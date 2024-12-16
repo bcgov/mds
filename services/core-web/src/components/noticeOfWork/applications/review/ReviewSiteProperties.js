@@ -4,10 +4,9 @@ import { PropTypes } from "prop-types";
 import { Row, Col } from "antd";
 import { Field, formValueSelector, FormSection } from "redux-form";
 import { connect } from "react-redux";
-import RenderMultiSelect from "@/components/common/RenderMultiSelect";
-import RenderSelect from "@/components/common/RenderSelect";
-import CustomPropTypes from "@/customPropTypes";
-import { requiredList, required } from "@common/utils/Validate";
+import RenderMultiSelect from "@mds/common/components/forms/RenderMultiSelect";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
+import { requiredList } from "@common/utils/Validate";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import {
   getConditionalDisturbanceOptionsHash,
@@ -30,14 +29,14 @@ const propTypes = {
 };
 
 const mapApplicationTypeToTenureType = (code) =>
-  ({
-    PLA: ["PLR"],
-    COL: ["COL"],
-    MIN: ["MIN"],
-    SAG: ["BCL", "PRL"],
-    QCA: ["BCL", "PRL"],
-    QIM: ["MIN"],
-  }[code]);
+({
+  PLA: ["PLR"],
+  COL: ["COL"],
+  MIN: ["MIN"],
+  SAG: ["BCL", "PRL"],
+  QCA: ["BCL", "PRL"],
+  QIM: ["MIN"],
+}[code]);
 export class ReviewSiteProperties extends Component {
   render() {
     const isCoalOrMineral =
@@ -70,15 +69,15 @@ export class ReviewSiteProperties extends Component {
               data={
                 this.props.site_property?.mine_tenure_type_code
                   ? this.props.conditionalCommodityOptions[
-                      this.props.site_property?.mine_tenure_type_code
-                    ]
+                  this.props.site_property?.mine_tenure_type_code
+                  ]
                   : null
               }
             />
           </Col>
           <Col md={12} sm={24}>
-            <div className="field-title">{isCoalOrMineral ? "Disturbance*" : "Disturbance"}</div>
             <Field
+              label="Disturbance"
               id="mine_disturbance_code"
               name="mine_disturbance_code"
               component={RenderMultiSelect}
@@ -86,10 +85,11 @@ export class ReviewSiteProperties extends Component {
               data={
                 this.props.site_property?.mine_tenure_type_code
                   ? this.props.conditionalDisturbanceOptions[
-                      this.props.site_property?.mine_tenure_type_code
-                    ]
+                  this.props.site_property?.mine_tenure_type_code
+                  ]
                   : null
               }
+              required={isCoalOrMineral}
               validate={isCoalOrMineral ? [requiredList] : []}
             />
           </Col>

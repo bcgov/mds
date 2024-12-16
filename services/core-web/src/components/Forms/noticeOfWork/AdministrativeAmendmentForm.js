@@ -1,10 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm, getFormValues } from "redux-form";
+import { Field, getFormValues } from "redux-form";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { required, dateNotInFuture } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
@@ -16,6 +14,7 @@ import {
   getApplicationReasonCodeDropdownOptions,
   getApplicationSourceTypeCodeDropdownOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -39,73 +38,75 @@ export const AdministrativeAmendmentForm = (props) => {
 
   const amendmentDropdown = props.formValues.permit_id
     ? createDropDownList(
-        permitAmendments.permit_amendments.filter(
-          ({ permit_amendment_status_code }) => permit_amendment_status_code !== "DFT"
-        ),
-        "issue_date",
-        "permit_amendment_guid",
-        false,
-        null,
-        formatDate
-      )
+      permitAmendments.permit_amendments.filter(
+        ({ permit_amendment_status_code }) => permit_amendment_status_code !== "DFT"
+      ),
+      "issue_date",
+      "permit_amendment_guid",
+      false,
+      null,
+      formatDate
+    )
     : [];
 
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <FormWrapper
+      name={FORM.ADMINISTRATIVE_AMENDMENT_FORM}
+      reduxFormConfig={{
+        touchOnBlur: false,
+        onSubmitSuccess: resetForm(FORM.ADMINISTRATIVE_AMENDMENT_FORM),
+        enableReinitialize: true,
+      }}
+      onSubmit={props.handleSubmit}>
       <Row>
         <Col span={24}>
-          <Form.Item>
-            <Field
-              id="permit_id"
-              name="permit_id"
-              placeholder="Select a Permit"
-              label="Permit*"
-              component={renderConfig.SELECT}
-              data={permitDropdown}
-              validate={[required]}
-            />
-          </Form.Item>
+          <Field
+            id="permit_id"
+            name="permit_id"
+            placeholder="Select a Permit"
+            label="Permit"
+            component={renderConfig.SELECT}
+            data={permitDropdown}
+            required
+            validate={[required]}
+          />
           {props.formValues.permit_id && (
-            <Form.Item>
-              <Field
-                id="permit_amendment_guid"
-                name="permit_amendment_guid"
-                label="Source Amendment by Issue Date*"
-                component={renderConfig.SELECT}
-                data={amendmentDropdown}
-                validate={[required]}
-              />
-            </Form.Item>
-          )}
-          <Form.Item>
             <Field
-              id="application_source_type_code"
-              name="application_source_type_code"
-              label="Source of Amendment*"
+              id="permit_amendment_guid"
+              name="permit_amendment_guid"
+              label="Source Amendment by Issue Date"
               component={renderConfig.SELECT}
-              data={props.applicationSourceTypeCodeOptions}
+              data={amendmentDropdown}
+              required
               validate={[required]}
             />
-          </Form.Item>
-          <Form.Item>
-            <Field
-              id="application_reason_codes"
-              name="application_reason_codes"
-              label="Reason for Amendment*"
-              component={renderConfig.MULTI_SELECT}
-              data={props.applicationReasonCodeOptions}
-              validate={[required]}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Field
-              id="received_date"
-              name="received_date"
-              label="Received Date*"
-              component={renderConfig.DATE}
-              validate={[required, dateNotInFuture]}
-            />
-          </Form.Item>
+          )}
+          <Field
+            id="application_source_type_code"
+            name="application_source_type_code"
+            label="Source of Amendment"
+            component={renderConfig.SELECT}
+            data={props.applicationSourceTypeCodeOptions}
+            required
+            validate={[required]}
+          />
+          <Field
+            id="application_reason_codes"
+            name="application_reason_codes"
+            label="Reason for Amendment"
+            component={renderConfig.MULTI_SELECT}
+            data={props.applicationReasonCodeOptions}
+            required
+            validate={[required]}
+          />
+          <Field
+            id="received_date"
+            name="received_date"
+            label="Received Date"
+            component={renderConfig.DATE}
+            required
+            validate={[required, dateNotInFuture]}
+          />
         </Col>
       </Row>
       <div className="right center-mobile">
@@ -125,7 +126,7 @@ export const AdministrativeAmendmentForm = (props) => {
           Proceed
         </Button>
       </div>
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -138,11 +139,5 @@ export default compose(
     permits: getPermits(state),
     applicationReasonCodeOptions: getApplicationReasonCodeDropdownOptions(state),
     applicationSourceTypeCodeOptions: getApplicationSourceTypeCodeDropdownOptions(state),
-  })),
-  reduxForm({
-    form: FORM.ADMINISTRATIVE_AMENDMENT_FORM,
-    touchOnBlur: false,
-    onSubmitSuccess: resetForm(FORM.ADMINISTRATIVE_AMENDMENT_FORM),
-    enableReinitialize: true,
-  })
+  }))
 )(AdministrativeAmendmentForm);

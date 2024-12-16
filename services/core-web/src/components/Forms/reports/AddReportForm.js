@@ -4,10 +4,8 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
 import { flatMap, uniqBy } from "lodash";
-import { Field, reduxForm, formValueSelector } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, List } from "antd";
+import { Field, formValueSelector } from "redux-form";
+import { Button, Col, Row, Popconfirm, List, Form } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { required, date } from "@common/utils/Validate";
@@ -25,6 +23,7 @@ import {
 import CustomPropTypes from "@/customPropTypes";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
 import ReportComments from "@/components/Forms/reports/ReportComments";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -155,45 +154,51 @@ export class AddReportForm extends Component {
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <FormWrapper
+        initialValues={this.props.initialValues}
+        name={FORM.ADD_REPORT}
+        reduxFormConfig={{
+          touchOnBlur: false,
+          enableReinitialize: true,
+          onSubmitSuccess: resetForm(FORM.ADD_REPORT),
+        }}
+        onSubmit={this.props.handleSubmit}>
         <Row gutter={16}>
           <Col span={24}>
             {!this.props.initialValues.mine_report_definition_guid && (
-              <Form.Item>
-                <Field
-                  id="mine_report_category"
-                  name="mine_report_category"
-                  label="Report Type*"
-                  placeholder="Select report type"
-                  data={this.props.dropdownMineReportCategoryOptions}
-                  doNotPinDropdown
-                  component={renderConfig.SELECT}
-                  validate={[required]}
-                  format={null}
-                />
-              </Form.Item>
-            )}
-            <Form.Item>
               <Field
-                id="mine_report_definition_guid"
-                name="mine_report_definition_guid"
-                label="Report Name*"
-                placeholder={
-                  this.props.selectedMineReportCategory
-                    ? "Select report name"
-                    : "Select report type above"
-                }
-                data={this.state.dropdownMineReportDefinitionOptionsFiltered}
+                id="mine_report_category"
+                name="mine_report_category"
+                label="Report Type"
+                placeholder="Select report type"
+                data={this.props.dropdownMineReportCategoryOptions}
                 doNotPinDropdown
                 component={renderConfig.SELECT}
+                required
                 validate={[required]}
                 format={null}
-                onChange={this.updateDueDateWithDefaultDueDate}
-                props={{
-                  disabled: this.state.existingReport || !this.props.selectedMineReportCategory,
-                }}
               />
-            </Form.Item>
+            )}
+            <Field
+              id="mine_report_definition_guid"
+              name="mine_report_definition_guid"
+              label="Report Name"
+              placeholder={
+                this.props.selectedMineReportCategory
+                  ? "Select report name"
+                  : "Select report type above"
+              }
+              data={this.state.dropdownMineReportDefinitionOptionsFiltered}
+              doNotPinDropdown
+              component={renderConfig.SELECT}
+              required
+              validate={[required]}
+              format={null}
+              onChange={this.updateDueDateWithDefaultDueDate}
+              props={{
+                disabled: this.state.existingReport || !this.props.selectedMineReportCategory,
+              }}
+            />
             {this.props.selectedMineReportCategory && this.props.selectedMineReportDefinition && (
               <Form.Item label="Report Code Requirements">
                 <List
@@ -204,44 +209,40 @@ export class AddReportForm extends Component {
                 >
                   {this.state.selectedMineReportComplianceArticles.length
                     ? this.state.selectedMineReportComplianceArticles.map((opt, index) => (
-                        <List.Item key={index}>
-                          {formatComplianceCodeValueOrLabel(opt, true)}
-                        </List.Item>
-                      ))
+                      <List.Item key={index}>
+                        {formatComplianceCodeValueOrLabel(opt, true)}
+                      </List.Item>
+                    ))
                     : [<List.Item key={1} />]}
                 </List>
               </Form.Item>
             )}
-            <Form.Item>
-              <Field
-                id="submission_year"
-                name="submission_year"
-                label="Compliance Year*"
-                placeholder="Select compliance year"
-                component={renderConfig.YEAR}
-                validate={[required]}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="due_date"
-                name="due_date"
-                label="Due Date*"
-                placeholder="Select due date"
-                component={renderConfig.DATE}
-                validate={[required, date]}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="received_date"
-                name="received_date"
-                label="Received Date"
-                placeholder="Select received date"
-                component={renderConfig.DATE}
-                validate={[requiredReceivedDateIfUploadedFiles, date]}
-              />
-            </Form.Item>
+            <Field
+              id="submission_year"
+              name="submission_year"
+              label="Compliance Year"
+              placeholder="Select compliance year"
+              component={renderConfig.YEAR}
+              required
+              validate={[required]}
+            />
+            <Field
+              id="due_date"
+              name="due_date"
+              label="Due Date"
+              placeholder="Select due date"
+              component={renderConfig.DATE}
+              required
+              validate={[required, date]}
+            />
+            <Field
+              id="received_date"
+              name="received_date"
+              label="Received Date"
+              placeholder="Select received date"
+              component={renderConfig.DATE}
+              validate={[requiredReceivedDateIfUploadedFiles, date]}
+            />
             <ReportSubmissions
               mineGuid={this.props.mineGuid}
               mineReportSubmissions={this.state.mineReportSubmissions}
@@ -251,7 +252,7 @@ export class AddReportForm extends Component {
             />
             {this.state.existingReport &&
               this.state.mineReportSubmissions.filter((x) => x.mine_report_submission_guid).length >
-                0 && (
+              0 && (
                 <ReportComments
                   mineGuid={this.props.mineGuid}
                   mineReportGuid={this.props.initialValues.mine_report_guid}
@@ -282,7 +283,7 @@ export class AddReportForm extends Component {
             {this.props.title}
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -298,11 +299,5 @@ export default compose(
     selectedMineReportCategory: selector(state, "mine_report_category"),
     selectedMineReportDefinition: selector(state, "mine_report_definition_guid"),
     formMeta: state.form[FORM.ADD_REPORT],
-  })),
-  reduxForm({
-    form: FORM.ADD_REPORT,
-    touchOnBlur: false,
-    enableReinitialize: true,
-    onSubmitSuccess: resetForm(FORM.ADD_REPORT),
-  })
+  }))
 )(AddReportForm);

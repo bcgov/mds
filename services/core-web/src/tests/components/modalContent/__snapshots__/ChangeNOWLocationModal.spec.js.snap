@@ -5,7 +5,7 @@ exports[`ChangeNOWLocationModal renders properly 1`] = `
   <LoadingWrapper
     condition={false}
   >
-    <Connect(ReduxForm)
+    <Connect(ChangeNOWLocationForm)
       fetchMineRecordById={
         [MockFunction] {
           "calls": Array [

@@ -2,15 +2,14 @@ import React from "react";
 import { compose } from "redux";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Field, reduxForm, getFormValues } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Alert, Typography } from "antd";
+import { Field, getFormValues } from "redux-form";
+import { Button, Col, Row, Alert, Typography, Form } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm, formatDate } from "@common/utils/helpers";
 import { getDropdownProjectDecisionPackageStatusCodes } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   dropdownProjectDecisionPackageStatusCodes: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -48,8 +47,13 @@ export const UpdateDecisionPackageStatusForm = (props) => {
   const isComplete = props.displayValues.status_code === "CMP";
 
   return (
-    <Form
-      layout="vertical"
+    <FormWrapper
+      name={FORM.UPDATE_PROJECT_DECISION_PACKAGE}
+      reduxFormConfig={{
+        onSubmitSuccess: resetForm(FORM.UPDATE_PROJECT_DECISION_PACKAGE),
+        touchOnBlur: false,
+        enableReinitialize: true,
+      }}
       onSubmit={(e) => {
         const submitPayload = {
           ...props.formValues,
@@ -63,7 +67,7 @@ export const UpdateDecisionPackageStatusForm = (props) => {
         <Alert
           message={
             props.displayValues.projectDecisionPackageStatusCodesHash[
-              props.displayValues?.status_code
+            props.displayValues?.status_code
             ]
           }
           description={
@@ -78,17 +82,16 @@ export const UpdateDecisionPackageStatusForm = (props) => {
                 </p>
               </Col>
               <Col xs={24} md={6}>
-                <Form.Item>
-                  <Field
-                    id="status_code"
-                    name="status_code"
-                    label=""
-                    placeholder="Action"
-                    component={renderConfig.SELECT}
-                    validate={[required]}
-                    data={props.dropdownProjectDecisionPackageStatusCodes}
-                  />
-                </Form.Item>
+                <Field
+                  id="status_code"
+                  name="status_code"
+                  label=""
+                  placeholder="Action"
+                  component={renderConfig.SELECT}
+                  required
+                  validate={[required]}
+                  data={props.dropdownProjectDecisionPackageStatusCodes}
+                />
                 {!props.pristine && (
                   <div className="right center-mobile">
                     <Button className="full-mobile" type="primary" htmlType="submit">
@@ -103,7 +106,7 @@ export const UpdateDecisionPackageStatusForm = (props) => {
           showIcon
         />
       </Col>
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -113,11 +116,5 @@ export default compose(
   connect((state) => ({
     formValues: getFormValues(FORM.UPDATE_PROJECT_DECISION_PACKAGE)(state) || {},
     dropdownProjectDecisionPackageStatusCodes: getDropdownProjectDecisionPackageStatusCodes(state),
-  })),
-  reduxForm({
-    form: FORM.UPDATE_PROJECT_DECISION_PACKAGE,
-    onSubmitSuccess: resetForm(FORM.UPDATE_PROJECT_DECISION_PACKAGE),
-    touchOnBlur: false,
-    enableReinitialize: true,
-  })
+  }))
 )(UpdateDecisionPackageStatusForm);

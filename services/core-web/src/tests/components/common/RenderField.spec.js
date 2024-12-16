@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import RenderField from "@/components/common/RenderField";
+import RenderField from "@mds/common/components/forms/RenderField";
 
 let props = {};
 

@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Field, getFormValues, reset } from "redux-form";
-import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Form } from "antd";
 import {
   getDropdownMineReportCategoryOptions,

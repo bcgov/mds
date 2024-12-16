@@ -7,7 +7,6 @@ import { Field, FieldArray } from "redux-form";
 import { Button } from "antd";
 import * as Strings from "@mds/common/constants/strings";
 import { TRASHCAN } from "@/constants/assets";
-import "@ant-design/compatible/assets/index.css";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,

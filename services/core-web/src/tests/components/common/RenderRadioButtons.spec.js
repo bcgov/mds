@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import RenderRadioButtons from "@/components/common/RenderRadioButtons";
+import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 
 let props = {};
 

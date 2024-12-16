@@ -2,16 +2,14 @@ import React from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { getExplosivesPermitStatusDropdownOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
-import RenderSelect from "@/components/common/RenderSelect";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 
 import CustomPropTypes from "@/customPropTypes";
 
@@ -29,33 +27,38 @@ export const ExplosivesPermitStatusForm = (props) => {
     return value === "REJ" || value === "WIT";
   });
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <FormWrapper onSubmit={props.handleSubmit}
+      name={FORM.EDIT_EXPLOSIVES_PERMIT_STATUS}
+      reduxFormConfig={{
+        touchOnBlur: false,
+        enableReinitialize: true,
+        onSubmitSuccess: resetForm(FORM.EDIT_EXPLOSIVES_PERMIT_STATUS),
+      }}
+    >
       <Row gutter={16}>
         <Col span={24}>
-          <Form.Item>
-            <Field
-              id="application_status"
-              name="application_status"
-              label="Application Status*"
-              placeholder="Select an application status"
-              component={RenderSelect}
-              data={options}
-              validate={[required]}
-            />
-          </Form.Item>
+          <Field
+            id="application_status"
+            name="application_status"
+            label="Application Status"
+            required
+            placeholder="Select an application status"
+            component={RenderSelect}
+            data={options}
+            validate={[required]}
+          />
         </Col>
       </Row>
       <Row gutter={16}>
         <Col span={24}>
-          <Form.Item>
-            <Field
-              id="decision_reason"
-              name="decision_reason"
-              label="Reason*"
-              validate={[required]}
-              component={RenderAutoSizeField}
-            />
-          </Form.Item>
+          <Field
+            id="decision_reason"
+            name="decision_reason"
+            label="Reason"
+            required
+            validate={[required]}
+            component={RenderAutoSizeField}
+          />
         </Col>
       </Row>
       <div className="right center-mobile">
@@ -75,7 +78,7 @@ export const ExplosivesPermitStatusForm = (props) => {
           {props.title}
         </Button>
       </div>
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -86,11 +89,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default compose(
-  connect(mapStateToProps),
-  reduxForm({
-    form: FORM.EDIT_EXPLOSIVES_PERMIT_STATUS,
-    touchOnBlur: false,
-    enableReinitialize: true,
-    onSubmitSuccess: resetForm(FORM.EDIT_EXPLOSIVES_PERMIT_STATUS),
-  })
+  connect(mapStateToProps)
 )(ExplosivesPermitStatusForm);

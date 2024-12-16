@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Field, reduxForm, FieldArray, formValueSelector } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field, FieldArray, formValueSelector } from "redux-form";
 import { Button, Col, Row, Popconfirm, Collapse, notification, Tag, Radio } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { difference, map, isEmpty, uniq } from "lodash";
@@ -17,7 +15,6 @@ import {
   lat,
   lon,
   lonNegative,
-  validateSelectOptions,
   wholeNumber,
 } from "@common/utils/Validate";
 import { getCurrentMineTypes } from "@mds/common/redux/selectors/mineSelectors";
@@ -40,6 +37,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { TRASHCAN } from "@/constants/assets";
 import { renderConfig } from "@/components/common/config";
 import { wholeNumberMask } from "@common/utils/helpers";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -175,7 +173,6 @@ export class MineRecordForm extends Component {
   createPanelHeader = (index, fields) => (
     <div className="inline-flex between">
       <Form.Item style={{ marginTop: "15px" }} label={`New Site Property: ${index + 1}`} />
-      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
       <div onClick={(event) => event.stopPropagation()}>
         <Popconfirm
           placement="topRight"
@@ -244,38 +241,35 @@ export class MineRecordForm extends Component {
     const renderTypeSelect = ({ fields }) => (
       <div>
         <Collapse activeKey={this.state.activeKey} onChange={this.setActiveKey}>
-          {this.props.currentMineTypes &&
-            this.props.currentMineTypes.map((type) => (
-              <Collapse.Panel
-                header={this.createExistingPanelHeader(type.mine_tenure_type_code)}
-                key={type.mine_tenure_type_code}
-              >
-                <div key={type.mine_tenure_type_code}>
-                  <div className="inline-flex">
-                    <Form.Item label="Commodity" />
-                    <div>
-                      {type.mine_commodity_code &&
-                        type.mine_commodity_code.map((code) => (
-                          <Tag>{this.props.mineCommodityOptionsHash[code]}</Tag>
-                        ))}
-                      {type.mine_commodity_code.length === 0 && <span>{Strings.EMPTY_FIELD}</span>}
-                    </div>
-                  </div>
-                  <div className="inline-flex">
-                    <Form.Item label="Disturbance" />
-                    <div>
-                      {type.mine_disturbance_code &&
-                        type.mine_disturbance_code.map((code) => (
-                          <Tag>{this.props.mineDisturbanceOptionsHash[code]}</Tag>
-                        ))}
-                      {type.mine_disturbance_code.length === 0 && (
-                        <span>{Strings.EMPTY_FIELD}</span>
-                      )}
-                    </div>
+          {this.props.currentMineTypes?.map((type) => (
+            <Collapse.Panel
+              header={this.createExistingPanelHeader(type.mine_tenure_type_code)}
+              key={type.mine_tenure_type_code}
+            >
+              <div key={type.mine_tenure_type_code}>
+                <div className="inline-flex">
+                  <Form.Item label="Commodity" />
+                  <div>
+                    {type.mine_commodity_code?.map((code) => (
+                      <Tag key={code}>{this.props.mineCommodityOptionsHash[code]}</Tag>
+                    ))}
+                    {type.mine_commodity_code.length === 0 && <span>{Strings.EMPTY_FIELD}</span>}
                   </div>
                 </div>
-              </Collapse.Panel>
-            ))}
+                <div className="inline-flex">
+                  <Form.Item label="Disturbance" />
+                  <div>
+                    {type.mine_disturbance_code?.map((code) => (
+                      <Tag key={code}>{this.props.mineDisturbanceOptionsHash[code]}</Tag>
+                    ))}
+                    {type.mine_disturbance_code.length === 0 && (
+                      <span>{Strings.EMPTY_FIELD}</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </Collapse.Panel>
+          ))}
           {fields.map((type, index) => (
             <Collapse.Panel header={this.createPanelHeader(index, fields)} key={type}>
               <Row gutter={16}>
@@ -301,12 +295,10 @@ export class MineRecordForm extends Component {
                     component={renderConfig.MULTI_SELECT}
                     // if data doesn't exist, the multi-select is disabled
                     data={
-                      this.props.mine_types[index] &&
-                      this.props.mine_types[index].mine_tenure_type_code &&
-                      this.props.mine_types[index].mine_tenure_type_code.length >= 1
+                      this.props.mine_types[index]?.mine_tenure_type_code?.length >= 1
                         ? this.props.conditionalCommodityOptions[
-                            this.props.mine_types[index].mine_tenure_type_code
-                          ]
+                        this.props.mine_types[index].mine_tenure_type_code
+                        ]
                         : null
                     }
                   />
@@ -321,12 +313,10 @@ export class MineRecordForm extends Component {
                     label="Disturbance"
                     component={renderConfig.MULTI_SELECT}
                     data={
-                      this.props.mine_types[index] &&
-                      this.props.mine_types[index].mine_tenure_type_code &&
-                      this.props.mine_types[index].mine_tenure_type_code.length >= 1
+                      this.props.mine_types[index]?.mine_tenure_type_code?.length >= 1
                         ? this.props.conditionalDisturbanceOptions[
-                            this.props.mine_types[index].mine_tenure_type_code
-                          ]
+                        this.props.mine_types[index].mine_tenure_type_code
+                        ]
                         : null
                     }
                   />
@@ -345,35 +335,40 @@ export class MineRecordForm extends Component {
     );
 
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <FormWrapper onSubmit={this.props.handleSubmit}
+        name={FORM.MINE_RECORD}
+        reduxFormConfig={{
+          touchOnBlur: false,
+          enableReinitialize: true,
+          keepDirtyOnReinitialize: true,
+        }}
+      >
         <Row gutter={16}>
           <Col span={24}>
-            <Form.Item>
-              <Field
-                id="mine_name"
-                name="mine_name"
-                label="Mine Name *"
-                component={renderConfig.FIELD}
-                validate={[required, maxLength(60), minLength(3)]}
-              />
-            </Form.Item>
+            <Field
+              id="mine_name"
+              name="mine_name"
+              label="Mine Name"
+              component={renderConfig.FIELD}
+              required
+              validate={[required, maxLength(60), minLength(3)]}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={24}>
-            <Form.Item>
-              <Field
-                id="mine_status"
-                name="mine_status"
-                label="Mine Status *"
-                placeholder="Please select status"
-                options={this.props.mineStatusDropDownOptions}
-                component={renderConfig.CASCADER}
-                validate={[required]}
-                onChange={this.onStatusChange}
-                changeOnSelect
-              />
-            </Form.Item>
+            <Field
+              id="mine_status"
+              name="mine_status"
+              label="Mine Status"
+              placeholder="Please select status"
+              options={this.props.mineStatusDropDownOptions}
+              component={renderConfig.CASCADER}
+              required
+              validate={[required]}
+              onChange={this.onStatusChange}
+              changeOnSelect
+            />
           </Col>
         </Row>
         <Row gutter={16}>
@@ -393,58 +388,51 @@ export class MineRecordForm extends Component {
         {this.state.showStatusDate && (
           <Row gutter={16}>
             <Col span={24}>
-              <Form.Item label="Date of Status Change" className="padding-lg">
-                <p className="p-light">
-                  The date will default to todays date, unless otherwise specified.
-                </p>
-                <Field
-                  id="status_date"
-                  name="status_date"
-                  placeholder="yyyy-mm-dd"
-                  component={renderConfig.DATE}
-                  validate={[dateNotInFuture, required]}
-                />
-              </Form.Item>
+              <Field
+                label="Date of Status Change"
+                help="The date will default to todays date, unless otherwise specified."
+                id="status_date"
+                name="status_date"
+                placeholder="yyyy-mm-dd"
+                component={renderConfig.DATE}
+                required
+                validate={[dateNotInFuture, required]}
+              />
             </Col>
           </Row>
         )}
         <Row gutter={16}>
           <Col span={24}>
-            <Form.Item>
-              <Field
-                id="mine_region"
-                name="mine_region"
-                label="Mine Region *"
-                placeholder="Select a Region"
-                component={renderConfig.SELECT}
-                data={this.props.mineRegionOptions}
-                validate={[required, validateSelectOptions(this.props.mineRegionOptions)]}
-              />
-            </Form.Item>
+            <Field
+              id="mine_region"
+              name="mine_region"
+              label="Mine Region"
+              placeholder="Select a Region"
+              component={renderConfig.SELECT}
+              data={this.props.mineRegionOptions}
+              required
+              validate={[required]}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col md={12} xs={24}>
-            <Form.Item>
-              <Field
-                id="latitude"
-                name="latitude"
-                label="Latitude"
-                component={renderConfig.FIELD}
-                validate={[number, maxLength(10), lat]}
-              />
-            </Form.Item>
+            <Field
+              id="latitude"
+              name="latitude"
+              label="Latitude"
+              component={renderConfig.FIELD}
+              validate={[number, maxLength(10), lat]}
+            />
           </Col>
           <Col md={12} xs={24}>
-            <Form.Item>
-              <Field
-                id="longitude"
-                name="longitude"
-                label="Longitude"
-                component={renderConfig.FIELD}
-                validate={[number, maxLength(12), lon, lonNegative]}
-              />
-            </Form.Item>
+            <Field
+              id="longitude"
+              name="longitude"
+              label="Longitude"
+              component={renderConfig.FIELD}
+              validate={[number, maxLength(12), lon, lonNegative]}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
@@ -462,17 +450,14 @@ export class MineRecordForm extends Component {
           </Col>
           {this.state.hasGovernmentAgency && (
             <Col md={12} xs={24}>
-              <Form.Item>
-                <Field
-                  id="exemption_fee_status_code"
-                  name="exemption_fee_status_code"
-                  label="Inspection Fee Status"
-                  disabled
-                  component={renderConfig.SELECT}
-                  validate={[validateSelectOptions(this.props.exemptionFeeStatusDropDownOptions)]}
-                  data={this.props.exemptionFeeStatusDropDownOptions}
-                />
-              </Form.Item>
+              <Field
+                id="exemption_fee_status_code"
+                name="exemption_fee_status_code"
+                label="Inspection Fee Status"
+                disabled
+                component={renderConfig.SELECT}
+                data={this.props.exemptionFeeStatusDropDownOptions}
+              />
             </Col>
           )}
         </Row>
@@ -483,26 +468,24 @@ export class MineRecordForm extends Component {
                 <Field
                   id="government_agency_type_code"
                   name="government_agency_type_code"
-                  label="Government Agency *"
+                  label="Government Agency"
                   placeholder="Select an Agency"
                   component={renderConfig.SELECT}
                   data={this.props.governmentAgencyTypeOptions}
+                  required
                   validate={[
                     required,
-                    validateSelectOptions(this.props.governmentAgencyTypeOptions),
                   ]}
                 />
               </Col>
               <Col md={12} xs={24}>
-                <Form.Item>
-                  <Field
-                    id="exemption_fee_status_note"
-                    name="exemption_fee_status_note"
-                    label="Fee Exemption Note"
-                    component={renderConfig.AUTO_SIZE_FIELD}
-                    validate={[maxLength(300)]}
-                  />
-                </Form.Item>
+                <Field
+                  id="exemption_fee_status_note"
+                  name="exemption_fee_status_note"
+                  label="Fee Exemption Note"
+                  component={renderConfig.AUTO_SIZE_FIELD}
+                  validate={[maxLength(300)]}
+                />
               </Col>
             </Row>
             <Form.Item label="Site Property" />
@@ -511,54 +494,46 @@ export class MineRecordForm extends Component {
         )}
         <Row gutter={16}>
           <Col md={12} xs={24}>
-            <Form.Item>
-              <Field
-                id="number_of_mine_employees"
-                name="number_of_mine_employees"
-                label="Number of Mine Employees"
-                component={renderConfig.FIELD}
-                {...wholeNumberMask}
-                validate={[wholeNumber]}
-              />
-            </Form.Item>
+            <Field
+              id="number_of_mine_employees"
+              name="number_of_mine_employees"
+              label="Number of Mine Employees"
+              component={renderConfig.FIELD}
+              {...wholeNumberMask}
+              validate={[wholeNumber]}
+            />
           </Col>
           <Col md={12} xs={24}>
-            <Form.Item>
-              <Field
-                id="number_of_contractors"
-                name="number_of_contractors"
-                label="Number of Contractors"
-                component={renderConfig.FIELD}
-                {...wholeNumberMask}
-                validate={[wholeNumber]}
-              />
-            </Form.Item>
+            <Field
+              id="number_of_contractors"
+              name="number_of_contractors"
+              label="Number of Contractors"
+              component={renderConfig.FIELD}
+              {...wholeNumberMask}
+              validate={[wholeNumber]}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={24}>
-            <Form.Item>
-              <Field
-                id="mine_note"
-                name="mine_note"
-                label="Notes"
-                component={renderConfig.AUTO_SIZE_FIELD}
-                validate={[maxLength(300)]}
-              />
-            </Form.Item>
+            <Field
+              id="mine_note"
+              name="mine_note"
+              label="Notes"
+              component={renderConfig.AUTO_SIZE_FIELD}
+              validate={[maxLength(300)]}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={24}>
-            <Form.Item>
-              <Field
-                id="major_mine_ind"
-                name="major_mine_ind"
-                label="Major Mine"
-                type="checkbox"
-                component={renderConfig.CHECKBOX}
-              />
-            </Form.Item>
+            <Field
+              id="major_mine_ind"
+              name="major_mine_ind"
+              label="Major Mine"
+              type="checkbox"
+              component={renderConfig.CHECKBOX}
+            />
           </Col>
         </Row>
         <div className="right center-mobile">
@@ -581,7 +556,7 @@ export class MineRecordForm extends Component {
             {this.props.title}
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -606,11 +581,5 @@ export default compose(
     mine_types: selector(state, "mine_types"),
     status_date: selector(state, "status_date"),
     exemptionFeeStatusDropDownOptions: getExemptionFeeStatusDropDownOptions(state),
-  })),
-  reduxForm({
-    form: FORM.MINE_RECORD,
-    touchOnBlur: false,
-    enableReinitialize: true,
-    keepDirtyOnReinitialize: true,
-  })
+  }))
 )(MineRecordForm);

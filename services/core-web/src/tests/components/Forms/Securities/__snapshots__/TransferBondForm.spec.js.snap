@@ -1,55 +1,53 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TransferBondForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  name="TRANSFER_BOND"
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "enableReinitialize": true,
+      "onSubmitSuccess": [Function],
+      "touchOnBlur": false,
+    }
+  }
 >
   <Row>
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          data={
-            Array [
-              Object {
-                "label": "C-12345",
-                "value": "1628847c-060b-45f2-990f-815877174801",
-              },
-            ]
-          }
-          id="permit_guid"
-          label="Permit *"
-          name="permit_guid"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        data={
+          Array [
+            Object {
+              "label": "C-12345",
+              "value": "1628847c-060b-45f2-990f-815877174801",
+            },
+          ]
+        }
+        id="permit_guid"
+        label="Permit"
+        name="permit_guid"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row>
     <Col
       md={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="note"
-          label="Notes"
-          name="note"
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="note"
+        label="Notes"
+        name="note"
+      />
     </Col>
   </Row>
   <div
@@ -78,5 +76,5 @@ exports[`TransferBondForm renders properly 1`] = `
       Transfer Bond
     </Button>
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

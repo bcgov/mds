@@ -17,7 +17,7 @@ beforeEach(() => {
   setupDispatchProps();
   setupProps();
 });
-
+// reduxForm is not defined
 describe("AddIncidentReportingForm", () => {
   it("renders properly", () => {
     const component = shallow(<AddIncidentReportingForm {...dispatchProps} {...props} />);

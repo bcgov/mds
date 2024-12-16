@@ -2,11 +2,15 @@
 
 exports[`MergePartyConfirmationForm renders properly 1`] = `
 <div>
-  <Form
-    colon={true}
-    hideRequiredMark={false}
-    layout="vertical"
+  <Connect(ReduxForm)
+    name="MERGE_PARTY_CONFIRMATION"
     onSubmit={[MockFunction]}
+    reduxFormConfig={
+      Object {
+        "onSubmitSuccess": [Function],
+        "touchOnBlur": false,
+      }
+    }
   >
     <Alert
       description="Once the merge is complete a new contact will be created and all previous contacts selected will be deleted. All roles listed will be copied over to the new contact."
@@ -28,21 +32,18 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
           <Col
             span={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="party_name"
-                label="Organization Name*"
-                name="party_name"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="party_name"
+              label="Organization Name"
+              name="party_name"
+              required={true}
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
           </Col>
         </Row>
         <Row
@@ -51,22 +52,19 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
           <Col
             span={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="email"
-                label="Email*"
-                name="email"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="email"
+              label="Email"
+              name="email"
+              required={true}
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
           </Col>
         </Row>
         <Row
@@ -75,45 +73,38 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
           <Col
             span={18}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="phone_no"
-                label="Phone Number*"
-                name="phone_no"
-                normalize={[Function]}
-                placeholder="e.g. xxx-xxx-xxxx"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="phone_no"
+              label="Phone Number"
+              name="phone_no"
+              normalize={[Function]}
+              placeholder="e.g. xxx-xxx-xxxx"
+              required={true}
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
           </Col>
           <Col
             span={6}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="phone_ext"
-                label="Ext"
-                name="phone_ext"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="phone_ext"
+              label="Ext"
+              name="phone_ext"
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
           </Col>
         </Row>
         <FormSection
@@ -125,35 +116,27 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
             <Col
               span={6}
             >
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="suite_no"
-                  label="Suite No."
-                  name="suite_no"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
+              <Field
+                component={[Function]}
+                id="suite_no"
+                label="Suite No."
+                name="suite_no"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
             </Col>
             <Col
               span={18}
             >
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="address_line_1"
-                  label="Street Address 1"
-                  name="address_line_1"
-                />
-              </FormItem>
+              <Field
+                component={[Function]}
+                id="address_line_1"
+                label="Street Address 1"
+                name="address_line_1"
+              />
             </Col>
           </Row>
           <Row
@@ -162,51 +145,38 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
             <Col
               span={18}
             >
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="address_line_2"
-                  label="Street Address 2"
-                  name="address_line_2"
-                />
-              </FormItem>
+              <Field
+                component={[Function]}
+                id="address_line_2"
+                label="Street Address 2"
+                name="address_line_2"
+              />
             </Col>
             <Col
               span={6}
             >
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  data={
-                    Array [
-                      Object {
-                        "isActive": true,
-                        "label": "AB",
-                        "subType": "CAN",
-                        "value": "AB",
-                      },
-                      Object {
-                        "isActive": true,
-                        "label": "BC",
-                        "subType": "CAN",
-                        "value": "BC",
-                      },
-                    ]
-                  }
-                  id="sub_division_code"
-                  label="Province"
-                  name="sub_division_code"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
+              <Field
+                component={[Function]}
+                data={
+                  Array [
+                    Object {
+                      "isActive": true,
+                      "label": "AB",
+                      "subType": "CAN",
+                      "value": "AB",
+                    },
+                    Object {
+                      "isActive": true,
+                      "label": "BC",
+                      "subType": "CAN",
+                      "value": "BC",
+                    },
+                  ]
+                }
+                id="sub_division_code"
+                label="Province"
+                name="sub_division_code"
+              />
             </Col>
           </Row>
           <Row
@@ -216,44 +186,36 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
               md={12}
               xs={24}
             >
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="city"
-                  label="City"
-                  name="city"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
+              <Field
+                component={[Function]}
+                id="city"
+                label="City"
+                name="city"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
             </Col>
             <Col
               md={12}
               xs={24}
             >
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="post_code"
-                  label="Postal Code"
-                  name="post_code"
-                  normalize={[Function]}
-                  placeholder="e.g xxxxxx"
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
+              <Field
+                component={[Function]}
+                id="post_code"
+                label="Postal Code"
+                name="post_code"
+                normalize={[Function]}
+                placeholder="e.g xxxxxx"
+                validate={
+                  Array [
+                    [Function],
+                    [Function],
+                  ]
+                }
+              />
             </Col>
           </Row>
         </FormSection>
@@ -326,6 +288,6 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
         </Button>
       </Connect(AuthorizationWrapper)>
     </div>
-  </Form>
+  </Connect(ReduxForm)>
 </div>
 `;

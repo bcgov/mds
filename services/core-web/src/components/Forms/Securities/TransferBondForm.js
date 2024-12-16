@@ -1,15 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import * as FORM from "@/constants/forms";
-import RenderSelect from "@/components/common/RenderSelect";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import CustomPropTypes from "@/customPropTypes";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -20,28 +19,32 @@ const propTypes = {
 };
 
 export const TransferBondForm = (props) => (
-  <Form layout="vertical" onSubmit={props.handleSubmit}>
+  <FormWrapper onSubmit={props.handleSubmit}
+    name={FORM.TRANSFER_BOND}
+    reduxFormConfig={{
+      touchOnBlur: false,
+      onSubmitSuccess: resetForm(FORM.TRANSFER_BOND),
+      enableReinitialize: true,
+    }}
+  >
     <Row>
       <Col span={24}>
-        <Form.Item>
-          <Field
-            id="permit_guid"
-            name="permit_guid"
-            label="Permit *"
-            component={RenderSelect}
-            data={props.permits.map((p) => {
-              return { value: p.permit_guid, label: p.permit_no };
-            })}
-            validate={[required]}
-          />
-        </Form.Item>
+        <Field
+          id="permit_guid"
+          name="permit_guid"
+          label="Permit"
+          required
+          component={RenderSelect}
+          data={props.permits.map((p) => {
+            return { value: p.permit_guid, label: p.permit_no };
+          })}
+          validate={[required]}
+        />
       </Col>
     </Row>
     <Row>
       <Col md={24}>
-        <Form.Item>
-          <Field id="note" name="note" label="Notes" component={RenderAutoSizeField} />
-        </Form.Item>
+        <Field id="note" name="note" label="Notes" component={RenderAutoSizeField} />
       </Col>
     </Row>
     <div className="right center-mobile">
@@ -60,14 +63,9 @@ export const TransferBondForm = (props) => (
         {props.title}
       </Button>
     </div>
-  </Form>
+  </FormWrapper>
 );
 
 TransferBondForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.TRANSFER_BOND,
-  touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.TRANSFER_BOND),
-  enableReinitialize: true,
-})(TransferBondForm);
+export default TransferBondForm;

@@ -14,7 +14,7 @@ const setupProps = () => {
 beforeEach(() => {
   setupProps();
 });
-
+// reduxForm is not defined
 describe("MineList", () => {
   it("renders properly", () => {
     const component = shallow(<MineList {...props} />);

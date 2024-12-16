@@ -1,11 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm, Alert } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -19,7 +17,13 @@ const defaultProps = {
 };
 
 export const GeneratePermitNumberForm = (props) => (
-  <Form layout="vertical" onSubmit={props.handleSubmit}>
+  <FormWrapper
+    name={FORM.GENERATE_PERMIT_NUMBER}
+    reduxFormConfig={{
+      touchOnBlur: true,
+      onSubmitSuccess: resetForm(FORM.GENERATE_PERMIT_NUMBER),
+    }}
+    onSubmit={props.handleSubmit}>
     <Alert
       message="This action is final"
       description="The generated permit number will be assigned to the current draft permit."
@@ -58,14 +62,10 @@ export const GeneratePermitNumberForm = (props) => (
         Generate Permit Number
       </Button>
     </div>
-  </Form>
+  </FormWrapper>
 );
 
 GeneratePermitNumberForm.propTypes = propTypes;
 GeneratePermitNumberForm.defaultProps = defaultProps;
 
-export default reduxForm({
-  form: FORM.GENERATE_PERMIT_NUMBER,
-  touchOnBlur: true,
-  onSubmitSuccess: resetForm(FORM.GENERATE_PERMIT_NUMBER),
-})(GeneratePermitNumberForm);
+export default GeneratePermitNumberForm;

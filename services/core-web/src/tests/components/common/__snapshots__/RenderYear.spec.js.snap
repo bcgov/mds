@@ -1,23 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RenderYear renders properly 1`] = `
-<FormItem
-  hasFeedback={false}
-  help={false}
+<RenderDate
+  id={1}
+  input={
+    Object {
+      "value": "",
+    }
+  }
   label="Time"
-  validateStatus=""
->
-  <ForwardRef
-    disabled={false}
-    format="YYYY"
-    id={1}
-    mode="year"
-    onChange={[Function]}
-    onOpenChange={[Function]}
-    onPanelChange={[Function]}
-    open={false}
-    placeholder=""
-    value={null}
-  />
-</FormItem>
+  meta={
+    Object {
+      "error": false,
+      "touched": false,
+      "warning": false,
+    }
+  }
+  yearMode={true}
+/>
 `;

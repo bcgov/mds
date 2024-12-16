@@ -1,28 +1,20 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Typography, Divider, Row, Col } from "antd";
+import React, { FC } from "react";
+import { Typography, Divider, Row, Col, Form } from "antd";
+import { BaseInputProps } from "@mds/common/components/forms/BaseInput";
 
+
+interface RenderLabelProps extends BaseInputProps {
+  indentText?: string;
+  className?: string;
+}
 /**
- * @constant RenderLabel
+ * 
+ * @deprecated - only used in GenerateDocumentFormField, don't add to new cases
  */
-
-const propTypes = {
-  input: PropTypes.objectOf(PropTypes.any).isRequired,
-  indentText: PropTypes.string,
-  className: PropTypes.string,
-};
-
-const defaultProps = {
-  className: "",
-  indentText: undefined,
-};
-
-const RenderLabel = (props) => {
+const RenderLabel: FC<RenderLabelProps> = ({ className = "", ...props }) => {
   return (
     <Form.Item>
-      <Row className={props.className}>
+      <Row className={className}>
         {props.indentText && (
           <>
             <Col span={2}>
@@ -47,8 +39,5 @@ const RenderLabel = (props) => {
     </Form.Item>
   );
 };
-
-RenderLabel.propTypes = propTypes;
-RenderLabel.defaultProps = defaultProps;
 
 export default RenderLabel;

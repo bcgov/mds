@@ -1,12 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field } from "redux-form";
 import { Button, Col, Row } from "antd";
 import { requiredList } from "@common/utils/Validate";
 import { nullableStringSorter, resetForm } from "@common/utils/helpers";
-import RenderField from "@/components/common/RenderField";
+import RenderField from "@mds/common/components/forms/RenderField";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -23,36 +21,40 @@ export const EditMinespaceUser = (props) => {
   const { mines, handleSubmit, handleChange, handleSearch } = props;
   const isModal = true; // currently no instance where it's not in a modal
   return (
-    <Form layout="vertical" onSubmit={handleSubmit}>
+    <FormWrapper onSubmit={handleSubmit}
+      name={FORM.EDIT_MINESPACE_USER}
+      initialValues={{ proponent_mine_access: [] }}
+      reduxFormConfig={{
+        touchOnBlur: false,
+        onSubmitSuccess: resetForm(FORM.EDIT_MINESPACE_USER),
+      }}
+    >
       <Col span={24}>
         <Row>
           <Col span={24}>
-            <Form.Item>
-              <Field
-                id="email_or_username"
-                name="email_or_username"
-                label="Email/BCeID username"
-                placeholder="Please enter a bceid in the format of user@bceid or a valid email address"
-                component={RenderField}
-                allowClear
-              />
-            </Form.Item>
+            <Field
+              id="email_or_username"
+              name="email_or_username"
+              label="Email/BCeID username"
+              placeholder="Please enter a bceid in the format of user@bceid or a valid email address"
+              component={RenderField}
+              allowClear
+            />
           </Col>
           <Col span={24}>
-            <Form.Item>
-              <Field
-                id="mine_guids"
-                name="mine_guids"
-                label="Mines*"
-                placeholder="Select the mines this user can access"
-                component={renderConfig.MULTI_SELECT}
-                data={mines.sort(nullableStringSorter("label"))}
-                onChange={handleChange}
-                onSearch={handleSearch}
-                validate={[requiredList]}
-                props={{ isModal }}
-              />
-            </Form.Item>
+            <Field
+              id="mine_guids"
+              name="mine_guids"
+              label="Mines"
+              required
+              placeholder="Select the mines this user can access"
+              component={renderConfig.MULTI_SELECT}
+              data={mines.sort(nullableStringSorter("label"))}
+              onChange={handleChange}
+              onSearch={handleSearch}
+              validate={[requiredList]}
+              props={{ isModal }}
+            />
           </Col>
         </Row>
         <div className="right center-mobile">
@@ -61,15 +63,10 @@ export const EditMinespaceUser = (props) => {
           </Button>
         </div>
       </Col>
-    </Form>
+    </FormWrapper>
   );
 };
 
 EditMinespaceUser.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.EDIT_MINESPACE_USER,
-  initialValues: { proponent_mine_access: [] },
-  touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.EDIT_MINESPACE_USER),
-})(EditMinespaceUser);
+export default EditMinespaceUser;

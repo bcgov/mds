@@ -464,7 +464,7 @@ exports[`ApplicationTab renders properly 1`] = `
   <div
     className="side-menu--content"
   >
-    <Connect(ReduxForm)
+    <Connect(ReviewAdminAmendmentApplication)
       initialValues={
         Object {
           "anyotherinformation": null,

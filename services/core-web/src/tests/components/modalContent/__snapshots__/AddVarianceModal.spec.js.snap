@@ -2,8 +2,7 @@
 
 exports[`AddVarianceModal renders properly 1`] = `
 <div>
-  <ReduxForm
-    change={[Function]}
+  <AddVarianceForm
     closeModal={[MockFunction]}
     complianceCodes={
       Array [
@@ -17,11 +16,6 @@ exports[`AddVarianceModal renders properly 1`] = `
         },
       ]
     }
-    destroyOnUnmount={true}
-    enableReinitialize={true}
-    forceUnregisterOnUnmount={false}
-    form="ADD_VARIANCE"
-    getFormState={[Function]}
     inspectors={
       Object {
         "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
@@ -54,20 +48,8 @@ exports[`AddVarianceModal renders properly 1`] = `
         },
       }
     }
-    keepDirtyOnReinitialize={false}
     mineGuid="48593"
     onSubmit={[MockFunction]}
-    onSubmitSuccess={[Function]}
-    persistentSubmitErrors={false}
-    pure={true}
-    shouldAsyncValidate={[Function]}
-    shouldError={[Function]}
-    shouldValidate={[Function]}
-    shouldWarn={[Function]}
-    submitAsSideEffect={false}
-    touchOnBlur={false}
-    touchOnChange={false}
-    updateUnregisteredFields={false}
   />
 </div>
 `;

@@ -4,8 +4,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import { isEmpty, some, negate } from "lodash";
-import { Field, reduxForm } from "redux-form";
-import "@ant-design/compatible/assets/index.css";
+import { Field } from "redux-form";
 import { Button, Col, Row, Form } from "antd";
 import {
   getDropdownMineReportStatusOptions,
@@ -17,6 +16,7 @@ import { sortListObjectsByPropertyLocaleCompare } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -84,7 +84,14 @@ export class ReportSearchForm extends Component {
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
+      <FormWrapper
+        initialValues={this.props.initialValues}
+        name={FORM.REPORT_ADVANCED_SEARCH}
+        reduxFormConfig={{
+          touchOnBlur: false,
+          enableReinitialize: true,
+        }}
+        onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
         <Row gutter={6}>
           <Col md={24} xs={24}>
             <Field
@@ -241,7 +248,7 @@ export class ReportSearchForm extends Component {
             Apply Filters
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -254,10 +261,5 @@ export default compose(
     dropdownMineReportStatusOptions: getDropdownMineReportStatusOptions(state, false),
     dropdownMineReportCategoryOptions: getDropdownMineReportCategoryOptions(state, false),
     dropdownMineReportDefinitionOptions: getDropdownMineReportDefinitionOptions(state, false),
-  })),
-  reduxForm({
-    form: FORM.REPORT_ADVANCED_SEARCH,
-    touchOnBlur: false,
-    enableReinitialize: true,
-  })
+  }))
 )(ReportSearchForm);

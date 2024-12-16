@@ -372,9 +372,10 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
               <Field
                 id="engineer_of_record.start_date"
                 name="engineer_of_record.start_date"
-                label={!fieldsDisabled ? "Start Date *" : "Start Date"}
+                label="Start Date"
                 disabled={fieldsDisabled}
                 component={renderConfig.DATE}
+                required={!fieldsDisabled}
                 validate={
                   !fieldsDisabled && [required, dateNotInFuture, validateEorStartDateOverlap]
                 }

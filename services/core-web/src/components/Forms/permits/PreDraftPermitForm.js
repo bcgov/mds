@@ -2,18 +2,15 @@ import React, { useState, useEffect } from "react";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Field, reduxForm, getFormValues, change } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field, getFormValues, change } from "redux-form";
 import { Col, Row, Tooltip, Alert } from "antd";
 import { resetForm, createDropDownList } from "@common/utils/helpers";
 import {
   required,
   requiredRadioButton,
-  validateSelectOptions,
   validateIfApplicationTypeCorrespondsToPermitNumber,
 } from "@common/utils/Validate";
-import RenderSelect from "@/components/common/RenderSelect";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import { getNoticeOfWorkEditableTypes } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 
 import * as FORM from "@/constants/forms";
@@ -24,7 +21,7 @@ import {
   getDropdownNoticeOfWorkApplicationTypeOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { PERMIT_AMENDMENT_TYPES } from "@mds/common/constants/strings";
-import RenderRadioButtons from "@/components/common/RenderRadioButtons";
+import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 
 const propTypes = {
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
@@ -140,55 +137,61 @@ export const PreDraftPermitForm = (props) => {
         />
       )}
       <br />
-      <Form layout="vertical">
+      <FormWrapper onSubmit={() => { }}
+        name={FORM.PRE_DRAFT_PERMIT}
+        reduxFormConfig={{
+          touchOnBlur: true,
+          destroyOnUnmount: false,
+          forceUnregisterOnUnmount: true,
+          enableReinitialize: true,
+          onSubmitSuccess: resetForm(FORM.PRE_DRAFT_PERMIT),
+        }}
+      >
         <Row gutter={16}>
           {!props.isNoticeOfWorkTypeDisabled && (
             <Col span={24}>
-              <Form.Item>
-                <Field
-                  id="notice_of_work_type_code"
-                  name="notice_of_work_type_code"
-                  label="Type of Notice of Work*"
-                  component={RenderSelect}
-                  data={filteredApplicationTypeOptions}
-                  validate={[required, validateSelectOptions(props.applicationTypeOptions)]}
-                  disabled={props.isNoticeOfWorkTypeDisabled}
-                />
-              </Form.Item>
+              <Field
+                id="notice_of_work_type_code"
+                name="notice_of_work_type_code"
+                label="Type of Notice of Work"
+                required
+                component={RenderSelect}
+                data={filteredApplicationTypeOptions}
+                validate={[required]}
+                disabled={props.isNoticeOfWorkTypeDisabled}
+              />
             </Col>
           )}
           <Col span={24}>
-            <Form.Item>
-              <Field
-                id="type_of_application"
-                name="type_of_application"
-                label="Application Type*"
-                component={renderConfig.SELECT}
-                data={[
-                  { value: "New Permit", label: "New Permit" },
-                  { value: "Amendment", label: "Amendment" },
-                ]}
-                validate={[required]}
-                disabled={props.initialValues.disabled}
-              />
-            </Form.Item>
+            <Field
+              id="type_of_application"
+              name="type_of_application"
+              label="Application Type"
+              required
+              component={renderConfig.SELECT}
+              data={[
+                { value: "New Permit", label: "New Permit" },
+                { value: "Amendment", label: "Amendment" },
+              ]}
+              validate={[required]}
+              disabled={props.initialValues.disabled}
+            />
           </Col>
           <Col span={24}>
             {isAmendment && (
               <div className="left">
-                <Form.Item>
-                  <Field
-                    id="permit_guid"
-                    name="permit_guid"
-                    label="Select a Permit*"
-                    doNotPinDropdown
-                    component={renderConfig.SELECT}
-                    data={permitDropdown}
-                    validate={[required]}
-                    disabled={props.initialValues.disabled}
-                    onChange={(permitGuid) => getPermitType(permitGuid)}
-                  />
-                </Form.Item>
+                <Field
+                  id="permit_guid"
+                  name="permit_guid"
+                  label="Select a Permit"
+                  required
+                  doNotPinDropdown
+                  component={renderConfig.SELECT}
+                  data={permitDropdown}
+                  validate={[required]}
+                  disabled={props.initialValues.disabled}
+                  onChange={(permitGuid) => getPermitType(permitGuid)}
+                />
                 {applicationTypeToPermitMismatch && (
                   <span style={{ position: "relative", top: "-15px" }} className="has-error">
                     <span className="ant-legacy-form-explain">
@@ -200,37 +203,35 @@ export const PreDraftPermitForm = (props) => {
             )}
             {!isAmendment && props.isCoalOrMineral && (
               <div className="ant-form-vertical">
-                <Form.Item>
-                  <Field
-                    id="is_exploration"
-                    name="is_exploration"
-                    label="Exploration Permit*"
-                    component={RenderRadioButtons}
-                    validate={[requiredRadioButton]}
-                  />
-                </Form.Item>
+                <Field
+                  id="is_exploration"
+                  name="is_exploration"
+                  label="Exploration Permit"
+                  required
+                  component={RenderRadioButtons}
+                  validate={[requiredRadioButton]}
+                />
               </div>
             )}
             <Tooltip title={tooltip} placement="left" mouseEnterDelay={0.3}>
               <p>Select Permit Type*</p>
             </Tooltip>
             <div className="left">
-              <Form.Item>
-                <Field
-                  id="permit_amendment_type_code"
-                  name="permit_amendment_type_code"
-                  placeholder="Select a Permit amendment type"
-                  doNotPinDropdown
-                  component={renderConfig.SELECT}
-                  data={permitAmendmentDropdown}
-                  validate={[required]}
-                  disabled={isPermitAmendmentTypeDropDownDisabled}
-                />
-              </Form.Item>
+              <Field
+                id="permit_amendment_type_code"
+                name="permit_amendment_type_code"
+                placeholder="Select a Permit amendment type"
+                required
+                doNotPinDropdown
+                component={renderConfig.SELECT}
+                data={permitAmendmentDropdown}
+                validate={[required]}
+                disabled={isPermitAmendmentTypeDropDownDisabled}
+              />
             </div>
           </Col>
         </Row>
-      </Form>
+      </FormWrapper>
     </>
   );
 };
@@ -253,14 +254,5 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: FORM.PRE_DRAFT_PERMIT,
-    touchOnBlur: true,
-    onSubmit: () => {},
-    destroyOnUnmount: false,
-    forceUnregisterOnUnmount: true,
-    enableReinitialize: true,
-    onSubmitSuccess: resetForm(FORM.PRE_DRAFT_PERMIT),
-  })
+  connect(mapStateToProps, mapDispatchToProps)
 )(PreDraftPermitForm);

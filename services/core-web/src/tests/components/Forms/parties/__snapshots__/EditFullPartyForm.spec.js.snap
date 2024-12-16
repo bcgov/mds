@@ -2,11 +2,15 @@
 
 exports[`EditFullPartyForm renders properly 1`] = `
 <div>
-  <Form
-    colon={true}
-    hideRequiredMark={false}
-    layout="horizontal"
-    onSubmit={[Function]}
+  <Connect(ReduxForm)
+    name="EDIT_FULL_PARTY"
+    reduxFormConfig={
+      Object {
+        "enableReinitialize": true,
+        "keepDirtyOnReinitialize": true,
+        "onSubmitSuccess": [Function],
+      }
+    }
   >
     <Row
       gutter={48}
@@ -35,41 +39,35 @@ exports[`EditFullPartyForm renders properly 1`] = `
             md={12}
             xs={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="first_name"
-                label="First Name *"
-                name="first_name"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="first_name"
+              label="First Name"
+              name="first_name"
+              required={true}
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
           </Col>
           <Col
             md={12}
             xs={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="party_name"
-                label="Surname *"
-                name="party_name"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="party_name"
+              label="Surname"
+              name="party_name"
+              required={true}
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
           </Col>
         </Row>
         <Row
@@ -78,21 +76,17 @@ exports[`EditFullPartyForm renders properly 1`] = `
           <Col
             span={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="email"
-                label="Primary Email"
-                name="email"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="email"
+              label="Primary Email"
+              name="email"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
           </Col>
         </Row>
         <Row
@@ -101,21 +95,17 @@ exports[`EditFullPartyForm renders properly 1`] = `
           <Col
             span={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="email_sec"
-                label="Secondary Email"
-                name="email_sec"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="email_sec"
+              label="Secondary Email"
+              name="email_sec"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
           </Col>
         </Row>
         <Row
@@ -124,45 +114,38 @@ exports[`EditFullPartyForm renders properly 1`] = `
           <Col
             span={18}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="phone_no"
-                label="Primary Phone No. *"
-                name="phone_no"
-                normalize={[Function]}
-                placeholder="e.g. xxx-xxx-xxxx"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="phone_no"
+              label="Primary Phone No."
+              name="phone_no"
+              normalize={[Function]}
+              placeholder="e.g. xxx-xxx-xxxx"
+              required={true}
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
           </Col>
           <Col
             span={6}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="phone_ext"
-                label="Ext"
-                name="phone_ext"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="phone_ext"
+              label="Ext"
+              name="phone_ext"
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
           </Col>
         </Row>
         <Row
@@ -171,44 +154,36 @@ exports[`EditFullPartyForm renders properly 1`] = `
           <Col
             span={18}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="phone_no_sec"
-                label="Secondary Phone No."
-                name="phone_no_sec"
-                normalize={[Function]}
-                placeholder="e.g. xxx-xxx-xxxx"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="phone_no_sec"
+              label="Secondary Phone No."
+              name="phone_no_sec"
+              normalize={[Function]}
+              placeholder="e.g. xxx-xxx-xxxx"
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
           </Col>
           <Col
             span={6}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="phone_sec_ext"
-                label="Ext"
-                name="phone_sec_ext"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="phone_sec_ext"
+              label="Ext"
+              name="phone_sec_ext"
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
           </Col>
         </Row>
         <Row
@@ -217,44 +192,36 @@ exports[`EditFullPartyForm renders properly 1`] = `
           <Col
             span={18}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="phone_no_ter"
-                label="Tertiary Phone No."
-                name="phone_no_ter"
-                normalize={[Function]}
-                placeholder="e.g. xxx-xxx-xxxx"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="phone_no_ter"
+              label="Tertiary Phone No."
+              name="phone_no_ter"
+              normalize={[Function]}
+              placeholder="e.g. xxx-xxx-xxxx"
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
           </Col>
           <Col
             span={6}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="phone_ter_ext"
-                label="Ext"
-                name="phone_ter_ext"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="phone_ter_ext"
+              label="Ext"
+              name="phone_ter_ext"
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
           </Col>
         </Row>
       </Col>
@@ -280,35 +247,27 @@ exports[`EditFullPartyForm renders properly 1`] = `
           <Col
             span={6}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="suite_no"
-                label="Suite No."
-                name="suite_no"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="suite_no"
+              label="Suite No."
+              name="suite_no"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
           </Col>
           <Col
             span={18}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="address_line_1"
-                label="Street Address 1"
-                name="address_line_1"
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="address_line_1"
+              label="Street Address 1"
+              name="address_line_1"
+            />
           </Col>
         </Row>
         <Row
@@ -317,31 +276,21 @@ exports[`EditFullPartyForm renders properly 1`] = `
           <Col
             span={18}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="address_line_2"
-                label="Street Address 2"
-                name="address_line_2"
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="address_line_2"
+              label="Street Address 2"
+              name="address_line_2"
+            />
           </Col>
           <Col
             span={6}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                data={
+            <Field
+              component={[Function]}
+              data={
+                Array [
                   Array [
-                    Object {
-                      "label": "None",
-                      "value": null,
-                    },
                     Object {
                       "isActive": true,
                       "label": "AB",
@@ -354,19 +303,13 @@ exports[`EditFullPartyForm renders properly 1`] = `
                       "subType": "CAN",
                       "value": "BC",
                     },
-                  ]
-                }
-                format={null}
-                id="sub_division_code"
-                label="Province"
-                name="sub_division_code"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+                  ],
+                ]
+              }
+              id="sub_division_code"
+              label="Province"
+              name="sub_division_code"
+            />
           </Col>
         </Row>
         <Row
@@ -376,44 +319,36 @@ exports[`EditFullPartyForm renders properly 1`] = `
             md={12}
             xs={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="city"
-                label="City"
-                name="city"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="city"
+              label="City"
+              name="city"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
           </Col>
           <Col
             md={12}
             xs={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="post_code"
-                label="Postal Code"
-                name="post_code"
-                normalize={[Function]}
-                placeholder="e.g xxxxxx"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              component={[Function]}
+              id="post_code"
+              label="Postal Code"
+              name="post_code"
+              normalize={[Function]}
+              placeholder="e.g xxxxxx"
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
           </Col>
         </Row>
       </Col>
@@ -590,6 +525,6 @@ exports[`EditFullPartyForm renders properly 1`] = `
         Update Person
       </Button>
     </div>
-  </Form>
+  </Connect(ReduxForm)>
 </div>
 `;

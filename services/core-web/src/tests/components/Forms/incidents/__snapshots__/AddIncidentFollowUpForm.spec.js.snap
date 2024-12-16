@@ -2,11 +2,16 @@
 
 exports[`AddIncidentFollowUpForm renders properly 1`] = `
 <div>
-  <Form
-    colon={true}
-    hideRequiredMark={false}
-    layout="vertical"
+  <Connect(ReduxForm)
+    name="MINE_INCIDENT"
     onSubmit={[Function]}
+    reduxFormConfig={
+      Object {
+        "destroyOnUnmount": false,
+        "forceUnregisterOnUnmount": true,
+        "touchOnBlur": true,
+      }
+    }
   >
     <Row
       gutter={48}
@@ -17,46 +22,39 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
         <h4>
           Follow-up Information
         </h4>
-        <FormItem
-          hasFeedback={false}
-        >
-          <Field
-            component={[Function]}
-            id="followup_inspection"
-            label="Was there a follow-up inspection?"
-            name="followup_inspection"
-            validate={
-              Array [
-                [Function],
-              ]
-            }
-          />
-        </FormItem>
-        <FormItem
-          hasFeedback={false}
-        >
-          <Field
-            component={[Function]}
-            data={
-              Array [
-                Object {
-                  "description": "No Action",
-                  "mine_incident_followup_type_code": "NOA",
-                },
-              ]
-            }
-            id="followup_investigation_type_code"
-            label="Was it escalated to EMLI investigation?*"
-            name="followup_investigation_type_code"
-            placeholder="Please choose one"
-            validate={
-              Array [
-                [Function],
-                [Function],
-              ]
-            }
-          />
-        </FormItem>
+        <Field
+          component={[Function]}
+          id="followup_inspection"
+          label="Was there a follow-up inspection?"
+          name="followup_inspection"
+          required={true}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+        <Field
+          component={[Function]}
+          data={
+            Array [
+              Object {
+                "description": "No Action",
+                "mine_incident_followup_type_code": "NOA",
+              },
+            ]
+          }
+          id="followup_investigation_type_code"
+          label="Was it escalated to EMLI investigation?"
+          name="followup_investigation_type_code"
+          placeholder="Please choose one"
+          required={true}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
         <h4>
           Final Investigation Report
         </h4>
@@ -65,34 +63,27 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
           id="recommendations"
           name="recommendations"
         />
-        <FormItem
-          hasFeedback={false}
-        >
-          <Field
-            component={[Function]}
-            id="InitialIncidentFileUpload"
-            name="InitialIncidentFileUpload"
-            onFileLoad={[Function]}
-            uploadUrl="/mines/undefined/incidents/documents"
-          />
-        </FormItem>
-        <FormItem
-          hasFeedback={false}
-        >
-          <Field
-            component={[Function]}
-            id="status_code"
-            label="Incident status*"
-            name="status_code"
-            validate={
-              Array [
-                [Function],
-              ]
-            }
-          />
-        </FormItem>
+        <Field
+          component={[Function]}
+          id="InitialIncidentFileUpload"
+          name="InitialIncidentFileUpload"
+          onFileLoad={[Function]}
+          uploadUrl="/mines/undefined/incidents/documents"
+        />
+        <Field
+          component={[Function]}
+          id="status_code"
+          label="Incident status"
+          name="status_code"
+          required={true}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
       </Col>
     </Row>
-  </Form>
+  </Connect(ReduxForm)>
 </div>
 `;

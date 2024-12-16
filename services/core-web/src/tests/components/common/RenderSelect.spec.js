@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import RenderSelect from "@/components/common/RenderSelect";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import { PARTY } from "@/tests/mocks/dataMocks";
 
 let props = {};

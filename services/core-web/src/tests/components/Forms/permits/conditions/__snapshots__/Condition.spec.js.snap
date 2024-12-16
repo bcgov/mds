@@ -2,28 +2,11 @@
 
 exports[`Condition renders properly 1`] = `
 <Fragment>
-  <ReduxForm
-    destroyOnUnmount={true}
-    enableReinitialize={false}
-    forceUnregisterOnUnmount={false}
-    form="CONDITION_SECTION"
-    getFormState={[Function]}
+  <ConditionForm
     initialValues={Object {}}
-    keepDirtyOnReinitialize={false}
     layer={2}
     onCancel={[Function]}
     onSubmit={[Function]}
-    onSubmitSuccess={[Function]}
-    persistentSubmitErrors={false}
-    pure={true}
-    shouldAsyncValidate={[Function]}
-    shouldError={[Function]}
-    shouldValidate={[Function]}
-    shouldWarn={[Function]}
-    submitAsSideEffect={false}
-    touchOnBlur={true}
-    touchOnChange={false}
-    updateUnregisteredFields={false}
   />
 </Fragment>
 `;

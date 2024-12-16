@@ -1,11 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ChangeNOWLocationForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  name="CHANGE_NOW_LOCATION"
   onSubmit={[Function]}
+  reduxFormConfig={
+    Object {
+      "onSubmit": [Function],
+      "onSubmitSuccess": [Function],
+    }
+  }
 >
   <EditNOWMineAndLocation
     latitude=""
@@ -46,5 +50,5 @@ exports[`ChangeNOWLocationForm renders properly 1`] = `
       </Button>
     </Connect(AuthorizationWrapper)>
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

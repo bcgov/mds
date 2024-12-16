@@ -8,13 +8,11 @@ import {
   reduxForm,
 } from "redux-form";
 import { Alert, Button, Col, Popconfirm, Row, Typography } from "antd";
-import { Form } from "@ant-design/compatible";
 import { maxLength, required, requiredRadioButton } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import {
   NOD_TYPE_FIELD_VALUE,
   NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
-  NOTICE_OF_DEPARTURE_STATUS_VALUES,
 } from "@mds/common/constants/strings";
 import { getNoticeOfDeparture } from "@mds/common/redux/reducers/noticeOfDepartureReducer";
 import { DOCUMENT, EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
@@ -22,7 +20,7 @@ import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import NoticeOfDepartureFileUpload from "@/components/Forms/noticeOfDeparture/NoticeOfDepartureFileUpload";
 import { EMPTY_FIELD } from "@/constants/strings";
-import RenderRadioButtons from "@/components/common/RenderRadioButtons";
+import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import { documentSection } from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureDetails";
 import NoticeOfDepartureCallout from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureCallout";
 import { renderContacts } from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
@@ -30,7 +28,6 @@ import {
   ICreateNoD,
   INodDocumentPayload,
   INoticeOfDeparture,
-  NoDStatusDisplayEnum,
   NodStatusSaveEnum,
 } from "@mds/common";
 import { bindActionCreators, compose } from "redux";
@@ -48,8 +45,9 @@ interface EditNoticeOfDepartureFormProps {
   change?: (field: string, value: any) => void;
 }
 
-const EditNoticeOfDepartureForm: React.FC<InjectedFormProps<Partial<ICreateNoD>> &
-  EditNoticeOfDepartureFormProps> = (props) => {
+const EditNoticeOfDepartureForm: React.FC<
+  InjectedFormProps<Partial<ICreateNoD>> & EditNoticeOfDepartureFormProps
+> = (props) => {
   const { onSubmit, closeModal, handleSubmit, mineGuid, noticeOfDeparture, pristine } = props;
   const { permit, nod_guid, nod_no, nod_status } = noticeOfDeparture;
   const [submitting, setSubmitting] = useState(false);

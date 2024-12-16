@@ -3,14 +3,11 @@ import { connect } from "react-redux";
 import { compose, bindActionCreators } from "redux";
 import {
   Field,
-  reduxForm,
   change,
   formValueSelector,
   getFormValues,
   InjectedFormProps,
 } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm, Alert, Typography, Radio } from "antd";
 import {
   IOption,
@@ -23,7 +20,6 @@ import {
 import { getNoticeOfWorkList } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import {
   required,
-  validateSelectOptions,
   maxLength,
   dateNotInFuture,
   number,
@@ -46,6 +42,7 @@ import MagazineForm from "@/components/Forms/ExplosivesPermit/MagazineForm";
 import { Feature } from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import ExplosivesPermitMap from "@mds/common/components/explosivespermits/ExplosivesPermitMap";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 interface StateProps {
   permits: IPermit[];
@@ -83,111 +80,117 @@ const closedOptions = [
 export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
   StateProps &
   InjectedFormProps<any>> = ({
-  initialValues = {},
-  mines_permit_guid = null,
-  isProcessed = false,
-  ...props
-}) => {
-  const partiesData = props.isPermitTab ? props.allPartyRelationships : props.partyRelationships;
-  const mineManagers = partiesData.filter(
-    ({ mine_party_appt_type_code }) => mine_party_appt_type_code === "MMG"
-  );
-  const permittee = partiesData.filter(
-    ({ mine_party_appt_type_code, related_guid }) =>
-      mine_party_appt_type_code === "PMT" && related_guid === mines_permit_guid
-  );
+    initialValues = {},
+    mines_permit_guid = null,
+    isProcessed = false,
+    ...props
+  }) => {
+    const partiesData = props.isPermitTab ? props.allPartyRelationships : props.partyRelationships;
+    const mineManagers = partiesData.filter(
+      ({ mine_party_appt_type_code }) => mine_party_appt_type_code === "MMG"
+    );
+    const permittee = partiesData.filter(
+      ({ mine_party_appt_type_code, related_guid }) =>
+        mine_party_appt_type_code === "PMT" && related_guid === mines_permit_guid
+    );
 
-  const dropdown = (array) =>
-    array.length > 0
-      ? array.map((item) => {
+    const dropdown = (array) =>
+      array.length > 0
+        ? array.map((item) => {
           const endDate = formatDate(item.end_date) || "Present";
           return {
             value: item.mine_party_appt_id,
             label: `${item.party.name} (${formatDate(item.start_date)} - ${endDate})`,
           };
         })
-      : [];
-  const mineManagersDropdown = dropdown(mineManagers);
-  const permitteeDropdown = dropdown(permittee);
-  const permitDropdown = createDropDownList(props.permits, "permit_no", "permit_guid");
-  const nowDropdown = createDropDownList(
-    props.noticeOfWorkApplications,
-    "now_number",
-    "now_application_guid"
-  );
+        : [];
+    const mineManagersDropdown = dropdown(mineManagers);
+    const permitteeDropdown = dropdown(permittee);
+    const permitDropdown = createDropDownList(props.permits, "permit_no", "permit_guid");
+    const nowDropdown = createDropDownList(
+      props.noticeOfWorkApplications,
+      "now_number",
+      "now_application_guid"
+    );
 
-  const [isHistoric, setIsHistoric] = useState<boolean>(
-    !initialValues?.explosives_permit_id && props.isPermitTab
-  );
-  const disabled = isProcessed;
+    const [isHistoric, setIsHistoric] = useState<boolean>(
+      !initialValues?.explosives_permit_id && props.isPermitTab
+    );
+    const disabled = isProcessed;
 
-  const [radioSelection, setRadioSelection] = useState<number>(props.isPermitTab ? 1 : 2);
-  const [parentView, setParentView] = useState<boolean>(true);
-  const [isAmend, setIsAmend] = useState<boolean>(false);
-  const { isFeatureEnabled } = useFeatureFlag();
+    const [radioSelection, setRadioSelection] = useState<number>(props.isPermitTab ? 1 : 2);
+    const [parentView, setParentView] = useState<boolean>(true);
+    const [isAmend, setIsAmend] = useState<boolean>(false);
+    const { isFeatureEnabled } = useFeatureFlag();
 
-  const handleRadioChange = (e) => {
-    setRadioSelection(e.target.value);
-    setIsHistoric(e.target.value == 1);
-    setIsAmend(e.target.value == 3);
-  };
+    const handleRadioChange = (e) => {
+      setRadioSelection(e.target.value);
+      setIsHistoric(e.target.value == 1);
+      setIsAmend(e.target.value == 3);
+    };
 
-  const handleOpenAddExplosivesPermitModal = () => {
-    setParentView(false);
-  };
+    const handleOpenAddExplosivesPermitModal = () => {
+      setParentView(false);
+    };
 
-  const descriptionListElement = (
-    <div>
-      <Typography.Paragraph>
+    const descriptionListElement = (
+      <div>
+        <Typography.Paragraph>
+          <ul className="landing-list">
+            <li>
+              <Typography.Text strong>Add an existing permit </Typography.Text>
+              <Typography.Text>
+                that was previously issued but does not exist in CORE and Minespace. This will help
+                you keep track of your past permits and activities.
+              </Typography.Text>
+            </li>
+            <li>
+              <Typography.Text strong>Create a new permit </Typography.Text>
+              <Typography.Text>
+                this is meant for new explosive storage and use permits.
+              </Typography.Text>
+            </li>
+            <li>
+              <Typography.Text strong>Amend an existing permit </Typography.Text>
+              <Typography.Text>
+                that has already been added to CORE and Minespace. This will allow you to make changes
+                to your permit conditions, such as the dates, amount of explosives.
+              </Typography.Text>
+            </li>
+          </ul>
+        </Typography.Paragraph>
+      </div>
+    );
+
+    const amendDescriptionListElement = (
+      <div>
+        To make changes to an existing explosive storage and use permit, follow these steps:
+        <br />
         <ul className="landing-list">
           <li>
-            <Typography.Text strong>Add an existing permit </Typography.Text>
-            <Typography.Text>
-              that was previously issued but does not exist in CORE and Minespace. This will help
-              you keep track of your past permits and activities.
-            </Typography.Text>
+            Open the permit that you want to amend from the applications page of the mine in CORE.
           </li>
           <li>
-            <Typography.Text strong>Create a new permit </Typography.Text>
-            <Typography.Text>
-              this is meant for new explosive storage and use permits.
-            </Typography.Text>
+            Click on the “Create Amendment” button at the bottom left corner of the permit details
+            page.
           </li>
-          <li>
-            <Typography.Text strong>Amend an existing permit </Typography.Text>
-            <Typography.Text>
-              that has already been added to CORE and Minespace. This will allow you to make changes
-              to your permit conditions, such as the dates, amount of explosives.
-            </Typography.Text>
-          </li>
+          <li>Fill out the amendment form with the required information and documents.</li>
+          <li>Complete the amendment and issue the permit.</li>
         </ul>
-      </Typography.Paragraph>
-    </div>
-  );
+      </div>
+    );
 
-  const amendDescriptionListElement = (
-    <div>
-      To make changes to an existing explosive storage and use permit, follow these steps:
-      <br />
-      <ul className="landing-list">
-        <li>
-          Open the permit that you want to amend from the applications page of the mine in CORE.
-        </li>
-        <li>
-          Click on the “Create Amendment” button at the bottom left corner of the permit details
-          page.
-        </li>
-        <li>Fill out the amendment form with the required information and documents.</li>
-        <li>Complete the amendment and issue the permit.</li>
-      </ul>
-    </div>
-  );
-
-  //Below ESUP_PERMIT_AMENDMENT feature is unreachable code as it's moved to ExplosivesPermitFormNew component.
-  //And new feature flow get dicided in AddExplosivesPermitModal.
-  return isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT) && parentView ? (
-    <>
-      <Form layout="vertical">
+    //Below ESUP_PERMIT_AMENDMENT feature is unreachable code as it's moved to ExplosivesPermitFormNew component.
+    //And new feature flow get dicided in AddExplosivesPermitModal.
+    return isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT) && parentView ? (
+      <FormWrapper
+        name={FORM.EXPLOSIVES_PERMIT}
+        onSubmit={() => { }}
+        reduxFormConfig={{
+          touchOnBlur: true,
+          onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT),
+        }}
+      >
         <Typography.Title level={3}>Add Permit</Typography.Title>
         <div>
           <Typography.Paragraph>
@@ -242,11 +245,16 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
             Next
           </Button>
         </div>
-      </Form>
-    </>
-  ) : (
-    <>
-      <Form layout="vertical" onSubmit={props.handleSubmit}>
+      </FormWrapper>
+    ) : (
+      <FormWrapper
+        name={FORM.EXPLOSIVES_PERMIT}
+        onSubmit={props.handleSubmit}
+        reduxFormConfig={{
+          touchOnBlur: true,
+          onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT),
+        }}
+      >
         {isHistoric && (
           <Alert
             message="Adding a Historic Explosives Storage & Use Permit"
@@ -271,44 +279,41 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
               <>
                 <Row gutter={6}>
                   <Col span={12}>
-                    <Form.Item>
-                      <Field
-                        id="issue_date"
-                        name="issue_date"
-                        label="Issue Date*"
-                        component={renderConfig.DATE}
-                        validate={[required, dateNotInFuture]}
-                        disabled={disabled}
-                      />
-                    </Form.Item>
+                    <Field
+                      id="issue_date"
+                      name="issue_date"
+                      label="Issue Date"
+                      component={renderConfig.DATE}
+                      required
+                      validate={[required, dateNotInFuture]}
+                      disabled={disabled}
+                    />
                   </Col>
                   <Col span={12}>
-                    <Form.Item>
-                      <Field
-                        id="expiry_date"
-                        name="expiry_date"
-                        label="Expiry Date*"
-                        component={renderConfig.DATE}
-                        validate={[required]}
-                        disabled={disabled}
-                      />
-                    </Form.Item>
+                    <Field
+                      id="expiry_date"
+                      name="expiry_date"
+                      label="Expiry Date"
+                      component={renderConfig.DATE}
+                      required
+                      validate={[required]}
+                      disabled={disabled}
+                    />
                   </Col>
                 </Row>
                 <Row gutter={6}>
                   <Col span={24}>
-                    <Form.Item>
-                      <Field
-                        id="issuing_inspector_party_guid"
-                        name="issuing_inspector_party_guid"
-                        label="Issuing Inspector*"
-                        component={renderConfig.GROUPED_SELECT}
-                        placeholder="Start typing the Issuing Inspector's name"
-                        validate={[required]}
-                        data={props.inspectors}
-                        disabled={disabled}
-                      />
-                    </Form.Item>
+                    <Field
+                      id="issuing_inspector_party_guid"
+                      name="issuing_inspector_party_guid"
+                      label="Issuing Inspector"
+                      component={renderConfig.GROUPED_SELECT}
+                      placeholder="Start typing the Issuing Inspector's name"
+                      required
+                      validate={[required]}
+                      data={props.inspectors}
+                      disabled={disabled}
+                    />
                   </Col>
                 </Row>
               </>
@@ -316,125 +321,113 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
             <Row gutter={6}>
               {props.isPermitTab && (
                 <Col span={12}>
-                  <Form.Item>
-                    <Field
-                      id="permit_number"
-                      name="permit_number"
-                      placeholder="Explosives Permit Number"
-                      label="Explosives Permit Number*"
-                      component={renderConfig.FIELD}
-                      validate={[required]}
-                      disabled={disabled}
-                    />
-                  </Form.Item>
+                  <Field
+                    id="permit_number"
+                    name="permit_number"
+                    placeholder="Explosives Permit Number"
+                    label="Explosives Permit Number"
+                    component={renderConfig.FIELD}
+                    required
+                    validate={[required]}
+                    disabled={disabled}
+                  />
                 </Col>
               )}
               <Col span={props.isPermitTab ? 12 : 24}>
-                <Form.Item>
-                  <Field
-                    id="permit_guid"
-                    name="permit_guid"
-                    placeholder="Select a Permit"
-                    label="Mines Act Permit*"
-                    component={renderConfig.SELECT}
-                    data={permitDropdown}
-                    validate={[required, validateSelectOptions(permitDropdown, true)]}
-                    disabled={disabled}
-                  />
-                </Form.Item>
+                <Field
+                  id="permit_guid"
+                  name="permit_guid"
+                  placeholder="Select a Permit"
+                  label="Mines Act Permit"
+                  component={renderConfig.SELECT}
+                  data={permitDropdown}
+                  required
+                  validate={[required]}
+                  disabled={disabled}
+                />
               </Col>
             </Row>
-            <Form.Item>
-              <Field
-                id="now_application_guid"
-                name="now_application_guid"
-                placeholder="Select a NoW"
-                label="Notice of Work Number"
-                component={renderConfig.SELECT}
-                validate={[validateSelectOptions(nowDropdown, true)]}
-                data={nowDropdown}
-                disabled={disabled}
-              />
-            </Form.Item>
+            <Field
+              id="now_application_guid"
+              name="now_application_guid"
+              placeholder="Select a NoW"
+              label="Notice of Work Number"
+              component={renderConfig.SELECT}
+              data={nowDropdown}
+              disabled={disabled}
+            />
             <Row gutter={6}>
               <Col span={12}>
-                <Form.Item>
-                  <Field
-                    id="mine_manager_mine_party_appt_id"
-                    name="mine_manager_mine_party_appt_id"
-                    label={props.isPermitTab ? "Mine Manager" : "Mine Manager*"}
-                    placeholder="Select Mine Manager"
-                    partyLabel="Mine Manager"
-                    validate={
-                      props.isPermitTab
-                        ? [validateSelectOptions(mineManagersDropdown, true)]
-                        : [required, validateSelectOptions(mineManagersDropdown, true)]
-                    }
-                    component={renderConfig.SELECT}
-                    data={mineManagersDropdown}
-                    disabled={disabled}
-                  />
-                </Form.Item>
+                <Field
+                  id="mine_manager_mine_party_appt_id"
+                  name="mine_manager_mine_party_appt_id"
+                  label={"Mine Manager"}
+                  placeholder="Select Mine Manager"
+                  partyLabel="Mine Manager"
+                  required={!props.isPermitTab}
+                  validate={
+                    props.isPermitTab
+                      ? []
+                      : [required]
+                  }
+                  component={renderConfig.SELECT}
+                  data={mineManagersDropdown}
+                  disabled={disabled}
+                />
               </Col>
               <Col span={12}>
-                <Form.Item>
-                  <Field
-                    id="permittee_mine_party_appt_id"
-                    name="permittee_mine_party_appt_id"
-                    label="Permittee*"
-                    component={renderConfig.SELECT}
-                    placeholder="Select Permittee"
-                    validate={[required, validateSelectOptions(permitteeDropdown, true)]}
-                    data={permitteeDropdown}
-                    disabled={disabled || !mines_permit_guid}
-                  />
-                </Form.Item>
+                <Field
+                  id="permittee_mine_party_appt_id"
+                  name="permittee_mine_party_appt_id"
+                  label="Permittee"
+                  component={renderConfig.SELECT}
+                  placeholder="Select Permittee"
+                  required
+                  validate={[required]}
+                  data={permitteeDropdown}
+                  disabled={disabled || !mines_permit_guid}
+                />
               </Col>
             </Row>
-            <Form.Item>
-              <Field
-                id="application_date"
-                name="application_date"
-                label="Application Date*"
-                component={renderConfig.DATE}
-                validate={[required, dateNotInFuture]}
-                disabled={disabled}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="description"
-                name="description"
-                label="Other Information"
-                component={renderConfig.AUTO_SIZE_FIELD}
-                disabled={disabled}
-              />
-            </Form.Item>
+            <Field
+              id="application_date"
+              name="application_date"
+              label="Application Date"
+              component={renderConfig.DATE}
+              required
+              validate={[required, dateNotInFuture]}
+              disabled={disabled}
+            />
+            <Field
+              id="description"
+              name="description"
+              label="Other Information"
+              component={renderConfig.AUTO_SIZE_FIELD}
+              disabled={disabled}
+            />
             <h4>Storage Details</h4>
             <Row gutter={6}>
               <Col span={12}>
-                <Form.Item>
-                  <Field
-                    id="latitude"
-                    name="latitude"
-                    label="Latitude*"
-                    validate={[number, maxLength(10), lat, required]}
-                    component={renderConfig.FIELD}
-                    disabled={disabled}
-                  />
-                </Form.Item>
+                <Field
+                  id="latitude"
+                  name="latitude"
+                  label="Latitude"
+                  required
+                  validate={[number, maxLength(10), lat, required]}
+                  component={renderConfig.FIELD}
+                  disabled={disabled}
+                />
               </Col>
               <Col span={12}>
-                <Form.Item>
-                  <Field
-                    id="longitude"
-                    name="longitude"
-                    label="Longitude*"
-                    validate={[number, maxLength(12), lon, required, lonNegative]}
-                    component={renderConfig.FIELD}
-                    disabled={disabled}
-                  />
-                </Form.Item>
+                <Field
+                  id="longitude"
+                  name="longitude"
+                  label="Longitude"
+                  required
+                  validate={[number, maxLength(12), lon, required, lonNegative]}
+                  component={renderConfig.FIELD}
+                  disabled={disabled}
+                />
               </Col>
             </Row>
             <ExplosivesPermitMap pin={[props.formValues?.latitude, props.formValues?.longitude]} />
@@ -451,39 +444,34 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
               <>
                 <Row gutter={16}>
                   <Col span={12}>
-                    <Form.Item>
-                      <Field
-                        id="is_closed"
-                        name="is_closed"
-                        label="Permit Status*"
-                        component={renderConfig.RADIO}
-                        customOptions={closedOptions}
-                        validate={[requiredRadioButton]}
-                      />
-                    </Form.Item>
+                    <Field
+                      id="is_closed"
+                      name="is_closed"
+                      label="Permit Status"
+                      component={renderConfig.RADIO}
+                      customOptions={closedOptions}
+                      required
+                      validate={[requiredRadioButton]}
+                    />
                   </Col>
                   <Col span={12}>
-                    <Form.Item>
-                      <Field
-                        id="closed_timestamp"
-                        name="closed_timestamp"
-                        label="Date Permit was Closed"
-                        component={renderConfig.DATE}
-                        disabled={disabled}
-                      />
-                    </Form.Item>
+                    <Field
+                      id="closed_timestamp"
+                      name="closed_timestamp"
+                      label="Date Permit was Closed"
+                      component={renderConfig.DATE}
+                      disabled={disabled}
+                    />
                   </Col>
                 </Row>
                 <Row gutter={16}>
                   <Col span={24}>
-                    <Form.Item>
-                      <Field
-                        id="closed_reason"
-                        name="closed_reason"
-                        label="Reason for Closure"
-                        component={renderConfig.AUTO_SIZE_FIELD}
-                      />
-                    </Form.Item>
+                    <Field
+                      id="closed_reason"
+                      name="closed_reason"
+                      label="Reason for Closure"
+                      component={renderConfig.AUTO_SIZE_FIELD}
+                    />
                   </Col>
                 </Row>
               </>
@@ -513,10 +501,9 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
             Submit
           </Button>
         </div>
-      </Form>
-    </>
-  );
-};
+      </FormWrapper>
+    );
+  };
 
 const selector = formValueSelector(FORM.EXPLOSIVES_PERMIT);
 const mapStateToProps = (state) => ({
@@ -538,10 +525,5 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 export default compose(
-  connect<StateProps, any, ExplosivesPermitFormProps>(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: FORM.EXPLOSIVES_PERMIT,
-    touchOnBlur: true,
-    onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT),
-  })
-)(ExplosivesPermitForm) as FC<ExplosivesPermitFormProps>;
+  connect(mapStateToProps, mapDispatchToProps),
+)((ExplosivesPermitForm) as any) as FC<ExplosivesPermitFormProps>;

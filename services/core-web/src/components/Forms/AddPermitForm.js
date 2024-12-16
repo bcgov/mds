@@ -4,15 +4,12 @@ import { compose, bindActionCreators } from "redux";
 import { remove } from "lodash";
 
 import PropTypes from "prop-types";
-import { Field, reduxForm, change, formValueSelector, FormSection } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field, change, formValueSelector, FormSection } from "redux-form";
 import { Button, Col, Row, Popconfirm, Divider, Alert } from "antd";
 import {
   required,
   dateNotInFuture,
   maxLength,
-  validateSelectOptions,
   requiredRadioButton,
   requiredList,
   number,
@@ -31,7 +28,8 @@ import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentFileUpload";
 import { securityNotRequiredReasonOptions } from "@/constants/NOWConditions";
-import RenderRadioButtons from "@/components/common/RenderRadioButtons";
+import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -85,14 +83,14 @@ const permitTypes = [
 ];
 
 const mapApplicationTypeToTenureType = (permitPrefix) =>
-  ({
-    P: ["PLR"],
-    C: ["COL"],
-    M: ["MIN"],
-    G: ["BCL", "PRL"],
-    Q: ["BCL", "PRL", "MIN"],
-    null: [],
-  }[permitPrefix]);
+({
+  P: ["PLR"],
+  C: ["COL"],
+  M: ["MIN"],
+  G: ["BCL", "PRL"],
+  Q: ["BCL", "PRL", "MIN"],
+  null: [],
+}[permitPrefix]);
 
 const selector = formValueSelector(FORM.ADD_PERMIT);
 
@@ -164,7 +162,13 @@ export class AddPermitForm extends Component {
       this.props.permitPrefix === "C" || this.props.permitPrefix === "M";
     const permitPrefix = this.props.permitPrefix ? this.props.permitPrefix : null;
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <FormWrapper onSubmit={this.props.handleSubmit} name={FORM.ADD_PERMIT}
+        reduxFormConfig={{
+          validate: validateBusinessRules,
+          touchOnBlur: false,
+          onSubmitSuccess: resetForm(FORM.ADD_PERMIT),
+        }}
+      >
         {(permitPrefixCoalOrMineral || this.props.permitIsExploration) && (
           <>
             <Alert
@@ -178,127 +182,115 @@ export class AddPermitForm extends Component {
         )}
         <Row gutter={48}>
           <Col md={12} sm={24} className="border--right--layout">
-            <Form.Item>
-              <PartySelectField
-                id="permittee_party_guid"
-                name="permittee_party_guid"
-                label="Permittee*"
-                partyLabel="permittee"
-                validate={[required]}
-                allowAddingParties
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="permit_type"
-                name="permit_type"
-                label="Permit Type*"
-                placeholder="Select a permit type"
-                component={renderConfig.SELECT}
-                validate={[required, validateSelectOptions(permitTypes)]}
-                data={permitTypes}
-              />
-            </Form.Item>
+            <PartySelectField
+              id="permittee_party_guid"
+              name="permittee_party_guid"
+              label="Permittee"
+              partyLabel="permittee"
+              required
+              validate={[required]}
+              allowAddingParties
+            />
+            <Field
+              id="permit_type"
+              name="permit_type"
+              label="Permit Type"
+              placeholder="Select a permit type"
+              component={renderConfig.SELECT}
+              required
+              validate={[required]}
+              data={permitTypes}
+            />
             {(permitPrefixCoalOrMineral || this.props.permitIsExploration) && (
-              <Form.Item>
-                <Field
-                  id="is_exploration"
-                  name="is_exploration"
-                  label="Exploration Permit*"
-                  component={RenderRadioButtons}
-                  validate={[requiredRadioButton]}
-                />
-              </Form.Item>
+              <Field
+                id="is_exploration"
+                name="is_exploration"
+                label="Exploration Permit"
+                component={RenderRadioButtons}
+                required
+                validate={[requiredRadioButton]}
+              />
             )}
-            <Form.Item>
-              <Field
-                id="permit_no"
-                name="permit_no"
-                label="Permit Number*"
-                component={renderConfig.FIELD}
-                validate={[required, maxLength(9)]}
-                inlineLabel={
-                  this.props.permitPrefix &&
-                  `${this.props.permitPrefix}${this.props.permitIsExploration ? "X" : ""} -`
-                }
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="permit_status_code"
-                name="permit_status_code"
-                label="Permit Status*"
-                placeholder="Select a permit status"
-                component={renderConfig.SELECT}
-                data={this.props.permitStatusOptions}
-                validate={[required, validateSelectOptions(this.props.permitStatusOptions)]}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="issue_date"
-                name="issue_date"
-                label="Issue Date*"
-                component={renderConfig.DATE}
-                validate={[required, dateNotInFuture]}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="authorization_end_date"
-                name="authorization_end_date"
-                label={
-                  permitPrefixCoalOrMineral ? "Authorization End Date" : "Authorization End Date*"
-                }
-                component={renderConfig.DATE}
-                validate={permitPrefixCoalOrMineral ? [] : [required]}
-              />
-            </Form.Item>
+            <Field
+              id="permit_no"
+              name="permit_no"
+              label="Permit Number"
+              required
+              component={renderConfig.FIELD}
+              validate={[required, maxLength(9)]}
+              inlineLabel={
+                this.props.permitPrefix &&
+                `${this.props.permitPrefix}${this.props.permitIsExploration ? "X" : ""} -`
+              }
+            />
+            <Field
+              id="permit_status_code"
+              name="permit_status_code"
+              required
+              label="Permit Status"
+              placeholder="Select a permit status"
+              component={renderConfig.SELECT}
+              data={this.props.permitStatusOptions}
+              validate={[required]}
+            />
+            <Field
+              id="issue_date"
+              name="issue_date"
+              label="Issue Date"
+              required
+              component={renderConfig.DATE}
+              validate={[required, dateNotInFuture]}
+            />
+            <Field
+              id="authorization_end_date"
+              name="authorization_end_date"
+              label={
+                permitPrefixCoalOrMineral ? "Authorization End Date" : "Authorization End Date"
+              }
+              component={renderConfig.DATE}
+              validate={permitPrefixCoalOrMineral ? [] : [required]}
+              required={!permitPrefixCoalOrMineral}
+            />
             <Divider />
-            <Form.Item label="Securities">
-              <Field
-                label="Security Not Required"
-                id="security_not_required"
-                name="security_not_required"
-                component={renderConfig.CHECKBOX}
-                onChange={(e) => this.handleChange(e)}
-              />
-            </Form.Item>
+            <Field
+              label="Security Not Required"
+              id="security_not_required"
+              name="security_not_required"
+              component={renderConfig.CHECKBOX}
+              onChange={(e) => this.handleChange(e)}
+            />
             {this.props.securityNotRequired && (
               <Field
                 id="security_not_required_reason"
-                label="Reason*"
+                label="Reason"
+                required
                 name="security_not_required_reason"
                 component={renderConfig.SELECT}
                 placeholder="Select a reason"
                 data={securityNotRequiredReasonOptions}
                 disabled={!this.props.securityNotRequired}
-                validate={[required, validateSelectOptions(securityNotRequiredReasonOptions)]}
+                validate={[required]}
               />
             )}
-            <Form.Item label="Assessed Liability Adjustment">
-              <p className="p-light">
-                This amount will be added to the Total Assessed Liability amount for this permit.
-                Changes to this value in Core will not be updated in MMS.
-              </p>
-              <Field
-                id="liability_adjustment"
-                name="liability_adjustment"
-                component={renderConfig.FIELD}
-                {...currencyMask}
-                validate={[number]}
-                disabled={this.props.securityNotRequired}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                label="Security Received"
-                id="security_received_date"
-                name="security_received_date"
-                component={renderConfig.DATE}
-                disabled={this.props.securityNotRequired}
-              />
-            </Form.Item>
+            <p className="p-light">
+              This amount will be added to the Total Assessed Liability amount for this permit.
+              Changes to this value in Core will not be updated in MMS.
+            </p>
+            <Field
+              id="liability_adjustment"
+              name="liability_adjustment"
+              component={renderConfig.FIELD}
+              {...currencyMask}
+              validate={[number]}
+              disabled={this.props.securityNotRequired}
+            />
+            <Field
+              label="Security Received"
+              id="security_received_date"
+              name="security_received_date"
+              component={renderConfig.DATE}
+              disabled={this.props.securityNotRequired}
+            />
           </Col>
 
           <Col md={12} sm={24}>
@@ -308,6 +300,7 @@ export class AddPermitForm extends Component {
                 id="mine_tenure_type_code"
                 name="mine_tenure_type_code"
                 component={renderConfig.SELECT}
+                required
                 validate={[requiredList]}
                 disabled={!this.props.permitPrefix}
                 data={this.props.mineTenureTypes.filter(({ value }) =>
@@ -322,12 +315,11 @@ export class AddPermitForm extends Component {
                 data={
                   this.props.site_properties?.mine_tenure_type_code
                     ? this.props.conditionalCommodityOptions[
-                        this.props.site_properties?.mine_tenure_type_code
-                      ]
+                    this.props.site_properties?.mine_tenure_type_code
+                    ]
                     : null
                 }
               />
-              <div className="field-title">{isCoalOrMineral ? "Disturbance*" : "Disturbance"}</div>
               <Field
                 id="mine_disturbance_code"
                 name="mine_disturbance_code"
@@ -335,10 +327,12 @@ export class AddPermitForm extends Component {
                 data={
                   this.props.site_properties?.mine_tenure_type_code
                     ? this.props.conditionalDisturbanceOptions[
-                        this.props.site_properties?.mine_tenure_type_code
-                      ]
+                    this.props.site_properties?.mine_tenure_type_code
+                    ]
                     : null
                 }
+                label="Diturbance"
+                required={isCoalOrMineral}
                 validate={isCoalOrMineral ? [required] : []}
               />
             </FormSection>
@@ -359,16 +353,14 @@ export class AddPermitForm extends Component {
               validate={[maxLength(300)]}
             />
             <Divider />
-            <Form.Item label="Upload Files">
-              <Field
-                id="PermitDocumentFileUpload"
-                name="PermitDocumentFileUpload"
-                onFileLoad={this.onFileLoad}
-                onRemoveFile={this.onRemoveFile}
-                mineGuid={this.props.mine_guid}
-                component={PermitAmendmentFileUpload}
-              />
-            </Form.Item>
+            <Field
+              id="PermitDocumentFileUpload"
+              name="PermitDocumentFileUpload"
+              onFileLoad={this.onFileLoad}
+              onRemoveFile={this.onRemoveFile}
+              mineGuid={this.props.mine_guid}
+              component={PermitAmendmentFileUpload}
+            />
           </Col>
         </Row>
         <div className="right center-mobile">
@@ -392,7 +384,7 @@ export class AddPermitForm extends Component {
             {this.props.title}
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -422,11 +414,5 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: FORM.ADD_PERMIT,
-    validate: validateBusinessRules,
-    touchOnBlur: false,
-    onSubmitSuccess: resetForm(FORM.ADD_PERMIT),
-  })
+  connect(mapStateToProps, mapDispatchToProps)
 )(AddPermitForm);

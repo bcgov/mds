@@ -13,7 +13,6 @@ import {
   number,
   required,
   requiredList,
-  validateSelectOptions,
 } from "@common/utils/Validate";
 import { useHistory, useParams } from "react-router-dom";
 
@@ -78,7 +77,7 @@ const DamForm: FC<DamFormProps> = (props) => {
         label="Dam Type"
         component={renderConfig.SELECT}
         data={DAM_TYPES}
-        validate={[requiredList, validateSelectOptions(DAM_TYPES)]}
+        validate={[requiredList]}
         disabled={!canEditTSFAndEditMode}
       />
       <Field
@@ -117,7 +116,7 @@ const DamForm: FC<DamFormProps> = (props) => {
         label="Operating Status"
         component={renderConfig.SELECT}
         data={DAM_OPERATING_STATUS}
-        validate={[requiredList, validateSelectOptions(DAM_OPERATING_STATUS)]}
+        validate={[requiredList]}
         disabled={!canEditTSFAndEditMode}
       />
       <Field
@@ -126,7 +125,7 @@ const DamForm: FC<DamFormProps> = (props) => {
         label="Dam Consequence Classification"
         component={renderConfig.SELECT}
         data={CONSEQUENCE_CLASSIFICATION_STATUS_CODE}
-        validate={[requiredList, validateSelectOptions(CONSEQUENCE_CLASSIFICATION_STATUS_CODE)]}
+        validate={[requiredList]}
         disabled={!canEditTSFAndEditMode}
       />
       <Field

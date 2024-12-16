@@ -1,11 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`BondForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
-  onSubmit={[Function]}
+<Connect(ReduxForm)
+  name="ADD_BOND"
+  reduxFormConfig={
+    Object {
+      "onSubmitSuccess": [Function],
+      "touchOnBlur": true,
+    }
+  }
 >
   <Row
     gutter={16}
@@ -14,57 +17,50 @@ exports[`BondForm renders properly 1`] = `
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          autoComplete="off"
-          component={[Function]}
-          disabled={false}
-          format={[Function]}
-          id="amount"
-          label="Bond Amount*"
-          name="amount"
-          normalize={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          validate={
-            Array [
-              [Function],
-              [Function],
-              [Function],
-            ]
-          }
-          warn={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        autoComplete="off"
+        component={[Function]}
+        disabled={false}
+        format={[Function]}
+        id="amount"
+        label="Bond Amount"
+        name="amount"
+        normalize={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        required={true}
+        validate={
+          Array [
+            [Function],
+            [Function],
+            [Function],
+          ]
+        }
+        warn={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
     <Col
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          disabled={false}
-          id="bond_type_code"
-          label="Bond Type*"
-          name="bond_type_code"
-          placeholder="Please select bond type"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        disabled={false}
+        id="bond_type_code"
+        label="Bond Type"
+        name="bond_type_code"
+        placeholder="Please select bond type"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -74,46 +70,40 @@ exports[`BondForm renders properly 1`] = `
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Connect(PartySelectField)
-          allowAddingParties={true}
-          id="payer_party_guid"
-          initialValues={Object {}}
-          label="Payer*"
-          name="payer_party_guid"
-          partyLabel="payee"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Connect(PartySelectField)
+        allowAddingParties={true}
+        id="payer_party_guid"
+        initialValues={Object {}}
+        label="Payer"
+        name="payer_party_guid"
+        partyLabel="payee"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
     <Col
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="issue_date"
-          label="Issue Date*"
-          name="issue_date"
-          showTime={true}
-          validate={
-            Array [
-              [Function],
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="issue_date"
+        label="Issue Date"
+        name="issue_date"
+        required={true}
+        showTime={true}
+        validate={
+          Array [
+            [Function],
+            [Function],
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -123,47 +113,35 @@ exports[`BondForm renders properly 1`] = `
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="reference_number"
-          label="Reference Number"
-          name="reference_number"
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="reference_number"
+        label="Reference Number"
+        name="reference_number"
+      />
     </Col>
     <Col
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="project_id"
-          label="Project ID"
-          name="project_id"
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="project_id"
+        label="Project ID"
+        name="project_id"
+      />
     </Col>
   </Row>
   <Row>
     <Col
       md={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="note"
-          label="Notes"
-          name="note"
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="note"
+        label="Notes"
+        name="note"
+      />
     </Col>
   </Row>
   <Row
@@ -185,16 +163,12 @@ exports[`BondForm renders properly 1`] = `
       lg={12}
       md={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="institution_name"
-          label="Institution Name"
-          name="institution_name"
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="institution_name"
+        label="Institution Name"
+        name="institution_name"
+      />
     </Col>
   </Row>
   <Row
@@ -204,36 +178,28 @@ exports[`BondForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="institution_street"
-          label="Street Address"
-          name="institution_street"
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="institution_street"
+        label="Street Address"
+        name="institution_street"
+      />
     </Col>
     <Col
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="institution_city"
-          label="City"
-          name="institution_city"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="institution_city"
+        label="City"
+        name="institution_city"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -243,61 +209,48 @@ exports[`BondForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          data={
-            Array [
-              Object {
-                "isActive": true,
-                "label": "AB",
-                "subType": "CAN",
-                "value": "AB",
-              },
-              Object {
-                "isActive": true,
-                "label": "BC",
-                "subType": "CAN",
-                "value": "BC",
-              },
-            ]
-          }
-          id="institution_province"
-          label="Province"
-          name="institution_province"
-          placeholder="Please select province"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        data={
+          Array [
+            Object {
+              "isActive": true,
+              "label": "AB",
+              "subType": "CAN",
+              "value": "AB",
+            },
+            Object {
+              "isActive": true,
+              "label": "BC",
+              "subType": "CAN",
+              "value": "BC",
+            },
+          ]
+        }
+        id="institution_province"
+        label="Province"
+        name="institution_province"
+        placeholder="Please select province"
+      />
     </Col>
     <Col
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="institution_postal_code"
-          label="Postal Code"
-          name="institution_postal_code"
-          normalize={[Function]}
-          placeholder="e.g xxxxxx"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="institution_postal_code"
+        label="Postal Code"
+        name="institution_postal_code"
+        normalize={[Function]}
+        placeholder="e.g xxxxxx"
+        validate={
+          Array [
+            [Function],
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -382,74 +335,59 @@ exports[`BondForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="document_date"
-          label="Document Date"
-          name="document_date"
-          showTime={true}
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="document_date"
+        label="Document Date"
+        name="document_date"
+        showTime={true}
+        validate={
+          Array [
+            [Function],
+            [Function],
+          ]
+        }
+      />
     </Col>
     <Col
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="bond_document_type_code"
-          label="Document Category"
-          name="bond_document_type_code"
-          placeholder="Please select category"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="bond_document_type_code"
+        label="Document Category"
+        name="bond_document_type_code"
+        placeholder="Please select category"
+        required={false}
+        validate={Array []}
+      />
     </Col>
   </Row>
-  <FormItem
-    hasFeedback={false}
-  >
-    <Field
-      acceptedFileTypesMap={
-        Object {
-          ".doc": "application/msword",
-          ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-          ".odm": "application/vnd.oasis.opendocument.text-master",
-          ".odt": "application/vnd.oasis.opendocument.text",
-          ".oth": "application/vnd.oasis.opendocument.text-web",
-          ".ott": "application/vnd.oasis.opendocument.text-template",
-          ".pdf": "application/pdf",
-          ".rtf": "application/rtf",
-          ".xls": "application/vnd.ms-excel",
-          ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        }
+  <Field
+    acceptedFileTypesMap={
+      Object {
+        ".doc": "application/msword",
+        ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        ".odm": "application/vnd.oasis.opendocument.text-master",
+        ".odt": "application/vnd.oasis.opendocument.text",
+        ".oth": "application/vnd.oasis.opendocument.text-web",
+        ".ott": "application/vnd.oasis.opendocument.text-template",
+        ".pdf": "application/pdf",
+        ".rtf": "application/rtf",
+        ".xls": "application/vnd.ms-excel",
+        ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       }
-      allowMultiple={true}
-      allowRevert={true}
-      component={[Function]}
-      id="documents"
-      name="documents"
-      onFileLoad={[Function]}
-      onRemoveFile={[Function]}
-      uploadUrl="/securities/undefined/bonds/documents"
-    />
-  </FormItem>
+    }
+    allowMultiple={true}
+    allowRevert={true}
+    component={[Function]}
+    id="documents"
+    name="documents"
+    onFileLoad={[Function]}
+    onRemoveFile={[Function]}
+    uploadUrl="/securities/undefined/bonds/documents"
+  />
   <div
     className="right center-mobile"
   >
@@ -476,5 +414,5 @@ exports[`BondForm renders properly 1`] = `
       Add Bond
     </Button>
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

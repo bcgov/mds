@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { reduxForm, Field } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field } from "redux-form";
 import { formatDate, formatMoney, resetForm } from "@common/utils/helpers";
 import { Button, Col, Row, Popconfirm, Alert } from "antd";
 
@@ -10,6 +8,7 @@ import { maxLength } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -27,7 +26,14 @@ const defaultProps = {
 };
 
 export const RejectApplicationForm = (props) => (
-  <Form layout="vertical" onSubmit={props.handleSubmit}>
+  <FormWrapper
+    name={FORM.REJECT_APPLICATION}
+    reduxFormConfig={{
+      touchOnBlur: false,
+      onSubmitSuccess: resetForm(FORM.REJECT_APPLICATION),
+      enableReinitialize: true,
+    }}
+    onSubmit={props.handleSubmit}>
     {props.draftAmendment?.security_received_date && props.draftAmendment?.liability_adjustment && (
       <Alert
         message="Return Reclamation Securities"
@@ -44,19 +50,17 @@ export const RejectApplicationForm = (props) => (
     <br />
     <Row>
       <Col span={24}>
-        <Form.Item>
-          <Field
-            id="status_reason"
-            name="status_reason"
-            label={
-              (props.type === "REJ" && "Reason for Rejection") ||
-              (props.type === "WDN" && "Reason for Withdrawal") ||
-              ""
-            }
-            component={renderConfig.AUTO_SIZE_FIELD}
-            validate={[maxLength(4000)]}
-          />
-        </Form.Item>
+        <Field
+          id="status_reason"
+          name="status_reason"
+          label={
+            (props.type === "REJ" && "Reason for Rejection") ||
+            (props.type === "WDN" && "Reason for Withdrawal") ||
+            ""
+          }
+          component={renderConfig.AUTO_SIZE_FIELD}
+          validate={[maxLength(4000)]}
+        />
       </Col>
     </Row>
     <div className="right center-mobile">
@@ -84,15 +88,10 @@ export const RejectApplicationForm = (props) => (
         {props.title}
       </Button>
     </div>
-  </Form>
+  </FormWrapper>
 );
 
 RejectApplicationForm.propTypes = propTypes;
 RejectApplicationForm.defaultProps = defaultProps;
 
-export default reduxForm({
-  form: FORM.REJECT_APPLICATION,
-  touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.REJECT_APPLICATION),
-  enableReinitialize: true,
-})(RejectApplicationForm);
+export default RejectApplicationForm;

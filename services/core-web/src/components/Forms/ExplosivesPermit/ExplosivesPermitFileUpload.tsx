@@ -1,8 +1,6 @@
 import React, { FC } from "react";
 import { useDispatch } from "react-redux";
 import { Field } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { EXPLOSIVES_PERMIT_DOCUMENTS } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
@@ -22,25 +20,23 @@ export const ExplosivesPermitFileUpload: FC<ExplosivesPermitFileUploadProps> = (
   };
 
   return (
-    <Form.Item>
-      <Field
-        id="fileUpload"
-        name="fileUpload"
-        component={FileUpload}
-        uploadUrl={EXPLOSIVES_PERMIT_DOCUMENTS(props.mineGuid, props.esupGuid)}
-        acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
-        onFileLoad={props.onFileLoad}
-        onRemoveFile={(err, fileItem) => {
-          props.onRemoveFile(err, fileItem);
-          setIsLoading(false);
-        }}
-        allowRevert
-        allowMultiple
-        onProcessFiles={() => setIsLoading(false)}
-        onAbort={() => setIsLoading(false)}
-        beforeAddFile={() => setIsLoading(true)}
-      />
-    </Form.Item>
+    <Field
+      id="fileUpload"
+      name="fileUpload"
+      component={FileUpload}
+      uploadUrl={EXPLOSIVES_PERMIT_DOCUMENTS(props.mineGuid, props.esupGuid)}
+      acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
+      onFileLoad={props.onFileLoad}
+      onRemoveFile={(err, fileItem) => {
+        props.onRemoveFile(err, fileItem);
+        setIsLoading(false);
+      }}
+      allowRevert
+      allowMultiple
+      onProcessFiles={() => setIsLoading(false)}
+      onAbort={() => setIsLoading(false)}
+      beforeAddFile={() => setIsLoading(true)}
+    />
   );
 };
 

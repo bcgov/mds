@@ -17,7 +17,7 @@ import { createItemMap, createItemIdsArray } from "@common/utils/helpers";
 import { Validate } from "@common/utils/Validate";
 import LinkButton from "@/components/common/buttons/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
-import RenderLargeSelect from "./RenderLargeSelect";
+import RenderLargeSelect from "@mds/common/components/forms/RenderLargeSelect";
 
 const propTypes = {
   id: PropTypes.string,
@@ -165,7 +165,7 @@ export class PartySelectField extends Component {
           createItemIdsArray(filteredParties, "party_guid"),
           createItemMap(filteredParties, "party_guid"),
           this.props.allowAddingParties &&
-            renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel)
+          renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel)
         );
         return { partyDataSource: newPartyDataSource };
       });

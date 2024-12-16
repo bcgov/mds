@@ -1,12 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AdvancedMineSearchForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  name="MINE_ADVANCED_SEARCH"
   onReset={[Function]}
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "enableReinitialize": true,
+      "touchOnBlur": false,
+    }
+  }
 >
   <Row
     gutter={6}
@@ -55,5 +59,5 @@ exports[`AdvancedMineSearchForm renders properly 1`] = `
       Apply Filters
     </Button>
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

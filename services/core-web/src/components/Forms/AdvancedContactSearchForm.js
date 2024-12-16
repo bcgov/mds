@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field } from "redux-form";
 import { Button, Col, Row } from "antd";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import { phoneNumber, maxLength } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -46,7 +45,13 @@ export class AdvancedContactSearchForm extends Component {
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
+      <FormWrapper
+        name={FORM.CONTACT_ADVANCED_SEARCH}
+        reduxFormConfig={{
+          touchOnBlur: false,
+          enableReinitialize: true,
+        }}
+        onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
         <Row gutter={6}>
           <Col md={6} xs={6}>
             <Field
@@ -131,7 +136,7 @@ export class AdvancedContactSearchForm extends Component {
             Apply Filters
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -139,8 +144,4 @@ export class AdvancedContactSearchForm extends Component {
 AdvancedContactSearchForm.propTypes = propTypes;
 AdvancedContactSearchForm.defaultProps = defaultProps;
 
-export default reduxForm({
-  form: FORM.CONTACT_ADVANCED_SEARCH,
-  touchOnBlur: false,
-  enableReinitialize: true,
-})(AdvancedContactSearchForm);
+export default AdvancedContactSearchForm;

@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 
 let props = {};
 

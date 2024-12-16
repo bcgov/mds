@@ -30,7 +30,7 @@ exports[`NoticeOfDepartureModal renders properly 1`] = `
     }
   }
 >
-  <Connect(ReduxForm)
+  <Connect(NoticeOfDepartureModal)
     closeModal={[MockFunction]}
     fetchDetailedNoticeOfDeparture={[MockFunction]}
     handleSubmit={[MockFunction]}

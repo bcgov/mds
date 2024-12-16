@@ -15,11 +15,15 @@ exports[`ConditionForm renders properly 1`] = `
   <Col
     span={20}
   >
-    <Form
-      colon={true}
-      hideRequiredMark={false}
-      layout="horizontal"
+    <Connect(ReduxForm)
+      initialValues={Object {}}
+      name="CONDITION_SECTION"
       onSubmit={[MockFunction]}
+      reduxFormConfig={
+        Object {
+          "onSubmitSuccess": [Function],
+        }
+      }
     >
       <Field
         component={[Function]}
@@ -58,7 +62,7 @@ exports[`ConditionForm renders properly 1`] = `
           Save
         </Button>
       </div>
-    </Form>
+    </Connect(ReduxForm)>
   </Col>
   <Col
     span={3}

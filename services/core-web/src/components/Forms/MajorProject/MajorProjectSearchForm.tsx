@@ -1,11 +1,12 @@
 import React, { FC } from "react";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
-import { Field, reduxForm } from "redux-form";
-import { Button, Col, Row, Form } from "antd";
+import { Field } from "redux-form";
+import { Button, Col, Row } from "antd";
 
 import * as FORM from "@/constants/forms";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderDate from "@mds/common/components/forms/RenderDate";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 interface MajorProjectsSearchFormProps {
   handleSubmit: (params: any) => void;
@@ -29,7 +30,16 @@ export const MajorProjectsSearchForm: FC<MajorProjectsSearchFormProps> = ({
   };
 
   return (
-    <Form layout="vertical" onReset={handleSearchFormReset}>
+    <FormWrapper
+      name={FORM.MAJOR_MINE_APPLICATION_ADVANCED_SEARCH}
+      reduxFormConfig={{
+        touchOnBlur: false,
+        enableReinitialize: true,
+      }}
+      onSubmit={() => { }}
+    // TODO: deal with
+    // onReset={handleSearchFormReset}
+    >
       <Row gutter={6}>
         <Col md={24} xs={24}>
           <Field
@@ -76,12 +86,8 @@ export const MajorProjectsSearchForm: FC<MajorProjectsSearchFormProps> = ({
           Apply Filters
         </Button>
       </div>
-    </Form>
+    </FormWrapper>
   );
 }
 
-export default reduxForm({
-  form: FORM.MAJOR_MINE_APPLICATION_ADVANCED_SEARCH,
-  touchOnBlur: false,
-  enableReinitialize: true,
-})(MajorProjectsSearchForm as any)
+export default MajorProjectsSearchForm;

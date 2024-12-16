@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row } from "antd";
+import { Field } from "redux-form";
+import { Button, Col, Row, Form } from "antd";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import { yearNotInFuture } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -34,7 +33,15 @@ export class IncidentSearchForm extends Component {
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
+      <FormWrapper
+        name={FORM.INCIDENT_ADVANCED_SEARCH}
+        reduxFormConfig={{
+          touchOnBlur: false,
+          enableReinitialize: true,
+        }}
+        onSubmit={this.props.handleSubmit}
+        // TODO: figure this out
+        onReset={this.handleReset}>
         <Row gutter={6}>
           <Col md={24} xs={24}>
             <Field
@@ -129,7 +136,7 @@ export class IncidentSearchForm extends Component {
             Apply Filters
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -137,8 +144,4 @@ export class IncidentSearchForm extends Component {
 IncidentSearchForm.propTypes = propTypes;
 IncidentSearchForm.defaultProps = defaultProps;
 
-export default reduxForm({
-  form: FORM.INCIDENT_ADVANCED_SEARCH,
-  touchOnBlur: false,
-  enableReinitialize: true,
-})(IncidentSearchForm);
+export default IncidentSearchForm;

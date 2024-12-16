@@ -1,9 +1,7 @@
 import React, { FC } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { Field, reduxForm, FormSection, formValueSelector, InjectedFormProps } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field, FormSection, formValueSelector, InjectedFormProps } from "redux-form";
 import { Row, Col } from "antd";
 import {
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
@@ -21,7 +19,6 @@ import {
   lon,
   maxLength,
   requiredRadioButton,
-  validateSelectOptions,
   number,
   min,
   max,
@@ -30,11 +27,11 @@ import {
 import * as Strings from "@mds/common/constants/strings";
 import { USER_ROLES } from "@mds/common";
 import { getNoticeOfWorkEditableTypes } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
-import RenderField from "@/components/common/RenderField";
-import RenderRadioButtons from "@/components/common/RenderRadioButtons";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
-import RenderSelect from "@/components/common/RenderSelect";
-import RenderDate from "@/components/common/RenderDate";
+import RenderField from "@mds/common/components/forms/RenderField";
+import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
+import RenderDate from "@mds/common/components/forms/RenderDate";
 import * as FORM from "@/constants/forms";
 import { OPEN_NEW_TAB } from "@/constants/assets";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
@@ -45,6 +42,7 @@ import ReviewApplicationFeeContent from "@/components/noticeOfWork/applications/
 import * as Permission from "@/constants/permissions";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 import ReclamationSummary from "./activities/ReclamationSummary";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -131,6 +129,7 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
             id="property_name"
             name="property_name"
             component={RenderField}
+            required
             disabled={props.isViewMode}
             validate={[required, maxLength(4000)]}
           />
@@ -216,7 +215,6 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
             name="mine_region"
             component={RenderSelect}
             data={props.regionDropdownOptions}
-            validate={[validateSelectOptions(props.regionDropdownOptions)]}
             disabled
           />
           <div className="field-title">
@@ -248,11 +246,12 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
   const renderPermitType = () => (
     <Row gutter={16}>
       <Col md={12} sm={24}>
-        <div className="field-title">Years sought for authorization to complete this work</div>
         <Field
+          label="Years sought for authorization to complete this work"
           id="term_of_application"
           name="term_of_application"
           component={RenderField}
+          required
           disabled={props.isViewMode}
           validate={[required, number, min(1), max(99), wholeNumber]}
         />
@@ -274,16 +273,16 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
           component={RenderSelect}
           data={props.permitTypeOptions}
           disabled={props.isViewMode}
-          validate={[validateSelectOptions(props.permitTypeOptions)]}
         />
       </Col>
       <Col md={12} sm={24}>
-        <div className="field-title">First year of multi-year, area based application?</div>
         <Field
+          label="First year of multi-year, area based application?"
           id="is_first_year_of_multi"
           name="is_first_year_of_multi"
           component={RenderRadioButtons}
           disabled={props.isViewMode}
+          required
           validate={[requiredRadioButton]}
           data={[
             { value: true, label: "Yes" },
@@ -342,7 +341,8 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
               component={RenderSelect}
               data={filteredApplicationTypeOptions}
               disabled={noticeOfWorkTypeDropDownDisabled}
-              validate={[required, validateSelectOptions(props.applicationTypeOptions)]}
+              required
+              validate={[required]}
             />
           </Col>
           <Col md={12} sm={24}>
@@ -373,8 +373,8 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
             />
           </Col>
           <Col md={12} sm={24}>
-            <div className="field-title">This mine is proposed for:</div>
             <Field
+              label="This mine is proposed for:"
               id="mine_purpose"
               name="mine_purpose"
               component={RenderRadioButtons}
@@ -467,8 +467,8 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
             />
           </Col>
           <Col md={12} sm={24}>
-            <div className="field-title">Life of the Mine</div>
             <Field
+              label="Life of the Mine"
               id="term_of_application"
               name="term_of_application"
               component={RenderField}
@@ -584,70 +584,6 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
           </Col>
         )}
       </Row>
-      {/* <h4>Access to Tenure</h4>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Do you need to build a road, create stream crossings or other surface disturbance that
-            will not be on your tenure?
-            {props.isPreLaunch && <NOWFieldOriginTooltip />}
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("has_surface_disturbance_outside_tenure").value
-              }
-              isVisible={
-                props.renderOriginalValues("has_surface_disturbance_outside_tenure").edited
-              }
-            />
-          </div>
-          <Field
-            id="has_surface_disturbance_outside_tenure"
-            name="has_surface_disturbance_outside_tenure"
-            component={RenderRadioButtons}
-            disabled={props.isViewMode}
-          />
-        </Col>
-        {props.surfaceDisturbance && (
-          <>
-            <Col md={12} sm={24}>
-              <div className="field-title">
-                Do you have the required access authorizations in place?
-                {props.isPreLaunch && <NOWFieldOriginTooltip />}
-                <NOWOriginalValueTooltip
-                  style={{ marginLeft: "5%" }}
-                  originalValue={props.renderOriginalValues("has_req_access_authorizations").value}
-                  isVisible={props.renderOriginalValues("has_req_access_authorizations").edited}
-                />
-              </div>
-              <Field
-                id="has_req_access_authorizations"
-                name="has_req_access_authorizations"
-                component={RenderRadioButtons}
-                disabled={props.isViewMode}
-              />
-            </Col>
-            <Col md={12} sm={24}>
-              <div className="field-title">
-                Provide the type and authorization numbers for each access authorization application
-                or exemption to use the road(s).
-                {props.isPreLaunch && <NOWFieldOriginTooltip />}
-                <NOWOriginalValueTooltip
-                  originalValue={
-                    props.renderOriginalValues("req_access_authorization_numbers").value
-                  }
-                  isVisible={props.renderOriginalValues("req_access_authorization_numbers").edited}
-                />
-              </div>
-              <Field
-                id="req_access_authorization_numbers"
-                name="req_access_authorization_numbers"
-                component={RenderAutoSizeField}
-                disabled={props.isViewMode}
-              />
-            </Col>
-          </>
-        )}
-      </Row> */}
     </div>
   );
 
@@ -873,6 +809,7 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
                   name="has_community_water_shed"
                   component={RenderRadioButtons}
                   disabled={props.isViewMode}
+                  required
                   validate={[requiredRadioButton]}
                 />
               </Col>
@@ -1257,32 +1194,30 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
           </>
         </ScrollContentWrapper>
         <ScrollContentWrapper id="indigenous-engagement" title="Indigenous Engagement">
-          <>
-            <Row gutter={16}>
-              <Col md={12} sm={24}>
-                <div className="field-title">
-                  Have you read and understand United Nations Declaration on the Rights of
-                  Indigenous Peoples and the Truth and Reconciliation Commission of Canada&apos;s
-                  Calls to Action?
-                  {props.isPreLaunch && <NOWFieldOriginTooltip />}
-                  <NOWOriginalValueTooltip
-                    originalValue={
-                      props.renderOriginalValues("state_of_land.has_acknowledged_undrip").value
-                    }
-                    isVisible={
-                      props.renderOriginalValues("state_of_land.has_acknowledged_undrip").edited
-                    }
-                  />
-                </div>
-                <Field
-                  id="has_acknowledged_undrip"
-                  name="has_acknowledged_undrip"
-                  component={RenderRadioButtons}
-                  disabled={props.isViewMode}
+          <Row gutter={16}>
+            <Col md={12} sm={24}>
+              <div className="field-title">
+                Have you read and understand United Nations Declaration on the Rights of
+                Indigenous Peoples and the Truth and Reconciliation Commission of Canada&apos;s
+                Calls to Action?
+                {props.isPreLaunch && <NOWFieldOriginTooltip />}
+                <NOWOriginalValueTooltip
+                  originalValue={
+                    props.renderOriginalValues("state_of_land.has_acknowledged_undrip").value
+                  }
+                  isVisible={
+                    props.renderOriginalValues("state_of_land.has_acknowledged_undrip").edited
+                  }
                 />
-              </Col>
-            </Row>
-          </>
+              </div>
+              <Field
+                id="has_acknowledged_undrip"
+                name="has_acknowledged_undrip"
+                component={RenderRadioButtons}
+                disabled={props.isViewMode}
+              />
+            </Col>
+          </Row>
         </ScrollContentWrapper>
       </FormSection>
     </div>
@@ -1326,27 +1261,25 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
   );
 
   const renderWorkPlan = () => (
-    <>
-      <Row gutter={16}>
-        <Col md={24} sm={24}>
-          <div className="field-title">
-            Sufficient details of your work program to enable a good understanding of the types and
-            scope of the activities that will be conducted:
-            {props.isPreLaunch && <NOWFieldOriginTooltip />}
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("work_plan").value}
-              isVisible={props.renderOriginalValues("work_plan").edited}
-            />
-          </div>
-          <Field
-            id="work_plan"
-            name="work_plan"
-            component={RenderAutoSizeField}
-            disabled={props.isViewMode}
+    <Row gutter={16}>
+      <Col md={24} sm={24}>
+        <div className="field-title">
+          Sufficient details of your work program to enable a good understanding of the types and
+          scope of the activities that will be conducted:
+          {props.isPreLaunch && <NOWFieldOriginTooltip />}
+          <NOWOriginalValueTooltip
+            originalValue={props.renderOriginalValues("work_plan").value}
+            isVisible={props.renderOriginalValues("work_plan").edited}
           />
-        </Col>
-      </Row>
-    </>
+        </div>
+        <Field
+          id="work_plan"
+          name="work_plan"
+          component={RenderAutoSizeField}
+          disabled={props.isViewMode}
+        />
+      </Col>
+    </Row>
   );
 
   const renderReclamation = () => (
@@ -1481,7 +1414,14 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
 
   return (
     <div>
-      <Form layout="vertical">
+      <FormWrapper onSubmit={() => { }}
+        name={FORM.EDIT_NOTICE_OF_WORK}
+        reduxFormConfig={{
+          touchOnChange: false,
+          touchOnBlur: true,
+          enableReinitialize: true,
+        }}
+      >
         <ScrollContentWrapper id="applicant-info" title="Applicant Information">
           {renderApplicantInfo()}
         </ScrollContentWrapper>
@@ -1579,7 +1519,7 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
             isViewMode={props.isViewMode}
           />
         </ScrollContentWrapper>
-      </Form>
+      </FormWrapper>
     </div>
   );
 };
@@ -1624,12 +1564,5 @@ export default compose(
     applicationTypeOptionsHash: getNoticeOfWorkApplicationTypeOptionsHash(state),
     userRoles: getUserAccessData(state),
     editableApplicationTypeOptions: getNoticeOfWorkEditableTypes(state),
-  })),
-  reduxForm({
-    form: FORM.EDIT_NOTICE_OF_WORK,
-    touchOnChange: false,
-    touchOnBlur: true,
-    enableReinitialize: true,
-    onSubmit: () => {},
-  })
+  }))
 )(ReviewNOWApplication);

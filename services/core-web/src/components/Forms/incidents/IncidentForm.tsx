@@ -2,8 +2,7 @@ import React, { FC, useState } from "react";
 import { useParams, withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { useDispatch, useSelector } from "react-redux";
-import { change, formValueSelector, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
-import "@ant-design/compatible/assets/index.css";
+import { change, formValueSelector, getFormValues, InjectedFormProps } from "redux-form";
 import { Button, Col, Form, Row } from "antd";
 import { IMineIncident } from "@mds/common";
 import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
@@ -27,6 +26,7 @@ import IncidentFormInitialReport from "@/components/Forms/incidents/IncidentForm
 import IncidentFormUpdateIncidentStatus from "@/components/Forms/incidents/IncidentFormUpdateIncidentStatus";
 import IncidentFormMinistryFollowup from "@/components/Forms/incidents/IncidentFormMinistryFollowup";
 import { removeDocumentFromMineIncident } from "@mds/common/redux/actionCreators/incidentActionCreator";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 export const INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD = "initial_incident_documents";
 export const FINAL_REPORT_DOCUMENTS_FORM_FIELD = "final_report_documents";
@@ -128,7 +128,16 @@ export const IncidentForm: FC<IncidentFormProps & InjectedFormProps> = (props) =
   };
 
   return (
-    <Form layout="vertical" onFinish={props.handleSubmit(parentHandlers.handleSaveData)}>
+    <FormWrapper
+      name={FORM.ADD_EDIT_INCIDENT}
+      initialValues={props.initialValues}
+      reduxFormConfig={{
+        enableReinitialize: true,
+        touchOnBlur: true,
+        touchOnChange: true,
+        destroyOnUnmount: true,
+      }}
+      onSubmit={props.handleSubmit(parentHandlers.handleSaveData)}>
       <Col span={24}>
         <IncidentFormUpdateIncidentStatus
           incident={props.incident}
@@ -179,17 +188,10 @@ export const IncidentForm: FC<IncidentFormProps & InjectedFormProps> = (props) =
           {renderEditSaveControls()}
         </Col>
       </Row>
-    </Form>
+    </FormWrapper>
   );
 };
 
 export default compose(
-  withRouter,
-  reduxForm({
-    form: FORM.ADD_EDIT_INCIDENT,
-    enableReinitialize: true,
-    touchOnBlur: true,
-    touchOnChange: true,
-    destroyOnUnmount: true,
-  })
+  withRouter
 )(IncidentForm);

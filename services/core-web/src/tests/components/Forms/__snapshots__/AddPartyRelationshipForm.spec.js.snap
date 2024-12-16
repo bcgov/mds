@@ -1,11 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddPartyRelationshipForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  name="ADD_PARTY_RELATIONSHIP"
   onSubmit={[Function]}
+  reduxFormConfig={
+    Object {
+      "touchOnBlur": false,
+      "validate": [Function],
+    }
+  }
 >
   <Row
     gutter={16}
@@ -14,21 +18,18 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
       md={24}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Connect(PartySelectField)
-          allowAddingParties={true}
-          id="party_guid"
-          name="party_guid"
-          onSelect={[Function]}
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Connect(PartySelectField)
+        allowAddingParties={true}
+        id="party_guid"
+        name="party_guid"
+        onSelect={[Function]}
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -38,38 +39,31 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="start_date"
-          label="* Start Date"
-          name="start_date"
-          placeholder="yyyy-mm-dd"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="start_date"
+        label="Start Date"
+        name="start_date"
+        placeholder="yyyy-mm-dd"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
     <Col
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="end_date"
-          label="End Date"
-          name="end_date"
-          placeholder="yyyy-mm-dd"
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="end_date"
+        label="End Date"
+        name="end_date"
+        placeholder="yyyy-mm-dd"
+      />
     </Col>
   </Row>
   <Row
@@ -91,15 +85,11 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
         <h4>
           Mine Manager Appointment Letter
         </h4>
-        <FormItem
-          hasFeedback={false}
-        >
-          <Field
-            component={[Function]}
-            id="PartyRelationshipFileUpload"
-            name="PartyRelationshipFileUpload"
-          />
-        </FormItem>
+        <Field
+          component={[Function]}
+          id="PartyRelationshipFileUpload"
+          name="PartyRelationshipFileUpload"
+        />
       </div>
     </Col>
   </Row>
@@ -128,5 +118,5 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
       type="primary"
     />
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

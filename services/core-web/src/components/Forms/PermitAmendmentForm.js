@@ -3,16 +3,13 @@ import PropTypes from "prop-types";
 import { remove } from "lodash";
 import { connect } from "react-redux";
 import { compose, bindActionCreators } from "redux";
-import { Field, reduxForm, change, formValueSelector } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Alert, Button, Col, Row, Popconfirm, Divider } from "antd";
+import { Field, change, formValueSelector } from "redux-form";
+import { Alert, Button, Col, Row, Popconfirm, Divider, Form } from "antd";
 import {
   required,
   maxLength,
   dateNotInFuture,
   number,
-  validateSelectOptions,
   assessedLiabilityNegativeWarning,
 } from "@common/utils/Validate";
 import { resetForm, currencyMask } from "@common/utils/helpers";
@@ -23,6 +20,7 @@ import PermitAmendmentUploadedFilesList from "@/components/mine/Permit/PermitAme
 import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentFileUpload";
 import { securityNotRequiredReasonOptions } from "@/constants/NOWConditions";
 import { USER_ROLES } from "@mds/common";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const originalPermit = "OGP";
 
@@ -123,51 +121,51 @@ export class PermitAmendmentForm extends Component {
       this.props.initialValues.permit_prefix === "C" ||
       this.props.initialValues.permit_prefix === "M";
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <FormWrapper onSubmit={this.props.handleSubmit}
+        name={FORM.PERMIT_AMENDMENT}
+        reduxFormConfig={{
+          validate: validateBusinessRules,
+          touchOnBlur: true,
+          onSubmitSuccess: resetForm(FORM.PERMIT_AMENDMENT),
+        }}
+      >
         <Row gutter={48}>
           <Col md={12} sm={24}>
             {!this.props.is_historical_amendment &&
               !this.props.initialValues.permit_amendment_guid && (
-                <Form.Item>
-                  <PartySelectField
-                    id="permittee_party_guid"
-                    name="permittee_party_guid"
-                    label="Permittee*"
-                    partyLabel="permittee"
-                    validate={[required]}
-                    allowAddingParties
-                  />
-                </Form.Item>
+                <PartySelectField
+                  id="permittee_party_guid"
+                  name="permittee_party_guid"
+                  label="Permittee"
+                  required
+                  partyLabel="permittee"
+                  validate={[required]}
+                  allowAddingParties
+                />
               )}
-            <Form.Item>
-              <Field
-                id="issue_date"
-                name="issue_date"
-                label="Issue Date*"
-                component={renderConfig.DATE}
-                validate={[required, dateNotInFuture]}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="authorization_end_date"
-                name="authorization_end_date"
-                label={isPermitCoalOrMineral ? "Authorization End Date" : "Authorization End Date*"}
-                component={renderConfig.DATE}
-                validate={isPermitCoalOrMineral ? [] : [required]}
-              />
-            </Form.Item>
-
-            <Form.Item>
-              <Field
-                id="description"
-                name="description"
-                label="Description"
-                component={renderConfig.AUTO_SIZE_FIELD}
-                validate={[maxLength(280)]}
-              />
-            </Form.Item>
-
+            <Field
+              id="issue_date"
+              name="issue_date"
+              label="Issue Date"
+              required
+              component={renderConfig.DATE}
+              validate={[required, dateNotInFuture]}
+            />
+            <Field
+              id="authorization_end_date"
+              name="authorization_end_date"
+              label={"Authorization End Date"}
+              component={renderConfig.DATE}
+              required={!isPermitCoalOrMineral}
+              validate={isPermitCoalOrMineral ? [] : [required]}
+            />
+            <Field
+              id="description"
+              name="description"
+              label="Description"
+              component={renderConfig.AUTO_SIZE_FIELD}
+              validate={[maxLength(280)]}
+            />
             <Divider />
             <Form.Item label="Securities">
               <Field
@@ -181,39 +179,35 @@ export class PermitAmendmentForm extends Component {
             {this.props.securityNotRequired && (
               <Field
                 id="security_not_required_reason"
-                label="Reason*"
+                label="Reason"
                 name="security_not_required_reason"
                 component={renderConfig.SELECT}
                 placeholder="Please select a reason"
                 data={securityNotRequiredReasonOptions}
                 disabled={!this.props.securityNotRequired}
-                validate={[required, validateSelectOptions(securityNotRequiredReasonOptions)]}
+                required
+                validate={[required]}
               />
             )}
-            <Form.Item label="Assessed Liability Adjustment">
-              <p className="p-light">
-                This amount will be added to the Total Assessed Liability amount for this permit.
-                Changes to this value in Core will not be updated in MMS.
-              </p>
-              <Field
-                id="liability_adjustment"
-                name="liability_adjustment"
-                component={renderConfig.FIELD}
-                {...currencyMask}
-                validate={[number]}
-                disabled={this.props.securityNotRequired}
-                warn={[assessedLiabilityNegativeWarning]}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                label="Security Received"
-                id="security_received_date"
-                name="security_received_date"
-                component={renderConfig.DATE}
-                disabled={this.props.securityNotRequired}
-              />
-            </Form.Item>
+            <Field
+              label="Assessed Liability Adjustment"
+              help="This amount will be added to the Total Assessed Liability amount for this permit.
+                Changes to this value in Core will not be updated in MMS."
+              id="liability_adjustment"
+              name="liability_adjustment"
+              component={renderConfig.FIELD}
+              {...currencyMask}
+              validate={[number]}
+              disabled={this.props.securityNotRequired}
+              warn={[assessedLiabilityNegativeWarning]}
+            />
+            <Field
+              label="Security Received"
+              id="security_received_date"
+              name="security_received_date"
+              component={renderConfig.DATE}
+              disabled={this.props.securityNotRequired}
+            />
           </Col>
           <Col md={12} sm={24} className="border--left--layout">
             {this.state.relatedDocuments.length > 0 && (
@@ -274,7 +268,7 @@ export class PermitAmendmentForm extends Component {
             {this.props.title}
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -296,11 +290,5 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: FORM.PERMIT_AMENDMENT,
-    validate: validateBusinessRules,
-    touchOnBlur: true,
-    onSubmitSuccess: resetForm(FORM.PERMIT_AMENDMENT),
-  })
+  connect(mapStateToProps, mapDispatchToProps)
 )(PermitAmendmentForm);

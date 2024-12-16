@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm, change, getFormValues, FieldArray } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { Card, Checkbox, Col, Row, Typography, Divider, Button } from "antd";
 import {
   required,
@@ -41,7 +39,7 @@ import { renderConfig } from "@/components/common/config";
 import Callout from "@/components/common/Callout";
 import customPropTypes from "@/customPropTypes";
 import IncidentFileUpload from "./IncidentFileUpload";
-import RenderDateTimeTz from "@/components/common/RenderDateTimeTz";
+import RenderDateTimeTz from "@mds/common/components/forms/RenderDateTimeTz";
 
 const propTypes = {
   incident: customPropTypes.incident.isRequired,
@@ -101,12 +99,8 @@ const retrieveIncidentDetailsDynamicValidation = (childProps) => {
 };
 
 const confirmationSubmission = (childProps) => {
-  const {
-    applicationSubmitted,
-    location,
-    confirmedSubmission,
-    setConfirmedSubmission,
-  } = childProps;
+  const { applicationSubmitted, location, confirmedSubmission, setConfirmedSubmission } =
+    childProps;
   return (
     !applicationSubmitted &&
     location?.state?.current === 2 && (

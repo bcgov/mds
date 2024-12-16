@@ -8,18 +8,11 @@ import { getParties } from "@mds/common/redux/selectors/partiesSelectors";
 import { compose, bindActionCreators } from "redux";
 import { Field, reduxForm, initialize, isDirty, reset, getFormValues, change } from "redux-form";
 import { connect } from "react-redux";
-import { Col, Row, Typography, Popconfirm, Button, Divider } from "antd";
-import { Form } from "@ant-design/compatible";
+import { Col, Row, Typography, Popconfirm, Button, Divider, Form } from "antd";
 import { debounce } from "lodash";
 import { getPartyRelationshipTypesList } from "@mds/common/redux/selectors/staticContentSelectors";
 
-import {
-  required,
-  email,
-  phoneNumber,
-  validateSelectOptions,
-  maxLength,
-} from "@common/utils/Validate";
+import { required, email, phoneNumber, maxLength } from "@common/utils/Validate";
 import { normalizePhone } from "@common/utils/helpers";
 import PropTypes from "prop-types";
 import { renderConfig } from "@/components/common/config";
@@ -138,7 +131,6 @@ export const AddContactFormDetails = (props) => {
               component={renderConfig.SELECT}
               onChange={props.handleSelectChange}
               data={props.contacts}
-              validate={[validateSelectOptions(props.contacts, true)]}
             />
           </Form.Item>
         </Col>
@@ -163,6 +155,7 @@ export const AddContactFormDetails = (props) => {
               name="first_name"
               placeholder="First Name"
               component={renderConfig.FIELD}
+              required
               validate={[required, maxLength(200)]}
             />
           </Form.Item>
@@ -174,12 +167,13 @@ export const AddContactFormDetails = (props) => {
               name="party_name"
               placeholder="Last Name"
               component={renderConfig.FIELD}
+              required
               validate={[required, maxLength(200)]}
             />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Job Title (optional)">
+          <Form.Item label="Job Title">
             <Field
               id="job_title_code"
               name="job_title_code"
@@ -187,12 +181,11 @@ export const AddContactFormDetails = (props) => {
               onChange={handleSelectChange}
               component={renderConfig.SELECT}
               data={props.partyRelationshipTypesList}
-              validate={[validateSelectOptions(props.partyRelationshipTypesList)]}
             />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Company Affiliation (optional)">
+          <Form.Item label="Company Affiliation">
             <Field
               id="organization_guid"
               name="organization_guid"
@@ -212,6 +205,7 @@ export const AddContactFormDetails = (props) => {
               name="email"
               component={renderConfig.FIELD}
               placeholder="example@example.com"
+              required
               validate={[email, required]}
             />
           </Form.Item>
@@ -223,13 +217,14 @@ export const AddContactFormDetails = (props) => {
               id="phone_no"
               placeholder="XXX-XXX-XXXX"
               component={renderConfig.FIELD}
+              required
               validate={[required, phoneNumber, maxLength(12)]}
               normalize={normalizePhone}
             />
           </Form.Item>
         </Col>
         <Col span={4}>
-          <Form.Item label="Ext. (optional)">
+          <Form.Item label="Ext.">
             <Field
               name="phone_ext"
               id="phone_ext"

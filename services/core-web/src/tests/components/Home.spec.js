@@ -15,7 +15,7 @@ const setupReducerProps = () => {
 beforeEach(() => {
   setupReducerProps();
 });
-
+// reduxForm is not defined
 describe("Home", () => {
   it("renders properly", () => {
     const component = shallow(<Home {...props} />);

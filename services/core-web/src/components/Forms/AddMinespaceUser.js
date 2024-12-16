@@ -1,15 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field } from "redux-form";
 import { Button, Col, Row } from "antd";
 import { required, requiredList } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
-import RenderField from "@/components/common/RenderField";
+import RenderField from "@mds/common/components/forms/RenderField";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   mines: CustomPropTypes.options.isRequired,
@@ -26,7 +25,15 @@ const minespaceUserNotExists = (value, allValues, props) =>
     : "A user with this email already exists";
 
 export const AddMinespaceUser = (props) => (
-  <Form layout="vertical" onSubmit={props.handleSubmit}>
+  <FormWrapper
+    name={FORM.ADD_MINESPACE_USER}
+    onSubmit={props.handleSubmit}
+    initialValues={{ proponent_mine_access: [] }}
+    reduxFormConfig={{
+      touchOnBlur: false,
+      onSubmitSuccess: resetForm(FORM.ADD_MINESPACE_USER)
+    }}
+  >
     <Col span={24}>
       <Row>
         <Col span={24}>
@@ -47,12 +54,13 @@ export const AddMinespaceUser = (props) => (
             <Field
               id="mine_guids"
               name="mine_guids"
-              label="Mines*"
+              label="Mines"
               placeholder="Select the mines this user can access"
               component={renderConfig.MULTI_SELECT}
               data={props.mines}
               onChange={props.handleChange}
               onSearch={props.handleSearch}
+              required
               validate={[requiredList]}
             />
           </Form.Item>
@@ -64,14 +72,9 @@ export const AddMinespaceUser = (props) => (
         </Button>
       </div>
     </Col>
-  </Form>
+  </FormWrapper>
 );
 
 AddMinespaceUser.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.ADD_MINESPACE_USER,
-  initialValues: { proponent_mine_access: [] },
-  touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.ADD_MINESPACE_USER),
-})(AddMinespaceUser);
+export default AddMinespaceUser;

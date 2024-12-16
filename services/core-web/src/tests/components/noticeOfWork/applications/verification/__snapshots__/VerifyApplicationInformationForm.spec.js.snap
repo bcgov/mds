@@ -1,11 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`VerifyApplicationInformationForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  initialValues={
+    Object {
+      "latitude": null,
+      "longitude": null,
+      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+    }
+  }
+  name="VERIFY_NOW_APPLICATION_FORM"
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "enableReinitialize": true,
+      "onSubmitSuccess": [Function],
+    }
+  }
 >
   <h4>
     Verify Mine
@@ -472,5 +483,5 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
       A mine must be associated to this application
     </p>
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

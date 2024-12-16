@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { Button } from "antd";
 import { concat, reject } from "lodash";
 import { MINE_REPORT_DOCUMENT } from "@mds/common/constants/API";
@@ -58,43 +56,39 @@ export const ReportSubmissions = (props) => {
               }
             />
           </div>
-          <Form.Item>
-            <Field
-              id="mine_report_submission_status"
-              name="mine_report_submission_status"
-              label="Revision Status"
-              data={props.mineReportStatusOptions}
-              component={renderConfig.SELECT}
-              defaultValue="NRQ"
-            />
-          </Form.Item>
+          <Field
+            id="mine_report_submission_status"
+            name="mine_report_submission_status"
+            label="Revision Status"
+            data={props.mineReportStatusOptions}
+            component={renderConfig.SELECT}
+            defaultValue="NRQ"
+          />
         </React.Fragment>
       )}
       {(!hasSubmissions || updateFilesClicked) && (
-        <Form.Item>
-          <Field
-            id="ReportFileUpload"
-            name="ReportFileUpload"
-            label="Upload Files"
-            onFileLoad={(document_name, document_manager_guid) => {
-              setUpdateFilesClicked(true);
-              const updatedSubmissions =
-                props.mineReportSubmissions && props.mineReportSubmissions.length > 0
-                  ? props.mineReportSubmissions
-                  : [{ documents: [] }];
-              updatedSubmissions[updatedSubmissions.length - 1].documents = concat(
-                updatedSubmissions[updatedSubmissions.length - 1].documents,
-                {
-                  document_name,
-                  document_manager_guid,
-                }
-              );
-              props.updateMineReportSubmissions(updatedSubmissions);
-            }}
-            uploadUrl={MINE_REPORT_DOCUMENT(props.mineGuid)}
-            component={FileUpload}
-          />
-        </Form.Item>
+        <Field
+          id="ReportFileUpload"
+          name="ReportFileUpload"
+          label="Upload Files"
+          onFileLoad={(document_name, document_manager_guid) => {
+            setUpdateFilesClicked(true);
+            const updatedSubmissions =
+              props.mineReportSubmissions && props.mineReportSubmissions.length > 0
+                ? props.mineReportSubmissions
+                : [{ documents: [] }];
+            updatedSubmissions[updatedSubmissions.length - 1].documents = concat(
+              updatedSubmissions[updatedSubmissions.length - 1].documents,
+              {
+                document_name,
+                document_manager_guid,
+              }
+            );
+            props.updateMineReportSubmissions(updatedSubmissions);
+          }}
+          uploadUrl={MINE_REPORT_DOCUMENT(props.mineGuid)}
+          component={FileUpload}
+        />
       )}
       {hasSubmissions && !updateFilesClicked && (
         <div className="inline-flex padding-md--bottom flex-flow-column">
@@ -110,7 +104,7 @@ export const ReportSubmissions = (props) => {
                     documents:
                       props.mineReportSubmissions.length > 0
                         ? props.mineReportSubmissions[props.mineReportSubmissions.length - 1]
-                            .documents
+                          .documents
                         : [],
                   },
                 ]);

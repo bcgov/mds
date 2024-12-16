@@ -4,12 +4,12 @@ import Routes from "@/routes/Routes";
 
 const props = {};
 
-const setupProps = () => {};
+const setupProps = () => { };
 
 beforeEach(() => {
   setupProps();
 });
-
+// reduxForm is not defined
 describe("Routes ", () => {
   it("renders properly", () => {
     const component = shallow(<Routes {...props} />);

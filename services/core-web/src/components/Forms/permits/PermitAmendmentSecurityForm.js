@@ -2,14 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose, bindActionCreators } from "redux";
-import { Field, reduxForm, formValueSelector, change } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field, formValueSelector, change } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
 import {
   currency,
   required,
-  validateSelectOptions,
   assessedLiabilityNegativeWarning,
 } from "@common/utils/Validate";
 import { currencyMask } from "@common/utils/helpers";
@@ -17,10 +14,10 @@ import * as FORM from "@/constants/forms";
 import { securityNotRequiredReasonOptions } from "@/constants/NOWConditions";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 
-import RenderField from "@/components/common/RenderField";
-import RenderDate from "@/components/common/RenderDate";
-import RenderCheckbox from "@/components/common/RenderCheckbox";
-import RenderSelect from "@/components/common/RenderSelect";
+import RenderField from "@mds/common/components/forms/RenderField";
+import RenderDate from "@mds/common/components/forms/RenderDate";
+import RenderCheckbox from "@mds/common/components/forms/RenderCheckbox";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -42,7 +39,13 @@ export const PermitAmendmentSecurityForm = (props) => {
   };
 
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <FormWrapper onSubmit={props.handleSubmit}
+      name={FORM.EDIT_PERMIT}
+      reduxFormConfig={{
+        touchOnBlur: true,
+        enableReinitialize: true,
+      }}
+    >
       <Row gutter={16}>
         <Col span={12}>
           <div className="field-title">
@@ -59,17 +62,18 @@ export const PermitAmendmentSecurityForm = (props) => {
           />
         </Col>
         <Col span={12}>
-          <div className="field-title">{!props.securityNotRequired ? "Reason" : "Reason*"}</div>
           <Field
             id="security_not_required_reason"
             name="security_not_required_reason"
+            label="Reason"
+            required={props.securityNotRequired}
             component={RenderSelect}
             placeholder="Please select a reason"
             data={securityNotRequiredReasonOptions}
             validate={
               !props.securityNotRequired
                 ? []
-                : [required, validateSelectOptions(securityNotRequiredReasonOptions)]
+                : [required]
             }
             disabled={!props.isEditMode || !props.securityNotRequired}
           />
@@ -129,7 +133,7 @@ export const PermitAmendmentSecurityForm = (props) => {
           </Button>
         </div>
       )}
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -149,10 +153,5 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: FORM.EDIT_PERMIT,
-    touchOnBlur: true,
-    enableReinitialize: true,
-  })
+  connect(mapStateToProps, mapDispatchToProps)
 )(PermitAmendmentSecurityForm);

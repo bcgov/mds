@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field } from "redux-form";
 import { Button, Col, Row } from "antd";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -47,7 +46,15 @@ export class VarianceSearchForm extends Component {
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
+      <FormWrapper
+        name={FORM.VARIANCE_ADVANCED_SEARCH}
+        reduxFormConfig={{
+          validate,
+          touchOnBlur: false,
+          enableReinitialize: true,
+        }}
+
+        onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
         <Row gutter={6}>
           <Col md={24} xs={24}>
             <Field
@@ -158,7 +165,7 @@ export class VarianceSearchForm extends Component {
             Apply Filters
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -166,9 +173,4 @@ export class VarianceSearchForm extends Component {
 VarianceSearchForm.propTypes = propTypes;
 VarianceSearchForm.defaultProps = defaultProps;
 
-export default reduxForm({
-  form: FORM.VARIANCE_ADVANCED_SEARCH,
-  validate,
-  touchOnBlur: false,
-  enableReinitialize: true,
-})(VarianceSearchForm);
+export default VarianceSearchForm;

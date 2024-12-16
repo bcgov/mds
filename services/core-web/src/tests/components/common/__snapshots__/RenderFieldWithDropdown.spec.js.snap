@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RenderFieldWithDropdown renders properly 1`] = `
-<FormItem
-  hasFeedback={false}
+<InternalFormItem
   help={false}
   label=""
   validateStatus=""
@@ -42,5 +41,5 @@ exports[`RenderFieldWithDropdown renders properly 1`] = `
       placeholder="select from dropdown"
     />
   </div>
-</FormItem>
+</InternalFormItem>
 `;

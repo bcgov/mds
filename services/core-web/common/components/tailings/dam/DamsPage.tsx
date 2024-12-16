@@ -6,8 +6,8 @@ import { createDam, updateDam } from "@mds/common/redux/actionCreators/damAction
 import { getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm, submit } from "redux-form";
 
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
-import Step from "@common/components/Step";
-import SteppedForm from "@common/components/SteppedForm";
+import SteppedForm from "@mds/common/components/forms/SteppedForm";
+import Step from "@mds/common/components/forms/Step";
 import { connect } from "react-redux";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getDam } from "@mds/common/redux/selectors/damSelectors";
@@ -130,9 +130,8 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
         </Col>
         <Col span={24}>
           <Popconfirm
-            title={`Are you sure you want to cancel ${
-              tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-            } dam?
+            title={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+              } dam?
             All unsaved data on this page will be lost.`}
             onConfirm={handleBack}
             cancelText="No"
@@ -148,17 +147,22 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
       </Row>
       <Divider />
       <SteppedForm
-        errors={[]}
+        name={ADD_EDIT_DAM}
         handleSaveData={handleSave}
-        handleTabChange={() => {}}
+        handleTabChange={() => { }}
         activeTab="basic-dam-information"
         submitText={`${isUserActionEdit ? "Save and" : ""} Return to Associated Dams`}
         handleCancel={handleBack}
-        cancelConfirmMessage={`Are you sure you want to cancel ${
-          tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-        } dam?
+        cancelConfirmMessage={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+          } dam?
         All unsaved data on this page will be lost.`}
+        reduxFormConfig={{
+          touchOnBlur: true,
+          destroyOnUnmount: true,
+          enableReinitialize: true,
+        }}
       >
+
         {[
           <Step key="basic-dam-information">
             <DamForm
@@ -190,14 +194,5 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: ADD_EDIT_DAM,
-    touchOnBlur: true,
-    destroyOnUnmount: true,
-    enableReinitialize: true,
-    onSubmit: () => {
-      resetForm(ADD_EDIT_DAM);
-    },
-  })
+  connect(mapStateToProps, mapDispatchToProps)
 )(withRouter(FeatureFlagGuard(Feature.TSF_V2)(DamsPage)) as any) as FC<DamsPageProps>;

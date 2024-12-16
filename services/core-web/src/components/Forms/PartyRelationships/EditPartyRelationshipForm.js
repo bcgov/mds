@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { isEmpty } from "lodash";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import { validateDateRanges } from "@common/utils/Validate";
@@ -13,6 +11,7 @@ import TSFOptions from "@/components/Forms/PartyRelationships/TSFOptions";
 import UnionRepOptions from "@/components/Forms/PartyRelationships/UnionRepOptions";
 import { PermitteeOptions } from "@/components/Forms/PartyRelationships/PermitteeOptions";
 import CustomPropTypes from "@/customPropTypes";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -104,29 +103,32 @@ export const EditPartyRelationshipForm = (props) => {
   }
 
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <FormWrapper
+      name={FORM.EDIT_PARTY_RELATIONSHIP}
+      reduxFormConfig={{
+        validate,
+        touchOnBlur: false,
+        onSubmitSuccess: resetForm(FORM.EDIT_PARTY_RELATIONSHIP),
+      }}
+      onSubmit={props.handleSubmit}>
       <Row gutter={16}>
         <Col md={12} xs={24}>
-          <Form.Item>
-            <Field
-              id="start_date"
-              name="start_date"
-              label="Start Date"
-              placeholder="yyyy-mm-dd"
-              component={renderConfig.DATE}
-            />
-          </Form.Item>
+          <Field
+            id="start_date"
+            name="start_date"
+            label="Start Date"
+            placeholder="yyyy-mm-dd"
+            component={renderConfig.DATE}
+          />
         </Col>
         <Col md={12} xs={24}>
-          <Form.Item>
-            <Field
-              id="end_date"
-              name="end_date"
-              label="End Date"
-              placeholder="yyyy-mm-dd"
-              component={renderConfig.DATE}
-            />
-          </Form.Item>
+          <Field
+            id="end_date"
+            name="end_date"
+            label="End Date"
+            placeholder="yyyy-mm-dd"
+            component={renderConfig.DATE}
+          />
         </Col>
       </Row>
       {options}
@@ -147,16 +149,11 @@ export const EditPartyRelationshipForm = (props) => {
           {props.title}
         </Button>
       </div>
-    </Form>
+    </FormWrapper>
   );
 };
 
 EditPartyRelationshipForm.propTypes = propTypes;
 EditPartyRelationshipForm.defaultProps = defaultProps;
 
-export default reduxForm({
-  form: FORM.EDIT_PARTY_RELATIONSHIP,
-  validate,
-  touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.EDIT_PARTY_RELATIONSHIP),
-})(EditPartyRelationshipForm);
+export default EditPartyRelationshipForm;

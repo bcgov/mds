@@ -6,11 +6,11 @@ import { Row, Col, Alert, Button } from "antd";
 import { requiredRadioButton, required } from "@common/utils/Validate";
 import { connect } from "react-redux";
 
-import RenderField from "@/components/common/RenderField";
-import RenderDate from "@/components/common/RenderDate";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
-import RenderRadioButtons from "@/components/common/RenderRadioButtons";
-import RenderCheckbox from "@/components/common/RenderCheckbox";
+import RenderField from "@mds/common/components/forms/RenderField";
+import RenderDate from "@mds/common/components/forms/RenderDate";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
+import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
+import RenderCheckbox from "@mds/common/components/forms/RenderCheckbox";
 import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";

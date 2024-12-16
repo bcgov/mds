@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { Button, Popconfirm } from "antd";
 import { required, maxLength, number, lat, lonNegative, lon } from "@common/utils/Validate";
 import {
@@ -13,8 +11,8 @@ import {
   getTSFOperatingStatusCodeDropdownOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { resetForm } from "@common/utils/helpers";
-import RenderField from "@/components/common/RenderField";
-import RenderSelect from "@/components/common/RenderSelect";
+import RenderField from "@mds/common/components/forms/RenderField";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
@@ -110,9 +108,8 @@ AddTailingsForm.propTypes = propTypes;
 
 export default compose(
   connect((state) => ({
-    consequenceClassificationStatusCodeOptions: getConsequenceClassificationStatusCodeDropdownOptions(
-      state
-    ),
+    consequenceClassificationStatusCodeOptions:
+      getConsequenceClassificationStatusCodeDropdownOptions(state),
     itrbExemptionStatusCodeOptions: getITRBExemptionStatusCodeDropdownOptions(state),
     TSFOperatingStatusCodeOptions: getTSFOperatingStatusCodeDropdownOptions(state),
   })),

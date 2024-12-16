@@ -1,15 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field } from "redux-form";
 import { Button, Col, Row, Popconfirm, Typography } from "antd";
 import { dateTimezoneRequired, dateNotInFutureTZ, required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
-import RenderDateTimeTz from "@/components/common/RenderDateTimeTz";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
+import RenderDateTimeTz from "@mds/common/components/forms/RenderDateTimeTz";
 import { normalizeDatetime } from "@common/utils/helpers";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -20,7 +19,14 @@ const propTypes = {
 
 export const ExplosivesPermitCloseForm = (props) => {
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <FormWrapper onSubmit={props.handleSubmit}
+      name={FORM.EXPLOSIVES_PERMIT_CLOSE}
+      reduxFormConfig={{
+        touchOnBlur: false,
+        enableReinitialize: true,
+        onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT_CLOSE),
+      }}
+    >
       <Row gutter={16}>
         <Col span={24}>
           <Typography.Title level={2}>Close Permit</Typography.Title>
@@ -78,15 +84,10 @@ export const ExplosivesPermitCloseForm = (props) => {
           Close Permit
         </Button>
       </div>
-    </Form>
+    </FormWrapper>
   );
 };
 
 ExplosivesPermitCloseForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.EXPLOSIVES_PERMIT_CLOSE,
-  touchOnBlur: false,
-  enableReinitialize: true,
-  onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT_CLOSE),
-})(ExplosivesPermitCloseForm);
+export default ExplosivesPermitCloseForm;

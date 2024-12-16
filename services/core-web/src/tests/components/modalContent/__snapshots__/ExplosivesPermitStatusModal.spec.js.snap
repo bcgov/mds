@@ -2,7 +2,7 @@
 
 exports[`ExplosivesPermitStatusModal renders properly 1`] = `
 <div>
-  <Connect(ReduxForm)
+  <Connect(ExplosivesPermitStatusForm)
     closeModal={[MockFunction]}
     onSubmit={[MockFunction]}
   />

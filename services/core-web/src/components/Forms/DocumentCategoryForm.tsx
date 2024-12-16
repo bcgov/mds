@@ -2,9 +2,7 @@ import React, { FC } from "react";
 import { connect } from "react-redux";
 import { remove } from "lodash";
 import { bindActionCreators } from "redux";
-import { Button, Col, Popconfirm, Row, Typography } from "antd";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Button, Col, Popconfirm, Row, Typography, Form } from "antd";
 import { arrayPush, change, Field, FieldArray, formValueSelector } from "redux-form";
 import { required } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
@@ -75,30 +73,28 @@ export const DocumentCategoryForm: FC<DocumentCategoryFormProps> = ({
             <div className="padding-sm margin-small" key={index}>
               <Row gutter={16}>
                 <Col span={10}>
-                  <Form.Item>
-                    <Field
-                      id={`${field}document_name`}
-                      name={`${field}document_name`}
-                      label="Document Name*"
-                      validate={[required]}
-                      disabled
-                      component={renderConfig.FIELD}
-                    />
-                  </Form.Item>
+                  <Field
+                    id={`${field}document_name`}
+                    name={`${field}document_name`}
+                    label="Document Name"
+                    required
+                    validate={[required]}
+                    disabled
+                    component={renderConfig.FIELD}
+                  />
                 </Col>
                 <Col span={10}>
-                  <Form.Item>
-                    <Field
-                      id={fieldId}
-                      name={fieldId}
-                      placeholder="Select a Document Category"
-                      label="Document Category*"
-                      component={renderConfig.SELECT}
-                      data={categories}
-                      validate={[required]}
-                      disabled={documentExists && isProcessed}
-                    />
-                  </Form.Item>
+                  <Field
+                    id={fieldId}
+                    name={fieldId}
+                    placeholder="Select a Document Category"
+                    label="Document Category"
+                    component={renderConfig.SELECT}
+                    data={categories}
+                    required
+                    validate={[required]}
+                    disabled={documentExists && isProcessed}
+                  />
                 </Col>
                 <Col span={4} className="right">
                   {documentExists && !isProcessed && (

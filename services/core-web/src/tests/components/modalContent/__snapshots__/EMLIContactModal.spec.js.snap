@@ -2,7 +2,7 @@
 
 exports[`EMLIContactModal renders properly 1`] = `
 <div>
-  <Connect(ReduxForm)
+  <Connect(EMLIContactForm)
     EMLIContactTypes={Array []}
     closeModal={[MockFunction]}
     initialValues={Object {}}

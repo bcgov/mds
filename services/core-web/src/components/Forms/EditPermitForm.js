@@ -2,20 +2,18 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { compose, bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import { getFormValues, Field, reduxForm, change } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { getFormValues, Field, change } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { currency, required, validateSelectOptions, maxLength } from "@common/utils/Validate";
+import { currency, required, maxLength } from "@common/utils/Validate";
 import { resetForm, determineExemptionFeeStatus, currencyMask } from "@common/utils/helpers";
 import {
   getDropdownPermitStatusOptions,
   getExemptionFeeStatusDropDownOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
-import RenderSelect from "@/components/common/RenderSelect";
-import RenderField from "@/components/common/RenderField";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
+import RenderField from "@mds/common/components/forms/RenderField";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 
 import CustomPropTypes from "@/customPropTypes";
 
@@ -45,23 +43,28 @@ export const EditPermitForm = (props) => {
   }, [props.formValues?.permit_status_code]);
 
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <FormWrapper onSubmit={props.handleSubmit}
+      name={FORM.EDIT_PERMIT}
+      reduxFormConfig={{
+        touchOnBlur: false,
+        enableReinitialize: true,
+        onSubmitSuccess: resetForm(FORM.EDIT_PERMIT),
+      }}
+    >
       <Row gutter={16}>
         <Col span={24}>
-          <Form.Item>
-            <Field
-              id="permit_status_code"
-              name="permit_status_code"
-              label="Permit status*"
-              placeholder="Select a permit status"
-              component={RenderSelect}
-              data={props.permitStatusOptions}
-              validate={[required, validateSelectOptions(props.permitStatusOptions)]}
-            />
-          </Form.Item>
+          <Field
+            id="permit_status_code"
+            name="permit_status_code"
+            label="Permit status"
+            placeholder="Select a permit status"
+            component={RenderSelect}
+            data={props.permitStatusOptions}
+            required
+            validate={[required]}
+          />
           {(props.formValues.permit_status_code === "C" ||
             props.formValues.remaining_static_liability !== null) && (
-            <Form.Item>
               <Field
                 id="remaining_static_liability"
                 name="remaining_static_liability"
@@ -71,8 +74,7 @@ export const EditPermitForm = (props) => {
                 component={RenderField}
                 validate={[currency]}
               />
-            </Form.Item>
-          )}
+            )}
         </Col>
       </Row>
       <Row gutter={16}>
@@ -116,7 +118,7 @@ export const EditPermitForm = (props) => {
           {props.title}
         </Button>
       </div>
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -137,11 +139,5 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: FORM.EDIT_PERMIT,
-    touchOnBlur: false,
-    enableReinitialize: true,
-    onSubmitSuccess: resetForm(FORM.EDIT_PERMIT),
-  })
+  connect(mapStateToProps, mapDispatchToProps)
 )(EditPermitForm);

@@ -882,25 +882,8 @@ exports[`Dashboard renders properly 1`] = `
                 md={10}
                 xs={24}
               >
-                <ReduxForm
-                  destroyOnUnmount={true}
-                  enableReinitialize={false}
-                  forceUnregisterOnUnmount={false}
-                  form="SEARCH_COORDINATES"
-                  getFormState={[Function]}
-                  keepDirtyOnReinitialize={false}
+                <SearchCoordinatesForm
                   onSubmit={[Function]}
-                  onSubmitSuccess={[Function]}
-                  persistentSubmitErrors={false}
-                  pure={true}
-                  shouldAsyncValidate={[Function]}
-                  shouldError={[Function]}
-                  shouldValidate={[Function]}
-                  shouldWarn={[Function]}
-                  submitAsSideEffect={false}
-                  touchOnBlur={false}
-                  touchOnChange={false}
-                  updateUnregisteredFields={false}
                 />
               </Col>
             </div>

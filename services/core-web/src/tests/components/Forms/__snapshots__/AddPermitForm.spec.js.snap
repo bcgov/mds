@@ -1,11 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddPermitForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  name="ADD_PERMIT"
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "onSubmitSuccess": [Function],
+      "touchOnBlur": false,
+      "validate": [Function],
+    }
+  }
 >
   <Row
     gutter={48}
@@ -15,177 +20,143 @@ exports[`AddPermitForm renders properly 1`] = `
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Connect(PartySelectField)
-          allowAddingParties={true}
-          id="permittee_party_guid"
-          label="Permittee*"
-          name="permittee_party_guid"
-          partyLabel="permittee"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          data={
-            Array [
-              Object {
-                "label": "Coal",
-                "value": "C",
-              },
-              Object {
-                "label": "Mineral",
-                "value": "M",
-              },
-              Object {
-                "label": "Placer",
-                "value": "P",
-              },
-              Object {
-                "label": "Sand & Gravel",
-                "value": "G",
-              },
-              Object {
-                "label": "Quarry",
-                "value": "Q",
-              },
-            ]
-          }
-          id="permit_type"
-          label="Permit Type*"
-          name="permit_type"
-          placeholder="Select a permit type"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="permit_no"
-          inlineLabel=""
-          label="Permit Number*"
-          name="permit_no"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          data={Array []}
-          id="permit_status_code"
-          label="Permit Status*"
-          name="permit_status_code"
-          placeholder="Select a permit status"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="issue_date"
-          label="Issue Date*"
-          name="issue_date"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="authorization_end_date"
-          label="Authorization End Date*"
-          name="authorization_end_date"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Connect(PartySelectField)
+        allowAddingParties={true}
+        id="permittee_party_guid"
+        label="Permittee"
+        name="permittee_party_guid"
+        partyLabel="permittee"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+      <Field
+        component={[Function]}
+        data={
+          Array [
+            Object {
+              "label": "Coal",
+              "value": "C",
+            },
+            Object {
+              "label": "Mineral",
+              "value": "M",
+            },
+            Object {
+              "label": "Placer",
+              "value": "P",
+            },
+            Object {
+              "label": "Sand & Gravel",
+              "value": "G",
+            },
+            Object {
+              "label": "Quarry",
+              "value": "Q",
+            },
+          ]
+        }
+        id="permit_type"
+        label="Permit Type"
+        name="permit_type"
+        placeholder="Select a permit type"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+      <Field
+        component={[Function]}
+        id="permit_no"
+        inlineLabel=""
+        label="Permit Number"
+        name="permit_no"
+        required={true}
+        validate={
+          Array [
+            [Function],
+            [Function],
+          ]
+        }
+      />
+      <Field
+        component={[Function]}
+        data={Array []}
+        id="permit_status_code"
+        label="Permit Status"
+        name="permit_status_code"
+        placeholder="Select a permit status"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+      <Field
+        component={[Function]}
+        id="issue_date"
+        label="Issue Date"
+        name="issue_date"
+        required={true}
+        validate={
+          Array [
+            [Function],
+            [Function],
+          ]
+        }
+      />
+      <Field
+        component={[Function]}
+        id="authorization_end_date"
+        label="Authorization End Date"
+        name="authorization_end_date"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
       <Divider />
-      <FormItem
-        hasFeedback={false}
-        label="Securities"
+      <Field
+        component={[Function]}
+        id="security_not_required"
+        label="Security Not Required"
+        name="security_not_required"
+        onChange={[Function]}
+      />
+      <p
+        className="p-light"
       >
-        <Field
-          component={[Function]}
-          id="security_not_required"
-          label="Security Not Required"
-          name="security_not_required"
-          onChange={[Function]}
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-        label="Assessed Liability Adjustment"
-      >
-        <p
-          className="p-light"
-        >
-          This amount will be added to the Total Assessed Liability amount for this permit. Changes to this value in Core will not be updated in MMS.
-        </p>
-        <Field
-          autoComplete="off"
-          component={[Function]}
-          format={[Function]}
-          id="liability_adjustment"
-          name="liability_adjustment"
-          normalize={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="security_received_date"
-          label="Security Received"
-          name="security_received_date"
-        />
-      </FormItem>
+        This amount will be added to the Total Assessed Liability amount for this permit. Changes to this value in Core will not be updated in MMS.
+      </p>
+      <Field
+        autoComplete="off"
+        component={[Function]}
+        format={[Function]}
+        id="liability_adjustment"
+        name="liability_adjustment"
+        normalize={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+      <Field
+        component={[Function]}
+        id="security_received_date"
+        label="Security Received"
+        name="security_received_date"
+      />
     </Col>
     <Col
       md={12}
@@ -205,6 +176,7 @@ exports[`AddPermitForm renders properly 1`] = `
           disabled={true}
           id="mine_tenure_type_code"
           name="mine_tenure_type_code"
+          required={true}
           validate={
             Array [
               [Function],
@@ -222,16 +194,13 @@ exports[`AddPermitForm renders properly 1`] = `
           id="mine_commodity_code"
           name="mine_commodity_code"
         />
-        <div
-          className="field-title"
-        >
-          Disturbance
-        </div>
         <Field
           component={[Function]}
           data={null}
           id="mine_disturbance_code"
+          label="Diturbance"
           name="mine_disturbance_code"
+          required={false}
           validate={Array []}
         />
       </FormSection>
@@ -255,19 +224,14 @@ exports[`AddPermitForm renders properly 1`] = `
         }
       />
       <Divider />
-      <FormItem
-        hasFeedback={false}
-        label="Upload Files"
-      >
-        <Field
-          component={[Function]}
-          id="PermitDocumentFileUpload"
-          mineGuid=""
-          name="PermitDocumentFileUpload"
-          onFileLoad={[Function]}
-          onRemoveFile={[Function]}
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="PermitDocumentFileUpload"
+        mineGuid=""
+        name="PermitDocumentFileUpload"
+        onFileLoad={[Function]}
+        onRemoveFile={[Function]}
+      />
     </Col>
   </Row>
   <div
@@ -296,5 +260,5 @@ exports[`AddPermitForm renders properly 1`] = `
       mockTitle
     </Button>
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

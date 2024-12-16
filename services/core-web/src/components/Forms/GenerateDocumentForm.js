@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { reduxForm, Field, getFormValues } from "redux-form";
+import { Field, getFormValues } from "redux-form";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm, Alert } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { getGenerateDocumentFormField } from "@/components/common/GenerateDocumentFormField";
-import RenderSelect from "@/components/common/RenderSelect";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
 
 const propTypes = {
   documentType: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -50,7 +48,7 @@ const createFields = (fields) => (
         .map((field) => (
           <Row key={field.id}>
             <Col span={24}>
-              <Form.Item>{getGenerateDocumentFormField(field)}</Form.Item>
+              {getGenerateDocumentFormField(field)}
             </Col>
           </Row>
         ))}
@@ -61,22 +59,26 @@ export const GenerateDocumentForm = (props) => {
   const [fileType, setFileType] = useState("PDF");
 
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <FormWrapper onSubmit={props.handleSubmit}
+      name={FORM.GENERATE_DOCUMENT}
+      reduxFormCondig={{
+        touchOnBlur: true,
+        onSubmitSuccess: resetForm(FORM.GENERATE_DOCUMENT),
+      }}
+    >
       {props.allowDocx && (
         <div>
           <Row key="fileType">
             <Col span={24}>
               <>
-                <Form.Item>
-                  <Field
-                    id="file_type"
-                    name="file_type"
-                    label="Select the file type for this document"
-                    data={fileTypes}
-                    component={RenderSelect}
-                    onChange={(value) => setFileType(value)}
-                  />
-                </Form.Item>
+                <Field
+                  id="file_type"
+                  name="file_type"
+                  label="Select the file type for this document"
+                  data={fileTypes}
+                  component={RenderSelect}
+                  onChange={(value) => setFileType(value)}
+                />
                 {fileType === "DOCX" && (
                   <>
                     <Alert
@@ -128,7 +130,7 @@ export const GenerateDocumentForm = (props) => {
           Generate {props.documentType.description} {props.additionalTitle}
         </Button>
       </div>
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -140,10 +142,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default compose(
-  connect(mapStateToProps, null),
-  reduxForm({
-    form: FORM.GENERATE_DOCUMENT,
-    touchOnBlur: true,
-    onSubmitSuccess: resetForm(FORM.GENERATE_DOCUMENT),
-  })
+  connect(mapStateToProps, null)
 )(GenerateDocumentForm);

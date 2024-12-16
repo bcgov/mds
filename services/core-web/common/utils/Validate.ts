@@ -214,11 +214,11 @@ export const dateNotBeforeStrictOther = memoize((other) => (value) =>
 export const timeNotBeforeOther = memoize(
   (comparableDate, baseDate, baseTime) => (comparableTime) =>
     baseTime &&
-    baseDate &&
-    comparableDate &&
-    comparableTime &&
-    baseDate === comparableDate &&
-    comparableTime < baseTime
+      baseDate &&
+      comparableDate &&
+      comparableTime &&
+      baseDate === comparableDate &&
+      comparableTime < baseTime
       ? `Time cannot be before ${baseTime.format("H:mm")} hrs.`
       : undefined
 );
@@ -237,21 +237,6 @@ export const validateIncidentDate = memoize((reportedDate) => (value) =>
     ? "Incident date and time cannot occur before reporting occurence."
     : undefined
 );
-
-/**
- * @param data: options to choose from
- * @param allowEmptyData: perform validation with empty data array (free text on empty data set will be invalid)
- */
-export const validateSelectOptions = memoize((data: IOption[], allowEmptyData = false) => (value):
-  | string
-  | undefined => {
-  if (value && (data?.length > 0 || allowEmptyData)) {
-    return data?.find((opt) => opt.value === value) !== undefined
-      ? undefined
-      : "Invalid. Select an option provided in the dropdown.";
-  }
-  return undefined;
-});
 
 export const decimalPlaces = memoize((places) => (value) => {
   if (value && !Validate.checkWholeNumber(value)) {
@@ -340,9 +325,8 @@ export const validateIfApplicationTypeCorrespondsToPermitNumber = (
     return permit?.permit_prefix &&
       Strings.APPLICATION_TYPES_BY_PERMIT_PREFIX[permit.permit_prefix].includes(applicationType)
       ? undefined
-      : `The ${
-          isAdminAmendment ? "Type of Administrative Amendment" : "Type of Notice of Work"
-        } does not match to the selected permit.`;
+      : `The ${isAdminAmendment ? "Type of Administrative Amendment" : "Type of Notice of Work"
+      } does not match to the selected permit.`;
   }
   return undefined;
 };

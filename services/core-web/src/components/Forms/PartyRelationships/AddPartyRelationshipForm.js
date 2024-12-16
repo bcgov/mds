@@ -4,9 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
-import { Field, reduxForm, formValueSelector } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field, formValueSelector } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { required, validateDateRanges } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
@@ -17,6 +15,7 @@ import { UnionRepOptions } from "@/components/Forms/PartyRelationships/UnionRepO
 import { PermitteeOptions } from "@/components/Forms/PartyRelationships/PermitteeOptions";
 import CustomPropTypes from "@/customPropTypes";
 import PartyRelationshipFileUpload from "./PartyRelationshipFileUpload";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -227,20 +226,25 @@ export class AddPartyRelationshipForm extends Component {
     };
 
     return (
-      <Form layout="vertical" onSubmit={handleSubmit}>
+      <FormWrapper
+        name={FORM.ADD_PARTY_RELATIONSHIP}
+        reduxFormConfig={{
+          validate,
+          touchOnBlur: false,
+        }}
+        onSubmit={handleSubmit}>
         <Row gutter={16}>
           <Col md={24} xs={24}>
-            <Form.Item>
-              <PartySelectField
-                id="party_guid"
-                name="party_guid"
-                validate={[required]}
-                onSelect={(val) => {
-                  this.setState({ selectedParty: val.originalValue });
-                }}
-                allowAddingParties
-              />
-            </Form.Item>
+            <PartySelectField
+              id="party_guid"
+              name="party_guid"
+              required
+              validate={[required]}
+              onSelect={(val) => {
+                this.setState({ selectedParty: val.originalValue });
+              }}
+              allowAddingParties
+            />
           </Col>
         </Row>
 
@@ -248,45 +252,39 @@ export class AddPartyRelationshipForm extends Component {
           <>
             <Row gutter={16}>
               <Col md={12} xs={24}>
-                <Form.Item>
-                  <Field
-                    id="start_date"
-                    name="start_date"
-                    label="* Start Date"
-                    placeholder="yyyy-mm-dd"
-                    component={renderConfig.DATE}
-                    validate={[required]}
-                  />
-                </Form.Item>
+                <Field
+                  id="start_date"
+                  name="start_date"
+                  label="Start Date"
+                  placeholder="yyyy-mm-dd"
+                  component={renderConfig.DATE}
+                  required
+                  validate={[required]}
+                />
               </Col>
               <Col md={12} xs={24}>
-                <Form.Item>
-                  <Field
-                    id="end_date"
-                    name="end_date"
-                    label="End Date"
-                    placeholder="yyyy-mm-dd"
-                    component={renderConfig.DATE}
-                  />
-                </Form.Item>
+                <Field
+                  id="end_date"
+                  name="end_date"
+                  label="End Date"
+                  placeholder="yyyy-mm-dd"
+                  component={renderConfig.DATE}
+                />
               </Col>
             </Row>
             <Row gutter={16}>
               <Col md={12} xs={24}>
                 {this.state.skipDateValidation && (
-                  <Form.Item>
-                    <Field
-                      id="end_current"
-                      name="end_current"
-                      label={`Would you like to set the end date of ${
-                        this.state.currentAppointment?.party?.name
+                  <Field
+                    id="end_current"
+                    name="end_current"
+                    label={`Would you like to set the end date of ${this.state.currentAppointment?.party?.name
                       } to ${moment(this.props.start_date)
                         .subtract(1, "days")
                         .format("MMMM Do YYYY")}`}
-                      type="checkbox"
-                      component={renderConfig.CHECKBOX}
-                    />
-                  </Form.Item>
+                    type="checkbox"
+                    component={renderConfig.CHECKBOX}
+                  />
                 )}
               </Col>
             </Row>
@@ -296,16 +294,14 @@ export class AddPartyRelationshipForm extends Component {
                 {this.props.partyRelationshipType.mine_party_appt_type_code === "MMG" && (
                   <div>
                     <h4>Mine Manager Appointment Letter</h4>
-                    <Form.Item>
-                      <Field
-                        id="PartyRelationshipFileUpload"
-                        name="PartyRelationshipFileUpload"
-                        onFileLoad={this.props.onFileLoad}
-                        onRemoveFile={this.props.onRemoveFile}
-                        mineGuid={this.props.mine.mine_guid}
-                        component={PartyRelationshipFileUpload}
-                      />
-                    </Form.Item>
+                    <Field
+                      id="PartyRelationshipFileUpload"
+                      name="PartyRelationshipFileUpload"
+                      onFileLoad={this.props.onFileLoad}
+                      onRemoveFile={this.props.onRemoveFile}
+                      mineGuid={this.props.mine.mine_guid}
+                      component={PartyRelationshipFileUpload}
+                    />
                   </div>
                 )}
               </Col>
@@ -334,7 +330,7 @@ export class AddPartyRelationshipForm extends Component {
             {this.props.title}
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -347,10 +343,5 @@ export default compose(
   connect((state) => ({
     related_guid: selector(state, "related_guid"),
     start_date: selector(state, "start_date"),
-  })),
-  reduxForm({
-    form: FORM.ADD_PARTY_RELATIONSHIP,
-    validate,
-    touchOnBlur: false,
-  })
+  }))
 )(AddPartyRelationshipForm);

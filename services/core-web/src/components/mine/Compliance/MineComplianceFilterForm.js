@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field } from "redux-form";
 import { Button, Col, Row } from "antd";
 import { compareCodes } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -24,7 +23,12 @@ export class MineComplianceFilterForm extends Component {
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
+      <FormWrapper
+        name={FORM.MINE_COMPLIANCE_FILTER}
+        reduxFormConfig={{
+          touchOnBlur: false,
+        }}
+        onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
         <div>
           <Row gutter={6}>
             <Col md={8} xs={24} sm={12}>
@@ -102,14 +106,11 @@ export class MineComplianceFilterForm extends Component {
             Apply Filters
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
 
 MineComplianceFilterForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.MINE_COMPLIANCE_FILTER,
-  touchOnBlur: false,
-})(MineComplianceFilterForm);
+export default MineComplianceFilterForm;

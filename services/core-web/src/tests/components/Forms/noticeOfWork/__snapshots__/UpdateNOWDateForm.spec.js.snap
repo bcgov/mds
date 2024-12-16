@@ -5,39 +5,43 @@ exports[`UpdateNOWDateForm renders properly 1`] = `
   <Alert
     closable={true}
     description={
-      <React.Fragment>
-        <div>
-          <ul>
-            <li>
-              Start Date cannot be before verification date: 
-              Jan 01 0001
-            </li>
-            <li>
-              The start date must be before the end date
-            </li>
-            <li>
-              Dates cannot be set in the future
-            </li>
-            <li>
-              If the application has been processed, dates cannot be set after the decision date
-            </li>
-            <li>
-              Delay start and end dates cannot overlap with previous delays
-            </li>
-          </ul>
-        </div>
-      </React.Fragment>
+      <div>
+        <ul>
+          <li>
+            Start Date cannot be before verification date: 
+            Jan 01 0001
+          </li>
+          <li>
+            The start date must be before the end date
+          </li>
+          <li>
+            Dates cannot be set in the future
+          </li>
+          <li>
+            If the application has been processed, dates cannot be set after the decision date
+          </li>
+          <li>
+            Delay start and end dates cannot overlap with previous delays
+          </li>
+        </ul>
+      </div>
     }
     message="Rules for editing progress and delay dates"
     showIcon={true}
     type="info"
   />
   <br />
-  <Form
-    colon={true}
-    hideRequiredMark={false}
-    layout="vertical"
+  <Connect(ReduxForm)
+    initialValues={Object {}}
+    name="UPDATE_PROGRESS_DATE_FORM"
     onSubmit={[MockFunction]}
+    reduxFormConfig={
+      Object {
+        "onSubmitSuccess": [Function],
+        "touchOnBlur": false,
+        "validate": [Function],
+      }
+    }
   >
     <Row
       gutter={16}
@@ -45,23 +49,20 @@ exports[`UpdateNOWDateForm renders properly 1`] = `
       <Col
         span={24}
       >
-        <FormItem
-          hasFeedback={false}
-        >
-          <Field
-            component={[Function]}
-            id="verified_by_user_date"
-            label="Verification/Import Date"
-            name="verified_by_user_date"
-            validate={
-              Array [
-                [Function],
-                [Function],
-                [Function],
-              ]
-            }
-          />
-        </FormItem>
+        <Field
+          component={[Function]}
+          id="verified_by_user_date"
+          label="Verification/Import Date"
+          name="verified_by_user_date"
+          required={true}
+          validate={
+            Array [
+              [Function],
+              [Function],
+              [Function],
+            ]
+          }
+        />
       </Col>
     </Row>
     <div
@@ -92,6 +93,6 @@ exports[`UpdateNOWDateForm renders properly 1`] = `
         </Button>
       </Connect(AuthorizationWrapper)>
     </div>
-  </Form>
+  </Connect(ReduxForm)>
 </div>
 `;

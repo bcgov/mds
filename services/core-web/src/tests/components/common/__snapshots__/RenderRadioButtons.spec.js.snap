@@ -2,18 +2,19 @@
 
 exports[`RenderRadioButtons renders properly 1`] = `
 <InternalFormItem
+  getValueProps={[Function]}
   help={false}
+  id="1"
   label=""
+  required={false}
   validateStatus=""
 >
   <Memo(ForwardRef)
+    buttonStyle="solid"
     disabled={false}
-    id="1"
     onChange={[Function]}
-  >
-    <Space
-      direction="horizontal"
-    />
-  </Memo(ForwardRef)>
+    optionType="default"
+    options={Array []}
+  />
 </InternalFormItem>
 `;

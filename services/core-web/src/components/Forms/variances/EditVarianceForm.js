@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm, getFormValues } from "redux-form";
+import { Field, getFormValues } from "redux-form";
 import { fromPairs, isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Popconfirm, Row, Col } from "antd";
-import { required, validateSelectOptions } from "@common/utils/Validate";
+import { Button, Popconfirm, Row, Col, Form } from "antd";
+import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as String from "@mds/common/constants/strings";
 import * as FORM from "@/constants/forms";
@@ -15,6 +13,7 @@ import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 import VarianceFileUpload from "./VarianceFileUpload";
 import { VarianceDetails } from "../../mine/Variances/VarianceDetails";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -72,8 +71,13 @@ export class EditVarianceForm extends Component {
   render() {
     const filesUploaded = !isEmpty(this.state.uploadedFiles);
     return (
-      <Form
-        layout="vertical"
+      <FormWrapper
+        name={FORM.EDIT_VARIANCE}
+        reduxFormConfig={{
+          touchOnBlur: false,
+          onSubmitSuccess: resetForm(FORM.EDIT_VARIANCE),
+          enableReinitialize: true,
+        }}
         onSubmit={this.props.handleSubmit(
           this.props.onSubmit(
             fromPairs(this.state.uploadedFiles),
@@ -84,51 +88,39 @@ export class EditVarianceForm extends Component {
       >
         <Row gutter={16}>
           <Col md={12} xs={24}>
-            <Form.Item
-              label={
-                this.state.isApprovedOrDenied
-                  ? "Assign a lead inspector*"
-                  : "Assign a lead inspector"
-              }
-            >
-              <Field
-                id="inspector_party_guid"
-                name="inspector_party_guid"
-                component={renderConfig.GROUPED_SELECT}
-                validate={this.state.isApprovedOrDenied ? [inspectorRequired] : []}
-                data={this.props.inspectors}
-              />
-            </Form.Item>
+            <Field
+              label="Assign a lead inspector"
+              id="inspector_party_guid"
+              name="inspector_party_guid"
+              component={renderConfig.GROUPED_SELECT}
+              required={this.state.isApprovedOrDenied}
+              validate={this.state.isApprovedOrDenied ? [inspectorRequired] : []}
+              data={this.props.inspectors}
+            />
           </Col>
           <Col md={12} xs={24}>
-            <Form.Item>
-              <Field
-                id="variance_application_status_code"
-                name="variance_application_status_code"
-                label="Application Status"
-                placeholder="Select a status"
-                component={renderConfig.SELECT}
-                validate={[required, validateSelectOptions(this.props.varianceStatusOptions)]}
-                data={this.props.varianceStatusOptions}
-              />
-            </Form.Item>
+            <Field
+              id="variance_application_status_code"
+              name="variance_application_status_code"
+              label="Application Status"
+              placeholder="Select a status"
+              component={renderConfig.SELECT}
+              required
+              validate={[required]}
+              data={this.props.varianceStatusOptions}
+            />
           </Col>
         </Row>
         {this.state.statusChangedToApproved && (
           <div>
-            <Form.Item label="Issue date">
-              <p className="p-light">
-                If issue date is not specified it will default to the day the application was
-                approved.
-              </p>
-              <Field id="issue_date" name="issue_date" component={renderConfig.DATE} />
-            </Form.Item>
-            <Form.Item label="Expiry date">
-              <p className="p-light">
-                If expiry date is not specified it will default to 5 years from issue date.
-              </p>
-              <Field id="expiry_date" name="expiry_date" component={renderConfig.DATE} />
-            </Form.Item>
+            <Field label="Issue date"
+              help="If issue date is not specified it will default to the day the application was
+                approved."
+              id="issue_date" name="issue_date" component={renderConfig.DATE}
+            />
+            <Field label="Expiry date"
+              help="If expiry date is not specified it will default to 5 years from issue date."
+              id="expiry_date" name="expiry_date" component={renderConfig.DATE} />
           </div>
         )}
         <h5>Application Details</h5>
@@ -146,40 +138,35 @@ export class EditVarianceForm extends Component {
           add a different category of document, please submit and re-open the form.
         </p>
         <br />
-        <Form.Item>
-          <Field
-            id="variance_document_category_code"
-            name="variance_document_category_code"
-            label={filesUploaded ? "Document Category*" : "Document Category"}
-            placeholder="Please select category"
-            component={renderConfig.SELECT}
-            validate={
-              filesUploaded
-                ? [required, validateSelectOptions(this.props.varianceDocumentCategoryOptions)]
-                : [validateSelectOptions(this.props.varianceDocumentCategoryOptions)]
-            }
-            data={this.props.varianceDocumentCategoryOptions}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field
-            id="VarianceDocumentFileUpload"
-            name="VarianceDocumentFileUpload"
-            onFileLoad={this.onFileLoad}
-            onRemoveFile={this.onRemoveFile}
-            mineGuid={this.props.mineGuid}
-            component={VarianceFileUpload}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field
-            id="parties_notified_ind"
-            name="parties_notified_ind"
-            label="As per MA 13(2), affected parties have been notified about this variance application and decision."
-            type="checkbox"
-            component={renderConfig.CHECKBOX}
-          />
-        </Form.Item>
+        <Field
+          id="variance_document_category_code"
+          name="variance_document_category_code"
+          label="Document Category"
+          placeholder="Please select category"
+          component={renderConfig.SELECT}
+          required={filesUploaded}
+          validate={
+            filesUploaded
+              ? [required]
+              : []
+          }
+          data={this.props.varianceDocumentCategoryOptions}
+        />
+        <Field
+          id="VarianceDocumentFileUpload"
+          name="VarianceDocumentFileUpload"
+          onFileLoad={this.onFileLoad}
+          onRemoveFile={this.onRemoveFile}
+          mineGuid={this.props.mineGuid}
+          component={VarianceFileUpload}
+        />
+        <Field
+          id="parties_notified_ind"
+          name="parties_notified_ind"
+          label="As per MA 13(2), affected parties have been notified about this variance application and decision."
+          type="checkbox"
+          component={renderConfig.CHECKBOX}
+        />
         <div className="right center-mobile">
           <Popconfirm
             placement="topRight"
@@ -201,7 +188,7 @@ export class EditVarianceForm extends Component {
             Update
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -211,11 +198,5 @@ EditVarianceForm.propTypes = propTypes;
 export default compose(
   connect((state) => ({
     statusCode: (getFormValues(FORM.EDIT_VARIANCE)(state) || {}).variance_application_status_code,
-  })),
-  reduxForm({
-    form: FORM.EDIT_VARIANCE,
-    touchOnBlur: false,
-    onSubmitSuccess: resetForm(FORM.EDIT_VARIANCE),
-    enableReinitialize: true,
-  })
+  }))
 )(EditVarianceForm);

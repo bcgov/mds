@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { throttle, isEmpty } from "lodash";
 import PropTypes from "prop-types";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { PlusOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import { getSearchResults } from "@mds/common/redux/selectors/searchSelectors";
 import { getLastCreatedParty } from "@mds/common/redux/selectors/partiesSelectors";
@@ -12,10 +10,11 @@ import { fetchSearchResults } from "@mds/common/redux/actionCreators/searchActio
 import { setAddPartyFormState } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import { createItemMap, createItemIdsArray } from "@common/utils/helpers";
 import { Validate } from "@common/utils/Validate";
-import { Select, Divider } from "antd";
+import { Divider } from "antd";
 import LinkButton from "@/components/common/buttons/LinkButton";
 
 import CustomPropTypes from "@/customPropTypes";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
 
 /**
  * @constant NOWPartySelectField - Ant Design `AutoComplete` component for redux-form -- being used instead of 'RenderSelect' for large data sets that require a limit.
@@ -64,7 +63,7 @@ const defaultProps = {
   disabled: false,
   initialValues: {},
   name: "party_guid",
-  label: "Name*",
+  label: "Name",
   partyLabel: "contact",
   person: false,
   organization: false,
@@ -200,7 +199,7 @@ export class NOWPartySelectField extends Component {
           createItemIdsArray(filteredParties, "party_guid"),
           createItemMap(filteredParties, "party_guid"),
           this.props.allowAddingParties &&
-            renderAddPartyHeader(this.showAddPartyForm, this.props.partyLabel)
+          renderAddPartyHeader(this.showAddPartyForm, this.props.partyLabel)
         );
         return { partyDataSource: newPartyDataSource };
       });
@@ -239,43 +238,18 @@ export class NOWPartySelectField extends Component {
 
   render() {
     return (
-      <Form.Item
-        label={this.props.label}
-        validateStatus={
-          this.props.meta.touched
-            ? (this.props.meta.error && "error") || (this.props.meta.warning && "warning")
-            : ""
-        }
-        help={
-          this.props.meta.touched &&
-          ((this.props.meta.error && <span>{this.props.meta.error}</span>) ||
-            (this.props.meta.warning && <span>{this.props.meta.warning}</span>))
-        }
-      >
-        <Select
-          {...this.props.input}
-          virtual={false}
-          showSearch
-          id={this.props.id}
-          defaultActiveFirstOption={false}
-          notFoundContent="Not Found"
-          dropdownMatchSelectWidth
-          backfill
-          disabled={this.props.disabled}
-          style={{ width: "100%" }}
-          options={this.state.partyDataSource}
-          placeholder="Search for Contact"
-          filterOption={false}
-          onSearch={this.handleSearch}
-          onSelect={this.handleSelect}
-          onChange={this.props.input.onChange}
-          onBlur={this.props.input.onChange(this.state.selectedOption.value)}
-          onFocus={(event) => {
-            this.handleFocus();
-            this.props.input.onFocus(event);
-          }}
-        />
-      </Form.Item>
+      <RenderSelect
+        {...this.props.input}
+        disabled={this.props.disabled}
+        data={this.state.partyDataSource}
+        placeholder="Search for Contact"
+        onSelect={this.handleSelect}
+        onFocus={(event) => {
+          this.handleFocus();
+          this.props.input.onFocus(event);
+        }}
+        onBlur={this.props.input.onChange(this.state.selectedOption.value)}
+      />
     );
   }
 }

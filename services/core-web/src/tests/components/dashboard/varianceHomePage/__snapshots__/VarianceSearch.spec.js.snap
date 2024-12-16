@@ -20,7 +20,7 @@ exports[`Variance Search Component renders properly 1`] = `
       <span
         className="advanced-search__container"
       >
-        <ReduxForm
+        <VarianceSearchForm
           complianceCodes={
             Object {
               "records": Array [
@@ -49,14 +49,8 @@ exports[`Variance Search Component renders properly 1`] = `
               ],
             }
           }
-          destroyOnUnmount={true}
-          enableReinitialize={true}
-          forceUnregisterOnUnmount={false}
-          form="VARIANCE_ADVANCED_SEARCH"
-          getFormState={[Function]}
           initialValues={Object {}}
           isAdvanceSearch={false}
-          keepDirtyOnReinitialize={false}
           mineRegionOptions={
             Object {
               "records": Array [
@@ -83,18 +77,7 @@ exports[`Variance Search Component renders properly 1`] = `
               ],
             }
           }
-          persistentSubmitErrors={false}
-          pure={true}
-          shouldAsyncValidate={[Function]}
-          shouldError={[Function]}
-          shouldValidate={[Function]}
-          shouldWarn={[Function]}
-          submitAsSideEffect={false}
           toggleAdvancedSearch={[Function]}
-          touchOnBlur={false}
-          touchOnChange={false}
-          updateUnregisteredFields={false}
-          validate={[Function]}
         />
       </span>
     </Col>

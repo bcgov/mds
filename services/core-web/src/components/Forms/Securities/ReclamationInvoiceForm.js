@@ -1,19 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { required, number, currency } from "@common/utils/Validate";
 import { currencyMask } from "@common/utils/helpers";
 import { RECLAMATION_INVOICE_DOCUMENTS } from "@mds/common/constants/API";
-import RenderDate from "@/components/common/RenderDate";
-import RenderField from "@/components/common/RenderField";
+import RenderDate from "@mds/common/components/forms/RenderDate";
+import RenderField from "@mds/common/components/forms/RenderField";
 import * as FORM from "@/constants/forms";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import CustomPropTypes from "@/customPropTypes";
 import FileUpload from "@/components/common/FileUpload";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 import {
   documentNameColumn,
@@ -21,6 +19,7 @@ import {
   uploadDateColumn,
 } from "@/components/common/DocumentColumns";
 import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -71,8 +70,8 @@ export class ReclamationInvoiceForm extends Component {
   render() {
     const documentTableRecords = (this.props.invoice.documents
       ? this.props.invoice.documents.filter(
-          (doc) => !this.state.filesToDelete.includes(doc.mine_document_guid)
-        )
+        (doc) => !this.state.filesToDelete.includes(doc.mine_document_guid)
+      )
       : []
     ).reduce(
       (docs, doc) => [
@@ -96,8 +95,11 @@ export class ReclamationInvoiceForm extends Component {
     ];
 
     return (
-      <Form
-        layout="vertical"
+      <FormWrapper
+        name={FORM.ADD_RECLAMATION_INVOICE}
+        reduxFormConfig={{
+          touchOnBlur: false,
+        }}
         onSubmit={this.props.handleSubmit((values) => {
           // TODO: move document deletion to BE call in onRemoveExistingFile
           // Create the invoice's new document list by removing deleted documents and adding uploaded documents.
@@ -116,52 +118,48 @@ export class ReclamationInvoiceForm extends Component {
       >
         <Row gutter={16}>
           <Col md={12} sm={24}>
-            <Form.Item>
-              <Field
-                id="project_id"
-                name="project_id"
-                label="Project ID*"
-                component={RenderField}
-                validate={[required]}
-                disabled
-              />
-            </Form.Item>
+            <Field
+              id="project_id"
+              name="project_id"
+              label="Project ID"
+              required
+              component={RenderField}
+              validate={[required]}
+              disabled
+            />
           </Col>
           <Col md={12} sm={24}>
-            <Form.Item>
-              <Field
-                id="vendor"
-                name="vendor"
-                label="Vendor*"
-                component={RenderField}
-                validate={[required]}
-              />
-            </Form.Item>
+            <Field
+              id="vendor"
+              name="vendor"
+              label="Vendor"
+              required
+              component={RenderField}
+              validate={[required]}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col md={12} sm={24}>
-            <Form.Item>
-              <Field
-                id="amount"
-                name="amount"
-                label="Invoice Amount*"
-                component={RenderField}
-                {...currencyMask}
-                validate={[required, number, currency]}
-              />
-            </Form.Item>
+            <Field
+              id="amount"
+              name="amount"
+              label="Invoice Amount"
+              required
+              component={RenderField}
+              {...currencyMask}
+              validate={[required, number, currency]}
+            />
           </Col>
           <Col md={12} sm={24}>
-            <Form.Item>
-              <Field
-                id="paid_date"
-                name="paid_date"
-                label="Paid Date*"
-                component={RenderDate}
-                validate={[required]}
-              />
-            </Form.Item>
+            <Field
+              id="paid_date"
+              name="paid_date"
+              label="Paid Date"
+              required
+              component={RenderDate}
+              validate={[required]}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
@@ -180,9 +178,7 @@ export class ReclamationInvoiceForm extends Component {
         </Row>
         <Row>
           <Col md={24}>
-            <Form.Item>
-              <Field id="note" name="note" label="Notes" component={RenderAutoSizeField} />
-            </Form.Item>
+            <Field id="note" name="note" label="Notes" component={RenderAutoSizeField} />
           </Col>
         </Row>
         <br />
@@ -191,19 +187,17 @@ export class ReclamationInvoiceForm extends Component {
             <h5>Document Upload</h5>
           </Col>
         </Row>
-        <Form.Item>
-          <Field
-            id="documents"
-            name="documents"
-            component={FileUpload}
-            uploadUrl={RECLAMATION_INVOICE_DOCUMENTS(this.props.mineGuid)}
-            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
-            onFileLoad={this.onFileLoad}
-            onRemoveFile={this.onRemoveFile}
-            allowRevert
-            allowMultiple
-          />
-        </Form.Item>
+        <Field
+          id="documents"
+          name="documents"
+          component={FileUpload}
+          uploadUrl={RECLAMATION_INVOICE_DOCUMENTS(this.props.mineGuid)}
+          acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
+          onFileLoad={this.onFileLoad}
+          onRemoveFile={this.onRemoveFile}
+          allowRevert
+          allowMultiple
+        />
         <div className="right center-mobile">
           <Popconfirm
             placement="topRight"
@@ -225,7 +219,7 @@ export class ReclamationInvoiceForm extends Component {
             Save Reclamation Invoice
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -233,7 +227,4 @@ export class ReclamationInvoiceForm extends Component {
 ReclamationInvoiceForm.propTypes = propTypes;
 ReclamationInvoiceForm.defaultProps = defaultProps;
 
-export default reduxForm({
-  form: FORM.ADD_RECLAMATION_INVOICE,
-  touchOnBlur: false,
-})(ReclamationInvoiceForm);
+export default ReclamationInvoiceForm;

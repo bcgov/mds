@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import RenderLargeSelect from "@/components/common/RenderLargeSelect";
+import RenderLargeSelect from "@mds/common/components/forms/RenderLargeSelect";
 
 let props = {};
 

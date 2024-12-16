@@ -6,11 +6,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, FieldArray } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Col, Row } from "antd";
+import { Col, Row, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { required, dateNotInFuture, validateSelectOptions } from "@common/utils/Validate";
+import { required, dateNotInFuture, requiredList } from "@common/utils/Validate";
 import { MINE_INCIDENT_DOCUMENTS } from "@mds/common/constants/API";
 import * as Strings from "@mds/common/constants/strings";
 import * as FORM from "@/constants/forms";
@@ -19,6 +17,7 @@ import { renderConfig } from "@/components/common/config";
 import LinkButton from "@/components/common/buttons/LinkButton";
 import FileUpload from "@/components/common/FileUpload";
 import { IncidentsUploadedFilesList } from "@/components/Forms/incidents/IncidentsUploadedFilesList";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   followupActionOptions: CustomPropTypes.options.isRequired,
@@ -57,7 +56,7 @@ export class AddIncidentFollowUpForm extends Component {
 
   uncommonBehaviourWarning = () =>
     this.props.determinationTypeCode === Strings.INCIDENT_DETERMINATION_TYPES.pending &&
-    this.props.hasFollowUp
+      this.props.hasFollowUp
       ? "Warning: It's uncommon for an inspection to occur if a determination has not been made"
       : undefined;
 
@@ -70,47 +69,51 @@ export class AddIncidentFollowUpForm extends Component {
   render() {
     return (
       <div>
-        <Form layout="vertical">
+        <FormWrapper
+          onSubmit={() => { }}
+          name={FORM.MINE_INCIDENT}
+          reduxFormConfig={{
+            destroyOnUnmount: false,
+            touchOnBlur: true,
+            forceUnregisterOnUnmount: true,
+          }}
+        >
           <Row gutter={48}>
             <Col span={24}>
               <h4>Follow-up Information</h4>
 
               {!this.props.hasFatalities && (
-                <Form.Item>
-                  <Field
-                    id="followup_inspection"
-                    name="followup_inspection"
-                    label="Was there a follow-up inspection?"
-                    component={renderConfig.RADIO}
-                    onChange={this.onFollowUpChange}
-                    validate={[required]}
-                  />
-                </Form.Item>
+                <Field
+                  id="followup_inspection"
+                  name="followup_inspection"
+                  label="Was there a follow-up inspection?"
+                  component={renderConfig.RADIO}
+                  onChange={this.onFollowUpChange}
+                  required
+                  validate={[required]}
+                />
               )}
 
               {this.props.hasFollowUp && (
-                <Form.Item>
-                  <Field
-                    id="followup_inspection_date"
-                    name="followup_inspection_date"
-                    label="Follow-up inspection date"
-                    placeholder="Please select date"
-                    component={renderConfig.DATE}
-                    validate={[dateNotInFuture, this.uncommonBehaviourWarning]}
-                  />
-                </Form.Item>
-              )}
-              <Form.Item>
                 <Field
-                  id="followup_investigation_type_code"
-                  name="followup_investigation_type_code"
-                  label="Was it escalated to EMLI investigation?*"
-                  placeholder="Please choose one"
-                  component={renderConfig.SELECT}
-                  data={this.filteredFollowupActions()}
-                  validate={[required, validateSelectOptions(this.filteredFollowupActions())]}
+                  id="followup_inspection_date"
+                  name="followup_inspection_date"
+                  label="Follow-up inspection date"
+                  placeholder="Please select date"
+                  component={renderConfig.DATE}
+                  validate={[dateNotInFuture, this.uncommonBehaviourWarning]}
                 />
-              </Form.Item>
+              )}
+              <Field
+                id="followup_investigation_type_code"
+                name="followup_investigation_type_code"
+                label="Was it escalated to EMLI investigation?"
+                placeholder="Please choose one"
+                component={renderConfig.SELECT}
+                data={this.filteredFollowupActions()}
+                required
+                validate={[required]}
+              />
 
               <h4>Final Investigation Report</h4>
               {!this.props.hasFatalities && (
@@ -132,35 +135,31 @@ export class AddIncidentFollowUpForm extends Component {
                   />
                 </Form.Item>
               )}
-              <Form.Item>
-                <Field
-                  id="InitialIncidentFileUpload"
-                  name="InitialIncidentFileUpload"
-                  onFileLoad={(document_name, document_manager_guid) =>
-                    this.props.onFileLoad(
-                      document_name,
-                      document_manager_guid,
-                      Strings.INCIDENT_DOCUMENT_TYPES.final
-                    )
-                  }
-                  uploadUrl={MINE_INCIDENT_DOCUMENTS(this.props.mineGuid)}
-                  component={FileUpload}
-                />
-              </Form.Item>
-
-              <Form.Item>
-                <Field
-                  id="status_code"
-                  name="status_code"
-                  label="Incident status*"
-                  component={renderConfig.SELECT}
-                  data={this.props.incidentStatusCodeOptions}
-                  validate={[validateSelectOptions(this.props.incidentStatusCodeOptions)]}
-                />
-              </Form.Item>
+              <Field
+                id="InitialIncidentFileUpload"
+                name="InitialIncidentFileUpload"
+                onFileLoad={(document_name, document_manager_guid) =>
+                  this.props.onFileLoad(
+                    document_name,
+                    document_manager_guid,
+                    Strings.INCIDENT_DOCUMENT_TYPES.final
+                  )
+                }
+                uploadUrl={MINE_INCIDENT_DOCUMENTS(this.props.mineGuid)}
+                component={FileUpload}
+              />
+              <Field
+                id="status_code"
+                name="status_code"
+                label="Incident status"
+                component={renderConfig.SELECT}
+                data={this.props.incidentStatusCodeOptions}
+                required
+                validate={[requiredList]}
+              />
             </Col>
           </Row>
-        </Form>
+        </FormWrapper>
       </div>
     );
   }
@@ -168,9 +167,4 @@ export class AddIncidentFollowUpForm extends Component {
 
 AddIncidentFollowUpForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.MINE_INCIDENT,
-  destroyOnUnmount: false,
-  touchOnBlur: true,
-  forceUnregisterOnUnmount: true,
-})(AddIncidentFollowUpForm);
+export default AddIncidentFollowUpForm;

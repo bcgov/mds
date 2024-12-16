@@ -25,7 +25,6 @@ const FIELDS_COMPONENT = {
   MULTI_SELECT: renderConfig.MULTI_SELECT,
   RADIO: renderConfig.RADIO,
   GROUPED_SELECT: renderConfig.GROUPED_SELECT,
-  MINE_SELECT: renderConfig.MINE_SELECT,
   LABEL: renderConfig.LABEL,
 };
 
@@ -72,7 +71,6 @@ const FIELDS = {
   MULTI_SELECT: GenerateDocumentFormField,
   RADIO: GenerateDocumentFormField,
   GROUPED_SELECT: GenerateDocumentFormField,
-  MINE_SELECT: GenerateDocumentFormField,
   LABEL: GenerateDocumentFormLabel,
 };
 

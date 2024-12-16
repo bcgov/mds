@@ -1,11 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddReportForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  initialValues={
+    Object {
+      "mine_report_definition_guid": "",
+    }
+  }
+  name="ADD_REPORT"
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "enableReinitialize": true,
+      "onSubmitSuccess": [Function],
+      "touchOnBlur": false,
+    }
+  }
 >
   <Row
     gutter={16}
@@ -13,99 +23,83 @@ exports[`AddReportForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          doNotPinDropdown={true}
-          format={null}
-          id="mine_report_category"
-          label="Report Type*"
-          name="mine_report_category"
-          placeholder="Select report type"
-          validate={
-            Array [
-              [Function],
-            ]
+      <Field
+        component={[Function]}
+        doNotPinDropdown={true}
+        format={null}
+        id="mine_report_category"
+        label="Report Type"
+        name="mine_report_category"
+        placeholder="Select report type"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+      <Field
+        component={[Function]}
+        data={Array []}
+        doNotPinDropdown={true}
+        format={null}
+        id="mine_report_definition_guid"
+        label="Report Name"
+        name="mine_report_definition_guid"
+        onChange={[Function]}
+        placeholder="Select report type above"
+        props={
+          Object {
+            "disabled": true,
           }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          data={Array []}
-          doNotPinDropdown={true}
-          format={null}
-          id="mine_report_definition_guid"
-          label="Report Name*"
-          name="mine_report_definition_guid"
-          onChange={[Function]}
-          placeholder="Select report type above"
-          props={
-            Object {
-              "disabled": true,
-            }
-          }
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="submission_year"
-          label="Compliance Year*"
-          name="submission_year"
-          placeholder="Select compliance year"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="due_date"
-          label="Due Date*"
-          name="due_date"
-          placeholder="Select due date"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="received_date"
-          label="Received Date"
-          name="received_date"
-          placeholder="Select received date"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+        }
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+      <Field
+        component={[Function]}
+        id="submission_year"
+        label="Compliance Year"
+        name="submission_year"
+        placeholder="Select compliance year"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+      <Field
+        component={[Function]}
+        id="due_date"
+        label="Due Date"
+        name="due_date"
+        placeholder="Select due date"
+        required={true}
+        validate={
+          Array [
+            [Function],
+            [Function],
+          ]
+        }
+      />
+      <Field
+        component={[Function]}
+        id="received_date"
+        label="Received Date"
+        name="received_date"
+        placeholder="Select received date"
+        validate={
+          Array [
+            [Function],
+            [Function],
+          ]
+        }
+      />
       <ReportSubmissions
         mineReportSubmissions={Array []}
         updateMineReportSubmissions={[Function]}
@@ -140,5 +134,5 @@ exports[`AddReportForm renders properly 1`] = `
       mockTitle
     </Button>
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

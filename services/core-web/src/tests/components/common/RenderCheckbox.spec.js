@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import RenderCheckbox from "@/components/common/RenderCheckbox";
+import RenderCheckbox from "@mds/common/components/forms/RenderCheckbox";
 
 let props = {};
 

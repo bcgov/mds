@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  change,
-  Field,
-  FieldArray,
-  FieldArrayFieldsProps,
-  InjectedFormProps,
-  reduxForm,
-} from "redux-form";
+import { change, Field, FieldArray, FieldArrayFieldsProps, InjectedFormProps } from "redux-form";
 import { Alert, Button, Col, Popconfirm, Row, Typography } from "antd";
-import { Form } from "@ant-design/compatible";
 import {
   email,
   maxLength,
@@ -16,17 +8,19 @@ import {
   required,
   requiredList,
   requiredRadioButton,
-  validateSelectOptions,
 } from "@common/utils/Validate";
 import { normalizePhone, resetForm } from "@common/utils/helpers";
-import { NOD_TYPE_FIELD_VALUE, NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@mds/common/constants/strings";
+import {
+  NOD_TYPE_FIELD_VALUE,
+  NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
+} from "@mds/common/constants/strings";
 import { bindActionCreators, compose } from "redux";
 import { DOCUMENT, EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
 import { NOTICE_OF_DEPARTURE_DOWNLOAD_LINK } from "@/constants/strings";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import NoticeOfDepartureFileUpload from "@/components/Forms/noticeOfDeparture/NoticeOfDepartureFileUpload";
-import RenderRadioButtons from "@/components/common/RenderRadioButtons";
+import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import {
   ICreateNoD,
   INoDContactInterface,
@@ -36,6 +30,7 @@ import {
 } from "@mds/common";
 import { AxiosResponse } from "axios";
 import { connect } from "react-redux";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 interface RenderContactsProps {
   fields: FieldArrayFieldsProps<INoDContactInterface>;
@@ -77,6 +72,7 @@ export const renderContacts: React.FC<RenderContactsProps> = (props) => {
               name={`${contact}.first_name`}
               placeholder="First Name"
               component={renderConfig.FIELD}
+              required
               validate={[required, maxLength(200)]}
             />
           </Col>
@@ -87,6 +83,7 @@ export const renderContacts: React.FC<RenderContactsProps> = (props) => {
               name={`${contact}.last_name`}
               placeholder="Last Name"
               component={renderConfig.FIELD}
+              required
               validate={[required, maxLength(200)]}
             />
           </Col>
@@ -97,6 +94,7 @@ export const renderContacts: React.FC<RenderContactsProps> = (props) => {
               label="Phone Number"
               placeholder="XXX-XXX-XXXX"
               component={renderConfig.FIELD}
+              required
               validate={[phoneNumber, maxLength(12), required]}
               normalize={normalizePhone}
             />
@@ -108,6 +106,7 @@ export const renderContacts: React.FC<RenderContactsProps> = (props) => {
               name={`${contact}.email`}
               component={renderConfig.FIELD}
               placeholder="example@example.com"
+              required
               validate={[email, required]}
             />
           </Col>
@@ -117,8 +116,9 @@ export const renderContacts: React.FC<RenderContactsProps> = (props) => {
   );
 };
 
-const AddNoticeOfDepartureForm: React.FC<InjectedFormProps<ICreateNoD> &
-  AddNoticeOfDepartureProps> = (props) => {
+const AddNoticeOfDepartureForm: React.FC<
+  InjectedFormProps<ICreateNoD> & AddNoticeOfDepartureProps
+> = (props) => {
   const { permits, onSubmit, closeModal, handleSubmit, mineGuid, change } = props;
   const [submitting, setSubmitting] = useState(false);
   const [hasChecklist, setHasChecklist] = useState(false);
@@ -192,7 +192,17 @@ const AddNoticeOfDepartureForm: React.FC<InjectedFormProps<ICreateNoD> &
 
   return (
     <div>
-      <Form layout="vertical" onSubmit={handleSubmit(handleNoticeOfDepartureSubmit)}>
+      <FormWrapper
+        name={FORM.ADD_NOTICE_OF_DEPARTURE}
+        reduxFormConfig={{
+          onSubmitSuccess: resetForm(FORM.ADD_NOTICE_OF_DEPARTURE),
+          initialValues: { nod_contacts: [{ is_primary: true }] },
+          touchOnBlur: false,
+          forceUnregisterOnUnmount: true,
+          enableReinitialize: true,
+        }}
+        onSubmit={handleSubmit(handleNoticeOfDepartureSubmit)}
+      >
         <Typography.Text>
           Please complete the following form to submit your Notice of Departure and any relevant
           supporting documents. For more information on the purpose and intent of a Notice of
@@ -218,6 +228,7 @@ const AddNoticeOfDepartureForm: React.FC<InjectedFormProps<ICreateNoD> &
           name="nod_title"
           placeholder="Departure Project Title"
           component={renderConfig.FIELD}
+          required
           validate={[required, maxLength(50)]}
         />
         <Row gutter={16}>
@@ -228,7 +239,8 @@ const AddNoticeOfDepartureForm: React.FC<InjectedFormProps<ICreateNoD> &
               name="permit_guid"
               placeholder="Select Permit #"
               component={renderConfig.SELECT}
-              validate={[requiredList, validateSelectOptions(permitOptions)]}
+              required
+              validate={[requiredList]}
               data={permitOptions}
             />
           </Col>
@@ -238,35 +250,34 @@ const AddNoticeOfDepartureForm: React.FC<InjectedFormProps<ICreateNoD> &
           name="nod_description"
           label="Departure Summary"
           component={renderConfig.AUTO_SIZE_FIELD}
+          required
           validate={[maxLength(3000), required]}
         />
         <FieldArray props={{}} name="nod_contacts" component={renderContacts} />
         <h4 className="nod-modal-section-header">
           Notice of Departure Self-Assessment Determination
         </h4>
-        <Form.Item>
-          <Field
-            id="nod_type"
-            name="nod_type"
-            label="Based on the information established in your self-assessment form please determine your
+        <Field
+          id="nod_type"
+          name="nod_type"
+          label="Based on the information established in your self-assessment form please determine your
           submissions Notice of Departure type. If you are unsure what category you fall under,
           please contact us."
-            component={RenderRadioButtons}
-            validate={[requiredRadioButton]}
-            customOptions={[
-              {
-                value: NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL,
-                label:
-                  "This Notice of Departure is non-substantial and does not require ministry review.  (Proponent is responsible for ensuring all details have been completed correctly for submission and can begin work immediately)",
-              },
-              {
-                value: NOD_TYPE_FIELD_VALUE.POTENTIALLY_SUBSTANTIAL,
-                label:
-                  "This Notice of Departure is potentially substantial and requires ministry review.  (Ministry staff will review submission and determine if work can move forward as Notice of Departure)",
-              },
-            ]}
-          />
-        </Form.Item>
+          component={RenderRadioButtons}
+          validate={[requiredRadioButton]}
+          customOptions={[
+            {
+              value: NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL,
+              label:
+                "This Notice of Departure is non-substantial and does not require ministry review.  (Proponent is responsible for ensuring all details have been completed correctly for submission and can begin work immediately)",
+            },
+            {
+              value: NOD_TYPE_FIELD_VALUE.POTENTIALLY_SUBSTANTIAL,
+              label:
+                "This Notice of Departure is potentially substantial and requires ministry review.  (Ministry staff will review submission and determine if work can move forward as Notice of Departure)",
+            },
+          ]}
+        />
         <h4 className="nod-modal-section-header">
           Upload Notice of Departure Self-Assessment Form
         </h4>
@@ -370,7 +381,7 @@ const AddNoticeOfDepartureForm: React.FC<InjectedFormProps<ICreateNoD> &
             Submit
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     </div>
   );
 };
@@ -383,14 +394,6 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default compose(
-  connect(mapDispatchToProps),
-  reduxForm({
-    form: FORM.ADD_NOTICE_OF_DEPARTURE,
-    onSubmitSuccess: resetForm(FORM.ADD_NOTICE_OF_DEPARTURE),
-    initialValues: { nod_contacts: [{ is_primary: true }] },
-    touchOnBlur: false,
-    forceUnregisterOnUnmount: true,
-    enableReinitialize: true,
-  })
-)(AddNoticeOfDepartureForm) as React.FC<AddNoticeOfDepartureProps>;
+export default compose(connect(mapDispatchToProps))(
+  AddNoticeOfDepartureForm as any
+) as React.FC<AddNoticeOfDepartureProps>;

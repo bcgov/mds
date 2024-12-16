@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
 import {
   required,
@@ -14,28 +12,27 @@ import {
   date,
   dateNotBeforeOther,
   dateNotAfterOther,
-  validateSelectOptions,
   assessedLiabilityNegativeWarning,
 } from "@common/utils/Validate";
 import { resetForm, upperCase, currencyMask } from "@common/utils/helpers";
 import { BOND_DOCUMENTS } from "@mds/common/constants/API";
-import RenderField from "@/components/common/RenderField";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
-import RenderDate from "@/components/common/RenderDate";
+import RenderField from "@mds/common/components/forms/RenderField";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
+import RenderDate from "@mds/common/components/forms/RenderDate";
 import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
-import RenderSelect from "@/components/common/RenderSelect";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import CustomPropTypes from "@/customPropTypes";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 import {
   documentNameColumn,
-  documentNameColumnNew,
   removeFunctionColumn,
   uploadDateColumn,
 } from "@/components/common/DocumentColumns";
 import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -93,8 +90,8 @@ export class BondForm extends Component {
 
     const documentTableRecords = (this.props.bond.documents
       ? this.props.bond.documents.filter(
-          (doc) => !this.state.filesToDelete.includes(doc.mine_document_guid)
-        )
+        (doc) => !this.state.filesToDelete.includes(doc.mine_document_guid)
+      )
       : []
     ).reduce(
       (docs, doc) => [
@@ -126,8 +123,12 @@ export class BondForm extends Component {
     ];
 
     return (
-      <Form
-        layout="vertical"
+      <FormWrapper
+        name={FORM.ADD_BOND}
+        reduxFormConfig={{
+          touchOnBlur: true,
+          onSubmitSuccess: resetForm(FORM.ADD_BOND),
+        }}
         onSubmit={this.props.handleSubmit((values) => {
           // Set the bond document type code for each uploaded document to the selected value.
           this.state.uploadedFiles.forEach((doc) => {
@@ -158,123 +159,110 @@ export class BondForm extends Component {
       >
         <Row gutter={16}>
           <Col md={12} sm={24}>
-            <Form.Item>
-              <Field
-                id="amount"
-                name="amount"
-                label="Bond Amount*"
-                component={RenderField}
-                {...currencyMask}
-                validate={[required, number, currency]}
-                disabled={this.props.editBond}
-                warn={[assessedLiabilityNegativeWarning]}
-              />
-            </Form.Item>
+            <Field
+              id="amount"
+              name="amount"
+              label="Bond Amount"
+              required
+              component={RenderField}
+              {...currencyMask}
+              validate={[required, number, currency]}
+              disabled={this.props.editBond}
+              warn={[assessedLiabilityNegativeWarning]}
+            />
           </Col>
           <Col md={12} sm={24}>
-            <Form.Item>
-              <Field
-                id="bond_type_code"
-                name="bond_type_code"
-                label="Bond Type*"
-                component={RenderSelect}
-                placeholder="Please select bond type"
-                data={this.props.bondTypeDropDownOptions}
-                validate={[required, validateSelectOptions(this.props.bondTypeDropDownOptions)]}
-                disabled={this.props.bond.bond_status_code === "CON"}
-              />
-            </Form.Item>
+            <Field
+              id="bond_type_code"
+              name="bond_type_code"
+              label="Bond Type"
+              required
+              component={RenderSelect}
+              placeholder="Please select bond type"
+              data={this.props.bondTypeDropDownOptions}
+              validate={[required]}
+              disabled={this.props.bond.bond_status_code === "CON"}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col md={12} sm={24}>
-            <Form.Item>
-              <PartySelectField
-                id="payer_party_guid"
-                name="payer_party_guid"
-                label="Payer*"
-                partyLabel="payee"
-                initialValues={this.props.initialPartyValue}
-                validate={[required]}
-                allowAddingParties
-              />
-            </Form.Item>
+            <PartySelectField
+              id="payer_party_guid"
+              name="payer_party_guid"
+              label="Payer"
+              required
+              partyLabel="payee"
+              initialValues={this.props.initialPartyValue}
+              validate={[required]}
+              allowAddingParties
+            />
           </Col>
           <Col md={12} sm={24}>
-            <Form.Item>
-              <Field
-                id="issue_date"
-                name="issue_date"
-                label="Issue Date*"
-                showTime
-                component={RenderDate}
-                validate={
-                  isBondClosed
-                    ? [
-                        required,
-                        date,
-                        dateNotInFuture,
-                        dateNotAfterOther(this.props.bond.closed_date),
-                      ]
-                    : [required, date, dateNotInFuture]
-                }
-              />
-            </Form.Item>
+            <Field
+              id="issue_date"
+              name="issue_date"
+              label="Issue Date"
+              required
+              showTime
+              component={RenderDate}
+              validate={
+                isBondClosed
+                  ? [
+                    required,
+                    date,
+                    dateNotInFuture,
+                    dateNotAfterOther(this.props.bond.closed_date),
+                  ]
+                  : [required, date, dateNotInFuture]
+              }
+            />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col md={12} sm={24}>
-            <Form.Item>
-              <Field
-                id="reference_number"
-                name="reference_number"
-                label="Reference Number"
-                component={RenderField}
-              />
-            </Form.Item>
+            <Field
+              id="reference_number"
+              name="reference_number"
+              label="Reference Number"
+              component={RenderField}
+            />
           </Col>
           <Col md={12} sm={24}>
-            <Form.Item>
-              <Field id="project_id" name="project_id" label="Project ID" component={RenderField} />
-            </Form.Item>
+            <Field id="project_id" name="project_id" label="Project ID" component={RenderField} />
           </Col>
         </Row>
         <Row>
           <Col md={24}>
-            <Form.Item>
-              <Field id="note" name="note" label="Notes" component={RenderAutoSizeField} />
-            </Form.Item>
+            <Field id="note" name="note" label="Notes" component={RenderAutoSizeField} />
           </Col>
         </Row>
         {this.props.editBond && isBondClosed && (
           <Row gutter={16}>
             <Col md={12} sm={24}>
-              <Form.Item>
-                <Field
-                  id="closed_date"
-                  name="closed_date"
-                  label={`${bondStatusDescription} Date*`}
-                  showTime
-                  component={RenderDate}
-                  validate={[
-                    required,
-                    date,
-                    dateNotInFuture,
-                    dateNotBeforeOther(this.props.bond.issue_date),
-                  ]}
-                />
-              </Form.Item>
+              <Field
+                id="closed_date"
+                name="closed_date"
+                label={`${bondStatusDescription} Date`}
+                required
+                showTime
+                component={RenderDate}
+                validate={[
+                  required,
+                  date,
+                  dateNotInFuture,
+                  dateNotBeforeOther(this.props.bond.issue_date),
+                ]}
+              />
             </Col>
             <Col md={12} sm={24}>
-              <Form.Item>
-                <Field
-                  id="closed_note"
-                  name="closed_note"
-                  label={`${bondStatusDescription} Notes`}
-                  component={RenderAutoSizeField}
-                  validate={[maxLength(4000)]}
-                />
-              </Form.Item>
+              <Field
+                id="closed_note"
+                name="closed_note"
+                label={`${bondStatusDescription} Notes`}
+                component={RenderAutoSizeField}
+                validate={[maxLength(4000)]}
+              />
             </Col>
           </Row>
         )}
@@ -285,65 +273,54 @@ export class BondForm extends Component {
         </Row>
         <Row gutter={16}>
           <Col lg={12} md={24}>
-            <Form.Item>
-              <Field
-                id="institution_name"
-                name="institution_name"
-                label="Institution Name"
-                component={RenderField}
-              />
-            </Form.Item>
+            <Field
+              id="institution_name"
+              name="institution_name"
+              label="Institution Name"
+              component={RenderField}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col md={12} xs={24}>
-            <Form.Item>
-              <Field
-                id="institution_street"
-                name="institution_street"
-                label="Street Address"
-                component={RenderField}
-              />
-            </Form.Item>
+            <Field
+              id="institution_street"
+              name="institution_street"
+              label="Street Address"
+              component={RenderField}
+            />
           </Col>
           <Col md={12} xs={24}>
-            <Form.Item>
-              <Field
-                id="institution_city"
-                name="institution_city"
-                label="City"
-                component={RenderField}
-                validate={[maxLength(30)]}
-              />
-            </Form.Item>
+            <Field
+              id="institution_city"
+              name="institution_city"
+              label="City"
+              component={RenderField}
+              validate={[maxLength(30)]}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col md={12} xs={24}>
-            <Form.Item>
-              <Field
-                id="institution_province"
-                name="institution_province"
-                label="Province"
-                placeholder="Please select province"
-                component={RenderSelect}
-                validate={[validateSelectOptions(this.props.provinceOptions)]}
-                data={this.props.provinceOptions}
-              />
-            </Form.Item>
+            <Field
+              id="institution_province"
+              name="institution_province"
+              label="Province"
+              placeholder="Please select province"
+              component={RenderSelect}
+              data={this.props.provinceOptions}
+            />
           </Col>
           <Col md={12} xs={24}>
-            <Form.Item>
-              <Field
-                id="institution_postal_code"
-                name="institution_postal_code"
-                label="Postal Code"
-                placeholder="e.g xxxxxx"
-                component={RenderField}
-                validate={[maxLength(10), postalCode]}
-                normalize={upperCase}
-              />
-            </Form.Item>
+            <Field
+              id="institution_postal_code"
+              name="institution_postal_code"
+              label="Postal Code"
+              placeholder="e.g xxxxxx"
+              component={RenderField}
+              validate={[maxLength(10), postalCode]}
+              normalize={upperCase}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
@@ -373,48 +350,43 @@ export class BondForm extends Component {
         <br />
         <Row gutter={16}>
           <Col md={12} xs={24}>
-            <Form.Item>
-              <Field
-                id="document_date"
-                name="document_date"
-                label="Document Date"
-                showTime
-                component={RenderDate}
-                validate={[date, dateNotInFuture]}
-              />
-            </Form.Item>
+            <Field
+              id="document_date"
+              name="document_date"
+              label="Document Date"
+              showTime
+              component={RenderDate}
+              validate={[date, dateNotInFuture]}
+            />
           </Col>
           <Col md={12} xs={24}>
-            <Form.Item>
-              <Field
-                id="bond_document_type_code"
-                name="bond_document_type_code"
-                label={filesUploaded ? "Document Category*" : "Document Category"}
-                placeholder="Please select category"
-                component={RenderSelect}
-                validate={
-                  filesUploaded
-                    ? [required, validateSelectOptions(this.props.bondDocumentTypeDropDownOptions)]
-                    : [validateSelectOptions(this.props.bondDocumentTypeDropDownOptions)]
-                }
-                data={this.props.bondDocumentTypeDropDownOptions}
-              />
-            </Form.Item>
+            <Field
+              id="bond_document_type_code"
+              name="bond_document_type_code"
+              label={"Document Category"}
+              required={filesUploaded}
+              placeholder="Please select category"
+              component={RenderSelect}
+              validate={
+                filesUploaded
+                  ? [required]
+                  : []
+              }
+              data={this.props.bondDocumentTypeDropDownOptions}
+            />
           </Col>
         </Row>
-        <Form.Item>
-          <Field
-            id="documents"
-            name="documents"
-            component={FileUpload}
-            uploadUrl={BOND_DOCUMENTS(this.props.mineGuid)}
-            acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
-            onFileLoad={this.onFileLoad}
-            onRemoveFile={this.onRemoveFile}
-            allowRevert
-            allowMultiple
-          />
-        </Form.Item>
+        <Field
+          id="documents"
+          name="documents"
+          component={FileUpload}
+          uploadUrl={BOND_DOCUMENTS(this.props.mineGuid)}
+          acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
+          onFileLoad={this.onFileLoad}
+          onRemoveFile={this.onRemoveFile}
+          allowRevert
+          allowMultiple
+        />
         <div className="right center-mobile">
           <Popconfirm
             placement="topRight"
@@ -436,7 +408,7 @@ export class BondForm extends Component {
             {this.props.title}
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -444,8 +416,4 @@ export class BondForm extends Component {
 BondForm.propTypes = propTypes;
 BondForm.defaultProps = defaultProps;
 
-export default reduxForm({
-  form: FORM.ADD_BOND,
-  touchOnBlur: true,
-  onSubmitSuccess: resetForm(FORM.ADD_BOND),
-})(BondForm);
+export default BondForm;
