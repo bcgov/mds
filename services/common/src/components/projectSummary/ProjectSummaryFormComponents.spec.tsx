@@ -20,7 +20,6 @@ import Declaration from "./Declaration";
 import DocumentUpload from "./DocumentUpload";
 import { FacilityOperator } from "./FacilityOperator";
 import { BrowserRouter } from "react-router-dom";
-import { isDocumentDeletionEnabled } from "../projects/projectUtils";
 
 const { formatProjectSummary } = exportForTesting;
 
