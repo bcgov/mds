@@ -10,7 +10,7 @@ interface ProjectDocumentsTabSectionProps {
   title?: string;
   titleLevel?: 1 | 2 | 3 | 4 | 5;
   documents: MineDocument[];
-  onArchivedDocuments: () => Promise<void>;
+  onArchivedDocuments?: () => Promise<void>;
   canArchive?: boolean;
   canReplace?: boolean;
   infoText?: string;
