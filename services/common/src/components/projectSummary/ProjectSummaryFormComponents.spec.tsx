@@ -20,6 +20,7 @@ import Declaration from "./Declaration";
 import DocumentUpload from "./DocumentUpload";
 import { FacilityOperator } from "./FacilityOperator";
 import { BrowserRouter } from "react-router-dom";
+import { isDocumentDeletionEnabled } from "../projects/projectUtils";
 
 const { formatProjectSummary } = exportForTesting;
 
@@ -62,12 +63,14 @@ const mockFields = jest.fn();
 const mockDocFields = jest.fn();
 const mockAuthFields = jest.fn();
 const mockEnvFields = jest.fn();
+const mockDocDeletion = jest.fn();
 
 jest.mock("@mds/common/components/projects/projectUtils", () => ({
     areFieldsDisabled: () => mockFields(),
     areDocumentFieldsDisabled: () => mockDocFields(),
     areAuthFieldsDisabled: () => mockAuthFields(),
     areAuthEnvFieldsDisabled: () => mockEnvFields(),
+    isDocumentDeletionEnabled: () => mockDocDeletion(),
     getProjectStatusDescription: () => jest.fn().mockReturnValue("Status Description")
 }));
 
@@ -112,6 +115,7 @@ describe("ProjectSummaryForm components disable accurately accoring to functions
         mockDocFields.mockReturnValue(docFieldsDisabled);
         mockAuthFields.mockReturnValue(authFieldsDisabled);
         mockEnvFields.mockReturnValue(envFieldsDisabled);
+        mockDocDeletion.mockReturnValue(false);
 
         return <BrowserRouter>
             <FormWrapper name={FORM.ADD_EDIT_PROJECT_SUMMARY} onSubmit={jest.fn()}>
@@ -125,7 +129,7 @@ describe("ProjectSummaryForm components disable accurately accoring to functions
                 <Agent fieldsDisabled={fieldsDisabled} />
                 <FacilityOperator fieldsDisabled={fieldsDisabled} />
                 <AuthorizationsInvolved fieldsDisabled={authFieldsDisabled} />
-                <DocumentUpload docFieldsDisabled={docFieldsDisabled} fieldsDisabled={fieldsDisabled}/>
+                <DocumentUpload docFieldsDisabled={docFieldsDisabled} deleteEnabled={false} />
                 <ApplicationSummary fieldsDisabled={fieldsDisabled} />
                 <Declaration />
             </FormWrapper>
