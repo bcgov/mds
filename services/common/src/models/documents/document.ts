@@ -136,6 +136,7 @@ export class MineDocument implements IMineDocument {
           this.makeChild(
             {
               ...version,
+              mine_guid: jsonObject.mine_guid,
               is_latest_version: false,
               mine_document_guid: this.mine_document_guid,
               document_manager_guid: this.document_manager_guid,

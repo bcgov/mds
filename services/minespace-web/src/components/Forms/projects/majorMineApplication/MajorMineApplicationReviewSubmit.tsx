@@ -19,18 +19,14 @@ const inputStyle = { width: "100%" };
 
 interface MajorMineApplicationReviewSubmitProps {
   project: IProject;
-  refreshData: () => Promise<void>;
-
   applicationSubmitted?: boolean;
   tabbedView?: boolean;
-
   confirmedSubmission?: boolean;
   toggleConfirmedSubmission?: () => void;
 }
 
 export const MajorMineApplicationReviewSubmit: FC<MajorMineApplicationReviewSubmitProps> = ({
   project,
-  refreshData,
   applicationSubmitted = false,
   tabbedView = false,
   confirmedSubmission = false,
@@ -109,8 +105,8 @@ export const MajorMineApplicationReviewSubmit: FC<MajorMineApplicationReviewSubm
           <DocumentTable
             documents={primary_documents}
             documentParent="Major Mine Application"
-            canArchiveDocuments={true}
-            onArchivedDocuments={() => refreshData()}
+            canArchiveDocuments={false}
+            canReplaceDocuments={false}
             showVersionHistory={true}
             enableBulkActions={true}
           />
@@ -119,7 +115,6 @@ export const MajorMineApplicationReviewSubmit: FC<MajorMineApplicationReviewSubm
             documents={spatial_documents}
             documentParent="Major Mine Application"
             canArchiveDocuments={false}
-            onArchivedDocuments={() => refreshData()}
             showVersionHistory={true}
             enableBulkActions={true}
           />
@@ -127,8 +122,8 @@ export const MajorMineApplicationReviewSubmit: FC<MajorMineApplicationReviewSubm
           <DocumentTable
             documents={supporting_documents}
             documentParent="Major Mine Application"
-            canArchiveDocuments={true}
-            onArchivedDocuments={() => refreshData()}
+            canArchiveDocuments={false}
+            canReplaceDocuments={false}
             showVersionHistory={true}
             enableBulkActions={true}
           />

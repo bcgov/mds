@@ -36,6 +36,7 @@ import ArchiveDocumentModal from "./ArchiveDocumentModal";
 import DeleteDocumentModal from "./DeleteDocumentModal";
 import ReplaceDocumentModal from "./ReplaceDocumentModal";
 import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
+import { ActionMenuButton } from "../common/ActionMenu";
 
 export const DocumentTable: FC<DocumentTableProps> = ({
   isViewOnly = false,
@@ -108,9 +109,9 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     setDocuments(parseDocuments(props.documents ?? []));
   }, [props.documents]);
 
-  const openArchiveModal = (event, docs: MineDocument[]) => {
+  const openArchiveModal = (docs: MineDocument[]) => {
     const mineGuid = docs[0].mine_guid;
-    event.preventDefault();
+
     dispatch(
       openModal({
         props: {
@@ -197,7 +198,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
       key: "archive",
       label: FileOperations.Archive,
       icon: <InboxOutlined />,
-      clickFunction: (event, record: MineDocument) => openArchiveModal(event, [record]),
+      clickFunction: (_event, record: MineDocument) => openArchiveModal([record]),
     },
     {
       key: "delete",
@@ -275,43 +276,26 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     ? { size: "small" as SizeType, rowClassName: "ant-table-row-minimal" }
     : null;
 
-  const bulkItems: MenuProps["items"] = [
+  const bulkItems = [
     {
       key: FileOperations.Download,
       icon: <DownloadOutlined />,
-      label: (
-        <button
-          type="button"
-          className="full add-permit-dropdown-button"
-          onClick={() => {
-            setIsCompressionModal(true);
-          }}
-        >
-          <div>Download File(s)</div>
-        </button>
-      ),
+      label: "Download File(s)",
+      clickFunction: () => setIsCompressionModal(true)
     },
     {
       key: FileOperations.Archive,
       icon: <InboxOutlined />,
-      label: (
-        <button
-          type="button"
-          className="full add-permit-dropdown-button"
-          onClick={(e) => {
-            openArchiveModal(e, rowSelection);
-          }}
-        >
-          <div>Archive File(s)</div>
-        </button>
-      ),
-    },
+      label: "Archive File(s)",
+      clickFunction: () => openArchiveModal(rowSelection)
+    }
   ].filter((a) => allowedTableActions[a.key]);
+
 
   const renderBulkActions = () => {
     let element = (
       <Button
-        className="ant-btn ant-btn-primary"
+        type="primary"
         disabled={rowSelection.length === 0 || isCompressionInProgress}
         onClick={() => {
           setIsCompressionModal(true);
@@ -322,16 +306,10 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     );
     if (documentsCanBulkDropDown) {
       element = (
-        <Dropdown
-          menu={{ items: bulkItems }}
-          placement="bottomLeft"
+        <ActionMenuButton actions={bulkItems}
           disabled={rowSelection.length === 0 || isCompressionInProgress}
-        >
-          <Button className="ant-btn ant-btn-primary">
-            Action
-            <DownOutlined />
-          </Button>
-        </Dropdown>
+          buttonProps={{ type: "primary", }}
+        />
       );
     }
 
@@ -350,22 +328,22 @@ export const DocumentTable: FC<DocumentTableProps> = ({
 
   const bulkActionsProps = enableBulkActions
     ? {
-        rowSelection: {
-          type: "checkbox",
-          ...rowSelectionObject,
-        },
-      }
+      rowSelection: {
+        type: "checkbox",
+        ...rowSelectionObject,
+      },
+    }
     : {};
 
   const versionProps = showVersionHistory
     ? {
-        expandProps: {
-          childrenColumnName: "versions",
-          matchChildColumnsToParent: true,
-          recordDescription: "version history",
-          rowExpandable: (record) => record.number_prev_versions > 0,
-        },
-      }
+      expandProps: {
+        childrenColumnName: "versions",
+        matchChildColumnsToParent: true,
+        recordDescription: "version history",
+        rowExpandable: (record) => record.number_prev_versions > 0,
+      },
+    }
     : {};
 
   const coreTableProps = {
