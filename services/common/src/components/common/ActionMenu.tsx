@@ -25,7 +25,7 @@ export const generateActionMenuItems = (actionItems: ITableAction[], record) => 
         <button
           type="button"
           disabled={action.disabled}
-          className={`full actions-dropdown-button menu-button`}
+          className={`full actions-dropdown-button menu-item-button`}
           data-testid={`action-button-${action.key}`}
           onClick={(event) => action.clickFunction(event, record)}
         >

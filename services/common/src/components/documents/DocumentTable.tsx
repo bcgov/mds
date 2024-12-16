@@ -111,7 +111,6 @@ export const DocumentTable: FC<DocumentTableProps> = ({
 
   const openArchiveModal = (docs: MineDocument[]) => {
     const mineGuid = docs[0].mine_guid;
-
     dispatch(
       openModal({
         props: {
@@ -290,7 +289,6 @@ export const DocumentTable: FC<DocumentTableProps> = ({
       clickFunction: () => openArchiveModal(rowSelection)
     }
   ].filter((a) => allowedTableActions[a.key]);
-
 
   const renderBulkActions = () => {
     let element = (
