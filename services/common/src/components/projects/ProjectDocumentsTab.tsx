@@ -287,7 +287,6 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
         <ArchivedDocumentsSection
           documents={mineDocuments}
           showCategory={false}
-          canReplace={canReplace}
         />
       ),
     },
