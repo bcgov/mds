@@ -62,6 +62,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const { isFeatureEnabled } = useFeatureFlag();
   const dispatch = useDispatch();
   const canEditPermitConditions = isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && userCanEdit;
+  const pdfSplitViewEnabled = isFeatureEnabled(Feature.PERMIT_CONDITIONS_PDF_SPLIT_VIEW);
   const { id: mineGuid, permitGuid } = useParams<{ id: string; permitGuid: string, mineGuid: string }>();
   const [isExpanded, setIsExpanded] = useState(false);
   const [viewPdf, setViewPdf] = useState(false);
@@ -269,9 +270,11 @@ const PermitConditions: FC<PermitConditionProps> = ({
     </Typography.Paragraph>
   );
 
+  const canViewPdfSplitScreen = viewPdf && pdfSplitViewEnabled && permitExtraction?.permit_amendment_document_guid;
+
   return (
     <Row>
-      <Col span={viewPdf ? 16 : 24}>
+      <Col span={canViewPdfSplitScreen ? 16 : 24}>
         <ScrollSidePageWrapper
           header={null}
           headerHeight={topOffset}
@@ -415,13 +418,17 @@ const PermitConditions: FC<PermitConditionProps> = ({
                   </Row>
                 </div>
               </Col>
-              {viewPdf && permitExtraction?.permit_amendment_document_guid ? (
-                <Col style={{ padding: '16px' }} span={8}><PreviewPermitAmendmentDocument amendment={latestAmendment} documentGuid={permitExtraction.permit_amendment_document_guid} selectedCondition={selectedCondition} /></Col>
-              ) : ''}
             </Row>
           }>
         </ScrollSidePageWrapper>
       </Col>
+      {canViewPdfSplitScreen ? (
+        <Col style={{ padding: '16px', height: 'inherit' }} span={8}>
+          <div style={{ position: 'sticky', 'top': '225px' }}>
+            <PreviewPermitAmendmentDocument amendment={latestAmendment} documentGuid={permitExtraction.permit_amendment_document_guid} selectedCondition={selectedCondition} />
+          </div>
+        </Col>
+      ) : ''}
     </Row>
   );
 };

@@ -46,6 +46,11 @@ $error-font: theme.$error-color; //#f44336;
   display: none;
 }
 
+#preview-permit-amendment-pdf {
+  width: 100%;
+  height: calc(100v - 240px);
+}
+
 #pdfviewer-container_zoomDropDownContainer {
   width: 108px;
 }

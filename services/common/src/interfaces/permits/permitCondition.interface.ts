@@ -7,7 +7,7 @@ export interface IPermitConditionCategory {
   step: string;
 }
 
-interface IBoundingBox {
+export interface IBoundingBox {
   top: number;
   right: number;
   bottom: number;

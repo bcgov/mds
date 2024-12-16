@@ -7,6 +7,7 @@ import ViewPermit from "./ViewPermit";
 import { BrowserRouter } from "react-router-dom";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
+
 const initialState = {
   [MINES]: MOCK.MINES,
   [PERMITS]: { permits: MOCK.PERMITS, permitAmendments: { [MOCK.PERMITS[0].permit_guid]: MOCK.PERMITS[0].permit_amendments[0] } },
