@@ -36,10 +36,6 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
   const systemFlag = useSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;
   const [isLoaded, setIsLoaded] = useState(true);
-  const statusesToDisableReplaceFor = ["UNR", "WDN", "OHD"];
-  const canReplace = isCore
-    ? true
-    : !statusesToDisableReplaceFor.includes(project?.project_summary?.status_code);
 
   const refreshData = async () => {
     setIsLoaded(false);
