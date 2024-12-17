@@ -28,6 +28,7 @@ import {
   fetchPermitExtractionStatus,
 } from "@mds/common/redux/slices/permitServiceSlice";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
+import { USER_ROLES } from "@mds/common/constants/environment";
 
 const tabs = ["overview", "conditions"];
 

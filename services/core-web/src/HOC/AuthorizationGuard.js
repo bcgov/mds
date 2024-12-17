@@ -6,6 +6,7 @@ import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSel
 import { USER_ROLES } from "@mds/common/constants/environment";
 import * as Permission from "@/constants/permissions";
 import { detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common/utils/environmentUtils";
+import NullScreen from "@/components/common/NullScreen";
 
 /**
  * @constant AuthorizationGuard - Higher Order Component that checks if user has the has the correct permission, if so, render component, else render a NullScreen.

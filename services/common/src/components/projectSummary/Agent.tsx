@@ -93,7 +93,6 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
     setVerified(false);
     setCheckingStatus(true);
     if (credential) {
-      // @ts-ignore
       dispatch(verifyOrgBookCredential(credential.id)).then((response) => {
         setVerified(response.success);
         setCheckingStatus(false);

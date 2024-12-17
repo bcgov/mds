@@ -17,6 +17,7 @@ import * as Strings from "@mds/common/constants/strings";
 import { FormContext } from "../forms/FormWrapper";
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
 import { FORM } from "@mds/common/constants/forms";
+import { USER_ROLES } from "@mds/common/constants/environment";
 
 interface ProjectLinksProps extends ProjectSummaryFormComponentProps {
   viewProject: (record: ILinkedProject) => string;
@@ -46,7 +47,6 @@ const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => 
   };
 
   const addRelatedProjects = () => {
-    // @ts-ignore
     dispatch(createProjectLinks(mineGuid, projectGuid, currentSelection)).then(() => {
       setCurrentSelection([]);
       dispatch(change(formName, fieldName, []));
@@ -95,7 +95,6 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, fieldsDisabled, tabl
   const mineProjects = useSelector(getProjects);
   const isUserProponent = useSelector(isProponent);
   const canEditProjects = useSelector((state) =>
-    // @ts-ignore
     userHasRole(state, USER_ROLES.role_edit_project_summaries)
   );
   const { isEditMode } = useContext(FormContext);
