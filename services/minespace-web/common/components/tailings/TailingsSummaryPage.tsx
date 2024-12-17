@@ -377,7 +377,7 @@ export default compose(
     touchOnChange: false,
     enableReinitialize: true,
     destroyOnUnmount: true,
-    onSubmit: () => {},
+    onSubmit: () => { },
   })
 )(
   withRouter(FeatureFlagGuard(Feature.TSF_V2)(TailingsSummaryPage)) as any
