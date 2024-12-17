@@ -26,7 +26,7 @@ import * as FORM from "@/constants/forms";
 import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
-import { Feature } from "@mds/common";
+import { Feature } from "@mds/common/utils/featureFlag";
 import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import * as Strings from "@mds/common/constants/strings";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
@@ -226,7 +226,7 @@ export class DecisionPackageTab extends Component {
         modalType,
         closeModal: this.props.closeModal,
         handleSubmit: submitHandler,
-        afterClose: () => {},
+        afterClose: () => { },
         optionalProps,
       },
       content,

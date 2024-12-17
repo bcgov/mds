@@ -2,11 +2,6 @@ import React from "react";
 import { Field } from "redux-form";
 import { Row, Col, Typography } from "antd";
 import {
-  IComplianceArticle,
-  REPORT_REGULATORY_AUTHORITY_CODES,
-  REPORT_REGULATORY_AUTHORITY_ENUM,
-} from "@mds/common";
-import {
   required,
   maxLength,
   digitCharactersOnly,
@@ -21,6 +16,8 @@ import {
   formatComplianceCodeArticleNumber,
   stripParentheses,
 } from "@mds/common/redux/utils/helpers";
+import { IComplianceArticle } from "@mds/common/interfaces";
+import { REPORT_REGULATORY_AUTHORITY_CODES, REPORT_REGULATORY_AUTHORITY_ENUM } from "@mds/common/constants/enums";
 
 export interface HSRCEditFormProps {
   complianceCodes: IComplianceArticle[];

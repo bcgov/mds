@@ -2,8 +2,8 @@ import React, { FC } from "react";
 
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { Alert, Button, Form, Typography } from "antd";
-import { IMineDocument } from "@mds/common";
 import { MineDocument } from "@mds/common/models/documents/document";
+import { IMineDocument } from "@mds/common/interfaces";
 
 interface ArchiveDocumentModalProps {
   documents: IMineDocument[];

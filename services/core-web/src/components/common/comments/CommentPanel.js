@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Spin, List, Button, Popconfirm } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
-import { USER_ROLES } from "@mds/common";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import CommentEditor from "@mds/common/components/comments/CommentEditor";
 import Comment from "@/components/common/comments/Comment";
@@ -32,9 +32,9 @@ const defaultProps = {
   loading: false,
   deletePermission: null,
   createPermission: null,
-  onChange: () => {},
-  onSubmit: () => {},
-  onRemove: () => {},
+  onChange: () => { },
+  onSubmit: () => { },
+  onRemove: () => { },
 };
 
 export const CommentPanel = (props) => {

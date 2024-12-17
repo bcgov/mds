@@ -1,5 +1,5 @@
 import { notification } from "antd";
-import { USER_ROLES } from "@mds/common";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import { request, success, error } from "@/actions/genericActions";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import * as authenticationActions from "@/actions/authenticationActions";

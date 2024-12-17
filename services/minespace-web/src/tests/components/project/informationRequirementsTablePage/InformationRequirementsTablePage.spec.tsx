@@ -5,7 +5,7 @@ import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import { AUTHENTICATION, PROJECTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import { render } from "@testing-library/react";
-import { USER_ROLES } from "@mds/common";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import { Provider } from "react-redux";
 import { store } from "@/App";
 import * as projectActionCreator from "@mds/common/redux/actionCreators/projectActionCreator";

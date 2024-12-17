@@ -20,9 +20,10 @@ import { normalizeDatetime, normalizePhone } from "@common/utils/helpers";
 import IncidentCategoryCheckboxGroup from "@/components/Forms/incidents/IncidentCategoryCheckboxGroup";
 import RenderDateTimeTz from "@/components/common/RenderDateTimeTz";
 import { getDropdownIncidentCategoryCodeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-import { IMineIncident, INCIDENT_CONTACT_METHOD_OPTIONS } from "@mds/common";
 import { ADD_EDIT_INCIDENT } from "@/constants/forms";
 import { dateNotBeforeStrictOther } from "@mds/common/redux/utils/Validate";
+import { IMineIncident } from "@mds/common/interfaces";
+import { INCIDENT_CONTACT_METHOD_OPTIONS } from "@mds/common/constants/strings";
 
 interface IncidentFormInitialReportProps {
   isEditMode: boolean;

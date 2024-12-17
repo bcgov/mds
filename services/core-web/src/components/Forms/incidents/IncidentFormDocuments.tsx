@@ -1,4 +1,3 @@
-import { IMineIncidentDocument, INCIDENT_DOCUMENT_TYPES } from "@mds/common";
 import React, { FC } from "react";
 import { Col, Empty, Form, Row, Typography } from "antd";
 import { Field } from "redux-form";
@@ -11,6 +10,8 @@ import {
   INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD,
 } from "@/components/Forms/incidents/IncidentForm";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
+import { IMineIncidentDocument } from "@mds/common/interfaces";
+import { INCIDENT_DOCUMENT_TYPES } from "@mds/common/constants/strings";
 
 interface IncidentFormDocumentsProps {
   documents: IMineIncidentDocument[];

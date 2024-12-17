@@ -1,7 +1,6 @@
 import queryString from "query-string";
 import * as Strings from "@mds/common/constants/strings";
 import { isEmpty } from "lodash";
-import { getEnvironment } from "@mds/common";
 import Home from "@/components/Home";
 import Logout from "@/components/common/Logout";
 import Dashboard from "@/components/dashboard/minesHomePage/Dashboard";
@@ -57,6 +56,7 @@ import ViewDigitalPermitCredential from "@/components/mine/DigitalPermitCredenti
 import ComplianceCodeManagement from "@/components/admin/complianceCodes/ComplianceCodeManagement";
 import ProjectSubmissionStatusPage from "@mds/common/components/projectSummary/ProjectSubmissionStatusPage";
 import ViewPermit from "@/components/mine/Permit/ViewPermit";
+import { getEnvironment } from "@mds/common/utils/environmentUtils";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));

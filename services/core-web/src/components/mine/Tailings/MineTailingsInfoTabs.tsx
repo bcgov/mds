@@ -34,9 +34,9 @@ import TailingsSummaryPageWrapper from "./TailingsSummaryPageWrapper";
 import { IMine, IMineReport } from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
-import { Feature } from "@mds/common";
+import { Feature } from "@mds/common/utils/featureFlag";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { USER_ROLES } from "@mds/common";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 
 /**

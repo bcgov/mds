@@ -4,7 +4,7 @@ import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { DAM, DAMS } from "@mds/common/constants/API";
 import { createDam, fetchDam } from "@mds/common/redux/actionCreators/damActionCreator";
 
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 

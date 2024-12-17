@@ -13,7 +13,7 @@ import { useLocation } from "react-router-dom";
 import { getFormattedProjectApplication } from "@mds/common/redux/selectors/projectSelectors";
 import ProjectCallout from "@mds/common/components/projects/ProjectCallout";
 import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
-import { SystemFlagEnum } from "@mds/common";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 const inputStyle = { width: "100%" };
 

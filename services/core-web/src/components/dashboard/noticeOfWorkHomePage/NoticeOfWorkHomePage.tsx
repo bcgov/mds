@@ -20,7 +20,7 @@ import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/Notic
 import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
 import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 import { PageTracker } from "@common/utils/trackers";
-import { INoticeOfWorkApplication, IPageData, IOption, INoticeOfWork } from "@mds/common";
+import { IPageData, IOption, INoticeOfWork } from "@mds/common/interfaces";
 import { RootState } from "@/App";
 
 export interface NoWSearchParams {

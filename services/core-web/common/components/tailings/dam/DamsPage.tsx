@@ -18,13 +18,13 @@ import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import DamForm from "./DamForm";
 import { ADD_EDIT_DAM } from "@/constants/forms";
-import { IDam, ITailingsStorageFacility } from "@mds/common";
+import { IDam, ITailingsStorageFacility } from "@mds/common/interfaces";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { RootState } from "@/App";
-import { Feature } from "@mds/common";
+import { Feature } from "@mds/common/utils/featureFlag";
 import FeatureFlagGuard from "@/components/common/featureFlag.guard";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { USER_ROLES } from "@mds/common";
+import { USER_ROLES } from "@mds/common/constants/environment";
 
 interface DamsPageProps {
   tsf: ITailingsStorageFacility;
@@ -130,9 +130,8 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
         </Col>
         <Col span={24}>
           <Popconfirm
-            title={`Are you sure you want to cancel ${
-              tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-            } dam?
+            title={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+              } dam?
             All unsaved data on this page will be lost.`}
             onConfirm={handleBack}
             cancelText="No"
@@ -150,13 +149,12 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
       <SteppedForm
         errors={[]}
         handleSaveData={handleSave}
-        handleTabChange={() => {}}
+        handleTabChange={() => { }}
         activeTab="basic-dam-information"
         submitText={`${isUserActionEdit ? "Save and" : ""} Return to Associated Dams`}
         handleCancel={handleBack}
-        cancelConfirmMessage={`Are you sure you want to cancel ${
-          tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-        } dam?
+        cancelConfirmMessage={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+          } dam?
         All unsaved data on this page will be lost.`}
       >
         {[

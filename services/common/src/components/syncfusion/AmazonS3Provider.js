@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { SampleBase } from "@mds/common/components/syncfusion/SampleBase";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import {
   FileManagerComponent,
   Inject,

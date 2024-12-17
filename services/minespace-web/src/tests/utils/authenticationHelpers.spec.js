@@ -1,4 +1,4 @@
-import { KEYCLOAK } from "@mds/common";
+import { KEYCLOAK } from "@mds/common/constants/environment";
 import keycloak from "@mds/common/keycloak";
 import { signOutFromSSO, signOutFromSiteMinder } from "@/utils/authenticationHelpers";
 import {

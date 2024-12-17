@@ -14,7 +14,7 @@ import * as router from "@/constants/routes";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { getApplicationStatusType } from "@/constants/theme";
 import DocumentLink from "@/components/common/DocumentLink";
-import { INoticeOfWork, IOption } from "@mds/common";
+import { INoticeOfWork, IOption } from "@mds/common/interfaces";
 import { ColumnType } from "antd/es/table";
 import { SortOrder } from "antd/es/table/interface";
 import { NoWSearchParams } from "./NoticeOfWorkHomePage";

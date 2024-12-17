@@ -2,7 +2,7 @@ import { Alert, Button, Col, Empty, Popconfirm, Row, Typography } from "antd";
 import { change, ChangeAction, Field, getFormValues } from "redux-form";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
-import { IDocument, IMine, IMinePartyAppt, PARTY_APPOINTMENT_STATUS } from "@mds/common";
+import { IDocument, IMine, IMinePartyAppt } from "@mds/common/interfaces";
 
 import { MINE_PARTY_APPOINTMENT_DOCUMENTS } from "@mds/common/constants/API";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
@@ -26,6 +26,7 @@ import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import PartyAppointmentTable from "../PartyAppointmentTable";
 import { ColumnsType } from "antd/lib/table";
 import CoreTable from "@mds/common/components/common/CoreTable";
+import { PARTY_APPOINTMENT_STATUS } from "@mds/common/constants/strings";
 
 interface EngineerOfRecordProps {
   change: (

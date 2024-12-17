@@ -10,7 +10,7 @@ import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { IComplianceArticle } from "@mds/common/interfaces";
 import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import { USER_ROLES } from "@mds/common/constants/environment";
-import { SystemFlagEnum } from "@mds/common";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 const initialState = {
   [complianceCodeReducerType]: {

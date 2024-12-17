@@ -1,9 +1,4 @@
 import { Alert, Button, Col, Row, Table, Typography } from "antd";
-import {
-  ESUP_DOCUMENT_GENERATED_TYPES,
-  IExplosivesPermit,
-  IExplosivesPermitAmendment,
-} from "@mds/common";
 import React, { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -13,6 +8,8 @@ import { formatDate } from "@mds/common/redux/utils/helpers";
 import ExplosivesPermitMap from "@mds/common/components/explosivespermits/ExplosivesPermitMap";
 import Magazine from "@mds/common/components/explosivespermits/Magazine";
 import { renderCategoryColumn, renderTextColumn } from "../common/CoreTableCommonColumns";
+import { ESUP_DOCUMENT_GENERATED_TYPES } from "@mds/common/constants/strings";
+import { IExplosivesPermit, IExplosivesPermitAmendment } from "@mds/common/interfaces";
 
 export const generatedDocColumns = [
   renderCategoryColumn(
@@ -178,9 +175,8 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
         <>
           <Alert
             className="ant-alert-grey bullet"
-            message={`This Permit Contains ${amendmentsCount} Amended Version${
-              amendmentsCount > 1 ? "s" : ""
-            }`}
+            message={`This Permit Contains ${amendmentsCount} Amended Version${amendmentsCount > 1 ? "s" : ""
+              }`}
             description={
               <div>
                 <Typography.Text>Click View History to See all past versions</Typography.Text>

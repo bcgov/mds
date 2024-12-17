@@ -11,7 +11,8 @@ import { renderConfig } from "@/components/common/config";
 import { TRASHCAN } from "@/constants/assets";
 import * as FORM from "@/constants/forms";
 import ExplosivesPermitFileUpload from "@/components/Forms/ExplosivesPermit/ExplosivesPermitFileUpload";
-import { Feature, IExplosivesPermitDocument, IOption, isFeatureEnabled } from "@mds/common";
+import { IExplosivesPermitDocument, IOption } from "@mds/common/interfaces";
+import { Feature, isFeatureEnabled } from "@mds/common/utils/featureFlag";
 
 interface DocumentCategoryFormProps {
   documents: IExplosivesPermitDocument[];

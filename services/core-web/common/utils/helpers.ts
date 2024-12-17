@@ -8,7 +8,7 @@ import { get, isEmpty, isNil, sortBy } from "lodash";
 import { createNumberMask } from "redux-form-input-masks";
 import moment from "moment-timezone";
 import { reset } from "redux-form";
-import { ItemMap } from "@mds/common";
+import { ItemMap } from "@mds/common/interfaces";
 
 /**
  * Helper function to clear redux form after submissions
@@ -583,7 +583,7 @@ export const getHighestConsequence = (tsf) => {
 
   const highestRankedDam = tsf.dams.reduce((prev, current) =>
     CONSEQUENCE_CLASSIFICATION_RANK_HASH[prev.consequence_classification] >
-    CONSEQUENCE_CLASSIFICATION_RANK_HASH[current.consequence_classification]
+      CONSEQUENCE_CLASSIFICATION_RANK_HASH[current.consequence_classification]
       ? prev
       : current
   );

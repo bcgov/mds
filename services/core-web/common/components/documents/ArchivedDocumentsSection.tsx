@@ -2,7 +2,7 @@ import React from "react";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { Typography } from "antd";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
-import { Feature } from "@mds/common";
+import { Feature } from "@mds/common/utils/featureFlag";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { ColumnType } from "antd/es/table";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";

@@ -20,7 +20,7 @@ import {
   updateTailingsStorageFacility,
 } from "@mds/common/redux/actionCreators/mineActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import * as API from "@mds/common/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
 

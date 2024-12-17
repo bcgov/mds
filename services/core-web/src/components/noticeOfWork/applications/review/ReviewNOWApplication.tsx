@@ -28,7 +28,7 @@ import {
   wholeNumber,
 } from "@common/utils/Validate";
 import * as Strings from "@mds/common/constants/strings";
-import { USER_ROLES } from "@mds/common";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import { getNoticeOfWorkEditableTypes } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import RenderField from "@/components/common/RenderField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
@@ -1630,6 +1630,6 @@ export default compose(
     touchOnChange: false,
     touchOnBlur: true,
     enableReinitialize: true,
-    onSubmit: () => {},
+    onSubmit: () => { },
   })
 )(ReviewNOWApplication);

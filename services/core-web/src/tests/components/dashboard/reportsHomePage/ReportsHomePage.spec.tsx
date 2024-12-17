@@ -4,8 +4,8 @@ import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { AUTHENTICATION, MINES, REPORTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import { BrowserRouter } from "react-router-dom";
 import ReportsHomePage from "@/components/dashboard/reportsHomePage/ReportsHomePage";
-import { SystemFlagEnum } from "@mds/common";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 const initialState: any = {
   [REPORTS]: { reports: MOCK.MINE_REPORTS, reportsPageData: MOCK.REPORTS_PAGE_DATA },

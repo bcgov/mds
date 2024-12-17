@@ -4,7 +4,7 @@ import { MinePermitInfo } from "@/components/mine/Permit/MinePermitInfo";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { AUTHENTICATION, PERMITS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
-import { USER_ROLES } from "@mds/common";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import { BrowserRouter } from "react-router-dom";
 
 const dispatchProps: any = {};

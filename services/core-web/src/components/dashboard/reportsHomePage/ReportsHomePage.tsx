@@ -15,7 +15,7 @@ import ReportsTable from "@/components/dashboard/reportsHomePage/ReportsTable";
 import ReportsSearch from "@/components/dashboard/reportsHomePage/ReportsSearch";
 import { modalConfig } from "@/components/modalContent/config";
 import { useHistory, useLocation } from "react-router-dom";
-import { MineReportParams } from "@mds/common";
+import { MineReportParams } from "@mds/common/interfaces";
 
 const defaultParams: MineReportParams = {
   page: Strings.DEFAULT_PAGE,

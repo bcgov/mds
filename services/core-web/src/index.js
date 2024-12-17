@@ -16,7 +16,7 @@ import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
 import FeatureFlagProvider from "@mds/common/providers/featureFlags/featureFlag.provider";
 import { registerLicense } from "@syncfusion/ej2-base";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 
 const idleTimeout = 5 * 60_000;
 const refreshTokenBufferSeconds = 60;

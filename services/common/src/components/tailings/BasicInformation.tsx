@@ -1,13 +1,4 @@
-import {
-  CONSEQUENCE_CLASSIFICATION_STATUS_CODE,
-  FACILITY_TYPES,
-  IPermit,
-  ITailingsStorageFacility,
-  STORAGE_LOCATION,
-  TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD,
-  TSF_OPERATING_STATUS_CODE,
-  TSF_TYPES,
-} from "@mds/common";
+
 import { Alert, Button, Col, Row, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
 import {
@@ -26,6 +17,8 @@ import { formatDateTime } from "@mds/common/redux/utils/helpers";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getTsf } from "@mds/common/redux/selectors/tailingsSelectors";
 import TailingsDiffModal from "@mds/common/components/tailings/TailingsDiffModal";
+import { IPermit, ITailingsStorageFacility } from "@mds/common/interfaces";
+import { CONSEQUENCE_CLASSIFICATION_STATUS_CODE, FACILITY_TYPES, STORAGE_LOCATION, TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD, TSF_OPERATING_STATUS_CODE, TSF_TYPES } from "@mds/common/constants/strings";
 
 export interface BasicInformationProps {
   permits: IPermit[];

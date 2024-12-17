@@ -13,7 +13,7 @@ import * as Strings from "@mds/common/constants/strings";
 import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import * as routes from "@/constants/routes";
 import ProjectStagesTable from "./ProjectStagesTable";
-import { Feature } from "@mds/common";
+import { Feature } from "@mds/common/utils/featureFlag";
 import ProjectLinks from "@mds/common/components/projectSummary/ProjectLinks";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 

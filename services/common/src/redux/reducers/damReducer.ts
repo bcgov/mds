@@ -1,7 +1,7 @@
 import { DAMS } from "@mds/common/constants/reducerTypes";
 import { STORE_DAM } from "@mds/common/constants/actionTypes";
-import { IDam } from "@mds/common";
 import { RootState } from "@mds/common/redux/rootState";
+import { IDam } from "@mds/common/interfaces";
 
 interface DamState {
   dam: IDam;

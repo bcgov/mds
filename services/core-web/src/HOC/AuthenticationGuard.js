@@ -6,7 +6,7 @@ import { useKeycloak } from "@react-keycloak/web";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import { isAuthenticated, getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { authenticateUser, storeUserAccessData } from "@mds/common/redux/actions/authenticationActions";
-import { USER_ROLES } from "@mds/common";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import NullScreen from "@/components/common/NullScreen";
 
 const propTypes = {

@@ -13,7 +13,7 @@ import moment from "moment";
 import { storeDam } from "@mds/common/redux/actions/damActions";
 import { useHistory } from "react-router-dom";
 import { ADD_DAM, EDIT_DAM } from "@/constants/routes";
-import { IDam, ITailingsStorageFacility } from "@mds/common";
+import { IDam, ITailingsStorageFacility } from "@mds/common/interfaces";
 import { RootState } from "@/App";
 import { ColumnsType } from "antd/lib/table";
 import CoreTable from "@mds/common/components/common/CoreTable";
@@ -62,15 +62,15 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
     },
     ...(isEditMode
       ? [
-          {
-            key: "edit",
-            label: "Edit Dam",
-            icon: <EditOutlined />,
-            clickFunction: (_event, record) => {
-              handleNavigateToEdit(event, record, true);
-            },
+        {
+          key: "edit",
+          label: "Edit Dam",
+          icon: <EditOutlined />,
+          clickFunction: (_event, record) => {
+            handleNavigateToEdit(event, record, true);
           },
-        ]
+        },
+      ]
       : []),
   ];
 

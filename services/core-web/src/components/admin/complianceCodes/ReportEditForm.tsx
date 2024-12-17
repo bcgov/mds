@@ -2,12 +2,12 @@ import React from "react";
 import { FieldArray, getFormValues } from "redux-form";
 import { useSelector } from "react-redux";
 import { Row, Col, Typography, Button, Collapse, Popconfirm } from "antd";
-import { IComplianceArticle } from "@mds/common";
 import { ReportDefinitionFieldSelect } from "@mds/common/components/reports/ReportDefinitionFieldSelect";
 import { ReportInfoBox } from "@mds/common/components/reports/ReportGetStarted";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
 import { getMineReportDefinitionOptions } from "@mds/common/redux/selectors/staticContentSelectors";
+import { IComplianceArticle } from "@mds/common/interfaces";
 
 export interface ReportEditProps {
   complianceCodes: IComplianceArticle[];

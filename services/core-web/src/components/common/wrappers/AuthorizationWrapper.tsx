@@ -6,8 +6,9 @@ import { startCase, camelCase } from "lodash";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { Tooltip } from "antd";
 import * as Permission from "@/constants/permissions";
-import { detectDevelopmentEnvironment, detectProdEnvironment, USER_ROLES } from "@mds/common";
 import PropTypes from "prop-types";
+import { detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common/utils/environmentUtils";
+import { USER_ROLES } from "@mds/common/constants/environment";
 
 /**
  * @constant AuthorizationWrapper conditionally renders react children depending

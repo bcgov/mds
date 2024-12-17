@@ -1,6 +1,6 @@
 import * as actionTypes from "@mds/common/constants/actionTypes";
 import { COMPLIANCE } from "@mds/common/constants/reducerTypes";
-import { IComplianceArticle } from "@mds/common";
+import { IComplianceArticle } from "@mds/common/interfaces";
 import { RootState } from "@mds/common/redux/rootState";
 
 /**

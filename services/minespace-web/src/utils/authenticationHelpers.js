@@ -1,4 +1,4 @@
-import { KEYCLOAK } from "@mds/common";
+import { KEYCLOAK } from "@mds/common/constants/environment";
 import {
   KEYCLOAK_LOGOUT_REDIRECT_URI,
   SITEMINDER_LOGOUT_REDIRECT_URI,

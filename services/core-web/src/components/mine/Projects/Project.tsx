@@ -5,7 +5,6 @@ import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import { fetchProjectById } from "@mds/common/redux/actionCreators/projectActionCreator";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
-import { Feature } from "@mds/common";
 import * as routes from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import ProjectOverviewTab from "@/components/mine/Projects/ProjectOverviewTab";
@@ -17,6 +16,7 @@ import ProjectDescriptionTab from "@mds/common/components/project/ProjectDescrip
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
 import ProjectDocumentsTab from "@mds/common/components/projects/ProjectDocumentsTab";
+import { Feature } from "@mds/common/utils/featureFlag";
 
 const Project: FC = () => {
   const { tab, projectGuid } = useParams<{ tab: string; projectGuid: string }>();

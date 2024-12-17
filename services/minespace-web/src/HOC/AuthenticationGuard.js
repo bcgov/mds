@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import queryString from "query-string";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import { useKeycloak } from "@react-keycloak/web";
-import { KEYCLOAK } from "@mds/common";
+import { KEYCLOAK } from "@mds/common/constants/environment";
 import { isAuthenticated } from "@mds/common/redux/selectors/authenticationSelectors";
 import { authenticateUser } from "@/actionCreators/authenticationActionCreator";
 import { storeUserAccessData } from "@mds/common/redux/actions/authenticationActions";

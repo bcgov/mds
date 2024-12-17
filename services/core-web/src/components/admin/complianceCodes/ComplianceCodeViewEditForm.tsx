@@ -4,7 +4,6 @@ import { getFormValues, change, touch } from "redux-form";
 import { Row, Button, Steps } from "antd";
 import * as FORM from "@/constants/forms";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
-import { IComplianceArticle, REPORT_REGULATORY_AUTHORITY_CODES } from "@mds/common";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import {
@@ -16,6 +15,8 @@ import { closeModal } from "@mds/common/redux/actions/modalActions";
 import { HSRCEditForm } from "./HSRCEditForm";
 import { ReportEditForm } from "./ReportEditForm";
 import CoreButton from "@mds/common/components/common/CoreButton";
+import { IComplianceArticle } from "@mds/common/interfaces";
+import { REPORT_REGULATORY_AUTHORITY_CODES } from "@mds/common/constants/enums";
 
 const ComplianceCodeViewEditForm: FC<{
   initialValues: IComplianceArticle;

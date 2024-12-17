@@ -1,6 +1,5 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT, IMineAlert, IMineAlertCreate } from "@mds/common";
 import { error, request, success } from "@mds/common/redux/actions/genericActions";
 import { createRequestHeader } from "@mds/common/redux/utils/RequestHeaders";
 import CustomAxios from "@mds/common/redux/customAxios";
@@ -9,6 +8,8 @@ import * as mineActions from "@/actions/mineAlertActions";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import { AxiosResponse } from "axios";
 import { AppThunk } from "@mds/common/interfaces/appThunk.type";
+import { IMineAlert, IMineAlertCreate } from "@mds/common/interfaces";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 
 export const fetchGlobalMineAlerts = (): AppThunk<Promise<AxiosResponse<IMineAlert>>> => (
   dispatch
