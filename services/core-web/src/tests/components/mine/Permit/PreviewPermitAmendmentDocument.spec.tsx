@@ -4,6 +4,7 @@ import { getDocument } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { PreviewPermitAmendmentDocument } from "@/components/mine/Permit/PreviewPermitAmendmentDocument";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { IPermitCondition } from "@mds/common/interfaces";
 
 jest.mock("@mds/common/redux/utils/actionlessNetworkCalls", () => ({
     getDocument: jest.fn()
@@ -11,7 +12,7 @@ jest.mock("@mds/common/redux/utils/actionlessNetworkCalls", () => ({
 
 const mockPermitAmendment = MOCK.PERMITS[0].permit_amendments[0];
 
-const mockSelectedCondition = {
+const mockSelectedCondition: IPermitCondition = {
     ...MOCK.PERMITS[0].permit_amendments[0].conditions[0],
     permit_condition_guid: "test-condition",
     meta: {

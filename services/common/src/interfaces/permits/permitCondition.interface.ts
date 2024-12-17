@@ -15,7 +15,7 @@ export interface IBoundingBox {
 }
 export interface IPermitConditionMeta {
   page: number;
-  role: string;
+  role?: string;
   bounding_box?: IBoundingBox;
 }
 export interface IPermitCondition {
