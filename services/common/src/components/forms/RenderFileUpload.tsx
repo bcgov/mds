@@ -10,7 +10,6 @@ import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import * as tus from "tus-js-client";
 import { HttpRequest, HttpResponse } from "tus-js-client";
-import { APPLICATION_OCTET_STREAM, ENVIRONMENT, Feature, SystemFlagEnum } from "@mds/common/index";
 import { pollDocumentUploadStatus } from "@mds/common/redux/actionCreators/documentActionCreator";
 import { FileUploadHelper } from "@mds/common/utils/fileUploadHelper";
 import { createRequestHeader } from "@mds/common/redux/utils/RequestHeaders";
@@ -25,6 +24,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleQuestion } from "@fortawesome/pro-light-svg-icons";
 import { FormContext } from "./FormWrapper";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
+import { APPLICATION_OCTET_STREAM } from "@mds/common/constants/fileTypes";
+import { Feature } from "@mds/common/utils/featureFlag";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 

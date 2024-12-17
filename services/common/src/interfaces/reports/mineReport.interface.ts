@@ -1,6 +1,6 @@
 import { IMineReportSubmission } from "@mds/common/interfaces/reports/mineReportSubmission.interface";
 import { IMineReportContact } from "./mineReportContact.interface";
-import { MINE_REPORT_SUBMISSION_CODES } from "../..";
+import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants/enums";
 
 export interface IMineReport {
   mine_report_id: string;

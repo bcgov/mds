@@ -8,8 +8,8 @@ import {
   formatComplianceCodeReportName,
 } from "../utils/helpers";
 import { RootState } from "@mds/common/redux/rootState";
-import { IMineReportDefinition } from "../..";
 import { getMunicipalityOptions } from "../reducers/staticContentReducer";
+import { IMineReportDefinition } from "@mds/common/interfaces/reports/mineReportDefinition.interface";
 
 export const {
   getStaticContentLoadingIsComplete,

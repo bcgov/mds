@@ -1,10 +1,10 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
-import { FORM, PROJECT_STATUS_CODES, SystemFlagEnum } from "@mds/common/index";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import UpdateStatusForm from "./UpdateStatusForm";
+import { SystemFlagEnum, PROJECT_STATUS_CODES, FORM } from "@mds/common/constants";
 
 const msState = {
     [AUTHENTICATION]: {

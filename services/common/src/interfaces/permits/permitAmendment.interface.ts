@@ -1,11 +1,9 @@
-import {
-  INoWDocument,
-  IPermitAmendmentDocument,
-  INoWImportedApplicationDocument,
-  IPermitCondition,
-  VC_CRED_ISSUE_STATES, IMineReportPermitRequirement,
-  IPermitConditionCategory,
-} from "@mds/common/index";
+import { VC_CRED_ISSUE_STATES } from "@mds/common/constants";
+import { INoWDocument } from "../NoWDocument.interface";
+import { INoWImportedApplicationDocument } from "../NoWImportedApplicationDocument.interface";
+import { IMineReportPermitRequirement } from "./mineReportPermitRequirements.interface";
+import { IPermitAmendmentDocument } from "./permitAmendmentDocument.interface";
+import { IPermitCondition, IPermitConditionCategory } from "./permitCondition.interface";
 
 export interface IPermitAmendment {
   permit_amendment_id: number;

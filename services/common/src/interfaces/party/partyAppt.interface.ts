@@ -1,4 +1,4 @@
-import { IAddPartyAppointment, IParty } from "@mds/common/index";
+import { IAddPartyAppointment, IParty } from "@mds/common/interfaces";
 
 export interface IPartyAppt extends IAddPartyAppointment {
   mine_party_appt_guid: string;

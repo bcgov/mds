@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 
-import { FORM } from "../..";
+import { FORM } from "@mds/common/constants/forms";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";

@@ -1,14 +1,7 @@
-import {
-  ConsequenceClassificationStatusCodeEnum,
-  FacilityTypeEnum,
-  IDam,
-  ITRBExemptionStatusCodeEnum,
-  StorageLocationEnum,
-  TSFOperatingStatusCodeEnum,
-  TailingsStorageFacilityTypeEnum,
-  IPartyAppt,
-} from "@mds/common/index";
 import { IDiffEntry } from "@mds/common/components/history/DiffColumn.interface";
+import { ConsequenceClassificationStatusCodeEnum, ITRBExemptionStatusCodeEnum, TSFOperatingStatusCodeEnum, FacilityTypeEnum, TailingsStorageFacilityTypeEnum, StorageLocationEnum } from "@mds/common/constants/enums";
+import { IDam } from "./dam/dam.interface";
+import { IPartyAppt } from "../party/partyAppt.interface";
 
 export interface ICreateTailingsStorageFacility {
   mine_tailings_storage_facility_name: string;

@@ -2,11 +2,12 @@ import React, { FC } from "react";
 import { Collapse, Row, Typography } from "antd";
 import { useSelector } from "react-redux";
 import { Field, getFormValues } from "redux-form";
-import { FORM, IProjectSummaryForm } from "../..";
 import { getAmsAuthorizationTypes } from "@mds/common/redux/selectors/projectSelectors";
 import { required } from "@mds/common/redux/utils/Validate";
 import RenderCheckbox from "../forms/RenderCheckbox";
 import PageFoldScrollWrapper from "../common/PageFoldScrollWrapper";
+import { FORM } from "@mds/common/constants";
+import { IProjectSummaryForm } from "@mds/common/interfaces";
 
 const terms = (
   <ol type="1" className="declaration-page-content">

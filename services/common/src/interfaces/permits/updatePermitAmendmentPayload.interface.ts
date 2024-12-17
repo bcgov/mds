@@ -5,7 +5,7 @@ import {
   INoWDocument,
   INoWImportedApplicationDocument,
   IPermitCondition,
-} from "@mds/common/index";
+} from "@mds/common/interfaces";
 
 export interface IUpdatePermitAmendmentPayload {
   amendmentNumber: number;

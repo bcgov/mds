@@ -1,9 +1,9 @@
 import React, { FC, useState } from "react";
 import { Form, Select } from "antd";
 import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
-import { IOption } from "../..";
 import { caseInsensitiveLabelFilter } from "@mds/common/redux/utils/helpers";
 import { FormConsumer, IFormContext } from "./FormWrapper";
+import { IOption } from "@mds/common/interfaces/common";
 
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);

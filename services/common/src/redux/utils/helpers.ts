@@ -12,10 +12,9 @@ import {
   IComplianceArticle,
   IMineReportDefinition,
   IMineReportSubmission,
-  IPermit,
   ItemMap,
 } from "@mds/common/interfaces";
-import { MINE_REPORT_SUBMISSION_CODES } from "../..";
+import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants/enums";
 
 /**
  * Helper function to clear redux form after submission

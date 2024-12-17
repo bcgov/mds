@@ -1,4 +1,6 @@
-import { Feature, IMineDocument, USER_ROLES, isFeatureEnabled } from "@mds/common/index";
+import { USER_ROLES } from "@mds/common/constants";
+import { IMineDocument } from "@mds/common/interfaces";
+import { isFeatureEnabled, Feature } from "@mds/common/utils";
 
 export enum FileOperations {
   View = "Open in document viewer",

@@ -4,7 +4,7 @@ import ProjectLinks from "./ProjectLinks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { PROJECTS } from "@mds/common/constants/reducerTypes";
 import FormWrapper from "../forms/FormWrapper";
-import { FORM } from "../..";
+import { FORM } from "@mds/common/constants/forms";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const initialState = {

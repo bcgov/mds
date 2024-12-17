@@ -3,13 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import ScrollSidePageWrapper from "../common/ScrollSidePageWrapper";
 import { ScrollSideMenuProps } from "../common/ScrollSideMenu";
 import { fetchProjectById } from "@mds/common/redux/actionCreators/projectActionCreator";
-import {
-  CATEGORY_CODE,
-  Feature,
-  IProject,
-  IProjectSummaryAuthorization,
-  SystemFlagEnum,
-} from "../..";
 import { Alert, Col, Row, Typography } from "antd";
 import ProjectDocumentsTabSection from "./ProjectDocumentsTabSection";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
@@ -23,6 +16,10 @@ import { MineDocument } from "@mds/common/models/documents/document";
 import Loading from "../common/Loading";
 import { getProjectSummaryDocumentTypesHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import { areDocumentFieldsDisabled } from "./projectUtils";
+import { IProject, IProjectSummaryAuthorization } from "@mds/common/interfaces/projects";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { CATEGORY_CODE } from "@mds/common/constants";
+import { Feature } from "@mds/common/utils";
 
 interface ProjectDocumentsTabProps {
   project: IProject;

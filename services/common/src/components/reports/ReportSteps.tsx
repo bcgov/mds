@@ -12,7 +12,7 @@ import ReportDetailsForm from "@mds/common/components/reports/ReportDetailsForm"
 import { createReportSubmission } from "./reportSubmissionSlice";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { SystemFlagEnum } from "@mds/common/constants";
-import { FORM } from "../..";
+import { FORM } from "@mds/common/constants/forms";
 
 const ReportSteps = () => {
   const system = useSelector(getSystemFlag);

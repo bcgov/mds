@@ -11,7 +11,6 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
-import { Feature, USER_ROLES } from "@mds/common/index";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { formatDate } from "@common/utils/helpers";
 import {
@@ -36,6 +35,8 @@ import {
 import { getDocumentDownloadToken } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import { downloadDocument, waitFor } from "@/components/common/downloads/helpers";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
+import { USER_ROLES } from "@mds/common/constants/environment";
+import { Feature } from "@mds/common/utils/featureFlag";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments

@@ -15,7 +15,8 @@ import {
   postalCodeWithCountry,
 } from "@mds/common/redux/utils/Validate";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
-import { FORM, CONTACTS_COUNTRY_OPTIONS, IProjectSummaryForm } from "../..";
+import { FORM, CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants";
+import { IProjectSummaryForm } from "@mds/common/interfaces";
 
 const { Title, Paragraph } = Typography;
 

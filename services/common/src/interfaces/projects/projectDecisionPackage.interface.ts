@@ -1,4 +1,4 @@
-import { IProjectDecisionPackageDocument } from "@mds/common/index";
+import { IProjectDecisionPackageDocument } from "./projectDecisionPackageDocument.interface";
 
 export interface IProjectDecisionPackage {
   project_decision_package_id: number;

@@ -1,4 +1,4 @@
-import { ICreateParty } from "@mds/common/index";
+import { ICreateParty } from "./createParty.interface";
 
 export interface IAddPartyFormState {
   showingAddPartyForm: boolean;

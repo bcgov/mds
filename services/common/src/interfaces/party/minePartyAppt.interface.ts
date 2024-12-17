@@ -1,4 +1,5 @@
-import { IParty, MinePartyAppointmentTypeCodeEnum } from "@mds/common/index";
+import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants";
+import { IParty } from "./party.interface";
 
 export interface IMinePartyAppt {
   documents: string[];

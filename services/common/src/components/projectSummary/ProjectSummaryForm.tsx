@@ -22,9 +22,9 @@ import { ApplicationSummary } from "./ApplicationSummary";
 import { getProjectSummaryAuthorizationTypesArray } from "@mds/common/redux/selectors/staticContentSelectors";
 import { ProjectManagement } from "./ProjectManagement";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
-import { SystemFlagEnum } from "../..";
 import { formatProjectPayload } from "@mds/common/utils/helpers";
 import { areAuthFieldsDisabled, areDocumentFieldsDisabled, areFieldsDisabled, isDocumentDeletionEnabled } from "../projects/projectUtils";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 interface ProjectSummaryFormProps {
   initialValues: IProjectSummary;

@@ -4,7 +4,7 @@ import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@mds/common/constants/fileTypes
 import { MINE_REPORT_DOCUMENT } from "@mds/common/constants/API";
 import RenderFileUpload from "../forms/RenderFileUpload";
 import { required, requiredNewFiles } from "@mds/common/redux/utils/Validate";
-import { IMineDocument } from "../..";
+import { IMineDocument } from "@mds/common/interfaces/mineDocument.interface";
 
 interface ReportFileUploadProps {
   mineGuid: string;

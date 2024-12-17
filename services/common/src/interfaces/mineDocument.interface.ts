@@ -1,4 +1,4 @@
-import { IMineDocumentVersion } from "@mds/common/index";
+import { IMineDocumentVersion } from "./mineDocumentVersion.interface";
 
 export interface IMineDocument {
   mine_document_guid: string;

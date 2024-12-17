@@ -1,4 +1,4 @@
-import { IMineDocument } from "@mds/common/index";
+import { IMineDocument } from "@mds/common/interfaces";
 
 export interface IMajorMinesApplicationDocument extends IMineDocument {
   major_mine_application_id: number;

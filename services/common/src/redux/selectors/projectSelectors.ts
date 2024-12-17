@@ -5,9 +5,9 @@ import {
   IParty,
   IProjectContact,
   IProjectSummaryDocument,
-  MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE,
-} from "../..";
+} from "@mds/common/interfaces";
 import { getTransformedProjectSummaryAuthorizationTypes } from "./staticContentSelectors";
+import { MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE } from "@mds/common/constants/strings";
 
 export const {
   getProjectSummary,

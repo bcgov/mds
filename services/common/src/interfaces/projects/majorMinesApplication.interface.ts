@@ -1,4 +1,5 @@
-import { IMajorMinesApplicationDocument, MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES } from "@mds/common/index";
+import { MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES } from "@mds/common/constants";
+import { IMajorMinesApplicationDocument } from "./majorMinesApplicationDocument.interface";
 
 export interface IMajorMinesApplication {
   major_mine_application_id: number;

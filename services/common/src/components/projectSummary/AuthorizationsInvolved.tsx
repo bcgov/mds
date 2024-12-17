@@ -48,18 +48,13 @@ import {
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { MineDocument } from "@mds/common/models/documents/document";
-import {
-  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE,
-  ENVIRONMENTAL_MANAGMENT_ACT,
-  WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL,
-  WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL,
-} from "../..";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FormContext } from "../forms/FormWrapper";
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
 import { areAuthEnvFieldsDisabled, areDocumentFieldsDisabled, isDocumentDeletionEnabled } from "../projects/projectUtils";
 import { removeDocumentFromProjectSummary } from "@mds/common/redux/actionCreators/projectActionCreator";
+import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE, ENVIRONMENTAL_MANAGMENT_ACT, WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL, WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL } from "@mds/common/constants/strings";
 
 const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled }) => {
   const dispatch = useDispatch();
@@ -88,16 +83,16 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
   };
 
   const onDeleteDocument = (event, key: string) => {
-    const document = tableDocuments.find( (doc) => key === doc.key);
-    if(document){
+    const document = tableDocuments.find((doc) => key === doc.key);
+    if (document) {
       dispatch(
         removeDocumentFromProjectSummary(
           project_guid,
           project_summary_guid,
           document.mine_document_guid
-      )).then( () => {
-        removeAmendmentDocument(tableDocuments.indexOf(document),document.category,document.document_manager_guid)
-      })
+        )).then(() => {
+          removeAmendmentDocument(tableDocuments.indexOf(document), document.category, document.document_manager_guid)
+        })
     }
   }
 

@@ -9,14 +9,6 @@ import {
   formatComplianceCodeReportName,
 } from "@mds/common/redux/utils/helpers";
 import ExportOutlined from "@ant-design/icons/ExportOutlined";
-import {
-  FORM,
-  MINE_REPORTS_ENUM,
-  MineReportType,
-  MMO_EMAIL,
-  REPORT_TYPE_CODES,
-  SystemFlagEnum,
-} from "../..";
 import FormWrapper from "../forms/FormWrapper";
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import { required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
@@ -30,6 +22,9 @@ import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { useParams } from "react-router-dom";
+import { MINE_REPORTS_ENUM, MineReportType, REPORT_TYPE_CODES, SystemFlagEnum } from "@mds/common/constants/enums";
+import { FORM } from "@mds/common/constants/forms";
+import { MMO_EMAIL } from "@mds/common/constants/strings";
 
 interface ReportGetStartedProps {
   mine: IMine;

@@ -1,4 +1,4 @@
-import { IPermitAmendment } from "@mds/common/index";
+import { IPermitAmendment } from "@mds/common/interfaces";
 
 export interface IDraftPermitAmendment {
   permit_guid: string;

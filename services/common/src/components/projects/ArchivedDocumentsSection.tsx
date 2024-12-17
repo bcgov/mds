@@ -6,7 +6,7 @@ import { MineDocument } from "@mds/common/models/documents/document";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import DocumentTable from "../documents/DocumentTable";
 import { renderCategoryColumn } from "../common/CoreTableCommonColumns";
-import { CATEGORY_CODE } from "../..";
+import { CATEGORY_CODE } from "@mds/common/constants/strings";
 
 interface ArchivedDocumentsSectionProps {
   documents: MineDocument[];

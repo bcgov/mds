@@ -1,9 +1,9 @@
+import { PartyTypeCodeEnum } from "@mds/common/constants/enums";
 import {
   IMinePartyAppt,
   IPartyAddress,
   IPartyOrgBookEntity,
-  PartyTypeCodeEnum,
-} from "@mds/common/index";
+} from "@mds/common/interfaces";
 
 export interface IParty {
   address: IPartyAddress;

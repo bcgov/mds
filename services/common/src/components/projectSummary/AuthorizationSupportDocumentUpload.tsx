@@ -3,14 +3,10 @@ import { Field } from "redux-form";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@mds/common/constants/fileTypes";
 import { PROJECT_SUMMARY_DOCUMENTS } from "@mds/common/constants/API";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
-import {
-  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE,
-  DISCHARGE_FACTOR_FORM_AMENDMENT,
-  DISCHARGE_FACTOR_FORM_NEW,
-  IProjectSummaryDocument,
-  MAX_DOCUMENT_NAME_LENGTHS,
-} from "../..";
 import { requiredList } from "@mds/common/redux/utils/Validate";
+import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE, DISCHARGE_FACTOR_FORM_AMENDMENT, DISCHARGE_FACTOR_FORM_NEW } from "@mds/common/constants/strings";
+import { IProjectSummaryDocument } from "@mds/common/interfaces";
+import { MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common/constants/enums";
 
 interface AuthorizationSupportDocumentUploadProps {
   mineGuid: string;

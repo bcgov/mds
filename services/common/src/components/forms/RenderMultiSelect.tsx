@@ -3,7 +3,7 @@ import { Select, Form } from "antd";
 import { caseInsensitiveLabelFilter } from "@mds/common/redux/utils/helpers";
 import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
 import { FormConsumer, IFormContext } from "./FormWrapper";
-import { IOption } from "../..";
+import { IOption } from "@mds/common/interfaces/common/option.interface";
 
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
@@ -21,7 +21,7 @@ export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
     placeholder = "",
     data = [],
     disabled = false,
-    onSearch = () => {},
+    onSearch = () => { },
     filterOption = false,
     label = "",
     meta,

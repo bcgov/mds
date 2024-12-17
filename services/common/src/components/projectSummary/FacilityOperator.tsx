@@ -12,13 +12,14 @@ import {
 } from "@mds/common/redux/utils/Validate";
 import RenderField from "../forms/RenderField";
 import RenderSelect from "../forms/RenderSelect";
-import { FORM, IProjectSummaryForm } from "../..";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
 import { getRegionOptions } from "@mds/common/redux/slices/regionsSlice"
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
+import { FORM } from "@mds/common/constants";
+import { IProjectSummaryForm } from "@mds/common/interfaces";
 
 export const FacilityOperator: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;

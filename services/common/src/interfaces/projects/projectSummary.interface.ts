@@ -1,11 +1,9 @@
-import {
-  IProjectSummaryDocument,
-  IProjectContact,
-  IProjectSummaryAuthorization,
-  IParty,
-  IMineDocument,
-  PROJECT_STATUS_CODES,
-} from "@mds/common/index";
+import { PROJECT_STATUS_CODES } from "@mds/common/constants";
+import { IMineDocument } from "../mineDocument.interface";
+import { IParty } from "../party";
+import { IProjectContact } from "./projectContact.interface";
+import { IProjectSummaryAuthorization } from "./projectSummaryAuthorizations.interface";
+import { IProjectSummaryDocument } from "./projectSummaryDocuments.interface";
 
 export interface ICredentialedParty extends IParty {
   credential_id: string;

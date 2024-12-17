@@ -7,10 +7,10 @@ import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
 import * as Strings from "@mds/common/constants/strings";
-import { IMine } from "../..";
 import { Validate } from "@mds/common/redux/utils/Validate";
 import { SMALL_PIN } from "@mds/common/constants/assets";
 import { IGeoJsonFeature } from "@mds/common/interfaces/document/geojsonFeature.interface";
+import { IMine } from "@mds/common/interfaces/mine.interface";
 
 /**
  * @React.FC LeafletMap.tsx is a Leaflet Map component.
@@ -35,7 +35,7 @@ const LeafletMap: FC<LeafletMapProps> = ({
   const hasMineLocation = mine?.mine_location?.latitude && mine?.mine_location?.longitude;
   const latLong = hasMineLocation
     ? // only add mine Pin if location exists
-      [mine.mine_location.latitude, mine.mine_location.longitude]
+    [mine.mine_location.latitude, mine.mine_location.longitude]
     : [Number(Strings.DEFAULT_LAT), Number(Strings.DEFAULT_LONG)];
 
   const [isMapInitialized, setIsMapInitialized] = useState(false);
