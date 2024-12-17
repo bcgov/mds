@@ -384,224 +384,293 @@ exports[`PermitConditions renders properly 1`] = `
               tabindex="0"
             >
               <div
-                class="scroll-side-menu-wrapper scroll-side-menu-view--steps"
+                class="ant-row"
               >
                 <div
-                  class="side-menu"
-                  style="top: 0px;"
+                  class="ant-col ant-col-24"
                 >
-                  <div>
+                  <div
+                    class="scroll-side-menu-wrapper scroll-side-menu-view--steps"
+                  >
                     <div
-                      class="ant-anchor-wrapper"
-                      style="max-height: calc(100vh - 254px);"
+                      class="side-menu"
+                      style="top: 0px;"
                     >
-                      <div
-                        class="ant-anchor ant-anchor-fixed"
-                      >
+                      <div>
                         <div
-                          class="ant-anchor-ink"
+                          class="ant-anchor-wrapper"
+                          style="max-height: calc(100vh - 254px);"
                         >
-                          <span
-                            class="ant-anchor-ink-ball-visible ant-anchor-ink-ball"
-                            style="top: -4.5px;"
-                          />
-                        </div>
-                        <div
-                          class="ant-anchor-link now-menu-link fade-in ant-anchor-link-active"
-                        >
-                          <a
-                            class="ant-anchor-link-title ant-anchor-link-title-active"
-                            href="#hsc"
-                            title=""
+                          <div
+                            class="ant-anchor ant-anchor-fixed"
                           >
                             <div
-                              class="side-nav-title"
+                              class="ant-anchor-ink"
                             >
                               <span
-                                class="margin-medium--right side-nav-title-icon"
-                              >
-                                <svg
-                                  aria-hidden="true"
-                                  class="svg-inline--fa fa-ban "
-                                  data-icon="ban"
-                                  data-prefix="fal"
-                                  focusable="false"
-                                  role="img"
-                                  style="color: rgb(187, 187, 187); font-size: 20px;"
-                                  viewBox="0 0 512 512"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    d="M402.7 425.3l-316-316C52.6 148.6 32 199.9 32 256c0 123.7 100.3 224 224 224c56.1 0 107.4-20.6 146.7-54.7zm22.6-22.6C459.4 363.4 480 312.1 480 256C480 132.3 379.7 32 256 32c-56.1 0-107.4 20.6-146.7 54.7l316 316zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                              <div
-                                class="side-nav-title-content"
-                              >
-                                <span
-                                  class="ant-typography"
-                                  style="font-size: 16px; font-weight: 600;"
-                                >
-                                  A.
-                                  Health and Safety
-                                </span>
-                                <span
-                                  class="side-nav-description"
-                                >
-                                  <br />
-                                  Not Started
-                                </span>
-                              </div>
+                                class="ant-anchor-ink-ball-visible ant-anchor-ink-ball"
+                                style="top: -4.5px;"
+                              />
                             </div>
-                          </a>
-                        </div>
-                        <div
-                          class="ant-anchor-link now-menu-link fade-in"
-                        >
-                          <a
-                            class="ant-anchor-link-title"
-                            href="#rcc"
-                            title=""
-                          >
                             <div
-                              class="side-nav-title"
+                              class="ant-anchor-link now-menu-link fade-in ant-anchor-link-active"
                             >
-                              <span
-                                class="margin-medium--right side-nav-title-icon"
+                              <a
+                                class="ant-anchor-link-title ant-anchor-link-title-active"
+                                href="#hsc"
+                                title=""
                               >
-                                <svg
-                                  aria-hidden="true"
-                                  class="svg-inline--fa fa-ban "
-                                  data-icon="ban"
-                                  data-prefix="fal"
-                                  focusable="false"
-                                  role="img"
-                                  style="color: rgb(187, 187, 187); font-size: 20px;"
-                                  viewBox="0 0 512 512"
-                                  xmlns="http://www.w3.org/2000/svg"
+                                <div
+                                  class="side-nav-title"
                                 >
-                                  <path
-                                    d="M402.7 425.3l-316-316C52.6 148.6 32 199.9 32 256c0 123.7 100.3 224 224 224c56.1 0 107.4-20.6 146.7-54.7zm22.6-22.6C459.4 363.4 480 312.1 480 256C480 132.3 379.7 32 256 32c-56.1 0-107.4 20.6-146.7 54.7l316 316zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                              <div
-                                class="side-nav-title-content"
-                              >
-                                <span
-                                  class="ant-typography"
-                                  style="font-size: 16px; font-weight: 600;"
-                                >
-                                  B.
-                                  Reclamation
-                                </span>
-                                <span
-                                  class="side-nav-description"
-                                >
-                                  <br />
-                                  Not Started
-                                </span>
-                              </div>
+                                  <span
+                                    class="margin-medium--right side-nav-title-icon"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="svg-inline--fa fa-ban "
+                                      data-icon="ban"
+                                      data-prefix="fal"
+                                      focusable="false"
+                                      role="img"
+                                      style="color: rgb(187, 187, 187); font-size: 20px;"
+                                      viewBox="0 0 512 512"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M402.7 425.3l-316-316C52.6 148.6 32 199.9 32 256c0 123.7 100.3 224 224 224c56.1 0 107.4-20.6 146.7-54.7zm22.6-22.6C459.4 363.4 480 312.1 480 256C480 132.3 379.7 32 256 32c-56.1 0-107.4 20.6-146.7 54.7l316 316zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"
+                                        fill="currentColor"
+                                      />
+                                    </svg>
+                                  </span>
+                                  <div
+                                    class="side-nav-title-content"
+                                  >
+                                    <span
+                                      class="ant-typography"
+                                      style="font-size: 16px; font-weight: 600;"
+                                    >
+                                      A.
+                                      Health and Safety
+                                    </span>
+                                    <span
+                                      class="side-nav-description"
+                                    >
+                                      <br />
+                                      Not Started
+                                    </span>
+                                  </div>
+                                </div>
+                              </a>
                             </div>
-                          </a>
-                        </div>
-                        <div
-                          class="ant-anchor-link now-menu-link fade-in"
-                        >
-                          <a
-                            class="ant-anchor-link-title"
-                            href="#elc"
-                            title=""
-                          >
                             <div
-                              class="side-nav-title"
+                              class="ant-anchor-link now-menu-link fade-in"
                             >
-                              <span
-                                class="margin-medium--right side-nav-title-icon"
+                              <a
+                                class="ant-anchor-link-title"
+                                href="#rcc"
+                                title=""
                               >
-                                <svg
-                                  aria-hidden="true"
-                                  class="svg-inline--fa fa-ban "
-                                  data-icon="ban"
-                                  data-prefix="fal"
-                                  focusable="false"
-                                  role="img"
-                                  style="color: rgb(187, 187, 187); font-size: 20px;"
-                                  viewBox="0 0 512 512"
-                                  xmlns="http://www.w3.org/2000/svg"
+                                <div
+                                  class="side-nav-title"
                                 >
-                                  <path
-                                    d="M402.7 425.3l-316-316C52.6 148.6 32 199.9 32 256c0 123.7 100.3 224 224 224c56.1 0 107.4-20.6 146.7-54.7zm22.6-22.6C459.4 363.4 480 312.1 480 256C480 132.3 379.7 32 256 32c-56.1 0-107.4 20.6-146.7 54.7l316 316zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                              <div
-                                class="side-nav-title-content"
-                              >
-                                <span
-                                  class="ant-typography"
-                                  style="font-size: 16px; font-weight: 600;"
-                                >
-                                  
-                                  Environmental Land and Watercourses
-                                </span>
-                                <span
-                                  class="side-nav-description"
-                                >
-                                  <br />
-                                  Not Started
-                                </span>
-                              </div>
+                                  <span
+                                    class="margin-medium--right side-nav-title-icon"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="svg-inline--fa fa-ban "
+                                      data-icon="ban"
+                                      data-prefix="fal"
+                                      focusable="false"
+                                      role="img"
+                                      style="color: rgb(187, 187, 187); font-size: 20px;"
+                                      viewBox="0 0 512 512"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M402.7 425.3l-316-316C52.6 148.6 32 199.9 32 256c0 123.7 100.3 224 224 224c56.1 0 107.4-20.6 146.7-54.7zm22.6-22.6C459.4 363.4 480 312.1 480 256C480 132.3 379.7 32 256 32c-56.1 0-107.4 20.6-146.7 54.7l316 316zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"
+                                        fill="currentColor"
+                                      />
+                                    </svg>
+                                  </span>
+                                  <div
+                                    class="side-nav-title-content"
+                                  >
+                                    <span
+                                      class="ant-typography"
+                                      style="font-size: 16px; font-weight: 600;"
+                                    >
+                                      B.
+                                      Reclamation
+                                    </span>
+                                    <span
+                                      class="side-nav-description"
+                                    >
+                                      <br />
+                                      Not Started
+                                    </span>
+                                  </div>
+                                </div>
+                              </a>
                             </div>
-                          </a>
+                            <div
+                              class="ant-anchor-link now-menu-link fade-in"
+                            >
+                              <a
+                                class="ant-anchor-link-title"
+                                href="#elc"
+                                title=""
+                              >
+                                <div
+                                  class="side-nav-title"
+                                >
+                                  <span
+                                    class="margin-medium--right side-nav-title-icon"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="svg-inline--fa fa-ban "
+                                      data-icon="ban"
+                                      data-prefix="fal"
+                                      focusable="false"
+                                      role="img"
+                                      style="color: rgb(187, 187, 187); font-size: 20px;"
+                                      viewBox="0 0 512 512"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M402.7 425.3l-316-316C52.6 148.6 32 199.9 32 256c0 123.7 100.3 224 224 224c56.1 0 107.4-20.6 146.7-54.7zm22.6-22.6C459.4 363.4 480 312.1 480 256C480 132.3 379.7 32 256 32c-56.1 0-107.4 20.6-146.7 54.7l316 316zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"
+                                        fill="currentColor"
+                                      />
+                                    </svg>
+                                  </span>
+                                  <div
+                                    class="side-nav-title-content"
+                                  >
+                                    <span
+                                      class="ant-typography"
+                                      style="font-size: 16px; font-weight: 600;"
+                                    >
+                                      
+                                      Environmental Land and Watercourses
+                                    </span>
+                                    <span
+                                      class="side-nav-description"
+                                    >
+                                      <br />
+                                      Not Started
+                                    </span>
+                                  </div>
+                                </div>
+                              </a>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                  <div
-                    class="ant-typography no_link_styling grey"
-                    style="font-size: 14px; text-align: center;"
-                  >
-                    <a
-                      class="ant-typography fade-in"
-                    >
-                      + Add Condition Category
-                    </a>
-                  </div>
-                </div>
-                <div
-                  class="side-menu--content"
-                  style="top: 0px;"
-                >
-                  <div
-                    class="ant-row ant-row-space-between ant-row-middle"
-                    style="margin: -8px -5px -8px -5px;"
-                  >
-                    <div
-                      class="ant-col ant-col-24"
-                      style="padding: 8px 5px 8px 5px;"
-                    >
-                      <h2
-                        class="ant-typography margin-none"
+                      <div
+                        class="ant-typography no_link_styling grey"
+                        style="font-size: 14px; text-align: center;"
                       >
-                        Permit Conditions
-                      </h2>
+                        <a
+                          class="ant-typography fade-in"
+                        >
+                          + Add Condition Category
+                        </a>
+                      </div>
                     </div>
                     <div
-                      class="ant-col"
-                      style="padding: 8px 5px 8px 5px;"
+                      class="side-menu--content"
+                      style="top: 0px;"
                     >
                       <div
-                        class="ant-row"
-                        style="margin-left: -5px; margin-right: -5px;"
+                        class="ant-row ant-row-space-between ant-row-middle"
+                        style="margin: -8px -5px -8px -5px;"
                       >
                         <div
+                          class="ant-col ant-col-24"
+                          style="padding: 8px 5px 8px 5px;"
+                        >
+                          <h2
+                            class="ant-typography margin-none"
+                          >
+                            Permit Conditions
+                          </h2>
+                        </div>
+                        <div
                           class="ant-col"
-                          style="padding-left: 5px; padding-right: 5px;"
+                          style="padding: 8px 5px 8px 5px;"
+                        >
+                          <div
+                            class="ant-row"
+                            style="margin-left: -5px; margin-right: -5px;"
+                          >
+                            <div
+                              class="ant-col"
+                              style="padding-left: 5px; padding-right: 5px;"
+                            >
+                              <button
+                                class="ant-btn ant-btn-dashed core-btn core-btn-tertiary fa-icon-container"
+                                type="button"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="svg-inline--fa fa-arrows-from-line "
+                                  data-icon="arrows-from-line"
+                                  data-prefix="fal"
+                                  focusable="false"
+                                  role="img"
+                                  viewBox="0 0 448 512"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M235.3 4.7c-3-3-7.1-4.7-11.3-4.7s-8.3 1.7-11.3 4.7l-80 80c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0L208 54.6V176c0 8.8 7.2 16 16 16s16-7.2 16-16V54.6l52.7 52.7c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-80-80zM0 256c0 8.8 7.2 16 16 16H432c8.8 0 16-7.2 16-16s-7.2-16-16-16H16c-8.8 0-16 7.2-16 16zM224 512c4.2 0 8.3-1.7 11.3-4.7l80-80c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0L240 457.4 240 336c0-8.8-7.2-16-16-16s-16 7.2-16 16l0 121.4-52.7-52.7c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6l80 80c3 3 7.1 4.7 11.3 4.7z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                                <span>
+                                  Expand All Conditions
+                                </span>
+                              </button>
+                            </div>
+                            <div
+                              class="ant-col"
+                              style="padding-left: 5px; padding-right: 5px;"
+                            >
+                              <button
+                                class="ant-btn ant-btn-dashed core-btn core-btn-tertiary"
+                                type="button"
+                              >
+                                <span
+                                  aria-label="file"
+                                  class="anticon anticon-file"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class=""
+                                    data-icon="file"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M854.6 288.6L639.4 73.4c-6-6-14.1-9.4-22.6-9.4H192c-17.7 0-32 14.3-32 32v832c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V311.3c0-8.5-3.4-16.7-9.4-22.7zM790.2 326H602V137.8L790.2 326zm1.8 562H232V136h302v216a42 42 0 0042 42h216v494z"
+                                    />
+                                  </svg>
+                                </span>
+                                <span>
+                                  Open Permit in Document Viewer
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="ant-col"
+                          style="padding: 8px 5px 8px 5px;"
                         >
                           <button
                             class="ant-btn ant-btn-dashed core-btn core-btn-tertiary fa-icon-container"
@@ -609,744 +678,683 @@ exports[`PermitConditions renders properly 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="svg-inline--fa fa-arrows-from-line "
-                              data-icon="arrows-from-line"
+                              class="svg-inline--fa fa-bars-staggered "
+                              data-icon="bars-staggered"
                               data-prefix="fal"
                               focusable="false"
                               role="img"
-                              viewBox="0 0 448 512"
+                              viewBox="0 0 512 512"
                               xmlns="http://www.w3.org/2000/svg"
                             >
                               <path
-                                d="M235.3 4.7c-3-3-7.1-4.7-11.3-4.7s-8.3 1.7-11.3 4.7l-80 80c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0L208 54.6V176c0 8.8 7.2 16 16 16s16-7.2 16-16V54.6l52.7 52.7c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-80-80zM0 256c0 8.8 7.2 16 16 16H432c8.8 0 16-7.2 16-16s-7.2-16-16-16H16c-8.8 0-16 7.2-16 16zM224 512c4.2 0 8.3-1.7 11.3-4.7l80-80c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0L240 457.4 240 336c0-8.8-7.2-16-16-16s-16 7.2-16 16l0 121.4-52.7-52.7c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6l80 80c3 3 7.1 4.7 11.3 4.7z"
+                                d="M0 80c0-8.8 7.2-16 16-16H432c8.8 0 16 7.2 16 16s-7.2 16-16 16H16C7.2 96 0 88.8 0 80zM64 240c0-8.8 7.2-16 16-16H496c8.8 0 16 7.2 16 16s-7.2 16-16 16H80c-8.8 0-16-7.2-16-16zM448 400c0 8.8-7.2 16-16 16H16c-8.8 0-16-7.2-16-16s7.2-16 16-16H432c8.8 0 16 7.2 16 16z"
                                 fill="currentColor"
                               />
                             </svg>
                             <span>
-                              Expand All Conditions
+                              Reorder
                             </span>
                           </button>
                         </div>
                         <div
-                          class="ant-col"
-                          style="padding-left: 5px; padding-right: 5px;"
-                        >
-                          <button
-                            class="ant-btn ant-btn-dashed core-btn core-btn-tertiary"
-                            type="button"
-                          >
-                            <span
-                              aria-label="file"
-                              class="anticon anticon-file"
-                              role="img"
-                            >
-                              <svg
-                                aria-hidden="true"
-                                class=""
-                                data-icon="file"
-                                fill="currentColor"
-                                focusable="false"
-                                height="1em"
-                                viewBox="64 64 896 896"
-                                width="1em"
-                              >
-                                <path
-                                  d="M854.6 288.6L639.4 73.4c-6-6-14.1-9.4-22.6-9.4H192c-17.7 0-32 14.3-32 32v832c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V311.3c0-8.5-3.4-16.7-9.4-22.7zM790.2 326H602V137.8L790.2 326zm1.8 562H232V136h302v216a42 42 0 0042 42h216v494z"
-                                />
-                              </svg>
-                            </span>
-                            <span>
-                              Open Permit in Document Viewer
-                            </span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="ant-col"
-                      style="padding: 8px 5px 8px 5px;"
-                    >
-                      <button
-                        class="ant-btn ant-btn-dashed core-btn core-btn-tertiary fa-icon-container"
-                        type="button"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="svg-inline--fa fa-bars-staggered "
-                          data-icon="bars-staggered"
-                          data-prefix="fal"
-                          focusable="false"
-                          role="img"
-                          viewBox="0 0 512 512"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M0 80c0-8.8 7.2-16 16-16H432c8.8 0 16 7.2 16 16s-7.2 16-16 16H16C7.2 96 0 88.8 0 80zM64 240c0-8.8 7.2-16 16-16H496c8.8 0 16 7.2 16 16s-7.2 16-16 16H80c-8.8 0-16-7.2-16-16zM448 400c0 8.8-7.2 16-16 16H16c-8.8 0-16-7.2-16-16s7.2-16 16-16H432c8.8 0 16 7.2 16 16z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                        <span>
-                          Reorder
-                        </span>
-                      </button>
-                    </div>
-                    <div
-                      class="ant-col ant-col-24"
-                      style="padding: 8px 5px 8px 5px;"
-                    >
-                      <div
-                        class="core-page-content"
-                      >
-                        <div
-                          class="ant-row"
-                          style="margin: -8px -8px -8px -8px;"
+                          class="ant-col ant-col-24"
+                          style="padding: 8px 5px 8px 5px;"
                         >
                           <div
-                            class="ant-col ant-col-24"
-                            style="padding: 8px 8px 8px 8px;"
+                            class="core-page-content"
                           >
                             <div
-                              class="ant-row ant-row-space-between"
-                            >
-                              <h3
-                                class="ant-typography margin-none"
-                                id="hsc"
-                              >
-                                <div>
-                                  <h3
-                                    class="ant-typography"
-                                    style="margin-bottom: 0px;"
-                                  >
-                                    A.. 
-                                    Health and Safety
-                                     (
-                                    1
-                                    )
-                                  </h3>
-                                </div>
-                              </h3>
-                              <button
-                                class="ant-btn ant-btn-primary core-btn core-btn-primary"
-                                type="button"
-                              >
-                                <span>
-                                  Add Condition
-                                </span>
-                              </button>
-                            </div>
-                          </div>
-                          <div
-                            class="ant-col ant-col-24 fade-in"
-                            style="padding: 8px 8px 8px 8px;"
-                          >
-                            <div
-                              class="condition-layer condition-layer--0 condition-SEC fade-in "
+                              class="ant-row"
+                              style="margin: -8px -8px -8px -8px;"
                             >
                               <div
-                                class="condition-collapsed"
+                                class="ant-col ant-col-24"
+                                style="padding: 8px 8px 8px 8px;"
                               >
-                                <form
-                                  class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1639 form-view"
-                                  id="EDIT_PERMIT_CONDITION_1639"
+                                <div
+                                  class="ant-row ant-row-space-between"
                                 >
-                                  <div
-                                    class="ant-row ant-row-no-wrap condition-content editable"
+                                  <h3
+                                    class="ant-typography margin-none"
+                                    id="hsc"
                                   >
-                                    <div
-                                      class="ant-col step-column"
-                                      style="flex-shrink: 0;"
-                                    >
-                                      <div
-                                        class="view-item ant-form-item"
+                                    <div>
+                                      <h3
+                                        class="ant-typography"
+                                        style="margin-bottom: 0px;"
                                       >
-                                        
-                                        <div
-                                          class="ant-typography view-item-value"
-                                        >
-                                          1.
-                                        </div>
-                                      </div>
+                                        A.. 
+                                        Health and Safety
+                                         (
+                                        1
+                                        )
+                                      </h3>
                                     </div>
-                                    <div
-                                      aria-label="Edit Condition"
-                                      class="ant-col condition-column"
-                                      title="Edit Condition"
-                                    >
-                                      <div
-                                        class="view-item ant-form-item"
-                                      >
-                                        
-                                        <div
-                                          class="ant-typography view-item-value"
-                                        >
-                                          Section decade check including.
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </form>
+                                  </h3>
+                                  <button
+                                    class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                    type="button"
+                                  >
+                                    <span>
+                                      Add Condition
+                                    </span>
+                                  </button>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                          <div
-                            class="ant-col ant-col-24"
-                            style="padding: 8px 8px 8px 8px;"
-                          >
-                            <div
-                              class="ant-row ant-row-space-between"
-                            >
-                              <h3
-                                class="ant-typography margin-none"
-                                id="rcc"
-                              >
-                                <div>
-                                  <h3
-                                    class="ant-typography"
-                                    style="margin-bottom: 0px;"
-                                  >
-                                    B.. 
-                                    Reclamation
-                                     (
-                                    1
-                                    )
-                                  </h3>
-                                </div>
-                              </h3>
-                              <button
-                                class="ant-btn ant-btn-primary core-btn core-btn-primary"
-                                type="button"
-                              >
-                                <span>
-                                  Add Condition
-                                </span>
-                              </button>
-                            </div>
-                          </div>
-                          <div
-                            class="ant-col ant-col-24 fade-in"
-                            style="padding: 8px 8px 8px 8px;"
-                          >
-                            <div
-                              class="condition-layer condition-layer--0 condition-SEC fade-in "
-                            >
                               <div
-                                class="condition-collapsed"
+                                class="ant-col ant-col-24 fade-in"
+                                style="padding: 8px 8px 8px 8px;"
                               >
-                                <form
-                                  class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1646 form-view"
-                                  id="EDIT_PERMIT_CONDITION_1646"
+                                <div
+                                  class="condition-layer condition-layer--0 condition-SEC fade-in "
                                 >
                                   <div
-                                    class="ant-row ant-row-no-wrap condition-content editable"
+                                    class="condition-collapsed"
                                   >
-                                    <div
-                                      class="ant-col step-column"
-                                      style="flex-shrink: 0;"
+                                    <form
+                                      class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1639 form-view"
+                                      id="EDIT_PERMIT_CONDITION_1639"
                                     >
                                       <div
-                                        class="view-item ant-form-item"
+                                        class="ant-row ant-row-no-wrap condition-content editable"
                                       >
-                                        
                                         <div
-                                          class="ant-typography view-item-value"
+                                          class="ant-col step-column"
+                                          style="flex-shrink: 0;"
                                         >
-                                          1.
+                                          <div
+                                            class="view-item ant-form-item"
+                                          >
+                                            
+                                            <div
+                                              class="ant-typography view-item-value"
+                                            >
+                                              1.
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div
+                                          aria-label="Edit Condition"
+                                          class="ant-col condition-column"
+                                          title="Edit Condition"
+                                        >
+                                          <div
+                                            class="view-item ant-form-item"
+                                          >
+                                            
+                                            <div
+                                              class="ant-typography view-item-value"
+                                            >
+                                              Section decade check including.
+                                            </div>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                    <div
-                                      aria-label="Edit Condition"
-                                      class="ant-col condition-column"
-                                      title="Edit Condition"
-                                    >
-                                      <div
-                                        class="view-item ant-form-item"
-                                      >
-                                        
-                                        <div
-                                          class="ant-typography view-item-value"
-                                        >
-                                          Reflect miss police tough such single force.
-                                        </div>
-                                      </div>
-                                    </div>
+                                    </form>
                                   </div>
-                                </form>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                          <div
-                            class="ant-col ant-col-24"
-                            style="padding: 8px 8px 8px 8px;"
-                          >
-                            <div
-                              class="ant-row ant-row-space-between"
-                            >
-                              <h3
-                                class="ant-typography margin-none"
-                                id="elc"
-                              >
-                                <div>
-                                  <h3
-                                    class="ant-typography"
-                                    style="margin-bottom: 0px;"
-                                  >
-                                    
-                                    Environmental Land and Watercourses
-                                     (
-                                    2
-                                    )
-                                  </h3>
-                                </div>
-                              </h3>
-                              <button
-                                class="ant-btn ant-btn-primary core-btn core-btn-primary"
-                                type="button"
-                              >
-                                <span>
-                                  Add Condition
-                                </span>
-                              </button>
-                            </div>
-                          </div>
-                          <div
-                            class="ant-col ant-col-24 fade-in"
-                            style="padding: 8px 8px 8px 8px;"
-                          >
-                            <div
-                              class="condition-layer condition-layer--0 condition-SEC fade-in "
-                            >
                               <div
-                                class="condition-collapsed"
+                                class="ant-col ant-col-24"
+                                style="padding: 8px 8px 8px 8px;"
                               >
-                                <form
-                                  class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1650 form-view"
-                                  id="EDIT_PERMIT_CONDITION_1650"
+                                <div
+                                  class="ant-row ant-row-space-between"
+                                >
+                                  <h3
+                                    class="ant-typography margin-none"
+                                    id="rcc"
+                                  >
+                                    <div>
+                                      <h3
+                                        class="ant-typography"
+                                        style="margin-bottom: 0px;"
+                                      >
+                                        B.. 
+                                        Reclamation
+                                         (
+                                        1
+                                        )
+                                      </h3>
+                                    </div>
+                                  </h3>
+                                  <button
+                                    class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                    type="button"
+                                  >
+                                    <span>
+                                      Add Condition
+                                    </span>
+                                  </button>
+                                </div>
+                              </div>
+                              <div
+                                class="ant-col ant-col-24 fade-in"
+                                style="padding: 8px 8px 8px 8px;"
+                              >
+                                <div
+                                  class="condition-layer condition-layer--0 condition-SEC fade-in "
                                 >
                                   <div
-                                    class="ant-row ant-row-no-wrap condition-content editable"
+                                    class="condition-collapsed"
                                   >
-                                    <div
-                                      class="ant-col step-column"
-                                      style="flex-shrink: 0;"
+                                    <form
+                                      class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1646 form-view"
+                                      id="EDIT_PERMIT_CONDITION_1646"
                                     >
                                       <div
-                                        class="view-item ant-form-item"
-                                      >
-                                        
-                                        <div
-                                          class="ant-typography view-item-value"
-                                        >
-                                          1.
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div
-                                      aria-label="Edit Condition"
-                                      class="ant-col condition-column"
-                                      title="Edit Condition"
-                                    >
-                                      <div
-                                        class="view-item ant-form-item"
-                                      >
-                                        
-                                        <div
-                                          class="ant-typography view-item-value"
-                                        >
-                                          International clear those TV individual look.
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </form>
-                                <div>
-                                  <div
-                                    class="condition-layer condition-layer--1 condition-CON fade-in "
-                                  >
-                                    <div
-                                      class="condition-collapsed"
-                                    >
-                                      <form
-                                        class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1641 form-view"
-                                        id="EDIT_PERMIT_CONDITION_1641"
+                                        class="ant-row ant-row-no-wrap condition-content editable"
                                       >
                                         <div
-                                          class="ant-row ant-row-no-wrap condition-content editable"
+                                          class="ant-col step-column"
+                                          style="flex-shrink: 0;"
                                         >
                                           <div
-                                            class="ant-col step-column"
-                                            style="flex-shrink: 0;"
+                                            class="view-item ant-form-item"
                                           >
+                                            
                                             <div
-                                              class="view-item ant-form-item"
+                                              class="ant-typography view-item-value"
                                             >
-                                              
-                                              <div
-                                                class="ant-typography view-item-value"
-                                              >
-                                                a.
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div
-                                            aria-label="Edit Condition"
-                                            class="ant-col condition-column"
-                                            title="Edit Condition"
-                                          >
-                                            <div
-                                              class="view-item ant-form-item"
-                                            >
-                                              
-                                              <div
-                                                class="ant-typography view-item-value"
-                                              >
-                                                See store understand company interview value factor.
-                                              </div>
+                                              1.
                                             </div>
                                           </div>
                                         </div>
-                                      </form>
-                                      <div>
                                         <div
-                                          class="condition-layer condition-layer--2 condition-LIS fade-in "
+                                          aria-label="Edit Condition"
+                                          class="ant-col condition-column"
+                                          title="Edit Condition"
                                         >
                                           <div
-                                            class="condition-collapsed"
+                                            class="view-item ant-form-item"
                                           >
-                                            <form
-                                              class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1644 form-view"
-                                              id="EDIT_PERMIT_CONDITION_1644"
+                                            
+                                            <div
+                                              class="ant-typography view-item-value"
                                             >
-                                              <div
-                                                class="ant-row ant-row-no-wrap condition-content editable"
-                                              >
-                                                <div
-                                                  class="ant-col step-column"
-                                                  style="flex-shrink: 0;"
-                                                >
-                                                  <div
-                                                    class="view-item ant-form-item"
-                                                  >
-                                                    
-                                                    <div
-                                                      class="ant-typography view-item-value"
-                                                    >
-                                                      i.
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                                <div
-                                                  aria-label="Edit Condition"
-                                                  class="ant-col condition-column"
-                                                  title="Edit Condition"
-                                                >
-                                                  <div
-                                                    class="view-item ant-form-item"
-                                                  >
-                                                    
-                                                    <div
-                                                      class="ant-typography view-item-value"
-                                                    >
-                                                      Mr item fall study although.
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </form>
+                                              Reflect miss police tough such single force.
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
-                                    </div>
+                                    </form>
                                   </div>
                                 </div>
-                                <div>
-                                  <div
-                                    class="condition-layer condition-layer--1 condition-SEC fade-in "
+                              </div>
+                              <div
+                                class="ant-col ant-col-24"
+                                style="padding: 8px 8px 8px 8px;"
+                              >
+                                <div
+                                  class="ant-row ant-row-space-between"
+                                >
+                                  <h3
+                                    class="ant-typography margin-none"
+                                    id="elc"
                                   >
-                                    <div
-                                      class="condition-collapsed"
+                                    <div>
+                                      <h3
+                                        class="ant-typography"
+                                        style="margin-bottom: 0px;"
+                                      >
+                                        
+                                        Environmental Land and Watercourses
+                                         (
+                                        2
+                                        )
+                                      </h3>
+                                    </div>
+                                  </h3>
+                                  <button
+                                    class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                    type="button"
+                                  >
+                                    <span>
+                                      Add Condition
+                                    </span>
+                                  </button>
+                                </div>
+                              </div>
+                              <div
+                                class="ant-col ant-col-24 fade-in"
+                                style="padding: 8px 8px 8px 8px;"
+                              >
+                                <div
+                                  class="condition-layer condition-layer--0 condition-SEC fade-in "
+                                >
+                                  <div
+                                    class="condition-collapsed"
+                                  >
+                                    <form
+                                      class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1650 form-view"
+                                      id="EDIT_PERMIT_CONDITION_1650"
                                     >
-                                      <form
-                                        class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12507 form-view"
-                                        id="EDIT_PERMIT_CONDITION_12507"
+                                      <div
+                                        class="ant-row ant-row-no-wrap condition-content editable"
                                       >
                                         <div
-                                          class="ant-row ant-row-no-wrap condition-content editable"
+                                          class="ant-col step-column"
+                                          style="flex-shrink: 0;"
                                         >
                                           <div
-                                            class="ant-col step-column"
-                                            style="flex-shrink: 0;"
+                                            class="view-item ant-form-item"
                                           >
+                                            
                                             <div
-                                              class="view-item ant-form-item"
+                                              class="ant-typography view-item-value"
                                             >
-                                              
-                                              <div
-                                                class="ant-typography view-item-value"
-                                              >
-                                                b.
-                                              </div>
+                                              1.
                                             </div>
                                           </div>
+                                        </div>
+                                        <div
+                                          aria-label="Edit Condition"
+                                          class="ant-col condition-column"
+                                          title="Edit Condition"
+                                        >
                                           <div
-                                            aria-label="Edit Condition"
-                                            class="ant-col condition-column"
-                                            title="Edit Condition"
+                                            class="view-item ant-form-item"
+                                          >
+                                            
+                                            <div
+                                              class="ant-typography view-item-value"
+                                            >
+                                              International clear those TV individual look.
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </form>
+                                    <div>
+                                      <div
+                                        class="condition-layer condition-layer--1 condition-CON fade-in "
+                                      >
+                                        <div
+                                          class="condition-collapsed"
+                                        >
+                                          <form
+                                            class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1641 form-view"
+                                            id="EDIT_PERMIT_CONDITION_1641"
                                           >
                                             <div
-                                              class="view-item ant-form-item"
+                                              class="ant-row ant-row-no-wrap condition-content editable"
                                             >
-                                              
                                               <div
-                                                class="ant-typography view-item-value"
+                                                class="ant-col step-column"
+                                                style="flex-shrink: 0;"
                                               >
-                                                words words words sub-section
+                                                <div
+                                                  class="view-item ant-form-item"
+                                                >
+                                                  
+                                                  <div
+                                                    class="ant-typography view-item-value"
+                                                  >
+                                                    a.
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div
+                                                aria-label="Edit Condition"
+                                                class="ant-col condition-column"
+                                                title="Edit Condition"
+                                              >
+                                                <div
+                                                  class="view-item ant-form-item"
+                                                >
+                                                  
+                                                  <div
+                                                    class="ant-typography view-item-value"
+                                                  >
+                                                    See store understand company interview value factor.
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </form>
+                                          <div>
+                                            <div
+                                              class="condition-layer condition-layer--2 condition-LIS fade-in "
+                                            >
+                                              <div
+                                                class="condition-collapsed"
+                                              >
+                                                <form
+                                                  class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1644 form-view"
+                                                  id="EDIT_PERMIT_CONDITION_1644"
+                                                >
+                                                  <div
+                                                    class="ant-row ant-row-no-wrap condition-content editable"
+                                                  >
+                                                    <div
+                                                      class="ant-col step-column"
+                                                      style="flex-shrink: 0;"
+                                                    >
+                                                      <div
+                                                        class="view-item ant-form-item"
+                                                      >
+                                                        
+                                                        <div
+                                                          class="ant-typography view-item-value"
+                                                        >
+                                                          i.
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    <div
+                                                      aria-label="Edit Condition"
+                                                      class="ant-col condition-column"
+                                                      title="Edit Condition"
+                                                    >
+                                                      <div
+                                                        class="view-item ant-form-item"
+                                                      >
+                                                        
+                                                        <div
+                                                          class="ant-typography view-item-value"
+                                                        >
+                                                          Mr item fall study although.
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </form>
                                               </div>
                                             </div>
                                           </div>
                                         </div>
-                                      </form>
-                                      <div>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <div
+                                        class="condition-layer condition-layer--1 condition-SEC fade-in "
+                                      >
                                         <div
-                                          class="condition-layer condition-layer--2 condition-CON fade-in "
+                                          class="condition-collapsed"
                                         >
-                                          <div
-                                            class="condition-collapsed"
+                                          <form
+                                            class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12507 form-view"
+                                            id="EDIT_PERMIT_CONDITION_12507"
                                           >
-                                            <form
-                                              class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12509 form-view"
-                                              id="EDIT_PERMIT_CONDITION_12509"
+                                            <div
+                                              class="ant-row ant-row-no-wrap condition-content editable"
                                             >
                                               <div
-                                                class="ant-row ant-row-no-wrap condition-content editable"
+                                                class="ant-col step-column"
+                                                style="flex-shrink: 0;"
                                               >
                                                 <div
-                                                  class="ant-col step-column"
-                                                  style="flex-shrink: 0;"
+                                                  class="view-item ant-form-item"
                                                 >
+                                                  
                                                   <div
-                                                    class="view-item ant-form-item"
+                                                    class="ant-typography view-item-value"
                                                   >
-                                                    
-                                                    <div
-                                                      class="ant-typography view-item-value"
-                                                    >
-                                                      i.
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                                <div
-                                                  aria-label="Edit Condition"
-                                                  class="ant-col condition-column"
-                                                  title="Edit Condition"
-                                                >
-                                                  <div
-                                                    class="view-item ant-form-item"
-                                                  >
-                                                    
-                                                    <div
-                                                      class="ant-typography view-item-value"
-                                                    >
-                                                      a condition added underneath the section, with a lot of detail added to it, which is probably important for documents like permits
-                                                    </div>
+                                                    b.
                                                   </div>
                                                 </div>
                                               </div>
-                                            </form>
-                                            <div>
                                               <div
-                                                class="condition-layer condition-layer--3 condition-LIS fade-in "
+                                                aria-label="Edit Condition"
+                                                class="ant-col condition-column"
+                                                title="Edit Condition"
                                               >
                                                 <div
-                                                  class="condition-collapsed"
+                                                  class="view-item ant-form-item"
                                                 >
-                                                  <form
-                                                    class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12510 form-view"
-                                                    id="EDIT_PERMIT_CONDITION_12510"
+                                                  
+                                                  <div
+                                                    class="ant-typography view-item-value"
                                                   >
-                                                    <div
-                                                      class="ant-row ant-row-no-wrap condition-content editable"
-                                                    >
-                                                      <div
-                                                        class="ant-col step-column"
-                                                        style="flex-shrink: 0;"
-                                                      >
-                                                        <div
-                                                          class="view-item ant-form-item"
-                                                        >
-                                                          
-                                                          <div
-                                                            class="ant-typography view-item-value"
-                                                          >
-                                                            1.
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                      <div
-                                                        aria-label="Edit Condition"
-                                                        class="ant-col condition-column"
-                                                        title="Edit Condition"
-                                                      >
-                                                        <div
-                                                          class="view-item ant-form-item"
-                                                        >
-                                                          
-                                                          <div
-                                                            class="ant-typography view-item-value"
-                                                          >
-                                                            a detailed list item desribing exactly what must be done to accomplish the parent condition
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                    </div>
-                                                  </form>
+                                                    words words words sub-section
+                                                  </div>
                                                 </div>
                                               </div>
                                             </div>
-                                            <div>
+                                          </form>
+                                          <div>
+                                            <div
+                                              class="condition-layer condition-layer--2 condition-CON fade-in "
+                                            >
                                               <div
-                                                class="condition-layer condition-layer--3 condition-LIS fade-in "
+                                                class="condition-collapsed"
                                               >
-                                                <div
-                                                  class="condition-collapsed"
+                                                <form
+                                                  class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12509 form-view"
+                                                  id="EDIT_PERMIT_CONDITION_12509"
                                                 >
-                                                  <form
-                                                    class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12511 form-view"
-                                                    id="EDIT_PERMIT_CONDITION_12511"
+                                                  <div
+                                                    class="ant-row ant-row-no-wrap condition-content editable"
                                                   >
                                                     <div
-                                                      class="ant-row ant-row-no-wrap condition-content editable"
+                                                      class="ant-col step-column"
+                                                      style="flex-shrink: 0;"
                                                     >
                                                       <div
-                                                        class="ant-col step-column"
-                                                        style="flex-shrink: 0;"
+                                                        class="view-item ant-form-item"
                                                       >
+                                                        
                                                         <div
-                                                          class="view-item ant-form-item"
+                                                          class="ant-typography view-item-value"
                                                         >
-                                                          
-                                                          <div
-                                                            class="ant-typography view-item-value"
-                                                          >
-                                                            2.
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                      <div
-                                                        aria-label="Edit Condition"
-                                                        class="ant-col condition-column"
-                                                        title="Edit Condition"
-                                                      >
-                                                        <div
-                                                          class="view-item ant-form-item"
-                                                        >
-                                                          
-                                                          <div
-                                                            class="ant-typography view-item-value"
-                                                          >
-                                                            but, that wasn't quite enough information, another list item will expand on other responsibilities associated with this permit
-                                                          </div>
+                                                          i.
                                                         </div>
                                                       </div>
                                                     </div>
-                                                  </form>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            <div>
-                                              <div
-                                                class="condition-layer condition-layer--3 condition-LIS fade-in "
-                                              >
-                                                <div
-                                                  class="condition-collapsed"
-                                                >
-                                                  <form
-                                                    class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12512 form-view"
-                                                    id="EDIT_PERMIT_CONDITION_12512"
-                                                  >
                                                     <div
-                                                      class="ant-row ant-row-no-wrap condition-content editable"
+                                                      aria-label="Edit Condition"
+                                                      class="ant-col condition-column"
+                                                      title="Edit Condition"
                                                     >
                                                       <div
-                                                        class="ant-col step-column"
-                                                        style="flex-shrink: 0;"
+                                                        class="view-item ant-form-item"
                                                       >
+                                                        
                                                         <div
-                                                          class="view-item ant-form-item"
+                                                          class="ant-typography view-item-value"
                                                         >
-                                                          
-                                                          <div
-                                                            class="ant-typography view-item-value"
-                                                          >
-                                                            3.
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                      <div
-                                                        aria-label="Edit Condition"
-                                                        class="ant-col condition-column"
-                                                        title="Edit Condition"
-                                                      >
-                                                        <div
-                                                          class="view-item ant-form-item"
-                                                        >
-                                                          
-                                                          <div
-                                                            class="ant-typography view-item-value"
-                                                          >
-                                                            good things come in 3s, so another list item is added to the condition
-                                                          </div>
+                                                          a condition added underneath the section, with a lot of detail added to it, which is probably important for documents like permits
                                                         </div>
                                                       </div>
                                                     </div>
-                                                  </form>
-                                                  <div>
+                                                  </div>
+                                                </form>
+                                                <div>
+                                                  <div
+                                                    class="condition-layer condition-layer--3 condition-LIS fade-in "
+                                                  >
                                                     <div
-                                                      class="condition-layer condition-layer--4 condition-LIS fade-in "
+                                                      class="condition-collapsed"
                                                     >
-                                                      <div
-                                                        class="condition-collapsed"
+                                                      <form
+                                                        class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12510 form-view"
+                                                        id="EDIT_PERMIT_CONDITION_12510"
                                                       >
-                                                        <form
-                                                          class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12513 form-view"
-                                                          id="EDIT_PERMIT_CONDITION_12513"
+                                                        <div
+                                                          class="ant-row ant-row-no-wrap condition-content editable"
                                                         >
                                                           <div
-                                                            class="ant-row ant-row-no-wrap condition-content editable"
+                                                            class="ant-col step-column"
+                                                            style="flex-shrink: 0;"
                                                           >
                                                             <div
-                                                              class="ant-col step-column"
-                                                              style="flex-shrink: 0;"
+                                                              class="view-item ant-form-item"
                                                             >
+                                                              
                                                               <div
-                                                                class="view-item ant-form-item"
+                                                                class="ant-typography view-item-value"
                                                               >
-                                                                
-                                                                <div
-                                                                  class="ant-typography view-item-value"
-                                                                >
-                                                                  a.
-                                                                </div>
-                                                              </div>
-                                                            </div>
-                                                            <div
-                                                              aria-label="Edit Condition"
-                                                              class="ant-col condition-column"
-                                                              title="Edit Condition"
-                                                            >
-                                                              <div
-                                                                class="view-item ant-form-item"
-                                                              >
-                                                                
-                                                                <div
-                                                                  class="ant-typography view-item-value"
-                                                                >
-                                                                  we want to show nesting to 5 levels, so one list item gets a child
-                                                                </div>
+                                                                1.
                                                               </div>
                                                             </div>
                                                           </div>
-                                                        </form>
+                                                          <div
+                                                            aria-label="Edit Condition"
+                                                            class="ant-col condition-column"
+                                                            title="Edit Condition"
+                                                          >
+                                                            <div
+                                                              class="view-item ant-form-item"
+                                                            >
+                                                              
+                                                              <div
+                                                                class="ant-typography view-item-value"
+                                                              >
+                                                                a detailed list item desribing exactly what must be done to accomplish the parent condition
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </form>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <div>
+                                                  <div
+                                                    class="condition-layer condition-layer--3 condition-LIS fade-in "
+                                                  >
+                                                    <div
+                                                      class="condition-collapsed"
+                                                    >
+                                                      <form
+                                                        class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12511 form-view"
+                                                        id="EDIT_PERMIT_CONDITION_12511"
+                                                      >
+                                                        <div
+                                                          class="ant-row ant-row-no-wrap condition-content editable"
+                                                        >
+                                                          <div
+                                                            class="ant-col step-column"
+                                                            style="flex-shrink: 0;"
+                                                          >
+                                                            <div
+                                                              class="view-item ant-form-item"
+                                                            >
+                                                              
+                                                              <div
+                                                                class="ant-typography view-item-value"
+                                                              >
+                                                                2.
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                          <div
+                                                            aria-label="Edit Condition"
+                                                            class="ant-col condition-column"
+                                                            title="Edit Condition"
+                                                          >
+                                                            <div
+                                                              class="view-item ant-form-item"
+                                                            >
+                                                              
+                                                              <div
+                                                                class="ant-typography view-item-value"
+                                                              >
+                                                                but, that wasn't quite enough information, another list item will expand on other responsibilities associated with this permit
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </form>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <div>
+                                                  <div
+                                                    class="condition-layer condition-layer--3 condition-LIS fade-in "
+                                                  >
+                                                    <div
+                                                      class="condition-collapsed"
+                                                    >
+                                                      <form
+                                                        class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12512 form-view"
+                                                        id="EDIT_PERMIT_CONDITION_12512"
+                                                      >
+                                                        <div
+                                                          class="ant-row ant-row-no-wrap condition-content editable"
+                                                        >
+                                                          <div
+                                                            class="ant-col step-column"
+                                                            style="flex-shrink: 0;"
+                                                          >
+                                                            <div
+                                                              class="view-item ant-form-item"
+                                                            >
+                                                              
+                                                              <div
+                                                                class="ant-typography view-item-value"
+                                                              >
+                                                                3.
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                          <div
+                                                            aria-label="Edit Condition"
+                                                            class="ant-col condition-column"
+                                                            title="Edit Condition"
+                                                          >
+                                                            <div
+                                                              class="view-item ant-form-item"
+                                                            >
+                                                              
+                                                              <div
+                                                                class="ant-typography view-item-value"
+                                                              >
+                                                                good things come in 3s, so another list item is added to the condition
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </form>
+                                                      <div>
+                                                        <div
+                                                          class="condition-layer condition-layer--4 condition-LIS fade-in "
+                                                        >
+                                                          <div
+                                                            class="condition-collapsed"
+                                                          >
+                                                            <form
+                                                              class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12513 form-view"
+                                                              id="EDIT_PERMIT_CONDITION_12513"
+                                                            >
+                                                              <div
+                                                                class="ant-row ant-row-no-wrap condition-content editable"
+                                                              >
+                                                                <div
+                                                                  class="ant-col step-column"
+                                                                  style="flex-shrink: 0;"
+                                                                >
+                                                                  <div
+                                                                    class="view-item ant-form-item"
+                                                                  >
+                                                                    
+                                                                    <div
+                                                                      class="ant-typography view-item-value"
+                                                                    >
+                                                                      a.
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                                <div
+                                                                  aria-label="Edit Condition"
+                                                                  class="ant-col condition-column"
+                                                                  title="Edit Condition"
+                                                                >
+                                                                  <div
+                                                                    class="view-item ant-form-item"
+                                                                  >
+                                                                    
+                                                                    <div
+                                                                      class="ant-typography view-item-value"
+                                                                    >
+                                                                      we want to show nesting to 5 levels, so one list item gets a child
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                            </form>
+                                                          </div>
+                                                        </div>
                                                       </div>
                                                     </div>
                                                   </div>
@@ -1360,105 +1368,105 @@ exports[`PermitConditions renders properly 1`] = `
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          </div>
-                          <div
-                            class="ant-col ant-col-24 fade-in"
-                            style="padding: 8px 8px 8px 8px;"
-                          >
-                            <div
-                              class="condition-layer condition-layer--0 condition-SEC fade-in "
-                            >
                               <div
-                                class="condition-collapsed"
+                                class="ant-col ant-col-24 fade-in"
+                                style="padding: 8px 8px 8px 8px;"
                               >
-                                <form
-                                  class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12514 form-view"
-                                  id="EDIT_PERMIT_CONDITION_12514"
+                                <div
+                                  class="condition-layer condition-layer--0 condition-SEC fade-in "
                                 >
                                   <div
-                                    class="ant-row ant-row-no-wrap condition-content editable"
+                                    class="condition-collapsed"
                                   >
-                                    <div
-                                      class="ant-col step-column"
-                                      style="flex-shrink: 0;"
+                                    <form
+                                      class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12514 form-view"
+                                      id="EDIT_PERMIT_CONDITION_12514"
                                     >
                                       <div
-                                        class="view-item ant-form-item"
-                                      >
-                                        
-                                        <div
-                                          class="ant-typography view-item-value"
-                                        >
-                                          2.
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div
-                                      aria-label="Edit Condition"
-                                      class="ant-col condition-column"
-                                      title="Edit Condition"
-                                    >
-                                      <div
-                                        class="view-item ant-form-item"
-                                      >
-                                        
-                                        <div
-                                          class="ant-typography view-item-value"
-                                        >
-                                          Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </form>
-                                <div>
-                                  <div
-                                    class="condition-layer condition-layer--1 condition-CON fade-in "
-                                  >
-                                    <div
-                                      class="condition-collapsed"
-                                    >
-                                      <form
-                                        class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12515 form-view"
-                                        id="EDIT_PERMIT_CONDITION_12515"
+                                        class="ant-row ant-row-no-wrap condition-content editable"
                                       >
                                         <div
-                                          class="ant-row ant-row-no-wrap condition-content editable"
+                                          class="ant-col step-column"
+                                          style="flex-shrink: 0;"
                                         >
                                           <div
-                                            class="ant-col step-column"
-                                            style="flex-shrink: 0;"
+                                            class="view-item ant-form-item"
                                           >
+                                            
                                             <div
-                                              class="view-item ant-form-item"
+                                              class="ant-typography view-item-value"
                                             >
-                                              
-                                              <div
-                                                class="ant-typography view-item-value"
-                                              >
-                                                a.
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div
-                                            aria-label="Edit Condition"
-                                            class="ant-col condition-column"
-                                            title="Edit Condition"
-                                          >
-                                            <div
-                                              class="view-item ant-form-item"
-                                            >
-                                              
-                                              <div
-                                                class="ant-typography view-item-value"
-                                              >
-                                                It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?
-                                              </div>
+                                              2.
                                             </div>
                                           </div>
                                         </div>
-                                      </form>
+                                        <div
+                                          aria-label="Edit Condition"
+                                          class="ant-col condition-column"
+                                          title="Edit Condition"
+                                        >
+                                          <div
+                                            class="view-item ant-form-item"
+                                          >
+                                            
+                                            <div
+                                              class="ant-typography view-item-value"
+                                            >
+                                              Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </form>
+                                    <div>
+                                      <div
+                                        class="condition-layer condition-layer--1 condition-CON fade-in "
+                                      >
+                                        <div
+                                          class="condition-collapsed"
+                                        >
+                                          <form
+                                            class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12515 form-view"
+                                            id="EDIT_PERMIT_CONDITION_12515"
+                                          >
+                                            <div
+                                              class="ant-row ant-row-no-wrap condition-content editable"
+                                            >
+                                              <div
+                                                class="ant-col step-column"
+                                                style="flex-shrink: 0;"
+                                              >
+                                                <div
+                                                  class="view-item ant-form-item"
+                                                >
+                                                  
+                                                  <div
+                                                    class="ant-typography view-item-value"
+                                                  >
+                                                    a.
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div
+                                                aria-label="Edit Condition"
+                                                class="ant-col condition-column"
+                                                title="Edit Condition"
+                                              >
+                                                <div
+                                                  class="view-item ant-form-item"
+                                                >
+                                                  
+                                                  <div
+                                                    class="ant-typography view-item-value"
+                                                  >
+                                                    It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </form>
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
@@ -1470,6 +1478,7 @@ exports[`PermitConditions renders properly 1`] = `
                     </div>
                   </div>
                 </div>
+                
               </div>
             </div>
           </div>

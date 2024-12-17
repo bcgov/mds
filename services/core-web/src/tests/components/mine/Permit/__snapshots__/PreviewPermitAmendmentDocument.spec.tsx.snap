@@ -1567,29 +1567,3 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
   </div>
 </div>
 `;
-
-exports[`PreviewPermitAmendmentDocument matches snapshot 1`] = `
-<div>
-  <div
-    class="ant-skeleton"
-  >
-    <div
-      class="ant-skeleton-content"
-    >
-      <h3
-        class="ant-skeleton-title"
-        style="width: 38%;"
-      />
-      <ul
-        class="ant-skeleton-paragraph"
-      >
-        <li />
-        <li />
-        <li
-          style="width: 61%;"
-        />
-      </ul>
-    </div>
-  </div>
-</div>
-`;
