@@ -1,7 +1,8 @@
 import * as ActionTypes from "@mds/common/constants/actionTypes";
 import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import { IUserInfo } from "@mds/common/interfaces";
-import { SystemFlagEnum, USER_ROLES } from "@mds/common/constants";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import { RootState } from "@mds/common/redux/rootState";
 import * as ReducerTypes from "@mds/common/constants/reducerTypes";
 

@@ -1,8 +1,4 @@
-import {
-  ConsequenceClassificationStatusCodeEnum,
-  DamTypeEnum,
-  OperatingStatusEnum,
-} from "@mds/common/constants";
+import { ConsequenceClassificationStatusCodeEnum, DamTypeEnum, OperatingStatusEnum } from "@mds/common/constants/enums";
 
 export interface ICreateDam {
   consequence_classification: ConsequenceClassificationStatusCodeEnum;

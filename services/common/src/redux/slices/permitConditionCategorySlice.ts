@@ -1,7 +1,7 @@
 import { createAppSlice, rejectHandler } from "@mds/common/redux/createAppSlice";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import CustomAxios from "@mds/common/redux/customAxios";
-import { ENVIRONMENT } from "@mds/common/constants";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { IPermitConditionCategory } from "@mds/common/interfaces";
 
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;

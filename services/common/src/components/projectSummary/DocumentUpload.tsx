@@ -10,11 +10,6 @@ import {
   uploadedByColumn,
 } from "../documents/DocumentColumns";
 import ProjectSummaryFileUpload from "./ProjectSummaryFileUpload";
-import {
-  ENVIRONMENT,
-  FORM,
-  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE,
-} from "@mds/common/constants";
 import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";
 import LinkButton from "../common/LinkButton";
 import * as API from "@mds/common/constants/API";
@@ -26,6 +21,9 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import { removeDocumentFromProjectSummary } from "@mds/common/redux/actionCreators/projectActionCreator";
 import { IProjectSummaryForm } from "@mds/common/interfaces";
 import { Feature } from "@mds/common/utils";
+import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE } from "@mds/common/constants/strings";
+import { FORM } from "@mds/common/constants/forms";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 
 const RenderOldDocuments = ({
   documents,

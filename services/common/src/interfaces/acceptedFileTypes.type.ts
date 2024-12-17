@@ -1,13 +1,4 @@
-import {
-  DOCUMENT,
-  EXCEL,
-  MODERN_EXCEL,
-  PDF,
-  IMAGE,
-  APPLICATION_OCTET_STREAM,
-  UNIQUELY_SPATIAL,
-  SPATIAL,
-} from "@mds/common/constants";
+import { APPLICATION_OCTET_STREAM, DOCUMENT, EXCEL, IMAGE, MODERN_EXCEL, PDF, SPATIAL, UNIQUELY_SPATIAL } from "../constants/fileTypes";
 
 export type IAcceptedFileTypes =
   | typeof DOCUMENT

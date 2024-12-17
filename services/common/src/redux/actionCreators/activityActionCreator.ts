@@ -5,12 +5,9 @@ import { storeActivities } from "../actions/activityActions";
 import { AxiosResponse } from "axios";
 import { IActivity } from "@mds/common/interfaces";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
-import {
-  ACTIVITIES,
-  ACTIVITIES_MARK_AS_READ,
-  ENVIRONMENT,
-} from "@mds/common/constants";
 import { AppThunk } from "@mds/common/interfaces/appThunk.type";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
+import { ACTIVITIES, ACTIVITIES_MARK_AS_READ } from "@mds/common/constants/API";
 
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;
 

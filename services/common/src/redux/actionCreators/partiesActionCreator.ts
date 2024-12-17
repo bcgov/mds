@@ -1,7 +1,6 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import queryString from "query-string";
-import { ENVIRONMENT, removeNullValues } from "@mds/common/constants";
 import { request, success, error } from "../actions/genericActions";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import * as partyActions from "../actions/partyActions";
@@ -25,6 +24,8 @@ import {
 } from "@mds/common/interfaces";
 import { AppThunk } from "@mds/common/interfaces/appThunk.type";
 import { AxiosResponse } from "axios";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
+import { removeNullValues } from "@mds/common/constants/utils";
 
 export const createParty = (payload: ICreateParty): AppThunk<Promise<AxiosResponse<IParty>>> => (
   dispatch

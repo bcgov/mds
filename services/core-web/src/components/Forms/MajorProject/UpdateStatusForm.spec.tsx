@@ -4,7 +4,8 @@ import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import UpdateStatusForm from "./UpdateStatusForm";
-import { SystemFlagEnum, PROJECT_STATUS_CODES, FORM } from "@mds/common/constants";
+import { PROJECT_STATUS_CODES, SystemFlagEnum } from "@mds/common/constants/enums";
+import { FORM } from "@mds/common/constants/forms";
 
 const msState = {
     [AUTHENTICATION]: {

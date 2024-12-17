@@ -1,4 +1,4 @@
-import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants";
+import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants/enums";
 import { IParty } from "./party.interface";
 
 export interface IMinePartyAppt {

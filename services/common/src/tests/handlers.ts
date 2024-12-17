@@ -8,7 +8,7 @@ import {
   PROJECT,
   PROJECT_SUMMARY_MINISTRY_COMMENTS,
 } from "@mds/common/tests/mocks/dataMocks";
-import { SystemFlagEnum } from "../constants";
+import { SystemFlagEnum } from "../constants/enums";
 
 const geoSpatialHandlers = [
   http.get("/%3CAPI_URL%3E/mines/document-bundle/shape", async () => {

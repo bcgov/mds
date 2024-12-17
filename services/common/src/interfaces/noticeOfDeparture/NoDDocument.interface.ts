@@ -1,4 +1,4 @@
-import { NoDTypeSaveEnum } from "@mds/common/constants";
+import { NoDTypeSaveEnum } from "@mds/common/constants/enums";
 import { IDocument } from "../document/document.interface";
 
 export interface INoDDocument extends IDocument {

@@ -1,6 +1,6 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT } from "@mds/common/constants";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { error, request, success } from "../actions/genericActions";
 import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";

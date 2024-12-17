@@ -1,4 +1,4 @@
-import { EMPTY_FIELD } from "@mds/common/constants";
+import { EMPTY_FIELD } from "@mds/common/constants/strings";
 import { Typography } from "antd";
 import React, { FC, ReactNode } from "react";
 import { WrappedFieldProps, WrappedFieldMetaProps, WrappedFieldInputProps } from "redux-form";

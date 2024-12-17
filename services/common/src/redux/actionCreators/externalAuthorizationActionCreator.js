@@ -1,5 +1,5 @@
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT } from "@mds/common/constants";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { request, success, error } from "../actions/genericActions";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import * as externalAuthActions from "../actions/externalAuthorizationActions";

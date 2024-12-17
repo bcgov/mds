@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Field, change, getFormValues } from "redux-form";
 import { Col, Row, Typography, Alert } from "antd";
-import { FORM } from "@mds/common/constants";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
@@ -28,6 +27,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCircleX, faSpinner } from "@fortawesome/pro-light-svg-icons";
 import { IProjectSummaryForm } from "@mds/common/interfaces";
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
+import { FORM } from "@mds/common/constants/forms";
 
 export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => {
   const dispatch = useDispatch();

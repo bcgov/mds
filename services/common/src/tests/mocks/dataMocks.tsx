@@ -1,3 +1,4 @@
+import { MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES, MINE_INCIDENT_DOCUMENT_TYPE_CODE, NodStatusSaveEnum, NoDTypeSaveEnum, PROJECT_STATUS_CODES, PROJECT_SUMMARY_STATUS_CODES, SystemFlagEnum, VC_CONNECTION_STATES, VC_CRED_ISSUE_STATES } from "@mds/common/constants/enums";
 import {
   IExplosivesPermit,
   INoticeOfDeparture,
@@ -10,17 +11,6 @@ import {
   IMineDocument,
   IPermitAmendment,
 } from "@mds/common/interfaces";
-import {
-  MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES,
-  MINE_INCIDENT_DOCUMENT_TYPE_CODE,
-  NodStatusSaveEnum,
-  NoDTypeSaveEnum,
-  PROJECT_STATUS_CODES,
-  PROJECT_SUMMARY_STATUS_CODES,
-  SystemFlagEnum,
-  VC_CONNECTION_STATES,
-  VC_CRED_ISSUE_STATES,
-} from "@mds/common/constants";
 
 export const createMockHeader = () => ({
   headers: {

@@ -12,7 +12,7 @@ import {
 import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
-import { FORM } from "@mds/common/constants";
+import { FORM } from "@mds/common/constants/forms";
 import { IAuthorizationSummary, IProjectSummaryForm } from "@mds/common/interfaces";
 import { FormContext } from "../forms/FormWrapper";
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";

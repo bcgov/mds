@@ -5,8 +5,9 @@ import CheckCircleOutlined from "@ant-design/icons/CheckCircleOutlined";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import CloseCircleOutlined from "@ant-design/icons/CloseCircleOutlined";
 import LinkButton from "../common/LinkButton";
-import { ENVIRONMENT, AMS_STATUS_CODE_FAIL } from "@mds/common/constants";
 import * as API from "@mds/common/constants/API";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
+import { AMS_STATUS_CODE_FAIL } from "@mds/common/constants/strings";
 
 export const ProjectSubmissionStatusPage = () => {
   const { projectGuid, status } = useParams<{ projectGuid: string; status: string }>();

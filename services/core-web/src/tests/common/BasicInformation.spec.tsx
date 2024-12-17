@@ -5,7 +5,7 @@ import { TAILINGS } from "@mds/common/constants/reducerTypes";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { MINE_RESPONSE } from "@mds/common/tests/mocks/dataMocks";
 import BasicInformation from "@mds/common/components/tailings/BasicInformation";
-import { FORM } from "@mds/common/constants";
+import { FORM } from "@mds/common/constants/forms";
 import TailingsProvider from "@common/components/tailings/TailingsProvider";
 import { renderConfig } from "@/components/common/config";
 import LinkButton from "@mds/common/components/common/LinkButton";

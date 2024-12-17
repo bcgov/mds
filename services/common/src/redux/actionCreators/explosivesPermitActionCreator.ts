@@ -1,6 +1,6 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT } from "@mds/common/constants";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { IExplosivesPermit } from "@mds/common/interfaces";
 import { request, success, error } from "../actions/genericActions";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";

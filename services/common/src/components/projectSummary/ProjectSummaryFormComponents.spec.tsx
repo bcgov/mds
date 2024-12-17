@@ -1,7 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import FormWrapper from "../forms/FormWrapper";
-import { FORM, SystemFlagEnum } from "@mds/common/constants";
 import { ProjectManagement } from "./ProjectManagement";
 import { LegalLandOwnerInformation } from "./LegalLandOwnerInformation";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
@@ -21,6 +20,8 @@ import DocumentUpload from "./DocumentUpload";
 import { FacilityOperator } from "./FacilityOperator";
 import { BrowserRouter } from "react-router-dom";
 import * as modalActions from "@mds/common/redux/actions/modalActions";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { FORM } from "@mds/common/constants/forms";
 
 const { formatProjectSummary } = exportForTesting;
 
@@ -275,11 +276,11 @@ describe("ProjectSummaryForm components disable accurately according to function
     describe("ProjectSummaryForm document deletion disables accurately according to functions", () => {
         const renderedComponents = ({ deletionEnabled }) => {
             mockDocDeletion.mockReturnValue(deletionEnabled);
-    
+
             return <BrowserRouter>
                 <FormWrapper name={FORM.ADD_EDIT_PROJECT_SUMMARY} onSubmit={jest.fn()}>
-                    <AuthorizationsInvolved fieldsDisabled={false} /> 
-                    <DocumentUpload docFieldsDisabled={false} deleteEnabled={deletionEnabled}/>
+                    <AuthorizationsInvolved fieldsDisabled={false} />
+                    <DocumentUpload docFieldsDisabled={false} deleteEnabled={deletionEnabled} />
                 </FormWrapper>
             </BrowserRouter>
         };
@@ -289,7 +290,7 @@ describe("ProjectSummaryForm components disable accurately according to function
             ...MOCK.PROJECT_SUMMARY.authorizations.flatMap(auth => auth.amendment_documents.map(doc => doc.document_manager_guid)),
             ...MOCK.PROJECT_SUMMARY.documents.filter(doc => doc.project_summary_document_type_code === "SPR").map(doc => doc.document_manager_guid)
         ];
-        
+
         afterEach(() => {
             jest.clearAllMocks();
         });
@@ -298,14 +299,14 @@ describe("ProjectSummaryForm components disable accurately according to function
             const params = {
                 deletionEnabled: true
             };
-    
-            const { container, findByTestId} = render(
+
+            const { container, findByTestId } = render(
                 <ReduxWrapper initialState={initialState}>
                     {renderedComponents(params)}
                 </ReduxWrapper>
             );
 
-            for (const key of keys){
+            for (const key of keys) {
                 const row = container.querySelector(`tr[data-row-key="${key}"]`)
                 expect(row).toBeInTheDocument();
                 const actionsButton = row.querySelector('button[data-cy="menu-actions-button"]')
@@ -321,14 +322,14 @@ describe("ProjectSummaryForm components disable accurately according to function
             const params = {
                 deletionEnabled: false
             };
-    
+
             const { container } = render(
                 <ReduxWrapper initialState={initialState}>
                     {renderedComponents(params)}
                 </ReduxWrapper>
             );
 
-            for (const key of keys){
+            for (const key of keys) {
                 const row = container.querySelector(`tr[data-row-key="${key}"]`)
                 expect(row).toBeInTheDocument();
                 const actionsButton = row.querySelector('button[data-cy="menu-actions-button"]')

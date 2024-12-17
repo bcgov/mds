@@ -7,7 +7,7 @@ import { Alert, Divider, Modal, Popconfirm, Table, Typography } from "antd";
 import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FilePondFile } from "filepond";
 import { IDocument } from "@mds/common/interfaces/document";
-import { MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common/constants";
+import { MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common/constants/enums";
 
 const notificationDisabledStatusCodes = [409]; // Define the notification disabled status codes
 

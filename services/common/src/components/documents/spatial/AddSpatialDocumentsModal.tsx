@@ -12,7 +12,8 @@ import { closeModal } from "@mds/common/redux/actions/modalActions";
 import ViewSpatialDetail from "./ViewSpatialDetail";
 import { createDocmanSpatialBundle } from "@mds/common/redux/slices/spatialDataSlice";
 import { OTHER_SPATIAL, XML } from "@mds/common/constants/fileTypes";
-import { SPATIAL_DATA_STANDARDS_URL, MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common/constants";
+import { SPATIAL_DATA_STANDARDS_URL } from "@mds/common/constants/strings";
+import { MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common/constants/enums";
 
 interface AddSpatialDocumentsModalProps {
   formName: string;

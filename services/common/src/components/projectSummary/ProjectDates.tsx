@@ -8,7 +8,7 @@ import {
   dateInFuture,
 } from "@mds/common/redux/utils/Validate";
 import Callout from "@mds/common/components/common/Callout";
-import { FORM } from "@mds/common/constants";
+import { FORM } from "@mds/common/constants/forms";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import { IProjectSummaryForm } from "@mds/common/interfaces";
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";

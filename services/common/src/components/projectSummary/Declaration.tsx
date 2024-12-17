@@ -6,7 +6,7 @@ import { getAmsAuthorizationTypes } from "@mds/common/redux/selectors/projectSel
 import { required } from "@mds/common/redux/utils/Validate";
 import RenderCheckbox from "../forms/RenderCheckbox";
 import PageFoldScrollWrapper from "../common/PageFoldScrollWrapper";
-import { FORM } from "@mds/common/constants";
+import { FORM } from "@mds/common/constants/forms";
 import { IProjectSummaryForm } from "@mds/common/interfaces";
 
 const terms = (

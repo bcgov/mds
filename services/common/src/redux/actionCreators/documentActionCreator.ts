@@ -4,7 +4,7 @@ import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 
 import { notification } from "antd";
-import { ENVIRONMENT } from "@mds/common/constants";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { IMineDocumentVersion } from "@mds/common/interfaces";
 import { error, request, success } from "@mds/common/redux/actions/genericActions";
 import CustomAxios from "@mds/common/redux/customAxios";

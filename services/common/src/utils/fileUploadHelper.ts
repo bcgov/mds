@@ -1,4 +1,3 @@
-import { COMPLETE_MULTIPART_UPLOAD, ENVIRONMENT } from "../constants";
 import CustomAxios from "../redux/customAxios";
 import { createRequestHeader } from "../redux/utils/RequestHeaders";
 import pLimit, { Limit } from "p-limit";
@@ -9,6 +8,8 @@ import {
   MultipartUploadPart,
 } from "./fileUploadHelper.interface";
 import { retryOnFail } from "./retry";
+import { COMPLETE_MULTIPART_UPLOAD } from "../constants/API";
+import { ENVIRONMENT } from "../constants/environment";
 
 /**
  * Encodes the given metadata to be sent to the document manager.

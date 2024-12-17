@@ -1,5 +1,5 @@
 // Styling types for various document/application status codes
-import { MINE_REPORT_STATUS_HASH } from "@mds/common/constants";
+import { MINE_REPORT_STATUS_HASH } from "@mds/common/constants/strings";
 
 const undefinedStatusStyleType = "default";
 

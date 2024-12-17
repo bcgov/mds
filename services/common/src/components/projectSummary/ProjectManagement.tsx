@@ -23,7 +23,7 @@ import MinistryCommentPanel from "@mds/common/components/comments/MinistryCommen
 import { requiredList } from "@mds/common/redux/utils/Validate";
 import { IGroupedDropdownList, IProjectSummaryForm, IProjectSummaryMinistryComment } from "@mds/common/interfaces";
 import { Feature } from "@mds/common/utils";
-import { USER_ROLES } from "@mds/common/constants";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import ProjectCallout from "../projects/ProjectCallout";
 
 const { Paragraph, Title } = Typography;

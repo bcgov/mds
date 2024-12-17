@@ -1,7 +1,7 @@
 import { notification } from "antd";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import { INoticeOfDeparture, ICreateNoD, INodDocumentPayload } from "@mds/common/interfaces";
-import { ENVIRONMENT } from "@mds/common/constants";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { IDispatchError, error, request, success } from "../actions/genericActions";
 import {
   NetworkReducerTypes

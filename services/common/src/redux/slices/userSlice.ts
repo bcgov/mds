@@ -2,8 +2,9 @@ import { createAppSlice, rejectHandler } from "@mds/common/redux/createAppSlice"
 import { createRequestHeader } from "@mds/common/redux/utils/RequestHeaders";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import CustomAxios from "@mds/common/redux/customAxios";
-import { ENVIRONMENT, USER_PROFILE } from "@mds/common/constants";
 import { IUser } from "@mds/common/interfaces";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
+import { USER_PROFILE } from "@mds/common/constants/API";
 
 export const userReducerType = "user";
 

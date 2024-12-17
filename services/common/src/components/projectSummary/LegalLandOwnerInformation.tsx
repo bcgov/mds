@@ -14,7 +14,7 @@ import {
   max,
   min,
 } from "@mds/common/redux/utils/Validate";
-import { FORM } from "@mds/common/constants";
+import { FORM } from "@mds/common/constants/forms";
 import RenderField from "../forms/RenderField";
 import { getDropdownMunicipalities } from "@mds/common/redux/selectors/staticContentSelectors";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";

@@ -8,7 +8,6 @@ import {
   isAuthenticated,
   userHasRole,
 } from "@mds/common/redux/selectors/authenticationSelectors";
-import { FORM, SystemFlagEnum, USER_ROLES } from "@mds/common/constants";
 import {
   createHelp,
   updateHelp,
@@ -30,6 +29,9 @@ import Loading from "../common/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/pro-regular-svg-icons";
 import { cancelConfirmWrapper } from "../forms/RenderCancelButton";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { USER_ROLES } from "@mds/common/constants/environment";
+import { FORM } from "@mds/common/constants/forms";
 
 interface HelpGuideProps {
   helpKey: string;

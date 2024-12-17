@@ -1,5 +1,5 @@
+import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants/enums";
 import { IMineDocument } from "@mds/common/interfaces";
-import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants";
 
 export interface IMineReportSubmission {
   comments: any[];

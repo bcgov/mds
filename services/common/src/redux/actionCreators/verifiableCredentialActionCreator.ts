@@ -1,4 +1,3 @@
-import { ENVIRONMENT } from "@mds/common/constants";
 import { request, success, error } from "../actions/genericActions";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import * as verfiableCredentialActions from "../actions/verfiableCredentialActions";
@@ -9,6 +8,7 @@ import { AppThunk } from "@mds/common/interfaces/appThunk.type";
 import { IVCInvitation } from "@mds/common/interfaces";
 import { AxiosResponse } from "axios";
 import { notification } from "antd";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 
 export const issueVCDigitalCredForPermit = (
   partyGuid: string,

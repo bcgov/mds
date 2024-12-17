@@ -5,7 +5,7 @@ import { Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import { userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
 import { detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common/utils";
-import { USER_ROLES } from "@mds/common/constants";
+import { USER_ROLES } from "@mds/common/constants/environment";
 
 /**
  * @constant AuthorizationWrapper conditionally renders react children depending

@@ -8,7 +8,7 @@ import "react-quill/dist/quill.snow.css";
 import parse from "html-react-parser";
 import DOMPurify from "dompurify";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
-import { SystemFlagEnum } from "@mds/common/constants";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 const RenderRichTextEditor: FC<BaseInputProps> = ({
   label,

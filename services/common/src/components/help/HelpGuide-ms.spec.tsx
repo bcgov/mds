@@ -3,7 +3,7 @@ import { render, fireEvent } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import HelpGuide, { HelpGuideContent } from "./HelpGuide";
 import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
-import { SystemFlagEnum } from "@mds/common/constants";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { MS_USER_ACCESS_DATA } from "@mds/common/tests/mocks/dataMocks";
 import { helpReducerType } from "@mds/common/redux/slices/helpSlice";
 import { BrowserRouter } from "react-router-dom";

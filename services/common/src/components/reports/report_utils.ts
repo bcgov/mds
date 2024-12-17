@@ -1,6 +1,7 @@
 // functions commonly used by reports
 
-import { MINE_REPORT_SUBMISSION_CODES } from "../../constants";
+import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants/enums";
+
 
 // values that antd understands
 export const reportStatusSeverityForDisplay = (status: MINE_REPORT_SUBMISSION_CODES) => {

@@ -1,6 +1,6 @@
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import { notification } from "antd";
-import { ENVIRONMENT } from "@mds/common/constants";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import { DAM, DAMS } from "@mds/common/constants/API";
 import { error, request, success } from "../actions/genericActions";

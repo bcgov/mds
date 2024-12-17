@@ -1,4 +1,4 @@
-import { MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES } from "@mds/common/constants";
+import { MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES } from "@mds/common/constants/enums";
 import { IIRTDocument } from "./irtDocument.interface";
 import { IIRTRequirementsXref } from "./irtRequirementsXref.interface";
 

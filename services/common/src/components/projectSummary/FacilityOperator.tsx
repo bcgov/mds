@@ -18,7 +18,7 @@ import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
 import { getRegionOptions } from "@mds/common/redux/slices/regionsSlice"
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
-import { FORM } from "@mds/common/constants";
+import { FORM } from "@mds/common/constants/forms";
 import { IProjectSummaryForm } from "@mds/common/interfaces";
 
 export const FacilityOperator: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => {

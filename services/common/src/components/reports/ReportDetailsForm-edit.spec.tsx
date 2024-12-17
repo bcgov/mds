@@ -5,7 +5,8 @@ import ReportDetailsForm from "./ReportDetailsForm";
 import { Button } from "antd";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
-import { SystemFlagEnum, USER_ROLES } from "@mds/common/constants";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { USER_ROLES } from "@mds/common/constants/environment";
 
 const mineReportSubmission = MOCK.MINE_REPORT_SUBMISSIONS[0];
 
@@ -43,7 +44,7 @@ describe("ReportDetailsForm", () => {
               <Button htmlType="submit">Submit</Button>
             </div>
           }
-          handleSubmit={() => {}}
+          handleSubmit={() => { }}
         />
       </ReduxWrapper>
     );

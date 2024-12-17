@@ -15,13 +15,14 @@ import {
 } from "@mds/common/redux/utils/Validate";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
 import LinkButton from "@mds/common/components/common/LinkButton";
-import { FORM, CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { FormContext } from "../forms/FormWrapper";
 import { IProjectSummaryForm } from "@mds/common/interfaces";
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
+import { FORM } from "@mds/common/constants/forms";
+import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants/strings";
 
 const RenderContacts = ({ fields, isDisabled }) => {
   const dispatch = useDispatch();

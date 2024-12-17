@@ -1,5 +1,5 @@
 import { searchConditionCategories, searchConditionCategoriesReducer, getConditionCategories } from "./permitConditionCategorySlice";
-import { ENVIRONMENT } from "@mds/common/constants";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import CustomAxios from "@mds/common/redux/customAxios";
 import { configureStore } from "@reduxjs/toolkit";
 

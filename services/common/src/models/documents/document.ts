@@ -1,4 +1,4 @@
-import { USER_ROLES } from "@mds/common/constants";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import { IMineDocument } from "@mds/common/interfaces";
 import { isFeatureEnabled, Feature } from "@mds/common/utils";
 

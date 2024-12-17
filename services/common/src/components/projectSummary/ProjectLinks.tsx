@@ -4,10 +4,6 @@ import { Field, change } from "redux-form";
 import { Button, Col, Row, Typography } from "antd";
 import ProjectLinksTable from "@mds/common/components/projectSummary/ProjectLinksTable";
 import { ILinkedProject, IProject } from "@mds/common/interfaces";
-import {
-  FORM,
-  USER_ROLES,
-} from "@mds/common/constants";
 import { getProjectStatusDescription } from "../projects/projectUtils";
 import { isProponent, userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
 import {
@@ -20,6 +16,7 @@ import RenderMultiSelect from "../forms/RenderMultiSelect";
 import * as Strings from "@mds/common/constants/strings";
 import { FormContext } from "../forms/FormWrapper";
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
+import { FORM } from "@mds/common/constants/forms";
 
 interface ProjectLinksProps extends ProjectSummaryFormComponentProps {
   viewProject: (record: ILinkedProject) => string;

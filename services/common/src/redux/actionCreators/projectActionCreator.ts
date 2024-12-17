@@ -7,7 +7,6 @@ import * as projectActions from "../actions/projectActions";
 import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
-import { ENVIRONMENT, MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES } from "@mds/common/constants";
 import {
   ICreateProjectSummary,
   IProjectSummary,
@@ -23,6 +22,8 @@ import {
 } from "@mds/common/interfaces";
 import { AppThunk } from "@mds/common/interfaces/appThunk.type";
 import { AxiosResponse } from "axios";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
+import { MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES } from "@mds/common/constants/enums";
 
 export const createProjectSummary = (
   { mineGuid },

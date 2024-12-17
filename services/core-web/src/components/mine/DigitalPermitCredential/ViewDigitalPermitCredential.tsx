@@ -1,5 +1,4 @@
 import { Alert, Button, Col, Row, Table, Typography } from "antd";
-import { VC_ACTIVE_CREDENTIAL_STATES, VC_CRED_ISSUE_STATES } from "@mds/common/constants";
 import {
   fetchPermits,
   patchPermitVCLocked,
@@ -19,6 +18,8 @@ import {
   revokeCredential,
 } from "@mds/common/redux/slices/verifiableCredentialsSlice";
 import DigitalCredentialDetails from "@/components/mine/DigitalPermitCredential/DigitalCredentialDetails";
+import { VC_CRED_ISSUE_STATES } from "@mds/common/constants/enums";
+import { VC_ACTIVE_CREDENTIAL_STATES } from "@mds/common/constants/strings";
 
 const { Paragraph, Title } = Typography;
 
@@ -169,7 +170,7 @@ export const ViewDigitalPermitCredential: FC = () => {
                 <Paragraph className="margin-none">
                   {VC_CRED_ISSUE_STATES[activePermitCredential?.cred_exch_state] ??
                     VC_CRED_ISSUE_STATES[
-                      minesActPermitIssuance[minesActPermitIssuance.length - 1]?.cred_exch_state
+                    minesActPermitIssuance[minesActPermitIssuance.length - 1]?.cred_exch_state
                     ] ??
                     "No Credential Issued"}
                 </Paragraph>

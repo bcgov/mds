@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Field } from "redux-form";
 import RenderRichTextEditor from "../forms/RenderRichTextEditor";
-import { FORM } from "@mds/common/constants";
+import { FORM } from "@mds/common/constants/forms";
 import FormWrapper from "../forms/FormWrapper";
 import { formatSnakeCaseToSentenceCase } from "@mds/common/redux/utils/helpers";
 import RenderRadioButtons from "../forms/RenderRadioButtons";

@@ -3,7 +3,7 @@ import { render, fireEvent } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { HelpGuideContent } from "./HelpGuide";
 import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
-import { SystemFlagEnum } from "@mds/common/constants";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { HELP_GUIDE_CORE, USER_ACCESS_DATA } from "@mds/common/tests/mocks/dataMocks";
 import { EMPTY_HELP_KEY, helpReducerType } from "@mds/common/redux/slices/helpSlice";
 

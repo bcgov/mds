@@ -1,4 +1,4 @@
-import { VC_CRED_ISSUE_STATES } from "@mds/common/constants";
+import { VC_CRED_ISSUE_STATES } from "@mds/common/constants/enums";
 import { INoWDocument } from "../NoWDocument.interface";
 import { INoWImportedApplicationDocument } from "../NoWImportedApplicationDocument.interface";
 import { IMineReportPermitRequirement } from "./mineReportPermitRequirements.interface";

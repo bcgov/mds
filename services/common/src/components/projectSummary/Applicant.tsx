@@ -11,7 +11,7 @@ import {
   requiredRadioButton,
 } from "@mds/common/redux/utils/Validate";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
-import { FORM } from "@mds/common/constants";
+import { FORM } from "@mds/common/constants/forms";
 import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants/strings";
 import { IOrgbookCredential } from "@mds/common/interfaces/party";
 import RenderOrgBookSearch from "@mds/common/components/forms/RenderOrgBookSearch";

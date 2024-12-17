@@ -1,4 +1,4 @@
-import { PROJECT_STATUS_CODES } from "@mds/common/constants";
+import { PROJECT_STATUS_CODES } from "@mds/common/constants/enums";
 import { IMineDocument } from "../mineDocument.interface";
 import { IParty } from "../party";
 import { IProjectContact } from "./projectContact.interface";

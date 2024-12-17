@@ -2,12 +2,9 @@ import { createAppSlice, rejectHandler } from "@mds/common/redux/createAppSlice"
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import CustomAxios from "@mds/common/redux/customAxios";
 import { ItemMap } from "@mds/common/interfaces";
-import {
-  ENVIRONMENT,
-  PERMIT_SERVICE_EXTRACTION,
-  POLL_PERMIT_SERVICE_EXTRACTION,
-} from "@mds/common/constants";
 import { createSelector } from "@reduxjs/toolkit";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
+import { PERMIT_SERVICE_EXTRACTION, POLL_PERMIT_SERVICE_EXTRACTION } from "@mds/common/constants/API";
 
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;
 

@@ -3,7 +3,7 @@ import { notification, Button } from "antd";
 import * as String from "@mds/common/constants/strings";
 import React from "react";
 import * as API from "@mds/common/constants/API";
-import { ENVIRONMENT } from "@mds/common/constants";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { createRequestHeader } from "./utils/RequestHeaders";
 import { Feature, isFeatureEnabled } from "@mds/common/utils";
 

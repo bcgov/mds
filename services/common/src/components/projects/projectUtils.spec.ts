@@ -1,4 +1,4 @@
-import { PROJECT_STATUS_CODES, SystemFlagEnum } from "@mds/common/constants";
+import { PROJECT_STATUS_CODES, SystemFlagEnum } from "@mds/common/constants/enums";
 import { areAuthEnvFieldsDisabled, areAuthFieldsDisabled, areDocumentFieldsDisabled, areFieldsDisabled } from "./projectUtils";
 
 const enumValues = (<any>Object).values(PROJECT_STATUS_CODES);

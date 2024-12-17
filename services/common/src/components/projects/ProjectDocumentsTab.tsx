@@ -18,8 +18,8 @@ import { getProjectSummaryDocumentTypesHash } from "@mds/common/redux/selectors/
 import { areDocumentFieldsDisabled } from "./projectUtils";
 import { IProject, IProjectSummaryAuthorization } from "@mds/common/interfaces/projects";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
-import { CATEGORY_CODE } from "@mds/common/constants";
 import { Feature } from "@mds/common/utils";
+import { CATEGORY_CODE } from "@mds/common/constants/strings";
 
 interface ProjectDocumentsTabProps {
   project: IProject;
