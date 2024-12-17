@@ -1,4 +1,4 @@
-from tests.factories import (ExplosivesPermitAmendmentFactory, ExplosivesPermitFactory)
+from tests.factories import ExplosivesPermitAmendmentFactory
 
 from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import ExplosivesPermitAmendment
 
