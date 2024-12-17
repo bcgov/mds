@@ -8,10 +8,13 @@ import {
   updatePartyRelationship,
   fetchPartyRelationships,
 } from "@mds/common/redux/actionCreators/partiesActionCreator";
-import { MINISTRY_ACKNOWLEDGED_STATUS, PARTY_APPOINTMENT_STATUS } from "@mds/common";
 import TailingsContext from "./tailings/TailingsContext";
 import DocumentLink from "@/components/common/DocumentLink";
 import CoreTable from "@mds/common/components/common/CoreTable";
+import {
+  MINISTRY_ACKNOWLEDGED_STATUS,
+  PARTY_APPOINTMENT_STATUS,
+} from "@mds/common/constants/strings";
 
 const propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string),
@@ -33,9 +36,9 @@ const PartyAppointmentTable = (props) => {
 
   const [loadingField, setLoadingField] = useState({});
 
-  const ministryAcknowledgedColumns = Object.entries(
-    MINISTRY_ACKNOWLEDGED_STATUS
-  ).map(([value, label]) => ({ value, label }));
+  const ministryAcknowledgedColumns = Object.entries(MINISTRY_ACKNOWLEDGED_STATUS).map(
+    ([value, label]) => ({ value, label })
+  );
   const statusColumns = Object.entries(PARTY_APPOINTMENT_STATUS).map(([value, label]) => ({
     value,
     label,

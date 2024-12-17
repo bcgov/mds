@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { MAJOR_MINE_APPLICATION_DOCUMENTS } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
-import { MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common";
+import { MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common/constants/enums";
 
 const propTypes = {
   onFileLoad: PropTypes.func.isRequired,

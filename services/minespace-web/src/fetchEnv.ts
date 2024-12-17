@@ -1,5 +1,6 @@
 import axios from "axios";
-import { setupEnvironment, setupKeycloak, DEFAULT_ENVIRONMENT } from "@mds/common";
+import { DEFAULT_ENVIRONMENT } from "@/constants/environment";
+import { setupEnvironment, setupKeycloak } from "@mds/common/constants/environment";
 
 export default function fetchEnv() {
   return axios
@@ -30,11 +31,11 @@ export default function fetchEnv() {
         env.keycloak_clientId,
         env.keycloak_resource,
         env.keycloak_url,
-        env.keycloak_idpHint,
-        env.keycloak_bceid_idpHint || "na",
-        env.keycloak_vcauthn_idpHint || "na",
-        env.vcauthn_pres_req_conf_id || "na",
-        env.siteminder_url || "na"
+        env.keycloak_idir_idpHint || "na",
+        env.keycloak_bceid_idpHint,
+        env.keycloak_vcauthn_idpHint,
+        env.vcauthn_pres_req_conf_id,
+        env.siteminder_url
       );
     });
 }

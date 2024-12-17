@@ -1,7 +1,7 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
-import { detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common";
+import { detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common/utils";
 import { isProponent, isAuthenticated } from "@mds/common/redux/selectors/authenticationSelectors";
 
 /**

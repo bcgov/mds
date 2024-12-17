@@ -11,7 +11,7 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "vendor/leaflet/leaflet-measure/leaflet-measure.css";
 import "vendor/leaflet/mouse-coordinates/leaflet.mousecoordinate";
 import "vendor/leaflet/grouped-layer-control/leaflet.groupedlayercontrol.min";
-import { FIRST_NATIONS_LAYER_URL } from "@mds/common";
+import { FIRST_NATIONS_LAYER_URL } from "@mds/common/constants/environment";
 import * as Strings from "@mds/common/constants/strings";
 import { Descriptions } from "antd";
 import CustomPropTypes from "@/customPropTypes";
@@ -72,7 +72,7 @@ LeafletWms.Source = LeafletWms.Source.extend({
     };
     return L.extend({}, wmsParams, infoParams);
   },
-  parseFeatureInfo: function(result, url) {
+  parseFeatureInfo: function (result, url) {
     // Hook to handle parsing AJAX response
     if (result == "error") {
       // AJAX failed, possibly due to CORS issues.
@@ -81,7 +81,7 @@ LeafletWms.Source = LeafletWms.Source.extend({
     }
     return result;
   },
-  showFeatureInfo: function(latlng, info) {
+  showFeatureInfo: function (latlng, info) {
     // Hook to handle displaying parsed AJAX response to the user
     if (!this._map) {
       return;
@@ -111,7 +111,7 @@ export class MineTailingsMap extends Component {
   latLong =
     this.props.mine.mine_location.latitude && this.props.mine.mine_location.longitude
       ? // only add mine Pin if location exists
-        [this.props.mine.mine_location.latitude, this.props.mine.mine_location.longitude]
+      [this.props.mine.mine_location.latitude, this.props.mine.mine_location.longitude]
       : [Number(Strings.DEFAULT_LAT), Number(Strings.DEFAULT_LONG)];
 
   componentDidMount() {
@@ -244,7 +244,7 @@ export class MineTailingsMap extends Component {
               let flLayer = subLayers[layerID];
               flLayer = Object.create(flLayer);
 
-              flLayer.__proto__.setStyle(function(feature) {
+              flLayer.__proto__.setStyle(function (feature) {
                 return tenureLayerStyles[layer.title];
               });
             }

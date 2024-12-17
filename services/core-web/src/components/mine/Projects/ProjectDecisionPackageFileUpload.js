@@ -4,7 +4,7 @@ import { Field } from "redux-form";
 import { PROJECT_DECISION_PACKAGE_DOCUMENTS } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@/constants/fileTypes";
-import { MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common";
+import { MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common/constants/enums";
 
 const propTypes = {
   onFileLoad: PropTypes.func.isRequired,

@@ -27,10 +27,11 @@ import EditOutlined from "@ant-design/icons/EditOutlined";
 import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
-import { Feature, USER_ROLES } from "@mds/common";
 import { getDocumentDownloadToken } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { waitFor, downloadDocument } from "@/components/common/downloads/helpers";
+import { USER_ROLES } from "@mds/common/constants/environment";
+import { Feature } from "@mds/common/utils/featureFlag";
 
 const propTypes = {
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
@@ -51,7 +52,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  handleTableChange: () => {},
+  handleTableChange: () => { },
   filters: {},
   sortField: undefined,
   sortDir: undefined,
@@ -142,9 +143,9 @@ export const MineReportTable = (props) => {
   const getComplianceCodeValue = (guid) => {
     return props.mineReportDefinitionHash && props.mineReportDefinitionHash[guid]
       ? formatComplianceCodeValueOrLabel(
-          props.mineReportDefinitionHash[guid].compliance_articles[0],
-          false
-        )
+        props.mineReportDefinitionHash[guid].compliance_articles[0],
+        false
+      )
       : null;
   };
 

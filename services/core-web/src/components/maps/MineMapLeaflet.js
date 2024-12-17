@@ -13,7 +13,6 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "vendor/leaflet/leaflet-measure/leaflet-measure.css";
 import "vendor/leaflet/mouse-coordinates/leaflet.mousecoordinate";
 import "vendor/leaflet/grouped-layer-control/leaflet.groupedlayercontrol.min";
-import { FIRST_NATIONS_LAYER_URL } from "@mds/common";
 import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
@@ -25,6 +24,7 @@ import {
   tenureLayerArray,
   tenureLayerStyles,
 } from "@/constants/MapLayers";
+import { FIRST_NATIONS_LAYER_URL } from "@mds/common/constants/environment";
 
 /**
  * @class MineMapLeaflet.js is a Leaflet Map component.
@@ -97,7 +97,7 @@ LeafletWms.Source = LeafletWms.Source.extend({
     };
     return L.extend({}, wmsParams, infoParams);
   },
-  parseFeatureInfo: function(result, url) {
+  parseFeatureInfo: function (result, url) {
     // Hook to handle parsing AJAX response
     if (result == "error") {
       // AJAX failed, possibly due to CORS issues.
@@ -106,7 +106,7 @@ LeafletWms.Source = LeafletWms.Source.extend({
     }
     return result;
   },
-  showFeatureInfo: function(latlng, info) {
+  showFeatureInfo: function (latlng, info) {
     // Hook to handle displaying parsed AJAX response to the user
     if (!this._map) {
       return;
@@ -275,7 +275,7 @@ class MineMapLeaflet extends Component {
               let flLayer = subLayers[layerID];
               flLayer = Object.create(flLayer);
 
-              flLayer.__proto__.setStyle(function(feature) {
+              flLayer.__proto__.setStyle(function (feature) {
                 return tenureLayerStyles[layer.title];
               });
             }

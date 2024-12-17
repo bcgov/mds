@@ -1,12 +1,13 @@
 import axios from "axios";
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { DEFAULT_DASHBOARD_PARAMS, ENVIRONMENT } from "@mds/common";
 import { request, success, error } from "@/actions/genericActions";
 import * as userMineActions from "@/actions/userMineActions";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "@/utils/RequestHeaders";
+import { DEFAULT_DASHBOARD_PARAMS, ERROR } from "@mds/common/constants/strings";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 
 export const fetchUserMineInfo =
   (params = DEFAULT_DASHBOARD_PARAMS) =>
@@ -22,7 +23,7 @@ export const fetchUserMineInfo =
       })
       .catch((err) => {
         notification.error({
-          message: err.response ? err.response.data.message : String.ERROR,
+          message: err.response ? err.response.data.message : ERROR,
           duration: 10,
         });
         dispatch(error(NetworkReducerTypes.GET_USER_MINE_INFO));
@@ -42,7 +43,7 @@ export const fetchMineRecordById = (mineId) => (dispatch) => {
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.message : String.ERROR,
+        message: err.response ? err.response.data.message : ERROR,
         duration: 10,
       });
       dispatch(error(NetworkReducerTypes.GET_MINE_RECORD));

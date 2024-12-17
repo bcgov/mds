@@ -8,7 +8,7 @@ import {
   updatePartyRelationship,
   fetchPartyRelationships,
 } from "@mds/common/redux/actionCreators/partiesActionCreator";
-import { MINISTRY_ACKNOWLEDGED_STATUS, } from "@mds/common/constants/enums";
+import { MINISTRY_ACKNOWLEDGED_STATUS, PARTY_APPOINTMENT_STATUS } from "@mds/common/constants/strings";
 import TailingsContext from "./tailings/TailingsContext";
 import DocumentLink from "@/components/common/DocumentLink";
 import CoreTable from "@mds/common/components/common/CoreTable";

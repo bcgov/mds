@@ -23,7 +23,6 @@ import {
   getIncidentFollowupActionOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
-import { DEFAULT_PER_PAGE, DEFAULT_PAGE } from "@mds/common";
 import * as ROUTES from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
@@ -31,6 +30,7 @@ import AddButton from "@/components/common/buttons/AddButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 import MineIncidentTable from "./MineIncidentTable";
+import { DEFAULT_PAGE, DEFAULT_PER_PAGE } from "@mds/common/constants/strings";
 
 /**
  * @component MineIncidents - all incident information related to the mine.
