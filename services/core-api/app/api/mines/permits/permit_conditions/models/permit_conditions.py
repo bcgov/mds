@@ -80,13 +80,10 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         # and is used to determine the display format of the step.
         # If not set (for manually added condtitions), we auto-generate the step
         if self._step:
-            # Format the first level with a trailing dot - A. B. C. and the rest with () - (a), (i), (ii)
-            if depth == 0:
-                return f"{self._step}."
-            return f"({self._step})"
-        if self._step == "":
-            return ""
-
+            return self._step
+        if self._step == '':
+            return ''
+    
         step_format = depth % 3
         if step_format == 0:
             return str(self.display_order) + "."
@@ -193,3 +190,24 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         return cls.query.filter_by(
             condition_category_code=condition_category_code, deleted_ind=False
         ).all()
+
+    @classmethod
+    def find_by_permit_amendment_id_ordered(cls, permit_amendment_id):
+        # Returns a list of root conditions ordered by display_order
+        # within each parent condition, subconditions are ordered by display_order
+
+        def get_all_conditions(condition):
+            conditions = [condition]
+            for sub_condition in condition.all_sub_conditions:
+                if not sub_condition.deleted_ind:
+                    conditions.extend(get_all_conditions(sub_condition))
+            return conditions
+
+        all_conditions = []
+        root_conditions = cls.query\
+            .filter_by(parent_permit_condition_id=None, deleted_ind=False, permit_amendment_id=permit_amendment_id)\
+            .order_by(cls.display_order)\
+            .all()
+        for root_condition in root_conditions:
+            all_conditions.extend(get_all_conditions(root_condition))
+        return all_conditions

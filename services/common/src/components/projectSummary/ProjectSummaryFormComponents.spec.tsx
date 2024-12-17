@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import FormWrapper from "../forms/FormWrapper";
 import { FORM, SystemFlagEnum } from "@mds/common/constants";
 import { ProjectManagement } from "./ProjectManagement";
@@ -20,9 +20,9 @@ import Declaration from "./Declaration";
 import DocumentUpload from "./DocumentUpload";
 import { FacilityOperator } from "./FacilityOperator";
 import { BrowserRouter } from "react-router-dom";
+import * as modalActions from "@mds/common/redux/actions/modalActions";
 
 const { formatProjectSummary } = exportForTesting;
-
 
 const amsAuthTypes = ['AIR_EMISSIONS_DISCHARGE_PERMIT', 'EFFLUENT_DISCHARGE_PERMIT', 'REFUSE_DISCHARGE_PERMIT'];
 const project = { project_lead_party_guid: "project_lead_party_guid" };
@@ -62,12 +62,14 @@ const mockFields = jest.fn();
 const mockDocFields = jest.fn();
 const mockAuthFields = jest.fn();
 const mockEnvFields = jest.fn();
+const mockDocDeletion = jest.fn();
 
 jest.mock("@mds/common/components/projects/projectUtils", () => ({
     areFieldsDisabled: () => mockFields(),
     areDocumentFieldsDisabled: () => mockDocFields(),
     areAuthFieldsDisabled: () => mockAuthFields(),
     areAuthEnvFieldsDisabled: () => mockEnvFields(),
+    isDocumentDeletionEnabled: () => mockDocDeletion(),
     getProjectStatusDescription: () => jest.fn().mockReturnValue("Status Description")
 }));
 
@@ -106,12 +108,13 @@ const isEnvMatch = (id: string) => {
     return match && !isDoc;
 };
 
-describe("ProjectSummaryForm components disable accurately accoring to functions", () => {
+describe("ProjectSummaryForm components disable accurately according to functions", () => {
     const renderedComponents = ({ fieldsDisabled, authFieldsDisabled, docFieldsDisabled, envFieldsDisabled }) => {
         mockFields.mockReturnValue(fieldsDisabled);
         mockDocFields.mockReturnValue(docFieldsDisabled);
         mockAuthFields.mockReturnValue(authFieldsDisabled);
         mockEnvFields.mockReturnValue(envFieldsDisabled);
+        mockDocDeletion.mockReturnValue(false);
 
         return <BrowserRouter>
             <FormWrapper name={FORM.ADD_EDIT_PROJECT_SUMMARY} onSubmit={jest.fn()}>
@@ -125,7 +128,7 @@ describe("ProjectSummaryForm components disable accurately accoring to functions
                 <Agent fieldsDisabled={fieldsDisabled} />
                 <FacilityOperator fieldsDisabled={fieldsDisabled} />
                 <AuthorizationsInvolved fieldsDisabled={authFieldsDisabled} />
-                <DocumentUpload docFieldsDisabled={docFieldsDisabled} />
+                <DocumentUpload docFieldsDisabled={docFieldsDisabled} deleteEnabled={false} />
                 <ApplicationSummary fieldsDisabled={fieldsDisabled} />
                 <Declaration />
             </FormWrapper>
@@ -267,5 +270,73 @@ describe("ProjectSummaryForm components disable accurately accoring to functions
         const enabledAuthIds = filteredEnabledIds.filter((id) => id.startsWith("authorization") && !isDocField(id));
 
         expect(enabledAuthIds).toEqual([]);
+    });
+
+    describe("ProjectSummaryForm document deletion disables accurately according to functions", () => {
+        const renderedComponents = ({ deletionEnabled }) => {
+            mockDocDeletion.mockReturnValue(deletionEnabled);
+    
+            return <BrowserRouter>
+                <FormWrapper name={FORM.ADD_EDIT_PROJECT_SUMMARY} onSubmit={jest.fn()}>
+                    <AuthorizationsInvolved fieldsDisabled={false} /> 
+                    <DocumentUpload docFieldsDisabled={false} deleteEnabled={deletionEnabled}/>
+                </FormWrapper>
+            </BrowserRouter>
+        };
+
+        const openModalSpy = jest.spyOn(modalActions, "openModal");
+        const keys = [
+            ...MOCK.PROJECT_SUMMARY.authorizations.flatMap(auth => auth.amendment_documents.map(doc => doc.document_manager_guid)),
+            ...MOCK.PROJECT_SUMMARY.documents.filter(doc => doc.project_summary_document_type_code === "SPR").map(doc => doc.document_manager_guid)
+        ];
+        
+        afterEach(() => {
+            jest.clearAllMocks();
+        });
+
+        test("Document deletion enabled", async () => {
+            const params = {
+                deletionEnabled: true
+            };
+    
+            const { container, findByTestId} = render(
+                <ReduxWrapper initialState={initialState}>
+                    {renderedComponents(params)}
+                </ReduxWrapper>
+            );
+
+            for (const key of keys){
+                const row = container.querySelector(`tr[data-row-key="${key}"]`)
+                expect(row).toBeInTheDocument();
+                const actionsButton = row.querySelector('button[data-cy="menu-actions-button"]')
+                fireEvent.mouseEnter(actionsButton);
+                const deleteAction = await findByTestId("action-button-delete");
+                expect(deleteAction).toBeInTheDocument();
+                fireEvent.click(deleteAction)
+            }
+            expect(openModalSpy).toHaveBeenCalledTimes(keys.length)
+        });
+
+        test("Document deletion disabled", async () => {
+            const params = {
+                deletionEnabled: false
+            };
+    
+            const { container } = render(
+                <ReduxWrapper initialState={initialState}>
+                    {renderedComponents(params)}
+                </ReduxWrapper>
+            );
+
+            for (const key of keys){
+                const row = container.querySelector(`tr[data-row-key="${key}"]`)
+                expect(row).toBeInTheDocument();
+                const actionsButton = row.querySelector('button[data-cy="menu-actions-button"]')
+                fireEvent.mouseEnter(actionsButton);
+                const deleteAction = container.querySelector('[data-testid="action-button-delete"]');
+                expect(deleteAction).not.toBeInTheDocument();
+            }
+            expect(openModalSpy).toHaveBeenCalledTimes(0)
+        });
     });
 });

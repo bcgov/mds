@@ -15,14 +15,14 @@ export const cancelConfirmWrapper = (
   return !isFormDirty
     ? cancelFunction()
     : Modal.confirm(
-        modalProps ?? {
-          title: "Discard changes?",
-          content: "All changes made will not be saved.",
-          onOk: cancelFunction,
-          cancelText: "Continue Editing",
-          okText: "Discard",
-        }
-      );
+      modalProps ?? {
+        title: "Discard changes?",
+        content: "All changes made will not be saved.",
+        onOk: cancelFunction,
+        cancelText: "Continue Editing",
+        okText: "Discard",
+      }
+    );
 };
 
 interface RenderCancelButtonProps {
@@ -31,6 +31,7 @@ interface RenderCancelButtonProps {
   buttonProps?: BaseButtonProps;
   cancelFunction?: () => void | Promise<void>;
   cancelModalProps?: ModalFuncProps;
+  iconButton?: boolean;
 }
 
 /**
@@ -47,6 +48,7 @@ const RenderCancelButton: FC<RenderCancelButtonProps> = ({
   buttonProps = { type: "default" },
   cancelFunction,
   cancelModalProps,
+  iconButton = false
 }) => {
   const dispatch = useDispatch();
   const { formName, isModal, isEditMode } = useContext(FormContext);
@@ -66,9 +68,10 @@ const RenderCancelButton: FC<RenderCancelButtonProps> = ({
     : handleCancel;
 
   const buttonType = buttonProps?.type ?? "default";
+  const buttonLabel = isEditMode ? buttonText : viewButtonText;
   return (
-    <CoreButton {...buttonProps} type={buttonType} onClick={() => buttonCancelFunction()}>
-      {isEditMode ? buttonText : viewButtonText}
+    <CoreButton aria-label="Cancel" {...buttonProps} type={buttonType} onClick={() => buttonCancelFunction()}>
+      {!iconButton && buttonLabel}
     </CoreButton>
   );
 };

@@ -1,9 +1,30 @@
 @use "../base.scss" as *;
 
 div.condition-layer {
-  padding: 12px 8px 0 8px;
+  padding-top: 12px;
+  padding-left: 24px;
   font-weight: normal;
-  cursor: pointer;
+
+  .condition-content {
+    &.editable:hover {
+      cursor: pointer;
+      background-color: lightgrey;
+    }
+
+    .view-item {
+      margin-bottom: 0;
+    }
+
+    .condition-column {
+      width: 100%;
+    }
+
+    .step-column {
+      padding-right: 8px;
+      max-width: 100px;
+      flex-shrink: 0;
+    }
+  }
 
   &--editing {
     cursor: initial;
@@ -12,7 +33,7 @@ div.condition-layer {
   &--0 {
     border: 1px solid $transparent-dark-grey;
     border-radius: 4px;
-    padding-bottom: 12px;
+    padding: 16px;
     font-weight: 700;
 
     p.condition-layer--0 {
@@ -23,7 +44,7 @@ div.condition-layer {
       white-space: pre-wrap;
     }
 
-    > .condition-collapsed {
+    >.condition-collapsed {
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 3;
@@ -35,24 +56,14 @@ div.condition-layer {
 }
 
 .condition-edit-buttons {
-  padding: 12px 8px 0 8px;
-}
-
-.condition-edit-buttons > button {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.condition-edit-buttons > button > svg {
-  margin-right: 4px;
+  padding: 0 8px;
 }
 
 .report-collapse-container {
   width: 100%;
 }
 
-.report-collapse-container > div {
+.report-collapse-container>div {
   border: 1px solid #d9d9d9;
 }
 

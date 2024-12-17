@@ -20,12 +20,13 @@ def permit_amendment(test_client, db_session):
     mine, permit = create_mine_and_permit()
     permit_amendment = permit.permit_amendments[0]
     PermitConditions.query.delete()
+    db_session.flush()
 
     yield permit_amendment
 
 
 @pytest.fixture(scope="function")
-def permit_conditions(permit_amendment):
+def permit_conditions(permit_amendment, db_session):
     task = PermitExtractionTask(
         task_result={
             "conditions": [
@@ -128,15 +129,16 @@ def permit_conditions(permit_amendment):
     create_permit_conditions_from_task(task)
 
     # Retrieve the created permit conditions from the database
-    permit_conditions = PermitConditions.query.all()
+    permit_conditions = PermitConditions.find_by_permit_amendment_id_ordered(permit_amendment.permit_amendment_id)
 
     return permit_conditions
 
 
 def test_create_permit_conditions_from_task(
     permit_conditions, permit_amendment, db_session
-):
+): 
 
+    assert len(permit_conditions) == 7
     ### General Section
     gen_cat = permit_conditions[0]
 

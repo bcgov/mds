@@ -444,7 +444,7 @@ exports[`PermitConditions renders properly 1`] = `
                                   class="ant-typography"
                                   style="font-size: 16px; font-weight: 600;"
                                 >
-                                  A.. 
+                                  A.
                                   Health and Safety
                                 </span>
                                 <span
@@ -495,7 +495,7 @@ exports[`PermitConditions renders properly 1`] = `
                                   class="ant-typography"
                                   style="font-size: 16px; font-weight: 600;"
                                 >
-                                  B.. 
+                                  B.
                                   Reclamation
                                 </span>
                                 <span
@@ -745,11 +745,46 @@ exports[`PermitConditions renders properly 1`] = `
                               <div
                                 class="condition-collapsed"
                               >
-                                <p>
-                                  1.
-                                   
-                                  Section decade check including.
-                                </p>
+                                <form
+                                  class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1639 form-view"
+                                  id="EDIT_PERMIT_CONDITION_1639"
+                                >
+                                  <div
+                                    class="ant-row ant-row-no-wrap condition-content editable"
+                                  >
+                                    <div
+                                      class="ant-col step-column"
+                                      style="flex-shrink: 0;"
+                                    >
+                                      <div
+                                        class="view-item ant-form-item"
+                                      >
+                                        
+                                        <div
+                                          class="ant-typography view-item-value"
+                                        >
+                                          1.
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      aria-label="Edit Condition"
+                                      class="ant-col condition-column"
+                                      title="Edit Condition"
+                                    >
+                                      <div
+                                        class="view-item ant-form-item"
+                                      >
+                                        
+                                        <div
+                                          class="ant-typography view-item-value"
+                                        >
+                                          Section decade check including.
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </form>
                               </div>
                             </div>
                           </div>
@@ -797,11 +832,46 @@ exports[`PermitConditions renders properly 1`] = `
                               <div
                                 class="condition-collapsed"
                               >
-                                <p>
-                                  1.
-                                   
-                                  Reflect miss police tough such single force.
-                                </p>
+                                <form
+                                  class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1646 form-view"
+                                  id="EDIT_PERMIT_CONDITION_1646"
+                                >
+                                  <div
+                                    class="ant-row ant-row-no-wrap condition-content editable"
+                                  >
+                                    <div
+                                      class="ant-col step-column"
+                                      style="flex-shrink: 0;"
+                                    >
+                                      <div
+                                        class="view-item ant-form-item"
+                                      >
+                                        
+                                        <div
+                                          class="ant-typography view-item-value"
+                                        >
+                                          1.
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      aria-label="Edit Condition"
+                                      class="ant-col condition-column"
+                                      title="Edit Condition"
+                                    >
+                                      <div
+                                        class="view-item ant-form-item"
+                                      >
+                                        
+                                        <div
+                                          class="ant-typography view-item-value"
+                                        >
+                                          Reflect miss police tough such single force.
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </form>
                               </div>
                             </div>
                           </div>
@@ -849,11 +919,46 @@ exports[`PermitConditions renders properly 1`] = `
                               <div
                                 class="condition-collapsed"
                               >
-                                <p>
-                                  1.
-                                   
-                                  International clear those TV individual look.
-                                </p>
+                                <form
+                                  class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1650 form-view"
+                                  id="EDIT_PERMIT_CONDITION_1650"
+                                >
+                                  <div
+                                    class="ant-row ant-row-no-wrap condition-content editable"
+                                  >
+                                    <div
+                                      class="ant-col step-column"
+                                      style="flex-shrink: 0;"
+                                    >
+                                      <div
+                                        class="view-item ant-form-item"
+                                      >
+                                        
+                                        <div
+                                          class="ant-typography view-item-value"
+                                        >
+                                          1.
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      aria-label="Edit Condition"
+                                      class="ant-col condition-column"
+                                      title="Edit Condition"
+                                    >
+                                      <div
+                                        class="view-item ant-form-item"
+                                      >
+                                        
+                                        <div
+                                          class="ant-typography view-item-value"
+                                        >
+                                          International clear those TV individual look.
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </form>
                                 <div>
                                   <div
                                     class="condition-layer condition-layer--1 condition-CON fade-in "
@@ -861,11 +966,46 @@ exports[`PermitConditions renders properly 1`] = `
                                     <div
                                       class="condition-collapsed"
                                     >
-                                      <p>
-                                        a.
-                                         
-                                        See store understand company interview value factor.
-                                      </p>
+                                      <form
+                                        class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1641 form-view"
+                                        id="EDIT_PERMIT_CONDITION_1641"
+                                      >
+                                        <div
+                                          class="ant-row ant-row-no-wrap condition-content editable"
+                                        >
+                                          <div
+                                            class="ant-col step-column"
+                                            style="flex-shrink: 0;"
+                                          >
+                                            <div
+                                              class="view-item ant-form-item"
+                                            >
+                                              
+                                              <div
+                                                class="ant-typography view-item-value"
+                                              >
+                                                a.
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div
+                                            aria-label="Edit Condition"
+                                            class="ant-col condition-column"
+                                            title="Edit Condition"
+                                          >
+                                            <div
+                                              class="view-item ant-form-item"
+                                            >
+                                              
+                                              <div
+                                                class="ant-typography view-item-value"
+                                              >
+                                                See store understand company interview value factor.
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </form>
                                       <div>
                                         <div
                                           class="condition-layer condition-layer--2 condition-LIS fade-in "
@@ -873,11 +1013,46 @@ exports[`PermitConditions renders properly 1`] = `
                                           <div
                                             class="condition-collapsed"
                                           >
-                                            <p>
-                                              i.
-                                               
-                                              Mr item fall study although.
-                                            </p>
+                                            <form
+                                              class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1644 form-view"
+                                              id="EDIT_PERMIT_CONDITION_1644"
+                                            >
+                                              <div
+                                                class="ant-row ant-row-no-wrap condition-content editable"
+                                              >
+                                                <div
+                                                  class="ant-col step-column"
+                                                  style="flex-shrink: 0;"
+                                                >
+                                                  <div
+                                                    class="view-item ant-form-item"
+                                                  >
+                                                    
+                                                    <div
+                                                      class="ant-typography view-item-value"
+                                                    >
+                                                      i.
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <div
+                                                  aria-label="Edit Condition"
+                                                  class="ant-col condition-column"
+                                                  title="Edit Condition"
+                                                >
+                                                  <div
+                                                    class="view-item ant-form-item"
+                                                  >
+                                                    
+                                                    <div
+                                                      class="ant-typography view-item-value"
+                                                    >
+                                                      Mr item fall study although.
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </form>
                                           </div>
                                         </div>
                                       </div>
@@ -891,11 +1066,46 @@ exports[`PermitConditions renders properly 1`] = `
                                     <div
                                       class="condition-collapsed"
                                     >
-                                      <p>
-                                        b.
-                                         
-                                        words words words sub-section
-                                      </p>
+                                      <form
+                                        class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12507 form-view"
+                                        id="EDIT_PERMIT_CONDITION_12507"
+                                      >
+                                        <div
+                                          class="ant-row ant-row-no-wrap condition-content editable"
+                                        >
+                                          <div
+                                            class="ant-col step-column"
+                                            style="flex-shrink: 0;"
+                                          >
+                                            <div
+                                              class="view-item ant-form-item"
+                                            >
+                                              
+                                              <div
+                                                class="ant-typography view-item-value"
+                                              >
+                                                b.
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div
+                                            aria-label="Edit Condition"
+                                            class="ant-col condition-column"
+                                            title="Edit Condition"
+                                          >
+                                            <div
+                                              class="view-item ant-form-item"
+                                            >
+                                              
+                                              <div
+                                                class="ant-typography view-item-value"
+                                              >
+                                                words words words sub-section
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </form>
                                       <div>
                                         <div
                                           class="condition-layer condition-layer--2 condition-CON fade-in "
@@ -903,11 +1113,46 @@ exports[`PermitConditions renders properly 1`] = `
                                           <div
                                             class="condition-collapsed"
                                           >
-                                            <p>
-                                              i.
-                                               
-                                              a condition added underneath the section, with a lot of detail added to it, which is probably important for documents like permits
-                                            </p>
+                                            <form
+                                              class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12509 form-view"
+                                              id="EDIT_PERMIT_CONDITION_12509"
+                                            >
+                                              <div
+                                                class="ant-row ant-row-no-wrap condition-content editable"
+                                              >
+                                                <div
+                                                  class="ant-col step-column"
+                                                  style="flex-shrink: 0;"
+                                                >
+                                                  <div
+                                                    class="view-item ant-form-item"
+                                                  >
+                                                    
+                                                    <div
+                                                      class="ant-typography view-item-value"
+                                                    >
+                                                      i.
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <div
+                                                  aria-label="Edit Condition"
+                                                  class="ant-col condition-column"
+                                                  title="Edit Condition"
+                                                >
+                                                  <div
+                                                    class="view-item ant-form-item"
+                                                  >
+                                                    
+                                                    <div
+                                                      class="ant-typography view-item-value"
+                                                    >
+                                                      a condition added underneath the section, with a lot of detail added to it, which is probably important for documents like permits
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </form>
                                             <div>
                                               <div
                                                 class="condition-layer condition-layer--3 condition-LIS fade-in "
@@ -915,11 +1160,46 @@ exports[`PermitConditions renders properly 1`] = `
                                                 <div
                                                   class="condition-collapsed"
                                                 >
-                                                  <p>
-                                                    1.
-                                                     
-                                                    a detailed list item desribing exactly what must be done to accomplish the parent condition
-                                                  </p>
+                                                  <form
+                                                    class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12510 form-view"
+                                                    id="EDIT_PERMIT_CONDITION_12510"
+                                                  >
+                                                    <div
+                                                      class="ant-row ant-row-no-wrap condition-content editable"
+                                                    >
+                                                      <div
+                                                        class="ant-col step-column"
+                                                        style="flex-shrink: 0;"
+                                                      >
+                                                        <div
+                                                          class="view-item ant-form-item"
+                                                        >
+                                                          
+                                                          <div
+                                                            class="ant-typography view-item-value"
+                                                          >
+                                                            1.
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                      <div
+                                                        aria-label="Edit Condition"
+                                                        class="ant-col condition-column"
+                                                        title="Edit Condition"
+                                                      >
+                                                        <div
+                                                          class="view-item ant-form-item"
+                                                        >
+                                                          
+                                                          <div
+                                                            class="ant-typography view-item-value"
+                                                          >
+                                                            a detailed list item desribing exactly what must be done to accomplish the parent condition
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </form>
                                                 </div>
                                               </div>
                                             </div>
@@ -930,11 +1210,46 @@ exports[`PermitConditions renders properly 1`] = `
                                                 <div
                                                   class="condition-collapsed"
                                                 >
-                                                  <p>
-                                                    2.
-                                                     
-                                                    but, that wasn't quite enough information, another list item will expand on other responsibilities associated with this permit
-                                                  </p>
+                                                  <form
+                                                    class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12511 form-view"
+                                                    id="EDIT_PERMIT_CONDITION_12511"
+                                                  >
+                                                    <div
+                                                      class="ant-row ant-row-no-wrap condition-content editable"
+                                                    >
+                                                      <div
+                                                        class="ant-col step-column"
+                                                        style="flex-shrink: 0;"
+                                                      >
+                                                        <div
+                                                          class="view-item ant-form-item"
+                                                        >
+                                                          
+                                                          <div
+                                                            class="ant-typography view-item-value"
+                                                          >
+                                                            2.
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                      <div
+                                                        aria-label="Edit Condition"
+                                                        class="ant-col condition-column"
+                                                        title="Edit Condition"
+                                                      >
+                                                        <div
+                                                          class="view-item ant-form-item"
+                                                        >
+                                                          
+                                                          <div
+                                                            class="ant-typography view-item-value"
+                                                          >
+                                                            but, that wasn't quite enough information, another list item will expand on other responsibilities associated with this permit
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </form>
                                                 </div>
                                               </div>
                                             </div>
@@ -945,11 +1260,46 @@ exports[`PermitConditions renders properly 1`] = `
                                                 <div
                                                   class="condition-collapsed"
                                                 >
-                                                  <p>
-                                                    3.
-                                                     
-                                                    good things come in 3s, so another list item is added to the condition
-                                                  </p>
+                                                  <form
+                                                    class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12512 form-view"
+                                                    id="EDIT_PERMIT_CONDITION_12512"
+                                                  >
+                                                    <div
+                                                      class="ant-row ant-row-no-wrap condition-content editable"
+                                                    >
+                                                      <div
+                                                        class="ant-col step-column"
+                                                        style="flex-shrink: 0;"
+                                                      >
+                                                        <div
+                                                          class="view-item ant-form-item"
+                                                        >
+                                                          
+                                                          <div
+                                                            class="ant-typography view-item-value"
+                                                          >
+                                                            3.
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                      <div
+                                                        aria-label="Edit Condition"
+                                                        class="ant-col condition-column"
+                                                        title="Edit Condition"
+                                                      >
+                                                        <div
+                                                          class="view-item ant-form-item"
+                                                        >
+                                                          
+                                                          <div
+                                                            class="ant-typography view-item-value"
+                                                          >
+                                                            good things come in 3s, so another list item is added to the condition
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </form>
                                                   <div>
                                                     <div
                                                       class="condition-layer condition-layer--4 condition-LIS fade-in "
@@ -957,11 +1307,46 @@ exports[`PermitConditions renders properly 1`] = `
                                                       <div
                                                         class="condition-collapsed"
                                                       >
-                                                        <p>
-                                                          a.
-                                                           
-                                                          we want to show nesting to 5 levels, so one list item gets a child
-                                                        </p>
+                                                        <form
+                                                          class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12513 form-view"
+                                                          id="EDIT_PERMIT_CONDITION_12513"
+                                                        >
+                                                          <div
+                                                            class="ant-row ant-row-no-wrap condition-content editable"
+                                                          >
+                                                            <div
+                                                              class="ant-col step-column"
+                                                              style="flex-shrink: 0;"
+                                                            >
+                                                              <div
+                                                                class="view-item ant-form-item"
+                                                              >
+                                                                
+                                                                <div
+                                                                  class="ant-typography view-item-value"
+                                                                >
+                                                                  a.
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                            <div
+                                                              aria-label="Edit Condition"
+                                                              class="ant-col condition-column"
+                                                              title="Edit Condition"
+                                                            >
+                                                              <div
+                                                                class="view-item ant-form-item"
+                                                              >
+                                                                
+                                                                <div
+                                                                  class="ant-typography view-item-value"
+                                                                >
+                                                                  we want to show nesting to 5 levels, so one list item gets a child
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </form>
                                                       </div>
                                                     </div>
                                                   </div>
@@ -987,11 +1372,46 @@ exports[`PermitConditions renders properly 1`] = `
                               <div
                                 class="condition-collapsed"
                               >
-                                <p>
-                                  2.
-                                   
-                                  Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines
-                                </p>
+                                <form
+                                  class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12514 form-view"
+                                  id="EDIT_PERMIT_CONDITION_12514"
+                                >
+                                  <div
+                                    class="ant-row ant-row-no-wrap condition-content editable"
+                                  >
+                                    <div
+                                      class="ant-col step-column"
+                                      style="flex-shrink: 0;"
+                                    >
+                                      <div
+                                        class="view-item ant-form-item"
+                                      >
+                                        
+                                        <div
+                                          class="ant-typography view-item-value"
+                                        >
+                                          2.
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      aria-label="Edit Condition"
+                                      class="ant-col condition-column"
+                                      title="Edit Condition"
+                                    >
+                                      <div
+                                        class="view-item ant-form-item"
+                                      >
+                                        
+                                        <div
+                                          class="ant-typography view-item-value"
+                                        >
+                                          Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </form>
                                 <div>
                                   <div
                                     class="condition-layer condition-layer--1 condition-CON fade-in "
@@ -999,11 +1419,46 @@ exports[`PermitConditions renders properly 1`] = `
                                     <div
                                       class="condition-collapsed"
                                     >
-                                      <p>
-                                        a.
-                                         
-                                        It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?
-                                      </p>
+                                      <form
+                                        class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12515 form-view"
+                                        id="EDIT_PERMIT_CONDITION_12515"
+                                      >
+                                        <div
+                                          class="ant-row ant-row-no-wrap condition-content editable"
+                                        >
+                                          <div
+                                            class="ant-col step-column"
+                                            style="flex-shrink: 0;"
+                                          >
+                                            <div
+                                              class="view-item ant-form-item"
+                                            >
+                                              
+                                              <div
+                                                class="ant-typography view-item-value"
+                                              >
+                                                a.
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div
+                                            aria-label="Edit Condition"
+                                            class="ant-col condition-column"
+                                            title="Edit Condition"
+                                          >
+                                            <div
+                                              class="view-item ant-form-item"
+                                            >
+                                              
+                                              <div
+                                                class="ant-typography view-item-value"
+                                              >
+                                                It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </form>
                                     </div>
                                   </div>
                                 </div>

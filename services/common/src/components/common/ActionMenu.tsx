@@ -1,5 +1,5 @@
 import React, { FC, ReactNode } from "react";
-import { Button, Dropdown, Modal } from "antd";
+import { Button, ButtonProps, Dropdown, Modal } from "antd";
 import CaretDownOutlined from "@ant-design/icons/CaretDownOutlined";
 import DownOutlined from "@ant-design/icons/DownOutlined";
 import { ITableAction } from "@mds/common/components/common/CoreTableCommonColumns";
@@ -25,7 +25,7 @@ export const generateActionMenuItems = (actionItems: ITableAction[], record) => 
         <button
           type="button"
           disabled={action.disabled}
-          className={`full actions-dropdown-button`}
+          className={`full actions-dropdown-button menu-item-button`}
           data-testid={`action-button-${action.key}`}
           onClick={(event) => action.clickFunction(event, record)}
         >
@@ -43,15 +43,17 @@ export interface IHeaderAction {
   clickFunction: () => void | Promise<void>;
 }
 // Looks like a button, intended for page-scope, not record-scope in the actions
-export const ActionMenuButton: FC<{ buttonText?: string; actions: IHeaderAction[] }> = ({
+export const ActionMenuButton: FC<{ buttonText?: string; actions: IHeaderAction[], disabled?: boolean, buttonProps?: ButtonProps }> = ({
   actions,
   buttonText = "Action",
+  buttonProps,
+  disabled = false
 }) => {
   const items = generateActionMenuItems((actions as unknown) as ITableAction[], null);
 
   return (
-    <Dropdown menu={{ items }} placement="bottomLeft">
-      <Button type="ghost" className="actions-dropdown-button">
+    <Dropdown menu={{ items }} placement="bottomLeft" disabled={disabled}>
+      <Button type="ghost" className="actions-dropdown-button" {...buttonProps}>
         {buttonText}
         <DownOutlined />
       </Button>

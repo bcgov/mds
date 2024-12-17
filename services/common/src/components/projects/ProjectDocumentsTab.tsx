@@ -22,6 +22,7 @@ import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionC
 import { MineDocument } from "@mds/common/models/documents/document";
 import Loading from "../common/Loading";
 import { getProjectSummaryDocumentTypesHash } from "@mds/common/redux/selectors/staticContentSelectors";
+import { areDocumentFieldsDisabled } from "./projectUtils";
 
 interface ProjectDocumentsTabProps {
   project: IProject;
@@ -35,10 +36,6 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
   const systemFlag = useSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;
   const [isLoaded, setIsLoaded] = useState(true);
-  const statusesToDisableReplaceFor = ["UNR", "WDN", "OHD"];
-  const canReplace = isCore
-    ? true
-    : !statusesToDisableReplaceFor.includes(project?.project_summary?.status_code);
 
   const refreshData = async () => {
     setIsLoaded(false);
@@ -85,6 +82,9 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
       .replace(/(_)/g, "-")
       .toLowerCase();
   };
+
+  const canModifySummaryDocs = areDocumentFieldsDisabled(systemFlag, project?.project_summary?.status_code);
+  const canModifyMmaDocs = areDocumentFieldsDisabled(systemFlag, project?.major_mine_application?.status_code);
 
   const projectSummaryDocs =
     project?.project_summary?.documents?.map(
@@ -163,8 +163,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
             title={titleText}
             key={auth.project_summary_authorization_guid}
             canArchive={false}
-            canReplace={canReplace}
-            onArchivedDocuments={refreshData}
+            canReplace={canModifySummaryDocs}
             documents={auth.amendment_documents.map(
               (d) =>
                 new MineDocument({
@@ -195,7 +194,8 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           title="Supporting Documents"
           documents={pdSupportingDocuments}
           onArchivedDocuments={refreshData}
-          canReplace={canReplace}
+          canReplace={canModifySummaryDocs}
+          canArchive={canModifySummaryDocs}
         />
       ),
     },
@@ -206,7 +206,6 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           id="information-requirements-table"
           key="information-requirements-table"
           titleLevel={3}
-          onArchivedDocuments={refreshData}
           documents={irtDocuments}
           canReplace={false}
           canArchive={false}
@@ -233,7 +232,8 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           key="primary-document"
           onArchivedDocuments={refreshData}
           documents={primaryDocuments}
-          canReplace={canReplace}
+          canReplace={canModifyMmaDocs}
+          canArchive={canModifyMmaDocs}
         />
       ),
     },
@@ -259,7 +259,8 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           key="supporting-documents"
           onArchivedDocuments={refreshData}
           documents={mmaSupportingDocuments}
-          canReplace={canReplace}
+          canReplace={canModifyMmaDocs}
+          canArchive={canModifyMmaDocs}
         />
       ),
     },
@@ -271,7 +272,8 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           key="ministry-decision-documentation"
           onArchivedDocuments={refreshData}
           documents={ministryDecisionDocuments}
-          canReplace={canReplace}
+          canReplace={canModifyMmaDocs}
+          canArchive={canModifyMmaDocs}
         />
       ),
     },
@@ -281,7 +283,6 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
         <ArchivedDocumentsSection
           documents={mineDocuments}
           showCategory={false}
-          canReplace={canReplace}
         />
       ),
     },

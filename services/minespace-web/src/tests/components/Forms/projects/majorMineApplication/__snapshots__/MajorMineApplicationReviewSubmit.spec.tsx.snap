@@ -156,7 +156,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
           style="float: right;"
         >
           <button
-            class="ant-btn ant-btn-default ant-dropdown-trigger ant-btn ant-btn-primary"
+            class="ant-btn ant-btn-primary ant-dropdown-trigger actions-dropdown-button"
             disabled=""
             type="button"
           >
@@ -626,7 +626,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
           style="float: right;"
         >
           <button
-            class="ant-btn ant-btn-default ant-dropdown-trigger ant-btn ant-btn-primary"
+            class="ant-btn ant-btn-primary ant-dropdown-trigger actions-dropdown-button"
             disabled=""
             type="button"
           >
@@ -1536,7 +1536,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
           style="float: right;"
         >
           <button
-            class="ant-btn ant-btn-default ant-dropdown-trigger ant-btn ant-btn-primary"
+            class="ant-btn ant-btn-primary ant-dropdown-trigger actions-dropdown-button"
             disabled=""
             type="button"
           >
@@ -2700,7 +2700,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
           style="float: right;"
         >
           <button
-            class="ant-btn ant-btn-default ant-dropdown-trigger ant-btn ant-btn-primary"
+            class="ant-btn ant-btn-primary ant-dropdown-trigger actions-dropdown-button"
             disabled=""
             type="button"
           >
@@ -3170,7 +3170,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
           style="float: right;"
         >
           <button
-            class="ant-btn ant-btn-default ant-dropdown-trigger ant-btn ant-btn-primary"
+            class="ant-btn ant-btn-primary ant-dropdown-trigger actions-dropdown-button"
             disabled=""
             type="button"
           >
@@ -4080,7 +4080,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
           style="float: right;"
         >
           <button
-            class="ant-btn ant-btn-default ant-dropdown-trigger ant-btn ant-btn-primary"
+            class="ant-btn ant-btn-primary ant-dropdown-trigger actions-dropdown-button"
             disabled=""
             type="button"
           >

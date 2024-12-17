@@ -74,20 +74,24 @@ export interface BaseInputProps extends WrappedFieldProps {
   allowClear?: boolean;
   help?: string;
   showOptional?: boolean;
+  showNA?: boolean;
+  autoFocus?: boolean;
 }
 
 interface BaseViewInputProps {
   label?: string | ReactNode;
   value: string | number;
+  showNA?: boolean;
 }
-export const BaseViewInput: FC<BaseViewInputProps> = ({ label = "", value = "" }) => {
-  const displayValue = value ? value.toString() : EMPTY_FIELD;
+export const BaseViewInput: FC<BaseViewInputProps> = ({ label = "", value = "", showNA = true }) => {
+  const hasValue = value !== "";
+  const displayValue = hasValue ? value.toString() : EMPTY_FIELD;
   return (
     <div className="view-item ant-form-item">
       {label && label !== "" && (
         <Typography.Paragraph className="view-item-label">{label}</Typography.Paragraph>
       )}
-      <Typography.Paragraph className="view-item-value">{displayValue}</Typography.Paragraph>
+      {(hasValue || showNA) && (<Typography.Paragraph className="view-item-value">{displayValue}</Typography.Paragraph>)}
     </div>
   );
 };

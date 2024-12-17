@@ -9,12 +9,14 @@ interface RenderSubmitButtonProps {
   buttonText?: string | ReactNode;
   buttonProps?: ButtonProps & React.RefAttributes<HTMLElement>;
   disableOnClean?: boolean;
+  iconButton?: boolean;
 }
 
 const RenderSubmitButton: FC<RenderSubmitButtonProps> = ({
   buttonText = "Save Changes",
   buttonProps,
   disableOnClean = true,
+  iconButton = false,
 }) => {
   const { formName, isEditMode } = useContext(FormContext);
   const submitting = useSelector(isSubmitting(formName));
@@ -29,9 +31,10 @@ const RenderSubmitButton: FC<RenderSubmitButtonProps> = ({
           disabled={disabled}
           loading={submitting}
           htmlType="submit"
+          aria-label="Submit"
           {...buttonProps}
         >
-          {buttonText}
+          {!iconButton && buttonText}
         </Button>
       )}
     </>

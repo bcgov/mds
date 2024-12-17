@@ -7715,12 +7715,82 @@ export const PROJECT_SUMMARY: IProjectSummary = {
       new_type: "PER",
       authorization_description: "sdfa",
       exemption_reason: "zxczxczx",
-      amendment_documents: [],
       exemption_requested: false,
       ams_tracking_number: null,
       ams_outcome: null,
       ams_status_code: null,
       ams_submission_timestamp: "2024-05-24T19:10:09.825194+00:00",
+      amendment_documents: [
+        {
+          project_summary_id: null,
+          project_summary_document_type_code: "MAP",
+          mine_document_guid: "1bf1884f-84b0-44a1-ba76-2c8aa2403480",
+          mine_guid: "83a8045c-37be-4ec4-8888-f633af902472",
+          document_manager_guid: "5066b2b5-6f92-4a4b-9771-22f8a13e3297",
+          document_name: "Location Document.png",
+          upload_date: "2024-12-12 22:00:35.119953+00:00",
+          update_timestamp: "2024-12-12 22:00:35.119943+00:00",
+          create_user: "idir\\username",
+          is_archived: false,
+          archived_date: null,
+          archived_by: null,
+          mine_document_bundle_id: null,
+          versions: []
+        },
+        {
+          project_summary_id: null,
+          project_summary_document_type_code: "DFA",
+          mine_document_guid: "c00f29ce-4507-4f5b-b822-8c6a4c7af676",
+          mine_guid: "83a8045c-37be-4ec4-8888-f633af902472",
+          document_manager_guid: "1de57298-0583-46f6-8f3d-29044bd6aeb3",
+          document_name: "Discharge Document.pdf",
+          upload_date: "2024-12-12 22:00:35.119968+00:00",
+          update_timestamp: "2024-12-12 22:00:35.119968+00:00",
+          create_user: "idir\\username",
+          is_archived: false,
+          archived_date: null,
+          archived_by: null,
+          mine_document_bundle_id: null,
+          versions: []
+        }
+      ],
+      discharge_documents: [
+        {
+          project_summary_id: null,
+          project_summary_document_type_code: "DFA",
+          mine_document_guid: "c00f29ce-4507-4f5b-b822-8c6a4c7af676",
+          mine_guid: "83a8045c-37be-4ec4-8888-f633af902472",
+          document_manager_guid: "1de57298-0583-46f6-8f3d-29044bd6aeb3",
+          document_name: "Discharge Document.pdf",
+          upload_date: "2024-12-12 22:00:35.119968+00:00",
+          update_timestamp: "2024-12-12 22:00:35.119968+00:00",
+          create_user: "idir\\username",
+          is_archived: false,
+          archived_date: null,
+          archived_by: null,
+          mine_document_bundle_id: null,
+          versions: []
+        }
+      ],
+      location_documents: [
+        {
+          project_summary_id: null,
+          project_summary_document_type_code: "MAP",
+          mine_document_guid: "1bf1884f-84b0-44a1-ba76-2c8aa2403480",
+          mine_guid: "83a8045c-37be-4ec4-8888-f633af902472",
+          document_manager_guid: "5066b2b5-6f92-4a4b-9771-22f8a13e3297",
+          document_name: "Location Document.png",
+          upload_date: "2024-12-12 22:00:35.119953+00:00",
+          update_timestamp: "2024-12-12 22:00:35.119943+00:00",
+          create_user: "idir\\username",
+          is_archived: false,
+          archived_date: null,
+          archived_by: null,
+          mine_document_bundle_id: null,
+          versions: []
+        }
+      ],
+      support_documents: []
     },
     {
       project_summary_authorization_guid: "624d3acc-b62b-491e-82a3-67ef3b1bbf88",
@@ -7857,6 +7927,9 @@ export const PROJECT: IProject = {
     major_mine_application_guid: "305ea694-e601-44a4-8994-fc2604c8c19e",
     project_guid: "35633148-57f8-4967-be35-7f89abfbd02e",
     status_code: MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES.CHR,
+    primary_documents: [],
+    spatial_documents: [],
+    supporting_documents: [],
     documents: [
       {
         major_mine_application_id: 2,

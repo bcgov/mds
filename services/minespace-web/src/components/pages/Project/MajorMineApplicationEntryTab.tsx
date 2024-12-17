@@ -1,41 +1,45 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
+import React, { FC } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import { Row, Col, Typography, Button, Empty, Steps } from "antd";
-import PropTypes from "prop-types";
 import * as routes from "@/constants/routes";
-import CustomPropTypes from "@/customPropTypes";
+import { IMajorMinesApplication } from "@mds/common/interfaces/projects/majorMinesApplication.interface";
+import { MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES } from "@mds/common/constants/enums";
 
-const propTypes = {
-  mma: CustomPropTypes.majorMinesApplication.isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      projectGuid: PropTypes.string,
-    }),
-  }).isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
-};
+interface MajorMineApplicationEntryTabProps {
+  mma: IMajorMinesApplication;
+}
 
-export const MajorMineApplicationEntryTab = (props) => {
-  const mmaExists = Boolean(props.mma?.major_mine_application_guid);
-  const projectGuid = props.mma?.project_guid || props.match.params?.projectGuid;
-  const mmaGuid = props.mma?.major_mine_application_guid;
+export const MajorMineApplicationEntryTab: FC<MajorMineApplicationEntryTabProps> = ({ mma }) => {
+  const mmaExists = Boolean(mma?.major_mine_application_guid);
+  const { projectGuid } = useParams<{ projectGuid: string }>();
+  const history = useHistory();
+  const mmaGuid = mma?.major_mine_application_guid;
+
+  // no mma? get started. generally? review
+  // expected to edit? create submission
+  let defaultCurrent = mmaExists ? 2 : 0;
+  if (
+    [
+      MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES.DFT,
+      MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES.CHR,
+    ].includes(mma?.status_code)
+  ) {
+    defaultCurrent = 1;
+  }
 
   const renderContent = () => {
     const buttonContent = {
       label: mmaExists ? "Resume" : "Start",
       link: mmaExists
         ? () =>
-            props.history.push({
+            history.push({
               pathname: `${routes.REVIEW_MAJOR_MINE_APPLICATION.dynamicRoute(
                 projectGuid,
                 mmaGuid
               )}`,
-              state: { current: 2 },
+              state: { current: defaultCurrent },
             })
-        : () =>
-            props.history.push(`${routes.ADD_MAJOR_MINE_APPLICATION.dynamicRoute(projectGuid)}`),
+        : () => history.push(`${routes.ADD_MAJOR_MINE_APPLICATION.dynamicRoute(projectGuid)}`),
     };
 
     const entryGraphic = (
@@ -56,7 +60,7 @@ export const MajorMineApplicationEntryTab = (props) => {
             <div style={{ width: "60%", margin: "0 auto" }}>
               <Steps
                 size="small"
-                current={2}
+                current={defaultCurrent}
                 items={[
                   { title: "Get Started" },
                   { title: "Create Submission" },
@@ -110,6 +114,4 @@ export const MajorMineApplicationEntryTab = (props) => {
   );
 };
 
-MajorMineApplicationEntryTab.propTypes = propTypes;
-
-export default withRouter(MajorMineApplicationEntryTab);
+export default MajorMineApplicationEntryTab;

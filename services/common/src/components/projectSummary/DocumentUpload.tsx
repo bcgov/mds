@@ -24,6 +24,7 @@ import SpatialDocumentTable from "../documents/spatial/SpatialDocumentTable";
 import { FormContext } from "../forms/FormWrapper";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature, IProjectSummaryForm } from "../..";
+import { removeDocumentFromProjectSummary } from "@mds/common/redux/actionCreators/projectActionCreator";
 
 const RenderOldDocuments = ({
   documents,
@@ -67,9 +68,10 @@ const RenderOldDocuments = ({
 
 interface DocumentUploadProps {
   docFieldsDisabled: boolean;
+  deleteEnabled: boolean;
 }
 
-export const DocumentUpload: FC<DocumentUploadProps> = ({ docFieldsDisabled }) => {
+export const DocumentUpload: FC<DocumentUploadProps> = ({ docFieldsDisabled, deleteEnabled }) => {
   const dispatch = useDispatch();
   const {
     spatial_documents = [],
@@ -145,28 +147,44 @@ export const DocumentUpload: FC<DocumentUploadProps> = ({ docFieldsDisabled }) =
     }
   };
 
+  const removeFile = (document) => {
+    if (document.project_summary_document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SPATIAL) {
+      const newSpatialDocuments = [...spatial_documents].filter(
+        (file) => document.document_manager_guid !== file.document_manager_guid
+      );
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", newSpatialDocuments));
+    } else if (document.project_summary_document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SUPPORTING) {
+      const newSupportDocuments = [...support_documents].filter(
+        (file) => document.document_manager_guid !== file.document_manager_guid
+      );
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", newSupportDocuments));
+    }
+  }
+
   const onRemoveFile = (err, fileItem) => {
     if (err) {
       console.log(err);
     }
-
     if (fileItem.serverId) {
-      const document_type_code = documents.find(
+      removeFile(documents.find(
         (file) => fileItem.serverId === file.document_manager_guid
-      )?.project_summary_document_type_code;
-      if (document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SPATIAL) {
-        const newSpatialDocuments = [...spatial_documents].filter(
-          (file) => fileItem.serverId !== file.document_manager_guid
-        );
-        dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", newSpatialDocuments));
-      } else if (document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SUPPORTING) {
-        const newSupportDocuments = [...support_documents].filter(
-          (file) => fileItem.serverId !== file.document_manager_guid
-        );
-        dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", newSupportDocuments));
-      }
+      ));
     }
   };
+
+  const onDeleteDocument = (event, key: string) => {
+    const document = documents.find( (doc) => key === doc.mine_document_guid);
+    if(document){
+      dispatch(
+        removeDocumentFromProjectSummary(
+          project_guid,
+          project_summary_guid,
+          document.mine_document_guid
+      )).then( () => {
+        removeFile(document);
+      })
+    }
+  }
 
   const downloadIRTTemplate = (url) => {
     const anchor = document.createElement("a");
@@ -283,6 +301,7 @@ export const DocumentUpload: FC<DocumentUploadProps> = ({ docFieldsDisabled }) =
         documents={support_documents}
         documentParent="project summary"
         documentColumns={documentColumns}
+        removeDocument={deleteEnabled && isEditMode ? onDeleteDocument : undefined}
       />
     </>
   );

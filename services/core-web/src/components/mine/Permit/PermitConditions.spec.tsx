@@ -1,14 +1,11 @@
 import React from "react";
-import { fireEvent, getAllByText, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { MINES, STATIC_CONTENT, PERMITS, AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import ViewPermit from "./ViewPermit";
 import { BrowserRouter } from "react-router-dom";
 import { USER_ROLES } from "@mds/common/constants/environment";
-import { useDispatch } from "react-redux";
-import { searchConditionCategories } from "@mds/common/redux/slices/permitConditionCategorySlice";
-import preview, { debug } from 'jest-preview';
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
 const initialState = {
   [MINES]: MOCK.MINES,
