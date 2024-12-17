@@ -285,12 +285,16 @@ describe("ProjectSummaryForm components disable accurately according to function
         };
 
         const openModalSpy = jest.spyOn(modalActions, "openModal");
-        const keys = MOCK.PROJECT_SUMMARY.authorizations.flatMap(auth => auth.amendment_documents.map(doc => doc.document_manager_guid));
+        const keys = [
+            ...MOCK.PROJECT_SUMMARY.authorizations.flatMap(auth => auth.amendment_documents.map(doc => doc.document_manager_guid)),
+            ...MOCK.PROJECT_SUMMARY.documents.filter(doc => doc.project_summary_document_type_code === "SPR").map(doc => doc.document_manager_guid)
+        ];
+        
         afterEach(() => {
             jest.clearAllMocks();
         });
 
-        test("Amendment document deletion enabled", async () => {
+        test("Document deletion enabled", async () => {
             const params = {
                 deletionEnabled: true
             };
@@ -313,7 +317,7 @@ describe("ProjectSummaryForm components disable accurately according to function
             expect(openModalSpy).toHaveBeenCalledTimes(keys.length)
         });
 
-        test("Amendment document deletion disabled", async () => {
+        test("Document deletion disabled", async () => {
             const params = {
                 deletionEnabled: false
             };
