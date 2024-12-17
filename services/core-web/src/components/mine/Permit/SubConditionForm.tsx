@@ -5,7 +5,7 @@ import {
     faCheck,
     faXmark,
 } from "@fortawesome/pro-regular-svg-icons";
-import { FORM, IPermitCondition, IPermitConditionCategory } from "@mds/common";
+import { IPermitCondition, IPermitConditionCategory } from "@mds/common/interfaces";
 import { ERROR } from "@mds/common/constants/actionTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
@@ -14,6 +14,7 @@ import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch } from "react-redux";
 import { createPermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { FORM } from "@mds/common/constants/forms";
 
 interface SubConditionFormProps {
     level?: number;

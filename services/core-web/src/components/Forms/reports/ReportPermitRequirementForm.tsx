@@ -3,16 +3,11 @@ import { Field } from "redux-form";
 import { Button, Col, Row, Typography } from "antd";
 import { useSelector } from "react-redux";
 import {
-  FORM,
   IMineReport,
   IMineReportPermitRequirement,
   IPermitCondition,
-  MINE_REPORT_SUBMISSION_CODES,
-  REPORT_FREQUENCY_HASH,
-  REPORT_MINISTRY_RECIPIENT_HASH,
-  REPORT_REGULATORY_AUTHORITY_CODES_HASH,
-  REPORT_TYPE_CODES,
-} from "@mds/common";
+} from "@mds/common/interfaces";
+
 import { required, requiredRadioButton, maxLength } from "@mds/common/redux/utils/Validate";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
@@ -24,6 +19,9 @@ import RenderGroupCheckbox, {
 } from "@mds/common/components/forms/RenderGroupCheckbox";
 import { getLatestAmendmentByPermitGuid } from "@mds/common/redux/selectors/permitSelectors";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
+import { FORM } from "@mds/common/constants/forms";
+import { MINE_REPORT_SUBMISSION_CODES, REPORT_TYPE_CODES } from "@mds/common/constants/enums";
+import { REPORT_FREQUENCY_HASH, REPORT_MINISTRY_RECIPIENT_HASH, REPORT_REGULATORY_AUTHORITY_CODES_HASH } from "@mds/common/constants/strings";
 
 interface ReportPermitRequirementProps {
   onSubmit: (values: Partial<IMineReport>) => void | Promise<void>;

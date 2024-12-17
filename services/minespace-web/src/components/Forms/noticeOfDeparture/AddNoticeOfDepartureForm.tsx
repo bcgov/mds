@@ -19,7 +19,10 @@ import {
   validateSelectOptions,
 } from "@common/utils/Validate";
 import { normalizePhone, resetForm } from "@common/utils/helpers";
-import { NOD_TYPE_FIELD_VALUE, NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@mds/common/constants/strings";
+import {
+  NOD_TYPE_FIELD_VALUE,
+  NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
+} from "@mds/common/constants/strings";
 import { bindActionCreators, compose } from "redux";
 import { DOCUMENT, EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
 import { NOTICE_OF_DEPARTURE_DOWNLOAD_LINK } from "@/constants/strings";
@@ -33,7 +36,7 @@ import {
   INodDocumentPayload,
   INoticeOfDeparture,
   INoDPermit,
-} from "@mds/common";
+} from "@mds/common/interfaces";
 import { AxiosResponse } from "axios";
 import { connect } from "react-redux";
 
@@ -117,8 +120,9 @@ export const renderContacts: React.FC<RenderContactsProps> = (props) => {
   );
 };
 
-const AddNoticeOfDepartureForm: React.FC<InjectedFormProps<ICreateNoD> &
-  AddNoticeOfDepartureProps> = (props) => {
+const AddNoticeOfDepartureForm: React.FC<
+  InjectedFormProps<ICreateNoD> & AddNoticeOfDepartureProps
+> = (props) => {
   const { permits, onSubmit, closeModal, handleSubmit, mineGuid, change } = props;
   const [submitting, setSubmitting] = useState(false);
   const [hasChecklist, setHasChecklist] = useState(false);

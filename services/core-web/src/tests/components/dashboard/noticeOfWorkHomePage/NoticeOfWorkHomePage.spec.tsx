@@ -2,7 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import { NoticeOfWorkHomePage } from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkHomePage";
 import * as MOCK from "@/tests/mocks/dataMocks";
-import { INoticeOfWork, IOption } from "@mds/common";
+import { INoticeOfWork, IOption } from "@mds/common/interfaces";
 
 const dispatchProps = {
   fetchNoticeOfWorkApplications: jest.fn(() => Promise.resolve({} as INoticeOfWork)),

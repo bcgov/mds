@@ -7,10 +7,11 @@ import "@ant-design/compatible/assets/index.css";
 import { Alert, Button, Popconfirm, Skeleton, Typography } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
-import { IVCInvitation, LOADING_STATUS, VC_CONNECTION_STATES } from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { getVCWalletConnectionInvitation } from "@mds/common/redux/selectors/verifiableCredentialSelectors";
 import { createVCWalletInvitation } from "@mds/common/redux/actionCreators/verifiableCredentialActionCreator";
+import { LOADING_STATUS, VC_CONNECTION_STATES } from "@mds/common/constants/enums";
+import { IVCInvitation } from "@mds/common/interfaces/verifiableCredentials/verifiableCredentialInvitation.interface";
 
 interface CreateInvitationFormProps {
   closeModal: () => void;
@@ -26,16 +27,9 @@ interface FormStateProps {
   invitation: IVCInvitation;
 }
 
-export const CreateInvitationForm: FC<CreateInvitationFormProps &
-  FormStateProps &
-  InjectedFormProps<any>> = ({
-  closeModal,
-  partyGuid,
-  partyName,
-  connectionState,
-  invitation,
-  ...props
-}) => {
+export const CreateInvitationForm: FC<
+  CreateInvitationFormProps & FormStateProps & InjectedFormProps<any>
+> = ({ closeModal, partyGuid, partyName, connectionState, invitation, ...props }) => {
   const isPreLoaded = invitation.invitation_url ? LOADING_STATUS.success : LOADING_STATUS.none;
   const [loading, setLoading] = useState(isPreLoaded);
 

@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { INFORMATION_REQUIREMENTS_TABLE_DOCUMENTS } from "@mds/common/constants/API";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
-import { MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common";
 import { requiredNewFiles } from "@mds/common/redux/utils/Validate";
+import { MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common/constants/enums";
 
 const propTypes = {
   onFileLoad: PropTypes.func.isRequired,

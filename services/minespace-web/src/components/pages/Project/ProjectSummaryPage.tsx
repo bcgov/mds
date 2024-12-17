@@ -30,17 +30,19 @@ import {
 import ProjectSummaryForm, {
   getProjectFormTabs,
 } from "@mds/common/components/projectSummary/ProjectSummaryForm";
-import {
-  Feature,
-  PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION,
-  AMS_STATUS_CODES_SUCCESS,
-  AMS_STATUS_CODE_FAIL,
-  AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
-  SystemFlagEnum,
-} from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { fetchRegions } from "@mds/common/redux/slices/regionsSlice";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import {
+  AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
+  SystemFlagEnum,
+} from "@mds/common/constants/enums";
+import { Feature } from "@mds/common/utils/featureFlag";
+import {
+  AMS_STATUS_CODE_FAIL,
+  AMS_STATUS_CODES_SUCCESS,
+  PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION,
+} from "@mds/common/constants/strings";
 
 interface IParams {
   mineGuid?: string;

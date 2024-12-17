@@ -1,8 +1,8 @@
 import React, { FC } from "react";
-import { IOption, IGroupedDropdownList, IExplosivesPermitDocument } from "@mds/common";
+import { IOption, IGroupedDropdownList, IExplosivesPermitDocument } from "@mds/common/interfaces";
 import ExplosivesPermitForm from "@/components/Forms/ExplosivesPermit/ExplosivesPermitForm";
-import { Feature, isFeatureEnabled } from "@mds/common";
 import ExplosivesPermitFormNew from "@/components/Forms/ExplosivesPermit/ExplosivesPermitFormNew";
+import { Feature, isFeatureEnabled } from "@mds/common/utils/featureFlag";
 
 interface ExplosivesPermitModalProps {
   title: string;

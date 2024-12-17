@@ -30,10 +30,11 @@ import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { IPermit, IMine, IExplosivesPermit, Feature } from "@mds/common";
+import { IPermit, IMine, IExplosivesPermit } from "@mds/common/interfaces";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { DigitalPermitCredential } from "@/components/mine/DigitalPermitCredential/DigitalPermitCredential";
+import { Feature } from "@mds/common/utils/featureFlag";
 /**
  * @class  MinePermitInfo - contains all permit information
  */
@@ -427,22 +428,20 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
           </>
         </Tabs.TabPane>
         <Tabs.TabPane
-          tab={`Explosives Storage & Use Permits (${
-            props.explosivesPermits.filter(({ application_status }) => application_status === "APP")
-              .length
-          })`}
+          tab={`Explosives Storage & Use Permits (${props.explosivesPermits.filter(({ application_status }) => application_status === "APP")
+            .length
+            })`}
           key="2"
         >
           <ExplosivesPermit isPermitTab />
         </Tabs.TabPane>
         {isFeatureEnabled(Feature.VC_ANONCREDS_CORE) && (
           <Tabs.TabPane
-            tab={`Digital Permit Credentials (${
-              props.permits.filter(
-                ({ current_permittee_digital_wallet_connection_state }) =>
-                  !!current_permittee_digital_wallet_connection_state
-              ).length
-            })`}
+            tab={`Digital Permit Credentials (${props.permits.filter(
+              ({ current_permittee_digital_wallet_connection_state }) =>
+                !!current_permittee_digital_wallet_connection_state
+            ).length
+              })`}
             key="3"
           >
             <DigitalPermitCredential />

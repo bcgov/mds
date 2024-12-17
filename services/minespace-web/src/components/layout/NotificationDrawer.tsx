@@ -20,7 +20,7 @@ import {
   REVIEW_MAJOR_MINE_APPLICATION,
   REPORT_VIEW_EDIT,
 } from "@/constants/routes";
-import { IActivity } from "@mds/common";
+import { IActivity } from "@mds/common/interfaces";
 
 const NotificationDrawer = () => {
   const [open, setOpen] = useState(false);

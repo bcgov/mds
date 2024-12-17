@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { Col, Row, Tabs, Form } from "antd";
 import ReviewSubmitInformationRequirementsTable from "@/components/Forms/projects/informationRequirementsTable/ReviewSubmitInformationRequirementsTable";
-import { IInformationRequirementsTable, IRequirement } from "@mds/common";
+import { IInformationRequirementsTable, IRequirement } from "@mds/common/interfaces";
 
 interface InformationRequirementsTableFormProps {
   informationRequirementsTable: IInformationRequirementsTable;

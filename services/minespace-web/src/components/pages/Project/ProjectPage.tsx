@@ -21,9 +21,10 @@ import MajorMineApplicationEntryTab from "./MajorMineApplicationEntryTab";
 import ProjectDocumentsTab from "@mds/common/components/projects/ProjectDocumentsTab";
 import ProjectDescriptionTab from "@mds/common/components/project/ProjectDescriptionTab";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
-import { Feature, SystemFlagEnum } from "@mds/common";
 import { getProjectSummary } from "@mds/common/redux/reducers/projectReducer";
 import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { Feature } from "@mds/common/utils/featureFlag";
 
 const tabs = [
   "overview",

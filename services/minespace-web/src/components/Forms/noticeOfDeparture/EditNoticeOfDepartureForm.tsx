@@ -14,7 +14,6 @@ import { resetForm } from "@common/utils/helpers";
 import {
   NOD_TYPE_FIELD_VALUE,
   NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
-  NOTICE_OF_DEPARTURE_STATUS_VALUES,
 } from "@mds/common/constants/strings";
 import { getNoticeOfDeparture } from "@mds/common/redux/reducers/noticeOfDepartureReducer";
 import { DOCUMENT, EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
@@ -26,15 +25,10 @@ import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import { documentSection } from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureDetails";
 import NoticeOfDepartureCallout from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureCallout";
 import { renderContacts } from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
-import {
-  ICreateNoD,
-  INodDocumentPayload,
-  INoticeOfDeparture,
-  NoDStatusDisplayEnum,
-  NodStatusSaveEnum,
-} from "@mds/common";
+import { ICreateNoD, INodDocumentPayload, INoticeOfDeparture } from "@mds/common/interfaces";
 import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
+import { NodStatusSaveEnum } from "@mds/common/constants/enums";
 
 interface EditNoticeOfDepartureFormProps {
   initialValues: INoticeOfDeparture;
@@ -48,8 +42,9 @@ interface EditNoticeOfDepartureFormProps {
   change?: (field: string, value: any) => void;
 }
 
-const EditNoticeOfDepartureForm: React.FC<InjectedFormProps<Partial<ICreateNoD>> &
-  EditNoticeOfDepartureFormProps> = (props) => {
+const EditNoticeOfDepartureForm: React.FC<
+  InjectedFormProps<Partial<ICreateNoD>> & EditNoticeOfDepartureFormProps
+> = (props) => {
   const { onSubmit, closeModal, handleSubmit, mineGuid, noticeOfDeparture, pristine } = props;
   const { permit, nod_guid, nod_no, nod_status } = noticeOfDeparture;
   const [submitting, setSubmitting] = useState(false);

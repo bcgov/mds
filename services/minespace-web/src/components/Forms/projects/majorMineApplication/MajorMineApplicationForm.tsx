@@ -6,15 +6,8 @@ import { Col, Row, Typography, Button } from "antd";
 import {
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE,
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE,
-} from "@mds/common/constants/strings";
-import {
-  DOCUMENT,
-  FORM,
-  IProject,
-  MODERN_EXCEL,
-  SPATIAL,
   SPATIAL_DATA_STANDARDS_URL,
-} from "@mds/common";
+} from "@mds/common/constants/strings";
 import * as routes from "@/constants/routes";
 import MajorMineApplicationFileUpload from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationFileUpload";
 import { openModal } from "@mds/common/redux/actions/modalActions";
@@ -27,6 +20,9 @@ import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import RenderField from "@mds/common/components/forms/RenderField";
 import ArchivedDocumentsSection from "@mds/common/components/projects/ArchivedDocumentsSection";
 import { required } from "@mds/common/redux/utils/Validate";
+import { IProject } from "@mds/common/interfaces/projects";
+import { FORM } from "@mds/common/constants/forms";
+import { DOCUMENT, MODERN_EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
 
 interface MajorMineApplicationFormProps {
   project: IProject;

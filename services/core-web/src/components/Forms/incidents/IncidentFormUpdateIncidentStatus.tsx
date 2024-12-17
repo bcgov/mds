@@ -1,10 +1,10 @@
 import React, { FC } from "react";
-import { IMineIncident } from "@mds/common";
 import { Alert, Button, Col, Form, Row, Typography } from "antd";
 import { formatDate } from "@common/utils/helpers";
 import { Field } from "redux-form";
 import { renderConfig } from "@/components/common/config";
 import { required } from "@common/utils/Validate";
+import { IMineIncident } from "@mds/common/interfaces";
 
 interface IncidentFormUpdateIncidentStatusProps {
   incident: IMineIncident;

@@ -31,7 +31,7 @@ import AddButton from "@/components/common/buttons/AddButton";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
 import TailingsSummaryPageWrapper from "./TailingsSummaryPageWrapper";
-import { IMine, IMineReport } from "@mds/common";
+import { IMine, IMineReport } from "@mds/common/interfaces";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";

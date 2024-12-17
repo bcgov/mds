@@ -5,7 +5,12 @@ import * as FORM from "@/constants/forms";
 import AddNoticeOfDepartureForm, {
   AddNoticeOfDepartureFormProps,
 } from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
-import { INoDPermit, ICreateNoD, INodDocumentPayload, INoticeOfDeparture } from "@mds/common";
+import {
+  INoDPermit,
+  ICreateNoD,
+  INodDocumentPayload,
+  INoticeOfDeparture,
+} from "@mds/common/interfaces";
 import { AxiosResponse } from "axios";
 import { RootState } from "@/App";
 

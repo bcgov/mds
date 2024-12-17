@@ -1,11 +1,12 @@
 import React from "react";
 import { MineTailingsInfoTabs } from "@/components/mine/Tailings/MineTailingsInfoTabs";
 import * as MOCK from "@/tests/mocks/dataMocks";
-import { AUTHENTICATION, SystemFlagEnum, USER_ROLES } from "@mds/common";
-import { REPORTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
+import { AUTHENTICATION, REPORTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { render } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
+import { USER_ROLES } from "@mds/common/constants/environment";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 const props: any = {};
 const dispatchProps: any = {};

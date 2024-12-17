@@ -35,7 +35,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
 import AddButton from "@/components/common/buttons/AddButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { IMine, IVariance, IOption, IGroupedDropdownList } from "@mds/common";
+import { IMine, IVariance, IOption, IGroupedDropdownList } from "@mds/common/interfaces";
 import { ActionCreator } from "@/interfaces/actionCreator";
 
 interface MineVarianceProps {

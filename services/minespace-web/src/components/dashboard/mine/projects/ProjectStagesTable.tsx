@@ -5,8 +5,9 @@ import { Button, Table } from "antd";
 import * as routes from "@/constants/routes";
 import { ColumnsType } from "antd/es/table";
 import { getProjectSummary } from "@mds/common/redux/reducers/projectReducer";
-import { IProjectStage, SystemFlagEnum } from "@mds/common";
 import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
+import { IProjectStage } from "@mds/common/interfaces/projects/projectStage.interface";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 interface ProjectStagesTableProps {
   projectStages: IProjectStage[];

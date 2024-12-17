@@ -23,12 +23,16 @@ import MineReportTable from "@/components/mine/Reports/MineReportTable";
 import ReportFilterForm from "@/components/Forms/reports/ReportFilterForm";
 import * as routes from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
-import { Feature, IMine, MINE_REPORTS_ENUM, MineReportParams, MineReportType } from "@mds/common";
+
 
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { RequestReportForm } from "@/components/Forms/reports/RequestReportForm";
 import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
+import { MineReportParams } from "@mds/common/interfaces/reports";
+import { MINE_REPORTS_ENUM, MineReportType } from "@mds/common/constants/enums";
+import { Feature } from "@mds/common/utils/featureFlag";
+import { IMine } from "@mds/common/interfaces/mine.interface";
 
 const defaultParams: MineReportParams = {
   report_name: undefined,
@@ -87,12 +91,12 @@ export const MineReportInfo: FC = () => {
   const handleFiltering = (reports, params: MineReportParams) => {
     const reportDefinitionGuids = params.report_type
       ? mineReportDefinitionOptions
-          .filter((option) =>
-            option.categories
-              .map((category) => category.mine_report_category)
-              .includes(params.report_type)
-          )
-          .map((definition) => definition.mine_report_definition_guid)
+        .filter((option) =>
+          option.categories
+            .map((category) => category.mine_report_category)
+            .includes(params.report_type)
+        )
+        .map((definition) => definition.mine_report_definition_guid)
       : mineReportDefinitionOptions.map((definition) => definition.mine_report_definition_guid);
 
     let report_type: boolean;
@@ -114,19 +118,19 @@ export const MineReportInfo: FC = () => {
       const due_date_start =
         !params.due_date_start ||
         moment(report.due_date, Strings.DATE_FORMAT) >=
-          moment(params.due_date_start, Strings.DATE_FORMAT);
+        moment(params.due_date_start, Strings.DATE_FORMAT);
       const due_date_end =
         !params.due_date_end ||
         moment(report.due_date, Strings.DATE_FORMAT) <=
-          moment(params.due_date_end, Strings.DATE_FORMAT);
+        moment(params.due_date_end, Strings.DATE_FORMAT);
       const received_date_start =
         !params.received_date_start ||
         moment(report.received_date, Strings.DATE_FORMAT) >=
-          moment(params.received_date_start, Strings.DATE_FORMAT);
+        moment(params.received_date_start, Strings.DATE_FORMAT);
       const received_date_end =
         !params.received_date_end ||
         moment(report.received_date, Strings.DATE_FORMAT) <=
-          moment(params.received_date_end, Strings.DATE_FORMAT);
+        moment(params.received_date_end, Strings.DATE_FORMAT);
       const requested_by =
         !params.requested_by ||
         report.created_by_idir.toLowerCase().includes(params.requested_by.toLowerCase());
@@ -225,7 +229,7 @@ export const MineReportInfo: FC = () => {
             mine_report_submission_status:
               report.mine_report_submissions.length > 0
                 ? report.mine_report_submissions[report.mine_report_submissions.length - 1]
-                    .mine_report_submission_status_code
+                  .mine_report_submission_status_code
                 : "NRQ",
             mineReportsType: mine_reports_type,
           },

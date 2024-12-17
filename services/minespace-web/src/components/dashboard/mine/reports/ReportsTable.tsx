@@ -11,12 +11,6 @@ import * as Strings from "@/constants/strings";
 import { EDIT_PENCIL } from "@/constants/assets";
 import LinkButton from "@/components/common/LinkButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import {
-  Feature,
-  IMineReport,
-  MINE_REPORT_STATUS_HASH,
-  MINE_REPORT_SUBMISSION_CODES,
-} from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import {
   renderActionsColumn,
@@ -25,6 +19,10 @@ import {
 import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import { ColumnsType } from "antd/es/table";
 import CoreTable from "@mds/common/components/common/CoreTable";
+import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants/enums";
+import { IMineReport } from "@mds/common/interfaces/reports/mineReport.interface";
+import { Feature } from "@mds/common/utils/featureFlag";
+import { MINE_REPORT_STATUS_HASH } from "@mds/common/constants/strings";
 
 interface ReportsTableProps {
   mineReports: IMineReport[];

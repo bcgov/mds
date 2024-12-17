@@ -2,13 +2,6 @@ import React, { FC } from "react";
 import { useSelector } from "react-redux";
 import { Field, getFormValues } from "redux-form";
 import { Button, Col, Row, Typography } from "antd";
-import {
-  FORM,
-  IMineReport,
-  IMineReportDefinition,
-  MINE_REPORT_SUBMISSION_CODES,
-  REPORT_TYPE_CODES,
-} from "@mds/common";
 import { required, yearNotInFuture } from "@mds/common/redux/utils/Validate";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
@@ -19,6 +12,9 @@ import {
   getMineReportDefinitionByGuid,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { RenderPRRFields, ReportInfoBox } from "@mds/common/components/reports/ReportGetStarted";
+import { IMineReport, IMineReportDefinition } from "@mds/common/interfaces";
+import { MINE_REPORT_SUBMISSION_CODES, REPORT_TYPE_CODES } from "@mds/common/constants/enums";
+import { FORM } from "@mds/common/constants/forms";
 
 interface RequestReportFormProps {
   onSubmit: (values: Partial<IMineReport>) => void | Promise<void>;

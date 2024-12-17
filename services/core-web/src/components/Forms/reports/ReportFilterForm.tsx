@@ -15,7 +15,7 @@ import { renderConfig } from "@/components/common/config";
 import * as Strings from "@mds/common/constants/strings";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
-import { MineReportParams } from "@mds/common";
+import { MineReportParams } from "@mds/common/interfaces";
 
 interface ReportFilterFormProps {
   onSubmit: (params: any) => void;

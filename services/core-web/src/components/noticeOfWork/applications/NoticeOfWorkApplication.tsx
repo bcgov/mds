@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Tabs } from "antd";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { kebabCase, isEmpty } from "lodash";
 import { getNoticeOfWork, getOriginalNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
@@ -12,7 +11,6 @@ import DraftPermitTab from "@/components/noticeOfWork/applications/permitGenerat
 import VerificationTab from "@/components/noticeOfWork/applications/verification/VerificationTab";
 import ApplicationTab from "@/components/noticeOfWork/applications/review/ApplicationTab";
 import ReferralTabs from "@/components/noticeOfWork/applications/referals/ReferralTabs";
-import CustomPropTypes from "@/customPropTypes";
 import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/NoticeOfWorkPageHeader";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import AdministrativeTab from "@/components/noticeOfWork/applications/administrative/AdministrativeTab";
@@ -21,10 +19,7 @@ import ApplicationGuard from "@/HOC/ApplicationGuard";
 import { getDraftPermitForNOW } from "@mds/common/redux/selectors/permitSelectors";
 import ManageDocumentsTab from "@/components/noticeOfWork/applications/manageDocuments/ManageDocumentsTab";
 
-import { INoticeOfWorkApplication } from "@mds/common";
-import { INoticeOfWork } from "@mds/common";
-import { INoticeOfWorkDraftPermit } from "@mds/common";
-
+import { INoticeOfWorkApplication, INoticeOfWorkDraftPermit } from "@mds/common/interfaces";
 /**
  * @class NoticeOfWorkApplication- contains all tabs needed for a CORE notice of work application.
  */

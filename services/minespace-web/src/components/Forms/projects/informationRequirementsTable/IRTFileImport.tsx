@@ -1,9 +1,9 @@
 import React, { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { change, Field, formValueSelector } from "redux-form";
+import { Field, formValueSelector } from "redux-form";
 import { Alert, Col, Row, Typography } from "antd";
 import { remove } from "lodash";
-import { ENVIRONMENT, IFileInfo, IProject } from "@mds/common";
+import { IFileInfo, IProject } from "@mds/common/interfaces";
 import * as API from "@mds/common/constants/API";
 import {
   createInformationRequirementsTable,
@@ -24,6 +24,7 @@ import { formatDateTime } from "@common/utils/helpers";
 import { documentNameColumn } from "@/components/common/DocumentColumns";
 import { MineDocument } from "@mds/common/models/documents/document";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 
 interface IRTFileImportProps {
   projectGuid: string;

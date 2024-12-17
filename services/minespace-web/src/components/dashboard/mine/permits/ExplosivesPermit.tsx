@@ -1,5 +1,5 @@
 import ExplosivesPermitViewModal from "@mds/common/components/explosivespermits/ExplosivesPermitViewModal";
-import { IExplosivesPermit, IExplosivesPermitAmendment, IMine } from "@mds/common";
+import { IExplosivesPermit, IExplosivesPermitAmendment, IMine } from "@mds/common/interfaces";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { connect } from "react-redux";
 import React, { FC, useEffect, useState } from "react";

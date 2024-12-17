@@ -2,11 +2,14 @@ import {
   IExplosivesPermit,
   INoticeOfDeparture,
   INoticeOfWork,
+  IMineIncident,
+} from "@mds/common/interfaces";
+
+import {
   NoDTypeSaveEnum,
   NodStatusSaveEnum,
-  IMineIncident,
   MINE_INCIDENT_DOCUMENT_TYPE_CODE,
-} from "@mds/common";
+} from "@mds/common/constants/enums";
 
 export const createMockHeader = () => ({
   headers: {

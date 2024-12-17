@@ -4,7 +4,7 @@ import { SearchOutlined, FileSearchOutlined } from "@ant-design/icons";
 
 import * as route from "@/constants/routes";
 import { MINE, PROFILE_NOCIRCLE, DOC } from "@/constants/assets";
-import { ISearchResult } from "@mds/common";
+import { ISearchResult } from "@mds/common/interfaces";
 
 interface SearchBarDropdownProps {
   history: any;
@@ -22,25 +22,25 @@ export const SearchBarDropdown: FC<SearchBarDropdownProps> = ({
   children,
 }) => {
   const URLFor = (item: ISearchResult) =>
-    ({
-      mine: route.MINE_GENERAL.dynamicRoute(item.result.id),
-      party: route.PARTY_PROFILE.dynamicRoute(item.result.id),
-      permit: route.SEARCH_RESULTS.dynamicRoute({ q: item.result.value }),
-    }[item.type]);
+  ({
+    mine: route.MINE_GENERAL.dynamicRoute(item.result.id),
+    party: route.PARTY_PROFILE.dynamicRoute(item.result.id),
+    permit: route.SEARCH_RESULTS.dynamicRoute({ q: item.result.value }),
+  }[item.type]);
 
   const IconFor = (item: ISearchResult) =>
-    ({
-      mine: <img className="icon-svg-filter" src={MINE} alt={item.result?.value} height={25} />,
-      party: (
-        <img
-          className="icon-svg-filter"
-          src={PROFILE_NOCIRCLE}
-          alt={item.result?.value}
-          height={25}
-        />
-      ),
-      permit: <img className="icon-svg-filter" src={DOC} alt={item.result?.value} height={25} />,
-    }[item.type]);
+  ({
+    mine: <img className="icon-svg-filter" src={MINE} alt={item.result?.value} height={25} />,
+    party: (
+      <img
+        className="icon-svg-filter"
+        src={PROFILE_NOCIRCLE}
+        alt={item.result?.value}
+        height={25}
+      />
+    ),
+    permit: <img className="icon-svg-filter" src={DOC} alt={item.result?.value} height={25} />,
+  }[item.type]);
 
   const getDropdownMenuItems = () => {
     let items: MenuProps["items"] = [];

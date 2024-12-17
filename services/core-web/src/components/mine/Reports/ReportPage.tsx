@@ -8,12 +8,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/pro-light-svg-icons";
 
 import * as routes from "@/constants/routes";
-import {
-  FORM,
-  IMineReportSubmission,
-  MINE_REPORT_STATUS_HASH,
-  MineReportTypeUrlParam,
-} from "@mds/common";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getDropdownMineReportStatusOptions } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -31,6 +25,10 @@ import modalConfig from "@/components/modalContent/config";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 
 import { getMineReportStatusDescription } from "@mds/common/redux/utils/helpers";
+import { IMineReportSubmission } from "@mds/common/interfaces/reports";
+import { FORM } from "@mds/common/constants/forms";
+import { MINE_REPORT_STATUS_HASH } from "@mds/common/constants/strings";
+import { MineReportTypeUrlParam } from "@mds/common/constants/enums";
 
 const ReportPage: FC = () => {
   const dispatch = useDispatch();
@@ -69,12 +67,12 @@ const ReportPage: FC = () => {
     !isFormDirty
       ? cancelFunction()
       : Modal.confirm({
-          title: "Discard changes?",
-          content: "All changes made will not be saved.",
-          onOk: cancelFunction,
-          cancelText: "Continue Editing",
-          okText: "Discard",
-        });
+        title: "Discard changes?",
+        content: "All changes made will not be saved.",
+        onOk: cancelFunction,
+        cancelText: "Continue Editing",
+        okText: "Discard",
+      });
 
   const revertChanges = () => {
     dispatch(reset(FORM.VIEW_EDIT_REPORT));

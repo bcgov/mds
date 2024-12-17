@@ -14,10 +14,12 @@ import { modalConfig } from "@/components/modalContent/config";
 import { EDIT_TAILINGS_STORAGE_FACILITY, ADD_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import * as FORM from "@/constants/forms";
 import TailingsTable from "./TailingsTable";
-import { Feature, IMine, USER_ROLES } from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
+import { IMine } from "@mds/common/interfaces/mine.interface";
+import { Feature } from "@mds/common/utils/featureFlag";
+import { USER_ROLES } from "@mds/common/constants/environment";
 
 const { Paragraph, Title, Text } = Typography;
 

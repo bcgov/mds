@@ -1,20 +1,13 @@
 import React, { FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Row, Col, Typography, Button, Badge } from "antd";
+import { Row, Col, Typography } from "antd";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { fetchExplosivesPermits } from "@mds/common/redux/actionCreators/explosivesPermitActionCreator";
 import { openModal } from "@mds/common/redux/actions/modalActions";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
 import PermitsTable from "@/components/dashboard/mine/permits/PermitsTable";
-import {
-  Feature,
-  IExplosivesPermit,
-  IMine,
-  IPermit,
-  VC_CONNECTION_STATES,
-  isFeatureEnabled,
-} from "@mds/common";
+import { IExplosivesPermit, IMine, IPermit } from "@mds/common/interfaces";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import modalConfig from "@/components/modalContent/config";
 

@@ -25,7 +25,7 @@ import CoreTable from "@mds/common/components/common/CoreTable";
 import DocumentLink from "@/components/common/DocumentLink";
 import * as route from "@/constants/routes";
 import { VIEW_MINE_PERMIT } from "@/constants/routes";
-import { IMineDocument, IPermit, IPermitAmendment } from "@mds/common";
+import { IMineDocument, IPermit, IPermitAmendment } from "@mds/common/interfaces";
 import { ColumnsType } from "antd/lib/table";
 import {
   ITableAction,
@@ -276,7 +276,7 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
           ) : null;
         const onOk = isDeletionAllowed
           ? () => handleDeletePermit((record.permit as IPermit).permit_guid)
-          : () => {};
+          : () => { };
         return Modal.confirm({
           title,
           content,
@@ -391,7 +391,7 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
           title =
             "You cannot delete permit amendment generated in Core with associated NoW application.";
           okText = "Ok";
-          onOk = () => {};
+          onOk = () => { };
         }
         return Modal.confirm({ title, okText, cancelText: "Cancel", onOk });
       },

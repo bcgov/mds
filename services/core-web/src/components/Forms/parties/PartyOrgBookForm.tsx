@@ -10,7 +10,7 @@ import {
   fetchPartyById,
 } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import { ORGBOOK_ENTITY_URL } from "@/constants/routes";
-import { IOrgbookCredential, IParty } from "@mds/common";
+import { IOrgbookCredential, IParty } from "@mds/common/interfaces";
 import OrgBookSearch from "@mds/common/components/parties/OrgBookSearch";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";

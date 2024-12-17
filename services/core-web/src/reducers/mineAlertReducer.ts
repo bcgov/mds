@@ -1,7 +1,7 @@
 import { MINE_ALERTS } from "@/constants/reducerTypes";
 import * as actionTypes from "../constants/actionTypes";
 import { RootState } from "@/App";
-import { IMineAlert, IMineAlertList } from "@mds/common";
+import { IMineAlert, IMineAlertList } from "@mds/common/interfaces";
 
 interface AlertState {
   mineAlerts: IMineAlert[];

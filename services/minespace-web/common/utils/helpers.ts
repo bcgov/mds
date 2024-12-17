@@ -8,7 +8,7 @@ import { get, isEmpty, isNil, sortBy } from "lodash";
 import { createNumberMask } from "redux-form-input-masks";
 import moment from "moment-timezone";
 import { reset } from "redux-form";
-import { ItemMap } from "@mds/common";
+import { ItemMap } from "@mds/common/interfaces/common/itemMap.interface";
 
 /**
  * Helper function to clear redux form after submissions

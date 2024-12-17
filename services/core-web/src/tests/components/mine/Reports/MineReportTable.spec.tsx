@@ -1,10 +1,10 @@
 import React from "react";
 import { MineReportTable } from "@/components/mine/Reports/MineReportTable";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { AUTHENTICATION } from "@mds/common";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { render } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
+import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 
 const props = {
   mine: MOCK.MINES.mines[MOCK.MINES.mineIds[0]],

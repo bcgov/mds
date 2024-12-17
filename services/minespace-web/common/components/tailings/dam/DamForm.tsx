@@ -21,7 +21,7 @@ import { Field } from "redux-form";
 import React, { FC } from "react";
 import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import { renderConfig } from "@/components/common/config";
-import { ITailingsStorageFacility, IDam } from "@mds/common";
+import { ITailingsStorageFacility, IDam } from "@mds/common/interfaces";
 
 interface DamFormProps {
   tsf: ITailingsStorageFacility;

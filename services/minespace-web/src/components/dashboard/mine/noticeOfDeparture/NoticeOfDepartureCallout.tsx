@@ -1,7 +1,7 @@
 import React from "react";
 import { CALLOUT_SEVERITY, NOTICE_OF_DEPARTURE_STATUS_VALUES } from "@mds/common/constants/strings";
 import Callout from "@/components/common/Callout";
-import { NoDStatusDisplayEnum, NodStatusSaveEnum } from "@mds/common";
+import { NoDStatusDisplayEnum, NodStatusSaveEnum } from "@mds/common/constants/enums";
 
 const calloutContent = (nodStatus: NodStatusSaveEnum) => {
   switch (nodStatus) {

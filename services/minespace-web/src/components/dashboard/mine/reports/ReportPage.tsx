@@ -11,12 +11,7 @@ import ReportDetailsForm from "@mds/common/components/reports/ReportDetailsForm"
 import Loading from "@/components/common/Loading";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
-import {
-  IMine,
-  IMineReportSubmission,
-  MINE_REPORT_STATUS_HASH,
-  MINE_REPORT_SUBMISSION_CODES,
-} from "@mds/common";
+
 import Callout from "@mds/common/components/common/Callout";
 import { reportStatusSeverity } from "./ReportsTable";
 import {
@@ -24,6 +19,10 @@ import {
   fetchLatestReportSubmission,
   getLatestReportSubmission,
 } from "@mds/common/components/reports/reportSubmissionSlice";
+import { MINE_REPORT_STATUS_HASH } from "@mds/common/constants/strings";
+import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants/enums";
+import { IMineReportSubmission } from "@mds/common/interfaces/reports/mineReportSubmission.interface";
+import { IMine } from "@mds/common/interfaces/mine.interface";
 
 const ReportPage = () => {
   const dispatch = useDispatch();

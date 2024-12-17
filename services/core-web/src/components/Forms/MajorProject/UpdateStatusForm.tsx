@@ -2,11 +2,12 @@ import React, { FC } from "react";
 import { Field } from "redux-form";
 import { Col, Row } from "antd";
 import { required } from "@mds/common/redux/utils/Validate";
-import { IOption, MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES, PROJECT_STATUS_CODES } from "@mds/common";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import ProjectCallout from "@mds/common/components/projects/ProjectCallout";
+import { MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES, PROJECT_STATUS_CODES } from "@mds/common/constants/enums";
+import { IOption } from "@mds/common/interfaces";
 
 interface UpdateStatusFormProps {
   displayValues: {

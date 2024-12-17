@@ -11,7 +11,7 @@ import {
   IPermitAmendmentDocument,
   IPermitStatusOption,
   IPermitTypeOption,
-} from "@mds/common";
+} from "@mds/common/interfaces";
 import { useParams } from "react-router-dom";
 import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
 import { useSelector } from "react-redux";

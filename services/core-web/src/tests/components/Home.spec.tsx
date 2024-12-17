@@ -1,10 +1,10 @@
 import React from "react";
 import { Home } from "@/components/Home";
-import { STATIC_CONTENT } from "@mds/common";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { userReducerType } from "@mds/common/redux/slices/userSlice";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
+import { STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 
 const props = {};
 

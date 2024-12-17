@@ -13,7 +13,7 @@ import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { IMine, IMineReport, IPageData, Feature } from "@mds/common";
+import { IMine, IMineReport, IPageData } from "@mds/common/interfaces";
 import { Link, useHistory } from "react-router-dom";
 import * as routes from "@/constants/routes";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
@@ -21,6 +21,7 @@ import { Link as ScrollLink, Element } from "react-scroll";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 import * as Strings from "@mds/common/constants/strings";
+import { Feature } from "@mds/common/utils/featureFlag";
 
 export const Reports: FC = () => {
   const dispatch = useDispatch();

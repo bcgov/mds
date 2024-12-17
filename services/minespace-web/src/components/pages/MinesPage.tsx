@@ -10,7 +10,8 @@ import * as routes from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import Map from "@/components/common/Map";
 import UnauthenticatedNotice from "../common/UnauthenticatedNotice";
-import { IMine, detectDevelopmentEnvironment } from "@mds/common";
+import { detectDevelopmentEnvironment } from "@mds/common/utils/environmentUtils";
+import { IMine } from "@mds/common/interfaces/mine.interface";
 
 const DEFAULT_MINES_PER_PAGE = 10;
 const DEFAULT_MINE_PAGE = 1;

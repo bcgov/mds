@@ -17,9 +17,10 @@ import { getInformationRequirementsTableDocumentTypesHash } from "@mds/common/re
 import { modalConfig } from "@/components/modalContent/config";
 import * as routes from "@/constants/routes";
 import StepForms from "@/components/pages/Project/InformationRequirementsTableStepForm";
-import { IProject, IRequirement, SystemFlagEnum } from "@mds/common";
 import ProjectCallout from "@mds/common/components/projects/ProjectCallout";
 import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
+import { IProject, IRequirement } from "@mds/common/interfaces/projects";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 export const InformationRequirementsTablePage = () => {
   const requirements: IRequirement[] = useSelector(getRequirements);

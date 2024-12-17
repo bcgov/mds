@@ -22,8 +22,9 @@ import Loading from "@mds/common/components/common/Loading";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { getFormattedProjectApplication } from "@mds/common/redux/selectors/projectSelectors";
 import ProjectCallout from "@mds/common/components/projects/ProjectCallout";
-import { IMajorMinesApplication, IProject, SystemFlagEnum } from "@mds/common";
 import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
+import { IMajorMinesApplication } from "@mds/common/interfaces/projects/majorMinesApplication.interface";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 export const MajorMineApplicationPage: FC = () => {
   const history = useHistory();

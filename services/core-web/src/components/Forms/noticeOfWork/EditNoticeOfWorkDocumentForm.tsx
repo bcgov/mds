@@ -8,7 +8,6 @@ import { getDropdownNoticeOfWorkApplicationDocumentTypeOptions } from "@mds/comm
 import { NOTICE_OF_WORK_DOCUMENT } from "@mds/common/constants/API";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@/constants/fileTypes";
 import * as FORM from "@/constants/forms";
-import { IMineDocument } from "@mds/common";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
@@ -18,6 +17,7 @@ import RenderField from "@mds/common/components/forms/RenderField";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
 import { requiredNewFiles } from "@mds/common/redux/utils/Validate";
+import { IMineDocument } from "@mds/common/interfaces";
 
 export interface EditNoticeOfWorkDocumentFormProps {
   onSubmit: (values) => void | Promise<void>;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { IPermit, VC_CONNECTION_STATES } from "@mds/common";
+import { IPermit } from "@mds/common/interfaces";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { useHistory, useParams } from "react-router-dom";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
@@ -11,6 +11,7 @@ import {
   renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import { MINE_PERMIT_DIGITAL_CREDENTIALS } from "@/constants/routes";
+import { VC_CONNECTION_STATES } from "@mds/common/constants/enums";
 
 export const DigitalPermitCredential = () => {
   const history = useHistory();

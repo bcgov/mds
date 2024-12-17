@@ -8,7 +8,7 @@ import { change, getFormValues } from "redux-form";
 import { TRASHCAN } from "@/constants/assets";
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import { IimportedNOWApplication } from "@mds/common";
+import { IimportedNOWApplication } from "@mds/common/interfaces";
 
 import NullScreen from "@/components/common/NullScreen";
 

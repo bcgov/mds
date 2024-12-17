@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 import { Row, Col, Card, Button, Typography } from "antd";
 import * as Strings from "@mds/common/constants/strings";
 import PropTypes from "prop-types";
-import * as COMMON_ENV from "@mds/common";
 // Uncomment when image is re-introduced
 // import { MAP_LOGO } from "@/constants/assets";
 import * as MINESPACE_ENV from "@/constants/environment";
 import { isAuthenticated } from "@mds/common/redux/selectors/authenticationSelectors";
 import { AuthorizationWrapper } from "@/components/common/wrappers/AuthorizationWrapper";
 import LoginButton from "../common/LoginButton";
+import { KEYCLOAK } from "@mds/common/constants/environment";
 
 const propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
@@ -56,7 +56,7 @@ export const LandingPage = (props: { isAuthenticated: boolean }) => (
             <AuthorizationWrapper inTesting>
               <Button type="primary" size="large" className="login">
                 <a
-                  href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.vcauthn_idpHint}`}
+                  href={`${KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${KEYCLOAK.vcauthn_idpHint}`}
                 >
                   Log in with Verifiable Credentials
                 </a>

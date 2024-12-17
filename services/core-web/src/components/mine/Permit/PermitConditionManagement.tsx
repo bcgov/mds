@@ -28,7 +28,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import { COLOR } from "@/constants/styles";
 import { Link } from "react-router-dom";
 import * as route from "@/constants/routes";
-import { IOption, IPermitAmendment } from "@mds/common";
+import { IPermitAmendment } from "@mds/common/interfaces";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
 interface PermitConditionManagementProps {
@@ -191,11 +191,10 @@ export const PermitConditionManagement: FC<PermitConditionManagementProps> = (pr
                   style={{ padding: "18px 16px", backgroundColor: COLOR.lightGrey }}
                   header={
                     <span>
-                      {`${conditionCategory.step} ${conditionCategory.description} (${
-                        Object.values(flattenObject({ conditions })).filter(
-                          (value) => value === "CON"
-                        ).length
-                      } conditions)`}
+                      {`${conditionCategory.step} ${conditionCategory.description} (${Object.values(flattenObject({ conditions })).filter(
+                        (value) => value === "CON"
+                      ).length
+                        } conditions)`}
                       <span role="button" onClick={(event) => event.stopPropagation()}>
                         {/* @ts-ignore */}
                         <Button

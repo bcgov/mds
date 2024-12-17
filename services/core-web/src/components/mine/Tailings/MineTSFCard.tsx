@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { IPartyAppt, ITailingsStorageFacility } from "@mds/common";
+import { IPartyAppt, ITailingsStorageFacility } from "@mds/common/interfaces";
 
 interface TSFCardProps {
   tailingsStorageFacility: ITailingsStorageFacility;

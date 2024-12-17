@@ -10,13 +10,8 @@ import {
 import LinkButton from "@/components/common/LinkButton";
 import { formatDate } from "@/utils/helpers";
 import NoticeOfDepartureCallout from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureCallout";
-import {
-  INoDDocument,
-  INodDocument,
-  INodDocumentPayload,
-  INoticeOfDeparture,
-  NodStatusSaveEnum,
-} from "@mds/common";
+import { INoDDocument, INodDocument, INoticeOfDeparture } from "@mds/common/interfaces";
+import { NodStatusSaveEnum } from "@mds/common/constants/enums";
 
 interface NoticeOfDepartureDetailsProps {
   noticeOfDeparture: INoticeOfDeparture;

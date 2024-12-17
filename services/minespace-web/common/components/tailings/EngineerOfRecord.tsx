@@ -2,7 +2,7 @@ import { Alert, Button, Col, Empty, Popconfirm, Row, Typography } from "antd";
 import { change, ChangeAction, Field, getFormValues } from "redux-form";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
-import { IDocument, IMine, IMinePartyAppt, PARTY_APPOINTMENT_STATUS } from "@mds/common";
+import { IDocument, IMine, IMinePartyAppt } from "@mds/common/interfaces";
 
 import { MINE_PARTY_APPOINTMENT_DOCUMENTS } from "@mds/common/constants/API";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
@@ -26,6 +26,7 @@ import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import PartyAppointmentTable from "../PartyAppointmentTable";
 import { ColumnsType } from "antd/lib/table";
 import CoreTable from "@mds/common/components/common/CoreTable";
+import { PARTY_APPOINTMENT_STATUS } from "@mds/common/constants/strings";
 
 interface EngineerOfRecordProps {
   change: (
@@ -179,9 +180,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
 
   const daysToEORExpiry =
     currentEor?.end_date &&
-    moment(currentEor.end_date)
-      .startOf("day")
-      .diff(moment().startOf("day"), "days");
+    moment(currentEor.end_date).startOf("day").diff(moment().startOf("day"), "days");
 
   // Enable editing of the EoR when a new EoR party has been selected (party_guid is set),
   // but it has yet to be assigned to the TSF (mine_party_appt_guid is not set).

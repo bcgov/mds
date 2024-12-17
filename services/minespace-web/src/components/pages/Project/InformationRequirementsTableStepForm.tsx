@@ -1,13 +1,6 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import IRTDownloadTemplate from "@/components/Forms/projects/informationRequirementsTable/IRTDownloadTemplate";
-import {
-  ENVIRONMENT,
-  IProject,
-  IRequirement,
-  MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES,
-  SystemFlagEnum,
-} from "@mds/common";
 import * as API from "@mds/common/constants/API";
 import { Button, Popconfirm, Typography } from "antd";
 import * as routes from "@/constants/routes";
@@ -16,6 +9,13 @@ import HourglassOutlined from "@ant-design/icons/HourglassOutlined";
 import { IRTFileImport } from "@/components/Forms/projects/informationRequirementsTable/IRTFileImport";
 import InformationRequirementsTableForm from "@/components/Forms/projects/informationRequirementsTable/InformationRequirementsTableForm";
 import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
+import { IRequirement } from "@mds/common/interfaces/projects/requirement.interface";
+import { IProject } from "@mds/common/interfaces/projects/project.interface";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
+import {
+  MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES,
+  SystemFlagEnum,
+} from "@mds/common/constants/enums";
 
 interface StepFormsProps {
   submitting: boolean;

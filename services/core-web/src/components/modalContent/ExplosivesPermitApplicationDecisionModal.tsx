@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import ExplosivesPermitDecisionForm from "@/components/Forms/ExplosivesPermit/ExplosivesPermitDecisionForm";
-import { IExplosivesPermitDocumentType, IParty } from "@mds/common";
+import { IExplosivesPermitDocumentType, IParty } from "@mds/common/interfaces";
 
 interface ExplosivesPermitApplicationDecisionModalProps {
   initialValues: any;

@@ -13,9 +13,9 @@ import {
   getProjectSummary,
 } from "@mds/common/redux/selectors/projectSelectors";
 import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryContactItem";
-import { EMPTY_FIELD, UNKNOWN } from "@mds/common";
 import { formatDate } from "@common/utils/helpers";
 import ProjectStagesTable from "@/components/dashboard/mine/projects/ProjectStagesTable";
+import { EMPTY_FIELD, UNKNOWN } from "@mds/common/constants/strings";
 
 interface ProjectOverviewTabProps {
   navigateForward: (source: string, status?: string) => void;

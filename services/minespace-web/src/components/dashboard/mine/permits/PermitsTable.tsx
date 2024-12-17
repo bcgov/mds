@@ -1,13 +1,11 @@
 import React, { FC } from "react";
 import { connect } from "react-redux";
 import {
-  Feature,
   IExplosivesPermit,
   IExplosivesPermitAmendment,
   IPermit,
   IPermitAmendment,
-  isFeatureEnabled,
-} from "@mds/common";
+} from "@mds/common/interfaces";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { truncateFilename } from "@common/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -25,6 +23,7 @@ import { SortOrder } from "antd/lib/table/interface";
 import { VIEW_ESUP } from "@/constants/routes";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { Feature, isFeatureEnabled } from "@mds/common/utils/featureFlag";
 
 const draftAmendment = "DFT";
 

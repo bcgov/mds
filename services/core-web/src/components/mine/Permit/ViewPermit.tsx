@@ -5,7 +5,7 @@ import {
   getLatestAmendmentByPermitGuid,
   getPermitByGuid,
 } from "@mds/common/redux/selectors/permitSelectors";
-import { IMine, IPermit, IPermitAmendment, USER_ROLES } from "@mds/common";
+import { IMine, IPermit, IPermitAmendment } from "@mds/common/interfaces";
 import ViewPermitOverview from "@/components/mine/Permit/ViewPermitOverview";
 import PermitConditions from "@/components/mine/Permit/PermitConditions";
 
@@ -175,19 +175,19 @@ const ViewPermit: FC = () => {
 
   const headerActions = [
     onConditionsTab &&
-      userCanEditConditions && {
-        key: "extract",
-        label: "Extract Permit Conditions",
-        disabled: !canStartExtraction,
-        clickFunction: handleInitiateExtraction,
-      },
+    userCanEditConditions && {
+      key: "extract",
+      label: "Extract Permit Conditions",
+      disabled: !canStartExtraction,
+      clickFunction: handleInitiateExtraction,
+    },
     onConditionsTab &&
-      userCanEditConditions && {
-        key: "delete_conditions",
-        label: "Delete Permit Conditions",
-        disabled: !hasConditions,
-        clickFunction: handleDeleteConditions,
-      },
+    userCanEditConditions && {
+      key: "delete_conditions",
+      label: "Delete Permit Conditions",
+      disabled: !hasConditions,
+      clickFunction: handleDeleteConditions,
+    },
   ].filter(Boolean);
 
   const headerActionComponent =

@@ -21,7 +21,7 @@ import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { EDIT_DAM, MINE_TAILINGS_DETAILS } from "@/constants/routes";
-import { IDam, ITailingsStorageFacility } from "@mds/common";
+import { IDam, ITailingsStorageFacility } from "@mds/common/interfaces";
 import { ColumnsType } from "antd/lib/table";
 import {
   renderCategoryColumn,
@@ -128,22 +128,22 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     },
     ...(canEditTSF
       ? [
-          {
-            key: "edit",
-            label: "Edit TSF",
-            icon: <EditOutlined />,
-            clickFunction: (_event, record) => {
-              props.history.push({
-                pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
-                  record.mine_tailings_storage_facility_guid,
-                  record.mine_guid,
-                  "basic-information",
-                  true
-                ),
-              });
-            },
+        {
+          key: "edit",
+          label: "Edit TSF",
+          icon: <EditOutlined />,
+          clickFunction: (_event, record) => {
+            props.history.push({
+              pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
+                record.mine_tailings_storage_facility_guid,
+                record.mine_guid,
+                "basic-information",
+                true
+              ),
+            });
           },
-        ]
+        },
+      ]
       : []),
   ];
 
@@ -158,15 +158,15 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     },
     ...(canEditTSF
       ? [
-          {
-            key: "edit",
-            label: "Edit Dam",
-            icon: <EditOutlined />,
-            clickFunction: (_event, record) => {
-              handleEditDam(event, record, true, true);
-            },
+        {
+          key: "edit",
+          label: "Edit Dam",
+          icon: <EditOutlined />,
+          clickFunction: (_event, record) => {
+            handleEditDam(event, record, true, true);
           },
-        ]
+        },
+      ]
       : []),
   ];
 
@@ -251,12 +251,12 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
         !tsfV2Enabled
           ? null
           : {
-              rowKey: "dam_guid",
-              rowExpandable: (record: any) => record.dams?.length > 0,
-              recordDescription: "associated dams",
-              getDataSource: (record: any) => record.dams,
-              subTableColumns: damColumns,
-            }
+            rowKey: "dam_guid",
+            rowExpandable: (record: any) => record.dams?.length > 0,
+            recordDescription: "associated dams",
+            getDataSource: (record: any) => record.dams,
+            subTableColumns: damColumns,
+          }
       }
     />
   );

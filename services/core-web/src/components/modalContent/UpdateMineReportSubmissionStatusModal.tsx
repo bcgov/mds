@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import { Field, getFormValues } from "redux-form";
 
-import { MINE_REPORT_STATUS_HASH, IMineReportSubmission } from "@mds/common";
 
 import { Button, Col, Row, Alert } from "antd";
 
@@ -13,6 +12,8 @@ import { useSelector } from "react-redux";
 // import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import { getMineReportStatusDescription } from "@mds/common/redux/utils/helpers";
+import { IMineReportSubmission } from "@mds/common/interfaces/reports";
+import { MINE_REPORT_STATUS_HASH } from "@mds/common/constants/strings";
 
 interface UpdateMineReportSubmissionStatusModalProps {
   latestSubmission: IMineReportSubmission;

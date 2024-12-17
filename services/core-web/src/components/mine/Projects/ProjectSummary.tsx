@@ -11,14 +11,6 @@ import {
   getFormattedProjectSummary,
   getProject,
 } from "@mds/common/redux/selectors/projectSelectors";
-import {
-  FORM,
-  Feature,
-  PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION,
-  AMS_STATUS_CODES_SUCCESS,
-  AMS_STATUS_CODE_FAIL,
-  AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
-} from "@mds/common";
 import { getMineById } from "@mds/common/redux/reducers/mineReducer";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 import {
@@ -39,6 +31,10 @@ import { clearProjectSummary } from "@mds/common/redux/actions/projectActions";
 import { cancelConfirmWrapper } from "@mds/common/components/forms/RenderCancelButton";
 import { fetchActivities } from "@mds/common/redux/actionCreators/activityActionCreator";
 import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
+import { FORM } from "@mds/common/constants/forms";
+import { Feature } from "@mds/common/utils/featureFlag";
+import { AMS_STATUS_CODE_FAIL, AMS_STATUS_CODES_SUCCESS, PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION } from "@mds/common/constants/strings";
+import { AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES } from "@mds/common/constants/enums";
 
 export const ProjectSummary: FC = () => {
   const dispatch = useDispatch();

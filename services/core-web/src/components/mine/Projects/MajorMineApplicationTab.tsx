@@ -18,12 +18,14 @@ import { ScrollSideMenuProps } from "@mds/common/components/common/ScrollSideMen
 import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import DocumentCompression from "@mds/common/components/documents/DocumentCompression";
-import { Feature, FORM, IProject } from "@mds/common";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
 import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
 import Loading from "@mds/common/components/common/Loading";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import ArchivedDocumentsSection from "@mds/common/components/projects/ArchivedDocumentsSection";
+import { FORM } from "@mds/common/constants/forms";
+import { Feature } from "@mds/common/utils/featureFlag";
+import { IProject } from "@mds/common/interfaces/projects";
 
 
 const MajorMineApplicationTab: FC = () => {

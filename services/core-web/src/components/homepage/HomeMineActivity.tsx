@@ -12,7 +12,7 @@ import {
 } from "@mds/common/redux/selectors/mineSelectors";
 import { getGlobalMineAlerts } from "@/selectors/mineAlertSelectors";
 import { formatDateTime } from "@common/utils/helpers";
-import { IMine, IMineAlert } from "@mds/common";
+import { IMine, IMineAlert } from "@mds/common/interfaces";
 import * as routes from "@/constants/routes";
 import { RootState } from "@/App";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";

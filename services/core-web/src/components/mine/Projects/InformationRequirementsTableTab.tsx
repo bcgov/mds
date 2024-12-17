@@ -16,7 +16,7 @@ import {
 } from "@mds/common/redux/selectors/projectSelectors";
 import ReviewInformationRequirementsTable from "@/components/mine/Projects/ReviewInformationRequirementsTable";
 import UpdateStatusForm from "@/components/Forms/MajorProject/UpdateStatusForm";
-import { FORM } from "@mds/common";
+import { FORM } from "@mds/common/constants/forms";
 
 const sideMenuOptions = [
   {

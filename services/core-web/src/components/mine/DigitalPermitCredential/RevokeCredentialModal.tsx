@@ -6,7 +6,7 @@ import { Field } from "redux-form";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import { maxLength } from "@mds/common/redux/utils/Validate";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
-import { FORM } from "@mds/common";
+import { FORM } from "@mds/common/constants/forms";
 
 const { Paragraph, Title } = Typography;
 

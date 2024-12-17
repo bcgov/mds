@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { formatDate } from "@common/utils/helpers";
 import { getMineTenureTypesHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
-import { IPermit, IPermitPartyRelationship } from "@mds/common";
+import { IPermit, IPermitPartyRelationship } from "@mds/common/interfaces";
 
 interface MinePermitCardProps {
   permit?: IPermit;
