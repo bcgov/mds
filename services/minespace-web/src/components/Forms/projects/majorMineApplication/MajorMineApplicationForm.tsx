@@ -14,6 +14,7 @@ import {
   MODERN_EXCEL,
   SPATIAL,
   SPATIAL_DATA_STANDARDS_URL,
+  SystemFlagEnum,
 } from "@mds/common";
 import * as routes from "@/constants/routes";
 import MajorMineApplicationFileUpload from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationFileUpload";
@@ -27,6 +28,7 @@ import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import RenderField from "@mds/common/components/forms/RenderField";
 import ArchivedDocumentsSection from "@mds/common/components/projects/ArchivedDocumentsSection";
 import { required } from "@mds/common/redux/utils/Validate";
+import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
 
 interface MajorMineApplicationFormProps {
   project: IProject;
@@ -41,6 +43,11 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
 
   const { primary_documents, spatial_documents, supporting_documents } =
     useSelector(getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION)) || {};
+  const canModifyMmaDocs = areDocumentFieldsDisabled(
+    SystemFlagEnum.ms,
+    project?.major_mine_application?.status_code
+  );
+
   const mineDocuments = useSelector(getMineDocuments);
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
 
@@ -219,7 +226,8 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         <DocumentTable
           documents={primaryDocument}
           documentParent="Major Mine Application"
-          canArchiveDocuments={true}
+          canArchiveDocuments={canModifyMmaDocs}
+          canReplaceDocuments={canModifyMmaDocs}
           onArchivedDocuments={refreshData}
           enableBulkActions={true}
           showVersionHistory={true}
@@ -290,7 +298,8 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         <DocumentTable
           documents={supportDocuments}
           documentParent="Major Mine Application"
-          canArchiveDocuments={true}
+          canArchiveDocuments={canModifyMmaDocs}
+          canReplaceDocuments={canModifyMmaDocs}
           onArchivedDocuments={refreshData}
           enableBulkActions={true}
           showVersionHistory={true}

@@ -101,8 +101,8 @@ export const MajorMineApplicationReviewSubmit: FC<MajorMineApplicationReviewSubm
         <Col span={24} {...columnStyleConfig}>
           <br />
           <Typography.Title level={3}>Application Files</Typography.Title>
-          <Typography.Title level={4}>Primary Document</Typography.Title>
           <DocumentTable
+            header={<Typography.Title level={4}>Primary Document</Typography.Title>}
             documents={primary_documents}
             documentParent="Major Mine Application"
             canArchiveDocuments={false}
@@ -110,16 +110,17 @@ export const MajorMineApplicationReviewSubmit: FC<MajorMineApplicationReviewSubm
             showVersionHistory={true}
             enableBulkActions={true}
           />
-          <Typography.Title level={4}>Spatial Components</Typography.Title>
           <DocumentTable
+            header={<Typography.Title level={4}>Spatial Components</Typography.Title>}
             documents={spatial_documents}
             documentParent="Major Mine Application"
             canArchiveDocuments={false}
+            canReplaceDocuments={false}
             showVersionHistory={true}
             enableBulkActions={true}
           />
-          <Typography.Title level={4}>Supporting Documents</Typography.Title>
           <DocumentTable
+            header={<Typography.Title level={4}>Supporting Documents</Typography.Title>}
             documents={supporting_documents}
             documentParent="Major Mine Application"
             canArchiveDocuments={false}
