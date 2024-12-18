@@ -117,7 +117,7 @@ export const ViewPdf: React.FC<ViewPDFProps> = ({
   let pdfViewer;
   return (
     <PdfViewerComponent
-      id={id || "pdfviewer-container"}
+      id={id}
       serviceUrl={pdfViewerServiceUrl}
       documentPath={documentPath}
       ajaxRequestSettings={ajaxRequestSettings}
