@@ -43,7 +43,7 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
 
   const { primary_documents, spatial_documents, supporting_documents } =
     useSelector(getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION)) || {};
-  const canModifyMmaDocs = areDocumentFieldsDisabled(
+  const canModifyMmaDocs = !areDocumentFieldsDisabled(
     SystemFlagEnum.ms,
     project?.major_mine_application?.status_code
   );

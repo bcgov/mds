@@ -83,8 +83,8 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
       .toLowerCase();
   };
 
-  const canModifySummaryDocs = areDocumentFieldsDisabled(systemFlag, project?.project_summary?.status_code);
-  const canModifyMmaDocs = areDocumentFieldsDisabled(systemFlag, project?.major_mine_application?.status_code);
+  const canModifySummaryDocs = !areDocumentFieldsDisabled(systemFlag, project?.project_summary?.status_code);
+  const canModifyMmaDocs = !areDocumentFieldsDisabled(systemFlag, project?.major_mine_application?.status_code);
 
   const projectSummaryDocs =
     project?.project_summary?.documents?.map(
