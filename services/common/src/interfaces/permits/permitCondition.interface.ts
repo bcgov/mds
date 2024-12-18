@@ -1,11 +1,5 @@
 import { IMineReportPermitRequirement } from "@mds/common/interfaces";
 
-export interface IPermitConditionCategory {
-  condition_category_code: string;
-  description: string;
-  display_order: number;
-  step: string;
-}
 
 export interface IBoundingBox {
   top: number;
