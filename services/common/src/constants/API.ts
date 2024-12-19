@@ -86,17 +86,15 @@ export const PERMIT_CONDITIONS = (mineGuid, permitGuid, permitAmendmentGuid) =>
 export const PERMIT_CONDITION = (mineGuid, permitGuid, permitAmendmentGuid, permitConditionGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/conditions/${permitConditionGuid}`;
 
-export const PERMIT_AMENDMENT_CONDITION_CATEGORIES = (
-  mineGuid,
-  permitGuid,
-  permitAmendmentGuid,
-) =>
+export const PERMIT_AMENDMENT_CONDITION_CATEGORIES = (mineGuid, permitGuid, permitAmendmentGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/condition-categories`;
 
 export const STANDARD_PERMIT_CONDITIONS = (noticeOfWorkType) =>
   `/mines/permits/standard-conditions/${noticeOfWorkType}`;
 export const STANDARD_PERMIT_CONDITION = (permitConditionGuid) =>
   `/mines/permits/standard-conditions/${permitConditionGuid}`;
+
+export const PERMIT_AMENDMENT_CONDITION_ASSIGN_REVIEWER = "mines/permits/condition-category/assign-review-user";
 
 export const PERMIT_SERVICE_EXTRACTION = `/mines/permits/condition-extraction`;
 export const POLL_PERMIT_SERVICE_EXTRACTION = (taskId: string) =>
@@ -390,3 +388,4 @@ export const APP_HELP = (helpKey: string, params?: { system?: string; help_guid?
 
 // User
 export const USER_PROFILE = () => "/users/profile";
+export const USER_SEARCH = (searchTerm: string) => `/users?search_term=${searchTerm}`;

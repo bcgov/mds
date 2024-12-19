@@ -100,6 +100,8 @@ from app.api.mines.permits.permit_conditions.resources.permit_amendment_conditio
 from app.api.mines.permits.permit_conditions.resources.permit_amendment_condition_category_resource import (
     PermitAmendmentConditionCategoryResource,
 )
+from app.api.mines.permits.permit_conditions.resources.permit_amendment_condition_category_user_resource import \
+    AssignUserToPermitConditionCategory
 from app.api.mines.permits.permit_conditions.resources.permit_condition_category_resource import (
     PermitConditionCategoryResource,
 )
@@ -268,6 +270,7 @@ api.add_resource(PermitListResource, '/<string:mine_guid>/permits')
 api.add_resource(PermitStatusCodeResource, '/permits/status-codes')
 api.add_resource(PermitConditionCategoryResource, '/permits/condition-category-codes')
 api.add_resource(PermitConditionTypeResource, '/permits/condition-type-codes')
+api.add_resource(AssignUserToPermitConditionCategory, '/permits/condition-category/assign-review-user')
 
 api.add_resource(StandardPermitConditionsListResource,
                  '/permits/standard-conditions/<string:notice_of_work_type>')

@@ -55,16 +55,18 @@ const RenderLargeSelect = (props) => (
     }
   >
     <Select
+      loading={props.loading}
       virtual={false}
-      showSearch
+      disabled={props.disabled}
       id={props.id}
-      defaultActiveFirstOption={false}
-      notFoundContent="Not Found"
       dropdownMatchSelectWidth
-      backfill
+      showSearch
       style={{ width: "100%" }}
-      options={props.dataSource}
+      defaultActiveFirstOption={false}
       placeholder={props.placeholder}
+      notFoundContent="Not Found"
+      backfill
+      options={props.dataSource}
       filterOption={() => true}
       onSearch={props.handleSearch}
       onSelect={props.handleSelect}
@@ -75,7 +77,6 @@ const RenderLargeSelect = (props) => (
         props.handleFocus();
         props.input.onFocus(event);
       }}
-      disabled={props.disabled}
     />
   </Form.Item>
 );

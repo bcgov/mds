@@ -1,4 +1,4 @@
-import { IMineReportPermitRequirement } from "@mds/common/interfaces";
+import { IMineReportPermitRequirement, IUser } from "@mds/common/interfaces";
 
 
 export interface IBoundingBox {
@@ -33,5 +33,6 @@ export interface IPermitConditionCategory {
   description: string;
   display_order: number;
   step: string;
+  assigned_review_user?: IUser
   conditions?: IPermitCondition[]
 }
