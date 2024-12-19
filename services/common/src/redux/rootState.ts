@@ -1,5 +1,5 @@
 import { sharedReducer } from "@mds/common/redux/reducers/rootReducerShared";
-import { configureStore, Dispatch } from "@reduxjs/toolkit";
+import { configureStore, Dispatch, UnknownAction } from "@reduxjs/toolkit";
 import { loadingBarReducer } from "react-redux-loading-bar";
 
 import type { TypedUseSelectorHook } from 'react-redux'
@@ -24,8 +24,10 @@ export const store = getStore();
 
 type RootState = ReturnType<typeof store.getState>;
 
-// Infer the `RootState` and `AppDispatch` types from the store itself + make sure redux-form actions are captured as well.
-export type AppDispatch = typeof store.dispatch & Dispatch<FormAction>;
+type AppAction = UnknownAction | FormAction;
+
+// Infer the `RootState` and `AppDispatch` types from the store itself + make sure redux-form acti are captured as well.
+export type AppDispatch = typeof store.dispatch & Dispatch<AppAction>;
 export type AppStore = typeof store;
 
 // Use throughout your app instead of plain `useDispatch` and `useSelector`
