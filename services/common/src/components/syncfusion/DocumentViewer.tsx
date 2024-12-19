@@ -51,6 +51,13 @@ const getAjaxRequestSettingsHeaders = (obj) => {
   return ajaxRequestSettingsHeaders;
 };
 
+function getAjaxRequestSettings() {
+  return {
+    ajaxHeaders: getAjaxRequestSettingsHeaders(createRequestHeader().headers),
+    withCredentials: false,
+  };
+}
+
 export const OPENABLE_DOCUMENT_TYPES = ["PDF"];
 
 export const isDocumentOpenable = (documentName) =>
@@ -85,22 +92,46 @@ interface ViewPDFProps {
   pdfViewerServiceUrl: string;
   documentPath: string;
   ajaxRequestSettings: any;
+  id?: string;
+  onInit?: (pdfViewer: any) => void;
+}
+interface PDFViewerProps {
+  documentPath: string;
+  id?: string;
+  onInit?: (pdfViewer: any) => void;
 }
 
-const ViewPdf: React.FC<ViewPDFProps> = ({
+export const PdfViewer: React.FC<PDFViewerProps> = (props: PDFViewerProps) => {
+  const ajaxSettings = getAjaxRequestSettings();
+
+  return <ViewPdf id={props.id} onInit={props.onInit} pdfViewerServiceUrl={ENVIRONMENT.pdfViewerServiceUrl} documentPath={props.documentPath} ajaxRequestSettings={ajaxSettings} />;
+};
+
+export const ViewPdf: React.FC<ViewPDFProps> = ({
   pdfViewerServiceUrl,
   documentPath,
   ajaxRequestSettings,
+  id = "pdfviewer-container",
+  onInit = null
 }) => {
+  let pdfViewer;
   return (
     <PdfViewerComponent
-      id="pdfviewer-container"
+      id={id}
       serviceUrl={pdfViewerServiceUrl}
       documentPath={documentPath}
       ajaxRequestSettings={ajaxRequestSettings}
       style={{ display: "block", height: "80vh" }}
-      enableAnnotation={false}
+      enableAnnotation={true}
       enableFormDesigner={false}
+      polygonSettings={{ fillColor: 'yellow', opacity: 0.6, strokeColor: 'orange' }}
+      ref={(scope) => {
+        pdfViewer = scope;
+
+        if (onInit) {
+          onInit(pdfViewer);
+        }
+      }}
     >
       <Inject
         services={[
@@ -140,10 +171,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
   const handleOk = () => closeDocumentViewer();
   const handleCancel = () => closeDocumentViewer();
 
-  const ajaxRequestSettings = {
-    ajaxHeaders: getAjaxRequestSettingsHeaders(createRequestHeader().headers),
-    withCredentials: false,
-  };
+  const ajaxRequestSettings = getAjaxRequestSettings();
 
   useEffect(() => {
     if (isDocumentViewerOpen) {

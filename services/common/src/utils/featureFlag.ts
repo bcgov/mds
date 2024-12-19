@@ -22,6 +22,7 @@ export enum Feature {
   DIGITIZED_PERMITS = "digitized_permits",
   SPATIAL_BUNDLE = "spatial_bundle",
   PERMIT_CONDITIONS_PAGE = "permit_conditions_page",
+  PERMIT_CONDITIONS_PDF_SPLIT_VIEW = "permit_conditions_pdf_split_view",
   MODIFY_PERMIT_CONDITIONS = "modify_permit_conditions",
   MAJOR_PROJECT_REFACTOR = "major_project_refactor",
   HELP_GUIDE = "help_guide",
