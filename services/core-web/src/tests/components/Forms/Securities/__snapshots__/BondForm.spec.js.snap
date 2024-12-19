@@ -77,7 +77,7 @@ exports[`BondForm renders properly 1`] = `
       <FormItem
         hasFeedback={false}
       >
-        <Connect(PartySelectField)
+        <PartySelectField
           allowAddingParties={true}
           id="payer_party_guid"
           initialValues={Object {}}

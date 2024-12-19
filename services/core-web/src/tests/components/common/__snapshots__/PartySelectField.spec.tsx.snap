@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PartySelectField renders properly 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-test_party_select form-view"
+    id="test_party_select"
+  >
+    <div
+      class="view-item ant-form-item"
+    >
+      
+      <div
+        class="ant-typography view-item-value"
+      >
+        N/A
+      </div>
+    </div>
+  </form>
+</div>
+`;

@@ -17,7 +17,7 @@ exports[`PermitAmendmentForm renders properly 1`] = `
       <FormItem
         hasFeedback={false}
       >
-        <Connect(PartySelectField)
+        <PartySelectField
           allowAddingParties={true}
           id="permittee_party_guid"
           label="Permittee*"

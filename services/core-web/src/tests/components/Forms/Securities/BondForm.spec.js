@@ -28,7 +28,7 @@ beforeEach(() => {
 
 describe("BondForm", () => {
   it("renders properly", () => {
-    const component = shallow(<BondForm {...dispatchProps} {...props} />);
+    const component = shallow(<BondForm {...dispatchProps} {...props} onSubmit={jest.fn()} />);
     expect(component).toMatchSnapshot();
   });
 });

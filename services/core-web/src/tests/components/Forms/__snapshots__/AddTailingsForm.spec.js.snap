@@ -147,7 +147,7 @@ exports[`AddTailingsForm renders properly 1`] = `
       <FormItem
         hasFeedback={false}
       >
-        <Connect(PartySelectField)
+        <PartySelectField
           allowAddingParties={true}
           allowNull={true}
           id="eor_party_guid"
