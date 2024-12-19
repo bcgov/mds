@@ -71,10 +71,11 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const dispatch = useDispatch();
   const user = useSelector(getUser);
 
-  const userIsAssigned = (category?: IPermitConditionCategory): boolean =>
-    user?.sub === category?.assigned_review_user?.sub;
+  const userIsAssigned = (category?: IPermitConditionCategory): boolean => {
+    return user?.sub === category?.assigned_review_user?.sub;
+  };
 
-  const canEditPermitConditions = (category?: IPermitConditionCategory): boolean =>
+  const canEditPermitConditions = (category: IPermitConditionCategory): boolean =>
     isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && userCanEdit && userIsAssigned(category);
 
   const { id: mineGuid, permitGuid } = useParams<{
@@ -82,9 +83,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
     permitGuid: string;
     mineGuid: string;
   }>();
-  const canEditPermitConditions = isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && userCanEdit;
   const pdfSplitViewEnabled = isFeatureEnabled(Feature.PERMIT_CONDITIONS_PDF_SPLIT_VIEW);
-  const { id: mineGuid, permitGuid } = useParams<{ id: string; permitGuid: string, mineGuid: string }>();
   const [isExpanded, setIsExpanded] = useState(false);
   const [viewPdf, setViewPdf] = useState(false);
   const [selectedCondition, setSelectedCondition] = useState<IPermitCondition | null>(null);
@@ -342,7 +341,8 @@ const PermitConditions: FC<PermitConditionProps> = ({
     </Typography.Paragraph>
   );
 
-  const canViewPdfSplitScreen = viewPdf && pdfSplitViewEnabled && permitExtraction?.permit_amendment_document_guid;
+  const canViewPdfSplitScreen =
+    viewPdf && pdfSplitViewEnabled && permitExtraction?.permit_amendment_document_guid;
 
   return (
     <Row>
@@ -368,14 +368,21 @@ const PermitConditions: FC<PermitConditionProps> = ({
                       disabled={showLoading}
                       type="tertiary"
                       className="fa-icon-container"
-                      icon={<FontAwesomeIcon icon={isExpanded ? faArrowsToLine : faArrowsFromLine} />}
+                      icon={
+                        <FontAwesomeIcon icon={isExpanded ? faArrowsToLine : faArrowsFromLine} />
+                      }
                       onClick={() => setIsExpanded(!isExpanded)}
                     >
                       {isExpanded ? "Collapse" : "Expand"} All Conditions
                     </CoreButton>
                   </Col>
                   <Col>
-                    <CoreButton type="tertiary" icon={<FileOutlined />} disabled={showLoading} onClick={toggleViewPdf}>
+                    <CoreButton
+                      type="tertiary"
+                      icon={<FileOutlined />}
+                      disabled={showLoading}
+                      onClick={toggleViewPdf}
+                    >
                       Open Permit in Document Viewer
                     </CoreButton>
                   </Col>
@@ -395,25 +402,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
               <Col span={24}>
                 <div className="core-page-content">
                   <Row gutter={[16, 16]}>
-                    {
-                      showLoading && (
-                        <Skeleton active paragraph={{ rows: 10 }} />
-                      )
-                    }
-          <Col>
-            <CoreButton
-              type="tertiary"
-              className="fa-icon-container"
-              disabled={showLoading}
-              icon={<FontAwesomeIcon icon={faBarsStaggered} />}
-            >
-              Reorder
-            </CoreButton>
-          </Col>
-          <Col span={24}>
-            <div className="core-page-content">
-              <Row gutter={[16, 16]}>
-                {showLoading && <Skeleton active paragraph={{ rows: 10 }} />}
+                    {showLoading && <Skeleton active paragraph={{ rows: 10 }} />}
 
                     {permitConditionCategories.map((category, idx) => {
                       const conditionsWithRequirements: IPermitCondition[] =
@@ -434,10 +423,12 @@ const PermitConditions: FC<PermitConditionProps> = ({
                                   conditionCount={category?.conditions.length || 0}
                                 />
                               </Title>
-                              {canEditPermitConditions && (
+                              {canEditPermitConditions(category.condition_category) && (
                                 <CoreButton
                                   type="primary"
-                                  disabled={Boolean(addingToCategoryCode) || Boolean(editingConditionGuid)}
+                                  disabled={
+                                    Boolean(addingToCategoryCode) || Boolean(editingConditionGuid)
+                                  }
                                   onClick={() =>
                                     setAddingToCategoryCode(category.condition_category_code)
                                   }
@@ -446,6 +437,12 @@ const PermitConditions: FC<PermitConditionProps> = ({
                                 </CoreButton>
                               )}
                             </Row>
+                            {isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && (
+                              <PermitConditionReviewAssignment
+                                category={category?.condition_category}
+                                refreshData={refreshData}
+                              />
+                            )}
                           </Col>
                           {category.conditions.map((sc, idx) => (
                             <Col span={24} key={sc.permit_condition_id} className="fade-in">
@@ -456,7 +453,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                                 handleMoveCondition={handleMoveCondition}
                                 currentPosition={idx}
                                 conditionCount={category.conditions.length}
-                                canEditPermitConditions={canEditPermitConditions}
+                                canEditPermitConditions={canEditPermitConditions(category.condition_category)}
                                 setEditingConditionGuid={setEditingConditionGuid}
                                 editingConditionGuid={editingConditionGuid ?? addingToCategoryCode}
                                 refreshData={refreshData}
@@ -464,14 +461,16 @@ const PermitConditions: FC<PermitConditionProps> = ({
                               />
                             </Col>
                           ))}
-                          {addingToCategoryCode === category.condition_category_code &&
+                          {addingToCategoryCode === category.condition_category_code && (
                             <Col span={24}>
                               <SubConditionForm
                                 conditionCategory={category}
                                 permitAmendmentGuid={latestAmendment.permit_amendment_guid}
                                 handleCancel={() => setAddingToCategoryCode(null)}
                                 onSubmit={handleAddCondition}
-                              /></Col>}
+                              />
+                            </Col>
+                          )}
                           {conditionsWithRequirements?.length > 0 && (
                             <div className="report-collapse-container ">
                               <Title level={4} className="primary-colour">
@@ -482,7 +481,12 @@ const PermitConditions: FC<PermitConditionProps> = ({
                                   <Collapse.Panel
                                     key={cond.permit_condition_id}
                                     header={
-                                      <Typography.Text strong>Report #{index + 1}{cond.mineReportPermitRequirement?.report_name ? ` - ${cond.mineReportPermitRequirement.report_name}` : ''}</Typography.Text>
+                                      <Typography.Text strong>
+                                        Report #{index + 1}
+                                        {cond.mineReportPermitRequirement?.report_name
+                                          ? ` - ${cond.mineReportPermitRequirement.report_name}`
+                                          : ""}
+                                      </Typography.Text>
                                     }
                                     className="report-collapse"
                                   >
@@ -505,125 +509,23 @@ const PermitConditions: FC<PermitConditionProps> = ({
                 </div>
               </Col>
             </Row>
-          }>
-        </ScrollSidePageWrapper>
+          }
+        ></ScrollSidePageWrapper>
       </Col>
       {canViewPdfSplitScreen ? (
-        <Col style={{ padding: '16px', height: 'inherit' }} span={8}>
-          <div style={{ position: 'sticky', 'top': '225px' }}>
-            <PreviewPermitAmendmentDocument amendment={latestAmendment} documentGuid={permitExtraction.permit_amendment_document_guid} selectedCondition={selectedCondition} />
+        <Col style={{ padding: "16px", height: "inherit" }} span={8}>
+          <div style={{ position: "sticky", top: "225px" }}>
+            <PreviewPermitAmendmentDocument
+              amendment={latestAmendment}
+              documentGuid={permitExtraction.permit_amendment_document_guid}
+              selectedCondition={selectedCondition}
+            />
           </div>
         </Col>
-      ) : ''}
+      ) : (
+        ""
+      )}
     </Row>
-                {permitConditionCategories.map((category, idx) => {
-                  const conditionsWithRequirements: IPermitCondition[] =
-                    getConditionsWithRequirements(category.conditions);
-                  return (
-                    <React.Fragment key={category.href}>
-                      <Col span={24}>
-                        <Row justify="space-between">
-                          <Title level={3} className="margin-none" id={category.href}>
-                            <EditPermitConditionCategoryInline
-                              onDelete={handleDeleteConditionCategory}
-                              onChange={handleUpdateConditionCategory}
-                              moveUp={(cat) => handleMove(cat, idx - 1)}
-                              moveDown={(cat) => handleMove(cat, idx + 1)}
-                              currentPosition={idx}
-                              categoryCount={permitConditionCategories.length}
-                              category={category.condition_category}
-                              conditionCount={category?.conditions.length || 0}
-                            />
-                          </Title>
-                          {canEditPermitConditions(category.condition_category) && (
-                            <CoreButton
-                              type="primary"
-                              disabled={
-                                Boolean(addingToCategoryCode) || Boolean(editingConditionGuid)
-                              }
-                              onClick={() =>
-                                setAddingToCategoryCode(category.condition_category_code)
-                              }
-                            >
-                              Add Condition
-                            </CoreButton>
-                          )}
-                        </Row>
-                        {isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && (
-                          <PermitConditionReviewAssignment
-                            category={category?.condition_category}
-                            refreshData={refreshData}
-                          />
-                        )}
-                      </Col>
-                      {category.conditions.map((sc, idx) => (
-                        <Col span={24} key={sc.permit_condition_id} className="fade-in">
-                          <PermitConditionLayer
-                            permitAmendmentGuid={latestAmendment.permit_amendment_guid}
-                            condition={sc}
-                            isExpanded={isExpanded}
-                            handleMoveCondition={handleMoveCondition}
-                            currentPosition={idx}
-                            conditionCount={category.conditions.length}
-                            canEditPermitConditions={canEditPermitConditions(
-                              category.condition_category
-                            )}
-                            setEditingConditionGuid={setEditingConditionGuid}
-                            editingConditionGuid={editingConditionGuid ?? addingToCategoryCode}
-                            refreshData={refreshData}
-                          />
-                        </Col>
-                      ))}
-                      {addingToCategoryCode === category.condition_category_code && (
-                        <Col span={24}>
-                          <SubConditionForm
-                            conditionCategory={category}
-                            permitAmendmentGuid={latestAmendment.permit_amendment_guid}
-                            handleCancel={() => setAddingToCategoryCode(null)}
-                            onSubmit={handleAddCondition}
-                          />
-                        </Col>
-                      )}
-                      {conditionsWithRequirements?.length > 0 && (
-                        <div className="report-collapse-container ">
-                          <Title level={4} className="primary-colour">
-                            Report Requirements
-                          </Title>
-                          <Collapse expandIconPosition="end">
-                            {conditionsWithRequirements.map((cond: IPermitCondition, index) => (
-                              <Collapse.Panel
-                                key={cond.permit_condition_id}
-                                header={
-                                  <Typography.Text strong>
-                                    Report #{index + 1}
-                                    {cond.mineReportPermitRequirement?.report_name
-                                      ? ` - ${cond.mineReportPermitRequirement.report_name}`
-                                      : ""}
-                                  </Typography.Text>
-                                }
-                                className="report-collapse"
-                              >
-                                <ReportPermitRequirementForm
-                                  modalView={false}
-                                  onSubmit={handleEditReportRequirement}
-                                  condition={cond}
-                                  permitGuid={permitGuid}
-                                  mineReportPermitRequirement={cond.mineReportPermitRequirement}
-                                />
-                              </Collapse.Panel>
-                            ))}
-                          </Collapse>
-                        </div>
-                      )}
-                    </React.Fragment>
-                  );
-                })}
-              </Row>
-            </div>
-          </Col>
-        </Row>
-      }
-    ></ScrollSidePageWrapper>
   );
 };
 

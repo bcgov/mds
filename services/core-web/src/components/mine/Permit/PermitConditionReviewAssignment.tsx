@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from "react";
+import React, { FC, useEffect, useState } from "react";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { FORM, IPermitConditionCategory, USER_ROLES } from "@mds/common";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,6 +26,13 @@ const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> 
 }) => {
   const dispatch = useDispatch();
   const user = useSelector(getUser);
+  const [assignedReviewUserInitialValues, setAssignedReviewUserIntitialValues] = useState<{
+    label: string;
+    value: string;
+  }>({
+    value: category?.assigned_review_user?.sub || "",
+    label: category?.assigned_review_user?.display_name || "",
+  });
 
   const userCanAssignReviewers = useSelector((state) =>
     userHasRole(state, USER_ROLES.role_edit_template_conditions)
@@ -52,12 +59,14 @@ const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> 
     );
   };
 
-  const assignedReviewUserInitialValues = useMemo(() => {
-    return {
-      value: category?.assigned_review_user?.sub || "",
-      label: category?.assigned_review_user?.display_name || "",
-    };
-  }, [category]);
+  useEffect(() => {
+    if (category?.assigned_review_user?.sub) {
+      setAssignedReviewUserIntitialValues({
+        value: category?.assigned_review_user?.sub || "",
+        label: category?.assigned_review_user?.display_name || "",
+      });
+    }
+  }, [category?.assigned_review_user?.sub]);
 
   return (
     <FormWrapper
@@ -67,7 +76,7 @@ const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> 
       onSubmit={handleSubmit}
       reduxFormConfig={{ enableReinitialize: true }}
       initialValues={{
-        assigned_review_user: assignedReviewUserInitialValues.value,
+        assigned_review_user: assignedReviewUserInitialValues?.value,
         condition_category_code: category.condition_category_code,
       }}
     >
