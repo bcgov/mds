@@ -14,6 +14,7 @@ import { getFormattedProjectApplication } from "@mds/common/redux/selectors/proj
 import ProjectCallout from "@mds/common/components/projects/ProjectCallout";
 import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
 import { SystemFlagEnum } from "@mds/common";
+import SpatialDocumentTable from "@mds/common/components/documents/spatial/SpatialDocumentTable";
 
 const inputStyle = { width: "100%" };
 
@@ -110,15 +111,8 @@ export const MajorMineApplicationReviewSubmit: FC<MajorMineApplicationReviewSubm
             showVersionHistory={true}
             enableBulkActions={true}
           />
-          <DocumentTable
-            header={<Typography.Title level={4}>Spatial Components</Typography.Title>}
-            documents={spatial_documents}
-            documentParent="Major Mine Application"
-            canArchiveDocuments={false}
-            canReplaceDocuments={false}
-            showVersionHistory={true}
-            enableBulkActions={true}
-          />
+          <Typography.Title level={4}>Spatial Components</Typography.Title>
+          <SpatialDocumentTable documents={spatial_documents} />
           <DocumentTable
             header={<Typography.Title level={4}>Supporting Documents</Typography.Title>}
             documents={supporting_documents}
