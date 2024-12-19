@@ -126,12 +126,7 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
             major_mine_application.save(commit=False)
 
         if documents:
-            spatial_docs = [doc for doc in documents if doc['major_mine_application_document_type_code'] == 'SPT']
-            updated_spatial_docs = MineDocumentBundle.update_spatial_mine_document_with_bundle_id(spatial_docs)
-
-            # update the original documents array with the updated spatial documents
-            documents = [doc for doc in documents if doc['major_mine_application_document_type_code'] != 'SPT']
-            documents.extend(updated_spatial_docs)
+            documents = MineDocumentBundle.parse_and_update_spatial_documents(documents)
 
             for doc in documents:
                 mine_doc = MineDocument(
@@ -159,24 +154,27 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
                add_to_session=True):
         self.status_code = status_code
 
-        for doc in documents:
-            mine_document_guid = doc.get('mine_document_guid')
-            if mine_document_guid:
-                major_mine_application_doc = MajorMineApplicationDocumentXref.find_by_mine_document_guid(mine_document_guid)
-                major_mine_application_doc.major_mine_application_document_type_code = doc.get(
-                    'major_mine_application_document_type_code')
-            else:
-                mine_doc = MineDocument(
-                    mine_guid=project.mine_guid,
-                    document_name=doc.get('document_name'),
-                    document_manager_guid=doc.get('document_manager_guid'))
-                major_mine_application_doc = MajorMineApplicationDocumentXref(
-                    mine_document_guid=mine_doc.mine_document_guid,
-                    major_mine_application_id=self.major_mine_application_id,
-                    major_mine_application_document_type_code=doc.get(
-                        'major_mine_application_document_type_code'))
-                major_mine_application_doc.mine_document = mine_doc
-                self.documents.append(major_mine_application_doc)
+        if documents:
+            documents = MineDocumentBundle.parse_and_update_spatial_documents(documents)
+            for doc in documents:
+                mine_document_guid = doc.get('mine_document_guid')
+                if mine_document_guid:
+                    major_mine_application_doc = MajorMineApplicationDocumentXref.find_by_mine_document_guid(mine_document_guid)
+                    major_mine_application_doc.major_mine_application_document_type_code = doc.get(
+                        'major_mine_application_document_type_code')
+                else:
+                    mine_doc = MineDocument(
+                        mine_guid=project.mine_guid,
+                        document_name=doc.get('document_name'),
+                        document_manager_guid=doc.get('document_manager_guid'),
+                        mine_document_bundle_id=doc.get('mine_document_bundle_id'))
+                    major_mine_application_doc = MajorMineApplicationDocumentXref(
+                        mine_document_guid=mine_doc.mine_document_guid,
+                        major_mine_application_id=self.major_mine_application_id,
+                        major_mine_application_document_type_code=doc.get(
+                            'major_mine_application_document_type_code'))
+                    major_mine_application_doc.mine_document = mine_doc
+                    self.documents.append(major_mine_application_doc)
 
         if add_to_session:
             self.save(commit=False)
