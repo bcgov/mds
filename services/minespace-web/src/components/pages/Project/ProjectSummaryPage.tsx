@@ -183,14 +183,20 @@ export const ProjectSummaryPage = () => {
     history.push(url);
   };
 
-  const handleSaveData = async (formValues, newActiveTab?: string) => {
+  const handleSaveData = async (formValues, newActiveTab?: string, currentTab?: string) => {
     let message = newActiveTab
       ? "Successfully updated the project description."
       : "Successfully submitted a project description to the Province of British Columbia.";
     let status_code = projectSummary.status_code;
     let is_historic = projectSummary.is_historic;
 
-    if (status_code === "CHR" && formValues.confirmation_of_submission) {
+    if (
+      status_code === "CHR" &&
+      formValues.confirmation_of_submission &&
+      currentTab === "declaration"
+    ) {
+      // If a proponent re-submits the declaration, when changes are made to the project description,
+      // change it back to under review.
       status_code = "UNR";
     } else if ((!status_code || !isEditMode) && status_code !== "UNR") {
       status_code = "DFT";

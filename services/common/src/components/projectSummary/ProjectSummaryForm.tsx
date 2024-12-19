@@ -29,7 +29,7 @@ import { areAuthFieldsDisabled, areDocumentFieldsDisabled, areFieldsDisabled, is
 interface ProjectSummaryFormProps {
   initialValues: IProjectSummary;
   handleTabChange: (newTab: string) => void;
-  handleSaveData: (formValues, newActiveTab?) => Promise<void>;
+  handleSaveData: (formValues, newActiveTab?, currentTab?) => Promise<void>;
   activeTab: string;
   isEditMode?: boolean;
 }
