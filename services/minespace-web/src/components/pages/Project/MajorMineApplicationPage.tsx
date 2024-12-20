@@ -40,6 +40,13 @@ export const MajorMineApplicationPage: FC = () => {
   const defaultCurrent = routeState?.current ?? 0;
   const [current, setCurrent] = useState(defaultCurrent);
 
+  useEffect(() => {
+    if (defaultCurrent !== current) {
+      // Make sure the current step is updated if the rootState changes
+      setCurrent(defaultCurrent);
+    }
+  }, [defaultCurrent]);
+
   const [loaded, setLoaded] = useState(false);
   const [confirmedSubmission, setConfirmedSubmission] = useState(false);
   const majorMineApplicationGuid =
