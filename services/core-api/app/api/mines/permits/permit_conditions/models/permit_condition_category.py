@@ -25,7 +25,8 @@ class PermitConditionCategory(SoftDeleteMixin, AuditMixin, Base):
 
     assigned_review_user = db.relationship(
         'User',
-        back_populates='permit_condition_categories'
+        back_populates='permit_condition_categories',
+        lazy='selectin'
     )
 
     # For Mines Act Permits, condition categories can be unique to a mine.
