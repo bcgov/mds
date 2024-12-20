@@ -1,4 +1,5 @@
 from flask_restx import Resource, reqparse
+from werkzeug.exceptions import BadRequest, NotFound
 
 from app.api.mines.permits.permit_conditions.models import PermitConditionCategory
 from app.api.mines.response_models import PERMIT_CONDITION_CATEGORY_MODEL
@@ -40,9 +41,9 @@ class AssignUserToPermitConditionCategory(Resource):
         category = PermitConditionCategory.query.filter_by(condition_category_code=permit_condition_category_code).first()
 
         if not user:
-            return {'message': 'User not found'}, 404
+            raise NotFound('User not found')
         if not category:
-            return {'message': 'PermitConditionCategory not found'}, 404
+            raise NotFound('PermitConditionCategory not found')
 
         # Add the association
         if category.assigned_review_user is not user:
@@ -75,10 +76,10 @@ class AssignUserToPermitConditionCategory(Resource):
         user_sub = user_info.get('sub')
 
         if not (jwt.validate_roles([EDIT_STANDARD_PERMIT_CONDITIONS]) or user_sub == category.user_sub):
-            raise AssertionError('User does not have permission to unassign a reviewer')
+            raise BadRequest('User does not have permission to unassign a reviewer')
 
         if not category:
-            return {'message': 'PermitConditionCategory not found'}, 404
+            raise NotFound('PermitConditionCategory not found')
 
         # Remove the association
         if category.user_sub is not None:
