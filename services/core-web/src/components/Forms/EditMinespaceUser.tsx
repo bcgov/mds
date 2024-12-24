@@ -1,6 +1,6 @@
-import React from "react";
+import React, { FC } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
+import { Field, InjectedFormProps, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row } from "antd";
@@ -10,17 +10,26 @@ import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import { compose } from "redux";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
-const propTypes = {
-  mines: CustomPropTypes.options.isRequired,
+interface EditMinespaceUserProps{
+  mines: any;
   // eslint-disable-next-line react/no-unused-prop-types
-  handleSubmit: PropTypes.func.isRequired,
-  handleChange: PropTypes.func.isRequired,
-  handleSearch: PropTypes.func.isRequired,
+  handleSubmit: () => void;
+  handleChange: () => void;
+  handleSearch: (name: any) => void;
+  initialValueOptions: any;
+  minespaceUserEmailHash: any;
 };
 
-export const EditMinespaceUser = (props) => {
-  const { mines, handleSubmit, handleChange, handleSearch } = props;
+export const EditMinespaceUser: FC<EditMinespaceUserProps & InjectedFormProps> = ({
+  mines,
+  handleSubmit,
+  handleChange,
+  handleSearch
+}) => {
   const isModal = true; // currently no instance where it's not in a modal
   return (
     <Form layout="vertical" onSubmit={handleSubmit}>
@@ -65,11 +74,8 @@ export const EditMinespaceUser = (props) => {
   );
 };
 
-EditMinespaceUser.propTypes = propTypes;
-
 export default reduxForm({
   form: FORM.EDIT_MINESPACE_USER,
-  initialValues: { proponent_mine_access: [] },
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.EDIT_MINESPACE_USER),
 })(EditMinespaceUser);
