@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-import PropTypes from "prop-types";
 import { Field, InjectedFormProps, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
@@ -9,10 +8,6 @@ import { nullableStringSorter, resetForm } from "@common/utils/helpers";
 import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import CustomPropTypes from "@/customPropTypes";
-import { compose } from "redux";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
 
 interface EditMinespaceUserProps{
   mines: any;

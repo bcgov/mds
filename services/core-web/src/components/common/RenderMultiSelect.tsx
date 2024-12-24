@@ -1,11 +1,11 @@
 import React, { FC, useRef } from "react";
-import PropTypes from "prop-types";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Select } from "antd";
 import { caseInsensitiveLabelFilter } from "@common/utils/helpers";
-import CustomPropTypes from "@/customPropTypes";
-import { debounce, DebouncedFunc } from "lodash";
+import { debounce} from "lodash";
+import { WrappedFieldMetaProps } from "redux-form";
+import { IOption } from "@mds/common";
 
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
@@ -15,12 +15,8 @@ interface RenderMultiSelectProps {
   input: any,
   placeholder?: string,
   label?: string,
-  meta: {
-    touched: boolean,
-    error: string,
-    warning: string,
-  },
-  data: {value: string | number, label?: string, tooltip?: string}[],
+  meta: WrappedFieldMetaProps,
+  data: IOption[],
   filterOption: (input: any, option: any) => void | boolean,
   disabled: boolean,
   onSearch: (value: any) => void,

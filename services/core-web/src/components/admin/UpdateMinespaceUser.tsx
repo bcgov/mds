@@ -1,12 +1,10 @@
-import React, { Component, FC, useState } from "react";
+import React, { FC, useState } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { getMineNames } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchMineNameList } from "@mds/common/redux/actionCreators/mineActionCreator";
 
 import { getMinespaceUserMines } from "@mds/common/redux/reducers/minespaceReducer";
-import CustomPropTypes from "@/customPropTypes";
 import EditMinespaceUser from "@/components/Forms/EditMinespaceUser";
 
 interface UpdateMinespaceUserProps {
