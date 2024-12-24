@@ -1,67 +1,52 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Select, Form } from "antd";
+import React, { FC } from "react";
+import { Select } from "antd";
+import { BaseInputProps, WrappedInput } from "./BaseInput";
+import { IGroupedDropdownList } from "@mds/common/interfaces";
 
 /**
- * @constant RenderGroupedSelect - Ant Design `Select` component for redux-form - used for data sets that require grouping.
+ * @component RenderGroupedSelect - Ant Design `Select` component for redux-form - used for data sets that require grouping.
  * There is a bug when the data sets are large enough to cause the dropdown to scroll, and the field is in a modal.
  * In the case where the modal cannot scroll, it is better to pass in the prop doNotPinDropdown.  It allows the
  * dropdown to render properly
  */
 
-const propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  input: PropTypes.objectOf(PropTypes.any).isRequired,
-  placeholder: PropTypes.string,
-  label: PropTypes.string,
-  meta: PropTypes.any, //CustomPropTypes.formMeta,
-  data: PropTypes.any, //CustomPropTypes.groupOptions,
-  disabled: PropTypes.bool,
-  onSelect: PropTypes.func,
-  usedOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
-};
 
-const defaultProps = {
-  placeholder: "",
-  label: "",
-  data: [],
-  disabled: false,
-  meta: {},
-  onSelect: () => {},
-  usedOptions: [],
-};
+interface GroupedSelectProps extends BaseInputProps {
+  data: IGroupedDropdownList[];
+  allowClear?: boolean;
+  onSelect?: (value, option) => void;
+}
 
-const RenderGroupedSelect = (props) => (
-  <Form.Item
-    label={props.label}
-    validateStatus={
-      props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
-    }
-    help={
-      props.meta.touched &&
-      ((props.meta.error && <span>{props.meta.error}</span>) ||
-        (props.meta.warning && <span>{props.meta.warning}</span>))
-    }
-  >
+
+const RenderGroupedSelect: FC<GroupedSelectProps> = (props) => {
+  const {
+    placeholder = "",
+    id,
+    input,
+    data = [],
+    onSelect = () => { },
+    allowClear = true,
+    disabled = false,
+  } = props;
+  return <WrappedInput {...props}>
     <Select
       virtual={false}
-      disabled={props.disabled}
+      disabled={disabled}
       dropdownMatchSelectWidth
       showSearch
-      placeholder={props.placeholder}
+      placeholder={placeholder}
       optionFilterProp="children"
-      id={props.id}
-      defaultValue={props.input.value}
-      value={props.input.value ? props.input.value : undefined}
-      onChange={props.input.onChange}
-      onSelect={props.onSelect}
+      id={id}
+      value={input.value ? input.value : undefined}
+      onChange={input.onChange}
+      onSelect={onSelect}
+      allowClear={allowClear}
     >
-      {props.data.map((group) => (
+      {data.map((group) => (
         <Select.OptGroup label={group.groupName} key={group.groupName}>
           {group.opt.map((opt) => (
             <Select.Option
-              disabled={props.usedOptions && props.usedOptions.includes(opt.value)}
-              key={opt.value}
+              key={opt.value.toString()}
               value={opt.value}
             >
               {opt.label}
@@ -70,10 +55,7 @@ const RenderGroupedSelect = (props) => (
         </Select.OptGroup>
       ))}
     </Select>
-  </Form.Item>
-);
-
-RenderGroupedSelect.propTypes = propTypes;
-RenderGroupedSelect.defaultProps = defaultProps;
+  </WrappedInput>
+};
 
 export default RenderGroupedSelect;

@@ -3,12 +3,33 @@ import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import SubConditionForm from "./SubConditionForm";
+import { createDropDownList } from "@mds/common/redux/utils/helpers";
 
 const condition = MOCK.PERMITS[0].permit_amendments[0].conditions[0];
+const conditionCategories = MOCK.PERMITS[0].permit_amendments[0].condition_categories;
 const conditionCategory = {
-    ...MOCK.PERMITS[0].permit_amendments[0].condition_categories[0],
+    ...conditionCategories[0],
     conditions: [condition]
 }
+const standardCategories = MOCK.BULK_STATIC_CONTENT_RESPONSE.permitConditionCategoryOptions;
+const dropdownOptions = [
+    {
+        groupName: "Custom Categories",
+        opt: createDropDownList(
+            conditionCategories,
+            "description",
+            "condition_category_code"
+        )
+    },
+    {
+        groupName: "Standard Categories",
+        opt: createDropDownList(
+            standardCategories,
+            "description",
+            "condition_category_code"
+        )
+    }
+]
 const initialState = {}
 
 describe("SubConditionForm", () => {
@@ -32,6 +53,7 @@ describe("SubConditionForm", () => {
                 conditionCategory={conditionCategory}
                 handleCancel={jest.fn()}
                 onSubmit={jest.fn()}
+                categoryOptions={dropdownOptions}
             />
         </ReduxWrapper>);
 

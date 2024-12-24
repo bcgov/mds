@@ -1,5 +1,5 @@
 import { EMPTY_FIELD } from "@mds/common/constants";
-import { Typography } from "antd";
+import { Form, Typography } from "antd";
 import React, { FC, ReactNode } from "react";
 import { WrappedFieldProps, WrappedFieldMetaProps, WrappedFieldInputProps } from "redux-form";
 
@@ -76,6 +76,7 @@ export interface BaseInputProps extends WrappedFieldProps {
   showOptional?: boolean;
   showNA?: boolean;
   autoFocus?: boolean;
+  className?: string;
 }
 
 interface BaseViewInputProps {
@@ -131,3 +132,40 @@ export const getFormItemLabel = (
     </div>
   );
 };
+
+interface WrappedInputProps extends BaseInputProps {
+  children: ReactNode;
+  getValueProps?: () => any;
+}
+
+export const WrappedInput: FC<WrappedInputProps> = ({
+  id,
+  label = "",
+  labelSubtitle,
+  meta,
+  input,
+  required,
+  showOptional,
+  children,
+  getValueProps,
+  className
+}) => {
+  return (
+    <Form.Item
+      className={className}
+      name={input.name}
+      label={getFormItemLabel(label, required, labelSubtitle, showOptional)}
+      required={required}
+      validateStatus={
+        meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""
+      }
+      help={
+        (meta.touched) &&
+        ((meta.error && <span>{meta.error}</span>) ||
+          (meta.warning && <span>{meta.warning}</span>))
+      }
+      id={id}
+      getValueProps={getValueProps}
+    >{children}</Form.Item>
+  );
+}

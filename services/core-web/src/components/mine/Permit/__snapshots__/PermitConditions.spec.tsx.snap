@@ -934,11 +934,11 @@ exports[`PermitConditions renders properly 1`] = `
                                     class="condition-collapsed"
                                   >
                                     <form
-                                      class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1639 form-view"
-                                      id="EDIT_PERMIT_CONDITION_1639"
+                                      class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1639_HSC form-view"
+                                      id="EDIT_PERMIT_CONDITION_1639_HSC"
                                     >
                                       <div
-                                        class="ant-row ant-row-no-wrap condition-content editable"
+                                        class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                       >
                                         <div
                                           class="ant-col step-column"
@@ -1161,11 +1161,11 @@ exports[`PermitConditions renders properly 1`] = `
                                     class="condition-collapsed"
                                   >
                                     <form
-                                      class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1646 form-view"
-                                      id="EDIT_PERMIT_CONDITION_1646"
+                                      class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1646_RCC form-view"
+                                      id="EDIT_PERMIT_CONDITION_1646_RCC"
                                     >
                                       <div
-                                        class="ant-row ant-row-no-wrap condition-content editable"
+                                        class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                       >
                                         <div
                                           class="ant-col step-column"
@@ -1390,11 +1390,11 @@ exports[`PermitConditions renders properly 1`] = `
                                     class="condition-collapsed"
                                   >
                                     <form
-                                      class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1650 form-view"
-                                      id="EDIT_PERMIT_CONDITION_1650"
+                                      class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1650_ELC form-view"
+                                      id="EDIT_PERMIT_CONDITION_1650_ELC"
                                     >
                                       <div
-                                        class="ant-row ant-row-no-wrap condition-content editable"
+                                        class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                       >
                                         <div
                                           class="ant-col step-column"
@@ -1437,11 +1437,11 @@ exports[`PermitConditions renders properly 1`] = `
                                           class="condition-collapsed"
                                         >
                                           <form
-                                            class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1641 form-view"
-                                            id="EDIT_PERMIT_CONDITION_1641"
+                                            class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1641_ELC form-view"
+                                            id="EDIT_PERMIT_CONDITION_1641_ELC"
                                           >
                                             <div
-                                              class="ant-row ant-row-no-wrap condition-content editable"
+                                              class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                             >
                                               <div
                                                 class="ant-col step-column"
@@ -1484,11 +1484,11 @@ exports[`PermitConditions renders properly 1`] = `
                                                 class="condition-collapsed"
                                               >
                                                 <form
-                                                  class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1644 form-view"
-                                                  id="EDIT_PERMIT_CONDITION_1644"
+                                                  class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1644_ELC form-view"
+                                                  id="EDIT_PERMIT_CONDITION_1644_ELC"
                                                 >
                                                   <div
-                                                    class="ant-row ant-row-no-wrap condition-content editable"
+                                                    class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                                   >
                                                     <div
                                                       class="ant-col step-column"
@@ -1537,11 +1537,11 @@ exports[`PermitConditions renders properly 1`] = `
                                           class="condition-collapsed"
                                         >
                                           <form
-                                            class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12507 form-view"
-                                            id="EDIT_PERMIT_CONDITION_12507"
+                                            class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12507_ELC form-view"
+                                            id="EDIT_PERMIT_CONDITION_12507_ELC"
                                           >
                                             <div
-                                              class="ant-row ant-row-no-wrap condition-content editable"
+                                              class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                             >
                                               <div
                                                 class="ant-col step-column"
@@ -1584,11 +1584,11 @@ exports[`PermitConditions renders properly 1`] = `
                                                 class="condition-collapsed"
                                               >
                                                 <form
-                                                  class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12509 form-view"
-                                                  id="EDIT_PERMIT_CONDITION_12509"
+                                                  class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12509_ELC form-view"
+                                                  id="EDIT_PERMIT_CONDITION_12509_ELC"
                                                 >
                                                   <div
-                                                    class="ant-row ant-row-no-wrap condition-content editable"
+                                                    class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                                   >
                                                     <div
                                                       class="ant-col step-column"
@@ -1631,11 +1631,11 @@ exports[`PermitConditions renders properly 1`] = `
                                                       class="condition-collapsed"
                                                     >
                                                       <form
-                                                        class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12510 form-view"
-                                                        id="EDIT_PERMIT_CONDITION_12510"
+                                                        class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12510_ELC form-view"
+                                                        id="EDIT_PERMIT_CONDITION_12510_ELC"
                                                       >
                                                         <div
-                                                          class="ant-row ant-row-no-wrap condition-content editable"
+                                                          class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                                         >
                                                           <div
                                                             class="ant-col step-column"
@@ -1681,11 +1681,11 @@ exports[`PermitConditions renders properly 1`] = `
                                                       class="condition-collapsed"
                                                     >
                                                       <form
-                                                        class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12511 form-view"
-                                                        id="EDIT_PERMIT_CONDITION_12511"
+                                                        class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12511_ELC form-view"
+                                                        id="EDIT_PERMIT_CONDITION_12511_ELC"
                                                       >
                                                         <div
-                                                          class="ant-row ant-row-no-wrap condition-content editable"
+                                                          class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                                         >
                                                           <div
                                                             class="ant-col step-column"
@@ -1731,11 +1731,11 @@ exports[`PermitConditions renders properly 1`] = `
                                                       class="condition-collapsed"
                                                     >
                                                       <form
-                                                        class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12512 form-view"
-                                                        id="EDIT_PERMIT_CONDITION_12512"
+                                                        class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12512_ELC form-view"
+                                                        id="EDIT_PERMIT_CONDITION_12512_ELC"
                                                       >
                                                         <div
-                                                          class="ant-row ant-row-no-wrap condition-content editable"
+                                                          class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                                         >
                                                           <div
                                                             class="ant-col step-column"
@@ -1778,11 +1778,11 @@ exports[`PermitConditions renders properly 1`] = `
                                                             class="condition-collapsed"
                                                           >
                                                             <form
-                                                              class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12513 form-view"
-                                                              id="EDIT_PERMIT_CONDITION_12513"
+                                                              class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12513_ELC form-view"
+                                                              id="EDIT_PERMIT_CONDITION_12513_ELC"
                                                             >
                                                               <div
-                                                                class="ant-row ant-row-no-wrap condition-content editable"
+                                                                class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                                               >
                                                                 <div
                                                                   class="ant-col step-column"
@@ -1843,11 +1843,11 @@ exports[`PermitConditions renders properly 1`] = `
                                     class="condition-collapsed"
                                   >
                                     <form
-                                      class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12514 form-view"
-                                      id="EDIT_PERMIT_CONDITION_12514"
+                                      class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12514_ELC form-view"
+                                      id="EDIT_PERMIT_CONDITION_12514_ELC"
                                     >
                                       <div
-                                        class="ant-row ant-row-no-wrap condition-content editable"
+                                        class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                       >
                                         <div
                                           class="ant-col step-column"
@@ -1890,11 +1890,11 @@ exports[`PermitConditions renders properly 1`] = `
                                           class="condition-collapsed"
                                         >
                                           <form
-                                            class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12515 form-view"
-                                            id="EDIT_PERMIT_CONDITION_12515"
+                                            class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_12515_ELC form-view"
+                                            id="EDIT_PERMIT_CONDITION_12515_ELC"
                                           >
                                             <div
-                                              class="ant-row ant-row-no-wrap condition-content editable"
+                                              class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                             >
                                               <div
                                                 class="ant-col step-column"

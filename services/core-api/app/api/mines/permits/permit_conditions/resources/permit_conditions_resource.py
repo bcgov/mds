@@ -73,6 +73,7 @@ class PermitConditionsResource(Resource, UserMixin):
     @api.marshal_with(PERMIT_CONDITION_MODEL, code=200)
     def put(self, mine_guid, permit_guid, permit_amendment_guid, permit_condition_guid):
 
+        request_data = request.json
         permit_amendment = get_permit_amendment(permit_amendment_guid)
 
         if permit_amendment.is_generated_in_core and permit_amendment.permit_amendment_status_code != "DFT":
@@ -80,10 +81,18 @@ class PermitConditionsResource(Resource, UserMixin):
 
         old_condition = PermitConditions.find_by_permit_condition_guid(permit_condition_guid)
         old_display_order = old_condition.display_order
+        old_category_code = old_condition.condition_category_code
+        new_category_code = request_data.get("condition_category_code", None)
+        changed_category = old_category_code != new_category_code
+
+        if changed_category:
+            sub_conditions = old_condition.sub_conditions
+            for sub_c in sub_conditions:
+                sub_c.condition_category_code = new_category_code
 
         try:
             condition = PermitConditions._schema().load(
-                request.json,
+                request_data,
                 instance=PermitConditions.find_by_permit_condition_guid(permit_condition_guid))
         except MarshmallowError as e:
             raise BadRequest(e)
@@ -96,6 +105,8 @@ class PermitConditionsResource(Resource, UserMixin):
                     condition.permit_amendment_id)
                 if x.condition_category_code == condition.condition_category_code
             ]
+        if changed_category:
+            condition.display_order = len(conditions) + 1
 
         if condition.display_order > old_display_order:
             conditions = sorted(

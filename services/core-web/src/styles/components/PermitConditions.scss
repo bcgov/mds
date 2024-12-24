@@ -77,3 +77,9 @@ div.condition-layer {
   justify-content: space-between;
   align-items: center;
 }
+
+.horizontal-form-item {
+  .ant-select {
+    max-width: 350px;
+  }
+}
