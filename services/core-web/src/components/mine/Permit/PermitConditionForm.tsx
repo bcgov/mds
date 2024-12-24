@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { change, Field, getFormValues, reset } from "redux-form";
+import { change, Field, reset } from "redux-form";
 import { Row, Col, Button } from "antd";
 import {
     faArrowDown,
@@ -63,7 +63,6 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     // the form fails to re-initialize when the category is changed, so concatenating it forces it to make a new one
     const formName = `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`;
-    const formValues = useSelector(getFormValues(formName)) as IPermitCondition;
 
     const startEdit = () => {
         onEdit();
