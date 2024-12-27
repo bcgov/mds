@@ -38,6 +38,7 @@ export const UpdateMinespaceUser: FC<UpdateMinespaceUserProps> = ({
   };
 
   const handleChange = () => {
+    setSearching(false)
     fetchMineNameList();
   };
 

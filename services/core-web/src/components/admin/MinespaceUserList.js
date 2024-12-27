@@ -18,7 +18,7 @@ const propTypes = {
 const defaultProps = {
   minespaceUsers: [],
   minespaceUserMines: [],
-  handleDelete: () => {},
+  handleDelete: () => { },
 };
 
 const columns = [
@@ -75,7 +75,7 @@ const lookupMineName = (mine_guids, mines) =>
       mine_guid,
       mine_name: mine_record ? `${mine_record.mine_name}-${mine_record.mine_no}` : "",
     };
-  });
+  }).sort((a, b) => a.mine_name.localeCompare(b.mine_name));
 
 const transformRowData = (minespaceUsers, mines, deleteFunc, handleOpenModal) =>
   minespaceUsers.map((user) => ({
