@@ -6,14 +6,15 @@ import { fetchMineNameList } from "@mds/common/redux/actionCreators/mineActionCr
 
 import { getMinespaceUserMines } from "@mds/common/redux/reducers/minespaceReducer";
 import EditMinespaceUser from "@/components/Forms/EditMinespaceUser";
+import { IMine, IMineSearch } from "@mds/common/interfaces";
 
 interface UpdateMinespaceUserProps {
   fetchMineNameList?: ActionCreator<typeof fetchMineNameList>,
-  mines: any[],
+  mines: IMineSearch[],
   minespaceUserEmailHash?: any,
   handleSubmit?: () => void,
   initialValues?: any,
-  minespaceUserMines?: any
+  minespaceUserMines?: IMine[]
 };
 
 export const UpdateMinespaceUser: FC<UpdateMinespaceUserProps> = ({
@@ -69,7 +70,6 @@ export const UpdateMinespaceUser: FC<UpdateMinespaceUserProps> = ({
       ...initialValues,
       mine_guids: initialValues.mineNames.map((mn) => mn.mine_guid),
     },
-    minespaceUserEmailHash: minespaceUserEmailHash,
     onSubmit: handleSubmit,
     handleChange: handleChange,
     handleSearch: handleSearch,

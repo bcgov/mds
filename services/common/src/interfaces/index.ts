@@ -44,3 +44,4 @@ export * from "./emli_contact.interface";
 export * from "./mineStatus.interface";
 export * from "./mineCommodityOption.interface";
 export * from "./mineDisturbanceOption.interface";
+export * from "./mineSearch.interface"

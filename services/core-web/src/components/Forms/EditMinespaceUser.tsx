@@ -8,15 +8,14 @@ import { nullableStringSorter, resetForm } from "@common/utils/helpers";
 import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
+import { IMine } from "@mds/common";
 
 interface EditMinespaceUserProps{
-  mines: any;
+  mines: IMine[];
   // eslint-disable-next-line react/no-unused-prop-types
   handleSubmit: () => void;
   handleChange: () => void;
   handleSearch: (name: any) => void;
-  initialValueOptions: any;
-  minespaceUserEmailHash: any;
 };
 
 export const EditMinespaceUser: FC<EditMinespaceUserProps & InjectedFormProps> = ({
