@@ -75,8 +75,12 @@ export const createDropDownList = (
 };
 
 // Function to create a hash given an array of values and labels
-export const createLabelHash = (arr) =>
-  arr.reduce((map, { value, label }) => ({ [value]: label, ...map }), {});
+export const createLabelHash = (arr) => {
+  return arr.reduce((map, { value, label }) => {
+    map[value] = label;
+    return map;
+  }, {});
+};
 
 export const formatTractionDate = (dateString: string) => {
   const year = dateString.slice(0, 4);
