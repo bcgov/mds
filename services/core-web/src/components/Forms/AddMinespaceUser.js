@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row } from "antd";
+import { Button, Form, Col, Row } from "antd";
 import { required, requiredList } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import RenderField from "@/components/common/RenderField";
@@ -26,7 +24,7 @@ const minespaceUserNotExists = (value, allValues, props) =>
     : "A user with this email already exists";
 
 export const AddMinespaceUser = (props) => (
-  <Form layout="vertical" onSubmit={props.handleSubmit}>
+  <Form layout="vertical" onFinish={props.handleSubmit}>
     <Col span={24}>
       <Row>
         <Col span={24}>

@@ -1,8 +1,6 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
-import { Popconfirm, Button } from "antd";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Popconfirm, Button, Form } from "antd";
 import PropTypes from "prop-types";
 import { required } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
@@ -23,7 +21,7 @@ const propTypes = {
 const UpdateNOWStatusForm = (props) => {
   return (
     <div>
-      <Form layout="vertical" onSubmit={props.handleSubmit}>
+      <Form layout="vertical" onFinish={props.handleSubmit}>
         <Form.Item>
           <Field
             id="now_application_status_code"

@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import { Field, reduxForm, getFormValues } from "redux-form";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Button, Col, Form, Row, Popconfirm } from "antd";
 import { required, dateNotInFuture } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import { resetForm, createDropDownList, formatDate } from "@common/utils/helpers";
@@ -39,19 +37,19 @@ export const AdministrativeAmendmentForm = (props) => {
 
   const amendmentDropdown = props.formValues.permit_id
     ? createDropDownList(
-        permitAmendments.permit_amendments.filter(
-          ({ permit_amendment_status_code }) => permit_amendment_status_code !== "DFT"
-        ),
-        "issue_date",
-        "permit_amendment_guid",
-        false,
-        null,
-        formatDate
-      )
+      permitAmendments.permit_amendments.filter(
+        ({ permit_amendment_status_code }) => permit_amendment_status_code !== "DFT"
+      ),
+      "issue_date",
+      "permit_amendment_guid",
+      false,
+      null,
+      formatDate
+    )
     : [];
 
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <Form layout="vertical" onFinish={props.handleSubmit}>
       <Row>
         <Col span={24}>
           <Form.Item>

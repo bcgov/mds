@@ -1,11 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ChangeNOWMineForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
+<ForwardRef(InternalForm)
   layout="vertical"
-  onSubmit={[MockFunction]}
+  onFinish={[MockFunction]}
 >
   <Row
     gutter={16}
@@ -13,9 +11,7 @@ exports[`ChangeNOWMineForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={
             Object {
@@ -34,7 +30,7 @@ exports[`ChangeNOWMineForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <div
@@ -66,5 +62,5 @@ exports[`ChangeNOWMineForm renders properly 1`] = `
       mockTitle
     </Button>
   </div>
-</Form>
+</ForwardRef(InternalForm)>
 `;

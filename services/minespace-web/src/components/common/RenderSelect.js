@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Select } from "antd";
+import { Form, Select } from "antd";
 import LoadingOutlined from "@ant-design/icons/LoadingOutlined";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -30,7 +28,7 @@ const defaultProps = {
   data: [],
   disabled: false,
   meta: {},
-  onSelect: () => { },
+  onSelect: () => {},
   usedOptions: [],
   loading: false,
 };

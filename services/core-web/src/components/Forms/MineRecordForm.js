@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, reduxForm, FieldArray, formValueSelector } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, Collapse, notification, Tag, Radio } from "antd";
+import { Button, Col, Form, Row, Popconfirm, Collapse, notification, Tag, Radio } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { difference, map, isEmpty, uniq } from "lodash";
 import {
@@ -302,11 +300,11 @@ export class MineRecordForm extends Component {
                     // if data doesn't exist, the multi-select is disabled
                     data={
                       this.props.mine_types[index] &&
-                      this.props.mine_types[index].mine_tenure_type_code &&
-                      this.props.mine_types[index].mine_tenure_type_code.length >= 1
+                        this.props.mine_types[index].mine_tenure_type_code &&
+                        this.props.mine_types[index].mine_tenure_type_code.length >= 1
                         ? this.props.conditionalCommodityOptions[
-                            this.props.mine_types[index].mine_tenure_type_code
-                          ]
+                        this.props.mine_types[index].mine_tenure_type_code
+                        ]
                         : null
                     }
                   />
@@ -322,11 +320,11 @@ export class MineRecordForm extends Component {
                     component={renderConfig.MULTI_SELECT}
                     data={
                       this.props.mine_types[index] &&
-                      this.props.mine_types[index].mine_tenure_type_code &&
-                      this.props.mine_types[index].mine_tenure_type_code.length >= 1
+                        this.props.mine_types[index].mine_tenure_type_code &&
+                        this.props.mine_types[index].mine_tenure_type_code.length >= 1
                         ? this.props.conditionalDisturbanceOptions[
-                            this.props.mine_types[index].mine_tenure_type_code
-                          ]
+                        this.props.mine_types[index].mine_tenure_type_code
+                        ]
                         : null
                     }
                   />
@@ -345,7 +343,7 @@ export class MineRecordForm extends Component {
     );
 
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <Form layout="vertical" onFinish={this.props.handleSubmit}>
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item>

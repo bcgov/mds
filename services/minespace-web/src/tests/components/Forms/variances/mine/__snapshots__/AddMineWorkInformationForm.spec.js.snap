@@ -1,11 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddMineWorkInformationForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
+<ForwardRef(InternalForm)
   layout="vertical"
-  onSubmit={[MockFunction]}
+  onFinish={[MockFunction]}
 >
   <Row
     gutter={16}
@@ -52,9 +50,7 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
             </React.Fragment>
           }
         >
-          <FormItem
-            hasFeedback={false}
-          >
+          <InternalFormItem>
             <Field
               component={[Function]}
               disabled={false}
@@ -69,7 +65,7 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
                 ]
               }
             />
-          </FormItem>
+          </InternalFormItem>
         </DescriptionsItem>
         <DescriptionsItem
           label={
@@ -106,9 +102,7 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
             </React.Fragment>
           }
         >
-          <FormItem
-            hasFeedback={false}
-          >
+          <InternalFormItem>
             <Field
               component={[Function]}
               disabled={false}
@@ -123,7 +117,7 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
                 ]
               }
             />
-          </FormItem>
+          </InternalFormItem>
         </DescriptionsItem>
         <DescriptionsItem
           label="Work Status"
@@ -142,9 +136,7 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           disabled={false}
@@ -154,7 +146,7 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
           name="work_comments"
           placeholder="Enter Comments"
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <div
@@ -185,5 +177,5 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
       testing title
     </Button>
   </div>
-</Form>
+</ForwardRef(InternalForm)>
 `;

@@ -3,8 +3,7 @@ import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 import { reduxForm, formValueSelector, reset, change } from "redux-form";
-import { Button, Divider, Popconfirm } from "antd";
-import { Form } from "@ant-design/compatible";
+import { Button, Divider, Form, Popconfirm } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 
 import { clearAllSearchResults } from "@mds/common/redux/actionCreators/searchActionCreator";
@@ -61,7 +60,7 @@ export const VerifyApplicationInformationForm = (props) => {
   const disabled = props.contactFormValues.length > formValuesWithParty || !props.mine_guid;
   const noMine = props.mine_guid ? "" : "A mine must be associated to this application";
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <Form layout="vertical" onFinish={props.handleSubmit}>
       <h4>Verify Mine</h4>
       <p>
         Review the information below to confirm that this Notice of Work belongs with this mine

@@ -1,11 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`VerifyApplicationInformationForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
+<ForwardRef(InternalForm)
   layout="vertical"
-  onSubmit={[MockFunction]}
+  onFinish={[MockFunction]}
 >
   <h4>
     Verify Mine
@@ -472,5 +470,5 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
       A mine must be associated to this application
     </p>
   </div>
-</Form>
+</ForwardRef(InternalForm)>
 `;

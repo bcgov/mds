@@ -1,8 +1,7 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
-import { Button, Popconfirm, Row, Col } from "antd";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Button, Popconfirm, Form, Row, Col } from "antd";
+
 import PropTypes from "prop-types";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import Highlight from "react-highlighter";
@@ -24,7 +23,7 @@ const propTypes = {
 const NOWDelayForm = (props) => {
   return (
     <div>
-      <Form layout="vertical" onSubmit={props.handleSubmit}>
+      <Form layout="vertical" onFinish={props.handleSubmit}>
         {props.stage === "Start" ? (
           <>
             <p>

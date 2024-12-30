@@ -3,7 +3,6 @@ import { useParams, withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { useDispatch, useSelector } from "react-redux";
 import { change, formValueSelector, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
-import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Form, Row } from "antd";
 import { IMineIncident } from "@mds/common";
 import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";

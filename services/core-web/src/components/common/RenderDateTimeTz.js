@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Form, DatePicker, Select } from "antd";
 import { useSelector, connect } from "react-redux";
 import { Field, getFormValues, change } from "redux-form";
-import "@ant-design/compatible/assets/index.css";
+
 import moment from "moment-timezone";
 import { compose, bindActionCreators } from "redux";
 import {

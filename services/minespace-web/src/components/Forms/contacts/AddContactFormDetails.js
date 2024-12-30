@@ -8,8 +8,7 @@ import { getParties } from "@mds/common/redux/selectors/partiesSelectors";
 import { compose, bindActionCreators } from "redux";
 import { Field, reduxForm, initialize, isDirty, reset, getFormValues, change } from "redux-form";
 import { connect } from "react-redux";
-import { Col, Row, Typography, Popconfirm, Button, Divider } from "antd";
-import { Form } from "@ant-design/compatible";
+import { Col, Row, Typography, Popconfirm, Button, Divider, Form } from "antd";
 import { debounce } from "lodash";
 import { getPartyRelationshipTypesList } from "@mds/common/redux/selectors/staticContentSelectors";
 
@@ -121,7 +120,7 @@ export const AddContactFormDetails = (props) => {
   };
 
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit(onSubmit)}>
+    <Form layout="vertical" onFinish={props.handleSubmit(onSubmit)}>
       <Row gutter={16}>
         <Col span={24}>
           <Typography.Paragraph>

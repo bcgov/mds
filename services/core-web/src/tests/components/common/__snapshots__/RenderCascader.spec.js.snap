@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RenderCascader renders properly 1`] = `
-<FormItem
-  hasFeedback={false}
+<InternalFormItem
   label=""
 >
   <Cascader
@@ -11,5 +10,5 @@ exports[`RenderCascader renders properly 1`] = `
     expandTrigger="hover"
     onChange={[Function]}
   />
-</FormItem>
+</InternalFormItem>
 `;

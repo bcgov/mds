@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, change } from "redux-form";
 import { remove } from "lodash";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Popconfirm, Typography } from "antd";
+import { Button, Form, Popconfirm, Typography } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
@@ -58,7 +56,7 @@ export class EditVarianceForm extends Component {
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={(event) => this.handleSubmit(event)}>
+      <Form layout="vertical" onFinish={(event) => this.handleSubmit(event)}>
         <VarianceDetails
           mineName={this.props.mineName}
           variance={this.props.variance}

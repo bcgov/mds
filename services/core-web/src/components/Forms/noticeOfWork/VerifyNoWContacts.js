@@ -10,7 +10,6 @@ import { FieldArray, Field, change } from "redux-form";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 
 import * as FORM from "@/constants/forms";
-import "@ant-design/compatible/assets/index.css";
 import { getPartyRelationshipTypesList } from "@mds/common/redux/selectors/staticContentSelectors";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
@@ -142,11 +141,10 @@ const renderContacts = ({
                           height: "55px",
                         }}
                       >
-                        <span className="field-title">{`Application ${
-                          contactExists
-                            ? fields.get(index).mine_party_appt_type_code_description
-                            : "Contact"
-                        }`}</span>
+                        <span className="field-title">{`Application ${contactExists
+                          ? fields.get(index).mine_party_appt_type_code_description
+                          : "Contact"
+                          }`}</span>
                         {!confirmedContacts?.includes(fields.get(index).id) ? (
                           <Button
                             ghost
@@ -193,7 +191,7 @@ const renderContacts = ({
                                 <MailOutlined className="icon-sm" />
                               </div>
                               {contactInformation.party.email &&
-                              contactInformation.party.email !== "Unknown" ? (
+                                contactInformation.party.email !== "Unknown" ? (
                                 <a href={`mailto:${contactInformation.party.email}`}>
                                   {contactInformation.party.email}
                                 </a>

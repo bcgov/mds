@@ -1,11 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PermitAmendmentSecurityForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
+<ForwardRef(InternalForm)
   layout="vertical"
-  onSubmit={[MockFunction]}
+  onFinish={[MockFunction]}
 >
   <Row
     gutter={16}
@@ -152,5 +150,5 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
       Save
     </Button>
   </div>
-</Form>
+</ForwardRef(InternalForm)>
 `;

@@ -4,9 +4,7 @@ import { Field, reduxForm, getFormValues } from "redux-form";
 import { fromPairs, isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Popconfirm, Row, Col } from "antd";
+import { Button, Popconfirm, Form, Row, Col } from "antd";
 import { required, validateSelectOptions } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as String from "@mds/common/constants/strings";
@@ -74,7 +72,7 @@ export class EditVarianceForm extends Component {
     return (
       <Form
         layout="vertical"
-        onSubmit={this.props.handleSubmit(
+        onFinish={this.props.handleSubmit(
           this.props.onSubmit(
             fromPairs(this.state.uploadedFiles),
             this.props.variance,

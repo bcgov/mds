@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Popconfirm } from "antd";
+import { Button, Form, Popconfirm } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
@@ -29,7 +27,7 @@ export class EditReportForm extends Component {
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <Form layout="vertical" onFinish={this.props.handleSubmit}>
         <ReportSubmissions
           mineGuid={this.props.mineGuid}
           mineReportSubmissions={this.state.mineReportSubmissions}

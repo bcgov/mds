@@ -2,11 +2,9 @@
 
 exports[`EMLIContactForm renders properly 1`] = `
 <div>
-  <Form
-    colon={true}
-    hideRequiredMark={false}
+  <ForwardRef(InternalForm)
     layout="vertical"
-    onSubmit={[MockFunction]}
+    onFinish={[MockFunction]}
   >
     <Row
       gutter={16}
@@ -14,9 +12,7 @@ exports[`EMLIContactForm renders properly 1`] = `
       <Col
         span={12}
       >
-        <FormItem
-          hasFeedback={false}
-        >
+        <InternalFormItem>
           <Field
             component={[Function]}
             disabled={true}
@@ -30,7 +26,7 @@ exports[`EMLIContactForm renders properly 1`] = `
               ]
             }
           />
-        </FormItem>
+        </InternalFormItem>
       </Col>
     </Row>
     <Row
@@ -40,9 +36,7 @@ exports[`EMLIContactForm renders properly 1`] = `
         md={12}
         xs={24}
       >
-        <FormItem
-          hasFeedback={false}
-        >
+        <InternalFormItem>
           <Field
             component={[Function]}
             data={Array []}
@@ -58,15 +52,13 @@ exports[`EMLIContactForm renders properly 1`] = `
               ]
             }
           />
-        </FormItem>
+        </InternalFormItem>
       </Col>
       <Col
         md={12}
         xs={24}
       >
-        <FormItem
-          hasFeedback={false}
-        >
+        <InternalFormItem>
           <Field
             component={[Function]}
             data={Array []}
@@ -81,7 +73,7 @@ exports[`EMLIContactForm renders properly 1`] = `
               ]
             }
           />
-        </FormItem>
+        </InternalFormItem>
       </Col>
     </Row>
     <Row
@@ -91,9 +83,7 @@ exports[`EMLIContactForm renders properly 1`] = `
         md={12}
         xs={24}
       >
-        <FormItem
-          hasFeedback={false}
-        >
+        <InternalFormItem>
           <Field
             component={[Function]}
             disabled={true}
@@ -106,15 +96,13 @@ exports[`EMLIContactForm renders properly 1`] = `
               ]
             }
           />
-        </FormItem>
+        </InternalFormItem>
       </Col>
       <Col
         md={12}
         xs={24}
       >
-        <FormItem
-          hasFeedback={false}
-        >
+        <InternalFormItem>
           <Field
             component={[Function]}
             disabled={true}
@@ -127,7 +115,7 @@ exports[`EMLIContactForm renders properly 1`] = `
               ]
             }
           />
-        </FormItem>
+        </InternalFormItem>
       </Col>
     </Row>
     <Row
@@ -136,9 +124,7 @@ exports[`EMLIContactForm renders properly 1`] = `
       <Col
         span={24}
       >
-        <FormItem
-          hasFeedback={false}
-        >
+        <InternalFormItem>
           <Field
             component={[Function]}
             disabled={true}
@@ -152,7 +138,7 @@ exports[`EMLIContactForm renders properly 1`] = `
               ]
             }
           />
-        </FormItem>
+        </InternalFormItem>
       </Col>
     </Row>
     <Row
@@ -161,9 +147,7 @@ exports[`EMLIContactForm renders properly 1`] = `
       <Col
         span={24}
       >
-        <FormItem
-          hasFeedback={false}
-        >
+        <InternalFormItem>
           <Field
             component={[Function]}
             disabled={true}
@@ -180,7 +164,7 @@ exports[`EMLIContactForm renders properly 1`] = `
               ]
             }
           />
-        </FormItem>
+        </InternalFormItem>
       </Col>
     </Row>
     <div
@@ -211,6 +195,6 @@ exports[`EMLIContactForm renders properly 1`] = `
         Update EMLI Contact
       </Button>
     </div>
-  </Form>
+  </ForwardRef(InternalForm)>
 </div>
 `;

@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import { compose } from "redux";
 import { Field, reduxForm, getFormValues } from "redux-form";
 import { connect } from "react-redux";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, Typography } from "antd";
+import { Button, Col, Form, Row, Popconfirm, Typography } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import { required } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
@@ -74,7 +72,7 @@ const UploadIncidentDocumentForm = (props) => {
 
   return (
     <div>
-      <Form layout="vertical" onSubmit={handleSubmit(handleUploadDocumentsSubmit)}>
+      <Form layout="vertical" onFinish={handleSubmit(handleUploadDocumentsSubmit)}>
         <Row>
           <Col span={24}>
             <Form.Item label={<b>{props.subTitle}</b>}>

@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { FieldArray, Field } from "redux-form";
-import { Form } from "@ant-design/compatible";
 import { required, maxLength, number, lat, lon, lonNegative, positiveNumber } from "@common/utils/Validate";
 
-import "@ant-design/compatible/assets/index.css";
-import { Collapse, Button, Popconfirm, Col, Row, Divider } from "antd";
+import { Collapse, Button, Form, Popconfirm, Col, Row, Divider } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { TRASHCAN } from "@/constants/assets";
 import { renderConfig } from "@/components/common/config";

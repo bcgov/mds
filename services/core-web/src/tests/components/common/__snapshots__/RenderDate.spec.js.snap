@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RenderDate renders properly 1`] = `
-<FormItem
-  hasFeedback={false}
+<InternalFormItem
   help={false}
   label=""
   validateStatus=""
@@ -16,5 +15,5 @@ exports[`RenderDate renders properly 1`] = `
     showTime={false}
     value={null}
   />
-</FormItem>
+</InternalFormItem>
 `;

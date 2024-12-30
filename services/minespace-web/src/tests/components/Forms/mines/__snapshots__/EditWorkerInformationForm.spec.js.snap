@@ -4,11 +4,9 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
 <div
   className="work-information-container "
 >
-  <Form
-    colon={true}
-    hideRequiredMark={false}
+  <ForwardRef(InternalForm)
     layout="vertical"
-    onSubmit={[MockFunction]}
+    onFinish={[MockFunction]}
   >
     <ForwardRef
       level={4}
@@ -38,9 +36,7 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
           <DescriptionsItem
             label="Number of Mine Employees"
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 autoComplete="off"
                 component={[Function]}
@@ -56,14 +52,12 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </DescriptionsItem>
           <DescriptionsItem
             label="Number of Contractors"
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 autoComplete="off"
                 component={[Function]}
@@ -79,7 +73,7 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </DescriptionsItem>
         </Descriptions>
       </Col>
@@ -113,6 +107,6 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
         Update Mine Worker Information
       </Button>
     </div>
-  </Form>
+  </ForwardRef(InternalForm)>
 </div>
 `;

@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 import { Field, reduxForm, getFormValues } from "redux-form";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Form } from "@ant-design/compatible";
-import { Button, Col, Row, Popconfirm, Typography } from "antd";
+import { Button, Col, Form, Row, Popconfirm, Typography } from "antd";
 import {
   required,
   dateNotBeforeOther,
@@ -42,22 +41,22 @@ export const AddMineAlertForm = (props) => {
   const startDateValidation = () => {
     return formValues?.mine_alert_guid
       ? [
-          required,
-          dateNotAfterOther(props.formValues.stop_date),
-          alertStartDateNotBeforeHistoric(mineAlerts),
-        ]
+        required,
+        dateNotAfterOther(props.formValues.stop_date),
+        alertStartDateNotBeforeHistoric(mineAlerts),
+      ]
       : [
-          required,
-          dateNotAfterOther(props.formValues.stop_date),
-          alertStartDateNotBeforeHistoric(mineAlerts),
-          dateNotBeforeOther(activeMineAlert.start_date),
-          alertNotInFutureIfCurrentActive(activeMineAlert),
-        ];
+        required,
+        dateNotAfterOther(props.formValues.stop_date),
+        alertStartDateNotBeforeHistoric(mineAlerts),
+        dateNotBeforeOther(activeMineAlert.start_date),
+        alertNotInFutureIfCurrentActive(activeMineAlert),
+      ];
   };
 
   return (
     <div>
-      <Form layout="vertical" onSubmit={props.handleSubmit}>
+      <Form layout="vertical" onFinish={props.handleSubmit}>
         <Typography.Paragraph>
           <Typography.Text>{text}</Typography.Text>
         </Typography.Paragraph>

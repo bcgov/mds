@@ -1,15 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SearchCoordinatesForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
+<ForwardRef(InternalForm)
   layout="vertical"
-  onSubmit={[MockFunction]}
+  onFinish={[MockFunction]}
 >
-  <FormItem
-    hasFeedback={false}
-  >
+  <InternalFormItem>
     <Field
       component={[Function]}
       id="latitude"
@@ -24,10 +20,8 @@ exports[`SearchCoordinatesForm renders properly 1`] = `
         ]
       }
     />
-  </FormItem>
-  <FormItem
-    hasFeedback={false}
-  >
+  </InternalFormItem>
+  <InternalFormItem>
     <Field
       component={[Function]}
       id="longitude"
@@ -42,7 +36,7 @@ exports[`SearchCoordinatesForm renders properly 1`] = `
         ]
       }
     />
-  </FormItem>
+  </InternalFormItem>
   <div
     className="right center-mobile"
   >
@@ -54,5 +48,5 @@ exports[`SearchCoordinatesForm renders properly 1`] = `
       <ForwardRef(SearchOutlined) />
     </Button>
   </div>
-</Form>
+</ForwardRef(InternalForm)>
 `;

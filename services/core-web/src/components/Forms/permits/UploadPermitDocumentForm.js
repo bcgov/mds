@@ -1,35 +1,14 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { compose, bindActionCreators } from "redux";
 import { remove } from "lodash";
 
 import PropTypes from "prop-types";
-import { Field, reduxForm, change, formValueSelector, FormSection } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, Divider } from "antd";
-import {
-  required,
-  dateNotInFuture,
-  maxLength,
-  validateSelectOptions,
-  requiredList,
-  number,
-} from "@common/utils/Validate";
-import { resetForm, determineExemptionFeeStatus, currencyMask } from "@common/utils/helpers";
-import {
-  getDropdownPermitStatusOptions,
-  getConditionalDisturbanceOptionsHash,
-  getConditionalCommodityOptions,
-  getMineTenureTypeDropdownOptions,
-  getExemptionFeeStatusDropDownOptions,
-} from "@mds/common/redux/selectors/staticContentSelectors";
-import { renderConfig } from "@/components/common/config";
-import PartySelectField from "@/components/common/PartySelectField";
+import { Field, reduxForm } from "redux-form";
+import { Button, Col, Form, Row, Popconfirm, Divider } from "antd";
+import { resetForm } from "@common/utils/helpers";
+
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentFileUpload";
-import { securityNotRequiredReasonOptions } from "@/constants/NOWConditions";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -59,7 +38,7 @@ export class UploadPermitDocumentFrom extends Component {
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <Form layout="vertical" onFinish={this.props.handleSubmit}>
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item label="Upload Files">

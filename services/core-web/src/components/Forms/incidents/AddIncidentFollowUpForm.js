@@ -6,9 +6,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, FieldArray } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Col, Row } from "antd";
+import { Col, Form, Row } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { required, dateNotInFuture, validateSelectOptions } from "@common/utils/Validate";
 import { MINE_INCIDENT_DOCUMENTS } from "@mds/common/constants/API";
@@ -57,7 +55,7 @@ export class AddIncidentFollowUpForm extends Component {
 
   uncommonBehaviourWarning = () =>
     this.props.determinationTypeCode === Strings.INCIDENT_DETERMINATION_TYPES.pending &&
-    this.props.hasFollowUp
+      this.props.hasFollowUp
       ? "Warning: It's uncommon for an inspection to occur if a determination has not been made"
       : undefined;
 

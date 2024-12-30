@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import { reduxForm, Field, getFormValues } from "redux-form";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, Alert } from "antd";
+import { Button, Col, Form, Row, Popconfirm, Alert } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { getGenerateDocumentFormField } from "@/components/common/GenerateDocumentFormField";
@@ -61,7 +59,7 @@ export const GenerateDocumentForm = (props) => {
   const [fileType, setFileType] = useState("PDF");
 
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <Form layout="vertical" onFinish={props.handleSubmit}>
       {props.allowDocx && (
         <div>
           <Row key="fileType">

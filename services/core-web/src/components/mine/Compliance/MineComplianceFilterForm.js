@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Form, Row } from "antd";
 import { compareCodes } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -24,7 +22,7 @@ export class MineComplianceFilterForm extends Component {
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
+      <Form layout="vertical" onFinish={this.props.handleSubmit} onReset={this.handleReset}>
         <div>
           <Row gutter={6}>
             <Col md={8} xs={24} sm={12}>

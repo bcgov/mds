@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Button, Col, Form, Row, Popconfirm } from "antd";
 import { required, number, currency } from "@common/utils/Validate";
 import { currencyMask } from "@common/utils/helpers";
 import { RECLAMATION_INVOICE_DOCUMENTS } from "@mds/common/constants/API";
@@ -71,8 +69,8 @@ export class ReclamationInvoiceForm extends Component {
   render() {
     const documentTableRecords = (this.props.invoice.documents
       ? this.props.invoice.documents.filter(
-          (doc) => !this.state.filesToDelete.includes(doc.mine_document_guid)
-        )
+        (doc) => !this.state.filesToDelete.includes(doc.mine_document_guid)
+      )
       : []
     ).reduce(
       (docs, doc) => [
@@ -98,7 +96,7 @@ export class ReclamationInvoiceForm extends Component {
     return (
       <Form
         layout="vertical"
-        onSubmit={this.props.handleSubmit((values) => {
+        onFinish={this.props.handleSubmit((values) => {
           // TODO: move document deletion to BE call in onRemoveExistingFile
           // Create the invoice's new document list by removing deleted documents and adding uploaded documents.
           const currentDocuments = this.props.invoice.documents || [];

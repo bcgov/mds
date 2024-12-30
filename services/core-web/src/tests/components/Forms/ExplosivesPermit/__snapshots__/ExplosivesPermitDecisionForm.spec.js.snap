@@ -1,11 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ExplosivesPermitDecisionForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
+<ForwardRef(InternalForm)
   layout="vertical"
-  onSubmit={[MockFunction]}
+  onFinish={[MockFunction]}
 >
   <Row
     gutter={48}
@@ -13,9 +11,7 @@ exports[`ExplosivesPermitDecisionForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           data={Array []}
@@ -29,10 +25,8 @@ exports[`ExplosivesPermitDecisionForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
+      </InternalFormItem>
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="issue_date"
@@ -44,10 +38,8 @@ exports[`ExplosivesPermitDecisionForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
+      </InternalFormItem>
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="expiry_date"
@@ -59,7 +51,7 @@ exports[`ExplosivesPermitDecisionForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <div
@@ -110,5 +102,5 @@ exports[`ExplosivesPermitDecisionForm renders properly 1`] = `
       Issue Permit
     </Button>
   </div>
-</Form>
+</ForwardRef(InternalForm)>
 `;

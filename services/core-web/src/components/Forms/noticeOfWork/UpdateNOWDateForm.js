@@ -1,11 +1,9 @@
 import React from "react";
 import { Field, reduxForm, getFormValues } from "redux-form";
-import { Button, Popconfirm, Row, Col, Alert } from "antd";
+import { Button, Popconfirm, Form, Row, Col, Alert } from "antd";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { resetForm, formatDate } from "@common/utils/helpers";
 import PropTypes from "prop-types";
 import { required, dateNotInFuture, date } from "@common/utils/Validate";
@@ -165,7 +163,7 @@ export const UpdateNOWDateForm = (props) => {
         closable
       />
       <br />
-      <Form layout="vertical" onSubmit={props.handleSubmit}>
+      <Form layout="vertical" onFinish={props.handleSubmit}>
         {props.recordType !== "VER" && props.recordType !== "DEC" && (
           <Row gutter={16}>
             <Col span={24}>

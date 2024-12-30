@@ -2,9 +2,7 @@ import React, { FC, useState } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, getFormValues, isSubmitting, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Popconfirm, Row } from "antd";
+import { Button, Col, Form, Popconfirm, Row } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
@@ -37,7 +35,7 @@ export const ExplosivesPermitDecisionForm: FC<ExplosivesPermitDecisionFormProps>
   const [isPreviewingPermit, setIsPreviewingPermit] = useState(false);
 
   return (
-    <Form layout="vertical" onSubmit={handleSubmit}>
+    <Form layout="vertical" onFinish={handleSubmit}>
       <Row gutter={48}>
         <Col span={24}>
           <Form.Item>

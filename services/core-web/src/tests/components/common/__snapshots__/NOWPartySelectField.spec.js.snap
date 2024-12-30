@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NOWPartySelectField renders properly 1`] = `
-<FormItem
-  hasFeedback={false}
+<InternalFormItem
   help={false}
   label="Party Select"
   validateStatus=""
@@ -58,5 +57,5 @@ exports[`NOWPartySelectField renders properly 1`] = `
     value="mock value"
     virtual={false}
   />
-</FormItem>
+</InternalFormItem>
 `;

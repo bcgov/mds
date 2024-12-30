@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Button, Col, Form, Row, Popconfirm } from "antd";
 import {
   required,
   number,
@@ -93,8 +91,8 @@ export class BondForm extends Component {
 
     const documentTableRecords = (this.props.bond.documents
       ? this.props.bond.documents.filter(
-          (doc) => !this.state.filesToDelete.includes(doc.mine_document_guid)
-        )
+        (doc) => !this.state.filesToDelete.includes(doc.mine_document_guid)
+      )
       : []
     ).reduce(
       (docs, doc) => [
@@ -128,7 +126,7 @@ export class BondForm extends Component {
     return (
       <Form
         layout="vertical"
-        onSubmit={this.props.handleSubmit((values) => {
+        onFinish={this.props.handleSubmit((values) => {
           // Set the bond document type code for each uploaded document to the selected value.
           this.state.uploadedFiles.forEach((doc) => {
             doc.bond_document_type_code = values.bond_document_type_code;
@@ -211,11 +209,11 @@ export class BondForm extends Component {
                 validate={
                   isBondClosed
                     ? [
-                        required,
-                        date,
-                        dateNotInFuture,
-                        dateNotAfterOther(this.props.bond.closed_date),
-                      ]
+                      required,
+                      date,
+                      dateNotInFuture,
+                      dateNotAfterOther(this.props.bond.closed_date),
+                    ]
                     : [required, date, dateNotInFuture]
                 }
               />

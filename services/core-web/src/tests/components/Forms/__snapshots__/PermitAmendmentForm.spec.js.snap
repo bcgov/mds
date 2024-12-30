@@ -1,11 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PermitAmendmentForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
+<ForwardRef(InternalForm)
   layout="vertical"
-  onSubmit={[MockFunction]}
+  onFinish={[MockFunction]}
 >
   <Row
     gutter={48}
@@ -14,9 +12,7 @@ exports[`PermitAmendmentForm renders properly 1`] = `
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <PartySelectField
           allowAddingParties={true}
           id="permittee_party_guid"
@@ -29,10 +25,8 @@ exports[`PermitAmendmentForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
+      </InternalFormItem>
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="issue_date"
@@ -45,10 +39,8 @@ exports[`PermitAmendmentForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
+      </InternalFormItem>
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="authorization_end_date"
@@ -60,10 +52,8 @@ exports[`PermitAmendmentForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
+      </InternalFormItem>
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="description"
@@ -75,10 +65,9 @@ exports[`PermitAmendmentForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
       <Divider />
-      <FormItem
-        hasFeedback={false}
+      <InternalFormItem
         label="Securities"
       >
         <Field
@@ -88,9 +77,8 @@ exports[`PermitAmendmentForm renders properly 1`] = `
           name="security_not_required"
           onChange={[Function]}
         />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
+      </InternalFormItem>
+      <InternalFormItem
         label="Assessed Liability Adjustment"
       >
         <p
@@ -118,25 +106,22 @@ exports[`PermitAmendmentForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
+      </InternalFormItem>
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="security_received_date"
           label="Security Received"
           name="security_received_date"
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
     <Col
       className="border--left--layout"
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
+      <InternalFormItem
         label="Upload files"
       >
         <Field
@@ -148,7 +133,7 @@ exports[`PermitAmendmentForm renders properly 1`] = `
           onFileLoad={[Function]}
           onRemoveFile={[Function]}
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <div
@@ -182,5 +167,5 @@ exports[`PermitAmendmentForm renders properly 1`] = `
       mockTitle
     </Button>
   </div>
-</Form>
+</ForwardRef(InternalForm)>
 `;

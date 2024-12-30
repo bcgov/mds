@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose, bindActionCreators } from "redux";
 import { Field, reduxForm, formValueSelector, change } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Button, Col, Form, Row, Popconfirm } from "antd";
 import {
   currency,
   required,
@@ -42,7 +40,7 @@ export const PermitAmendmentSecurityForm = (props) => {
   };
 
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <Form layout="vertical" onFinish={props.handleSubmit}>
       <Row gutter={16}>
         <Col span={12}>
           <div className="field-title">

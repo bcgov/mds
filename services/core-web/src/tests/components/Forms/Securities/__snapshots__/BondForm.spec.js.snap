@@ -1,11 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`BondForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
+<ForwardRef(InternalForm)
   layout="vertical"
-  onSubmit={[Function]}
 >
   <Row
     gutter={16}
@@ -14,9 +11,7 @@ exports[`BondForm renders properly 1`] = `
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           autoComplete="off"
           component={[Function]}
@@ -41,15 +36,13 @@ exports[`BondForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
     <Col
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           disabled={false}
@@ -64,7 +57,7 @@ exports[`BondForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <Row
@@ -74,9 +67,7 @@ exports[`BondForm renders properly 1`] = `
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <PartySelectField
           allowAddingParties={true}
           id="payer_party_guid"
@@ -90,15 +81,13 @@ exports[`BondForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
     <Col
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="issue_date"
@@ -113,7 +102,7 @@ exports[`BondForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <Row
@@ -123,47 +112,41 @@ exports[`BondForm renders properly 1`] = `
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="reference_number"
           label="Reference Number"
           name="reference_number"
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
     <Col
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="project_id"
           label="Project ID"
           name="project_id"
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <Row>
     <Col
       md={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="note"
           label="Notes"
           name="note"
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <Row
@@ -185,16 +168,14 @@ exports[`BondForm renders properly 1`] = `
       lg={12}
       md={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="institution_name"
           label="Institution Name"
           name="institution_name"
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <Row
@@ -204,24 +185,20 @@ exports[`BondForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="institution_street"
           label="Street Address"
           name="institution_street"
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
     <Col
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="institution_city"
@@ -233,7 +210,7 @@ exports[`BondForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <Row
@@ -243,9 +220,7 @@ exports[`BondForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           data={
@@ -274,15 +249,13 @@ exports[`BondForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
     <Col
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="institution_postal_code"
@@ -297,7 +270,7 @@ exports[`BondForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <Row
@@ -382,9 +355,7 @@ exports[`BondForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="document_date"
@@ -398,15 +369,13 @@ exports[`BondForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
     <Col
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="bond_document_type_code"
@@ -419,12 +388,10 @@ exports[`BondForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
-  <FormItem
-    hasFeedback={false}
-  >
+  <InternalFormItem>
     <Field
       acceptedFileTypesMap={
         Object {
@@ -449,7 +416,7 @@ exports[`BondForm renders properly 1`] = `
       onRemoveFile={[Function]}
       uploadUrl="/securities/undefined/bonds/documents"
     />
-  </FormItem>
+  </InternalFormItem>
   <div
     className="right center-mobile"
   >
@@ -476,5 +443,5 @@ exports[`BondForm renders properly 1`] = `
       Add Bond
     </Button>
   </div>
-</Form>
+</ForwardRef(InternalForm)>
 `;

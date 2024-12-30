@@ -2,11 +2,8 @@
 
 exports[`AddIncidentFollowUpForm renders properly 1`] = `
 <div>
-  <Form
-    colon={true}
-    hideRequiredMark={false}
+  <ForwardRef(InternalForm)
     layout="vertical"
-    onSubmit={[Function]}
   >
     <Row
       gutter={48}
@@ -17,9 +14,7 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
         <h4>
           Follow-up Information
         </h4>
-        <FormItem
-          hasFeedback={false}
-        >
+        <InternalFormItem>
           <Field
             component={[Function]}
             id="followup_inspection"
@@ -31,10 +26,8 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
               ]
             }
           />
-        </FormItem>
-        <FormItem
-          hasFeedback={false}
-        >
+        </InternalFormItem>
+        <InternalFormItem>
           <Field
             component={[Function]}
             data={
@@ -56,7 +49,7 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
               ]
             }
           />
-        </FormItem>
+        </InternalFormItem>
         <h4>
           Final Investigation Report
         </h4>
@@ -65,9 +58,7 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
           id="recommendations"
           name="recommendations"
         />
-        <FormItem
-          hasFeedback={false}
-        >
+        <InternalFormItem>
           <Field
             component={[Function]}
             id="InitialIncidentFileUpload"
@@ -75,10 +66,8 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
             onFileLoad={[Function]}
             uploadUrl="/mines/undefined/incidents/documents"
           />
-        </FormItem>
-        <FormItem
-          hasFeedback={false}
-        >
+        </InternalFormItem>
+        <InternalFormItem>
           <Field
             component={[Function]}
             id="status_code"
@@ -90,9 +79,9 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
               ]
             }
           />
-        </FormItem>
+        </InternalFormItem>
       </Col>
     </Row>
-  </Form>
+  </ForwardRef(InternalForm)>
 </div>
 `;

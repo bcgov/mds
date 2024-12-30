@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Popconfirm } from "antd";
+import { Button, Form, Popconfirm } from "antd";
 import { required, maxLength, number, lat, lonNegative, lon } from "@common/utils/Validate";
 import {
   getConsequenceClassificationStatusCodeDropdownOptions,
@@ -32,7 +30,7 @@ const propTypes = {
 };
 
 export const AddTailingsForm = (props) => (
-  <Form layout="vertical" onSubmit={props.handleSubmit}>
+  <Form layout="vertical" onFinish={props.handleSubmit}>
     <Field
       id="mine_tailings_storage_facility_name"
       name="mine_tailings_storage_facility_name"
@@ -110,9 +108,8 @@ AddTailingsForm.propTypes = propTypes;
 
 export default compose(
   connect((state) => ({
-    consequenceClassificationStatusCodeOptions: getConsequenceClassificationStatusCodeDropdownOptions(
-      state
-    ),
+    consequenceClassificationStatusCodeOptions:
+      getConsequenceClassificationStatusCodeDropdownOptions(state),
     itrbExemptionStatusCodeOptions: getITRBExemptionStatusCodeDropdownOptions(state),
     TSFOperatingStatusCodeOptions: getTSFOperatingStatusCodeDropdownOptions(state),
   })),

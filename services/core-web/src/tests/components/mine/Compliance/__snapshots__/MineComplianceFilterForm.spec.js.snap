@@ -1,12 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineComplianceFilterForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
+<ForwardRef(InternalForm)
   layout="vertical"
+  onFinish={[MockFunction]}
   onReset={[Function]}
-  onSubmit={[MockFunction]}
 >
   <div>
     <Row
@@ -142,5 +140,5 @@ exports[`MineComplianceFilterForm renders properly 1`] = `
       Apply Filters
     </Button>
   </div>
-</Form>
+</ForwardRef(InternalForm)>
 `;

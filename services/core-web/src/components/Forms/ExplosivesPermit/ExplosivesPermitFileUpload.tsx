@@ -1,8 +1,7 @@
 import React, { FC } from "react";
 import { useDispatch } from "react-redux";
 import { Field } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Form } from "antd";
 import { EXPLOSIVES_PERMIT_DOCUMENTS } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";

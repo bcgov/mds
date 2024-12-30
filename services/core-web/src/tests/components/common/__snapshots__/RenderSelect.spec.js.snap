@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RenderSelect renders properly 1`] = `
-<FormItem
-  hasFeedback={false}
+<InternalFormItem
   help={false}
   id="1"
   label=""
@@ -49,5 +48,5 @@ exports[`RenderSelect renders properly 1`] = `
       }
     />
   </ForwardRef(InternalSelect)>
-</FormItem>
+</InternalFormItem>
 `;

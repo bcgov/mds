@@ -3,9 +3,7 @@ import { compose } from "redux";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Field, reduxForm, getFormValues } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Alert, Typography } from "antd";
+import { Button, Col, Form, Row, Alert, Typography } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm, formatDate } from "@common/utils/helpers";
 import { getDropdownProjectDecisionPackageStatusCodes } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -50,7 +48,7 @@ export const UpdateDecisionPackageStatusForm = (props) => {
   return (
     <Form
       layout="vertical"
-      onSubmit={(e) => {
+      onFinish={(e) => {
         const submitPayload = {
           ...props.formValues,
           documents: props.displayValues?.documents,
@@ -63,7 +61,7 @@ export const UpdateDecisionPackageStatusForm = (props) => {
         <Alert
           message={
             props.displayValues.projectDecisionPackageStatusCodesHash[
-              props.displayValues?.status_code
+            props.displayValues?.status_code
             ]
           }
           description={

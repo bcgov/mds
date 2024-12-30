@@ -9,9 +9,7 @@ import {
   reduxForm,
   change,
 } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Alert, Button, Col, Popconfirm, Row, Table, Typography, Radio } from "antd";
+import { Alert, Button, Col, Form, Popconfirm, Row, Table, Typography, Radio } from "antd";
 import {
   IPermit,
   IExplosivesPermit,
@@ -351,7 +349,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
   const dynamicText = textOptions[currentFormMode] ?? textOptions[EsupFormMode.create_new];
 
   const permitForm = (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <Form layout="vertical" onFinish={props.handleSubmit}>
       <Alert
         className="ant-alert-grey bullet"
         message={dynamicText.alertTitle}

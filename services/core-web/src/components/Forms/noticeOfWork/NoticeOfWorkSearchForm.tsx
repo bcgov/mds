@@ -1,9 +1,7 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import PropTypes from "prop-types";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Form, Row } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -18,7 +16,7 @@ const propTypes = {
 // this should be stateful once fully implemented
 export const NoticeOfWorkSearchForm = (props) => {
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <Form layout="vertical" onFinish={props.handleSubmit}>
       <Row gutter={6}>
         <Col md={24} xs={24}>
           <Field

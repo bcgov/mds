@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RenderLargeSelect renders properly 1`] = `
-<FormItem
-  hasFeedback={false}
+<InternalFormItem
   help={false}
   label=""
   validateStatus=""
@@ -43,5 +42,5 @@ exports[`RenderLargeSelect renders properly 1`] = `
     value=""
     virtual={false}
   />
-</FormItem>
+</InternalFormItem>
 `;

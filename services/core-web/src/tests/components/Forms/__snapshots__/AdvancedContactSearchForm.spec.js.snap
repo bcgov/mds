@@ -1,12 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AdvancedContactSearch form renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
+<ForwardRef(InternalForm)
   layout="vertical"
+  onFinish={[MockFunction]}
   onReset={[Function]}
-  onSubmit={[MockFunction]}
 >
   <Row
     gutter={6}
@@ -81,5 +79,5 @@ exports[`AdvancedContactSearch form renders properly 1`] = `
       Apply Filters
     </Button>
   </div>
-</Form>
+</ForwardRef(InternalForm)>
 `;

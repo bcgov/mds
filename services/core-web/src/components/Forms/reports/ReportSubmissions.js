@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button } from "antd";
+import { Button, Form } from "antd";
 import { concat, reject } from "lodash";
 import { MINE_REPORT_DOCUMENT } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
@@ -110,7 +108,7 @@ export const ReportSubmissions = (props) => {
                     documents:
                       props.mineReportSubmissions.length > 0
                         ? props.mineReportSubmissions[props.mineReportSubmissions.length - 1]
-                            .documents
+                          .documents
                         : [],
                   },
                 ]);

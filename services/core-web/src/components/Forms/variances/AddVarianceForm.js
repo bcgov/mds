@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Field, reduxForm, change } from "redux-form";
 import { fromPairs } from "lodash";
 import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { Button, Popconfirm, Radio } from "antd";
 import {
   required,
@@ -62,7 +61,7 @@ export class AddVarianceForm extends Component {
     return (
       <Form
         layout="vertical"
-        onSubmit={this.props.handleSubmit(
+        onFinish={this.props.handleSubmit(
           this.props.onSubmit(fromPairs(this.state.uploadedFiles), this.state.isApplication)
         )}
       >

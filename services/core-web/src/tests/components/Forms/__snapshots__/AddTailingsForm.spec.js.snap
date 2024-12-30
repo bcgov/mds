@@ -1,11 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddTailingsForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
+<ForwardRef(InternalForm)
   layout="vertical"
-  onSubmit={[MockFunction]}
+  onFinish={[MockFunction]}
 >
   <Row
     gutter={16}
@@ -13,9 +11,7 @@ exports[`AddTailingsForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="mine_tailings_storage_facility_name"
@@ -27,7 +23,7 @@ exports[`AddTailingsForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <Row
@@ -36,9 +32,7 @@ exports[`AddTailingsForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="notes"
@@ -50,7 +44,7 @@ exports[`AddTailingsForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <Row
@@ -60,9 +54,7 @@ exports[`AddTailingsForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="latitude"
@@ -76,15 +68,13 @@ exports[`AddTailingsForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
     <Col
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="longitude"
@@ -98,7 +88,7 @@ exports[`AddTailingsForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <Row
@@ -108,9 +98,7 @@ exports[`AddTailingsForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           data={Array []}
@@ -118,15 +106,13 @@ exports[`AddTailingsForm renders properly 1`] = `
           label="Consequence Classification"
           name="consequence_classification_status_code"
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
     <Col
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           data={Array []}
@@ -134,7 +120,7 @@ exports[`AddTailingsForm renders properly 1`] = `
           label="Operating Status"
           name="tsf_operating_status_code"
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <Row
@@ -144,9 +130,7 @@ exports[`AddTailingsForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <PartySelectField
           allowAddingParties={true}
           allowNull={true}
@@ -155,15 +139,13 @@ exports[`AddTailingsForm renders properly 1`] = `
           name="eor_party_guid"
           partyLabel="EoR"
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
     <Col
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           data={Array []}
@@ -171,7 +153,7 @@ exports[`AddTailingsForm renders properly 1`] = `
           label="Has Independent Tailings Review Board?"
           name="itrb_exemption_status_code"
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <div
@@ -202,5 +184,5 @@ exports[`AddTailingsForm renders properly 1`] = `
       mockTitle
     </Button>
   </div>
-</Form>
+</ForwardRef(InternalForm)>
 `;

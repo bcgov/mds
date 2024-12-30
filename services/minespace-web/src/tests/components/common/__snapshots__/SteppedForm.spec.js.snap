@@ -33,18 +33,15 @@ exports[`SteppedForm renders properly 1`] = `
     <div
       className="stepped-form-form-container"
     >
-      <Form
-        colon={true}
-        hideRequiredMark={false}
+      <ForwardRef(InternalForm)
         layout="vertical"
-        onSubmit={[Function]}
       >
         <Step
           key="1"
         >
           <div />
         </Step>
-      </Form>
+      </ForwardRef(InternalForm)>
       <Row
         justify="end"
       >

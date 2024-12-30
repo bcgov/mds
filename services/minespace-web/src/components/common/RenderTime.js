@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { TimePicker } from "antd";
+import { Form, TimePicker } from "antd";
 
 /**
  * @constant RenderTime  - Ant Design `TimePicker` component for redux-form.

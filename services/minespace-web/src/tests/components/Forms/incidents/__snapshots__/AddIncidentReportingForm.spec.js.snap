@@ -2,14 +2,10 @@
 
 exports[`AddIncidentReportingForm renders properly 1`] = `
 <div>
-  <Form
-    colon={true}
-    hideRequiredMark={false}
+  <ForwardRef(InternalForm)
     layout="vertical"
-    onSubmit={[Function]}
   >
-    <FormItem
-      hasFeedback={false}
+    <InternalFormItem
       label="Incident type(s)"
     >
       <Field
@@ -24,15 +20,14 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
           ]
         }
       />
-    </FormItem>
+    </InternalFormItem>
     <Divider />
     <ForwardRef(Text)>
       <h4>
         Reporter Details
       </h4>
     </ForwardRef(Text)>
-    <FormItem
-      hasFeedback={false}
+    <InternalFormItem
       label="Reported by"
     >
       <Field
@@ -46,7 +41,7 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
           ]
         }
       />
-    </FormItem>
+    </InternalFormItem>
     <Row
       gutter={16}
     >
@@ -54,8 +49,7 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
         md={12}
         xs={24}
       >
-        <FormItem
-          hasFeedback={false}
+        <InternalFormItem
           label="Phone number (optional)"
         >
           <Field
@@ -71,14 +65,13 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
               ]
             }
           />
-        </FormItem>
+        </InternalFormItem>
       </Col>
       <Col
         md={12}
         xs={24}
       >
-        <FormItem
-          hasFeedback={false}
+        <InternalFormItem
           label="Phone extension (optional)"
         >
           <Field
@@ -93,11 +86,10 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
               ]
             }
           />
-        </FormItem>
+        </InternalFormItem>
       </Col>
     </Row>
-    <FormItem
-      hasFeedback={false}
+    <InternalFormItem
       label="Email address (optional)"
     >
       <Field
@@ -111,7 +103,7 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
           ]
         }
       />
-    </FormItem>
-  </Form>
+    </InternalFormItem>
+  </ForwardRef(InternalForm)>
 </div>
 `;

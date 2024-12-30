@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Input } from "antd";
+import { Input, Form } from "antd";
 
 /**
  * @constant  RenderScrollField - Ant Design `TextArea` component for redux-form. (useful for notes/description)

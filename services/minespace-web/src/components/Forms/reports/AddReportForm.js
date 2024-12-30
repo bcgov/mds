@@ -6,9 +6,7 @@ import { compose } from "redux";
 import PropTypes from "prop-types";
 import { flatMap, uniqBy } from "lodash";
 import { Field, reduxForm, formValueSelector } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Popconfirm, List, Typography } from "antd";
+import { Button, Form, Popconfirm, List, Typography } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { required, yearNotInFuture } from "@common/utils/Validate";
@@ -128,7 +126,7 @@ export class AddReportForm extends Component {
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <Form layout="vertical" onFinish={this.props.handleSubmit}>
         {!this.props.initialValues.mine_report_definition_guid && (
           <Field
             id="mine_report_category"

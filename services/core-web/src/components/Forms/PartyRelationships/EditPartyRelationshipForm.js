@@ -2,9 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { isEmpty } from "lodash";
 import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Button, Col, Form, Row, Popconfirm } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import { validateDateRanges } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
@@ -104,7 +102,7 @@ export const EditPartyRelationshipForm = (props) => {
   }
 
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <Form layout="vertical" onFinish={props.handleSubmit}>
       <Row gutter={16}>
         <Col md={12} xs={24}>
           <Form.Item>

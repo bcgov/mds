@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Popconfirm, Row, Col } from "antd";
+import { Button, Form, Popconfirm, Row, Col } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
@@ -18,11 +16,11 @@ const propTypes = {
 };
 
 const placeHolderText = (type) =>
-  ({
-    SEC: "Sub-Section Name",
-    CON: "Type a condition",
-    LIS: "Type a list item",
-  }[type]);
+({
+  SEC: "Sub-Section Name",
+  CON: "Type a condition",
+  LIS: "Type a list item",
+}[type]);
 
 export const ConditionForm = (props) => {
   const formSpan = 21 - props.layer;
@@ -30,7 +28,7 @@ export const ConditionForm = (props) => {
     <Row gutter={[16, 24]}>
       <Col span={props.layer} />
       <Col span={formSpan}>
-        <Form onSubmit={props.handleSubmit}>
+        <Form onFinish={props.handleSubmit}>
           <Field
             id="condition"
             name="condition"

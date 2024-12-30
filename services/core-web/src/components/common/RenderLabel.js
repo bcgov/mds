@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Typography, Divider, Row, Col } from "antd";
+import { Form, Typography, Divider, Row, Col } from "antd";
 
 /**
  * @constant RenderLabel

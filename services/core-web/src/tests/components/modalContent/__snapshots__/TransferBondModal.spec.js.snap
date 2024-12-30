@@ -21,13 +21,13 @@ exports[`TransferBondModal renders properly 1`] = `
     forceUnregisterOnUnmount={false}
     form="TRANSFER_BOND"
     getFormState={[Function]}
+    handleSubmit={[Function]}
     initialValues={
       Object {
         "note": null,
       }
     }
     keepDirtyOnReinitialize={false}
-    onSubmit={[Function]}
     onSubmitSuccess={[Function]}
     permits={Array []}
     persistentSubmitErrors={false}

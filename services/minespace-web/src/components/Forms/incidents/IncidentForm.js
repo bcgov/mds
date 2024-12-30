@@ -4,9 +4,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm, change, getFormValues, FieldArray } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Card, Checkbox, Col, Row, Typography, Divider, Button } from "antd";
+import { Card, Checkbox, Col, Form, Row, Typography, Divider, Button } from "antd";
 import {
   required,
   maxLength,
@@ -101,12 +99,8 @@ const retrieveIncidentDetailsDynamicValidation = (childProps) => {
 };
 
 const confirmationSubmission = (childProps) => {
-  const {
-    applicationSubmitted,
-    location,
-    confirmedSubmission,
-    setConfirmedSubmission,
-  } = childProps;
+  const { applicationSubmitted, location, confirmedSubmission, setConfirmedSubmission } =
+    childProps;
   return (
     !applicationSubmitted &&
     location?.state?.current === 2 && (
@@ -933,7 +927,7 @@ export const IncidentForm = (props) => {
   const parentColumnProps = isFinalReviewStage ? {} : { span: 16, offset: 4 };
 
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <Form layout="vertical" onFinish={props.handleSubmit}>
       <Row>
         <Col {...parentColumnProps}>
           {renderIncidentStatusCallout({ incident })}

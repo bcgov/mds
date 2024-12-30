@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Popconfirm, Row } from "antd";
-import { Form } from "@ant-design/compatible";
+import { Button, Col, Form, Popconfirm, Row } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
 import {
@@ -267,7 +266,7 @@ const NoticeOfDepartureModal: React.FC<InjectedFormProps<ICreateNoD> &
 
   return (
     <div>
-      <Form layout="vertical" onSubmit={handleSubmit(updateNoticeOfDepartureSubmit)}>
+      <Form layout="vertical" onFinish={handleSubmit(updateNoticeOfDepartureSubmit)}>
         <h4 className="nod-modal-section-header">Basic Information</h4>
         <div className="content--light-grey nod-section-padding">
           <div className="inline-flex padding-sm">

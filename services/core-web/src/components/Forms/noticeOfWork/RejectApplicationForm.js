@@ -1,10 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { reduxForm, Field } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { formatDate, formatMoney, resetForm } from "@common/utils/helpers";
-import { Button, Col, Row, Popconfirm, Alert } from "antd";
+import { Button, Col, Form, Row, Popconfirm, Alert } from "antd";
 
 import { maxLength } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
@@ -27,7 +25,7 @@ const defaultProps = {
 };
 
 export const RejectApplicationForm = (props) => (
-  <Form layout="vertical" onSubmit={props.handleSubmit}>
+  <Form layout="vertical" onFinish={props.handleSubmit}>
     {props.draftAmendment?.security_received_date && props.draftAmendment?.liability_adjustment && (
       <Alert
         message="Return Reclamation Securities"

@@ -1,11 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddReportForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
+<ForwardRef(InternalForm)
   layout="vertical"
-  onSubmit={[MockFunction]}
+  onFinish={[MockFunction]}
 >
   <Row
     gutter={16}
@@ -13,9 +11,7 @@ exports[`AddReportForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           doNotPinDropdown={true}
@@ -30,10 +26,8 @@ exports[`AddReportForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
+      </InternalFormItem>
+      <InternalFormItem>
         <Field
           component={[Function]}
           data={Array []}
@@ -55,10 +49,8 @@ exports[`AddReportForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
+      </InternalFormItem>
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="submission_year"
@@ -71,10 +63,8 @@ exports[`AddReportForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
+      </InternalFormItem>
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="due_date"
@@ -88,10 +78,8 @@ exports[`AddReportForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
+      </InternalFormItem>
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="received_date"
@@ -105,7 +93,7 @@ exports[`AddReportForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
       <ReportSubmissions
         mineReportSubmissions={Array []}
         updateMineReportSubmissions={[Function]}
@@ -140,5 +128,5 @@ exports[`AddReportForm renders properly 1`] = `
       mockTitle
     </Button>
   </div>
-</Form>
+</ForwardRef(InternalForm)>
 `;

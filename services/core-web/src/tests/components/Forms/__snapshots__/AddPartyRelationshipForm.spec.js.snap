@@ -1,11 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddPartyRelationshipForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
+<ForwardRef(InternalForm)
   layout="vertical"
-  onSubmit={[Function]}
+  onFinish={[Function]}
 >
   <Row
     gutter={16}
@@ -14,9 +12,7 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
       md={24}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <PartySelectField
           allowAddingParties={true}
           id="party_guid"
@@ -28,7 +24,7 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <Row
@@ -38,9 +34,7 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="start_date"
@@ -53,15 +47,13 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
     <Col
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="end_date"
@@ -69,7 +61,7 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
           name="end_date"
           placeholder="yyyy-mm-dd"
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <Row
@@ -91,15 +83,13 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
         <h4>
           Mine Manager Appointment Letter
         </h4>
-        <FormItem
-          hasFeedback={false}
-        >
+        <InternalFormItem>
           <Field
             component={[Function]}
             id="PartyRelationshipFileUpload"
             name="PartyRelationshipFileUpload"
           />
-        </FormItem>
+        </InternalFormItem>
       </div>
     </Col>
   </Row>
@@ -128,5 +118,5 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
       type="primary"
     />
   </div>
-</Form>
+</ForwardRef(InternalForm)>
 `;

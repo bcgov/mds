@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Form } from "antd";
 import { VARIANCE_DOCUMENTS } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";

@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm, getFormValues } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Descriptions, Popconfirm } from "antd";
+import { Button, Col, Form, Row, Descriptions, Popconfirm } from "antd";
 import { required, dateNotAfterOther, dateNotBeforeOther, maxLength } from "@common/utils/Validate";
 import { resetForm, formatDate } from "@common/utils/helpers";
 import { getEditingPreambleFlag } from "@mds/common/redux/selectors/permitSelectors";
@@ -427,6 +425,6 @@ export default compose(
     touchOnBlur: false,
     onSubmitSuccess: resetForm(FORM.GENERATE_PERMIT),
     enableReinitialize: true,
-    onSubmit: () => {},
+    onSubmit: () => { },
   })
 )(GeneratePermitForm);

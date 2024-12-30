@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Popconfirm, Row, Tooltip, Typography, Descriptions } from "antd";
+import { Button, Col, Form, Popconfirm, Row, Tooltip, Typography, Descriptions } from "antd";
 
 import { Field, reduxForm } from "redux-form";
 import { wholeNumber } from "@common/utils/Validate";
@@ -19,7 +17,7 @@ const propTypes = {
 
 export const EditWorkerInformationForm = (props) => (
   <div className="work-information-container ">
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <Form layout="vertical" onFinish={props.handleSubmit}>
       <Typography.Title level={4}>
         Worker Information
         <Tooltip

@@ -1,11 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ReclamationInvoiceForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
+<ForwardRef(InternalForm)
   layout="vertical"
-  onSubmit={[Function]}
 >
   <Row
     gutter={16}
@@ -14,9 +11,7 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           disabled={true}
@@ -29,15 +24,13 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
     <Col
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="vendor"
@@ -49,7 +42,7 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <Row
@@ -59,9 +52,7 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           autoComplete="off"
           component={[Function]}
@@ -80,15 +71,13 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
     <Col
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="paid_date"
@@ -100,7 +89,7 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <Row
@@ -163,16 +152,14 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
     <Col
       md={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="note"
           label="Notes"
           name="note"
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <br />
@@ -188,9 +175,7 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
       </h5>
     </Col>
   </Row>
-  <FormItem
-    hasFeedback={false}
-  >
+  <InternalFormItem>
     <Field
       acceptedFileTypesMap={
         Object {
@@ -215,7 +200,7 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
       onRemoveFile={[Function]}
       uploadUrl="/securities/462562457/reclamation-invoices/documents"
     />
-  </FormItem>
+  </InternalFormItem>
   <div
     className="right center-mobile"
   >
@@ -242,5 +227,5 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
       Save Reclamation Invoice
     </Button>
   </div>
-</Form>
+</ForwardRef(InternalForm)>
 `;

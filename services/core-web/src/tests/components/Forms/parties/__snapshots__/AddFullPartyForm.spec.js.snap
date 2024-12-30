@@ -2,12 +2,7 @@
 
 exports[`AddFullPartyForm renders properly 1`] = `
 <div>
-  <Form
-    colon={true}
-    hideRequiredMark={false}
-    layout="horizontal"
-    onSubmit={[Function]}
-  >
+  <ForwardRef(InternalForm)>
     <Row
       gutter={48}
     >
@@ -55,9 +50,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
           <Col
             span={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="party_name"
@@ -69,7 +62,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
         </Row>
         <Row
@@ -78,9 +71,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
           <Col
             span={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="email"
@@ -92,7 +83,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
         </Row>
         <Row
@@ -101,9 +92,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
           <Col
             span={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="email_sec"
@@ -115,7 +104,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
         </Row>
         <Row
@@ -124,9 +113,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
           <Col
             span={18}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="phone_no"
@@ -142,14 +129,12 @@ exports[`AddFullPartyForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
           <Col
             span={6}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="phone_ext"
@@ -163,7 +148,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
         </Row>
         <Row
@@ -172,9 +157,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
           <Col
             span={18}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="phone_no_sec"
@@ -189,14 +172,12 @@ exports[`AddFullPartyForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
           <Col
             span={6}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="phone_sec_ext"
@@ -210,7 +191,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
         </Row>
         <Row
@@ -219,9 +200,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
           <Col
             span={18}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="phone_no_ter"
@@ -236,14 +215,12 @@ exports[`AddFullPartyForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
           <Col
             span={6}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="phone_ter_ext"
@@ -257,7 +234,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
         </Row>
       </Col>
@@ -288,9 +265,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
           <Col
             span={6}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="suite_no"
@@ -302,21 +277,19 @@ exports[`AddFullPartyForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
           <Col
             span={18}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="address_line_1"
                 label="Street Address 1"
                 name="address_line_1"
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
         </Row>
         <Row
@@ -325,23 +298,19 @@ exports[`AddFullPartyForm renders properly 1`] = `
           <Col
             span={18}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="address_line_2"
                 label="Street Address 2"
                 name="address_line_2"
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
           <Col
             span={6}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 data={
@@ -369,7 +338,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
         </Row>
         <Row
@@ -379,9 +348,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
             md={12}
             xs={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="city"
@@ -393,15 +360,13 @@ exports[`AddFullPartyForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
           <Col
             md={12}
             xs={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="post_code"
@@ -416,11 +381,11 @@ exports[`AddFullPartyForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
         </Row>
       </Col>
     </Row>
-  </Form>
+  </ForwardRef(InternalForm)>
 </div>
 `;

@@ -2,9 +2,7 @@ import React, { FC } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm, FormSection, formValueSelector, InjectedFormProps } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Row, Col } from "antd";
+import { Row, Col, Form } from "antd";
 import {
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
   getMineRegionDropdownOptions,

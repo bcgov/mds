@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Button, Col, Form, Row, Popconfirm } from "antd";
 import { required, maxLength, number, lat, lon } from "@common/utils/Validate";
 import {
   getConsequenceClassificationStatusCodeDropdownOptions,
@@ -33,7 +31,7 @@ const propTypes = {
 };
 
 export const AddTailingsForm = (props) => (
-  <Form layout="vertical" onSubmit={props.handleSubmit}>
+  <Form layout="vertical" onFinish={props.handleSubmit}>
     <Row gutter={16}>
       <Col span={24}>
         <Form.Item>

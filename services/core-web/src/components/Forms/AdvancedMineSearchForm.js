@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { isEmpty, some, negate } from "lodash";
 import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Form, Row } from "antd";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -53,7 +51,7 @@ export class AdvancedMineSearchForm extends Component {
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
+      <Form layout="vertical" onFinish={this.props.handleSubmit} onReset={this.handleReset}>
         <Row gutter={6}>
           <Col md={24} xs={24}>
             <Field

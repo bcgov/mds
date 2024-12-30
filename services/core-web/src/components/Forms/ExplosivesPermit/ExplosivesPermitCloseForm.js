@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, Typography } from "antd";
+import { Button, Col, Form, Row, Popconfirm, Typography } from "antd";
 import { dateTimezoneRequired, dateNotInFutureTZ, required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
@@ -20,7 +18,7 @@ const propTypes = {
 
 export const ExplosivesPermitCloseForm = (props) => {
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <Form layout="vertical" onFinish={props.handleSubmit}>
       <Row gutter={16}>
         <Col span={24}>
           <Typography.Title level={2}>Close Permit</Typography.Title>

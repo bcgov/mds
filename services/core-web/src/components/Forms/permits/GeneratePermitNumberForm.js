@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, Alert } from "antd";
+import { Button, Col, Form, Row, Popconfirm, Alert } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 
@@ -19,7 +17,7 @@ const defaultProps = {
 };
 
 export const GeneratePermitNumberForm = (props) => (
-  <Form layout="vertical" onSubmit={props.handleSubmit}>
+  <Form layout="vertical" onFinish={props.handleSubmit}>
     <Alert
       message="This action is final"
       description="The generated permit number will be assigned to the current draft permit."

@@ -2,8 +2,7 @@
 
 exports[`RenderMultiSelect renders properly 1`] = `
 <div>
-  <FormItem
-    hasFeedback={false}
+  <InternalFormItem
     help={false}
     label=""
     validateStatus=""
@@ -23,6 +22,6 @@ exports[`RenderMultiSelect renders properly 1`] = `
       <Option />
       <Option />
     </ForwardRef(InternalSelect)>
-  </FormItem>
+  </InternalFormItem>
 </div>
 `;

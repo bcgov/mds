@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, reduxForm, getFormValues } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Button, Col, Form, Row, Popconfirm } from "antd";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import {
   required,
@@ -80,7 +78,7 @@ export const EMLIContactForm = (props) => {
 
   return (
     <div>
-      <Form layout="vertical" onSubmit={props.handleSubmit}>
+      <Form layout="vertical" onFinish={props.handleSubmit}>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item>

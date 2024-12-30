@@ -3,9 +3,7 @@ import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Field, reduxForm, getFormValues, change } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Col, Row, Tooltip, Alert } from "antd";
+import { Col, Form, Row, Tooltip, Alert } from "antd";
 import { resetForm, createDropDownList } from "@common/utils/helpers";
 import {
   required,
@@ -257,7 +255,7 @@ export default compose(
   reduxForm({
     form: FORM.PRE_DRAFT_PERMIT,
     touchOnBlur: true,
-    onSubmit: () => {},
+    onSubmit: () => { },
     destroyOnUnmount: false,
     forceUnregisterOnUnmount: true,
     enableReinitialize: true,

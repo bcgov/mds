@@ -7,8 +7,7 @@ import {
   InjectedFormProps,
   reduxForm,
 } from "redux-form";
-import { Alert, Button, Col, Popconfirm, Row, Typography } from "antd";
-import { Form } from "@ant-design/compatible";
+import { Alert, Button, Col, Form, Popconfirm, Row, Typography } from "antd";
 import { maxLength, required, requiredRadioButton } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import {
@@ -48,8 +47,9 @@ interface EditNoticeOfDepartureFormProps {
   change?: (field: string, value: any) => void;
 }
 
-const EditNoticeOfDepartureForm: React.FC<InjectedFormProps<Partial<ICreateNoD>> &
-  EditNoticeOfDepartureFormProps> = (props) => {
+const EditNoticeOfDepartureForm: React.FC<
+  InjectedFormProps<Partial<ICreateNoD>> & EditNoticeOfDepartureFormProps
+> = (props) => {
   const { onSubmit, closeModal, handleSubmit, mineGuid, noticeOfDeparture, pristine } = props;
   const { permit, nod_guid, nod_no, nod_status } = noticeOfDeparture;
   const [submitting, setSubmitting] = useState(false);
@@ -143,7 +143,7 @@ const EditNoticeOfDepartureForm: React.FC<InjectedFormProps<Partial<ICreateNoD>>
   return (
     <div>
       <NoticeOfDepartureCallout nodStatus={nod_status as NodStatusSaveEnum} />
-      <Form layout="vertical" onSubmit={handleSubmit(handleNoticeOfDepartureSubmit)}>
+      <Form layout="vertical" onFinish={handleSubmit(handleNoticeOfDepartureSubmit)}>
         <Typography.Title level={4}>Basic Information</Typography.Title>
         <Typography.Text>
           Enter the following information about your Notice of Departure.

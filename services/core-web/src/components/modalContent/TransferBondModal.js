@@ -26,7 +26,7 @@ export const TransferBondModal = (props) => {
       />
       <br />
       <TransferBondForm
-        onSubmit={handleTransferBond}
+        handleSubmit={handleTransferBond}
         closeModal={props.closeModal}
         title={props.title}
         initialValues={{ note: props.bond.note }}

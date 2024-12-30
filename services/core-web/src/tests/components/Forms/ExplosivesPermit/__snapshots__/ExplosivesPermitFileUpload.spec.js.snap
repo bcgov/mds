@@ -2,75 +2,79 @@
 
 exports[`ExplosivesPermitFileUpload renders properly 1`] = `
 <div
-  class="ant-row ant-legacy-form-item"
+  class="ant-form-item"
 >
   <div
-    class="ant-col ant-legacy-form-item-control-wrapper"
+    class="ant-row ant-form-item-row"
   >
     <div
-      class="ant-legacy-form-item-control"
+      class="ant-col ant-form-item-control"
     >
-      <span
-        class="ant-legacy-form-item-children"
+      <div
+        class="ant-form-item-control-input"
       >
         <div
-          class="whirlpool-container"
+          class="ant-form-item-control-input-content"
         >
           <div
-            class="ant-form-item ant-form-item-with-help"
+            class="whirlpool-container"
           >
             <div
-              class="ant-row ant-form-item-row"
+              class="ant-form-item ant-form-item-with-help"
             >
               <div
-                class="ant-col ant-form-item-label"
-              >
-                <label
-                  class=""
-                  for="fileUpload"
-                  title=""
-                />
-              </div>
-              <div
-                class="ant-col ant-form-item-control"
+                class="ant-row ant-form-item-row"
               >
                 <div
-                  class="ant-form-item-control-input"
+                  class="ant-col ant-form-item-label"
                 >
-                  <div
-                    class="ant-form-item-control-input-content"
-                  >
-                    <div
-                      class="filepond--wrapper"
-                    >
-                      <input
-                        accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                        id="fileUpload"
-                        multiple=""
-                        name="file"
-                        type="file"
-                      />
-                    </div>
-                  </div>
+                  <label
+                    class=""
+                    for="fileUpload"
+                    title=""
+                  />
                 </div>
                 <div
-                  style="display: flex; flex-wrap: nowrap;"
+                  class="ant-col ant-form-item-control"
                 >
                   <div
-                    class="ant-form-item-explain ant-form-item-explain-connected"
-                    id="fileUpload_help"
-                    role="alert"
+                    class="ant-form-item-control-input"
                   >
                     <div
-                      class=""
-                    />
+                      class="ant-form-item-control-input-content"
+                    >
+                      <div
+                        class="filepond--wrapper"
+                      >
+                        <input
+                          accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                          id="fileUpload"
+                          multiple=""
+                          name="file"
+                          type="file"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; flex-wrap: nowrap;"
+                  >
+                    <div
+                      class="ant-form-item-explain ant-form-item-explain-connected"
+                      id="fileUpload_help"
+                      role="alert"
+                    >
+                      <div
+                        class=""
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </span>
+      </div>
     </div>
   </div>
 </div>

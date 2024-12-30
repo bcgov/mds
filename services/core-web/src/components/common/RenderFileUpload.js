@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Form } from "antd";
 import FileUpload from "./FileUpload";
 
 /**
@@ -35,14 +34,14 @@ const defaultProps = {
   disabled: false,
   maxFileSize: "750MB",
   acceptedFileTypesMap: {},
-  onFileLoad: () => {},
-  onRemoveFile: () => {},
-  addFileStart: () => {},
+  onFileLoad: () => { },
+  onRemoveFile: () => { },
+  addFileStart: () => { },
   chunkSize: 1048576, // 1MB
   allowRevert: false,
   allowMultiple: true,
-  onProcessFiles: () => {},
-  onAbort: () => {},
+  onProcessFiles: () => { },
+  onAbort: () => { },
   labelIdle:
     '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br> \
   <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>',

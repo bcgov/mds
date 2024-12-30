@@ -1,10 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { DatePicker, Tooltip } from "antd";
-import { CoreTooltip } from "@/components/common/CoreTooltip";
+import { DatePicker, Form } from "antd";
 
 /**
  * @constant RenderDate  - Ant Design `DatePicker` component for redux-form.

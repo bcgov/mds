@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm, formValueSelector } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Row, Col } from "antd";
+import { Row, Col, Form } from "antd";
 import {
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
   getMineRegionDropdownOptions,
@@ -71,8 +69,8 @@ export const ReviewAdminAmendmentApplication = (props) => {
     const filteredApplicationTypeOptions = noticeOfWorkTypeDropDownDisabled
       ? props.applicationTypeOptions
       : props.applicationTypeOptions.filter((o) =>
-          mapNoticeOfWorkTypeBasedOnPermitNumber(permit.permit_prefix)?.includes(o.value)
-        );
+        mapNoticeOfWorkTypeBasedOnPermitNumber(permit.permit_prefix)?.includes(o.value)
+      );
 
     return (
       <div>
@@ -236,6 +234,6 @@ export default compose(
     touchOnChange: false,
     touchOnBlur: true,
     enableReinitialize: true,
-    onSubmit: () => {},
+    onSubmit: () => { },
   })
 )(ReviewAdminAmendmentApplication);

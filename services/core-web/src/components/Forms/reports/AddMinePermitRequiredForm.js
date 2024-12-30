@@ -3,9 +3,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
 import { Field, reduxForm, formValueSelector } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Button, Col, Form, Row, Popconfirm } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { required, date } from "@common/utils/Validate";
@@ -43,7 +41,7 @@ const selector = formValueSelector(FORM.ADD_REPORT);
 
 const defaultProps = {
   initialValues: {},
-  change: () => {},
+  change: () => { },
 };
 
 const requiredReceivedDateIfUploadedFiles = (value, formValues) =>
@@ -55,7 +53,7 @@ export class AddMinePermitRequiredForm extends Component {
   state = {
     existingReport: Boolean(
       this.props.initialValues.mine_report_submissions &&
-        this.props.initialValues.mine_report_submissions.length > 0
+      this.props.initialValues.mine_report_submissions.length > 0
     ),
     mineReportSubmissions: this.props.initialValues.mine_report_submissions,
   };
@@ -74,7 +72,7 @@ export class AddMinePermitRequiredForm extends Component {
     const permitDropdown = createDropDownList(this.props.permits, "permit_no", "permit_guid");
 
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <Form layout="vertical" onFinish={this.props.handleSubmit}>
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item>
@@ -139,7 +137,7 @@ export class AddMinePermitRequiredForm extends Component {
             />
             {this.state.existingReport &&
               this.state.mineReportSubmissions.filter((x) => x.mine_report_submission_guid).length >
-                0 && (
+              0 && (
                 <ReportComments
                   mineGuid={this.props.mineGuid}
                   mineReportGuid={this.props.initialValues.mine_report_guid}

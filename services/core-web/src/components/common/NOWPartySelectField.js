@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { throttle, isEmpty } from "lodash";
 import PropTypes from "prop-types";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Form } from "antd";
+
 import { PlusOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import { getSearchResults } from "@mds/common/redux/selectors/searchSelectors";
 import { getLastCreatedParty } from "@mds/common/redux/selectors/partiesSelectors";
@@ -200,7 +200,7 @@ export class NOWPartySelectField extends Component {
           createItemIdsArray(filteredParties, "party_guid"),
           createItemMap(filteredParties, "party_guid"),
           this.props.allowAddingParties &&
-            renderAddPartyHeader(this.showAddPartyForm, this.props.partyLabel)
+          renderAddPartyHeader(this.showAddPartyForm, this.props.partyLabel)
         );
         return { partyDataSource: newPartyDataSource };
       });

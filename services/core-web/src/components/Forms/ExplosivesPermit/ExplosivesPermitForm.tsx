@@ -9,9 +9,7 @@ import {
   getFormValues,
   InjectedFormProps,
 } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, Alert, Typography, Radio } from "antd";
+import { Button, Form, Col, Row, Popconfirm, Alert, Typography, Radio } from "antd";
 import {
   IOption,
   IGroupedDropdownList,
@@ -246,7 +244,7 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
     </>
   ) : (
     <>
-      <Form layout="vertical" onSubmit={props.handleSubmit}>
+      <Form layout="vertical" onFinish={props.handleSubmit}>
         {isHistoric && (
           <Alert
             message="Adding a Historic Explosives Storage & Use Permit"

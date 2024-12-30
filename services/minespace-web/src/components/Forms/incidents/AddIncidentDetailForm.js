@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import { Col, Divider, Row, Typography } from "antd";
+import { Col, Divider, Form, Row, Typography } from "antd";
 import { required, maxLength, wholeNumber, dateNotInFuture } from "@common/utils/Validate";
 import * as Strings from "@mds/common/constants/strings";
 import * as FORM from "@/constants/forms";

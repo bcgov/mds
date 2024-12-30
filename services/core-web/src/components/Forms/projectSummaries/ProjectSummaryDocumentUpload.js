@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, change, formValueSelector } from "redux-form";
-import { Form } from "@ant-design/compatible";
 import { connect } from "react-redux";
 import { remove } from "lodash";
-import { Typography, Row, Col } from "antd";
+import { Typography, Form, Row, Col } from "antd";
 import { bindActionCreators } from "redux";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";

@@ -9,8 +9,7 @@ exports[`EditNOWMineAndLocation renders properly 1`] = `
       md={12}
       s={12}
     >
-      <FormItem
-        hasFeedback={false}
+      <InternalFormItem
         label={
           Array [
             <Badge
@@ -30,14 +29,13 @@ exports[`EditNOWMineAndLocation renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
     <Col
       md={12}
       s={12}
     >
-      <FormItem
-        hasFeedback={false}
+      <InternalFormItem
         label="NoW Longitude"
       >
         <Field
@@ -51,7 +49,7 @@ exports[`EditNOWMineAndLocation renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
 </div>

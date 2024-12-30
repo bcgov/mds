@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, FieldArray } from "redux-form";
-import { Form } from "@ant-design/compatible";
 import {
   lat,
   lon,
@@ -12,8 +11,7 @@ import {
   required,
 } from "@common/utils/Validate";
 
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Collapse, Divider, Popconfirm, Row, Typography } from "antd";
+import { Button, Col, Collapse, Divider, Form, Popconfirm, Row, Typography } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { TRASHCAN } from "@/constants/assets";
 import { renderConfig } from "@/components/common/config";

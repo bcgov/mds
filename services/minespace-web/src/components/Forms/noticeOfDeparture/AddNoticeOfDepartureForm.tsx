@@ -7,8 +7,7 @@ import {
   InjectedFormProps,
   reduxForm,
 } from "redux-form";
-import { Alert, Button, Col, Popconfirm, Row, Typography } from "antd";
-import { Form } from "@ant-design/compatible";
+import { Alert, Button, Col, Form, Popconfirm, Row, Typography } from "antd";
 import {
   email,
   maxLength,
@@ -19,7 +18,10 @@ import {
   validateSelectOptions,
 } from "@common/utils/Validate";
 import { normalizePhone, resetForm } from "@common/utils/helpers";
-import { NOD_TYPE_FIELD_VALUE, NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@mds/common/constants/strings";
+import {
+  NOD_TYPE_FIELD_VALUE,
+  NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
+} from "@mds/common/constants/strings";
 import { bindActionCreators, compose } from "redux";
 import { DOCUMENT, EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
 import { NOTICE_OF_DEPARTURE_DOWNLOAD_LINK } from "@/constants/strings";
@@ -117,8 +119,9 @@ export const renderContacts: React.FC<RenderContactsProps> = (props) => {
   );
 };
 
-const AddNoticeOfDepartureForm: React.FC<InjectedFormProps<ICreateNoD> &
-  AddNoticeOfDepartureProps> = (props) => {
+const AddNoticeOfDepartureForm: React.FC<
+  InjectedFormProps<ICreateNoD> & AddNoticeOfDepartureProps
+> = (props) => {
   const { permits, onSubmit, closeModal, handleSubmit, mineGuid, change } = props;
   const [submitting, setSubmitting] = useState(false);
   const [hasChecklist, setHasChecklist] = useState(false);
@@ -192,7 +195,7 @@ const AddNoticeOfDepartureForm: React.FC<InjectedFormProps<ICreateNoD> &
 
   return (
     <div>
-      <Form layout="vertical" onSubmit={handleSubmit(handleNoticeOfDepartureSubmit)}>
+      <Form layout="vertical" onFinish={handleSubmit(handleNoticeOfDepartureSubmit)}>
         <Typography.Text>
           Please complete the following form to submit your Notice of Departure and any relevant
           supporting documents. For more information on the purpose and intent of a Notice of

@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Select } from "antd";
+import { Form, Select } from "antd";
 
 /**
  * @constant RenderLargeSelect - Ant Design `AutoComplete` component for redux-form -- being used instead of 'RenderSelect' for large data sets that require a limit.
@@ -34,7 +32,7 @@ const propTypes = {
   disabled: PropTypes.bool,
 };
 
-const doNothing = () => {};
+const doNothing = () => { };
 const defaultProps = {
   label: "",
   placeholder: "",

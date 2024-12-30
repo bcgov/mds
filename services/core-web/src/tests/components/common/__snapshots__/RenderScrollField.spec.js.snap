@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RenderScrollField renders properly 1`] = `
-<FormItem
-  hasFeedback={false}
+<InternalFormItem
   help={false}
   label=""
   placeholder="scroll"
@@ -14,5 +13,5 @@ exports[`RenderScrollField renders properly 1`] = `
     placeholder="scroll"
     rows={2}
   />
-</FormItem>
+</InternalFormItem>
 `;

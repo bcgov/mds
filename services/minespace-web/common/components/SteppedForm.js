@@ -1,9 +1,8 @@
-import { Button, Col, Menu, Popconfirm, Row } from "antd";
+import { Button, Col, Form, Menu, Popconfirm, Row } from "antd";
 import LeftOutlined from "@ant-design/icons/LeftOutlined";
 import RightOutlined from "@ant-design/icons/RightOutlined";
 import React, { useEffect, useState } from "react";
 
-import { Form } from "@ant-design/compatible";
 import PropTypes from "prop-types";
 import { formatUrlToUpperCaseString } from "@common/utils/helpers";
 import { indexOf } from "lodash";

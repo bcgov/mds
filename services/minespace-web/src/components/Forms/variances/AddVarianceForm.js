@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, change } from "redux-form";
 import { remove } from "lodash";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Popconfirm, Typography } from "antd";
+import { Button, Form, Popconfirm, Typography } from "antd";
 import { required, maxLength } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
@@ -47,7 +45,7 @@ export class AddVarianceForm extends Component {
     return (
       <Form
         layout="vertical"
-        onSubmit={this.props.handleSubmit(this.props.onSubmit(this.state.documentNameGuidMap))}
+        onFinish={this.props.handleSubmit(this.props.onSubmit(this.state.documentNameGuidMap))}
       >
         <Field
           id="compliance_article_id"

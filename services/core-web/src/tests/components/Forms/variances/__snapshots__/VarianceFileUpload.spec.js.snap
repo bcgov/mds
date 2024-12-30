@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`VarianceFileUpload renders properly 1`] = `
-<FormItem
-  hasFeedback={false}
->
+<InternalFormItem>
   <Field
     acceptedFileTypesMap={
       Object {
@@ -28,5 +26,5 @@ exports[`VarianceFileUpload renders properly 1`] = `
     onRemoveFile={[MockFunction]}
     uploadUrl="/mines/48593/variances/undefined/documents"
   />
-</FormItem>
+</InternalFormItem>
 `;

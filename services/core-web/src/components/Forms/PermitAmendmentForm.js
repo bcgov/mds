@@ -4,9 +4,7 @@ import { remove } from "lodash";
 import { connect } from "react-redux";
 import { compose, bindActionCreators } from "redux";
 import { Field, reduxForm, change, formValueSelector } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Alert, Button, Col, Row, Popconfirm, Divider } from "antd";
+import { Alert, Button, Col, Form, Row, Popconfirm, Divider } from "antd";
 import {
   required,
   maxLength,
@@ -123,7 +121,7 @@ export class PermitAmendmentForm extends Component {
       this.props.initialValues.permit_prefix === "C" ||
       this.props.initialValues.permit_prefix === "M";
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <Form layout="vertical" onFinish={this.props.handleSubmit}>
         <Row gutter={48}>
           <Col md={12} sm={24}>
             {!this.props.is_historical_amendment &&

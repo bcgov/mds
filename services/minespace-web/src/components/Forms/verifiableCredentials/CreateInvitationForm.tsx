@@ -2,9 +2,7 @@ import React, { FC, useState } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { reduxForm, InjectedFormProps } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Alert, Button, Popconfirm, Skeleton, Typography } from "antd";
+import { Alert, Button, Form, Popconfirm, Skeleton, Typography } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { IVCInvitation, LOADING_STATUS, VC_CONNECTION_STATES } from "@mds/common";
@@ -26,16 +24,9 @@ interface FormStateProps {
   invitation: IVCInvitation;
 }
 
-export const CreateInvitationForm: FC<CreateInvitationFormProps &
-  FormStateProps &
-  InjectedFormProps<any>> = ({
-  closeModal,
-  partyGuid,
-  partyName,
-  connectionState,
-  invitation,
-  ...props
-}) => {
+export const CreateInvitationForm: FC<
+  CreateInvitationFormProps & FormStateProps & InjectedFormProps<any>
+> = ({ closeModal, partyGuid, partyName, connectionState, invitation, ...props }) => {
   const isPreLoaded = invitation.invitation_url ? LOADING_STATUS.success : LOADING_STATUS.none;
   const [loading, setLoading] = useState(isPreLoaded);
 

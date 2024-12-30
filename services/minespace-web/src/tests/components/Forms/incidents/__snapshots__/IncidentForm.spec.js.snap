@@ -1,11 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`IncidentForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
+<ForwardRef(InternalForm)
   layout="vertical"
-  onSubmit={[Function]}
 >
   <Row>
     <Col>
@@ -55,8 +52,7 @@ exports[`IncidentForm renders properly 1`] = `
           md={10}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Reported by"
           >
             <Field
@@ -71,14 +67,13 @@ exports[`IncidentForm renders properly 1`] = `
                 ]
               }
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           md={10}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Phone number"
           >
             <Field
@@ -96,14 +91,13 @@ exports[`IncidentForm renders properly 1`] = `
                 ]
               }
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           md={4}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Ext. (optional)"
           >
             <Field
@@ -119,14 +113,13 @@ exports[`IncidentForm renders properly 1`] = `
                 ]
               }
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           md={10}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="* Email"
           >
             <Field
@@ -143,7 +136,7 @@ exports[`IncidentForm renders properly 1`] = `
                 ]
               }
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
       </Row>
       <br />
@@ -170,8 +163,7 @@ exports[`IncidentForm renders properly 1`] = `
         <Col
           span={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Incident Location"
           >
             <Field
@@ -201,14 +193,13 @@ exports[`IncidentForm renders properly 1`] = `
                 ]
               }
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Incident date and time"
           >
             <Field
@@ -240,14 +231,13 @@ exports[`IncidentForm renders properly 1`] = `
                 ]
               }
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Proponent incident number (optional)"
           >
             <Field
@@ -261,14 +251,13 @@ exports[`IncidentForm renders properly 1`] = `
                 ]
               }
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Number of injuries (optional)"
           >
             <Field
@@ -283,14 +272,13 @@ exports[`IncidentForm renders properly 1`] = `
                 ]
               }
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Number of fatalities (optional)"
           >
             <Field
@@ -305,14 +293,13 @@ exports[`IncidentForm renders properly 1`] = `
                 ]
               }
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Were emergency services called? (optional)"
           >
             <Field
@@ -322,13 +309,12 @@ exports[`IncidentForm renders properly 1`] = `
               name="emergency_services_called"
               placeholder="Please choose one"
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           span={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Description of incident"
           >
             <Field
@@ -344,13 +330,12 @@ exports[`IncidentForm renders properly 1`] = `
                 ]
               }
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           span={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Immediate measures taken (optional)"
           >
             <Field
@@ -365,13 +350,12 @@ exports[`IncidentForm renders properly 1`] = `
                 ]
               }
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           span={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="If any injuries, please describe (optional)"
           >
             <Field
@@ -386,7 +370,7 @@ exports[`IncidentForm renders properly 1`] = `
                 ]
               }
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Divider />
         <Col
@@ -418,8 +402,7 @@ exports[`IncidentForm renders properly 1`] = `
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)?"
           >
             <Field
@@ -433,7 +416,7 @@ exports[`IncidentForm renders properly 1`] = `
                 ]
               }
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           span={24}
@@ -449,8 +432,7 @@ exports[`IncidentForm renders properly 1`] = `
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="OHSC Worker Rep Name (optional)"
           >
             <Field
@@ -465,14 +447,13 @@ exports[`IncidentForm renders properly 1`] = `
                 ]
               }
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Has this person already been informed of the incident?"
           >
             <Field
@@ -481,7 +462,7 @@ exports[`IncidentForm renders properly 1`] = `
               id="johsc_worker_rep_contacted"
               name="johsc_worker_rep_contacted"
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           span={24}
@@ -497,8 +478,7 @@ exports[`IncidentForm renders properly 1`] = `
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="OHSC Management Rep Name (optional)"
           >
             <Field
@@ -513,14 +493,13 @@ exports[`IncidentForm renders properly 1`] = `
                 ]
               }
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Has this person already been informed of the incident?"
           >
             <Field
@@ -529,7 +508,7 @@ exports[`IncidentForm renders properly 1`] = `
               id="johsc_management_rep_contacted"
               name="johsc_management_rep_contacted"
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
       </Row>
       <br />
@@ -703,8 +682,7 @@ exports[`IncidentForm renders properly 1`] = `
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Was there a follow-up inspection?"
           >
             <Field
@@ -713,14 +691,13 @@ exports[`IncidentForm renders properly 1`] = `
               id="followup_inspection"
               name="followup_inspection"
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Follow-up inspection date"
           >
             <Field
@@ -739,14 +716,13 @@ exports[`IncidentForm renders properly 1`] = `
               normalize={[Function]}
               showTime={false}
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Was it escalated to EMLI investigation?"
           >
             <Field
@@ -755,14 +731,13 @@ exports[`IncidentForm renders properly 1`] = `
               id="followup_investigation_type_code"
               name="followup_investigation_type_code"
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Incident Status"
           >
             <Field
@@ -771,13 +746,12 @@ exports[`IncidentForm renders properly 1`] = `
               id="status_code"
               name="status_code"
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
         <Col
           span={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Mine manager's recommendations"
           >
             <FieldArray
@@ -786,10 +760,10 @@ exports[`IncidentForm renders properly 1`] = `
               id="recommendations"
               name="recommendations"
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
       </Row>
     </Col>
   </Row>
-</Form>
+</ForwardRef(InternalForm)>
 `;

@@ -2,11 +2,9 @@
 
 exports[`MergePartyConfirmationForm renders properly 1`] = `
 <div>
-  <Form
-    colon={true}
-    hideRequiredMark={false}
+  <ForwardRef(InternalForm)
     layout="vertical"
-    onSubmit={[MockFunction]}
+    onFinish={[MockFunction]}
   >
     <Alert
       description="Once the merge is complete a new contact will be created and all previous contacts selected will be deleted. All roles listed will be copied over to the new contact."
@@ -28,9 +26,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
           <Col
             span={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="party_name"
@@ -42,7 +38,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
         </Row>
         <Row
@@ -51,9 +47,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
           <Col
             span={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="email"
@@ -66,7 +60,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
         </Row>
         <Row
@@ -75,9 +69,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
           <Col
             span={18}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="phone_no"
@@ -93,14 +85,12 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
           <Col
             span={6}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="phone_ext"
@@ -113,7 +103,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
         </Row>
         <FormSection
@@ -125,9 +115,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
             <Col
               span={6}
             >
-              <FormItem
-                hasFeedback={false}
-              >
+              <InternalFormItem>
                 <Field
                   component={[Function]}
                   id="suite_no"
@@ -139,21 +127,19 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
                     ]
                   }
                 />
-              </FormItem>
+              </InternalFormItem>
             </Col>
             <Col
               span={18}
             >
-              <FormItem
-                hasFeedback={false}
-              >
+              <InternalFormItem>
                 <Field
                   component={[Function]}
                   id="address_line_1"
                   label="Street Address 1"
                   name="address_line_1"
                 />
-              </FormItem>
+              </InternalFormItem>
             </Col>
           </Row>
           <Row
@@ -162,23 +148,19 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
             <Col
               span={18}
             >
-              <FormItem
-                hasFeedback={false}
-              >
+              <InternalFormItem>
                 <Field
                   component={[Function]}
                   id="address_line_2"
                   label="Street Address 2"
                   name="address_line_2"
                 />
-              </FormItem>
+              </InternalFormItem>
             </Col>
             <Col
               span={6}
             >
-              <FormItem
-                hasFeedback={false}
-              >
+              <InternalFormItem>
                 <Field
                   component={[Function]}
                   data={
@@ -206,7 +188,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
                     ]
                   }
                 />
-              </FormItem>
+              </InternalFormItem>
             </Col>
           </Row>
           <Row
@@ -216,9 +198,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
               md={12}
               xs={24}
             >
-              <FormItem
-                hasFeedback={false}
-              >
+              <InternalFormItem>
                 <Field
                   component={[Function]}
                   id="city"
@@ -230,15 +210,13 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
                     ]
                   }
                 />
-              </FormItem>
+              </InternalFormItem>
             </Col>
             <Col
               md={12}
               xs={24}
             >
-              <FormItem
-                hasFeedback={false}
-              >
+              <InternalFormItem>
                 <Field
                   component={[Function]}
                   id="post_code"
@@ -253,7 +231,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
                     ]
                   }
                 />
-              </FormItem>
+              </InternalFormItem>
             </Col>
           </Row>
         </FormSection>
@@ -326,6 +304,6 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
         </Button>
       </Connect(AuthorizationWrapper)>
     </div>
-  </Form>
+  </ForwardRef(InternalForm)>
 </div>
 `;

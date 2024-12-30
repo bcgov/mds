@@ -3,9 +3,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Button, Col, Form, Row, Popconfirm } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { getExplosivesPermitStatusDropdownOptions } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -29,7 +27,7 @@ export const ExplosivesPermitStatusForm = (props) => {
     return value === "REJ" || value === "WIT";
   });
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <Form layout="vertical" onFinish={props.handleSubmit}>
       <Row gutter={16}>
         <Col span={24}>
           <Form.Item>

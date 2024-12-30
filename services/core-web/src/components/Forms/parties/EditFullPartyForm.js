@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Col, Row, Button, Popconfirm, Descriptions, Typography, Divider } from "antd";
+import { Col, Row, Button, Form, Popconfirm, Descriptions, Typography, Divider } from "antd";
 import { isEmpty } from "lodash";
 import {
   required,
@@ -52,7 +50,7 @@ export class EditFullPartyForm extends Component {
     return (
       <div>
         <Form
-          onSubmit={this.props.handleSubmit((values) => {
+          onFinish={this.props.handleSubmit((values) => {
             const party = {
               ...values,
               signature: this.state.signature,

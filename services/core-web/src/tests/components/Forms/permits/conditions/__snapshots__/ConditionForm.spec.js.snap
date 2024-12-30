@@ -15,11 +15,8 @@ exports[`ConditionForm renders properly 1`] = `
   <Col
     span={20}
   >
-    <Form
-      colon={true}
-      hideRequiredMark={false}
-      layout="horizontal"
-      onSubmit={[MockFunction]}
+    <ForwardRef(InternalForm)
+      onFinish={[MockFunction]}
     >
       <Field
         component={[Function]}
@@ -58,7 +55,7 @@ exports[`ConditionForm renders properly 1`] = `
           Save
         </Button>
       </div>
-    </Form>
+    </ForwardRef(InternalForm)>
   </Col>
   <Col
     span={3}

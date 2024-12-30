@@ -3,9 +3,7 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { reduxForm, Field } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Button, Col, Form, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { resetForm } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
@@ -46,7 +44,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  change: () => {},
+  change: () => { },
 };
 export class NOWReviewForm extends Component {
   state = {
@@ -82,7 +80,7 @@ export class NOWReviewForm extends Component {
     });
 
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <Form layout="vertical" onFinish={this.props.handleSubmit}>
         <Row gutter={16}>
           <Col span={24}>
             {this.props.type === REFERRAL_CODE && (

@@ -1,11 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ExplosivesPermitCloseForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
+<ForwardRef(InternalForm)
   layout="vertical"
-  onSubmit={[MockFunction]}
+  onFinish={[MockFunction]}
 >
   <Row
     gutter={16}
@@ -29,8 +27,7 @@ exports[`ExplosivesPermitCloseForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
+      <InternalFormItem
         label="Date Permit was Closed"
         required={true}
       >
@@ -62,7 +59,7 @@ exports[`ExplosivesPermitCloseForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <Row
@@ -71,16 +68,14 @@ exports[`ExplosivesPermitCloseForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
+      <InternalFormItem>
         <Field
           component={[Function]}
           id="closed_reason"
           label="Reason for closure"
           name="closed_reason"
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <div
@@ -111,5 +106,5 @@ exports[`ExplosivesPermitCloseForm renders properly 1`] = `
       Close Permit
     </Button>
   </div>
-</Form>
+</ForwardRef(InternalForm)>
 `;

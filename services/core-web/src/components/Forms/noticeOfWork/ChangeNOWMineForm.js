@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { reduxForm, Field, getFormValues } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Button, Col, Form, Row, Popconfirm } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import { required } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
@@ -21,7 +19,7 @@ const propTypes = {
 };
 
 export const ChangeNOWMineForm = (props) => (
-  <Form layout="vertical" onSubmit={props.handleSubmit}>
+  <Form layout="vertical" onFinish={props.handleSubmit}>
     <Row gutter={16}>
       <Col span={24}>
         <Form.Item>

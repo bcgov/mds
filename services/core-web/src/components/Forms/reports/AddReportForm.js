@@ -5,9 +5,7 @@ import { compose } from "redux";
 import PropTypes from "prop-types";
 import { flatMap, uniqBy } from "lodash";
 import { Field, reduxForm, formValueSelector } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, List } from "antd";
+import { Button, Col, Form, Row, Popconfirm, List } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { required, date } from "@common/utils/Validate";
@@ -155,7 +153,7 @@ export class AddReportForm extends Component {
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <Form layout="vertical" onFinish={this.props.handleSubmit}>
         <Row gutter={16}>
           <Col span={24}>
             {!this.props.initialValues.mine_report_definition_guid && (
@@ -204,10 +202,10 @@ export class AddReportForm extends Component {
                 >
                   {this.state.selectedMineReportComplianceArticles.length
                     ? this.state.selectedMineReportComplianceArticles.map((opt, index) => (
-                        <List.Item key={index}>
-                          {formatComplianceCodeValueOrLabel(opt, true)}
-                        </List.Item>
-                      ))
+                      <List.Item key={index}>
+                        {formatComplianceCodeValueOrLabel(opt, true)}
+                      </List.Item>
+                    ))
                     : [<List.Item key={1} />]}
                 </List>
               </Form.Item>
@@ -251,7 +249,7 @@ export class AddReportForm extends Component {
             />
             {this.state.existingReport &&
               this.state.mineReportSubmissions.filter((x) => x.mine_report_submission_guid).length >
-                0 && (
+              0 && (
                 <ReportComments
                   mineGuid={this.props.mineGuid}
                   mineReportGuid={this.props.initialValues.mine_report_guid}

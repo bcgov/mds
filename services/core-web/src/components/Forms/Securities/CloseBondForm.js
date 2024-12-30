@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Button, Col, Form, Row, Popconfirm } from "antd";
 import {
   required,
   date,
@@ -31,7 +29,7 @@ const propTypes = {
 export const CloseBondForm = (props) => {
   const bondStatusDescription = props.bondStatusOptionsHash[props.bondStatusCode];
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <Form layout="vertical" onFinish={props.handleSubmit}>
       <Row>
         <Col span={24}>
           {props.bondStatusCode === "CON" && (

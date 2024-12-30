@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, FormSection } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, Alert } from "antd";
+import { Button, Col, Form, Row, Popconfirm, Alert } from "antd";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { formatDate, resetForm, normalizePhone, upperCase } from "@common/utils/helpers";
 
@@ -74,7 +72,7 @@ export const MergePartyConfirmationForm = (props) => {
 
   return (
     <div>
-      <Form layout="vertical" onSubmit={props.handleSubmit}>
+      <Form layout="vertical" onFinish={props.handleSubmit}>
         <Alert
           message="Ensure the information is correct"
           description="Once the merge is complete a new contact will be created and all previous contacts selected will be deleted. All roles listed will be copied over to the new contact."

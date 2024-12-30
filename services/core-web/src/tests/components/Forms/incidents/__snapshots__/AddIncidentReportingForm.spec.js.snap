@@ -2,11 +2,8 @@
 
 exports[`AddIncidentReportingForm renders properly 1`] = `
 <div>
-  <Form
-    colon={true}
-    hideRequiredMark={false}
+  <ForwardRef(InternalForm)
     layout="vertical"
-    onSubmit={[Function]}
   >
     <Row
       gutter={48}
@@ -14,9 +11,7 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
       <Col
         span={24}
       >
-        <FormItem
-          hasFeedback={false}
-        >
+        <InternalFormItem>
           <Field
             component={[Function]}
             id="categories"
@@ -29,10 +24,8 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
               ]
             }
           />
-        </FormItem>
-        <FormItem
-          hasFeedback={false}
-        >
+        </InternalFormItem>
+        <InternalFormItem>
           <Field
             component={[Function]}
             format={null}
@@ -46,10 +39,8 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
               ]
             }
           />
-        </FormItem>
-        <FormItem
-          hasFeedback={false}
-        >
+        </InternalFormItem>
+        <InternalFormItem>
           <Field
             component={[Function]}
             format={null}
@@ -63,13 +54,11 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
               ]
             }
           />
-        </FormItem>
+        </InternalFormItem>
         <h4>
           Reporter Details
         </h4>
-        <FormItem
-          hasFeedback={false}
-        >
+        <InternalFormItem>
           <Field
             component={[Function]}
             id="reported_by_name"
@@ -82,7 +71,7 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
               ]
             }
           />
-        </FormItem>
+        </InternalFormItem>
         <Row
           gutter={16}
         >
@@ -90,9 +79,7 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
             md={12}
             xs={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="reported_by_phone_no"
@@ -107,15 +94,13 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
           <Col
             md={12}
             xs={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="reported_by_phone_ext"
@@ -129,12 +114,10 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
         </Row>
-        <FormItem
-          hasFeedback={false}
-        >
+        <InternalFormItem>
           <Field
             component={[Function]}
             id="reported_by_email"
@@ -147,7 +130,7 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
               ]
             }
           />
-        </FormItem>
+        </InternalFormItem>
         <Row
           gutter={16}
         >
@@ -155,9 +138,7 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
             md={12}
             xs={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 id="reported_date"
@@ -171,15 +152,13 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
           <Col
             md={12}
             xs={24}
           >
-            <FormItem
-              hasFeedback={false}
-            >
+            <InternalFormItem>
               <Field
                 component={[Function]}
                 fullWidth={true}
@@ -193,11 +172,11 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
                   ]
                 }
               />
-            </FormItem>
+            </InternalFormItem>
           </Col>
         </Row>
       </Col>
     </Row>
-  </Form>
+  </ForwardRef(InternalForm)>
 </div>
 `;

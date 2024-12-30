@@ -5,12 +5,9 @@ import { v4 as uuidv4 } from "uuid";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { startCase } from "lodash";
-import { Col, Row, Button, Card, Popconfirm } from "antd";
+import { Col, Row, Button, Card, Form, Popconfirm } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { FieldArray, Field, change } from "redux-form";
-
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { getAddPartyFormState } from "@mds/common/redux/selectors/partiesSelectors";
 import { getPartyRelationshipTypesList } from "@mds/common/redux/selectors/staticContentSelectors";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
@@ -95,9 +92,8 @@ const NOWContact = ({
           <Popconfirm
             className="no-margin"
             placement="topLeft"
-            title={`Are you sure you want to remove the ${
-              contact.mine_party_appt_type_code_description
-            }, ${startCase(contact.party.name)}, as a contact on this Notice of Work?`}
+            title={`Are you sure you want to remove the ${contact.mine_party_appt_type_code_description
+              }, ${startCase(contact.party.name)}, as a contact on this Notice of Work?`}
             okText="Delete"
             cancelText="Cancel"
             onConfirm={handleRemove}
@@ -340,7 +336,7 @@ export class EditNoWContacts extends Component {
     if (
       nextProps.addPartyFormState.showingAddPartyForm &&
       this.props.addPartyFormState.showingAddPartyForm !==
-        nextProps.addPartyFormState.showingAddPartyForm
+      nextProps.addPartyFormState.showingAddPartyForm
     ) {
       this.showAddPartyModal();
     }

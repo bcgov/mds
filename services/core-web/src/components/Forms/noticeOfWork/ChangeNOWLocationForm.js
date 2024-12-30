@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { reduxForm, formValueSelector } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Popconfirm } from "antd";
+import { Button, Form, Popconfirm } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
@@ -44,7 +42,7 @@ export class ChangeNOWLocationForm extends Component {
         ? [this.props.latitude, this.props.longitude]
         : [];
     return (
-      <Form layout="vertical" onSubmit={this.handleFormSubmit}>
+      <Form layout="vertical" onFinish={this.handleFormSubmit}>
         <EditNOWMineAndLocation
           locationOnly
           latitude={this.props.latitude}
@@ -96,6 +94,6 @@ export default compose(
   reduxForm({
     form: FORM.CHANGE_NOW_LOCATION,
     onSubmitSuccess: resetForm(FORM.CHANGE_NOW_LOCATION),
-    onSubmit: () => {},
+    onSubmit: () => { },
   })
 )(ChangeNOWLocationForm);

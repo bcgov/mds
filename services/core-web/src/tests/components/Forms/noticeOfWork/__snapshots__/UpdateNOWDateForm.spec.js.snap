@@ -33,11 +33,9 @@ exports[`UpdateNOWDateForm renders properly 1`] = `
     type="info"
   />
   <br />
-  <Form
-    colon={true}
-    hideRequiredMark={false}
+  <ForwardRef(InternalForm)
     layout="vertical"
-    onSubmit={[MockFunction]}
+    onFinish={[MockFunction]}
   >
     <Row
       gutter={16}
@@ -45,9 +43,7 @@ exports[`UpdateNOWDateForm renders properly 1`] = `
       <Col
         span={24}
       >
-        <FormItem
-          hasFeedback={false}
-        >
+        <InternalFormItem>
           <Field
             component={[Function]}
             id="verified_by_user_date"
@@ -61,7 +57,7 @@ exports[`UpdateNOWDateForm renders properly 1`] = `
               ]
             }
           />
-        </FormItem>
+        </InternalFormItem>
       </Col>
     </Row>
     <div
@@ -92,6 +88,6 @@ exports[`UpdateNOWDateForm renders properly 1`] = `
         </Button>
       </Connect(AuthorizationWrapper)>
     </div>
-  </Form>
+  </ForwardRef(InternalForm)>
 </div>
 `;

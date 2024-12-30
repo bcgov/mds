@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Form, Row } from "antd";
 import { requiredList } from "@common/utils/Validate";
 import { nullableStringSorter, resetForm } from "@common/utils/helpers";
 import RenderField from "@/components/common/RenderField";
@@ -23,7 +21,7 @@ export const EditMinespaceUser = (props) => {
   const { mines, handleSubmit, handleChange, handleSearch } = props;
   const isModal = true; // currently no instance where it's not in a modal
   return (
-    <Form layout="vertical" onSubmit={handleSubmit}>
+    <Form layout="vertical" onFinish={handleSubmit}>
       <Col span={24}>
         <Row>
           <Col span={24}>

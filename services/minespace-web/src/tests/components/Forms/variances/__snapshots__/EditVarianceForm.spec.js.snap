@@ -1,11 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EditVarianceForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
+<ForwardRef(InternalForm)
   layout="vertical"
-  onSubmit={[Function]}
+  onFinish={[Function]}
 >
   <VarianceDetails
     complianceCodesHash={
@@ -44,8 +42,7 @@ exports[`EditVarianceForm renders properly 1`] = `
       }
     }
   />
-  <FormItem
-    hasFeedback={false}
+  <InternalFormItem
     label="Attached Files"
   >
     <ForwardRef>
@@ -59,7 +56,7 @@ exports[`EditVarianceForm renders properly 1`] = `
       onFileLoad={[Function]}
       onRemoveFile={[Function]}
     />
-  </FormItem>
+  </InternalFormItem>
   <div
     className="ant-modal-footer"
   >
@@ -82,5 +79,5 @@ exports[`EditVarianceForm renders properly 1`] = `
       Submit
     </Button>
   </div>
-</Form>
+</ForwardRef(InternalForm)>
 `;

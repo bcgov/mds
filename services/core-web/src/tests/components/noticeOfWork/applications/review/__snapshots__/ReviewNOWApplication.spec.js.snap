@@ -2,11 +2,8 @@
 
 exports[`ReviewNOWApplication renders properly 1`] = `
 <div>
-  <Form
-    colon={true}
-    hideRequiredMark={false}
+  <ForwardRef(InternalForm)
     layout="vertical"
-    onSubmit={[Function]}
   >
     <withRouter(Connect(ScrollContentWrapper))
       id="applicant-info"
@@ -2197,6 +2194,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         tableDescription="In this table, you can see all documents submitted during initial application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified."
       />
     </withRouter(Connect(ScrollContentWrapper))>
-  </Form>
+  </ForwardRef(InternalForm)>
 </div>
 `;
