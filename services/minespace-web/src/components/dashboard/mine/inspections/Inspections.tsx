@@ -10,6 +10,13 @@ import TableSummaryCard from "@/components/common/TableSummaryCard";
 import * as Strings from "@/constants/strings";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { IMine } from "@mds/common/interfaces/mine.interface";
+import {
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  ExclamationCircleOutlined,
+  FileTextOutlined,
+} from "@ant-design/icons";
+import { COLOR } from "@mds/common/constants/styles";
 
 export const Inspections: FC = () => {
   const dispatch = useDispatch();
@@ -49,24 +56,24 @@ export const Inspections: FC = () => {
               <TableSummaryCard
                 title="Inspections YTD"
                 content={mineComplianceInfo.year_to_date.num_inspections}
-                icon="check-circle"
-                type="success"
+                Icon={CheckCircleOutlined}
+                iconColor={COLOR.successGreen}
               />
             </Col>
             <Col sm={24} md={10} lg={6}>
               <TableSummaryCard
                 title="Responses Due"
                 content={mineComplianceInfo.num_open_orders}
-                icon="exclamation-circle"
-                type="warning"
+                Icon={ExclamationCircleOutlined}
+                iconColor={COLOR.yellow}
               />
             </Col>
             <Col sm={24} md={10} lg={6}>
               <TableSummaryCard
                 title="Overdue Orders"
                 content={mineComplianceInfo.num_overdue_orders}
-                icon="clock-circle"
-                type="error"
+                Icon={ClockCircleOutlined}
+                iconColor={COLOR.errorRed}
               />
             </Col>
             <Col sm={24} md={10} lg={6}>
@@ -85,8 +92,8 @@ export const Inspections: FC = () => {
                     Strings.EMPTY_FIELD
                   )
                 }
-                icon="file-text"
-                type="info"
+                Icon={FileTextOutlined}
+                iconColor={COLOR.blue}
               />
             </Col>
           </Row>
