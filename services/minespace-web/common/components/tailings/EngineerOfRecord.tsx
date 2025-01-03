@@ -7,7 +7,8 @@ import { IDocument, IMine, IMinePartyAppt, PARTY_APPOINTMENT_STATUS } from "@mds
 import { MINE_PARTY_APPOINTMENT_DOCUMENTS } from "@mds/common/constants/API";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { bindActionCreators } from "redux";
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import {
@@ -179,9 +180,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
 
   const daysToEORExpiry =
     currentEor?.end_date &&
-    moment(currentEor.end_date)
-      .startOf("day")
-      .diff(moment().startOf("day"), "days");
+    moment(currentEor.end_date).startOf("day").diff(moment().startOf("day"), "days");
 
   // Enable editing of the EoR when a new EoR party has been selected (party_guid is set),
   // but it has yet to be assigned to the TSF (mine_party_appt_guid is not set).

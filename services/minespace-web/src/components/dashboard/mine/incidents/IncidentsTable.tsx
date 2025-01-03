@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { useHistory } from "react-router-dom";
 import { Button } from "antd";
 import { formatDateTimeTz } from "@common/utils/helpers";

@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import * as Strings from "@mds/common/constants/strings";
 import queryString from "query-string";
 import { fetchProjects } from "@mds/common/redux/actionCreators/projectActionCreator";

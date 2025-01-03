@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { startCase, camelCase } from "lodash";
 import { Tooltip } from "antd";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
 import { detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common/utils";
 import { USER_ROLES } from "@mds/common/constants";

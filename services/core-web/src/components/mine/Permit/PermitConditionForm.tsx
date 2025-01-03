@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch } from "@mds/common/redux/rootState";
 import { useParams } from "react-router-dom";
 import { change, Field, reset } from "redux-form";
 import { Row, Col, Button } from "antd";

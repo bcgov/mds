@@ -6,7 +6,9 @@ import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelect
 
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { bindActionCreators } from "redux";
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
+
 import {
   dateInFuture,
   dateNotInFuture,

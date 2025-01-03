@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { getFormValues, change, touch } from "redux-form";
 import { Row, Button, Steps } from "antd";
 import * as FORM from "@/constants/forms";

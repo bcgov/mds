@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch } from "@mds/common/redux/rootState";
 import { BrowserRouter } from "react-router-dom";
 import { hot } from "react-hot-loader";
 import Routes from "./routes/Routes";

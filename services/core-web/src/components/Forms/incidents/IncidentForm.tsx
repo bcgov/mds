@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { useParams, withRouter } from "react-router-dom";
 import { compose } from "redux";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { change, formValueSelector, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Form, Row } from "antd";

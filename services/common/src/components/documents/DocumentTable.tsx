@@ -15,7 +15,7 @@ import { some } from "lodash";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import DocumentCompression from "@mds/common/components/documents/DocumentCompression";
 import { archiveMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
-import { useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch } from "@mds/common/redux/rootState";
 import { Feature } from "@mds/common/utils/featureFlag";
 import { SizeType } from "antd/lib/config-provider/SizeContext";
 import { ColumnsType } from "antd/es/table";

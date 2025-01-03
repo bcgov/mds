@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
 import { flattenObject } from "@common/utils/helpers";
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Link, useParams, withRouter } from "react-router-dom";
 import {
   change,

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { getFormValues } from "redux-form";
 import { FORM } from "@mds/common/constants/forms";
 import DocumentUpload from "@mds/common/components/projectSummary/DocumentUpload";

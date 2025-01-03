@@ -12,7 +12,7 @@ import {
   getMineCommodityOptions,
   getMineDisturbanceOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 
 const { Title, Paragraph } = Typography;
 

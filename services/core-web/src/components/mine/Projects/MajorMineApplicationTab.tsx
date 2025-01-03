@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { useParams } from "react-router-dom";
 import { Row, Col, Typography, Descriptions, Input, Button } from "antd";
 import DownloadOutlined from "@ant-design/icons/DownloadOutlined";

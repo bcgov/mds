@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Badge, Button, Col, Dropdown, Popconfirm, Row, Tooltip, Typography } from "antd";
 import { DeleteOutlined, EditOutlined, EyeOutlined, WarningOutlined } from "@ant-design/icons";
 import { dateSorter, formatDate } from "@common/utils/helpers";
@@ -123,9 +123,9 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
 
   const editPermitFunction = isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
     ? (actionKey) => (event, permitRecord) =>
-        props.handleOpenEditExplosivesPermitModal(event, permitRecord, actionKey)
+      props.handleOpenEditExplosivesPermitModal(event, permitRecord, actionKey)
     : (_actionKey) => (event, permitRecord) =>
-        props.handleOpenAddExplosivesPermitModal(event, isPermitTab, permitRecord);
+      props.handleOpenAddExplosivesPermitModal(event, isPermitTab, permitRecord);
 
   const editDocumentAction: ITableAction = {
     key: "edit_documents",
@@ -257,9 +257,8 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
               <AuthorizationWrapper permission={Permission.ADMIN}>
                 <Popconfirm
                   placement="topLeft"
-                  title={`Are you sure you want to delete the Explosives Storage & Use ${
-                    isPermitTab ? "Permit" : "Permit Application"
-                  }?`}
+                  title={`Are you sure you want to delete the Explosives Storage & Use ${isPermitTab ? "Permit" : "Permit Application"
+                    }?`}
                   onConfirm={(event) => props.handleDeleteExplosivesPermit(event, record)}
                   okText="Delete"
                   cancelText="Cancel"
@@ -582,19 +581,19 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
       expandProps={
         isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
           ? {
-              rowExpandable: (record: IExplosivesPermit) => record.amendment_count > 0,
-              recordDescription: "amendment details",
-              getDataSource: (record: IExplosivesPermit) =>
-                record.explosives_permit_amendments.sort((a, b) => b.amendment_no - a.amendment_no),
-              subTableColumns: amendmentDetailColumns,
-            }
+            rowExpandable: (record: IExplosivesPermit) => record.amendment_count > 0,
+            recordDescription: "amendment details",
+            getDataSource: (record: IExplosivesPermit) =>
+              record.explosives_permit_amendments.sort((a, b) => b.amendment_no - a.amendment_no),
+            subTableColumns: amendmentDetailColumns,
+          }
           : {
-              rowKey: (document) => document.mine_document_guid,
-              rowExpandable: (record) => record.documents.length > 0,
-              recordDescription: "document details",
-              getDataSource: (record) => record.documents,
-              subTableColumns: documentDetailColumns,
-            }
+            rowKey: (document) => document.mine_document_guid,
+            rowExpandable: (record) => record.documents.length > 0,
+            recordDescription: "document details",
+            getDataSource: (record) => record.documents,
+            subTableColumns: documentDetailColumns,
+          }
       }
     />
   );

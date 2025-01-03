@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
-import { connect, useDispatch } from "react-redux";
+import { connect } from "react-redux";
+import { useAppDispatch as useDispatch } from "@mds/common/redux/rootState";
 import { Link, useHistory, withRouter } from "react-router-dom";
 import { Button, Drawer, Popconfirm } from "antd";
 import { CloseOutlined, EyeOutlined } from "@ant-design/icons";
@@ -128,8 +129,8 @@ const MineIncidentTable: FC<MineIncidentTableProps> = (props) => {
         incident_types:
           incident.categories && incident.categories.length > 0
             ? incident.categories.map(
-                (type) => incidentCategoryCodeHash[type.mine_incident_category_code]
-              )
+              (type) => incidentCategoryCodeHash[type.mine_incident_category_code]
+            )
             : [],
         handleEditMineIncident,
         handleDeleteMineIncident,

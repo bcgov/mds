@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Link } from "react-router-dom";
 import {
   arrayPush,
@@ -88,16 +88,16 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
   };
 
   const onDeleteDocument = (event, key: string) => {
-    const document = tableDocuments.find( (doc) => key === doc.key);
-    if(document){
+    const document = tableDocuments.find((doc) => key === doc.key);
+    if (document) {
       dispatch(
         removeDocumentFromProjectSummary(
           project_guid,
           project_summary_guid,
           document.mine_document_guid
-      )).then( () => {
-        removeAmendmentDocument(tableDocuments.indexOf(document),document.category,document.document_manager_guid)
-      })
+        )).then(() => {
+          removeAmendmentDocument(tableDocuments.indexOf(document), document.category, document.document_manager_guid)
+        })
     }
   }
 

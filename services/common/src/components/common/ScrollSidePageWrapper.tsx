@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, ReactNode, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import ScrollSideMenu, { ScrollSideMenuProps } from "./ScrollSideMenu";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";

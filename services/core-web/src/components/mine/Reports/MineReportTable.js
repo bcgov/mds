@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import * as Strings from "@mds/common/constants/strings";
 import {
   formatDate,
@@ -51,7 +52,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  handleTableChange: () => {},
+  handleTableChange: () => { },
   filters: {},
   sortField: undefined,
   sortDir: undefined,
@@ -142,9 +143,9 @@ export const MineReportTable = (props) => {
   const getComplianceCodeValue = (guid) => {
     return props.mineReportDefinitionHash && props.mineReportDefinitionHash[guid]
       ? formatComplianceCodeValueOrLabel(
-          props.mineReportDefinitionHash[guid].compliance_articles[0],
-          false
-        )
+        props.mineReportDefinitionHash[guid].compliance_articles[0],
+        false
+      )
       : null;
   };
 

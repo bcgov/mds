@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useContext } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { isDirty, isSubmitting } from "redux-form";
 import { FormContext } from "./FormWrapper";
 import { Button } from "antd";

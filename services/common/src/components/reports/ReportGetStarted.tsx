@@ -2,7 +2,7 @@ import { Alert, Button, Col, Row, Typography } from "antd";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { Field, getFormValues, change } from "redux-form";
 import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { IMine, IMineReportDefinition, IMineReportSubmission } from "@mds/common/interfaces";
 import {
   createDropDownList,

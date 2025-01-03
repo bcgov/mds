@@ -3,7 +3,7 @@ import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row } from "antd";
 import { BookOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import { isEmpty } from "lodash";
-import { useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch } from "@mds/common/redux/rootState";
 import {
   createPartyOrgBookEntity,
   deletePartyOrgBookEntity,

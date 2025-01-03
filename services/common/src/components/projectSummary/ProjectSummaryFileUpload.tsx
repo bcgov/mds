@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState, ReactNode } from "react";
 import { Field, WrappedFieldProps } from "redux-form";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { NEW_VERSION_DOCUMENTS, PROJECT_SUMMARY_DOCUMENTS } from "@mds/common/constants/API";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
 import { Alert, Divider, Modal, Popconfirm, Table, Typography } from "antd";

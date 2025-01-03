@@ -1,7 +1,7 @@
 import { Alert, Button, Col, Drawer, Row, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
 import { Route, Switch, useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { isDirty, submit } from "redux-form";
 import {
   getSystemFlag,

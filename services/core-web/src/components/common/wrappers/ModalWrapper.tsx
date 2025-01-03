@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import CommonModalWrapper from "@mds/common/wrappers/CommonModalWrapper";
 import { getContent, getProps } from "@mds/common/redux/selectors/modalSelectors";
 import AddPartyComponentWrapper from "./AddPartyComponentWrapper";

@@ -18,7 +18,7 @@ import {
 } from "@mds/common/constants/enums";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { getProject } from "@mds/common/redux/selectors/projectSelectors";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";

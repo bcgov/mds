@@ -6,7 +6,8 @@ import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelect
 
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { bindActionCreators } from "redux";
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import {
   dateInFuture,
   dateNotInFuture,
@@ -65,9 +66,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
 
   const daysToQPExpiry =
     currentQp?.end_date &&
-    moment(currentQp?.end_date)
-      .startOf("day")
-      .diff(moment().startOf("day"), "days");
+    moment(currentQp?.end_date).startOf("day").diff(moment().startOf("day"), "days");
 
   const openCreateQPModal = (event) => {
     event.preventDefault();

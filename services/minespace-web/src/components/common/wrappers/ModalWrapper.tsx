@@ -1,5 +1,8 @@
 import React, { FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  useAppDispatch as useDispatch,
+  useAppSelector as useSelector,
+} from "@mds/common/redux/rootState";
 import LoadingBar from "react-redux-loading-bar";
 import CommonModalWrapper from "@mds/common/wrappers/CommonModalWrapper";
 import { getProps, getContent } from "@mds/common/redux/selectors/modalSelectors";

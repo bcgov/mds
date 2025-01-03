@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Field, change, getFormValues } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { required, maxLength } from "@common/utils/Validate";

@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { debounce } from "lodash";
 import { Field } from "redux-form";
 import { getSearchUsers, searchUsers } from "@mds/common/redux/slices/userSlice";
@@ -25,7 +25,7 @@ const transformUserData = (users) => {
 };
 
 export const UserSelectField: FC<UserSelectFieldProps> = ({
-  onSelect = () => {},
+  onSelect = () => { },
   validate = [],
   disabled = false,
   required = false,

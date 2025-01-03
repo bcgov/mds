@@ -1,5 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  useAppDispatch as useDispatch,
+  useAppSelector as useSelector,
+} from "@mds/common/redux/rootState";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row, Typography } from "antd";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";

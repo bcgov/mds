@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { FORM, IPermitConditionCategory, USER_ROLES } from "@mds/common";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Button, Col, Popconfirm, Row, Typography } from "antd";
 import { faCheck } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

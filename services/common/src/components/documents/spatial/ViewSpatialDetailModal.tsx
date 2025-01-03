@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Button, Row, Typography } from "antd";
-import { useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch } from "@mds/common/redux/rootState";
 import ViewSpatialDetail, { ViewSpatialDetailProps } from "./ViewSpatialDetail";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
 

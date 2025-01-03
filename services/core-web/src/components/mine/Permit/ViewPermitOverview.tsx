@@ -14,7 +14,7 @@ import {
 } from "@mds/common";
 import { useParams } from "react-router-dom";
 import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { findOptionDescription, getDescriptionsFromCodes } from "@mds/common/redux/utils/helpers";
 import {

@@ -1,5 +1,8 @@
 import React, { FC, useContext } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  useAppDispatch as useDispatch,
+  useAppSelector as useSelector,
+} from "@mds/common/redux/rootState";
 import { Row, Col, Typography, Button } from "antd";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {

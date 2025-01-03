@@ -8,7 +8,7 @@ import { IMine, IPermit } from "@mds/common/interfaces";
 import React, { FC, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { renderDateColumn } from "@mds/common/components/common/CoreTableCommonColumns";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
@@ -169,7 +169,7 @@ export const ViewDigitalPermitCredential: FC = () => {
                 <Paragraph className="margin-none">
                   {VC_CRED_ISSUE_STATES[activePermitCredential?.cred_exch_state] ??
                     VC_CRED_ISSUE_STATES[
-                      minesActPermitIssuance[minesActPermitIssuance.length - 1]?.cred_exch_state
+                    minesActPermitIssuance[minesActPermitIssuance.length - 1]?.cred_exch_state
                     ] ??
                     "No Credential Issued"}
                 </Paragraph>

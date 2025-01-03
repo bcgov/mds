@@ -8,7 +8,7 @@ import {
 } from "@mds/common/constants";
 import Callout from "../common/Callout";
 import { Alert, Col, Row } from "antd";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 export const statusTextHash = (status: string, isCore: boolean) => {
@@ -47,11 +47,10 @@ export const statusTextHash = (status: string, isCore: boolean) => {
       CHR: {
         severity: CALLOUT_SEVERITY.warning,
         message: `This project requires changes by the mine. MineSpace users can update text fields and update documents. 
-        Note: ${
-          isCore
+        Note: ${isCore
             ? "when the MineSpace user resubmits at this step the project status will be changed to under review."
             : "Navigate to the submit section of the form to resubmit your application after making any changes to have them resubmitted to the ministry."
-        }`,
+          }`,
       },
       ASG: {
         severity: CALLOUT_SEVERITY.success,

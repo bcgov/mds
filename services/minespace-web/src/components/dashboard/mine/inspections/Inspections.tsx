@@ -1,5 +1,8 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import {
+  useAppDispatch as useDispatch,
+  useAppSelector as useSelector,
+} from "@mds/common/redux/rootState";
 import moment from "moment";
 import { Row, Col, Typography } from "antd";
 import { formatDate } from "@common/utils/helpers";

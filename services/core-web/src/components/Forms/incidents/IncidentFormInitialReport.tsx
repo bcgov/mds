@@ -2,7 +2,7 @@ import { Col, Divider, Form, Row, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
 import { Field, getFormValues } from "redux-form";
 import { renderConfig } from "@/components/common/config";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import {
   dateNotInFutureTZ,
   dateTimezoneRequired,

@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Divider, Tabs } from "antd";
 import {
   deleteMineReport,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { IPermit, VC_CONNECTION_STATES } from "@mds/common";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { useHistory, useParams } from "react-router-dom";

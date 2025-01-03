@@ -1,6 +1,6 @@
 import React, { FC, useContext, useEffect } from "react";
 import { change, Field, getFormValues } from "redux-form";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Button, Typography } from "antd";
 import { CSV, DOCUMENT, EXCEL, IMAGE, OTHER_SPATIAL, XML } from "@mds/common/constants/fileTypes";
 import DocumentTable from "../documents/DocumentTable";
@@ -173,16 +173,16 @@ export const DocumentUpload: FC<DocumentUploadProps> = ({ docFieldsDisabled, del
   };
 
   const onDeleteDocument = (event, key: string) => {
-    const document = documents.find( (doc) => key === doc.mine_document_guid);
-    if(document){
+    const document = documents.find((doc) => key === doc.mine_document_guid);
+    if (document) {
       dispatch(
         removeDocumentFromProjectSummary(
           project_guid,
           project_summary_guid,
           document.mine_document_guid
-      )).then( () => {
-        removeFile(document);
-      })
+        )).then(() => {
+          removeFile(document);
+        })
     }
   }
 

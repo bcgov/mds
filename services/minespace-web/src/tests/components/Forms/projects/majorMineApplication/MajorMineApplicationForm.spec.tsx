@@ -8,7 +8,7 @@ import { ReduxWrapper as CommonReduxWrapper } from "@mds/common/tests/utils/Redu
 import { ReduxWrapper as MinespaceReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { BrowserRouter } from "react-router-dom";
 
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 
 const mockDispatch = jest.fn();
 

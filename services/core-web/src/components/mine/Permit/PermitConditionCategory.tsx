@@ -11,7 +11,7 @@ import { faArrowDown, faArrowUp, faCheck, faTrash, faXmark } from "@fortawesome/
 import PermitConditionCategorySelector from "./PermitConditionCategorySelector";
 import { required } from "@mds/common/redux/utils/Validate";
 import { reset } from 'redux-form';
-import { useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch } from "@mds/common/redux/rootState";
 
 export interface IPermitConditionCategoryProps {
   onChange: (category: IPermitConditionCategory) => void | Promise<void>;

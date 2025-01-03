@@ -1,5 +1,8 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  useAppDispatch as useDispatch,
+  useAppSelector as useSelector,
+} from "@mds/common/redux/rootState";
 import { Row, Col, Typography } from "antd";
 import { fetchMineBonds } from "@mds/common/redux/actionCreators/securitiesActionCreator";
 import { getBonds } from "@mds/common/redux/selectors/securitiesSelectors";

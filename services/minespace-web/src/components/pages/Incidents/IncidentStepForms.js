@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { getFormValues } from "redux-form";
 import { Button, Col, Popconfirm, Row } from "antd";
 import { useHistory } from "react-router-dom";

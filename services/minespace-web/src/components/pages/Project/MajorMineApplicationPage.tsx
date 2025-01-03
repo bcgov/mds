@@ -1,5 +1,8 @@
 import React, { FC, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import {
+  useAppDispatch as useDispatch,
+  useAppSelector as useSelector,
+} from "@mds/common/redux/rootState";
 import { getFormValues, isDirty, submit } from "redux-form";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { Button, Row, Col, Popconfirm, Steps, Typography } from "antd";

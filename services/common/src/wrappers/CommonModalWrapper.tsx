@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Button, Modal, Popconfirm } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { closeModal } from "@mds/common/redux/actions/modalActions";

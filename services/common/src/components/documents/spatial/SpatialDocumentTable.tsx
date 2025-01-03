@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { GenericDocTableProps } from "@mds/common/interfaces/document/documentTableProps.interface";
 import CoreTable from "../../common/CoreTable";
 import { uploadDateColumn, uploadedByColumn } from "../DocumentColumns";
@@ -97,12 +97,12 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({ documents, catego
 
   const categoryColumn = categoryText
     ? [
-        {
-          key: "category",
-          title: "Category",
-          render: () => <div title="Category">{categoryText}</div>,
-        },
-      ]
+      {
+        key: "category",
+        title: "Category",
+        render: () => <div title="Category">{categoryText}</div>,
+      },
+    ]
     : [];
 
   const columns = [

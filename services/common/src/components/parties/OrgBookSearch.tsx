@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Form, Select, Spin } from "antd";
 import { debounce, DebouncedFunc } from "lodash";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import {
   getOrgBookCredential,
   getSearchOrgBookResults,

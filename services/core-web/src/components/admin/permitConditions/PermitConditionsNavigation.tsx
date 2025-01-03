@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Link } from "react-router-dom";
 import { Menu } from "antd";
 import { DownOutlined } from "@ant-design/icons";

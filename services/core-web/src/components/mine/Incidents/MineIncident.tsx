@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { flattenObject } from "@common/utils/helpers";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { getFormSyncErrors, getFormValues } from "redux-form";
 import { Tag } from "antd";

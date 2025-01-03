@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { getFormSyncErrors, getFormValues, submit } from "redux-form";
 import { Button, Col, Menu, Popconfirm, Row, StepProps } from "antd";
 import LeftOutlined from "@ant-design/icons/LeftOutlined";

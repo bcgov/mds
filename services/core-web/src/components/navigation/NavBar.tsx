@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from "react";
 import { Tooltip, Dropdown, Button, Row, Col, MenuProps } from "antd";
 import { DownOutlined, UserOutlined, MessageOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Link } from "react-router-dom";
 import MediaQuery from "react-responsive";
 import { includes } from "lodash";

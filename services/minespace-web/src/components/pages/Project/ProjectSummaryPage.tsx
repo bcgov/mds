@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  useAppDispatch as useDispatch,
+  useAppSelector as useSelector,
+} from "@mds/common/redux/rootState";
 import { Link, Prompt, useHistory, useLocation, useParams } from "react-router-dom";
 import { reset } from "redux-form";
 import { Col, Divider, Row, Typography } from "antd";

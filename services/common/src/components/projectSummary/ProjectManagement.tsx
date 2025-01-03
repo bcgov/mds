@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Field, getFormValues } from "redux-form";
 import { Alert, Col, Row, Typography } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

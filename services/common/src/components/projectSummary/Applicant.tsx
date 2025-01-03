@@ -1,6 +1,6 @@
 import { Col, Row, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Field, getFormValues, change } from "redux-form";
 import {
   email,

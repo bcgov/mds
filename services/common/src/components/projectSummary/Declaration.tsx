@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Collapse, Row, Typography } from "antd";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Field, getFormValues } from "redux-form";
 import { FORM, IProjectSummaryForm } from "../..";
 import { getAmsAuthorizationTypes } from "@mds/common/redux/selectors/projectSelectors";

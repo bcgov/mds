@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch } from "@mds/common/redux/rootState";
 import { useHistory } from "react-router-dom";
 
 import { ColumnsType } from "antd/es/table";

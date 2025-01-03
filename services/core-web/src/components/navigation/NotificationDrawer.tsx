@@ -1,7 +1,7 @@
 import React, { RefObject, useEffect, useRef, useState } from "react";
 import { Badge, Button, Col, Row, Tabs, Typography } from "antd";
 import { BellOutlined } from "@ant-design/icons";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import {
   fetchActivities,
   markActivitiesAsRead,

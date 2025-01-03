@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Button, Form, Input } from "antd";
 import { userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
 

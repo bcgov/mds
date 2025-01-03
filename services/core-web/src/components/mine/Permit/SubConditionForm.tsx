@@ -12,7 +12,7 @@ import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeFiel
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch } from "@mds/common/redux/rootState";
 import { createPermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
 
 interface SubConditionFormProps {

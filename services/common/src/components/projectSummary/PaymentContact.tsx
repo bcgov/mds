@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Col, Row, Typography } from "antd";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Field, getFormValues, change } from "redux-form";
 
 import RenderField from "@mds/common/components/forms/RenderField";

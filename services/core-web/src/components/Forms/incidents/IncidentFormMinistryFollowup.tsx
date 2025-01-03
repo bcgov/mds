@@ -3,7 +3,7 @@ import {
   INCIDENT_FOLLOWUP_ACTIONS,
 } from "@mds/common/constants/strings";
 import React, { FC } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Field, FieldArray, getFormValues } from "redux-form";
 import { ADD_EDIT_INCIDENT } from "@/constants/forms";
 import { Button, Col, Row, Typography } from "antd";

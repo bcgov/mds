@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import CoreTable from "../../common/CoreTable";
 import { renderTextColumn } from "../../common/CoreTableCommonColumns";
 import { formatDate } from "@mds/common/redux/utils/helpers";

@@ -1,6 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from "react";
 import { getFormValues } from "redux-form";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { ColumnsType } from "antd/es/table";
 import { Button, Alert, Typography, Col, Row } from "antd";
 import { useHistory } from "react-router-dom";

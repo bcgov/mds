@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { isDirty, reset } from "redux-form";
 import { Alert, Button, Modal, Row, Tag, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
@@ -69,12 +69,12 @@ const ReportPage: FC = () => {
     !isFormDirty
       ? cancelFunction()
       : Modal.confirm({
-          title: "Discard changes?",
-          content: "All changes made will not be saved.",
-          onOk: cancelFunction,
-          cancelText: "Continue Editing",
-          okText: "Discard",
-        });
+        title: "Discard changes?",
+        content: "All changes made will not be saved.",
+        onOk: cancelFunction,
+        cancelText: "Continue Editing",
+        okText: "Discard",
+      });
 
   const revertChanges = () => {
     dispatch(reset(FORM.VIEW_EDIT_REPORT));

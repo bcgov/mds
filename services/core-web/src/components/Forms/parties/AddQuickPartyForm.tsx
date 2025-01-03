@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from "react";
 import { Field, getFormValues, isSubmitting, change } from "redux-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Button, Col, Row, Form } from "antd";
 import {
   required,

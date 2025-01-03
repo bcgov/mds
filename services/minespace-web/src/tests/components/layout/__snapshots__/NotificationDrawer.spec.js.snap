@@ -30,6 +30,22 @@ exports[`Notification Drawer renders properly 1`] = `
             />
           </svg>
         </span>
+        <sup
+          class="ant-scroll-number ant-badge-count"
+          data-show="true"
+          title="3"
+        >
+          <span
+            class="ant-scroll-number-only"
+            style="transition: none;"
+          >
+            <span
+              class="ant-scroll-number-only-unit current"
+            >
+              3
+            </span>
+          </span>
+        </sup>
       </span>
     </button>
     <div
@@ -136,6 +152,210 @@ exports[`Notification Drawer renders properly 1`] = `
                     Mark all as read
                   </span>
                 </button>
+              </div>
+              <div
+                class="notification-list-item"
+              >
+                <div
+                  class="notification-dot"
+                />
+                <div
+                  role="button"
+                  tabindex="0"
+                >
+                  <span
+                    class="ant-typography"
+                  >
+                    Notice of Departure Submitted for Bennett Group
+                  </span>
+                  <div
+                    class="ant-row items-center margin-small"
+                    style="margin-left: -3px; margin-right: -3px;"
+                  >
+                    <div
+                      class="ant-col"
+                      style="padding-left: 3px; padding-right: 3px;"
+                    >
+                      <span
+                        class="ant-typography notification-info-text"
+                      >
+                        Bennett Group
+                      </span>
+                    </div>
+                    <div
+                      class="ant-col"
+                      style="padding-left: 3px; padding-right: 3px;"
+                    >
+                      <div
+                        class="notification-separator"
+                      />
+                    </div>
+                    <div
+                      class="ant-col"
+                      style="padding-left: 3px; padding-right: 3px;"
+                    >
+                      <span
+                        class="ant-typography notification-info-text"
+                      >
+                        M-5830615
+                      </span>
+                    </div>
+                    <div
+                      class="ant-col"
+                      style="padding-left: 3px; padding-right: 3px;"
+                    >
+                      <div
+                        class="notification-separator"
+                      />
+                    </div>
+                    <div
+                      class="ant-col"
+                      style="padding-left: 3px; padding-right: 3px;"
+                    >
+                      <span
+                        class="ant-typography notification-info-text"
+                      >
+                        Aug 8, 2022 8:59 PM
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="notification-list-item"
+              >
+                <div
+                  class="notification-dot"
+                />
+                <div
+                  role="button"
+                  tabindex="0"
+                >
+                  <span
+                    class="ant-typography"
+                  >
+                    Notice of Departure Submitted for Bennett Group
+                  </span>
+                  <div
+                    class="ant-row items-center margin-small"
+                    style="margin-left: -3px; margin-right: -3px;"
+                  >
+                    <div
+                      class="ant-col"
+                      style="padding-left: 3px; padding-right: 3px;"
+                    >
+                      <span
+                        class="ant-typography notification-info-text"
+                      >
+                        Bennett Group
+                      </span>
+                    </div>
+                    <div
+                      class="ant-col"
+                      style="padding-left: 3px; padding-right: 3px;"
+                    >
+                      <div
+                        class="notification-separator"
+                      />
+                    </div>
+                    <div
+                      class="ant-col"
+                      style="padding-left: 3px; padding-right: 3px;"
+                    >
+                      <span
+                        class="ant-typography notification-info-text"
+                      >
+                        M-5830615
+                      </span>
+                    </div>
+                    <div
+                      class="ant-col"
+                      style="padding-left: 3px; padding-right: 3px;"
+                    >
+                      <div
+                        class="notification-separator"
+                      />
+                    </div>
+                    <div
+                      class="ant-col"
+                      style="padding-left: 3px; padding-right: 3px;"
+                    >
+                      <span
+                        class="ant-typography notification-info-text"
+                      >
+                        Aug 8, 2022 8:59 PM
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="notification-list-item"
+              >
+                <div
+                  class="notification-dot"
+                />
+                <div
+                  role="button"
+                  tabindex="0"
+                >
+                  <span
+                    class="ant-typography"
+                  >
+                    Notice of Departure Submitted for Bennett Group
+                  </span>
+                  <div
+                    class="ant-row items-center margin-small"
+                    style="margin-left: -3px; margin-right: -3px;"
+                  >
+                    <div
+                      class="ant-col"
+                      style="padding-left: 3px; padding-right: 3px;"
+                    >
+                      <span
+                        class="ant-typography notification-info-text"
+                      >
+                        Bennett Group
+                      </span>
+                    </div>
+                    <div
+                      class="ant-col"
+                      style="padding-left: 3px; padding-right: 3px;"
+                    >
+                      <div
+                        class="notification-separator"
+                      />
+                    </div>
+                    <div
+                      class="ant-col"
+                      style="padding-left: 3px; padding-right: 3px;"
+                    >
+                      <span
+                        class="ant-typography notification-info-text"
+                      >
+                        M-5830615
+                      </span>
+                    </div>
+                    <div
+                      class="ant-col"
+                      style="padding-left: 3px; padding-right: 3px;"
+                    >
+                      <div
+                        class="notification-separator"
+                      />
+                    </div>
+                    <div
+                      class="ant-col"
+                      style="padding-left: 3px; padding-right: 3px;"
+                    >
+                      <span
+                        class="ant-typography notification-info-text"
+                      >
+                        Aug 8, 2022 8:59 PM
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

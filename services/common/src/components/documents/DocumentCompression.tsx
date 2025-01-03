@@ -1,5 +1,5 @@
 import React, { FC, useState, useRef, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch } from "@mds/common/redux/rootState";
 import { notification } from "antd";
 import CompressionNotificationProgressBar from "@mds/common/components/documents/CompressionNotificationProgressBar";
 import { MineDocument } from "@mds/common/models/documents/document";

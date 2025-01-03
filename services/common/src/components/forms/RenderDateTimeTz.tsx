@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Form, DatePicker, Select } from "antd";
-import { useSelector, connect } from "react-redux";
+import { connect } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Field, getFormValues, change } from "redux-form";
 import moment from "moment-timezone";
 import { compose, bindActionCreators } from "redux";

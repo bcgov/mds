@@ -10,7 +10,7 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Feature, USER_ROLES } from "@mds/common/index";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { formatDate } from "@common/utils/helpers";
@@ -276,7 +276,7 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
           ) : null;
         const onOk = isDeletionAllowed
           ? () => handleDeletePermit((record.permit as IPermit).permit_guid)
-          : () => {};
+          : () => { };
         return Modal.confirm({
           title,
           content,
@@ -391,7 +391,7 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
           title =
             "You cannot delete permit amendment generated in Core with associated NoW application.";
           okText = "Ok";
-          onOk = () => {};
+          onOk = () => { };
         }
         return Modal.confirm({ title, okText, cancelText: "Cancel", onOk });
       },

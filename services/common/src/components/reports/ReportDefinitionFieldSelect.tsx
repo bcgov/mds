@@ -1,6 +1,6 @@
 import { formatComplianceCodeReportName } from "@mds/common/redux/utils/helpers";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Field } from "redux-form";
 
 import { getMineReportDefinitionOptions } from "@mds/common/redux/selectors/staticContentSelectors";

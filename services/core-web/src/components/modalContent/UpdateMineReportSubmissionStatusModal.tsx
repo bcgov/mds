@@ -9,7 +9,7 @@ import * as FORM from "@/constants/forms";
 import { required } from "@mds/common/redux/utils/Validate";
 
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 // import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import { getMineReportStatusDescription } from "@mds/common/redux/utils/helpers";

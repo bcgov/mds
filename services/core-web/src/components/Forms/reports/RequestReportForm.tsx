@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Field, getFormValues } from "redux-form";
 import { Button, Col, Row, Typography } from "antd";
 import {

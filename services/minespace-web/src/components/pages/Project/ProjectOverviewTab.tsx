@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Card, Col, Descriptions, Row, Typography } from "antd";
 import { getEMLIContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
 import {

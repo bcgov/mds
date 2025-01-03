@@ -4,7 +4,7 @@ import { Field } from "redux-form";
 import { maxLength, required } from "@mds/common/redux/utils/Validate";
 import { IPermitConditionCategory } from "@mds/common/interfaces";
 import RenderAutoComplete from "@mds/common/components/forms/RenderAutoComplete";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { searchConditionCategories, getConditionCategories } from "@mds/common/redux/slices/permitConditionCategorySlice";
 import { debounce, DebouncedFunc } from "lodash";
 

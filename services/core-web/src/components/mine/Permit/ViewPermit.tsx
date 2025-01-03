@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import {
   getLatestAmendmentByPermitGuid,
   getPermitByGuid,
@@ -175,19 +175,19 @@ const ViewPermit: FC = () => {
 
   const headerActions = [
     onConditionsTab &&
-      userCanEditConditions && {
-        key: "extract",
-        label: "Extract Permit Conditions",
-        disabled: !canStartExtraction,
-        clickFunction: handleInitiateExtraction,
-      },
+    userCanEditConditions && {
+      key: "extract",
+      label: "Extract Permit Conditions",
+      disabled: !canStartExtraction,
+      clickFunction: handleInitiateExtraction,
+    },
     onConditionsTab &&
-      userCanEditConditions && {
-        key: "delete_conditions",
-        label: "Delete Permit Conditions",
-        disabled: !hasConditions,
-        clickFunction: handleDeleteConditions,
-      },
+    userCanEditConditions && {
+      key: "delete_conditions",
+      label: "Delete Permit Conditions",
+      disabled: !hasConditions,
+      clickFunction: handleDeleteConditions,
+    },
   ].filter(Boolean);
 
   const headerActionComponent =

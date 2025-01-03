@@ -1,6 +1,6 @@
 import React from "react";
 import { FieldArray, getFormValues } from "redux-form";
-import { useSelector } from "react-redux";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Row, Col, Typography, Button, Collapse, Popconfirm } from "antd";
 import { IComplianceArticle } from "@mds/common";
 import { ReportDefinitionFieldSelect } from "@mds/common/components/reports/ReportDefinitionFieldSelect";
