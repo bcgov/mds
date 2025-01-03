@@ -20,6 +20,12 @@ class User(SoftDeleteMixin, AuditMixin, Base):
     idir_user_guid = db.Column(db.String(), nullable=False)
     last_logged_in = db.Column(db.DateTime(), nullable=False)
 
+    permit_condition_categories = db.relationship(
+        'PermitConditionCategory',
+        back_populates='assigned_review_user',
+        cascade='all, delete-orphan'
+    )
+
     def __repr__(self):
         return f'{self.__class__.__name__} {self.sub}'
 

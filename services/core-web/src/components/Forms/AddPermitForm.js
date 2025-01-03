@@ -5,9 +5,7 @@ import { remove } from "lodash";
 
 import PropTypes from "prop-types";
 import { Field, reduxForm, change, formValueSelector, FormSection } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, Divider, Alert } from "antd";
+import { Button, Col, Row, Popconfirm, Divider, Alert, Form } from "antd";
 import {
   required,
   dateNotInFuture,
@@ -92,7 +90,7 @@ const mapApplicationTypeToTenureType = (permitPrefix) =>
     G: ["BCL", "PRL"],
     Q: ["BCL", "PRL", "MIN"],
     null: [],
-  }[permitPrefix]);
+  })[permitPrefix];
 
 const selector = formValueSelector(FORM.ADD_PERMIT);
 
@@ -178,16 +176,14 @@ export class AddPermitForm extends Component {
         )}
         <Row gutter={48}>
           <Col md={12} sm={24} className="border--right--layout">
-            <Form.Item>
-              <PartySelectField
-                id="permittee_party_guid"
-                name="permittee_party_guid"
-                label="Permittee*"
-                partyLabel="permittee"
-                validate={[required]}
-                allowAddingParties
-              />
-            </Form.Item>
+            <PartySelectField
+              id="permittee_party_guid"
+              name="permittee_party_guid"
+              label="Permittee*"
+              partyLabel="permittee"
+              validate={[required]}
+              allowAddingParties
+            />
             <Form.Item>
               <Field
                 id="permit_type"

@@ -7,9 +7,10 @@ import ViewPermit from "./ViewPermit";
 import { BrowserRouter } from "react-router-dom";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
-
+import { userReducerType } from "@mds/common/redux/slices/userSlice";
 const initialState = {
   [MINES]: MOCK.MINES,
+  [userReducerType]: MOCK.USER,
   [PERMITS]: { permits: MOCK.PERMITS, permitAmendments: { [MOCK.PERMITS[0].permit_guid]: MOCK.PERMITS[0].permit_amendments[0] } },
   [STATIC_CONTENT]: MOCK.BULK_STATIC_CONTENT_RESPONSE,
   [AUTHENTICATION]: {

@@ -731,15 +731,197 @@ exports[`PermitConditions renders properly 1`] = `
                                       </h3>
                                     </div>
                                   </h3>
-                                  <button
-                                    class="ant-btn ant-btn-primary core-btn core-btn-primary"
-                                    type="button"
-                                  >
-                                    <span>
-                                      Add Condition
-                                    </span>
-                                  </button>
                                 </div>
+                                <form
+                                  class="ant-form ant-form-horizontal common-form common-form-PERMIT_CONDITION_REVIEW_ASSIGNMENT}-HSC form-edit"
+                                  id="PERMIT_CONDITION_REVIEW_ASSIGNMENT}-HSC"
+                                >
+                                  <div
+                                    class="ant-row ant-row-start ant-row-top"
+                                    style="margin-left: -8px; margin-right: -8px;"
+                                  >
+                                    <div
+                                      class="ant-col"
+                                      style="padding-left: 8px; padding-right: 8px;"
+                                    >
+                                      <div
+                                        class="ant-typography"
+                                      >
+                                        Assigned Reviewer
+                                      </div>
+                                    </div>
+                                    <div
+                                      class="ant-col ant-col-12"
+                                      style="padding-left: 8px; padding-right: 8px;"
+                                    >
+                                      <div
+                                        class="ant-form-item ant-form-item-with-help"
+                                      >
+                                        <div
+                                          class="ant-row ant-form-item-row"
+                                        >
+                                          <div
+                                            class="ant-col ant-form-item-control"
+                                          >
+                                            <div
+                                              class="ant-form-item-control-input"
+                                            >
+                                              <div
+                                                class="ant-form-item-control-input-content"
+                                              >
+                                                <div
+                                                  class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                                                  data-cy="assigned_review_user"
+                                                >
+                                                  <div
+                                                    class="ant-select-selector"
+                                                  >
+                                                    <span
+                                                      class="ant-select-selection-search"
+                                                    >
+                                                      <input
+                                                        aria-activedescendant="assigned_review_user_list_0"
+                                                        aria-autocomplete="list"
+                                                        aria-controls="assigned_review_user_list"
+                                                        aria-haspopup="listbox"
+                                                        aria-owns="assigned_review_user_list"
+                                                        autocomplete="off"
+                                                        class="ant-select-selection-search-input"
+                                                        id="assigned_review_user"
+                                                        role="combobox"
+                                                        type="search"
+                                                        value=""
+                                                      />
+                                                    </span>
+                                                    <span
+                                                      class="ant-select-selection-item"
+                                                      title="Testerson, Test EMLI:EX"
+                                                    >
+                                                      Testerson, Test EMLI:EX
+                                                    </span>
+                                                  </div>
+                                                  <span
+                                                    aria-hidden="true"
+                                                    class="ant-select-arrow"
+                                                    style="user-select: none;"
+                                                    unselectable="on"
+                                                  >
+                                                    <span
+                                                      aria-label="down"
+                                                      class="anticon anticon-down ant-select-suffix"
+                                                      role="img"
+                                                    >
+                                                      <svg
+                                                        aria-hidden="true"
+                                                        data-icon="down"
+                                                        fill="currentColor"
+                                                        focusable="false"
+                                                        height="1em"
+                                                        viewBox="64 64 896 896"
+                                                        width="1em"
+                                                      >
+                                                        <path
+                                                          d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                                        />
+                                                      </svg>
+                                                    </span>
+                                                  </span>
+                                                  <span
+                                                    aria-hidden="true"
+                                                    class="ant-select-clear"
+                                                    style="user-select: none;"
+                                                    unselectable="on"
+                                                  >
+                                                    <span
+                                                      aria-label="close-circle"
+                                                      class="anticon anticon-close-circle"
+                                                      role="img"
+                                                    >
+                                                      <svg
+                                                        aria-hidden="true"
+                                                        data-icon="close-circle"
+                                                        fill="currentColor"
+                                                        fill-rule="evenodd"
+                                                        focusable="false"
+                                                        height="1em"
+                                                        viewBox="64 64 896 896"
+                                                        width="1em"
+                                                      >
+                                                        <path
+                                                          d="M512 64c247.4 0 448 200.6 448 448S759.4 960 512 960 64 759.4 64 512 264.6 64 512 64zm127.98 274.82h-.04l-.08.06L512 466.75 384.14 338.88c-.04-.05-.06-.06-.08-.06a.12.12 0 00-.07 0c-.03 0-.05.01-.09.05l-45.02 45.02a.2.2 0 00-.05.09.12.12 0 000 .07v.02a.27.27 0 00.06.06L466.75 512 338.88 639.86c-.05.04-.06.06-.06.08a.12.12 0 000 .07c0 .03.01.05.05.09l45.02 45.02a.2.2 0 00.09.05.12.12 0 00.07 0c.02 0 .04-.01.08-.05L512 557.25l127.86 127.87c.04.04.06.05.08.05a.12.12 0 00.07 0c.03 0 .05-.01.09-.05l45.02-45.02a.2.2 0 00.05-.09.12.12 0 000-.07v-.02a.27.27 0 00-.05-.06L557.25 512l127.87-127.86c.04-.04.05-.06.05-.08a.12.12 0 000-.07c0-.03-.01-.05-.05-.09l-45.02-45.02a.2.2 0 00-.09-.05.12.12 0 00-.07 0z"
+                                                        />
+                                                      </svg>
+                                                    </span>
+                                                  </span>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div
+                                              style="display: flex; flex-wrap: nowrap;"
+                                            >
+                                              <div
+                                                class="ant-form-item-explain ant-form-item-explain-connected"
+                                                id="PERMIT_CONDITION_REVIEW_ASSIGNMENT}-HSC_assigned_review_user_help"
+                                                role="alert"
+                                              >
+                                                <div
+                                                  class=""
+                                                />
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      class="ant-col"
+                                      style="padding-left: 8px; padding-right: 8px;"
+                                    >
+                                      <button
+                                        aria-label="Submit"
+                                        class="ant-btn ant-btn-primary ant-btn-icon-only"
+                                        disabled=""
+                                        type="submit"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          class="svg-inline--fa fa-check "
+                                          data-icon="check"
+                                          data-prefix="far"
+                                          focusable="false"
+                                          role="img"
+                                          viewBox="0 0 448 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M441 103c9.4 9.4 9.4 24.6 0 33.9L177 401c-9.4 9.4-24.6 9.4-33.9 0L7 265c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l119 119L407 103c9.4-9.4 24.6-9.4 33.9 0z"
+                                            fill="currentColor"
+                                          />
+                                        </svg>
+                                      </button>
+                                      <button
+                                        class="ant-btn ant-btn-default ant-btn-icon-only"
+                                        type="button"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          class="svg-inline--fa fa-xmark "
+                                          data-icon="xmark"
+                                          data-prefix="fal"
+                                          focusable="false"
+                                          role="img"
+                                          viewBox="0 0 384 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M324.5 411.1c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L214.6 256 347.1 123.5c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0L192 233.4 59.5 100.9c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6L169.4 256 36.9 388.5c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0L192 278.6 324.5 411.1z"
+                                            fill="currentColor"
+                                          />
+                                        </svg>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </form>
                               </div>
                               <div
                                 class="ant-col ant-col-24 fade-in"
@@ -774,9 +956,7 @@ exports[`PermitConditions renders properly 1`] = `
                                           </div>
                                         </div>
                                         <div
-                                          aria-label="Edit Condition"
                                           class="ant-col condition-column"
-                                          title="Edit Condition"
                                         >
                                           <div
                                             class="view-item ant-form-item"
@@ -827,6 +1007,148 @@ exports[`PermitConditions renders properly 1`] = `
                                     </span>
                                   </button>
                                 </div>
+                                <form
+                                  class="ant-form ant-form-horizontal common-form common-form-PERMIT_CONDITION_REVIEW_ASSIGNMENT}-RCC form-edit"
+                                  id="PERMIT_CONDITION_REVIEW_ASSIGNMENT}-RCC"
+                                >
+                                  <div
+                                    class="ant-row ant-row-start ant-row-top"
+                                    style="margin-left: -8px; margin-right: -8px;"
+                                  >
+                                    <div
+                                      class="ant-col"
+                                      style="padding-left: 8px; padding-right: 8px;"
+                                    >
+                                      <div
+                                        class="ant-typography"
+                                      >
+                                        Assigned Reviewer
+                                      </div>
+                                    </div>
+                                    <div
+                                      class="ant-col ant-col-12"
+                                      style="padding-left: 8px; padding-right: 8px;"
+                                    >
+                                      <div
+                                        class="ant-form-item ant-form-item-with-help"
+                                      >
+                                        <div
+                                          class="ant-row ant-form-item-row"
+                                        >
+                                          <div
+                                            class="ant-col ant-form-item-control"
+                                          >
+                                            <div
+                                              class="ant-form-item-control-input"
+                                            >
+                                              <div
+                                                class="ant-form-item-control-input-content"
+                                              >
+                                                <div
+                                                  class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                                                  data-cy="assigned_review_user"
+                                                >
+                                                  <div
+                                                    class="ant-select-selector"
+                                                  >
+                                                    <span
+                                                      class="ant-select-selection-search"
+                                                    >
+                                                      <input
+                                                        aria-activedescendant="assigned_review_user_list_0"
+                                                        aria-autocomplete="list"
+                                                        aria-controls="assigned_review_user_list"
+                                                        aria-haspopup="listbox"
+                                                        aria-owns="assigned_review_user_list"
+                                                        autocomplete="off"
+                                                        class="ant-select-selection-search-input"
+                                                        id="assigned_review_user"
+                                                        role="combobox"
+                                                        type="search"
+                                                        value=""
+                                                      />
+                                                    </span>
+                                                    <span
+                                                      class="ant-select-selection-placeholder"
+                                                    >
+                                                      Search for a user
+                                                    </span>
+                                                  </div>
+                                                  <span
+                                                    aria-hidden="true"
+                                                    class="ant-select-arrow"
+                                                    style="user-select: none;"
+                                                    unselectable="on"
+                                                  >
+                                                    <span
+                                                      aria-label="down"
+                                                      class="anticon anticon-down ant-select-suffix"
+                                                      role="img"
+                                                    >
+                                                      <svg
+                                                        aria-hidden="true"
+                                                        data-icon="down"
+                                                        fill="currentColor"
+                                                        focusable="false"
+                                                        height="1em"
+                                                        viewBox="64 64 896 896"
+                                                        width="1em"
+                                                      >
+                                                        <path
+                                                          d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                                        />
+                                                      </svg>
+                                                    </span>
+                                                  </span>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div
+                                              style="display: flex; flex-wrap: nowrap;"
+                                            >
+                                              <div
+                                                class="ant-form-item-explain ant-form-item-explain-connected"
+                                                id="PERMIT_CONDITION_REVIEW_ASSIGNMENT}-RCC_assigned_review_user_help"
+                                                role="alert"
+                                              >
+                                                <div
+                                                  class=""
+                                                />
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      class="ant-col"
+                                      style="padding-left: 8px; padding-right: 8px;"
+                                    >
+                                      <button
+                                        aria-label="Submit"
+                                        class="ant-btn ant-btn-primary ant-btn-icon-only"
+                                        disabled=""
+                                        type="submit"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          class="svg-inline--fa fa-check "
+                                          data-icon="check"
+                                          data-prefix="far"
+                                          focusable="false"
+                                          role="img"
+                                          viewBox="0 0 448 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M441 103c9.4 9.4 9.4 24.6 0 33.9L177 401c-9.4 9.4-24.6 9.4-33.9 0L7 265c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l119 119L407 103c9.4-9.4 24.6-9.4 33.9 0z"
+                                            fill="currentColor"
+                                          />
+                                        </svg>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </form>
                               </div>
                               <div
                                 class="ant-col ant-col-24 fade-in"
@@ -914,6 +1236,148 @@ exports[`PermitConditions renders properly 1`] = `
                                     </span>
                                   </button>
                                 </div>
+                                <form
+                                  class="ant-form ant-form-horizontal common-form common-form-PERMIT_CONDITION_REVIEW_ASSIGNMENT}-ELC form-edit"
+                                  id="PERMIT_CONDITION_REVIEW_ASSIGNMENT}-ELC"
+                                >
+                                  <div
+                                    class="ant-row ant-row-start ant-row-top"
+                                    style="margin-left: -8px; margin-right: -8px;"
+                                  >
+                                    <div
+                                      class="ant-col"
+                                      style="padding-left: 8px; padding-right: 8px;"
+                                    >
+                                      <div
+                                        class="ant-typography"
+                                      >
+                                        Assigned Reviewer
+                                      </div>
+                                    </div>
+                                    <div
+                                      class="ant-col ant-col-12"
+                                      style="padding-left: 8px; padding-right: 8px;"
+                                    >
+                                      <div
+                                        class="ant-form-item ant-form-item-with-help"
+                                      >
+                                        <div
+                                          class="ant-row ant-form-item-row"
+                                        >
+                                          <div
+                                            class="ant-col ant-form-item-control"
+                                          >
+                                            <div
+                                              class="ant-form-item-control-input"
+                                            >
+                                              <div
+                                                class="ant-form-item-control-input-content"
+                                              >
+                                                <div
+                                                  class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                                                  data-cy="assigned_review_user"
+                                                >
+                                                  <div
+                                                    class="ant-select-selector"
+                                                  >
+                                                    <span
+                                                      class="ant-select-selection-search"
+                                                    >
+                                                      <input
+                                                        aria-activedescendant="assigned_review_user_list_0"
+                                                        aria-autocomplete="list"
+                                                        aria-controls="assigned_review_user_list"
+                                                        aria-haspopup="listbox"
+                                                        aria-owns="assigned_review_user_list"
+                                                        autocomplete="off"
+                                                        class="ant-select-selection-search-input"
+                                                        id="assigned_review_user"
+                                                        role="combobox"
+                                                        type="search"
+                                                        value=""
+                                                      />
+                                                    </span>
+                                                    <span
+                                                      class="ant-select-selection-placeholder"
+                                                    >
+                                                      Search for a user
+                                                    </span>
+                                                  </div>
+                                                  <span
+                                                    aria-hidden="true"
+                                                    class="ant-select-arrow"
+                                                    style="user-select: none;"
+                                                    unselectable="on"
+                                                  >
+                                                    <span
+                                                      aria-label="down"
+                                                      class="anticon anticon-down ant-select-suffix"
+                                                      role="img"
+                                                    >
+                                                      <svg
+                                                        aria-hidden="true"
+                                                        data-icon="down"
+                                                        fill="currentColor"
+                                                        focusable="false"
+                                                        height="1em"
+                                                        viewBox="64 64 896 896"
+                                                        width="1em"
+                                                      >
+                                                        <path
+                                                          d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                                        />
+                                                      </svg>
+                                                    </span>
+                                                  </span>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div
+                                              style="display: flex; flex-wrap: nowrap;"
+                                            >
+                                              <div
+                                                class="ant-form-item-explain ant-form-item-explain-connected"
+                                                id="PERMIT_CONDITION_REVIEW_ASSIGNMENT}-ELC_assigned_review_user_help"
+                                                role="alert"
+                                              >
+                                                <div
+                                                  class=""
+                                                />
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      class="ant-col"
+                                      style="padding-left: 8px; padding-right: 8px;"
+                                    >
+                                      <button
+                                        aria-label="Submit"
+                                        class="ant-btn ant-btn-primary ant-btn-icon-only"
+                                        disabled=""
+                                        type="submit"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          class="svg-inline--fa fa-check "
+                                          data-icon="check"
+                                          data-prefix="far"
+                                          focusable="false"
+                                          role="img"
+                                          viewBox="0 0 448 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M441 103c9.4 9.4 9.4 24.6 0 33.9L177 401c-9.4 9.4-24.6 9.4-33.9 0L7 265c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l119 119L407 103c9.4-9.4 24.6-9.4 33.9 0z"
+                                            fill="currentColor"
+                                          />
+                                        </svg>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </form>
                               </div>
                               <div
                                 class="ant-col ant-col-24 fade-in"

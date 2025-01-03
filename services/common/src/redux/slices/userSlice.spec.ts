@@ -1,7 +1,7 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { userReducer, fetchUser, getUser } from "./userSlice"; // Adjust the import path as necessary
-import { ENVIRONMENT, USER_PROFILE } from "@mds/common/constants";
+import { userReducer, fetchUser, searchUsers, getUser, getSearchUsers } from "./userSlice"; // Adjust the path as required
+import { ENVIRONMENT, USER_PROFILE, USER_SEARCH } from "@mds/common/constants";
 import CustomAxios from "@mds/common/redux/customAxios";
+import { configureStore } from "@reduxjs/toolkit";
 
 const showLoadingMock = jest
   .fn()
@@ -83,6 +83,77 @@ describe("userSlice", () => {
 
       expect(getMock).toHaveBeenCalledWith(
         `${ENVIRONMENT.apiUrl}${USER_PROFILE()}`,
+        expect.any(Object)
+      );
+    });
+  });
+
+  describe("searchUsers", () => {
+    const mockSearchResponse = {
+      data: [
+        {
+          sub: "user1-sub",
+          display_name: "User One",
+          email: "user1@example.com",
+          given_name: "User1Given",
+          family_name: "User1Family",
+        },
+        {
+          sub: "user2-sub",
+          display_name: "User Two",
+          email: "user2@example.com",
+          given_name: "User2Given",
+          family_name: "User2Family",
+        },
+      ],
+    };
+
+    it("should fetch users successfully for a search term", async () => {
+      (CustomAxios as jest.Mock).mockImplementation(() => ({
+        get: jest.fn().mockResolvedValue(mockSearchResponse),
+      }));
+
+      const searchTerm = "test-search";
+
+      await store.dispatch(searchUsers(searchTerm));
+      const state = store.getState().user;
+
+      // Verify loading state management
+      expect(showLoadingMock).toHaveBeenCalledTimes(1);
+      expect(hideLoadingMock).toHaveBeenCalledTimes(1);
+
+      // Verify state update
+      expect(getSearchUsers({ user: state })).toEqual(mockSearchResponse.data);
+      expect(CustomAxios).toHaveBeenCalledWith({ errorToastMessage: "default" });
+    });
+
+    it("should handle API error for searchUsers", async () => {
+      const error = new Error("API Error");
+      (CustomAxios as jest.Mock).mockImplementation(() => ({
+        get: jest.fn().mockRejectedValue(error),
+      }));
+
+      const searchTerm = "test-failure";
+
+      await store.dispatch(searchUsers(searchTerm));
+      const state = store.getState().user;
+
+      // Check searchUsers state remains empty on error
+      expect(getSearchUsers({ user: state })).toEqual([]);
+    });
+
+    it("should construct the correct searchUsers endpoint URL", async () => {
+      const getMock = jest.fn().mockResolvedValue(mockSearchResponse);
+      (CustomAxios as jest.Mock).mockImplementation(() => ({
+        get: getMock,
+      }));
+
+      const searchTerm = "specific-user";
+
+      await store.dispatch(searchUsers(searchTerm));
+
+      expect(getMock).toHaveBeenCalledWith(
+        `${ENVIRONMENT.apiUrl}${USER_SEARCH(searchTerm)}`,
         expect.any(Object)
       );
     });

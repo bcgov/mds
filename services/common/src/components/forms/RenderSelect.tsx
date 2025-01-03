@@ -14,6 +14,8 @@ interface SelectProps extends BaseInputProps {
   data: IOption[];
   onSelect?: (value, option) => void;
   allowClear?: boolean;
+  onSearch?: (value) => void;
+  enableGetPopupContainer?: boolean;
 }
 
 export const RenderSelect: FC<SelectProps> = ({
@@ -24,11 +26,14 @@ export const RenderSelect: FC<SelectProps> = ({
   input,
   placeholder = "Please select",
   data = [],
-  onSelect = () => { },
+  onSelect = () => {},
   allowClear = true,
   disabled = false,
   required = false,
   showOptional = true,
+  loading = false,
+  enableGetPopupContainer = true,
+  onSearch,
 }) => {
   const [isDirty, setIsDirty] = useState(meta.touched);
   return (
@@ -60,18 +65,22 @@ export const RenderSelect: FC<SelectProps> = ({
             getValueProps={() => input.value !== "" && { value: input.value }}
           >
             <Select
+              loading={loading}
               virtual={false}
               data-cy={input.name}
               disabled={disabled}
               allowClear={allowClear}
               dropdownMatchSelectWidth
-              getPopupContainer={(trigger) => trigger.parentNode}
+              getPopupContainer={
+                enableGetPopupContainer ? (trigger) => trigger.parentNode : undefined
+              }
               showSearch
               dropdownStyle={{ zIndex: 100000, position: "relative" }}
               placeholder={placeholder}
               optionFilterProp="children"
               filterOption={caseInsensitiveLabelFilter}
               id={id}
+              onSearch={onSearch}
               onChange={(changeValue) => {
                 setIsDirty(true);
                 input.onChange(changeValue);
@@ -80,6 +89,9 @@ export const RenderSelect: FC<SelectProps> = ({
                 if (!open) {
                   setIsDirty(true);
                 }
+              }}
+              onFocus={(event) => {
+                input.onFocus(event);
               }}
               onSelect={onSelect}
               options={data}
