@@ -106,18 +106,14 @@ describe("Major Projects", () => {
     cy.get(`[name="payment_contact.phone_no"]`).type("123-456-7890", { force: true });
     cy.get(`[name="payment_contact.email"]`).type("test@test.com", { force: true });
     cy.get(`[name="payment_contact.address[0].address_line_1"]`).type("123 Fake St", { force: true });
-    cy.get(`[data-cy="payment_contact.address[0].address_type_code"]`)
+    cy.get(`[data-cy="payment_contact.address[0].address_type_code"]:visible`)
       .contains("Please select")
-      .click({
-        force: true,
-      });
-    cy.get('[title="Canada"]').click({ force: true });
-    cy.get(`[data-cy="payment_contact.address[0].sub_division_code"]`)
+      .click();
+    cy.get('[title="Canada"]:visible').click();
+    cy.get(`[data-cy="payment_contact.address[0].sub_division_code"]:visible`)
       .contains("Please select")
-      .click({
-        force: true,
-      });
-    cy.get('[title="AB"]').click({ force: true });
+      .click();
+    cy.get('[title="AB"]:visible').click();
     cy.get(`[name="payment_contact.address[0].post_code"]`).type("A0A0A0", { force: true });
     cy.get(`[name="payment_contact.address[0].city"]`).type("Cityville", { force: true });
 
