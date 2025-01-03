@@ -53,6 +53,7 @@ import { getIsFetching } from "@mds/common/redux/reducers/networkReducer";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import PermitConditionReviewAssignment from "@/components/mine/Permit/PermitConditionReviewAssignment";
 import { getUser } from "@mds/common/redux/slices/userSlice";
+import { createDropDownList } from "@common/utils/helpers";
 
 const { Title } = Typography;
 
@@ -200,6 +201,26 @@ const PermitConditions: FC<PermitConditionProps> = ({
     featureUrlRoute: VIEW_MINE_PERMIT.hashRoute,
     featureUrlRouteArguments: [mineGuid, permitGuid, "conditions"],
   };
+
+  const customCategories = createDropDownList(
+    latestAmendment?.condition_categories ?? [],
+    "description",
+    "condition_category_code"
+  );
+
+  const standardCategories = createDropDownList(
+    condWithoutConditionsText,
+    "description",
+    "condition_category_code"
+  );
+
+  const dropdownCategories = [{
+    groupName: "Custom Categories",
+    opt: customCategories
+  }, {
+    groupName: "Standard Categories",
+    opt: standardCategories
+  }]
 
   const topOffset = 99 + 49; // header + tab nav
 
@@ -458,6 +479,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                                 editingConditionGuid={editingConditionGuid ?? addingToCategoryCode}
                                 refreshData={refreshData}
                                 conditionSelected={setSelectedCondition}
+                                categoryOptions={dropdownCategories}
                               />
                             </Col>
                           ))}
@@ -468,9 +490,8 @@ const PermitConditions: FC<PermitConditionProps> = ({
                                 permitAmendmentGuid={latestAmendment.permit_amendment_guid}
                                 handleCancel={() => setAddingToCategoryCode(null)}
                                 onSubmit={handleAddCondition}
-                              />
-                            </Col>
-                          )}
+                                categoryOptions={dropdownCategories}
+                              /></Col>)}
                           {conditionsWithRequirements?.length > 0 && (
                             <div className="report-collapse-container ">
                               <Title level={4} className="primary-colour">

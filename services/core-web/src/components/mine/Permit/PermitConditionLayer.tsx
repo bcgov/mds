@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
 import PermitConditionForm from "./PermitConditionForm";
 import SubConditionForm from "./SubConditionForm";
+import { IGroupedDropdownList } from "@mds/common/interfaces/common/option.interface";
 
 interface PermitConditionLayerProps {
   condition: IPermitCondition;
@@ -17,6 +18,7 @@ interface PermitConditionLayerProps {
   permitAmendmentGuid: string;
   refreshData: () => Promise<void>;
   conditionSelected?: (condition: IPermitCondition) => void;
+  categoryOptions?: IGroupedDropdownList[];
 }
 
 const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
@@ -33,6 +35,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   conditionCount,
   permitAmendmentGuid,
   refreshData,
+  categoryOptions
 }) => {
   const editingCondition = editingConditionGuid === condition.permit_condition_guid;
   const [isAddingListItem, setIsAddingListItem] = useState<boolean>(false);
@@ -97,6 +100,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
           refreshData={refreshData}
           setIsAddingListItem={setIsAddingListItem}
           isAddingListItem={isAddingListItem}
+          categoryOptions={categoryOptions}
         />
         {condition?.sub_conditions?.map((subCondition, idx) => {
           return (

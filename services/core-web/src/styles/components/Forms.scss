@@ -95,6 +95,19 @@
   }
 }
 
+.horizontal-form-item {
+  .ant-form-item-row {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: baseline;
+
+    .ant-form-item-label {
+      flex-shrink: 0;
+      padding-right: 6px;
+    }
+  }
+}
+
 .common-form.form-view {
   .ant-form-item-required::before {
     display: none !important;

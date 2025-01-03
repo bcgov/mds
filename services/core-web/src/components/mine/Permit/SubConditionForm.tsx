@@ -5,7 +5,7 @@ import {
     faCheck,
     faXmark,
 } from "@fortawesome/pro-regular-svg-icons";
-import { FORM, IPermitCondition, IPermitConditionCategory } from "@mds/common";
+import { FORM, IGroupedDropdownList, IPermitCondition, IPermitConditionCategory } from "@mds/common";
 import { ERROR } from "@mds/common/constants/actionTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
@@ -14,6 +14,7 @@ import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch } from "react-redux";
 import { createPermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
+import RenderGroupedSelect from "@mds/common/components/forms/RenderGroupedSelect";
 
 interface SubConditionFormProps {
     level?: number;
@@ -22,9 +23,10 @@ interface SubConditionFormProps {
     handleCancel: () => void;
     onSubmit: () => Promise<void>;
     permitAmendmentGuid: string;
+    categoryOptions?: IGroupedDropdownList[];
 };
 
-const SubConditionForm: FC<SubConditionFormProps> = ({ level = 1, parentCondition, conditionCategory, permitAmendmentGuid, handleCancel, onSubmit }) => {
+const SubConditionForm: FC<SubConditionFormProps> = ({ level = 1, parentCondition, conditionCategory, permitAmendmentGuid, categoryOptions, handleCancel, onSubmit }) => {
     const dispatch = useDispatch();
 
     const handleSubmit = async (values) => {
@@ -74,6 +76,19 @@ const SubConditionForm: FC<SubConditionFormProps> = ({ level = 1, parentConditio
             scrollOnToggleEdit={false}
         >
             <div className={`condition-layer condition-layer--${level} condition-${emptyCondition.condition_type_code} fade-in`}>
+                {categoryOptions && <Row>
+                    <Col span={24}>
+                        <Field
+                            showOptional={false}
+                            label="Condition Category:"
+                            component={RenderGroupedSelect}
+                            name="condition_category_code"
+                            data={categoryOptions}
+                            allowClear={false}
+                            className="horizontal-form-item"
+                        />
+                    </Col>
+                </Row>}
                 <Row wrap={false} >
                     <Col span={24}>
                         <Field

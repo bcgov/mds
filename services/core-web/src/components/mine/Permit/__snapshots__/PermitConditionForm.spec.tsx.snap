@@ -3,11 +3,11 @@
 exports[`PermitConditionForm renders properly in edit mode 1`] = `
 <div>
   <form
-    class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1639 form-edit"
-    id="EDIT_PERMIT_CONDITION_1639"
+    class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1639_HSC form-edit"
+    id="EDIT_PERMIT_CONDITION_1639_HSC"
   >
     <div
-      class="ant-row ant-row-no-wrap condition-content editable"
+      class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
     >
       <div
         class="ant-col step-column"
@@ -42,7 +42,7 @@ exports[`PermitConditionForm renders properly in edit mode 1`] = `
               >
                 <div
                   class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="EDIT_PERMIT_CONDITION_1639_step_help"
+                  id="EDIT_PERMIT_CONDITION_1639_HSC_step_help"
                   role="alert"
                 >
                   <div
@@ -88,7 +88,7 @@ exports[`PermitConditionForm renders properly in edit mode 1`] = `
               >
                 <div
                   class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="EDIT_PERMIT_CONDITION_1639_condition_help"
+                  id="EDIT_PERMIT_CONDITION_1639_HSC_condition_help"
                   role="alert"
                 >
                   <div

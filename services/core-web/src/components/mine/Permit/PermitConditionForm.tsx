@@ -13,6 +13,7 @@ import {
     faXmark,
 } from "@fortawesome/pro-regular-svg-icons";
 import { FORM, IPermitCondition } from "@mds/common";
+import { IGroupedDropdownList } from "@mds/common/interfaces/common/option.interface";
 import { ERROR } from "@mds/common/constants/actionTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
@@ -26,6 +27,7 @@ import { createMineReportPermitRequirement } from "@mds/common/redux/slices/mine
 import RenderField from "@mds/common/components/forms/RenderField";
 import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import { formatPermitConditionStep, parsePermitConditionStep } from "@mds/common/utils/helpers";
+import RenderGroupedSelect from "@mds/common/components/forms/RenderGroupedSelect";
 
 
 interface PermitConditionFormProps {
@@ -40,6 +42,7 @@ interface PermitConditionFormProps {
     refreshData: () => Promise<void>;
     setIsAddingListItem: (isAdding: boolean) => void;
     isAddingListItem: boolean;
+    categoryOptions?: IGroupedDropdownList[];
 }
 const PermitConditionForm: FC<PermitConditionFormProps> = ({
     permitAmendmentGuid,
@@ -52,12 +55,14 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     moveDown,
     refreshData,
     setIsAddingListItem,
-    isAddingListItem
+    isAddingListItem,
+    categoryOptions
 }) => {
     const dispatch = useDispatch();
     const { id: mineGuid, permitGuid } = useParams<{ id: string; permitGuid: string }>();
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
-    const formName = `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}`;
+    // the form fails to re-initialize when the category is changed, so concatenating it forces it to make a new one
+    const formName = `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`;
 
     const startEdit = () => {
         onEdit();
@@ -81,8 +86,8 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
         const resp = await dispatch(updatePermitCondition(values.permit_condition_guid, permitAmendmentGuid, payload));
         // @ts-ignore
         if (resp?.type !== ERROR) {
-            refreshData();
             cancelEdit();
+            return refreshData();
         }
     };
     const handleCancel = () => {
@@ -153,8 +158,22 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 enableReinitialize: true
             }}
         >
+            {(isEditMode && categoryOptions) && <Row>
+                <Col span={24}>
+                    <Field
+                        showOptional={false}
+                        label="Condition Category:"
+                        component={RenderGroupedSelect}
+                        name="condition_category_code"
+                        data={categoryOptions}
+                        allowClear={false}
+                        className="horizontal-form-item"
+                    />
+                </Col>
+            </Row>}
             <Row
                 wrap={false}
+                align="top"
                 className={`condition-content ${!editingConditionGuid ? "editable" : ""}`}
             >
                 <Col className="step-column" style={{ flexShrink: 0 }}>
