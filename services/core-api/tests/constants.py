@@ -303,7 +303,7 @@ LOCATION_ACCESS_DATA = {
 }
 
 PAYMENT_CONTACT_DATA = {
-        "party_type_code": "PER",
+        "party_type_code": "ORG",
         "phone_no": "123-123-1234",
         "email": "test@gov.bc.ca",
         "party_name": "test name",
