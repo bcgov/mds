@@ -17,7 +17,6 @@ import {
   maxLength,
   required,
   requiredList,
-  validateSelectOptions,
 } from "@mds/common/redux/utils/Validate";
 
 import { Field } from "redux-form";
@@ -133,45 +132,50 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
       <Field
         id="facility_type"
         name="facility_type"
-        label="Facility Type *"
+        label="Facility Type"
         component={renderConfig.SELECT}
         disabled={!canEditTSFAndEditMode}
         data={FACILITY_TYPES}
-        validate={[requiredList, validateSelectOptions(FACILITY_TYPES)]}
+        required
+        validate={[requiredList]}
       />
       <Field
-        label="Mines Act Permit Number *"
+        label="Mines Act Permit Number"
         id="mines_act_permit_no"
         name="mines_act_permit_no"
         component={renderConfig.SELECT}
         disabled={!canEditTSFAndEditMode}
-        validate={[requiredList, validateSelectOptions(permitOptions)]}
+        required
+        validate={[requiredList]}
         data={permitOptions}
       />
       <Field
         id="tailings_storage_facility_type"
         name="tailings_storage_facility_type"
-        label="Tailings Storage Facility Type *"
+        label="Tailings Storage Facility Type"
         component={renderConfig.SELECT}
         disabled={!canEditTSFAndEditMode}
-        validate={[requiredList, validateSelectOptions(TSF_TYPES)]}
+        required
+        validate={[requiredList]}
         data={TSF_TYPES}
       />
       <Field
         id="storage_location"
         name="storage_location"
-        label="Underground or Above Ground? *"
+        label="Underground or Above Ground?"
         component={renderConfig.SELECT}
         disabled={!canEditTSFAndEditMode}
         data={STORAGE_LOCATION}
-        validate={[requiredList, validateSelectOptions(STORAGE_LOCATION)]}
+        required
+        validate={[requiredList]}
       />
       <Field
         id="mine_tailings_storage_facility_name"
         name="mine_tailings_storage_facility_name"
-        label="Facility Name *"
+        label="Facility Name"
         component={renderConfig.FIELD}
         disabled={!canEditTSFAndEditMode}
+        required
         validate={[maxLength(60), required]}
       />
       <Row gutter={16}>
@@ -179,9 +183,10 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
           <Field
             id="latitude"
             name="latitude"
-            label="Latitude *"
+            label="Latitude"
             component={renderConfig.FIELD}
             disabled={!canEditTSFAndEditMode}
+            required
             validate={[lat, required]}
           />
         </Col>
@@ -189,9 +194,10 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
           <Field
             id="longitude"
             name="longitude"
-            label="Longitude *"
+            label="Longitude"
             component={renderConfig.FIELD}
             disabled={!canEditTSFAndEditMode}
+            required
             validate={[lonNegative, lon, required]}
           />
         </Col>
@@ -199,28 +205,31 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
       <Field
         id="consequence_classification_status_code"
         name="consequence_classification_status_code"
-        label="Consequence Classification *"
+        label="Consequence Classification"
         component={renderConfig.SELECT}
         disabled={!canEditTSFAndEditMode}
         data={CONSEQUENCE_CLASSIFICATION_STATUS_CODE}
-        validate={[requiredList, validateSelectOptions(CONSEQUENCE_CLASSIFICATION_STATUS_CODE)]}
+        required
+        validate={[requiredList]}
       />
       <Field
         id="tsf_operating_status_code"
         name="tsf_operating_status_code"
-        label="Operating Status *"
+        label="Operating Status"
         data={statusCodeOptions}
         component={renderConfig.SELECT}
         disabled={!canEditTSFAndEditMode}
-        validate={[requiredList, validateSelectOptions(statusCodeOptions)]}
+        required
+        validate={[requiredList]}
       />
       <Field
         id="itrb_exemption_status_code"
         name="itrb_exemption_status_code"
-        label="Independent Tailings Review Board Member *"
+        label="Independent Tailings Review Board Member"
         component={renderConfig.SELECT}
         disabled={!canEditTSFAndEditMode}
         data={TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD}
+        required
         validate={[maxLength(300), required]}
       />
       <TailingsDiffModal

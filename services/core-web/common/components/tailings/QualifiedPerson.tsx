@@ -235,7 +235,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
             <Field
               id="qualified_person.end_date"
               name="qualified_person.end_date"
-              label="End Date (Optional)"
+              label="End Date"
               disabled={fieldsDisabled}
               validate={!fieldsDisabled && [dateInFuture]}
               component={renderConfig.DATE}

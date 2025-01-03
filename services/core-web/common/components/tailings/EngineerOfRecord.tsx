@@ -385,7 +385,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
               <Field
                 id="engineer_of_record.end_date"
                 name="engineer_of_record.end_date"
-                label="End Date (Optional)"
+                label="End Date"
                 disabled={fieldsDisabled}
                 validate={!fieldsDisabled && [dateInFuture]}
                 component={renderConfig.DATE}

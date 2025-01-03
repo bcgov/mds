@@ -324,21 +324,6 @@ export const validateIncidentDate = memoize((reportedDate) => (value) =>
     : undefined
 );
 
-/**
- * @param data: options to choose from
- * @param allowEmptyData: perform validation with empty data array (free text on empty data set will be invalid)
- */
-export const validateSelectOptions = memoize((data: IOption[], allowEmptyData = false) => (value):
-  | string
-  | undefined => {
-  if (value && (data?.length > 0 || allowEmptyData)) {
-    return data?.find((opt) => opt.value === value) !== undefined
-      ? undefined
-      : "Invalid. Select an option provided in the dropdown.";
-  }
-  return undefined;
-});
-
 export const decimalPlaces = memoize((places) => (value) => {
   if (value && !Validate.checkWholeNumber(value)) {
     const valueDecimalPlaces = value.split(".")[1];

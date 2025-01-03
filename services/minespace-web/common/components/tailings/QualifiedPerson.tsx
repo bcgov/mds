@@ -222,9 +222,10 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
             <Field
               id="qualified_person.start_date"
               name="qualified_person.start_date"
-              label={!fieldsDisabled ? "Start Date *" : "Start Date"}
+              label="Start Date"
               disabled={fieldsDisabled}
               component={renderConfig.DATE}
+              required={!fieldsDisabled}
               validate={!fieldsDisabled && [required, dateNotInFuture, validateQPStartDateOverlap]}
             />
           </Col>
@@ -232,7 +233,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
             <Field
               id="qualified_person.end_date"
               name="qualified_person.end_date"
-              label="End Date (Optional)"
+              label="End Date"
               disabled={fieldsDisabled}
               validate={!fieldsDisabled && [dateInFuture]}
               component={renderConfig.DATE}
