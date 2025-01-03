@@ -44,6 +44,9 @@ export const PaymentContact = ({ isDisabled }) => {
     }
   }, [payment_contact?.party_type_code, payment_contact?.address]);
 
+  const paymentContactAddress = payment_contact?.address || [];
+  const isMailingInternational = paymentContactAddress[0]?.address_type_code === "INT";
+
   return (
     <div style={{ paddingTop: 12 }}>
       <Title level={4}>Contact for Payment</Title>
@@ -105,11 +108,14 @@ export const PaymentContact = ({ isDisabled }) => {
             disabled={isDisabled}
             name="payment_contact.address[0].address_line_1"
             label="Street"
+            required
+            validate={[required, maxLength(100)]}
             component={RenderField}
           />
         </Col>
         <Col md={5} sm={24}>
           <Field
+            validate={[maxLength(5)]}
             disabled={isDisabled}
             name="payment_contact.address[0].suite_no"
             label="Unit #"
@@ -123,6 +129,8 @@ export const PaymentContact = ({ isDisabled }) => {
             disabled={isDisabled}
             name="payment_contact.address[0].address_type_code"
             label="Country"
+            required
+            validate={[required]}
             data={CONTACTS_COUNTRY_OPTIONS}
             component={RenderSelect}
           />
@@ -132,6 +140,8 @@ export const PaymentContact = ({ isDisabled }) => {
             disabled={isDisabled}
             name="payment_contact.address[0].sub_division_code"
             label="Province"
+            required={!isMailingInternational}
+            validate={!isMailingInternational ? [required] : []}
             data={provinceOptions.filter(
               (p) => p.subType === payment_contact?.address?.[0]?.address_type_code
             )}
@@ -146,6 +156,8 @@ export const PaymentContact = ({ isDisabled }) => {
             disabled={isDisabled}
             name="payment_contact.address[0].city"
             label="City"
+            required
+            validate={[required]}
             component={RenderField}
           />
         </Col>
@@ -155,6 +167,7 @@ export const PaymentContact = ({ isDisabled }) => {
             name="payment_contact.address[0].post_code"
             label="Postal Code"
             component={RenderField}
+            required
             validate={[
               postalCodeWithCountry(payment_contact?.address?.[0]?.address_type_code),
               maxLength(10),

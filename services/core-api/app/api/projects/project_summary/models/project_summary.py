@@ -876,9 +876,17 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             if do_full_validation and applicant == None:
                 errors_found['applicant_info'].append('Applicant Information not provided')
             elif applicant != None:
+                payment_contact = data.get('payment_contact', None)
                 applicant_validation = ProjectSummary.validate_project_party(applicant, 'applicant')
                 if applicant_validation != True:
                     errors_found['applicant_info'].append(applicant_validation)
+
+                if payment_contact['address'] == None:
+                    errors_found['applicant_info'].append('Payment contact address info not provided')
+                else:
+                    payment_contact_validation = ProjectSummary.validate_project_party(payment_contact, 'applicant')
+                    if payment_contact_validation != True:
+                        errors_found['applicant_info'].append(payment_contact_validation)
 
             # Validate Agent
             if do_full_validation and is_agent == None:
@@ -1088,6 +1096,17 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             self.applicant_party_guid = applicant_party.party_guid
 
         if payment_contact is not None:
+            if self.payment_contact != None and len(payment_contact['address']) == 1 and len(self.payment_contact.address) == 0:
+                    temp_address = Address.create(
+                        suite_no=None,
+                        address_line_1=None,
+                        city=None,
+                        sub_division_code=None,
+                        post_code=None,
+                        address_type_code=None,
+                    )
+
+                    (self.payment_contact.address).append(temp_address)
             payment_contact_party = self.create_or_update_party(payment_contact, 'PAY', self.payment_contact)
             payment_contact_party.save()
             self.payment_contact_party_guid = payment_contact_party.party_guid
