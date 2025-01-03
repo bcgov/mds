@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { required } from "@common/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import * as FORM from "@/constants/forms";
@@ -11,7 +11,8 @@ import CustomPropTypes from "@/customPropTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -19,7 +20,7 @@ const propTypes = {
 };
 
 export const TransferBondForm = (props) => (
-  <FormWrapper onSubmit={props.handleSubmit}
+  <FormWrapper onSubmit={props.onSubmit} initialValues={props.initialValues}
     name={FORM.TRANSFER_BOND}
     reduxFormConfig={{
       touchOnBlur: false,

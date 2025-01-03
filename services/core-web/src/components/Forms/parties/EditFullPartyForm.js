@@ -10,7 +10,7 @@ import {
   postalCode,
   maxLength,
   number,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { normalizePhone, upperCase, resetForm, formatDateTime } from "@common/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as FORM from "@/constants/forms";
@@ -23,10 +23,10 @@ import PartySignatureUpload from "./PartySignatureUpload";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
   party: CustomPropTypes.party.isRequired,
   closeModal: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   submitting: PropTypes.bool.isRequired,
   orgBookEntity: PropTypes.objectOf(PropTypes.string).isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
@@ -51,13 +51,14 @@ export class EditFullPartyForm extends Component {
       <div>
         <FormWrapper
           name={FORM.EDIT_FULL_PARTY}
-          onSubmit={this.props.handleSubmit((values) => {
+          initialValues={this.props.initialValues}
+          onSubmit={(values) => {
             const party = {
               ...values,
               signature: this.state.signature,
             };
             return this.props.onSubmit(party);
-          })}
+          }}
           reduxFormConfig={{
             onSubmitSuccess: resetForm(FORM.EDIT_FULL_PARTY),
             enableReinitialize: true,

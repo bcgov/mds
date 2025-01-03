@@ -2,24 +2,22 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Button, Col, Row, Popconfirm, Typography } from "antd";
-import { dateTimezoneRequired, dateNotInFutureTZ, required } from "@common/utils/Validate";
-import { resetForm } from "@common/utils/helpers";
+import { dateTimezoneRequired, dateNotInFutureTZ, required } from "@mds/common/redux/utils/Validate";
+import { resetForm, normalizeDatetime } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import RenderDateTimeTz from "@mds/common/components/forms/RenderDateTimeTz";
-import { normalizeDatetime } from "@common/utils/helpers";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
 };
 
 export const ExplosivesPermitCloseForm = (props) => {
   return (
-    <FormWrapper onSubmit={props.handleSubmit}
+    <FormWrapper onSubmit={props.onSubmit}
       name={FORM.EXPLOSIVES_PERMIT_CLOSE}
       reduxFormConfig={{
         touchOnBlur: false,
@@ -39,32 +37,30 @@ export const ExplosivesPermitCloseForm = (props) => {
       </Row>
       <Row gutter={16}>
         <Col span={24}>
-          <Form.Item label="Date Permit was Closed" required>
-            <Field
-              id="closed_timestamp"
-              name="closed_timestamp"
-              normalize={normalizeDatetime}
-              component={RenderDateTimeTz}
-              validate={[
-                dateNotInFutureTZ,
-                required,
-                dateTimezoneRequired("esup_permit_close_timezone"),
-              ]}
-              props={{ timezoneFieldProps: { name: "esup_permit_close_timezone" } }}
-            />
-          </Form.Item>
+          <Field
+            label="Date Permit was Closed"
+            id="closed_timestamp"
+            name="closed_timestamp"
+            normalize={normalizeDatetime}
+            component={RenderDateTimeTz}
+            required
+            validate={[
+              dateNotInFutureTZ,
+              required,
+              dateTimezoneRequired("esup_permit_close_timezone"),
+            ]}
+            props={{ timezoneFieldProps: { name: "esup_permit_close_timezone" } }}
+          />
         </Col>
       </Row>
       <Row gutter={16}>
         <Col span={24}>
-          <Form.Item>
-            <Field
-              id="closed_reason"
-              name="closed_reason"
-              label="Reason for closure"
-              component={RenderAutoSizeField}
-            />
-          </Form.Item>
+          <Field
+            id="closed_reason"
+            name="closed_reason"
+            label="Reason for closure"
+            component={RenderAutoSizeField}
+          />
         </Col>
       </Row>
       <div className="right center-mobile">

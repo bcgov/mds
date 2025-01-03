@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, getFormValues, isSubmitting } from "redux-form";
 import { Button, Col, Popconfirm, Row, Form } from "antd";
-import { required } from "@common/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
@@ -12,7 +12,6 @@ import { IExplosivesPermitDocumentType, IParty } from "@mds/common";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 interface ExplosivesPermitDecisionFormProps {
-  handleSubmit?: any;
   closeModal: any;
   previewDocument: any;
   inspectors: IParty[];
@@ -25,7 +24,8 @@ interface ExplosivesPermitDecisionFormProps {
 
 export const ExplosivesPermitDecisionForm: FC<ExplosivesPermitDecisionFormProps> = ({
   inspectors,
-  handleSubmit,
+  onSubmit,
+  initialValues,
   documentType,
   submitting,
   previewDocument,
@@ -42,7 +42,7 @@ export const ExplosivesPermitDecisionForm: FC<ExplosivesPermitDecisionFormProps>
         touchOnBlur: true,
         onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT_DECISION),
       }}
-      layout="vertical" onSubmit={handleSubmit}>
+      initialValues={initialValues} onSubmit={onSubmit}>
       <Row gutter={48}>
         <Col span={24}>
           <Field

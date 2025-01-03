@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Button, Col, Collapse, Popconfirm, Row, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { required } from "@common/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";

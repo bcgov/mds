@@ -14,7 +14,7 @@ import {
   required,
   number,
   maxLength,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";

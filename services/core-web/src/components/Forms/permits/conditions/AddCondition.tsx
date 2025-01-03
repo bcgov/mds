@@ -82,11 +82,11 @@ export const AddCondition: FC<RouteComponentProps & AddCondtionProps> = (props) 
   };
 
   const conditionMenu = () =>
-    ({
-      SEC: (
-        <Menu>
-          {(!props.initialValues.sibling_condition_type_code ||
-            props.initialValues.sibling_condition_type_code === "SEC") && (
+  ({
+    SEC: (
+      <Menu>
+        {(!props.initialValues.sibling_condition_type_code ||
+          props.initialValues.sibling_condition_type_code === "SEC") && (
             <Menu.Item>
               <button
                 type="button"
@@ -101,8 +101,8 @@ export const AddCondition: FC<RouteComponentProps & AddCondtionProps> = (props) 
               </button>
             </Menu.Item>
           )}
-          {(!props.initialValues.sibling_condition_type_code ||
-            props.initialValues.sibling_condition_type_code === "CON") && (
+        {(!props.initialValues.sibling_condition_type_code ||
+          props.initialValues.sibling_condition_type_code === "CON") && (
             <Menu.Item>
               <button
                 type="button"
@@ -117,43 +117,43 @@ export const AddCondition: FC<RouteComponentProps & AddCondtionProps> = (props) 
               </button>
             </Menu.Item>
           )}
-        </Menu>
-      ),
-      CON: (
-        <Menu>
-          <Menu.Item>
-            <button
-              type="button"
-              className="full"
-              onClick={() => {
-                props.setEditingConditionFlag(true);
-                setIsEditing(true);
-                setConditionType("LIS");
-              }}
-            >
-              List Item
-            </button>
-          </Menu.Item>
-        </Menu>
-      ),
-      LIS: (
-        <Menu>
-          <Menu.Item>
-            <button
-              type="button"
-              className="full"
-              onClick={() => {
-                props.setEditingConditionFlag(true);
-                setIsEditing(true);
-                setConditionType("LIS");
-              }}
-            >
-              List Item
-            </button>
-          </Menu.Item>
-        </Menu>
-      ),
-    }[props.initialValues.parent_condition_type_code]);
+      </Menu>
+    ),
+    CON: (
+      <Menu>
+        <Menu.Item>
+          <button
+            type="button"
+            className="full"
+            onClick={() => {
+              props.setEditingConditionFlag(true);
+              setIsEditing(true);
+              setConditionType("LIS");
+            }}
+          >
+            List Item
+          </button>
+        </Menu.Item>
+      </Menu>
+    ),
+    LIS: (
+      <Menu>
+        <Menu.Item>
+          <button
+            type="button"
+            className="full"
+            onClick={() => {
+              props.setEditingConditionFlag(true);
+              setIsEditing(true);
+              setConditionType("LIS");
+            }}
+          >
+            List Item
+          </button>
+        </Menu.Item>
+      </Menu>
+    ),
+  }[props.initialValues.parent_condition_type_code]);
 
   const hasSibling = props.initialValues.sibling_condition_type_code;
   const addTitle = hasSibling ? "Add Another" : "Create";
@@ -218,7 +218,7 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(AddCondition) as FC<
+  connect(mapStateToProps, mapDispatchToProps)(AddCondition as any) as FC<
     AddCondtionProps & RouteComponentProps
   >
 );

@@ -6,7 +6,7 @@ const dispatchProps = {};
 const props = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.handleSubmit = jest.fn();
+  dispatchProps.onSubmit = jest.fn();
 };
 
 const setupProps = () => {
@@ -17,7 +17,7 @@ beforeEach(() => {
   setupDispatchProps();
   setupProps();
 });
-// reduxForm is not defined
+
 describe("AddIncidentReportingForm", () => {
   it("renders properly", () => {
     const component = shallow(<AddIncidentReportingForm {...dispatchProps} {...props} />);

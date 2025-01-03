@@ -2,51 +2,50 @@
 
 exports[`AddIncidentReportingForm renders properly 1`] = `
 <div>
-  <Form
-    colon={true}
-    hideRequiredMark={false}
-    layout="vertical"
+  <Connect(ReduxForm)
+    name="ADD_INCIDENT"
     onSubmit={[Function]}
+    reduxFormConfig={
+      Object {
+        "destroyOnUnmount": false,
+        "forceUnregisterOnUnmount": true,
+        "touchOnBlur": true,
+      }
+    }
   >
-    <FormItem
-      hasFeedback={false}
+    <Field
+      component={[Function]}
+      data={Object {}}
+      id="categories"
       label="Incident type(s)"
-    >
-      <Field
-        component={[Function]}
-        data={Object {}}
-        id="categories"
-        name="categories"
-        placeholder="Select incident type(s)"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </FormItem>
+      name="categories"
+      placeholder="Select incident type(s)"
+      required={true}
+      validate={
+        Array [
+          [Function],
+        ]
+      }
+    />
     <Divider />
     <ForwardRef(Text)>
       <h4>
         Reporter Details
       </h4>
     </ForwardRef(Text)>
-    <FormItem
-      hasFeedback={false}
+    <Field
+      component={[Function]}
+      id="reported_by_name"
       label="Reported by"
-    >
-      <Field
-        component={[Function]}
-        id="reported_by_name"
-        name="reported_by_name"
-        placeholder="Enter name of reporter"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </FormItem>
+      name="reported_by_name"
+      placeholder="Enter name of reporter"
+      required={true}
+      validate={
+        Array [
+          [Function],
+        ]
+      }
+    />
     <Row
       gutter={16}
     >
@@ -54,64 +53,52 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
         md={12}
         xs={24}
       >
-        <FormItem
-          hasFeedback={false}
-          label="Phone number (optional)"
-        >
-          <Field
-            component={[Function]}
-            id="reported_by_phone_no"
-            name="reported_by_phone_no"
-            normalize={[Function]}
-            placeholder="xxx-xxx-xxxx"
-            validate={
-              Array [
-                [Function],
-                [Function],
-              ]
-            }
-          />
-        </FormItem>
+        <Field
+          component={[Function]}
+          id="reported_by_phone_no"
+          label="Phone number"
+          name="reported_by_phone_no"
+          normalize={[Function]}
+          placeholder="xxx-xxx-xxxx"
+          validate={
+            Array [
+              [Function],
+              [Function],
+            ]
+          }
+        />
       </Col>
       <Col
         md={12}
         xs={24}
       >
-        <FormItem
-          hasFeedback={false}
-          label="Phone extension (optional)"
-        >
-          <Field
-            component={[Function]}
-            id="reported_by_phone_ext"
-            name="reported_by_phone_ext"
-            placeholder="xxxxxx"
-            validate={
-              Array [
-                [Function],
-                [Function],
-              ]
-            }
-          />
-        </FormItem>
+        <Field
+          component={[Function]}
+          id="reported_by_phone_ext"
+          label="Phone extension"
+          name="reported_by_phone_ext"
+          placeholder="xxxxxx"
+          validate={
+            Array [
+              [Function],
+              [Function],
+            ]
+          }
+        />
       </Col>
     </Row>
-    <FormItem
-      hasFeedback={false}
-      label="Email address (optional)"
-    >
-      <Field
-        component={[Function]}
-        id="reported_by_email"
-        name="reported_by_email"
-        placeholder="example@domain.com"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </FormItem>
-  </Form>
+    <Field
+      component={[Function]}
+      id="reported_by_email"
+      label="Email address"
+      name="reported_by_email"
+      placeholder="example@domain.com"
+      validate={
+        Array [
+          [Function],
+        ]
+      }
+    />
+  </Connect(ReduxForm)>
 </div>
 `;

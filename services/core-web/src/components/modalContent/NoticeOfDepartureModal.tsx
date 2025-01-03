@@ -24,7 +24,7 @@ import {
   maxLength,
   phoneNumber,
   required,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import {
   ICreateNoD,
   IMine,
@@ -48,11 +48,11 @@ import * as Permission from "@/constants/permissions";
 import { renderDocumentLinkColumn } from "../common/DocumentColumns";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
-interface renderContactsProps {
+interface RenderContactsProps {
   fields: INoDContactInterface[];
 }
 
-export const renderContacts: React.FC<renderContactsProps> = (props, disabled = false) => {
+export const renderContacts: React.FC<RenderContactsProps> = (props, disabled = false) => {
   const { fields } = props;
 
   return (
@@ -124,7 +124,6 @@ interface NoticeOfDepartureModalProps {
   fetchNoticesOfDeparture: any;
   updateNoticeOfDeparture: any;
   addDocumentToNoticeOfDeparture: any;
-  handleSubmit: (event?: any) => void;
   pristine: boolean;
   mine: IMine;
   userRoles: string[];
@@ -138,7 +137,7 @@ const NoticeOfDepartureModal: React.FC<InjectedFormProps<ICreateNoD> &
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [uploading, setUploading] = useState(false);
 
-    const { noticeOfDeparture, mine, handleSubmit, pristine, change } = props;
+    const { noticeOfDeparture, mine, pristine, change } = props;
     const { nod_guid } = noticeOfDeparture;
 
     const hasEditPermission = props.userRoles.includes(USER_ROLES[Permission.EDIT_PERMITS]);
@@ -271,13 +270,14 @@ const NoticeOfDepartureModal: React.FC<InjectedFormProps<ICreateNoD> &
       <div>
         <FormWrapper
           name={FORM.NOTICE_OF_DEPARTURE_FORM}
+          initialValues={props.initialValues}
           reduxFormConfig={{
             onSubmitSuccess: resetForm(FORM.NOTICE_OF_DEPARTURE_FORM),
             touchOnBlur: false,
             forceUnregisterOnUnmount: true,
             enableReinitialize: true,
           }}
-          onSubmit={handleSubmit(updateNoticeOfDepartureSubmit)}>
+          onSubmit={updateNoticeOfDepartureSubmit}>
           <h4 className="nod-modal-section-header">Basic Information</h4>
           <div className="content--light-grey nod-section-padding">
             <div className="inline-flex padding-sm">
@@ -400,7 +400,7 @@ const NoticeOfDepartureModal: React.FC<InjectedFormProps<ICreateNoD> &
                   className="full-mobile nod-update-button"
                   type="primary"
                   htmlType="submit"
-                  onClick={handleSubmit(updateNoticeOfDepartureSubmit)}
+                  onClick={updateNoticeOfDepartureSubmit}
                   disabled={(pristine && documentArray.length === 0) || uploading}
                 >
                   Update

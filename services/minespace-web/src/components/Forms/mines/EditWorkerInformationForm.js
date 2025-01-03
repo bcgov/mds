@@ -1,25 +1,32 @@
 import React from "react";
 import PropTypes from "prop-types";
 import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Popconfirm, Row, Tooltip, Typography, Descriptions } from "antd";
-
-import { Field, reduxForm } from "redux-form";
-import { wholeNumber } from "@common/utils/Validate";
+import { Field } from "redux-form";
+import { wholeNumber } from "@mds/common/redux/utils/Validate";
 import { wholeNumberMask } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   submitting: PropTypes.bool.isRequired,
   handleToggleEdit: PropTypes.func.isRequired,
 };
 
 export const EditWorkerInformationForm = (props) => (
   <div className="work-information-container ">
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <FormWrapper
+      name={FORM.EDIT_EMPLOYEE_COUNT}
+      onSubmit={props.onSubmit}
+      initialValues={props.initialValues}
+      reduxFormConfig={{
+        touchOnBlur: false,
+        enableReinitialize: true,
+      }}
+    >
       <Typography.Title level={4}>
         Worker Information
         <Tooltip
@@ -35,26 +42,22 @@ export const EditWorkerInformationForm = (props) => (
         <Col span={22}>
           <Descriptions column={5} colon={false}>
             <Descriptions.Item label="Number of Mine Employees">
-              <Form.Item>
-                <Field
-                  id="number_of_mine_employees"
-                  name="number_of_mine_employees"
-                  component={renderConfig.FIELD}
-                  {...wholeNumberMask}
-                  validate={[wholeNumber]}
-                />
-              </Form.Item>
+              <Field
+                id="number_of_mine_employees"
+                name="number_of_mine_employees"
+                component={renderConfig.FIELD}
+                {...wholeNumberMask}
+                validate={[wholeNumber]}
+              />
             </Descriptions.Item>
             <Descriptions.Item label="Number of Contractors">
-              <Form.Item>
-                <Field
-                  id="number_of_contractors"
-                  name="number_of_contractors"
-                  component={renderConfig.FIELD}
-                  {...wholeNumberMask}
-                  validate={[wholeNumber]}
-                />
-              </Form.Item>
+              <Field
+                id="number_of_contractors"
+                name="number_of_contractors"
+                component={renderConfig.FIELD}
+                {...wholeNumberMask}
+                validate={[wholeNumber]}
+              />
             </Descriptions.Item>
           </Descriptions>
         </Col>
@@ -84,14 +87,10 @@ export const EditWorkerInformationForm = (props) => (
           Update Mine Worker Information
         </Button>
       </div>
-    </Form>
+    </FormWrapper>
   </div>
 );
 
 EditWorkerInformationForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.EDIT_EMPLOYEE_COUNT,
-  touchOnBlur: false,
-  enableReinitialize: true,
-})(EditWorkerInformationForm);
+export default EditWorkerInformationForm;

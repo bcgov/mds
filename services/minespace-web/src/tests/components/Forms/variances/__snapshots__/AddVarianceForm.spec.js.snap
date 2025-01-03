@@ -1,11 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddVarianceForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  name="ADD_VARIANCE"
   onSubmit={[Function]}
+  reduxFormConfig={
+    Object {
+      "onSubmitSuccess": [Function],
+      "touchOnBlur": false,
+    }
+  }
 >
   <Field
     component={[Function]}
@@ -57,8 +61,7 @@ exports[`AddVarianceForm renders properly 1`] = `
       ]
     }
   />
-  <FormItem
-    hasFeedback={false}
+  <InternalFormItem
     label="Attached Files"
   >
     <ForwardRef>
@@ -72,7 +75,7 @@ exports[`AddVarianceForm renders properly 1`] = `
       onFileLoad={[Function]}
       onRemoveFile={[Function]}
     />
-  </FormItem>
+  </InternalFormItem>
   <div
     className="ant-modal-footer"
   >
@@ -95,5 +98,5 @@ exports[`AddVarianceForm renders properly 1`] = `
       Submit
     </Button>
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

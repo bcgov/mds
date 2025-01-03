@@ -4,7 +4,7 @@ import { Button, Popconfirm, Row, Col } from "antd";
 import PropTypes from "prop-types";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import Highlight from "react-highlighter";
-import { required } from "@common/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -14,7 +14,8 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   title: PropTypes.bool.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   delayTypeOptions: CustomPropTypes.options.isRequired,
   stage: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -23,7 +24,8 @@ const propTypes = {
 const NOWDelayForm = (props) => {
   return (
     <div>
-      <FormWrapper onSubmit={props.handleSubmit}
+      <FormWrapper onSubmit={props.onSubmit}
+        initialValues={props.initialValues}
         name={FORM.MANAGE_DELAY_FORM}
         reduxFormConfig={{
           touchOnBlur: true

@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { Button, Popconfirm } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -29,7 +27,13 @@ export class EditReportForm extends Component {
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <FormWrapper
+        name={FORM.EDIT_REPORT}
+        onSubmit={this.props.handleSubmit}
+        reduxFormConfig={{
+          touchOnBlur: true,
+        }}
+      >
         <ReportSubmissions
           mineGuid={this.props.mineGuid}
           mineReportSubmissions={this.state.mineReportSubmissions}
@@ -51,14 +55,11 @@ export class EditReportForm extends Component {
             Add Documents
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
 
 EditReportForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.EDIT_REPORT,
-  touchOnBlur: true,
-})(EditReportForm);
+export default EditReportForm;

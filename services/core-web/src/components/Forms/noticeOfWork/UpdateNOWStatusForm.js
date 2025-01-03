@@ -2,7 +2,7 @@ import React from "react";
 import { Field } from "redux-form";
 import { Popconfirm, Button } from "antd";
 import PropTypes from "prop-types";
-import { required } from "@common/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { resetForm } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
@@ -13,7 +13,8 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   dropdownNoticeOfWorkApplicationStatusOptions: CustomPropTypes.options.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   closeModal: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
@@ -28,7 +29,8 @@ const UpdateNOWStatusForm = (props) => {
           touchOnBlur: false,
           onSubmitSuccess: resetForm(FORM.UPDATE_NOW_STATUS),
         }}
-        onSubmit={props.handleSubmit}>
+        initialValues={props.initialValues}
+        onSubmit={props.onSubmit}>
         <Field
           id="now_application_status_code"
           name="now_application_status_code"

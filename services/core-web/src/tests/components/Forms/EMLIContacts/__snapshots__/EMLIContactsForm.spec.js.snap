@@ -2,11 +2,17 @@
 
 exports[`EMLIContactForm renders properly 1`] = `
 <div>
-  <Form
-    colon={true}
-    hideRequiredMark={false}
-    layout="vertical"
+  <Connect(ReduxForm)
+    initialValues={Object {}}
+    name="EMLI_CONTACT_FORM"
     onSubmit={[MockFunction]}
+    reduxFormConfig={
+      Object {
+        "enableReinitialize": true,
+        "onSubmitSuccess": [Function],
+        "touchOnBlur": false,
+      }
+    }
   >
     <Row
       gutter={16}
@@ -14,23 +20,20 @@ exports[`EMLIContactForm renders properly 1`] = `
       <Col
         span={12}
       >
-        <FormItem
-          hasFeedback={false}
-        >
-          <Field
-            component={[Function]}
-            disabled={true}
-            id="is_major_mine"
-            label="Is this a Major Mine Contact?*"
-            name="is_major_mine"
-            type="checkbox"
-            validate={
-              Array [
-                [Function],
-              ]
-            }
-          />
-        </FormItem>
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="is_major_mine"
+          label="Is this a Major Mine Contact?"
+          name="is_major_mine"
+          required={true}
+          type="checkbox"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
       </Col>
     </Row>
     <Row
@@ -40,48 +43,41 @@ exports[`EMLIContactForm renders properly 1`] = `
         md={12}
         xs={24}
       >
-        <FormItem
-          hasFeedback={false}
-        >
-          <Field
-            component={[Function]}
-            data={Array []}
-            disabled={true}
-            id="mine_region_code"
-            label="Mine Region*"
-            name="mine_region_code"
-            placeholder="Select a mine Region"
-            validate={
-              Array [
-                [Function],
-                [Function],
-              ]
-            }
-          />
-        </FormItem>
+        <Field
+          component={[Function]}
+          data={Array []}
+          disabled={true}
+          id="mine_region_code"
+          label="Mine Region"
+          name="mine_region_code"
+          placeholder="Select a mine Region"
+          required={true}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
       </Col>
       <Col
         md={12}
         xs={24}
       >
-        <FormItem
-          hasFeedback={false}
-        >
-          <Field
-            component={[Function]}
-            data={Array []}
-            disabled={true}
-            id="emli_contact_type_code"
-            label="Contact Type*"
-            name="emli_contact_type_code"
-            placeholder="Select a contact type"
-            validate={
-              Array [
-                [Function],
-              ]
-            }
-          />
-        </FormItem>
+        <Field
+          component={[Function]}
+          data={Array []}
+          disabled={true}
+          id="emli_contact_type_code"
+          label="Contact Type"
+          name="emli_contact_type_code"
+          placeholder="Select a contact type"
+          required={true}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
       </Col>
     </Row>
     <Row
@@ -91,43 +87,37 @@ exports[`EMLIContactForm renders properly 1`] = `
         md={12}
         xs={24}
       >
-        <FormItem
-          hasFeedback={false}
-        >
-          <Field
-            component={[Function]}
-            disabled={true}
-            id="first_name"
-            label="First Name*"
-            name="first_name"
-            validate={
-              Array [
-                [Function],
-              ]
-            }
-          />
-        </FormItem>
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="first_name"
+          label="First Name"
+          name="first_name"
+          required={true}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
       </Col>
       <Col
         md={12}
         xs={24}
       >
-        <FormItem
-          hasFeedback={false}
-        >
-          <Field
-            component={[Function]}
-            disabled={true}
-            id="last_name"
-            label="Surname*"
-            name="last_name"
-            validate={
-              Array [
-                [Function],
-              ]
-            }
-          />
-        </FormItem>
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="last_name"
+          label="Surname"
+          name="last_name"
+          required={true}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
       </Col>
     </Row>
     <Row
@@ -136,23 +126,20 @@ exports[`EMLIContactForm renders properly 1`] = `
       <Col
         span={24}
       >
-        <FormItem
-          hasFeedback={false}
-        >
-          <Field
-            component={[Function]}
-            disabled={true}
-            id="email"
-            label="Email*"
-            name="email"
-            validate={
-              Array [
-                [Function],
-                [Function],
-              ]
-            }
-          />
-        </FormItem>
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="email"
+          label="Email"
+          name="email"
+          required={true}
+          validate={
+            Array [
+              [Function],
+              [Function],
+            ]
+          }
+        />
       </Col>
     </Row>
     <Row
@@ -161,26 +148,23 @@ exports[`EMLIContactForm renders properly 1`] = `
       <Col
         span={24}
       >
-        <FormItem
-          hasFeedback={false}
-        >
-          <Field
-            component={[Function]}
-            disabled={true}
-            id="phone_number"
-            label="Phone Number*"
-            name="phone_number"
-            normalize={[Function]}
-            placeholder="e.g. xxx-xxx-xxxx"
-            validate={
-              Array [
-                [Function],
-                [Function],
-                [Function],
-              ]
-            }
-          />
-        </FormItem>
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="phone_number"
+          label="Phone Number"
+          name="phone_number"
+          normalize={[Function]}
+          placeholder="e.g. xxx-xxx-xxxx"
+          required={true}
+          validate={
+            Array [
+              [Function],
+              [Function],
+              [Function],
+            ]
+          }
+        />
       </Col>
     </Row>
     <div
@@ -211,6 +195,6 @@ exports[`EMLIContactForm renders properly 1`] = `
         Update EMLI Contact
       </Button>
     </div>
-  </Form>
+  </Connect(ReduxForm)>
 </div>
 `;

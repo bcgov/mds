@@ -182,13 +182,10 @@ exports[`VarianceSearchForm form renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <Button
+    <RenderResetButton
+      buttonText="Clear Filters"
       className="full-mobile"
-      htmlType="reset"
-      type="secondary"
-    >
-      Clear Filters
-    </Button>
+    />
     <Button
       className="full-mobile"
       htmlType="submit"

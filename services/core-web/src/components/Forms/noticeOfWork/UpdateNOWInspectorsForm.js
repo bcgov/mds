@@ -2,7 +2,7 @@ import React from "react";
 import { Field } from "redux-form";
 import { Button, Popconfirm, Alert } from "antd";
 import PropTypes from "prop-types";
-import { required } from "@common/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { MDS_EMAIL } from "@mds/common/constants/strings";
 import { renderConfig } from "@/components/common/config";
@@ -14,7 +14,8 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   isAdminView: PropTypes.bool.isRequired,
   isEditMode: PropTypes.bool.isRequired,
   setEditMode: PropTypes.func.isRequired,
@@ -29,7 +30,7 @@ const UpdateNOWInspectorsForm = (props) => {
         reduxFormConfig={{
           touchOnBlur: true,
         }}
-        onSubmit={props.handleSubmit}>
+        onSubmit={props.onSubmit} initialValues={props.initialValues}>
         <div className="field-title">Lead Inspector</div>
         <Field
           id="lead_inspector_party_guid"

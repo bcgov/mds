@@ -11,7 +11,7 @@ import RenderSelect from "@mds/common/components/forms/RenderSelect";
 
 const propTypes = {
   documentType: PropTypes.objectOf(PropTypes.any).isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   preview: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -20,6 +20,7 @@ const propTypes = {
   disabled: PropTypes.bool,
   allowDocx: PropTypes.bool,
   allCurrentValues: PropTypes.arrayOf(PropTypes.any).isRequired,
+  initialValues: PropTypes.any,
 };
 
 const defaultProps = {
@@ -59,7 +60,7 @@ export const GenerateDocumentForm = (props) => {
   const [fileType, setFileType] = useState("PDF");
 
   return (
-    <FormWrapper onSubmit={props.handleSubmit}
+    <FormWrapper onSubmit={props.onSubmit} initialValues={props.initialValues}
       name={FORM.GENERATE_DOCUMENT}
       reduxFormCondig={{
         touchOnBlur: true,

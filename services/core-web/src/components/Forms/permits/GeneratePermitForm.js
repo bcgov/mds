@@ -4,7 +4,7 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field, getFormValues } from "redux-form";
 import { Button, Col, Row, Descriptions, Popconfirm } from "antd";
-import { required, dateNotAfterOther, dateNotBeforeOther, maxLength } from "@common/utils/Validate";
+import { required, dateNotAfterOther, dateNotBeforeOther, maxLength } from "@mds/common/redux/utils/Validate";
 import { resetForm, formatDate } from "@common/utils/helpers";
 import { getEditingPreambleFlag } from "@mds/common/redux/selectors/permitSelectors";
 import * as FORM from "@/constants/forms";
@@ -12,7 +12,6 @@ import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import { EDIT_OUTLINE } from "@/constants/assets";
 import VariableConditionMenu from "@/components/Forms/permits/conditions/VariableConditionMenu";
-
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
 import PreviousAmendmentDocuments from "@/components/noticeOfWork/applications/PreviousAmendmentDocuments";

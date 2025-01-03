@@ -6,7 +6,7 @@ import moment from "moment";
 import { isEmpty } from "lodash";
 import { Field, formValueSelector } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { required, validateDateRanges } from "@common/utils/Validate";
+import { required, validateDateRanges } from "@mds/common/redux/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
@@ -18,7 +18,6 @@ import PartyRelationshipFileUpload from "./PartyRelationshipFileUpload";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   onFileLoad: PropTypes.func.isRequired,
@@ -213,15 +212,14 @@ export class AddPartyRelationshipForm extends Component {
         break;
     }
 
-    const handleSubmit = (evt) => {
+    const handleSubmit = (values) => {
       if (this.props.createPartyOnly) {
         // Override redux-form submit to allow submitting the selected party
         // instead of the form values
-        evt.preventDefault();
         this.props.onSubmit(this.state.selectedParty);
       } else {
         // Let redux-form handle submission
-        this.props.handleSubmit(evt);
+        this.props.onSubmit(values);
       }
     };
 

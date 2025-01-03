@@ -4,14 +4,14 @@ import { Field } from "redux-form";
 import { formatDate, formatMoney, resetForm } from "@common/utils/helpers";
 import { Button, Col, Row, Popconfirm, Alert } from "antd";
 
-import { maxLength } from "@common/utils/Validate";
+import { maxLength } from "@mds/common/redux/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   prev: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
@@ -33,7 +33,7 @@ export const RejectApplicationForm = (props) => (
       onSubmitSuccess: resetForm(FORM.REJECT_APPLICATION),
       enableReinitialize: true,
     }}
-    onSubmit={props.handleSubmit}>
+    onSubmit={props.onSubmit}>
     {props.draftAmendment?.security_received_date && props.draftAmendment?.liability_adjustment && (
       <Alert
         message="Return Reclamation Securities"

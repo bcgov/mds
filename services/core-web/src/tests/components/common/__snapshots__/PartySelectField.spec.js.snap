@@ -32,12 +32,13 @@ exports[`PartySelectField renders properly 1`] = `
       "value": "29489218432",
     }
   }
-  label="Name*"
+  label="Name"
   name="party_guid"
   onSelect={null}
   organization={false}
   partyLabel="contact"
   person={false}
+  required={false}
   searchResults={Array []}
   selectedOption={
     Object {

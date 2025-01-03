@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import RefreshButton from "@/components/common/buttons/RefreshButton";
-// reduxForm is not defined
+
 describe("RefreshButton", () => {
   it("renders properly", () => {
     const wrapper = shallow(<RefreshButton />);

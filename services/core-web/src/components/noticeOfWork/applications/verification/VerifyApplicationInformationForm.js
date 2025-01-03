@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-import { reduxForm, formValueSelector, reset, change } from "redux-form";
+import { formValueSelector, reset, change } from "redux-form";
 import { Button, Divider, Popconfirm } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -21,7 +21,8 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   mineGuid: PropTypes.string.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   isImporting: PropTypes.bool.isRequired,
   longitude: PropTypes.string,
   latitude: PropTypes.string,
@@ -38,19 +39,19 @@ const defaultProps = {
 };
 
 export const VerifyApplicationInformationForm = (props) => {
-  const [wasFormReset, setReset] = useState(false);
-  const values = {
+  const [wasFormReset, setWasFormReset] = useState(false);
+  const values = props.initialValues ?? {
     mine_guid: props.mineGuid,
     longitude: props.noticeOfWork.longitude,
     latitude: props.noticeOfWork.latitude,
   };
 
   useEffect(() => {
-    setReset(false);
+    setWasFormReset(false);
   }, [props.contactFormValues]);
 
   const handleReset = () => {
-    setReset(true);
+    setWasFormReset(true);
     props.reset(FORM.VERIFY_NOW_APPLICATION_FORM);
     props.change(FORM.VERIFY_NOW_APPLICATION_FORM, "contacts", props.originalNoticeOfWork.contacts);
     props.clearAllSearchResults();
@@ -68,7 +69,7 @@ export const VerifyApplicationInformationForm = (props) => {
         onSubmitSuccess: resetForm(FORM.VERIFY_NOW_APPLICATION_FORM),
       }}
       initialValues={values}
-      onSubmit={props.handleSubmit}>
+      onSubmit={props.onSubmit}>
       <h4>Verify Mine</h4>
       <p>
         Review the information below to confirm that this Notice of Work belongs with this mine

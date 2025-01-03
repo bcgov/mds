@@ -2,9 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
+import { Field } from "redux-form";
 import { Button, Popconfirm } from "antd";
-import { required, maxLength, number, lat, lonNegative, lon } from "@common/utils/Validate";
+import {
+  required,
+  maxLength,
+  number,
+  lat,
+  lonNegative,
+  lon,
+} from "@mds/common/redux/utils/Validate";
 import {
   getConsequenceClassificationStatusCodeDropdownOptions,
   getITRBExemptionStatusCodeDropdownOptions,
@@ -16,6 +23,7 @@ import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -30,12 +38,21 @@ const propTypes = {
 };
 
 export const AddTailingsForm = (props) => (
-  <Form layout="vertical" onSubmit={props.handleSubmit}>
+  <FormWrapper
+    name={FORM.ADD_TAILINGS}
+    onSubmit={props.handleSubmit}
+    reduxFormConfig={{
+      touchOnBlur: false,
+      enableReinitialize: true,
+      onSubmitSuccess: resetForm(FORM.ADD_TAILINGS),
+    }}
+  >
     <Field
       id="mine_tailings_storage_facility_name"
       name="mine_tailings_storage_facility_name"
       label="Tailings Storage Facility Name"
       component={RenderField}
+      required
       validate={[required]}
     />
     <Field
@@ -43,6 +60,7 @@ export const AddTailingsForm = (props) => (
       name="latitude"
       label="Latitude"
       component={RenderField}
+      required
       validate={[number, maxLength(10), lat, required]}
     />
     <Field
@@ -50,6 +68,7 @@ export const AddTailingsForm = (props) => (
       name="longitude"
       label="Longitude"
       component={RenderField}
+      required
       validate={[number, maxLength(12), lon, lonNegative, required]}
     />
     <Field
@@ -58,6 +77,7 @@ export const AddTailingsForm = (props) => (
       label="Consequence Classification"
       component={RenderSelect}
       data={props.consequenceClassificationStatusCodeOptions}
+      required
       validate={[required]}
     />
     <Field
@@ -66,6 +86,7 @@ export const AddTailingsForm = (props) => (
       name="tsf_operating_status_code"
       component={RenderSelect}
       data={props.TSFOperatingStatusCodeOptions}
+      required
       validate={[required]}
     />
     <Field
@@ -74,6 +95,7 @@ export const AddTailingsForm = (props) => (
       label="Has Independent Tailings Review Board?"
       component={RenderSelect}
       data={props.itrbExemptionStatusCodeOptions}
+      required
       validate={[required]}
     />
     <Field
@@ -101,7 +123,7 @@ export const AddTailingsForm = (props) => (
         {props.title}
       </Button>
     </div>
-  </Form>
+  </FormWrapper>
 );
 
 AddTailingsForm.propTypes = propTypes;
@@ -112,11 +134,5 @@ export default compose(
       getConsequenceClassificationStatusCodeDropdownOptions(state),
     itrbExemptionStatusCodeOptions: getITRBExemptionStatusCodeDropdownOptions(state),
     TSFOperatingStatusCodeOptions: getTSFOperatingStatusCodeDropdownOptions(state),
-  })),
-  reduxForm({
-    form: FORM.ADD_TAILINGS,
-    touchOnBlur: false,
-    enableReinitialize: true,
-    onSubmitSuccess: resetForm(FORM.ADD_TAILINGS),
-  })
+  }))
 )(AddTailingsForm);

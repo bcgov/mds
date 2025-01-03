@@ -1,27 +1,178 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddIncidentDetailForm renders properly 1`] = `
-<Hoc
-  destroyOnUnmount={false}
-  enableReinitialize={false}
-  forceUnregisterOnUnmount={true}
-  form="ADD_INCIDENT"
-  forwardedRef={null}
-  getFormState={[Function]}
-  incidentDeterminationOptions={Object {}}
-  keepDirtyOnReinitialize={false}
-  mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"
-  onFileLoad={[MockFunction]}
-  onRemoveFile={[MockFunction]}
-  persistentSubmitErrors={false}
-  pure={true}
-  shouldAsyncValidate={[Function]}
-  shouldError={[Function]}
-  shouldValidate={[Function]}
-  shouldWarn={[Function]}
-  submitAsSideEffect={false}
-  touchOnBlur={true}
-  touchOnChange={false}
-  updateUnregisteredFields={false}
-/>
+<Connect(ReduxForm)
+  name="ADD_INCIDENT"
+  onSubmit={[Function]}
+  reduxFormConfig={
+    Object {
+      "destroyOnUnmount": false,
+      "forceUnregisterOnUnmount": true,
+      "touchOnBlur": true,
+    }
+  }
+>
+  <Row
+    gutter={48}
+  >
+    <Col
+      span={24}
+    >
+      <ForwardRef(Text)>
+        <h4>
+          Incident Details
+        </h4>
+      </ForwardRef(Text)>
+      <Row
+        gutter={16}
+      >
+        <Col
+          md={12}
+          xs={24}
+        >
+          <Field
+            component={[Function]}
+            id="incident_date"
+            label="Incident date"
+            name="incident_date"
+            placeholder="Please select date"
+            required={true}
+            validate={
+              Array [
+                [Function],
+                [Function],
+              ]
+            }
+          />
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
+          <Field
+            component={[Function]}
+            fullWidth={true}
+            id="incident_time"
+            label="Incident time"
+            name="incident_time"
+            placeholder="Please select time"
+            required={true}
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
+        </Col>
+      </Row>
+      <Field
+        component={[Function]}
+        id="proponent_incident_no"
+        label="Proponent incident number"
+        name="proponent_incident_no"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+      <Row
+        gutter={16}
+      >
+        <Col
+          md={12}
+          xs={24}
+        >
+          <Field
+            component={[Function]}
+            id="number_of_injuries"
+            label="Proponent incident number"
+            name="number_of_injuries"
+            validate={
+              Array [
+                [Function],
+                [Function],
+              ]
+            }
+          />
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
+          <Field
+            component={[Function]}
+            id="number_of_fatalities"
+            label="Number of fatalities"
+            name="number_of_fatalities"
+            validate={
+              Array [
+                [Function],
+                [Function],
+              ]
+            }
+          />
+        </Col>
+      </Row>
+      <Field
+        component={[Function]}
+        id="emergency_services_called"
+        label="Were emergency services called?"
+        name="emergency_services_called"
+        placeholder="Please choose one"
+      />
+      <Field
+        component={[Function]}
+        id="incident_description"
+        label="Description of incident"
+        name="incident_description"
+        placeholder="Provide a detailed description of the incident"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+      <Divider />
+      <ForwardRef(Text)>
+        <h4>
+          Dangerous Occurrence Determination
+        </h4>
+      </ForwardRef(Text)>
+      <Field
+        component={[Function]}
+        id="mine_determination_type_code"
+        label="Is this a dangerous occurrence?"
+        name="mine_determination_type_code"
+      />
+      <Field
+        component={[Function]}
+        id="mine_determination_representative"
+        label="Mine representative who made determination"
+        name="mine_determination_representative"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+      <InternalFormItem
+        label="Initial Notification Documents"
+      >
+        <ForwardRef>
+          Please upload all of the required documents.
+        </ForwardRef>
+        <Field
+          component={[Function]}
+          id="InitialIncidentFileUpload"
+          mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"
+          name="InitialIncidentFileUpload"
+          onFileLoad={[Function]}
+          onRemoveFile={[MockFunction]}
+        />
+      </InternalFormItem>
+    </Col>
+  </Row>
+</Connect(ReduxForm)>
 `;

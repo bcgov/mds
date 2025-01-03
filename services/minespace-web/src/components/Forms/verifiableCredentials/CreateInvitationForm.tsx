@@ -1,9 +1,6 @@
 import React, { FC, useState } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { reduxForm, InjectedFormProps } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { Alert, Button, Popconfirm, Skeleton, Typography } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
@@ -11,6 +8,7 @@ import { IVCInvitation, LOADING_STATUS, VC_CONNECTION_STATES } from "@mds/common
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { getVCWalletConnectionInvitation } from "@mds/common/redux/selectors/verifiableCredentialSelectors";
 import { createVCWalletInvitation } from "@mds/common/redux/actionCreators/verifiableCredentialActionCreator";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 interface CreateInvitationFormProps {
   closeModal: () => void;
@@ -20,15 +18,12 @@ interface CreateInvitationFormProps {
 }
 
 interface FormStateProps {
-  handleSubmit(args: any): Promise<void>;
   createVCWalletInvitation: ActionCreator<typeof createVCWalletInvitation>;
   submitting: boolean;
   invitation: IVCInvitation;
 }
 
-export const CreateInvitationForm: FC<CreateInvitationFormProps &
-  FormStateProps &
-  InjectedFormProps<any>> = ({
+export const CreateInvitationForm: FC<CreateInvitationFormProps & FormStateProps> = ({
   closeModal,
   partyGuid,
   partyName,
@@ -56,7 +51,14 @@ export const CreateInvitationForm: FC<CreateInvitationFormProps &
   const disableGenerateButton: boolean =
     props.submitting || loading === LOADING_STATUS.sent || invitation.invitation_url?.length > 0;
   return (
-    <Form layout="vertical">
+    <FormWrapper
+      name={FORM.CREATE_VC_CONNECTION_INVITATION}
+      onSubmit={getInvitation}
+      reduxFormConfig={{
+        touchOnBlur: false,
+        onSubmitSuccess: resetForm(FORM.CREATE_VC_CONNECTION_INVITATION),
+      }}
+    >
       <Alert
         type="info"
         message="Key Terms"
@@ -86,7 +88,7 @@ export const CreateInvitationForm: FC<CreateInvitationFormProps &
             applies to all major mine permits.
           </p>
           <br />
-          <Button disabled={disableGenerateButton} onClick={getInvitation} type="primary">
+          <Button disabled={disableGenerateButton} type="primary" htmlType="submit">
             Generate Invitation for {partyName}
           </Button>
           <br />
@@ -126,7 +128,7 @@ export const CreateInvitationForm: FC<CreateInvitationFormProps &
           <Button disabled={props.submitting}>Close</Button>
         </Popconfirm>
       </div>
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -138,11 +140,6 @@ const mapDispatchToProps = {
   createVCWalletInvitation,
 };
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: FORM.CREATE_VC_CONNECTION_INVITATION,
-    touchOnBlur: false,
-    onSubmitSuccess: resetForm(FORM.CREATE_VC_CONNECTION_INVITATION),
-  })
-)(CreateInvitationForm) as FC<CreateInvitationFormProps>;
+export default compose(connect(mapStateToProps, mapDispatchToProps))(
+  CreateInvitationForm
+) as FC<CreateInvitationFormProps>;

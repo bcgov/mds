@@ -2,7 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Field } from "redux-form";
 import { Row, Col } from "antd";
-import { maxLength, number, required } from "@common/utils/Validate";
+import { maxLength, number, required } from "@mds/common/redux/utils/Validate";
 import RenderField from "@mds/common/components/forms/RenderField";
 import { currencyMask } from "@common/utils/helpers";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";

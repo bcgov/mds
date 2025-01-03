@@ -1131,7 +1131,7 @@ exports[`MineReportInfo renders properly 1`] = `
       >
         <button
           class="ant-btn ant-btn-default full-mobile"
-          type="button"
+          type="reset"
         >
           <span>
             Clear Filters

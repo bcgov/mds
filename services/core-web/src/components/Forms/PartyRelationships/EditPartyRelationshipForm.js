@@ -4,7 +4,7 @@ import { isEmpty } from "lodash";
 import { Field } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { resetForm } from "@common/utils/helpers";
-import { validateDateRanges } from "@common/utils/Validate";
+import { validateDateRanges } from "@mds/common/redux/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import TSFOptions from "@/components/Forms/PartyRelationships/TSFOptions";
@@ -14,7 +14,8 @@ import CustomPropTypes from "@/customPropTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   // Props are used indirectly. Linting is unable to detect it
@@ -104,13 +105,14 @@ export const EditPartyRelationshipForm = (props) => {
 
   return (
     <FormWrapper
+      initialValues={props.initialValues}
       name={FORM.EDIT_PARTY_RELATIONSHIP}
       reduxFormConfig={{
         validate,
         touchOnBlur: false,
         onSubmitSuccess: resetForm(FORM.EDIT_PARTY_RELATIONSHIP),
       }}
-      onSubmit={props.handleSubmit}>
+      onSubmit={props.onSubmit}>
       <Row gutter={16}>
         <Col md={12} xs={24}>
           <Field

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Button, Col, Row } from "antd";
-import { requiredList } from "@common/utils/Validate";
+import { requiredList } from "@mds/common/redux/utils/Validate";
 import { nullableStringSorter, resetForm } from "@common/utils/helpers";
 import RenderField from "@mds/common/components/forms/RenderField";
 import * as FORM from "@/constants/forms";
@@ -11,19 +11,19 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   mines: CustomPropTypes.options.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
-  handleSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
+  onSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   handleSearch: PropTypes.func.isRequired,
 };
 
 export const EditMinespaceUser = (props) => {
-  const { mines, handleSubmit, handleChange, handleSearch } = props;
+  const { mines, onSubmit, handleChange, handleSearch } = props;
   const isModal = true; // currently no instance where it's not in a modal
   return (
-    <FormWrapper onSubmit={handleSubmit}
+    <FormWrapper onSubmit={onSubmit}
       name={FORM.EDIT_MINESPACE_USER}
-      initialValues={{ proponent_mine_access: [] }}
+      initialValues={{ proponent_mine_access: [], ...props.initialValues }}
       reduxFormConfig={{
         touchOnBlur: false,
         onSubmitSuccess: resetForm(FORM.EDIT_MINESPACE_USER),

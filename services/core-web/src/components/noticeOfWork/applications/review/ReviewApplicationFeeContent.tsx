@@ -7,7 +7,7 @@ import RenderField from "@mds/common/components/forms/RenderField";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import { change, Field } from "redux-form";
 import { CloseOutlined } from "@ant-design/icons";
-import { dateNotAfterOther, dateNotBeforeOther, number } from "@common/utils/Validate";
+import { dateNotAfterOther, dateNotBeforeOther, number } from "@mds/common/redux/utils/Validate";
 import {
   getDurationText,
   isDateRangeValid,

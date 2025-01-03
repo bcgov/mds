@@ -7,7 +7,7 @@ const props = {};
 
 const setupDispatchProps = () => {
   dispatchProps.onCancel = jest.fn();
-  dispatchProps.handleSubmit = jest.fn();
+  dispatchProps.onSubmit = jest.fn();
 };
 
 const setupProps = () => {

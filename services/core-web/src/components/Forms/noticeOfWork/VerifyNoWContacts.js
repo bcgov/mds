@@ -14,7 +14,7 @@ import { getPartyRelationshipTypesList } from "@mds/common/redux/selectors/stati
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
-import { required } from "@common/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 import {
   fetchSearchResults,
   clearAllSearchResults,
@@ -234,6 +234,7 @@ const renderContacts = ({
                           component={RenderSelect}
                           data={selectedData}
                           disabled
+                          required
                           validate={[required]}
                         />
                       )}

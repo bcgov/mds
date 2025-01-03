@@ -1,7 +1,7 @@
 import React from "react";
 import { Field } from "redux-form";
 import { Col, Row } from "antd";
-import { required } from "@common/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 
 export const UnionRepOptions = () => (

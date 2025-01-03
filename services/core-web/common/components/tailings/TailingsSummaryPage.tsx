@@ -22,7 +22,6 @@ import {
   getFormValues,
   InjectedFormProps,
   isDirty,
-  reduxForm,
   submit,
   touch,
 } from "redux-form";
@@ -278,6 +277,7 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
           </Row>
           <Divider />
           <SteppedForm
+            initialValues={props.initialValues}
             name={props.form}
             handleSaveData={handleSaveData}
             handleTabChange={handleTabChange}

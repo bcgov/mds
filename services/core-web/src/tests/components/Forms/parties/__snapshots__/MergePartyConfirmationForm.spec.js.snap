@@ -3,6 +3,7 @@
 exports[`MergePartyConfirmationForm renders properly 1`] = `
 <div>
   <Connect(ReduxForm)
+    initialValues={Object {}}
     name="MERGE_PARTY_CONFIRMATION"
     onSubmit={[MockFunction]}
     reduxFormConfig={

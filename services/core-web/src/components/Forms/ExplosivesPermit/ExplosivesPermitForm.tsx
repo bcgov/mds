@@ -6,7 +6,6 @@ import {
   change,
   formValueSelector,
   getFormValues,
-  InjectedFormProps,
 } from "redux-form";
 import { Button, Col, Row, Popconfirm, Alert, Typography, Radio } from "antd";
 import {
@@ -27,7 +26,7 @@ import {
   lon,
   requiredRadioButton,
   lonNegative,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { resetForm, createDropDownList, formatDate } from "@common/utils/helpers";
 import {
   getPartyRelationships,
@@ -53,7 +52,7 @@ interface StateProps {
   allPartyRelationships: IPermitPartyRelationship[];
   noticeOfWorkApplications: IimportedNOWApplication[];
   submitting: boolean;
-  handleSubmit: any;
+  onSubmit: any;
 }
 
 interface ExplosivesPermitFormProps {
@@ -78,8 +77,7 @@ const closedOptions = [
 ];
 
 export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
-  StateProps &
-  InjectedFormProps<any>> = ({
+  StateProps> = ({
     initialValues = {},
     mines_permit_guid = null,
     isProcessed = false,
@@ -249,7 +247,7 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
     ) : (
       <FormWrapper
         name={FORM.EXPLOSIVES_PERMIT}
-        onSubmit={props.handleSubmit}
+        onSubmit={props.onSubmit}
         reduxFormConfig={{
           touchOnBlur: true,
           onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT),

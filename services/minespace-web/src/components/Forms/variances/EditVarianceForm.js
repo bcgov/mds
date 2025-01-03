@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm, change } from "redux-form";
+import { Field, change } from "redux-form";
 import { remove } from "lodash";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Popconfirm, Typography } from "antd";
+import { Button, Popconfirm, Typography, Form } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { VarianceDetails } from "@/components/dashboard/mine/variances/VarianceDetails";
 import VarianceFileUpload from "@/components/Forms/variances/VarianceFileUpload";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   closeModal: PropTypes.func.isRequired,
   removeDocument: PropTypes.func.isRequired,
   mineName: PropTypes.string.isRequired,
@@ -46,9 +46,8 @@ export class EditVarianceForm extends Component {
     change("uploadedFiles", this.state.uploadedFiles);
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = () => {
     const codeLabel = this.props.complianceCodesHash[this.props.variance.compliance_article_id];
-    event.preventDefault();
     this.props.onSubmit(
       this.state.documentNameGuidMap,
       this.props.variance.variance_guid,
@@ -58,7 +57,15 @@ export class EditVarianceForm extends Component {
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={(event) => this.handleSubmit(event)}>
+      <FormWrapper
+        initialValues={this.props.initialValues}
+        onSubmit={this.handleSubmit}
+        name={FORM.EDIT_VARIANCE}
+        reduxFormConfig={{
+          touchOnBlur: false,
+          onSubmitSuccess: resetForm(FORM.EDIT_VARIANCE),
+        }}
+      >
         <VarianceDetails
           mineName={this.props.mineName}
           variance={this.props.variance}
@@ -92,15 +99,11 @@ export class EditVarianceForm extends Component {
             Submit
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
 
 EditVarianceForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.EDIT_VARIANCE,
-  touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.EDIT_VARIANCE),
-})(EditVarianceForm);
+export default EditVarianceForm;

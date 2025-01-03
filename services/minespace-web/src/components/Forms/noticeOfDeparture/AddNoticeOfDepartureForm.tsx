@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { change, Field, FieldArray, FieldArrayFieldsProps, InjectedFormProps } from "redux-form";
+import { change, Field, FieldArray, FieldArrayFieldsProps } from "redux-form";
 import { Alert, Button, Col, Popconfirm, Row, Typography } from "antd";
 import {
   email,
@@ -8,7 +8,7 @@ import {
   required,
   requiredList,
   requiredRadioButton,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { normalizePhone, resetForm } from "@common/utils/helpers";
 import {
   NOD_TYPE_FIELD_VALUE,
@@ -49,7 +49,6 @@ interface AddNoticeOfDepartureProps {
   ) => Promise<AxiosResponse<INoticeOfDeparture>>;
   closeModal: () => void;
   mineGuid: string;
-  handleSubmit?: any;
   change?: (fieldName: string, value: any) => void;
   initialValues: AddNoticeOfDepartureFormProps;
 }
@@ -116,10 +115,8 @@ export const renderContacts: React.FC<RenderContactsProps> = (props) => {
   );
 };
 
-const AddNoticeOfDepartureForm: React.FC<
-  InjectedFormProps<ICreateNoD> & AddNoticeOfDepartureProps
-> = (props) => {
-  const { permits, onSubmit, closeModal, handleSubmit, mineGuid, change } = props;
+const AddNoticeOfDepartureForm: React.FC<AddNoticeOfDepartureProps> = (props) => {
+  const { permits, onSubmit, closeModal, mineGuid, change } = props;
   const [submitting, setSubmitting] = useState(false);
   const [hasChecklist, setHasChecklist] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -201,7 +198,8 @@ const AddNoticeOfDepartureForm: React.FC<
           forceUnregisterOnUnmount: true,
           enableReinitialize: true,
         }}
-        onSubmit={handleSubmit(handleNoticeOfDepartureSubmit)}
+        initialValues={props.initialValues}
+        onSubmit={handleNoticeOfDepartureSubmit}
       >
         <Typography.Text>
           Please complete the following form to submit your Notice of Departure and any relevant

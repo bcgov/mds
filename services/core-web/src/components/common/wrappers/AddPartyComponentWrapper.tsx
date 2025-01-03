@@ -27,7 +27,7 @@ interface AddPartyComponentWrapperProps {
   initialValues?: any;
 }
 
-const AddPartyComponentWrapper: FC<AddPartyComponentWrapperProps> = ({ childProps, content }) => {
+const AddPartyComponentWrapper: FC<AddPartyComponentWrapperProps> = ({ childProps, content, initialValues }) => {
   const [isPerson, setIsPerson] = useState(true);
   const [addingParty, setAddingParty] = useState(false);
 
@@ -110,6 +110,7 @@ const AddPartyComponentWrapper: FC<AddPartyComponentWrapperProps> = ({ childProp
           onSubmit={handlePartySubmit}
           isPerson={isPerson}
           provinceOptions={provinceOptions}
+          initialValues={initialValues}
         />
       </div>
     </div>

@@ -3,7 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field, getFormValues } from "redux-form";
 import { Link } from "react-router-dom";
 import { Row, Col, Alert, Button } from "antd";
-import { requiredRadioButton, required } from "@common/utils/Validate";
+import { requiredRadioButton, required } from "@mds/common/redux/utils/Validate";
 import { connect } from "react-redux";
 
 import RenderField from "@mds/common/components/forms/RenderField";

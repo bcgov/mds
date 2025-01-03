@@ -4,7 +4,7 @@ import { Field, getFormValues } from "redux-form";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { required, dateNotInFuture } from "@common/utils/Validate";
+import { required, dateNotInFuture } from "@mds/common/redux/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import { resetForm, createDropDownList, formatDate } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
@@ -17,7 +17,7 @@ import {
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any),
@@ -57,7 +57,7 @@ export const AdministrativeAmendmentForm = (props) => {
         onSubmitSuccess: resetForm(FORM.ADMINISTRATIVE_AMENDMENT_FORM),
         enableReinitialize: true,
       }}
-      onSubmit={props.handleSubmit}>
+      onSubmit={props.onSubmit}>
       <Row>
         <Col span={24}>
           <Field

@@ -4,11 +4,15 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
 <div
   className="work-information-container "
 >
-  <Form
-    colon={true}
-    hideRequiredMark={false}
-    layout="vertical"
+  <Connect(ReduxForm)
+    name="EDIT_EMPLOYEE_COUNT_FORM"
     onSubmit={[MockFunction]}
+    reduxFormConfig={
+      Object {
+        "enableReinitialize": true,
+        "touchOnBlur": false,
+      }
+    }
   >
     <ForwardRef
       level={4}
@@ -38,48 +42,40 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
           <DescriptionsItem
             label="Number of Mine Employees"
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                autoComplete="off"
-                component={[Function]}
-                format={[Function]}
-                id="number_of_mine_employees"
-                name="number_of_mine_employees"
-                normalize={[Function]}
-                onChange={[Function]}
-                onFocus={[Function]}
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              autoComplete="off"
+              component={[Function]}
+              format={[Function]}
+              id="number_of_mine_employees"
+              name="number_of_mine_employees"
+              normalize={[Function]}
+              onChange={[Function]}
+              onFocus={[Function]}
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
           </DescriptionsItem>
           <DescriptionsItem
             label="Number of Contractors"
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                autoComplete="off"
-                component={[Function]}
-                format={[Function]}
-                id="number_of_contractors"
-                name="number_of_contractors"
-                normalize={[Function]}
-                onChange={[Function]}
-                onFocus={[Function]}
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+            <Field
+              autoComplete="off"
+              component={[Function]}
+              format={[Function]}
+              id="number_of_contractors"
+              name="number_of_contractors"
+              normalize={[Function]}
+              onChange={[Function]}
+              onFocus={[Function]}
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
           </DescriptionsItem>
         </Descriptions>
       </Col>
@@ -113,6 +109,6 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
         Update Mine Worker Information
       </Button>
     </div>
-  </Form>
+  </Connect(ReduxForm)>
 </div>
 `;

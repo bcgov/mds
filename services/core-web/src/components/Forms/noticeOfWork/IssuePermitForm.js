@@ -10,7 +10,7 @@ import {
   dateNotInFuture,
   dateNotBeforeOther,
   dateNotAfterOther,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -19,7 +19,8 @@ import CustomPropTypes from "@/customPropTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -40,7 +41,7 @@ export const IssuePermitForm = (props) => {
         onSubmitSuccess: resetForm(FORM.ISSUE_PERMIT),
         enableReinitialize: true,
       }}
-      onSubmit={props.handleSubmit}>
+      onSubmit={props.onSubmit} initialValues={props.initialValues}>
       <Row>
         <Col span={24}>
           <Field

@@ -3,16 +3,15 @@ import { Link, useHistory, useParams, withRouter } from "react-router-dom";
 import React, { FC, useEffect, useState } from "react";
 import { bindActionCreators, compose } from "redux";
 import { createDam, updateDam } from "@mds/common/redux/actionCreators/damActionCreator";
-import { getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm, submit } from "redux-form";
+import { getFormSyncErrors, getFormValues, InjectedFormProps, submit } from "redux-form";
 
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
-import Step from "@common/components/Step";
-import SteppedForm from "@common/components/SteppedForm";
+import SteppedForm from "@mds/common/components/forms/SteppedForm";
+import Step from "@mds/common/components/forms/Step";
 import { connect } from "react-redux";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getDam } from "@mds/common/redux/selectors/damSelectors";
 import { getTsf } from "@mds/common/redux/selectors/tailingsSelectors";
-import { resetForm } from "@common/utils/helpers";
 import { storeDam } from "@mds/common/redux/actions/damActions";
 import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
@@ -43,19 +42,14 @@ interface DamsPageProps {
 const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
   const history = useHistory();
   const { tsf, formValues, formErrors, initialValues } = props;
-  const {
-    tailingsStorageFacilityGuid,
-    damGuid,
-    mineGuid,
-    parentTSFFormMode,
-    userAction,
-  } = useParams<{
-    tailingsStorageFacilityGuid: string;
-    damGuid?: string;
-    mineGuid: string;
-    parentTSFFormMode: string;
-    userAction: string;
-  }>();
+  const { tailingsStorageFacilityGuid, damGuid, mineGuid, parentTSFFormMode, userAction } =
+    useParams<{
+      tailingsStorageFacilityGuid: string;
+      damGuid?: string;
+      mineGuid: string;
+      parentTSFFormMode: string;
+      userAction: string;
+    }>();
   const [canEditTSF, setCanEditTSF] = useState(false);
   const isUserActionEdit = userAction === "editDam" || userAction === "newDam";
   const isTSFEditMode = parentTSFFormMode === "edit";
@@ -148,7 +142,8 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
       </Row>
       <Divider />
       <SteppedForm
-        errors={[]}
+        initialValues={initialValues}
+        name={ADD_EDIT_DAM}
         handleSaveData={handleSave}
         handleTabChange={() => {}}
         activeTab="basic-dam-information"
@@ -158,6 +153,14 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
           tailingsStorageFacilityGuid ? "updating this" : "creating a new"
         } dam?
         All unsaved data on this page will be lost.`}
+        reduxFormConfig={{
+          touchOnBlur: true,
+          destroyOnUnmount: true,
+          enableReinitialize: true,
+          // onSubmit: () => {
+          //   resetForm(ADD_EDIT_DAM);
+          // },
+        }}
       >
         {[
           <Step key="basic-dam-information">
@@ -189,15 +192,6 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: ADD_EDIT_DAM,
-    touchOnBlur: true,
-    destroyOnUnmount: true,
-    enableReinitialize: true,
-    onSubmit: () => {
-      resetForm(ADD_EDIT_DAM);
-    },
-  })
-)(withRouter(FeatureFlagGuard(Feature.TSF_V2)(DamsPage)) as any) as FC<DamsPageProps>;
+export default compose(connect(mapStateToProps, mapDispatchToProps))(
+  withRouter(FeatureFlagGuard(Feature.TSF_V2)(DamsPage)) as any
+) as FC<DamsPageProps>;

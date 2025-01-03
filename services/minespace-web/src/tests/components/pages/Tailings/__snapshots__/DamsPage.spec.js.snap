@@ -30,7 +30,7 @@ exports[`DamsPage renders properly 1`] = `
     }
   }
 >
-  <Connect(ReduxForm)
+  <Connect(withRouter(featureFlagGuard))
     fetchDam={[MockFunction]}
     fetchMineRecordById={[MockFunction]}
     formErrors={Object {}}

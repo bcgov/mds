@@ -3,14 +3,14 @@ import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { required, maxLength, number, lat, lon } from "@common/utils/Validate";
+import { required, maxLength, number, lat, lon } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export const SearchCoordinatesForm = (props) => (
@@ -20,7 +20,7 @@ export const SearchCoordinatesForm = (props) => (
       touchOnBlur: false,
       onSubmitSuccess: resetForm(FORM.SEARCH_COORDINATES),
     }}
-    onSubmit={props.handleSubmit}>
+    onSubmit={props.onSubmit}>
     <Field
       id="latitude"
       name="latitude"

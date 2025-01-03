@@ -1,11 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ExplosivesPermitStatusForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  name="EDIT_EXPLOSIVES_PERMIT_STATUS"
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "enableReinitialize": true,
+      "onSubmitSuccess": [Function],
+      "touchOnBlur": false,
+    }
+  }
 >
   <Row
     gutter={16}
@@ -13,23 +18,20 @@ exports[`ExplosivesPermitStatusForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          data={Array []}
-          id="application_status"
-          label="Application Status*"
-          name="application_status"
-          placeholder="Select an application status"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        data={Array []}
+        id="application_status"
+        label="Application Status"
+        name="application_status"
+        placeholder="Select an application status"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -38,21 +40,18 @@ exports[`ExplosivesPermitStatusForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="decision_reason"
-          label="Reason*"
-          name="decision_reason"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="decision_reason"
+        label="Reason"
+        name="decision_reason"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <div
@@ -83,5 +82,5 @@ exports[`ExplosivesPermitStatusForm renders properly 1`] = `
       Close Permit
     </Button>
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

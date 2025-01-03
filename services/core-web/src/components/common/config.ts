@@ -13,9 +13,8 @@ import RenderGroupedSelect from "@mds/common/components/forms/RenderGroupedSelec
 import RenderLargeSelect from "@mds/common/components/forms/RenderLargeSelect";
 import RenderTime from "@mds/common/components/forms/RenderTime";
 import RenderLabel from "./RenderLabel";
-import RenderYear from "./RenderYear";
+import RenderYear from "@mds/common/components/forms/RenderYear";
 
-// This file is anticipated to have multiple exports
 export const renderConfig = {
   CHECKBOX: RenderCheckbox,
   GROUP_CHECK_BOX: RenderGroupCheckbox,
@@ -24,7 +23,7 @@ export const renderConfig = {
   CASCADER: RenderCascader,
   DATE: RenderDate,
   TIME: RenderTime,
-  YEAR: RenderYear, // used - in generatedocformfield - not really though, incidents, addminepermitrequiredform, reports (old?)
+  YEAR: RenderYear,
   FIELD: RenderField,
   SCROLL_FIELD: RenderAutoSizeField,
   SELECT: RenderSelect,
@@ -32,6 +31,6 @@ export const renderConfig = {
   MULTI_SELECT: RenderMultiSelect,
   RADIO: RenderRadioButtons,
   GROUPED_SELECT: RenderGroupedSelect,
-  LABEL: RenderLabel, // generatedocformfield
+  LABEL: RenderLabel,
   FILE_UPLOAD: RenderFileUpload,
 };

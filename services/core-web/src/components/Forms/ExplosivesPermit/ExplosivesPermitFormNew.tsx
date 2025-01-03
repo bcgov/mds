@@ -28,7 +28,7 @@ import {
   maxLength,
   number,
   required,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { createDropDownList, formatDate, resetForm } from "@common/utils/helpers";
 import { getAllPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
@@ -71,12 +71,11 @@ interface StateProps {
   allPartyRelationships: IPermitPartyRelationship[];
   noticeOfWorkApplications: IimportedNOWApplication[];
   submitting: boolean;
-  handleSubmit: any;
+  onSubmit: any;
 }
 
 export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
-  StateProps &
-  InjectedFormProps<any>> = ({
+  StateProps> = ({
     initialValues = {},
     mines_permit_guid = null,
     formMode = EsupFormMode.select_type_modal,
@@ -355,7 +354,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
           touchOnBlur: true,
           onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT_NEW),
         }}
-        onSubmit={props.handleSubmit}>
+        onSubmit={props.onSubmit}>
         <Alert
           className="ant-alert-grey bullet"
           message={dynamicText.alertTitle}

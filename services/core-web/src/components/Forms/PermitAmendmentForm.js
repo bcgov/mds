@@ -11,7 +11,7 @@ import {
   dateNotInFuture,
   number,
   assessedLiabilityNegativeWarning,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { resetForm, currencyMask } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
@@ -25,7 +25,7 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 const originalPermit = "OGP";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   handleRemovePermitAmendmentDocument: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
@@ -121,7 +121,7 @@ export class PermitAmendmentForm extends Component {
       this.props.initialValues.permit_prefix === "C" ||
       this.props.initialValues.permit_prefix === "M";
     return (
-      <FormWrapper onSubmit={this.props.handleSubmit}
+      <FormWrapper onSubmit={this.props.onSubmit}
         name={FORM.PERMIT_AMENDMENT}
         reduxFormConfig={{
           validate: validateBusinessRules,

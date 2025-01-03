@@ -1,11 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddContactFormDetails renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  initialValues={Object {}}
+  name="ADD_CONTACT"
   onSubmit={[Function]}
+  reduxFormConfig={
+    Object {
+      "destroyOnUnmount": true,
+      "enableReinitialize": true,
+      "forceUnregisterOnUnmount": true,
+      "touchOnBlur": true,
+    }
+  }
 >
   <Row
     gutter={16}
@@ -20,24 +27,15 @@ exports[`AddContactFormDetails renders properly 1`] = `
     <Col
       span={12}
     >
-      <FormItem
-        hasFeedback={false}
+      <Field
+        component={[Function]}
+        data={Array []}
+        id="party_guid"
         label="Select Contact"
-      >
-        <Field
-          component={[Function]}
-          data={Array []}
-          id="party_guid"
-          name="party_guid"
-          onChange={[MockFunction]}
-          placeholder="Select a contact"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+        name="party_guid"
+        onChange={[MockFunction]}
+        placeholder="Select a contact"
+      />
     </Col>
     <Col
       span={24}
@@ -70,147 +68,118 @@ exports[`AddContactFormDetails renders properly 1`] = `
     <Col
       span={12}
     >
-      <FormItem
-        hasFeedback={false}
+      <Field
+        component={[Function]}
+        id="first_name"
         label="First Name"
-      >
-        <Field
-          component={[Function]}
-          id="first_name"
-          name="first_name"
-          placeholder="First Name"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+        name="first_name"
+        placeholder="First Name"
+        required={true}
+        validate={
+          Array [
+            [Function],
+            [Function],
+          ]
+        }
+      />
     </Col>
     <Col
       span={12}
     >
-      <FormItem
-        hasFeedback={false}
+      <Field
+        component={[Function]}
+        id="party_name"
         label="Last Name"
-      >
-        <Field
-          component={[Function]}
-          id="party_name"
-          name="party_name"
-          placeholder="Last Name"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+        name="party_name"
+        placeholder="Last Name"
+        required={true}
+        validate={
+          Array [
+            [Function],
+            [Function],
+          ]
+        }
+      />
     </Col>
     <Col
       span={12}
     >
-      <FormItem
-        hasFeedback={false}
-        label="Job Title (optional)"
-      >
-        <Field
-          component={[Function]}
-          data={Array []}
-          id="job_title_code"
-          name="job_title_code"
-          onChange={[Function]}
-          placeholder="Select a job title"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        data={Array []}
+        id="job_title_code"
+        label="Job Title"
+        name="job_title_code"
+        onChange={[Function]}
+        placeholder="Select a job title"
+      />
     </Col>
     <Col
       span={12}
     >
-      <FormItem
-        hasFeedback={false}
-        label="Company Affiliation (optional)"
-      >
-        <Field
-          component={[Function]}
-          data={Array []}
-          handleChange={[Function]}
-          id="organization_guid"
-          name="organization_guid"
-          onChange={[Function]}
-          placeholder="Search organizations"
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        data={Array []}
+        handleChange={[Function]}
+        id="organization_guid"
+        label="Company Affiliation"
+        name="organization_guid"
+        onChange={[Function]}
+        placeholder="Search organizations"
+      />
     </Col>
     <Col
       span={12}
     >
-      <FormItem
-        hasFeedback={false}
+      <Field
+        component={[Function]}
+        id="email"
         label="Email"
-      >
-        <Field
-          component={[Function]}
-          id="email"
-          name="email"
-          placeholder="example@example.com"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+        name="email"
+        placeholder="example@example.com"
+        required={true}
+        validate={
+          Array [
+            [Function],
+            [Function],
+          ]
+        }
+      />
     </Col>
     <Col
       span={8}
     >
-      <FormItem
-        hasFeedback={false}
+      <Field
+        component={[Function]}
+        id="phone_no"
         label="Phone Number"
-      >
-        <Field
-          component={[Function]}
-          id="phone_no"
-          name="phone_no"
-          normalize={[Function]}
-          placeholder="XXX-XXX-XXXX"
-          validate={
-            Array [
-              [Function],
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+        name="phone_no"
+        normalize={[Function]}
+        placeholder="XXX-XXX-XXXX"
+        required={true}
+        validate={
+          Array [
+            [Function],
+            [Function],
+            [Function],
+          ]
+        }
+      />
     </Col>
     <Col
       span={4}
     >
-      <FormItem
-        hasFeedback={false}
-        label="Ext. (optional)"
-      >
-        <Field
-          component={[Function]}
-          id="phone_ext"
-          name="phone_ext"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="phone_ext"
+        label="Ext."
+        name="phone_ext"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -239,5 +208,5 @@ exports[`AddContactFormDetails renders properly 1`] = `
       Create Contact
     </Button>
   </Row>
-</Form>
+</Connect(ReduxForm)>
 `;

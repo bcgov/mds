@@ -3,18 +3,18 @@ import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Button, Col, Row } from "antd";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
-import { phoneNumber, maxLength } from "@common/utils/Validate";
+import { phoneNumber, maxLength } from "@mds/common/redux/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderResetButton from "@mds/common/components/forms/RenderResetButton";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   handleSearch: PropTypes.func.isRequired,
   handleNameFieldReset: PropTypes.func.isRequired,
   toggleAdvancedSearch: PropTypes.func.isRequired,
-  reset: PropTypes.func.isRequired,
   partyTypeOptions: CustomPropTypes.options.isRequired,
   relationshipTypes: CustomPropTypes.options.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -34,7 +34,6 @@ export class AdvancedContactSearchForm extends Component {
   };
 
   handleReset = () => {
-    this.props.reset();
     this.props.handleSearch({}, true);
     this.handleContactTypeChange(null, "PER");
   };
@@ -46,12 +45,13 @@ export class AdvancedContactSearchForm extends Component {
   render() {
     return (
       <FormWrapper
+        initialValues={this.props.initialValues}
         name={FORM.CONTACT_ADVANCED_SEARCH}
         reduxFormConfig={{
           touchOnBlur: false,
           enableReinitialize: true,
         }}
-        onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
+        onSubmit={this.props.onSubmit} onReset={this.handleReset}>
         <Row gutter={6}>
           <Col md={6} xs={6}>
             <Field
@@ -129,9 +129,7 @@ export class AdvancedContactSearchForm extends Component {
           </Button>
         </div>
         <div className="right center-mobile">
-          <Button className="full-mobile" type="secondary" htmlType="reset">
-            Clear Filters
-          </Button>
+          <RenderResetButton buttonText="Clear Filters" className="full-mobile" />
           <Button className="full-mobile" type="primary" htmlType="submit">
             Apply Filters
           </Button>

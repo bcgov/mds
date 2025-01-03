@@ -11,7 +11,7 @@ const setupProps = () => {
   props.isPermitTab = false;
   props.title = "Close Permit";
   props.mineGuid = "523642546";
-  props.handleSubmit = jest.fn();
+  props.onSubmit = jest.fn();
   props.closeModal = jest.fn();
   props.previewDocument = jest.fn();
   props.inspectors = [];

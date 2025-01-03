@@ -3,7 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field } from "redux-form";
 import { Row, Col } from "antd";
 import { currencyMask } from "@common/utils/helpers";
-import { maxLength, number, required } from "@common/utils/Validate";
+import { maxLength, number, required } from "@mds/common/redux/utils/Validate";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";

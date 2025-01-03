@@ -12,7 +12,7 @@ import {
   dateNotInFuture,
   required,
   validateDateRanges,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import ContactDetails from "@common/components/ContactDetails";
 import TailingsContext from "@common/components/tailings/TailingsContext";
 import moment from "moment";

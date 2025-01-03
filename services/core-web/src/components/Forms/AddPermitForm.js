@@ -13,7 +13,7 @@ import {
   requiredRadioButton,
   requiredList,
   number,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { resetForm, determineExemptionFeeStatus, currencyMask } from "@common/utils/helpers";
 import {
   getDropdownPermitStatusOptions,
@@ -32,7 +32,7 @@ import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons"
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   title: PropTypes.string.isRequired,
@@ -162,7 +162,7 @@ export class AddPermitForm extends Component {
       this.props.permitPrefix === "C" || this.props.permitPrefix === "M";
     const permitPrefix = this.props.permitPrefix ? this.props.permitPrefix : null;
     return (
-      <FormWrapper onSubmit={this.props.handleSubmit} name={FORM.ADD_PERMIT}
+      <FormWrapper onSubmit={this.props.onSubmit} name={FORM.ADD_PERMIT}
         reduxFormConfig={{
           validate: validateBusinessRules,
           touchOnBlur: false,
@@ -244,9 +244,7 @@ export class AddPermitForm extends Component {
             <Field
               id="authorization_end_date"
               name="authorization_end_date"
-              label={
-                permitPrefixCoalOrMineral ? "Authorization End Date" : "Authorization End Date"
-              }
+              label="Authorization End Date"
               component={renderConfig.DATE}
               validate={permitPrefixCoalOrMineral ? [] : [required]}
               required={!permitPrefixCoalOrMineral}

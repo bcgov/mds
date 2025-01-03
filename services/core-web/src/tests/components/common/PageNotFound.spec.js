@@ -11,7 +11,7 @@ const setupProps = () => {
 beforeEach(() => {
   setupProps();
 });
-// reduxForm is not defined
+
 describe("PageNotFound", () => {
   it("renders properly", () => {
     const wrapper = shallow(<PageNotFound {...props} />);

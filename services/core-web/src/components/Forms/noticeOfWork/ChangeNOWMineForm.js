@@ -5,13 +5,13 @@ import { connect } from "react-redux";
 import { Field, getFormValues } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { resetForm } from "@common/utils/helpers";
-import { required } from "@common/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 import * as FORM from "@/constants/forms";
 import RenderMineSelect from "@/components/common/RenderMineSelect";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -22,11 +22,12 @@ const propTypes = {
 export const ChangeNOWMineForm = (props) => (
   <FormWrapper
     name={FORM.CHANGE_NOW_MINE}
+    initialValues={props.initialValues}
     reduxFormConfig={{
       touchOnBlur: false,
       onSubmitSuccess: resetForm(FORM.CHANGE_NOW_MINE),
     }}
-    onSubmit={props.handleSubmit}>
+    onSubmit={props.onSubmit}>
     <Row gutter={16}>
       <Col span={24}>
         <Field

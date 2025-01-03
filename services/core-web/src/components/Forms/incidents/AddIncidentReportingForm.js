@@ -10,7 +10,7 @@ import {
   phoneNumber,
   maxLength,
   dateNotInFuture,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { normalizePhone } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -26,6 +26,7 @@ const propTypes = {
 export const AddIncidentReportingForm = (props) => (
   <div>
     <FormWrapper
+      initialValues={props.initialValues}
       name={FORM.MINE_INCIDENT}
       reduxFormConfig={{
         destroyOnUnmount: false,

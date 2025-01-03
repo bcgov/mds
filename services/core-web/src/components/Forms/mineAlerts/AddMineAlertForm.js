@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Field, getFormValues } from "redux-form";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Button, Col, Row, Popconfirm, Typography, Form } from "antd";
+import { Button, Col, Row, Popconfirm, Typography } from "antd";
 import {
   required,
   dateNotBeforeOther,
@@ -12,7 +12,7 @@ import {
   phoneNumber,
   alertStartDateNotBeforeHistoric,
   alertNotInFutureIfCurrentActive,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { resetForm, normalizePhone } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -20,7 +20,8 @@ import CustomPropTypes from "@/customPropTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any),
@@ -64,7 +65,8 @@ export const AddMineAlertForm = (props) => {
           touchOnBlur: false,
           enableReinitialize: true,
         }}
-        onSubmit={props.handleSubmit}>
+        onSubmit={props.onSubmit}
+        initialValues={props.initialValues}>
         <Typography.Paragraph>
           <Typography.Text>{text}</Typography.Text>
         </Typography.Paragraph>

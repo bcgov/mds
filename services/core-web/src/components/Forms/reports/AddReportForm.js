@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
@@ -8,7 +7,7 @@ import { Field, formValueSelector } from "redux-form";
 import { Button, Col, Row, Popconfirm, List, Form } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import { required, date } from "@common/utils/Validate";
+import { required, date } from "@mds/common/redux/utils/Validate";
 import {
   resetForm,
   createDropDownList,
@@ -27,7 +26,7 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.objectOf(PropTypes.any)]).isRequired,
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -162,7 +161,7 @@ export class AddReportForm extends Component {
           enableReinitialize: true,
           onSubmitSuccess: resetForm(FORM.ADD_REPORT),
         }}
-        onSubmit={this.props.handleSubmit}>
+        onSubmit={this.props.onSubmit}>
         <Row gutter={16}>
           <Col span={24}>
             {!this.props.initialValues.mine_report_definition_guid && (

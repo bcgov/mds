@@ -13,7 +13,7 @@ import {
   dateNotBeforeOther,
   dateNotAfterOther,
   assessedLiabilityNegativeWarning,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { resetForm, upperCase, currencyMask } from "@common/utils/helpers";
 import { BOND_DOCUMENTS } from "@mds/common/constants/API";
 import RenderField from "@mds/common/components/forms/RenderField";
@@ -36,7 +36,7 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -124,12 +124,13 @@ export class BondForm extends Component {
 
     return (
       <FormWrapper
+        initialValues={this.props.initialValues}
         name={FORM.ADD_BOND}
         reduxFormConfig={{
           touchOnBlur: true,
           onSubmitSuccess: resetForm(FORM.ADD_BOND),
         }}
-        onSubmit={this.props.handleSubmit((values) => {
+        onSubmit={(values) => {
           // Set the bond document type code for each uploaded document to the selected value.
           this.state.uploadedFiles.forEach((doc) => {
             doc.bond_document_type_code = values.bond_document_type_code;
@@ -155,7 +156,7 @@ export class BondForm extends Component {
             documents: newDocuments,
           };
           return this.props.onSubmit(bond);
-        })}
+        }}
       >
         <Row gutter={16}>
           <Col md={12} sm={24}>

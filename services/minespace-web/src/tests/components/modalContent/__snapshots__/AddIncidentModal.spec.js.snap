@@ -18,24 +18,8 @@ exports[`AddIncidentModal renders properly 1`] = `
       </Steps>
       <br />
       <div>
-        <ReduxForm
-          destroyOnUnmount={false}
-          enableReinitialize={false}
-          forceUnregisterOnUnmount={true}
-          form="ADD_INCIDENT"
-          getFormState={[Function]}
+        <AddIncidentReportingForm
           incidentCategoryCodeOptions={Object {}}
-          keepDirtyOnReinitialize={false}
-          persistentSubmitErrors={false}
-          pure={true}
-          shouldAsyncValidate={[Function]}
-          shouldError={[Function]}
-          shouldValidate={[Function]}
-          shouldWarn={[Function]}
-          submitAsSideEffect={false}
-          touchOnBlur={true}
-          touchOnChange={false}
-          updateUnregisteredFields={false}
         />
       </div>
       <div

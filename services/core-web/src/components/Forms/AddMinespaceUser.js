@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Button, Col, Row } from "antd";
-import { required, requiredList } from "@common/utils/Validate";
+import { required, requiredList } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import RenderField from "@mds/common/components/forms/RenderField";
 import * as FORM from "@/constants/forms";
@@ -12,9 +12,8 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   mines: CustomPropTypes.options.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
   minespaceUserEmailHash: PropTypes.objectOf(PropTypes.any).isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   handleSearch: PropTypes.func.isRequired,
 };
@@ -27,7 +26,7 @@ const minespaceUserNotExists = (value, allValues, props) =>
 export const AddMinespaceUser = (props) => (
   <FormWrapper
     name={FORM.ADD_MINESPACE_USER}
-    onSubmit={props.handleSubmit}
+    onSubmit={props.onSubmit}
     initialValues={{ proponent_mine_access: [] }}
     reduxFormConfig={{
       touchOnBlur: false,
@@ -37,33 +36,30 @@ export const AddMinespaceUser = (props) => (
     <Col span={24}>
       <Row>
         <Col span={24}>
-          <Form.Item>
-            <Field
-              id="email_or_username"
-              name="email_or_username"
-              label="Email/BCeID username"
-              placeholder="Please enter a bceid in the format of user@bceid or a valid email address"
-              component={RenderField}
-              validate={[required, minespaceUserNotExists]}
-              allowClear
-            />
-          </Form.Item>
+          <Field
+            id="email_or_username"
+            name="email_or_username"
+            label="Email/BCeID username"
+            placeholder="Please enter a bceid in the format of user@bceid or a valid email address"
+            component={RenderField}
+            required
+            validate={[required, minespaceUserNotExists]}
+            allowClear
+          />
         </Col>
         <Col span={24}>
-          <Form.Item>
-            <Field
-              id="mine_guids"
-              name="mine_guids"
-              label="Mines"
-              placeholder="Select the mines this user can access"
-              component={renderConfig.MULTI_SELECT}
-              data={props.mines}
-              onChange={props.handleChange}
-              onSearch={props.handleSearch}
-              required
-              validate={[requiredList]}
-            />
-          </Form.Item>
+          <Field
+            id="mine_guids"
+            name="mine_guids"
+            label="Mines"
+            placeholder="Select the mines this user can access"
+            component={renderConfig.MULTI_SELECT}
+            data={props.mines}
+            onChange={props.handleChange}
+            onSearch={props.handleSearch}
+            required
+            validate={[requiredList]}
+          />
         </Col>
       </Row>
       <div className="right center-mobile">

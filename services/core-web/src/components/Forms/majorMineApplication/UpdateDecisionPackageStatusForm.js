@@ -3,8 +3,8 @@ import { compose } from "redux";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Field, getFormValues } from "redux-form";
-import { Button, Col, Row, Alert, Typography, Form } from "antd";
-import { required } from "@common/utils/Validate";
+import { Button, Col, Row, Alert, Typography } from "antd";
+import { required } from "@mds/common/redux/utils/Validate";
 import { resetForm, formatDate } from "@common/utils/helpers";
 import { getDropdownProjectDecisionPackageStatusCodes } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
@@ -23,6 +23,7 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   pristine: PropTypes.bool.isRequired,
+  initialValues: PropTypes.any,
 };
 
 const alertText = (status, updateUser, updateDate) => {
@@ -48,6 +49,7 @@ export const UpdateDecisionPackageStatusForm = (props) => {
 
   return (
     <FormWrapper
+      initialValues={props.initialValues}
       name={FORM.UPDATE_PROJECT_DECISION_PACKAGE}
       reduxFormConfig={{
         onSubmitSuccess: resetForm(FORM.UPDATE_PROJECT_DECISION_PACKAGE),

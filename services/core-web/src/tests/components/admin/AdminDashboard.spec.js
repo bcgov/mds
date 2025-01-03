@@ -15,7 +15,7 @@ beforeEach(() => {
   setupDispatchProps();
   setupProps();
 });
-// reduxForm is not defined
+
 describe("AdminDashboard", () => {
   it("renders properly", () => {
     const component = shallow(<AdminDashboard {...dispatchProps} {...props} />);

@@ -12,7 +12,7 @@ import {
   dateNotInFuture,
   maxLength,
   protocol,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import {
   getDropdownNoticeOfWorkApplicationDocumentTypeOptions,
@@ -31,7 +31,7 @@ import {
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   handleDocumentDelete: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   documentTypeOptions: CustomPropTypes.options.isRequired,
@@ -80,7 +80,8 @@ export class NOWReviewForm extends Component {
     });
 
     return (
-      <FormWrapper onSubmit={this.props.handleSubmit}
+      <FormWrapper onSubmit={this.props.onSubmit}
+        initialValues={this.props.initialValues}
         name={FORM.ADD_NOW_REVIEW}
         reduxFormConfig={{
           touchOnBlur: false,

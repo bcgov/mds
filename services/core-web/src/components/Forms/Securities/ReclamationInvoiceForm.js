@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { required, number, currency } from "@common/utils/Validate";
+import { required, number, currency } from "@mds/common/redux/utils/Validate";
 import { currencyMask } from "@common/utils/helpers";
 import { RECLAMATION_INVOICE_DOCUMENTS } from "@mds/common/constants/API";
 import RenderDate from "@mds/common/components/forms/RenderDate";
@@ -23,7 +23,7 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -96,11 +96,12 @@ export class ReclamationInvoiceForm extends Component {
 
     return (
       <FormWrapper
+        initialValues={this.props.initialValues}
         name={FORM.ADD_RECLAMATION_INVOICE}
         reduxFormConfig={{
           touchOnBlur: false,
         }}
-        onSubmit={this.props.handleSubmit((values) => {
+        onSubmit={(values) => {
           // TODO: move document deletion to BE call in onRemoveExistingFile
           // Create the invoice's new document list by removing deleted documents and adding uploaded documents.
           const currentDocuments = this.props.invoice.documents || [];
@@ -114,7 +115,7 @@ export class ReclamationInvoiceForm extends Component {
             documents: newDocuments,
           };
           return this.props.onSubmit(invoice);
-        })}
+        }}
       >
         <Row gutter={16}>
           <Col md={12} sm={24}>

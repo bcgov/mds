@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, FieldArray, formValueSelector } from "redux-form";
-import { Button, Col, Row, Popconfirm, Collapse, notification, Tag, Radio } from "antd";
+import { Button, Col, Row, Popconfirm, Collapse, notification, Tag, Radio, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { difference, map, isEmpty, uniq } from "lodash";
 import {
@@ -16,7 +16,7 @@ import {
   lon,
   lonNegative,
   wholeNumber,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { getCurrentMineTypes } from "@mds/common/redux/selectors/mineSelectors";
 import {
   getConditionalDisturbanceOptionsHash,
@@ -40,7 +40,7 @@ import { wholeNumberMask } from "@common/utils/helpers";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
@@ -335,7 +335,7 @@ export class MineRecordForm extends Component {
     );
 
     return (
-      <FormWrapper onSubmit={this.props.handleSubmit}
+      <FormWrapper onSubmit={this.props.onSubmit}
         name={FORM.MINE_RECORD}
         reduxFormConfig={{
           touchOnBlur: false,

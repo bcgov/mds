@@ -1,17 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddTailingsForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
-  onSubmit={[MockFunction]}
+<Connect(ReduxForm)
+  name="ADD_TAILINGS"
+  reduxFormConfig={
+    Object {
+      "enableReinitialize": true,
+      "onSubmitSuccess": [Function],
+      "touchOnBlur": false,
+    }
+  }
 >
   <Field
     component={[Function]}
     id="mine_tailings_storage_facility_name"
     label="Tailings Storage Facility Name"
     name="mine_tailings_storage_facility_name"
+    required={true}
     validate={
       Array [
         [Function],
@@ -23,6 +28,7 @@ exports[`AddTailingsForm renders properly 1`] = `
     id="latitude"
     label="Latitude"
     name="latitude"
+    required={true}
     validate={
       Array [
         [Function],
@@ -37,6 +43,7 @@ exports[`AddTailingsForm renders properly 1`] = `
     id="longitude"
     label="Longitude"
     name="longitude"
+    required={true}
     validate={
       Array [
         [Function],
@@ -53,6 +60,7 @@ exports[`AddTailingsForm renders properly 1`] = `
     id="consequence_classification_status_code"
     label="Consequence Classification"
     name="consequence_classification_status_code"
+    required={true}
     validate={
       Array [
         [Function],
@@ -65,6 +73,7 @@ exports[`AddTailingsForm renders properly 1`] = `
     id="tsf_operating_status_code"
     label="Operating Status"
     name="tsf_operating_status_code"
+    required={true}
     validate={
       Array [
         [Function],
@@ -77,6 +86,7 @@ exports[`AddTailingsForm renders properly 1`] = `
     id="itrb_exemption_status_code"
     label="Has Independent Tailings Review Board?"
     name="itrb_exemption_status_code"
+    required={true}
     validate={
       Array [
         [Function],
@@ -122,5 +132,5 @@ exports[`AddTailingsForm renders properly 1`] = `
       mockTitle
     </Button>
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

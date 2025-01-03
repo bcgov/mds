@@ -2,7 +2,6 @@
 
 exports[`ExplosivesPermitDecisionForm renders properly 1`] = `
 <Connect(ReduxForm)
-  layout="vertical"
   name="EXPLOSIVES_PERMIT_DECISION"
   onSubmit={[MockFunction]}
   reduxFormConfig={

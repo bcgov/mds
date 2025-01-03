@@ -370,7 +370,7 @@ export const validateDateRanges = (
   existingAppointments,
   newAppt,
   apptType,
-  isCurrentAppointment
+  isCurrentAppointment = false
 ) => {
   const errorMessages: any = {};
   const toDate = (dateString) => (dateString ? moment(dateString, "YYYY-MM-DD").toDate() : null);
@@ -431,3 +431,8 @@ export const validateIfApplicationTypeCorrespondsToPermitNumber = (
   }
   return undefined;
 };
+
+export const assessedLiabilityNegativeWarning = (value) =>
+  positiveNumber(value)
+    ? "A negative value will decrease the current assessed liability"
+    : undefined;

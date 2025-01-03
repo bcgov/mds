@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import RenderYear from "@/components/common/RenderYear";
+import RenderYear from "@mds/common/components/forms/RenderYear";
 
 let props = {};
 

@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import { Row, Col, Popconfirm, Button } from "antd";
-import { Field, formValueSelector, FormSection, reduxForm } from "redux-form";
+import { Field, formValueSelector, FormSection } from "redux-form";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import RenderMultiSelect from "@mds/common/components/forms/RenderMultiSelect";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import CustomPropTypes from "@/customPropTypes";
-import { requiredList, maxLength, required } from "@common/utils/Validate";
+import { requiredList, maxLength, required } from "@mds/common/redux/utils/Validate";
 import {
   getConditionalDisturbanceOptionsHash,
   getConditionalCommodityOptions,
@@ -33,7 +33,8 @@ const propTypes = {
   exemptionFeeStatusDropDownOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
   submitting: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   change: PropTypes.func.isRequired,
 };
 
@@ -74,7 +75,7 @@ export class SitePropertiesForm extends Component {
       this.props.site_properties?.mine_tenure_type_code === "COL" ||
       this.props.site_properties?.mine_tenure_type_code === "MIN";
     return (
-      <FormWrapper onSubmit={this.props.handleSubmit}
+      <FormWrapper onSubmit={this.props.onSubmit} initialValues={this.props.initialValues}
         name={FORM.EDIT_SITE_PROPERTIES}
         reduxFormConfig={{
           enableReinitialize: true,

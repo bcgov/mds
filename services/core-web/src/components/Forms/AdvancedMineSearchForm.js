@@ -2,21 +2,21 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { isEmpty, some, negate } from "lodash";
 import { Field } from "redux-form";
-import { Button, Col, Row, Form } from "antd";
+import { Button, Col, Row } from "antd";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderResetButton from "@mds/common/components/forms/RenderResetButton";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  handleReset: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  onReset: PropTypes.func.isRequired,
   mineTenureTypes: CustomPropTypes.options.isRequired,
   mineCommodityOptions: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  reset: PropTypes.func.isRequired,
 };
 
 export class AdvancedMineSearchForm extends Component {
@@ -26,8 +26,7 @@ export class AdvancedMineSearchForm extends Component {
   };
 
   handleReset = () => {
-    this.props.reset();
-    this.props.handleReset();
+    this.props.onReset();
   };
 
   toggleIsAdvancedSearch = () =>
@@ -53,12 +52,13 @@ export class AdvancedMineSearchForm extends Component {
   render() {
     return (
       <FormWrapper
+        initialValues={this.props.initialValues}
         name={FORM.MINE_ADVANCED_SEARCH}
         reduxFormConfig={{
           touchOnBlur: false,
           enableReinitialize: true,
         }}
-        onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
+        onSubmit={this.props.onSubmit} onReset={this.handleReset}>
         <Row gutter={6}>
           <Col md={24} xs={24}>
             <Field
@@ -181,9 +181,10 @@ export class AdvancedMineSearchForm extends Component {
           </Button>
         </div>
         <div className="right center-mobile">
-          <Button className="full-mobile" type="secondary" htmlType="reset">
-            Clear Filters
-          </Button>
+          <RenderResetButton
+            buttonText="Clear Filters"
+            className="full-mobile"
+          />
           <Button
             data-cy="apply-filter-button"
             className="full-mobile"

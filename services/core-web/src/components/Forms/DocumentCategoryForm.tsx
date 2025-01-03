@@ -4,7 +4,7 @@ import { remove } from "lodash";
 import { bindActionCreators } from "redux";
 import { Button, Col, Popconfirm, Row, Typography, Form } from "antd";
 import { arrayPush, change, Field, FieldArray, formValueSelector } from "redux-form";
-import { required } from "@common/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import { TRASHCAN } from "@/constants/assets";
 import * as FORM from "@/constants/forms";

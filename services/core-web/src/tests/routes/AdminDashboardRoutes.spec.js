@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import AdminDashboardRoutes from "@/routes/AdminDashboardRoutes";
-// reduxForm is not defined
+
 describe("AdminDashboardRoutes ", () => {
   it("renders properly", () => {
     const component = shallow(<AdminDashboardRoutes />);

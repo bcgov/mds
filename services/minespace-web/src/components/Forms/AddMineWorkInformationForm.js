@@ -2,20 +2,19 @@ import React from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
-import { Field, reduxForm, getFormValues } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field, getFormValues } from "redux-form";
 import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
 import { Row, Col, Popconfirm, Button, Descriptions, Typography, Badge, Tooltip } from "antd";
-import { dateNotBeforeOther, dateNotAfterOther, date } from "@common/utils/Validate";
+import { dateNotBeforeOther, dateNotAfterOther, date } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { getWorkInformationBadgeStatusType } from "@/constants/theme";
 import * as STRINGS from "@/constants/strings";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.objectOf(PropTypes.any)]).isRequired,
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
@@ -31,7 +30,16 @@ const defaultProps = {
 
 export const AddMineWorkInformationForm = (props) => {
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <FormWrapper
+      onSubmit={props.onSubmit}
+      initialValues={props.initialValues}
+      name={FORM.ADD_MINE_WORK_INFORMATION}
+      reduxFormConfig={{
+        onSubmitSuccess: resetForm(FORM.ADD_MINE_WORK_INFORMATION),
+        touchOnBlur: false,
+        enableReinitialize: true,
+      }}
+    >
       <Row gutter={16}>
         <Col span={22}>
           <Descriptions column={5} colon={false}>
@@ -64,17 +72,15 @@ export const AddMineWorkInformationForm = (props) => {
                 </>
               }
             >
-              <Form.Item>
-                <Field
-                  id="work_start_date"
-                  name="work_start_date"
-                  placeholder="Select Work Start Date"
-                  component={renderConfig.DATE}
-                  disabled={!props.isEditMode}
-                  validate={[date, dateNotAfterOther(props.formValues.work_stop_date)]}
-                  format={null}
-                />
-              </Form.Item>
+              <Field
+                id="work_start_date"
+                name="work_start_date"
+                placeholder="Select Work Start Date"
+                component={renderConfig.DATE}
+                disabled={!props.isEditMode}
+                validate={[date, dateNotAfterOther(props.formValues.work_stop_date)]}
+                format={null}
+              />
             </Descriptions.Item>
             <Descriptions.Item
               label={
@@ -106,17 +112,15 @@ export const AddMineWorkInformationForm = (props) => {
                 </>
               }
             >
-              <Form.Item>
-                <Field
-                  id="work_stop_date"
-                  name="work_stop_date"
-                  placeholder="Select Work Stop Date"
-                  component={renderConfig.DATE}
-                  disabled={!props.isEditMode}
-                  validate={[date, dateNotBeforeOther(props.formValues.work_start_date)]}
-                  format={null}
-                />
-              </Form.Item>
+              <Field
+                id="work_stop_date"
+                name="work_stop_date"
+                placeholder="Select Work Stop Date"
+                component={renderConfig.DATE}
+                disabled={!props.isEditMode}
+                validate={[date, dateNotBeforeOther(props.formValues.work_start_date)]}
+                format={null}
+              />
             </Descriptions.Item>
 
             <Descriptions.Item label="Work Status">
@@ -130,17 +134,15 @@ export const AddMineWorkInformationForm = (props) => {
       </Row>
       <Row gutter={16}>
         <Col span={24}>
-          <Form.Item>
-            <Field
-              id="work_comments"
-              name="work_comments"
-              label="Comments"
-              placeholder="Enter Comments"
-              minRows={3}
-              disabled={!props.isEditMode}
-              component={renderConfig.AUTO_SIZE_FIELD}
-            />
-          </Form.Item>
+          <Field
+            id="work_comments"
+            name="work_comments"
+            label="Comments"
+            placeholder="Enter Comments"
+            minRows={3}
+            disabled={!props.isEditMode}
+            component={renderConfig.AUTO_SIZE_FIELD}
+          />
         </Col>
       </Row>
 
@@ -166,7 +168,7 @@ export const AddMineWorkInformationForm = (props) => {
           {props.title}
         </Button>
       </div>
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -176,11 +178,5 @@ AddMineWorkInformationForm.defaultProps = defaultProps;
 export default compose(
   connect((state) => ({
     formValues: getFormValues(FORM.ADD_MINE_WORK_INFORMATION)(state) || {},
-  })),
-  reduxForm({
-    form: FORM.ADD_MINE_WORK_INFORMATION,
-    onSubmitSuccess: resetForm(FORM.ADD_MINE_WORK_INFORMATION),
-    touchOnBlur: false,
-    enableReinitialize: true,
-  })
+  }))
 )(AddMineWorkInformationForm);

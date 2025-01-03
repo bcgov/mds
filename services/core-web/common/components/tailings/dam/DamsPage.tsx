@@ -3,7 +3,7 @@ import { Link, useHistory, useParams, withRouter } from "react-router-dom";
 import React, { FC, useEffect, useState } from "react";
 import { bindActionCreators, compose } from "redux";
 import { createDam, updateDam } from "@mds/common/redux/actionCreators/damActionCreator";
-import { getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm, submit } from "redux-form";
+import { getFormSyncErrors, getFormValues, InjectedFormProps, submit } from "redux-form";
 
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import SteppedForm from "@mds/common/components/forms/SteppedForm";
@@ -12,7 +12,6 @@ import { connect } from "react-redux";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getDam } from "@mds/common/redux/selectors/damSelectors";
 import { getTsf } from "@mds/common/redux/selectors/tailingsSelectors";
-import { resetForm } from "@common/utils/helpers";
 import { storeDam } from "@mds/common/redux/actions/damActions";
 import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
@@ -147,6 +146,7 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
       </Row>
       <Divider />
       <SteppedForm
+        initialValues={initialValues}
         name={ADD_EDIT_DAM}
         handleSaveData={handleSave}
         handleTabChange={() => { }}

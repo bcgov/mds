@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "@ant-design/compatible/assets/index.css";
 import UploadIncidentDocumentForm from "@/components/Forms/incidents/UploadIncidentDocumentForm";
 
 const propTypes = {

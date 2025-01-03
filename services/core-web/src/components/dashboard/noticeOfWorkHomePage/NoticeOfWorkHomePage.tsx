@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import { Action, bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
@@ -20,7 +20,7 @@ import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/Notic
 import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
 import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 import { PageTracker } from "@common/utils/trackers";
-import { INoticeOfWorkApplication, IPageData, IOption, INoticeOfWork } from "@mds/common";
+import { IPageData, IOption, INoticeOfWork } from "@mds/common";
 import { RootState } from "@/App";
 
 export interface NoWSearchParams {
@@ -164,4 +164,4 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(NoticeOfWorkHomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(NoticeOfWorkHomePage as any) as FC<NoticeOfWorkHomePageProps>;

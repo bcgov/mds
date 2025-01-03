@@ -1,19 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm, change } from "redux-form";
+import { Field, change } from "redux-form";
 import { remove } from "lodash";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Popconfirm, Typography } from "antd";
-import { required, maxLength } from "@common/utils/Validate";
+import { Button, Popconfirm, Typography, Form } from "antd";
+import { required, maxLength } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 import VarianceFileUpload from "@/components/Forms/variances/VarianceFileUpload";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -45,9 +43,13 @@ export class AddVarianceForm extends Component {
 
   render() {
     return (
-      <Form
-        layout="vertical"
-        onSubmit={this.props.handleSubmit(this.props.onSubmit(this.state.documentNameGuidMap))}
+      <FormWrapper
+        onSubmit={() => this.props.onSubmit(this.state.documentNameGuidMap)}
+        name={FORM.ADD_VARIANCE}
+        reduxFormConfig={{
+          touchOnBlur: false,
+          onSubmitSuccess: resetForm(FORM.ADD_VARIANCE),
+        }}
       >
         <Field
           id="compliance_article_id"
@@ -91,15 +93,11 @@ export class AddVarianceForm extends Component {
             Submit
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
 
 AddVarianceForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.ADD_VARIANCE,
-  touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.ADD_VARIANCE),
-})(AddVarianceForm);
+export default AddVarianceForm;

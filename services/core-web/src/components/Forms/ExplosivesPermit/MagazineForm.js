@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { FieldArray, Field } from "redux-form";
-import { required, maxLength, number, lat, lon, lonNegative, positiveNumber } from "@common/utils/Validate";
+import { required, maxLength, number, lat, lon, lonNegative, positiveNumber } from "@mds/common/redux/utils/Validate";
 import { Collapse, Button, Popconfirm, Col, Row, Divider, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { TRASHCAN } from "@/constants/assets";

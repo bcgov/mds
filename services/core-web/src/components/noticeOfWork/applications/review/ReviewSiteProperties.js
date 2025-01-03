@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import { Row, Col } from "antd";
@@ -6,7 +5,7 @@ import { Field, formValueSelector, FormSection } from "redux-form";
 import { connect } from "react-redux";
 import RenderMultiSelect from "@mds/common/components/forms/RenderMultiSelect";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
-import { requiredList } from "@common/utils/Validate";
+import { requiredList } from "@mds/common/redux/utils/Validate";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import {
   getConditionalDisturbanceOptionsHash,
@@ -55,6 +54,7 @@ export class ReviewSiteProperties extends Component {
               name="mine_tenure_type_code"
               component={RenderSelect}
               disabled={this.props.isViewMode}
+              required
               validate={[requiredList]}
               data={this.props.mineTenureTypes.filter(({ value }) =>
                 mapApplicationTypeToTenureType(this.props.noticeOfWorkType).includes(value)

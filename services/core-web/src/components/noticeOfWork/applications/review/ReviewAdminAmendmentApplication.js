@@ -19,7 +19,7 @@ import {
   lon,
   maxLength,
   requiredList,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
@@ -50,6 +50,7 @@ const propTypes = {
   applicationSourceTypeCodeOptions: CustomPropTypes.options.isRequired,
   permits: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   isNoticeOfWorkTypeDisabled: PropTypes.bool,
+  initialValues: PropTypes.any,
 };
 
 const defaultProps = {
@@ -178,6 +179,7 @@ export const ReviewAdminAmendmentApplication = (props) => {
   return (
     <div>
       <FormWrapper onSubmit={() => { }}
+        initialValues={props.initialValues}
         name={FORM.EDIT_NOTICE_OF_WORK}
         reduxFormConfig={{
           touchOnChange: false,

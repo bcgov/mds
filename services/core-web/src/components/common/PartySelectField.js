@@ -14,7 +14,7 @@ import { getLastCreatedParty } from "@mds/common/redux/selectors/partiesSelector
 import { fetchSearchResults } from "@mds/common/redux/actionCreators/searchActionCreator";
 import { setAddPartyFormState } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import { createItemMap, createItemIdsArray } from "@common/utils/helpers";
-import { Validate } from "@common/utils/Validate";
+import { Validate } from "@mds/common/redux/utils/Validate";
 import LinkButton from "@/components/common/buttons/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
 import RenderLargeSelect from "@mds/common/components/forms/RenderLargeSelect";
@@ -38,12 +38,13 @@ const propTypes = {
   allowNull: PropTypes.bool,
   disabled: PropTypes.bool,
   onSelect: PropTypes.func,
+  required: PropTypes.bool,
 };
 
 const defaultProps = {
   id: "party_guid",
   name: "party_guid",
-  label: "Name*",
+  label: "Name",
   partyLabel: "contact",
   person: false,
   organization: false,
@@ -54,6 +55,7 @@ const defaultProps = {
   allowNull: false,
   disabled: false,
   onSelect: null,
+  required: false,
 };
 
 const renderAddPartyFooter = (showAddParty, partyLabel) => (
@@ -226,6 +228,7 @@ export class PartySelectField extends Component {
         validate={this.props.validate.concat(this.validOption)}
         dataSource={this.state.partyDataSource}
         selectedOption={this.state.selectedOption}
+        required={this.props.required}
       />
     );
   }

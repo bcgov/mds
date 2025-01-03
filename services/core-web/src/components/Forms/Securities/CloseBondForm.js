@@ -8,7 +8,7 @@ import {
   dateNotInFuture,
   maxLength,
   dateNotBeforeOther,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
@@ -18,7 +18,8 @@ import CustomPropTypes from "@/customPropTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   bond: CustomPropTypes.bond.isRequired,
@@ -30,7 +31,7 @@ const propTypes = {
 export const CloseBondForm = (props) => {
   const bondStatusDescription = props.bondStatusOptionsHash[props.bondStatusCode];
   return (
-    <FormWrapper onSubmit={props.handleSubmit}
+    <FormWrapper onSubmit={props.onSubmit} initialValues={props.initialValues}
       name={FORM.CLOSE_BOND}
       reduxFormConfig={{
         enableReinitialize: true,

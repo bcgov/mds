@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Button, Popconfirm, Row, Col } from "antd";
-import { required } from "@common/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -10,7 +10,7 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   onCancel: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   layer: PropTypes.number.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -35,7 +35,7 @@ export const ConditionForm = (props) => {
             onSubmitSuccess: resetForm(FORM.CONDITION_SECTION),
           }}
           initialValues={props.initialValues}
-          onSubmit={props.handleSubmit}
+          onSubmit={props.onSubmit}
         >
           <Field
             id="condition"

@@ -1,8 +1,7 @@
 import { uniq, concat, reject } from "lodash";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Form } from "antd";
 import { Field } from "redux-form";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@mds/common/constants/fileTypes";

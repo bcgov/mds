@@ -2,6 +2,11 @@
 
 exports[`AdvancedContactSearch form renders properly 1`] = `
 <Connect(ReduxForm)
+  initialValues={
+    Object {
+      "type": "PER",
+    }
+  }
   name="CONTACT_ADVANCE_SEARCH"
   onReset={[Function]}
   onSubmit={[MockFunction]}
@@ -70,13 +75,10 @@ exports[`AdvancedContactSearch form renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <Button
+    <RenderResetButton
+      buttonText="Clear Filters"
       className="full-mobile"
-      htmlType="reset"
-      type="secondary"
-    >
-      Clear Filters
-    </Button>
+    />
     <Button
       className="full-mobile"
       htmlType="submit"

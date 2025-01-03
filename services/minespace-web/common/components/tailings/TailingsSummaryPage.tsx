@@ -22,15 +22,14 @@ import {
   getFormValues,
   InjectedFormProps,
   isDirty,
-  reduxForm,
   submit,
   touch,
 } from "redux-form";
 
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import BasicInformation from "@mds/common/components/tailings/BasicInformation";
-import Step from "@common/components/Step";
-import SteppedForm from "@common/components/SteppedForm";
+import Step from "@mds/common/components/forms/Step";
+import SteppedForm from "@mds/common/components/forms/SteppedForm";
 import { connect } from "react-redux";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getMines } from "@mds/common/redux/selectors/mineSelectors";
@@ -83,8 +82,9 @@ interface TailingsSummaryPageProps {
   userAction: string;
 }
 
-export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility> &
-  TailingsSummaryPageProps> = (props) => {
+export const TailingsSummaryPage: FC<
+  InjectedFormProps<ITailingsStorageFacility> & TailingsSummaryPageProps
+> = (props) => {
   const {
     mines,
     history,
@@ -253,7 +253,6 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
     history.push(url);
   };
 
-  const errors = Object.keys(flattenObject(formErrors));
   const mineName = mines[mineGuid]?.mine_name || "";
   const hasCreatedTSF = !!props.initialValues?.mine_tailings_storage_facility_guid;
 
@@ -279,11 +278,17 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
         </Row>
         <Divider />
         <SteppedForm
-          errors={errors}
+          name={props.form}
           handleSaveData={handleSaveData}
           handleTabChange={handleTabChange}
           activeTab={tab}
           sectionChangeText={canEditTSF && isUserActionEdit ? undefined : "Continue"}
+          reduxFormConfig={{
+            touchOnBlur: true,
+            touchOnChange: false,
+            enableReinitialize: true,
+            destroyOnUnmount: true,
+          }}
         >
           <Step key="basic-information">
             <BasicInformation
@@ -369,15 +374,6 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    touchOnBlur: true,
-    touchOnChange: false,
-    enableReinitialize: true,
-    destroyOnUnmount: true,
-    onSubmit: () => {},
-  })
-)(withRouter(FeatureFlagGuard(Feature.TSF_V2)(TailingsSummaryPage)) as any) as FC<
-  TailingsSummaryPageProps
->;
+export default compose(connect(mapStateToProps, mapDispatchToProps))(
+  withRouter(FeatureFlagGuard(Feature.TSF_V2)(TailingsSummaryPage)) as any
+) as FC<TailingsSummaryPageProps>;

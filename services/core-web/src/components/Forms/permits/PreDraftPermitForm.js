@@ -9,7 +9,7 @@ import {
   required,
   requiredRadioButton,
   validateIfApplicationTypeCorrespondsToPermitNumber,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import { getNoticeOfWorkEditableTypes } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 
@@ -137,7 +137,7 @@ export const PreDraftPermitForm = (props) => {
         />
       )}
       <br />
-      <FormWrapper onSubmit={() => { }}
+      <FormWrapper onSubmit={() => { }} initialValues={props.initialValues}
         name={FORM.PRE_DRAFT_PERMIT}
         reduxFormConfig={{
           touchOnBlur: true,

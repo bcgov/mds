@@ -1,7 +1,7 @@
 import React from "react";
 import { Field } from "redux-form";
 import { Col, Row } from "antd";
-import { notnone } from "@common/utils/Validate";
+import { notnone } from "@mds/common/redux/utils/Validate";
 import { createDropDownList } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";

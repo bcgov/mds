@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Col, Row, Badge } from "antd";
-import { required, lat, lon, lonNegative } from "@common/utils/Validate";
+import { required, lat, lon, lonNegative } from "@mds/common/redux/utils/Validate";
 import RenderMineSelect from "@/components/common/RenderMineSelect";
 import RenderField from "@mds/common/components/forms/RenderField";
 import * as Styles from "@/constants/styles";
@@ -27,6 +27,7 @@ export const EditNOWMineAndLocation = (props) => {
               id="mine_guid"
               name="mine_guid"
               component={RenderMineSelect}
+              required
               validate={[required]}
               fullWidth
               additionalPin={additionalPin}

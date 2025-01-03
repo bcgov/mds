@@ -12,7 +12,7 @@ import {
   dateNotInFuture,
   required,
   validateDateRanges,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import ContactDetails from "@common/components/ContactDetails";
 import TailingsContext from "@common/components/tailings/TailingsContext";
 import moment from "moment";
@@ -65,9 +65,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
 
   const daysToQPExpiry =
     currentQp?.end_date &&
-    moment(currentQp?.end_date)
-      .startOf("day")
-      .diff(moment().startOf("day"), "days");
+    moment(currentQp?.end_date).startOf("day").diff(moment().startOf("day"), "days");
 
   const openCreateQPModal = (event) => {
     event.preventDefault();

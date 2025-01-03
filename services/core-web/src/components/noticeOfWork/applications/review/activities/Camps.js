@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Field, getFormValues } from "redux-form";
 import { Row, Col } from "antd";
 import { currencyMask } from "@common/utils/helpers";
-import { maxLength, number, requiredRadioButton, required } from "@common/utils/Validate";
+import { maxLength, number, requiredRadioButton, required } from "@mds/common/redux/utils/Validate";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";

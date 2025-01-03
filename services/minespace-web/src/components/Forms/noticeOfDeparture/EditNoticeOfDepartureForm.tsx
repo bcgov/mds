@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-  change,
-  Field,
-  FieldArray,
-  getFormSyncErrors,
-  InjectedFormProps,
-  reduxForm,
-} from "redux-form";
+import { change, Field, FieldArray, getFormSyncErrors } from "redux-form";
 import { Alert, Button, Col, Popconfirm, Row, Typography } from "antd";
-import { maxLength, required, requiredRadioButton } from "@common/utils/Validate";
+import { maxLength, required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import {
   NOD_TYPE_FIELD_VALUE,
@@ -24,14 +17,10 @@ import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons"
 import { documentSection } from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureDetails";
 import NoticeOfDepartureCallout from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureCallout";
 import { renderContacts } from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
-import {
-  ICreateNoD,
-  INodDocumentPayload,
-  INoticeOfDeparture,
-  NodStatusSaveEnum,
-} from "@mds/common";
+import { INodDocumentPayload, INoticeOfDeparture, NodStatusSaveEnum } from "@mds/common";
 import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 interface EditNoticeOfDepartureFormProps {
   initialValues: INoticeOfDeparture;
@@ -39,16 +28,13 @@ interface EditNoticeOfDepartureFormProps {
   closeModal: () => void;
   mineGuid: string;
   noticeOfDeparture: INoticeOfDeparture;
-  handleSubmit?: any;
   logFormErrors?: any;
   pristine?: boolean;
   change?: (field: string, value: any) => void;
 }
 
-const EditNoticeOfDepartureForm: React.FC<
-  InjectedFormProps<Partial<ICreateNoD>> & EditNoticeOfDepartureFormProps
-> = (props) => {
-  const { onSubmit, closeModal, handleSubmit, mineGuid, noticeOfDeparture, pristine } = props;
+const EditNoticeOfDepartureForm: React.FC<EditNoticeOfDepartureFormProps> = (props) => {
+  const { onSubmit, closeModal, mineGuid, noticeOfDeparture, pristine } = props;
   const { permit, nod_guid, nod_no, nod_status } = noticeOfDeparture;
   const [submitting, setSubmitting] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -141,7 +127,17 @@ const EditNoticeOfDepartureForm: React.FC<
   return (
     <div>
       <NoticeOfDepartureCallout nodStatus={nod_status as NodStatusSaveEnum} />
-      <Form layout="vertical" onSubmit={handleSubmit(handleNoticeOfDepartureSubmit)}>
+      <FormWrapper
+        initialValues={props.initialValues}
+        name={FORM.EDIT_NOTICE_OF_DEPARTURE}
+        onSubmit={handleNoticeOfDepartureSubmit}
+        reduxFormConfig={{
+          onSubmitSuccess: resetForm(FORM.EDIT_NOTICE_OF_DEPARTURE),
+          touchOnBlur: false,
+          forceUnregisterOnUnmount: true,
+          enableReinitialize: true,
+        }}
+      >
         <Typography.Title level={4}>Basic Information</Typography.Title>
         <Typography.Text>
           Enter the following information about your Notice of Departure.
@@ -151,6 +147,7 @@ const EditNoticeOfDepartureForm: React.FC<
           id="nodTitle"
           name="nod_title"
           component={renderConfig.FIELD}
+          required
           validate={[required, maxLength(50)]}
         />
         <Row gutter={24}>
@@ -168,35 +165,35 @@ const EditNoticeOfDepartureForm: React.FC<
           name="nod_description"
           label="Departure Summary"
           component={renderConfig.AUTO_SIZE_FIELD}
+          required
           validate={[maxLength(3000), required]}
         />
         <FieldArray props={{}} name="nod_contacts" component={renderContacts} />
         <h4 className="nod-modal-section-header">
           Notice of Departure Self-Assessment Determination
         </h4>
-        <Form.Item>
-          <Field
-            id="nod_type"
-            name="nod_type"
-            label="Based on the information established in your self-assessment form please determine your
+        <Field
+          id="nod_type"
+          name="nod_type"
+          label="Based on the information established in your self-assessment form please determine your
           submissions Notice of Departure type. If you are unsure what category you fall under,
           please contact us."
-            component={RenderRadioButtons}
-            validate={[requiredRadioButton]}
-            customOptions={[
-              {
-                value: NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL,
-                label:
-                  "This Notice of Departure is non-substantial and does not require ministry review.  (Proponent is responsible for ensuring all details have been completed correctly for submission and can begin work immediately)",
-              },
-              {
-                value: NOD_TYPE_FIELD_VALUE.POTENTIALLY_SUBSTANTIAL,
-                label:
-                  "This Notice of Departure is potentially substantial and requires ministry review.  (Ministry staff will review submission and determine if work can move forward as Notice of Departure)",
-              },
-            ]}
-          />
-        </Form.Item>
+          component={RenderRadioButtons}
+          required
+          validate={[requiredRadioButton]}
+          customOptions={[
+            {
+              value: NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL,
+              label:
+                "This Notice of Departure is non-substantial and does not require ministry review.  (Proponent is responsible for ensuring all details have been completed correctly for submission and can begin work immediately)",
+            },
+            {
+              value: NOD_TYPE_FIELD_VALUE.POTENTIALLY_SUBSTANTIAL,
+              label:
+                "This Notice of Departure is potentially substantial and requires ministry review.  (Ministry staff will review submission and determine if work can move forward as Notice of Departure)",
+            },
+          ]}
+        />
         <h4 className="nod-modal-section-header">
           Upload Notice of Departure Self-Assessment Form
         </h4>
@@ -334,7 +331,7 @@ const EditNoticeOfDepartureForm: React.FC<
             Submit Notice of Departure
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     </div>
   );
 };
@@ -352,13 +349,6 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: FORM.EDIT_NOTICE_OF_DEPARTURE,
-    onSubmitSuccess: resetForm(FORM.EDIT_NOTICE_OF_DEPARTURE),
-    touchOnBlur: false,
-    forceUnregisterOnUnmount: true,
-    enableReinitialize: true,
-  })
-)(EditNoticeOfDepartureForm) as React.FC<EditNoticeOfDepartureFormProps>;
+export default compose(connect(mapStateToProps, mapDispatchToProps))(
+  EditNoticeOfDepartureForm as any
+) as React.FC<EditNoticeOfDepartureFormProps>;

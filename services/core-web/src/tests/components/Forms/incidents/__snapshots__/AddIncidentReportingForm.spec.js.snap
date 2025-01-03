@@ -3,6 +3,7 @@
 exports[`AddIncidentReportingForm renders properly 1`] = `
 <div>
   <Connect(ReduxForm)
+    initialValues={Object {}}
     name="MINE_INCIDENT"
     onSubmit={[Function]}
     reduxFormConfig={

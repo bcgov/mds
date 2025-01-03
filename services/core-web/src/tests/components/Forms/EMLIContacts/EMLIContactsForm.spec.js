@@ -7,7 +7,7 @@ const props = {};
 const setupProps = () => {
   props.submitting = false;
   props.title = "Update EMLI Contact";
-  props.handleSubmit = jest.fn();
+  props.onSubmit = jest.fn();
   props.closeModal = jest.fn();
   props.regionDropdownOptions = [];
   props.EMLIContactTypes = [];

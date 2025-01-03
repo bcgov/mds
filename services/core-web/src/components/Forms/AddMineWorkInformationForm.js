@@ -6,13 +6,12 @@ import { Field, getFormValues } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import { dateNotBeforeOther, dateNotAfterOther, date } from "@common/utils/Validate";
+import { dateNotBeforeOther, dateNotAfterOther, date } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  mineGuid: PropTypes.string.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.objectOf(PropTypes.any)]).isRequired,
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -26,7 +25,8 @@ const defaultProps = {
 export class AddMineWorkInformationForm extends Component {
   render() {
     return (
-      <FormWrapper name={FORM.ADD_MINE_WORK_INFORMATION} onSubmit={this.props.handleSubmit}
+      <FormWrapper name={FORM.ADD_MINE_WORK_INFORMATION} onSubmit={this.props.onSubmit}
+        initialValues={this.props.initialValues}
         reduxFormConfig={{
           onSubmitSuccess: resetForm(FORM.ADD_MINE_WORK_INFORMATION),
           touchOnBlur: false,

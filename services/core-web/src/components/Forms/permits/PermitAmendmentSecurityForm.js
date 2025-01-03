@@ -8,7 +8,7 @@ import {
   currency,
   required,
   assessedLiabilityNegativeWarning,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { currencyMask } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { securityNotRequiredReasonOptions } from "@/constants/NOWConditions";
@@ -18,9 +18,11 @@ import RenderField from "@mds/common/components/forms/RenderField";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderCheckbox from "@mds/common/components/forms/RenderCheckbox";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   submitting: PropTypes.bool.isRequired,
   isEditMode: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
@@ -39,7 +41,7 @@ export const PermitAmendmentSecurityForm = (props) => {
   };
 
   return (
-    <FormWrapper onSubmit={props.handleSubmit}
+    <FormWrapper onSubmit={props.onSubmit} initialValues={props.initialValues}
       name={FORM.EDIT_PERMIT}
       reduxFormConfig={{
         touchOnBlur: true,

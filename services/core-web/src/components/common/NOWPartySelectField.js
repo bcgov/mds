@@ -9,7 +9,7 @@ import { getLastCreatedParty } from "@mds/common/redux/selectors/partiesSelector
 import { fetchSearchResults } from "@mds/common/redux/actionCreators/searchActionCreator";
 import { setAddPartyFormState } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import { createItemMap, createItemIdsArray } from "@common/utils/helpers";
-import { Validate } from "@common/utils/Validate";
+import { Validate } from "@mds/common/redux/utils/Validate";
 import { Divider } from "antd";
 import LinkButton from "@/components/common/buttons/LinkButton";
 

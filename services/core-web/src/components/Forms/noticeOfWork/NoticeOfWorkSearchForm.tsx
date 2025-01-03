@@ -1,16 +1,14 @@
 import React from "react";
 import { Field } from "redux-form";
 import PropTypes from "prop-types";
-import { Button, Col, Row, Form } from "antd";
+import { Button, Col, Row } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  // initialValues is used by reduxForm magic
-  // eslint-disable-next-line react/no-unused-prop-types
+  onSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
@@ -24,7 +22,7 @@ export const NoticeOfWorkSearchForm = (props) => {
         touchOnBlur: false,
         enableReinitialize: true,
       }}
-      onSubmit={props.handleSubmit}>
+      onSubmit={props.onSubmit}>
       <Row gutter={6}>
         <Col md={24} xs={24}>
           <Field

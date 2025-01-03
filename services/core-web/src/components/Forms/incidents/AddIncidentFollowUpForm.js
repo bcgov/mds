@@ -5,10 +5,10 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm, FieldArray } from "redux-form";
+import { Field, FieldArray } from "redux-form";
 import { Col, Row, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { required, dateNotInFuture, requiredList } from "@common/utils/Validate";
+import { required, dateNotInFuture, requiredList } from "@mds/common/redux/utils/Validate";
 import { MINE_INCIDENT_DOCUMENTS } from "@mds/common/constants/API";
 import * as Strings from "@mds/common/constants/strings";
 import * as FORM from "@/constants/forms";
@@ -70,6 +70,7 @@ export class AddIncidentFollowUpForm extends Component {
     return (
       <div>
         <FormWrapper
+          initialValues={this.props.initialValues}
           onSubmit={() => { }}
           name={FORM.MINE_INCIDENT}
           reduxFormConfig={{

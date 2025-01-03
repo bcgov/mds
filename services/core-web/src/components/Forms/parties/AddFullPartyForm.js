@@ -9,7 +9,7 @@ import {
   maxLength,
   number,
   postalCode,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { normalizePhone, upperCase, normalizeExt } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";

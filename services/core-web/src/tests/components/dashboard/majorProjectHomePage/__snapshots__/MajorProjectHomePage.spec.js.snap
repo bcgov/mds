@@ -125,7 +125,7 @@ exports[`MajorProjectHomePage renders properly 1`] = `
                   class="right center-mobile"
                 >
                   <button
-                    class="ant-btn ant-btn-secondary full-mobile"
+                    class="ant-btn ant-btn-default full-mobile"
                     type="reset"
                   >
                     <span>

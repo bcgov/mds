@@ -9,7 +9,7 @@ import {
   number,
   positiveNumber,
   required,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { Button, Col, Collapse, Divider, Popconfirm, Row, Typography, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { TRASHCAN } from "@/constants/assets";

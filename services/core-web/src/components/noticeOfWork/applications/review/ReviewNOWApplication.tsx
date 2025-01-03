@@ -23,7 +23,7 @@ import {
   min,
   max,
   wholeNumber,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import * as Strings from "@mds/common/constants/strings";
 import { USER_ROLES } from "@mds/common";
 import { getNoticeOfWorkEditableTypes } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
@@ -1414,7 +1414,7 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
 
   return (
     <div>
-      <FormWrapper onSubmit={() => { }}
+      <FormWrapper onSubmit={() => { }} initialValues={props.initialValues}
         name={FORM.EDIT_NOTICE_OF_WORK}
         reduxFormConfig={{
           touchOnChange: false,

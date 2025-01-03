@@ -1,13 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import { Col, Divider, Row, Typography } from "antd";
-import { required, maxLength, wholeNumber, dateNotInFuture } from "@common/utils/Validate";
+import { Field } from "redux-form";
+import { Col, Divider, Row, Typography, Form } from "antd";
+import {
+  required,
+  maxLength,
+  wholeNumber,
+  dateNotInFuture,
+} from "@mds/common/redux/utils/Validate";
 import * as Strings from "@mds/common/constants/strings";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import IncidentFileUpload from "./IncidentFileUpload";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -19,7 +24,15 @@ const defaultProps = {};
 
 export const AddIncidentDetailForm = (props) => {
   return (
-    <Form layout="vertical">
+    <FormWrapper
+      name={FORM.ADD_INCIDENT}
+      onSubmit={() => {}}
+      reduxFormConfig={{
+        destroyOnUnmount: false,
+        touchOnBlur: true,
+        forceUnregisterOnUnmount: true,
+      }}
+    >
       <Row gutter={48}>
         <Col span={24}>
           <Typography.Text>
@@ -27,95 +40,89 @@ export const AddIncidentDetailForm = (props) => {
           </Typography.Text>
           <Row gutter={16}>
             <Col md={12} xs={24}>
-              <Form.Item label="Incident date">
-                <Field
-                  id="incident_date"
-                  name="incident_date"
-                  placeholder="Please select date"
-                  component={renderConfig.DATE}
-                  validate={[required, dateNotInFuture]}
-                />
-              </Form.Item>
+              <Field
+                label="Incident date"
+                id="incident_date"
+                name="incident_date"
+                placeholder="Please select date"
+                component={renderConfig.DATE}
+                required
+                validate={[required, dateNotInFuture]}
+              />
             </Col>
             <Col md={12} xs={24}>
-              <Form.Item label="Incident time">
-                <Field
-                  id="incident_time"
-                  name="incident_time"
-                  placeholder="Please select time"
-                  component={renderConfig.TIME}
-                  validate={[required]}
-                  fullWidth
-                />
-              </Form.Item>
+              <Field
+                label="Incident time"
+                id="incident_time"
+                name="incident_time"
+                placeholder="Please select time"
+                component={renderConfig.TIME}
+                required
+                validate={[required]}
+                fullWidth
+              />
             </Col>
           </Row>
-          <Form.Item label="Proponent incident number (optional)">
-            <Field
-              id="proponent_incident_no"
-              name="proponent_incident_no"
-              component={renderConfig.FIELD}
-              validate={[maxLength(20)]}
-            />
-          </Form.Item>
+          <Field
+            label="Proponent incident number"
+            id="proponent_incident_no"
+            name="proponent_incident_no"
+            component={renderConfig.FIELD}
+            validate={[maxLength(20)]}
+          />
           <Row gutter={16}>
             <Col md={12} xs={24}>
-              <Form.Item label="Number of injuries (optional)">
-                <Field
-                  id="number_of_injuries"
-                  name="number_of_injuries"
-                  component={renderConfig.FIELD}
-                  validate={[wholeNumber, maxLength(10)]}
-                />
-              </Form.Item>
+              <Field
+                label="Proponent incident number"
+                id="number_of_injuries"
+                name="number_of_injuries"
+                component={renderConfig.FIELD}
+                validate={[wholeNumber, maxLength(10)]}
+              />
             </Col>
             <Col md={12} xs={24}>
-              <Form.Item label="Number of fatalities (optional)">
-                <Field
-                  id="number_of_fatalities"
-                  name="number_of_fatalities"
-                  component={renderConfig.FIELD}
-                  validate={[wholeNumber, maxLength(10)]}
-                />
-              </Form.Item>
+              <Field
+                label="Number of fatalities"
+                id="number_of_fatalities"
+                name="number_of_fatalities"
+                component={renderConfig.FIELD}
+                validate={[wholeNumber, maxLength(10)]}
+              />
             </Col>
           </Row>
-          <Form.Item label="Were emergency services called? (optional)">
-            <Field
-              id="emergency_services_called"
-              name="emergency_services_called"
-              placeholder="Please choose one"
-              component={renderConfig.RADIO}
-            />
-          </Form.Item>
-          <Form.Item label="Description of incident">
-            <Field
-              id="incident_description"
-              name="incident_description"
-              placeholder="Provide a detailed description of the incident"
-              component={renderConfig.SCROLL_FIELD}
-              validate={[required]}
-            />
-          </Form.Item>
+          <Field
+            label="Were emergency services called?"
+            id="emergency_services_called"
+            name="emergency_services_called"
+            placeholder="Please choose one"
+            component={renderConfig.RADIO}
+          />
+          <Field
+            label="Description of incident"
+            id="incident_description"
+            name="incident_description"
+            placeholder="Provide a detailed description of the incident"
+            component={renderConfig.SCROLL_FIELD}
+            required
+            validate={[required]}
+          />
           <Divider />
           <Typography.Text>
             <h4>Dangerous Occurrence Determination</h4>
           </Typography.Text>
-          <Form.Item label="Is this a dangerous occurrence? (optional)">
-            <Field
-              id="mine_determination_type_code"
-              name="mine_determination_type_code"
-              component={renderConfig.RADIO}
-            />
-          </Form.Item>
-          <Form.Item label="Mine representative who made determination">
-            <Field
-              id="mine_determination_representative"
-              name="mine_determination_representative"
-              component={renderConfig.FIELD}
-              validate={[maxLength(255)]}
-            />
-          </Form.Item>
+          <Field
+            label="Is this a dangerous occurrence?"
+            id="mine_determination_type_code"
+            name="mine_determination_type_code"
+            component={renderConfig.RADIO}
+          />
+          <Field
+            label="Mine representative who made determination"
+            id="mine_determination_representative"
+            name="mine_determination_representative"
+            component={renderConfig.FIELD}
+            validate={[maxLength(255)]}
+          />
           <Form.Item label="Initial Notification Documents">
             <Typography.Paragraph>
               Please upload all of the required documents.
@@ -137,16 +144,11 @@ export const AddIncidentDetailForm = (props) => {
           </Form.Item>
         </Col>
       </Row>
-    </Form>
+    </FormWrapper>
   );
 };
 
 AddIncidentDetailForm.propTypes = propTypes;
 AddIncidentDetailForm.defaultProps = defaultProps;
 
-export default reduxForm({
-  form: FORM.ADD_INCIDENT,
-  destroyOnUnmount: false,
-  touchOnBlur: true,
-  forceUnregisterOnUnmount: true,
-})(AddIncidentDetailForm);
+export default AddIncidentDetailForm;

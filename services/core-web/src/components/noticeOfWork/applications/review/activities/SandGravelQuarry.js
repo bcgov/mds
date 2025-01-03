@@ -4,7 +4,7 @@ import { Field, Fields, getFormValues } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
 import { currencyMask } from "@common/utils/helpers";
-import { maxLength, number, numberWithUnitCode, required } from "@common/utils/Validate";
+import { maxLength, number, numberWithUnitCode, required } from "@mds/common/redux/utils/Validate";
 import { getDropdownNoticeOfWorkUnitTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";

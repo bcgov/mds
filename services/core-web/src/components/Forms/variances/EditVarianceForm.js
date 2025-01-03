@@ -4,8 +4,8 @@ import { Field, getFormValues } from "redux-form";
 import { fromPairs, isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Button, Popconfirm, Row, Col, Form } from "antd";
-import { required } from "@common/utils/Validate";
+import { Button, Popconfirm, Row, Col } from "antd";
+import { required } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as String from "@mds/common/constants/strings";
 import * as FORM from "@/constants/forms";
@@ -16,7 +16,7 @@ import { VarianceDetails } from "../../mine/Variances/VarianceDetails";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -73,18 +73,19 @@ export class EditVarianceForm extends Component {
     return (
       <FormWrapper
         name={FORM.EDIT_VARIANCE}
+        initialValues={this.props.initialValues}
         reduxFormConfig={{
           touchOnBlur: false,
           onSubmitSuccess: resetForm(FORM.EDIT_VARIANCE),
           enableReinitialize: true,
         }}
-        onSubmit={this.props.handleSubmit(
+        onSubmit={
           this.props.onSubmit(
             fromPairs(this.state.uploadedFiles),
             this.props.variance,
             this.state.statusChangedToApproved
           )
-        )}
+        }
       >
         <Row gutter={16}>
           <Col md={12} xs={24}>

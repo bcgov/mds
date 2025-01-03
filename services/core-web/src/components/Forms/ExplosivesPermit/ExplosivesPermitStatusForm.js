@@ -4,17 +4,18 @@ import { compose } from "redux";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { required } from "@common/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { getExplosivesPermitStatusDropdownOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
-
 import CustomPropTypes from "@/customPropTypes";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   closeModal: PropTypes.func.isRequired,
   explosivesPermitStatusDropdownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem)
     .isRequired,
@@ -27,7 +28,7 @@ export const ExplosivesPermitStatusForm = (props) => {
     return value === "REJ" || value === "WIT";
   });
   return (
-    <FormWrapper onSubmit={props.handleSubmit}
+    <FormWrapper onSubmit={props.onSubmit} initialValues={props.initialValues}
       name={FORM.EDIT_EXPLOSIVES_PERMIT_STATUS}
       reduxFormConfig={{
         touchOnBlur: false,

@@ -7,9 +7,9 @@ import React, { FC } from "react";
  * @deprecated - use RenderDate directly
  */
 const RenderYear: FC<BaseInputProps> = (props) => {
-  return (
-    <RenderDate {...props} yearMode />
-  )
+    return (
+        <RenderDate {...props} yearMode />
+    )
 }
 
 export default RenderYear;

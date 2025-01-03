@@ -1,17 +1,14 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import moment from "moment";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
 import { flatMap, uniqBy } from "lodash";
-import { Field, reduxForm, formValueSelector } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Popconfirm, List, Typography } from "antd";
+import { Field, formValueSelector } from "redux-form";
+import { Button, Popconfirm, List, Typography, Form } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import { required, yearNotInFuture } from "@common/utils/Validate";
+import { required, yearNotInFuture } from "@mds/common/redux/utils/Validate";
 import {
   resetForm,
   createDropDownList,
@@ -24,10 +21,11 @@ import {
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
@@ -128,16 +126,25 @@ export class AddReportForm extends Component {
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <FormWrapper
+        onSubmit={this.props.onSubmit}
+        initialValues={this.props.initialValues}
+        name={FORM.ADD_REPORT}
+        reduxFormConfig={{
+          touchOnBlur: true,
+          onSubmitSuccess: resetForm(FORM.ADD_REPORT),
+        }}
+      >
         {!this.props.initialValues.mine_report_definition_guid && (
           <Field
             id="mine_report_category"
             name="mine_report_category"
-            label="Report Type*"
+            label="Report Type"
             placeholder="Select"
             data={this.props.dropdownMineReportCategoryOptions}
             doNotPinDropdown
             component={renderConfig.SELECT}
+            required
             validate={[required]}
           />
         )}
@@ -145,11 +152,12 @@ export class AddReportForm extends Component {
         <Field
           id="mine_report_definition_guid"
           name="mine_report_definition_guid"
-          label="Report Name*"
+          label="Report Name"
           placeholder={this.props.selectedMineReportCategory ? "Select" : "Select a category above"}
           data={this.state.dropdownMineReportDefinitionOptionsFiltered}
           doNotPinDropdown
           component={renderConfig.SELECT}
+          required
           validate={[required]}
           onChange={this.updateDueDateWithDefaultDueDate}
           props={{ disabled: !this.props.selectedMineReportCategory }}
@@ -171,16 +179,11 @@ export class AddReportForm extends Component {
         <Field
           id="submission_year"
           name="submission_year"
-          label={
-            <span>
-              <div style={{ paddingBottom: 8 }}>Report Compliance Year/Period*</div>
-              <Typography.Text>
-                Select the year for which the report is being submitted. Depending on the report,
-                this may not be the current calendar year.
-              </Typography.Text>
-            </span>
-          }
+          label="Report Compliance Year/Period"
+          labelSubtitle="Select the year for which the report is being submitted. Depending on the report,
+                this may not be the current calendar year."
           component={renderConfig.YEAR}
+          required
           validate={[required, yearNotInFuture]}
           disabledDate={(currentDate) => currentDate.year() > moment().year}
         />
@@ -204,7 +207,7 @@ export class AddReportForm extends Component {
             {this.props.title}
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -219,10 +222,5 @@ export default compose(
     selectedMineReportCategory: selector(state, "mine_report_category"),
     selectedMineReportDefinition: selector(state, "mine_report_definition_guid"),
     formMeta: state.form[FORM.ADD_REPORT],
-  })),
-  reduxForm({
-    form: FORM.ADD_REPORT,
-    touchOnBlur: true,
-    onSubmitSuccess: resetForm(FORM.ADD_REPORT),
-  })
+  }))
 )(AddReportForm);

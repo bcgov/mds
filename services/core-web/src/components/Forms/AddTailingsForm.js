@@ -4,7 +4,7 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { required, maxLength, number, lat, lon } from "@common/utils/Validate";
+import { required, maxLength, number, lat, lon } from "@mds/common/redux/utils/Validate";
 import {
   getConsequenceClassificationStatusCodeDropdownOptions,
   getITRBExemptionStatusCodeDropdownOptions,
@@ -17,9 +17,11 @@ import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   closeModal: PropTypes.func.isRequired,
   initialPartyValue: PropTypes.objectOf(PropTypes.any).isRequired,
   title: PropTypes.string.isRequired,
@@ -31,9 +33,10 @@ const propTypes = {
 };
 
 export const AddTailingsForm = (props) => (
-  <FormWrapper onSubmit={props.handleSubmit}
-    name={ORM.ADD_TAILINGS}
-    reduxFormConfid={{
+  <FormWrapper onSubmit={props.onSubmit}
+    initialValues={props.initialValues}
+    name={FORM.ADD_TAILINGS}
+    reduxFormConfig={{
       touchOnBlur: false,
       enableReinitialize: true,
       onSubmitSuccess: resetForm(FORM.ADD_TAILINGS),

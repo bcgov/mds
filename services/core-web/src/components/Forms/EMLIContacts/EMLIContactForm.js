@@ -11,7 +11,7 @@ import {
   phoneNumber,
   maxLength,
   requiredRadioButton,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import {
   getMineRegionDropdownOptions,
   getDropdownEMLIContactTypes,
@@ -23,7 +23,8 @@ import CustomPropTypes from "@/customPropTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   regionDropdownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
@@ -43,6 +44,7 @@ const majorMineOfficeCode = "MMO";
 const chiefPermittingCode = "CHP";
 const chiefInspectorCode = "CHI";
 const officeCodes = [regionalOfficeCode, majorMineOfficeCode];
+
 export const EMLIContactForm = (props) => {
   const filteredContactTypes = () => {
     const codes = [];
@@ -78,7 +80,8 @@ export const EMLIContactForm = (props) => {
 
   return (
     <div>
-      <FormWrapper onSubmit={props.handleSubmit}
+      <FormWrapper onSubmit={props.onSubmit}
+        initialValues={props.initialValues}
         name={FORM.EMLI_CONTACT_FORM}
         reduxFormConfig={{
           onSubmitSuccess: resetForm(FORM.EMLI_CONTACT_FORM),
@@ -138,19 +141,17 @@ export const EMLIContactForm = (props) => {
             />
           </Col>
           <Col md={12} xs={24}>
-            <Form.Item>
-              <Field
-                id="emli_contact_type_code"
-                name="emli_contact_type_code"
-                label="Contact Type"
-                placeholder="Select a contact type"
-                component={renderConfig.SELECT}
-                reqiiored
-                validate={[required]}
-                data={filteredContactTypes()}
-                disabled={props.isEdit}
-              />
-            </Form.Item>
+            <Field
+              id="emli_contact_type_code"
+              name="emli_contact_type_code"
+              label="Contact Type"
+              placeholder="Select a contact type"
+              component={renderConfig.SELECT}
+              required
+              validate={[required]}
+              data={filteredContactTypes()}
+              disabled={props.isEdit}
+            />
           </Col>
         </Row>
         {!officeCodes.includes(props.formValues.emli_contact_type_code) && (

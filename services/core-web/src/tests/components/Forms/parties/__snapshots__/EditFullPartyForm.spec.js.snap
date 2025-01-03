@@ -3,7 +3,9 @@
 exports[`EditFullPartyForm renders properly 1`] = `
 <div>
   <Connect(ReduxForm)
+    initialValues={Object {}}
     name="EDIT_FULL_PARTY"
+    onSubmit={[Function]}
     reduxFormConfig={
       Object {
         "enableReinitialize": true,

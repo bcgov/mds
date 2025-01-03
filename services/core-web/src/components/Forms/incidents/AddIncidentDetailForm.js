@@ -8,7 +8,7 @@ import {
   wholeNumber,
   dateNotInFuture,
   requiredList,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { MINE_INCIDENT_DOCUMENTS } from "@mds/common/constants/API";
 import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -28,6 +28,7 @@ const propTypes = {
   uploadedFiles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   onFileLoad: PropTypes.func.isRequired,
   onRemoveFile: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
 };
 
 const defaultProps = {
@@ -40,7 +41,9 @@ class AddIncidentDetailForm extends Component {
 
   render() {
     return (
-      <FormWrapper onSubmit={() => { }}
+      <FormWrapper
+        initialValues={this.props.initialValues}
+        onSubmit={() => { }}
         name={FORM.MINE_INCIDENT}
         reduxFormConfig={{
           destroyOnUnmount: false,

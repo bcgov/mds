@@ -6,7 +6,7 @@ import { Field, formValueSelector } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import { required, date } from "@common/utils/Validate";
+import { required, date } from "@mds/common/redux/utils/Validate";
 import { resetForm, createDropDownList } from "@common/utils/helpers";
 import {
   getDropdownPermitConditionCategoryOptions,
@@ -21,7 +21,7 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.objectOf(PropTypes.any)]).isRequired,
@@ -81,7 +81,7 @@ export class AddMinePermitRequiredForm extends Component {
           enableReinitialize: true,
           onSubmitSuccess: resetForm(FORM.ADD_REPORT),
         }}
-        onSubmit={this.props.handleSubmit}>
+        onSubmit={this.props.onSubmit}>
         <Row gutter={16}>
           <Col span={24}>
             <Field

@@ -7,7 +7,7 @@ import {
   required,
   dateNotInFuture,
   maxLength,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -17,7 +17,6 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   change: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -66,9 +65,9 @@ export class AddVarianceForm extends Component {
           onSubmitSuccess: resetForm(FORM.ADD_VARIANCE),
           enableReinitialize: true,
         }}
-        onSubmit={this.props.handleSubmit(
+        onSubmit={
           this.props.onSubmit(fromPairs(this.state.uploadedFiles), this.state.isApplication)
-        )}
+        }
       >
         <Form.Item label="Are you creating an application or an approved variance?">
           <Radio.Group onChange={this.onChange} value={this.state.isApplication}>

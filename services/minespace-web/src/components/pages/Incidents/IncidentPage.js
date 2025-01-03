@@ -9,7 +9,6 @@ import {
   getFormSyncErrors,
   getFormValues,
   isDirty,
-  reset,
   submit,
   touch,
 } from "redux-form";
@@ -174,12 +173,6 @@ export const IncidentPage = (props) => {
   };
 
   const formatPayload = (values) => {
-    const reportedToInspectorDateSet =
-      values?.reported_to_inspector_contact_date && values?.reported_to_inspector_contact_time;
-    const johscWorkerRepDateSet =
-      values?.johsc_worker_rep_contact_date && values?.johsc_worker_rep_contact_time;
-    const johscManagementRepDateSet =
-      values?.johsc_management_rep_contact_date && values?.johsc_management_rep_contact_time;
     const updatedDocuments = [
       ...new Map(
         [
@@ -364,7 +357,6 @@ const mapDispatchToProps = (dispatch) =>
       removeDocumentFromMineIncident,
       fetchInspectors,
       submit,
-      reset,
       touch,
       change,
       destroy,

@@ -3,6 +3,7 @@
 exports[`ReclamationInvoiceForm renders properly 1`] = `
 <Connect(ReduxForm)
   name="ADD_RECLAMATION_INVOICE"
+  onSubmit={[Function]}
   reduxFormConfig={
     Object {
       "touchOnBlur": false,

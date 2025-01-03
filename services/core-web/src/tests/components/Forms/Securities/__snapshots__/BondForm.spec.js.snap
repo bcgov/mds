@@ -3,6 +3,7 @@
 exports[`BondForm renders properly 1`] = `
 <Connect(ReduxForm)
   name="ADD_BOND"
+  onSubmit={[Function]}
   reduxFormConfig={
     Object {
       "onSubmitSuccess": [Function],

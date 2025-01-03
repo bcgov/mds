@@ -4,7 +4,7 @@ import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
 import { currencyMask } from "@common/utils/helpers";
-import { requiredRadioButton, maxLength, number, required } from "@common/utils/Validate";
+import { requiredRadioButton, maxLength, number, required } from "@mds/common/redux/utils/Validate";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";

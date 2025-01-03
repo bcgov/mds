@@ -4,7 +4,6 @@ import { Field, FormSection } from "redux-form";
 import { Button, Col, Row, Popconfirm, Alert } from "antd";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { formatDate, resetForm, normalizePhone, upperCase } from "@common/utils/helpers";
-
 import * as Strings from "@mds/common/constants/strings";
 import {
   required,
@@ -13,8 +12,7 @@ import {
   maxLength,
   number,
   postalCode,
-} from "@common/utils/Validate";
-
+} from "@mds/common/redux/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -23,13 +21,13 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   isPerson: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
   partyRelationshipTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   roles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
 };
@@ -72,7 +70,8 @@ export const MergePartyConfirmationForm = (props) => {
 
   return (
     <div>
-      <FormWrapper name={FORM.MERGE_PARTY_CONFIRMATION} onSubmit={props.handleSubmit}
+      <FormWrapper name={FORM.MERGE_PARTY_CONFIRMATION} onSubmit={props.onSubmit}
+        initialValues={props.initialValues}
         reduxFormConfig={{
           touchOnBlur: false,
           onSubmitSuccess: resetForm(FORM.MERGE_PARTY_CONFIRMATION),

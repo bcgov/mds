@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { isEmpty } from "lodash";
 import { resetForm, formatDate } from "@common/utils/helpers";
 import PropTypes from "prop-types";
-import { required, dateNotInFuture, date } from "@common/utils/Validate";
+import { required, dateNotInFuture, date } from "@mds/common/redux/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -14,8 +14,7 @@ import * as Permission from "@/constants/permissions";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  title: PropTypes.bool.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   showCommentFields: PropTypes.string.isRequired,
   importedDate: PropTypes.string.isRequired,
@@ -170,7 +169,7 @@ export const UpdateNOWDateForm = (props) => {
           touchOnBlur: false,
         }}
         initialValues={props.initialValues}
-        onSubmit={props.handleSubmit}>
+        onSubmit={props.onSubmit}>
         {props.recordType !== "VER" && props.recordType !== "DEC" && (
           <Row gutter={16}>
             <Col span={24}>

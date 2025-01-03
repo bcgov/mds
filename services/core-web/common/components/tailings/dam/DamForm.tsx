@@ -13,7 +13,7 @@ import {
   number,
   required,
   requiredList,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { useHistory, useParams } from "react-router-dom";
 import { Field } from "redux-form";
 import React, { FC } from "react";
