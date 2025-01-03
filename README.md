@@ -1,8 +1,10 @@
 # Mines Digital Services
 
-The technologies that support mine oversight for British Columbians need to be reimagined. This project will replace the legacy Mine Management System (MMS) with a scalable, open source, data driven system using modern and flexible technologies.
+Mines Digital Services (MDS) upholds the BC Public Service’s commitment to modernization, transparency, and efficiency, enabling better governance and service delivery when it comes to mining in British Columbia.
 
-The Mines Digital Services (MDS) will have a number of interconnections and relationships to systems across the Natural Resource Ministries and will be important not only to the Ministry of Energy, Mines and Low Carbon Innovation but also to inter-agency collaborations across ministries. The future state must be intuitive, and capable of providing meaningful data to relevant stakeholders.
+This project replaced the legacy Mine Management System (MMS) with a scalable, open source, data driven system using modern and flexible technologies.
+
+The MDS have a number of interconnections and relationships to systems across the Natural Resource Ministries and is important not only to the Ministry of Mining and Critical Minerals but also to inter-agency collaborations across ministries, industry stakeholders and the public.
 
 [![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)](Redirect-URL)
 [![CORE WEB - Unit Tests](https://github.com/bcgov/mds/actions/workflows/core-web.unit.yaml/badge.svg)](https://github.com/bcgov/mds/actions/workflows/core-web.unit.yaml)
@@ -14,12 +16,14 @@ The Mines Digital Services (MDS) will have a number of interconnections and rela
 
 ## Features
 
-The product is anticipated to include:
+Key products that are maintained by MDS include Core, MineSpace and the public-facing [BC Mine Information website](https://mines.nrs.gov.bc.ca) [(github repository)](https://github.com/bcgov/NR-BCMI)
 
-1. Support for integrated analysis and decision making across the process of mine oversight
-2. Support for the creation of a complex data model that can connect various components of mines. Some examples include consultation information, risk management modeling, spatial data, financial tracking and collecting and physical attributes
-3. Enhancements to the public-facing [BC Mine Information website](http://mines.nrs.gov.bc.ca/) ([github repository](https://github.com/bcgov/mem-mmti-public)) to broaden the available data and create new or improved functionality to increase usability
-4. Enhancements to the [BC Mine Information website's administrative console](https://mines.empr.gov.bc.ca/) ([github repository](https://github.com/bcgov/mem-admin)) , including work required to connect with other systems (e.g., the Natural Resource Inspection System, aka NRIS)
+Mines Digital Services build features with these principles in mind:
+
+1. MDS develops tools and platforms that prioritize ease of use for mining companies, regulators, and the public.
+2. MDS supports access to high-quality geoscientific data and regulatory information, empowering government bodies and mining companies to make informed decisions.
+3. MDS collaborates across government agencies and industries to create cohesive solutions that integrate regulatory processes, permitting, and compliance systems.
+4. Digital tools from MDS help monitor and ensure mining activities adhere to environmental and social governance standards.
 
 ## Services
 

@@ -478,6 +478,33 @@ class AuditMixin(object):
     update_timestamp = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+class DocumentXrefMixin(object):
+    @declared_attr
+    def mine_document(cls):
+        return db.relationship('MineDocument', lazy='select')
+    
+    @declared_attr
+    def mine_document_guid(cls):
+        return db.Column(
+        UUID(as_uuid=True),
+        db.ForeignKey('mine_document.mine_document_guid'),
+        nullable=False,
+        unique=True)
+    
+    mine_guid = association_proxy('mine_document', 'mine_guid')
+    document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
+    document_name = association_proxy('mine_document', 'document_name')
+    upload_date = association_proxy('mine_document', 'upload_date')
+    create_user = association_proxy('mine_document', 'create_user')
+    versions = association_proxy('mine_document', 'versions')
+    update_timestamp = association_proxy('mine_document', 'update_timestamp')
+    mine_document_bundle_id = association_proxy('mine_document', 'mine_document_bundle_id')
+    deleted_ind = association_proxy('mine_document', 'deleted_ind')
+
+    @classmethod
+    def find_by_mine_document_guid(cls, mine_document_guid):
+        return cls.query.filter_by(mine_document_guid=mine_document_guid).filter( # type: ignore
+            cls.deleted_ind == False).one_or_none()
 
 class SoftDeleteMixin(object):
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())

@@ -18,7 +18,7 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
       md={24}
       xs={24}
     >
-      <Connect(PartySelectField)
+      <PartySelectField
         allowAddingParties={true}
         id="party_guid"
         name="party_guid"

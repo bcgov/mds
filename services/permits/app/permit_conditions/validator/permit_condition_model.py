@@ -49,7 +49,40 @@ class PermitCondition(BaseModel):
                 data[key] = data[key].strip()
 
         super(PermitCondition, self).__init__(**data)
+    
+    @property
+    def formatted_text(self) -> str:
+        if not self.condition_text:
+            return ''
 
+        indent_level = 0
+        last_defined = None
+        for key in [
+            "section",
+            "paragraph",
+            "subparagraph",
+            "clause",
+            "subclause",
+            "subsubclause",
+        ]:
+            if getattr(self, key) is not None:
+                indent_level += 1
+                last_defined = key
+
+        formatted_text = self.condition_text
+
+        if last_defined:
+            last_value = getattr(self, last_defined)
+            if last_defined == "section":
+                formatted_text = f"{last_value}. {formatted_text}"
+            else:
+                formatted_text = f"({last_value}) {formatted_text}"
+
+
+        formatted_text = "    " * indent_level + formatted_text
+
+
+        return formatted_text
 
 class PermitConditions(BaseModel):
     conditions: List[PermitCondition]

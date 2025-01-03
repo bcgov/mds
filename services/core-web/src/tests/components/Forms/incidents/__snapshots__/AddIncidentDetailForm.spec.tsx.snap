@@ -564,18 +564,6 @@ exports[`AddIncidentDetailForm renders properly 1`] = `
                     placeholder="Provide a detailed description of the incident"
                     style="height: 0px; resize: none; min-height: -12px;"
                   />
-                  <div
-                    class="ant-row ant-row-space-between form-item-help incident_description-form-help"
-                  >
-                    <span>
-                      Maximum undefined characters
-                    </span>
-                    <span
-                      class="flex-end"
-                    >
-                      NaN / undefined
-                    </span>
-                  </div>
                 </div>
               </div>
               <div

@@ -1,11 +1,8 @@
-import csv
-import io
 import json
 import logging
 import os
 from typing import Any, Dict, List, Optional
 
-import pandas as pd
 from app.permit_conditions.context import context
 from app.permit_conditions.validator.parse_hierarchy import split_numbering
 from haystack import Document, component, logging

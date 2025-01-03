@@ -15,7 +15,7 @@ import { some } from "lodash";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import DocumentCompression from "@mds/common/components/documents/DocumentCompression";
 import { archiveMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Feature } from "@mds/common/utils/featureFlag";
 import { SizeType } from "antd/lib/config-provider/SizeContext";
 import { ColumnsType } from "antd/es/table";
@@ -23,19 +23,18 @@ import { FileOperations, MineDocument } from "@mds/common/models/documents/docum
 
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import DownloadOutlined from "@ant-design/icons/DownloadOutlined";
-import DownOutlined from "@ant-design/icons/DownOutlined";
 import FileOutlined from "@ant-design/icons/FileOutlined";
 import InboxOutlined from "@ant-design/icons/InboxOutlined";
 import SyncOutlined from "@ant-design/icons/SyncOutlined";
 import { openDocument } from "@mds/common/components/syncfusion/DocumentViewer";
-import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { Button, Dropdown, MenuProps } from "antd";
+import { Button, Col, Row } from "antd";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import DocumentTableProps from "@mds/common/interfaces/document/documentTableProps.interface";
 import ArchiveDocumentModal from "./ArchiveDocumentModal";
 import DeleteDocumentModal from "./DeleteDocumentModal";
 import ReplaceDocumentModal from "./ReplaceDocumentModal";
 import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
+import { ActionMenuButton } from "../common/ActionMenu";
 
 export const DocumentTable: FC<DocumentTableProps> = ({
   isViewOnly = false,
@@ -57,7 +56,6 @@ export const DocumentTable: FC<DocumentTableProps> = ({
 }: DocumentTableProps) => {
   // differences from bringing over from CORE (vs the MS version): this file has doc compression & bulk actions
   const dispatch = useDispatch();
-  const userRoles = useSelector(getUserAccessData);
 
   const handleCloseModal = () => {
     dispatch(closeModal());
@@ -82,22 +80,17 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   const isMinimalView: boolean = view === "minimal";
 
   const parseDocuments = (docs: any[]): MineDocument[] => {
-    let parsedDocs: MineDocument[];
     if (docs.length && docs[0] instanceof MineDocument) {
-      parsedDocs = docs;
+      return docs;
     } else {
-      parsedDocs = docs.map((doc) => new MineDocument(doc));
+      return docs.map((doc) => new MineDocument(doc));
     }
-    return parsedDocs.map((doc) => {
-      doc.setAllowedActions(userRoles);
-      return doc;
-    });
   };
 
   const [documents, setDocuments] = useState<MineDocument[]>(parseDocuments(props.documents ?? []));
 
   useEffect(() => {
-    const isBulkArchive = documents.every((doc) =>
+    const isBulkArchive = canArchiveDocuments && documents.every((doc) =>
       doc.allowed_actions.find((a) => a === FileOperations.Archive)
     );
 
@@ -108,9 +101,8 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     setDocuments(parseDocuments(props.documents ?? []));
   }, [props.documents]);
 
-  const openArchiveModal = (event, docs: MineDocument[]) => {
+  const openArchiveModal = (docs: MineDocument[]) => {
     const mineGuid = docs[0].mine_guid;
-    event.preventDefault();
     dispatch(
       openModal({
         props: {
@@ -197,7 +189,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
       key: "archive",
       label: FileOperations.Archive,
       icon: <InboxOutlined />,
-      clickFunction: (event, record: MineDocument) => openArchiveModal(event, [record]),
+      clickFunction: (_event, record: MineDocument) => openArchiveModal([record]),
     },
     {
       key: "delete",
@@ -275,43 +267,25 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     ? { size: "small" as SizeType, rowClassName: "ant-table-row-minimal" }
     : null;
 
-  const bulkItems: MenuProps["items"] = [
+  const bulkItems = [
     {
       key: FileOperations.Download,
       icon: <DownloadOutlined />,
-      label: (
-        <button
-          type="button"
-          className="full add-permit-dropdown-button"
-          onClick={() => {
-            setIsCompressionModal(true);
-          }}
-        >
-          <div>Download File(s)</div>
-        </button>
-      ),
+      label: "Download File(s)",
+      clickFunction: () => setIsCompressionModal(true)
     },
     {
       key: FileOperations.Archive,
       icon: <InboxOutlined />,
-      label: (
-        <button
-          type="button"
-          className="full add-permit-dropdown-button"
-          onClick={(e) => {
-            openArchiveModal(e, rowSelection);
-          }}
-        >
-          <div>Archive File(s)</div>
-        </button>
-      ),
-    },
+      label: "Archive File(s)",
+      clickFunction: () => openArchiveModal(rowSelection)
+    }
   ].filter((a) => allowedTableActions[a.key]);
 
   const renderBulkActions = () => {
     let element = (
       <Button
-        className="ant-btn ant-btn-primary"
+        type="primary"
         disabled={rowSelection.length === 0 || isCompressionInProgress}
         onClick={() => {
           setIsCompressionModal(true);
@@ -322,20 +296,19 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     );
     if (documentsCanBulkDropDown) {
       element = (
-        <Dropdown
-          menu={{ items: bulkItems }}
-          placement="bottomLeft"
+        <ActionMenuButton actions={bulkItems}
           disabled={rowSelection.length === 0 || isCompressionInProgress}
-        >
-          <Button className="ant-btn ant-btn-primary">
-            Action
-            <DownOutlined />
-          </Button>
-        </Dropdown>
+          buttonProps={{ type: "primary", }}
+        />
       );
     }
 
-    return enableBulkActions && <div style={{ float: "right" }}>{element}</div>;
+    const hasHeader = Boolean(props.header);
+
+    return (enableBulkActions || hasHeader) && <Row justify={hasHeader ? "space-between" : "end"} align="bottom" className="document-table-header">
+      {hasHeader && <Col>{props.header}</Col>}
+      {enableBulkActions && <Col className="document-table-actions">{element}</Col>}
+    </Row>;
   };
 
   const handleRowSelectionChange = (value) => {
@@ -350,22 +323,22 @@ export const DocumentTable: FC<DocumentTableProps> = ({
 
   const bulkActionsProps = enableBulkActions
     ? {
-        rowSelection: {
-          type: "checkbox",
-          ...rowSelectionObject,
-        },
-      }
+      rowSelection: {
+        type: "checkbox",
+        ...rowSelectionObject,
+      },
+    }
     : {};
 
   const versionProps = showVersionHistory
     ? {
-        expandProps: {
-          childrenColumnName: "versions",
-          matchChildColumnsToParent: true,
-          recordDescription: "version history",
-          rowExpandable: (record) => record.number_prev_versions > 0,
-        },
-      }
+      expandProps: {
+        childrenColumnName: "versions",
+        matchChildColumnsToParent: true,
+        recordDescription: "version history",
+        rowExpandable: (record) => record.number_prev_versions > 0,
+      },
+    }
     : {};
 
   const coreTableProps = {

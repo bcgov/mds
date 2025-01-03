@@ -28,7 +28,7 @@ describe("DocumentUpload", () => {
           initialValues={MOCK.PROJECT_SUMMARY}
           onSubmit={() => { }}
         >
-          <DocumentUpload docFieldsDisabled={false} />
+          <DocumentUpload docFieldsDisabled={false} deleteEnabled={false}/>
         </FormWrapper>
       </ReduxWrapper>
     );

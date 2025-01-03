@@ -126,7 +126,7 @@ exports[`AddTailingsForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <Connect(PartySelectField)
+      <PartySelectField
         allowAddingParties={true}
         allowNull={true}
         id="eor_party_guid"

@@ -23,7 +23,7 @@
   width: 0; // effectively "fit-content"
 }
 
-.actions-dropdown-button {
+.actions-dropdown-button.menu-item-button {
   border: none;
   background: transparent;
   box-shadow: none;
@@ -31,6 +31,10 @@
 
 .ant-dropdown-menu-item-icon {
   font-size: 16px;
+}
+
+.ant-dropdown-menu-item:hover, .ant-dropdown-menu-item button:hover{
+  cursor: pointer;
 }
 
 @include screen-md {

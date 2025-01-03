@@ -183,12 +183,7 @@ const ProjectPage: FC = () => {
   }, [tab]);
 
   const majorMineApplicationTabContent = mmaDocsDisabled ? (
-    <MajorMineApplicationReviewSubmit
-      project={project}
-      applicationSubmitted
-      tabbedView
-      refreshData={handleFetchData}
-    />
+    <MajorMineApplicationReviewSubmit project={project} applicationSubmitted tabbedView />
   ) : (
     <MajorMineApplicationEntryTab mma={major_mine_application} />
   );

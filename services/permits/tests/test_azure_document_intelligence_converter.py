@@ -5,7 +5,6 @@ from unittest import mock
 import pytest
 from app.permit_conditions.converters.azure_document_intelligence_converter import (
     AzureDocumentIntelligenceConverter,
-    _create_csv_representation,
 )
 from app.permit_conditions.tasks.tasks import task_context
 from tests.mocks import MockContext
@@ -45,7 +44,8 @@ def test_run(mock_client, converter, tmp_path):
                         mock.Mock(x=1, y=2),
                         mock.Mock(x=3, y=4),
                         mock.Mock(x=5, y=6),
-                    ]
+                    ],
+                    page_number=1
                 )
             ],
         ),
@@ -58,7 +58,8 @@ def test_run(mock_client, converter, tmp_path):
                         mock.Mock(x=2, y=2),
                         mock.Mock(x=3, y=9),
                         mock.Mock(x=5, y=6),
-                    ]
+                    ],
+                    page_number=2
                 )
             ],
         ),
@@ -71,19 +72,14 @@ def test_run(mock_client, converter, tmp_path):
 
     assert isinstance(result, dict)
     assert "documents" in result
-    assert "permit_condition_csv" in result
 
     documents = result["documents"]
-    permit_condition_csv = result["permit_condition_csv"]
 
     assert isinstance(documents, list)
-    assert isinstance(permit_condition_csv, list)
 
     assert len(documents) == 2
-    assert len(permit_condition_csv) == 1
 
     document = documents[0]
-    csv_document = permit_condition_csv[0]
 
     res = json.loads(document.content)
 
@@ -99,12 +95,10 @@ def test_run(mock_client, converter, tmp_path):
             "bottom": 6,
             "left": 1,
         },
+        "page": 1,
         "role": "Test role",
     }
 
-    res2 = json.loads(documents[1].content)
-
-    assert csv_document.content == f'"id","text"\n"{res['id']}","Test paragraph"\n"{res2['id']}","Test paragraph2"\n'
 
 
 def test_add_metadata_to_document(converter):
@@ -118,7 +112,8 @@ def test_add_metadata_to_document(converter):
                     mock.Mock(x=1, y=2),
                     mock.Mock(x=3, y=4),
                     mock.Mock(x=5, y=6),
-                ]
+                ],
+                page_number=2
             )
         ],
     )
@@ -135,5 +130,6 @@ def test_add_metadata_to_document(converter):
             "bottom": 6,
             "left": 1,
         },
+        "page": 2,
         "role": "Test role",
     }

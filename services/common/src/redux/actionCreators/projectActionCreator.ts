@@ -167,7 +167,7 @@ export const removeDocumentFromProjectSummary = (
     )
     .then((response: AxiosResponse<string>) => {
       notification.success({
-        message: "Successfully deleted project description document.",
+        message: "Successfully deleted project document.",
         duration: 10,
       });
       dispatch(success(NetworkReducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_SUMMARY));

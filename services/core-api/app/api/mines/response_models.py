@@ -9,6 +9,7 @@ from app.api.parties.party_appt.models.mine_party_appt import (
     MinePartyAppointmentStatus,
 )
 from app.api.parties.response_models import PARTY
+from app.api.users.response_models import USER_MODEL
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.extensions import api
 from flask_restx import fields, marshal
@@ -252,6 +253,7 @@ MINE_TYPE_MODEL = api.model(
 
 MINE_REPORT_PERMIT_REQUIREMENT = api.model(
     'MineReportPermitRequirement', {
+        'report_name': fields.String,
         'mine_report_permit_requirement_id': fields.Integer,
         'due_date_period_months': fields.Integer,
         'initial_due_date': fields.Date,
@@ -266,7 +268,8 @@ PERMIT_CONDITION_CATEGORY_MODEL = api.model(
         'condition_category_code': fields.String,
         'step': fields.String,
         'description': fields.String,
-        'display_order': fields.Integer
+        'display_order': fields.Integer,
+        'assigned_review_user': fields.Nested(USER_MODEL)
     })
 
 PERMIT_AMENDMENT_MODEL = api.model(
@@ -895,7 +898,8 @@ PERMIT_CONDITION_MODEL = api.model(
         'parent_permit_condition_id': fields.Integer,
         'sub_conditions': fields.List(PermitCondition),
         'step': fields.String,
-        'display_order': fields.Integer
+        'display_order': fields.Integer,
+        'meta': fields.Raw,
     })
 
 PERMIT_CONDITION_TEMPLATE_MODEL = api.model('PermitConditionTemplate', {

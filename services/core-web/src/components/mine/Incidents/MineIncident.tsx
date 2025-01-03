@@ -11,12 +11,12 @@ import {
   fetchMineIncident,
   updateMineIncident,
 } from "@mds/common/redux/actionCreators/incidentActionCreator";
-import { clearMineIncident } from "@mds/common/redux/actions/incidentActions";
 import * as Strings from "@mds/common/constants/strings";
 import * as FORM from "@/constants/forms";
 import IncidentForm from "@/components/Forms/incidents/IncidentForm";
 import ScrollSideMenu from "@mds/common/components/common/ScrollSideMenu";
 import * as routes from "@/constants/routes";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 interface IParams {
   mineGuid?: string;
@@ -25,7 +25,7 @@ interface IParams {
 }
 
 export const MineIncident = (props) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { history } = props;
   const params = useParams<IParams>();

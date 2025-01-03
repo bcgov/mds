@@ -90,6 +90,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     if (record.isAmendment) values.amendment_no = record.amendment_no;
     const payload = {
       explosives_permit_guid: record.explosives_permit_guid,
+      ...(record.explosives_permit_amendment_id && { explosives_permit_amendment_id: record.explosives_permit_amendment_id }),
       template_data: values,
     };
     return props.generateExplosivesPermitDocument(

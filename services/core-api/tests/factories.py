@@ -14,6 +14,7 @@ from app.api.mines.reports.models.mine_report_definition_compliance_article_xref
 from app.api.mines.reports.models.mine_report_permit_requirement import MineReportPermitRequirement, OfficeDestination
 from app.api.projects.project_link.models.project_link import ProjectLink
 from app.api.projects.project_summary.models.project_summary_ministry_comment import ProjectSummaryMinistryComment
+from app.api.users.models.user import User
 from app.extensions import db
 from tests.status_code_gen import *
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -59,6 +60,7 @@ from app.api.projects.project_summary.models.project_summary import ProjectSumma
 from app.api.projects.project_summary.models.project_summary_contact import ProjectSummaryContact
 from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
 from app.api.projects.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
+from app.api.projects.project_summary.models.project_summary_authorization_document_xref import ProjectSummaryAuthorizationDocumentXref
 from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
 from app.api.projects.information_requirements_table.models.information_requirements_table_document_xref import InformationRequirementsTableDocumentXref
 from app.api.projects.project_decision_package.models.project_decision_package_document_xref import ProjectDecisionPackageDocumentXref
@@ -380,6 +382,20 @@ class ProjectSummaryDocumentFactory(BaseFactory):
     project_summary_id = factory.SelfAttribute('project_summary.project_summary_id')
     project_summary_document_type_code = factory.LazyFunction(RandomProjectSummaryDocumentTypeCode)
 
+class ProjectSummaryAuthorizationDocumentFactory(BaseFactory):
+
+    class Meta:
+        model = ProjectSummaryAuthorizationDocumentXref
+
+    class Params:
+        project_summary = factory.SubFactory('tests.factories.ProjectSummaryFactory')
+        project_summary_authorization = factory.SubFactory('tests.factories.ProjectSummaryAuthorizationFactory')
+        mine_document = factory.SubFactory(MineDocumentFactory,mine_guid=factory.SelfAttribute('..project_summary.mine_guid'))
+
+    project_summary_authorization_document_xref_guid = GUID
+    project_summary_authorization_guid = factory.SelfAttribute('project_summary_authorization.project_summary_authorization_guid')
+    mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
+    project_summary_document_type_code = factory.LazyFunction(RandomProjectSummaryDocumentTypeCode)
 
 class InformationRequirementsTableDocumentFactory(BaseFactory):
 
@@ -782,6 +798,20 @@ class CoreUserFactory(BaseFactory):
     phone_no = factory.Faker('numerify', text='###-###-####')
     last_logon = TODAY
     idir_user_detail = factory.RelatedFactory('tests.factories.IdirUserDetailFactory', 'core_user')
+
+class UserFactory(BaseFactory):
+    class Meta:
+        model = User
+
+    sub = factory.Faker('uuid4')
+    email = factory.Faker('email')
+    given_name = factory.Faker('first_name')
+    family_name = factory.Faker('last_name')
+    display_name = factory.LazyAttribute(lambda obj: f"{obj.given_name} {obj.family_name} EMLI:EX")
+    idir_username = factory.Faker('user_name')
+    identity_provider = factory.Faker('random_element', elements=['idir', 'bceid'])
+    idir_user_guid = factory.Faker('uuid4')
+    last_logged_in = factory.LazyFunction(lambda: datetime.now(tz=utc))
 
 
 class IdirUserDetailFactory(BaseFactory):
@@ -1412,7 +1442,6 @@ class ProjectSummaryAuthorizationFactory(BaseFactory):
     project_summary_authorization_type = 'MINES_ACT_PERMIT'
     existing_permits_authorizations = []
     deleted_ind = False
-
 
 class EMLIContactTypeFactory(BaseFactory):
 

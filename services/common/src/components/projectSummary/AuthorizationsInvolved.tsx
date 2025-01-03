@@ -58,7 +58,8 @@ import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FormContext } from "../forms/FormWrapper";
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
-import { areAuthEnvFieldsDisabled, areDocumentFieldsDisabled } from "../projects/projectUtils";
+import { areAuthEnvFieldsDisabled, areDocumentFieldsDisabled, isDocumentDeletionEnabled } from "../projects/projectUtils";
+import { removeDocumentFromProjectSummary } from "@mds/common/redux/actionCreators/projectActionCreator";
 
 const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled }) => {
   const dispatch = useDispatch();
@@ -79,10 +80,26 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
 
   const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
   const docFieldsDisabled = areDocumentFieldsDisabled(systemFlag, status_code);
+  const { isEditMode } = useContext(FormContext);
+  const deletionEnabled = isDocumentDeletionEnabled(systemFlag, status_code);
 
   const onChange = (value) => {
     setShowExemptionSection(value);
   };
+
+  const onDeleteDocument = (event, key: string) => {
+    const document = tableDocuments.find( (doc) => key === doc.key);
+    if(document){
+      dispatch(
+        removeDocumentFromProjectSummary(
+          project_guid,
+          project_summary_guid,
+          document.mine_document_guid
+      )).then( () => {
+        removeAmendmentDocument(tableDocuments.indexOf(document),document.category,document.document_manager_guid)
+      })
+    }
+  }
 
   const removeAmendmentDocument = (
     amendmentDocumentsIndex: number,
@@ -231,6 +248,7 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
         documents={tableDocuments}
         documentParent="project summary authorization"
         documentColumns={documentColumns}
+        removeDocument={deletionEnabled && isEditMode ? onDeleteDocument : undefined}
       />
     </>
   );

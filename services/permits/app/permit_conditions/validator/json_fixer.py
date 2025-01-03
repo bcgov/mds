@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 DEBUG_MODE = os.environ.get("DEBUG_MODE", "False").lower() == "true"
 
+
 @component
 class JSONRepair:
     @component.output_types(data=ChatData)
@@ -28,12 +29,21 @@ class JSONRepair:
             dict: A dictionary containing the repaired ChatData object.
         """
 
-        for msg in data.messages:
-            msg.content = json.dumps(json.loads(repair_json(msg.content)))
+        for group in data.messages:
+            for msg in group:
+                msg.content = json.dumps(json.loads(str(repair_json(msg.content))))
 
-        
         if DEBUG_MODE:
             with open("debug/json_repair_output.txt", "a") as f:
-                f.write(json.dumps([json.loads(msg.content) for msg in data.messages], indent=4))
+                f.write(
+                    json.dumps(
+                        [
+                            json.loads(msg.content)
+                            for msg in group
+                            for _ in data.messages
+                        ],
+                        indent=4,
+                    )
+                )
 
         return {"data": data}

@@ -3,7 +3,7 @@ import * as actionTypes from "@mds/common/constants/actionTypes";
 import { PARTIES } from "@mds/common/constants/reducerTypes";
 import { createItemMap, createItemIdsArray } from "../utils/helpers";
 import { RootState } from "@mds/common/redux/rootState";
-import { IParty, ItemMap, IPartyAppt, IPageData, IAddPartyFormState, IOption } from "@mds/common";
+import { IParty, ItemMap, IPartyAppt, IPageData, IAddPartyFormState, IOption } from "@mds/common/interfaces";
 
 /**
  * @file partiesReducer.js

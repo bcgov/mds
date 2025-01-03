@@ -83,14 +83,14 @@ const permitTypes = [
 ];
 
 const mapApplicationTypeToTenureType = (permitPrefix) =>
-({
-  P: ["PLR"],
-  C: ["COL"],
-  M: ["MIN"],
-  G: ["BCL", "PRL"],
-  Q: ["BCL", "PRL", "MIN"],
-  null: [],
-}[permitPrefix]);
+  ({
+    P: ["PLR"],
+    C: ["COL"],
+    M: ["MIN"],
+    G: ["BCL", "PRL"],
+    Q: ["BCL", "PRL", "MIN"],
+    null: [],
+  })[permitPrefix];
 
 const selector = formValueSelector(FORM.ADD_PERMIT);
 

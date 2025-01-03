@@ -9,8 +9,14 @@ DUMMY_AUTH_CLAIMS = {
     "username": "mds",
     "preferred_username": "mds",
     "email": "test-email",
-    "given_name": "test-given-name",
-    "client_roles": []
+    "client_roles": [],
+    "sub": 'bce4ffa4b74741c79afa82287bfffbc8@idir',
+    "given_name": 'Test',
+    "family_name": 'Testerson',
+    "display_name": 'Testerson, Test: EMLI:EX',
+    "idir_username": "mds",
+    "identity_provider": "idir",
+    "idir_user_guid": "BCE4FFA4B63641C79AFA82287BFFFBC8",
 }
 
 

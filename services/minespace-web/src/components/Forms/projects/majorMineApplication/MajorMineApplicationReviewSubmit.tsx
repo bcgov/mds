@@ -14,23 +14,20 @@ import { getFormattedProjectApplication } from "@mds/common/redux/selectors/proj
 import ProjectCallout from "@mds/common/components/projects/ProjectCallout";
 import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
 import { SystemFlagEnum } from "@mds/common";
+import SpatialDocumentTable from "@mds/common/components/documents/spatial/SpatialDocumentTable";
 
 const inputStyle = { width: "100%" };
 
 interface MajorMineApplicationReviewSubmitProps {
   project: IProject;
-  refreshData: () => Promise<void>;
-
   applicationSubmitted?: boolean;
   tabbedView?: boolean;
-
   confirmedSubmission?: boolean;
   toggleConfirmedSubmission?: () => void;
 }
 
 export const MajorMineApplicationReviewSubmit: FC<MajorMineApplicationReviewSubmitProps> = ({
   project,
-  refreshData,
   applicationSubmitted = false,
   tabbedView = false,
   confirmedSubmission = false,
@@ -105,30 +102,23 @@ export const MajorMineApplicationReviewSubmit: FC<MajorMineApplicationReviewSubm
         <Col span={24} {...columnStyleConfig}>
           <br />
           <Typography.Title level={3}>Application Files</Typography.Title>
-          <Typography.Title level={4}>Primary Document</Typography.Title>
           <DocumentTable
+            header={<Typography.Title level={4}>Primary Document</Typography.Title>}
             documents={primary_documents}
             documentParent="Major Mine Application"
-            canArchiveDocuments={true}
-            onArchivedDocuments={() => refreshData()}
+            canArchiveDocuments={false}
+            canReplaceDocuments={false}
             showVersionHistory={true}
             enableBulkActions={true}
           />
           <Typography.Title level={4}>Spatial Components</Typography.Title>
+          <SpatialDocumentTable documents={spatial_documents} />
           <DocumentTable
-            documents={spatial_documents}
-            documentParent="Major Mine Application"
-            canArchiveDocuments={false}
-            onArchivedDocuments={() => refreshData()}
-            showVersionHistory={true}
-            enableBulkActions={true}
-          />
-          <Typography.Title level={4}>Supporting Documents</Typography.Title>
-          <DocumentTable
+            header={<Typography.Title level={4}>Supporting Documents</Typography.Title>}
             documents={supporting_documents}
             documentParent="Major Mine Application"
-            canArchiveDocuments={true}
-            onArchivedDocuments={() => refreshData()}
+            canArchiveDocuments={false}
+            canReplaceDocuments={false}
             showVersionHistory={true}
             enableBulkActions={true}
           />

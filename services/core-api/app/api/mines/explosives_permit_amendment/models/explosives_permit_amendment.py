@@ -216,6 +216,11 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
     def find_by_explosives_permit_amendment_guid(cls, explosives_permit_amendment_guid):
         return cls.query.filter_by(
             explosives_permit_amendment_guid=explosives_permit_amendment_guid, deleted_ind=False).one_or_none()
+    
+    @classmethod
+    def find_by_explosives_permit_id(cls, explosives_permit_id):
+        return cls.query.filter_by(
+            explosives_permit_id=explosives_permit_id, deleted_ind=False).all()
 
     def update(self,
                amendment_no,

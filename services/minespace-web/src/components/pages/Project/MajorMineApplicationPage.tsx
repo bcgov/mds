@@ -40,6 +40,13 @@ export const MajorMineApplicationPage: FC = () => {
   const defaultCurrent = routeState?.current ?? 0;
   const [current, setCurrent] = useState(defaultCurrent);
 
+  useEffect(() => {
+    if (defaultCurrent !== current) {
+      // Make sure the current step is updated if the rootState changes
+      setCurrent(defaultCurrent);
+    }
+  }, [defaultCurrent]);
+
   const [loaded, setLoaded] = useState(false);
   const [confirmedSubmission, setConfirmedSubmission] = useState(false);
   const majorMineApplicationGuid =
@@ -50,6 +57,7 @@ export const MajorMineApplicationPage: FC = () => {
 
   const applicationStatus = majorMineApplication?.status_code;
   const docsDisabled = areDocumentFieldsDisabled(SystemFlagEnum.ms, applicationStatus);
+
   const toggleConfirmedSubmission = () => setConfirmedSubmission(!confirmedSubmission);
 
   const handleFetchData = async () => {
@@ -203,7 +211,7 @@ export const MajorMineApplicationPage: FC = () => {
             id="step2-next"
             type="primary"
             htmlType="submit"
-            disabled={formValues?.primary_documents?.length === 0 || !isFormDirty}
+            disabled={formValues?.primary_documents?.length === 0}
           >
             Review & Submit
           </Button>
@@ -217,7 +225,6 @@ export const MajorMineApplicationPage: FC = () => {
           toggleConfirmedSubmission={toggleConfirmedSubmission}
           confirmedSubmission={confirmedSubmission}
           project={project}
-          refreshData={handleFetchData}
         />
       ),
       buttons: [

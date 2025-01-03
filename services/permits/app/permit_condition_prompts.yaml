@@ -1,23 +1,27 @@
 system_prompt: |
-  You are a helpful AI assistant that can extract information from text files. You extract what is exactly as it is from the text and return it in a json format.
+  You are a helpful AI assistant that answer questions about paragraphs in a mining permit. You answer exactly what is asked for and return it in a json format.
 
 permit_document_prompt_meta_questions: |
   -----------
   {{documents[0].content}}
 
 user_prompt_meta_questions: |
-  Your task is to answer questions for each of the paragraphs in the input text and return the answers in a JSON format.
+  You are given a list of paragraphs extracted from a mining permit. These paragraphs may have a reporting requirement. Your task is to identify the paragraphs that have a reporting requirement.
+  A reporting requirement means that a report is mentioned that needs submission, such as an annual report, an entity needs to be notified when something happens, updates or results needs to be submitted or filed to an entity. Please consider synonyms of those terms as well to a reporting requirement. 
+  Some paragraphs may mention "all reports" under the permit, this should not be considered as a reporting requirement as it does not mentions a specific report.
 
-  You will be given a mining permit and should answer the questions for each condition of the text in the text. The questions are as follows:
+  For each of the identified paragraphs that require a report you need to extract the following information:
 
   "require_report": Does this paragraph require a report to be submitted? (type: boolean)
   "due_date": When is the report due date? (type: date)
   "recurring": Is this a recurring report requirement? (type: boolean)
-  "frequency": Frequency of the report - "Yearly", "Monthly", "Daily", "Weekly", "Bi-weekly", "Quarterly", "Semi-annually", "Annually", "Bi-annually", "As needed", "Other" (type: string)
+  "frequency": Frequency of the report - "Yearly", "Monthly", "Quarterly", "Semi-annually", "Annually", "Bi-annually", "5 years", "As needed", "Other" (type: string)
   "mention_chief_inspector": Does this paragraph mention the Chief Inspector? (type: boolean)
   "mention_chief_permitting_officer": Does this paragraph mention the Chief Permitting Officer? (type: boolean)
+  "report_name": Name of the report mentioned (if found) (type: string)
 
-  Output should be a json structured as follows:
+
+  Output should be a json blob structured as follows:
   {
     "paragraphs": [
       {
@@ -33,16 +37,9 @@ user_prompt_meta_questions: |
       ...
     ]
   }
-
-  The input is a csv file with the following columns. The values in each column are quoted with ""
-  - id: id of the paragraph
-  - text: The text of the paragraph
-
-  Each line in the input should have a corresponding output if an answer to any of the questions is found.
-
   Very Important: Output the full json structure without code blocks or other text. Do not output any other explanation or questions that is not in the json format.
 
-  Here's the CSV input (delimited by ---------)
+  Here's the input (delimited by ---------)
 
 # The following prompts are currently not in use. They are kept here for future reference.
 user_prompt: |

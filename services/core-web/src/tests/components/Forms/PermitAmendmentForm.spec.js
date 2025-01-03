@@ -26,7 +26,13 @@ beforeEach(() => {
 
 describe("PermitAmendmentForm", () => {
   it("renders properly", () => {
-    const component = shallow(<PermitAmendmentForm {...dispatchProps} {...props} />);
+    const component = shallow(
+      <PermitAmendmentForm
+        {...dispatchProps}
+        {...props}
+        handleRemovePermitAmendmentDocument={jest.fn()}
+      />
+    );
     expect(component).toMatchSnapshot();
   });
 });

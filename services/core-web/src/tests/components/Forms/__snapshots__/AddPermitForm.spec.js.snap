@@ -20,7 +20,7 @@ exports[`AddPermitForm renders properly 1`] = `
       md={12}
       sm={24}
     >
-      <Connect(PartySelectField)
+      <PartySelectField
         allowAddingParties={true}
         id="permittee_party_guid"
         label="Permittee"
