@@ -105,6 +105,21 @@ describe("Major Projects", () => {
     cy.get(`[name="payment_contact.party_name"]`).type("Tester", { force: true });
     cy.get(`[name="payment_contact.phone_no"]`).type("123-456-7890", { force: true });
     cy.get(`[name="payment_contact.email"]`).type("test@test.com", { force: true });
+    cy.get(`[name="payment_contact.address[0].address_line_1"]`).type("123 Fake St", { force: true });
+    cy.get(`[data-cy="payment_contact.address[0].address_type_code"]`)
+      .contains("Please select")
+      .click({
+        force: true,
+      });
+    cy.get('[title="Canada"]').click({ force: true });
+    cy.get(`[data-cy="payment_contact.address[0].sub_division_code"]`)
+      .contains("Please select")
+      .click({
+        force: true,
+      });
+    cy.get('[title="AB"]').click({ force: true });
+    cy.get(`[name="payment_contact.address[0].post_code"]`).type("A0A0A0", { force: true });
+    cy.get(`[name="payment_contact.address[0].city"]`).type("Cityville", { force: true });
 
     // SAVE & CONTINUE - Agent
     cy.contains("Save & Continue").click({ force: true });
