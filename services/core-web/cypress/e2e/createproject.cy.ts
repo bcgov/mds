@@ -109,12 +109,12 @@ describe("Major Projects", () => {
     cy.get(`[data-cy="payment_contact.address[0].address_type_code"]`)
       .contains("Please select")
       .click({ force: true });
-    cy.get('[title="Canada"]:visible').click();
+    cy.get('[title="Canada"]:visible').next().click({ force: true });
     cy.get(`[data-cy="payment_contact.address[0].sub_division_code"]`)
       .contains("Please select")
       .click({ force: true });
-    cy.get('[title="AB"]:visible').click();
-    cy.get(`[name="payment_contact.address[0].post_code"]`).type("A0A0A0", { force: true });
+    cy.get('[title="AK"]:visible').click({ force: true });
+    cy.get(`[name="payment_contact.address[0].post_code"]`).type("99501", { force: true });
     cy.get(`[name="payment_contact.address[0].city"]`).type("Cityville", { force: true });
 
     // SAVE & CONTINUE - Agent
