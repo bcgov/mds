@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { Form, Radio } from "antd";
+import { IRadioOption } from "@mds/common/interfaces";
 
 /**
  * @class RenderRadioButtons - Ant Design `Radio` component used for boolean values in redux-form.
@@ -16,7 +17,7 @@ interface RenderRadioButtonsProps {
   meta: any;
   disabled: boolean;
   input: any;
-  customOptions: { label: string; value: any }[];
+  customOptions: IRadioOption[];
 }
 
 const RenderRadioButtons: FC<RenderRadioButtonsProps> = (props) => {
