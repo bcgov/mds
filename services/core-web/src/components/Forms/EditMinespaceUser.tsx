@@ -8,7 +8,7 @@ import { nullableStringSorter, resetForm } from "@common/utils/helpers";
 import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import { IMine } from "@mds/common";
+import { IMine } from "@mds/common/interfaces";
 
 interface EditMinespaceUserProps{
   mines: IMine[];

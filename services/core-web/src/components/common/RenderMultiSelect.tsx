@@ -5,7 +5,7 @@ import { Select } from "antd";
 import { caseInsensitiveLabelFilter } from "@common/utils/helpers";
 import { debounce} from "lodash";
 import { WrappedFieldMetaProps } from "redux-form";
-import { IOption } from "@mds/common";
+import { IOption } from "@mds/common/interfaces";
 
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
