@@ -7,7 +7,7 @@ import {
   formValueSelector,
   getFormValues,
 } from "redux-form";
-import { Button, Col, Row, Popconfirm, Alert, Typography, Radio } from "antd";
+import { Button, Col, Row, Alert, Typography, Radio } from "antd";
 import {
   IOption,
   IGroupedDropdownList,
@@ -27,7 +27,7 @@ import {
   requiredRadioButton,
   lonNegative,
 } from "@mds/common/redux/utils/Validate";
-import { resetForm, createDropDownList, formatDate } from "@common/utils/helpers";
+import { createDropDownList, formatDate } from "@common/utils/helpers";
 import {
   getPartyRelationships,
   getAllPartyRelationships,
@@ -42,6 +42,8 @@ import { Feature } from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import ExplosivesPermitMap from "@mds/common/components/explosivespermits/ExplosivesPermitMap";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 interface StateProps {
   permits: IPermit[];
@@ -51,12 +53,10 @@ interface StateProps {
   partyRelationships: IPermitPartyRelationship[];
   allPartyRelationships: IPermitPartyRelationship[];
   noticeOfWorkApplications: IimportedNOWApplication[];
-  submitting: boolean;
   onSubmit: any;
 }
 
 interface ExplosivesPermitFormProps {
-  closeModal: () => void;
   initialValues: any;
   mineGuid: string;
   isProcessed: boolean;
@@ -182,11 +182,11 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
     //And new feature flow get dicided in AddExplosivesPermitModal.
     return isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT) && parentView ? (
       <FormWrapper
+        isModal
         name={FORM.EXPLOSIVES_PERMIT}
         onSubmit={() => { }}
         reduxFormConfig={{
           touchOnBlur: true,
-          onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT),
         }}
       >
         <Typography.Title level={3}>Add Permit</Typography.Title>
@@ -226,15 +226,7 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
           )}
         </div>
         <div className="right center-mobile" style={{ paddingTop: "14px" }}>
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            okText="Yes"
-            cancelText="No"
-            onConfirm={props.closeModal}
-          >
-            <Button className="full-mobile">Cancel</Button>
-          </Popconfirm>
+          <RenderCancelButton />
           <Button
             disabled={isAmend}
             type="primary"
@@ -246,11 +238,11 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
       </FormWrapper>
     ) : (
       <FormWrapper
+        isModal
         name={FORM.EXPLOSIVES_PERMIT}
         onSubmit={props.onSubmit}
         reduxFormConfig={{
           touchOnBlur: true,
-          onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT),
         }}
       >
         {isHistoric && (
@@ -479,25 +471,8 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
           </Col>
         </Row>
         <div className="right center-mobile" style={{ paddingTop: "14px" }}>
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            onConfirm={props.closeModal}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button className="full-mobile" type="default">
-              Cancel
-            </Button>
-          </Popconfirm>
-          <Button
-            type="primary"
-            className="full-mobile"
-            htmlType="submit"
-            loading={props.submitting}
-          >
-            Submit
-          </Button>
+          <RenderCancelButton />
+          <RenderSubmitButton />
         </div>
       </FormWrapper>
     );

@@ -8,6 +8,7 @@ import RenderField from "@mds/common/components/forms/RenderField";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   mines: CustomPropTypes.options.isRequired,

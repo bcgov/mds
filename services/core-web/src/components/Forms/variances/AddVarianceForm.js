@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, change } from "redux-form";
 import { fromPairs } from "lodash";
-import { Button, Popconfirm, Radio, Form } from "antd";
+import { Radio, Form } from "antd";
 import {
   required,
   dateNotInFuture,
@@ -14,12 +14,12 @@ import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 import VarianceFileUpload from "./VarianceFileUpload";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
   change: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
   documentCategoryOptions: CustomPropTypes.options.isRequired,
   mineGuid: PropTypes.string.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
@@ -31,6 +31,8 @@ export class AddVarianceForm extends Component {
     uploadedFiles: [],
     isApplication: true,
   };
+
+  formName = FORM.ADD_VARIANCE;
 
   onFileLoad = (documentName, document_manager_guid) => {
     this.setState((prevState) => ({
@@ -49,9 +51,9 @@ export class AddVarianceForm extends Component {
       isApplication: e.target.value,
     });
     // reset the date fields if user toggles between application and approved
-    this.props.change("received_date", null);
-    this.props.change("expiry_date", null);
-    this.props.change("issue_date", null);
+    this.props.change(this.formName, "received_date", null);
+    this.props.change(this.formName, "expiry_date", null);
+    this.props.change(this.formName, "issue_date", null);
   };
 
   render() {
@@ -170,25 +172,8 @@ export class AddVarianceForm extends Component {
           />
         )}
         <div className="right center-mobile">
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            onConfirm={this.props.closeModal}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button className="full-mobile" type="secondary">
-              Cancel
-            </Button>
-          </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            loading={this.props.submitting}
-          >
-            Add Variance
-          </Button>
+          <RenderCancelButton />
+          <RenderSubmitButton buttonText="Add Variance" />
         </div>
       </FormWrapper>
     );

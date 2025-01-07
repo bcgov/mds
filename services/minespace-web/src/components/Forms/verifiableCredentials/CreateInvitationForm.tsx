@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Alert, Button, Popconfirm, Skeleton, Typography } from "antd";
+import { Alert, Button, Skeleton, Typography } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { IVCInvitation, LOADING_STATUS, VC_CONNECTION_STATES } from "@mds/common";
@@ -9,9 +9,10 @@ import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { getVCWalletConnectionInvitation } from "@mds/common/redux/selectors/verifiableCredentialSelectors";
 import { createVCWalletInvitation } from "@mds/common/redux/actionCreators/verifiableCredentialActionCreator";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 
 interface CreateInvitationFormProps {
-  closeModal: () => void;
   partyGuid: string;
   partyName: string;
   connectionState: string;
@@ -19,12 +20,10 @@ interface CreateInvitationFormProps {
 
 interface FormStateProps {
   createVCWalletInvitation: ActionCreator<typeof createVCWalletInvitation>;
-  submitting: boolean;
   invitation: IVCInvitation;
 }
 
 export const CreateInvitationForm: FC<CreateInvitationFormProps & FormStateProps> = ({
-  closeModal,
   partyGuid,
   partyName,
   connectionState,
@@ -48,12 +47,11 @@ export const CreateInvitationForm: FC<CreateInvitationFormProps & FormStateProps
     navigator.clipboard.writeText(invitation.invitation_url);
   };
 
-  const disableGenerateButton: boolean =
-    props.submitting || loading === LOADING_STATUS.sent || invitation.invitation_url?.length > 0;
   return (
     <FormWrapper
       name={FORM.CREATE_VC_CONNECTION_INVITATION}
       onSubmit={getInvitation}
+      isModal
       reduxFormConfig={{
         touchOnBlur: false,
         onSubmitSuccess: resetForm(FORM.CREATE_VC_CONNECTION_INVITATION),
@@ -88,9 +86,12 @@ export const CreateInvitationForm: FC<CreateInvitationFormProps & FormStateProps
             applies to all major mine permits.
           </p>
           <br />
-          <Button disabled={disableGenerateButton} type="primary" htmlType="submit">
-            Generate Invitation for {partyName}
-          </Button>
+          <RenderSubmitButton
+            buttonProps={{
+              disabled: loading === LOADING_STATUS.sent || invitation.invitation_url?.length > 0,
+            }}
+            buttonText={`Generate Invitation for ${partyName}`}
+          />
           <br />
         </div>
       )}
@@ -117,16 +118,7 @@ export const CreateInvitationForm: FC<CreateInvitationFormProps & FormStateProps
         </Skeleton>
       )}
       <div style={{ textAlign: "right" }}>
-        <Popconfirm
-          placement="topRight"
-          title="Are you sure?"
-          onConfirm={closeModal}
-          okText="Yes"
-          cancelText="No"
-          disabled={props.submitting}
-        >
-          <Button disabled={props.submitting}>Close</Button>
-        </Popconfirm>
+        <RenderCancelButton buttonText="Close" />
       </div>
     </FormWrapper>
   );

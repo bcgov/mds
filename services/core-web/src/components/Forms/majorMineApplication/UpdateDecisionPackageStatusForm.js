@@ -2,14 +2,15 @@ import React from "react";
 import { compose } from "redux";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Field, getFormValues } from "redux-form";
-import { Button, Col, Row, Alert, Typography } from "antd";
+import { Field } from "redux-form";
+import { Col, Row, Alert, Typography } from "antd";
 import { required } from "@mds/common/redux/utils/Validate";
 import { resetForm, formatDate } from "@common/utils/helpers";
 import { getDropdownProjectDecisionPackageStatusCodes } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 
 const propTypes = {
   dropdownProjectDecisionPackageStatusCodes: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -20,9 +21,7 @@ const propTypes = {
     projectDecisionPackageStatusCodesHash: PropTypes.objectOf(PropTypes.string),
     documents: PropTypes.arrayOf(PropTypes.any),
   }).isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  pristine: PropTypes.bool.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.any,
 };
 
@@ -56,12 +55,12 @@ export const UpdateDecisionPackageStatusForm = (props) => {
         touchOnBlur: false,
         enableReinitialize: true,
       }}
-      onSubmit={(e) => {
+      onSubmit={(values) => {
         const submitPayload = {
-          ...props.formValues,
+          ...values,
           documents: props.displayValues?.documents,
         };
-        return props.handleSubmit(e, submitPayload);
+        return props.onSubmit(submitPayload);
       }}
       onValuesChange
     >
@@ -94,13 +93,9 @@ export const UpdateDecisionPackageStatusForm = (props) => {
                   validate={[required]}
                   data={props.dropdownProjectDecisionPackageStatusCodes}
                 />
-                {!props.pristine && (
-                  <div className="right center-mobile">
-                    <Button className="full-mobile" type="primary" htmlType="submit">
-                      Update Status
-                    </Button>
-                  </div>
-                )}
+                <div className="right center-mobile">
+                  <RenderSubmitButton />
+                </div>
               </Col>
             </Row>
           }
@@ -116,7 +111,6 @@ UpdateDecisionPackageStatusForm.propTypes = propTypes;
 
 export default compose(
   connect((state) => ({
-    formValues: getFormValues(FORM.UPDATE_PROJECT_DECISION_PACKAGE)(state) || {},
     dropdownProjectDecisionPackageStatusCodes: getDropdownProjectDecisionPackageStatusCodes(state),
   }))
 )(UpdateDecisionPackageStatusForm);

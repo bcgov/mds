@@ -1,18 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
 import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
-import { Button, Col, Popconfirm, Row, Tooltip, Typography, Descriptions } from "antd";
+import { Col, Row, Tooltip, Typography, Descriptions } from "antd";
 import { Field } from "redux-form";
 import { wholeNumber } from "@mds/common/redux/utils/Validate";
 import { wholeNumberMask } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.any,
-  submitting: PropTypes.bool.isRequired,
   handleToggleEdit: PropTypes.func.isRequired,
 };
 
@@ -21,6 +22,7 @@ export const EditWorkerInformationForm = (props) => (
     <FormWrapper
       name={FORM.EDIT_EMPLOYEE_COUNT}
       onSubmit={props.onSubmit}
+      isModal
       initialValues={props.initialValues}
       reduxFormConfig={{
         touchOnBlur: false,
@@ -63,29 +65,8 @@ export const EditWorkerInformationForm = (props) => (
         </Col>
       </Row>
       <div className="right center-mobile">
-        <Popconfirm
-          placement="topRight"
-          title="Are you sure you want to cancel?"
-          onConfirm={(event) => {
-            props.handleToggleEdit(event);
-          }}
-          okText="Yes"
-          cancelText="No"
-          disabled={props.submitting}
-        >
-          <Button className="full-mobile margin-small" type="secondary" disabled={props.submitting}>
-            Cancel
-          </Button>
-        </Popconfirm>
-        <Button
-          className="full-mobile margin-small"
-          type="primary"
-          htmlType="submit"
-          loading={props.submitting}
-          disabled={props.submitting}
-        >
-          Update Mine Worker Information
-        </Button>
+        <RenderCancelButton cancelFunction={props.handleToggleEdit} />
+        <RenderSubmitButton buttonText="Update Mine Worker Information" />
       </div>
     </FormWrapper>
   </div>

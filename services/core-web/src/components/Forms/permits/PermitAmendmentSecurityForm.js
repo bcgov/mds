@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose, bindActionCreators } from "redux";
 import { Field, formValueSelector, change } from "redux-form";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Col, Row } from "antd";
 import {
   currency,
   required,
@@ -13,17 +13,17 @@ import { currencyMask } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { securityNotRequiredReasonOptions } from "@/constants/NOWConditions";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
-
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderCheckbox from "@mds/common/components/forms/RenderCheckbox";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.any,
-  submitting: PropTypes.bool.isRequired,
   isEditMode: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
@@ -31,12 +31,14 @@ const propTypes = {
 };
 
 export const PermitAmendmentSecurityForm = (props) => {
+  const formName = FORM.EDIT_PERMIT;
+
   const handleChange = (e) => {
     if (e.target.value) {
-      props.change("security_not_required_reason", null);
+      props.change(formName, "security_not_required_reason", null);
     } else {
-      props.change("liability_adjustment", null);
-      props.change("security_received_date", null);
+      props.change(formName, "liability_adjustment", null);
+      props.change(formName, "security_received_date", null);
     }
   };
 
@@ -113,26 +115,8 @@ export const PermitAmendmentSecurityForm = (props) => {
       </Row>
       {props.isEditMode && (
         <div className="right center-mobile">
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            okText="Yes"
-            cancelText="No"
-            disabled={props.submitting}
-            onConfirm={() => props.onCancel()}
-          >
-            <Button className="full-mobile" type="secondary" disabled={props.submitting}>
-              Cancel
-            </Button>
-          </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            loading={props.submitting}
-          >
-            Save
-          </Button>
+          <RenderCancelButton cancelFunction={props.onCancel} />
+          <RenderSubmitButton buttonText="Save" />
         </div>
       )}
     </FormWrapper>

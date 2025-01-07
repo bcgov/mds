@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Col, Row } from "antd";
 import { required, number, currency } from "@mds/common/redux/utils/Validate";
 import { currencyMask } from "@common/utils/helpers";
 import { RECLAMATION_INVOICE_DOCUMENTS } from "@mds/common/constants/API";
@@ -20,13 +20,13 @@ import {
 } from "@/components/common/DocumentColumns";
 import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.any,
-  closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  submitting: PropTypes.bool.isRequired,
   invoice: CustomPropTypes.invoice,
   mineGuid: PropTypes.string.isRequired,
 };
@@ -98,6 +98,7 @@ export class ReclamationInvoiceForm extends Component {
       <FormWrapper
         initialValues={this.props.initialValues}
         name={FORM.ADD_RECLAMATION_INVOICE}
+        isModal
         reduxFormConfig={{
           touchOnBlur: false,
         }}
@@ -200,25 +201,8 @@ export class ReclamationInvoiceForm extends Component {
           allowMultiple
         />
         <div className="right center-mobile">
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            onConfirm={this.props.closeModal}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button className="full-mobile" type="secondary">
-              Cancel
-            </Button>
-          </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            loading={this.props.submitting}
-          >
-            Save Reclamation Invoice
-          </Button>
+          <RenderCancelButton />
+          <RenderSubmitButton buttonText="Save Reclamation Invoice" />
         </div>
       </FormWrapper>
     );

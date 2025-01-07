@@ -2,11 +2,11 @@
 
 exports[`ChangeNOWMineForm renders properly 1`] = `
 <Connect(ReduxForm)
+  isModal={true}
   name="CHANGE_NOW_MINE"
   onSubmit={[MockFunction]}
   reduxFormConfig={
     Object {
-      "onSubmitSuccess": [Function],
       "touchOnBlur": false,
     }
   }
@@ -41,31 +41,10 @@ exports[`ChangeNOWMineForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      disabled={false}
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile"
-        disabled={false}
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile"
-      disabled={true}
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      mockTitle
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonText="mockTitle"
+    />
   </div>
 </Connect(ReduxForm)>
 `;

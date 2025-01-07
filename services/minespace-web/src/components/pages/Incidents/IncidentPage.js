@@ -3,15 +3,7 @@ import { bindActionCreators } from "redux";
 import { flattenObject } from "@common/utils/helpers";
 import { connect, useSelector } from "react-redux";
 import { Link, useParams, withRouter } from "react-router-dom";
-import {
-  change,
-  destroy,
-  getFormSyncErrors,
-  getFormValues,
-  isDirty,
-  submit,
-  touch,
-} from "redux-form";
+import { destroy, getFormSyncErrors, getFormValues, isDirty, submit, touch } from "redux-form";
 import { Col, Row, Steps, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import PropTypes from "prop-types";
@@ -358,7 +350,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchInspectors,
       submit,
       touch,
-      change,
       destroy,
       openModal,
       closeModal,

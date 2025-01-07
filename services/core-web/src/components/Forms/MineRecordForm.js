@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { compose } from "redux";
-import { Field, FieldArray, formValueSelector } from "redux-form";
+import { compose, bindActionCreators } from "redux";
+import { Field, FieldArray, formValueSelector, change } from "redux-form";
 import { Button, Col, Row, Popconfirm, Collapse, notification, Tag, Radio, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { difference, map, isEmpty, uniq } from "lodash";
@@ -38,6 +38,8 @@ import { TRASHCAN } from "@/constants/assets";
 import { renderConfig } from "@/components/common/config";
 import { wholeNumberMask } from "@common/utils/helpers";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -55,7 +57,6 @@ const propTypes = {
   conditionalDisturbanceOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
   conditionalCommodityOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
   currentMineTypes: PropTypes.arrayOf(CustomPropTypes.mineTypes),
-  submitting: PropTypes.bool.isRequired,
   isNewRecord: PropTypes.bool,
   exemptionFeeStatusDropDownOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
   governmentAgencyTypeOptions: CustomPropTypes.options.isRequired,
@@ -77,6 +78,7 @@ export class MineRecordForm extends Component {
     showStatusDate: false,
     hasGovernmentAgency: false,
   };
+  formName = FORM.MINE_RECORD;
 
   componentDidMount() {
     const existingMineTypes = map(this.props.currentMineTypes, "mine_tenure_type_code");
@@ -84,7 +86,7 @@ export class MineRecordForm extends Component {
 
     if (this.props.isNewRecord) {
       const date = new Date();
-      this.props.change("status_date", date);
+      this.props.change(this.formName, "status_date", date);
     }
 
     if (this.props.initialValues && this.props.initialValues.government_agency_type_code)
@@ -197,21 +199,21 @@ export class MineRecordForm extends Component {
   toggleGovernmentAgency = () => {
     this.setState((prevState) => {
       if (!prevState.hasGovernmentAgency) {
-        this.props.change("exemption_fee_status_code", "Y");
+        this.props.change(this.formName, "exemption_fee_status_code", "Y");
       } else {
-        this.props.change("exemption_fee_status_code", null);
-        this.props.change("exemption_fee_status_note", null);
+        this.props.change(this.formName, "exemption_fee_status_code", null);
+        this.props.change(this.formName, "exemption_fee_status_note", null);
       }
       return { hasGovernmentAgency: !prevState.hasGovernmentAgency };
     });
 
-    this.props.change("government_agency_type_code", null);
+    this.props.change(this.formName, "government_agency_type_code", null);
   };
 
   // When the status changes, set the status date to current date.
   onStatusChange = () => {
     const date = new Date();
-    this.props.change("status_date", date);
+    this.props.change(this.formName, "status_date", date);
   };
 
   createExistingPanelHeader = (mineTenureCode) => (
@@ -336,6 +338,8 @@ export class MineRecordForm extends Component {
 
     return (
       <FormWrapper onSubmit={this.props.onSubmit}
+        initialValues={this.props.initialValues}
+        isModal
         name={FORM.MINE_RECORD}
         reduxFormConfig={{
           touchOnBlur: false,
@@ -537,24 +541,8 @@ export class MineRecordForm extends Component {
           </Col>
         </Row>
         <div className="right center-mobile">
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            onConfirm={this.props.closeModal}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button className="full-mobile">Cancel</Button>
-          </Popconfirm>
-          <Button
-            id="mine-record-submit"
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            loading={this.props.submitting}
-          >
-            {this.props.title}
-          </Button>
+          <RenderCancelButton />
+          <RenderSubmitButton buttonText={this.props.title} />
         </div>
       </FormWrapper>
     );
@@ -565,21 +553,29 @@ MineRecordForm.propTypes = propTypes;
 MineRecordForm.defaultProps = defaultProps;
 const selector = formValueSelector(FORM.MINE_RECORD);
 
+const mapStateToProps = (state) => ({
+  currentMineTypes: getCurrentMineTypes(state),
+  mineStatusDropDownOptions: getMineStatusDropDownOptions(state),
+  mineRegionOptions: getMineRegionDropdownOptions(state),
+  governmentAgencyTypeOptions: getGovernmentAgencyDropdownOptions(state),
+  mineTenureHash: getMineTenureTypesHash(state),
+  mineCommodityOptionsHash: getCommodityOptionHash(state),
+  mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
+  mineTenureTypes: getMineTenureTypeDropdownOptions(state),
+  conditionalCommodityOptions: getConditionalCommodityOptions(state),
+  conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
+  mineStatus: selector(state, "mine_status"),
+  mine_types: selector(state, "mine_types"),
+  status_date: selector(state, "status_date"),
+  exemptionFeeStatusDropDownOptions: getExemptionFeeStatusDropDownOptions(state),
+});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({
+    change,
+  },
+    dispatch
+  );
 export default compose(
-  connect((state) => ({
-    currentMineTypes: getCurrentMineTypes(state),
-    mineStatusDropDownOptions: getMineStatusDropDownOptions(state),
-    mineRegionOptions: getMineRegionDropdownOptions(state),
-    governmentAgencyTypeOptions: getGovernmentAgencyDropdownOptions(state),
-    mineTenureHash: getMineTenureTypesHash(state),
-    mineCommodityOptionsHash: getCommodityOptionHash(state),
-    mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
-    mineTenureTypes: getMineTenureTypeDropdownOptions(state),
-    conditionalCommodityOptions: getConditionalCommodityOptions(state),
-    conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
-    mineStatus: selector(state, "mine_status"),
-    mine_types: selector(state, "mine_types"),
-    status_date: selector(state, "status_date"),
-    exemptionFeeStatusDropDownOptions: getExemptionFeeStatusDropDownOptions(state),
-  }))
+  connect(mapStateToProps, mapDispatchToProps)
 )(MineRecordForm);

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, change } from "redux-form";
 import { remove } from "lodash";
-import { Button, Popconfirm, Typography, Form } from "antd";
+import { Typography, Form } from "antd";
 import { required, maxLength } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
@@ -10,11 +10,11 @@ import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 import VarianceFileUpload from "@/components/Forms/variances/VarianceFileUpload";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
   mineGuid: PropTypes.string.isRequired,
   complianceCodes: CustomPropTypes.options.isRequired,
 };
@@ -45,6 +45,7 @@ export class AddVarianceForm extends Component {
     return (
       <FormWrapper
         onSubmit={() => this.props.onSubmit(this.state.documentNameGuidMap)}
+        isModal
         name={FORM.ADD_VARIANCE}
         reduxFormConfig={{
           touchOnBlur: false,
@@ -80,18 +81,8 @@ export class AddVarianceForm extends Component {
           />
         </Form.Item>
         <div className="ant-modal-footer">
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            onConfirm={this.props.closeModal}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button>Cancel</Button>
-          </Popconfirm>
-          <Button type="primary" htmlType="submit" loading={this.props.submitting}>
-            Submit
-          </Button>
+          <RenderCancelButton />
+          <RenderSubmitButton buttonText="Submit" />
         </div>
       </FormWrapper>
     );

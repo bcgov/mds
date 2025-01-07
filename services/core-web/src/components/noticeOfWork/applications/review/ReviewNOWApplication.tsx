@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { Field, FormSection, formValueSelector, InjectedFormProps } from "redux-form";
+import { Field, FormSection, formValueSelector } from "redux-form";
 import { Row, Col } from "antd";
 import {
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
@@ -90,7 +90,7 @@ interface ReviewNOWApplicationProps {
   isAccessGated: boolean;
 }
 
-export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicationProps> = (
+export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
   props
 ) => {
   const isAdmin = props.userRoles.includes(USER_ROLES[Permission.ADMIN]);

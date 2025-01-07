@@ -2,11 +2,11 @@
 
 exports[`PermitAmendmentForm renders properly 1`] = `
 <Connect(ReduxForm)
+  isModal={true}
   name="PERMIT_AMENDMENT"
   onSubmit={[MockFunction]}
   reduxFormConfig={
     Object {
-      "onSubmitSuccess": [Function],
       "touchOnBlur": true,
       "validate": [Function],
     }
@@ -138,28 +138,10 @@ exports[`PermitAmendmentForm renders properly 1`] = `
       }
     }
   >
-    <ForwardRef
-      cancelText="No"
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile"
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile"
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      mockTitle
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonText="mockTitle"
+    />
   </div>
 </Connect(ReduxForm)>
 `;

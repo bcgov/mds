@@ -21,7 +21,7 @@ export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
     placeholder = "",
     data = [],
     disabled = false,
-    onSearch = () => {},
+    onSearch = () => { },
     filterOption = false,
     label = "",
     meta,
@@ -57,7 +57,7 @@ export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
                 loading={props.loading}
                 style={{ width: "100%" }}
                 virtual={false}
-                disabled={!data.length || disabled}
+                disabled={!data?.length || disabled}
                 mode="multiple"
                 size="small"
                 placeholder={placeholder}

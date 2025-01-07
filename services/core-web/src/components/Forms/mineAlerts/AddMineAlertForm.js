@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Field, getFormValues } from "redux-form";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Button, Col, Row, Popconfirm, Typography } from "antd";
+import { Col, Row, Typography } from "antd";
 import {
   required,
   dateNotBeforeOther,
@@ -13,17 +13,17 @@ import {
   alertStartDateNotBeforeHistoric,
   alertNotInFutureIfCurrentActive,
 } from "@mds/common/redux/utils/Validate";
-import { resetForm, normalizePhone } from "@common/utils/helpers";
+import { normalizePhone } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.any,
-  closeModal: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any),
   title: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
@@ -60,8 +60,8 @@ export const AddMineAlertForm = (props) => {
     <div>
       <FormWrapper
         name={FORM.ADD_EDIT_MINE_ALERT}
+        isModal
         reduxFormConfig={{
-          onSubmitSuccess: resetForm(FORM.ADD_EDIT_MINE_ALERT),
           touchOnBlur: false,
           enableReinitialize: true,
         }}
@@ -118,6 +118,7 @@ export const AddMineAlertForm = (props) => {
               label="Start Date"
               placeholder="Select Date"
               component={renderConfig.DATE}
+              required
               validate={startDateValidation()}
               format={null}
             />
@@ -135,26 +136,8 @@ export const AddMineAlertForm = (props) => {
           </Col>
         </Row>
         <div className="right center-mobile">
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            loading={props.submitting}
-          >
-            {title}
-          </Button>
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            onConfirm={props.closeModal}
-            okText="Yes"
-            cancelText="No"
-            disabled={props.submitting}
-          >
-            <Button className="full-mobile" type="secondary" disabled={props.submitting}>
-              Cancel
-            </Button>
-          </Popconfirm>
+          <RenderCancelButton />
+          <RenderSubmitButton buttonText={title} />
         </div>
       </FormWrapper>
     </div>

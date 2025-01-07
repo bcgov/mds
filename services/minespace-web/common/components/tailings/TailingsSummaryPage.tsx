@@ -6,7 +6,6 @@ import {
   addPartyRelationship,
   fetchPartyRelationships,
 } from "@mds/common/redux/actionCreators/partiesActionCreator";
-
 import { bindActionCreators, compose } from "redux";
 import { clearTsf, storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import {
@@ -15,17 +14,7 @@ import {
   fetchTailingsStorageFacility,
   updateTailingsStorageFacility,
 } from "@mds/common/redux/actionCreators/mineActionCreator";
-import { flattenObject } from "@common/utils/helpers";
-import {
-  FormErrors,
-  getFormSyncErrors,
-  getFormValues,
-  InjectedFormProps,
-  isDirty,
-  submit,
-  touch,
-} from "redux-form";
-
+import { isDirty } from "redux-form";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import BasicInformation from "@mds/common/components/tailings/BasicInformation";
 import Step from "@mds/common/components/forms/Step";
@@ -62,8 +51,6 @@ interface TailingsSummaryPageProps {
   tab: string;
   mines?: IMine[];
   history?: { push: (path: string) => void; replace: (path: string) => void };
-  submit?: (form: string) => void;
-  formErrors?: FormErrors;
   location?: { pathname: string };
   fetchPartyRelationships?: ActionCreator<typeof fetchPartyRelationships>;
   addDocumentToRelationship?: ActionCreator<typeof addDocumentToRelationship>;
@@ -71,7 +58,6 @@ interface TailingsSummaryPageProps {
   createTailingsStorageFacility?: ActionCreator<typeof createTailingsStorageFacility>;
   fetchTailingsStorageFacility?: ActionCreator<typeof fetchTailingsStorageFacility>;
   addPartyRelationship?: ActionCreator<typeof addPartyRelationship>;
-  formValues?: Partial<ITailingsStorageFacility>;
   fetchPermits?: ActionCreator<typeof fetchPermits>;
   fetchMineRecordById?: ActionCreator<typeof fetchMineRecordById>;
   storeTsf?: typeof storeTsf;
@@ -82,19 +68,8 @@ interface TailingsSummaryPageProps {
   userAction: string;
 }
 
-export const TailingsSummaryPage: FC<
-  InjectedFormProps<ITailingsStorageFacility> & TailingsSummaryPageProps
-> = (props) => {
-  const {
-    mines,
-    history,
-    formErrors,
-    formValues,
-    mineGuid,
-    tsfGuid,
-    tab,
-    userAction = "edit",
-  } = props;
+export const TailingsSummaryPage: FC<TailingsSummaryPageProps> = (props) => {
+  const { mines, history, mineGuid, tsfGuid, tab, userAction = "edit" } = props;
   const [isLoaded, setIsLoaded] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -154,30 +129,19 @@ export const TailingsSummaryPage: FC<
     setUploadedFiles([]);
   };
 
-  const handleSaveData = async (e, newActiveTab) => {
-    if (e) {
-      e.preventDefault();
-    }
-
-    props.submit(props.form);
-    const errors = Object.keys(flattenObject(formErrors));
-
-    if (errors?.length) {
-      return;
-    }
-
+  const handleSaveData = async (values, newActiveTab) => {
     let newTsf = null;
 
     switch (tab) {
       case "basic-information":
         if (tsfGuid) {
           if (props.isDirty) {
-            await props.updateTailingsStorageFacility(mineGuid, tsfGuid, formValues);
+            await props.updateTailingsStorageFacility(mineGuid, tsfGuid, values);
           }
         } else {
           newTsf = await props.createTailingsStorageFacility(
             mineGuid,
-            formValues as ICreateTailingsStorageFacility
+            values as ICreateTailingsStorageFacility
           );
           await props.clearTsf();
         }
@@ -201,16 +165,16 @@ export const TailingsSummaryPage: FC<
           },
         }[tab];
 
-        if (!formValues[attr].mine_party_appt_guid && formValues[attr].party_guid) {
+        if (!values[attr].mine_party_appt_guid && values[attr].party_guid) {
           // Only add party relationship if changed
           const relationship = await props.addPartyRelationship(
             {
               mine_guid: mineGuid,
-              party_guid: formValues[attr].party_guid,
+              party_guid: values[attr].party_guid,
               mine_party_appt_type_code: apptType,
               related_guid: tsfGuid,
-              start_date: formValues[attr].start_date,
-              end_date: formValues[attr].end_date,
+              start_date: values[attr].start_date,
+              end_date: values[attr].end_date,
               end_current: true,
             },
             successMessage
@@ -278,6 +242,7 @@ export const TailingsSummaryPage: FC<
         </Row>
         <Divider />
         <SteppedForm
+          initialValues={props.initialValues}
           name={props.form}
           handleSaveData={handleSaveData}
           handleTabChange={handleTabChange}
@@ -338,12 +303,8 @@ const mapStateToProps = (state, ownProps) => {
   const tsf = getTsf(state);
 
   return {
-    anyTouched: state.form[ownProps.form]?.anyTouched || false,
     isDirty: isDirty(ownProps.form)(state),
-    fieldsTouched: state.form[ownProps.form]?.fields || {},
     mines: getMines(state),
-    formErrors: getFormSyncErrors(ownProps.form)(state),
-    formValues: getFormValues(ownProps.form)(state),
     initialValues: {
       ...tsf,
       engineers_of_record: getEngineersOfRecord(state),
@@ -365,8 +326,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineRecordById,
       addPartyRelationship,
       addDocumentToRelationship,
-      submit,
-      touch,
       storeTsf,
       clearTsf,
       fetchPermits,

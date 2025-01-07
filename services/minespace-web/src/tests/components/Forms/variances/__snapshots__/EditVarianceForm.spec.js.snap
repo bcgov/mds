@@ -2,11 +2,11 @@
 
 exports[`EditVarianceForm renders properly 1`] = `
 <Connect(ReduxForm)
+  isModal={true}
   name="EDIT_VARIANCE"
   onSubmit={[Function]}
   reduxFormConfig={
     Object {
-      "onSubmitSuccess": [Function],
       "touchOnBlur": false,
     }
   }
@@ -66,24 +66,10 @@ exports[`EditVarianceForm renders properly 1`] = `
   <div
     className="ant-modal-footer"
   >
-    <ForwardRef
-      cancelText="No"
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button>
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      Submit
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonText="Submit"
+    />
   </div>
 </Connect(ReduxForm)>
 `;

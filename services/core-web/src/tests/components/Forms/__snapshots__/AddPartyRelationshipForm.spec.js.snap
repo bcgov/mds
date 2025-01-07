@@ -2,6 +2,7 @@
 
 exports[`AddPartyRelationshipForm renders properly 1`] = `
 <Connect(ReduxForm)
+  isModal={true}
   name="ADD_PARTY_RELATIONSHIP"
   onSubmit={[Function]}
   reduxFormConfig={
@@ -96,27 +97,8 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      disabled={false}
-      okText="Yes"
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile"
-        disabled={false}
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile"
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    />
+    <RenderCancelButton />
+    <RenderSubmitButton />
   </div>
 </Connect(ReduxForm)>
 `;

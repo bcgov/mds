@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, FormSection } from "redux-form";
-import { Button, Col, Row, Popconfirm, Alert } from "antd";
+import { Field, FormSection, getFormValues } from "redux-form";
+import { Col, Row, Alert } from "antd";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import { formatDate, resetForm, normalizePhone, upperCase } from "@common/utils/helpers";
+import { formatDate, normalizePhone, upperCase } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
 import {
   required,
@@ -11,7 +11,7 @@ import {
   phoneNumber,
   maxLength,
   number,
-  postalCode,
+  postalCodeWithCountry,
 } from "@mds/common/redux/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -19,20 +19,25 @@ import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import { useSelector } from "react-redux";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.any,
   isPerson: PropTypes.bool.isRequired,
-  submitting: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
-  closeModal: PropTypes.func.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   partyRelationshipTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   roles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
 };
 
 export const MergePartyConfirmationForm = (props) => {
+  const { sub_division_code } = useSelector(getFormValues(FORM.MERGE_PARTY_CONFIRMATION)) ?? {};
+  const province = props.provinceOptions.find((prov) => prov.value === sub_division_code);
+  const address_type_code = province?.subType;
+
   const columns = [
     {
       title: "Mine Name",
@@ -70,11 +75,13 @@ export const MergePartyConfirmationForm = (props) => {
 
   return (
     <div>
-      <FormWrapper name={FORM.MERGE_PARTY_CONFIRMATION} onSubmit={props.onSubmit}
+      <FormWrapper
+        name={FORM.MERGE_PARTY_CONFIRMATION}
+        onSubmit={props.onSubmit}
+        isModal
         initialValues={props.initialValues}
         reduxFormConfig={{
           touchOnBlur: false,
-          onSubmitSuccess: resetForm(FORM.MERGE_PARTY_CONFIRMATION),
         }}
       >
         <Alert
@@ -217,7 +224,7 @@ export const MergePartyConfirmationForm = (props) => {
                         label="Postal Code"
                         placeholder="e.g xxxxxx"
                         component={renderConfig.FIELD}
-                        validate={[maxLength(10), postalCode]}
+                        validate={[maxLength(10), postalCodeWithCountry(address_type_code)]}
                         normalize={upperCase}
                       />
                     </Col>
@@ -236,27 +243,9 @@ export const MergePartyConfirmationForm = (props) => {
           </Col>
         </Row>
         <div className="right center-mobile">
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            onConfirm={props.closeModal}
-            okText="Yes"
-            cancelText="No"
-            disabled={props.submitting}
-          >
-            <Button className="full-mobile" type="secondary" disabled={props.submitting}>
-              Cancel
-            </Button>
-          </Popconfirm>
+          <RenderCancelButton />
           <AuthorizationWrapper permission={Permission.ADMINISTRATIVE_USERS}>
-            <Button
-              className="full-mobile"
-              type="primary"
-              htmlType="submit"
-              loading={props.submitting}
-            >
-              {props.title}
-            </Button>
+            <RenderSubmitButton buttonText={props.title} />
           </AuthorizationWrapper>
         </div>
       </FormWrapper>

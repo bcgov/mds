@@ -2,12 +2,12 @@
 
 exports[`TransferBondForm renders properly 1`] = `
 <Connect(ReduxForm)
+  isModal={true}
   name="TRANSFER_BOND"
   onSubmit={[MockFunction]}
   reduxFormConfig={
     Object {
       "enableReinitialize": true,
-      "onSubmitSuccess": [Function],
       "touchOnBlur": false,
     }
   }
@@ -53,28 +53,10 @@ exports[`TransferBondForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile"
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile"
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      Transfer Bond
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonText="Transfer Bond"
+    />
   </div>
 </Connect(ReduxForm)>
 `;

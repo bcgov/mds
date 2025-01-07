@@ -3,12 +3,12 @@
 exports[`AddMineWorkInformationForm renders properly 1`] = `
 <Connect(ReduxForm)
   initialValues={Object {}}
+  isModal={true}
   name="ADD_MINE_WORK_INFORMATION"
   onSubmit={[MockFunction]}
   reduxFormConfig={
     Object {
       "enableReinitialize": true,
-      "onSubmitSuccess": [Function],
       "touchOnBlur": false,
     }
   }
@@ -154,30 +154,12 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      disabled={false}
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile margin-small"
-        disabled={false}
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile margin-small"
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      testing title
-    </Button>
+    <RenderCancelButton
+      cancelFunction={[MockFunction]}
+    />
+    <RenderSubmitButton
+      buttonText="testing title"
+    />
   </div>
 </Connect(ReduxForm)>
 `;

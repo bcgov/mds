@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
-import { Row, Col, Popconfirm, Button } from "antd";
-import { Field, formValueSelector, FormSection } from "redux-form";
+import { Row, Col } from "antd";
+import { Field, formValueSelector, FormSection, change } from "redux-form";
 import { connect } from "react-redux";
-import { compose } from "redux";
+import { compose, bindActionCreators } from "redux";
 import RenderMultiSelect from "@mds/common/components/forms/RenderMultiSelect";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import CustomPropTypes from "@/customPropTypes";
@@ -18,6 +18,8 @@ import { determineExemptionFeeStatus } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 /**
  * @constant SitePropertiesForm renders edit/view for the NoW Application review step
  */
@@ -31,8 +33,6 @@ const propTypes = {
     PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)])
   ).isRequired,
   exemptionFeeStatusDropDownOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
-  submitting: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.any,
   change: PropTypes.func.isRequired,
@@ -46,7 +46,10 @@ const mapApplicationTypeToTenureType = (permitPrefix) =>
   G: ["BCL", "PRL"],
   Q: ["BCL", "PRL", "MIN"],
 }[permitPrefix]);
+
 export class SitePropertiesForm extends Component {
+  formName = FORM.EDIT_SITE_PROPERTIES;
+
   componentWillReceiveProps = (nextProps) => {
     const permitIsExploration = this.props.permit.permit_no.charAt(1) === "X";
     if (nextProps.site_properties !== this.props.site_properties) {
@@ -57,7 +60,7 @@ export class SitePropertiesForm extends Component {
         permitIsExploration,
         nextProps.site_properties?.mine_disturbance_code
       );
-      this.props.change("exemption_fee_status_code", statusCode);
+      this.props.change(this.formName, "exemption_fee_status_code", statusCode);
     }
     const tenureChanged =
       this.props.site_properties?.mine_tenure_type_code &&
@@ -65,8 +68,8 @@ export class SitePropertiesForm extends Component {
       nextProps.site_properties?.mine_tenure_type_code;
 
     if (tenureChanged) {
-      this.props.change("site_properties.mine_disturbance_code", []);
-      this.props.change("site_properties.mine_commodity_code", []);
+      this.props.change(this.formName, "site_properties.mine_disturbance_code", []);
+      this.props.change(this.formName, "site_properties.mine_commodity_code", []);
     }
   };
 
@@ -77,6 +80,7 @@ export class SitePropertiesForm extends Component {
     return (
       <FormWrapper onSubmit={this.props.onSubmit} initialValues={this.props.initialValues}
         name={FORM.EDIT_SITE_PROPERTIES}
+        isModal
         reduxFormConfig={{
           enableReinitialize: true,
         }}
@@ -159,26 +163,8 @@ export class SitePropertiesForm extends Component {
           </Col>
         </Row>
         <div className="right center-mobile">
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            okText="Yes"
-            cancelText="No"
-            disabled={this.props.submitting}
-            onConfirm={() => this.props.closeModal()}
-          >
-            <Button className="full-mobile" type="secondary" disabled={this.props.submitting}>
-              Cancel
-            </Button>
-          </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            loading={this.props.submitting}
-          >
-            Save
-          </Button>
+          <RenderCancelButton />
+          <RenderSubmitButton buttonText="Save" />
         </div>
       </FormWrapper>
     );
@@ -188,6 +174,13 @@ export class SitePropertiesForm extends Component {
 SitePropertiesForm.propTypes = propTypes;
 const selector = formValueSelector(FORM.EDIT_SITE_PROPERTIES);
 
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      change,
+    },
+    dispatch
+  );
 export default compose(
   connect((state) => ({
     mineTenureTypes: getMineTenureTypeDropdownOptions(state),
@@ -195,5 +188,5 @@ export default compose(
     conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
     site_properties: selector(state, "site_properties"),
     exemptionFeeStatusDropDownOptions: getExemptionFeeStatusDropDownOptions(state),
-  }))
+  }), mapDispatchToProps)
 )(SitePropertiesForm);

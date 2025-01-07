@@ -21,26 +21,27 @@ import { INodDocumentPayload, INoticeOfDeparture, NodStatusSaveEnum } from "@mds
 import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 interface EditNoticeOfDepartureFormProps {
   initialValues: INoticeOfDeparture;
   onSubmit: (nod_guid: string, values: any, documentArray: INodDocumentPayload[]) => any;
-  closeModal: () => void;
   mineGuid: string;
   noticeOfDeparture: INoticeOfDeparture;
-  logFormErrors?: any;
-  pristine?: boolean;
   change?: (field: string, value: any) => void;
 }
 
 const EditNoticeOfDepartureForm: React.FC<EditNoticeOfDepartureFormProps> = (props) => {
-  const { onSubmit, closeModal, mineGuid, noticeOfDeparture, pristine } = props;
+  const { onSubmit, mineGuid, noticeOfDeparture } = props;
   const { permit, nod_guid, nod_no, nod_status } = noticeOfDeparture;
   const [submitting, setSubmitting] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [documentArray, setDocumentArray] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [hasChecklist, setHasChecklist] = useState(false);
+
+  const formName = FORM.EDIT_NOTICE_OF_DEPARTURE;
 
   const checklist = noticeOfDeparture.documents.find(
     (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
@@ -83,20 +84,20 @@ const EditNoticeOfDepartureForm: React.FC<EditNoticeOfDepartureFormProps> = (pro
       },
     ]);
     if (documentType === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
-      props.change("self-assessment", documentName);
+      props.change(formName, "self-assessment", documentName);
       setHasChecklist(true);
     }
   };
 
   useEffect(() => {
-    props.change("uploadedFiles", documentArray);
+    props.change(formName, "uploadedFiles", documentArray);
   }, [documentArray]);
 
   const onRemoveFile = (_, fileItem) => {
     const removedDoc = documentArray.find((doc) => doc.document_manager_guid === fileItem.serverId);
     if (removedDoc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
       setHasChecklist(false);
-      props.change("self-assessment", null);
+      props.change(formName, "self-assessment", null);
     }
     setDocumentArray(
       documentArray.filter((document) => document.document_manager_guid !== fileItem.serverId)
@@ -130,6 +131,7 @@ const EditNoticeOfDepartureForm: React.FC<EditNoticeOfDepartureFormProps> = (pro
       <FormWrapper
         initialValues={props.initialValues}
         name={FORM.EDIT_NOTICE_OF_DEPARTURE}
+        isModal
         onSubmit={handleNoticeOfDepartureSubmit}
         reduxFormConfig={{
           onSubmitSuccess: resetForm(FORM.EDIT_NOTICE_OF_DEPARTURE),
@@ -311,25 +313,13 @@ const EditNoticeOfDepartureForm: React.FC<EditNoticeOfDepartureFormProps> = (pro
         )}
 
         <div className="ant-modal-footer">
-          <Popconfirm
-            placement="top"
-            title="Are you sure you want to cancel?"
-            okText="Yes"
-            cancelText="No"
-            onConfirm={closeModal}
-          >
-            <Button disabled={submitting}>Cancel</Button>
-          </Popconfirm>
-          <Button
-            disabled={
-              submitting || uploading || (pristine && documentArray.length === 0) || !hasChecklist
-            }
-            type="primary"
-            className="full-mobile margin-small"
-            htmlType="submit"
-          >
-            Submit Notice of Departure
-          </Button>
+          <RenderCancelButton />
+          <RenderSubmitButton
+            buttonText="Submit Notice of Departure"
+            buttonProps={{
+              disabled: submitting || uploading || documentArray.length === 0 || !hasChecklist,
+            }}
+          />
         </div>
       </FormWrapper>
     </div>

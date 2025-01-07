@@ -202,15 +202,6 @@ export const lonNegative = (value) =>
 export const phoneNumber = (value) =>
   value && !Validate.checkPhone(value) ? "Invalid phone number e.g. xxx-xxx-xxxx" : undefined;
 
-// relies on provinceOptions being passed as props rather than through a selector
-export const postalCode = (value, allValues, formProps) => {
-  const { sub_division_code } = allValues;
-  const country = formProps.provinceOptions.find((prov) => prov.value === sub_division_code)
-    ?.subType;
-  return value && !Validate.checkPostalCode(value, country)
-    ? "Invalid postal code or zip code"
-    : undefined;
-};
 
 export const postalCodeWithCountry = memoize((address_type_code = "CAN") => (value) => {
   const code_type = address_type_code === "USA" ? "zip code" : "postal code";
@@ -230,9 +221,6 @@ export const email = (value) =>
 
 export const currency = (value) =>
   value && !Validate.checkCurrency(value) ? "Invalid dollar amount" : undefined;
-
-export const validSearchSelection = ({ key, err }) => (value, allValues, formProps) =>
-  !Object.keys(formProps[key]).includes(value) ? err || "Invalid Selection" : undefined;
 
 export const validateStartDate = memoize((previousStartDate) => (value) =>
   value <= previousStartDate

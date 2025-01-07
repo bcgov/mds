@@ -4,7 +4,7 @@ import { remove } from "lodash";
 import { connect } from "react-redux";
 import { compose, bindActionCreators } from "redux";
 import { Field, change, formValueSelector } from "redux-form";
-import { Alert, Button, Col, Row, Popconfirm, Divider, Form } from "antd";
+import { Alert, Col, Row, Divider, Form } from "antd";
 import {
   required,
   maxLength,
@@ -12,7 +12,7 @@ import {
   number,
   assessedLiabilityNegativeWarning,
 } from "@mds/common/redux/utils/Validate";
-import { resetForm, currencyMask } from "@common/utils/helpers";
+import { currencyMask } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
@@ -21,15 +21,15 @@ import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentF
 import { securityNotRequiredReasonOptions } from "@/constants/NOWConditions";
 import { USER_ROLES } from "@mds/common";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const originalPermit = "OGP";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
   handleRemovePermitAmendmentDocument: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  submitting: PropTypes.bool.isRequired,
   mine_guid: PropTypes.string.isRequired,
   permit_guid: PropTypes.string.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
@@ -81,6 +81,7 @@ export class PermitAmendmentForm extends Component {
     relatedDocuments: this.props.initialValues.related_documents || [],
     uploadedFiles: [],
   };
+  formName = FORM.PERMIT_AMENDMENT;
 
   // Attached files handlers
   handleRemovePermitAmendmentDocument = (relatedDocuments, documentGuid) => {
@@ -98,20 +99,20 @@ export class PermitAmendmentForm extends Component {
   // File upload handlers
   onFileLoad = (fileName, document_manager_guid) => {
     this.state.uploadedFiles.push({ fileName, document_manager_guid });
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
+    this.props.change(this.formName, "uploadedFiles", this.state.uploadedFiles);
   };
 
   onRemoveFile = (err, fileItem) => {
     remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
+    this.props.change(this.formName, "uploadedFiles", this.state.uploadedFiles);
   };
 
   handleChange = (e) => {
     if (e.target.value) {
-      this.props.change("security_not_required_reason", null);
+      this.props.change(this.formName, "security_not_required_reason", null);
     } else {
-      this.props.change("liability_adjustment", null);
-      this.props.change("security_received_date", null);
+      this.props.change(this.formName, "liability_adjustment", null);
+      this.props.change(this.formName, "security_received_date", null);
     }
   };
 
@@ -121,12 +122,13 @@ export class PermitAmendmentForm extends Component {
       this.props.initialValues.permit_prefix === "C" ||
       this.props.initialValues.permit_prefix === "M";
     return (
-      <FormWrapper onSubmit={this.props.onSubmit}
+      <FormWrapper
+        onSubmit={this.props.onSubmit}
+        isModal
         name={FORM.PERMIT_AMENDMENT}
         reduxFormConfig={{
           validate: validateBusinessRules,
           touchOnBlur: true,
-          onSubmitSuccess: resetForm(FORM.PERMIT_AMENDMENT),
         }}
       >
         <Row gutter={48}>
@@ -248,25 +250,8 @@ export class PermitAmendmentForm extends Component {
           </Col>
         </Row>
         <div className="right center-mobile" style={{ paddingTop: "14px" }}>
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            onConfirm={this.props.closeModal}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button className="full-mobile" type="secondary">
-              Cancel
-            </Button>
-          </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            loading={this.props.submitting}
-          >
-            {this.props.title}
-          </Button>
+          <RenderCancelButton />
+          <RenderSubmitButton buttonText={this.props.title} />
         </div>
       </FormWrapper>
     );

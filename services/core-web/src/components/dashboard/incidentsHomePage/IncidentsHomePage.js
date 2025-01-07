@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { destroy } from "redux-form";
 import queryString from "query-string";
 import PropTypes from "prop-types";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
@@ -40,7 +39,6 @@ import IncidentsSearch from "./IncidentsSearch";
 const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  destroy: PropTypes.func.isRequired,
   fetchIncidents: PropTypes.func.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   incidentPageData: CustomPropTypes.incidentPageData.isRequired,
@@ -239,7 +237,6 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchIncidents,
       updateMineIncident,
-      destroy,
       openModal,
       closeModal,
       deleteMineIncident,

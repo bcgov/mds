@@ -138,6 +138,10 @@
   }
 }
 
+label .info-tooltip {
+  float: right;
+}
+
 .ant-form-item-label label:after {
   content: none;
 }

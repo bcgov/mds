@@ -2,6 +2,7 @@
 
 exports[`ReclamationInvoiceForm renders properly 1`] = `
 <Connect(ReduxForm)
+  isModal={true}
   name="ADD_RECLAMATION_INVOICE"
   onSubmit={[Function]}
   reduxFormConfig={
@@ -202,28 +203,10 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile"
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile"
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      Save Reclamation Invoice
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonText="Save Reclamation Invoice"
+    />
   </div>
 </Connect(ReduxForm)>
 `;

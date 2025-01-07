@@ -4,12 +4,11 @@ import { compose } from "redux";
 import PropTypes from "prop-types";
 import { flatMap, uniqBy } from "lodash";
 import { Field, formValueSelector } from "redux-form";
-import { Button, Col, Row, Popconfirm, List, Form } from "antd";
+import { Col, Row, List, Form } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { required, date } from "@mds/common/redux/utils/Validate";
 import {
-  resetForm,
   createDropDownList,
   formatComplianceCodeValueOrLabel,
   sortListObjectsByPropertyLocaleCompare,
@@ -23,11 +22,12 @@ import CustomPropTypes from "@/customPropTypes";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
 import ReportComments from "@/components/Forms/reports/ReportComments";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.objectOf(PropTypes.any)]).isRequired,
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.any).isRequired,
   dropdownMineReportCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
@@ -60,6 +60,8 @@ export class AddReportForm extends Component {
     selectedMineReportComplianceArticles: [],
     mineReportSubmissions: this.props.initialValues.mine_report_submissions,
   };
+
+  formName = FORM.ADD_REPORT;
 
   componentWillMount = () => {
     if (this.props.initialValues.mine_report_definition_guid) {
@@ -147,19 +149,19 @@ export class AddReportForm extends Component {
 
   updateMineReportSubmissions = (updatedSubmissions) => {
     this.setState({ mineReportSubmissions: updatedSubmissions }, () =>
-      this.props.change("mine_report_submissions", this.state.mineReportSubmissions)
+      this.props.change(this.formName, "mine_report_submissions", this.state.mineReportSubmissions)
     );
   };
 
   render() {
     return (
       <FormWrapper
+        isModal
         initialValues={this.props.initialValues}
         name={FORM.ADD_REPORT}
         reduxFormConfig={{
           touchOnBlur: false,
           enableReinitialize: true,
-          onSubmitSuccess: resetForm(FORM.ADD_REPORT),
         }}
         onSubmit={this.props.onSubmit}>
         <Row gutter={16}>
@@ -261,26 +263,8 @@ export class AddReportForm extends Component {
           </Col>
         </Row>
         <div className="right center-mobile">
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            onConfirm={this.props.closeModal}
-            okText="Yes"
-            cancelText="No"
-            disabled={this.props.submitting}
-          >
-            <Button className="full-mobile" type="secondary" disabled={this.props.submitting}>
-              Cancel
-            </Button>
-          </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            loading={this.props.submitting}
-          >
-            {this.props.title}
-          </Button>
+          <RenderCancelButton />
+          <RenderSubmitButton buttonText={this.props.title} />
         </div>
       </FormWrapper>
     );

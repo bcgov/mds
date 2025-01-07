@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
 import { Field, formValueSelector } from "redux-form";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Col, Row } from "antd";
 import { required, validateDateRanges } from "@mds/common/redux/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
@@ -16,10 +16,11 @@ import { PermitteeOptions } from "@/components/Forms/PartyRelationships/Permitte
 import CustomPropTypes from "@/customPropTypes";
 import PartyRelationshipFileUpload from "./PartyRelationshipFileUpload";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
   onFileLoad: PropTypes.func.isRequired,
   onRemoveFile: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
@@ -29,7 +30,6 @@ const propTypes = {
   start_date: PropTypes.date,
   mine: CustomPropTypes.mine,
   minePermits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
-  submitting: PropTypes.bool.isRequired,
   createPartyOnly: PropTypes.bool,
 };
 
@@ -86,60 +86,6 @@ const checkCurrentAppointmentValidation = (
   return false;
 };
 
-// returns validation errors to be displayed to the user.
-const checkDatesForOverlap = (values, props) => {
-  const existingAppointments = props.partyRelationships.filter(
-    ({ mine_party_appt_type_code, related_guid }) => {
-      const match =
-        mine_party_appt_type_code === props.partyRelationshipType.mine_party_appt_type_code;
-      if (related_guid !== "") {
-        return match && values.related_guid === related_guid;
-      }
-      return match;
-    }
-  );
-  const newAppt = { start_date: null, end_date: null, ...values };
-
-  return validateDateRanges(
-    existingAppointments,
-    newAppt,
-    props.partyRelationshipType.description,
-    false
-  );
-};
-
-// Validate function that gets called on every touch of the form. This is ignored if the only error is that
-// appointment interferes with the current and the user has decided to end that appointment.
-const validate = (values, props) => {
-  const errors = {};
-  const minePartyApptTypeCode = props.partyRelationshipType.mine_party_appt_type_code;
-  if (minePartyApptToValidate.includes(minePartyApptTypeCode)) {
-    if (values.start_date && values.end_date) {
-      if (moment(values.start_date) > moment(values.end_date)) {
-        errors.end_date = "Must be after start date.";
-      }
-    }
-    if (isEmpty(errors) && !values.end_current) {
-      const { start_date, end_date } = checkDatesForOverlap(values, props);
-      if (
-        start_date &&
-        !checkCurrentAppointmentValidation(
-          values.start_date,
-          props.partyRelationshipType,
-          props.partyRelationships,
-          props.related_guid
-        )
-      ) {
-        errors.start_date = `${start_date}. You cannot have two appointments with overlapping dates.`;
-      } else {
-        errors.start_date = start_date;
-      }
-      errors.end_date = end_date ? " " : null;
-    }
-  }
-  return errors;
-};
-
 export class AddPartyRelationshipForm extends Component {
   constructor(props) {
     super(props);
@@ -149,6 +95,60 @@ export class AddPartyRelationshipForm extends Component {
       selectedParty: null,
     };
   }
+
+  // returns validation errors to be displayed to the user.
+  checkDatesForOverlap = (values) => {
+    const existingAppointments = this.props.partyRelationships.filter(
+      ({ mine_party_appt_type_code, related_guid }) => {
+        const match =
+          mine_party_appt_type_code === this.props.partyRelationshipType.mine_party_appt_type_code;
+        if (related_guid !== "") {
+          return match && values.related_guid === related_guid;
+        }
+        return match;
+      }
+    );
+    const newAppt = { start_date: null, end_date: null, ...values };
+
+    return validateDateRanges(
+      existingAppointments,
+      newAppt,
+      this.props.partyRelationshipType.description,
+      false
+    );
+  };
+
+  // Validate function that gets called on every touch of the form. This is ignored if the only error is that
+  // appointment interferes with the current and the user has decided to end that appointment.
+  validate = (values) => {
+    const errors = {};
+    const minePartyApptTypeCode = this.props.partyRelationshipType.mine_party_appt_type_code;
+    if (minePartyApptToValidate.includes(minePartyApptTypeCode)) {
+      if (values.start_date && values.end_date) {
+        if (moment(values.start_date) > moment(values.end_date)) {
+          errors.end_date = "Must be after start date.";
+        }
+      }
+      if (isEmpty(errors) && !values.end_current) {
+        const { start_date, end_date } = this.checkDatesForOverlap(values, this.props);
+        if (
+          start_date &&
+          !checkCurrentAppointmentValidation(
+            values.start_date,
+            this.props.partyRelationshipType,
+            this.props.partyRelationships,
+            this.props.related_guid
+          )
+        ) {
+          errors.start_date = `${start_date}. You cannot have two appointments with overlapping dates.`;
+        } else {
+          errors.start_date = start_date;
+        }
+        errors.end_date = end_date ? " " : null;
+      }
+    }
+    return errors;
+  };
 
   // When the start_date and/or the related_guid are changed this checks to see if the the only appointment
   // it violates is the current one. A state variable is set that toggles a check box if it only violates the current appointment.
@@ -225,9 +225,10 @@ export class AddPartyRelationshipForm extends Component {
 
     return (
       <FormWrapper
+        isModal
         name={FORM.ADD_PARTY_RELATIONSHIP}
         reduxFormConfig={{
-          validate,
+          validate: this.validate,
           touchOnBlur: false,
         }}
         onSubmit={handleSubmit}>
@@ -307,26 +308,8 @@ export class AddPartyRelationshipForm extends Component {
           </>
         )}
         <div className="right center-mobile">
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            onConfirm={this.props.closeModal}
-            okText="Yes"
-            cancelText="No"
-            disabled={this.props.submitting}
-          >
-            <Button className="full-mobile" type="secondary" disabled={this.props.submitting}>
-              Cancel
-            </Button>
-          </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            loading={this.props.submitting}
-          >
-            {this.props.title}
-          </Button>
+          <RenderCancelButton />
+          <RenderSubmitButton buttonText={this.props.title} />
         </div>
       </FormWrapper>
     );

@@ -129,28 +129,10 @@ exports[`AddVarianceForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile"
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile"
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      Add Variance
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonText="Add Variance"
+    />
   </div>
 </Connect(ReduxForm)>
 `;

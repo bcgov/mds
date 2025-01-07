@@ -1,31 +1,27 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { compose } from "redux";
-import { connect } from "react-redux";
-import { Field, getFormValues } from "redux-form";
-import { Button, Col, Row, Popconfirm } from "antd";
-import { resetForm } from "@common/utils/helpers";
+import { Field } from "redux-form";
+import { Col, Row } from "antd";
 import { required } from "@mds/common/redux/utils/Validate";
 import * as FORM from "@/constants/forms";
 import RenderMineSelect from "@/components/common/RenderMineSelect";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  submitting: PropTypes.bool.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export const ChangeNOWMineForm = (props) => (
   <FormWrapper
     name={FORM.CHANGE_NOW_MINE}
     initialValues={props.initialValues}
+    isModal
     reduxFormConfig={{
       touchOnBlur: false,
-      onSubmitSuccess: resetForm(FORM.CHANGE_NOW_MINE),
     }}
     onSubmit={props.onSubmit}>
     <Row gutter={16}>
@@ -40,37 +36,12 @@ export const ChangeNOWMineForm = (props) => (
       </Col>
     </Row>
     <div className="right center-mobile">
-      <Popconfirm
-        placement="topRight"
-        title="Are you sure you want to cancel?"
-        onConfirm={props.closeModal}
-        okText="Yes"
-        cancelText="No"
-        disabled={props.submitting}
-      >
-        <Button className="full-mobile" type="secondary" disabled={props.submitting}>
-          Cancel
-        </Button>
-      </Popconfirm>
-      <Button
-        className="full-mobile"
-        type="primary"
-        htmlType="submit"
-        disabled={props.initialValues?.mine_guid === props.formValues?.mine_guid}
-        loading={props.submitting}
-      >
-        {props.title}
-      </Button>
+      <RenderCancelButton />
+      <RenderSubmitButton buttonText={props.title} />
     </div>
   </FormWrapper>
 );
 
 ChangeNOWMineForm.propTypes = propTypes;
 
-const mapStateToProps = (state) => ({
-  formValues: getFormValues(FORM.CHANGE_NOW_MINE)(state),
-});
-
-export default compose(
-  connect(mapStateToProps)
-)(ChangeNOWMineForm);
+export default ChangeNOWMineForm;

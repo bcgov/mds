@@ -5,6 +5,7 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
   className="work-information-container "
 >
   <Connect(ReduxForm)
+    isModal={true}
     name="EDIT_EMPLOYEE_COUNT_FORM"
     onSubmit={[MockFunction]}
     reduxFormConfig={
@@ -83,31 +84,12 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
     <div
       className="right center-mobile"
     >
-      <ForwardRef
-        cancelText="No"
-        disabled={false}
-        okText="Yes"
-        onConfirm={[Function]}
-        placement="topRight"
-        title="Are you sure you want to cancel?"
-      >
-        <Button
-          className="full-mobile margin-small"
-          disabled={false}
-          type="secondary"
-        >
-          Cancel
-        </Button>
-      </ForwardRef>
-      <Button
-        className="full-mobile margin-small"
-        disabled={false}
-        htmlType="submit"
-        loading={false}
-        type="primary"
-      >
-        Update Mine Worker Information
-      </Button>
+      <RenderCancelButton
+        cancelFunction={[MockFunction]}
+      />
+      <RenderSubmitButton
+        buttonText="Update Mine Worker Information"
+      />
     </div>
   </Connect(ReduxForm)>
 </div>

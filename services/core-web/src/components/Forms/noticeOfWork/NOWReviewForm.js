@@ -3,9 +3,8 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
-import { resetForm } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import {
   required,
@@ -29,16 +28,16 @@ import {
   ADVERTISEMENT_DOC,
 } from "@/constants/NOWConditions";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   handleDocumentDelete: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
   documentTypeOptions: CustomPropTypes.options.isRequired,
   documentTypeOptionsHash: PropTypes.objectOf(PropTypes.Strings).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   change: PropTypes.func,
-  submitting: PropTypes.bool.isRequired,
   type: PropTypes.string.isRequired,
   categoriesToShow: PropTypes.arrayOf(PropTypes.String).isRequired,
 };
@@ -51,6 +50,7 @@ export class NOWReviewForm extends Component {
     uploadedFiles: [],
     existingDocuments: [],
   };
+  formName = FORM.ADD_NOW_REVIEW;
 
   componentDidMount() {
     this.setState({ existingDocuments: this.props.initialValues.documents });
@@ -60,7 +60,7 @@ export class NOWReviewForm extends Component {
     this.setState((prevState) => ({
       uploadedFiles: [[document_manager_guid, documentName], ...prevState.uploadedFiles],
     }));
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
+    this.props.change(this.formName, "uploadedFiles", this.state.uploadedFiles);
   };
 
   onRemoveFile = (err, fileItem) => {
@@ -68,7 +68,7 @@ export class NOWReviewForm extends Component {
       uploadedFiles: prevState.uploadedFiles.filter((fileArr) => fileArr[0] !== fileItem.serverId),
     }));
 
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
+    this.props.change(this.formName, "uploadedFiles", this.state.uploadedFiles);
   };
 
   render() {
@@ -81,11 +81,11 @@ export class NOWReviewForm extends Component {
 
     return (
       <FormWrapper onSubmit={this.props.onSubmit}
+        isModal
         initialValues={this.props.initialValues}
         name={FORM.ADD_NOW_REVIEW}
         reduxFormConfig={{
           touchOnBlur: false,
-          onSubmitSuccess: resetForm(FORM.ADD_NOW_REVIEW),
         }}
       >
         <Row gutter={16}>
@@ -220,26 +220,8 @@ export class NOWReviewForm extends Component {
           </Col>
         </Row>
         <div className="right center-mobile">
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            onConfirm={this.props.closeModal}
-            okText="Yes"
-            cancelText="No"
-            disabled={this.props.submitting}
-          >
-            <Button className="full-mobile" type="secondary" disabled={this.props.submitting}>
-              Cancel
-            </Button>
-          </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            loading={this.props.submitting}
-          >
-            Save
-          </Button>
+          <RenderCancelButton />
+          <RenderSubmitButton buttonText="Save" />
         </div>
       </FormWrapper>
     );

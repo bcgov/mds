@@ -18,7 +18,7 @@ exports[`RenderGroupedSelect renders properly 1`] = `
             class="ant-form-item-control-input-content"
           >
             <div
-              class="ant-select ant-select-in-form-item ant-select-single ant-select-show-arrow ant-select-show-search"
+              class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
             >
               <div
                 class="ant-select-selector"
@@ -41,8 +41,7 @@ exports[`RenderGroupedSelect renders properly 1`] = `
                   />
                 </span>
                 <span
-                  class="ant-select-selection-item"
-                  title=""
+                  class="ant-select-selection-placeholder"
                 />
               </div>
               <span

@@ -2,23 +2,22 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, change } from "redux-form";
 import { remove } from "lodash";
-import { Button, Popconfirm, Typography, Form } from "antd";
-import { resetForm } from "@common/utils/helpers";
+import { Typography, Form } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { VarianceDetails } from "@/components/dashboard/mine/variances/VarianceDetails";
 import VarianceFileUpload from "@/components/Forms/variances/VarianceFileUpload";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.any,
-  closeModal: PropTypes.func.isRequired,
   removeDocument: PropTypes.func.isRequired,
   mineName: PropTypes.string.isRequired,
   mineGuid: PropTypes.string.isRequired,
   variance: CustomPropTypes.variance.isRequired,
-  submitting: PropTypes.bool.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -59,11 +58,11 @@ export class EditVarianceForm extends Component {
     return (
       <FormWrapper
         initialValues={this.props.initialValues}
+        isModal
         onSubmit={this.handleSubmit}
         name={FORM.EDIT_VARIANCE}
         reduxFormConfig={{
           touchOnBlur: false,
-          onSubmitSuccess: resetForm(FORM.EDIT_VARIANCE),
         }}
       >
         <VarianceDetails
@@ -86,18 +85,8 @@ export class EditVarianceForm extends Component {
           />
         </Form.Item>
         <div className="ant-modal-footer">
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            onConfirm={this.props.closeModal}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button>Cancel</Button>
-          </Popconfirm>
-          <Button type="primary" htmlType="submit" loading={this.props.submitting}>
-            Submit
-          </Button>
+          <RenderCancelButton />
+          <RenderSubmitButton buttonText="Submit" />
         </div>
       </FormWrapper>
     );

@@ -1,17 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
-import { Button, Popconfirm, Row, Col } from "antd";
+import { Row, Col } from "antd";
 import { required } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
   onCancel: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
   layer: PropTypes.number.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
@@ -46,25 +47,8 @@ export const ConditionForm = (props) => {
             validate={[required]}
           />
           <div className="right center-mobile">
-            <Popconfirm
-              placement="topRight"
-              title="Are you sure you want to cancel?"
-              onConfirm={props.onCancel}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button className="full-mobile" type="secondary">
-                Cancel
-              </Button>
-            </Popconfirm>
-            <Button
-              className="full-mobile"
-              type="primary"
-              htmlType="submit"
-              loading={props.submitting}
-            >
-              Save
-            </Button>
+            <RenderCancelButton cancelFunction={props.onCancel} />
+            <RenderSubmitButton buttonText="Save" />
           </div>
         </FormWrapper>
       </Col>

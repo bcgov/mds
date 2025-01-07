@@ -26,7 +26,9 @@ export class WorkerInfoEmployee extends Component {
   };
 
   handleToggleEdit = (event) => {
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
     this.setState((prevState) => ({
       isEditable: !prevState.isEditable,
     }));

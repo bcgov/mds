@@ -71,7 +71,7 @@ export class ReviewSiteProperties extends Component {
                   ? this.props.conditionalCommodityOptions[
                   this.props.site_property?.mine_tenure_type_code
                   ]
-                  : null
+                  : []
               }
             />
           </Col>
@@ -87,7 +87,7 @@ export class ReviewSiteProperties extends Component {
                   ? this.props.conditionalDisturbanceOptions[
                   this.props.site_property?.mine_tenure_type_code
                   ]
-                  : null
+                  : []
               }
               required={isCoalOrMineral}
               validate={isCoalOrMineral ? [requiredList] : []}

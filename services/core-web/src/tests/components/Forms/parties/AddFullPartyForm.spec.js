@@ -1,28 +1,17 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { AddFullPartyForm } from "@/components/Forms/parties/AddFullPartyForm";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.togglePartyChange = jest.fn();
-};
-
-const setupProps = () => {
-  props.isPerson = false;
-  props.provinceOptions = MOCK.DROPDOWN_PROVINCE_OPTIONS;
-};
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("AddFullPartyForm", () => {
   it("renders properly", () => {
-    const component = shallow(<AddFullPartyForm {...dispatchProps} {...props} />);
-    expect(component).toMatchSnapshot();
+    const { container } = render(<ReduxWrapper><AddFullPartyForm
+      togglePartyChange={jest.fn()}
+      isPerson={false}
+      provinceOptions={MOCK.DROPDOWN_PROVINCE_OPTIONS}
+    /></ReduxWrapper>);
+    expect(container).toMatchSnapshot();
   });
 });

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field } from "redux-form";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Col, Row } from "antd";
 import { required, maxLength, number, lat, lon } from "@mds/common/redux/utils/Validate";
 import {
   getConsequenceClassificationStatusCodeDropdownOptions,
@@ -18,14 +18,14 @@ import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.any,
-  closeModal: PropTypes.func.isRequired,
   initialPartyValue: PropTypes.objectOf(PropTypes.any).isRequired,
   title: PropTypes.string.isRequired,
-  submitting: PropTypes.bool.isRequired,
   consequenceClassificationStatusCodeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem)
     .isRequired,
   itrbExemptionStatusCodeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
@@ -128,21 +128,8 @@ export const AddTailingsForm = (props) => (
       </Col>
     </Row>
     <div className="right center-mobile">
-      <Popconfirm
-        placement="topRight"
-        title="Are you sure you want to cancel?"
-        onConfirm={props.closeModal}
-        okText="Yes"
-        cancelText="No"
-        disabled={props.submitting}
-      >
-        <Button className="full-mobile" type="secondary" disabled={props.submitting}>
-          Cancel
-        </Button>
-      </Popconfirm>
-      <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
-        {props.title}
-      </Button>
+      <RenderCancelButton />
+      <RenderSubmitButton buttonText={props.title} />
     </div>
   </FormWrapper>
 );

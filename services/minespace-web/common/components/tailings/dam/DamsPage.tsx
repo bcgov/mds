@@ -3,8 +3,6 @@ import { Link, useHistory, useParams, withRouter } from "react-router-dom";
 import React, { FC, useEffect, useState } from "react";
 import { bindActionCreators, compose } from "redux";
 import { createDam, updateDam } from "@mds/common/redux/actionCreators/damActionCreator";
-import { getFormSyncErrors, getFormValues, InjectedFormProps, submit } from "redux-form";
-
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import SteppedForm from "@mds/common/components/forms/SteppedForm";
 import Step from "@mds/common/components/forms/Step";
@@ -30,18 +28,15 @@ interface DamsPageProps {
   storeTsf: typeof storeTsf;
   storeDam: typeof storeDam;
   fetchMineRecordById: ActionCreator<typeof fetchMineRecordById>;
-  formValues: IDam;
-  formErrors: any;
-  submit: () => void;
   createDam: ActionCreator<typeof createDam>;
   updateDam: ActionCreator<typeof updateDam>;
   initialValues: IDam;
   userRoles: string[];
 }
 
-const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
+const DamsPage: React.FC<DamsPageProps> = (props) => {
   const history = useHistory();
-  const { tsf, formValues, formErrors, initialValues } = props;
+  const { tsf, initialValues } = props;
   const { tailingsStorageFacilityGuid, damGuid, mineGuid, parentTSFFormMode, userAction } =
     useParams<{
       tailingsStorageFacilityGuid: string;
@@ -91,17 +86,13 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
     handleBack();
   };
 
-  const handleSave = async () => {
-    if (Object.keys(formErrors).length > 0) {
-      props.submit();
-      return;
-    }
+  const handleSave = async (values, newActiveTab) => {
     if (damGuid) {
-      const updatedDam = await props.updateDam(damGuid, formValues);
+      const updatedDam = await props.updateDam(damGuid, values);
       handleCompleteSubmit(updatedDam.data);
     } else {
       const newDam = await props.createDam({
-        ...formValues,
+        ...values,
         mine_tailings_storage_facility_guid: tailingsStorageFacilityGuid,
       });
       handleCompleteSubmit(newDam.data);
@@ -157,9 +148,6 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
           touchOnBlur: true,
           destroyOnUnmount: true,
           enableReinitialize: true,
-          // onSubmit: () => {
-          //   resetForm(ADD_EDIT_DAM);
-          // },
         }}
       >
         {[
@@ -181,16 +169,11 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
 const mapStateToProps = (state: RootState) => ({
   initialValues: getDam(state),
   tsf: getTsf(state),
-  formValues: getFormValues(ADD_EDIT_DAM)(state),
-  formErrors: getFormSyncErrors(ADD_EDIT_DAM)(state),
   userRoles: getUserAccessData(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    { createDam, updateDam, fetchMineRecordById, storeTsf, storeDam, submit },
-    dispatch
-  );
+  bindActionCreators({ createDam, updateDam, fetchMineRecordById, storeTsf, storeDam }, dispatch);
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(
   withRouter(FeatureFlagGuard(Feature.TSF_V2)(DamsPage)) as any

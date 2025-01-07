@@ -2,11 +2,12 @@
 
 exports[`AddTailingsForm renders properly 1`] = `
 <Connect(ReduxForm)
+  isModal={true}
   name="ADD_TAILINGS"
+  onSubmit={[MockFunction]}
   reduxFormConfig={
     Object {
       "enableReinitialize": true,
-      "onSubmitSuccess": [Function],
       "touchOnBlur": false,
     }
   }
@@ -107,30 +108,10 @@ exports[`AddTailingsForm renders properly 1`] = `
   <div
     className="ant-modal-footer"
   >
-    <ForwardRef
-      cancelText="No"
-      disabled={false}
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="secondary"
-        disabled={false}
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="primary"
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      mockTitle
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonText="mockTitle"
+    />
   </div>
 </Connect(ReduxForm)>
 `;

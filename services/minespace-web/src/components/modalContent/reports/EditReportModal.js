@@ -7,7 +7,6 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   mineReport: CustomPropTypes.mineReport.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
 };
 
 export const EditReportModal = (props) => (
@@ -15,7 +14,6 @@ export const EditReportModal = (props) => (
     mineGuid={props.mineGuid}
     mineReport={props.mineReport}
     onSubmit={props.onSubmit}
-    closeModal={props.closeModal}
   />
 );
 

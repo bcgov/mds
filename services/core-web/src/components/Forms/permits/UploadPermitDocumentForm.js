@@ -2,19 +2,18 @@ import React, { Component } from "react";
 import { remove } from "lodash";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
-import { Button, Col, Row, Popconfirm } from "antd";
-import { resetForm } from "@common/utils/helpers";
+import { Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
-import CustomPropTypes from "@/customPropTypes";
 import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentFileUpload";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  mineGuid: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  submitting: PropTypes.bool.isRequired,
+  change: PropTypes.func.isRequired
 };
 
 const defaultProps = {};
@@ -24,23 +23,25 @@ export class UploadPermitDocumentFrom extends Component {
     uploadedFiles: [],
   };
 
+  formName = FORM.UPLOAD_PERMIT_DOCUMENT;
+
   // File upload handlers
   onFileLoad = (fileName, document_manager_guid) => {
     this.state.uploadedFiles.push({ fileName, document_manager_guid });
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
+    this.props.change(this.formName, "uploadedFiles", this.state.uploadedFiles);
   };
 
   onRemoveFile = (err, fileItem) => {
     remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
+    this.props.change(this.formName, "uploadedFiles", this.state.uploadedFiles);
   };
 
   render() {
     return (
-      <FormWrapper onSubmit={this.props.handleSubmit} name={FORM.UPLOAD_PERMIT_DOCUMENT}
+      <FormWrapper onSubmit={this.props.onSubmit} name={FORM.UPLOAD_PERMIT_DOCUMENT}
+        isModal
         reduxFormConfig={{
           touchOnBlur: false,
-          onSubmitSuccess: resetForm(FORM.UPLOAD_PERMIT_DOCUMENT),
         }}
       >
         <Row gutter={16}>
@@ -57,25 +58,8 @@ export class UploadPermitDocumentFrom extends Component {
           </Col>
         </Row>
         <div className="right center-mobile">
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            onConfirm={this.props.closeModal}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button className="full-mobile" type="secondary">
-              Cancel
-            </Button>
-          </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            loading={this.props.submitting}
-          >
-            {this.props.title}
-          </Button>
+          <RenderCancelButton />
+          <RenderSubmitButton buttonText={this.props.title} />
         </div>
       </FormWrapper>
     );

@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { compose, bindActionCreators } from "redux";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { compose } from "redux";
 import PropTypes from "prop-types";
 import { getFormValues, Field, change } from "redux-form";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Col, Row } from "antd";
 import { currency, required, maxLength } from "@mds/common/redux/utils/Validate";
-import { resetForm, determineExemptionFeeStatus, currencyMask } from "@common/utils/helpers";
+import { determineExemptionFeeStatus, currencyMask } from "@common/utils/helpers";
 import {
   getDropdownPermitStatusOptions,
   getExemptionFeeStatusDropDownOptions,
@@ -16,39 +16,43 @@ import RenderField from "@mds/common/components/forms/RenderField";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 
 import CustomPropTypes from "@/customPropTypes";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  formValues: PropTypes.objectOf(PropTypes.strings).isRequired,
   title: PropTypes.string.isRequired,
-  submitting: PropTypes.bool.isRequired,
   initialValues: CustomPropTypes.permit.isRequired,
-  change: PropTypes.func.isRequired,
   exemptionFeeStatusDropDownOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
 };
 
 export const EditPermitForm = (props) => {
+  const dispatch = useDispatch();
+  const formValues = useSelector(getFormValues(FORM.EDIT_PERMIT)) ?? {};
+
   useEffect(() => {
     const isExploration = props.initialValues.permit_no.charAt(1) === "X";
     const feeStatus = determineExemptionFeeStatus(
-      props.formValues?.permit_status_code,
+      formValues?.permit_status_code,
       props.initialValues.permit_prefix,
       props.initialValues.site_properties?.mine_tenure_type_code,
       isExploration,
       props.initialValues.site_properties?.mine_disturbance_code
     );
-    props.change("exemption_fee_status_code", feeStatus);
-  }, [props.formValues?.permit_status_code]);
+    dispatch(change("exemption_fee_status_code", feeStatus));
+  }, [formValues?.permit_status_code]);
 
   return (
     <FormWrapper onSubmit={props.onSubmit}
+      isModal
+      initialValues={props.initialValues}
       name={FORM.EDIT_PERMIT}
       reduxFormConfig={{
         touchOnBlur: false,
         enableReinitialize: true,
-        onSubmitSuccess: resetForm(FORM.EDIT_PERMIT),
       }}
     >
       <Row gutter={16}>
@@ -63,8 +67,8 @@ export const EditPermitForm = (props) => {
             required
             validate={[required]}
           />
-          {(props.formValues.permit_status_code === "C" ||
-            props.formValues.remaining_static_liability !== null) && (
+          {(formValues.permit_status_code === "C" ||
+            formValues.remaining_static_liability !== null) && (
               <Field
                 id="remaining_static_liability"
                 name="remaining_static_liability"
@@ -84,6 +88,7 @@ export const EditPermitForm = (props) => {
             name="exemption_fee_status_code"
             label="Inspection Fee Status"
             placeholder="Inspection Fee Status will be automatically populated."
+            showOptional={false}
             component={RenderSelect}
             disabled
             data={props.exemptionFeeStatusDropDownOptions}
@@ -102,21 +107,8 @@ export const EditPermitForm = (props) => {
         </Col>
       </Row>
       <div className="right center-mobile">
-        <Popconfirm
-          placement="topRight"
-          title="Are you sure you want to cancel?"
-          onConfirm={props.closeModal}
-          okText="Yes"
-          cancelText="No"
-          disabled={props.submitting}
-        >
-          <Button className="full-mobile" type="secondary" disabled={props.submitting}>
-            Cancel
-          </Button>
-        </Popconfirm>
-        <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
-          {props.title}
-        </Button>
+        <RenderCancelButton />
+        <RenderSubmitButton buttonText={props.title} />
       </div>
     </FormWrapper>
   );
@@ -126,18 +118,9 @@ EditPermitForm.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   permitStatusOptions: getDropdownPermitStatusOptions(state),
-  formValues: getFormValues(FORM.EDIT_PERMIT)(state) || {},
   exemptionFeeStatusDropDownOptions: getExemptionFeeStatusDropDownOptions(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      change,
-    },
-    dispatch
-  );
-
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps)
 )(EditPermitForm);

@@ -1,30 +1,29 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Col, Row } from "antd";
 import { required } from "@mds/common/redux/utils/Validate";
-import { resetForm } from "@common/utils/helpers";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import * as FORM from "@/constants/forms";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import CustomPropTypes from "@/customPropTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.any,
-  closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  submitting: PropTypes.bool.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
 
 export const TransferBondForm = (props) => (
   <FormWrapper onSubmit={props.onSubmit} initialValues={props.initialValues}
     name={FORM.TRANSFER_BOND}
+    isModal
     reduxFormConfig={{
       touchOnBlur: false,
-      onSubmitSuccess: resetForm(FORM.TRANSFER_BOND),
       enableReinitialize: true,
     }}
   >
@@ -49,20 +48,8 @@ export const TransferBondForm = (props) => (
       </Col>
     </Row>
     <div className="right center-mobile">
-      <Popconfirm
-        placement="topRight"
-        title="Are you sure you want to cancel?"
-        onConfirm={props.closeModal}
-        okText="Yes"
-        cancelText="No"
-      >
-        <Button className="full-mobile" type="secondary">
-          Cancel
-        </Button>
-      </Popconfirm>
-      <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
-        {props.title}
-      </Button>
+      <RenderCancelButton />
+      <RenderSubmitButton buttonText={props.title} />
     </div>
   </FormWrapper>
 );

@@ -21,18 +21,14 @@ exports[`BasicInformation renders properly 1`] = `
         class="ant-col ant-form-item-label"
       >
         <label
-          class=""
+          class="ant-form-item-required"
           for="facility_type"
           title=""
         >
-          <div>
-            Facility Type *
-             
-            <span
-              class="form-item-optional"
-            >
-               (optional)
-            </span>
+          <div
+            style="width: 100%;"
+          >
+            Facility Type
           </div>
         </label>
       </div>
@@ -46,6 +42,7 @@ exports[`BasicInformation renders properly 1`] = `
             class="ant-form-item-control-input-content"
           >
             <div
+              aria-required="true"
               class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
               data-cy="facility_type"
             >
@@ -61,6 +58,7 @@ exports[`BasicInformation renders properly 1`] = `
                     aria-controls="facility_type_list"
                     aria-haspopup="listbox"
                     aria-owns="facility_type_list"
+                    aria-required="true"
                     autocomplete="off"
                     class="ant-select-selection-search-input"
                     id="facility_type"
@@ -130,18 +128,14 @@ exports[`BasicInformation renders properly 1`] = `
         class="ant-col ant-form-item-label"
       >
         <label
-          class=""
+          class="ant-form-item-required"
           for="mines_act_permit_no"
           title=""
         >
-          <div>
-            Mines Act Permit Number *
-             
-            <span
-              class="form-item-optional"
-            >
-               (optional)
-            </span>
+          <div
+            style="width: 100%;"
+          >
+            Mines Act Permit Number
           </div>
         </label>
       </div>
@@ -155,6 +149,7 @@ exports[`BasicInformation renders properly 1`] = `
             class="ant-form-item-control-input-content"
           >
             <div
+              aria-required="true"
               class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
               data-cy="mines_act_permit_no"
             >
@@ -170,6 +165,7 @@ exports[`BasicInformation renders properly 1`] = `
                     aria-controls="mines_act_permit_no_list"
                     aria-haspopup="listbox"
                     aria-owns="mines_act_permit_no_list"
+                    aria-required="true"
                     autocomplete="off"
                     class="ant-select-selection-search-input"
                     id="mines_act_permit_no"
@@ -239,18 +235,14 @@ exports[`BasicInformation renders properly 1`] = `
         class="ant-col ant-form-item-label"
       >
         <label
-          class=""
+          class="ant-form-item-required"
           for="tailings_storage_facility_type"
           title=""
         >
-          <div>
-            Tailings Storage Facility Type *
-             
-            <span
-              class="form-item-optional"
-            >
-               (optional)
-            </span>
+          <div
+            style="width: 100%;"
+          >
+            Tailings Storage Facility Type
           </div>
         </label>
       </div>
@@ -264,6 +256,7 @@ exports[`BasicInformation renders properly 1`] = `
             class="ant-form-item-control-input-content"
           >
             <div
+              aria-required="true"
               class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
               data-cy="tailings_storage_facility_type"
             >
@@ -279,6 +272,7 @@ exports[`BasicInformation renders properly 1`] = `
                     aria-controls="tailings_storage_facility_type_list"
                     aria-haspopup="listbox"
                     aria-owns="tailings_storage_facility_type_list"
+                    aria-required="true"
                     autocomplete="off"
                     class="ant-select-selection-search-input"
                     id="tailings_storage_facility_type"
@@ -348,18 +342,14 @@ exports[`BasicInformation renders properly 1`] = `
         class="ant-col ant-form-item-label"
       >
         <label
-          class=""
+          class="ant-form-item-required"
           for="storage_location"
           title=""
         >
-          <div>
-            Underground or Above Ground? *
-             
-            <span
-              class="form-item-optional"
-            >
-               (optional)
-            </span>
+          <div
+            style="width: 100%;"
+          >
+            Underground or Above Ground?
           </div>
         </label>
       </div>
@@ -373,6 +363,7 @@ exports[`BasicInformation renders properly 1`] = `
             class="ant-form-item-control-input-content"
           >
             <div
+              aria-required="true"
               class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
               data-cy="storage_location"
             >
@@ -388,6 +379,7 @@ exports[`BasicInformation renders properly 1`] = `
                     aria-controls="storage_location_list"
                     aria-haspopup="listbox"
                     aria-owns="storage_location_list"
+                    aria-required="true"
                     autocomplete="off"
                     class="ant-select-selection-search-input"
                     id="storage_location"
@@ -457,18 +449,14 @@ exports[`BasicInformation renders properly 1`] = `
         class="ant-col ant-form-item-label"
       >
         <label
-          class=""
+          class="ant-form-item-required"
           for="mine_tailings_storage_facility_name"
           title=""
         >
-          <div>
-            Facility Name *
-             
-            <span
-              class="form-item-optional"
-            >
-               (optional)
-            </span>
+          <div
+            style="width: 100%;"
+          >
+            Facility Name
           </div>
         </label>
       </div>
@@ -525,18 +513,14 @@ exports[`BasicInformation renders properly 1`] = `
             class="ant-col ant-form-item-label"
           >
             <label
-              class=""
+              class="ant-form-item-required"
               for="latitude"
               title=""
             >
-              <div>
-                Latitude *
-                 
-                <span
-                  class="form-item-optional"
-                >
-                   (optional)
-                </span>
+              <div
+                style="width: 100%;"
+              >
+                Latitude
               </div>
             </label>
           </div>
@@ -590,18 +574,14 @@ exports[`BasicInformation renders properly 1`] = `
             class="ant-col ant-form-item-label"
           >
             <label
-              class=""
+              class="ant-form-item-required"
               for="longitude"
               title=""
             >
-              <div>
-                Longitude *
-                 
-                <span
-                  class="form-item-optional"
-                >
-                   (optional)
-                </span>
+              <div
+                style="width: 100%;"
+              >
+                Longitude
               </div>
             </label>
           </div>
@@ -652,18 +632,14 @@ exports[`BasicInformation renders properly 1`] = `
         class="ant-col ant-form-item-label"
       >
         <label
-          class=""
+          class="ant-form-item-required"
           for="consequence_classification_status_code"
           title=""
         >
-          <div>
-            Consequence Classification *
-             
-            <span
-              class="form-item-optional"
-            >
-               (optional)
-            </span>
+          <div
+            style="width: 100%;"
+          >
+            Consequence Classification
           </div>
         </label>
       </div>
@@ -677,6 +653,7 @@ exports[`BasicInformation renders properly 1`] = `
             class="ant-form-item-control-input-content"
           >
             <div
+              aria-required="true"
               class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
               data-cy="consequence_classification_status_code"
             >
@@ -692,6 +669,7 @@ exports[`BasicInformation renders properly 1`] = `
                     aria-controls="consequence_classification_status_code_list"
                     aria-haspopup="listbox"
                     aria-owns="consequence_classification_status_code_list"
+                    aria-required="true"
                     autocomplete="off"
                     class="ant-select-selection-search-input"
                     id="consequence_classification_status_code"
@@ -761,18 +739,14 @@ exports[`BasicInformation renders properly 1`] = `
         class="ant-col ant-form-item-label"
       >
         <label
-          class=""
+          class="ant-form-item-required"
           for="tsf_operating_status_code"
           title=""
         >
-          <div>
-            Operating Status *
-             
-            <span
-              class="form-item-optional"
-            >
-               (optional)
-            </span>
+          <div
+            style="width: 100%;"
+          >
+            Operating Status
           </div>
         </label>
       </div>
@@ -786,6 +760,7 @@ exports[`BasicInformation renders properly 1`] = `
             class="ant-form-item-control-input-content"
           >
             <div
+              aria-required="true"
               class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
               data-cy="tsf_operating_status_code"
             >
@@ -801,6 +776,7 @@ exports[`BasicInformation renders properly 1`] = `
                     aria-controls="tsf_operating_status_code_list"
                     aria-haspopup="listbox"
                     aria-owns="tsf_operating_status_code_list"
+                    aria-required="true"
                     autocomplete="off"
                     class="ant-select-selection-search-input"
                     id="tsf_operating_status_code"
@@ -870,18 +846,14 @@ exports[`BasicInformation renders properly 1`] = `
         class="ant-col ant-form-item-label"
       >
         <label
-          class=""
+          class="ant-form-item-required"
           for="itrb_exemption_status_code"
           title=""
         >
-          <div>
-            Independent Tailings Review Board Member *
-             
-            <span
-              class="form-item-optional"
-            >
-               (optional)
-            </span>
+          <div
+            style="width: 100%;"
+          >
+            Independent Tailings Review Board Member
           </div>
         </label>
       </div>
@@ -895,6 +867,7 @@ exports[`BasicInformation renders properly 1`] = `
             class="ant-form-item-control-input-content"
           >
             <div
+              aria-required="true"
               class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
               data-cy="itrb_exemption_status_code"
             >
@@ -910,6 +883,7 @@ exports[`BasicInformation renders properly 1`] = `
                     aria-controls="itrb_exemption_status_code_list"
                     aria-haspopup="listbox"
                     aria-owns="itrb_exemption_status_code_list"
+                    aria-required="true"
                     autocomplete="off"
                     class="ant-select-selection-search-input"
                     id="itrb_exemption_status_code"

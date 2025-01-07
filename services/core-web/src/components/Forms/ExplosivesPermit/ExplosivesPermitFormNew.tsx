@@ -5,10 +5,9 @@ import {
   Field,
   formValueSelector,
   getFormValues,
-  InjectedFormProps,
   change,
 } from "redux-form";
-import { Alert, Button, Col, Popconfirm, Row, Table, Typography, Radio, Form } from "antd";
+import { Alert, Button, Col, Row, Table, Typography, Radio, Form } from "antd";
 import {
   IPermit,
   IExplosivesPermit,
@@ -29,7 +28,7 @@ import {
   number,
   required,
 } from "@mds/common/redux/utils/Validate";
-import { createDropDownList, formatDate, resetForm } from "@common/utils/helpers";
+import { createDropDownList, formatDate } from "@common/utils/helpers";
 import { getAllPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getIsFormLoading } from "@mds/common/redux/reducers/modalReducer";
@@ -43,6 +42,8 @@ import {
 } from "@mds/common/components/explosivespermits/ExplosivesPermitViewModal";
 import ExplosivesPermitMap from "@mds/common/components/explosivespermits/ExplosivesPermitMap";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 export enum EsupFormMode {
   select_type_modal,
@@ -70,7 +71,6 @@ interface StateProps {
   formValues: IExplosivesPermit;
   allPartyRelationships: IPermitPartyRelationship[];
   noticeOfWorkApplications: IimportedNOWApplication[];
-  submitting: boolean;
   onSubmit: any;
 }
 
@@ -260,17 +260,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
           )}
         </div>
         <div className="right center-mobile" style={{ paddingTop: "14px" }}>
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            okText="Yes"
-            cancelText="No"
-            onConfirm={props.closeModal}
-          >
-            <Button className="full-mobile" type="ghost">
-              Cancel
-            </Button>
-          </Popconfirm>
+          <RenderCancelButton />
           <Button
             disabled={isAmendSelected}
             type="primary"
@@ -352,7 +342,6 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
         name={FORM.EXPLOSIVES_PERMIT_NEW}
         reduxFormConfig={{
           touchOnBlur: true,
-          onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT_NEW),
         }}
         onSubmit={props.onSubmit}>
         <Alert
@@ -564,7 +553,6 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                 </>
               )}
             </Row>
-
             <DocumentCategoryForm
               categories={props.documentTypeDropdownOptions}
               mineGuid={props.mineGuid}
@@ -595,26 +583,8 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
           </Col>
         </Row>
         <Row className="flex-between form-button-container-row">
-          <Popconfirm
-            placement="topRight"
-            title={`Are you sure you want to cancel?`}
-            okText="Yes"
-            cancelText="No"
-            onConfirm={cancelButtonFunc}
-          >
-            <Button className="full-mobile" type="ghost">
-              {cancelButtonText}
-            </Button>
-          </Popconfirm>
-          <Button
-            type="primary"
-            className="full-mobile"
-            htmlType="submit"
-            style={{ marginLeft: "auto" }}
-            loading={props.submitting || isDocumentUploading}
-          >
-            {showIssueModal ? "Finish And Generate Certificate" : "Submit"}
-          </Button>
+          <RenderCancelButton buttonText={cancelButtonText} cancelFunction={cancelButtonFunc} />
+          <RenderSubmitButton loading={isDocumentUploading} buttonText={showIssueModal ? "Finish And Generate Certificate" : "Submit"} />
         </Row>
       </FormWrapper>
     );

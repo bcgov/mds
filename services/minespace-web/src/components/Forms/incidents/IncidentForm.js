@@ -47,7 +47,6 @@ const propTypes = {
   inspectorOptions: customPropTypes.groupedDropdownList.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   initialValues: PropTypes.any,
-  form: PropTypes.string.isRequired,
   handlers: PropTypes.shape({ deleteDocument: PropTypes.func }).isRequired,
   change: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
@@ -882,7 +881,7 @@ export const IncidentForm = (props) => {
     handlers,
   } = props;
   const [uploadedFiles, setUploadedFiles] = useState([]);
-
+  const form = FORM.ADD_EDIT_INCIDENT;
   const onFileLoad = (fileName, document_manager_guid, documentTypeCode, documentFormField) => {
     const updatedUploadedFiles = [
       ...uploadedFiles,
@@ -895,7 +894,7 @@ export const IncidentForm = (props) => {
     ];
     setUploadedFiles(updatedUploadedFiles);
 
-    return props.change(documentFormField, updatedUploadedFiles);
+    return props.change(form, documentFormField, updatedUploadedFiles);
   };
   const onRemoveFile = (err, fileItem, documentFormField) => {
     const updatedUploadedFiles = uploadedFiles.filter(
@@ -903,7 +902,7 @@ export const IncidentForm = (props) => {
     );
     setUploadedFiles(updatedUploadedFiles);
 
-    return props.change(documentFormField, updatedUploadedFiles);
+    return props.change(form, documentFormField, updatedUploadedFiles);
   };
   const formDisabled = isReviewSubmitStage || isFinalReviewStage;
   const parentColumnProps = isFinalReviewStage ? {} : { span: 16, offset: 4 };

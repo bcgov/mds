@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { Field, getFormValues } from "redux-form";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Col, Row } from "antd";
 import { required, dateNotInFuture } from "@mds/common/redux/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
-import { resetForm, createDropDownList, formatDate } from "@common/utils/helpers";
+import { createDropDownList, formatDate } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
@@ -15,11 +15,11 @@ import {
   getApplicationSourceTypeCodeDropdownOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any),
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   applicationReasonCodeOptions: CustomPropTypes.options.isRequired,
@@ -52,9 +52,9 @@ export const AdministrativeAmendmentForm = (props) => {
   return (
     <FormWrapper
       name={FORM.ADMINISTRATIVE_AMENDMENT_FORM}
+      isModal
       reduxFormConfig={{
         touchOnBlur: false,
-        onSubmitSuccess: resetForm(FORM.ADMINISTRATIVE_AMENDMENT_FORM),
         enableReinitialize: true,
       }}
       onSubmit={props.onSubmit}>
@@ -110,21 +110,8 @@ export const AdministrativeAmendmentForm = (props) => {
         </Col>
       </Row>
       <div className="right center-mobile">
-        <Popconfirm
-          placement="topRight"
-          title="Are you sure you want to cancel?"
-          onConfirm={props.closeModal}
-          okText="Yes"
-          cancelText="No"
-          disabled={props.submitting}
-        >
-          <Button className="full-mobile" type="secondary" disabled={props.submitting}>
-            Cancel
-          </Button>
-        </Popconfirm>
-        <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
-          Proceed
-        </Button>
+        <RenderCancelButton />
+        <RenderSubmitButton buttonText="Proceed" />
       </div>
     </FormWrapper>
   );

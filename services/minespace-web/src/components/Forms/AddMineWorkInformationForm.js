@@ -4,21 +4,21 @@ import { compose } from "redux";
 import PropTypes from "prop-types";
 import { Field, getFormValues } from "redux-form";
 import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
-import { Row, Col, Popconfirm, Button, Descriptions, Typography, Badge, Tooltip } from "antd";
+import { Row, Col, Descriptions, Typography, Badge, Tooltip } from "antd";
 import { dateNotBeforeOther, dateNotAfterOther, date } from "@mds/common/redux/utils/Validate";
-import { resetForm } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { getWorkInformationBadgeStatusType } from "@/constants/theme";
 import * as STRINGS from "@/constants/strings";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.objectOf(PropTypes.any)]).isRequired,
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
-  submitting: PropTypes.bool.isRequired,
   cancelEdit: PropTypes.func.isRequired,
   isEditMode: PropTypes.bool,
 };
@@ -32,10 +32,10 @@ export const AddMineWorkInformationForm = (props) => {
   return (
     <FormWrapper
       onSubmit={props.onSubmit}
+      isModal
       initialValues={props.initialValues}
       name={FORM.ADD_MINE_WORK_INFORMATION}
       reduxFormConfig={{
-        onSubmitSuccess: resetForm(FORM.ADD_MINE_WORK_INFORMATION),
         touchOnBlur: false,
         enableReinitialize: true,
       }}
@@ -147,26 +147,8 @@ export const AddMineWorkInformationForm = (props) => {
       </Row>
 
       <div className="right center-mobile">
-        <Popconfirm
-          placement="topRight"
-          title="Are you sure you want to cancel?"
-          onConfirm={props.cancelEdit}
-          okText="Yes"
-          cancelText="No"
-          disabled={props.submitting}
-        >
-          <Button className="full-mobile margin-small" type="secondary" disabled={props.submitting}>
-            Cancel
-          </Button>
-        </Popconfirm>
-        <Button
-          className="full-mobile margin-small"
-          type="primary"
-          htmlType="submit"
-          loading={props.submitting}
-        >
-          {props.title}
-        </Button>
+        <RenderCancelButton cancelFunction={props.cancelEdit} />
+        <RenderSubmitButton buttonText={props.title} />
       </div>
     </FormWrapper>
   );

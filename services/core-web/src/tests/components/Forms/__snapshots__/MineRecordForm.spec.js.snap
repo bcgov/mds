@@ -2,6 +2,8 @@
 
 exports[`MineRecordForm renders properly 1`] = `
 <Connect(ReduxForm)
+  initialValues={Object {}}
+  isModal={true}
   name="MINE_RECORD"
   onSubmit={[MockFunction]}
   reduxFormConfig={
@@ -283,28 +285,10 @@ exports[`MineRecordForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile"
-      htmlType="submit"
-      id="mine-record-submit"
-      loading={false}
-      type="primary"
-    >
-      mockTitle
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonText="mockTitle"
+    />
   </div>
 </Connect(ReduxForm)>
 `;

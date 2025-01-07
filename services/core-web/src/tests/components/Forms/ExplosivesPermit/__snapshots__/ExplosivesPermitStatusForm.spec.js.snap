@@ -2,6 +2,7 @@
 
 exports[`ExplosivesPermitStatusForm renders properly 1`] = `
 <Connect(ReduxForm)
+  isModal={true}
   name="EDIT_EXPLOSIVES_PERMIT_STATUS"
   onSubmit={[MockFunction]}
   reduxFormConfig={
@@ -57,30 +58,10 @@ exports[`ExplosivesPermitStatusForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      disabled={false}
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile"
-        disabled={false}
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile"
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      Close Permit
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonText="Close Permit"
+    />
   </div>
 </Connect(ReduxForm)>
 `;

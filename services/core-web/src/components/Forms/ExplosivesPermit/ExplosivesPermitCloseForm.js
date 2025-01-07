@@ -1,28 +1,28 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
-import { Button, Col, Row, Popconfirm, Typography } from "antd";
+import { Col, Row, Typography } from "antd";
 import { dateTimezoneRequired, dateNotInFutureTZ, required } from "@mds/common/redux/utils/Validate";
-import { resetForm, normalizeDatetime } from "@common/utils/helpers";
+import { normalizeDatetime } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import RenderDateTimeTz from "@mds/common/components/forms/RenderDateTimeTz";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
 };
 
 export const ExplosivesPermitCloseForm = (props) => {
   return (
     <FormWrapper onSubmit={props.onSubmit}
+      isModal
       name={FORM.EXPLOSIVES_PERMIT_CLOSE}
       reduxFormConfig={{
         touchOnBlur: false,
         enableReinitialize: true,
-        onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT_CLOSE),
       }}
     >
       <Row gutter={16}>
@@ -64,21 +64,8 @@ export const ExplosivesPermitCloseForm = (props) => {
         </Col>
       </Row>
       <div className="right center-mobile">
-        <Popconfirm
-          placement="topRight"
-          title="Are you sure you want to cancel?"
-          onConfirm={props.closeModal}
-          okText="Yes"
-          cancelText="No"
-          disabled={props.submitting}
-        >
-          <Button className="full-mobile" type="secondary" disabled={props.submitting}>
-            Cancel
-          </Button>
-        </Popconfirm>
-        <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
-          Close Permit
-        </Button>
+        <RenderCancelButton />
+        <RenderSubmitButton buttonText="Close Permit" />
       </div>
     </FormWrapper>
   );

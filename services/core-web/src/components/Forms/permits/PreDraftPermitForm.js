@@ -54,6 +54,7 @@ export const PreDraftPermitForm = (props) => {
       props.permits.find((p) => p.permit_guid === props.formValues?.permit_guid)
     )
   );
+  const formName = FORM.PRE_DRAFT_PERMIT;
 
   useEffect(() => {
     setApplicationTypeToPermitMismatch(
@@ -68,10 +69,10 @@ export const PreDraftPermitForm = (props) => {
     const isNewPermit = props.formValues?.type_of_application === "New Permit";
     setIsAmendment(!isNewPermit);
     if (!isNewPermit) {
-      props.change("permit_amendment_type_code", permitType);
+      props.change(formName, "permit_amendment_type_code", permitType);
     }
     if (props.isCoalOrMineral && isNewPermit) {
-      props.change("is_exploration", null);
+      props.change(formName, "is_exploration", null);
     }
   }, [props.formValues?.type_of_application]);
 
@@ -88,7 +89,7 @@ export const PreDraftPermitForm = (props) => {
             ? PERMIT_AMENDMENT_TYPES.amalgamated
             : PERMIT_AMENDMENT_TYPES.amendment;
         setPermitType(selectedPermitType);
-        props.change("permit_amendment_type_code", selectedPermitType);
+        props.change(formName, "permit_amendment_type_code", selectedPermitType);
       }
     }
   };
@@ -144,7 +145,6 @@ export const PreDraftPermitForm = (props) => {
           destroyOnUnmount: false,
           forceUnregisterOnUnmount: true,
           enableReinitialize: true,
-          onSubmitSuccess: resetForm(FORM.PRE_DRAFT_PERMIT),
         }}
       >
         <Row gutter={16}>
