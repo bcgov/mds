@@ -137,7 +137,7 @@ export const MinesPage = () => {
                 ],
               }}
             >
-              <Button className="mine-page-dropdown">Manage My Mines</Button>
+              <Button type="primary">Manage My Mines</Button>
             </Dropdown>
           </Col>
         </Row>

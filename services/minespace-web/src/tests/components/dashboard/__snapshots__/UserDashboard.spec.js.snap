@@ -39,7 +39,7 @@ exports[`UserDashboard renders properly 1`] = `
         class="ant-col"
       >
         <button
-          class="ant-btn ant-btn-default ant-dropdown-trigger mine-page-dropdown"
+          class="ant-btn ant-btn-primary ant-dropdown-trigger"
           type="button"
         >
           <span>
