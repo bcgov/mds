@@ -109,10 +109,11 @@ export const MinesPage = () => {
                     key: "add",
                     label: (
                       <Button
+                        className="actions-dropdown-button menu-item-button fa-icon-container"
                         type="link"
                         href="https://submit.digital.gov.bc.ca/app/form/submit?f=0cdcf6c4-bbad-429e-b17b-4031d8960ae3"
                         target="_blank"
-                        icon={<FontAwesomeIcon icon={faPlus} className="margin-medium--right" />}
+                        icon={<FontAwesomeIcon icon={faPlus} />}
                       >
                         Request Access To Mine
                       </Button>
@@ -122,7 +123,7 @@ export const MinesPage = () => {
                     key: "remove",
                     label: (
                       <Button
-                        className="mines-page-remove-mine-link"
+                        className="actions-dropdown-button menu-item-button fa-icon-container color-error"
                         type="link"
                         href="https://submit.digital.gov.bc.ca/app/form/submit?f=85bbab24-2f58-4b68-9687-659b2c9c1978"
                         target="_blank"
