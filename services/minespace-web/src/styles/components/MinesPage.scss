@@ -1,0 +1,20 @@
+@use "../base.scss" as *;
+
+.mines-page-mine-section {
+  border: $non-textual-grey solid 1px;
+  border-radius: 3px;
+  padding: 20px;
+}
+
+.mine-page-dropdown {
+  color: $white;
+  background-color: $gov-blue;
+  &:hover {
+    color: $white;
+    background-color: $gov-blue; // Same background-color on hover
+  }
+}
+
+.mines-page-remove-mine-link {
+  color: $alert-red !important;
+}
