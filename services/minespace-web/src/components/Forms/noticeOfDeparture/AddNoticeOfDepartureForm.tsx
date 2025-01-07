@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { change, Field, FieldArray, FieldArrayFieldsProps } from "redux-form";
-import { Alert, Button, Col, Popconfirm, Row, Typography } from "antd";
+import { Alert, Col, Row, Typography } from "antd";
 import {
   email,
   maxLength,
@@ -14,7 +14,6 @@ import {
   NOD_TYPE_FIELD_VALUE,
   NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
 } from "@mds/common/constants/strings";
-import { bindActionCreators, compose } from "redux";
 import { DOCUMENT, EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
 import { NOTICE_OF_DEPARTURE_DOWNLOAD_LINK } from "@/constants/strings";
 import { renderConfig } from "@/components/common/config";
@@ -29,8 +28,10 @@ import {
   INoDPermit,
 } from "@mds/common";
 import { AxiosResponse } from "axios";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 
 interface RenderContactsProps {
   fields: FieldArrayFieldsProps<INoDContactInterface>;
@@ -47,9 +48,7 @@ interface AddNoticeOfDepartureProps {
     values: ICreateNoD,
     documentArray: INodDocumentPayload[]
   ) => Promise<AxiosResponse<INoticeOfDeparture>>;
-  closeModal: () => void;
   mineGuid: string;
-  change?: (fieldName: string, value: any) => void;
   initialValues: AddNoticeOfDepartureFormProps;
 }
 
@@ -116,13 +115,16 @@ export const renderContacts: React.FC<RenderContactsProps> = (props) => {
 };
 
 const AddNoticeOfDepartureForm: React.FC<AddNoticeOfDepartureProps> = (props) => {
-  const { permits, onSubmit, closeModal, mineGuid, change } = props;
+  const { permits, onSubmit, mineGuid } = props;
   const [submitting, setSubmitting] = useState(false);
   const [hasChecklist, setHasChecklist] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [permitOptions, setPermitOptions] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [documentArray, setDocumentArray] = useState([]);
+  const dispatch = useDispatch();
+
+  const formName = FORM.ADD_NOTICE_OF_DEPARTURE;
 
   useEffect(() => {
     if (permits.length > 0) {
@@ -133,7 +135,7 @@ const AddNoticeOfDepartureForm: React.FC<AddNoticeOfDepartureProps> = (props) =>
         }))
       );
     }
-    change("uploadedFiles", []);
+    dispatch(change(formName, "uploadedFiles", []));
   }, []);
 
   const handleNoticeOfDepartureSubmit = (values) => {
@@ -164,20 +166,20 @@ const AddNoticeOfDepartureForm: React.FC<AddNoticeOfDepartureProps> = (props) =>
       },
     ]);
     if (documentType === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
-      change("self-assessment", documentName);
+      dispatch(change(formName, "self-assessment", documentName));
       setHasChecklist(true);
     }
   };
 
   useEffect(() => {
-    change("uploadedFiles", documentArray);
+    dispatch(change(formName, "uploadedFiles", documentArray));
   }, [documentArray]);
 
   const onRemoveFile = (_, fileItem) => {
     const removedDoc = documentArray.find((doc) => doc.document_manager_guid === fileItem.serverId);
     if (removedDoc?.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
       setHasChecklist(false);
-      change("self-assessment", null);
+      dispatch(change(formName, "self-assessment", null));
     }
     setDocumentArray(
       documentArray.filter((document) => document.document_manager_guid !== fileItem.serverId)
@@ -360,38 +362,12 @@ const AddNoticeOfDepartureForm: React.FC<AddNoticeOfDepartureProps> = (props) =>
           />
         </div>
         <div className="ant-modal-footer">
-          <Popconfirm
-            placement="top"
-            title="Are you sure you want to cancel?"
-            okText="Yes"
-            cancelText="No"
-            onConfirm={closeModal}
-            disabled={submitting}
-          >
-            <Button disabled={submitting}>Cancel</Button>
-          </Popconfirm>
-          <Button
-            disabled={submitting || !hasChecklist || uploading}
-            type="primary"
-            className="full-mobile margin-small"
-            htmlType="submit"
-          >
-            Submit
-          </Button>
+          <RenderCancelButton />
+          <RenderSubmitButton disabled={submitting || !hasChecklist || uploading} />
         </div>
       </FormWrapper>
     </div>
   );
 };
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      change,
-    },
-    dispatch
-  );
-
-export default compose(connect(mapDispatchToProps))(
-  AddNoticeOfDepartureForm as any
-) as React.FC<AddNoticeOfDepartureProps>;
+export default AddNoticeOfDepartureForm;

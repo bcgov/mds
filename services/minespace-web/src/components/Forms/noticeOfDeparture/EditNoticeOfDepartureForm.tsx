@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { change, Field, FieldArray, getFormSyncErrors } from "redux-form";
+import { change, Field, FieldArray, getFormSyncErrors, isPristine } from "redux-form";
 import { Alert, Button, Col, Popconfirm, Row, Typography } from "antd";
 import { maxLength, required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
@@ -18,8 +18,8 @@ import { documentSection } from "@/components/dashboard/mine/noticeOfDeparture/N
 import NoticeOfDepartureCallout from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureCallout";
 import { renderContacts } from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
 import { INodDocumentPayload, INoticeOfDeparture, NodStatusSaveEnum } from "@mds/common";
-import { bindActionCreators, compose } from "redux";
-import { connect } from "react-redux";
+import { compose } from "redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
@@ -29,7 +29,6 @@ interface EditNoticeOfDepartureFormProps {
   onSubmit: (nod_guid: string, values: any, documentArray: INodDocumentPayload[]) => any;
   mineGuid: string;
   noticeOfDeparture: INoticeOfDeparture;
-  change?: (field: string, value: any) => void;
 }
 
 const EditNoticeOfDepartureForm: React.FC<EditNoticeOfDepartureFormProps> = (props) => {
@@ -40,8 +39,9 @@ const EditNoticeOfDepartureForm: React.FC<EditNoticeOfDepartureFormProps> = (pro
   const [documentArray, setDocumentArray] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [hasChecklist, setHasChecklist] = useState(false);
-
+  const dispatch = useDispatch();
   const formName = FORM.EDIT_NOTICE_OF_DEPARTURE;
+  const pristine = useSelector(isPristine(formName));
 
   const checklist = noticeOfDeparture.documents.find(
     (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
@@ -84,20 +84,20 @@ const EditNoticeOfDepartureForm: React.FC<EditNoticeOfDepartureFormProps> = (pro
       },
     ]);
     if (documentType === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
-      props.change(formName, "self-assessment", documentName);
+      dispatch(change(formName, "self-assessment", documentName));
       setHasChecklist(true);
     }
   };
 
   useEffect(() => {
-    props.change(formName, "uploadedFiles", documentArray);
+    dispatch(change(formName, "uploadedFiles", documentArray));
   }, [documentArray]);
 
   const onRemoveFile = (_, fileItem) => {
     const removedDoc = documentArray.find((doc) => doc.document_manager_guid === fileItem.serverId);
     if (removedDoc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
       setHasChecklist(false);
-      props.change(formName, "self-assessment", null);
+      dispatch(change(formName, "self-assessment", null));
     }
     setDocumentArray(
       documentArray.filter((document) => document.document_manager_guid !== fileItem.serverId)
@@ -316,9 +316,9 @@ const EditNoticeOfDepartureForm: React.FC<EditNoticeOfDepartureFormProps> = (pro
           <RenderCancelButton />
           <RenderSubmitButton
             buttonText="Submit Notice of Departure"
-            buttonProps={{
-              disabled: submitting || uploading || documentArray.length === 0 || !hasChecklist,
-            }}
+            disabled={
+              submitting || uploading || (pristine && documentArray.length === 0) || !hasChecklist
+            }
           />
         </div>
       </FormWrapper>
@@ -331,14 +331,6 @@ const mapStateToProps = (state) => ({
   logFormErrors: getFormSyncErrors(FORM.EDIT_NOTICE_OF_DEPARTURE)(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      change,
-    },
-    dispatch
-  );
-
-export default compose(connect(mapStateToProps, mapDispatchToProps))(
+export default compose(connect(mapStateToProps))(
   EditNoticeOfDepartureForm as any
 ) as React.FC<EditNoticeOfDepartureFormProps>;
