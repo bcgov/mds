@@ -5,7 +5,6 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
   className="work-information-container "
 >
   <Connect(ReduxForm)
-    isModal={true}
     name="EDIT_EMPLOYEE_COUNT_FORM"
     onSubmit={[MockFunction]}
     reduxFormConfig={
@@ -14,6 +13,7 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
         "touchOnBlur": false,
       }
     }
+    scrollOnToggleEdit={false}
   >
     <ForwardRef
       level={4}

@@ -22,7 +22,7 @@ export const EditWorkerInformationForm = (props) => (
     <FormWrapper
       name={FORM.EDIT_EMPLOYEE_COUNT}
       onSubmit={props.onSubmit}
-      isModal
+      scrollOnToggleEdit={false}
       initialValues={props.initialValues}
       reduxFormConfig={{
         touchOnBlur: false,

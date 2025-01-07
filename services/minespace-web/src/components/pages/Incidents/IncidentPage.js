@@ -241,6 +241,7 @@ export const IncidentPage = (props) => {
     return props.openModal({
       props: {
         onSubmit: handleSaveData,
+        closeModal: props.closeModal,
         onCancel: props.closeModal,
         mineGuid: incident?.mine_guid,
         title: modalTitle,

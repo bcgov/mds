@@ -32,8 +32,8 @@ export const AddMineWorkInformationForm = (props) => {
   return (
     <FormWrapper
       onSubmit={props.onSubmit}
-      isModal
       initialValues={props.initialValues}
+      scrollOnToggleEdit={false}
       name={FORM.ADD_MINE_WORK_INFORMATION}
       reduxFormConfig={{
         touchOnBlur: false,

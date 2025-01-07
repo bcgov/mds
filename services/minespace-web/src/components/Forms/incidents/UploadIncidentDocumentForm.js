@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Field, getFormValues } from "redux-form";
+import { Field, getFormValues, change } from "redux-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Row, Typography, Form } from "antd";
 import { required } from "@mds/common/redux/utils/Validate";
@@ -16,6 +16,7 @@ import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton"
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   subTitle: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   mineGuid: PropTypes.string.isRequired,
@@ -23,7 +24,7 @@ const propTypes = {
 };
 
 const UploadIncidentDocumentForm = (props) => {
-  const { onSubmit } = props;
+  const { onSubmit, closeModal } = props;
   const dispatch = useDispatch();
   const formValues = useSelector(getFormValues(FORM.UPLOAD_INCIDENT_DOCUMENT)) || {};
   const incidentFormValues = useSelector(getFormValues(FORM.ADD_EDIT_INCIDENT)) || {};
@@ -74,6 +75,7 @@ const UploadIncidentDocumentForm = (props) => {
       <FormWrapper
         onSubmit={handleUploadDocumentsSubmit}
         isModal
+        scrollOnToggleEdit={false}
         name={FORM.UPLOAD_INCIDENT_DOCUMENT}
         initialValues={{
           [INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD]: [],
@@ -110,7 +112,10 @@ const UploadIncidentDocumentForm = (props) => {
         </Row>
         <div className="right center-mobile">
           <RenderCancelButton />
-          <RenderSubmitButton disabled={formValues?.[formFieldName]?.length === 0} />
+          <RenderSubmitButton
+            disabled={formValues?.[formFieldName]?.length === 0}
+            buttonText="Finish Upload"
+          />
         </div>
       </FormWrapper>
     </div>

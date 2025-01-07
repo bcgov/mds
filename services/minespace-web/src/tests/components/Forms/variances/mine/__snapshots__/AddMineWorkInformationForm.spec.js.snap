@@ -3,7 +3,6 @@
 exports[`AddMineWorkInformationForm renders properly 1`] = `
 <Connect(ReduxForm)
   initialValues={Object {}}
-  isModal={true}
   name="ADD_MINE_WORK_INFORMATION"
   onSubmit={[MockFunction]}
   reduxFormConfig={
@@ -12,6 +11,7 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
       "touchOnBlur": false,
     }
   }
+  scrollOnToggleEdit={false}
 >
   <Row
     gutter={16}

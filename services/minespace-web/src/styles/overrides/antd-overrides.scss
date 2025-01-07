@@ -595,6 +595,8 @@ th.ant-descriptions-item.vertical-description {
 .ant-picker {
   width: 100%;
   @extend .ant-input;
+  border: 1px solid $normal-color;
+  border-radius: 2px;
 }
 
 // Picker time
