@@ -150,7 +150,6 @@ export const ProjectManagement: FC = () => {
                   renderEditor={true}
                   onSubmit={submitComment}
                   loading={false}
-                  maxLength={500}
                   comments={ministryComments?.map((comment: IProjectSummaryMinistryComment) => ({
                     key: comment.project_summary_ministry_comment_guid,
                     author: comment.update_user,

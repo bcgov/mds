@@ -12,7 +12,7 @@ interface CommentEditorProps {
 export const CommentEditor: FC<CommentEditorProps> = ({
   onSubmit,
   addCommentPermission,
-  maxLength = 300,
+  maxLength = 500,
 }) => {
   const [submitting, setSubmitting] = React.useState(false);
   const [comment, setComment] = React.useState("");
