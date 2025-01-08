@@ -75,13 +75,12 @@
 
   &.ant-btn-danger,
   &.ant-btn-dangerous {
-    color: $danger-btn-color;
+    color: $pure-white;
     border: 1px solid $danger-btn-color;
 
     &:hover,
     &:focus {
-      color: $danger-btn-color-hover;
-      border: 1px solid $danger-btn-color-hover;
+      color: $pure-white;
     }
 
     &:disabled {

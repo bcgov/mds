@@ -41,7 +41,6 @@ import NoPermitRequiredSelectionModal from "./NoPermitRequiredSelectionModal";
 import AddExplosivesPermitModal from "./AddExplosivesPermitModal";
 import ExplosivesPermitApplicationDecisionModal from "./ExplosivesPermitApplicationDecisionModal";
 import ViewMagazineModal from "./ViewMagazineModal";
-import ExplosivesPermitStatusModal from "./ExplosivesPermitStatusModal";
 import ExplosivesPermitCloseModal from "./ExplosivesPermitCloseModal";
 import ExplosivesPermitViewModal from "@mds/common/components/explosivespermits/ExplosivesPermitViewModal";
 import MergePartyConfirmationModal from "./MergePartyConfirmationModal";
@@ -106,7 +105,6 @@ export const modalConfig = {
   EXPLOSIVES_PERMIT_DECISION_MODAL: ExplosivesPermitApplicationDecisionModal,
   EXPLOSIVES_PERMIT_VIEW_MODAL: ExplosivesPermitViewModal,
   VIEW_MAGAZINE_MODAL: ViewMagazineModal,
-  EXPLOSIVES_PERMIT_STATUS_MODAL: ExplosivesPermitStatusModal,
   EXPLOSIVES_PERMIT_CLOSE_MODAL: ExplosivesPermitCloseModal,
   UPDATE_NOW_DATE_MODAL: UpdateNoWDateModal,
   EMLI_CONTACT_MODAL: EMLIContactModal,

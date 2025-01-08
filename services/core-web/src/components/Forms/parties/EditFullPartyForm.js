@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Field, getFormValues } from "redux-form";
-import { Col, Row, Button, Popconfirm, Descriptions, Typography, Divider } from "antd";
+import { Col, Row, Descriptions, Typography, Divider } from "antd";
 import { isEmpty } from "lodash";
 import {
   required,
@@ -463,7 +463,7 @@ export const EditFullPartyForm = (props) => {
         )}
         <div className="right center-mobile">
           <RenderCancelButton />
-          <RenderSubmitButton buttonText={isPerson ? "Update Person" : "Update Organization"} />
+          <RenderSubmitButton buttonText={isPerson ? "Update Person" : "Update Organization"} disableOnClean={false} />
         </div>
       </FormWrapper>
     </div>

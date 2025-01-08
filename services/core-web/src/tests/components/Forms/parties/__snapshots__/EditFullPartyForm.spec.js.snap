@@ -1199,7 +1199,6 @@ exports[`EditFullPartyForm renders properly 1`] = `
         <button
           aria-label="Submit"
           class="ant-btn ant-btn-primary  form-btn"
-          disabled=""
           type="submit"
         >
           <span>

@@ -33,7 +33,9 @@ exports[`MineReportInfo renders properly 1`] = `
       class="ant-form ant-form-vertical common-form common-form-FILTER_REPORTS form-edit"
       id="FILTER_REPORTS"
     >
-      <div>
+      <div
+        class="hide-required-indicator"
+      >
         <div
           class="ant-row"
           style="margin-left: -8px; margin-right: -8px;"

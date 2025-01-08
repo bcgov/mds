@@ -137,7 +137,7 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
       initialValues={initialValues}
       onReset={onReset}
     >
-      <div>
+      <div className="hide-required-indicator">
         <Row gutter={16}>
           <Col md={8} sm={24}>
             <Field

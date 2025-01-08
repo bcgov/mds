@@ -9,7 +9,7 @@ import { renderConfig } from "@/components/common/config";
 import { TRASHCAN } from "@/constants/assets";
 import * as FORM from "@/constants/forms";
 import ExplosivesPermitFileUpload from "@/components/Forms/ExplosivesPermit/ExplosivesPermitFileUpload";
-import { Feature, IExplosivesPermitDocument, IOption, isFeatureEnabled } from "@mds/common";
+import { IExplosivesPermitDocument, IOption } from "@mds/common";
 
 interface DocumentCategoryFormProps {
   documents: IExplosivesPermitDocument[];
@@ -36,9 +36,7 @@ export const DocumentCategoryForm: FC<DocumentCategoryFormProps> = ({
   // File upload handlers
   const onFileLoad = (fileName, document_manager_guid) => {
     props.arrayPush(
-      isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
-        ? FORM.EXPLOSIVES_PERMIT_NEW
-        : FORM.EXPLOSIVES_PERMIT,
+      FORM.EXPLOSIVES_PERMIT_NEW,
       "documents",
       {
         document_name: fileName,
@@ -50,9 +48,7 @@ export const DocumentCategoryForm: FC<DocumentCategoryFormProps> = ({
   const onRemoveFile = (err, fileItem) => {
     remove(documents, { document_manager_guid: fileItem.serverId });
     return props.change(
-      isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
-        ? FORM.EXPLOSIVES_PERMIT_NEW
-        : FORM.EXPLOSIVES_PERMIT,
+      FORM.EXPLOSIVES_PERMIT_NEW,
       "documents",
       documents
     );

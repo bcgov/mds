@@ -30,9 +30,8 @@ import AddButton from "@/components/common/buttons/AddButton";
 import MineExplosivesPermitTable from "@/components/mine/ExplosivesPermit/MineExplosivesPermitTable";
 import { modalConfig } from "@/components/modalContent/config";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
-import { Feature, IExplosivesPermit, IGroupedDropdownList, IMine, IOption } from "@mds/common";
+import { IExplosivesPermit, IGroupedDropdownList, IMine, IOption } from "@mds/common";
 import { EsupFormMode } from "@/components/Forms/ExplosivesPermit/ExplosivesPermitFormNew";
-import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 interface ExplosivesPermitProps {
   isPermitTab: boolean;
@@ -71,7 +70,6 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   closeModal,
   ...props
 }) => {
-  const { isFeatureEnabled } = useFeatureFlag();
 
   const handleIssueExplosivesPermit = async (values, record) => {
     const payload = { ...record, ...values, application_status: "APP" };
@@ -198,12 +196,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
 
     props.openModal({
       props: {
-        onSubmit: (values) => {
-          // after feature flag removed, this will ONLY be used for new records and can be simplified. ("Add" button on table)
-          return record && !isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
-            ? handleUpdateExplosivesPermit(values)
-            : handleAddExplosivesPermit(values);
-        },
+        onSubmit: handleAddExplosivesPermit,
         title: "Add Permit",
         initialValues,
         documents: record?.documents ?? [],
@@ -295,21 +288,6 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     });
   };
 
-  const handleOpenExplosivesPermitStatusModal = (event, record = null) => {
-    const initialValues = record || {};
-    delete initialValues.application_status;
-    event.preventDefault();
-    props.openModal({
-      props: {
-        onSubmit: handleUpdateExplosivesPermit,
-        title: "Update Explosives Permit Status",
-        initialValues,
-        mineGuid,
-      },
-      content: modalConfig.EXPLOSIVES_PERMIT_STATUS_MODAL,
-    });
-  };
-
   const handleOpenExplosivesPermitCloseModal = (event, record = null) => {
     let initialValues = record || {};
     event.preventDefault();
@@ -394,13 +372,11 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         data={data}
         isPermitTab={isPermitTab}
         handleOpenExplosivesPermitDecisionModal={handleOpenExplosivesPermitDecisionModal}
-        handleOpenAddExplosivesPermitModal={handleOpenAddExplosivesPermitModal}
         handleOpenEditExplosivesPermitModal={handleOpenEditExplosivesPermitModal}
         handleOpenViewMagazineModal={handleOpenViewMagazineModal}
         handleOpenViewExplosivesPermitModal={handleOpenViewExplosivesPermitModal}
         explosivesPermitStatusOptionsHash={props.explosivesPermitStatusOptionsHash}
         explosivesPermitDocumentTypeOptionsHash={props.explosivesPermitDocumentTypeOptionsHash}
-        handleOpenExplosivesPermitStatusModal={handleOpenExplosivesPermitStatusModal}
         handleDeleteExplosivesPermit={handleDeleteExplosivesPermit}
         handleOpenAmendExplosivesPermitModal={handleOpenAmendExplosivesPermitModal}
       />

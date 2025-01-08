@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { compose } from "redux";
 import {
   Field,
@@ -7,7 +7,7 @@ import {
   getFormValues,
   change,
 } from "redux-form";
-import { Alert, Button, Col, Row, Table, Typography, Radio, Form } from "antd";
+import { Alert, Button, Col, Row, Table, Typography, Radio, Form, Popconfirm } from "antd";
 import {
   IPermit,
   IExplosivesPermit,
@@ -44,6 +44,8 @@ import ExplosivesPermitMap from "@mds/common/components/explosivespermits/Explos
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
+import { resetForm } from "@mds/common/redux/utils/helpers";
+import { closeModal } from "@mds/common/redux/actions/modalActions";
 
 export enum EsupFormMode {
   select_type_modal,
@@ -54,7 +56,7 @@ export enum EsupFormMode {
 }
 
 interface ExplosivesPermitFormProps {
-  closeModal: () => void;
+  onSubmit: any;
   initialValues: any;
   mineGuid: string;
   documentTypeDropdownOptions: IOption[];
@@ -62,7 +64,6 @@ interface ExplosivesPermitFormProps {
   formMode?: EsupFormMode;
   inspectors: IGroupedDropdownList[];
   documents: IExplosivesPermitDocument[];
-  dispatch: any;
 }
 
 interface StateProps {
@@ -71,7 +72,6 @@ interface StateProps {
   formValues: IExplosivesPermit;
   allPartyRelationships: IPermitPartyRelationship[];
   noticeOfWorkApplications: IimportedNOWApplication[];
-  onSubmit: any;
 }
 
 export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
@@ -82,6 +82,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
     documents,
     ...props
   }) => {
+    const dispatch = useDispatch();
     const [generatedDocs, setGeneratedDocs] = useState([]);
     const [supportingDocs, setSupportingDocs] = useState([]);
 
@@ -110,7 +111,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
 
     useEffect(() => {
       if (currentFormMode === EsupFormMode.select_type_modal) {
-        props.dispatch(change(FORM.EXPLOSIVES_PERMIT_NEW, "is_historic", isHistoric));
+        dispatch(change(FORM.EXPLOSIVES_PERMIT_NEW, "is_historic", isHistoric));
       }
     }, [isHistoric]);
 
@@ -169,7 +170,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
     const cancelButtonText = showBackButton ? "Back" : "Close";
     const cancelButtonFunc = showBackButton
       ? () => setCurrentFormMode(EsupFormMode.select_type_modal)
-      : props.closeModal;
+      : () => dispatch(closeModal());
 
     const descriptionListElement = (
       <div>
@@ -260,7 +261,17 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
           )}
         </div>
         <div className="right center-mobile" style={{ paddingTop: "14px" }}>
-          <RenderCancelButton />
+          <Popconfirm
+            placement="topRight"
+            title="Are you sure you want to cancel?"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={() => dispatch(closeModal())}
+          >
+            <Button className="full-mobile" type="ghost">
+              Cancel
+            </Button>
+          </Popconfirm>
           <Button
             disabled={isAmendSelected}
             type="primary"
@@ -339,9 +350,11 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
 
     const permitForm = (
       <FormWrapper
+        initialValues={{ ...initialValues, is_historic: isHistoric }}
         name={FORM.EXPLOSIVES_PERMIT_NEW}
         reduxFormConfig={{
           touchOnBlur: true,
+          onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT_NEW)
         }}
         onSubmit={props.onSubmit}>
         <Alert
@@ -584,7 +597,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
         </Row>
         <Row className="flex-between form-button-container-row">
           <RenderCancelButton buttonText={cancelButtonText} cancelFunction={cancelButtonFunc} />
-          <RenderSubmitButton loading={isDocumentUploading} buttonText={showIssueModal ? "Finish And Generate Certificate" : "Submit"} />
+          <RenderSubmitButton loading={isDocumentUploading} buttonText={showIssueModal ? "Finish And Generate Certificate" : "Submit"} disableOnClean={false} />
         </Row>
       </FormWrapper>
     );

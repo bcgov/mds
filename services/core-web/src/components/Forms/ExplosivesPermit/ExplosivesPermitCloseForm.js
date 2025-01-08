@@ -13,11 +13,13 @@ import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton"
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
 };
 
 export const ExplosivesPermitCloseForm = (props) => {
   return (
     <FormWrapper onSubmit={props.onSubmit}
+      initialValues={props.initialValues}
       isModal
       name={FORM.EXPLOSIVES_PERMIT_CLOSE}
       reduxFormConfig={{
