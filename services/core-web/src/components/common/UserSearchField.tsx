@@ -73,6 +73,8 @@ export const UserSelectField: FC<UserSelectFieldProps> = ({
   };
 
   const validateOption = (value: any) => {
+    if (initialDataSource.length && initialDataSource.find((user) => user.value)) return undefined;
+
     if (
       value &&
       userDataSource &&
