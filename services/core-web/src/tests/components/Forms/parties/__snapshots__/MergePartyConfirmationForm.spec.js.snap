@@ -907,7 +907,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
       >
         <button
           aria-label="Cancel"
-          class="ant-btn ant-btn-default core-btn core-btn-default"
+          class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
           type="button"
         >
           <span>

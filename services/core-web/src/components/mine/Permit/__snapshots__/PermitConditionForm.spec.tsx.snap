@@ -173,7 +173,7 @@ exports[`PermitConditionForm renders properly in edit mode 1`] = `
           >
             <button
               aria-label="Cancel"
-              class="ant-btn ant-btn-primary ant-btn-icon-only core-btn core-btn-primary"
+              class="ant-btn ant-btn-primary ant-btn-icon-only core-btn core-btn-primary  form-btn"
               type="button"
             >
               <svg
@@ -199,7 +199,7 @@ exports[`PermitConditionForm renders properly in edit mode 1`] = `
           >
             <button
               aria-label="Submit"
-              class="ant-btn ant-btn-primary ant-btn-icon-only"
+              class="ant-btn ant-btn-primary ant-btn-icon-only  form-btn"
               disabled=""
               type="submit"
             >

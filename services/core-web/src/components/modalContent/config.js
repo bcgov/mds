@@ -10,7 +10,6 @@ import EditPartyModal from "./EditPartyModal";
 import AddVarianceModal from "./AddVarianceModal";
 import ViewVarianceModal from "./ViewVarianceModal";
 import EditVarianceModal from "./EditVarianceModal";
-import AddIncidentModal from "./AddIncidentModal";
 import AddReportModal from "./AddReportModal";
 import AddMineWorkInformationModal from "./AddMineWorkInformationModal";
 import EditNoticeOfWorkDocumentModal from "./EditNoticeOfWorkDocumentModal";
@@ -57,9 +56,6 @@ import UploadProjectDecisionPackageDocumentModal from "./UploadProjectDecisionPa
 import UpdateProjectDecisionPackageDocumentModal from "./UpdateProjectDecisionPackageDocumentModal";
 import AddMineAlertModal from "./AddMineAlertModal";
 import ViewPastMineAlertModal from "./ViewPastMineAlertModal";
-import ArchiveDocumentModal from "@common/components/documents/ArchiveDocumentModal";
-import DeleteDocumentModal from "@mds/common/components/documents/DeleteDocumentModal";
-import ReplaceDocumentModal from "@mds/common/components/documents/ReplaceDocumentModal";
 import UpdateMineReportSubmissionStatusModal from "./UpdateMineReportSubmissionStatusModal";
 import RevokeCredentialModal from "@/components/mine/DigitalPermitCredential/RevokeCredentialModal";
 import CredentialContentModal from "@/components/mine/DigitalPermitCredential/CredentialContentModal";
@@ -70,9 +66,6 @@ export const modalConfig = {
   ADD_PARTY_RELATIONSHIP: AddPartyRelationshipModal,
   ADD_QUICK_PARTY: AddQuickPartyModal,
   MERGE_PARTY_CONFIRMATION: MergePartyConfirmationModal,
-  ARCHIVE_DOCUMENT: ArchiveDocumentModal,
-  DELETE_DOCUMENT: DeleteDocumentModal,
-  REPLACE_DOCUMENT: ReplaceDocumentModal,
   EDIT_PARTY_RELATIONSHIP: EditPartyRelationshipModal,
   ADD_CONTACT: AddPartyModal,
   ADD_PERMIT: AddPermitModal,
@@ -82,7 +75,6 @@ export const modalConfig = {
   ADD_VARIANCE: AddVarianceModal,
   VIEW_VARIANCE: ViewVarianceModal,
   EDIT_VARIANCE: EditVarianceModal,
-  MINE_INCIDENT: AddIncidentModal,
   ADD_REPORT: AddReportModal,
   ADD_MINE_WORK_INFORMATION: AddMineWorkInformationModal,
   GENERATE_DOCUMENT: GenerateDocumentModal,

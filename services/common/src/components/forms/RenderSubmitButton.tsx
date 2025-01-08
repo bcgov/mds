@@ -27,7 +27,7 @@ const RenderSubmitButton: FC<RenderSubmitButtonProps> = ({
   const submitting = useSelector(isSubmitting(formName));
   const isFormDirty = useSelector(isDirty(formName));
   const disabled = props.disabled || submitting || (!isFormDirty && disableOnClean);
-  const className = `${buttonProps?.className} form-btn`;
+  const className = `${buttonProps?.className ?? ""} form-btn`;
 
   return (
     <>

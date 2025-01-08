@@ -69,7 +69,7 @@ const RenderCancelButton: FC<RenderCancelButtonProps> = ({
 
   const buttonType = buttonProps?.type ?? "default";
   const buttonLabel = isEditMode ? buttonText : viewButtonText;
-  const className = `${buttonProps?.className} form-btn`;
+  const className = `${buttonProps?.className ?? ""} form-btn`;
 
   return (
     <CoreButton aria-label="Cancel" {...buttonProps} className={className} type={buttonType} onClick={() => buttonCancelFunction()}>

@@ -185,7 +185,7 @@ exports[`UpdateStatusForm renders properly 1`] = `
                   </div>
                   <button
                     aria-label="Submit"
-                    class="ant-btn ant-btn-primary"
+                    class="ant-btn ant-btn-primary  form-btn"
                     disabled=""
                     type="submit"
                   >
