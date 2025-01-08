@@ -2,21 +2,13 @@ import React, { FC, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { Button, Col, Row, Typography } from "antd";
-import moment from "moment";
-import {
-  createMineReport,
-  fetchMineReports,
-  updateMineReport,
-} from "@mds/common/redux/actionCreators/reportActionCreator";
-import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
+import { fetchMineReports } from "@mds/common/redux/actionCreators/reportActionCreator";
 import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
-import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { IMine, IMineReport, IPageData, Feature } from "@mds/common";
+import { IMine, IMineReport, IPageData } from "@mds/common";
 import { Link, useHistory } from "react-router-dom";
 import * as routes from "@/constants/routes";
-import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Link as ScrollLink, Element } from "react-scroll";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
@@ -25,15 +17,11 @@ import * as Strings from "@mds/common/constants/strings";
 export const Reports: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { isFeatureEnabled } = useFeatureFlag();
-
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
   const pageData = useSelector(getReportsPageData);
-
   const mineReports: IMineReport[] = useSelector(getMineReports);
 
   const [isLoaded, setIsLoaded] = useState(false);
-  const [report, setReport] = useState(null);
   const [permitRequiredReports, setPermitRequiredReports] = useState<IMineReport[]>([]);
   const [codeRequiredReports, setCodeRequiredReports] = useState<IMineReport[]>([]);
   const defaultPageData = {
@@ -76,84 +64,9 @@ export const Reports: FC = () => {
     };
   }, []);
 
-  // TODO: remove with CODE_REQUIRED_REPORTS feature flag
-  const handleAddReport = async (values) => {
-    const formValues = values;
-    if (values.mine_report_submissions && values.mine_report_submissions.length > 0) {
-      formValues.received_date = moment().format("YYYY-MM-DD");
-    }
-
-    await dispatch(createMineReport(mine.mine_guid, formValues));
-    await dispatch(closeModal());
-    return dispatch(fetchMineReports(mine.mine_guid, null));
-  };
-
-  // TODO: remove with CODE_REQUIRED_REPORTS feature flag
-  const handleEditReport = async (values) => {
-    if (!values.mine_report_submissions || values.mine_report_submissions.length === 0) {
-      dispatch(closeModal());
-      return;
-    }
-
-    let payload: any = {
-      mine_report_submissions: [
-        ...values.mine_report_submissions,
-        {
-          documents:
-            values.mine_report_submissions[values.mine_report_submissions.length - 1].documents,
-        },
-      ],
-    };
-
-    if (
-      !report.received_date &&
-      values.mine_report_submissions &&
-      values.mine_report_submissions.length > 0
-    ) {
-      payload = { ...payload, received_date: moment().format("YYYY-MM-DD") };
-    }
-    await dispatch(updateMineReport(mine.mine_guid, report.mine_report_guid, payload));
-    await dispatch(closeModal());
-    return dispatch(fetchMineReports(mine.mine_guid, null));
-  };
-
   const openReport = (reportRecord: IMineReport) => {
     history.push(
       routes.REPORT_VIEW_EDIT.dynamicRoute(mine.mine_guid, reportRecord.mine_report_guid)
-    );
-  };
-
-  // TODO: remove with CODE_REQUIRED_REPORTS feature flag
-  const openAddReportModal = (event) => {
-    event.preventDefault();
-    dispatch(
-      openModal({
-        props: {
-          onSubmit: handleAddReport,
-          title: "Add Report",
-          mineGuid: mine.mine_guid,
-          width: "40vw",
-        },
-        content: modalConfig.ADD_REPORT,
-      })
-    );
-  };
-
-  // TODO: remove with CODE_REQUIRED_REPORTS feature flag
-  const openEditReportModal = (event, report) => {
-    event.preventDefault();
-    setReport(report);
-    dispatch(
-      openModal({
-        props: {
-          onSubmit: handleEditReport,
-          title: `Edit Report: ${report.report_name}`,
-          mineGuid: mine.mine_guid,
-          width: "40vw",
-          mineReport: report,
-        },
-        content: modalConfig.EDIT_REPORT,
-      })
     );
   };
 
@@ -182,23 +95,12 @@ export const Reports: FC = () => {
           <Col span={24}>
             <div>
               <AuthorizationWrapper>
-                {isFeatureEnabled(Feature.CODE_REQUIRED_REPORTS) ? (
-                  <Link to={routes.REPORTS_CREATE_NEW.dynamicRoute(mine.mine_guid)}>
-                    <Button className="dashboard-add-button" type="primary">
-                      <PlusCircleFilled />
-                      Submit Report
-                    </Button>
-                  </Link>
-                ) : (
-                  <Button
-                    type="primary"
-                    className="dashboard-add-button"
-                    onClick={(event) => openAddReportModal(event)}
-                  >
+                <Link to={routes.REPORTS_CREATE_NEW.dynamicRoute(mine.mine_guid)}>
+                  <Button className="dashboard-add-button" type="primary">
                     <PlusCircleFilled />
                     Submit Report
                   </Button>
-                )}
+                </Link>
               </AuthorizationWrapper>
             </div>
             <Typography.Title level={1} className="report-title">
@@ -234,7 +136,6 @@ export const Reports: FC = () => {
           <Col span={24}>
             <ReportsTable
               openReport={openReport}
-              openEditReportModal={openEditReportModal}
               mineReports={codeRequiredReports}
               isLoaded={isLoaded}
               backendPaginated
@@ -259,7 +160,6 @@ export const Reports: FC = () => {
             </Typography.Paragraph>
             <ReportsTable
               openReport={openReport}
-              openEditReportModal={openEditReportModal}
               mineReports={permitRequiredReports}
               isLoaded={isLoaded}
             />

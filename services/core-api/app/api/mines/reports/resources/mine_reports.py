@@ -47,7 +47,6 @@ class MineReportListResource(Resource, UserMixin):
         'received_date',
         location='json',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
-    parser.add_argument('mine_report_submissions', type=list, location='json')
     parser.add_argument('permit_condition_category_code', type=str, location='json')
     parser.add_argument('mine_report_status_code', type=str, location='json')
     parser.add_argument('description_comment', type=str, location='json')
@@ -193,61 +192,6 @@ class MineReportListResource(Resource, UserMixin):
             if mine_report_contacts:
                 mine_report.mine_report_contacts = mine_report_contacts
 
-        # TODO: remove following with CODE_REQUIRED_REPORTS feature flag (submissions, if submissions)
-        submissions = data.get('mine_report_submissions')
-        if submissions:
-            submission = submissions[-1]
-            if len(submission.get('documents')) > 0:
-                submission_status = data.get('mine_report_submission_status') if data.get(
-                    'mine_report_submission_status') else 'INI'
-                report_submission = MineReportSubmission(
-                    description_comment=mine_report.description_comment,
-                    due_date=mine_report.due_date,
-                    mine_guid=mine_report.mine_guid,
-                    mine_report_definition_id=mine_report.mine_report_definition_id,
-                    mine_report_id=mine_report.mine_report_id,
-                    mine_report_submission_status_code=submission_status,
-                    permit_condition_category_code=mine_report.permit_condition_category_code,
-                    permit_id=mine_report.permit_id,
-                    received_date=mine_report.received_date,
-                    submission_year=mine_report.submission_year,
-                    submitter_email=mine_report.submitter_email,
-                    submitter_name=mine_report.submitter_name,
-                    submission_date=datetime.utcnow())
-                for submission_doc in submission.get('documents'):
-                    mine_doc = MineDocument(
-                        mine_guid=mine.mine_guid,
-                        document_name=submission_doc['document_name'],
-                        document_manager_guid=submission_doc['document_manager_guid'])
-
-                    if not mine_doc:
-                        raise BadRequest('Unable to register uploaded file as document')
-
-                    mine_doc.save()
-
-                    report_submission.documents.append(mine_doc)
-
-                mine_report.mine_report_submissions.append(report_submission)
-                # TODO: remove following with CODE_REQUIRED_REPORTS feature flag (submissions, if submissions)
-        elif is_first_submission and is_code_required_report and not is_report_request:
-            # If this is the initial report, create a submission with the status
-            # of INI (Received)
-            initial_submission = MineReportSubmission(
-                description_comment=mine_report.description_comment,
-                due_date=mine_report.due_date,
-                mine_guid=mine_report.mine_guid,
-                mine_report_definition_id=mine_report.mine_report_definition_id,
-                mine_report_id=mine_report.mine_report_id,
-                permit_condition_category_code=mine_report.permit_condition_category_code,
-                permit_id=mine_report.permit_id,
-                received_date=mine_report.received_date,
-                submission_year=mine_report.submission_year,
-                submitter_email=mine_report.submitter_email,
-                submitter_name=mine_report.submitter_name,
-                mine_report_submission_status_code='INI',
-                submission_date=datetime.utcnow())
-
-            mine_report.mine_report_submissions.append(initial_submission)
         try:
             mine_report.save()
         except Exception as e:
@@ -277,7 +221,6 @@ class MineReportResource(Resource, UserMixin):
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
     parser.add_argument('submission_year', type=str, location='json', store_missing=False)
     parser.add_argument('mine_report_submission_status', type=str, location='json')
-    parser.add_argument('mine_report_submissions', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_REPORT_MODEL, code=200)
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
@@ -312,69 +255,6 @@ class MineReportResource(Resource, UserMixin):
         else:
             mine_report_submission_status = 'NRQ'
 
-        report_submissions = data.get('mine_report_submissions')
-        submission_iterator = iter(report_submissions)
-        new_submission = next(
-            (x for x in submission_iterator if x.get('mine_report_submission_guid') is None), None)
-        if new_submission is not None:
-            new_report_submission = MineReportSubmission(
-                description_comment=mine_report.description_comment,
-                due_date=mine_report.due_date,
-                mine_guid=mine_report.mine_guid,
-                mine_report_definition_id=mine_report.mine_report_definition_id,
-                mine_report_id=mine_report.mine_report_id,
-                permit_condition_category_code=mine_report.permit_condition_category_code,
-                permit_id=mine_report.permit_id,
-                received_date=mine_report.received_date,
-                submission_year=mine_report.submission_year,
-                submitter_email=mine_report.submitter_email,
-                submitter_name=mine_report.submitter_name,
-                submission_date=datetime.now(),
-                mine_report_submission_status_code=mine_report_submission_status)
-            # Copy the current list of documents for the report submission
-            last_submission_docs = mine_report.mine_report_submissions[-1].documents.copy() if len(
-                mine_report.mine_report_submissions) > 0 else []
-
-            # Gets the difference between the set of documents in the new submission and the last submission
-            new_docs = [
-                x for x in new_submission.get('documents') if not any(
-                    str(doc.document_manager_guid) == x['document_manager_guid']
-                    for doc in last_submission_docs)
-            ]
-            # Get the documents that were on the last submission but not part of the new submission
-            removed_docs = [
-                x for x in last_submission_docs
-                if not any(doc['document_manager_guid'] == str(x.document_manager_guid)
-                           for doc in new_submission.get('documents'))
-            ]
-            # Remove the deleted documents from the existing set.
-            for doc in removed_docs:
-                last_submission_docs.remove(doc)
-
-            if len(last_submission_docs) > 0:
-                new_report_submission.documents.extend(last_submission_docs)
-
-            for doc in new_docs:
-                mine_doc = MineDocument(
-                    mine_guid=mine.mine_guid,
-                    document_name=doc['document_name'],
-                    document_manager_guid=doc['document_manager_guid'])
-
-                if not mine_doc:
-                    raise BadRequest('Unable to register uploaded file as document')
-
-                mine_doc.save()
-
-                new_report_submission.documents.append(mine_doc)
-
-            mine_report.mine_report_submissions.append(new_report_submission)
-
-        # if the status has changed, update the status of the last submission
-        elif (len(mine_report.mine_report_submissions) >
-              0) and mine_report_submission_status != mine_report.mine_report_submissions[
-                  -1].mine_report_submission_status_code:
-            mine_report.mine_report_submissions[
-                -1].mine_report_submission_status_code = mine_report_submission_status
 
         try:
             mine_report.save()

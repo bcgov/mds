@@ -23,13 +23,11 @@ import { getReportSubmissionBadgeStatusType } from "@/constants/theme";
 import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import DownloadOutlined from "@ant-design/icons/DownloadOutlined";
-import EditOutlined from "@ant-design/icons/EditOutlined";
 import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
-import { Feature, USER_ROLES } from "@mds/common";
+import { USER_ROLES } from "@mds/common";
 import { getDocumentDownloadToken } from "@mds/common/redux/utils/actionlessNetworkCalls";
-import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { waitFor, downloadDocument } from "@/components/common/downloads/helpers";
 
 const propTypes = {
@@ -37,8 +35,6 @@ const propTypes = {
   mineReportCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineReportStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineReportDefinitionHash: PropTypes.objectOf(PropTypes.any).isRequired,
-  openEditReportModal: PropTypes.func.isRequired,
-  handleEditReport: PropTypes.func.isRequired,
   handleRemoveReport: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   handleTableChange: PropTypes.func,
@@ -51,7 +47,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  handleTableChange: () => {},
+  handleTableChange: () => { },
   filters: {},
   sortField: undefined,
   sortDir: undefined,
@@ -65,7 +61,6 @@ export const MineReportTable = (props) => {
   const userIsCoreEditReports = useSelector((state) =>
     userHasRole(state, USER_ROLES.role_edit_reports)
   );
-  const { isFeatureEnabled } = useFeatureFlag();
   const history = useHistory();
 
   const openReportPage = (mineReport) => {
@@ -101,20 +96,12 @@ export const MineReportTable = (props) => {
 
   const getRecordActions = () => {
     return [
-      isFeatureEnabled(Feature.CODE_REQUIRED_REPORTS) && {
+      {
         key: "view",
         label: "View",
         icon: <EyeOutlined />,
         clickFunction: (event, record) => {
           openReportPage(record);
-        },
-      },
-      !isFeatureEnabled(Feature.CODE_REQUIRED_REPORTS) && {
-        key: "edit",
-        label: "Edit",
-        icon: <EditOutlined />,
-        clickFunction: (event, record) => {
-          props.openEditReportModal(event, props.handleEditReport, record.report);
         },
       },
       {
@@ -142,9 +129,9 @@ export const MineReportTable = (props) => {
   const getComplianceCodeValue = (guid) => {
     return props.mineReportDefinitionHash && props.mineReportDefinitionHash[guid]
       ? formatComplianceCodeValueOrLabel(
-          props.mineReportDefinitionHash[guid].compliance_articles[0],
-          false
-        )
+        props.mineReportDefinitionHash[guid].compliance_articles[0],
+        false
+      )
       : null;
   };
 

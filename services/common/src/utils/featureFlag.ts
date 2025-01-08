@@ -15,7 +15,6 @@ export enum Feature {
   MINESPACE_ESUPS = "minespace_esups",
   REPORT_ERROR = "report_error",
   MAJOR_PROJECT_LINK_PROJECTS = "major_project_link_projects",
-  CODE_REQUIRED_REPORTS = "code_required_reports",
   AMS_AGENT = "ams_agent",
   HSRC_CODE_EDIT = "hsrc_code_edit",
   MULTIPART_UPLOAD = "s3_multipart_upload",

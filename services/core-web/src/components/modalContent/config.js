@@ -10,7 +10,6 @@ import EditPartyModal from "./EditPartyModal";
 import AddVarianceModal from "./AddVarianceModal";
 import ViewVarianceModal from "./ViewVarianceModal";
 import EditVarianceModal from "./EditVarianceModal";
-import AddReportModal from "./AddReportModal";
 import AddMineWorkInformationModal from "./AddMineWorkInformationModal";
 import EditNoticeOfWorkDocumentModal from "./EditNoticeOfWorkDocumentModal";
 import ChangeNOWMineModal from "./ChangeNOWMineModal";
@@ -75,7 +74,6 @@ export const modalConfig = {
   ADD_VARIANCE: AddVarianceModal,
   VIEW_VARIANCE: ViewVarianceModal,
   EDIT_VARIANCE: EditVarianceModal,
-  ADD_REPORT: AddReportModal,
   ADD_MINE_WORK_INFORMATION: AddMineWorkInformationModal,
   GENERATE_DOCUMENT: GenerateDocumentModal,
   EDIT_NOTICE_OF_WORK_DOCUMENT: EditNoticeOfWorkDocumentModal,
