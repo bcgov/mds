@@ -7,7 +7,6 @@ exports[`AddVarianceForm renders properly 1`] = `
   onSubmit={[Function]}
   reduxFormConfig={
     Object {
-      "onSubmitSuccess": [Function],
       "touchOnBlur": false,
     }
   }

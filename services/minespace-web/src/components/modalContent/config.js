@@ -12,7 +12,7 @@ import ImportIRTSuccessModal from "@/components/modalContent/informationRequirem
 import ImportIRTErrorModal from "@/components/modalContent/informationRequirementsTable/ImportIRTErrorModal";
 import ViewFileHistoryModal from "./informationRequirementsTable/ViewFileHistoryModal";
 import UploadIncidentDocumentModal from "@/components/modalContent/incidents/UploadIncidentDocumentModal";
-import CreateInvitationModal from "@/components/modalContent/verifiableCredentials/createInvitationModal";
+import CreateInvitationModal from "@/components/modalContent/verifiableCredentials/CreateInvitationModal";
 
 export const modalConfig = {
   ADD_REPORT: AddReportModal,

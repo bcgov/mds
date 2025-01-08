@@ -97,6 +97,7 @@ const DamForm: FC<DamFormProps> = (props) => {
             name="latitude"
             label="Latitude"
             component={renderConfig.FIELD}
+            required
             validate={[required, lat]}
             disabled={!canEditTSFAndEditMode}
           />

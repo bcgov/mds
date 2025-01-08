@@ -27,6 +27,7 @@ import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton"
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   initialPartyValue: PropTypes.objectOf(PropTypes.any).isRequired,
   title: PropTypes.string.isRequired,
   consequenceClassificationStatusCodeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem)
@@ -38,6 +39,7 @@ const propTypes = {
 export const AddTailingsForm = (props) => (
   <FormWrapper
     name={FORM.ADD_TAILINGS}
+    initialValues={props.initialValues}
     isModal
     onSubmit={props.onSubmit}
     reduxFormConfig={{

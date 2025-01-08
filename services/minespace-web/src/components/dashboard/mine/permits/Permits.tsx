@@ -1,22 +1,14 @@
 import React, { FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Row, Col, Typography, Button, Badge } from "antd";
+import { Row, Col, Typography } from "antd";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { fetchExplosivesPermits } from "@mds/common/redux/actionCreators/explosivesPermitActionCreator";
 import { openModal } from "@mds/common/redux/actions/modalActions";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
 import PermitsTable from "@/components/dashboard/mine/permits/PermitsTable";
-import {
-  Feature,
-  IExplosivesPermit,
-  IMine,
-  IPermit,
-  VC_CONNECTION_STATES,
-  isFeatureEnabled,
-} from "@mds/common";
+import { IExplosivesPermit, IMine, IPermit } from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
-import modalConfig from "@/components/modalContent/config";
 
 interface PermitsProps {
   mine: IMine;
@@ -37,24 +29,6 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, explosivesPermits, ..
     }
   }, []);
 
-  const openVCWalletInvitationModal = (
-    event,
-    partyGuid: string,
-    partyName: string,
-    connectionState: string
-  ) => {
-    event.preventDefault();
-    props.openModal({
-      props: {
-        title: "Generate Digital Wallet Connection Invitation",
-        partyGuid: partyGuid,
-        partyName: partyName,
-        connectionState: connectionState,
-      },
-      content: modalConfig.VC_WALLET_INVITATION,
-    });
-  };
-
   return (
     <Row>
       <Col span={24}>
@@ -67,7 +41,6 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, explosivesPermits, ..
           permits={permits}
           explosivesPermits={explosivesPermits}
           majorMineInd={mine.major_mine_ind}
-          openVCWalletInvitationModal={openVCWalletInvitationModal}
           mineGuid={mine.mine_guid}
         />
       </Col>
