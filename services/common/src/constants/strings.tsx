@@ -494,3 +494,15 @@ export const REPORT_FREQUENCY_HASH = {
   "Every 5 Years": 60,
   "Not Specified": 0,
 };
+
+export const AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT = {
+  "AIR_EMISSIONS_DISCHARGE_PERMIT": "Air Emissions Discharge Permit",
+  "EFFLUENT_DISCHARGE_PERMIT": "Effluent Discharge Permit",
+  "REFUSE_DISCHARGE_PERMIT": "Refuse Discharge Permit",
+  "MUNICIPAL_WASTEWATER_REGULATION": "Municipal Wastewater Regulation",
+}
+
+export const AMS_AUTHORIZATION_TYPES_TEXT = {
+  "NEW": "New",
+  "AMENDMENT": "Amendment",
+}
