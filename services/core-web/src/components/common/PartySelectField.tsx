@@ -12,9 +12,9 @@ import { getLastCreatedParty } from "@mds/common/redux/selectors/partiesSelector
 import { fetchSearchResults } from "@mds/common/redux/actionCreators/searchActionCreator";
 import { setAddPartyFormState } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import { createItemIdsArray, createItemMap } from "@common/utils/helpers";
-import { Validate } from "@common/utils/Validate";
+import { Validate } from "@mds/common/redux/utils/Validate";
 import LinkButton from "@mds/common/components/common/LinkButton";
-import RenderSelect from "@mds/common/components/forms/RenderSelect";
+import RenderLargeSelect from "@mds/common/components/forms/RenderLargeSelect";
 
 const renderAddPartyFooter = (showAddParty, partyLabel) => (
   <div className="wrapped-text">
@@ -89,6 +89,7 @@ interface PartySelectFieldProps {
   allowNull?: boolean;
   disabled?: boolean;
   onSelect?: any;
+  required?: boolean;
 }
 
 export const PartySelectField: FC<PartySelectFieldProps> = ({
@@ -210,28 +211,15 @@ export const PartySelectField: FC<PartySelectFieldProps> = ({
     }
   };
 
-  // Validator to ensure the selected option is in the collection of available options.
-  // This validator is appened to any validators passed in from the form in the render function below.
-  // eslint-disable-next-line consistent-return
-  const validOption = (value) => {
-    // ignore this validation if an initialValue is passed in
-    if (initialValues && initialValues !== selectedOption && !allowNull) {
-      return partyDataSource.find((opt) => opt.value === value)
-        ? undefined
-        : `Invalid ${partyLabel}`;
-    }
-  };
-
   return (
     <Field
-      className="left"
       loading={searching}
       disabled={disabled}
       {...rest}
-      component={RenderSelect}
+      component={RenderLargeSelect}
       handleSearch={handleSearch}
       handleSelect={handleSelect}
-      validate={validate.concat(validOption)}
+      validate={validate}
       dataSource={partyDataSource}
       selectedOption={selectedOption}
     />

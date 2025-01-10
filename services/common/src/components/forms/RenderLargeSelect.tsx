@@ -30,6 +30,7 @@ const propTypes = {
   handleSelect: PropTypes.func,
   handleFocus: PropTypes.func,
   disabled: PropTypes.bool,
+  required: PropTypes.bool,
 };
 
 const doNothing = () => {};
@@ -44,6 +45,7 @@ const defaultProps = {
 
 const RenderLargeSelect = (props) => (
   <Form.Item
+    required={props.required}
     label={props.label}
     validateStatus={
       props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
@@ -65,14 +67,11 @@ const RenderLargeSelect = (props) => (
       defaultActiveFirstOption={false}
       placeholder={props.placeholder}
       notFoundContent="Not Found"
-      backfill
       options={props.dataSource}
       filterOption={() => true}
       onSearch={props.handleSearch}
       onSelect={props.handleSelect}
       onChange={props.input.onChange}
-      onBlur={props.input.onChange(props.selectedOption.value)}
-      {...props.input}
       onFocus={(event) => {
         props.handleFocus();
         props.input.onFocus(event);
