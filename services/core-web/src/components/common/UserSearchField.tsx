@@ -73,13 +73,14 @@ export const UserSelectField: FC<UserSelectFieldProps> = ({
   };
 
   const validateOption = (value: any) => {
-    if (initialDataSource.length && initialDataSource.find((user) => user.value)) return undefined;
-
     if (
-      value &&
-      userDataSource &&
-      !userDataSource.find((user) => user.value === value)
-    ) {
+      initialDataSource &&
+      initialDataSource.length &&
+      initialDataSource.find((user) => user?.value)
+    )
+      return undefined;
+
+    if (value && userDataSource && !userDataSource.find((user) => user.value === value)) {
       return "Invalid user selected";
     }
     return undefined;
