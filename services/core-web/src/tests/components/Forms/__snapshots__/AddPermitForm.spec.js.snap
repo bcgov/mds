@@ -1,279 +1,1122 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddPermitForm renders properly 1`] = `
-<ForwardRef(InternalForm)
-  layout="vertical"
-  onSubmit={[MockFunction]}
->
-  <Row
-    gutter={48}
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-ADD_PERMIT form-edit"
+    id="ADD_PERMIT"
   >
-    <Col
-      className="border--right--layout"
-      md={12}
-      sm={24}
+    <div
+      class="ant-row"
+      style="margin-left: -24px; margin-right: -24px;"
     >
-      <PartySelectField
-        allowAddingParties={true}
-        id="permittee_party_guid"
-        label="Permittee*"
-        name="permittee_party_guid"
-        partyLabel="permittee"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-      <InternalFormItem>
-        <Field
-          component={[Function]}
-          data={
-            Array [
-              Object {
-                "label": "Coal",
-                "value": "C",
-              },
-              Object {
-                "label": "Mineral",
-                "value": "M",
-              },
-              Object {
-                "label": "Placer",
-                "value": "P",
-              },
-              Object {
-                "label": "Sand & Gravel",
-                "value": "G",
-              },
-              Object {
-                "label": "Quarry",
-                "value": "Q",
-              },
-            ]
-          }
-          id="permit_type"
-          label="Permit Type*"
-          name="permit_type"
-          placeholder="Select a permit type"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </InternalFormItem>
-      <InternalFormItem>
-        <Field
-          component={[Function]}
-          id="permit_no"
-          inlineLabel=""
-          label="Permit Number*"
-          name="permit_no"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </InternalFormItem>
-      <InternalFormItem>
-        <Field
-          component={[Function]}
-          data={Array []}
-          id="permit_status_code"
-          label="Permit Status*"
-          name="permit_status_code"
-          placeholder="Select a permit status"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </InternalFormItem>
-      <InternalFormItem>
-        <Field
-          component={[Function]}
-          id="issue_date"
-          label="Issue Date*"
-          name="issue_date"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </InternalFormItem>
-      <InternalFormItem>
-        <Field
-          component={[Function]}
-          id="authorization_end_date"
-          label="Authorization End Date*"
-          name="authorization_end_date"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </InternalFormItem>
-      <Divider />
-      <InternalFormItem
-        label="Securities"
-      >
-        <Field
-          component={[Function]}
-          id="security_not_required"
-          label="Security Not Required"
-          name="security_not_required"
-          onChange={[Function]}
-        />
-      </InternalFormItem>
-      <InternalFormItem
-        label="Assessed Liability Adjustment"
-      >
-        <p
-          className="p-light"
-        >
-          This amount will be added to the Total Assessed Liability amount for this permit. Changes to this value in Core will not be updated in MMS.
-        </p>
-        <Field
-          autoComplete="off"
-          component={[Function]}
-          format={[Function]}
-          id="liability_adjustment"
-          name="liability_adjustment"
-          normalize={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </InternalFormItem>
-      <InternalFormItem>
-        <Field
-          component={[Function]}
-          id="security_received_date"
-          label="Security Received"
-          name="security_received_date"
-        />
-      </InternalFormItem>
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <FormSection
-        name="site_properties"
+      <div
+        class="ant-col border--right--layout ant-col-sm-24 ant-col-md-12"
+        style="padding-left: 24px; padding-right: 24px;"
       >
         <div
-          className="field-title"
+          class="ant-form-item ant-form-item-with-help"
         >
-          Tenure*
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                title="Permittee"
+              >
+                Permittee
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    class="ant-select ant-select-in-form-item ant-select-single ant-select-show-arrow ant-select-show-search"
+                    style="width: 100%;"
+                  >
+                    <div
+                      class="ant-select-selector"
+                    >
+                      <span
+                        class="ant-select-selection-search"
+                      >
+                        <input
+                          aria-activedescendant="permittee_party_guid_list_0"
+                          aria-autocomplete="list"
+                          aria-controls="permittee_party_guid_list"
+                          aria-haspopup="listbox"
+                          aria-owns="permittee_party_guid_list"
+                          autocomplete="off"
+                          class="ant-select-selection-search-input"
+                          id="permittee_party_guid"
+                          role="combobox"
+                          type="search"
+                          value=""
+                        />
+                      </span>
+                      <span
+                        class="ant-select-selection-placeholder"
+                      />
+                    </div>
+                    <span
+                      aria-hidden="true"
+                      class="ant-select-arrow"
+                      style="user-select: none;"
+                      unselectable="on"
+                    >
+                      <span
+                        aria-label="down"
+                        class="anticon anticon-down ant-select-suffix"
+                        role="img"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          data-icon="down"
+                          fill="currentColor"
+                          focusable="false"
+                          height="1em"
+                          viewBox="64 64 896 896"
+                          width="1em"
+                        >
+                          <path
+                            d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <Field
-          component={[Function]}
-          data={Array []}
-          disabled={true}
-          id="mine_tenure_type_code"
-          name="mine_tenure_type_code"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
+        <div
+          class="ant-row ant-legacy-form-item"
+        >
+          <div
+            class="ant-col ant-legacy-form-item-label"
+          >
+            <label
+              class=""
+              for="permit_type"
+              title="Permit Type"
+            >
+              Permit Type
+            </label>
+          </div>
+          <div
+            class="ant-col ant-legacy-form-item-control-wrapper"
+          >
+            <div
+              class="ant-legacy-form-item-control"
+            >
+              <span
+                class="ant-legacy-form-item-children"
+              >
+                <div
+                  class="ant-select ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                >
+                  <div
+                    class="ant-select-selector"
+                  >
+                    <span
+                      class="ant-select-selection-search"
+                    >
+                      <input
+                        aria-activedescendant="permit_type_list_0"
+                        aria-autocomplete="list"
+                        aria-controls="permit_type_list"
+                        aria-haspopup="listbox"
+                        aria-owns="permit_type_list"
+                        autocomplete="off"
+                        class="ant-select-selection-search-input"
+                        id="permit_type"
+                        role="combobox"
+                        type="search"
+                        value=""
+                      />
+                    </span>
+                    <span
+                      class="ant-select-selection-placeholder"
+                    >
+                      Select a permit type
+                    </span>
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="ant-select-arrow"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      aria-label="down"
+                      class="anticon anticon-down ant-select-suffix"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="down"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-row ant-legacy-form-item"
+        >
+          <div
+            class="ant-col ant-legacy-form-item-label"
+          >
+            <label
+              class=""
+              title="Permit Number"
+            >
+              Permit Number
+            </label>
+          </div>
+          <div
+            class="ant-col ant-legacy-form-item-control-wrapper"
+          >
+            <div
+              class="ant-legacy-form-item-control"
+            >
+              <span
+                class="ant-legacy-form-item-children"
+              >
+                <div
+                  class="inline-flex"
+                  style="flex-direction: column;"
+                >
+                  
+                  <input
+                    class="ant-input"
+                    id="permit_no"
+                    name="permit_no"
+                    placeholder=""
+                    type="text"
+                    value=""
+                  />
+                  
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-row ant-legacy-form-item"
+        >
+          <div
+            class="ant-col ant-legacy-form-item-label"
+          >
+            <label
+              class=""
+              for="permit_status_code"
+              title="Permit Status"
+            >
+              Permit Status
+            </label>
+          </div>
+          <div
+            class="ant-col ant-legacy-form-item-control-wrapper"
+          >
+            <div
+              class="ant-legacy-form-item-control"
+            >
+              <span
+                class="ant-legacy-form-item-children"
+              >
+                <div
+                  class="ant-select ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                >
+                  <div
+                    class="ant-select-selector"
+                  >
+                    <span
+                      class="ant-select-selection-search"
+                    >
+                      <input
+                        aria-activedescendant="permit_status_code_list_0"
+                        aria-autocomplete="list"
+                        aria-controls="permit_status_code_list"
+                        aria-haspopup="listbox"
+                        aria-owns="permit_status_code_list"
+                        autocomplete="off"
+                        class="ant-select-selection-search-input"
+                        id="permit_status_code"
+                        role="combobox"
+                        type="search"
+                        value=""
+                      />
+                    </span>
+                    <span
+                      class="ant-select-selection-placeholder"
+                    >
+                      Select a permit status
+                    </span>
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="ant-select-arrow"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      aria-label="down"
+                      class="anticon anticon-down ant-select-suffix"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="down"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-row ant-legacy-form-item"
+        >
+          <div
+            class="ant-col ant-legacy-form-item-label"
+          >
+            <label
+              class=""
+              title="Issue Date"
+            >
+              Issue Date
+            </label>
+          </div>
+          <div
+            class="ant-col ant-legacy-form-item-control-wrapper"
+          >
+            <div
+              class="ant-legacy-form-item-control"
+            >
+              <span
+                class="ant-legacy-form-item-children"
+              >
+                <div
+                  class="ant-picker"
+                >
+                  <div
+                    class="ant-picker-input"
+                  >
+                    <input
+                      autocomplete="off"
+                      id="issue_date"
+                      name="issue_date"
+                      placeholder=""
+                      readonly=""
+                      size="12"
+                      title=""
+                      value=""
+                    />
+                    <span
+                      class="ant-picker-suffix"
+                    >
+                      <span
+                        aria-label="calendar"
+                        class="anticon anticon-calendar"
+                        role="img"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          data-icon="calendar"
+                          fill="currentColor"
+                          focusable="false"
+                          height="1em"
+                          viewBox="64 64 896 896"
+                          width="1em"
+                        >
+                          <path
+                            d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-row ant-legacy-form-item"
+        >
+          <div
+            class="ant-col ant-legacy-form-item-label"
+          >
+            <label
+              class=""
+              title="Authorization End Date"
+            >
+              Authorization End Date
+            </label>
+          </div>
+          <div
+            class="ant-col ant-legacy-form-item-control-wrapper"
+          >
+            <div
+              class="ant-legacy-form-item-control"
+            >
+              <span
+                class="ant-legacy-form-item-children"
+              >
+                <div
+                  class="ant-picker"
+                >
+                  <div
+                    class="ant-picker-input"
+                  >
+                    <input
+                      autocomplete="off"
+                      id="authorization_end_date"
+                      name="authorization_end_date"
+                      placeholder=""
+                      readonly=""
+                      size="12"
+                      title=""
+                      value=""
+                    />
+                    <span
+                      class="ant-picker-suffix"
+                    >
+                      <span
+                        aria-label="calendar"
+                        class="anticon anticon-calendar"
+                        role="img"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          data-icon="calendar"
+                          fill="currentColor"
+                          focusable="false"
+                          height="1em"
+                          viewBox="64 64 896 896"
+                          width="1em"
+                        >
+                          <path
+                            d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-divider ant-divider-horizontal"
+          role="separator"
         />
         <div
-          className="field-title"
+          class="ant-row ant-legacy-form-item"
         >
-          Commodity
+          <div
+            class="ant-col ant-legacy-form-item-control-wrapper"
+          >
+            <div
+              class="ant-legacy-form-item-control"
+            >
+              <span
+                class="ant-legacy-form-item-children"
+              >
+                <label
+                  class="ant-checkbox-wrapper"
+                >
+                  <span
+                    class="ant-checkbox"
+                  >
+                    <input
+                      class="ant-checkbox-input"
+                      id="security_not_required"
+                      name="security_not_required"
+                      type="checkbox"
+                      value=""
+                    />
+                    <span
+                      class="ant-checkbox-inner"
+                    />
+                  </span>
+                  <span>
+                    Security Not Required
+                  </span>
+                </label>
+              </span>
+            </div>
+          </div>
         </div>
-        <Field
-          component={[Function]}
-          data={null}
-          id="mine_commodity_code"
-          name="mine_commodity_code"
+        <div
+          class="ant-row ant-legacy-form-item"
+        >
+          <div
+            class="ant-col ant-legacy-form-item-label"
+          >
+            <label
+              class=""
+              title="Assessed Liability Adjustment"
+            >
+              Assessed Liability Adjustment
+            </label>
+          </div>
+          <div
+            class="ant-col ant-legacy-form-item-control-wrapper"
+          >
+            <div
+              class="ant-legacy-form-item-control"
+            >
+              <span
+                class="ant-legacy-form-item-children"
+              >
+                <div
+                  class="inline-flex"
+                  style="flex-direction: column;"
+                >
+                  
+                  <input
+                    class="ant-input"
+                    id="liability_adjustment"
+                    name="liability_adjustment"
+                    placeholder=""
+                    type="text"
+                    value=""
+                  />
+                  
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-row ant-legacy-form-item"
+        >
+          <div
+            class="ant-col ant-legacy-form-item-label"
+          >
+            <label
+              class=""
+              title="Security Received"
+            >
+              Security Received
+            </label>
+          </div>
+          <div
+            class="ant-col ant-legacy-form-item-control-wrapper"
+          >
+            <div
+              class="ant-legacy-form-item-control"
+            >
+              <span
+                class="ant-legacy-form-item-children"
+              >
+                <div
+                  class="ant-picker"
+                >
+                  <div
+                    class="ant-picker-input"
+                  >
+                    <input
+                      autocomplete="off"
+                      id="security_received_date"
+                      name="security_received_date"
+                      placeholder=""
+                      readonly=""
+                      size="12"
+                      title=""
+                      value=""
+                    />
+                    <span
+                      class="ant-picker-suffix"
+                    >
+                      <span
+                        aria-label="calendar"
+                        class="anticon anticon-calendar"
+                        role="img"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          data-icon="calendar"
+                          fill="currentColor"
+                          focusable="false"
+                          height="1em"
+                          viewBox="64 64 896 896"
+                          width="1em"
+                        >
+                          <path
+                            d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-sm-24 ant-col-md-12"
+        style="padding-left: 24px; padding-right: 24px;"
+      >
+        <div>
+          <div
+            class="ant-row ant-legacy-form-item"
+          >
+            <div
+              class="ant-col ant-legacy-form-item-label"
+            >
+              <label
+                class=""
+                for="mine_tenure_type_code"
+                title="Tenure"
+              >
+                Tenure
+              </label>
+            </div>
+            <div
+              class="ant-col ant-legacy-form-item-control-wrapper"
+            >
+              <div
+                class="ant-legacy-form-item-control"
+              >
+                <span
+                  class="ant-legacy-form-item-children"
+                >
+                  <div
+                    class="ant-select ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-disabled ant-select-show-search"
+                  >
+                    <div
+                      class="ant-select-selector"
+                    >
+                      <span
+                        class="ant-select-selection-search"
+                      >
+                        <input
+                          aria-activedescendant="mine_tenure_type_code_list_0"
+                          aria-autocomplete="list"
+                          aria-controls="mine_tenure_type_code_list"
+                          aria-expanded="false"
+                          aria-haspopup="listbox"
+                          aria-owns="mine_tenure_type_code_list"
+                          autocomplete="off"
+                          class="ant-select-selection-search-input"
+                          disabled=""
+                          id="mine_tenure_type_code"
+                          role="combobox"
+                          type="search"
+                          value=""
+                        />
+                      </span>
+                      <span
+                        class="ant-select-selection-placeholder"
+                      >
+                        Please select
+                      </span>
+                    </div>
+                    <span
+                      aria-hidden="true"
+                      class="ant-select-arrow"
+                      style="user-select: none;"
+                      unselectable="on"
+                    >
+                      <span
+                        aria-label="down"
+                        class="anticon anticon-down ant-select-suffix"
+                        role="img"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          data-icon="down"
+                          fill="currentColor"
+                          focusable="false"
+                          height="1em"
+                          viewBox="64 64 896 896"
+                          width="1em"
+                        >
+                          <path
+                            d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div
+              class="ant-row ant-legacy-form-item"
+            >
+              <div
+                class="ant-col ant-legacy-form-item-label"
+              >
+                <label
+                  class=""
+                  title="Commodity"
+                >
+                  Commodity
+                </label>
+              </div>
+              <div
+                class="ant-col ant-legacy-form-item-control-wrapper"
+              >
+                <div
+                  class="ant-legacy-form-item-control"
+                >
+                  <span
+                    class="ant-legacy-form-item-children"
+                  >
+                    <div
+                      class="ant-select ant-select-sm ant-select-multiple ant-select-show-arrow ant-select-show-search"
+                    >
+                      <div
+                        class="ant-select-selector"
+                      >
+                        <div
+                          class="ant-select-selection-overflow"
+                        >
+                          <div
+                            class="ant-select-selection-overflow-item ant-select-selection-overflow-item-suffix"
+                            style="opacity: 1;"
+                          >
+                            <div
+                              class="ant-select-selection-search"
+                              style="width: 0px;"
+                            >
+                              <input
+                                aria-activedescendant="mine_commodity_code_list_0"
+                                aria-autocomplete="list"
+                                aria-controls="mine_commodity_code_list"
+                                aria-haspopup="listbox"
+                                aria-owns="mine_commodity_code_list"
+                                autocomplete="off"
+                                class="ant-select-selection-search-input"
+                                id="mine_commodity_code"
+                                readonly=""
+                                role="combobox"
+                                style="opacity: 0;"
+                                type="search"
+                                unselectable="on"
+                                value=""
+                              />
+                              <span
+                                aria-hidden="true"
+                                class="ant-select-selection-search-mirror"
+                              >
+                                
+                                 
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <span
+                          class="ant-select-selection-placeholder"
+                        />
+                      </div>
+                      <span
+                        aria-hidden="true"
+                        class="ant-select-arrow"
+                        style="user-select: none;"
+                        unselectable="on"
+                      >
+                        <span
+                          aria-label="down"
+                          class="anticon anticon-down ant-select-suffix"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="down"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div
+              class="ant-row ant-legacy-form-item"
+            >
+              <div
+                class="ant-col ant-legacy-form-item-label"
+              >
+                <label
+                  class=""
+                  title="Disturbance"
+                >
+                  Disturbance
+                </label>
+              </div>
+              <div
+                class="ant-col ant-legacy-form-item-control-wrapper"
+              >
+                <div
+                  class="ant-legacy-form-item-control"
+                >
+                  <span
+                    class="ant-legacy-form-item-children"
+                  >
+                    <div
+                      class="ant-select ant-select-sm ant-select-multiple ant-select-show-arrow ant-select-show-search"
+                    >
+                      <div
+                        class="ant-select-selector"
+                      >
+                        <div
+                          class="ant-select-selection-overflow"
+                        >
+                          <div
+                            class="ant-select-selection-overflow-item ant-select-selection-overflow-item-suffix"
+                            style="opacity: 1;"
+                          >
+                            <div
+                              class="ant-select-selection-search"
+                              style="width: 0px;"
+                            >
+                              <input
+                                aria-activedescendant="mine_disturbance_code_list_0"
+                                aria-autocomplete="list"
+                                aria-controls="mine_disturbance_code_list"
+                                aria-haspopup="listbox"
+                                aria-owns="mine_disturbance_code_list"
+                                autocomplete="off"
+                                class="ant-select-selection-search-input"
+                                id="mine_disturbance_code"
+                                readonly=""
+                                role="combobox"
+                                style="opacity: 0;"
+                                type="search"
+                                unselectable="on"
+                                value=""
+                              />
+                              <span
+                                aria-hidden="true"
+                                class="ant-select-selection-search-mirror"
+                              >
+                                
+                                 
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <span
+                          class="ant-select-selection-placeholder"
+                        />
+                      </div>
+                      <span
+                        aria-hidden="true"
+                        class="ant-select-arrow"
+                        style="user-select: none;"
+                        unselectable="on"
+                      >
+                        <span
+                          aria-label="down"
+                          class="anticon anticon-down ant-select-suffix"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="down"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-row ant-legacy-form-item"
+        >
+          <div
+            class="ant-col ant-legacy-form-item-label"
+          >
+            <label
+              class=""
+              for="exemption_fee_status_code"
+              title="Inspection Fee Status"
+            >
+              Inspection Fee Status
+            </label>
+          </div>
+          <div
+            class="ant-col ant-legacy-form-item-control-wrapper"
+          >
+            <div
+              class="ant-legacy-form-item-control"
+            >
+              <span
+                class="ant-legacy-form-item-children"
+              >
+                <div
+                  class="ant-select ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-disabled ant-select-show-search"
+                >
+                  <div
+                    class="ant-select-selector"
+                  >
+                    <span
+                      class="ant-select-selection-search"
+                    >
+                      <input
+                        aria-activedescendant="exemption_fee_status_code_list_0"
+                        aria-autocomplete="list"
+                        aria-controls="exemption_fee_status_code_list"
+                        aria-expanded="false"
+                        aria-haspopup="listbox"
+                        aria-owns="exemption_fee_status_code_list"
+                        autocomplete="off"
+                        class="ant-select-selection-search-input"
+                        disabled=""
+                        id="exemption_fee_status_code"
+                        role="combobox"
+                        type="search"
+                        value=""
+                      />
+                    </span>
+                    <span
+                      class="ant-select-selection-placeholder"
+                    >
+                      Inspection Fee Status will be automatically populated.
+                    </span>
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="ant-select-arrow"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      aria-label="down"
+                      class="anticon anticon-down ant-select-suffix"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="down"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-row ant-legacy-form-item"
+          placeholder=""
+        >
+          <div
+            class="ant-col ant-legacy-form-item-label"
+          >
+            <label
+              class=""
+              title="Fee Exemption Note"
+            >
+              Fee Exemption Note
+            </label>
+          </div>
+          <div
+            class="ant-col ant-legacy-form-item-control-wrapper"
+          >
+            <div
+              class="ant-legacy-form-item-control"
+            >
+              <span
+                class="ant-legacy-form-item-children"
+              >
+                <textarea
+                  class="ant-input"
+                  id="exemption_fee_status_note"
+                  name="exemption_fee_status_note"
+                  placeholder=""
+                  style="height: 0px; resize: none; min-height: -12px;"
+                />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-divider ant-divider-horizontal"
+          role="separator"
         />
         <div
-          className="field-title"
+          class="ant-row ant-legacy-form-item"
         >
-          Disturbance
+          <div
+            class="ant-col ant-legacy-form-item-control-wrapper"
+          >
+            <div
+              class="ant-legacy-form-item-control"
+            >
+              <span
+                class="ant-legacy-form-item-children"
+              >
+                <div
+                  class="whirlpool-container"
+                >
+                  <div
+                    class="ant-form-item ant-form-item-with-help"
+                  >
+                    <div
+                      class="ant-row ant-form-item-row"
+                    >
+                      <div
+                        class="ant-col ant-form-item-label"
+                      >
+                        <label
+                          class=""
+                          for="ADD_PERMIT_fileUpload"
+                          title=""
+                        />
+                      </div>
+                      <div
+                        class="ant-col ant-form-item-control"
+                      >
+                        <div
+                          class="ant-form-item-control-input"
+                        >
+                          <div
+                            class="ant-form-item-control-input-content"
+                          >
+                            <div
+                              class="filepond--wrapper"
+                            >
+                              <input
+                                accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                id="fileUpload"
+                                multiple=""
+                                name="file"
+                                type="file"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          style="display: flex; flex-wrap: nowrap;"
+                        >
+                          <div
+                            class="ant-form-item-explain ant-form-item-explain-connected"
+                            id="ADD_PERMIT_fileUpload_help"
+                            role="alert"
+                          >
+                            <div
+                              class=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
         </div>
-        <Field
-          component={[Function]}
-          data={null}
-          id="mine_disturbance_code"
-          name="mine_disturbance_code"
-          validate={Array []}
-        />
-      </FormSection>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="exemption_fee_status_code"
-        label="Inspection Fee Status"
-        name="exemption_fee_status_code"
-        placeholder="Inspection Fee Status will be automatically populated."
-      />
-      <Field
-        component={[Function]}
-        id="exemption_fee_status_note"
-        label="Fee Exemption Note"
-        name="exemption_fee_status_note"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-      <Divider />
-      <InternalFormItem
-        label="Upload Files"
-      >
-        <Field
-          component={[Function]}
-          id="PermitDocumentFileUpload"
-          mineGuid=""
-          name="PermitDocumentFileUpload"
-          onFileLoad={[Function]}
-          onRemoveFile={[Function]}
-        />
-      </InternalFormItem>
-    </Col>
-  </Row>
-  <div
-    className="right center-mobile"
-  >
-    <ForwardRef
-      cancelText="No"
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
+      </div>
+    </div>
+    <div
+      class="right center-mobile"
     >
-      <Button
-        className="full-mobile"
-        type="secondary"
+      <button
+        aria-label="Cancel"
+        class="ant-btn ant-btn-default core-btn core-btn-default"
+        type="button"
       >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile"
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      mockTitle
-    </Button>
-  </div>
-</ForwardRef(InternalForm)>
+        <span>
+          Cancel
+        </span>
+      </button>
+      <button
+        aria-label="Submit"
+        class="ant-btn ant-btn-primary"
+        type="submit"
+      >
+        <span>
+          mockTitle
+        </span>
+      </button>
+    </div>
+  </form>
+</div>
 `;
