@@ -56,8 +56,9 @@ const DamForm: FC<DamFormProps> = (props) => {
       <div className="margin-large--bottom">
         <Typography.Title level={4}>Associated Dams - {dam.dam_name}</Typography.Title>
         <Popconfirm
-          title={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-            } dam?
+          title={`Are you sure you want to cancel ${
+            tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+          } dam?
         All unsaved data on this page will be lost.`}
           cancelText="No"
           okText="Yes"
