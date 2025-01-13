@@ -108,6 +108,10 @@
   }
 }
 
+.form-btn+.form-btn {
+  margin-left: 1em;
+}
+
 .common-form.form-view {
   .ant-form-item-required::before {
     display: none !important;
