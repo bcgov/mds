@@ -33,8 +33,8 @@ const propTypes = {
 export const PermitAmendmentSecurityForm = (props) => {
   const formName = FORM.EDIT_PERMIT;
 
-  const handleChange = (e) => {
-    if (e.target.value) {
+  const handleChange = (value) => {
+    if (value) {
       props.change(formName, "security_not_required_reason", null);
     } else {
       props.change(formName, "liability_adjustment", null);

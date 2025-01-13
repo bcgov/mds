@@ -138,6 +138,7 @@ const IncidentFormMinistryFollowup: FC<IncidentFormMinistryFollowupProps> = ({
               component={renderConfig.RADIO}
               customOptions={filteredFollowUpActions}
               disabled={!isEditMode}
+              required
               validate={requiredRadioButton}
             />
           </Col>

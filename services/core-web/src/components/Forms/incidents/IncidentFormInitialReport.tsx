@@ -108,7 +108,7 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
             </Col>
             <Col md={10} xs={24}>
               <Field
-                label="Emaiil"
+                label="Email"
                 id="reported_by_email"
                 name="reported_by_email"
                 placeholder="example@domain.com"

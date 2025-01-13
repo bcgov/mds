@@ -107,8 +107,8 @@ export class PermitAmendmentForm extends Component {
     this.props.change(this.formName, "uploadedFiles", this.state.uploadedFiles);
   };
 
-  handleChange = (e) => {
-    if (e.target.value) {
+  handleChange = (value) => {
+    if (value) {
       this.props.change(this.formName, "security_not_required_reason", null);
     } else {
       this.props.change(this.formName, "liability_adjustment", null);
@@ -125,6 +125,7 @@ export class PermitAmendmentForm extends Component {
       <FormWrapper
         onSubmit={this.props.onSubmit}
         isModal
+        initialValues={this.props.initialValues}
         name={FORM.PERMIT_AMENDMENT}
         reduxFormConfig={{
           validate: validateBusinessRules,

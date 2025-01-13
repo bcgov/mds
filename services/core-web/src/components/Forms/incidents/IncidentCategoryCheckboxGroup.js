@@ -52,7 +52,6 @@ const IncidentCategoryCheckboxGroup = (props) => {
       <Checkbox.Group
         onChange={onChange}
         defaultValue={initial}
-        value={input.value}
         disabled={disabled}
       >
         {historicalCategories.length > 0 && (

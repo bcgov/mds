@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Field, getFormValues, change } from "redux-form";
 import { Col, Row, Tooltip, Alert } from "antd";
-import { resetForm, createDropDownList } from "@common/utils/helpers";
+import { createDropDownList } from "@common/utils/helpers";
 import {
   required,
   requiredRadioButton,
@@ -22,6 +22,7 @@ import {
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { PERMIT_AMENDMENT_TYPES } from "@mds/common/constants/strings";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
