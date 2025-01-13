@@ -115,8 +115,9 @@ const DamsPage: React.FC<DamsPageProps> = (props) => {
         </Col>
         <Col span={24}>
           <Popconfirm
-            title={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-              } dam?
+            title={`Are you sure you want to cancel ${
+              tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+            } dam?
             All unsaved data on this page will be lost.`}
             onConfirm={handleBack}
             cancelText="No"
@@ -135,12 +136,13 @@ const DamsPage: React.FC<DamsPageProps> = (props) => {
         initialValues={initialValues}
         name={ADD_EDIT_DAM}
         handleSaveData={handleSave}
-        handleTabChange={() => { }}
+        handleTabChange={() => {}}
         activeTab="basic-dam-information"
         submitText={`${isUserActionEdit ? "Save and" : ""} Return to Associated Dams`}
         handleCancel={handleBack}
-        cancelConfirmMessage={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-          } dam?
+        cancelConfirmMessage={`Are you sure you want to cancel ${
+          tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+        } dam?
         All unsaved data on this page will be lost.`}
         reduxFormConfig={{
           touchOnBlur: true,
