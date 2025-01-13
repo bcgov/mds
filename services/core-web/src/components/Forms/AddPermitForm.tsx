@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Field, change, FormSection, getFormValues } from "redux-form";
-import { Col, Row, Divider, Alert } from "antd";
+import { Col, Row, Divider, Alert, Typography } from "antd";
 import {
   required,
   dateNotInFuture,
@@ -192,6 +192,11 @@ export const AddPermitForm: FC<AddPermitFormProps> = (props) => {
               validate={[requiredRadioButton]}
             />
           )}
+          {permit_type &&
+            <Typography.Paragraph>
+              {permit_type}{is_exploration ? "X" : ""} -
+            </Typography.Paragraph>
+          }
           <Field
             id="permit_no"
             name="permit_no"
@@ -199,10 +204,6 @@ export const AddPermitForm: FC<AddPermitFormProps> = (props) => {
             required
             component={renderConfig.FIELD}
             validate={[required, maxLength(9)]}
-            inlineLabel={
-              permit_type &&
-              `${permit_type}${is_exploration ? "X" : ""} -`
-            }
           />
           <Field
             id="permit_status_code"

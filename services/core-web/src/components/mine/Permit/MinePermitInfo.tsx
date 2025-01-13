@@ -100,8 +100,10 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
     setModifiedPermits(true);
 
     return props.createPermit(props.mineGuid, payload).then((data) => {
-      const siteProperties = { ...values.site_properties, permit_guid: data.data.permit_guid };
-      props.createMineTypes(props.mineGuid, [siteProperties]).then(closePermitModal);
+      if (data) {
+        const siteProperties = { ...values.site_properties, permit_guid: data.data.permit_guid };
+        props.createMineTypes(props.mineGuid, [siteProperties]).then(closePermitModal);
+      }
     });
   };
 
@@ -427,22 +429,20 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
           </>
         </Tabs.TabPane>
         <Tabs.TabPane
-          tab={`Explosives Storage & Use Permits (${
-            props.explosivesPermits.filter(({ application_status }) => application_status === "APP")
-              .length
-          })`}
+          tab={`Explosives Storage & Use Permits (${props.explosivesPermits.filter(({ application_status }) => application_status === "APP")
+            .length
+            })`}
           key="2"
         >
           <ExplosivesPermit isPermitTab />
         </Tabs.TabPane>
         {isFeatureEnabled(Feature.VC_ANONCREDS_CORE) && (
           <Tabs.TabPane
-            tab={`Digital Permit Credentials (${
-              props.permits.filter(
-                ({ current_permittee_digital_wallet_connection_state }) =>
-                  !!current_permittee_digital_wallet_connection_state
-              ).length
-            })`}
+            tab={`Digital Permit Credentials (${props.permits.filter(
+              ({ current_permittee_digital_wallet_connection_state }) =>
+                !!current_permittee_digital_wallet_connection_state
+            ).length
+              })`}
             key="3"
           >
             <DigitalPermitCredential />
