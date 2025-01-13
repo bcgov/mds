@@ -37,19 +37,14 @@ interface DamsPageProps {
 const DamsPage: React.FC<DamsPageProps> = (props) => {
   const history = useHistory();
   const { tsf, initialValues } = props;
-  const {
-    tailingsStorageFacilityGuid,
-    damGuid,
-    mineGuid,
-    parentTSFFormMode,
-    userAction,
-  } = useParams<{
-    tailingsStorageFacilityGuid: string;
-    damGuid?: string;
-    mineGuid: string;
-    parentTSFFormMode: string;
-    userAction: string;
-  }>();
+  const { tailingsStorageFacilityGuid, damGuid, mineGuid, parentTSFFormMode, userAction } =
+    useParams<{
+      tailingsStorageFacilityGuid: string;
+      damGuid?: string;
+      mineGuid: string;
+      parentTSFFormMode: string;
+      userAction: string;
+    }>();
   const [canEditTSF, setCanEditTSF] = useState(false);
   const isUserActionEdit = userAction === "editDam" || userAction === "newDam";
   const isTSFEditMode = parentTSFFormMode === "edit";
@@ -153,7 +148,6 @@ const DamsPage: React.FC<DamsPageProps> = (props) => {
           enableReinitialize: true,
         }}
       >
-
         {[
           <Step key="basic-dam-information">
             <DamForm
@@ -177,11 +171,8 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    { createDam, updateDam, fetchMineRecordById, storeTsf, storeDam },
-    dispatch
-  );
+  bindActionCreators({ createDam, updateDam, fetchMineRecordById, storeTsf, storeDam }, dispatch);
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps)
-)(withRouter(FeatureFlagGuard(Feature.TSF_V2)(DamsPage)) as any) as FC<DamsPageProps>;
+export default compose(connect(mapStateToProps, mapDispatchToProps))(
+  withRouter(FeatureFlagGuard(Feature.TSF_V2)(DamsPage)) as any
+) as FC<DamsPageProps>;

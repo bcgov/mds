@@ -65,9 +65,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
 
   const daysToQPExpiry =
     currentQp?.end_date &&
-    moment(currentQp?.end_date)
-      .startOf("day")
-      .diff(moment().startOf("day"), "days");
+    moment(currentQp?.end_date).startOf("day").diff(moment().startOf("day"), "days");
 
   const openCreateQPModal = (event) => {
     event.preventDefault();

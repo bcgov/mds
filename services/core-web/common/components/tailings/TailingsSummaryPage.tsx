@@ -14,9 +14,7 @@ import {
   fetchTailingsStorageFacility,
   updateTailingsStorageFacility,
 } from "@mds/common/redux/actionCreators/mineActionCreator";
-import {
-  isDirty,
-} from "redux-form";
+import { isDirty } from "redux-form";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import BasicInformation from "@mds/common/components/tailings/BasicInformation";
 import Step from "@mds/common/components/forms/Step";
@@ -71,14 +69,7 @@ interface TailingsSummaryPageProps {
 }
 
 export const TailingsSummaryPage: FC<TailingsSummaryPageProps> = (props) => {
-  const {
-    mines,
-    history,
-    mineGuid,
-    tsfGuid,
-    tab,
-    userAction = "edit",
-  } = props;
+  const { mines, history, mineGuid, tsfGuid, tab, userAction = "edit" } = props;
   const [isLoaded, setIsLoaded] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -342,8 +333,6 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps)
-)(withRouter(FeatureFlagGuard(Feature.TSF_V2)(TailingsSummaryPage)) as any) as FC<
-  TailingsSummaryPageProps
->;
+export default compose(connect(mapStateToProps, mapDispatchToProps))(
+  withRouter(FeatureFlagGuard(Feature.TSF_V2)(TailingsSummaryPage)) as any
+) as FC<TailingsSummaryPageProps>;
