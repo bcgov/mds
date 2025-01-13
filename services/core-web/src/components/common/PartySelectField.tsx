@@ -12,7 +12,7 @@ import { getLastCreatedParty } from "@mds/common/redux/selectors/partiesSelector
 import { fetchSearchResults } from "@mds/common/redux/actionCreators/searchActionCreator";
 import { setAddPartyFormState } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import { createItemIdsArray, createItemMap } from "@common/utils/helpers";
-import { Validate } from "@mds/common/redux/utils/Validate";;
+import { Validate } from "@mds/common/redux/utils/Validate";
 import LinkButton from "@mds/common/components/common/LinkButton";
 import RenderLargeSelect from "@mds/common/components/forms/RenderLargeSelect";
 
