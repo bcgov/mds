@@ -16,26 +16,46 @@ exports[`UserDashboard renders properly 1`] = `
       class="ant-divider ant-divider-horizontal"
       role="separator"
     />
-    <h4
-      class="ant-typography"
-    >
-      Welcome, 
-      test@bceid
-      .
-    </h4>
     <div
-      class="ant-row"
+      class="ant-row ant-row-space-between"
+    >
+      <div
+        class="ant-col"
+      >
+        <h4
+          class="ant-typography"
+        >
+          Welcome, 
+          test@bceid
+          .
+        </h4>
+        <div
+          class="ant-typography"
+        >
+          You are authorized to submit information for the following mines:
+        </div>
+      </div>
+      <div
+        class="ant-col"
+      >
+        <button
+          class="ant-btn ant-btn-primary ant-dropdown-trigger"
+          type="button"
+        >
+          <span>
+            Manage My Mines
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      class="ant-row mines-page-mine-section"
       style="margin-left: -16px; margin-right: -16px;"
     >
       <div
         class="ant-col ant-col-sm-24 ant-col-lg-14 ant-col-xl-12"
         style="padding-left: 16px; padding-right: 16px;"
       >
-        <div
-          class="ant-typography"
-        >
-          You are authorized to submit information for the following mines:
-        </div>
         <div
           class="link-card"
         >
@@ -253,6 +273,10 @@ exports[`UserDashboard renders properly 1`] = `
           </ul>
         </div>
       </div>
+      <div
+        class="ant-col ant-col-sm-24 ant-col-lg-14 ant-col-xl-12"
+        style="padding-left: 16px; padding-right: 16px;"
+      />
     </div>
   </div>
 </div>

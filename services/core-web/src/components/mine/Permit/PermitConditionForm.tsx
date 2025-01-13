@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { change, Field, reset } from "redux-form";
@@ -75,6 +75,14 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
         setEditingConditionGuid(null);
         setIsAddingListItem(false);
     }
+
+    // If the assigned user is changed while isEditMode
+    // is true, set it to false
+    useEffect(() => {
+        if (!canEditPermitConditions) {
+            setIsEditMode(false);
+        }
+    }, [canEditPermitConditions]);
 
     const handleSubmit = async (values) => {
         const payload = values.step

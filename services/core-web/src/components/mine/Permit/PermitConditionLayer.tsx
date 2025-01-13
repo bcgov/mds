@@ -26,7 +26,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   isExpanded,
   conditionSelected,
   level = 0,
-  setParentExpand = () => { },
+  setParentExpand = () => {},
   canEditPermitConditions = false,
   setEditingConditionGuid,
   editingConditionGuid,
@@ -35,7 +35,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   conditionCount,
   permitAmendmentGuid,
   refreshData,
-  categoryOptions
+  categoryOptions,
 }) => {
   const editingCondition = editingConditionGuid === condition.permit_condition_guid;
   const [isAddingListItem, setIsAddingListItem] = useState<boolean>(false);
@@ -45,7 +45,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   const className = `condition-layer condition-layer--${level} condition-${condition.condition_type_code} fade-in`;
 
   const handleSetParentExpand = () => {
-    if ((level === 0)) {
+    if (level === 0) {
       return;
     } else {
       setExpandClass("condition-expanded");
@@ -71,15 +71,15 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   const handleSaveListItem = async () => {
     await refreshData();
     setIsAddingListItem(false);
-  }
+  };
 
   const moveUp = async (condition: IPermitCondition) => {
     await handleMoveCondition(condition, true);
-  }
+  };
 
   const moveDown = async (condition: IPermitCondition) => {
     await handleMoveCondition(condition, false);
-  }
+  };
 
   return (
     <div
@@ -123,7 +123,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
           );
         })}
       </div>
-      {isAddingListItem &&
+      {isAddingListItem && (
         <SubConditionForm
           level={level + 1}
           parentCondition={condition}
@@ -131,7 +131,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
           onSubmit={handleSaveListItem}
           permitAmendmentGuid={permitAmendmentGuid}
         />
-      }
+      )}
       {/* Content added here will show up at the top level when conditions are collapsed */}
     </div>
   );

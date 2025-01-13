@@ -4,6 +4,7 @@ import { debounce } from "lodash";
 import { Field } from "redux-form";
 import { getSearchUsers, searchUsers } from "@mds/common/redux/slices/userSlice";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
+import { IOption } from "@mds/common";
 
 interface UserSelectFieldProps {
   id?: string;
@@ -36,7 +37,7 @@ export const UserSelectField: FC<UserSelectFieldProps> = ({
   const dispatch = useDispatch();
   const searchResults = useSelector(getSearchUsers);
 
-  const [userDataSource, setUserDataSource] = useState([]);
+  const [userDataSource, setUserDataSource] = useState<IOption[]>([]);
   const [searching, setSearching] = useState(false);
 
   useEffect(() => {
@@ -74,10 +75,13 @@ export const UserSelectField: FC<UserSelectFieldProps> = ({
 
   const validateOption = (value: any) => {
     if (
-      value &&
-      userDataSource &&
-      !userDataSource.find((user) => user.value === value)
-    ) {
+      initialDataSource &&
+      initialDataSource.length &&
+      initialDataSource.find((user) => user?.value)
+    )
+      return undefined;
+
+    if (value && userDataSource && !userDataSource.find((user) => user.value === value)) {
       return "Invalid user selected";
     }
     return undefined;
@@ -93,7 +97,7 @@ export const UserSelectField: FC<UserSelectFieldProps> = ({
       loading={searching}
       disabled={disabled}
       required={required}
-      allowClear
+      allowClear={false}
       enableGetPopupContainer={false}
       onSearch={handleSearch}
       component={RenderSelect}

@@ -1,6 +1,7 @@
-import React, { FC } from "react";
+import React, { FC, useRef } from "react";
 import { Select, Form } from "antd";
 import { caseInsensitiveLabelFilter } from "@mds/common/redux/utils/helpers";
+import { debounce } from "lodash";
 import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
 import { FormConsumer, IFormContext } from "./FormWrapper";
 import { IOption } from "../..";
@@ -27,6 +28,8 @@ export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
     meta,
     input,
   } = props;
+  const debouncedSearch = useRef(debounce(onSearch, 500)).current;
+
   return (
     <FormConsumer>
       {(value: IFormContext) => {
@@ -57,12 +60,12 @@ export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
                 loading={props.loading}
                 style={{ width: "100%" }}
                 virtual={false}
-                disabled={!data?.length || disabled}
+                disabled={!data || disabled}
                 mode="multiple"
                 size="small"
                 placeholder={placeholder}
                 id={props.id ?? props.input.name}
-                onSearch={onSearch}
+                onSearch={debouncedSearch}
                 options={data}
                 onChange={input.onChange}
                 filterOption={filterOption || caseInsensitiveLabelFilter}

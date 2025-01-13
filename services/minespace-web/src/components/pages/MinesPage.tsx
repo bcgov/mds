@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EnvironmentOutlined from "@ant-design/icons/EnvironmentOutlined";
-import { Row, Col, Divider, Typography, Skeleton, Pagination } from "antd";
+import { Row, Col, Divider, Typography, Skeleton, Pagination, Dropdown, Button } from "antd";
 import { Link } from "react-router-dom";
 import { getUserInfo, isProponent } from "@mds/common/redux/selectors/authenticationSelectors";
 import { getUserMinePageData } from "@/selectors/userMineSelectors";
@@ -11,6 +11,8 @@ import * as Strings from "@/constants/strings";
 import Map from "@/components/common/Map";
 import UnauthenticatedNotice from "../common/UnauthenticatedNotice";
 import { IMine, detectDevelopmentEnvironment } from "@mds/common";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faCircleMinus } from "@fortawesome/pro-regular-svg-icons";
 
 const DEFAULT_MINES_PER_PAGE = 10;
 const DEFAULT_MINE_PAGE = 1;
@@ -34,6 +36,7 @@ export const MinesPage = () => {
     let isMounted = true;
     setIsLoaded(false);
     const queryParams = `?page=${desiredPage}&per_page=${desiredPageSize}`;
+    // @ts-ignore
     dispatch(fetchUserMineInfo(queryParams)).then(() => {
       if (isMounted) {
         setIsLoaded(true);
@@ -68,6 +71,7 @@ export const MinesPage = () => {
     return (
       <Row>
         <Col span={24}>
+          <Typography.Title level={4}>Welcome, {userInfo.preferred_username}.</Typography.Title>
           <Typography.Paragraph>
             You are not authorized to manage information for any mines. Please contact&nbsp;
             <a className="underline" href={Strings.MDS_EMAIL}>
@@ -88,17 +92,59 @@ export const MinesPage = () => {
       <Col span={24}>
         <Typography.Title>My Mines</Typography.Title>
         <Divider />
-        <Typography.Title level={4}>Welcome, {userInfo.preferred_username}.</Typography.Title>
 
         {isLoaded && mines?.length === 0 && renderNoMines()}
-
+        <Row justify="space-between">
+          <Col>
+            <Typography.Title level={4}>Welcome, {userInfo.preferred_username}.</Typography.Title>
+            <Typography.Paragraph>
+              You are authorized to submit information for the following mines:
+            </Typography.Paragraph>
+          </Col>
+          <Col>
+            <Dropdown
+              menu={{
+                items: [
+                  {
+                    key: "add",
+                    label: (
+                      <Button
+                        className="actions-dropdown-button menu-item-button fa-icon-container"
+                        type="link"
+                        href="https://submit.digital.gov.bc.ca/app/form/submit?f=0cdcf6c4-bbad-429e-b17b-4031d8960ae3"
+                        target="_blank"
+                        icon={<FontAwesomeIcon icon={faPlus} />}
+                      >
+                        Request Access To Mine
+                      </Button>
+                    ),
+                  },
+                  {
+                    key: "remove",
+                    label: (
+                      <Button
+                        className="actions-dropdown-button menu-item-button fa-icon-container color-error"
+                        type="link"
+                        href="https://submit.digital.gov.bc.ca/app/form/submit?f=85bbab24-2f58-4b68-9687-659b2c9c1978"
+                        target="_blank"
+                        icon={
+                          <FontAwesomeIcon icon={faCircleMinus} className="margin-medium--right" />
+                        }
+                      >
+                        Request Removal From Mine
+                      </Button>
+                    ),
+                  },
+                ],
+              }}
+            >
+              <Button type="primary">Manage My Mines</Button>
+            </Dropdown>
+          </Col>
+        </Row>
         {(!isLoaded || (isLoaded && mines?.length > 0)) && (
-          <Row gutter={32}>
+          <Row gutter={32} className="mines-page-mine-section">
             <Col xl={12} lg={14} sm={24}>
-              <Typography.Paragraph>
-                You are authorized to submit information for the following mines:
-              </Typography.Paragraph>
-
               {!isLoaded ? (
                 renderSkeleton()
               ) : (
@@ -129,7 +175,7 @@ export const MinesPage = () => {
             </Col>
             {isLoaded && mines.length > 0 && (
               <Col xl={12} lg={10} sm={0}>
-                <div style={{ height: "400px", marginTop: "-32px" }}>
+                <div style={{ height: "400px" }}>
                   <Map
                     controls={false}
                     additionalPins={mines.map((mine) => [mine.latitude, mine.longitude])}
@@ -142,21 +188,22 @@ export const MinesPage = () => {
                 </Typography.Paragraph>
               </Col>
             )}
+            <Col xl={12} lg={14} sm={24}>
+              <Pagination
+                disabled={!isLoaded}
+                onChange={handlePaginationChange}
+                hideOnSinglePage={items_per_page === DEFAULT_MINES_PER_PAGE}
+                current={current_page}
+                pageSize={items_per_page}
+                pageSizeOptions={[10, 20, 50, 100]}
+                showSizeChanger
+                defaultPageSize={DEFAULT_MINES_PER_PAGE}
+                defaultCurrent={DEFAULT_MINE_PAGE}
+                total={total}
+              />
+            </Col>
           </Row>
         )}
-
-        <Pagination
-          disabled={!isLoaded}
-          onChange={handlePaginationChange}
-          hideOnSinglePage={items_per_page === DEFAULT_MINES_PER_PAGE}
-          current={current_page}
-          pageSize={items_per_page}
-          pageSizeOptions={[10, 20, 50, 100]}
-          showSizeChanger
-          defaultPageSize={DEFAULT_MINES_PER_PAGE}
-          defaultCurrent={DEFAULT_MINE_PAGE}
-          total={total}
-        />
       </Col>
     </Row>
   );

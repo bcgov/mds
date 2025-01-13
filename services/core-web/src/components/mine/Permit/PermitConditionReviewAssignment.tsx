@@ -26,13 +26,24 @@ const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> 
 }) => {
   const dispatch = useDispatch();
   const user = useSelector(getUser);
-  const [assignedReviewUserInitialValues, setAssignedReviewUserIntitialValues] = useState<{
-    label: string;
-    value: string;
-  }>({
-    value: category?.assigned_review_user?.sub || "",
-    label: category?.assigned_review_user?.display_name || "",
-  });
+  const [assignedReviewUserInitialValues, setAssignedReviewUserIntitialValues] = useState<
+    | [
+        {
+          label: string;
+          value: string;
+        },
+      ]
+    | undefined
+  >(
+    category?.assigned_review_user?.sub
+      ? [
+          {
+            value: category?.assigned_review_user?.sub || "",
+            label: category?.assigned_review_user?.display_name || "",
+          },
+        ]
+      : undefined
+  );
 
   const userCanAssignReviewers = useSelector((state) =>
     userHasRole(state, USER_ROLES.role_edit_template_conditions)
@@ -54,6 +65,7 @@ const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> 
     // @ts-ignore
     dispatch(unassignReviewer({ condition_category_code: category.condition_category_code })).then(
       () => {
+        setAssignedReviewUserIntitialValues(undefined);
         refreshData();
       }
     );
@@ -61,10 +73,12 @@ const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> 
 
   useEffect(() => {
     if (category?.assigned_review_user?.sub) {
-      setAssignedReviewUserIntitialValues({
-        value: category?.assigned_review_user?.sub || "",
-        label: category?.assigned_review_user?.display_name || "",
-      });
+      setAssignedReviewUserIntitialValues([
+        {
+          value: category?.assigned_review_user?.sub,
+          label: category?.assigned_review_user?.display_name,
+        },
+      ]);
     }
   }, [category?.assigned_review_user?.sub]);
 
@@ -76,7 +90,7 @@ const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> 
       onSubmit={handleSubmit}
       reduxFormConfig={{ enableReinitialize: true }}
       initialValues={{
-        assigned_review_user: assignedReviewUserInitialValues?.value,
+        assigned_review_user: assignedReviewUserInitialValues?.[0]?.value ?? null,
         condition_category_code: category.condition_category_code,
       }}
     >
@@ -87,7 +101,7 @@ const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> 
         <Col span={12}>
           <UserSearchField
             disabled={!userCanAssignReviewers}
-            initialDataSource={[assignedReviewUserInitialValues]}
+            initialDataSource={assignedReviewUserInitialValues}
             id="assigned_review_user"
             name="assigned_review_user"
           />

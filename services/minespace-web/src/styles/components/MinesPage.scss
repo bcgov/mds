@@ -1,0 +1,7 @@
+@use "../base.scss" as *;
+
+.mines-page-mine-section {
+  border: $non-textual-grey solid 1px;
+  border-radius: 3px;
+  padding: 20px;
+}

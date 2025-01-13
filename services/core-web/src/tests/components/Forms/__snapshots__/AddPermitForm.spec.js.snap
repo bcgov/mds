@@ -930,7 +930,7 @@ exports[`AddPermitForm renders properly 1`] = `
                       class="ant-form-item-control-input-content"
                     >
                       <div
-                        class="ant-select ant-select-sm ant-select-in-form-item ant-select-multiple ant-select-show-arrow ant-select-disabled ant-select-show-search"
+                        class="ant-select ant-select-sm ant-select-in-form-item ant-select-multiple ant-select-show-arrow ant-select-show-search"
                         style="width: 100%;"
                       >
                         <div
@@ -951,12 +951,10 @@ exports[`AddPermitForm renders properly 1`] = `
                                   aria-activedescendant="mine_commodity_code_list_0"
                                   aria-autocomplete="list"
                                   aria-controls="mine_commodity_code_list"
-                                  aria-expanded="false"
                                   aria-haspopup="listbox"
                                   aria-owns="mine_commodity_code_list"
                                   autocomplete="off"
                                   class="ant-select-selection-search-input"
-                                  disabled=""
                                   id="mine_commodity_code"
                                   readonly=""
                                   role="combobox"
@@ -1063,7 +1061,7 @@ exports[`AddPermitForm renders properly 1`] = `
                       class="ant-form-item-control-input-content"
                     >
                       <div
-                        class="ant-select ant-select-sm ant-select-in-form-item ant-select-multiple ant-select-show-arrow ant-select-disabled ant-select-show-search"
+                        class="ant-select ant-select-sm ant-select-in-form-item ant-select-multiple ant-select-show-arrow ant-select-show-search"
                         style="width: 100%;"
                       >
                         <div
@@ -1084,12 +1082,10 @@ exports[`AddPermitForm renders properly 1`] = `
                                   aria-activedescendant="mine_disturbance_code_list_0"
                                   aria-autocomplete="list"
                                   aria-controls="mine_disturbance_code_list"
-                                  aria-expanded="false"
                                   aria-haspopup="listbox"
                                   aria-owns="mine_disturbance_code_list"
                                   autocomplete="off"
                                   class="ant-select-selection-search-input"
-                                  disabled=""
                                   id="mine_disturbance_code"
                                   readonly=""
                                   role="combobox"

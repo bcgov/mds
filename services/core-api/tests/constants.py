@@ -301,3 +301,19 @@ LOCATION_ACCESS_DATA = {
     'facility_lease_no': "1234",
     'facility_pid_pin_crown_file_no': "1234",
 }
+
+PAYMENT_CONTACT_DATA = {
+        "party_type_code": "ORG",
+        "phone_no": "123-123-1234",
+        "email": "test@gov.bc.ca",
+        "party_name": "test name",
+        "address": [
+            {
+                "address_line_1": "123 fake street",
+                "city": "Vancouver",
+                "sub_division_code": "BC",
+                "post_code": "V5S4W2",
+                "address_type_code": "CAN"
+            },
+        ],
+}
