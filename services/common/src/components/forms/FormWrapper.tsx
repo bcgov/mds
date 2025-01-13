@@ -87,6 +87,7 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
     formName: props.name,
     onReset
   };
+  console.log('open form', props.name)
   const dispatch = useDispatch();
   const formErrors = useSelector(getFormSubmitErrors(props.name));
 
@@ -97,6 +98,7 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
   }, [isEditMode]);
 
   const handleSubmit = async (values) => {
+    console.log('handleSubmit', props.name, values)
     dispatch(submit(props.name));
     if (!formErrors) {
       await props.onSubmit(values);
