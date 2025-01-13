@@ -75,7 +75,7 @@ export const RejectApplicationForm = (props) => {
         >
           Back
         </Button>
-        <RenderSubmitButton buttonText={props.title} />
+        <RenderSubmitButton buttonText={props.title} disableOnClean={false} />
       </div>
     </FormWrapper>
   )

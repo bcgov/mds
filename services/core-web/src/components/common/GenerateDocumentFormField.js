@@ -35,6 +35,7 @@ const GenerateDocumentFormField = (props) => (
     label={props.field.label}
     placeholder={props.field.placeholder}
     component={FIELDS_COMPONENT[props.field.type]}
+    required={props.field.required}
     validate={props.field.required ? [required] : null}
     {...props}
   />

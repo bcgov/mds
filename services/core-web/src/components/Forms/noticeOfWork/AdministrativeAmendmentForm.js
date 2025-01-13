@@ -111,7 +111,7 @@ export const AdministrativeAmendmentForm = (props) => {
       </Row>
       <div className="right center-mobile">
         <RenderCancelButton />
-        <RenderSubmitButton buttonText="Proceed" />
+        <RenderSubmitButton buttonText="Proceed" disableOnClean={false} />
       </div>
     </FormWrapper>
   );

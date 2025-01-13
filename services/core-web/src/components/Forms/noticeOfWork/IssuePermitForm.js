@@ -91,7 +91,7 @@ export const IssuePermitForm = (props) => {
       </Row>
       <div className="right center-mobile">
         <RenderCancelButton />
-        <RenderSubmitButton buttonText={props.title} />
+        <RenderSubmitButton buttonText={props.title} disableOnClean={false} />
       </div>
     </FormWrapper>
   );

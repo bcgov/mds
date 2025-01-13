@@ -44,6 +44,7 @@ exports[`ChangeNOWMineForm renders properly 1`] = `
     <RenderCancelButton />
     <RenderSubmitButton
       buttonText="mockTitle"
+      disableOnClean={false}
     />
   </div>
 </Connect(ReduxForm)>

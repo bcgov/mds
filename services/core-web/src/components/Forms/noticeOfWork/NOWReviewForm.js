@@ -221,7 +221,7 @@ export class NOWReviewForm extends Component {
         </Row>
         <div className="right center-mobile">
           <RenderCancelButton />
-          <RenderSubmitButton buttonText="Save" />
+          <RenderSubmitButton buttonText="Save" disableOnClean={false} />
         </div>
       </FormWrapper>
     );

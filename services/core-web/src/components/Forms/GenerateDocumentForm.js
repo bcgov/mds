@@ -10,6 +10,7 @@ import { getGenerateDocumentFormField } from "@/components/common/GenerateDocume
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   documentType: PropTypes.objectOf(PropTypes.any).isRequired,

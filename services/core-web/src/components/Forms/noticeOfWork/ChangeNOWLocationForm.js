@@ -61,7 +61,7 @@ export class ChangeNOWLocationForm extends Component {
             <>
               <RenderCancelButton />
               <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                <RenderSubmitButton buttonText={this.props.title} disabled={this.state.submitting} />
+                <RenderSubmitButton buttonText={this.props.title} disabled={this.state.submitting} disableOnClean={false} />
               </AuthorizationWrapper>
             </>
           )}
