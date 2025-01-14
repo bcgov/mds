@@ -5,9 +5,9 @@ from app.extensions import api
 from flask import request
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_edit_emli_contacts, requires_role_mine_admin, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
-from app.api.EMLI_contacts.response_models import EMLI_CONTACT_MODEL
-from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
-from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
+from app.api.ministry_contacts.response_models import EMLI_CONTACT_MODEL
+from app.api.ministry_contacts.models.EMLI_contact import EMLIContact
+from app.api.ministry_contacts.models.EMLI_contact_type import EMLIContactType
 
 
 class EMLIContactResource(Resource, UserMixin):

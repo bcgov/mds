@@ -35,7 +35,7 @@ from app.api.document_generation.namespace import api as doc_gen_api
 from app.api.securities.namespace import api as securities_api
 from app.api.verify.namespace import api as verify_api
 from app.api.orgbook.namespace import api as orgbook_api
-from app.api.EMLI_contacts.namespace import api as EMLI_contacts_api
+from app.api.ministry_contacts.namespace import api as EMLI_contacts_api
 from app.api.projects.namespace import api as projects_api
 from app.api.notice_of_departure.namespace import api as notice_of_departure_api
 from app.api.activity.namespace import api as activity_api

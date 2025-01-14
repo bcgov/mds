@@ -19,7 +19,7 @@ import {
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import EMLIContactsTable from "@/components/admin/contacts/EMLIContacts/EMLIContactsTable";
+import EMLIContactsTable from "@/components/admin/contacts/MinistryContacts/MinistryContactsTable";
 import AddButton from "@/components/common/buttons/AddButton";
 
 const propTypes = {

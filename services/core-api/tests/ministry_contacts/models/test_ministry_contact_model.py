@@ -1,6 +1,6 @@
 import uuid, pytest
 
-from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
+from app.api.ministry_contacts.models.EMLI_contact import EMLIContact
 from tests.factories import EMLIContactFactory
 
 

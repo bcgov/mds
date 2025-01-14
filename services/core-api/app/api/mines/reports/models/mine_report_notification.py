@@ -3,7 +3,7 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from app.api.utils.models_mixins import Base
-from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
+from app.api.ministry_contacts.models.EMLI_contact import EMLIContact
 from app.api.compliance.models.compliance_article import ComplianceArticle
 
 from app.extensions import db

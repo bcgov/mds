@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { MineSpaceEMLIContactManagement } from "@/components/admin/contacts/EMLIContacts/MineSpaceEMLIContactManagement";
+import { MineSpaceEMLIContactManagement } from "@/components/admin/contacts/MinistryContacts/MineSpaceMinistryContactManagement";
 
 const dispatchProps = {};
 const props = {};

@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { EMLIContactsTable } from "@/components/admin/contacts/EMLIContacts/EMLIContactsTable";
+import { EMLIContactsTable } from "@/components/admin/contacts/MinistryContacts/MinistryContactsTable";
 
 const dispatchProps = {};
 const props = {};

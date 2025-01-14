@@ -3,7 +3,7 @@ from datetime import datetime
 
 from flask_restx import marshal
 from tests.factories import EMLIContactFactory
-from app.api.EMLI_contacts.response_models import EMLI_CONTACT_MODEL
+from app.api.ministry_contacts.response_models import EMLI_CONTACT_MODEL
 
 
 #GET

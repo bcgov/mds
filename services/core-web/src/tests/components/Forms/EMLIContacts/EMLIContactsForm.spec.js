@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { EMLIContactForm } from "@/components/Forms/EMLIContacts/EMLIContactForm";
+import { EMLIContactForm } from "@/components/Forms/MinistryContacts/EMLIContactForm";
 
 const props = {};
 

@@ -65,8 +65,8 @@ from app.api.projects.information_requirements_table.models.information_requirem
 from app.api.projects.information_requirements_table.models.information_requirements_table_document_xref import InformationRequirementsTableDocumentXref
 from app.api.projects.project_decision_package.models.project_decision_package_document_xref import ProjectDecisionPackageDocumentXref
 from app.api.projects.major_mine_application.models.major_mine_application import MajorMineApplication
-from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
-from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
+from app.api.ministry_contacts.models.EMLI_contact_type import EMLIContactType
+from app.api.ministry_contacts.models.EMLI_contact import EMLIContact
 from app.api.activity.models.activity_notification import ActivityNotification
 from app.api.projects.project_decision_package.models.project_decision_package import ProjectDecisionPackage
 from app.api.mines.alerts.models.mine_alert import MineAlert

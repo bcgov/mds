@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import EMLIContactForm from "@/components/Forms/EMLIContacts/EMLIContactForm";
+import EMLIContactForm from "@/components/Forms/MinistryContacts/EMLIContactForm";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,

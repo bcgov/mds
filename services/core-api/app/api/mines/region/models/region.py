@@ -2,7 +2,7 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
-from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
+from app.api.ministry_contacts.models.EMLI_contact import EMLIContact
 
 
 class MineRegionCode(AuditMixin, Base):
