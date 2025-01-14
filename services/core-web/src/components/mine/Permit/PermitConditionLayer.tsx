@@ -3,6 +3,7 @@ import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition
 import PermitConditionForm from "./PermitConditionForm";
 import SubConditionForm from "./SubConditionForm";
 import { IGroupedDropdownList } from "@mds/common/interfaces/common/option.interface";
+import { PermitConditionStatus } from "./PermitConditionStatus";
 
 interface PermitConditionLayerProps {
   condition: IPermitCondition;
@@ -131,6 +132,15 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
           onSubmit={handleSaveListItem}
           permitAmendmentGuid={permitAmendmentGuid}
         />
+      )}
+      {level == 0 && (
+        <PermitConditionStatus
+          condition={condition}
+          canEditPermitConditions={canEditPermitConditions}
+          isDisabled={isAddingListItem || isExpanded}
+          permitAmendmentGuid={permitAmendmentGuid}
+          refreshData={refreshData}
+      />
       )}
       {/* Content added here will show up at the top level when conditions are collapsed */}
     </div>

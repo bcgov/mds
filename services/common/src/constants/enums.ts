@@ -270,3 +270,9 @@ export enum AMS_FORESTRY_ACT_TYPE {
 export enum MAX_DOCUMENT_NAME_LENGTHS {
   "MAJOR_PROJECTS" = "50",
 }
+
+export enum PERMIT_CONDITION_STATUS_CODE {
+  COM = "COM",
+  INP = "INP",
+  NST = "NST"
+}

@@ -26,6 +26,8 @@ export interface IPermitCondition {
   display_order: number;
   mineReportPermitRequirement?: IMineReportPermitRequirement;
   meta?: IPermitConditionMeta
+  permit_condition_status_code: string;
+  top_level_parent_permit_condition_id: number;
 }
 
 export interface IPermitConditionCategory {

@@ -62,6 +62,7 @@ const SubConditionForm: FC<SubConditionFormProps> = ({ level = 1, parentConditio
         condition_type_code: getConditionTypeCode(),
         display_order: parentCondition.sub_conditions.length + 1,
         parent_permit_condition_id: parentCondition.permit_condition_id,
+        top_level_parent_permit_condition_id: parentCondition.top_level_parent_permit_condition_id ? parentCondition.top_level_parent_permit_condition_id : parentCondition.parent_permit_condition_id
     } : {
         condition_category_code: conditionCategory.condition_category_code,
         condition_type_code: getConditionTypeCode(),
