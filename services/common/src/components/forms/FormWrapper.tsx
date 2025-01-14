@@ -1,29 +1,9 @@
-import React, { FC, useEffect } from "react";
-import { Form } from "antd";
+import React, { FC } from "react";
 import { compose } from "@reduxjs/toolkit";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { reduxForm, submit, getFormSubmitErrors, InjectedFormProps, ConfigProps } from "redux-form";
+import { BaseFormWrapper, BaseFormWrapperProps } from "./BaseFormWrapper";
 
-export interface IFormContext {
-  isEditMode: boolean;
-  isModal: boolean;
-  formName: string;
-  isReduxForm: boolean;
-}
-/**
- * The values in FormProvider (from FormWrapper props) will be passed down to child components
- * without having to pass them down through the whole tree, manually
- * Import FormConsumer to access these values within an input component
- * More attributes can be added if necessary, but it should be kept minimal
- */
-export const FormContext = React.createContext<IFormContext>({
-  isEditMode: true,
-  isModal: false,
-  formName: null,
-  isReduxForm: true,
-});
-export const { Provider: FormProvider, Consumer: FormConsumer } = FormContext;
-export const useFormContext = () => React.useContext(FormContext);
 
 // FormWrapper EXAMPLE USAGE:
 /** 
@@ -59,71 +39,33 @@ NOTABLE OMISSIONS:
 SEE ALSO:
 - BaseInput.tsx 
 */
-export interface FormWrapperProps {
-  name: string;
-  initialValues?: any;
+interface FormWrapperProps extends BaseFormWrapperProps {
   reduxFormConfig?: Partial<ConfigProps>;
-  onSubmit: (values) => void | Promise<void>;
-  children: any;
-  isModal?: boolean;
-  loading?: boolean;
-  isEditMode?: boolean;
-  scrollOnToggleEdit?: boolean;
-  layout?: "inline" | "horizontal" | "vertical";
 }
 
-const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
-  isEditMode = true,
-  isModal = false,
-  scrollOnToggleEdit = true,
-  children,
-  layout,
-  ...props
-}) => {
-  const providerValues = {
-    isEditMode,
-    isModal,
-    formName: props.name,
-  };
+const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = (props) => {
   const dispatch = useDispatch();
   const formErrors = useSelector(getFormSubmitErrors(props.name));
 
-  useEffect(() => {
-    if (scrollOnToggleEdit) {
-      window.scrollTo(0, 0);
-    }
-  }, [isEditMode]);
-
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values: any) => {
     dispatch(submit(props.name));
     if (!formErrors) {
       await props.onSubmit(values);
     }
   };
 
-  const formClassName = `common-form common-form-${props.name} form-${isEditMode ? "edit" : "view"
-    }`;
-
-  return (
-    <FormProvider value={providerValues}>
-      <Form
-        layout={layout ?? "vertical"}
-        onFinish={handleSubmit}
-        name={props.name}
-        className={formClassName}
-        initialValues={props.initialValues}
-      >
-        {children}
-      </Form>
-    </FormProvider>
-  );
+  return <BaseFormWrapper {...props} onSubmit={handleSubmit} />;
 };
 
-const mapStateToProps = (_state, ownProps) => ({
+const mapStateToProps = (_state: any, ownProps: FormWrapperProps) => ({
   form: ownProps.name,
   initialValues: ownProps.initialValues,
   ...ownProps.reduxFormConfig,
 });
-export default compose(connect(mapStateToProps), reduxForm({}))(FormWrapper as any) as FC<
-  FormWrapperProps
->;
+
+export default compose(
+  connect(mapStateToProps),
+  reduxForm({})
+)(FormWrapper as any) as FC<FormWrapperProps>;
+
+export { FormContext } from "./BaseFormWrapper";
