@@ -569,7 +569,7 @@ exports[`ReportPage renders view mode properly 1`] = `
               <div
                 class="ant-typography view-item-value"
               >
-                General Conditions
+                N/A
               </div>
             </div>
           </div>

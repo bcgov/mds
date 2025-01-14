@@ -29,7 +29,7 @@ exports[`RequestReportForm renders form properly 1`] = `
         style="padding-left: 8px; padding-right: 8px;"
       >
         <div
-          class="ant-form-item ant-form-item-with-help"
+          class="ant-form-item"
         >
           <div
             class="ant-row ant-form-item-row"
@@ -119,19 +119,6 @@ exports[`RequestReportForm renders form properly 1`] = `
                   </div>
                 </div>
               </div>
-              <div
-                style="display: flex; flex-wrap: nowrap;"
-              >
-                <div
-                  class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="REQUEST_REPORT_mine_report_definition_guid_help"
-                  role="alert"
-                >
-                  <div
-                    class=""
-                  />
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -141,7 +128,7 @@ exports[`RequestReportForm renders form properly 1`] = `
         style="padding-left: 8px; padding-right: 8px;"
       >
         <div
-          class="ant-form-item ant-form-item-with-help"
+          class="ant-form-item"
         >
           <div
             class="ant-row ant-form-item-row"
@@ -214,19 +201,6 @@ exports[`RequestReportForm renders form properly 1`] = `
                   </div>
                 </div>
               </div>
-              <div
-                style="display: flex; flex-wrap: nowrap;"
-              >
-                <div
-                  class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="REQUEST_REPORT_submission_year_help"
-                  role="alert"
-                >
-                  <div
-                    class=""
-                  />
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -236,7 +210,7 @@ exports[`RequestReportForm renders form properly 1`] = `
         style="padding-left: 8px; padding-right: 8px;"
       >
         <div
-          class="ant-form-item ant-form-item-with-help"
+          class="ant-form-item"
         >
           <div
             class="ant-row ant-form-item-row"
@@ -307,19 +281,6 @@ exports[`RequestReportForm renders form properly 1`] = `
                       </span>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div
-                style="display: flex; flex-wrap: nowrap;"
-              >
-                <div
-                  class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="REQUEST_REPORT_due_date_help"
-                  role="alert"
-                >
-                  <div
-                    class=""
-                  />
                 </div>
               </div>
             </div>

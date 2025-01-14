@@ -68,4 +68,4 @@ export default compose(
   reduxForm({})
 )(FormWrapper as any) as FC<FormWrapperProps>;
 
-export { FormContext } from "./BaseFormWrapper";
+export { FormContext, useFormContext, FormConsumer } from "./BaseFormWrapper";

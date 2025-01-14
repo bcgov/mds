@@ -476,7 +476,7 @@ exports[`PaymentContact Component should render the component with expected fiel
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item ant-form-item-with-help"
+            class="ant-form-item"
           >
             <div
               class="ant-row ant-form-item-row"
@@ -566,19 +566,6 @@ exports[`PaymentContact Component should render the component with expected fiel
                     </div>
                   </div>
                 </div>
-                <div
-                  style="display: flex; flex-wrap: nowrap;"
-                >
-                  <div
-                    class="ant-form-item-explain ant-form-item-explain-connected"
-                    id="ADD_EDIT_PROJECT_SUMMARY_payment_contact.address[0].address_type_code_help"
-                    role="alert"
-                  >
-                    <div
-                      class=""
-                    />
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -588,7 +575,7 @@ exports[`PaymentContact Component should render the component with expected fiel
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item ant-form-item-with-help"
+            class="ant-form-item"
           >
             <div
               class="ant-row ant-form-item-row"
@@ -676,19 +663,6 @@ exports[`PaymentContact Component should render the component with expected fiel
                         </span>
                       </span>
                     </div>
-                  </div>
-                </div>
-                <div
-                  style="display: flex; flex-wrap: nowrap;"
-                >
-                  <div
-                    class="ant-form-item-explain ant-form-item-explain-connected"
-                    id="ADD_EDIT_PROJECT_SUMMARY_payment_contact.address[0].sub_division_code_help"
-                    role="alert"
-                  >
-                    <div
-                      class=""
-                    />
                   </div>
                 </div>
               </div>

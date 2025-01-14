@@ -41,7 +41,7 @@ exports[`ProjectDates renders properly 1`] = `
         style="padding-top: 8px; padding-bottom: 8px;"
       >
         <div
-          class="ant-form-item ant-form-item-with-help"
+          class="ant-form-item"
         >
           <div
             class="ant-row ant-form-item-row"
@@ -142,19 +142,6 @@ exports[`ProjectDates renders properly 1`] = `
                   </div>
                 </div>
               </div>
-              <div
-                style="display: flex; flex-wrap: nowrap;"
-              >
-                <div
-                  class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="ADD_EDIT_PROJECT_SUMMARY_expected_draft_irt_submission_date_help"
-                  role="alert"
-                >
-                  <div
-                    class=""
-                  />
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -164,7 +151,7 @@ exports[`ProjectDates renders properly 1`] = `
         style="padding-top: 8px; padding-bottom: 8px;"
       >
         <div
-          class="ant-form-item ant-form-item-with-help"
+          class="ant-form-item"
         >
           <div
             class="ant-row ant-form-item-row"
@@ -265,19 +252,6 @@ exports[`ProjectDates renders properly 1`] = `
                   </div>
                 </div>
               </div>
-              <div
-                style="display: flex; flex-wrap: nowrap;"
-              >
-                <div
-                  class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="ADD_EDIT_PROJECT_SUMMARY_expected_permit_application_date_help"
-                  role="alert"
-                >
-                  <div
-                    class=""
-                  />
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -287,7 +261,7 @@ exports[`ProjectDates renders properly 1`] = `
         style="padding-top: 8px; padding-bottom: 8px;"
       >
         <div
-          class="ant-form-item ant-form-item-with-help"
+          class="ant-form-item"
         >
           <div
             class="ant-row ant-form-item-row"
@@ -388,19 +362,6 @@ exports[`ProjectDates renders properly 1`] = `
                   </div>
                 </div>
               </div>
-              <div
-                style="display: flex; flex-wrap: nowrap;"
-              >
-                <div
-                  class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="ADD_EDIT_PROJECT_SUMMARY_expected_permit_receipt_date_help"
-                  role="alert"
-                >
-                  <div
-                    class=""
-                  />
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -410,7 +371,7 @@ exports[`ProjectDates renders properly 1`] = `
         style="padding-top: 8px; padding-bottom: 8px;"
       >
         <div
-          class="ant-form-item ant-form-item-with-help"
+          class="ant-form-item"
         >
           <div
             class="ant-row ant-form-item-row"
@@ -509,19 +470,6 @@ exports[`ProjectDates renders properly 1`] = `
                       </span>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div
-                style="display: flex; flex-wrap: nowrap;"
-              >
-                <div
-                  class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="ADD_EDIT_PROJECT_SUMMARY_expected_project_start_date_help"
-                  role="alert"
-                >
-                  <div
-                    class=""
-                  />
                 </div>
               </div>
             </div>

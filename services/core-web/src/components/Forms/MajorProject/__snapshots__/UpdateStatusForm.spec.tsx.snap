@@ -93,7 +93,7 @@ exports[`UpdateStatusForm renders properly 1`] = `
                   class="ant-col ant-col-xs-24 ant-col-md-6"
                 >
                   <div
-                    class="ant-form-item ant-form-item-with-help"
+                    class="ant-form-item"
                   >
                     <div
                       class="ant-row ant-form-item-row"
@@ -165,19 +165,6 @@ exports[`UpdateStatusForm renders properly 1`] = `
                                 </span>
                               </span>
                             </div>
-                          </div>
-                        </div>
-                        <div
-                          style="display: flex; flex-wrap: nowrap;"
-                        >
-                          <div
-                            class="ant-form-item-explain ant-form-item-explain-connected"
-                            id="UPDATE_IRT_status_code_help"
-                            role="alert"
-                          >
-                            <div
-                              class=""
-                            />
                           </div>
                         </div>
                       </div>

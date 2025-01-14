@@ -59,7 +59,7 @@ exports[`HelpGuide renders CORE properly 1`] = `
     id="EDIT_HELP_GUIDE"
   >
     <div
-      class="ant-form-item ant-form-item-with-help"
+      class="ant-form-item"
     >
       <div
         class="ant-row ant-form-item-row"
@@ -132,19 +132,6 @@ exports[`HelpGuide renders CORE properly 1`] = `
                   </span>
                 </label>
               </div>
-            </div>
-          </div>
-          <div
-            style="display: flex; flex-wrap: nowrap;"
-          >
-            <div
-              class="ant-form-item-explain ant-form-item-explain-connected"
-              id="EDIT_HELP_GUIDE_page_tab_help"
-              role="alert"
-            >
-              <div
-                class=""
-              />
             </div>
           </div>
         </div>

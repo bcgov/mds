@@ -28,7 +28,7 @@ exports[`Project Management renders properly 1`] = `
         Project status is shared with the proponent via MineSpace. Changing the status will notify the project’s Primary Contact.
       </div>
       <div
-        class="ant-form-item ant-form-item-with-help"
+        class="ant-form-item"
       >
         <div
           class="ant-row ant-form-item-row"
@@ -131,19 +131,6 @@ exports[`Project Management renders properly 1`] = `
                 </div>
               </div>
             </div>
-            <div
-              style="display: flex; flex-wrap: nowrap;"
-            >
-              <div
-                class="ant-form-item-explain ant-form-item-explain-connected"
-                id="ADD_EDIT_PROJECT_SUMMARY_status_code_help"
-                role="alert"
-              >
-                <div
-                  class=""
-                />
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -223,7 +210,7 @@ exports[`Project Management renders properly 1`] = `
         </div>
       </div>
       <div
-        class="ant-form-item ant-form-item-with-help"
+        class="ant-form-item"
       >
         <div
           class="ant-row ant-form-item-row"
@@ -309,19 +296,6 @@ exports[`Project Management renders properly 1`] = `
                     </span>
                   </span>
                 </div>
-              </div>
-            </div>
-            <div
-              style="display: flex; flex-wrap: nowrap;"
-            >
-              <div
-                class="ant-form-item-explain ant-form-item-explain-connected"
-                id="ADD_EDIT_PROJECT_SUMMARY_project_lead_party_guid_help"
-                role="alert"
-              >
-                <div
-                  class=""
-                />
               </div>
             </div>
           </div>

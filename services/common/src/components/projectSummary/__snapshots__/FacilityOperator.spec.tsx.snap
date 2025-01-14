@@ -150,7 +150,7 @@ exports[`FacilityOperator Component should render the component with expected fi
         class="ant-col ant-col-12"
       >
         <div
-          class="ant-form-item ant-form-item-with-help"
+          class="ant-form-item"
         >
           <div
             class="ant-row ant-form-item-row"
@@ -238,19 +238,6 @@ exports[`FacilityOperator Component should render the component with expected fi
                       </span>
                     </span>
                   </div>
-                </div>
-              </div>
-              <div
-                style="display: flex; flex-wrap: nowrap;"
-              >
-                <div
-                  class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="ADD_EDIT_PROJECT_SUMMARY_regional_district_id_help"
-                  role="alert"
-                >
-                  <div
-                    class=""
-                  />
                 </div>
               </div>
             </div>
@@ -453,7 +440,7 @@ exports[`FacilityOperator Component should render the component with expected fi
       </div>
     </div>
     <div
-      class="ant-form-item ant-form-item-with-help"
+      class="ant-form-item"
     >
       <div
         class="ant-row ant-form-item-row"
@@ -543,19 +530,6 @@ exports[`FacilityOperator Component should render the component with expected fi
               </div>
             </div>
           </div>
-          <div
-            style="display: flex; flex-wrap: nowrap;"
-          >
-            <div
-              class="ant-form-item-explain ant-form-item-explain-connected"
-              id="ADD_EDIT_PROJECT_SUMMARY_facility_operator.address.sub_division_code_help"
-              role="alert"
-            >
-              <div
-                class=""
-              />
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -619,7 +593,7 @@ exports[`FacilityOperator Component should render the component with expected fi
       </div>
     </div>
     <div
-      class="ant-form-item ant-form-item-with-help"
+      class="ant-form-item"
     >
       <div
         class="ant-row ant-form-item-row"
@@ -692,19 +666,6 @@ exports[`FacilityOperator Component should render the component with expected fi
                   </span>
                 </label>
               </div>
-            </div>
-          </div>
-          <div
-            style="display: flex; flex-wrap: nowrap;"
-          >
-            <div
-              class="ant-form-item-explain ant-form-item-explain-connected"
-              id="ADD_EDIT_PROJECT_SUMMARY_zoning_help"
-              role="alert"
-            >
-              <div
-                class=""
-              />
             </div>
           </div>
         </div>

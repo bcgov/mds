@@ -142,7 +142,7 @@ exports[`RequestReportForm renders form properly 1`] = `
         style="padding: 8px 8px 8px 8px;"
       >
         <div
-          class="ant-form-item ant-form-item-with-help"
+          class="ant-form-item"
         >
           <div
             class="ant-row ant-form-item-row"
@@ -232,19 +232,6 @@ exports[`RequestReportForm renders form properly 1`] = `
                   </div>
                 </div>
               </div>
-              <div
-                style="display: flex; flex-wrap: nowrap;"
-              >
-                <div
-                  class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="ADD_REPORT_TO_PERMIT_CONDITION-1639_due_date_period_months_help"
-                  role="alert"
-                >
-                  <div
-                    class=""
-                  />
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -254,7 +241,7 @@ exports[`RequestReportForm renders form properly 1`] = `
         style="padding: 8px 8px 8px 8px;"
       >
         <div
-          class="ant-form-item ant-form-item-with-help"
+          class="ant-form-item"
         >
           <div
             class="ant-row ant-form-item-row"
@@ -330,19 +317,6 @@ exports[`RequestReportForm renders form properly 1`] = `
                   </div>
                 </div>
               </div>
-              <div
-                style="display: flex; flex-wrap: nowrap;"
-              >
-                <div
-                  class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="ADD_REPORT_TO_PERMIT_CONDITION-1639_initial_due_date_help"
-                  role="alert"
-                >
-                  <div
-                    class=""
-                  />
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -352,7 +326,7 @@ exports[`RequestReportForm renders form properly 1`] = `
         style="padding: 8px 8px 8px 8px;"
       >
         <div
-          class="ant-form-item ant-form-item-with-help"
+          class="ant-form-item"
         >
           <div
             class="ant-row ant-form-item-row"
@@ -465,19 +439,6 @@ exports[`RequestReportForm renders form properly 1`] = `
                       </span>
                     </label>
                   </div>
-                </div>
-              </div>
-              <div
-                style="display: flex; flex-wrap: nowrap;"
-              >
-                <div
-                  class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="ADD_REPORT_TO_PERMIT_CONDITION-1639_cim_or_cpo_help"
-                  role="alert"
-                >
-                  <div
-                    class=""
-                  />
                 </div>
               </div>
             </div>

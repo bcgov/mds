@@ -31,7 +31,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
           Regulatory Authority
         </h3>
         <div
-          class="ant-form-item ant-form-item-with-help"
+          class="ant-form-item"
         >
           <div
             class="ant-row ant-form-item-row"
@@ -127,10 +127,10 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                       </span>
                     </label>
                     <label
-                      class="ant-radio-wrapper ant-radio-wrapper-checked ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
                     >
                       <span
-                        class="ant-radio ant-radio-checked ant-radio-disabled"
+                        class="ant-radio ant-radio-disabled"
                       >
                         <input
                           class="ant-radio-input"
@@ -148,19 +148,6 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                       </span>
                     </label>
                   </div>
-                </div>
-              </div>
-              <div
-                style="display: flex; flex-wrap: nowrap;"
-              >
-                <div
-                  class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="VIEW_EDIT_REPORT_report_for_help"
-                  role="alert"
-                >
-                  <div
-                    class=""
-                  />
                 </div>
               </div>
             </div>
@@ -183,7 +170,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
         style="padding: 4px 8px 4px 8px;"
       >
         <div
-          class="ant-form-item ant-form-item-with-help"
+          class="ant-form-item"
         >
           <div
             class="ant-row ant-form-item-row"
@@ -258,19 +245,6 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                       </span>
                     </label>
                   </div>
-                </div>
-              </div>
-              <div
-                style="display: flex; flex-wrap: nowrap;"
-              >
-                <div
-                  class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="VIEW_EDIT_REPORT_report_type_help"
-                  role="alert"
-                >
-                  <div
-                    class=""
-                  />
                 </div>
               </div>
             </div>
@@ -369,7 +343,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
         style="padding: 4px 8px 4px 8px;"
       >
         <div
-          class="ant-form-item ant-form-item-with-help"
+          class="ant-form-item"
         >
           <div
             class="ant-row ant-form-item-row"
@@ -442,19 +416,6 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                   </div>
                 </div>
               </div>
-              <div
-                style="display: flex; flex-wrap: nowrap;"
-              >
-                <div
-                  class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="VIEW_EDIT_REPORT_submission_year_help"
-                  role="alert"
-                >
-                  <div
-                    class=""
-                  />
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -464,7 +425,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
         style="padding: 4px 8px 4px 8px;"
       >
         <div
-          class="ant-form-item ant-form-item-with-help"
+          class="ant-form-item"
         >
           <div
             class="ant-row ant-form-item-row"
@@ -535,19 +496,6 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                       </span>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div
-                style="display: flex; flex-wrap: nowrap;"
-              >
-                <div
-                  class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="VIEW_EDIT_REPORT_due_date_help"
-                  role="alert"
-                >
-                  <div
-                    class=""
-                  />
                 </div>
               </div>
             </div>

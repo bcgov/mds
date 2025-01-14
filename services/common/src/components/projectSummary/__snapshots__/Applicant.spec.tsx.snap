@@ -20,7 +20,7 @@ exports[`Applicant Component should render the component with expected fields 1`
         This must be the name of the company or person seeking authorization.
       </div>
       <div
-        class="ant-form-item ant-form-item-with-help"
+        class="ant-form-item"
       >
         <div
           class="ant-row ant-form-item-row"
@@ -53,10 +53,10 @@ exports[`Applicant Component should render the component with expected fields 1`
                   class="ant-radio-group ant-radio-group-solid"
                 >
                   <label
-                    class="ant-radio-button-wrapper ant-radio-button-wrapper-checked ant-radio-button-wrapper-in-form-item"
+                    class="ant-radio-button-wrapper ant-radio-button-wrapper-in-form-item"
                   >
                     <span
-                      class="ant-radio-button ant-radio-button-checked"
+                      class="ant-radio-button"
                     >
                       <input
                         class="ant-radio-button-input"
@@ -93,19 +93,6 @@ exports[`Applicant Component should render the component with expected fields 1`
                     </span>
                   </label>
                 </div>
-              </div>
-            </div>
-            <div
-              style="display: flex; flex-wrap: nowrap;"
-            >
-              <div
-                class="ant-form-item-explain ant-form-item-explain-connected"
-                id="ADD_EDIT_PROJECT_SUMMARY_applicant.party_type_code_help"
-                role="alert"
-              >
-                <div
-                  class=""
-                />
               </div>
             </div>
           </div>
@@ -686,7 +673,7 @@ exports[`Applicant Component should render the component with expected fields 1`
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item ant-form-item-with-help"
+            class="ant-form-item"
           >
             <div
               class="ant-row ant-form-item-row"
@@ -776,19 +763,6 @@ exports[`Applicant Component should render the component with expected fields 1`
                     </div>
                   </div>
                 </div>
-                <div
-                  style="display: flex; flex-wrap: nowrap;"
-                >
-                  <div
-                    class="ant-form-item-explain ant-form-item-explain-connected"
-                    id="ADD_EDIT_PROJECT_SUMMARY_applicant.address[0].address_type_code_help"
-                    role="alert"
-                  >
-                    <div
-                      class=""
-                    />
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -798,7 +772,7 @@ exports[`Applicant Component should render the component with expected fields 1`
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item ant-form-item-with-help"
+            class="ant-form-item"
           >
             <div
               class="ant-row ant-form-item-row"
@@ -886,19 +860,6 @@ exports[`Applicant Component should render the component with expected fields 1`
                         </span>
                       </span>
                     </div>
-                  </div>
-                </div>
-                <div
-                  style="display: flex; flex-wrap: nowrap;"
-                >
-                  <div
-                    class="ant-form-item-explain ant-form-item-explain-connected"
-                    id="ADD_EDIT_PROJECT_SUMMARY_applicant.address[0].sub_division_code_help"
-                    role="alert"
-                  >
-                    <div
-                      class=""
-                    />
                   </div>
                 </div>
               </div>
@@ -1228,7 +1189,7 @@ exports[`Applicant Component should render the component with expected fields 1`
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item ant-form-item-with-help"
+            class="ant-form-item"
           >
             <div
               class="ant-row ant-form-item-row"
@@ -1318,19 +1279,6 @@ exports[`Applicant Component should render the component with expected fields 1`
                     </div>
                   </div>
                 </div>
-                <div
-                  style="display: flex; flex-wrap: nowrap;"
-                >
-                  <div
-                    class="ant-form-item-explain ant-form-item-explain-connected"
-                    id="ADD_EDIT_PROJECT_SUMMARY_applicant.address[1].address_type_code_help"
-                    role="alert"
-                  >
-                    <div
-                      class=""
-                    />
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -1340,7 +1288,7 @@ exports[`Applicant Component should render the component with expected fields 1`
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item ant-form-item-with-help"
+            class="ant-form-item"
           >
             <div
               class="ant-row ant-form-item-row"
@@ -1428,19 +1376,6 @@ exports[`Applicant Component should render the component with expected fields 1`
                         </span>
                       </span>
                     </div>
-                  </div>
-                </div>
-                <div
-                  style="display: flex; flex-wrap: nowrap;"
-                >
-                  <div
-                    class="ant-form-item-explain ant-form-item-explain-connected"
-                    id="ADD_EDIT_PROJECT_SUMMARY_applicant.address[1].sub_division_code_help"
-                    role="alert"
-                  >
-                    <div
-                      class=""
-                    />
                   </div>
                 </div>
               </div>
@@ -1839,7 +1774,7 @@ exports[`Applicant Component should render the component with expected fields 1`
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item ant-form-item-with-help"
+            class="ant-form-item"
           >
             <div
               class="ant-row ant-form-item-row"
@@ -1929,19 +1864,6 @@ exports[`Applicant Component should render the component with expected fields 1`
                     </div>
                   </div>
                 </div>
-                <div
-                  style="display: flex; flex-wrap: nowrap;"
-                >
-                  <div
-                    class="ant-form-item-explain ant-form-item-explain-connected"
-                    id="ADD_EDIT_PROJECT_SUMMARY_applicant.address[2].address_type_code_help"
-                    role="alert"
-                  >
-                    <div
-                      class=""
-                    />
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -1951,7 +1873,7 @@ exports[`Applicant Component should render the component with expected fields 1`
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item ant-form-item-with-help"
+            class="ant-form-item"
           >
             <div
               class="ant-row ant-form-item-row"
@@ -2039,19 +1961,6 @@ exports[`Applicant Component should render the component with expected fields 1`
                         </span>
                       </span>
                     </div>
-                  </div>
-                </div>
-                <div
-                  style="display: flex; flex-wrap: nowrap;"
-                >
-                  <div
-                    class="ant-form-item-explain ant-form-item-explain-connected"
-                    id="ADD_EDIT_PROJECT_SUMMARY_applicant.address[2].sub_division_code_help"
-                    role="alert"
-                  >
-                    <div
-                      class=""
-                    />
                   </div>
                 </div>
               </div>
@@ -2654,7 +2563,7 @@ exports[`Applicant Component should render the component with expected fields 1`
             style="padding-left: 8px; padding-right: 8px;"
           >
             <div
-              class="ant-form-item ant-form-item-with-help"
+              class="ant-form-item"
             >
               <div
                 class="ant-row ant-form-item-row"
@@ -2744,19 +2653,6 @@ exports[`Applicant Component should render the component with expected fields 1`
                       </div>
                     </div>
                   </div>
-                  <div
-                    style="display: flex; flex-wrap: nowrap;"
-                  >
-                    <div
-                      class="ant-form-item-explain ant-form-item-explain-connected"
-                      id="ADD_EDIT_PROJECT_SUMMARY_payment_contact.address[0].address_type_code_help"
-                      role="alert"
-                    >
-                      <div
-                        class=""
-                      />
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -2766,7 +2662,7 @@ exports[`Applicant Component should render the component with expected fields 1`
             style="padding-left: 8px; padding-right: 8px;"
           >
             <div
-              class="ant-form-item ant-form-item-with-help"
+              class="ant-form-item"
             >
               <div
                 class="ant-row ant-form-item-row"
@@ -2854,19 +2750,6 @@ exports[`Applicant Component should render the component with expected fields 1`
                           </span>
                         </span>
                       </div>
-                    </div>
-                  </div>
-                  <div
-                    style="display: flex; flex-wrap: nowrap;"
-                  >
-                    <div
-                      class="ant-form-item-explain ant-form-item-explain-connected"
-                      id="ADD_EDIT_PROJECT_SUMMARY_payment_contact.address[0].sub_division_code_help"
-                      role="alert"
-                    >
-                      <div
-                        class=""
-                      />
                     </div>
                   </div>
                 </div>
