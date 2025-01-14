@@ -1,16 +1,16 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { EMLIContactForm } from "@/components/Forms/MinistryContacts/EMLIContactForm";
+import { MinistryContactForm } from "@/components/Forms/MinistryContacts/MinistryContactForm";
 
 const props = {};
 
 const setupProps = () => {
   props.submitting = false;
-  props.title = "Update EMLI Contact";
+  props.title = "Update MCM Contact";
   props.handleSubmit = jest.fn();
   props.closeModal = jest.fn();
   props.regionDropdownOptions = [];
-  props.EMLIContactTypes = [];
+  props.MinistryContactTypes = [];
   props.isEdit = true;
   props.initialValues = {};
   props.formValues = {};
@@ -21,9 +21,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("EMLIContactForm", () => {
+describe("MinistryContactForm", () => {
   it("renders properly", () => {
-    const component = shallow(<EMLIContactForm {...props} />);
+    const component = shallow(<MinistryContactForm {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EMLIContactForm renders properly 1`] = `
+exports[`MinistryContactForm renders properly 1`] = `
 <div>
   <Form
     colon={true}
@@ -71,9 +71,9 @@ exports[`EMLIContactForm renders properly 1`] = `
             component={[Function]}
             data={Array []}
             disabled={true}
-            id="emli_contact_type_code"
+            id="ministry_contact_type_code"
             label="Contact Type*"
-            name="emli_contact_type_code"
+            name="ministry_contact_type_code"
             placeholder="Select a contact type"
             validate={
               Array [
@@ -208,7 +208,7 @@ exports[`EMLIContactForm renders properly 1`] = `
         loading={false}
         type="primary"
       >
-        Update EMLI Contact
+        Update MCM Contact
       </Button>
     </div>
   </Form>

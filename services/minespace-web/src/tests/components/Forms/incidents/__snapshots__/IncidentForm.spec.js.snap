@@ -747,7 +747,7 @@ exports[`IncidentForm renders properly 1`] = `
         >
           <FormItem
             hasFeedback={false}
-            label="Was it escalated to EMLI investigation?"
+            label="Was it escalated to MCM investigation?"
           >
             <Field
               component={[Function]}

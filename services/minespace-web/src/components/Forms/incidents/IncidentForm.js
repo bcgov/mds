@@ -101,12 +101,8 @@ const retrieveIncidentDetailsDynamicValidation = (childProps) => {
 };
 
 const confirmationSubmission = (childProps) => {
-  const {
-    applicationSubmitted,
-    location,
-    confirmedSubmission,
-    setConfirmedSubmission,
-  } = childProps;
+  const { applicationSubmitted, location, confirmedSubmission, setConfirmedSubmission } =
+    childProps;
   return (
     !applicationSubmitted &&
     location?.state?.current === 2 && (
@@ -855,7 +851,7 @@ const renderMinistryFollowUp = (childProps, formDisabled, formValues) => {
         </Form.Item>
       </Col>
       <Col md={12} xs={24}>
-        <Form.Item label="Was it escalated to EMLI investigation?">
+        <Form.Item label="Was it escalated to MCM investigation?">
           <Field
             id="followup_investigation_type_code"
             name="followup_investigation_type_code"

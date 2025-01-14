@@ -219,7 +219,7 @@ exports[`MajorProjectTable renders properly 1`] = `
                       </div>
                     </th>
                     <th
-                      aria-label="EMLI Project Lead"
+                      aria-label="MCM Project Lead"
                       class="ant-table-cell ant-table-column-has-sorters"
                       tabindex="0"
                     >
@@ -229,7 +229,7 @@ exports[`MajorProjectTable renders properly 1`] = `
                         <span
                           class="ant-table-column-title"
                         >
-                          EMLI Project Lead
+                          MCM Project Lead
                         </span>
                         <span
                           class="ant-table-column-sorter ant-table-column-sorter-full"
@@ -427,7 +427,7 @@ exports[`MajorProjectTable renders properly 1`] = `
                     >
                       <div
                         class="project_lead_name-column"
-                        title="EMLI Project Lead"
+                        title="MCM Project Lead"
                       >
                         N/A
                       </div>

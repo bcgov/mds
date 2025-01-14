@@ -77,9 +77,9 @@ import {
   getDropdownProjectSummaryPermitTypes,
   getDropdownProjectSummaryStatusCodes,
   getDropdownProjectSummaryDocumentTypes,
-  getEMLIContactTypes,
-  getEMLIContactTypesHash,
-  getDropdownEMLIContactTypes,
+  getMinistryContactTypes,
+  getMinistryContactTypesHash,
+  getDropdownMinistryContactTypes,
   getDropdownProjectSummaryAliasStatusCodes,
   getProjectSummaryAliasStatusCodesHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -526,15 +526,15 @@ describe("staticContentSelectors", () => {
     );
   });
 
-  it("`getDropdownEMLIContactTypes` calls `staticContentReducer.getDropdownEMLIContactTypes`", () => {
-    expect(getDropdownEMLIContactTypes(mockState)).toEqual(Mock.EMLI_TYPE_CODES_DROPDOWN);
+  it("`getDropdownMinistryContactTypes` calls `staticContentReducer.getDropdownMinistryContactTypes`", () => {
+    expect(getDropdownMinistryContactTypes(mockState)).toEqual(Mock.MINISTRY_TYPE_CODES_DROPDOWN);
   });
 
-  it("`getEMLIContactTypes` calls `staticContentReducer.getEMLIContactTypes`", () => {
-    expect(getEMLIContactTypes(mockState)).toEqual(mockState[STATIC_CONTENT].EMLIContactTypes);
+  it("`getMinistryContactTypes` calls `staticContentReducer.getMinistryContactTypes`", () => {
+    expect(getMinistryContactTypes(mockState)).toEqual(mockState[STATIC_CONTENT].MinistryContactTypes);
   });
 
-  it("`getEMLIContactTypesHash` calls `staticContentReducer.getEMLIContactTypesHash`", () => {
-    expect(getEMLIContactTypesHash(mockState)).toEqual(Mock.EMLI_TYPE_CODES_HASH);
+  it("`getMinistryContactTypesHash` calls `staticContentReducer.getMinistryContactTypesHash`", () => {
+    expect(getMinistryContactTypesHash(mockState)).toEqual(Mock.MINISTRY_TYPE_CODES_HASH);
   });
 });

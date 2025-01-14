@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { EMLIContactModal } from "@/components/modalContent/EMLIContactModal";
+import { MinistryContactModal } from "@/components/modalContent/MinistryContactModal";
 
 const dispatchProps = {};
 const props = {};
@@ -13,7 +13,7 @@ const setupDispatchProps = () => {
 const setupProps = () => {
   props.initialValues = {};
   props.regionDropdownOptions = [];
-  props.EMLIContactTypes = [];
+  props.MinistryContactTypes = [];
   props.isEdit = true;
 };
 
@@ -22,9 +22,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("EMLIContactModal", () => {
+describe("MinistryContactModal", () => {
   it("renders properly", () => {
-    const component = shallow(<EMLIContactModal {...dispatchProps} {...props} />);
+    const component = shallow(<MinistryContactModal {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

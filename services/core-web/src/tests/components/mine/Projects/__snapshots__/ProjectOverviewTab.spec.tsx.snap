@@ -613,7 +613,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                   class="ant-typography ministry-contact-title"
                 >
                   <strong>
-                    EMLI Project Lead
+                    MCM Project Lead
                   </strong>
                 </span>
                 <br />

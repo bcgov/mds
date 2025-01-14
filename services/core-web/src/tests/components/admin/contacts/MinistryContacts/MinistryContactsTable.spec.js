@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { EMLIContactsTable } from "@/components/admin/contacts/MinistryContacts/MinistryContactsTable";
+import { MinistryContactsTable } from "@/components/admin/contacts/MinistryContacts/MinistryContactsTable";
 
 const dispatchProps = {};
 const props = {};
@@ -13,7 +13,7 @@ const setupDispatchProps = () => {
 const setupProps = () => {
   props.contacts = [];
   props.mineRegionHash = {};
-  props.EMLIContactTypesHash = {};
+  props.MinistryContactTypesHash = {};
   props.isLoaded = true;
   props.isOffice = false;
 };
@@ -23,9 +23,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("EMLIContactsTable", () => {
+describe("MinistryContactsTable", () => {
   it("renders properly", () => {
-    const component = shallow(<EMLIContactsTable {...dispatchProps} {...props} />);
+    const component = shallow(<MinistryContactsTable {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

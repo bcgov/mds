@@ -2892,29 +2892,29 @@ export const MINE_REPORT_STATUS_OPTIONS_HASH = {
 };
 
 export const BULK_STATIC_CONTENT_RESPONSE = {
-  EMLIContactTypes: [
+  MinistryContactTypes: [
     {
-      emli_contact_type_code: "SHI",
+      ministry_contact_type_code: "SHI",
       description: "Senior Health, Safety and Environment Inspector",
       active_ind: true,
     },
     {
-      emli_contact_type_code: "SPI",
+      ministry_contact_type_code: "SPI",
       description: "Senior Permitting Inspector",
       active_ind: true,
     },
     {
-      emli_contact_type_code: "ROE",
+      ministry_contact_type_code: "ROE",
       description: "Regional Office",
       active_ind: true,
     },
     {
-      emli_contact_type_code: "RDR",
+      ministry_contact_type_code: "RDR",
       description: "Regional Director",
       active_ind: true,
     },
     {
-      emli_contact_type_code: "HSI",
+      ministry_contact_type_code: "HSI",
       description: "Health and Safety Inspector",
       active_ind: true,
     },
@@ -7342,7 +7342,7 @@ export const MAJOR_MINES_APPLICATION_STATUS_CODES_HASH = {
   CHR: "Change Requested",
 };
 
-export const EMLI_TYPE_CODES_DROPDOWN = [
+export const MINISTRY_TYPE_CODES_DROPDOWN = [
   {
     value: "HSI",
     label: "Health and Safety Inspector",
@@ -7375,7 +7375,7 @@ export const EMLI_TYPE_CODES_DROPDOWN = [
   },
 ];
 
-export const EMLI_TYPE_CODES_HASH = {
+export const MINISTRY_TYPE_CODES_HASH = {
   HSI: "Health and Safety Inspector",
   RDR: "Regional Director",
   ROE: "Regional Office",

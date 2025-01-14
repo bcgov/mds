@@ -1,8 +1,8 @@
 import { PropTypes, shape } from "prop-types";
 
-export const EMLIContact = shape({
+export const MinistryContact = shape({
   contact_id: PropTypes.string,
-  emli_contact_type_code: PropTypes.string,
+  ministry_contact_type_code: PropTypes.string,
   mine_region_code: PropTypes.string,
   is_major_mine: PropTypes.bool,
   is_general_contact: PropTypes.bool,
@@ -15,4 +15,4 @@ export const EMLIContact = shape({
   mailing_address_line_2: PropTypes.string,
 });
 
-export default EMLIContact;
+export default MinistryContact;

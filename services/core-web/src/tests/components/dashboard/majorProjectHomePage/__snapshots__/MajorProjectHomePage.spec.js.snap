@@ -189,7 +189,7 @@ exports[`MajorProjectHomePage renders properly 1`] = `
                         <th
                           class="ant-table-cell"
                         >
-                          EMLI Project Lead
+                          MCM Project Lead
                         </th>
                         <th
                           class="ant-table-cell"

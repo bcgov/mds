@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MineSpaceEMLIContactManagement renders properly 1`] = `
+exports[`MineSpaceMinistryContactManagement renders properly 1`] = `
 <div>
   <div
     className="landing-page__header"
@@ -9,7 +9,7 @@ exports[`MineSpaceEMLIContactManagement renders properly 1`] = `
       className="inline-flex between"
     >
       <h1>
-        MineSpace EMLI Contact Management
+        MineSpace MCM Contact Management
       </h1>
       <Connect(AuthorizationWrapper)
         permission="role_admin"
@@ -17,7 +17,7 @@ exports[`MineSpaceEMLIContactManagement renders properly 1`] = `
         <AddButton
           onClick={[Function]}
         >
-          Create EMLI Contact
+          Create MCM Contact
         </AddButton>
       </Connect(AuthorizationWrapper)>
     </div>
@@ -34,7 +34,7 @@ exports[`MineSpaceEMLIContactManagement renders properly 1`] = `
           The Offices are displayed in MineSpace, shown on the footer on permits, and NoW documents, and are the default email address for variances, code required reports, and mine information notifications.
         </React.Fragment>
       }
-      message="EMLI contacts and offices are displayed in multiple places within Core and MineSpace."
+      message="MCM contacts and offices are displayed in multiple places within Core and MineSpace."
       showIcon={true}
       type="info"
     />
@@ -42,8 +42,8 @@ exports[`MineSpaceEMLIContactManagement renders properly 1`] = `
       Offices
     </h2>
     <Divider />
-    <EMLIContactsTable
-      EMLIContactTypesHash={Object {}}
+    <MinistryContactsTable
+      MinistryContactTypesHash={Object {}}
       contacts={Array []}
       handleDeleteContact={[Function]}
       isLoaded={false}
@@ -56,8 +56,8 @@ exports[`MineSpaceEMLIContactManagement renders properly 1`] = `
       Contacts
     </h2>
     <Divider />
-    <EMLIContactsTable
-      EMLIContactTypesHash={Object {}}
+    <MinistryContactsTable
+      MinistryContactTypesHash={Object {}}
       contacts={Array []}
       handleDeleteContact={[Function]}
       isLoaded={false}
