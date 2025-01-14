@@ -1,6 +1,5 @@
-import { Alert, Button, Col, Row, Typography } from "antd";
+import { Alert, Button, Col, Form, Row, Typography } from "antd";
 import React, { FC, ReactNode, useEffect, useState } from "react";
-import { Field, getFormValues, change } from "redux-form";
 import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
 import { useSelector, useDispatch } from "react-redux";
 import { IMine, IMineReportDefinition, IMineReportSubmission } from "@mds/common/interfaces";
@@ -30,6 +29,8 @@ import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { useParams } from "react-router-dom";
+import FormField from "../forms/FormField";
+import AntdFormWrapper from "../forms/AntdFormWrapper";
 
 interface ReportGetStartedProps {
   mine: IMine;
@@ -122,7 +123,7 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean }> = ({
         </>
       )}
       <Col md={!fullWidth && 12} sm={24}>
-        <Field
+        <FormField
           name="permit_guid"
           label="Permit Number"
           required
@@ -134,7 +135,7 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean }> = ({
 
       {!isCore && (
         <Col span={24} className="radio-two-column-container">
-          <Field
+          <FormField
             name="permit_condition_category_code"
             required
             validate={[required]}
@@ -147,7 +148,7 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean }> = ({
       )}
       {isCore && (
         <Col md={!fullWidth && 12} sm={24}>
-          <Field
+          <FormField
             name="permit_condition_category_code"
             required
             validate={[required]}
@@ -167,14 +168,17 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
   formButtons,
   setDisableNextButton,
 }) => {
-  const dispatch = useDispatch();
-  const { reportType } = useParams<{ reportType?: string }>();
+  const { reportType: reportTypeParam } = useParams<{ reportType?: string }>();
+
+  const [report_type, setReportType] = useState<string | undefined>(MineReportType[reportTypeParam] || REPORT_TYPE_CODES.CRR);
   const system = useSelector(getSystemFlag);
-  const formValues = useSelector(getFormValues(FORM.VIEW_EDIT_REPORT));
+
+  const [form] = Form.useForm();
+  const mine_report_definition_guid = Form.useWatch("mine_report_definition_guid", form);
   const [commonReportDefinitionOptions, setCommonReportDefinitionOptions] = useState([]);
   const mineReportDefinitionOptions = useSelector(getFormattedMineReportDefinitionOptions);
   const selectedReportDefinition: IMineReportDefinition = useSelector(
-    getMineReportDefinitionByGuid(formValues?.mine_report_definition_guid)
+    getMineReportDefinitionByGuid(mine_report_definition_guid)
   );
 
   useEffect(() => {
@@ -194,16 +198,16 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
   }, [mineReportDefinitionOptions]);
 
   const handleReportDefinitionChange = (newValue: string) => {
-    dispatch(change(FORM.VIEW_EDIT_REPORT, "mine_report_definition_guid", newValue));
+    form.setFieldValue("mine_report_definition_guid", newValue);
   };
 
   return (
-    <FormWrapper
+    <AntdFormWrapper
       name={FORM.VIEW_EDIT_REPORT}
+      form={form}
       onSubmit={handleSubmit}
-      reduxFormConfig={{ destroyOnUnmount: false, enableReinitialize: true }}
       initialValues={{
-        report_type: reportType ? MineReportType[reportType] : REPORT_TYPE_CODES.CRR,
+        report_type: reportTypeParam ? MineReportType[reportTypeParam] : REPORT_TYPE_CODES.CRR,
       }}
     >
       <div>
@@ -223,9 +227,13 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
           .
         </Typography.Paragraph>
         <Typography.Title level={5}>What type of report are you submitting today?</Typography.Title>
-        <Field
+        <FormField
           name="report_type"
           component={RenderRadioButtons}
+          onChange={(val) => {
+            console.log(val)
+            setReportType(val);
+          }}
           props={{ isVertical: true }}
           validate={[requiredRadioButton]}
           customOptions={[
@@ -255,7 +263,7 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
         />
         {system !== SystemFlagEnum.core &&
           mine.major_mine_ind &&
-          formValues?.report_type === REPORT_TYPE_CODES.PRR && (
+          report_type === REPORT_TYPE_CODES.PRR && (
             <Alert
               description={
                 <>
@@ -271,10 +279,10 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
               className="margin-small--bottom"
             />
           )}
-        {formValues?.report_type === REPORT_TYPE_CODES.PRR && (
+        {report_type === REPORT_TYPE_CODES.PRR && (
           <RenderPRRFields mineGuid={mine.mine_guid} />
         )}
-        {formValues?.report_type === REPORT_TYPE_CODES.CRR && (
+        {report_type === REPORT_TYPE_CODES.CRR && (
           <>
             <Typography.Title level={5}>
               Enter code section or choose from the submission list or select report type in the
@@ -287,7 +295,7 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
             <Row gutter={24} className="margin-large--bottom">
               <Col span={12}>
                 <div className="light-grey-border">
-                  <Field
+                  <FormField
                     name="mine_report_definition_guid"
                     placeholder="Enter a code section or report name"
                     required
@@ -337,7 +345,7 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
         )}
       </div>
       {formButtons}
-    </FormWrapper>
+    </AntdFormWrapper>
   );
 };
 

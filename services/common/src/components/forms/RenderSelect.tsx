@@ -3,14 +3,14 @@ import { Form, Select } from "antd";
 import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
 import { IOption } from "../..";
 import { caseInsensitiveLabelFilter } from "@mds/common/redux/utils/helpers";
-import { FormConsumer, IFormContext } from "./FormWrapper";
+import { FormConsumer, IFormContext, useFormContext } from "./FormWrapper";
 
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
  * There is a bug when the data sets are large enough to cause the dropdown to scroll, and the field is in a modal.
  */
 
-interface SelectProps extends BaseInputProps {
+export interface SelectProps extends BaseInputProps {
   data: IOption[];
   onSelect?: (value, option) => void;
   allowClear?: boolean;
@@ -26,7 +26,7 @@ export const RenderSelect: FC<SelectProps> = ({
   input,
   placeholder = "Please select",
   data = [],
-  onSelect = () => {},
+  onSelect = () => { },
   allowClear = true,
   disabled = false,
   required = false,
@@ -34,8 +34,12 @@ export const RenderSelect: FC<SelectProps> = ({
   loading = false,
   enableGetPopupContainer = true,
   onSearch,
+  rules = null,
 }) => {
-  const [isDirty, setIsDirty] = useState(meta.touched);
+  const ctx = useFormContext();
+
+  const isReduxForm = ctx.isReduxForm;
+  const [isDirty, setIsDirty] = useState(isReduxForm ? meta.touched : false);
   return (
     <FormConsumer>
       {(value: IFormContext) => {
@@ -54,15 +58,16 @@ export const RenderSelect: FC<SelectProps> = ({
             label={getFormItemLabel(label, required, labelSubtitle, showOptional)}
             required={required}
             validateStatus={
-              isDirty || meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""
+              !isReduxForm ? undefined : (isDirty || meta.touched ? (meta.error && "error") || (meta.warning && "warning") : "")
             }
             help={
-              (isDirty || meta.touched) &&
-              ((meta.error && <span>{meta.error}</span>) ||
-                (meta.warning && <span>{meta.warning}</span>))
+              !isReduxForm ? undefined : ((isDirty || meta.touched) &&
+                ((meta.error && <span>{meta.error}</span>) ||
+                  (meta.warning && <span>{meta.warning}</span>)))
             }
             id={id}
             getValueProps={() => input.value !== "" && { value: input.value }}
+            rules={rules}
           >
             <Select
               loading={loading}

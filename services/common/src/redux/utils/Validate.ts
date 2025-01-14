@@ -315,8 +315,12 @@ export const dateNotAfterOther = memoize((other: string, otherLabel?: string) =>
   return `Date cannot be after ${otherDateText}`
 }, (other, otherLabel) => `${other}_${otherLabel}`);
 
-export const yearNotInFuture = (value) =>
-  value && value > new Date().getFullYear() ? "Year cannot be in the future" : undefined;
+export const yearNotInFuture = (value) => {
+  if (value && moment.isMoment(value)) {
+    value = value.year();
+  }
+  return value && value > new Date().getFullYear() ? "Year cannot be in the future" : undefined;
+}
 
 export const validateIncidentDate = memoize((reportedDate) => (value) =>
   value <= reportedDate

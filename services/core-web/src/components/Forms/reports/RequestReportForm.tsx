@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import { useSelector } from "react-redux";
-import { Field, getFormValues } from "redux-form";
-import { Button, Col, Row, Typography } from "antd";
+import { Button, Col, Form, Row, Typography } from "antd";
 import {
   FORM,
   IMineReport,
@@ -10,7 +9,7 @@ import {
   REPORT_TYPE_CODES,
 } from "@mds/common";
 import { required, yearNotInFuture } from "@mds/common/redux/utils/Validate";
-import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import AntdFormWrapper from "@mds/common/components/forms/AntdFormWrapper";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
@@ -19,7 +18,8 @@ import {
   getMineReportDefinitionByGuid,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { RenderPRRFields, ReportInfoBox } from "@mds/common/components/reports/ReportGetStarted";
-
+import FormField from "@mds/common/components/forms/FormField";
+import { isMoment } from "moment";
 interface RequestReportFormProps {
   onSubmit: (values: Partial<IMineReport>) => void | Promise<void>;
   mineReportsType: REPORT_TYPE_CODES;
@@ -31,16 +31,26 @@ export const RequestReportForm: FC<RequestReportFormProps> = ({
   mineGuid,
 }) => {
   const mineReportDefinitionOptions = useSelector(getFormattedMineReportDefinitionOptions);
-  const formValues = useSelector(getFormValues(FORM.REQUEST_REPORT));
+
+  const [form] = Form.useForm();
+  const mine_report_definition_guid = Form.useWatch('mine_report_definition_guid', form);
+
   const selectedReportDefinition: IMineReportDefinition = useSelector(
-    getMineReportDefinitionByGuid(formValues?.mine_report_definition_guid)
+    getMineReportDefinitionByGuid(mine_report_definition_guid)
   );
 
   return (
     <div style={{ minHeight: "380px" }}>
-      <FormWrapper
+      <AntdFormWrapper
+        form={form}
         name={FORM.REQUEST_REPORT}
-        onSubmit={onSubmit}
+        onSubmit={val => {
+          return onSubmit({
+            ...val,
+            due_date: isMoment(val.due_date) ? val.due_date.format("YYYY-MM-DD") : val.due_date,
+            submission_year: isMoment(val.submission_year) ? val.submission_year.format("YYYY") : val.submission_year,
+          });
+        }}
         isModal={true}
         initialValues={{
           mine_report_status_code: MINE_REPORT_SUBMISSION_CODES.NON,
@@ -52,11 +62,11 @@ export const RequestReportForm: FC<RequestReportFormProps> = ({
           </Col>
           {mineReportsType === REPORT_TYPE_CODES.CRR && (
             <Col span={24}>
-              <Field
+              <FormField
                 name="mine_report_definition_guid"
                 label="Search by Code Section or Report Name"
                 placeholder="Enter a code section or report name"
-                required
+                required={true}
                 validate={[required]}
                 component={RenderSelect}
                 data={mineReportDefinitionOptions}
@@ -67,7 +77,7 @@ export const RequestReportForm: FC<RequestReportFormProps> = ({
             <RenderPRRFields mineGuid={mineGuid} fullWidth />
           )}
           <Col md={12} sm={24}>
-            <Field
+            <FormField
               name="submission_year"
               label="Report Compliance Year/Period"
               placeholder="Select year"
@@ -81,7 +91,7 @@ export const RequestReportForm: FC<RequestReportFormProps> = ({
             />
           </Col>
           <Col md={12} sm={24}>
-            <Field
+            <FormField
               name="due_date"
               label="Due Date"
               placeholder="Select date"
@@ -102,7 +112,7 @@ export const RequestReportForm: FC<RequestReportFormProps> = ({
             Request Report
           </Button>
         </Row>
-      </FormWrapper>
+      </AntdFormWrapper>
     </div>
   );
 };

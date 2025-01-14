@@ -214,11 +214,11 @@ export const dateNotBeforeStrictOther = memoize((other) => (value) =>
 export const timeNotBeforeOther = memoize(
   (comparableDate, baseDate, baseTime) => (comparableTime) =>
     baseTime &&
-    baseDate &&
-    comparableDate &&
-    comparableTime &&
-    baseDate === comparableDate &&
-    comparableTime < baseTime
+      baseDate &&
+      comparableDate &&
+      comparableTime &&
+      baseDate === comparableDate &&
+      comparableTime < baseTime
       ? `Time cannot be before ${baseTime.format("H:mm")} hrs.`
       : undefined
 );
@@ -229,8 +229,9 @@ export const dateNotAfterOther = memoize((other) => (value) =>
     : undefined
 );
 
-export const yearNotInFuture = (value) =>
-  value && value > new Date().getFullYear() ? "Year cannot be in the future" : undefined;
+export const yearNotInFuture = (value) => {
+  return value && value > new Date().getFullYear() ? "Year cannot be in the future" : undefined;
+}
 
 export const validateIncidentDate = memoize((reportedDate) => (value) =>
   value <= reportedDate
@@ -340,9 +341,8 @@ export const validateIfApplicationTypeCorrespondsToPermitNumber = (
     return permit?.permit_prefix &&
       Strings.APPLICATION_TYPES_BY_PERMIT_PREFIX[permit.permit_prefix].includes(applicationType)
       ? undefined
-      : `The ${
-          isAdminAmendment ? "Type of Administrative Amendment" : "Type of Notice of Work"
-        } does not match to the selected permit.`;
+      : `The ${isAdminAmendment ? "Type of Administrative Amendment" : "Type of Notice of Work"
+      } does not match to the selected permit.`;
   }
   return undefined;
 };

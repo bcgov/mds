@@ -8,6 +8,7 @@ export interface IFormContext {
   isEditMode: boolean;
   isModal: boolean;
   formName: string;
+  isReduxForm: boolean;
 }
 /**
  * The values in FormProvider (from FormWrapper props) will be passed down to child components
@@ -19,8 +20,10 @@ export const FormContext = React.createContext<IFormContext>({
   isEditMode: true,
   isModal: false,
   formName: null,
+  isReduxForm: true,
 });
 export const { Provider: FormProvider, Consumer: FormConsumer } = FormContext;
+export const useFormContext = () => React.useContext(FormContext);
 
 // FormWrapper EXAMPLE USAGE:
 /** 

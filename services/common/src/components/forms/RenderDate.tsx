@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import moment from "moment-timezone";
 import { DatePicker, Form } from "antd";
 import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
-import { FormConsumer } from "./FormWrapper";
+import { FormConsumer, useFormContext } from "./FormWrapper";
 import { formatDate } from "@mds/common/redux/utils/helpers";
 
 /**
@@ -29,7 +29,10 @@ const RenderDate: FC<DateInputProps> = ({
   yearMode = false,
   disabledDate,
   formatViewDate = false,
+  rules = null,
 }) => {
+  const isReduxForm = useFormContext().isReduxForm;
+
   return (
     <FormConsumer>
       {(value) => {
@@ -58,6 +61,7 @@ const RenderDate: FC<DateInputProps> = ({
         // this is to deal with a bug that surfaces with antd/moment/initialValues.
         // basically this issue: https://stackoverflow.com/questions/64527820/antd-datepicker-date-clone-date-load-is-not-a-function
         const getMomentValue = () => {
+
           if (!input.value) {
             return null;
           }
@@ -72,13 +76,14 @@ const RenderDate: FC<DateInputProps> = ({
             label={getFormItemLabel(label, required)}
             getValueProps={getMomentValue}
             validateStatus={
-              meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""
+              !isReduxForm ? undefined : meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""
             }
             help={
-              meta.touched &&
-              ((meta.error && <span>{meta.error}</span>) ||
-                (meta.warning && <span>{meta.warning}</span>))
+              !isReduxForm ? undefined : meta.touched &&
+                ((meta.error && <span>{meta.error}</span>) ||
+                  (meta.warning && <span>{meta.warning}</span>))
             }
+            rules={rules}
           >
             <DatePicker
               disabled={disabled}
