@@ -1,9 +1,9 @@
 from flask_restx import Namespace
 
-from app.api.ministry_contacts.resources.EMLI_contact_list import EMLIContactListResource
-from app.api.ministry_contacts.resources.EMLI_contact import EMLIContactResource
+from app.api.ministry_contacts.resources.ministry_contact_list import MinistryContactListResource
+from app.api.ministry_contacts.resources.ministry_contact import MinistryContactResource
 
-api = Namespace('EMLI-contacts', description='EMLI contact information')
+api = Namespace('ministry-contacts', description='MCM contact information')
 
-api.add_resource(EMLIContactResource, '/<string:contact_guid>')
-api.add_resource(EMLIContactListResource, '', '/<string:mine_region_code>/contacts')
+api.add_resource(MinistryContactResource, '/<string:contact_guid>')
+api.add_resource(MinistryContactListResource, '', '/<string:mine_region_code>/contacts')

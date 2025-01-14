@@ -1,6 +1,6 @@
 # Audit Log / History tracking
 
-A common use case accross the MDS system is for EMLI staff and proponents to be able to track changes to data over time.This is useful for auditing purposes, as well as for implementing versioning and rollback functionality.
+A common use case accross the MDS system is for MCMs staff and proponents to be able to track changes to data over time.This is useful for auditing purposes, as well as for implementing versioning and rollback functionality.
 Examples of implementations of this can be found for Explosives Storage facilities and Tailings Storage Facility functionality.
 
 ## SQLAlchemy - Continuum

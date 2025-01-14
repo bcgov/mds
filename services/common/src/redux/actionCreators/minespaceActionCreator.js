@@ -88,85 +88,85 @@ export const deleteMinespaceUser = (minespaceUserId) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-// MineSpace EMLI contact
-export const fetchEMLIContacts = () => (dispatch) => {
+// MineSpace MCM contact
+export const fetchMinistryContacts = () => (dispatch) => {
   dispatch(showLoading());
-  dispatch(request(NetworkReducerTypes.GET_EMLI_CONTACTS));
+  dispatch(request(NetworkReducerTypes.GET_MINISTRY_CONTACTS));
   return CustomAxios()
-    .get(ENVIRONMENT.apiUrl + API.EMLI_CONTACTS, createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.MINISTRY_CONTACTS, createRequestHeader())
     .then((response) => {
-      dispatch(success(NetworkReducerTypes.GET_EMLI_CONTACTS));
-      dispatch(minespaceActions.storeEMLIContacts(response.data));
+      dispatch(success(NetworkReducerTypes.GET_MINISTRY_CONTACTS));
+      dispatch(minespaceActions.storeMinistryContacts(response.data));
       return response;
     })
-    .catch(() => dispatch(error(NetworkReducerTypes.GET_EMLI_CONTACTS)))
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_MINISTRY_CONTACTS)))
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchEMLIContactsByRegion = (region, isMajorMine) => (dispatch) => {
+export const fetchMinistryContactsByRegion = (region, isMajorMine) => (dispatch) => {
   dispatch(showLoading());
-  dispatch(request(NetworkReducerTypes.GET_EMLI_CONTACTS));
+  dispatch(request(NetworkReducerTypes.GET_MINISTRY_CONTACTS));
   return CustomAxios()
     .get(
-      ENVIRONMENT.apiUrl + API.EMLI_CONTACTS_BY_REGION(region, isMajorMine),
+      ENVIRONMENT.apiUrl + API.MINISTRY_CONTACTS_BY_REGION(region, isMajorMine),
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(NetworkReducerTypes.GET_EMLI_CONTACTS));
-      dispatch(minespaceActions.storeEMLIContactsByRegion(response.data));
+      dispatch(success(NetworkReducerTypes.GET_MINISTRY_CONTACTS));
+      dispatch(minespaceActions.storeMinistryContactsByRegion(response.data));
       return response;
     })
-    .catch(() => dispatch(error(NetworkReducerTypes.GET_EMLI_CONTACTS)))
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_MINISTRY_CONTACTS)))
     .finally(() => dispatch(hideLoading()));
 };
 
-export const createEMLIContact = (payload) => (dispatch) => {
-  dispatch(request(NetworkReducerTypes.UPDATE_EMLI_CONTACT));
+export const createMinistryContact = (payload) => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.UPDATE_MINISTRY_CONTACT));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .post(ENVIRONMENT.apiUrl + API.EMLI_CONTACTS, payload, createRequestHeader())
+    .post(ENVIRONMENT.apiUrl + API.MINISTRY_CONTACTS, payload, createRequestHeader())
     .then((response) => {
       notification.success({
-        message: `Successfully created a new EMLI contact.`,
+        message: `Successfully created a new MCM contact.`,
         duration: 10,
       });
-      dispatch(success(NetworkReducerTypes.UPDATE_EMLI_CONTACT));
+      dispatch(success(NetworkReducerTypes.UPDATE_MINISTRY_CONTACT));
       return response;
     })
-    .catch(() => dispatch(error(NetworkReducerTypes.UPDATE_EMLI_CONTACT)))
+    .catch(() => dispatch(error(NetworkReducerTypes.UPDATE_MINISTRY_CONTACT)))
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const updateEMLIContact = (guid, payload) => (dispatch) => {
-  dispatch(request(NetworkReducerTypes.UPDATE_EMLI_CONTACT));
+export const updateMinistryContact = (guid, payload) => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.UPDATE_MINISTRY_CONTACT));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .put(ENVIRONMENT.apiUrl + API.EMLI_CONTACT(guid), payload, createRequestHeader())
+    .put(ENVIRONMENT.apiUrl + API.MINISTRY_CONTACT(guid), payload, createRequestHeader())
     .then((response) => {
       notification.success({
-        message: `Successfully updated EMLI contact.`,
+        message: `Successfully updated MCM contact.`,
         duration: 10,
       });
-      dispatch(success(NetworkReducerTypes.UPDATE_EMLI_CONTACT));
+      dispatch(success(NetworkReducerTypes.UPDATE_MINISTRY_CONTACT));
       return response;
     })
-    .catch(() => dispatch(error(NetworkReducerTypes.UPDATE_EMLI_CONTACT)))
+    .catch(() => dispatch(error(NetworkReducerTypes.UPDATE_MINISTRY_CONTACT)))
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const deleteEMLIContact = (guid) => (dispatch) => {
-  dispatch(request(NetworkReducerTypes.DELETE_EMLI_CONTACT));
+export const deleteMinistryContact = (guid) => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.DELETE_MINISTRY_CONTACT));
   dispatch(showLoading());
   return CustomAxios()
-    .delete(ENVIRONMENT.apiUrl + API.EMLI_CONTACT(guid), createRequestHeader())
+    .delete(ENVIRONMENT.apiUrl + API.MINISTRY_CONTACT(guid), createRequestHeader())
     .then((response) => {
       notification.success({
-        message: `Successfully deleted EMLI contact.`,
+        message: `Successfully deleted MCM contact.`,
         duration: 10,
       });
-      dispatch(success(NetworkReducerTypes.DELETE_EMLI_CONTACT));
+      dispatch(success(NetworkReducerTypes.DELETE_MINISTRY_CONTACT));
       return response;
     })
-    .catch(() => dispatch(error(NetworkReducerTypes.DELETE_EMLI_CONTACT)))
+    .catch(() => dispatch(error(NetworkReducerTypes.DELETE_MINISTRY_CONTACT)))
     .finally(() => dispatch(hideLoading()));
 };

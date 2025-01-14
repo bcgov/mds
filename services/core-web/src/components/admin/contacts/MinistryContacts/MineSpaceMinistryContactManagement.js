@@ -7,106 +7,106 @@ import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
   getMineRegionHash,
-  getEMLIContactTypesHash,
+  getMinistryContactTypesHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getEMLIContacts } from "@mds/common/redux/selectors/minespaceSelector";
+import { getMinistryContacts } from "@mds/common/redux/selectors/minespaceSelector";
 import {
-  fetchEMLIContacts,
-  updateEMLIContact,
-  deleteEMLIContact,
-  createEMLIContact,
+  fetchMinistryContacts,
+  updateMinistryContact,
+  deleteMinistryContact,
+  createMinistryContact,
 } from "@mds/common/redux/actionCreators/minespaceActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import EMLIContactsTable from "@/components/admin/contacts/MinistryContacts/MinistryContactsTable";
+import MinistryContactsTable from "@/components/admin/contacts/MinistryContacts/MinistryContactsTable";
 import AddButton from "@/components/common/buttons/AddButton";
 
 const propTypes = {
-  fetchEMLIContacts: PropTypes.func.isRequired,
-  updateEMLIContact: PropTypes.func.isRequired,
-  deleteEMLIContact: PropTypes.func.isRequired,
-  createEMLIContact: PropTypes.func.isRequired,
+  fetchMinistryContacts: PropTypes.func.isRequired,
+  updateMinistryContact: PropTypes.func.isRequired,
+  deleteMinistryContact: PropTypes.func.isRequired,
+  createMinistryContact: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  EMLIContacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  MinistryContacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  EMLIContactTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  MinistryContactTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {};
 
-export class MineSpaceEMLIContactManagement extends Component {
+export class MineSpaceMinistryContactManagement extends Component {
   state = { isLoaded: false };
 
   componentWillMount() {
-    this.handleFetchEMLIContacts();
+    this.handleFetchMinistryContacts();
   }
 
-  handleFetchEMLIContacts = () => {
-    this.props.fetchEMLIContacts().then(() => {
+  handleFetchMinistryContacts = () => {
+    this.props.fetchMinistryContacts().then(() => {
       this.setState({ isLoaded: true });
     });
   };
 
   handleCreateContact = (values) => {
-    this.props.createEMLIContact(values).then(() => {
-      this.handleFetchEMLIContacts();
+    this.props.createMinistryContact(values).then(() => {
+      this.handleFetchMinistryContacts();
       this.props.closeModal();
     });
   };
 
   handleUpdateContact = (values) => {
-    this.props.updateEMLIContact(values.contact_guid, values).then(() => {
-      this.handleFetchEMLIContacts();
+    this.props.updateMinistryContact(values.contact_guid, values).then(() => {
+      this.handleFetchMinistryContacts();
       this.props.closeModal();
     });
   };
 
   handleDeleteContact = (guid) => {
     this.setState({ isLoaded: false });
-    this.props.deleteEMLIContact(guid).then(() => {
-      this.handleFetchEMLIContacts();
+    this.props.deleteMinistryContact(guid).then(() => {
+      this.handleFetchMinistryContacts();
     });
   };
 
   openContactModal = (isEdit, record = null) => {
     return this.props.openModal({
       props: {
-        title: isEdit ? "Update EMLI Contact" : "Create EMLI Contact",
+        title: isEdit ? "Update MCM Contact" : "Create MCM Contact",
         closeModal: this.props.closeModal,
         initialValues: isEdit ? record : {},
         onSubmit: isEdit ? this.handleUpdateContact : this.handleCreateContact,
         isEdit,
-        contacts: this.props.EMLIContacts,
+        contacts: this.props.MinistryContacts,
       },
-      content: modalConfig.EMLI_CONTACT_MODAL,
+      content: modalConfig.MINISTRY_CONTACT_MODAL,
     });
   };
 
   render() {
     const officeCodes = ["ROE", "MMO"];
-    const offices = this.props.EMLIContacts.filter(({ emli_contact_type_code }) =>
-      officeCodes.includes(emli_contact_type_code)
+    const offices = this.props.MinistryContacts.filter(({ ministry_contact_type_code }) =>
+      officeCodes.includes(ministry_contact_type_code)
     );
-    const contacts = this.props.EMLIContacts.filter(
-      ({ emli_contact_type_code }) => !officeCodes.includes(emli_contact_type_code)
+    const contacts = this.props.MinistryContacts.filter(
+      ({ ministry_contact_type_code }) => !officeCodes.includes(ministry_contact_type_code)
     );
     return (
       <div>
         <div className="landing-page__header">
           <div className="inline-flex between">
-            <h1>MineSpace EMLI Contact Management</h1>
+            <h1>MineSpace MCM Contact Management</h1>
             <AuthorizationWrapper permission={Permission.ADMIN}>
               <AddButton onClick={() => this.openContactModal(false)}>
-                Create EMLI Contact
+                Create MCM Contact
               </AddButton>
             </AuthorizationWrapper>
           </div>
         </div>
         <div className="tab__content">
           <Alert
-            message="EMLI contacts and offices are displayed in multiple places within Core and MineSpace."
+            message="MCM contacts and offices are displayed in multiple places within Core and MineSpace."
             closable
             description={
               <>
@@ -122,25 +122,25 @@ export class MineSpaceEMLIContactManagement extends Component {
           />
           <h2>Offices</h2>
           <Divider />
-          <EMLIContactsTable
+          <MinistryContactsTable
             isLoaded={this.state.isLoaded}
             contacts={offices}
             isOffice
             mineRegionHash={this.props.mineRegionHash}
             openEditModal={this.openContactModal}
             handleDeleteContact={this.handleDeleteContact}
-            EMLIContactTypesHash={this.props.EMLIContactTypesHash}
+            MinistryContactTypesHash={this.props.MinistryContactTypesHash}
           />
           <br />
           <h2>Contacts</h2>
           <Divider />
-          <EMLIContactsTable
+          <MinistryContactsTable
             isLoaded={this.state.isLoaded}
             contacts={contacts}
             mineRegionHash={this.props.mineRegionHash}
             openEditModal={this.openContactModal}
             handleDeleteContact={this.handleDeleteContact}
-            EMLIContactTypesHash={this.props.EMLIContactTypesHash}
+            MinistryContactTypesHash={this.props.MinistryContactTypesHash}
           />
         </div>
       </div>
@@ -148,28 +148,28 @@ export class MineSpaceEMLIContactManagement extends Component {
   }
 }
 
-MineSpaceEMLIContactManagement.propTypes = propTypes;
-MineSpaceEMLIContactManagement.defaultProps = defaultProps;
+MineSpaceMinistryContactManagement.propTypes = propTypes;
+MineSpaceMinistryContactManagement.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
-  EMLIContacts: getEMLIContacts(state),
+  MinistryContacts: getMinistryContacts(state),
   mineRegionHash: getMineRegionHash(state),
-  EMLIContactTypesHash: getEMLIContactTypesHash(state),
+  MinistryContactTypesHash: getMinistryContactTypesHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchEMLIContacts,
-      updateEMLIContact,
-      deleteEMLIContact,
-      createEMLIContact,
+      fetchMinistryContacts,
+      updateMinistryContact,
+      deleteMinistryContact,
+      createMinistryContact,
       openModal,
       closeModal,
     },
     dispatch
   );
 
-export default AuthorizationGuard(Permission.EDIT_EMLI_CONTACTS)(
-  connect(mapStateToProps, mapDispatchToProps)(MineSpaceEMLIContactManagement)
+export default AuthorizationGuard(Permission.EDIT_MINISTRY_CONTACTS)(
+  connect(mapStateToProps, mapDispatchToProps)(MineSpaceMinistryContactManagement)
 );

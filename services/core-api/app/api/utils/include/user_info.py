@@ -13,7 +13,7 @@ DUMMY_AUTH_CLAIMS = {
     "sub": 'bce4ffa4b74741c79afa82287bfffbc8@idir',
     "given_name": 'Test',
     "family_name": 'Testerson',
-    "display_name": 'Testerson, Test: EMLI:EX',
+    "display_name": 'Testerson, Test: MCM:EX',
     "idir_username": "mds",
     "identity_provider": "idir",
     "idir_user_guid": "BCE4FFA4B63641C79AFA82287BFFFBC8",

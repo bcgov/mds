@@ -1,9 +1,9 @@
-export interface IEmliContact {
+export interface IMinistryContact {
   contact_guid: string;
   contact_id: number;
   deleted_ind: boolean;
   email: string;
-  emli_contact_type_code: string;
+  ministry_contact_type_code: string;
   fax_number: string;
   first_name: string;
   is_general_contact: boolean;

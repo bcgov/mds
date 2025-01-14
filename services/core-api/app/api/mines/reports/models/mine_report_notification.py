@@ -3,7 +3,7 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from app.api.utils.models_mixins import Base
-from app.api.ministry_contacts.models.EMLI_contact import EMLIContact
+from app.api.ministry_contacts.models.ministry_contact import MinistryContact
 from app.api.compliance.models.compliance_article import ComplianceArticle
 
 from app.extensions import db
@@ -12,27 +12,27 @@ from app.extensions import db
 from sqlalchemy import func, and_
 from app.api.mines.exceptions.mine_exceptions import MineException
 
-# mine_report_notification (compliance_article_emli_contact_xref) table, 
+# mine_report_notification (compliance_article_ministry_contact_xref) table, 
 # cotains the parameters that needs to decide the notifications depending on the article section and mine types
 class MineReportNotification(Base):
     __tablename__ = "mine_report_notification"
-    compliance_article_emli_contact_xref_guid = db.Column(UUID(as_uuid=True),
+    compliance_article_ministry_contact_xref_guid = db.Column(UUID(as_uuid=True),
                                                   primary_key=True,
                                                   server_default=FetchedValue())
     compliance_article_id = db.Column(db.Integer, db.ForeignKey('compliance_article.compliance_article_id'))
-    contact_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('emli_contact.contact_guid'))
+    contact_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('ministry_contact.contact_guid'))
     is_major_mine = db.Column(db.Boolean, nullable=False)
     is_regional_mine = db.Column(db.Boolean, nullable=False)
 
     @hybrid_property
-    def emli_contact(self):
+    def ministry_contact(self):
         if self.contact_guid:
-            contact = EMLIContact.find_EMLI_contact_by_guid(self.contact_guid)
+            contact = MinistryContact.find_ministry_contact_by_guid(self.contact_guid)
             return contact.email
         return None
 
     def __repr__(self):
-        return '<mine_report_notification %r>' % self.compliance_article_emli_contact_xref_guid
+        return '<mine_report_notification %r>' % self.compliance_article_ministry_contact_xref_guid
 
     @classmethod
     def find_contact_by_compliance_article(cls, _section, _sub_section, _paragraph, _sub_paragraph):
@@ -60,8 +60,8 @@ class MineReportNotification(Base):
             else:
                 raise MineException("Atleast compliance article 'section' field is mandatory to continue", status_code = 400)
 
-            query_result = db.session.query(EMLIContact.email, MineReportNotification.is_major_mine, MineReportNotification.is_regional_mine).\
-                join(MineReportNotification, EMLIContact.contact_guid == MineReportNotification.contact_guid).\
+            query_result = db.session.query(MinistryContact.email, MineReportNotification.is_major_mine, MineReportNotification.is_regional_mine).\
+                join(MineReportNotification, MinistryContact.contact_guid == MineReportNotification.contact_guid).\
                 join(ComplianceArticle, ComplianceArticle.compliance_article_id == MineReportNotification.compliance_article_id).\
                 filter(condition)
             results = query_result.all()

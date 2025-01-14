@@ -1176,7 +1176,7 @@ export const PERMITS: IPermit[] = [
               email: "test.testerson@gov.bc.ca",
               given_name: "Test",
               family_name: "Testerson",
-              display_name: "Testerson, Test EMLI:EX",
+              display_name: "Testerson, Test MCM:EX",
               last_logged_in: "2024-12-20T17:09:03.200417+00:00",
             },
           },
@@ -3261,29 +3261,29 @@ export const MINE_REPORT_STATUS_OPTIONS_HASH = {
 };
 
 export const BULK_STATIC_CONTENT_RESPONSE = {
-  EMLIContactTypes: [
+  MinistryContactTypes: [
     {
-      emli_contact_type_code: "SHI",
+      ministry_contact_type_code: "SHI",
       description: "Senior Health, Safety and Environment Inspector",
       active_ind: true,
     },
     {
-      emli_contact_type_code: "SPI",
+      ministry_contact_type_code: "SPI",
       description: "Senior Permitting Inspector",
       active_ind: true,
     },
     {
-      emli_contact_type_code: "ROE",
+      ministry_contact_type_code: "ROE",
       description: "Regional Office",
       active_ind: true,
     },
     {
-      emli_contact_type_code: "RDR",
+      ministry_contact_type_code: "RDR",
       description: "Regional Director",
       active_ind: true,
     },
     {
-      emli_contact_type_code: "HSI",
+      ministry_contact_type_code: "HSI",
       description: "Health and Safety Inspector",
       active_ind: true,
     },
@@ -7387,11 +7387,11 @@ export const EXPLOSIVES_PERMITS = {
   },
 };
 
-export const EMLI_CONTACTS_BY_REGION = [
+export const MINISTRY_CONTACTS_BY_REGION = [
   {
     contact_guid: "7f107cdd-974c-4505-b076-9a88438a2fce",
     contact_id: 1,
-    emli_contact_type_code: "MMO",
+    ministry_contact_type_code: "MMO",
     mine_region_code: null,
     is_major_mine: true,
     is_general_contact: false,
@@ -7407,7 +7407,7 @@ export const EMLI_CONTACTS_BY_REGION = [
   {
     contact_guid: "f9c42bc7-6d02-4830-b1e0-51a64e8b28cb",
     contact_id: 2,
-    emli_contact_type_code: "CHI",
+    ministry_contact_type_code: "CHI",
     mine_region_code: null,
     is_major_mine: true,
     is_general_contact: true,
@@ -7423,7 +7423,7 @@ export const EMLI_CONTACTS_BY_REGION = [
   {
     contact_guid: "eee5bb02-e92d-43b9-baf0-b7ee07dedbaf",
     contact_id: 3,
-    emli_contact_type_code: "CHP",
+    ministry_contact_type_code: "CHP",
     mine_region_code: null,
     is_major_mine: true,
     is_general_contact: true,
@@ -7439,7 +7439,7 @@ export const EMLI_CONTACTS_BY_REGION = [
   {
     contact_guid: "402fd5a0-de84-4ff4-adec-d69f73f6f106",
     contact_id: 18,
-    emli_contact_type_code: "HSI",
+    ministry_contact_type_code: "HSI",
     mine_region_code: "SC",
     is_major_mine: true,
     is_general_contact: false,
@@ -8700,7 +8700,7 @@ export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPES_HASH = {
 export const MAJOR_MINES_APPLICATION_STATUS_CODES_HASH =
   INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH;
 
-export const EMLI_TYPE_CODES_DROPDOWN = [
+export const MINISTRY_TYPE_CODES_DROPDOWN = [
   {
     value: "HSI",
     label: "Health and Safety Inspector",
@@ -8733,7 +8733,7 @@ export const EMLI_TYPE_CODES_DROPDOWN = [
   },
 ];
 
-export const EMLI_TYPE_CODES_HASH = {
+export const MINISTRY_TYPE_CODES_HASH = {
   HSI: "Health and Safety Inspector",
   RDR: "Regional Director",
   ROE: "Regional Office",
@@ -9050,7 +9050,7 @@ export const HELP_GUIDE_MS = {
 
 export const USER = {
   sub: "1234",
-  displayName: "Testerson, Test EMLI:EX",
+  displayName: "Testerson, Test MCM:EX",
   email: "test@test.ca",
   family_name: "Testerson",
   given_name: "Test",

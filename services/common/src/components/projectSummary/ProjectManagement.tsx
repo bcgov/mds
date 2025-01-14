@@ -72,7 +72,7 @@ export const ProjectManagement: FC = () => {
         <div>
           <Typography.Title level={3}>Project Management</Typography.Title>
           <Title level={3} className="color-primary">
-            EMLI Status
+            MCM Status
           </Title>
           <Title level={4}>Project Status</Title>
           <Paragraph>

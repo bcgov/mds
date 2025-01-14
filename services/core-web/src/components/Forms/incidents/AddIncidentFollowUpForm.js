@@ -57,7 +57,7 @@ export class AddIncidentFollowUpForm extends Component {
 
   uncommonBehaviourWarning = () =>
     this.props.determinationTypeCode === Strings.INCIDENT_DETERMINATION_TYPES.pending &&
-    this.props.hasFollowUp
+      this.props.hasFollowUp
       ? "Warning: It's uncommon for an inspection to occur if a determination has not been made"
       : undefined;
 
@@ -104,7 +104,7 @@ export class AddIncidentFollowUpForm extends Component {
                 <Field
                   id="followup_investigation_type_code"
                   name="followup_investigation_type_code"
-                  label="Was it escalated to EMLI investigation?*"
+                  label="Was it escalated to MCM investigation?*"
                   placeholder="Please choose one"
                   component={renderConfig.SELECT}
                   data={this.filteredFollowupActions()}

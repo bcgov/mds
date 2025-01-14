@@ -1,11 +1,11 @@
 from app.extensions import api
 from flask_restx import fields
 
-EMLI_CONTACT_MODEL = api.model(
-    'EMLIContact', {
+MINISTRY_CONTACT_MODEL = api.model(
+    'MinistryContact', {
         'contact_guid': fields.String,
         'contact_id': fields.Integer,
-        'emli_contact_type_code': fields.String,
+        'ministry_contact_type_code': fields.String,
         'mine_region_code': fields.String,
         'is_major_mine': fields.Boolean,
         'is_general_contact': fields.Boolean,
@@ -19,8 +19,8 @@ EMLI_CONTACT_MODEL = api.model(
         'deleted_ind': fields.Boolean,
     })
 
-EMLI_CONTACT_TYPE = api.model('EMLIContactType', {
-    'emli_contact_type_code': fields.String,
+MINISTRY_CONTACT_TYPE = api.model('MinistryContactType', {
+    'ministry_contact_type_code': fields.String,
     'description': fields.String,
     'active_ind': fields.Boolean
 })

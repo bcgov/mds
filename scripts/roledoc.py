@@ -76,7 +76,7 @@ def find_decorated_functions(folder_path, decorator_names):
 decorator_names = ["is_minespace_user",
     "can_edit_now_dates",
     "can_edit_mines",
-    "requires_role_edit_emli_contacts",
+    "requires_role_edit_ministry_contacts",
     "requires_role_edit_project_summaries",
     "requires_role_edit_incidents",
     "requires_role_view_all",
