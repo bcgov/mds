@@ -79,5 +79,5 @@ SELECT nid.now_application_guid,
      LEFT JOIN party pis ON app.issuing_inspector_party_guid = pis.party_guid
      LEFT JOIN (SELECT *, ROW_NUMBER() OVER (PARTITION BY now_application_id ORDER BY response_date DESC) AS rn FROM now_application_review) nrev
                ON nrev.now_application_id = nid.now_application_id AND nrev.rn = 1 AND nrev.now_application_review_type_code = 'ADV'
-     LEFT JOIN emli_contact ec ON m.mine_region = ec.mine_region_code AND ec.emli_contact_type_code = 'ROE'
+     LEFT JOIN ministry_contact ec ON m.mine_region = ec.mine_region_code AND ec.ministry_contact_type_code = 'ROE'
      WHERE (nid.messageid IS NOT NULL AND sub.processed::text = 'Y'::text OR nid.messageid IS NULL) AND (sub.originating_system IS NULL OR sub.originating_system IS NOT NULL AND nid.now_number IS NOT NULL);
