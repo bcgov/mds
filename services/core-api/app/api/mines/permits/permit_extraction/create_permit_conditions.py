@@ -82,10 +82,7 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
                 type_code = _map_condition_to_type_code(condition)
 
                 parent_id = parent.permit_condition_id if parent else None
-
-                top_parent_id = None
-                if parent:
-                    top_parent_id = parent.top_level_parent_permit_condition_id if parent.top_level_parent_permit_condition_id else parent.permit_condition_id
+                top_parent_id = _get_top_level_parent_condition_id(None,parent)
 
                 if parent_id not in display_order_by_parent:
                     display_order_by_parent[parent_id] = 0
@@ -118,6 +115,7 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
                     )
 
                 parent_condition_id = _get_parent_condition_id(title_cond, parent)
+                top_parent_id = _get_top_level_parent_condition_id(title_cond,parent)
 
                 cond = _create_permit_condition(
                     task,
@@ -189,6 +187,19 @@ def _get_parent_condition_id(
         return title_cond.permit_condition_id
     elif parent:
         return parent.permit_condition_id
+    else:
+        return None
+
+def _get_top_level_parent_condition_id(
+    title_cond: PermitConditionResult, parent: PermitConditionResult
+) -> Optional[str]:
+    if title_cond:
+        return title_cond.permit_condition_id
+    elif parent:
+        if parent.top_level_parent_permit_condition_id:
+            return parent.top_level_parent_permit_condition_id
+        else:
+            return parent.permit_condition_id
     else:
         return None
 

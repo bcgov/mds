@@ -78,8 +78,6 @@ class PermitConditionsResource(Resource, UserMixin):
     @api.marshal_with(PERMIT_CONDITION_MODEL, code=200)
     def put(self, mine_guid, permit_guid, permit_amendment_guid, permit_condition_guid):
 
-        print("HEREEE")
-
         request_data = request.json
         permit_amendment = get_permit_amendment(permit_amendment_guid)
 
@@ -91,16 +89,8 @@ class PermitConditionsResource(Resource, UserMixin):
         old_category_code = old_condition.condition_category_code
         new_category_code = request_data.get("condition_category_code", None)
         changed_category = old_category_code != new_category_code
-
-        ##If anything is changed reset status on top level parent
-
-        ##If set to complete then check permission is set
-        changed_status = old_condition.permit_condition_status_code != request_data.get("permit_condition_status_code",None)
-        
-        #If top level parent and status changed
-        #if condition.parent_permit_condition_id is None and changed_status:
-            #allow
-
+        new_status_code = request_data.get("permit_condition_status_code",None)
+        changed_status = old_condition.permit_condition_status_code != new_status_code
 
         if changed_category:
             sub_conditions = old_condition.sub_conditions
@@ -126,7 +116,7 @@ class PermitConditionsResource(Resource, UserMixin):
             condition.display_order = len(conditions) + 1
 
          #Reset status unless status is being changed to complete
-        if not changed_status:
+        if not ( changed_status and new_status_code == 'COM' ):
             if condition.top_level_parent_permit_condition_id is not None:
                 top_condition = PermitConditions.find_by_permit_condition_id(condition.top_level_parent_permit_condition_id)
                 top_condition.permit_condition_status_code = 'NST'

@@ -57,7 +57,7 @@ import PermitConditionReviewAssignment from "@/components/mine/Permit/PermitCond
 import { getUser } from "@mds/common/redux/slices/userSlice";
 import { createDropDownList } from "@common/utils/helpers";
 import { COLOR } from "@/constants/styles";
-import { PERMIT_CONDITION_STATUS, PERMIT_CONDITION_STATUS_CODE } from "@mds/common";
+import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common";
 
 const { Title } = Typography;
 
