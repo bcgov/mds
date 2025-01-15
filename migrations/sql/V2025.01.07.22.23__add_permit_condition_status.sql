@@ -1,6 +1,6 @@
 
 
-CREATE TABLE permit_condition_status_code
+CREATE TABLE IF NOT EXISTS permit_condition_status_code
     (
         permit_condition_status_code character varying(3) NOT NULL,
         description character varying(100) NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE permit_condition_status_code
     ON CONFLICT DO NOTHING;
 
 ALTER TABLE permit_conditions
-    ADD COLUMN IF NOT EXISTS permit_condition_status_code character varying(3),
+    ADD COLUMN IF NOT EXISTS permit_condition_status_code character varying(3) DEFAULT 'NST' NOT NULL,
     ADD COLUMN IF NOT EXISTS top_level_parent_permit_condition_id integer,
 ADD CONSTRAINT permit_condition_status_code_fkey FOREIGN KEY (permit_condition_status_code)
     REFERENCES permit_condition_status_code(permit_condition_status_code),
@@ -40,7 +40,7 @@ ADD CONSTRAINT top_level_parent_permit_condition_id_fkey FOREIGN KEY (top_level_
     REFERENCES permit_conditions(permit_condition_id);
 
 ALTER TABLE permit_conditions_version 
-    ADD COLUMN IF NOT EXISTS permit_condition_status_code character varying(3),
+    ADD COLUMN IF NOT EXISTS permit_condition_status_code character varying(3) DEFAULT 'NST' NOT NULL,
     ADD COLUMN IF NOT EXISTS top_level_parent_permit_condition_id integer,
 ADD CONSTRAINT permit_condition_status_code_fkey FOREIGN KEY (permit_condition_status_code)
     REFERENCES permit_condition_status_code(permit_condition_status_code),

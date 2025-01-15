@@ -24,7 +24,7 @@ class PermitConditionStatusCode(AuditMixin, Base):
     @validates('permit_condition_status_code')
     def validate_permit_condition_status_code(self, key, permit_condition_status_code):
         if not permit_condition_status_code:
-            raise AssertionError('Permit amendment status code is not provided.')
+            raise AssertionError('Permit condition status code is not provided.')
         if len(permit_condition_status_code) > 3:
-            raise AssertionError('Permit amendment status code must not exceed 3 characters.')
+            raise AssertionError('Permit condition status code must not exceed 3 characters.')
         return permit_condition_status_code

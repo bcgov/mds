@@ -21,6 +21,10 @@
     color: theme.$white !important;
   }
 
+  &-success {
+    color: variables.$ok-green !important;
+  }
+
   // Brand Colours
   &-gov-grey {
     color: variables.$gov-grey !important;

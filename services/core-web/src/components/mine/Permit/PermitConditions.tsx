@@ -132,9 +132,9 @@ const PermitConditions: FC<PermitConditionProps> = ({
   );
 
   const PERMIT_CONDITION_STATUS = {
-    complete: {icon: faCheckCircle, color: "#45a766", text: "Complete"},
-    in_progress: {icon: faClock, color: COLOR.violet, text: "In Progress"},
-    not_started: {icon: faBan, color: "#bbb", text:"Not Started"}
+    complete: {icon: faCheckCircle, color: "color-success", text: "Complete"},
+    in_progress: {icon: faClock, color: "color-primary", text: "In Progress"},
+    not_started: {icon: faBan, color: "color-gov-grey", text:"Not Started"}
   }
 
   const getPermitConditionCategories = (categories, conditions) => {
@@ -197,7 +197,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
 
         return {
           href: cat.condition_category_code.toLowerCase().replace("-", ""),
-          icon: <FontAwesomeIcon icon={status.icon} style={{ color: status.color, fontSize: "20px" }} />,
+          icon: <FontAwesomeIcon icon={status.icon} className={status.color} style={{ fontSize: "20px" }} />,
           title: (
             <Typography.Text style={{ fontSize: "16px", fontWeight: "600" }}>
               {formatPermitConditionStep(cat.step)}
