@@ -428,12 +428,12 @@ exports[`PermitConditions renders properly 1`] = `
                                   >
                                     <svg
                                       aria-hidden="true"
-                                      class="svg-inline--fa fa-ban "
+                                      class="svg-inline--fa fa-ban color-gov-grey"
                                       data-icon="ban"
                                       data-prefix="fal"
                                       focusable="false"
                                       role="img"
-                                      style="color: rgb(187, 187, 187); font-size: 20px;"
+                                      style="font-size: 20px;"
                                       viewBox="0 0 512 512"
                                       xmlns="http://www.w3.org/2000/svg"
                                     >
@@ -501,12 +501,12 @@ exports[`PermitConditions renders properly 1`] = `
                                   >
                                     <svg
                                       aria-hidden="true"
-                                      class="svg-inline--fa fa-ban "
+                                      class="svg-inline--fa fa-ban color-gov-grey"
                                       data-icon="ban"
                                       data-prefix="fal"
                                       focusable="false"
                                       role="img"
-                                      style="color: rgb(187, 187, 187); font-size: 20px;"
+                                      style="font-size: 20px;"
                                       viewBox="0 0 512 512"
                                       xmlns="http://www.w3.org/2000/svg"
                                     >
@@ -574,12 +574,12 @@ exports[`PermitConditions renders properly 1`] = `
                                   >
                                     <svg
                                       aria-hidden="true"
-                                      class="svg-inline--fa fa-ban "
+                                      class="svg-inline--fa fa-ban color-gov-grey"
                                       data-icon="ban"
                                       data-prefix="fal"
                                       focusable="false"
                                       role="img"
-                                      style="color: rgb(187, 187, 187); font-size: 20px;"
+                                      style="font-size: 20px;"
                                       viewBox="0 0 512 512"
                                       xmlns="http://www.w3.org/2000/svg"
                                     >
