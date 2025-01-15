@@ -16,7 +16,7 @@ describe("PartySelectField", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
         <FormWrapper name="test_party_select" isEditMode={false} onSubmit={jest.fn()}>
-          <PartySelectField validate={[]} allowAddingParties={true} name="test" />
+          <PartySelectField validate={[]} allowAddingParties={true} name="test" initialValues={{ label: "Jane Doe", value: "some_guid" }} />
         </FormWrapper>
       </ReduxWrapper>
     );

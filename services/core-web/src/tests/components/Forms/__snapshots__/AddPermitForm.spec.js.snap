@@ -64,7 +64,8 @@ exports[`AddPermitForm renders properly 1`] = `
                         />
                       </span>
                       <span
-                        class="ant-select-selection-placeholder"
+                        class="ant-select-selection-item"
+                        title=""
                       />
                     </div>
                     <span

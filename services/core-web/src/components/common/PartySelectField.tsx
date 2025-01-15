@@ -108,8 +108,7 @@ export const PartySelectField: FC<PartySelectFieldProps> = ({
 
   const searchResults = useSelector(getSearchResults);
   const lastCreatedParty = useSelector(getLastCreatedParty);
-
-  const [selectedOption, setSelectedOption] = useState({ value: "", label: "" });
+  const [selectedOption, setSelectedOption] = useState(initialValues ?? { value: "", label: "" });
   const [partyDataSource, setPartyDataSource] = useState([]);
   const [searching, setSearching] = useState(false);
 
@@ -131,16 +130,6 @@ export const PartySelectField: FC<PartySelectFieldProps> = ({
       setSearching(false);
     }
   }, [searchResults]);
-
-  useEffect(() => {
-    if (initialValues?.label) {
-      handleSearch(initialValues.label);
-      setSelectedOption({
-        value: initialValues.value,
-        label: initialValues.label,
-      });
-    }
-  }, [initialValues]);
 
   const showAddPartyForm = () => {
     dispatch(
@@ -185,7 +174,7 @@ export const PartySelectField: FC<PartySelectFieldProps> = ({
       }
     }
 
-    if (lastCreatedParty) {
+    if (lastCreatedParty?.party_guid) {
       setSelectedOption({
         value: lastCreatedParty.party_guid,
         label: lastCreatedParty.name,
@@ -198,7 +187,6 @@ export const PartySelectField: FC<PartySelectFieldProps> = ({
       setSearching(true);
       debouncedSearch(value, "party");
     }
-    setSelectedOption({ value, label: value });
   };
 
   const handleSelect = (value, option) => {

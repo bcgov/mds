@@ -21,9 +21,8 @@ import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import { Link } from "react-router-dom";
 import Address from "@/components/common/Address";
-
-import NOWPartySelectField from "@/components/common/NOWPartySelectField";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
+import PartySelectField from "@/components/common/PartySelectField";
 
 const propTypes = {
   partyRelationshipTypesList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
@@ -120,14 +119,13 @@ const NOWContact = ({
               required
               validate={[required]}
             />
-            <Field
+            <PartySelectField
               id={`${field}.party_guid`}
               required
               name={`${field}.party_guid`}
               label="Contact"
               partyLabel="Contact"
               validate={[required]}
-              component={NOWPartySelectField}
               allowAddingParties
               initialValues={{
                 label: contact.party.name,
@@ -244,14 +242,13 @@ const renderContacts = ({
                           data={filteredRelationships}
                           validate={[required]}
                         />
-                        <Field
+                        <PartySelectField
                           id={`${field}.party_guid`}
                           name={`${field}.party_guid`}
                           label="Contact"
                           required
                           partyLabel="Contact"
                           validate={[required]}
-                          component={NOWPartySelectField}
                           allowAddingParties
                         />
                       </Col>

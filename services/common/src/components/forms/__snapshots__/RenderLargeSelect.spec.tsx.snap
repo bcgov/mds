@@ -1,13 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RenderGroupedSelect renders properly 1`] = `
+exports[`RenderLargeSelect renders properly without required (optional), failed validation + label 1`] = `
 <div>
   <div
-    class="ant-form-item ant-form-item-with-help"
+    class="ant-form-item ant-form-item-with-help ant-form-item-has-error"
   >
     <div
       class="ant-row ant-form-item-row"
     >
+      <div
+        class="ant-col ant-form-item-label"
+      >
+        <label
+          class="ant-form-item-required"
+          title="Mock Label"
+        >
+          Mock Label
+        </label>
+      </div>
       <div
         class="ant-col ant-form-item-control"
       >
@@ -18,7 +28,8 @@ exports[`RenderGroupedSelect renders properly 1`] = `
             class="ant-form-item-control-input-content"
           >
             <div
-              class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+              class="ant-select ant-select-in-form-item ant-select-status-error ant-select-single ant-select-show-arrow ant-select-show-search"
+              style="width: 100%;"
             >
               <div
                 class="ant-select-selector"
@@ -27,22 +38,25 @@ exports[`RenderGroupedSelect renders properly 1`] = `
                   class="ant-select-selection-search"
                 >
                   <input
-                    aria-activedescendant="groupedSelect_list_0"
+                    aria-activedescendant="field_list_0"
                     aria-autocomplete="list"
-                    aria-controls="groupedSelect_list"
+                    aria-controls="field_list"
                     aria-haspopup="listbox"
-                    aria-owns="groupedSelect_list"
+                    aria-owns="field_list"
                     autocomplete="off"
                     class="ant-select-selection-search-input"
-                    id="groupedSelect"
+                    id="field"
                     role="combobox"
                     type="search"
                     value=""
                   />
                 </span>
                 <span
-                  class="ant-select-selection-placeholder"
-                />
+                  class="ant-select-selection-item"
+                  title="Opt 4"
+                >
+                  Opt 4
+                </span>
               </div>
               <span
                 aria-hidden="true"
@@ -78,12 +92,15 @@ exports[`RenderGroupedSelect renders properly 1`] = `
         >
           <div
             class="ant-form-item-explain ant-form-item-explain-connected"
-            id="groupedSelect_help"
             role="alert"
           >
             <div
-              class=""
-            />
+              class="ant-form-item-explain-error"
+            >
+              <span>
+                This input is invalid
+              </span>
+            </div>
           </div>
         </div>
       </div>

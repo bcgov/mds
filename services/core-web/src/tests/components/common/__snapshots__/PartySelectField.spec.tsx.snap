@@ -46,8 +46,11 @@ exports[`PartySelectField renders properly 1`] = `
                     />
                   </span>
                   <span
-                    class="ant-select-selection-placeholder"
-                  />
+                    class="ant-select-selection-item"
+                    title="Jane Doe"
+                  >
+                    Jane Doe
+                  </span>
                 </div>
                 <span
                   aria-hidden="true"

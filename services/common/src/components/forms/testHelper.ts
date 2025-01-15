@@ -16,6 +16,24 @@ export const inputMeta = {
     visited: false,
 };
 
+export const errorInputMeta = {
+    touched: true,
+    error: "This is a required field",
+    warning: false,
+    autofilled: false,
+    asyncValidating: false,
+    dirty: true,
+    dispatch: jest.fn(),
+    form: "FORM",
+    initial: undefined,
+    invalid: true,
+    pristine: true,
+    submitFailed: false,
+    submitting: false,
+    valid: true,
+    visited: true,
+}
+
 // needs a value and a name
 export const inputProps = {
     onBlur: jest.fn(),
