@@ -91,7 +91,11 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     const payload = {
       explosives_permit_guid: record.explosives_permit_guid,
       ...(record.explosives_permit_amendment_id && { explosives_permit_amendment_id: record.explosives_permit_amendment_id }),
-      template_data: values,
+      template_data: {
+        ...values,
+        mine_manager_mine_party_appt_id: record.mine_manager_mine_party_appt_id,
+        permittee_mine_party_appt_id: record.permittee_mine_party_appt_id
+      },
     };
     return props.generateExplosivesPermitDocument(
       documentTypeCode,
