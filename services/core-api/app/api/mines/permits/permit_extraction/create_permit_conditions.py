@@ -132,7 +132,7 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
 
         db.session.commit()
     except Exception as e:
-        print(e)
+        current_app.logger.error(e)
         db.session.rollback()
         raise
 
