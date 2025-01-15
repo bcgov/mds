@@ -11,7 +11,7 @@ const initialState = {
 
 const setupProps = () => ({
   contact: {
-    ministry_contact_type_code: "SPI",
+    emli_contact_type_code: "SPI",
     first_name: "John",
     last_name: "Doe",
     phone_number: "123-456-7890",

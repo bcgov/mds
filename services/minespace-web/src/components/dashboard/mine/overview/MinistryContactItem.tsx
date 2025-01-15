@@ -6,7 +6,7 @@ import * as Strings from "@/constants/strings";
 
 interface MinistryContactItemProps {
   contact: {
-    ministry_contact_type_code: string;
+    emli_contact_type_code: string;
     first_name: string;
     last_name: string;
     phone_number: string;
@@ -22,7 +22,7 @@ export const MinistryContactItem: React.FC<MinistryContactItemProps> = (
 ) => (
   <Typography.Paragraph className="ministry-contact-item">
     <Typography.Text strong className="ministry-contact-title">
-      {props.MinistryContactTypesHash[props.contact.ministry_contact_type_code] || Strings.UNKNOWN}
+      {props.MinistryContactTypesHash[props.contact.emli_contact_type_code] || Strings.UNKNOWN}
       <br />
     </Typography.Text>
     {props.contact.first_name && props.contact.last_name && (

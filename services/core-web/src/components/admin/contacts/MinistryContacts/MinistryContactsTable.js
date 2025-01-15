@@ -56,8 +56,8 @@ const columns = (
     },
     {
       title: "Contact Type",
-      dataIndex: "ministry_contact_type_code",
-      sorter: nullableStringSorter("ministry_contact_type_code"),
+      dataIndex: "emli_contact_type_code",
+      sorter: nullableStringSorter("emli_contact_type_code"),
       render: (text) => <div title="Contact Type">{MinistryContactTypesHash[text]}</div>,
     },
     {

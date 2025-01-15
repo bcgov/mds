@@ -44,7 +44,7 @@ def RandomMineRegionCode():
 
 def RandomMinistryContactTypeCode():
     return random.choice([
-        x.ministry_contact_type_code
+        x.emli_contact_type_code
         for x in db.session.query(MinistryContactType).filter(MinistryContactType.active_ind == True).all()
     ])
 

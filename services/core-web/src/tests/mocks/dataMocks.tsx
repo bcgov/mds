@@ -2894,27 +2894,27 @@ export const MINE_REPORT_STATUS_OPTIONS_HASH = {
 export const BULK_STATIC_CONTENT_RESPONSE = {
   MinistryContactTypes: [
     {
-      ministry_contact_type_code: "SHI",
+      emli_contact_type_code: "SHI",
       description: "Senior Health, Safety and Environment Inspector",
       active_ind: true,
     },
     {
-      ministry_contact_type_code: "SPI",
+      emli_contact_type_code: "SPI",
       description: "Senior Permitting Inspector",
       active_ind: true,
     },
     {
-      ministry_contact_type_code: "ROE",
+      emli_contact_type_code: "ROE",
       description: "Regional Office",
       active_ind: true,
     },
     {
-      ministry_contact_type_code: "RDR",
+      emli_contact_type_code: "RDR",
       description: "Regional Director",
       active_ind: true,
     },
     {
-      ministry_contact_type_code: "HSI",
+      emli_contact_type_code: "HSI",
       description: "Health and Safety Inspector",
       active_ind: true,
     },

@@ -71,9 +71,9 @@ exports[`MinistryContactForm renders properly 1`] = `
             component={[Function]}
             data={Array []}
             disabled={true}
-            id="ministry_contact_type_code"
+            id="emli_contact_type_code"
             label="Contact Type*"
-            name="ministry_contact_type_code"
+            name="emli_contact_type_code"
             placeholder="Select a contact type"
             validate={
               Array [

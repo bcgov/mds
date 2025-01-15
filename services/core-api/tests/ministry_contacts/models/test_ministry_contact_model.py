@@ -7,10 +7,10 @@ from tests.factories import MinistryContactFactory
 def test_find_ministry_contact(db_session):
     contact = MinistryContactFactory()
 
-    ministry_contact = MinistryContact.find_ministry_contact(contact.ministry_contact_type_code,
+    ministry_contact = MinistryContact.find_ministry_contact(contact.emli_contact_type_code,
                                                  contact.mine_region_code, contact.is_major_mine)
 
-    assert ministry_contact.ministry_contact_type_code == contact.ministry_contact_type_code
+    assert ministry_contact.emli_contact_type_code == contact.emli_contact_type_code
     assert ministry_contact.mine_region_code == contact.mine_region_code
 
 
@@ -26,7 +26,7 @@ def test_find_ministry_contacts_by_mine_region(db_session):
 
     ministry_contact = MinistryContact.find_ministry_contacts_by_mine_region(contact.mine_region_code,
                                                                  contact.is_major_mine)
-    assert (c.mine_region == None if c.ministry_contact_type_code in ('MMO', 'CHP', 'CHI') else
+    assert (c.mine_region == None if c.emli_contact_type_code in ('MMO', 'CHP', 'CHI') else
             c.mine_region == contact.mine_region for c in ministry_contact)
 
 

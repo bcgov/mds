@@ -195,7 +195,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   useEffect(() => {
     if (isMS && mine && MinistryContactsByRegion.length) {
       const contactCode = mine.major_mine_ind ? "MMO" : "ROE";
-      const contact = MinistryContactsByRegion.find((c) => c.ministry_contact_type_code === contactCode);
+      const contact = MinistryContactsByRegion.find((c) => c.emli_contact_type_code === contactCode);
       setContactEmail(contact?.email);
     }
   }, [MinistryContactsByRegion, mine]);

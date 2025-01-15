@@ -1448,7 +1448,7 @@ class MinistryContactTypeFactory(BaseFactory):
     class Meta:
         model = MinistryContactType
 
-    ministry_contact_type_code = factory.LazyFunction(RandomMinistryContactTypeCode)
+    emli_contact_type_code = factory.LazyFunction(RandomMinistryContactTypeCode)
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     display_order = factory.Sequence(lambda n: n + 1)
     active_ind = True
@@ -1462,7 +1462,7 @@ class MinistryContactFactory(BaseFactory):
     class Params:
         major_mine = factory.Trait(
             contact_guid=GUID,
-            ministry_contact_type_code=factory.LazyFunction(RandomMinistryContactTypeCode),
+            emli_contact_type_code=factory.LazyFunction(RandomMinistryContactTypeCode),
             mine_region_code=factory.LazyFunction(RandomMineRegionCode),
             first_name=factory.Faker('first_name'),
             last_name=factory.Faker('last_name'),
@@ -1473,7 +1473,7 @@ class MinistryContactFactory(BaseFactory):
             deleted_ind=False)
 
     contact_guid = GUID
-    ministry_contact_type_code = factory.LazyFunction(RandomMinistryContactTypeCode)
+    emli_contact_type_code = factory.LazyFunction(RandomMinistryContactTypeCode)
     mine_region_code = factory.LazyFunction(RandomMineRegionCode)
     first_name = factory.Faker('first_name')
     last_name = factory.Faker('last_name')

@@ -86,11 +86,11 @@ export class MineSpaceMinistryContactManagement extends Component {
 
   render() {
     const officeCodes = ["ROE", "MMO"];
-    const offices = this.props.MinistryContacts.filter(({ ministry_contact_type_code }) =>
-      officeCodes.includes(ministry_contact_type_code)
+    const offices = this.props.MinistryContacts.filter(({ emli_contact_type_code }) =>
+      officeCodes.includes(emli_contact_type_code)
     );
     const contacts = this.props.MinistryContacts.filter(
-      ({ ministry_contact_type_code }) => !officeCodes.includes(ministry_contact_type_code)
+      ({ emli_contact_type_code }) => !officeCodes.includes(emli_contact_type_code)
     );
     return (
       <div>

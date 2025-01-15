@@ -2,7 +2,7 @@ import { PropTypes, shape } from "prop-types";
 
 export const MinistryContact = shape({
   contact_id: PropTypes.string,
-  ministry_contact_type_code: PropTypes.string,
+  emli_contact_type_code: PropTypes.string,
   mine_region_code: PropTypes.string,
   is_major_mine: PropTypes.bool,
   is_general_contact: PropTypes.bool,

@@ -3,7 +3,7 @@ export interface IMinistryContact {
   contact_id: number;
   deleted_ind: boolean;
   email: string;
-  ministry_contact_type_code: string;
+  emli_contact_type_code: string;
   fax_number: string;
   first_name: string;
   is_general_contact: boolean;

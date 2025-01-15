@@ -3263,27 +3263,27 @@ export const MINE_REPORT_STATUS_OPTIONS_HASH = {
 export const BULK_STATIC_CONTENT_RESPONSE = {
   MinistryContactTypes: [
     {
-      ministry_contact_type_code: "SHI",
+      emli_contact_type_code: "SHI",
       description: "Senior Health, Safety and Environment Inspector",
       active_ind: true,
     },
     {
-      ministry_contact_type_code: "SPI",
+      emli_contact_type_code: "SPI",
       description: "Senior Permitting Inspector",
       active_ind: true,
     },
     {
-      ministry_contact_type_code: "ROE",
+      emli_contact_type_code: "ROE",
       description: "Regional Office",
       active_ind: true,
     },
     {
-      ministry_contact_type_code: "RDR",
+      emli_contact_type_code: "RDR",
       description: "Regional Director",
       active_ind: true,
     },
     {
-      ministry_contact_type_code: "HSI",
+      emli_contact_type_code: "HSI",
       description: "Health and Safety Inspector",
       active_ind: true,
     },
@@ -7391,7 +7391,7 @@ export const MINISTRY_CONTACTS_BY_REGION = [
   {
     contact_guid: "7f107cdd-974c-4505-b076-9a88438a2fce",
     contact_id: 1,
-    ministry_contact_type_code: "MMO",
+    emli_contact_type_code: "MMO",
     mine_region_code: null,
     is_major_mine: true,
     is_general_contact: false,
@@ -7407,7 +7407,7 @@ export const MINISTRY_CONTACTS_BY_REGION = [
   {
     contact_guid: "f9c42bc7-6d02-4830-b1e0-51a64e8b28cb",
     contact_id: 2,
-    ministry_contact_type_code: "CHI",
+    emli_contact_type_code: "CHI",
     mine_region_code: null,
     is_major_mine: true,
     is_general_contact: true,
@@ -7423,7 +7423,7 @@ export const MINISTRY_CONTACTS_BY_REGION = [
   {
     contact_guid: "eee5bb02-e92d-43b9-baf0-b7ee07dedbaf",
     contact_id: 3,
-    ministry_contact_type_code: "CHP",
+    emli_contact_type_code: "CHP",
     mine_region_code: null,
     is_major_mine: true,
     is_general_contact: true,
@@ -7439,7 +7439,7 @@ export const MINISTRY_CONTACTS_BY_REGION = [
   {
     contact_guid: "402fd5a0-de84-4ff4-adec-d69f73f6f106",
     contact_id: 18,
-    ministry_contact_type_code: "HSI",
+    emli_contact_type_code: "HSI",
     mine_region_code: "SC",
     is_major_mine: true,
     is_general_contact: false,

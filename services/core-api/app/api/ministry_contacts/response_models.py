@@ -5,7 +5,7 @@ MINISTRY_CONTACT_MODEL = api.model(
     'MinistryContact', {
         'contact_guid': fields.String,
         'contact_id': fields.Integer,
-        'ministry_contact_type_code': fields.String,
+        'emli_contact_type_code': fields.String,
         'mine_region_code': fields.String,
         'is_major_mine': fields.Boolean,
         'is_general_contact': fields.Boolean,
@@ -20,7 +20,7 @@ MINISTRY_CONTACT_MODEL = api.model(
     })
 
 MINISTRY_CONTACT_TYPE = api.model('MinistryContactType', {
-    'ministry_contact_type_code': fields.String,
+    'emli_contact_type_code': fields.String,
     'description': fields.String,
     'active_ind': fields.Boolean
 })

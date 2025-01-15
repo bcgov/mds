@@ -27,7 +27,7 @@ exports[`MinistryContactsTable renders properly 1`] = `
         </span>,
       },
       Object {
-        "dataIndex": "ministry_contact_type_code",
+        "dataIndex": "emli_contact_type_code",
         "render": [Function],
         "sorter": [Function],
         "title": "Contact Type",

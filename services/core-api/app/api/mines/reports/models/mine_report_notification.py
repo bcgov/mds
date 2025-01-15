@@ -16,11 +16,11 @@ from app.api.mines.exceptions.mine_exceptions import MineException
 # cotains the parameters that needs to decide the notifications depending on the article section and mine types
 class MineReportNotification(Base):
     __tablename__ = "mine_report_notification"
-    compliance_article_ministry_contact_xref_guid = db.Column(UUID(as_uuid=True),
+    compliance_article_emli_contact_xref_guid = db.Column(UUID(as_uuid=True),
                                                   primary_key=True,
                                                   server_default=FetchedValue())
     compliance_article_id = db.Column(db.Integer, db.ForeignKey('compliance_article.compliance_article_id'))
-    contact_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('ministry_contact.contact_guid'))
+    contact_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('emli_contact.contact_guid'))
     is_major_mine = db.Column(db.Boolean, nullable=False)
     is_regional_mine = db.Column(db.Boolean, nullable=False)
 
@@ -32,7 +32,7 @@ class MineReportNotification(Base):
         return None
 
     def __repr__(self):
-        return '<mine_report_notification %r>' % self.compliance_article_ministry_contact_xref_guid
+        return '<mine_report_notification %r>' % self.compliance_article_emli_contact_xref_guid
 
     @classmethod
     def find_contact_by_compliance_article(cls, _section, _sub_section, _paragraph, _sub_paragraph):

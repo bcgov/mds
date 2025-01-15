@@ -65,7 +65,7 @@ def test_get_ministry_contacts_by_mine_region_code(test_client, db_session, auth
 
 def test_post_ministry_contacts(test_client, db_session, auth_headers):
     data = {
-        'ministry_contact_type_code': 'SHI',
+        'emli_contact_type_code': 'SHI',
         'mine_region_code': 'SW',
         'email': 'test@email.com',
         'phone_number': '250-111-8888',

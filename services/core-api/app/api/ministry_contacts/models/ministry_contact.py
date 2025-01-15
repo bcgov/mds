@@ -7,12 +7,12 @@ from app.api.utils.models_mixins import SoftDeleteMixin
 
 
 class MinistryContact(SoftDeleteMixin, AuditMixin, Base):
-    __tablename__ = 'ministry_contact'
+    __tablename__ = 'emli_contact'
 
     contact_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     contact_id = db.Column(db.Integer, nullable=False, unique=True, server_default=FetchedValue())
-    ministry_contact_type_code = db.Column(
-        db.String(3), db.ForeignKey('ministry_contact_type.ministry_contact_type_code'))
+    emli_contact_type_code = db.Column(
+        db.String(3), db.ForeignKey('emli_contact_type.emli_contact_type_code'))
     mine_region_code = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
     email = db.Column(db.String(254))
     phone_number = db.Column(db.String(12))
@@ -26,13 +26,13 @@ class MinistryContact(SoftDeleteMixin, AuditMixin, Base):
 
     ministry_contact = db.relationship(
         'MinistryContactType',
-        backref='ministry_contact',
+        backref='emli_contact',
         order_by='asc(MinistryContactType.display_order)',
         lazy='joined')
 
     @classmethod
     def create(cls,
-               ministry_contact_type_code,
+               emli_contact_type_code,
                mine_region_code,
                email,
                phone_number,
@@ -46,7 +46,7 @@ class MinistryContact(SoftDeleteMixin, AuditMixin, Base):
                deleted_ind,
                add_to_session=True):
         new_contact = cls(
-            ministry_contact_type_code=ministry_contact_type_code,
+            emli_contact_type_code=emli_contact_type_code,
             mine_region_code=mine_region_code,
             email=email,
             phone_number=phone_number,
@@ -63,17 +63,17 @@ class MinistryContact(SoftDeleteMixin, AuditMixin, Base):
         return new_contact
 
     @classmethod
-    def find_ministry_contact(cls, ministry_contact_type_code, mine_region_code=None, is_major_mine=None):
+    def find_ministry_contact(cls, emli_contact_type_code, mine_region_code=None, is_major_mine=None):
         if is_major_mine and mine_region_code:
             return cls.query.filter_by(
-                ministry_contact_type_code=ministry_contact_type_code,
+                emli_contact_type_code=emli_contact_type_code,
                 mine_region_code=mine_region_code,
                 is_major_mine=is_major_mine).filter_by(deleted_ind=False).first()
         elif mine_region_code:
             return cls.query.filter_by(
-                ministry_contact_type_code=ministry_contact_type_code,
+                emli_contact_type_code=emli_contact_type_code,
                 mine_region_code=mine_region_code).filter_by(deleted_ind=False).first()
-        return cls.query.filter_by(ministry_contact_type_code=ministry_contact_type_code).filter_by(
+        return cls.query.filter_by(emli_contact_type_code=emli_contact_type_code).filter_by(
             deleted_ind=False).first()
 
     @classmethod
@@ -107,9 +107,9 @@ class MinistryContact(SoftDeleteMixin, AuditMixin, Base):
     def get_all(cls, is_major_mine=None):
         if is_major_mine:
             return cls.query.filter_by(is_major_mine=is_major_mine).filter_by(
-                deleted_ind=False).order_by(cls.mine_region_code, cls.ministry_contact_type_code).all()
+                deleted_ind=False).order_by(cls.mine_region_code, cls.emli_contact_type_code).all()
         return cls.query.filter_by(deleted_ind=False).order_by(cls.mine_region_code,
-                                                               cls.ministry_contact_type_code).all()
+                                                               cls.emli_contact_type_code).all()
 
     def __repr__(self):
         return '<MinistryContact %r>' % self.contact_guid

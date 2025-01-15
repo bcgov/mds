@@ -915,7 +915,7 @@ export const getMajorMinesApplicationDocumentTypesHash = createSelector(
 export const getDropdownMinistryContactTypes = createSelectorWrapper(
   getMinistryContactTypes,
   createDropDownList,
-  ["description", "ministry_contact_type_code", "active_ind"]
+  ["description", "emli_contact_type_code", "active_ind"]
 );
 
 export const getMinistryContactTypesHash = createSelector(

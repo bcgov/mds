@@ -13,7 +13,7 @@ from app.api.ministry_contacts.response_models import MINISTRY_CONTACT_MODEL
 class MinistryContactListResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument(
-        'ministry_contact_type_code',
+        'emli_contact_type_code',
         type=str,
         trim=True,
         help='MCM contact type code',
@@ -64,7 +64,7 @@ class MinistryContactListResource(Resource, UserMixin):
     def post(self):
         data = self.parser.parse_args()
 
-        contact_type = data.get('ministry_contact_type_code', None)
+        contact_type = data.get('emli_contact_type_code', None)
         is_major_mine = data.get('is_major_mine', None)
         is_general_contact = data.get('is_general_contact', None)
         contact_desc = MinistryContactType.find_contact_type(contact_type)
@@ -74,11 +74,11 @@ class MinistryContactListResource(Resource, UserMixin):
         chief_permitting = MinistryContact.find_ministry_contact('CHP')
         roe_contact = MinistryContact.find_ministry_contact('ROE', data.mine_region_code)
 
-        unique_by_region = roe_contact.ministry_contact_type_code if roe_contact else None
+        unique_by_region = roe_contact.emli_contact_type_code if roe_contact else None
         unique_global = [
-            mmo_contact.ministry_contact_type_code if mmo_contact is not None else None,
-            chief_inspector.ministry_contact_type_code if chief_inspector is not None else None,
-            chief_permitting.ministry_contact_type_code if chief_permitting is not None else None
+            mmo_contact.emli_contact_type_code if mmo_contact is not None else None,
+            chief_inspector.emli_contact_type_code if chief_inspector is not None else None,
+            chief_permitting.emli_contact_type_code if chief_permitting is not None else None
         ]
 
         if unique_by_region and contact_type in unique_by_region:
@@ -92,7 +92,7 @@ class MinistryContactListResource(Resource, UserMixin):
             raise BadRequest(f'Error: General contacts must be a major mine contact.')
 
         contact = MinistryContact.create(
-            ministry_contact_type_code=contact_type,
+            emli_contact_type_code=contact_type,
             mine_region_code=data.get('mine_region_code'),
             first_name=data.get('first_name', None),
             last_name=data.get('last_name', None),
