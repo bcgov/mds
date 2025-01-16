@@ -8,6 +8,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import backref
 from sqlalchemy.schema import FetchedValue
 
+from . import permit_condition_status_code
 
 class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "permit_conditions"
@@ -39,6 +40,9 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         nullable=False,
     )
 
+    permit_condition_status_code = db.Column(
+        db.String(3), db.ForeignKey('permit_condition_status_code.permit_condition_status_code'), nullable=False, server_default=FetchedValue())
+
     condition_category = db.relationship("PermitConditionCategory", lazy="select")
 
     condition_type_code = db.Column(
@@ -47,6 +51,9 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         nullable=False,
     )
     parent_permit_condition_id = db.Column(
+        db.Integer, db.ForeignKey("permit_conditions.permit_condition_id")
+    )
+    top_level_parent_permit_condition_id = db.Column(
         db.Integer, db.ForeignKey("permit_conditions.permit_condition_id")
     )
     display_order = db.Column(db.Integer, nullable=False)
@@ -62,6 +69,7 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         lazy="joined",
         order_by="asc(PermitConditions.display_order)",
         backref=backref("parent", remote_side=[permit_condition_id]),
+        foreign_keys=[parent_permit_condition_id]
     )
 
     @hybrid_property

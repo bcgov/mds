@@ -16,6 +16,7 @@ def test_get_permit_conditions_by_permit_amendment_by_guid(test_client, db_sessi
             "condition": "test",
             "condition_category_code": "GEC",
             "parent_permit_condition_id": None,
+            "top_level_parent_permit_condition_id": None,
             "display_order": 3,
             "condition_type_code": "LIS"
         }

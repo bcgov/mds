@@ -122,11 +122,27 @@ services:
       - jaeger
       - otelcollector
       - keycloak
+      - core_api_celery
     healthcheck:
       test: [ "CMD", "curl", "localhost:5000/health" ]
       interval: 5s
       timeout: 5s
       retries: 5
+
+  core_api_celery:
+    restart: always
+    container_name: core_api_celery
+    build:
+      context: services/core-api
+    entrypoint: ./celery_dev.sh
+    ports:
+      - 5556:5555
+    volumes:
+      - ./services/core-api:/app
+    depends_on:
+      - postgres
+      - redis
+    env_file: ./services/core-api/.env
 
   ####################### Redis Definition #######################
   redis:

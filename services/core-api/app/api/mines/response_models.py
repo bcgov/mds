@@ -269,7 +269,8 @@ PERMIT_CONDITION_CATEGORY_MODEL = api.model(
         'step': fields.String,
         'description': fields.String,
         'display_order': fields.Integer,
-        'assigned_review_user': fields.Nested(USER_MODEL)
+        'assigned_review_user': fields.Nested(USER_MODEL),
+        'permit_condition_status_code': fields.String
     })
 
 PERMIT_AMENDMENT_MODEL = api.model(
@@ -897,6 +898,8 @@ PERMIT_CONDITION_MODEL = api.model(
         'step': fields.String,
         'display_order': fields.Integer,
         'meta': fields.Raw,
+        'permit_condition_status_code': fields.String,
+        'top_level_parent_permit_condition_id': fields.Integer
     })
 
 PERMIT_CONDITION_TEMPLATE_MODEL = api.model('PermitConditionTemplate', {

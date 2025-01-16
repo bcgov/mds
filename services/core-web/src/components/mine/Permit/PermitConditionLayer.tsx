@@ -3,6 +3,9 @@ import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition
 import PermitConditionForm from "./PermitConditionForm";
 import SubConditionForm from "./SubConditionForm";
 import { IGroupedDropdownList } from "@mds/common/interfaces/common/option.interface";
+import { PermitConditionStatus } from "./PermitConditionStatus";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils/featureFlag";
 
 interface PermitConditionLayerProps {
   condition: IPermitCondition;
@@ -43,7 +46,8 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
     isExpanded ? "condition-expanded" : "condition-collapsed"
   );
   const className = `condition-layer condition-layer--${level} condition-${condition.condition_type_code} fade-in`;
-
+  const { isFeatureEnabled } = useFeatureFlag();
+  
   const handleSetParentExpand = () => {
     if (level === 0) {
       return;
@@ -131,6 +135,15 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
           onSubmit={handleSaveListItem}
           permitAmendmentGuid={permitAmendmentGuid}
         />
+      )}
+      {level == 0 && isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && (
+        <PermitConditionStatus
+          condition={condition}
+          canEditPermitConditions={canEditPermitConditions}
+          isDisabled={isAddingListItem || isExpanded}
+          permitAmendmentGuid={permitAmendmentGuid}
+          refreshData={refreshData}
+      />
       )}
       {/* Content added here will show up at the top level when conditions are collapsed */}
     </div>

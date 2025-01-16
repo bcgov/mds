@@ -31,6 +31,11 @@ class PermitConditionsListResource(Resource, UserMixin):
 
         try:
             permit_condition = PermitConditions._schema().load(request.json['permit_condition'])
+
+            if permit_condition.top_level_parent_permit_condition_id is not None:
+                top_condition = PermitConditions.find_by_permit_condition_id(permit_condition.top_level_parent_permit_condition_id)
+                top_condition.permit_condition_status_code = 'NST'
+
         except MarshmallowError as e:
             raise BadRequest(e)
 
@@ -84,6 +89,8 @@ class PermitConditionsResource(Resource, UserMixin):
         old_category_code = old_condition.condition_category_code
         new_category_code = request_data.get("condition_category_code", None)
         changed_category = old_category_code != new_category_code
+        new_status_code = request_data.get("permit_condition_status_code",None)
+        changed_status = old_condition.permit_condition_status_code != new_status_code
 
         if changed_category:
             sub_conditions = old_condition.sub_conditions
@@ -107,6 +114,14 @@ class PermitConditionsResource(Resource, UserMixin):
             ]
         if changed_category:
             condition.display_order = len(conditions) + 1
+
+         #Reset status unless status is being changed to complete
+        if not ( changed_status and new_status_code == 'COM' ):
+            if condition.top_level_parent_permit_condition_id is not None:
+                top_condition = PermitConditions.find_by_permit_condition_id(condition.top_level_parent_permit_condition_id)
+                top_condition.permit_condition_status_code = 'NST'
+            else:
+                condition.permit_condition_status_code = 'NST'
 
         if condition.display_order > old_display_order:
             conditions = sorted(

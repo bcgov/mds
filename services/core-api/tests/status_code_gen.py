@@ -9,6 +9,7 @@ from app.api.ministry_contacts.models.ministry_contact_type import MinistryConta
 from app.api.mines.permits.permit.models.permit_status_code import PermitStatusCode
 from app.api.mines.permits.permit_conditions.models.permit_condition_category import PermitConditionCategory
 from app.api.mines.permits.permit_conditions.models.permit_condition_type import PermitConditionType
+from app.api.mines.permits.permit_conditions.models.permit_condition_status_code import PermitConditionStatusCode
 from app.api.mines.mine.models.excemption_fee_status import ExemptionFeeStatus
 from app.api.securities.models.bond_status import BondStatus
 from app.api.securities.models.bond_type import BondType
@@ -75,6 +76,8 @@ def RandomConditionCategoryCode():
 def RandomConditionTypeCode():
     return random.choice([x.condition_type_code for x in PermitConditionType.get_all()])
 
+def RandomConditionStatusCode():
+    return random.choice([x.permit_condition_status_code for x in PermitConditionStatusCode.get_all()])
 
 def RandomTenureTypeCode():
     return random.choice(

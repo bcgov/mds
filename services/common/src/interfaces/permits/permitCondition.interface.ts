@@ -19,13 +19,15 @@ export interface IPermitCondition {
   condition: string;
   condition_type_code: string;
   condition_category_code: string;
-  parent_permit_condition_id: number;
+  parent_permit_condition_id?: number;
   sub_conditions: IPermitCondition[];
   step: string;
   stepPath?: string;
   display_order: number;
   mineReportPermitRequirement?: IMineReportPermitRequirement;
   meta?: IPermitConditionMeta
+  permit_condition_status_code: string;
+  top_level_parent_permit_condition_id?: number;
 }
 
 export interface IPermitConditionCategory {

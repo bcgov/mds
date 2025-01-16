@@ -82,6 +82,7 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
                 type_code = _map_condition_to_type_code(condition)
 
                 parent_id = parent.permit_condition_id if parent else None
+                top_parent_id = _get_top_level_parent_condition_id(None,parent)
 
                 if parent_id not in display_order_by_parent:
                     display_order_by_parent[parent_id] = 0
@@ -108,16 +109,20 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
                         category_code,
                         condition,
                         parent,
+                        top_parent_id,
                         current_display_order,
                         type_code,
                     )
 
                 parent_condition_id = _get_parent_condition_id(title_cond, parent)
+                top_parent_id = _get_top_level_parent_condition_id(title_cond,parent)
+
                 cond = _create_permit_condition(
                     task,
                     category_code,
                     condition,
                     parent_condition_id,
+                    top_parent_id,
                     current_display_order,
                     type_code,
                 )
@@ -126,7 +131,8 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
                 last_condition_id_by_hierarchy[hierarchy_key] = cond
 
         db.session.commit()
-    except:
+    except Exception as e:
+        current_app.logger.error(e)
         db.session.rollback()
         raise
 
@@ -152,7 +158,7 @@ def _map_condition_to_type_code(condition: PermitConditionResult):
 
 
 def _create_title_condition(
-    task, current_category, condition, parent, idx, type_code
+    task, current_category, condition, parent, top_parent_condition_id, idx, type_code
 ) -> PermitConditionResult:
     condition = PermitConditions(
         permit_amendment_id=task.permit_amendment.permit_amendment_id,
@@ -161,6 +167,8 @@ def _create_title_condition(
         condition=condition.condition_title,
         condition_type_code=type_code,
         parent_permit_condition_id=parent.permit_condition_id if parent else None,
+        top_level_parent_permit_condition_id=top_parent_condition_id,
+        permit_condition_status_code="NST",
         display_order=idx,
         meta=condition.meta,
         _step=condition.step,
@@ -182,9 +190,22 @@ def _get_parent_condition_id(
     else:
         return None
 
+def _get_top_level_parent_condition_id(
+    title_cond: PermitConditionResult, parent: PermitConditionResult
+) -> Optional[str]:
+    if title_cond:
+        return title_cond.permit_condition_id
+    elif parent:
+        if parent.top_level_parent_permit_condition_id:
+            return parent.top_level_parent_permit_condition_id
+        else:
+            return parent.permit_condition_id
+    else:
+        return None
+
 
 def _create_permit_condition(
-    task, current_category, condition, parent_condition_id, idx, type_code
+    task, current_category, condition, parent_condition_id, top_parent_condition_id, idx, type_code
 ) -> PermitConditions:
     condition = PermitConditions(
         permit_amendment_id=task.permit_amendment.permit_amendment_id,
@@ -193,6 +214,8 @@ def _create_permit_condition(
         condition=condition.condition_text,
         condition_type_code=type_code,
         parent_permit_condition_id=parent_condition_id,
+        top_level_parent_permit_condition_id=top_parent_condition_id,
+        permit_condition_status_code="NST",
         display_order=idx,
         meta=condition.meta,
         _step=(

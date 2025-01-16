@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Col, Collapse, Row, Skeleton, Typography } from "antd";
+import { Col, Collapse, Row, Skeleton, Space, Typography } from "antd";
 import FileOutlined from "@ant-design/icons/FileOutlined";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,6 +9,8 @@ import {
   faArrowsToLine,
   faBan,
   faBarsStaggered,
+  faCheckCircle,
+  faClock
 } from "@fortawesome/pro-light-svg-icons";
 import { getPermitConditionCategoryOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import PermitConditionLayer from "./PermitConditionLayer";
@@ -54,6 +56,8 @@ import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import PermitConditionReviewAssignment from "@/components/mine/Permit/PermitConditionReviewAssignment";
 import { getUser } from "@mds/common/redux/slices/userSlice";
 import { createDropDownList } from "@common/utils/helpers";
+import { COLOR } from "@/constants/styles";
+import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common";
 
 const { Title } = Typography;
 
@@ -127,6 +131,12 @@ const PermitConditions: FC<PermitConditionProps> = ({
     "condition_category_code"
   );
 
+  const PERMIT_CONDITION_STATUS = {
+    complete: {icon: faCheckCircle, color: "color-success", text: "Complete"},
+    in_progress: {icon: faClock, color: "color-primary", text: "In Progress"},
+    not_started: {icon: faBan, color: "color-gov-grey", text:"Not Started"}
+  }
+
   const getPermitConditionCategories = (categories, conditions) => {
     return categories
       .map((cat) => {
@@ -172,9 +182,22 @@ const PermitConditions: FC<PermitConditionProps> = ({
         // Initialize the step paths for all top-level conditions
         const formattedConditions = catConditions.map((condition) => getStepPath(condition));
 
+        //Set the text and icon based on the Status of all the top level conditions
+        const statuses = catConditions.map(con => con.permit_condition_status_code);
+        const allComplete = statuses.every(s => s === PERMIT_CONDITION_STATUS_CODE.COM);
+        const someComplete = statuses.some(s => s === PERMIT_CONDITION_STATUS_CODE.COM);
+
+        let status = PERMIT_CONDITION_STATUS.not_started;
+
+        if ( allComplete ) {
+          status = PERMIT_CONDITION_STATUS.complete;
+        } else if ( someComplete ) {
+          status = PERMIT_CONDITION_STATUS.in_progress;
+        }
+
         return {
           href: cat.condition_category_code.toLowerCase().replace("-", ""),
-          icon: <FontAwesomeIcon icon={faBan} style={{ color: "#bbb", fontSize: "20px" }} />,
+          icon: <FontAwesomeIcon icon={status.icon} className={status.color} style={{ fontSize: "20px" }} />,
           title: (
             <Typography.Text style={{ fontSize: "16px", fontWeight: "600" }}>
               {formatPermitConditionStep(cat.step)}
@@ -182,7 +205,12 @@ const PermitConditions: FC<PermitConditionProps> = ({
             </Typography.Text>
           ),
           titleText: cat.description,
-          description: "Not Started",
+          description: ( 
+            <Space direction="vertical">
+              <Typography.Text>{status.text}</Typography.Text>
+              <Typography.Text className="faded-text">{cat.assigned_review_user?.display_name ? "Assigned to "+cat.assigned_review_user.display_name : "Not Assigned"}</Typography.Text>
+            </Space>
+          ),
           conditions: formattedConditions || [],
           condition_category_code: cat.condition_category_code,
           condition_category: cat,
