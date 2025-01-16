@@ -107,11 +107,11 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
 
   const applicationFilesTypes = ["AAF", "AEF", "MDO", "SDO"];
 
-  const generateEmliInspectionMapperUrl = (nowApplicationGuid) => {
+  const generateMinistryInspectionMapperUrl = (nowApplicationGuid) => {
     const queryString = encodeURIComponent(
       `bcgw_pub_whse_mineral_tenure_8797,NOW_APPLICATION_GUID,${nowApplicationGuid}`
     );
-    return `${Strings.EMLI_INSPECTION_MAPPER_BASE_URL}&query=${queryString}`;
+    return `${Strings.MINISTRY_INSPECTION_MAPPER_BASE_URL}&query=${queryString}`;
   };
 
   const renderMineInfo = () => (
@@ -231,7 +231,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
           <div className="field-title">
             Open and view NoW on the Inspection Mapper (new window)&nbsp;&nbsp;
             <a
-              href={generateEmliInspectionMapperUrl(props.now_application_guid)}
+              href={generateMinistryInspectionMapperUrl(props.now_application_guid)}
               target="_blank"
               rel="noopener noreferrer"
             >

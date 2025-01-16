@@ -534,8 +534,8 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
-    key="/admin/minespace-emli-contact-management"
-    path="/admin/minespace-emli-contact-management"
+    key="/admin/minespace-ministry-contact-management"
+    path="/admin/minespace-ministry-contact-management"
   />
   <Route
     component={

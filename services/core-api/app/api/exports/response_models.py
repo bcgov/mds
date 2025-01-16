@@ -10,7 +10,7 @@ from app.api.parties.response_models import MINE_PARTY_APPT_TYPE_MODEL, SUB_DIVI
 from app.api.variances.response_models import VARIANCE_APPLICATION_STATUS_CODE, VARIANCE_DOCUMENT_CATEGORY_CODE
 from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT_TYPE_MODEL, NOW_APPLICATION_REVIEW_TYPES, NOW_APPLICATION_TYPES, UNIT_TYPES, NOW_ACTIVITY_TYPES, NOW_APPLICATION_STATUS_CODES, UNDERGROUND_EXPLORATION_TYPES, NOW_APPLICATION_PERMIT_TYPES, NOW_APPLICATION_REVIEW_TYPES, APPLICATION_PROGRESS_STATUS_CODES, NOW_APPLICATION_DELAY_TYPE, APPLICATION_REASON_CODE, APPLICATION_SOURCE_TYPE_CODE, APPLICATION_TYPE_CODE
 from app.api.securities.response_models import BOND_STATUS, BOND_TYPE, BOND_DOCUMENT_TYPE
-from app.api.EMLI_contacts.response_models import EMLI_CONTACT_TYPE
+from app.api.ministry_contacts.response_models import MINISTRY_CONTACT_TYPE
 
 MINE_SUMMARY_MODEL = api.model(
     'MineSummaryModel', {
@@ -250,10 +250,10 @@ STATIC_CONTENT_MODEL = api.model(
         fields.List(
             fields.Nested(PROJECT_DECISION_PACKAGE_DOCUMENT_TYPE_MODEL),
             attribute='ProjectDecisionPackageDocumentType'),
-        'EMLIContactTypes':
+        'MinistryContactTypes':
         fields.List(
-            fields.Nested(EMLI_CONTACT_TYPE),
-            attribute='EMLIContactType'),
+            fields.Nested(MINISTRY_CONTACT_TYPE),
+            attribute='MinistryContactType'),
         'municipalityOptions':
         fields.List(fields.Nested(MUNICIPALITY_MODEL), attribute='Municipality')
     })

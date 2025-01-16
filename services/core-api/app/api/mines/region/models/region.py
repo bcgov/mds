@@ -2,7 +2,7 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
-from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
+from app.api.ministry_contacts.models.ministry_contact import MinistryContact
 
 
 class MineRegionCode(AuditMixin, Base):
@@ -14,12 +14,12 @@ class MineRegionCode(AuditMixin, Base):
     effective_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
     expiry_date = db.Column(db.DateTime)
 
-    regional_contacts = db.relationship('EMLIContact', lazy='select')
+    regional_contacts = db.relationship('MinistryContact', lazy='select')
 
     # Specific regional contacts
     @hybrid_property
     def regional_contact_office(self):
-        return EMLIContact.find_EMLI_contact('ROE', self.mine_region_code)
+        return MinistryContact.find_ministry_contact('ROE', self.mine_region_code)
 
     def __repr__(self):
         return '<MineRegionCode %r>' % self.mine_region_code

@@ -14,7 +14,7 @@ def test_user_resource_get(test_client, auth_headers):
         "email": "test-email",
         "given_name": "Test",
         "family_name": "Testerson",
-        "display_name": "Testerson, Test: EMLI:EX",
+        "display_name": "Testerson, Test: MCM:EX",
         "idir_username": "TTESTERSON",
         "idir_user_guid": "BCE4FFA4B63641C79AFA82287BFFFBC8",
         "last_logged_in": datetime.now(tz=utc),

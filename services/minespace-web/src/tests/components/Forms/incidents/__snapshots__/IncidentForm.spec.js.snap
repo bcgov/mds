@@ -681,7 +681,7 @@ exports[`IncidentForm renders properly 1`] = `
             component={[Function]}
             disabled={true}
             id="followup_investigation_type_code"
-            label="Was it escalated to EMLI investigation?"
+            label="Was it escalated to MCM investigation?"
             name="followup_investigation_type_code"
           />
         </Col>

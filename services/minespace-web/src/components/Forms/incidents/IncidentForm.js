@@ -833,7 +833,7 @@ const renderMinistryFollowUp = (childProps, formDisabled, formValues) => {
       </Col>
       <Col md={12} xs={24}>
         <Field
-          label="Was it escalated to EMLI investigation?"
+          label="Was it escalated to MCM investigation?"
           id="followup_investigation_type_code"
           name="followup_investigation_type_code"
           component={renderConfig.SELECT}

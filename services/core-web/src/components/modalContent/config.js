@@ -46,7 +46,7 @@ import ExplosivesPermitViewModal from "@mds/common/components/explosivespermits/
 import MergePartyConfirmationModal from "./MergePartyConfirmationModal";
 import ViewAllConditionsModal from "./ViewAllConditionsModal";
 import UpdateNoWDateModal from "./UpdateNoWDateModal";
-import EMLIContactModal from "./EMLIContactModal";
+import MinistryContactModal from "./MinistryContactModal";
 import UpdateMinespaceUserModal from "./UpdateMinespaceUserModal";
 import ManageDocumentsDownloadPackageModal from "./ManageDocumentsDownloadPackageModal";
 import NoticeOfDepartureModal from "./NoticeOfDepartureModal";
@@ -107,7 +107,7 @@ export const modalConfig = {
   VIEW_MAGAZINE_MODAL: ViewMagazineModal,
   EXPLOSIVES_PERMIT_CLOSE_MODAL: ExplosivesPermitCloseModal,
   UPDATE_NOW_DATE_MODAL: UpdateNoWDateModal,
-  EMLI_CONTACT_MODAL: EMLIContactModal,
+  MINISTRY_CONTACT_MODAL: MinistryContactModal,
   UPDATE_MINESPACE_USERS: UpdateMinespaceUserModal,
   NOW_MANAGE_DOCUMENTS_DOWNLOAD_PACKAGE_MODAL: ManageDocumentsDownloadPackageModal,
   NOTICE_OF_DEPARTURE_MODAL: NoticeOfDepartureModal,

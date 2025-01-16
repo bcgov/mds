@@ -2892,7 +2892,7 @@ export const MINE_REPORT_STATUS_OPTIONS_HASH = {
 };
 
 export const BULK_STATIC_CONTENT_RESPONSE = {
-  EMLIContactTypes: [
+  MinistryContactTypes: [
     {
       emli_contact_type_code: "SHI",
       description: "Senior Health, Safety and Environment Inspector",
@@ -4117,7 +4117,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
             type: "LABEL",
             required: false,
             "context-value":
-              "and you may wish to take the opportunity to post your security at this time to avoid any delays.  Safekeeping Agreements backed by GIC’s may be used for bonds under $25,000 with the enclosed template. Complete the form with your banker, using the 'Instructions on Completing a Safekeeping Agreement' and return it to this office for our signature.  A copy of the completed form will be returned to you and your financial institution.  Irrevocable Letters of Credit, certified cheque, bank draft or money order made payable to the Minister of Finance, at the undernoted address, are also acceptable. Payments made by EFT can also be arranged. Please do not send cash. For reclamation surety bonds, the bond shall be with a surety licensed to transact the business of a surety in Canada. For the surety bond template and more please visit our Reclamation Security website. Personal information collected by the Ministry of Energy, Mines, and Low Carbon Innovation is under the authority of section 26(c) of the Freedom of Information and Protection of Privacy Act for the purpose of collecting Bond and Securities Data. If you have any questions about the collection, use and disclosure of your personal information, please contact: Mines Digital Services by email at mds@gov.bc.ca, by phone at: 778-698-7233, or by mail at: PO Box 9380, STN PROV GOVT, Victoria, BC, V8W 9M6.",
+              "and you may wish to take the opportunity to post your security at this time to avoid any delays.  Safekeeping Agreements backed by GIC’s may be used for bonds under $25,000 with the enclosed template. Complete the form with your banker, using the 'Instructions on Completing a Safekeeping Agreement' and return it to this office for our signature.  A copy of the completed form will be returned to you and your financial institution.  Irrevocable Letters of Credit, certified cheque, bank draft or money order made payable to the Minister of Finance, at the undernoted address, are also acceptable. Payments made by EFT can also be arranged. Please do not send cash. For reclamation surety bonds, the bond shall be with a surety licensed to transact the business of a surety in Canada. For the surety bond template and more please visit our Reclamation Security website. Personal information collected by the Ministry of Mining and Critical Minerals is under the authority of section 26(c) of the Freedom of Information and Protection of Privacy Act for the purpose of collecting Bond and Securities Data. If you have any questions about the collection, use and disclosure of your personal information, please contact: Mines Digital Services by email at mds@gov.bc.ca, by phone at: 778-698-7233, or by mail at: PO Box 9380, STN PROV GOVT, Victoria, BC, V8W 9M6.",
             "read-only": false,
           },
           {
@@ -7342,7 +7342,7 @@ export const MAJOR_MINES_APPLICATION_STATUS_CODES_HASH = {
   CHR: "Change Requested",
 };
 
-export const EMLI_TYPE_CODES_DROPDOWN = [
+export const MINISTRY_TYPE_CODES_DROPDOWN = [
   {
     value: "HSI",
     label: "Health and Safety Inspector",
@@ -7375,7 +7375,7 @@ export const EMLI_TYPE_CODES_DROPDOWN = [
   },
 ];
 
-export const EMLI_TYPE_CODES_HASH = {
+export const MINISTRY_TYPE_CODES_HASH = {
   HSI: "Health and Safety Inspector",
   RDR: "Regional Director",
   ROE: "Regional Office",

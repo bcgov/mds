@@ -187,7 +187,7 @@ export const USER_ROLES = {
   role_edit_historical_amendments: "core_edit_historical_amendments",
   role_mds_administrative_users: "mds_administrative_users",
   role_edit_now_dates: "core_edit_now_dates",
-  role_edit_emli_contacts: "core_edit_emli_contacts",
+  role_edit_ministry_contacts: "core_edit_emli_contacts",
   role_edit_project_summaries: "core_edit_project_summaries",
   role_edit_project_decision_package: "core_edit_project_decision_packages",
   role_edit_major_mine_applications: "core_edit_major_mine_applications",

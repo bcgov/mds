@@ -44,11 +44,11 @@ export const MINESPACE_USER = "/users/minespace";
 export const UPDATE_MINESPACE_USER = (id) => `/users/minespace/${id}`;
 export const PROVINCE_CODES = "/parties/sub-division-codes";
 
-// EMLI contacts
-export const EMLI_CONTACTS = "/EMLI-contacts";
-export const EMLI_CONTACTS_BY_REGION = (region, isMajorMine) =>
-  `/EMLI-contacts/${region}/contacts?is_major_mine=${isMajorMine}`;
-export const EMLI_CONTACT = (guid) => `/EMLI-contacts/${guid}`;
+// MCM contacts
+export const MINISTRY_CONTACTS = "/ministry-contacts";
+export const MINISTRY_CONTACTS_BY_REGION = (region, isMajorMine) =>
+  `/ministry-contacts/${region}/contacts?is_major_mine=${isMajorMine}`;
+export const MINISTRY_CONTACT = (guid) => `/ministry-contacts/${guid}`;
 
 export const MINE_VERIFIED_STATUSES = (params = {}) =>
   `/mines/verified-status?${queryString.stringify(params)}`;

@@ -132,7 +132,7 @@ const IncidentFormMinistryFollowup: FC<IncidentFormMinistryFollowupProps> = ({
           )}
           <Col span={24}>
             <Field
-              label="Was it escalated to EMLI investigation?"
+              label="Was it escalated to MCM investigation?"
               id="followup_investigation_type_code"
               name="followup_investigation_type_code"
               component={renderConfig.RADIO}

@@ -275,7 +275,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         return value
 
     def send_incidents_email(self):
-        emli_recipients = [INCIDENTS_EMAIL]
+        ministry_recipients = [INCIDENTS_EMAIL]
         cc = None
         minespace_recipients = [self.reported_by_email]
         duration = self.reported_timestamp - self.incident_timestamp
@@ -283,10 +283,10 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         days = divmod(duration_in_s, 86400)
         hours = divmod(days[1], 3600)
 
-        emli_body = open("app/templates/email/incident/emli_incident_email.html", "r").read()
+        ministry_body = open("app/templates/email/incident/ministry_incident_email.html", "r").read()
         minespace_body = open("app/templates/email/incident/minespace_incident_email.html", "r").read()
         subject = f'{self.mine_table.mine_name}: A new notice of reportable incident has been created on {format_email_datetime_to_string(self.create_timestamp)}'
-        emli_context = {
+        ministry_context = {
             "incident": {
                 "mine_incident_report_no": self.mine_incident_report_no,
                 "incident_timestamp": format_email_datetime_to_string(self.incident_timestamp, self.incident_timezone),
@@ -312,7 +312,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
             },
             "minespace_incident_link": f'{Config.MINESPACE_PROD_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}',
         }
-        EmailService.send_template_email(subject, emli_recipients, emli_body, emli_context, cc=cc)
+        EmailService.send_template_email(subject, ministry_recipients, ministry_body, ministry_context, cc=cc)
         EmailService.send_template_email(subject, minespace_recipients, minespace_body, minespace_context, cc=cc)
 
     def send_awaiting_final_report_email(self, is_prop):
@@ -323,7 +323,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
 
         subject = f'{self.mine_name}: The status of a reportable incident {self.mine_incident_report_no} has been updated on {format_email_datetime_to_string(self.update_timestamp)}'
         link = f'{Config.MINESPACE_PROD_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}/review' if is_prop else f'{Config.CORE_WEB_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}'
-        body = open("app/templates/email/incident/minespace_awaiting_incident_final_report_email.html", "r").read() if is_prop else open("app/templates/email/incident/emli_awaiting_incident_final_report_email.html", "r").read()
+        body = open("app/templates/email/incident/minespace_awaiting_incident_final_report_email.html", "r").read() if is_prop else open("app/templates/email/incident/ministry_awaiting_incident_final_report_email.html", "r").read()
 
         context = {
             "incident": {
@@ -344,7 +344,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         cc = None
 
         link = f'{Config.MINESPACE_PROD_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}/review' if is_prop else f'{Config.CORE_WEB_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}'
-        body = open("app/templates/email/incident/minespace_final_report_received_incident_email.html", "r").read() if is_prop else open("app/templates/email/incident/emli_final_report_received_incident_email.html", "r").read()
+        body = open("app/templates/email/incident/minespace_final_report_received_incident_email.html", "r").read() if is_prop else open("app/templates/email/incident/ministry_final_report_received_incident_email.html", "r").read()
         subject = f'{self.mine_name}: A final incident report on {self.mine_incident_report_no} has been submitted on {format_email_datetime_to_string(self.update_timestamp)}'
         context = {
             "incident": {

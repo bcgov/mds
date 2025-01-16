@@ -4,8 +4,8 @@ import { MINESPACE } from "@mds/common/constants/reducerTypes";
 const initialState = {
   minespaceUsers: [],
   minespaceUserMines: [],
-  EMLIContacts: [],
-  EMLIContactsByRegion: [],
+  MinistryContacts: [],
+  MinistryContactsByRegion: [],
 };
 
 export const minespaceReducer = (state = initialState, action) => {
@@ -20,15 +20,15 @@ export const minespaceReducer = (state = initialState, action) => {
         ...state,
         minespaceUserMines: action.payload,
       };
-    case actionTypes.STORE_EMLI_CONTACTS:
+    case actionTypes.STORE_MINISTRY_CONTACTS:
       return {
         ...state,
-        EMLIContacts: action.payload.records,
+        MinistryContacts: action.payload.records,
       };
-    case actionTypes.STORE_EMLI_CONTACTS_BY_REGION:
+    case actionTypes.STORE_MINISTRY_CONTACTS_BY_REGION:
       return {
         ...state,
-        EMLIContactsByRegion: action.payload.records,
+        MinistryContactsByRegion: action.payload.records,
       };
     default:
       return state;
@@ -41,7 +41,7 @@ const minespaceReducerObject = {
 
 export const getMinespaceUsers = (state) => state[MINESPACE].minespaceUsers;
 export const getMinespaceUserMines = (state) => state[MINESPACE].minespaceUserMines;
-export const getEMLIContacts = (state) => state[MINESPACE].EMLIContacts;
-export const getEMLIContactsByRegion = (state) => state[MINESPACE].EMLIContactsByRegion;
+export const getMinistryContacts = (state) => state[MINESPACE].MinistryContacts;
+export const getMinistryContactsByRegion = (state) => state[MINESPACE].MinistryContactsByRegion;
 
 export default minespaceReducerObject;

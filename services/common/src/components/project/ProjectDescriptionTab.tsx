@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Typography, Button, Alert, Badge, Empty } from "antd";
+import { Row, Col, Typography, Button, Alert, Badge, Empty, List } from "antd";
 import Callout from "@mds/common/components/common/Callout";
 import {
   CALLOUT_SEVERITY,
@@ -8,6 +8,8 @@ import {
   AMS_STATUS_CODES_SUCCESS,
   AMS_STATUS_CODE_ERROR,
   WASTE_DISCHARGE_AUTHORIZATION_PROCESS,
+  AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT,
+  AMS_AUTHORIZATION_TYPES_TEXT
 } from "@mds/common/constants/strings";
 import {
   AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
@@ -168,7 +170,7 @@ const ProjectDescriptionTab = () => {
       const permitTypeLabel = parseProjectTypeLabel(authorization.project_summary_permit_type[0]);
       const projectType = `${parseTransformedProjectSummaryAuthorizationTypes(
         permitAuthorizationType,
-        projectSummaryAuthorizationType
+        projectSummaryAuthorizationType,
       )} - ${permitTypeLabel}`;
       const permitNo =
         authorization?.project_summary_permit_type[0] === AMS_AUTHORIZATION_TYPES.AMENDMENT &&
@@ -182,11 +184,15 @@ const ProjectDescriptionTab = () => {
           : NOT_APPLICABLE;
 
       let status = createStatusBadge("Rejected", AMS_STATUS_CODE_ERROR);
+      let ams_error_message = `${AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT[projectSummaryAuthorizationType]} 
+        ${AMS_AUTHORIZATION_TYPES_TEXT[authorization.project_summary_permit_type[0]]}(${permitNo}): "${authorization?.ams_outcome}"`;
+
       if (authorization?.ams_status_code === "500") {
         status = createStatusBadge("Failed", AMS_STATUS_CODE_ERROR);
         setShouldDisplayRetryButton(true);
       } else if (authorization?.ams_status_code === "200") {
         status = createStatusBadge("Submitted", AMS_STATUS_CODES_SUCCESS);
+        ams_error_message = null;
       }
 
       return {
@@ -196,6 +202,7 @@ const ProjectDescriptionTab = () => {
         date_submitted: dateSubmitted,
         project_summary_authorization_guid: projectSummaryAuthorizationGuid,
         status: status,
+        ams_error_message: ams_error_message,
       };
     }
     return null;
@@ -486,7 +493,32 @@ const ProjectDescriptionTab = () => {
                     message="Submission Unsuccessful"
                     showIcon
                     type="error"
-                    description={`Your environment authorization application was not submitted successfully. Please start a new application for the rejected authorization(s). You can link the submission to the new application on the Related Projects page. One or more of your environment authorization application has not been submitted successfully.`}
+                    description={
+                      <div>
+                        <Typography.Text>
+                          One or more of the environment authorization application was not submitted successfully. Please <b>retry the failed submission</b> or <b>start a new application</b> for the rejected authorization(s). You can link this submission to the new application on the Related Projects page.
+                        </Typography.Text>
+                        <List
+                          className="project-description-tab-errors"
+                          itemLayout="horizontal"
+                          dataSource={environmentalManagementActData}
+                          renderItem={(item) => {
+                            return item.ams_error_message ? (
+                              <li key={item.project_summary_authorization_guid}>
+                                <div className="inline-flex">
+                                  <div className="flex-4">
+                                    <Row>
+                                      <Col span={21}>
+                                        {item.ams_error_message}
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                </div>
+                              </li>
+                            ) : null;
+                          }}
+                        />
+                      </div>}
                     action={
                       shouldDisplayRetryButton ? (
                         <Button onClick={handleRetryAMSSubmissionClicked}>

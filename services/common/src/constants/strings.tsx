@@ -114,7 +114,7 @@ export const MINE_REPORTS_TYPE = {
 export const E_REFERRALS_URL =
   "https://j200.gov.bc.ca/int/ereferral/Default.aspx?PosseMenuName=EIMain";
 
-export const EMLI_INSPECTION_MAPPER_BASE_URL =
+export const MINISTRY_INSPECTION_MAPPER_BASE_URL =
   "https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6";
 
 export const PERMIT_AMENDMENT_TYPES = {
@@ -494,3 +494,15 @@ export const REPORT_FREQUENCY_HASH = {
   "Every 5 Years": 60,
   "Not Specified": 0,
 };
+
+export const AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT = {
+  "AIR_EMISSIONS_DISCHARGE_PERMIT": "Air Emissions Discharge Permit",
+  "EFFLUENT_DISCHARGE_PERMIT": "Effluent Discharge Permit",
+  "REFUSE_DISCHARGE_PERMIT": "Refuse Discharge Permit",
+  "MUNICIPAL_WASTEWATER_REGULATION": "Municipal Wastewater Regulation",
+}
+
+export const AMS_AUTHORIZATION_TYPES_TEXT = {
+  "NEW": "New",
+  "AMENDMENT": "Amendment",
+}
