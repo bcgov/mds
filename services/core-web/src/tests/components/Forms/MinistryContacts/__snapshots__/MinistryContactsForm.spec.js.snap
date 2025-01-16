@@ -5,6 +5,7 @@ exports[`MinistryContactForm renders properly 1`] = `
   <Connect(ReduxForm)
     initialValues={Object {}}
     isModal={true}
+    name="MINISTRY_CONTACT_FORM"
     reduxFormConfig={
       Object {
         "enableReinitialize": true,

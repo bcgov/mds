@@ -82,7 +82,7 @@ export const MinistryContactForm = (props) => {
       <FormWrapper onSubmit={props.onSubmit}
         isModal
         initialValues={props.initialValues}
-        name={FORM.EMLI_CONTACT_FORM}
+        name={FORM.MINISTRY_CONTACT_FORM}
         reduxFormConfig={{
           touchOnBlur: false,
           enableReinitialize: true,
