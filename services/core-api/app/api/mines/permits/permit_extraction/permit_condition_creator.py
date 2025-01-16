@@ -51,15 +51,19 @@ class PermitConditionCreator:
         current_category = self.get_current_category()
 
         parent = self._determine_parent(condition)
+
+        top_parent_id = _get_top_level_parent_condition_id(None,parent)
         title_condition = None
 
         # Create title condition if present
         if condition.condition_title:
             title_condition = self._create_title_condition(
-                condition=condition, category_code=current_category, parent=parent
+                condition=condition, category_code=current_category, parent=parent,top_parent_condition_id=top_parent_id
             )
             # Title becomes parent for main condition
             parent = title_condition
+
+        top_parent_id = _get_top_level_parent_condition_id(title_condition,parent)
 
         # Create main condition
         display_order = self._get_next_display_order(
@@ -76,6 +80,7 @@ class PermitConditionCreator:
             display_order=display_order,
             parent_permit_condition_id=parent.permit_condition_id if parent else None,
             deleted_ind=False,
+            top_parent_id=top_parent_id,
             meta=condition.meta,
             _step=(condition.step if not condition.condition_title else ""),
         )
@@ -106,6 +111,7 @@ class PermitConditionCreator:
         condition: PermitConditionResult,
         category_code: Optional[str],
         parent: Optional[PermitConditions],
+        top_parent_condition_id: Optional[str],
     ) -> PermitConditions:
         display_order = self._get_next_display_order(
             parent.permit_condition_id if parent else None
@@ -119,6 +125,8 @@ class PermitConditionCreator:
             display_order=display_order,
             parent_permit_condition_id=parent.permit_condition_id if parent else None,
             deleted_ind=False,
+            top_level_parent_permit_condition_id=top_parent_condition_id,
+            permit_condition_status_code="NST",
             meta=condition.meta,
             _step=condition.step,
         )
@@ -144,7 +152,7 @@ class PermitConditionCreator:
 
         parent_key = ".".join(parent_number_structure)
         parent_id = self.last_condition_id_by_number_structure.get(parent_key)
-
+        
         if parent_id:
             return db.session.query(PermitConditions).get(parent_id)
         return None
@@ -153,3 +161,16 @@ class PermitConditionCreator:
         current = self.display_order_by_parent.get(parent_id, 0) + 1
         self.display_order_by_parent[parent_id] = current
         return current
+
+def _get_top_level_parent_condition_id(
+    title_cond: Optional[PermitConditions], parent: PermitConditions
+) -> Optional[str]:
+    if title_cond:
+        return title_cond.permit_condition_id
+    elif parent:
+        if parent.top_level_parent_permit_condition_id:
+            return parent.top_level_parent_permit_condition_id
+        else:
+            return parent.permit_condition_id
+    else:
+        return None
