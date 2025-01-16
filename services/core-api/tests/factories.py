@@ -1144,6 +1144,7 @@ class PermitConditionsFactory(BaseFactory):
     condition_type_code = factory.LazyFunction(RandomConditionTypeCode)
     condition = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     display_order = factory.Sequence(lambda n: n + 1)
+    permit_condition_status_code = factory.LazyFunction(RandomConditionStatusCode)
 
 
 class StandardPermitConditionsFactory(BaseFactory):

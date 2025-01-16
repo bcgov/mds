@@ -21,6 +21,10 @@ class PermitConditionStatusCode(AuditMixin, Base):
     def find_by_permit_condition_status_code(cls, _id):
         return cls.query.filter_by(permit_condition_status_code=_id).first()
 
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()
+
     @validates('permit_condition_status_code')
     def validate_permit_condition_status_code(self, key, permit_condition_status_code):
         if not permit_condition_status_code:
