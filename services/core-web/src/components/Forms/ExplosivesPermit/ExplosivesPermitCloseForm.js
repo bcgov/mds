@@ -1,26 +1,32 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, Typography } from "antd";
-import { dateTimezoneRequired, dateNotInFutureTZ, required } from "@common/utils/Validate";
-import { resetForm } from "@common/utils/helpers";
-import * as FORM from "@/constants/forms";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
-import RenderDateTimeTz from "@/components/common/RenderDateTimeTz";
+import { Field } from "redux-form";
+import { Col, Row, Typography } from "antd";
+import { dateTimezoneRequired, dateNotInFutureTZ, required } from "@mds/common/redux/utils/Validate";
 import { normalizeDatetime } from "@common/utils/helpers";
+import * as FORM from "@/constants/forms";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
+import RenderDateTimeTz from "@mds/common/components/forms/RenderDateTimeTz";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
 };
 
 export const ExplosivesPermitCloseForm = (props) => {
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <FormWrapper onSubmit={props.onSubmit}
+      initialValues={props.initialValues}
+      isModal
+      name={FORM.EXPLOSIVES_PERMIT_CLOSE}
+      reduxFormConfig={{
+        touchOnBlur: false,
+        enableReinitialize: true,
+      }}
+    >
       <Row gutter={16}>
         <Col span={24}>
           <Typography.Title level={2}>Close Permit</Typography.Title>
@@ -33,60 +39,40 @@ export const ExplosivesPermitCloseForm = (props) => {
       </Row>
       <Row gutter={16}>
         <Col span={24}>
-          <Form.Item label="Date Permit was Closed" required>
-            <Field
-              id="closed_timestamp"
-              name="closed_timestamp"
-              normalize={normalizeDatetime}
-              component={RenderDateTimeTz}
-              validate={[
-                dateNotInFutureTZ,
-                required,
-                dateTimezoneRequired("esup_permit_close_timezone"),
-              ]}
-              props={{ timezoneFieldProps: { name: "esup_permit_close_timezone" } }}
-            />
-          </Form.Item>
+          <Field
+            label="Date Permit was Closed"
+            id="closed_timestamp"
+            name="closed_timestamp"
+            normalize={normalizeDatetime}
+            component={RenderDateTimeTz}
+            required
+            validate={[
+              dateNotInFutureTZ,
+              required,
+              dateTimezoneRequired("esup_permit_close_timezone"),
+            ]}
+            props={{ timezoneFieldProps: { name: "esup_permit_close_timezone" } }}
+          />
         </Col>
       </Row>
       <Row gutter={16}>
         <Col span={24}>
-          <Form.Item>
-            <Field
-              id="closed_reason"
-              name="closed_reason"
-              label="Reason for closure"
-              component={RenderAutoSizeField}
-            />
-          </Form.Item>
+          <Field
+            id="closed_reason"
+            name="closed_reason"
+            label="Reason for closure"
+            component={RenderAutoSizeField}
+          />
         </Col>
       </Row>
       <div className="right center-mobile">
-        <Popconfirm
-          placement="topRight"
-          title="Are you sure you want to cancel?"
-          onConfirm={props.closeModal}
-          okText="Yes"
-          cancelText="No"
-          disabled={props.submitting}
-        >
-          <Button className="full-mobile" type="secondary" disabled={props.submitting}>
-            Cancel
-          </Button>
-        </Popconfirm>
-        <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
-          Close Permit
-        </Button>
+        <RenderCancelButton />
+        <RenderSubmitButton buttonText="Close Permit" />
       </div>
-    </Form>
+    </FormWrapper>
   );
 };
 
 ExplosivesPermitCloseForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.EXPLOSIVES_PERMIT_CLOSE,
-  touchOnBlur: false,
-  enableReinitialize: true,
-  onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT_CLOSE),
-})(ExplosivesPermitCloseForm);
+export default ExplosivesPermitCloseForm;

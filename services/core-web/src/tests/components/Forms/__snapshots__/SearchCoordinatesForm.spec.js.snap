@@ -1,48 +1,46 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SearchCoordinatesForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  name="SEARCH_COORDINATES"
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "onSubmitSuccess": [Function],
+      "touchOnBlur": false,
+    }
+  }
 >
-  <FormItem
-    hasFeedback={false}
-  >
-    <Field
-      component={[Function]}
-      id="latitude"
-      name="latitude"
-      placeholder="Latitude"
-      validate={
-        Array [
-          [Function],
-          [Function],
-          [Function],
-          [Function],
-        ]
-      }
-    />
-  </FormItem>
-  <FormItem
-    hasFeedback={false}
-  >
-    <Field
-      component={[Function]}
-      id="longitude"
-      name="longitude"
-      placeholder="Longitude"
-      validate={
-        Array [
-          [Function],
-          [Function],
-          [Function],
-          [Function],
-        ]
-      }
-    />
-  </FormItem>
+  <Field
+    component={[Function]}
+    id="latitude"
+    name="latitude"
+    placeholder="Latitude"
+    required={true}
+    validate={
+      Array [
+        [Function],
+        [Function],
+        [Function],
+        [Function],
+      ]
+    }
+  />
+  <Field
+    component={[Function]}
+    id="longitude"
+    name="longitude"
+    placeholder="Longitude"
+    required={true}
+    validate={
+      Array [
+        [Function],
+        [Function],
+        [Function],
+        [Function],
+      ]
+    }
+  />
   <div
     className="right center-mobile"
   >
@@ -54,5 +52,5 @@ exports[`SearchCoordinatesForm renders properly 1`] = `
       <ForwardRef(SearchOutlined) />
     </Button>
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

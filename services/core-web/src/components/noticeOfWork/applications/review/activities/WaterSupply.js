@@ -1,11 +1,11 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
-import { number, required } from "@common/utils/Validate";
-import RenderField from "@/components/common/RenderField";
+import { number, required } from "@mds/common/redux/utils/Validate";
+import RenderField from "@mds/common/components/forms/RenderField";
 import { getDropdownNoticeOfWorkUnitTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
-import RenderSelect from "@/components/common/RenderSelect";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import CustomPropTypes from "@/customPropTypes";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 

@@ -95,6 +95,23 @@
   }
 }
 
+.horizontal-form-item {
+  .ant-form-item-row {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: baseline;
+
+    .ant-form-item-label {
+      flex-shrink: 0;
+      padding-right: 6px;
+    }
+  }
+}
+
+.form-btn+.form-btn {
+  margin-left: 1em;
+}
+
 .common-form.form-view {
   .ant-form-item-required::before {
     display: none !important;
@@ -123,6 +140,10 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
+}
+
+label .info-tooltip {
+  float: right;
 }
 
 .ant-form-item-label label:after {

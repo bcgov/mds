@@ -170,133 +170,131 @@ export class MergeContactsDashboard extends Component {
 
   renderContactCards = () => {
     return (
-      <>
-        <div className="contact-container">
-          <Alert
-            description="All contacts selected will be deleted when the merge is complete and the proposed
+      <div className="contact-container">
+        <Alert
+          description="All contacts selected will be deleted when the merge is complete and the proposed
           contact will be created."
-            type="info"
-            showIcon
-            closable
-          />
-          <br />
-          {this.state.contactsForMerge?.length > 0 ? (
-            <Row gutter={[8, 8]} type="flex" justify="start">
-              {this.state.contactsForMerge.map((data, i) => {
-                return (
-                  <Col span={6} flex={4} key={data.party_guid}>
-                    <Card
-                      className="no-header"
-                      style={{ height: "100%", overflowX: "auto" }}
-                      bordered={false}
-                    >
-                      {this.state.activeTab === "PER" && (
-                        <Row>
-                          <Col span={24} className="grid padding-sm">
-                            <h6>First Name</h6>
-                            <Radio.Group
-                              name={data.first_name}
-                              onChange={(event) => this.handleContactSelect(event, "first_name")}
-                              value={this.state.valuesSelected.first_name}
-                            >
-                              <Radio value={`${data.first_name}${i}`} disabled={!data.first_name}>
-                                {data.first_name || Strings.EMPTY_FIELD}
-                              </Radio>
-                            </Radio.Group>
-                          </Col>
-                        </Row>
-                      )}
+          type="info"
+          showIcon
+          closable
+        />
+        <br />
+        {this.state.contactsForMerge?.length > 0 ? (
+          <Row gutter={[8, 8]} type="flex" justify="start">
+            {this.state.contactsForMerge.map((data, i) => {
+              return (
+                <Col span={6} flex={4} key={data.party_guid}>
+                  <Card
+                    className="no-header"
+                    style={{ height: "100%", overflowX: "auto" }}
+                    bordered={false}
+                  >
+                    {this.state.activeTab === "PER" && (
                       <Row>
                         <Col span={24} className="grid padding-sm">
-                          <h6>
-                            {this.state.activeTab === "PER" ? "Last Name" : "Organization Name"}
-                          </h6>
+                          <h6>First Name</h6>
                           <Radio.Group
-                            name={data.party_name}
-                            onChange={(event) => this.handleContactSelect(event, "party_name")}
-                            value={this.state.valuesSelected.party_name}
+                            name={data.first_name}
+                            onChange={(event) => this.handleContactSelect(event, "first_name")}
+                            value={this.state.valuesSelected.first_name}
                           >
-                            <Radio value={`${data.party_name}${i}`} disabled={!data.party_name}>
-                              {data.party_name || Strings.EMPTY_FIELD}
+                            <Radio value={`${data.first_name}${i}`} disabled={!data.first_name}>
+                              {data.first_name || Strings.EMPTY_FIELD}
                             </Radio>
                           </Radio.Group>
                         </Col>
                       </Row>
-                      <Row>
-                        <Col span={24} className="grid padding-sm">
-                          <h6>Phone Number</h6>
-                          <Radio.Group
-                            name={data.phone_no}
-                            onChange={(event) => this.handleContactSelect(event, "phone_no")}
-                            value={this.state.valuesSelected.phone_no}
-                          >
-                            <Radio value={`${data.phone_no}${i}`} disabled={!data.phone_no}>
-                              {data.phone_no || Strings.EMPTY_FIELD}
-                            </Radio>
-                          </Radio.Group>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col span={24} className="grid padding-sm">
-                          <h6>Email</h6>
-                          <Radio.Group
-                            name={data.email}
-                            onChange={(event) => this.handleContactSelect(event, "email")}
-                            value={this.state.valuesSelected.email}
-                          >
-                            <Radio value={`${data.email}${i}`} disabled={!data.email}>
-                              {data.email || Strings.EMPTY_FIELD}
-                            </Radio>
-                          </Radio.Group>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col span={24} className="grid padding-sm">
-                          <h6>Address</h6>
-                          <Radio.Group
-                            name={data.address[0]}
-                            onChange={(event) => this.handleContactSelect(event, "address")}
-                            value={this.state.valuesSelected.address}
-                          >
-                            <Radio value={data.address[0]} disabled={isEmpty(data.address[0])}>
-                              <Address address={data.address[0] || {}} showIcon={false} />
-                            </Radio>
-                          </Radio.Group>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col span={24} className="grid padding-sm">
-                          <h6>Active Roles</h6>
-                          {data?.mine_party_appt?.filter(({ end_date }) => !end_date)?.length >
+                    )}
+                    <Row>
+                      <Col span={24} className="grid padding-sm">
+                        <h6>
+                          {this.state.activeTab === "PER" ? "Last Name" : "Organization Name"}
+                        </h6>
+                        <Radio.Group
+                          name={data.party_name}
+                          onChange={(event) => this.handleContactSelect(event, "party_name")}
+                          value={this.state.valuesSelected.party_name}
+                        >
+                          <Radio value={`${data.party_name}${i}`} disabled={!data.party_name}>
+                            {data.party_name || Strings.EMPTY_FIELD}
+                          </Radio>
+                        </Radio.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col span={24} className="grid padding-sm">
+                        <h6>Phone Number</h6>
+                        <Radio.Group
+                          name={data.phone_no}
+                          onChange={(event) => this.handleContactSelect(event, "phone_no")}
+                          value={this.state.valuesSelected.phone_no}
+                        >
+                          <Radio value={`${data.phone_no}${i}`} disabled={!data.phone_no}>
+                            {data.phone_no || Strings.EMPTY_FIELD}
+                          </Radio>
+                        </Radio.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col span={24} className="grid padding-sm">
+                        <h6>Email</h6>
+                        <Radio.Group
+                          name={data.email}
+                          onChange={(event) => this.handleContactSelect(event, "email")}
+                          value={this.state.valuesSelected.email}
+                        >
+                          <Radio value={`${data.email}${i}`} disabled={!data.email}>
+                            {data.email || Strings.EMPTY_FIELD}
+                          </Radio>
+                        </Radio.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col span={24} className="grid padding-sm">
+                        <h6>Address</h6>
+                        <Radio.Group
+                          name={data.address[0]}
+                          onChange={(event) => this.handleContactSelect(event, "address")}
+                          value={this.state.valuesSelected.address}
+                        >
+                          <Radio value={data.address[0]} disabled={isEmpty(data.address[0])}>
+                            <Address address={data.address[0] || {}} showIcon={false} />
+                          </Radio>
+                        </Radio.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col span={24} className="grid padding-sm">
+                        <h6>Active Roles</h6>
+                        {data?.mine_party_appt?.filter(({ end_date }) => !end_date)?.length >
                           0 ? (
-                            data.mine_party_appt?.length > 0 &&
-                            data.mine_party_appt
-                              .filter(({ end_date }) => !end_date)
-                              .map((appt) => (
-                                <p>
-                                  {
-                                    this.props.partyRelationshipTypesHash[
-                                      appt.mine_party_appt_type_code
-                                    ]
-                                  }{" "}
-                                  - {appt.mine.mine_name}
-                                </p>
-                              ))
-                          ) : (
-                            <p>{Strings.EMPTY_FIELD}</p>
-                          )}
-                        </Col>
-                      </Row>
-                    </Card>
-                  </Col>
-                );
-              })}
-            </Row>
-          ) : (
-            <NullScreen type="merged-contacts" />
-          )}
-        </div>
-      </>
+                          data.mine_party_appt?.length > 0 &&
+                          data.mine_party_appt
+                            .filter(({ end_date }) => !end_date)
+                            .map((appt) => (
+                              <p>
+                                {
+                                  this.props.partyRelationshipTypesHash[
+                                  appt.mine_party_appt_type_code
+                                  ]
+                                }{" "}
+                                - {appt.mine.mine_name}
+                              </p>
+                            ))
+                        ) : (
+                          <p>{Strings.EMPTY_FIELD}</p>
+                        )}
+                      </Col>
+                    </Row>
+                  </Card>
+                </Col>
+              );
+            })}
+          </Row>
+        ) : (
+          <NullScreen type="merged-contacts" />
+        )}
+      </div>
     );
   };
 
@@ -388,87 +386,85 @@ export class MergeContactsDashboard extends Component {
   );
 
   renderMergeContactsDashboard = () => (
-    <>
-      <div className="merge-dashboard">
-        <h4 className="padding-sm">Merge {partyType[this.state.activeTab]}</h4>
-        <Alert
-          message="Not all contacts can be merged at this time"
-          closable
-          description={
-            <>
-              The following contacts will be disabled in the dropdown list:
-              <div
-                className={this.state.expanded ? "block" : "hidden"}
-                style={{ marginLeft: "40px" }}
-              >
-                <ul>
-                  <li>Contacts with the role of Permittee.</li>
-                  <li>Contacts with the role of Inspector.</li>
-                  <li>Organizations connected to OrgBook.</li>
-                </ul>
-              </div>
-              <Button className="btn--expand" onClick={() => this.setExpanded()}>
-                {this.state.expanded ? "  Read less" : "  ...Read more"}
-              </Button>
-            </>
-          }
-          type="info"
-          showIcon
-        />
-        <br />
-        <div className="search-contents inline-flex between">
-          <div className="flex-1 padding-sm">
-            <p>
-              <b>Search and select contacts to merge</b>
-            </p>
-          </div>
-          <div className="flex-4">
-            <RenderMultiSelectPartySearch
-              onSelectedPartySearchResultsChanged={this.onSelectedPartySearchResultsChanged}
-              isLoading={this.state.isLoading}
-              partyType={this.state.activeTab}
-              triggerSelectReset={this.state.triggerSelectReset}
-            />
-          </div>
-          <br />
+    <div className="merge-dashboard">
+      <h4 className="padding-sm">Merge {partyType[this.state.activeTab]}</h4>
+      <Alert
+        message="Not all contacts can be merged at this time"
+        closable
+        description={
+          <>
+            The following contacts will be disabled in the dropdown list:
+            <div
+              className={this.state.expanded ? "block" : "hidden"}
+              style={{ marginLeft: "40px" }}
+            >
+              <ul>
+                <li>Contacts with the role of Permittee.</li>
+                <li>Contacts with the role of Inspector.</li>
+                <li>Organizations connected to OrgBook.</li>
+              </ul>
+            </div>
+            <Button className="btn--expand" onClick={() => this.setExpanded()}>
+              {this.state.expanded ? "  Read less" : "  ...Read more"}
+            </Button>
+          </>
+        }
+        type="info"
+        showIcon
+      />
+      <br />
+      <div className="search-contents inline-flex between">
+        <div className="flex-1 padding-sm">
+          <p>
+            <b>Search and select contacts to merge</b>
+          </p>
+        </div>
+        <div className="flex-4">
+          <RenderMultiSelectPartySearch
+            onSelectedPartySearchResultsChanged={this.onSelectedPartySearchResultsChanged}
+            isLoading={this.state.isLoading}
+            partyType={this.state.activeTab}
+            triggerSelectReset={this.state.triggerSelectReset}
+          />
         </div>
         <br />
-        <div className="merge-container">
-          <div className="merge-container--tall inline-flex between">
-            <div className="flex-1">
-              <h4 className="padding-sm">Proposed Merged Contact</h4>
-              {this.renderContactCard(this.state.values)}
-            </div>
-            <div className="flex-4">{this.renderContactCards()}</div>
-          </div>
-          <br />
-          <AuthorizationWrapper permission={Permission.ADMINISTRATIVE_USERS}>
-            <div className="right center-mobile">
-              <Popconfirm
-                placement="topRight"
-                title="Are you sure you want to cancel?"
-                onConfirm={() => this.handleClearState()}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button className="full-mobile" type="secondary">
-                  Clear All
-                </Button>
-              </Popconfirm>
-              <Button
-                className="full-mobile"
-                type="primary"
-                htmlType="submit"
-                disabled={this.state.contactsForMerge?.length < 2}
-                onClick={() => this.confirmMergeModal()}
-              >
-                Proceed to Merge
-              </Button>
-            </div>
-          </AuthorizationWrapper>
-        </div>
       </div>
-    </>
+      <br />
+      <div className="merge-container">
+        <div className="merge-container--tall inline-flex between">
+          <div className="flex-1">
+            <h4 className="padding-sm">Proposed Merged Contact</h4>
+            {this.renderContactCard(this.state.values)}
+          </div>
+          <div className="flex-4">{this.renderContactCards()}</div>
+        </div>
+        <br />
+        <AuthorizationWrapper permission={Permission.ADMINISTRATIVE_USERS}>
+          <div className="right center-mobile">
+            <Popconfirm
+              placement="topRight"
+              title="Are you sure you want to cancel?"
+              onConfirm={() => this.handleClearState()}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button className="full-mobile" type="secondary">
+                Clear All
+              </Button>
+            </Popconfirm>
+            <Button
+              className="full-mobile"
+              type="primary"
+              htmlType="submit"
+              disabled={this.state.contactsForMerge?.length < 2}
+              onClick={() => this.confirmMergeModal()}
+            >
+              Proceed to Merge
+            </Button>
+          </div>
+        </AuthorizationWrapper>
+      </div>
+    </div>
   );
 
   render() {

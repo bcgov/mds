@@ -145,45 +145,33 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
       >
         Application Files
       </h3>
-      <h4
-        class="ant-typography"
-      >
-        Primary Document
-      </h4>
       <div>
         <div />
         <div
-          style="float: right;"
+          class="ant-row ant-row-space-between ant-row-bottom document-table-header"
         >
-          <button
-            class="ant-btn ant-btn-primary ant-dropdown-trigger actions-dropdown-button"
-            disabled=""
-            type="button"
+          <div
+            class="ant-col"
           >
-            <span>
-              Action
-            </span>
-            <span
-              aria-label="down"
-              class="anticon anticon-down"
-              role="img"
+            <h4
+              class="ant-typography"
             >
-              <svg
-                aria-hidden="true"
-                class=""
-                data-icon="down"
-                fill="currentColor"
-                focusable="false"
-                height="1em"
-                viewBox="64 64 896 896"
-                width="1em"
-              >
-                <path
-                  d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
-                />
-              </svg>
-            </span>
-          </button>
+              Primary Document
+            </h4>
+          </div>
+          <div
+            class="ant-col document-table-actions"
+          >
+            <button
+              class="ant-btn ant-btn-primary"
+              disabled=""
+              type="button"
+            >
+              <div>
+                Download
+              </div>
+            </button>
+          </div>
         </div>
         <div
           class="ant-table-wrapper  core-table"
@@ -620,41 +608,10 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
       >
         Spatial Components
       </h4>
-      <div>
+      <div
+        data-testid="spatial-document-table"
+      >
         <div />
-        <div
-          style="float: right;"
-        >
-          <button
-            class="ant-btn ant-btn-primary ant-dropdown-trigger actions-dropdown-button"
-            disabled=""
-            type="button"
-          >
-            <span>
-              Action
-            </span>
-            <span
-              aria-label="down"
-              class="anticon anticon-down"
-              role="img"
-            >
-              <svg
-                aria-hidden="true"
-                class=""
-                data-icon="down"
-                fill="currentColor"
-                focusable="false"
-                height="1em"
-                viewBox="64 64 896 896"
-                width="1em"
-              >
-                <path
-                  d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
-                />
-              </svg>
-            </span>
-          </button>
-        </div>
         <div
           class="ant-table-wrapper  core-table"
         >
@@ -676,41 +633,13 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
                     <table
                       style="table-layout: auto;"
                     >
-                      <colgroup>
-                        <col
-                          class="ant-table-selection-col"
-                        />
-                      </colgroup>
+                      <colgroup />
                       <thead
                         class="ant-table-thead"
                       >
                         <tr>
                           <th
-                            class="ant-table-cell ant-table-selection-column"
-                          >
-                            <div
-                              class="ant-table-selection"
-                            >
-                              <label
-                                class="ant-checkbox-wrapper"
-                              >
-                                <span
-                                  class="ant-checkbox"
-                                >
-                                  <input
-                                    aria-label="Select all"
-                                    class="ant-checkbox-input"
-                                    type="checkbox"
-                                  />
-                                  <span
-                                    class="ant-checkbox-inner"
-                                  />
-                                </span>
-                              </label>
-                            </div>
-                          </th>
-                          <th
-                            aria-label=""
+                            aria-label="File Name"
                             class="ant-table-cell ant-table-column-has-sorters"
                             tabindex="0"
                           >
@@ -720,11 +649,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
                               <span
                                 class="ant-table-column-title"
                               >
-                                <span
-                                  style="margin-left: 38px;"
-                                >
-                                  File Name
-                                </span>
+                                File Name
                               </span>
                               <span
                                 class="ant-table-column-sorter ant-table-column-sorter-full"
@@ -775,69 +700,8 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
                             </div>
                           </th>
                           <th
-                            aria-label="File Type"
+                            aria-label="Last Modified"
                             class="ant-table-cell ant-table-column-has-sorters"
-                            tabindex="0"
-                          >
-                            <div
-                              class="ant-table-column-sorters"
-                            >
-                              <span
-                                class="ant-table-column-title"
-                              >
-                                File Type
-                              </span>
-                              <span
-                                class="ant-table-column-sorter ant-table-column-sorter-full"
-                              >
-                                <span
-                                  class="ant-table-column-sorter-inner"
-                                >
-                                  <span
-                                    aria-label="caret-up"
-                                    class="anticon anticon-caret-up ant-table-column-sorter-up"
-                                    role="presentation"
-                                  >
-                                    <svg
-                                      aria-hidden="true"
-                                      data-icon="caret-up"
-                                      fill="currentColor"
-                                      focusable="false"
-                                      height="1em"
-                                      viewBox="0 0 1024 1024"
-                                      width="1em"
-                                    >
-                                      <path
-                                        d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
-                                      />
-                                    </svg>
-                                  </span>
-                                  <span
-                                    aria-label="caret-down"
-                                    class="anticon anticon-caret-down ant-table-column-sorter-down"
-                                    role="presentation"
-                                  >
-                                    <svg
-                                      aria-hidden="true"
-                                      data-icon="caret-down"
-                                      fill="currentColor"
-                                      focusable="false"
-                                      height="1em"
-                                      viewBox="0 0 1024 1024"
-                                      width="1em"
-                                    >
-                                      <path
-                                        d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
-                                      />
-                                    </svg>
-                                  </span>
-                                </span>
-                              </span>
-                            </div>
-                          </th>
-                          <th
-                            aria-sort="descending"
-                            class="ant-table-cell ant-table-column-sort ant-table-column-has-sorters"
                             tabindex="0"
                           >
                             <div
@@ -875,7 +739,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
                                   </span>
                                   <span
                                     aria-label="caret-down"
-                                    class="anticon anticon-caret-down ant-table-column-sorter-down active"
+                                    class="anticon anticon-caret-down ant-table-column-sorter-down"
                                     role="presentation"
                                   >
                                     <svg
@@ -968,27 +832,8 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
                       >
                         <tr
                           class="ant-table-row ant-table-row-level-0 table-row-align-middle no-sub-table-expandable-rows fade-in"
-                          data-row-key="0f21c334-1d01-4289-b7ee-a7a5fd8b9a32"
+                          data-row-key="1"
                         >
-                          <td
-                            class="ant-table-cell ant-table-selection-column"
-                          >
-                            <label
-                              class="ant-checkbox-wrapper"
-                            >
-                              <span
-                                class="ant-checkbox"
-                              >
-                                <input
-                                  class="ant-checkbox-input"
-                                  type="checkbox"
-                                />
-                                <span
-                                  class="ant-checkbox-inner"
-                                />
-                              </span>
-                            </label>
-                          </td>
                           <td
                             class="ant-table-cell ant-table-cell-with-append"
                           >
@@ -996,361 +841,72 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
                               class="ant-table-row-indent indent-level-0"
                               style="padding-left: 0px;"
                             />
+                            <a
+                              class="expand-row-icon"
+                              role="link"
+                              style="cursor: pointer;"
+                              tabindex="0"
+                            >
+                              <span
+                                aria-label="plus-square"
+                                class="anticon anticon-plus-square icon-lg--lightgrey"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class=""
+                                  data-icon="plus-square"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM704 536c0 4.4-3.6 8-8 8H544v152c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V544H328c-4.4 0-8-3.6-8-8v-48c0-4.4 3.6-8 8-8h152V328c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v152h152c4.4 0 8 3.6 8 8v48z"
+                                  />
+                                </svg>
+                              </span>
+                            </a>
                             <div
-                              class="inline-flex flex-between file-name-container"
-                              style="margin-left: 38px;"
+                              class="inline-flex flex-between tag-column-container parent"
                               title="File Name"
                             >
-                              <a>
-                                shape.dbf
-                              </a>
-                              <span
-                                class="file-history-container"
-                              />
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell"
-                          >
-                            <div
-                              class="file_type-column"
-                              title="File Type"
-                            >
-                              .dbf
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell ant-table-column-sort"
-                          >
-                            <div
-                              title="Last Modified"
-                            >
-                              Jul 19 2024
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell"
-                          >
-                            <div
-                              class="create_user-column"
-                              title="Created By"
-                            >
-                              test@bceid
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
-                            style="position: sticky; right: 0px;"
-                          >
-                            <div>
-                              <button
-                                class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
-                                data-cy="menu-actions-button"
-                                type="button"
+                              <div
+                                class="tag-text-parent"
                               >
-                                <span>
-                                  Actions
-                                </span>
+                                shape
+                              </div>
+                              <div
+                                class="file-history-container"
+                              >
                                 <span
-                                  alt="Menu"
-                                  aria-label="caret-down"
-                                  class="anticon anticon-caret-down"
-                                  role="img"
+                                  class="ant-tag table-tag table-tag--primary"
                                 >
                                   <svg
                                     aria-hidden="true"
-                                    class=""
-                                    data-icon="caret-down"
-                                    fill="currentColor"
+                                    class="svg-inline--fa fa-files "
+                                    data-icon="files"
+                                    data-prefix="fal"
                                     focusable="false"
-                                    height="1em"
-                                    viewBox="0 0 1024 1024"
-                                    width="1em"
+                                    role="img"
+                                    viewBox="0 0 448 512"
+                                    xmlns="http://www.w3.org/2000/svg"
                                   >
                                     <path
-                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                      d="M160 384c-17.7 0-32-14.3-32-32V64c0-17.7 14.3-32 32-32H304v80c0 17.7 14.3 32 32 32h80c0 .3 0 .5 0 .8V352c0 17.7-14.3 32-32 32H160zM336 57.5L390 112H336V57.5zM160 0C124.7 0 96 28.7 96 64V352c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V144.8c0-12.7-5-24.8-13.9-33.8l-96-96.8C329.1 5.1 316.8 0 304 0H160zM32 112c0-8.8-7.2-16-16-16s-16 7.2-16 16V384c0 70.7 57.3 128 128 128H336c8.8 0 16-7.2 16-16s-7.2-16-16-16H128c-53 0-96-43-96-96V112z"
+                                      fill="currentColor"
                                     />
                                   </svg>
+                                  <span>
+                                    4
+                                  </span>
                                 </span>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr
-                          class="ant-table-row ant-table-row-level-0 table-row-align-middle no-sub-table-expandable-rows fade-in"
-                          data-row-key="92be7cea-e25a-4fa3-9f82-2536c1a786ff"
-                        >
-                          <td
-                            class="ant-table-cell ant-table-selection-column"
-                          >
-                            <label
-                              class="ant-checkbox-wrapper"
-                            >
-                              <span
-                                class="ant-checkbox"
-                              >
-                                <input
-                                  class="ant-checkbox-input"
-                                  type="checkbox"
-                                />
-                                <span
-                                  class="ant-checkbox-inner"
-                                />
-                              </span>
-                            </label>
-                          </td>
-                          <td
-                            class="ant-table-cell ant-table-cell-with-append"
-                          >
-                            <span
-                              class="ant-table-row-indent indent-level-0"
-                              style="padding-left: 0px;"
-                            />
-                            <div
-                              class="inline-flex flex-between file-name-container"
-                              style="margin-left: 38px;"
-                              title="File Name"
-                            >
-                              <a>
-                                shape.prj
-                              </a>
-                              <span
-                                class="file-history-container"
-                              />
+                              </div>
                             </div>
                           </td>
                           <td
                             class="ant-table-cell"
-                          >
-                            <div
-                              class="file_type-column"
-                              title="File Type"
-                            >
-                              .prj
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell ant-table-column-sort"
-                          >
-                            <div
-                              title="Last Modified"
-                            >
-                              Jul 19 2024
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell"
-                          >
-                            <div
-                              class="create_user-column"
-                              title="Created By"
-                            >
-                              test@bceid
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
-                            style="position: sticky; right: 0px;"
-                          >
-                            <div>
-                              <button
-                                class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
-                                data-cy="menu-actions-button"
-                                type="button"
-                              >
-                                <span>
-                                  Actions
-                                </span>
-                                <span
-                                  alt="Menu"
-                                  aria-label="caret-down"
-                                  class="anticon anticon-caret-down"
-                                  role="img"
-                                >
-                                  <svg
-                                    aria-hidden="true"
-                                    class=""
-                                    data-icon="caret-down"
-                                    fill="currentColor"
-                                    focusable="false"
-                                    height="1em"
-                                    viewBox="0 0 1024 1024"
-                                    width="1em"
-                                  >
-                                    <path
-                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
-                                    />
-                                  </svg>
-                                </span>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr
-                          class="ant-table-row ant-table-row-level-0 table-row-align-middle no-sub-table-expandable-rows fade-in"
-                          data-row-key="f5809a0e-e052-4b0e-b37d-eb7976a9e7d7"
-                        >
-                          <td
-                            class="ant-table-cell ant-table-selection-column"
-                          >
-                            <label
-                              class="ant-checkbox-wrapper"
-                            >
-                              <span
-                                class="ant-checkbox"
-                              >
-                                <input
-                                  class="ant-checkbox-input"
-                                  type="checkbox"
-                                />
-                                <span
-                                  class="ant-checkbox-inner"
-                                />
-                              </span>
-                            </label>
-                          </td>
-                          <td
-                            class="ant-table-cell ant-table-cell-with-append"
-                          >
-                            <span
-                              class="ant-table-row-indent indent-level-0"
-                              style="padding-left: 0px;"
-                            />
-                            <div
-                              class="inline-flex flex-between file-name-container"
-                              style="margin-left: 38px;"
-                              title="File Name"
-                            >
-                              <a>
-                                shape.shp
-                              </a>
-                              <span
-                                class="file-history-container"
-                              />
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell"
-                          >
-                            <div
-                              class="file_type-column"
-                              title="File Type"
-                            >
-                              .shp
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell ant-table-column-sort"
-                          >
-                            <div
-                              title="Last Modified"
-                            >
-                              Jul 19 2024
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell"
-                          >
-                            <div
-                              class="create_user-column"
-                              title="Created By"
-                            >
-                              test@bceid
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
-                            style="position: sticky; right: 0px;"
-                          >
-                            <div>
-                              <button
-                                class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
-                                data-cy="menu-actions-button"
-                                type="button"
-                              >
-                                <span>
-                                  Actions
-                                </span>
-                                <span
-                                  alt="Menu"
-                                  aria-label="caret-down"
-                                  class="anticon anticon-caret-down"
-                                  role="img"
-                                >
-                                  <svg
-                                    aria-hidden="true"
-                                    class=""
-                                    data-icon="caret-down"
-                                    fill="currentColor"
-                                    focusable="false"
-                                    height="1em"
-                                    viewBox="0 0 1024 1024"
-                                    width="1em"
-                                  >
-                                    <path
-                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
-                                    />
-                                  </svg>
-                                </span>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr
-                          class="ant-table-row ant-table-row-level-0 table-row-align-middle no-sub-table-expandable-rows fade-in"
-                          data-row-key="f93ba7a4-0236-4110-93a8-d60d8b99adf8"
-                        >
-                          <td
-                            class="ant-table-cell ant-table-selection-column"
-                          >
-                            <label
-                              class="ant-checkbox-wrapper"
-                            >
-                              <span
-                                class="ant-checkbox"
-                              >
-                                <input
-                                  class="ant-checkbox-input"
-                                  type="checkbox"
-                                />
-                                <span
-                                  class="ant-checkbox-inner"
-                                />
-                              </span>
-                            </label>
-                          </td>
-                          <td
-                            class="ant-table-cell ant-table-cell-with-append"
-                          >
-                            <span
-                              class="ant-table-row-indent indent-level-0"
-                              style="padding-left: 0px;"
-                            />
-                            <div
-                              class="inline-flex flex-between file-name-container"
-                              style="margin-left: 38px;"
-                              title="File Name"
-                            >
-                              <a>
-                                shape.shx
-                              </a>
-                              <span
-                                class="file-history-container"
-                              />
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell"
-                          >
-                            <div
-                              class="file_type-column"
-                              title="File Type"
-                            >
-                              .shx
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell ant-table-column-sort"
                           >
                             <div
                               title="Last Modified"
@@ -1411,25 +967,6 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
                           data-row-key="951f3658-3f28-4b7b-a402-a5c7f5a092f3"
                         >
                           <td
-                            class="ant-table-cell ant-table-selection-column"
-                          >
-                            <label
-                              class="ant-checkbox-wrapper"
-                            >
-                              <span
-                                class="ant-checkbox"
-                              >
-                                <input
-                                  class="ant-checkbox-input"
-                                  type="checkbox"
-                                />
-                                <span
-                                  class="ant-checkbox-inner"
-                                />
-                              </span>
-                            </label>
-                          </td>
-                          <td
                             class="ant-table-cell ant-table-cell-with-append"
                           >
                             <span
@@ -1437,30 +974,18 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
                               style="padding-left: 0px;"
                             />
                             <div
-                              class="inline-flex flex-between file-name-container"
-                              style="margin-left: 38px;"
+                              class="inline-flex flex-between tag-column-container child"
                               title="File Name"
                             >
-                              <a>
+                              <div
+                                class="tag-text-child"
+                              >
                                 testfile.kml
-                              </a>
-                              <span
-                                class="file-history-container"
-                              />
+                              </div>
                             </div>
                           </td>
                           <td
                             class="ant-table-cell"
-                          >
-                            <div
-                              class="file_type-column"
-                              title="File Type"
-                            >
-                              .kml
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell ant-table-column-sort"
                           >
                             <div
                               title="Last Modified"
@@ -1525,45 +1050,33 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
           </div>
         </div>
       </div>
-      <h4
-        class="ant-typography"
-      >
-        Supporting Documents
-      </h4>
       <div>
         <div />
         <div
-          style="float: right;"
+          class="ant-row ant-row-space-between ant-row-bottom document-table-header"
         >
-          <button
-            class="ant-btn ant-btn-primary ant-dropdown-trigger actions-dropdown-button"
-            disabled=""
-            type="button"
+          <div
+            class="ant-col"
           >
-            <span>
-              Action
-            </span>
-            <span
-              aria-label="down"
-              class="anticon anticon-down"
-              role="img"
+            <h4
+              class="ant-typography"
             >
-              <svg
-                aria-hidden="true"
-                class=""
-                data-icon="down"
-                fill="currentColor"
-                focusable="false"
-                height="1em"
-                viewBox="64 64 896 896"
-                width="1em"
-              >
-                <path
-                  d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
-                />
-              </svg>
-            </span>
-          </button>
+              Supporting Documents
+            </h4>
+          </div>
+          <div
+            class="ant-col document-table-actions"
+          >
+            <button
+              class="ant-btn ant-btn-primary"
+              disabled=""
+              type="button"
+            >
+              <div>
+                Download
+              </div>
+            </button>
+          </div>
         </div>
         <div
           class="ant-table-wrapper  core-table"
@@ -2689,45 +2202,33 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
       >
         Application Files
       </h3>
-      <h4
-        class="ant-typography"
-      >
-        Primary Document
-      </h4>
       <div>
         <div />
         <div
-          style="float: right;"
+          class="ant-row ant-row-space-between ant-row-bottom document-table-header"
         >
-          <button
-            class="ant-btn ant-btn-primary ant-dropdown-trigger actions-dropdown-button"
-            disabled=""
-            type="button"
+          <div
+            class="ant-col"
           >
-            <span>
-              Action
-            </span>
-            <span
-              aria-label="down"
-              class="anticon anticon-down"
-              role="img"
+            <h4
+              class="ant-typography"
             >
-              <svg
-                aria-hidden="true"
-                class=""
-                data-icon="down"
-                fill="currentColor"
-                focusable="false"
-                height="1em"
-                viewBox="64 64 896 896"
-                width="1em"
-              >
-                <path
-                  d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
-                />
-              </svg>
-            </span>
-          </button>
+              Primary Document
+            </h4>
+          </div>
+          <div
+            class="ant-col document-table-actions"
+          >
+            <button
+              class="ant-btn ant-btn-primary"
+              disabled=""
+              type="button"
+            >
+              <div>
+                Download
+              </div>
+            </button>
+          </div>
         </div>
         <div
           class="ant-table-wrapper  core-table"
@@ -3164,41 +2665,10 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
       >
         Spatial Components
       </h4>
-      <div>
+      <div
+        data-testid="spatial-document-table"
+      >
         <div />
-        <div
-          style="float: right;"
-        >
-          <button
-            class="ant-btn ant-btn-primary ant-dropdown-trigger actions-dropdown-button"
-            disabled=""
-            type="button"
-          >
-            <span>
-              Action
-            </span>
-            <span
-              aria-label="down"
-              class="anticon anticon-down"
-              role="img"
-            >
-              <svg
-                aria-hidden="true"
-                class=""
-                data-icon="down"
-                fill="currentColor"
-                focusable="false"
-                height="1em"
-                viewBox="64 64 896 896"
-                width="1em"
-              >
-                <path
-                  d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
-                />
-              </svg>
-            </span>
-          </button>
-        </div>
         <div
           class="ant-table-wrapper  core-table"
         >
@@ -3220,41 +2690,13 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
                     <table
                       style="table-layout: auto;"
                     >
-                      <colgroup>
-                        <col
-                          class="ant-table-selection-col"
-                        />
-                      </colgroup>
+                      <colgroup />
                       <thead
                         class="ant-table-thead"
                       >
                         <tr>
                           <th
-                            class="ant-table-cell ant-table-selection-column"
-                          >
-                            <div
-                              class="ant-table-selection"
-                            >
-                              <label
-                                class="ant-checkbox-wrapper"
-                              >
-                                <span
-                                  class="ant-checkbox"
-                                >
-                                  <input
-                                    aria-label="Select all"
-                                    class="ant-checkbox-input"
-                                    type="checkbox"
-                                  />
-                                  <span
-                                    class="ant-checkbox-inner"
-                                  />
-                                </span>
-                              </label>
-                            </div>
-                          </th>
-                          <th
-                            aria-label=""
+                            aria-label="File Name"
                             class="ant-table-cell ant-table-column-has-sorters"
                             tabindex="0"
                           >
@@ -3264,11 +2706,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
                               <span
                                 class="ant-table-column-title"
                               >
-                                <span
-                                  style="margin-left: 38px;"
-                                >
-                                  File Name
-                                </span>
+                                File Name
                               </span>
                               <span
                                 class="ant-table-column-sorter ant-table-column-sorter-full"
@@ -3319,69 +2757,8 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
                             </div>
                           </th>
                           <th
-                            aria-label="File Type"
+                            aria-label="Last Modified"
                             class="ant-table-cell ant-table-column-has-sorters"
-                            tabindex="0"
-                          >
-                            <div
-                              class="ant-table-column-sorters"
-                            >
-                              <span
-                                class="ant-table-column-title"
-                              >
-                                File Type
-                              </span>
-                              <span
-                                class="ant-table-column-sorter ant-table-column-sorter-full"
-                              >
-                                <span
-                                  class="ant-table-column-sorter-inner"
-                                >
-                                  <span
-                                    aria-label="caret-up"
-                                    class="anticon anticon-caret-up ant-table-column-sorter-up"
-                                    role="presentation"
-                                  >
-                                    <svg
-                                      aria-hidden="true"
-                                      data-icon="caret-up"
-                                      fill="currentColor"
-                                      focusable="false"
-                                      height="1em"
-                                      viewBox="0 0 1024 1024"
-                                      width="1em"
-                                    >
-                                      <path
-                                        d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
-                                      />
-                                    </svg>
-                                  </span>
-                                  <span
-                                    aria-label="caret-down"
-                                    class="anticon anticon-caret-down ant-table-column-sorter-down"
-                                    role="presentation"
-                                  >
-                                    <svg
-                                      aria-hidden="true"
-                                      data-icon="caret-down"
-                                      fill="currentColor"
-                                      focusable="false"
-                                      height="1em"
-                                      viewBox="0 0 1024 1024"
-                                      width="1em"
-                                    >
-                                      <path
-                                        d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
-                                      />
-                                    </svg>
-                                  </span>
-                                </span>
-                              </span>
-                            </div>
-                          </th>
-                          <th
-                            aria-sort="descending"
-                            class="ant-table-cell ant-table-column-sort ant-table-column-has-sorters"
                             tabindex="0"
                           >
                             <div
@@ -3419,7 +2796,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
                                   </span>
                                   <span
                                     aria-label="caret-down"
-                                    class="anticon anticon-caret-down ant-table-column-sorter-down active"
+                                    class="anticon anticon-caret-down ant-table-column-sorter-down"
                                     role="presentation"
                                   >
                                     <svg
@@ -3512,27 +2889,8 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
                       >
                         <tr
                           class="ant-table-row ant-table-row-level-0 table-row-align-middle no-sub-table-expandable-rows fade-in"
-                          data-row-key="0f21c334-1d01-4289-b7ee-a7a5fd8b9a32"
+                          data-row-key="1"
                         >
-                          <td
-                            class="ant-table-cell ant-table-selection-column"
-                          >
-                            <label
-                              class="ant-checkbox-wrapper"
-                            >
-                              <span
-                                class="ant-checkbox"
-                              >
-                                <input
-                                  class="ant-checkbox-input"
-                                  type="checkbox"
-                                />
-                                <span
-                                  class="ant-checkbox-inner"
-                                />
-                              </span>
-                            </label>
-                          </td>
                           <td
                             class="ant-table-cell ant-table-cell-with-append"
                           >
@@ -3540,361 +2898,72 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
                               class="ant-table-row-indent indent-level-0"
                               style="padding-left: 0px;"
                             />
+                            <a
+                              class="expand-row-icon"
+                              role="link"
+                              style="cursor: pointer;"
+                              tabindex="0"
+                            >
+                              <span
+                                aria-label="plus-square"
+                                class="anticon anticon-plus-square icon-lg--lightgrey"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class=""
+                                  data-icon="plus-square"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM704 536c0 4.4-3.6 8-8 8H544v152c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V544H328c-4.4 0-8-3.6-8-8v-48c0-4.4 3.6-8 8-8h152V328c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v152h152c4.4 0 8 3.6 8 8v48z"
+                                  />
+                                </svg>
+                              </span>
+                            </a>
                             <div
-                              class="inline-flex flex-between file-name-container"
-                              style="margin-left: 38px;"
+                              class="inline-flex flex-between tag-column-container parent"
                               title="File Name"
                             >
-                              <a>
-                                shape.dbf
-                              </a>
-                              <span
-                                class="file-history-container"
-                              />
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell"
-                          >
-                            <div
-                              class="file_type-column"
-                              title="File Type"
-                            >
-                              .dbf
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell ant-table-column-sort"
-                          >
-                            <div
-                              title="Last Modified"
-                            >
-                              Jul 19 2024
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell"
-                          >
-                            <div
-                              class="create_user-column"
-                              title="Created By"
-                            >
-                              test@bceid
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
-                            style="position: sticky; right: 0px;"
-                          >
-                            <div>
-                              <button
-                                class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
-                                data-cy="menu-actions-button"
-                                type="button"
+                              <div
+                                class="tag-text-parent"
                               >
-                                <span>
-                                  Actions
-                                </span>
+                                shape
+                              </div>
+                              <div
+                                class="file-history-container"
+                              >
                                 <span
-                                  alt="Menu"
-                                  aria-label="caret-down"
-                                  class="anticon anticon-caret-down"
-                                  role="img"
+                                  class="ant-tag table-tag table-tag--primary"
                                 >
                                   <svg
                                     aria-hidden="true"
-                                    class=""
-                                    data-icon="caret-down"
-                                    fill="currentColor"
+                                    class="svg-inline--fa fa-files "
+                                    data-icon="files"
+                                    data-prefix="fal"
                                     focusable="false"
-                                    height="1em"
-                                    viewBox="0 0 1024 1024"
-                                    width="1em"
+                                    role="img"
+                                    viewBox="0 0 448 512"
+                                    xmlns="http://www.w3.org/2000/svg"
                                   >
                                     <path
-                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                      d="M160 384c-17.7 0-32-14.3-32-32V64c0-17.7 14.3-32 32-32H304v80c0 17.7 14.3 32 32 32h80c0 .3 0 .5 0 .8V352c0 17.7-14.3 32-32 32H160zM336 57.5L390 112H336V57.5zM160 0C124.7 0 96 28.7 96 64V352c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V144.8c0-12.7-5-24.8-13.9-33.8l-96-96.8C329.1 5.1 316.8 0 304 0H160zM32 112c0-8.8-7.2-16-16-16s-16 7.2-16 16V384c0 70.7 57.3 128 128 128H336c8.8 0 16-7.2 16-16s-7.2-16-16-16H128c-53 0-96-43-96-96V112z"
+                                      fill="currentColor"
                                     />
                                   </svg>
+                                  <span>
+                                    4
+                                  </span>
                                 </span>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr
-                          class="ant-table-row ant-table-row-level-0 table-row-align-middle no-sub-table-expandable-rows fade-in"
-                          data-row-key="92be7cea-e25a-4fa3-9f82-2536c1a786ff"
-                        >
-                          <td
-                            class="ant-table-cell ant-table-selection-column"
-                          >
-                            <label
-                              class="ant-checkbox-wrapper"
-                            >
-                              <span
-                                class="ant-checkbox"
-                              >
-                                <input
-                                  class="ant-checkbox-input"
-                                  type="checkbox"
-                                />
-                                <span
-                                  class="ant-checkbox-inner"
-                                />
-                              </span>
-                            </label>
-                          </td>
-                          <td
-                            class="ant-table-cell ant-table-cell-with-append"
-                          >
-                            <span
-                              class="ant-table-row-indent indent-level-0"
-                              style="padding-left: 0px;"
-                            />
-                            <div
-                              class="inline-flex flex-between file-name-container"
-                              style="margin-left: 38px;"
-                              title="File Name"
-                            >
-                              <a>
-                                shape.prj
-                              </a>
-                              <span
-                                class="file-history-container"
-                              />
+                              </div>
                             </div>
                           </td>
                           <td
                             class="ant-table-cell"
-                          >
-                            <div
-                              class="file_type-column"
-                              title="File Type"
-                            >
-                              .prj
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell ant-table-column-sort"
-                          >
-                            <div
-                              title="Last Modified"
-                            >
-                              Jul 19 2024
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell"
-                          >
-                            <div
-                              class="create_user-column"
-                              title="Created By"
-                            >
-                              test@bceid
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
-                            style="position: sticky; right: 0px;"
-                          >
-                            <div>
-                              <button
-                                class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
-                                data-cy="menu-actions-button"
-                                type="button"
-                              >
-                                <span>
-                                  Actions
-                                </span>
-                                <span
-                                  alt="Menu"
-                                  aria-label="caret-down"
-                                  class="anticon anticon-caret-down"
-                                  role="img"
-                                >
-                                  <svg
-                                    aria-hidden="true"
-                                    class=""
-                                    data-icon="caret-down"
-                                    fill="currentColor"
-                                    focusable="false"
-                                    height="1em"
-                                    viewBox="0 0 1024 1024"
-                                    width="1em"
-                                  >
-                                    <path
-                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
-                                    />
-                                  </svg>
-                                </span>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr
-                          class="ant-table-row ant-table-row-level-0 table-row-align-middle no-sub-table-expandable-rows fade-in"
-                          data-row-key="f5809a0e-e052-4b0e-b37d-eb7976a9e7d7"
-                        >
-                          <td
-                            class="ant-table-cell ant-table-selection-column"
-                          >
-                            <label
-                              class="ant-checkbox-wrapper"
-                            >
-                              <span
-                                class="ant-checkbox"
-                              >
-                                <input
-                                  class="ant-checkbox-input"
-                                  type="checkbox"
-                                />
-                                <span
-                                  class="ant-checkbox-inner"
-                                />
-                              </span>
-                            </label>
-                          </td>
-                          <td
-                            class="ant-table-cell ant-table-cell-with-append"
-                          >
-                            <span
-                              class="ant-table-row-indent indent-level-0"
-                              style="padding-left: 0px;"
-                            />
-                            <div
-                              class="inline-flex flex-between file-name-container"
-                              style="margin-left: 38px;"
-                              title="File Name"
-                            >
-                              <a>
-                                shape.shp
-                              </a>
-                              <span
-                                class="file-history-container"
-                              />
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell"
-                          >
-                            <div
-                              class="file_type-column"
-                              title="File Type"
-                            >
-                              .shp
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell ant-table-column-sort"
-                          >
-                            <div
-                              title="Last Modified"
-                            >
-                              Jul 19 2024
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell"
-                          >
-                            <div
-                              class="create_user-column"
-                              title="Created By"
-                            >
-                              test@bceid
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
-                            style="position: sticky; right: 0px;"
-                          >
-                            <div>
-                              <button
-                                class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
-                                data-cy="menu-actions-button"
-                                type="button"
-                              >
-                                <span>
-                                  Actions
-                                </span>
-                                <span
-                                  alt="Menu"
-                                  aria-label="caret-down"
-                                  class="anticon anticon-caret-down"
-                                  role="img"
-                                >
-                                  <svg
-                                    aria-hidden="true"
-                                    class=""
-                                    data-icon="caret-down"
-                                    fill="currentColor"
-                                    focusable="false"
-                                    height="1em"
-                                    viewBox="0 0 1024 1024"
-                                    width="1em"
-                                  >
-                                    <path
-                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
-                                    />
-                                  </svg>
-                                </span>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr
-                          class="ant-table-row ant-table-row-level-0 table-row-align-middle no-sub-table-expandable-rows fade-in"
-                          data-row-key="f93ba7a4-0236-4110-93a8-d60d8b99adf8"
-                        >
-                          <td
-                            class="ant-table-cell ant-table-selection-column"
-                          >
-                            <label
-                              class="ant-checkbox-wrapper"
-                            >
-                              <span
-                                class="ant-checkbox"
-                              >
-                                <input
-                                  class="ant-checkbox-input"
-                                  type="checkbox"
-                                />
-                                <span
-                                  class="ant-checkbox-inner"
-                                />
-                              </span>
-                            </label>
-                          </td>
-                          <td
-                            class="ant-table-cell ant-table-cell-with-append"
-                          >
-                            <span
-                              class="ant-table-row-indent indent-level-0"
-                              style="padding-left: 0px;"
-                            />
-                            <div
-                              class="inline-flex flex-between file-name-container"
-                              style="margin-left: 38px;"
-                              title="File Name"
-                            >
-                              <a>
-                                shape.shx
-                              </a>
-                              <span
-                                class="file-history-container"
-                              />
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell"
-                          >
-                            <div
-                              class="file_type-column"
-                              title="File Type"
-                            >
-                              .shx
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell ant-table-column-sort"
                           >
                             <div
                               title="Last Modified"
@@ -3955,25 +3024,6 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
                           data-row-key="951f3658-3f28-4b7b-a402-a5c7f5a092f3"
                         >
                           <td
-                            class="ant-table-cell ant-table-selection-column"
-                          >
-                            <label
-                              class="ant-checkbox-wrapper"
-                            >
-                              <span
-                                class="ant-checkbox"
-                              >
-                                <input
-                                  class="ant-checkbox-input"
-                                  type="checkbox"
-                                />
-                                <span
-                                  class="ant-checkbox-inner"
-                                />
-                              </span>
-                            </label>
-                          </td>
-                          <td
                             class="ant-table-cell ant-table-cell-with-append"
                           >
                             <span
@@ -3981,30 +3031,18 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
                               style="padding-left: 0px;"
                             />
                             <div
-                              class="inline-flex flex-between file-name-container"
-                              style="margin-left: 38px;"
+                              class="inline-flex flex-between tag-column-container child"
                               title="File Name"
                             >
-                              <a>
+                              <div
+                                class="tag-text-child"
+                              >
                                 testfile.kml
-                              </a>
-                              <span
-                                class="file-history-container"
-                              />
+                              </div>
                             </div>
                           </td>
                           <td
                             class="ant-table-cell"
-                          >
-                            <div
-                              class="file_type-column"
-                              title="File Type"
-                            >
-                              .kml
-                            </div>
-                          </td>
-                          <td
-                            class="ant-table-cell ant-table-column-sort"
                           >
                             <div
                               title="Last Modified"
@@ -4069,45 +3107,33 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
           </div>
         </div>
       </div>
-      <h4
-        class="ant-typography"
-      >
-        Supporting Documents
-      </h4>
       <div>
         <div />
         <div
-          style="float: right;"
+          class="ant-row ant-row-space-between ant-row-bottom document-table-header"
         >
-          <button
-            class="ant-btn ant-btn-primary ant-dropdown-trigger actions-dropdown-button"
-            disabled=""
-            type="button"
+          <div
+            class="ant-col"
           >
-            <span>
-              Action
-            </span>
-            <span
-              aria-label="down"
-              class="anticon anticon-down"
-              role="img"
+            <h4
+              class="ant-typography"
             >
-              <svg
-                aria-hidden="true"
-                class=""
-                data-icon="down"
-                fill="currentColor"
-                focusable="false"
-                height="1em"
-                viewBox="64 64 896 896"
-                width="1em"
-              >
-                <path
-                  d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
-                />
-              </svg>
-            </span>
-          </button>
+              Supporting Documents
+            </h4>
+          </div>
+          <div
+            class="ant-col document-table-actions"
+          >
+            <button
+              class="ant-btn ant-btn-primary"
+              disabled=""
+              type="button"
+            >
+              <div>
+                Download
+              </div>
+            </button>
+          </div>
         </div>
         <div
           class="ant-table-wrapper  core-table"

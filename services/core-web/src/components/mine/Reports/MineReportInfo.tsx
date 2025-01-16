@@ -9,30 +9,21 @@ import {
   createMineReport,
   deleteMineReport,
   fetchMineReports,
-  updateMineReport,
 } from "@mds/common/redux/actionCreators/reportActionCreator";
-import { changeModalTitle, closeModal, openModal } from "@mds/common/redux/actions/modalActions";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
 import { getMineReportDefinitionOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import * as Strings from "@mds/common/constants/strings";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import AddButton from "@/components/common/buttons/AddButton";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
 import ReportFilterForm from "@/components/Forms/reports/ReportFilterForm";
 import * as routes from "@/constants/routes";
-import { modalConfig } from "@/components/modalContent/config";
-
-
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
-import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { RequestReportForm } from "@/components/Forms/reports/RequestReportForm";
 import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 import { MineReportParams } from "@mds/common/interfaces/reports";
 import { MINE_REPORTS_ENUM, MineReportType } from "@mds/common/constants/enums";
-import { Feature } from "@mds/common/utils/featureFlag";
-import { IMine } from "@mds/common/interfaces/mine.interface";
 
 const defaultParams: MineReportParams = {
   report_name: undefined,
@@ -53,17 +44,12 @@ const defaultParams: MineReportParams = {
 export const MineReportInfo: FC = () => {
   const mineReports = useSelector(getMineReports);
   const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
-  const mines = useSelector(getMines);
   const pageData = useSelector(getReportsPageData);
 
   const { id: mineGuid } = useParams<{ id: string }>();
-
-  const [mine, setMine] = useState<IMine>();
   const [stateParams, setStateParams] = useState<MineReportParams>(defaultParams);
   const [filteredReports, setFilteredReports] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-
-  const { isFeatureEnabled } = useFeatureFlag();
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -73,7 +59,6 @@ export const MineReportInfo: FC = () => {
   const mine_reports_type: MineReportType = MineReportType[reportType];
 
   useEffect(() => {
-    setMine(mines[mineGuid]);
     const params: MineReportParams = queryString.parse(location.search);
     const newParams = { ...defaultParams, ...params };
     history.replace(routes.MINE_REPORTS.dynamicRoute(mineGuid, reportType, newParams));
@@ -170,12 +155,6 @@ export const MineReportInfo: FC = () => {
     return dispatch(fetchMineReports(mineGuid, mine_reports_type, stateParams ?? defaultParams));
   };
 
-  const handleEditReport = (report) => {
-    return dispatch(updateMineReport(report.mine_guid, report.mine_report_guid, report))
-      .then(() => dispatch(closeModal()))
-      .then(() => refreshReportData());
-  };
-
   const handleAddReport = (values) => {
     return dispatch(createMineReport(mineGuid, values))
       .then(() => dispatch(closeModal()))
@@ -199,48 +178,6 @@ export const MineReportInfo: FC = () => {
     setStateParams(newParams);
     handleReportFilterSubmit(newParams);
     handleFiltering(mineReports, { ...stateParams, page, per_page });
-  };
-
-  // TODO: remove with CODE_REQUIRED_REPORTS flag
-  const openAddReportModal = (event) => {
-    event.preventDefault();
-    dispatch(
-      openModal({
-        props: {
-          onSubmit: handleAddReport,
-          title: `Add report for ${mine.mine_name}`,
-          mineGuid: mineGuid,
-          changeModalTitle: dispatch(changeModalTitle),
-          mineReportsType: mine_reports_type,
-        },
-        content: modalConfig.ADD_REPORT,
-      })
-    );
-  };
-
-  // TODO: remove with CODE_REQUIRED_REPORTS feature flag
-  const openEditReportModal = (event, onSubmit, report) => {
-    event.preventDefault();
-    dispatch(
-      openModal({
-        props: {
-          initialValues: {
-            ...report,
-            mine_report_submission_status:
-              report.mine_report_submissions.length > 0
-                ? report.mine_report_submissions[report.mine_report_submissions.length - 1]
-                  .mine_report_submission_status_code
-                : "NRQ",
-            mineReportsType: mine_reports_type,
-          },
-          onSubmit,
-          title: `Edit ${report.submission_year} ${report.report_name}`,
-          mineGuid: mineGuid,
-          changeModalTitle: dispatch(changeModalTitle),
-        },
-        content: modalConfig.ADD_REPORT,
-      })
-    );
   };
 
   const handleReportFilterReset = () => {
@@ -296,15 +233,11 @@ export const MineReportInfo: FC = () => {
       <div className="inline-flex flex-end">
         <Row>
           <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
-            {isFeatureEnabled(Feature.CODE_REQUIRED_REPORTS) ? (
-              <Dropdown trigger={["click"]} menu={{ items }} overlayClassName="full-click-menu">
-                <Button type="primary" icon={<PlusOutlined />}>
-                  Add a Report
-                </Button>
-              </Dropdown>
-            ) : (
-              <AddButton onClick={(event) => openAddReportModal(event)}>Add a Report</AddButton>
-            )}
+            <Dropdown trigger={["click"]} menu={{ items }} overlayClassName="full-click-menu">
+              <Button type="primary" icon={<PlusOutlined />}>
+                Add a Report
+              </Button>
+            </Dropdown>
           </AuthorizationWrapper>
         </Row>
       </div>
@@ -323,8 +256,6 @@ export const MineReportInfo: FC = () => {
       </div>
       <MineReportTable
         isLoaded={isLoaded}
-        openEditReportModal={openEditReportModal}
-        handleEditReport={handleEditReport}
         handleRemoveReport={handleRemoveReport}
         handleTableChange={handleReportFilterSubmit}
         mineReports={filteredReports}

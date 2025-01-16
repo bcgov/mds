@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field } from "redux-form";
 import { Button, Col, Row } from "antd";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderResetButton from "@mds/common/components/forms/RenderResetButton";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   toggleAdvancedSearch: PropTypes.func.isRequired,
-  reset: PropTypes.func.isRequired,
   isAdvanceSearch: PropTypes.bool,
   handleReset: PropTypes.func.isRequired,
   complianceCodes: CustomPropTypes.options.isRequired,
@@ -41,13 +41,20 @@ export const validate = (values) => {
 
 export class VarianceSearchForm extends Component {
   handleReset = () => {
-    this.props.reset();
     this.props.handleReset();
   };
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
+      <FormWrapper
+        name={FORM.VARIANCE_ADVANCED_SEARCH}
+        reduxFormConfig={{
+          validate,
+          touchOnBlur: false,
+          enableReinitialize: true,
+        }}
+        initialValues={this.props.initialValues}
+        onSubmit={this.props.onSubmit} onReset={this.handleReset}>
         <Row gutter={6}>
           <Col md={24} xs={24}>
             <Field
@@ -151,14 +158,12 @@ export class VarianceSearchForm extends Component {
         </div>
 
         <div className="right center-mobile">
-          <Button className="full-mobile" type="secondary" htmlType="reset">
-            Clear Filters
-          </Button>
+          <RenderResetButton className="full-mobile" buttonText="Clear Filters" />
           <Button className="full-mobile" type="primary" htmlType="submit">
             Apply Filters
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -166,9 +171,4 @@ export class VarianceSearchForm extends Component {
 VarianceSearchForm.propTypes = propTypes;
 VarianceSearchForm.defaultProps = defaultProps;
 
-export default reduxForm({
-  form: FORM.VARIANCE_ADVANCED_SEARCH,
-  validate,
-  touchOnBlur: false,
-  enableReinitialize: true,
-})(VarianceSearchForm);
+export default VarianceSearchForm;

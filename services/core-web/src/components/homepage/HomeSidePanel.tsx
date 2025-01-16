@@ -42,7 +42,7 @@ const ExternalLinksSection = () => {
       url: "https://minfile.gov.bc.ca/",
     },
     {
-      title: "EMLI Inspection Mapper",
+      title: "MCM Inspection Mapper",
       url:
         "https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6",
     },

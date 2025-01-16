@@ -100,7 +100,7 @@ class ProjectListDashboardResource(Resource, UserMixin):
         params={
             'page_number': f'The page number of paginated records to return. Default: {PAGE_DEFAULT}',
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
-            'project_lead_name': 'EMLI project lead for the project',
+            'project_lead_name': 'MCM project lead for the project',
             'mine_commodity_code': 'A specific commodity to filter the project list on.',
             'sort_field': 'The field the returned results will be ordered by',
             'sort_dir': 'The direction by which the sort field is ordered',

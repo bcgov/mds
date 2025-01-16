@@ -2,9 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { Field, reduxForm, formValueSelector } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field, formValueSelector } from "redux-form";
 import { Row, Col } from "antd";
 import {
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
@@ -20,22 +18,22 @@ import {
   lat,
   lon,
   maxLength,
-  validateSelectOptions,
   requiredList,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
-import RenderField from "@/components/common/RenderField";
-import RenderSelect from "@/components/common/RenderSelect";
+import RenderField from "@mds/common/components/forms/RenderField";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import * as FORM from "@/constants/forms";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
-import RenderMultiSelect from "@/components/common/RenderMultiSelect";
-import RenderDate from "@/components/common/RenderDate";
+import RenderMultiSelect from "@mds/common/components/forms/RenderMultiSelect";
+import RenderDate from "@mds/common/components/forms/RenderDate";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { isEmpty } from "lodash";
 import * as Strings from "@mds/common/constants/strings";
 import ReviewNOWContacts from "./ReviewNOWContacts";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -52,6 +50,7 @@ const propTypes = {
   applicationSourceTypeCodeOptions: CustomPropTypes.options.isRequired,
   permits: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   isNoticeOfWorkTypeDisabled: PropTypes.bool,
+  initialValues: PropTypes.any,
 };
 
 const defaultProps = {
@@ -71,79 +70,81 @@ export const ReviewAdminAmendmentApplication = (props) => {
     const filteredApplicationTypeOptions = noticeOfWorkTypeDropDownDisabled
       ? props.applicationTypeOptions
       : props.applicationTypeOptions.filter((o) =>
-          mapNoticeOfWorkTypeBasedOnPermitNumber(permit.permit_prefix)?.includes(o.value)
-        );
+        mapNoticeOfWorkTypeBasedOnPermitNumber(permit.permit_prefix)?.includes(o.value)
+      );
 
     return (
       <div>
         <Row gutter={16}>
           <Col md={12} sm={24}>
-            <div className="field-title">Source of Amendment</div>
             <Field
               id="application_source_type_code"
               name="application_source_type_code"
               component={RenderSelect}
               disabled={props.isViewMode}
+              label="Source of Amendment"
+              required
               validate={[required]}
               data={props.applicationSourceTypeCodeOptions}
             />
-            <div className="field-title">Reason for Amendment</div>
             <Field
               id="application_reason_codes"
               name="application_reason_codes"
               component={RenderMultiSelect}
               disabled={props.isViewMode}
+              label="Reason for Amendment"
+              required
               validate={[requiredList]}
               data={props.applicationReasonCodeOptions}
             />
-            <div className="field-title">Name of Property</div>
             <Field
               id="property_name"
               name="property_name"
               component={RenderField}
               disabled={props.isViewMode}
+              label="Name of Property"
+              required
               validate={[required, maxLength(4000)]}
             />
-            <div className="field-title">Mine Number</div>
-            <Field id="mine_no" name="mine_no" component={RenderField} disabled />
-            <div className="field-title">Region</div>
+            <Field label="Mine Number" id="mine_no" name="mine_no" component={RenderField} disabled />
             <Field
+              label="Region"
               id="mine_region"
               name="mine_region"
               component={RenderSelect}
               data={props.regionDropdownOptions}
-              validate={[validateSelectOptions(props.regionDropdownOptions)]}
               disabled
             />
           </Col>
           <Col md={12} sm={24}>
-            <div className="field-title">Lat</div>
             <Field
               id="latitude"
+              label="Lat"
               name="latitude"
               component={RenderField}
               disabled
               validate={[lat]}
             />
-            <div className="field-title">Long</div>
             <Field
               id="longitude"
+              label="Long"
               name="longitude"
               component={RenderField}
               disabled
               validate={[lon]}
             />
-            <div className="field-title">Type of Administrative Amendment</div>
             <Field
+              label="Type of Administrative Amendment"
+              required
               id="notice_of_work_type_code"
               name="notice_of_work_type_code"
               component={RenderSelect}
               data={filteredApplicationTypeOptions}
               disabled={noticeOfWorkTypeDropDownDisabled}
-              validate={[required, validateSelectOptions(props.applicationTypeOptions)]}
+              validate={[required]}
             />
-            <div className="field-title">Type of Application</div>
             <Field
+              label="Type of Application"
               id="type_of_application"
               name="type_of_application"
               component={RenderField}
@@ -177,7 +178,15 @@ export const ReviewAdminAmendmentApplication = (props) => {
 
   return (
     <div>
-      <Form layout="vertical">
+      <FormWrapper onSubmit={() => { }}
+        initialValues={props.initialValues}
+        name={FORM.EDIT_NOTICE_OF_WORK}
+        reduxFormConfig={{
+          touchOnChange: false,
+          touchOnBlur: true,
+          enableReinitialize: true,
+        }}
+      >
         <ScrollContentWrapper id="application-info" title="Application Information">
           {renderApplicationInfo()}
         </ScrollContentWrapper>
@@ -202,7 +211,7 @@ export const ReviewAdminAmendmentApplication = (props) => {
             isStandardDocuments
           />
         </ScrollContentWrapper>
-      </Form>
+      </FormWrapper>
     </div>
   );
 };
@@ -230,12 +239,5 @@ export default compose(
     applicationReasonCodeOptions: getApplicationReasonCodeDropdownOptions(state),
     applicationSourceTypeCodeOptions: getApplicationSourceTypeCodeDropdownOptions(state),
     permits: getPermits(state),
-  })),
-  reduxForm({
-    form: FORM.EDIT_NOTICE_OF_WORK,
-    touchOnChange: false,
-    touchOnBlur: true,
-    enableReinitialize: true,
-    onSubmit: () => {},
-  })
+  }))
 )(ReviewAdminAmendmentApplication);

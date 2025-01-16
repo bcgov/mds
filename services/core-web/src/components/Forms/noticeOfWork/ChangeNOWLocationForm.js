@@ -2,21 +2,20 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { reduxForm, formValueSelector } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Popconfirm } from "antd";
-import { resetForm } from "@common/utils/helpers";
+import { formValueSelector } from "redux-form";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import MineCard from "@/components/mine/NoticeOfWork/MineCard";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import EditNOWMineAndLocation from "@/components/Forms/noticeOfWork/EditNOWMineAndLocation";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   title: PropTypes.string.isRequired,
   locationOnly: PropTypes.bool,
   mine: CustomPropTypes.mine,
@@ -35,7 +34,7 @@ export class ChangeNOWLocationForm extends Component {
 
   handleFormSubmit = (values) => {
     this.setState({ submitting: true });
-    this.props.handleSubmit(values);
+    this.props.onSubmit(values);
   };
 
   render() {
@@ -44,7 +43,11 @@ export class ChangeNOWLocationForm extends Component {
         ? [this.props.latitude, this.props.longitude]
         : [];
     return (
-      <Form layout="vertical" onSubmit={this.handleFormSubmit}>
+      <FormWrapper
+        name={FORM.CHANGE_NOW_LOCATION}
+        initialValues={this.props.initialValues}
+        isModal
+        onSubmit={this.handleFormSubmit}>
         <EditNOWMineAndLocation
           locationOnly
           latitude={this.props.latitude}
@@ -56,31 +59,14 @@ export class ChangeNOWLocationForm extends Component {
         <div className="right center-mobile">
           {this.props.locationOnly && (
             <>
-              <Popconfirm
-                placement="topRight"
-                title="Are you sure you want to cancel?"
-                onConfirm={this.props.closeModal}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button className="full-mobile" type="secondary">
-                  Cancel
-                </Button>
-              </Popconfirm>
+              <RenderCancelButton />
               <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                <Button
-                  className="full-mobile"
-                  type="primary"
-                  htmlType="submit"
-                  disabled={this.state.submitting}
-                >
-                  {this.props.title}
-                </Button>
+                <RenderSubmitButton buttonText={this.props.title} disabled={this.state.submitting} disableOnClean={false} />
               </AuthorizationWrapper>
             </>
           )}
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -92,10 +78,5 @@ export default compose(
   connect((state) => ({
     latitude: selector(state, "latitude"),
     longitude: selector(state, "longitude"),
-  })),
-  reduxForm({
-    form: FORM.CHANGE_NOW_LOCATION,
-    onSubmitSuccess: resetForm(FORM.CHANGE_NOW_LOCATION),
-    onSubmit: () => {},
-  })
+  }))
 )(ChangeNOWLocationForm);

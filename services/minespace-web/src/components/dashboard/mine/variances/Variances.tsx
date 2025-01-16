@@ -58,7 +58,8 @@ export const Variances: FC = () => {
       )
     );
 
-  const handleCreateVariances = (files) => (values) => {
+  const handleCreateVariances = (values) => {
+    const { files } = values;
     const received_date = moment().format("YYYY-MM-DD");
     const payload = { received_date, variance_application_status_code: "REV", ...values };
     return dispatch(

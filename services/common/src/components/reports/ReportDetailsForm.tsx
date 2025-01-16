@@ -33,7 +33,7 @@ import {
   IParty,
   IPartyAppt,
   IMine,
-  IEmliContact,
+  IMinistryContact,
 } from "@mds/common/interfaces";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 import { BaseViewInput } from "../forms/BaseInput";
@@ -57,8 +57,8 @@ import {
 import AuthorizationWrapper from "@mds/common/wrappers/AuthorizationWrapper";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
-import { fetchEMLIContactsByRegion } from "@mds/common/redux/actionCreators/minespaceActionCreator";
-import { getEMLIContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
+import { fetchMinistryContactsByRegion } from "@mds/common/redux/actionCreators/minespaceActionCreator";
+import { getMinistryContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
 import { useParams } from "react-router-dom";
 import { MINE_REPORT_SUBMISSION_CODES, MINE_REPORTS_ENUM, MinePartyAppointmentTypeCodeEnum, REPORT_REGULATORY_AUTHORITY_CODES, REPORT_REGULATORY_AUTHORITY_ENUM, REPORT_TYPE_CODES, SystemFlagEnum } from "@mds/common/constants/enums";
 
@@ -162,7 +162,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
 
   const system = useSelector(getSystemFlag);
   const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
-  const EMLIContactsByRegion: IEmliContact[] = useSelector(getEMLIContactsByRegion);
+  const MinistryContactsByRegion: IMinistryContact[] = useSelector(getMinistryContactsByRegion);
   const [contactEmail, setContactEmail] = useState<string>();
 
   // PRR
@@ -187,12 +187,12 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const mineSpaceEdit = isMS && initialValues?.mine_report_guid && isEditMode;
 
   useEffect(() => {
-    if (isMS && mine && EMLIContactsByRegion.length) {
+    if (isMS && mine && MinistryContactsByRegion.length) {
       const contactCode = mine.major_mine_ind ? "MMO" : "ROE";
-      const contact = EMLIContactsByRegion.find((c) => c.emli_contact_type_code === contactCode);
+      const contact = MinistryContactsByRegion.find((c) => c.emli_contact_type_code === contactCode);
       setContactEmail(contact?.email);
     }
-  }, [EMLIContactsByRegion, mine]);
+  }, [MinistryContactsByRegion, mine]);
 
   useEffect(() => {
     if (permit_guid && !permit) {
@@ -209,7 +209,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
 
   useEffect(() => {
     if (mine?.mine_region) {
-      dispatch(fetchEMLIContactsByRegion(mine.mine_region, mine.major_mine_ind));
+      dispatch(fetchMinistryContactsByRegion(mine.mine_region, mine.major_mine_ind));
     }
   }, [mine]);
 

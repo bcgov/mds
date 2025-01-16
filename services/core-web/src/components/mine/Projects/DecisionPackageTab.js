@@ -96,8 +96,7 @@ export class DecisionPackageTab extends Component {
     }
   }
 
-  handleUpdateProjectDecisionPackage = (event, values) => {
-    event.preventDefault();
+  handleUpdateProjectDecisionPackage = (values) => {
     const { projectGuid } = this.props.match?.params;
     const projectDecisionPackage = this.props.project.project_decision_package;
     const projectDecisionPackageGuid = projectDecisionPackage?.project_decision_package_guid;
@@ -224,8 +223,8 @@ export class DecisionPackageTab extends Component {
         instructions,
         projectGuid: this.props.project?.project_guid,
         modalType,
-        closeModal: this.props.closeModal,
-        handleSubmit: submitHandler,
+        isModal,
+        onSubmit: submitHandler,
         afterClose: () => { },
         optionalProps,
       },
@@ -298,7 +297,7 @@ export class DecisionPackageTab extends Component {
                 updateDate: projectDecisionPackage?.update_timestamp,
                 documents: projectDecisionPackage?.documents,
               }}
-              handleSubmit={this.handleUpdateProjectDecisionPackage}
+              onSubmit={this.handleUpdateProjectDecisionPackage}
             />
             <Col span={24}>
               <Typography.Title level={3}>

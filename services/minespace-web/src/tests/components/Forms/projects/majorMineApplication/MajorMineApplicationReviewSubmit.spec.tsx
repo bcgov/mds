@@ -34,7 +34,6 @@ describe("MajorMineApplicationReviewSubmit", () => {
           toggleConfirmedSubmission={() => {}}
           confirmedSubmission={false}
           project={MOCK.PROJECT}
-          refreshData={() => Promise.resolve()}
         />
       </ReduxWrapper>
     );
@@ -44,12 +43,7 @@ describe("MajorMineApplicationReviewSubmit", () => {
   test("renders properly as on ProjectPage", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
-        <MajorMineApplicationReviewSubmit
-          project={MOCK.PROJECT}
-          applicationSubmitted
-          tabbedView
-          refreshData={() => Promise.resolve()}
-        />
+        <MajorMineApplicationReviewSubmit project={MOCK.PROJECT} applicationSubmitted tabbedView />
       </ReduxWrapper>
     );
     expect(container).toMatchSnapshot();

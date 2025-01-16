@@ -14,7 +14,6 @@ class Feature(Enum):
     VC_ANONCREDS_CORE = "vc_anoncreds_core"
     VC_ANONCREDS_MINESPACE = "vc_anoncreds_minespace"
     VC_W3C = "vc_w3c"
-    CODE_REQUIRED_REPORTS = 'code_required-reports'
     PERMIT_DOCUMENT_KEYWORD_SEARCH = 'permit_document_keyword_search'
     AMS_AGENT = 'ams_agent'
 

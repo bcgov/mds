@@ -26,7 +26,9 @@ export class WorkerInfoEmployee extends Component {
   };
 
   handleToggleEdit = (event) => {
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
     this.setState((prevState) => ({
       isEditable: !prevState.isEditable,
     }));
@@ -62,19 +64,17 @@ export class WorkerInfoEmployee extends Component {
             <Row gutter={16}>
               <Col span={24}>
                 <div className="inline-flex between">
-                  <>
-                    <Typography.Title level={3}>
-                      Worker Information
-                      <Tooltip
-                        overlayClassName="minespace-tooltip"
-                        title="Approximate number of workers on site that includes mine employees and contractors."
-                        placement="right"
-                        mouseEnterDelay={0.3}
-                      >
-                        <InfoCircleOutlined className="padding-sm" />
-                      </Tooltip>
-                    </Typography.Title>
-                  </>
+                  <Typography.Title level={3}>
+                    Worker Information
+                    <Tooltip
+                      overlayClassName="minespace-tooltip"
+                      title="Approximate number of workers on site that includes mine employees and contractors."
+                      placement="right"
+                      mouseEnterDelay={0.3}
+                    >
+                      <InfoCircleOutlined className="padding-sm" />
+                    </Tooltip>
+                  </Typography.Title>
                   <AuthorizationWrapper>
                     <Button
                       type="link"

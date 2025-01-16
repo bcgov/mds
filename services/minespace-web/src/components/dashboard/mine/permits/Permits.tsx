@@ -9,7 +9,6 @@ import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPerm
 import PermitsTable from "@/components/dashboard/mine/permits/PermitsTable";
 import { IExplosivesPermit, IMine, IPermit } from "@mds/common/interfaces";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
-import modalConfig from "@/components/modalContent/config";
 
 interface PermitsProps {
   mine: IMine;
@@ -30,24 +29,6 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, explosivesPermits, ..
     }
   }, []);
 
-  const openVCWalletInvitationModal = (
-    event,
-    partyGuid: string,
-    partyName: string,
-    connectionState: string
-  ) => {
-    event.preventDefault();
-    props.openModal({
-      props: {
-        title: "Generate Digital Wallet Connection Invitation",
-        partyGuid: partyGuid,
-        partyName: partyName,
-        connectionState: connectionState,
-      },
-      content: modalConfig.VC_WALLET_INVITATION,
-    });
-  };
-
   return (
     <Row>
       <Col span={24}>
@@ -60,7 +41,6 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, explosivesPermits, ..
           permits={permits}
           explosivesPermits={explosivesPermits}
           majorMineInd={mine.major_mine_ind}
-          openVCWalletInvitationModal={openVCWalletInvitationModal}
           mineGuid={mine.mine_guid}
         />
       </Col>

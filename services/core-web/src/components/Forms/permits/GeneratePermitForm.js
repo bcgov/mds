@@ -2,11 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { Field, reduxForm, getFormValues } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field, getFormValues } from "redux-form";
 import { Button, Col, Row, Descriptions, Popconfirm } from "antd";
-import { required, dateNotAfterOther, dateNotBeforeOther, maxLength } from "@common/utils/Validate";
+import { required, dateNotAfterOther, dateNotBeforeOther, maxLength } from "@mds/common/redux/utils/Validate";
 import { resetForm, formatDate } from "@common/utils/helpers";
 import { getEditingPreambleFlag } from "@mds/common/redux/selectors/permitSelectors";
 import * as FORM from "@/constants/forms";
@@ -14,7 +12,6 @@ import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import { EDIT_OUTLINE } from "@/constants/assets";
 import VariableConditionMenu from "@/components/Forms/permits/conditions/VariableConditionMenu";
-
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
 import PreviousAmendmentDocuments from "@/components/noticeOfWork/applications/PreviousAmendmentDocuments";
@@ -26,6 +23,7 @@ import ReviewSiteProperties from "@/components/noticeOfWork/applications/review/
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   isAmendment: PropTypes.bool.isRequired,
@@ -47,7 +45,16 @@ const propTypes = {
 
 export const GeneratePermitForm = (props) => {
   return (
-    <Form layout="vertical">
+    <FormWrapper
+      initialValues={props.initialValues}
+      name={FORM.GENERATE_PERMIT}
+      reduxFormConfig={{
+        touchOnBlur: false,
+        onSubmitSuccess: resetForm(FORM.GENERATE_PERMIT),
+        enableReinitialize: true,
+      }}
+      onSubmit={() => { }}
+    >
       {!props.draftPermitAmendment.has_permit_conditions && (
         <ScrollContentWrapper id="permit" title="Permit" isLoaded={props.isLoaded}>
           <UploadPermitDocument
@@ -170,6 +177,7 @@ export const GeneratePermitForm = (props) => {
                 name="regional_office"
                 label="Regional Office"
                 component={renderConfig.SELECT}
+                required
                 validate={[required]}
                 data={[
                   { value: "Cranbrook", label: "Cranbrook" },
@@ -221,8 +229,9 @@ export const GeneratePermitForm = (props) => {
               <Field
                 id="issue_date"
                 name="issue_date"
-                label="Issue Date*"
+                label="Issue Date"
                 component={renderConfig.DATE}
+                required
                 validate={[dateNotAfterOther(props.formValues.auth_end_date)]}
                 disabled={props.isViewMode}
               />
@@ -231,8 +240,9 @@ export const GeneratePermitForm = (props) => {
               <Field
                 id="auth_end_date"
                 name="auth_end_date"
-                label="Authorization End Date*"
+                label="Authorization End Date"
                 component={renderConfig.DATE}
+                required
                 validate={[dateNotBeforeOther(props.formValues.issue_date)]}
                 disabled={props.isViewMode}
               />
@@ -305,6 +315,7 @@ export const GeneratePermitForm = (props) => {
                   doNotPinDropdown
                   component={renderConfig.SELECT}
                   data={props.permitAmendmentDropdown}
+                  required
                   validate={[required]}
                   disabled={props.isViewMode ? true : props.isPermitAmendmentTypeDropDownDisabled}
                 />
@@ -409,7 +420,7 @@ export const GeneratePermitForm = (props) => {
           isStandardDocuments
         />
       </ScrollContentWrapper>
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -421,12 +432,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default compose(
-  connect(mapStateToProps),
-  reduxForm({
-    form: FORM.GENERATE_PERMIT,
-    touchOnBlur: false,
-    onSubmitSuccess: resetForm(FORM.GENERATE_PERMIT),
-    enableReinitialize: true,
-    onSubmit: () => {},
-  })
+  connect(mapStateToProps)
 )(GeneratePermitForm);

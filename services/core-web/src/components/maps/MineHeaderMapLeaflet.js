@@ -9,7 +9,7 @@ import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
 import * as Strings from "@mds/common/constants/strings";
-import { Validate } from "@common/utils/Validate";
+import { Validate } from "@mds/common/redux/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
 
@@ -49,7 +49,7 @@ class MineHeaderMapLeaflet extends Component {
   latLong =
     this.props.mine.mine_location.latitude && this.props.mine.mine_location.longitude
       ? // only add mine Pin if location exists
-        [this.props.mine.mine_location.latitude, this.props.mine.mine_location.longitude]
+      [this.props.mine.mine_location.latitude, this.props.mine.mine_location.longitude]
       : [Number(Strings.DEFAULT_LAT), Number(Strings.DEFAULT_LONG)];
 
   componentDidMount() {

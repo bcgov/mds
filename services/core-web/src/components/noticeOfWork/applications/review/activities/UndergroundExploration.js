@@ -13,14 +13,13 @@ import {
   numberWithUnitCode,
   required,
   number,
-  validateSelectOptions,
   maxLength,
-} from "@common/utils/Validate";
-import RenderField from "@/components/common/RenderField";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
-import RenderSelect from "@/components/common/RenderSelect";
+} from "@mds/common/redux/utils/Validate";
+import RenderField from "@mds/common/components/forms/RenderField";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
-import RenderCheckbox from "@/components/common/RenderCheckbox";
+import RenderCheckbox from "@mds/common/components/forms/RenderCheckbox";
 import CustomPropTypes from "@/customPropTypes";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
@@ -233,7 +232,7 @@ export const UndergroundExploration = (props) => {
             title: "Exploration Type",
             value: "underground_exploration_type_code",
             component: RenderSelect,
-            validate: [required, validateSelectOptions(props.undergroundExplorationTypeOptions)],
+            validate: [required],
             data: props.undergroundExplorationTypeOptions,
             dataHash: props.undergroundExplorationTypeOptionsHash,
           },

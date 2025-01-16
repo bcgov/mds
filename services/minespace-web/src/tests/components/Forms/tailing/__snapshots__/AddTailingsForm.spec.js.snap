@@ -1,17 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddTailingsForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  isModal={true}
+  name="ADD_TAILINGS"
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "enableReinitialize": true,
+      "touchOnBlur": false,
+    }
+  }
 >
   <Field
     component={[Function]}
     id="mine_tailings_storage_facility_name"
     label="Tailings Storage Facility Name"
     name="mine_tailings_storage_facility_name"
+    required={true}
     validate={
       Array [
         [Function],
@@ -23,6 +29,7 @@ exports[`AddTailingsForm renders properly 1`] = `
     id="latitude"
     label="Latitude"
     name="latitude"
+    required={true}
     validate={
       Array [
         [Function],
@@ -37,6 +44,7 @@ exports[`AddTailingsForm renders properly 1`] = `
     id="longitude"
     label="Longitude"
     name="longitude"
+    required={true}
     validate={
       Array [
         [Function],
@@ -53,6 +61,7 @@ exports[`AddTailingsForm renders properly 1`] = `
     id="consequence_classification_status_code"
     label="Consequence Classification"
     name="consequence_classification_status_code"
+    required={true}
     validate={
       Array [
         [Function],
@@ -65,6 +74,7 @@ exports[`AddTailingsForm renders properly 1`] = `
     id="tsf_operating_status_code"
     label="Operating Status"
     name="tsf_operating_status_code"
+    required={true}
     validate={
       Array [
         [Function],
@@ -77,6 +87,7 @@ exports[`AddTailingsForm renders properly 1`] = `
     id="itrb_exemption_status_code"
     label="Has Independent Tailings Review Board?"
     name="itrb_exemption_status_code"
+    required={true}
     validate={
       Array [
         [Function],
@@ -97,30 +108,10 @@ exports[`AddTailingsForm renders properly 1`] = `
   <div
     className="ant-modal-footer"
   >
-    <ForwardRef
-      cancelText="No"
-      disabled={false}
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="secondary"
-        disabled={false}
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="primary"
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      mockTitle
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonText="mockTitle"
+    />
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

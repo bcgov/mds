@@ -1,12 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineComplianceFilterForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  name="MINE_COMPLIANCE_FILTER"
   onReset={[Function]}
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "touchOnBlur": false,
+    }
+  }
 >
   <div>
     <Row
@@ -127,13 +130,10 @@ exports[`MineComplianceFilterForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <Button
+    <RenderResetButton
+      buttonText="Clear Filters"
       className="full-mobile"
-      htmlType="reset"
-      type="secondary"
-    >
-      Clear Filters
-    </Button>
+    />
     <Button
       className="full-mobile"
       htmlType="submit"
@@ -142,5 +142,5 @@ exports[`MineComplianceFilterForm renders properly 1`] = `
       Apply Filters
     </Button>
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

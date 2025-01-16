@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { isNil } from "lodash";
 import { Alert, Button, Drawer } from "antd";
-import RenderField from "@/components/common/RenderField";
-import RenderDate from "@/components/common/RenderDate";
+import RenderField from "@mds/common/components/forms/RenderField";
+import RenderDate from "@mds/common/components/forms/RenderDate";
 import { change, Field } from "redux-form";
 import { CloseOutlined } from "@ant-design/icons";
-import { dateNotAfterOther, dateNotBeforeOther, number } from "@common/utils/Validate";
+import { dateNotAfterOther, dateNotBeforeOther, number } from "@mds/common/redux/utils/Validate";
 import {
   getDurationText,
   isDateRangeValid,
@@ -172,7 +172,7 @@ export const ReviewApplicationFeeContent: FC<ReviewApplicationFeeContentProps> =
     );
   }, [proposedStartDate, proposedAuthorizationEndDate]);
 
-  useEffect(() => {}, [adjustedTonnage, proposedTonnage]);
+  useEffect(() => { }, [adjustedTonnage, proposedTonnage]);
 
   const toggleFeeDrawer = () => setIsFeeDrawerVisible(!isFeeDrawerVisible);
 

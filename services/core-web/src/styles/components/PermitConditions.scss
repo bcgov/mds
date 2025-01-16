@@ -8,7 +8,7 @@ div.condition-layer {
   .condition-content {
     &.editable:hover {
       cursor: pointer;
-      background-color: lightgrey;
+      background-color: #F4F0F0;
     }
 
     .view-item {
@@ -76,4 +76,10 @@ div.condition-layer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.horizontal-form-item {
+  .ant-select {
+    max-width: 350px;
+  }
 }

@@ -13,7 +13,8 @@ exports[`Major Project Search Component renders properly 1`] = `
           class="advanced-search__container"
         >
           <form
-            class="ant-form ant-form-vertical"
+            class="ant-form ant-form-vertical common-form common-form-MAJOR_MINE_APPLICATION_ADVANCED_SEARCH form-edit"
+            id="MAJOR_MINE_APPLICATION_ADVANCED_SEARCH"
           >
             <div
               class="ant-row"
@@ -54,7 +55,7 @@ exports[`Major Project Search Component renders properly 1`] = `
                       >
                         <div
                           class="ant-form-item-explain ant-form-item-explain-connected"
-                          id="search_help"
+                          id="MAJOR_MINE_APPLICATION_ADVANCED_SEARCH_search_help"
                           role="alert"
                         >
                           <div
@@ -103,7 +104,7 @@ exports[`Major Project Search Component renders properly 1`] = `
               class="right center-mobile"
             >
               <button
-                class="ant-btn ant-btn-secondary full-mobile"
+                class="ant-btn ant-btn-default full-mobile"
                 type="reset"
               >
                 <span>

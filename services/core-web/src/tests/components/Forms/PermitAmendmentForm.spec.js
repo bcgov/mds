@@ -6,7 +6,7 @@ const dispatchProps = {};
 const props = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.handleSubmit = jest.fn();
+  dispatchProps.onSubmit = jest.fn();
   dispatchProps.closeModal = jest.fn();
   dispatchProps.getDropdownPermitStatusOptions = jest.fn();
 };
@@ -26,7 +26,13 @@ beforeEach(() => {
 
 describe("PermitAmendmentForm", () => {
   it("renders properly", () => {
-    const component = shallow(<PermitAmendmentForm {...dispatchProps} {...props} />);
+    const component = shallow(
+      <PermitAmendmentForm
+        {...dispatchProps}
+        {...props}
+        handleRemovePermitAmendmentDocument={jest.fn()}
+      />
+    );
     expect(component).toMatchSnapshot();
   });
 });

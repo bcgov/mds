@@ -6,7 +6,7 @@ const props = {};
 const dispatchProps = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.handleSubmit = jest.fn();
+  dispatchProps.onSubmit = jest.fn();
   dispatchProps.handleToggleEdit = jest.fn();
 };
 

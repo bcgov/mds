@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
-import { Row, Col, Popconfirm, Button } from "antd";
-import { Field, formValueSelector, FormSection, reduxForm, Form } from "redux-form";
+import { Row, Col } from "antd";
+import { Field, formValueSelector, FormSection, change } from "redux-form";
 import { connect } from "react-redux";
-import { compose } from "redux";
-import RenderMultiSelect from "@/components/common/RenderMultiSelect";
-import RenderSelect from "@/components/common/RenderSelect";
+import { compose, bindActionCreators } from "redux";
+import RenderMultiSelect from "@mds/common/components/forms/RenderMultiSelect";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import CustomPropTypes from "@/customPropTypes";
-import { requiredList, maxLength, required } from "@common/utils/Validate";
+import { requiredList, maxLength, required } from "@mds/common/redux/utils/Validate";
 import {
   getConditionalDisturbanceOptionsHash,
   getConditionalCommodityOptions,
@@ -16,7 +16,10 @@ import {
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { determineExemptionFeeStatus } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 /**
  * @constant SitePropertiesForm renders edit/view for the NoW Application review step
  */
@@ -30,21 +33,23 @@ const propTypes = {
     PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)])
   ).isRequired,
   exemptionFeeStatusDropDownOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
-  submitting: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   change: PropTypes.func.isRequired,
 };
 
 const mapApplicationTypeToTenureType = (permitPrefix) =>
-  ({
-    P: ["PLR"],
-    C: ["COL"],
-    M: ["MIN"],
-    G: ["BCL", "PRL"],
-    Q: ["BCL", "PRL", "MIN"],
-  }[permitPrefix]);
+({
+  P: ["PLR"],
+  C: ["COL"],
+  M: ["MIN"],
+  G: ["BCL", "PRL"],
+  Q: ["BCL", "PRL", "MIN"],
+}[permitPrefix]);
+
 export class SitePropertiesForm extends Component {
+  formName = FORM.EDIT_SITE_PROPERTIES;
+
   componentWillReceiveProps = (nextProps) => {
     const permitIsExploration = this.props.permit.permit_no.charAt(1) === "X";
     if (nextProps.site_properties !== this.props.site_properties) {
@@ -55,16 +60,16 @@ export class SitePropertiesForm extends Component {
         permitIsExploration,
         nextProps.site_properties?.mine_disturbance_code
       );
-      this.props.change("exemption_fee_status_code", statusCode);
+      this.props.change(this.formName, "exemption_fee_status_code", statusCode);
     }
     const tenureChanged =
       this.props.site_properties?.mine_tenure_type_code &&
       this.props.site_properties?.mine_tenure_type_code !==
-        nextProps.site_properties?.mine_tenure_type_code;
+      nextProps.site_properties?.mine_tenure_type_code;
 
     if (tenureChanged) {
-      this.props.change("site_properties.mine_disturbance_code", []);
-      this.props.change("site_properties.mine_commodity_code", []);
+      this.props.change(this.formName, "site_properties.mine_disturbance_code", []);
+      this.props.change(this.formName, "site_properties.mine_commodity_code", []);
     }
   };
 
@@ -73,15 +78,22 @@ export class SitePropertiesForm extends Component {
       this.props.site_properties?.mine_tenure_type_code === "COL" ||
       this.props.site_properties?.mine_tenure_type_code === "MIN";
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <FormWrapper onSubmit={this.props.onSubmit} initialValues={this.props.initialValues}
+        name={FORM.EDIT_SITE_PROPERTIES}
+        isModal
+        reduxFormConfig={{
+          enableReinitialize: true,
+        }}
+      >
         <FormSection name="site_properties">
           <Row gutter={16}>
             <Col span={24}>
-              <div className="field-title">Tenure*</div>
               <Field
                 id="mine_tenure_type_code"
                 name="mine_tenure_type_code"
                 component={RenderSelect}
+                label="Tenure"
+                required
                 validate={[requiredList]}
                 data={this.props.mineTenureTypes.filter(({ value }) =>
                   mapApplicationTypeToTenureType(this.props.permit.permit_prefix).includes(value)
@@ -91,16 +103,16 @@ export class SitePropertiesForm extends Component {
           </Row>
           <Row gutter={16}>
             <Col span={24}>
-              <div className="field-title">Commodity</div>
               <Field
                 id="mine_commodity_code"
                 name="mine_commodity_code"
+                label="Commodity"
                 component={RenderMultiSelect}
                 data={
                   this.props.site_properties?.mine_tenure_type_code
                     ? this.props.conditionalCommodityOptions[
-                        this.props.site_properties?.mine_tenure_type_code
-                      ]
+                    this.props.site_properties?.mine_tenure_type_code
+                    ]
                     : null
                 }
               />
@@ -108,16 +120,17 @@ export class SitePropertiesForm extends Component {
           </Row>
           <Row gutter={16}>
             <Col span={24}>
-              <div className="field-title">{isCoalOrMineral ? "Disturbance*" : "Disturbance"}</div>
               <Field
                 id="mine_disturbance_code"
                 name="mine_disturbance_code"
+                label="Disturbance"
+                required={isCoalOrMineral}
                 component={RenderMultiSelect}
                 data={
                   this.props.site_properties?.mine_tenure_type_code
                     ? this.props.conditionalDisturbanceOptions[
-                        this.props.site_properties?.mine_tenure_type_code
-                      ]
+                    this.props.site_properties?.mine_tenure_type_code
+                    ]
                     : null
                 }
                 validate={isCoalOrMineral ? [required] : []}
@@ -150,28 +163,10 @@ export class SitePropertiesForm extends Component {
           </Col>
         </Row>
         <div className="right center-mobile">
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            okText="Yes"
-            cancelText="No"
-            disabled={this.props.submitting}
-            onConfirm={() => this.props.closeModal()}
-          >
-            <Button className="full-mobile" type="secondary" disabled={this.props.submitting}>
-              Cancel
-            </Button>
-          </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            loading={this.props.submitting}
-          >
-            Save
-          </Button>
+          <RenderCancelButton />
+          <RenderSubmitButton buttonText="Save" />
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -179,6 +174,13 @@ export class SitePropertiesForm extends Component {
 SitePropertiesForm.propTypes = propTypes;
 const selector = formValueSelector(FORM.EDIT_SITE_PROPERTIES);
 
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      change,
+    },
+    dispatch
+  );
 export default compose(
   connect((state) => ({
     mineTenureTypes: getMineTenureTypeDropdownOptions(state),
@@ -186,9 +188,5 @@ export default compose(
     conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
     site_properties: selector(state, "site_properties"),
     exemptionFeeStatusDropDownOptions: getExemptionFeeStatusDropDownOptions(state),
-  })),
-  reduxForm({
-    form: FORM.EDIT_SITE_PROPERTIES,
-    enableReinitialize: true,
-  })
+  }), mapDispatchToProps)
 )(SitePropertiesForm);

@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { fetchMineNameList } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getMineWithoutStore } from "@common/utils/actionlessNetworkCalls";
 import { getMineNames } from "@mds/common/redux/selectors/mineSelectors";
-import RenderAutoComplete from "@/components/common/RenderAutoComplete";
+import RenderAutoComplete from "@mds/common/components/forms/RenderAutoComplete";
 import MineCard from "@/components/mine/NoticeOfWork/MineCard";
 import CustomPropTypes from "@/customPropTypes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
@@ -35,7 +35,7 @@ const defaultProps = {
   placeholder: "Search for a mine by name",
   disabled: false,
   majorMineOnly: undefined,
-  onMineSelect: () => {},
+  onMineSelect: () => { },
   meta: {},
   label: "Select a mine",
   input: { value: "" },
@@ -43,6 +43,10 @@ const defaultProps = {
   additionalPin: [],
 };
 
+/**
+ * 
+ * @deprecated - don't add to new cases
+ */
 export class RenderMineSelect extends Component {
   state = {
     selectedMine: false,

@@ -2,7 +2,7 @@ import React, { useState, useEffect, FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Field, change, getFormValues } from "redux-form";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { required, maxLength } from "@common/utils/Validate";
+import { required, maxLength, requiredNewFiles } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { getDropdownNoticeOfWorkApplicationDocumentTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { NOTICE_OF_WORK_DOCUMENT } from "@mds/common/constants/API";
@@ -16,7 +16,6 @@ import RenderCheckbox from "@mds/common/components/forms/RenderCheckbox";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
-import { requiredNewFiles } from "@mds/common/redux/utils/Validate";
 import { IMineDocument } from "@mds/common/interfaces";
 
 export interface EditNoticeOfWorkDocumentFormProps {

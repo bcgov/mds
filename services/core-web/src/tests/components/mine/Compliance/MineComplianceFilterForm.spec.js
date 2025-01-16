@@ -7,7 +7,7 @@ const dispatchProps = {};
 const props = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.handleSubmit = jest.fn();
+  dispatchProps.onSubmit = jest.fn();
   dispatchProps.onSubmit = jest.fn();
   dispatchProps.reset = jest.fn();
 };

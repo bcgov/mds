@@ -12,6 +12,7 @@ import {
   BC_TIMEZONE_NAMES,
   CANADA_TIMEZONE_MAP,
 } from "@mds/common/constants/strings";
+import { getFormItemLabel } from "./BaseInput";
 
 const propTypes = {
   input: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -99,6 +100,8 @@ const RenderDateTimeTz = (props) => {
 
   return (
     <Form.Item
+      label={getFormItemLabel(props.label, props.required, props.labelSubtitle, props.showOptional)}
+      required={props.required}
       validateStatus={meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""}
       help={
         meta.touched &&

@@ -1,12 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`VarianceSearchForm form renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  name="VARIANCE_ADVANCED_SEARCH"
   onReset={[Function]}
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "enableReinitialize": true,
+      "touchOnBlur": false,
+      "validate": [Function],
+    }
+  }
 >
   <Row
     gutter={6}
@@ -177,13 +182,10 @@ exports[`VarianceSearchForm form renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <Button
+    <RenderResetButton
+      buttonText="Clear Filters"
       className="full-mobile"
-      htmlType="reset"
-      type="secondary"
-    >
-      Clear Filters
-    </Button>
+    />
     <Button
       className="full-mobile"
       htmlType="submit"
@@ -192,5 +194,5 @@ exports[`VarianceSearchForm form renders properly 1`] = `
       Apply Filters
     </Button>
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

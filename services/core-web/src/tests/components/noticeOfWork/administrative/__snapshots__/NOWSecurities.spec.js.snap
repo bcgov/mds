@@ -33,7 +33,7 @@ exports[`NOWSecurities renders properly 1`] = `
     <div
       style={Object {}}
     >
-      <Connect(ReduxForm)
+      <Connect(PermitAmendmentSecurityForm)
         initialValues={
           Object {
             "adjusted_annual_maximum_tonnage": "",

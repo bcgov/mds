@@ -1,10 +1,7 @@
 import React, { FC, useState } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { reduxForm, InjectedFormProps } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Alert, Button, Popconfirm, Skeleton, Typography } from "antd";
+import { Alert, Button, Skeleton, Typography } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
@@ -12,24 +9,28 @@ import { getVCWalletConnectionInvitation } from "@mds/common/redux/selectors/ver
 import { createVCWalletInvitation } from "@mds/common/redux/actionCreators/verifiableCredentialActionCreator";
 import { LOADING_STATUS, VC_CONNECTION_STATES } from "@mds/common/constants/enums";
 import { IVCInvitation } from "@mds/common/interfaces/verifiableCredentials/verifiableCredentialInvitation.interface";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 
 interface CreateInvitationFormProps {
-  closeModal: () => void;
   partyGuid: string;
   partyName: string;
   connectionState: string;
 }
 
 interface FormStateProps {
-  handleSubmit(args: any): Promise<void>;
   createVCWalletInvitation: ActionCreator<typeof createVCWalletInvitation>;
-  submitting: boolean;
   invitation: IVCInvitation;
 }
 
-export const CreateInvitationForm: FC<
-  CreateInvitationFormProps & FormStateProps & InjectedFormProps<any>
-> = ({ closeModal, partyGuid, partyName, connectionState, invitation, ...props }) => {
+export const CreateInvitationForm: FC<CreateInvitationFormProps & FormStateProps> = ({
+  partyGuid,
+  partyName,
+  connectionState,
+  invitation,
+  ...props
+}) => {
   const isPreLoaded = invitation.invitation_url ? LOADING_STATUS.success : LOADING_STATUS.none;
   const [loading, setLoading] = useState(isPreLoaded);
 
@@ -47,10 +48,16 @@ export const CreateInvitationForm: FC<
     navigator.clipboard.writeText(invitation.invitation_url);
   };
 
-  const disableGenerateButton: boolean =
-    props.submitting || loading === LOADING_STATUS.sent || invitation.invitation_url?.length > 0;
   return (
-    <Form layout="vertical">
+    <FormWrapper
+      name={FORM.CREATE_VC_CONNECTION_INVITATION}
+      onSubmit={getInvitation}
+      isModal
+      reduxFormConfig={{
+        touchOnBlur: false,
+        onSubmitSuccess: resetForm(FORM.CREATE_VC_CONNECTION_INVITATION),
+      }}
+    >
       <Alert
         type="info"
         message="Key Terms"
@@ -80,9 +87,12 @@ export const CreateInvitationForm: FC<
             applies to all major mine permits.
           </p>
           <br />
-          <Button disabled={disableGenerateButton} onClick={getInvitation} type="primary">
-            Generate Invitation for {partyName}
-          </Button>
+          <RenderSubmitButton
+            buttonProps={{
+              disabled: loading === LOADING_STATUS.sent || invitation.invitation_url?.length > 0,
+            }}
+            buttonText={`Generate Invitation for ${partyName}`}
+          />
           <br />
         </div>
       )}
@@ -109,18 +119,9 @@ export const CreateInvitationForm: FC<
         </Skeleton>
       )}
       <div style={{ textAlign: "right" }}>
-        <Popconfirm
-          placement="topRight"
-          title="Are you sure?"
-          onConfirm={closeModal}
-          okText="Yes"
-          cancelText="No"
-          disabled={props.submitting}
-        >
-          <Button disabled={props.submitting}>Close</Button>
-        </Popconfirm>
+        <RenderCancelButton buttonText="Close" />
       </div>
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -132,11 +133,6 @@ const mapDispatchToProps = {
   createVCWalletInvitation,
 };
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: FORM.CREATE_VC_CONNECTION_INVITATION,
-    touchOnBlur: false,
-    onSubmitSuccess: resetForm(FORM.CREATE_VC_CONNECTION_INVITATION),
-  })
-)(CreateInvitationForm) as FC<CreateInvitationFormProps>;
+export default compose(connect(mapStateToProps, mapDispatchToProps))(
+  CreateInvitationForm
+) as FC<CreateInvitationFormProps>;

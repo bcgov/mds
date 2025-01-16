@@ -65,8 +65,8 @@ from app.api.projects.information_requirements_table.models.information_requirem
 from app.api.projects.information_requirements_table.models.information_requirements_table_document_xref import InformationRequirementsTableDocumentXref
 from app.api.projects.project_decision_package.models.project_decision_package_document_xref import ProjectDecisionPackageDocumentXref
 from app.api.projects.major_mine_application.models.major_mine_application import MajorMineApplication
-from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
-from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
+from app.api.ministry_contacts.models.ministry_contact_type import MinistryContactType
+from app.api.ministry_contacts.models.ministry_contact import MinistryContact
 from app.api.activity.models.activity_notification import ActivityNotification
 from app.api.projects.project_decision_package.models.project_decision_package import ProjectDecisionPackage
 from app.api.mines.alerts.models.mine_alert import MineAlert
@@ -807,7 +807,7 @@ class UserFactory(BaseFactory):
     email = factory.Faker('email')
     given_name = factory.Faker('first_name')
     family_name = factory.Faker('last_name')
-    display_name = factory.LazyAttribute(lambda obj: f"{obj.given_name} {obj.family_name} EMLI:EX")
+    display_name = factory.LazyAttribute(lambda obj: f"{obj.given_name} {obj.family_name} MCM:EX")
     idir_username = factory.Faker('user_name')
     identity_provider = factory.Faker('random_element', elements=['idir', 'bceid'])
     idir_user_guid = factory.Faker('uuid4')
@@ -1443,26 +1443,26 @@ class ProjectSummaryAuthorizationFactory(BaseFactory):
     existing_permits_authorizations = []
     deleted_ind = False
 
-class EMLIContactTypeFactory(BaseFactory):
+class MinistryContactTypeFactory(BaseFactory):
 
     class Meta:
-        model = EMLIContactType
+        model = MinistryContactType
 
-    emli_contact_type_code = factory.LazyFunction(RandomEMLIContactTypeCode)
+    emli_contact_type_code = factory.LazyFunction(RandomMinistryContactTypeCode)
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     display_order = factory.Sequence(lambda n: n + 1)
     active_ind = True
 
 
-class EMLIContactFactory(BaseFactory):
+class MinistryContactFactory(BaseFactory):
 
     class Meta:
-        model = EMLIContact
+        model = MinistryContact
 
     class Params:
         major_mine = factory.Trait(
             contact_guid=GUID,
-            emli_contact_type_code=factory.LazyFunction(RandomEMLIContactTypeCode),
+            emli_contact_type_code=factory.LazyFunction(RandomMinistryContactTypeCode),
             mine_region_code=factory.LazyFunction(RandomMineRegionCode),
             first_name=factory.Faker('first_name'),
             last_name=factory.Faker('last_name'),
@@ -1473,7 +1473,7 @@ class EMLIContactFactory(BaseFactory):
             deleted_ind=False)
 
     contact_guid = GUID
-    emli_contact_type_code = factory.LazyFunction(RandomEMLIContactTypeCode)
+    emli_contact_type_code = factory.LazyFunction(RandomMinistryContactTypeCode)
     mine_region_code = factory.LazyFunction(RandomMineRegionCode)
     first_name = factory.Faker('first_name')
     last_name = factory.Faker('last_name')

@@ -14,7 +14,7 @@ const initialState = {
   },
   [STATIC_CONTENT]: MOCK.BULK_STATIC_CONTENT_RESPONSE,
   [MINESPACE]: {
-    EMLIContactsByRegion: MOCK.EMLI_CONTACTS_BY_REGION,
+    MinistryContactsByRegion: MOCK.MINISTRY_CONTACTS_BY_REGION,
   },
 };
 

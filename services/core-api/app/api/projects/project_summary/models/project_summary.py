@@ -876,9 +876,17 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             if do_full_validation and applicant == None:
                 errors_found['applicant_info'].append('Applicant Information not provided')
             elif applicant != None:
+                payment_contact = data.get('payment_contact', None)
                 applicant_validation = ProjectSummary.validate_project_party(applicant, 'applicant')
                 if applicant_validation != True:
                     errors_found['applicant_info'].append(applicant_validation)
+
+                if payment_contact['address'] == None:
+                    errors_found['applicant_info'].append('Payment contact address info not provided')
+                else:
+                    payment_contact_validation = ProjectSummary.validate_project_party(payment_contact, 'applicant')
+                    if payment_contact_validation != True:
+                        errors_found['applicant_info'].append(payment_contact_validation)
 
             # Validate Agent
             if do_full_validation and is_agent == None:
@@ -1088,6 +1096,17 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             self.applicant_party_guid = applicant_party.party_guid
 
         if payment_contact is not None:
+            if self.payment_contact != None and len(payment_contact['address']) == 1 and len(self.payment_contact.address) == 0:
+                    temp_address = Address.create(
+                        suite_no=None,
+                        address_line_1=None,
+                        city=None,
+                        sub_division_code=None,
+                        post_code=None,
+                        address_type_code=None,
+                    )
+
+                    (self.payment_contact.address).append(temp_address)
             payment_contact_party = self.create_or_update_party(payment_contact, 'PAY', self.payment_contact)
             payment_contact_party.save()
             self.payment_contact_party_guid = payment_contact_party.party_guid
@@ -1297,11 +1316,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             email_recipients = emails.get(self.status_code)
 
             if email_recipients is not None:
-                emli_body = open("app/templates/email/projects/emli_project_summary_email.html", "r").read()
+                ministry_body = open("app/templates/email/projects/ministry_project_summary_email.html", "r").read()
                 subject = f'Project Description Documents Notification for {mine.mine_name}'
                 cc = [MDS_EMAIL]
 
-                emli_context = {
+                ministry_context = {
                     "project_summary": {
                         "project_summary_description": self.project_summary_description,
                     },
@@ -1312,14 +1331,14 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     "message": message,
                     "core_project_summary_link": f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/overview'
                 }
-                EmailService.send_template_email(subject, email_recipients, emli_body, emli_context, cc=cc)
+                EmailService.send_template_email(subject, email_recipients, ministry_body, ministry_context, cc=cc)
 
 
     def send_project_summary_email(self, mine, message) -> None:
 
         project_lead_email = self.project_lead_email
 
-        emli_emails = {
+        ministry_emails = {
             'SUB': [PERM_RECL_EMAIL] + PROJECT_SUMMARY_EMAILS,
             'ASG': [project_lead_email],
             'OHD': [PERM_RECL_EMAIL, project_lead_email],
@@ -1329,15 +1348,15 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         send_ms_email = self.status_code != "DFT" and self.status_code != "ASG"
         
-        emli_recipients = emli_emails.get(self.status_code)
+        ministry_recipients = ministry_emails.get(self.status_code)
         cc = [MDS_EMAIL]
         minespace_recipients = [contact.email for contact in self.contacts if contact.is_primary]
 
-        emli_body = open("app/templates/email/projects/emli_project_summary_email.html", "r").read()
+        ministry_body = open("app/templates/email/projects/ministry_project_summary_email.html", "r").read()
         minespace_body = open("app/templates/email/projects/minespace_project_summary_email.html", "r").read()
         subject = f'Project Description Notification for {mine.mine_name}'
 
-        emli_context = {
+        ministry_context = {
             "project_summary": {
                 "project_summary_description": self.project_summary_description,
             },
@@ -1359,6 +1378,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             "ema_auth_link": f'{Config.EMA_AUTH_LINK}',
         }
 
-        EmailService.send_template_email(subject, emli_recipients, emli_body, emli_context, cc=cc)
+        EmailService.send_template_email(subject, ministry_recipients, ministry_body, ministry_context, cc=cc)
         if send_ms_email:
             EmailService.send_template_email(subject, minespace_recipients, minespace_body, minespace_context, cc=cc)

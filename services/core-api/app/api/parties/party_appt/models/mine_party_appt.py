@@ -362,7 +362,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         """
         party_title = 'Engineer of Record'
         party_page = 'engineer-of-record'
-        email_body = open("app/templates/email/mine_party_appt/emli_new_eor_email.html", "r").read()
+        email_body = open("app/templates/email/mine_party_appt/ministry_new_eor_email.html", "r").read()
 
         EDIT_TSF_EMAILS = 'EDIT_TSF_EMAILS'
 

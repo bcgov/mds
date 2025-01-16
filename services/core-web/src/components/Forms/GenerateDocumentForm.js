@@ -1,27 +1,27 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { reduxForm, Field, getFormValues } from "redux-form";
+import { Field, getFormValues } from "redux-form";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, Alert } from "antd";
+import { Button, Col, Row, Alert } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { getGenerateDocumentFormField } from "@/components/common/GenerateDocumentFormField";
-import RenderSelect from "@/components/common/RenderSelect";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   documentType: PropTypes.objectOf(PropTypes.any).isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   preview: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
   previewGenerating: PropTypes.bool.isRequired,
   additionalTitle: PropTypes.string,
   disabled: PropTypes.bool,
   allowDocx: PropTypes.bool,
   allCurrentValues: PropTypes.arrayOf(PropTypes.any).isRequired,
+  initialValues: PropTypes.any,
 };
 
 const defaultProps = {
@@ -50,7 +50,7 @@ const createFields = (fields) => (
         .map((field) => (
           <Row key={field.id}>
             <Col span={24}>
-              <Form.Item>{getGenerateDocumentFormField(field)}</Form.Item>
+              {getGenerateDocumentFormField(field)}
             </Col>
           </Row>
         ))}
@@ -61,22 +61,27 @@ export const GenerateDocumentForm = (props) => {
   const [fileType, setFileType] = useState("PDF");
 
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <FormWrapper onSubmit={props.onSubmit} initialValues={props.initialValues}
+      isModal
+      name={FORM.GENERATE_DOCUMENT}
+      reduxFormCondig={{
+        touchOnBlur: true,
+        onSubmitSuccess: resetForm(FORM.GENERATE_DOCUMENT),
+      }}
+    >
       {props.allowDocx && (
         <div>
           <Row key="fileType">
             <Col span={24}>
               <>
-                <Form.Item>
-                  <Field
-                    id="file_type"
-                    name="file_type"
-                    label="Select the file type for this document"
-                    data={fileTypes}
-                    component={RenderSelect}
-                    onChange={(value) => setFileType(value)}
-                  />
-                </Form.Item>
+                <Field
+                  id="file_type"
+                  name="file_type"
+                  label="Select the file type for this document"
+                  data={fileTypes}
+                  component={RenderSelect}
+                  onChange={(value) => setFileType(value)}
+                />
                 {fileType === "DOCX" && (
                   <>
                     <Alert
@@ -96,18 +101,7 @@ export const GenerateDocumentForm = (props) => {
         <Col span={24}>{createFields(props.documentType.document_template.form_spec)}</Col>
       </Row>
       <div className="right center-mobile">
-        <Popconfirm
-          placement="topRight"
-          title="Are you sure you want to cancel?"
-          onConfirm={props.closeModal}
-          okText="Yes"
-          cancelText="No"
-          disabled={props.submitting}
-        >
-          <Button className="full-mobile" type="secondary" disabled={props.submitting}>
-            Cancel
-          </Button>
-        </Popconfirm>
+        <RenderCancelButton />
         <Button
           className="full-mobile"
           type="secondary"
@@ -118,17 +112,9 @@ export const GenerateDocumentForm = (props) => {
         >
           Preview Document
         </Button>
-        <Button
-          className="full-mobile"
-          type="primary"
-          htmlType="submit"
-          loading={props.submitting}
-          disabled={props.disabled}
-        >
-          Generate {props.documentType.description} {props.additionalTitle}
-        </Button>
+        <RenderSubmitButton buttonText={`Generate ${props.documentType.description} ${props.additionalTitle}`} buttonProps={{ disabled: props.disabled }} />
       </div>
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -140,10 +126,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default compose(
-  connect(mapStateToProps, null),
-  reduxForm({
-    form: FORM.GENERATE_DOCUMENT,
-    touchOnBlur: true,
-    onSubmitSuccess: resetForm(FORM.GENERATE_DOCUMENT),
-  })
+  connect(mapStateToProps, null)
 )(GenerateDocumentForm);

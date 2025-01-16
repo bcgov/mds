@@ -5,11 +5,11 @@ import {
   fetchMinespaceUsers,
   deleteMinespaceUser,
   fetchMinespaceUserMines,
-  deleteEMLIContact,
-  updateEMLIContact,
-  createEMLIContact,
-  fetchEMLIContactsByRegion,
-  fetchEMLIContacts,
+  deleteMinistryContact,
+  updateMinistryContact,
+  createMinistryContact,
+  fetchMinistryContactsByRegion,
+  fetchMinistryContacts,
   updateMinespaceUserMines,
 } from "@mds/common/redux/actionCreators/minespaceActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
@@ -126,12 +126,12 @@ describe("`deleteMinespaceUser` action creator", () => {
   });
 });
 
-describe("`fetchEMLIContacts` action creator", () => {
-  const url = ENVIRONMENT.apiUrl + API.EMLI_CONTACTS;
+describe("`fetchMinistryContacts` action creator", () => {
+  const url = ENVIRONMENT.apiUrl + API.MINISTRY_CONTACTS;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchEMLIContacts()(dispatch).then(() => {
+    return fetchMinistryContacts()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -140,7 +140,7 @@ describe("`fetchEMLIContacts` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return fetchEMLIContacts()(dispatch).then(() => {
+    return fetchMinistryContacts()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -148,14 +148,14 @@ describe("`fetchEMLIContacts` action creator", () => {
   });
 });
 
-describe("`fetchEMLIContactsByRegion` action creator", () => {
+describe("`fetchMinistryContactsByRegion` action creator", () => {
   const region = "NE";
   const isMajorMine = true;
-  const url = ENVIRONMENT.apiUrl + API.EMLI_CONTACTS_BY_REGION(region, isMajorMine);
+  const url = ENVIRONMENT.apiUrl + API.MINISTRY_CONTACTS_BY_REGION(region, isMajorMine);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchEMLIContactsByRegion(
+    return fetchMinistryContactsByRegion(
       region,
       isMajorMine
     )(dispatch).then(() => {
@@ -167,7 +167,7 @@ describe("`fetchEMLIContactsByRegion` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return fetchEMLIContactsByRegion(
+    return fetchMinistryContactsByRegion(
       region,
       isMajorMine
     )(dispatch).then(() => {
@@ -178,13 +178,13 @@ describe("`fetchEMLIContactsByRegion` action creator", () => {
   });
 });
 
-describe("`deleteEMLIContact` action creator", () => {
+describe("`deleteMinistryContact` action creator", () => {
   const guid = "2";
-  const url = ENVIRONMENT.apiUrl + API.EMLI_CONTACT(guid);
+  const url = ENVIRONMENT.apiUrl + API.MINISTRY_CONTACT(guid);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onDelete(url).reply(200, mockResponse);
-    return deleteEMLIContact(guid)(dispatch).then(() => {
+    return deleteMinistryContact(guid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -193,7 +193,7 @@ describe("`deleteEMLIContact` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onDelete(url).reply(418, MOCK.ERROR);
-    return deleteEMLIContact(guid)(dispatch).catch(() => {
+    return deleteMinistryContact(guid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -201,13 +201,13 @@ describe("`deleteEMLIContact` action creator", () => {
   });
 });
 
-describe("`createEMLIContact` action creator", () => {
-  const url = ENVIRONMENT.apiUrl + API.EMLI_CONTACTS;
+describe("`createMinistryContact` action creator", () => {
+  const url = ENVIRONMENT.apiUrl + API.MINISTRY_CONTACTS;
   const payload = { email: "mock_email" };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url, payload).reply(200, mockResponse);
-    return createEMLIContact(payload)(dispatch).then(() => {
+    return createMinistryContact(payload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -216,7 +216,7 @@ describe("`createEMLIContact` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(418, MOCK.ERROR);
-    return createEMLIContact({})(dispatch).catch(() => {
+    return createMinistryContact({})(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -224,14 +224,14 @@ describe("`createEMLIContact` action creator", () => {
   });
 });
 
-describe("`updateEMLIContact` action creator", () => {
+describe("`updateMinistryContact` action creator", () => {
   const guid = 2;
-  const url = ENVIRONMENT.apiUrl + API.EMLI_CONTACT(guid);
+  const url = ENVIRONMENT.apiUrl + API.MINISTRY_CONTACT(guid);
   const payload = { email: "mock_email" };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url, payload).reply(200, mockResponse);
-    return updateEMLIContact(
+    return updateMinistryContact(
       guid,
       payload
     )(dispatch).then(() => {
@@ -243,7 +243,7 @@ describe("`updateEMLIContact` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(418, MOCK.ERROR);
-    return updateEMLIContact(
+    return updateMinistryContact(
       guid,
       {}
     )(dispatch).catch(() => {

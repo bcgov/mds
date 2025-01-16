@@ -120,7 +120,7 @@ export const MajorProjectTable: FC<MajorProjectTableProps> = ({
     },
     renderTextColumn("project_id", "Client ID", true),
     renderTextColumn("mine_name", "Mine Name", true),
-    renderTextColumn("project_lead_name", "EMLI Project Lead", true),
+    renderTextColumn("project_lead_name", "MCM Project Lead", true),
     {
       key: "commodity",
       title: "Commodity",
@@ -162,7 +162,7 @@ export const MajorProjectTable: FC<MajorProjectTableProps> = ({
 
   const childColumns = [
     { ...renderTextColumn("key", "Project Stage") },
-    { ...renderTextColumn("status", "EMLI Review Status") },
+    { ...renderTextColumn("status", "MCM Review Status") },
     { ...renderTextColumn("updateTimestamp", "Last Updated") },
     { ...renderTextColumn("updateUser", "Updated By") },
     {

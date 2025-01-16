@@ -1,16 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Collapse, Popconfirm, Row } from "antd";
+import { Field } from "redux-form";
+import { Button, Col, Collapse, Popconfirm, Row, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { required } from "@common/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
 import { renderConfig } from "@/components/common/config";
 import { COLOR } from "@/constants/styles";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const { mediumGrey, antIconGrey } = COLOR;
 
@@ -55,37 +54,43 @@ const transformMineNames = (names) =>
 
 export const AddRolesForm = (props) => (
   <div>
-    <Form>
+    <FormWrapper
+      name={FORM.ADD_ROLES}
+      reduxFormConfig={{
+        destroyOnUnmount: false,
+      }}
+      onSubmit={() => { }}
+    >
       <Collapse accordion activeKey={[props.activeKey]} onChange={props.handleActivePanelChange}>
         {props.roleNumbers.map((roleNumber) => (
           <Collapse.Panel header={panelHeader(props.removeField, roleNumber)} key={roleNumber}>
             <Row gutter={16} style={{ minHeight: "250px" }}>
               <Col span={12}>
-                <Form.Item label="Role *">
-                  <Field
-                    id={`mine_party_appt_type_code-${roleNumber}`}
-                    name={`mine_party_appt_type_code-${roleNumber}`}
-                    component={renderConfig.SELECT}
-                    doNotPinDropdown
-                    data={simpleRelationships(props.partyRelationshipTypesList)}
-                    validate={[required]}
-                  />
-                </Form.Item>
+                <Field
+                  label="Role"
+                  id={`mine_party_appt_type_code-${roleNumber}`}
+                  name={`mine_party_appt_type_code-${roleNumber}`}
+                  component={renderConfig.SELECT}
+                  doNotPinDropdown
+                  data={simpleRelationships(props.partyRelationshipTypesList)}
+                  required
+                  validate={[required]}
+                />
               </Col>
               <Col span={12}>
-                <Form.Item label="Mine *">
-                  <Field
-                    id={`mine_guid-${roleNumber}`}
-                    name={`mine_guid-${roleNumber}`}
-                    component={renderConfig.AUTOCOMPLETE}
-                    placeholder="Please add Mine"
-                    data={transformMineNames(props.mineNameList)}
-                    handleChange={props.handleChange(roleNumber)}
-                    handleSelect={props.handleSelect(roleNumber)}
-                    iconColor={antIconGrey}
-                    validate={[required]}
-                  />
-                </Form.Item>
+                <Field
+                  label="Mine"
+                  id={`mine_guid-${roleNumber}`}
+                  name={`mine_guid-${roleNumber}`}
+                  component={renderConfig.AUTOCOMPLETE}
+                  placeholder="Please add Mine"
+                  data={transformMineNames(props.mineNameList)}
+                  handleChange={props.handleChange(roleNumber)}
+                  handleSelect={props.handleSelect(roleNumber)}
+                  iconColor={antIconGrey}
+                  required
+                  validate={[required]}
+                />
               </Col>
             </Row>
 
@@ -116,13 +121,10 @@ export const AddRolesForm = (props) => (
         <PlusOutlined style={{ color: mediumGrey }} />
         {props.roleNumbers.length > 0 ? "Add Another Role" : "Add Role"}
       </Button>
-    </Form>
+    </FormWrapper>
   </div>
 );
 
 AddRolesForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.ADD_ROLES,
-  destroyOnUnmount: false,
-})(AddRolesForm);
+export default AddRolesForm;

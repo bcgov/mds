@@ -129,6 +129,7 @@ def test_submit_project_summary_without_ams_auths(test_client, db_session, auth_
 
     # Applicant data
     data['applicant'] = APPLICANT_DATA
+    data['payment_contact'] = PAYMENT_CONTACT_DATA
 
     # Agent data
     data['is_agent'] = False
@@ -182,6 +183,13 @@ def test_update_project_summary_bad_request_with_validation_errors(test_client, 
 
     # Applicant data
     data['applicant'] = APPLICANT_DATA
+    data['payment_contact'] = {
+        "party_type_code": "ORG",
+        "phone_no": "123-123-1234",
+        "email": "test@gov.bc.ca",
+        "party_name": "test name",
+        "address": None,
+    }
     
     # Agent data
     data['is_agent'] = True
@@ -208,7 +216,7 @@ def test_update_project_summary_bad_request_with_validation_errors(test_client, 
     'basic_info': [], 
     'project_contacts': [], 
     'authorizations': [], 
-    'applicant_info': [], 
+    'applicant_info': ['Payment contact address info not provided'], 
     'agent': ['{"address": ["no definitions validate", {"anyof definition 0": ["must be of list type"], "anyof definition 1": [{"address_line_1": ["null value not allowed"]}]}]}'], 
     'location_access_land_use': ['{"is_crown_land_federal_or_provincial": ["null value not allowed"]}', '{"facility_coords_source": ["required field"], "facility_latitude": ["required field"], "facility_lease_no": ["required field"], "facility_longitude": ["required field"], "facility_pid_pin_crown_file_no": ["required field"], "legal_land_desc": ["required field"]}'],
     'mine_component_and_offsite': [], 
@@ -244,6 +252,7 @@ def test_update_project_summary_validation_success(test_client, db_session, auth
 
     # Applicant data
     data['applicant'] = APPLICANT_DATA
+    data['payment_contact'] = PAYMENT_CONTACT_DATA
 
     # Agent data
     data['is_agent'] = False

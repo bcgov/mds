@@ -75,6 +75,10 @@
 .filepond--root {
   max-height: 260px;
   margin-bottom: 0 !important;
+
+  .filepond--credits {
+    display: none;
+  }
 }
 
 .filepond-popover-container {

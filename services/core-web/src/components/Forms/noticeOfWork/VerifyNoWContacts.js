@@ -10,12 +10,11 @@ import { FieldArray, Field, change } from "redux-form";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 
 import * as FORM from "@/constants/forms";
-import "@ant-design/compatible/assets/index.css";
 import { getPartyRelationshipTypesList } from "@mds/common/redux/selectors/staticContentSelectors";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
-import { required } from "@common/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 import {
   fetchSearchResults,
   clearAllSearchResults,
@@ -34,7 +33,7 @@ import * as Strings from "@mds/common/constants/strings";
 
 import Address from "@/components/common/Address";
 import AddButton from "@/components/common/buttons/AddButton";
-import RenderSelect from "@/components/common/RenderSelect";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
@@ -98,201 +97,200 @@ const renderContacts = ({
     ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "MOR"].includes(pr.value)
   );
   return (
-    <>
-      <Col span={8}>
-        <Row className="contact-rows">
-          <div className="scroll">
-            <Col span={24} style={{ minHeight: "150px" }}>
-              <h3>Application Contacts</h3>
-              <p>
-                Contacts listed here come from the original Notice of Work. Click &quot;Search
-                Contact&quot; to see a list of possible Core matches in the &quot;Matching Contact
-                Options&quot; column. Ensure the correct role has been assigned to the application
-                contact.
-              </p>
-            </Col>
-            {fields.map((field, index) => {
-              if (!fields.get(index).id) {
-                fields.get(index).id = uuidv4();
-              }
-              const contactExists = fields.get(index) && !isEmpty(fields.get(index).party);
+    <Col span={8}>
+      <Row className="contact-rows">
+        <div className="scroll">
+          <Col span={24} style={{ minHeight: "150px" }}>
+            <h3>Application Contacts</h3>
+            <p>
+              Contacts listed here come from the original Notice of Work. Click &quot;Search
+              Contact&quot; to see a list of possible Core matches in the &quot;Matching Contact
+              Options&quot; column. Ensure the correct role has been assigned to the application
+              contact.
+            </p>
+          </Col>
+          {fields.map((field, index) => {
+            if (!fields.get(index).id) {
+              fields.get(index).id = uuidv4();
+            }
+            const contactExists = fields.get(index) && !isEmpty(fields.get(index).party);
 
-              const isSelectedContact = selectedContactIndex === index;
-              const selectedCorePartyGuid = contactFormValues
-                .filter(({ id }) => id === fields.get(index).id)
-                .map(({ party_guid }) => party_guid)[0];
-              const selectedCoreParty = selectedData
-                .filter(({ value }) => selectedCorePartyGuid === value)
-                .map((contact) => contact)[0];
-              const contactInformation = selectedCoreParty || fields.get(index);
-              const selectedClass = isSelectedContact ? "selected" : "";
-              const appointmentCode = contactFormValues
-                .filter(({ id }) => id === fields.get(index).id)
-                .map(({ mine_party_appt_type_code }) => mine_party_appt_type_code)[0];
-              return (
-                <Col span={24} key={fields.get(index).id}>
-                  <Card
-                    hoverable
-                    className={`ant-card-now white inherit-height ${selectedClass}`}
-                    title={
-                      <div
-                        className="inline-flex between"
-                        style={{
-                          alignItems: "center",
-                          height: "55px",
-                        }}
-                      >
-                        <span className="field-title">{`Application ${
-                          contactExists
-                            ? fields.get(index).mine_party_appt_type_code_description
-                            : "Contact"
+            const isSelectedContact = selectedContactIndex === index;
+            const selectedCorePartyGuid = contactFormValues
+              .filter(({ id }) => id === fields.get(index).id)
+              .map(({ party_guid }) => party_guid)[0];
+            const selectedCoreParty = selectedData
+              .filter(({ value }) => selectedCorePartyGuid === value)
+              .map((contact) => contact)[0];
+            const contactInformation = selectedCoreParty || fields.get(index);
+            const selectedClass = isSelectedContact ? "selected" : "";
+            const appointmentCode = contactFormValues
+              .filter(({ id }) => id === fields.get(index).id)
+              .map(({ mine_party_appt_type_code }) => mine_party_appt_type_code)[0];
+            return (
+              <Col span={24} key={fields.get(index).id}>
+                <Card
+                  hoverable
+                  className={`ant-card-now white inherit-height ${selectedClass}`}
+                  title={
+                    <div
+                      className="inline-flex between"
+                      style={{
+                        alignItems: "center",
+                        height: "55px",
+                      }}
+                    >
+                      <span className="field-title">{`Application ${contactExists
+                        ? fields.get(index).mine_party_appt_type_code_description
+                        : "Contact"
                         }`}</span>
-                        {!confirmedContacts?.includes(fields.get(index).id) ? (
-                          <Button
-                            ghost
-                            disabled={isSelectedContact}
-                            onClick={() => {
-                              fields.remove(index);
-                            }}
-                          >
-                            <img
-                              name="remove"
-                              src={TRASHCAN}
-                              alt="Remove Application Contact"
-                              className={isSelectedContact ? "disabled-icon" : ""}
-                            />
-                          </Button>
-                        ) : (
-                          <div className="confirm-success">
-                            <Result status="success" title="Contact Confirmed" />
-                          </div>
-                        )}
-                      </div>
-                    }
-                    bordered={false}
-                  >
-                    <Row align="middle" justify="center">
-                      <Col span={15}>
-                        <div className="inline-flex">
+                      {!confirmedContacts?.includes(fields.get(index).id) ? (
+                        <Button
+                          ghost
+                          disabled={isSelectedContact}
+                          onClick={() => {
+                            fields.remove(index);
+                          }}
+                        >
                           <img
-                            className="icon-sm padding-sm--right"
-                            src={PROFILE_NOCIRCLE}
-                            alt="user"
-                            height={25}
+                            name="remove"
+                            src={TRASHCAN}
+                            alt="Remove Application Contact"
+                            className={isSelectedContact ? "disabled-icon" : ""}
                           />
-                          <h4>
-                            {contactExists || selectedCoreParty
-                              ? startCase(contactInformation.party.name)
-                              : "New Contact"}
-                          </h4>
+                        </Button>
+                      ) : (
+                        <div className="confirm-success">
+                          <Result status="success" title="Contact Confirmed" />
                         </div>
-                        {(contactExists || selectedCoreParty) && (
-                          <div>
-                            <div className="inline-flex">
-                              <div className="padding-sm--right">
-                                <MailOutlined className="icon-sm" />
-                              </div>
-                              {contactInformation.party.email &&
+                      )}
+                    </div>
+                  }
+                  bordered={false}
+                >
+                  <Row align="middle" justify="center">
+                    <Col span={15}>
+                      <div className="inline-flex">
+                        <img
+                          className="icon-sm padding-sm--right"
+                          src={PROFILE_NOCIRCLE}
+                          alt="user"
+                          height={25}
+                        />
+                        <h4>
+                          {contactExists || selectedCoreParty
+                            ? startCase(contactInformation.party.name)
+                            : "New Contact"}
+                        </h4>
+                      </div>
+                      {(contactExists || selectedCoreParty) && (
+                        <div>
+                          <div className="inline-flex">
+                            <div className="padding-sm--right">
+                              <MailOutlined className="icon-sm" />
+                            </div>
+                            {contactInformation.party.email &&
                               contactInformation.party.email !== "Unknown" ? (
-                                <a href={`mailto:${contactInformation.party.email}`}>
-                                  {contactInformation.party.email}
-                                </a>
-                              ) : (
-                                <p>{Strings.EMPTY_FIELD}</p>
-                              )}
-                            </div>
-                            <div className="inline-flex">
-                              <div className="padding-sm--right">
-                                <PhoneOutlined className="icon-sm" />
-                              </div>
-                              <p>
-                                {contactInformation.party.phone_no}{" "}
-                                {contactInformation.party.phone_ext
-                                  ? `x${contactInformation.party.phone_ext}`
-                                  : ""}
-                              </p>
-                            </div>
-                            <Address address={contactInformation.party?.address[0] || {}} />
+                              <a href={`mailto:${contactInformation.party.email}`}>
+                                {contactInformation.party.email}
+                              </a>
+                            ) : (
+                              <p>{Strings.EMPTY_FIELD}</p>
+                            )}
                           </div>
-                        )}
-                      </Col>
+                          <div className="inline-flex">
+                            <div className="padding-sm--right">
+                              <PhoneOutlined className="icon-sm" />
+                            </div>
+                            <p>
+                              {contactInformation.party.phone_no}{" "}
+                              {contactInformation.party.phone_ext
+                                ? `x${contactInformation.party.phone_ext}`
+                                : ""}
+                            </p>
+                          </div>
+                          <Address address={contactInformation.party?.address[0] || {}} />
+                        </div>
+                      )}
+                    </Col>
 
-                      <Col span={9}>
+                    <Col span={9}>
+                      <Field
+                        usedOptions={rolesUsedOnce}
+                        id={`${field}.mine_party_appt_type_code`}
+                        name={`${field}.mine_party_appt_type_code`}
+                        label="Role"
+                        component={RenderSelect}
+                        data={filteredRelationships}
+                        required
+                        validate={[required]}
+                      />
+                      {confirmedContacts?.includes(fields.get(index).id) && (
                         <Field
                           usedOptions={rolesUsedOnce}
-                          id={`${field}.mine_party_appt_type_code`}
-                          name={`${field}.mine_party_appt_type_code`}
-                          label="Role*"
+                          id={`${field}.party_guid`}
+                          name={`${field}.party_guid`}
+                          label="Selected Core contact"
                           component={RenderSelect}
-                          data={filteredRelationships}
+                          data={selectedData}
+                          disabled
+                          required
                           validate={[required]}
                         />
-                        {confirmedContacts?.includes(fields.get(index).id) && (
-                          <Field
-                            usedOptions={rolesUsedOnce}
-                            id={`${field}.party_guid`}
-                            name={`${field}.party_guid`}
-                            label="Selected Core contact"
-                            component={RenderSelect}
-                            data={selectedData}
-                            disabled
-                            validate={[required]}
-                          />
-                        )}
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col span={12} />
-                      <Col span={12}>
-                        {!confirmedContacts?.includes(fields.get(index).id) ? (
-                          <Button
-                            type="primary"
-                            style={{ float: "right" }}
-                            disabled={isSelectedContact || !appointmentCode}
-                            onClick={(event) => handleSearch(event, fields.get(index), index)}
-                          >
-                            Search Contact
-                          </Button>
-                        ) : (
-                          <Button
-                            type="secondary"
-                            style={{ float: "right" }}
-                            disabled={isImporting}
-                            onClick={(event) => handleSearch(event, fields.get(index), index, true)}
-                          >
-                            Redo
-                          </Button>
-                        )}
-                      </Col>
-                    </Row>
-                  </Card>
-                </Col>
-              );
-            })}
-            <Col span={24}>
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                <div
-                  role="button"
-                  className="add-content-block"
-                  tabIndex="0"
-                  onKeyPress={() =>
-                    fields.push({ mine_party_appt_type_code: "", party_guid: "", id: uuidv4() })
-                  }
-                  onClick={() =>
-                    fields.push({ mine_party_appt_type_code: "", party_guid: "", id: uuidv4() })
-                  }
-                >
-                  <div className="inline-flex flex-center">
-                    <PlusOutlined className="icon-sm padding-sm--right" />
-                    <p>Add New Application Contact</p>
-                  </div>
+                      )}
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col span={12} />
+                    <Col span={12}>
+                      {!confirmedContacts?.includes(fields.get(index).id) ? (
+                        <Button
+                          type="primary"
+                          style={{ float: "right" }}
+                          disabled={isSelectedContact || !appointmentCode}
+                          onClick={(event) => handleSearch(event, fields.get(index), index)}
+                        >
+                          Search Contact
+                        </Button>
+                      ) : (
+                        <Button
+                          type="secondary"
+                          style={{ float: "right" }}
+                          disabled={isImporting}
+                          onClick={(event) => handleSearch(event, fields.get(index), index, true)}
+                        >
+                          Redo
+                        </Button>
+                      )}
+                    </Col>
+                  </Row>
+                </Card>
+              </Col>
+            );
+          })}
+          <Col span={24}>
+            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              <div
+                role="button"
+                className="add-content-block"
+                tabIndex="0"
+                onKeyPress={() =>
+                  fields.push({ mine_party_appt_type_code: "", party_guid: "", id: uuidv4() })
+                }
+                onClick={() =>
+                  fields.push({ mine_party_appt_type_code: "", party_guid: "", id: uuidv4() })
+                }
+              >
+                <div className="inline-flex flex-center">
+                  <PlusOutlined className="icon-sm padding-sm--right" />
+                  <p>Add New Application Contact</p>
                 </div>
-              </AuthorizationWrapper>
-            </Col>
-          </div>
-        </Row>
-      </Col>
-    </>
+              </div>
+            </AuthorizationWrapper>
+          </Col>
+        </div>
+      </Row>
+    </Col>
   );
 };
 

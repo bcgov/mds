@@ -1,6 +1,9 @@
 import pytest
 
+from app.api.mines.permits.permit_conditions.resources.permit_amendment_condition_category_user_resource import \
+ AssignUserToPermitConditionCategory
 from app.api.mines.reports.resources.mine_report_permit_requirement import MineReportPermitRequirementResource
+from app.api.users.resources.user_list_resource import UserListResource
 from app.api.users.resources.user_resource import UserResource
 from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, \
  EDIT_PERMIT, EDIT_STANDARD_PERMIT_CONDITIONS, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES, \
@@ -123,6 +126,7 @@ from app.api.exports.now_application.resources.now_application_gis_export_resour
      (MinespaceUserMineListResource, 'post', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'delete', [MINE_ADMIN]),
      (UserResource, 'get', [VIEW_ALL]),
+     (UserListResource, 'get', [VIEW_ALL]),
      (NOWActivityTypeResource, 'get', [VIEW_ALL]),
      (NOWApplicationImportResource, 'post', [EDIT_PERMIT]),
      (NOWApplicationListResource, 'get', [VIEW_ALL, GIS]),
@@ -147,6 +151,8 @@ from app.api.exports.now_application.resources.now_application_gis_export_resour
      (PermitConditionsResource, 'get', [EDIT_PERMIT]),
      (PermitConditionsResource, 'put', [EDIT_PERMIT]),
      (PermitConditionsResource, 'delete', [EDIT_PERMIT]),
+     (AssignUserToPermitConditionCategory, 'post', [EDIT_STANDARD_PERMIT_CONDITIONS]),
+     (AssignUserToPermitConditionCategory, 'put', [VIEW_ALL]),
      (StandardPermitConditionsListResource, 'post', [EDIT_STANDARD_PERMIT_CONDITIONS]),
      (StandardPermitConditionsListResource, 'get', [EDIT_STANDARD_PERMIT_CONDITIONS]),
      (StandardPermitConditionsResource, 'put', [EDIT_STANDARD_PERMIT_CONDITIONS]),

@@ -1,21 +1,21 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
+import { Field } from "redux-form";
 import { Button, Popconfirm, Row, Col } from "antd";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import PropTypes from "prop-types";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import Highlight from "react-highlighter";
-import { required, validateSelectOptions } from "@common/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   title: PropTypes.bool.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   delayTypeOptions: CustomPropTypes.options.isRequired,
   stage: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -24,7 +24,13 @@ const propTypes = {
 const NOWDelayForm = (props) => {
   return (
     <div>
-      <Form layout="vertical" onSubmit={props.handleSubmit}>
+      <FormWrapper onSubmit={props.onSubmit}
+        initialValues={props.initialValues}
+        name={FORM.MANAGE_DELAY_FORM}
+        reduxFormConfig={{
+          touchOnBlur: true
+        }}
+      >
         {props.stage === "Start" ? (
           <>
             <p>
@@ -39,42 +45,38 @@ const NOWDelayForm = (props) => {
             <br />
             <Row gutter={16}>
               <Col span={24}>
-                <Form.Item>
-                  <Field
-                    id="delay_type_code"
-                    name="delay_type_code"
-                    label="Reason for Delay*"
-                    placeholder="Select a document type"
-                    component={renderConfig.SELECT}
-                    data={props.delayTypeOptions}
-                    validate={[required, validateSelectOptions(props.delayTypeOptions)]}
-                  />
-                </Form.Item>
+                <Field
+                  id="delay_type_code"
+                  name="delay_type_code"
+                  label="Reason for Delay"
+                  placeholder="Select a document type"
+                  component={renderConfig.SELECT}
+                  data={props.delayTypeOptions}
+                  required
+                  validate={[required]}
+                />
               </Col>
               <Col span={24}>
-                <Form.Item>
-                  <Field
-                    id="start_comment"
-                    name="start_comment"
-                    label="Comment"
-                    component={renderConfig.AUTO_SIZE_FIELD}
-                    validate={[required]}
-                  />
-                </Form.Item>
+                <Field
+                  id="start_comment"
+                  name="start_comment"
+                  label="Comment"
+                  component={renderConfig.AUTO_SIZE_FIELD}
+                  required
+                  validate={[required]}
+                />
               </Col>
             </Row>
           </>
         ) : (
           <Row gutter={16}>
             <Col span={24}>
-              <Form.Item>
-                <Field
-                  id="end_comment"
-                  name="end_comment"
-                  label="Comment"
-                  component={renderConfig.AUTO_SIZE_FIELD}
-                />
-              </Form.Item>
+              <Field
+                id="end_comment"
+                name="end_comment"
+                label="Comment"
+                component={renderConfig.AUTO_SIZE_FIELD}
+              />
             </Col>
           </Row>
         )}
@@ -97,14 +99,11 @@ const NOWDelayForm = (props) => {
             </Button>
           </AuthorizationWrapper>
         </div>
-      </Form>
+      </FormWrapper>
     </div>
   );
 };
 
 NOWDelayForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.MANAGE_DELAY_FORM,
-  touchOnBlur: true,
-})(NOWDelayForm);
+export default NOWDelayForm;

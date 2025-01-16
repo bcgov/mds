@@ -10,7 +10,7 @@ const setupDispatchProps = () => {
   dispatchProps.updateParty = jest.fn();
   dispatchProps.fetchParties = jest.fn();
   dispatchProps.onSubmit = jest.fn();
-  dispatchProps.handleSubmit = jest.fn();
+  dispatchProps.onSubmit = jest.fn();
   dispatchProps.handleSelectChange = jest.fn();
   dispatchProps.onCancel = jest.fn();
 };

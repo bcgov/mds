@@ -1,11 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineRecordForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  initialValues={Object {}}
+  isModal={true}
+  name="MINE_RECORD"
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "enableReinitialize": true,
+      "keepDirtyOnReinitialize": true,
+      "touchOnBlur": false,
+    }
+  }
 >
   <Row
     gutter={16}
@@ -13,23 +20,20 @@ exports[`MineRecordForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="mine_name"
-          label="Mine Name *"
-          name="mine_name"
-          validate={
-            Array [
-              [Function],
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="mine_name"
+        label="Mine Name"
+        name="mine_name"
+        required={true}
+        validate={
+          Array [
+            [Function],
+            [Function],
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -38,24 +42,21 @@ exports[`MineRecordForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          changeOnSelect={true}
-          component={[Function]}
-          id="mine_status"
-          label="Mine Status *"
-          name="mine_status"
-          onChange={[Function]}
-          placeholder="Please select status"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        changeOnSelect={true}
+        component={[Function]}
+        id="mine_status"
+        label="Mine Status"
+        name="mine_status"
+        onChange={[Function]}
+        placeholder="Please select status"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -64,8 +65,7 @@ exports[`MineRecordForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
+      <InternalFormItem
         label="Is this a historic mine status?"
       >
         <Memo(ForwardRef)
@@ -84,7 +84,7 @@ exports[`MineRecordForm renders properly 1`] = `
             No
           </Radio>
         </Memo(ForwardRef)>
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <Row
@@ -93,47 +93,43 @@ exports[`MineRecordForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          data={
-            Array [
-              Object {
-                "label": "North East",
-                "value": "NE",
-              },
-              Object {
-                "label": "North West",
-                "value": "NW",
-              },
-              Object {
-                "label": "South Central",
-                "value": "SC",
-              },
-              Object {
-                "label": "South East",
-                "value": "SE",
-              },
-              Object {
-                "label": "South West",
-                "value": "SW",
-              },
-            ]
-          }
-          id="mine_region"
-          label="Mine Region *"
-          name="mine_region"
-          placeholder="Select a Region"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        data={
+          Array [
+            Object {
+              "label": "North East",
+              "value": "NE",
+            },
+            Object {
+              "label": "North West",
+              "value": "NW",
+            },
+            Object {
+              "label": "South Central",
+              "value": "SC",
+            },
+            Object {
+              "label": "South East",
+              "value": "SE",
+            },
+            Object {
+              "label": "South West",
+              "value": "SW",
+            },
+          ]
+        }
+        id="mine_region"
+        label="Mine Region"
+        name="mine_region"
+        placeholder="Select a Region"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -143,46 +139,38 @@ exports[`MineRecordForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="latitude"
-          label="Latitude"
-          name="latitude"
-          validate={
-            Array [
-              [Function],
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="latitude"
+        label="Latitude"
+        name="latitude"
+        validate={
+          Array [
+            [Function],
+            [Function],
+            [Function],
+          ]
+        }
+      />
     </Col>
     <Col
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="longitude"
-          label="Longitude"
-          name="longitude"
-          validate={
-            Array [
-              [Function],
-              [Function],
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="longitude"
+        label="Longitude"
+        name="longitude"
+        validate={
+          Array [
+            [Function],
+            [Function],
+            [Function],
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -192,8 +180,7 @@ exports[`MineRecordForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
+      <InternalFormItem
         label="Does this mine site belong to a government agency?"
       >
         <Memo(ForwardRef)
@@ -212,7 +199,7 @@ exports[`MineRecordForm renders properly 1`] = `
             No
           </Radio>
         </Memo(ForwardRef)>
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <Row
@@ -222,51 +209,43 @@ exports[`MineRecordForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          autoComplete="off"
-          component={[Function]}
-          format={[Function]}
-          id="number_of_mine_employees"
-          label="Number of Mine Employees"
-          name="number_of_mine_employees"
-          normalize={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        autoComplete="off"
+        component={[Function]}
+        format={[Function]}
+        id="number_of_mine_employees"
+        label="Number of Mine Employees"
+        name="number_of_mine_employees"
+        normalize={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
     <Col
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          autoComplete="off"
-          component={[Function]}
-          format={[Function]}
-          id="number_of_contractors"
-          label="Number of Contractors"
-          name="number_of_contractors"
-          normalize={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        autoComplete="off"
+        component={[Function]}
+        format={[Function]}
+        id="number_of_contractors"
+        label="Number of Contractors"
+        name="number_of_contractors"
+        normalize={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -275,21 +254,17 @@ exports[`MineRecordForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="mine_note"
-          label="Notes"
-          name="mine_note"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="mine_note"
+        label="Notes"
+        name="mine_note"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -298,44 +273,22 @@ exports[`MineRecordForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="major_mine_ind"
-          label="Major Mine"
-          name="major_mine_ind"
-          type="checkbox"
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="major_mine_ind"
+        label="Major Mine"
+        name="major_mine_ind"
+        type="checkbox"
+      />
     </Col>
   </Row>
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile"
-      htmlType="submit"
-      id="mine-record-submit"
-      loading={false}
-      type="primary"
-    >
-      mockTitle
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonText="mockTitle"
+    />
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

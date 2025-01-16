@@ -2,29 +2,28 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose, bindActionCreators } from "redux";
-import { Field, reduxForm, formValueSelector, change } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Field, formValueSelector, change } from "redux-form";
+import { Col, Row } from "antd";
 import {
   currency,
   required,
-  validateSelectOptions,
   assessedLiabilityNegativeWarning,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { currencyMask } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { securityNotRequiredReasonOptions } from "@/constants/NOWConditions";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
-
-import RenderField from "@/components/common/RenderField";
-import RenderDate from "@/components/common/RenderDate";
-import RenderCheckbox from "@/components/common/RenderCheckbox";
-import RenderSelect from "@/components/common/RenderSelect";
+import RenderField from "@mds/common/components/forms/RenderField";
+import RenderDate from "@mds/common/components/forms/RenderDate";
+import RenderCheckbox from "@mds/common/components/forms/RenderCheckbox";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   isEditMode: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
@@ -32,17 +31,25 @@ const propTypes = {
 };
 
 export const PermitAmendmentSecurityForm = (props) => {
-  const handleChange = (e) => {
-    if (e.target.value) {
-      props.change("security_not_required_reason", null);
+  const formName = FORM.EDIT_PERMIT;
+
+  const handleChange = (value) => {
+    if (value) {
+      props.change(formName, "security_not_required_reason", null);
     } else {
-      props.change("liability_adjustment", null);
-      props.change("security_received_date", null);
+      props.change(formName, "liability_adjustment", null);
+      props.change(formName, "security_received_date", null);
     }
   };
 
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <FormWrapper onSubmit={props.onSubmit} initialValues={props.initialValues}
+      name={FORM.EDIT_PERMIT}
+      reduxFormConfig={{
+        touchOnBlur: true,
+        enableReinitialize: true,
+      }}
+    >
       <Row gutter={16}>
         <Col span={12}>
           <div className="field-title">
@@ -59,17 +66,18 @@ export const PermitAmendmentSecurityForm = (props) => {
           />
         </Col>
         <Col span={12}>
-          <div className="field-title">{!props.securityNotRequired ? "Reason" : "Reason*"}</div>
           <Field
             id="security_not_required_reason"
             name="security_not_required_reason"
+            label="Reason"
+            required={props.securityNotRequired}
             component={RenderSelect}
             placeholder="Please select a reason"
             data={securityNotRequiredReasonOptions}
             validate={
               !props.securityNotRequired
                 ? []
-                : [required, validateSelectOptions(securityNotRequiredReasonOptions)]
+                : [required]
             }
             disabled={!props.isEditMode || !props.securityNotRequired}
           />
@@ -107,29 +115,11 @@ export const PermitAmendmentSecurityForm = (props) => {
       </Row>
       {props.isEditMode && (
         <div className="right center-mobile">
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            okText="Yes"
-            cancelText="No"
-            disabled={props.submitting}
-            onConfirm={() => props.onCancel()}
-          >
-            <Button className="full-mobile" type="secondary" disabled={props.submitting}>
-              Cancel
-            </Button>
-          </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            loading={props.submitting}
-          >
-            Save
-          </Button>
+          <RenderCancelButton cancelFunction={props.onCancel} />
+          <RenderSubmitButton buttonText="Save" />
         </div>
       )}
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -149,10 +139,5 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: FORM.EDIT_PERMIT,
-    touchOnBlur: true,
-    enableReinitialize: true,
-  })
+  connect(mapStateToProps, mapDispatchToProps)
 )(PermitAmendmentSecurityForm);

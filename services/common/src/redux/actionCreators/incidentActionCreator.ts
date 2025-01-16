@@ -8,12 +8,16 @@ import * as incidentActions from "../actions/incidentActions";
 import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
+import { IMineIncident } from "@mds/common/interfaces";
+import { AppThunk } from "@mds/common/interfaces/appThunk.type";
+import { AxiosResponse } from "axios";
+
 
 export const createMineIncident = (
   mine_guid,
   payload,
   message = "Successfully created incident."
-) => (dispatch) => {
+): AppThunk<Promise<AxiosResponse<IMineIncident>>> => (dispatch): Promise<AxiosResponse<IMineIncident>> => {
   dispatch(request(NetworkReducerTypes.CREATE_MINE_INCIDENT));
   dispatch(showLoading("modal"));
   return CustomAxios()

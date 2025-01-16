@@ -1,22 +1,20 @@
 import React from "react";
-import { Field, reduxForm, getFormValues } from "redux-form";
+import { Field, getFormValues } from "redux-form";
 import { Button, Popconfirm, Row, Col, Alert } from "antd";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { resetForm, formatDate } from "@common/utils/helpers";
 import PropTypes from "prop-types";
-import { required, dateNotInFuture, date } from "@common/utils/Validate";
+import { required, dateNotInFuture, date } from "@mds/common/redux/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  title: PropTypes.bool.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   showCommentFields: PropTypes.string.isRequired,
   importedDate: PropTypes.string.isRequired,
@@ -144,54 +142,57 @@ export const UpdateNOWDateForm = (props) => {
       <Alert
         message="Rules for editing progress and delay dates"
         description={
-          <>
-            <div>
-              <ul>
-                <li>
-                  Start Date cannot be before verification date: {formatDate(props.importedDate)}
-                </li>
-                <li>The start date must be before the end date</li>
-                <li>Dates cannot be set in the future</li>
-                <li>
-                  If the application has been processed, dates cannot be set after the decision date
-                </li>
-                <li>Delay start and end dates cannot overlap with previous delays</li>
-              </ul>
-            </div>
-          </>
+          <div>
+            <ul>
+              <li>
+                Start Date cannot be before verification date: {formatDate(props.importedDate)}
+              </li>
+              <li>The start date must be before the end date</li>
+              <li>Dates cannot be set in the future</li>
+              <li>
+                If the application has been processed, dates cannot be set after the decision date
+              </li>
+              <li>Delay start and end dates cannot overlap with previous delays</li>
+            </ul>
+          </div>
         }
         type="info"
         showIcon
         closable
       />
       <br />
-      <Form layout="vertical" onSubmit={props.handleSubmit}>
+      <FormWrapper
+        name={FORM.UPDATE_PROGRESS_DATE_FORM}
+        reduxFormConfig={{
+          onSubmitSuccess: resetForm(FORM.UPDATE_PROGRESS_DATE_FORM),
+          validate: validateBusinessRules,
+          touchOnBlur: false,
+        }}
+        initialValues={props.initialValues}
+        onSubmit={props.onSubmit}>
         {props.recordType !== "VER" && props.recordType !== "DEC" && (
           <Row gutter={16}>
             <Col span={24}>
-              <Form.Item>
-                <Field
-                  id="start_date"
-                  name="start_date"
-                  label="Start Date*"
-                  component={renderConfig.DATE}
-                  validate={[required, dateNotInFuture, date]}
-                />
-              </Form.Item>
+              <Field
+                id="start_date"
+                name="start_date"
+                label="Start Date"
+                component={renderConfig.DATE}
+                required
+                validate={[required, dateNotInFuture, date]}
+              />
             </Col>
           </Row>
         )}
         {props.showCommentFields && (
           <Row gutter={16}>
             <Col span={24}>
-              <Form.Item>
-                <Field
-                  id="start_comment"
-                  name="start_comment"
-                  label="Start Comment"
-                  component={renderConfig.AUTO_SIZE_FIELD}
-                />
-              </Form.Item>
+              <Field
+                id="start_comment"
+                name="start_comment"
+                label="Start Comment"
+                component={renderConfig.AUTO_SIZE_FIELD}
+              />
             </Col>
           </Row>
         )}
@@ -199,19 +200,18 @@ export const UpdateNOWDateForm = (props) => {
         {props.recordType !== "VER" && props.recordType !== "DEC" && (
           <Row gutter={16}>
             <Col span={24}>
-              <Form.Item>
-                <Field
-                  id="end_date"
-                  name="end_date"
-                  label={props.initialValues.end_date ? "End Date*" : "End Date"}
-                  component={renderConfig.DATE}
-                  validate={
-                    props.initialValues.end_date
-                      ? [required, dateNotInFuture, date]
-                      : [dateNotInFuture, date]
-                  }
-                />
-              </Form.Item>
+              <Field
+                id="end_date"
+                name="end_date"
+                label="End Date"
+                component={renderConfig.DATE}
+                required={Boolean(props.initialValues.end_date)}
+                validate={
+                  props.initialValues.end_date
+                    ? [required, dateNotInFuture, date]
+                    : [dateNotInFuture, date]
+                }
+              />
             </Col>
           </Row>
         )}
@@ -219,15 +219,14 @@ export const UpdateNOWDateForm = (props) => {
         {props.recordType === "VER" && (
           <Row gutter={16}>
             <Col span={24}>
-              <Form.Item>
-                <Field
-                  id="verified_by_user_date"
-                  name="verified_by_user_date"
-                  label="Verification/Import Date"
-                  component={renderConfig.DATE}
-                  validate={[dateNotInFuture, required, date]}
-                />
-              </Form.Item>
+              <Field
+                id="verified_by_user_date"
+                name="verified_by_user_date"
+                label="Verification/Import Date"
+                component={renderConfig.DATE}
+                required
+                validate={[dateNotInFuture, required, date]}
+              />
             </Col>
           </Row>
         )}
@@ -235,15 +234,14 @@ export const UpdateNOWDateForm = (props) => {
         {props.recordType === "DEC" && (
           <Row gutter={16}>
             <Col span={24}>
-              <Form.Item>
-                <Field
-                  id="decision_by_user_date"
-                  name="decision_by_user_date"
-                  label="Decision Date"
-                  component={renderConfig.DATE}
-                  validate={[dateNotInFuture, required, date]}
-                />
-              </Form.Item>
+              <Field
+                id="decision_by_user_date"
+                name="decision_by_user_date"
+                label="Decision Date"
+                component={renderConfig.DATE}
+                required
+                validate={[dateNotInFuture, required, date]}
+              />
             </Col>
           </Row>
         )}
@@ -251,14 +249,12 @@ export const UpdateNOWDateForm = (props) => {
         {props.showCommentFields && (
           <Row gutter={16}>
             <Col span={24}>
-              <Form.Item>
-                <Field
-                  id="end_comment"
-                  name="end_comment"
-                  label="End Comment"
-                  component={renderConfig.AUTO_SIZE_FIELD}
-                />
-              </Form.Item>
+              <Field
+                id="end_comment"
+                name="end_comment"
+                label="End Comment"
+                component={renderConfig.AUTO_SIZE_FIELD}
+              />
             </Col>
           </Row>
         )}
@@ -280,7 +276,7 @@ export const UpdateNOWDateForm = (props) => {
             </Button>
           </AuthorizationWrapper>
         </div>
-      </Form>
+      </FormWrapper>
     </div>
   );
 };
@@ -290,11 +286,5 @@ UpdateNOWDateForm.propTypes = propTypes;
 export default compose(
   connect((state) => ({
     formValues: getFormValues(FORM.UPDATE_PROGRESS_DATE_FORM)(state) || {},
-  })),
-  reduxForm({
-    form: FORM.UPDATE_PROGRESS_DATE_FORM,
-    onSubmitSuccess: resetForm(FORM.UPDATE_PROGRESS_DATE_FORM),
-    validate: validateBusinessRules,
-    touchOnBlur: false,
-  })
+  }))
 )(UpdateNOWDateForm);

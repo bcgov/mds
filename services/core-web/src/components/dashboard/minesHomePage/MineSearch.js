@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { fetchMineNameList } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getMineNames } from "@mds/common/redux/selectors/mineSelectors";
-import RenderAutoComplete from "@/components/common/RenderAutoComplete";
+import RenderAutoComplete from "@mds/common/components/forms/RenderAutoComplete";
 import AdvancedMineSearchForm from "@/components/Forms/AdvancedMineSearchForm";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -23,7 +23,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  handleReset: () => {},
+  handleReset: () => { },
   mineNameList: [],
   isMapView: false,
 };

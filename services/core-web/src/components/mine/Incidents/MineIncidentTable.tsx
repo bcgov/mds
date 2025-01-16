@@ -253,12 +253,12 @@ const MineIncidentTable: FC<MineIncidentTableProps> = (props) => {
       ),
     },
     {
-      title: "EMLI Action",
+      title: "MCM Action",
       key: "followup_action",
       dataIndex: "followup_action",
       className: hideColumn(true),
       render: (action, record) => (
-        <div title="EMLI Action" className={hideColumn(true)}>
+        <div title="MCM Action" className={hideColumn(true)}>
           {action ? action.description : record.incident.followup_type_code}
         </div>
       ),

@@ -8,10 +8,10 @@ import {
   getMineRegionHash,
   getDisturbanceOptionHash,
   getCommodityOptionHash,
-  getEMLIContactTypesHash,
+  getMinistryContactTypesHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getTransformedMineTypes } from "@mds/common/redux/selectors/mineSelectors";
-import { getEMLIContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
+import { getMinistryContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
 import WorkerInfoEmployee from "@/components/dashboard/mine/overview/WorkerInfoEmployee";
 import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
 import CustomPropTypes from "@/customPropTypes";
@@ -29,7 +29,7 @@ const propTypes = {
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
   userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
-  EMLIcontactInfo: PropTypes.arrayOf(CustomPropTypes.EMLIContactInfo).isRequired,
+  MinistryContactInfo: PropTypes.arrayOf(CustomPropTypes.MinistryContactInfo).isRequired,
 };
 
 const isPartyRelationshipActive = (pr) =>
@@ -57,9 +57,9 @@ export const Overview = (props) => {
         <Col lg={{ span: 14 }} xl={{ span: 16 }}>
           <Typography.Title level={2}>Mine Information</Typography.Title>
           <Typography.Paragraph>
-            This tab contains general information about your mine and important contacts at EMLI.
-            The information is pulled from current Ministry resources. If anything is incorrect,
-            please notify one of the Ministry contacts.
+            This tab contains general information about your mine and important contacts at MCM. The
+            information is pulled from current Ministry resources. If anything is incorrect, please
+            notify one of the Ministry contacts.
           </Typography.Paragraph>
           <Descriptions column={2} colon={false}>
             <Descriptions.Item span={2} label="Region">
@@ -128,7 +128,7 @@ export const Overview = (props) => {
             {(mine.major_mine_ind && (
               <Col span={24}>
                 <Card title="Ministry Contacts">
-                  {props.EMLIcontactInfo.map((contact) => (
+                  {props.MinistryContactInfo.map((contact) => (
                     <MinistryContactItem contact={contact} key={contact.id} />
                   ))}
                 </Card>
@@ -136,7 +136,7 @@ export const Overview = (props) => {
             )) || [
               <Col span={24} key="regional">
                 <Card title="Regional Ministry Contacts">
-                  {props.EMLIcontactInfo.filter(
+                  {props.MinistryContactInfo.filter(
                     ({ is_general_contact }) => !is_general_contact
                   ).map((contact) => (
                     <MinistryContactItem contact={contact} key={contact.id} />
@@ -145,11 +145,11 @@ export const Overview = (props) => {
               </Col>,
               <Col span={24} key="general">
                 <Card title="General Ministry Contacts">
-                  {props.EMLIcontactInfo.filter(({ is_general_contact }) => is_general_contact).map(
-                    (contact) => (
-                      <MinistryContactItem contact={contact} key={contact.id} />
-                    )
-                  )}
+                  {props.MinistryContactInfo.filter(
+                    ({ is_general_contact }) => is_general_contact
+                  ).map((contact) => (
+                    <MinistryContactItem contact={contact} key={contact.id} />
+                  ))}
                 </Card>
               </Col>,
             ]}
@@ -167,8 +167,8 @@ const mapStateToProps = (state) => ({
   mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
   partyRelationships: getPartyRelationships(state),
   transformedMineTypes: getTransformedMineTypes(state),
-  EMLIcontactInfo: getEMLIContactsByRegion(state),
-  EMLIContactTypesHash: getEMLIContactTypesHash(state),
+  MinistryContactInfo: getMinistryContactsByRegion(state),
+  MinistryContactTypesHash: getMinistryContactTypesHash(state),
 });
 
 Overview.propTypes = propTypes;

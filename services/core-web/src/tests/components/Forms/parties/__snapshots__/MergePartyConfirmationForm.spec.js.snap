@@ -2,330 +2,920 @@
 
 exports[`MergePartyConfirmationForm renders properly 1`] = `
 <div>
-  <Form
-    colon={true}
-    hideRequiredMark={false}
-    layout="vertical"
-    onSubmit={[MockFunction]}
-  >
-    <Alert
-      description="Once the merge is complete a new contact will be created and all previous contacts selected will be deleted. All roles listed will be copied over to the new contact."
-      message="Ensure the information is correct"
-      showIcon={true}
-      type="info"
-    />
-    <br />
-    <Row
-      gutter={24}
+  <div>
+    <form
+      class="ant-form ant-form-vertical common-form common-form-MERGE_PARTY_CONFIRMATION form-edit"
+      id="MERGE_PARTY_CONFIRMATION"
     >
-      <Col
-        className="border--right--layout"
-        span={12}
+      <div
+        class="ant-alert ant-alert-info ant-alert-with-description"
+        data-show="true"
+        role="alert"
       >
-        <Row
-          gutter={16}
+        <span
+          aria-label="info-circle"
+          class="anticon anticon-info-circle ant-alert-icon"
+          role="img"
         >
-          <Col
-            span={24}
+          <svg
+            aria-hidden="true"
+            data-icon="info-circle"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="party_name"
-                label="Organization Name*"
-                name="party_name"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-        </Row>
-        <Row
-          gutter={16}
+            <path
+              d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+            />
+            <path
+              d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+            />
+          </svg>
+        </span>
+        <div
+          class="ant-alert-content"
         >
-          <Col
-            span={24}
+          <div
+            class="ant-alert-message"
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="email"
-                label="Email*"
-                name="email"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-        </Row>
-        <Row
-          gutter={16}
-        >
-          <Col
-            span={18}
+            Ensure the information is correct
+          </div>
+          <div
+            class="ant-alert-description"
           >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="phone_no"
-                label="Phone Number*"
-                name="phone_no"
-                normalize={[Function]}
-                placeholder="e.g. xxx-xxx-xxxx"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-          <Col
-            span={6}
-          >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="phone_ext"
-                label="Ext"
-                name="phone_ext"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-        </Row>
-        <FormSection
-          name="address"
-        >
-          <Row
-            gutter={16}
-          >
-            <Col
-              span={6}
-            >
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="suite_no"
-                  label="Suite No."
-                  name="suite_no"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              span={18}
-            >
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="address_line_1"
-                  label="Street Address 1"
-                  name="address_line_1"
-                />
-              </FormItem>
-            </Col>
-          </Row>
-          <Row
-            gutter={16}
-          >
-            <Col
-              span={18}
-            >
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="address_line_2"
-                  label="Street Address 2"
-                  name="address_line_2"
-                />
-              </FormItem>
-            </Col>
-            <Col
-              span={6}
-            >
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  data={
-                    Array [
-                      Object {
-                        "isActive": true,
-                        "label": "AB",
-                        "subType": "CAN",
-                        "value": "AB",
-                      },
-                      Object {
-                        "isActive": true,
-                        "label": "BC",
-                        "subType": "CAN",
-                        "value": "BC",
-                      },
-                    ]
-                  }
-                  id="sub_division_code"
-                  label="Province"
-                  name="sub_division_code"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-          </Row>
-          <Row
-            gutter={16}
-          >
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="city"
-                  label="City"
-                  name="city"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="post_code"
-                  label="Postal Code"
-                  name="post_code"
-                  normalize={[Function]}
-                  placeholder="e.g xxxxxx"
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-          </Row>
-        </FormSection>
-      </Col>
-      <Col
-        span={12}
+            Once the merge is complete a new contact will be created and all previous contacts selected will be deleted. All roles listed will be copied over to the new contact.
+          </div>
+        </div>
+      </div>
+      <br />
+      <div
+        class="ant-row"
+        style="margin-left: -12px; margin-right: -12px;"
       >
-        <CoreTable
-          columns={
-            Array [
-              Object {
-                "dataIndex": "mine_name",
-                "render": [Function],
-                "title": "Mine Name",
-                "width": 150,
-              },
-              Object {
-                "dataIndex": "mine_party_appt_type_code",
-                "render": [Function],
-                "title": "Role",
-                "width": 150,
-              },
-              Object {
-                "dataIndex": "dates",
-                "render": [Function],
-                "title": "Start Date - End Date",
-                "width": 150,
-              },
-            ]
-          }
-          condition={true}
-          dataSource={Array []}
-          scroll={
-            Object {
-              "y": 500,
-            }
-          }
-        />
-      </Col>
-    </Row>
-    <div
-      className="right center-mobile"
-    >
-      <ForwardRef
-        cancelText="No"
-        disabled={false}
-        okText="Yes"
-        onConfirm={[MockFunction]}
-        placement="topRight"
-        title="Are you sure you want to cancel?"
-      >
-        <Button
-          className="full-mobile"
-          disabled={false}
-          type="secondary"
+        <div
+          class="ant-col ant-col-12 border--right--layout"
+          style="padding-left: 12px; padding-right: 12px;"
         >
-          Cancel
-        </Button>
-      </ForwardRef>
-      <Connect(AuthorizationWrapper)
-        permission="role_mds_administrative_users"
-      >
-        <Button
-          className="full-mobile"
-          htmlType="submit"
-          loading={false}
-          type="primary"
+          <div
+            class="ant-row"
+            style="margin-left: -8px; margin-right: -8px;"
+          >
+            <div
+              class="ant-col ant-col-24"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class="ant-form-item-required"
+                      for="MERGE_PARTY_CONFIRMATION_party_name"
+                      title=""
+                    >
+                      <div
+                        style="width: 100%;"
+                      >
+                        Organization Name
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="party_name"
+                          class="ant-input"
+                          id="party_name"
+                          name="party_name"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="MERGE_PARTY_CONFIRMATION_party_name_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-row"
+            style="margin-left: -8px; margin-right: -8px;"
+          >
+            <div
+              class="ant-col ant-col-24"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class="ant-form-item-required"
+                      for="MERGE_PARTY_CONFIRMATION_email"
+                      title=""
+                    >
+                      <div
+                        style="width: 100%;"
+                      >
+                        Email
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="email"
+                          class="ant-input"
+                          id="email"
+                          name="email"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="MERGE_PARTY_CONFIRMATION_email_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-row"
+            style="margin-left: -8px; margin-right: -8px;"
+          >
+            <div
+              class="ant-col ant-col-18"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class="ant-form-item-required"
+                      for="MERGE_PARTY_CONFIRMATION_phone_no"
+                      title=""
+                    >
+                      <div
+                        style="width: 100%;"
+                      >
+                        Phone Number
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="phone_no"
+                          class="ant-input"
+                          id="phone_no"
+                          name="phone_no"
+                          placeholder="e.g. xxx-xxx-xxxx"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="MERGE_PARTY_CONFIRMATION_phone_no_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-col ant-col-6"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="MERGE_PARTY_CONFIRMATION_phone_ext"
+                      title=""
+                    >
+                      <div>
+                        Ext
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="phone_ext"
+                          class="ant-input"
+                          id="phone_ext"
+                          name="phone_ext"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="MERGE_PARTY_CONFIRMATION_phone_ext_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-row"
+            style="margin-left: -8px; margin-right: -8px;"
+          >
+            <div
+              class="ant-col ant-col-6"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="MERGE_PARTY_CONFIRMATION_address.suite_no"
+                      title=""
+                    >
+                      <div>
+                        Suite No.
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="address.suite_no"
+                          class="ant-input"
+                          id="suite_no"
+                          name="address.suite_no"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="MERGE_PARTY_CONFIRMATION_address.suite_no_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-col ant-col-18"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="MERGE_PARTY_CONFIRMATION_address.address_line_1"
+                      title=""
+                    >
+                      <div>
+                        Street Address 1
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="address.address_line_1"
+                          class="ant-input"
+                          id="address_line_1"
+                          name="address.address_line_1"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="MERGE_PARTY_CONFIRMATION_address.address_line_1_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-row"
+            style="margin-left: -8px; margin-right: -8px;"
+          >
+            <div
+              class="ant-col ant-col-18"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="MERGE_PARTY_CONFIRMATION_address.address_line_2"
+                      title=""
+                    >
+                      <div>
+                        Street Address 2
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="address.address_line_2"
+                          class="ant-input"
+                          id="address_line_2"
+                          name="address.address_line_2"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="MERGE_PARTY_CONFIRMATION_address.address_line_2_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-col ant-col-6"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="MERGE_PARTY_CONFIRMATION_address.sub_division_code"
+                      title=""
+                    >
+                      <div>
+                        Province
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <div
+                          class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                          data-cy="address.sub_division_code"
+                        >
+                          <div
+                            class="ant-select-selector"
+                          >
+                            <span
+                              class="ant-select-selection-search"
+                            >
+                              <input
+                                aria-activedescendant="sub_division_code_list_0"
+                                aria-autocomplete="list"
+                                aria-controls="sub_division_code_list"
+                                aria-haspopup="listbox"
+                                aria-owns="sub_division_code_list"
+                                autocomplete="off"
+                                class="ant-select-selection-search-input"
+                                id="sub_division_code"
+                                role="combobox"
+                                type="search"
+                                value=""
+                              />
+                            </span>
+                            <span
+                              class="ant-select-selection-placeholder"
+                            >
+                              Please select
+                            </span>
+                          </div>
+                          <span
+                            aria-hidden="true"
+                            class="ant-select-arrow"
+                            style="user-select: none;"
+                            unselectable="on"
+                          >
+                            <span
+                              aria-label="down"
+                              class="anticon anticon-down ant-select-suffix"
+                              role="img"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="64 64 896 896"
+                                width="1em"
+                              >
+                                <path
+                                  d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="MERGE_PARTY_CONFIRMATION_address.sub_division_code_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-row"
+            style="margin-left: -8px; margin-right: -8px;"
+          >
+            <div
+              class="ant-col ant-col-xs-24 ant-col-md-12"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="MERGE_PARTY_CONFIRMATION_address.city"
+                      title=""
+                    >
+                      <div>
+                        City
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="address.city"
+                          class="ant-input"
+                          id="city"
+                          name="address.city"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="MERGE_PARTY_CONFIRMATION_address.city_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-col ant-col-xs-24 ant-col-md-12"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="MERGE_PARTY_CONFIRMATION_address.post_code"
+                      title=""
+                    >
+                      <div>
+                        Postal Code
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="address.post_code"
+                          class="ant-input"
+                          id="post_code"
+                          name="address.post_code"
+                          placeholder="e.g xxxxxx"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="MERGE_PARTY_CONFIRMATION_address.post_code_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-12"
+          style="padding-left: 12px; padding-right: 12px;"
         >
-          Merge Contact
-        </Button>
-      </Connect(AuthorizationWrapper)>
-    </div>
-  </Form>
+          <div
+            class="ant-table-wrapper  core-table"
+          >
+            <div
+              class="ant-spin-nested-loading"
+            >
+              <div
+                class="ant-spin-container"
+              >
+                <div
+                  class="ant-table ant-table-empty ant-table-fixed-header"
+                >
+                  <div
+                    class="ant-table-container"
+                  >
+                    <div
+                      class="ant-table-header"
+                      style="overflow: hidden;"
+                    >
+                      <table
+                        style="table-layout: fixed;"
+                      >
+                        <colgroup />
+                        <thead
+                          class="ant-table-thead"
+                        >
+                          <tr>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Mine Name
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Role
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Start Date - End Date
+                            </th>
+                          </tr>
+                        </thead>
+                      </table>
+                    </div>
+                    <div
+                      class="ant-table-body"
+                      style="overflow-y: scroll; max-height: 500px;"
+                    >
+                      <table
+                        style="table-layout: auto;"
+                      >
+                        <colgroup>
+                          <col
+                            style="width: 150px;"
+                          />
+                          <col
+                            style="width: 150px;"
+                          />
+                          <col
+                            style="width: 150px;"
+                          />
+                        </colgroup>
+                        <tbody
+                          class="ant-table-tbody"
+                        >
+                          <tr
+                            aria-hidden="true"
+                            class="ant-table-measure-row"
+                            style="height: 0px; font-size: 0px;"
+                          >
+                            <td
+                              style="padding: 0px; border: 0px; height: 0px;"
+                            >
+                              <div
+                                style="height: 0px; overflow: hidden;"
+                              >
+                                 
+                              </div>
+                            </td>
+                            <td
+                              style="padding: 0px; border: 0px; height: 0px;"
+                            >
+                              <div
+                                style="height: 0px; overflow: hidden;"
+                              >
+                                 
+                              </div>
+                            </td>
+                            <td
+                              style="padding: 0px; border: 0px; height: 0px;"
+                            >
+                              <div
+                                style="height: 0px; overflow: hidden;"
+                              >
+                                 
+                              </div>
+                            </td>
+                          </tr>
+                          <tr
+                            class="ant-table-placeholder"
+                          >
+                            <td
+                              class="ant-table-cell"
+                              colspan="3"
+                            >
+                              No Data Yet
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="right center-mobile"
+      >
+        <button
+          aria-label="Cancel"
+          class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
+          type="button"
+        >
+          <span>
+            Cancel
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
 `;

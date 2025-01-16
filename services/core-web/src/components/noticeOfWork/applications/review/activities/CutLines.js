@@ -3,9 +3,9 @@ import { PropTypes } from "prop-types";
 import { Field } from "redux-form";
 import { Row, Col } from "antd";
 import { currencyMask } from "@common/utils/helpers";
-import { maxLength, number } from "@common/utils/Validate";
-import RenderField from "@/components/common/RenderField";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import { maxLength, number } from "@mds/common/redux/utils/Validate";
+import RenderField from "@mds/common/components/forms/RenderField";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 

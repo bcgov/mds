@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Field, getFormValues, reset } from "redux-form";
-import "@ant-design/compatible/assets/index.css";
+import { useSelector } from "react-redux";
+import { Field, getFormValues } from "redux-form";
 import { Button, Col, Row, Form } from "antd";
 import {
   getDropdownMineReportCategoryOptions,
@@ -16,6 +15,7 @@ import * as Strings from "@mds/common/constants/strings";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { MineReportParams } from "@mds/common/interfaces";
+import RenderResetButton from "@mds/common/components/forms/RenderResetButton";
 
 interface ReportFilterFormProps {
   onSubmit: (params: any) => void;
@@ -30,7 +30,6 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
   initialValues,
   mineReportType,
 }) => {
-  const dispatch = useDispatch();
   const [
     dropdownMineReportDefinitionOptionsFiltered,
     setDropdownMineReportDefinitionOptionsFiltered,
@@ -51,11 +50,6 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
     report_type: selectedMineReportCategory,
     report_name: selectedMineReportDefinitionGuid,
   } = useSelector((state) => getFormValues(FORM.FILTER_REPORTS)(state) ?? {});
-
-  const handleReset = () => {
-    dispatch(reset(FORM.FILTER_REPORTS));
-    onReset();
-  };
 
   const updateMineReportDefinitionOptions = (
     mineReportDefinitionOptions,
@@ -141,8 +135,9 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
       reduxFormConfig={{ touchOnBlur: false, enableReinitialize: true }}
       onSubmit={onSubmit}
       initialValues={initialValues}
+      onReset={onReset}
     >
-      <div>
+      <div className="hide-required-indicator">
         <Row gutter={16}>
           <Col md={8} sm={24}>
             <Field
@@ -283,9 +278,7 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
         </Row>
       </div>
       <div className="right center-mobile">
-        <Button className="full-mobile" onClick={handleReset}>
-          Clear Filters
-        </Button>
+        <RenderResetButton className="full-mobile" buttonText="Clear Filters" />
         <Button className="full-mobile" type="primary" htmlType="submit">
           Apply Filters
         </Button>

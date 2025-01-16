@@ -2,594 +2,1211 @@
 
 exports[`EditFullPartyForm renders properly 1`] = `
 <div>
-  <Form
-    colon={true}
-    hideRequiredMark={false}
-    layout="horizontal"
-    onSubmit={[Function]}
-  >
-    <Row
-      gutter={48}
+  <div>
+    <form
+      class="ant-form ant-form-vertical common-form common-form-EDIT_FULL_PARTY form-edit"
+      id="EDIT_FULL_PARTY"
     >
-      <Col
-        className="border--right--layout"
-        md={12}
-        sm={24}
+      <div
+        class="ant-row"
+        style="margin-left: -24px; margin-right: -24px;"
       >
-        <Row
-          gutter={16}
+        <div
+          class="ant-col border--right--layout ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 24px; padding-right: 24px;"
         >
-          <Col
-            md={12}
-            xs={24}
+          <div
+            class="ant-row"
+            style="margin-left: -8px; margin-right: -8px;"
           >
-            <h5>
-              Basic Details
-            </h5>
-          </Col>
-        </Row>
-        <Row
-          gutter={16}
+            <div
+              class="ant-col ant-col-xs-24 ant-col-md-12"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <h5>
+                Basic Details
+              </h5>
+            </div>
+          </div>
+          <div
+            class="ant-row"
+            style="margin-left: -8px; margin-right: -8px;"
+          >
+            <div
+              class="ant-col ant-col-xs-24 ant-col-md-12"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class="ant-form-item-required"
+                      for="EDIT_FULL_PARTY_first_name"
+                      title=""
+                    >
+                      <div
+                        style="width: 100%;"
+                      >
+                        First Name
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="first_name"
+                          class="ant-input"
+                          id="first_name"
+                          name="first_name"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="EDIT_FULL_PARTY_first_name_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-col ant-col-xs-24 ant-col-md-12"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class="ant-form-item-required"
+                      for="EDIT_FULL_PARTY_party_name"
+                      title=""
+                    >
+                      <div
+                        style="width: 100%;"
+                      >
+                        Surname
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="party_name"
+                          class="ant-input"
+                          id="party_name"
+                          name="party_name"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="EDIT_FULL_PARTY_party_name_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-row"
+            style="margin-left: -8px; margin-right: -8px;"
+          >
+            <div
+              class="ant-col ant-col-24"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="EDIT_FULL_PARTY_email"
+                      title=""
+                    >
+                      <div>
+                        Primary Email
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="email"
+                          class="ant-input"
+                          id="email"
+                          name="email"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="EDIT_FULL_PARTY_email_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-row"
+            style="margin-left: -8px; margin-right: -8px;"
+          >
+            <div
+              class="ant-col ant-col-24"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="EDIT_FULL_PARTY_email_sec"
+                      title=""
+                    >
+                      <div>
+                        Secondary Email
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="email_sec"
+                          class="ant-input"
+                          id="email_sec"
+                          name="email_sec"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="EDIT_FULL_PARTY_email_sec_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-row"
+            style="margin-left: -8px; margin-right: -8px;"
+          >
+            <div
+              class="ant-col ant-col-18"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class="ant-form-item-required"
+                      for="EDIT_FULL_PARTY_phone_no"
+                      title=""
+                    >
+                      <div
+                        style="width: 100%;"
+                      >
+                        Primary Phone No.
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="phone_no"
+                          class="ant-input"
+                          id="phone_no"
+                          name="phone_no"
+                          placeholder="e.g. xxx-xxx-xxxx"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="EDIT_FULL_PARTY_phone_no_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-col ant-col-6"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="EDIT_FULL_PARTY_phone_ext"
+                      title=""
+                    >
+                      <div>
+                        Ext
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="phone_ext"
+                          class="ant-input"
+                          id="phone_ext"
+                          name="phone_ext"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="EDIT_FULL_PARTY_phone_ext_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-row"
+            style="margin-left: -8px; margin-right: -8px;"
+          >
+            <div
+              class="ant-col ant-col-18"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="EDIT_FULL_PARTY_phone_no_sec"
+                      title=""
+                    >
+                      <div>
+                        Secondary Phone No.
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="phone_no_sec"
+                          class="ant-input"
+                          id="phone_no_sec"
+                          name="phone_no_sec"
+                          placeholder="e.g. xxx-xxx-xxxx"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="EDIT_FULL_PARTY_phone_no_sec_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-col ant-col-6"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="EDIT_FULL_PARTY_phone_sec_ext"
+                      title=""
+                    >
+                      <div>
+                        Ext
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="phone_sec_ext"
+                          class="ant-input"
+                          id="phone_sec_ext"
+                          name="phone_sec_ext"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="EDIT_FULL_PARTY_phone_sec_ext_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-row"
+            style="margin-left: -8px; margin-right: -8px;"
+          >
+            <div
+              class="ant-col ant-col-18"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="EDIT_FULL_PARTY_phone_no_ter"
+                      title=""
+                    >
+                      <div>
+                        Tertiary Phone No.
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="phone_no_ter"
+                          class="ant-input"
+                          id="phone_no_ter"
+                          name="phone_no_ter"
+                          placeholder="e.g. xxx-xxx-xxxx"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="EDIT_FULL_PARTY_phone_no_ter_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-col ant-col-6"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="EDIT_FULL_PARTY_phone_ter_ext"
+                      title=""
+                    >
+                      <div>
+                        Ext
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="phone_ter_ext"
+                          class="ant-input"
+                          id="phone_ter_ext"
+                          name="phone_ter_ext"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="EDIT_FULL_PARTY_phone_ter_ext_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 24px; padding-right: 24px;"
         >
-          <Col
-            md={12}
-            xs={24}
+          <div
+            class="ant-row"
+            style="margin-left: -8px; margin-right: -8px;"
           >
-            <FormItem
-              hasFeedback={false}
+            <div
+              class="ant-col ant-col-xs-24 ant-col-md-12"
+              style="padding-left: 8px; padding-right: 8px;"
             >
-              <Field
-                component={[Function]}
-                id="first_name"
-                label="First Name *"
-                name="first_name"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-          <Col
-            md={12}
-            xs={24}
+              <h5>
+                Address
+              </h5>
+            </div>
+          </div>
+          <div
+            class="ant-row"
+            style="margin-left: -8px; margin-right: -8px;"
           >
-            <FormItem
-              hasFeedback={false}
+            <div
+              class="ant-col ant-col-6"
+              style="padding-left: 8px; padding-right: 8px;"
             >
-              <Field
-                component={[Function]}
-                id="party_name"
-                label="Surname *"
-                name="party_name"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-        </Row>
-        <Row
-          gutter={16}
-        >
-          <Col
-            span={24}
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="EDIT_FULL_PARTY_suite_no"
+                      title=""
+                    >
+                      <div>
+                        Suite No.
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="suite_no"
+                          class="ant-input"
+                          id="suite_no"
+                          name="suite_no"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="EDIT_FULL_PARTY_suite_no_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-col ant-col-18"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="EDIT_FULL_PARTY_address_line_1"
+                      title=""
+                    >
+                      <div>
+                        Street Address 1
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="address_line_1"
+                          class="ant-input"
+                          id="address_line_1"
+                          name="address_line_1"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="EDIT_FULL_PARTY_address_line_1_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-row"
+            style="margin-left: -8px; margin-right: -8px;"
           >
-            <FormItem
-              hasFeedback={false}
+            <div
+              class="ant-col ant-col-18"
+              style="padding-left: 8px; padding-right: 8px;"
             >
-              <Field
-                component={[Function]}
-                id="email"
-                label="Primary Email"
-                name="email"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-        </Row>
-        <Row
-          gutter={16}
-        >
-          <Col
-            span={24}
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="EDIT_FULL_PARTY_address_line_2"
+                      title=""
+                    >
+                      <div>
+                        Street Address 2
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="address_line_2"
+                          class="ant-input"
+                          id="address_line_2"
+                          name="address_line_2"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="EDIT_FULL_PARTY_address_line_2_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-col ant-col-6"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="EDIT_FULL_PARTY_sub_division_code"
+                      title=""
+                    >
+                      <div>
+                        Province
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <div
+                          class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                          data-cy="sub_division_code"
+                        >
+                          <div
+                            class="ant-select-selector"
+                          >
+                            <span
+                              class="ant-select-selection-search"
+                            >
+                              <input
+                                aria-activedescendant="sub_division_code_list_0"
+                                aria-autocomplete="list"
+                                aria-controls="sub_division_code_list"
+                                aria-haspopup="listbox"
+                                aria-owns="sub_division_code_list"
+                                autocomplete="off"
+                                class="ant-select-selection-search-input"
+                                id="sub_division_code"
+                                role="combobox"
+                                type="search"
+                                value=""
+                              />
+                            </span>
+                            <span
+                              class="ant-select-selection-placeholder"
+                            >
+                              Please select
+                            </span>
+                          </div>
+                          <span
+                            aria-hidden="true"
+                            class="ant-select-arrow"
+                            style="user-select: none;"
+                            unselectable="on"
+                          >
+                            <span
+                              aria-label="down"
+                              class="anticon anticon-down ant-select-suffix"
+                              role="img"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="64 64 896 896"
+                                width="1em"
+                              >
+                                <path
+                                  d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="EDIT_FULL_PARTY_sub_division_code_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-row"
+            style="margin-left: -8px; margin-right: -8px;"
           >
-            <FormItem
-              hasFeedback={false}
+            <div
+              class="ant-col ant-col-xs-24 ant-col-md-12"
+              style="padding-left: 8px; padding-right: 8px;"
             >
-              <Field
-                component={[Function]}
-                id="email_sec"
-                label="Secondary Email"
-                name="email_sec"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-        </Row>
-        <Row
-          gutter={16}
-        >
-          <Col
-            span={18}
-          >
-            <FormItem
-              hasFeedback={false}
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="EDIT_FULL_PARTY_city"
+                      title=""
+                    >
+                      <div>
+                        City
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="city"
+                          class="ant-input"
+                          id="city"
+                          name="city"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="EDIT_FULL_PARTY_city_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-col ant-col-xs-24 ant-col-md-12"
+              style="padding-left: 8px; padding-right: 8px;"
             >
-              <Field
-                component={[Function]}
-                id="phone_no"
-                label="Primary Phone No. *"
-                name="phone_no"
-                normalize={[Function]}
-                placeholder="e.g. xxx-xxx-xxxx"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-          <Col
-            span={6}
-          >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="phone_ext"
-                label="Ext"
-                name="phone_ext"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-        </Row>
-        <Row
-          gutter={16}
-        >
-          <Col
-            span={18}
-          >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="phone_no_sec"
-                label="Secondary Phone No."
-                name="phone_no_sec"
-                normalize={[Function]}
-                placeholder="e.g. xxx-xxx-xxxx"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-          <Col
-            span={6}
-          >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="phone_sec_ext"
-                label="Ext"
-                name="phone_sec_ext"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-        </Row>
-        <Row
-          gutter={16}
-        >
-          <Col
-            span={18}
-          >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="phone_no_ter"
-                label="Tertiary Phone No."
-                name="phone_no_ter"
-                normalize={[Function]}
-                placeholder="e.g. xxx-xxx-xxxx"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-          <Col
-            span={6}
-          >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="phone_ter_ext"
-                label="Ext"
-                name="phone_ter_ext"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-        </Row>
-      </Col>
-      <Col
-        md={12}
-        sm={24}
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class=""
+                      for="EDIT_FULL_PARTY_post_code"
+                      title=""
+                    >
+                      <div>
+                        Postal Code
+                         
+                        <span
+                          class="form-item-optional"
+                        >
+                           (optional)
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="post_code"
+                          class="ant-input"
+                          id="post_code"
+                          name="post_code"
+                          placeholder="e.g xxxxxx"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="EDIT_FULL_PARTY_post_code_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+        style="margin-left: -24px; margin-right: -24px;"
       >
-        <Row
-          gutter={16}
-        >
-          <Col
-            md={12}
-            xs={24}
-          >
-            <h5>
-              Address
-            </h5>
-          </Col>
-        </Row>
-        <Row
-          gutter={16}
-        >
-          <Col
-            span={6}
-          >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="suite_no"
-                label="Suite No."
-                name="suite_no"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-          <Col
-            span={18}
-          >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="address_line_1"
-                label="Street Address 1"
-                name="address_line_1"
-              />
-            </FormItem>
-          </Col>
-        </Row>
-        <Row
-          gutter={16}
-        >
-          <Col
-            span={18}
-          >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="address_line_2"
-                label="Street Address 2"
-                name="address_line_2"
-              />
-            </FormItem>
-          </Col>
-          <Col
-            span={6}
-          >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                data={
-                  Array [
-                    Object {
-                      "label": "None",
-                      "value": null,
-                    },
-                    Object {
-                      "isActive": true,
-                      "label": "AB",
-                      "subType": "CAN",
-                      "value": "AB",
-                    },
-                    Object {
-                      "isActive": true,
-                      "label": "BC",
-                      "subType": "CAN",
-                      "value": "BC",
-                    },
-                  ]
-                }
-                format={null}
-                id="sub_division_code"
-                label="Province"
-                name="sub_division_code"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-        </Row>
-        <Row
-          gutter={16}
-        >
-          <Col
-            md={12}
-            xs={24}
-          >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="city"
-                label="City"
-                name="city"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-          <Col
-            md={12}
-            xs={24}
-          >
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="post_code"
-                label="Postal Code"
-                name="post_code"
-                normalize={[Function]}
-                placeholder="e.g xxxxxx"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-        </Row>
-      </Col>
-    </Row>
-    <Row
-      gutter={48}
-    >
-      <Col
-        span={24}
-      />
-    </Row>
-    <br />
-    <Connect(AuthorizationWrapper)
-      permission="role_admin"
-    >
-      <Divider />
-      <Row
-        gutter={16}
-      >
-        <Col
-          span={24}
-        >
-          <h5>
-            Assign Inspector Role
-          </h5>
-        </Col>
-      </Row>
-      <Row>
-        <p>
-          By setting this checkbox you grant inspector role to this party. Please note that removing this checkbox will not delete party from associated entities.
-        </p>
-        <Col
-          md={12}
-          sm={24}
-        >
-          <Field
-            component={[Function]}
-            id="set_to_inspector"
-            label="Set to inspector"
-            name="set_to_inspector"
-            type="checkbox"
-          />
-        </Col>
-      </Row>
-      <Row
-        gutter={16}
-      >
-        <Col
-          span={12}
-        >
-          <Field
-            component={[Function]}
-            id="inspector_start_date"
-            label="Start Date"
-            name="inspector_start_date"
-            placeholder="yyyy-mm-dd"
-          />
-        </Col>
-        <Col
-          span={12}
-        >
-          <Field
-            component={[Function]}
-            id="inspector_end_date"
-            label="End Date"
-            name="inspector_end_date"
-            placeholder="yyyy-mm-dd"
-          />
-        </Col>
-      </Row>
+        <div
+          class="ant-col ant-col-24"
+          style="padding-left: 24px; padding-right: 24px;"
+        />
+      </div>
       <br />
-      <Divider />
-      <Row
-        gutter={16}
+      <div
+        class="right center-mobile"
       >
-        <Col
-          span={24}
+        <button
+          aria-label="Cancel"
+          class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
+          type="button"
         >
-          <h5>
-            Assign Project Lead Role
-          </h5>
-        </Col>
-      </Row>
-      <Row>
-        <p>
-          By setting this checkbox you grant project lead role to this party. Please note that removing this checkbox will not delete party from associated entities.
-        </p>
-        <Col
-          md={12}
-          sm={24}
+          <span>
+            Cancel
+          </span>
+        </button>
+        <button
+          aria-label="Submit"
+          class="ant-btn ant-btn-primary  form-btn"
+          type="submit"
         >
-          <Field
-            component={[Function]}
-            id="set_to_project_lead"
-            label="Set to project lead"
-            name="set_to_project_lead"
-            type="checkbox"
-          />
-        </Col>
-      </Row>
-      <Row
-        gutter={16}
-      >
-        <Col
-          span={12}
-        >
-          <Field
-            component={[Function]}
-            id="project_lead_start_date"
-            label="Start Date"
-            name="project_lead_start_date"
-            placeholder="yyyy-mm-dd"
-          />
-        </Col>
-        <Col
-          span={12}
-        >
-          <Field
-            component={[Function]}
-            id="project_lead_end_date"
-            label="End Date"
-            name="project_lead_end_date"
-            placeholder="yyyy-mm-dd"
-          />
-        </Col>
-      </Row>
-      <br />
-      <Divider />
-      <Row
-        gutter={16}
-      >
-        <Col
-          span={24}
-        >
-          <h5>
-            Upload Signature
-          </h5>
-        </Col>
-      </Row>
-      <Row>
-        <Col
-          span={24}
-        >
-          <Field
-            component={[Function]}
-            id="PartySignatureUpload"
-            name="PartySignatureUpload"
-            onFileChange={[Function]}
-          />
-        </Col>
-      </Row>
-    </Connect(AuthorizationWrapper)>
-    <div
-      className="right center-mobile"
-    >
-      <ForwardRef
-        cancelText="No"
-        okText="Yes"
-        onConfirm={[MockFunction]}
-        placement="topRight"
-        title="Are you sure you want to cancel?"
-      >
-        <Button
-          className="full-mobile"
-        >
-          Cancel
-        </Button>
-      </ForwardRef>
-      <Button
-        className="full-mobile"
-        htmlType="submit"
-        type="primary"
-      >
-        Update Person
-      </Button>
-    </div>
-  </Form>
+          <span>
+            Update Person
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
 `;

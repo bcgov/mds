@@ -15,11 +15,15 @@ exports[`ConditionForm renders properly 1`] = `
   <Col
     span={20}
   >
-    <Form
-      colon={true}
-      hideRequiredMark={false}
-      layout="horizontal"
+    <Connect(ReduxForm)
+      initialValues={Object {}}
+      name="CONDITION_SECTION"
       onSubmit={[MockFunction]}
+      reduxFormConfig={
+        Object {
+          "onSubmitSuccess": [Function],
+        }
+      }
     >
       <Field
         component={[Function]}
@@ -35,30 +39,14 @@ exports[`ConditionForm renders properly 1`] = `
       <div
         className="right center-mobile"
       >
-        <ForwardRef
-          cancelText="No"
-          okText="Yes"
-          onConfirm={[MockFunction]}
-          placement="topRight"
-          title="Are you sure you want to cancel?"
-        >
-          <Button
-            className="full-mobile"
-            type="secondary"
-          >
-            Cancel
-          </Button>
-        </ForwardRef>
-        <Button
-          className="full-mobile"
-          htmlType="submit"
-          loading={false}
-          type="primary"
-        >
-          Save
-        </Button>
+        <RenderCancelButton
+          cancelFunction={[MockFunction]}
+        />
+        <RenderSubmitButton
+          buttonText="Save"
+        />
       </div>
-    </Form>
+    </Connect(ReduxForm)>
   </Col>
   <Col
     span={3}

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, FieldArray } from "redux-form";
-import { Form } from "@ant-design/compatible";
 import {
   lat,
   lon,
@@ -10,10 +9,8 @@ import {
   number,
   positiveNumber,
   required,
-} from "@common/utils/Validate";
-
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Collapse, Divider, Popconfirm, Row, Typography } from "antd";
+} from "@mds/common/redux/utils/Validate";
+import { Button, Col, Collapse, Divider, Popconfirm, Row, Typography, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { TRASHCAN } from "@/constants/assets";
 import { renderConfig } from "@/components/common/config";
@@ -81,20 +78,22 @@ class MagazineForm extends Component<FormProps> {
         <Row gutter={16}>
           <Col span={12}>
             <Field
-              label="Type No. *"
+              label="Type No."
               id={`${field}type_no`}
               name={`${field}type_no`}
               component={renderConfig.FIELD}
+              required
               validate={[required]}
               disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={12}>
             <Field
-              label="Tag No. *"
+              label="Tag No."
               id={`${field}tag_no`}
               name={`${field}tag_no`}
               component={renderConfig.FIELD}
+              required
               validate={[required]}
               disabled={this.props.isProcessed}
             />
@@ -103,20 +102,22 @@ class MagazineForm extends Component<FormProps> {
         <Row gutter={16}>
           <Col span={12}>
             <Field
-              label="Construction *"
+              label="Construction"
               id={`${field}construction`}
               name={`${field}construction`}
               component={renderConfig.FIELD}
+              required
               validate={[required]}
               disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={12}>
             <Field
-              label={`Quantity ${unit}*`}
+              label={`Quantity ${unit}`}
               id={`${field}quantity`}
               name={`${field}quantity`}
               component={renderConfig.FIELD}
+              required
               validate={[positiveNumber, required]}
               disabled={this.props.isProcessed}
             />
@@ -126,19 +127,21 @@ class MagazineForm extends Component<FormProps> {
         <Row gutter={16}>
           <Col span={12}>
             <Field
-              label="Latitude *"
+              label="Latitude"
               id={`${field}latitude`}
               name={`${field}latitude`}
               component={renderConfig.FIELD}
+              required
               validate={[number, maxLength(10), lat, required]}
               disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={12}>
             <Field
-              label="Longitude *"
+              label="Longitude"
               id={`${field}longitude`}
               name={`${field}longitude`}
+              required
               validate={[number, maxLength(12), lon, lonNegative, required]}
               component={renderConfig.FIELD}
               disabled={this.props.isProcessed}
@@ -149,10 +152,11 @@ class MagazineForm extends Component<FormProps> {
           <Row gutter={16}>
             <Col span={24}>
               <Field
-                label="Type of Detonator*"
+                label="Type of Detonator"
                 id={`${field}detonator_type`}
                 name={`${field}detonator_type`}
                 component={renderConfig.AUTO_SIZE_FIELD}
+                required
                 validate={[required]}
                 disabled={this.props.isProcessed}
               />
@@ -162,20 +166,22 @@ class MagazineForm extends Component<FormProps> {
         <Row gutter={16}>
           <Col span={24}>
             <Field
-              label="Distance from Road or Work Area (m)*"
+              label="Distance from Road or Work Area (m)"
               id={`${field}distance_road`}
               name={`${field}distance_road`}
               component={renderConfig.FIELD}
+              required
               validate={[positiveNumber, required]}
               disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={24}>
             <Field
-              label="Distance from Dwelling or Flammable Material Storage Area (m)*"
+              label="Distance from Dwelling or Flammable Material Storage Area (m)"
               id={`${field}distance_dwelling`}
               name={`${field}distance_dwelling`}
               component={renderConfig.FIELD}
+              required
               validate={[positiveNumber, required]}
               disabled={this.props.isProcessed}
             />
@@ -184,30 +190,33 @@ class MagazineForm extends Component<FormProps> {
         <Row gutter={16}>
           <Col span={8}>
             <Field
-              label="Length (m)*"
+              label="Length (m)"
               id={`${field}length`}
               name={`${field}length`}
               component={renderConfig.FIELD}
+              required
               validate={[positiveNumber, required]}
               disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={8}>
             <Field
-              label="Width (m)*"
+              label="Width (m)"
               id={`${field}width`}
               name={`${field}width`}
               component={renderConfig.FIELD}
+              required
               validate={[positiveNumber, required]}
               disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={8}>
             <Field
-              label="Height (m)*"
+              label="Height (m)"
               id={`${field}height`}
               name={`${field}height`}
               component={renderConfig.FIELD}
+              required
               validate={[positiveNumber, required]}
               disabled={this.props.isProcessed}
             />

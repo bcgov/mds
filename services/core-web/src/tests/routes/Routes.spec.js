@@ -4,7 +4,7 @@ import Routes from "@/routes/Routes";
 
 const props = {};
 
-const setupProps = () => {};
+const setupProps = () => { };
 
 beforeEach(() => {
   setupProps();

@@ -2,15 +2,15 @@ import React from "react";
 import { compose } from "redux";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Field, reduxForm, getFormValues } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Alert, Typography } from "antd";
-import { required } from "@common/utils/Validate";
+import { Field } from "redux-form";
+import { Col, Row, Alert, Typography } from "antd";
+import { required } from "@mds/common/redux/utils/Validate";
 import { resetForm, formatDate } from "@common/utils/helpers";
 import { getDropdownProjectDecisionPackageStatusCodes } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 
 const propTypes = {
   dropdownProjectDecisionPackageStatusCodes: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -21,9 +21,8 @@ const propTypes = {
     projectDecisionPackageStatusCodesHash: PropTypes.objectOf(PropTypes.string),
     documents: PropTypes.arrayOf(PropTypes.any),
   }).isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  pristine: PropTypes.bool.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
 };
 
 const alertText = (status, updateUser, updateDate) => {
@@ -48,14 +47,20 @@ export const UpdateDecisionPackageStatusForm = (props) => {
   const isComplete = props.displayValues.status_code === "CMP";
 
   return (
-    <Form
-      layout="vertical"
-      onSubmit={(e) => {
+    <FormWrapper
+      initialValues={props.initialValues}
+      name={FORM.UPDATE_PROJECT_DECISION_PACKAGE}
+      reduxFormConfig={{
+        onSubmitSuccess: resetForm(FORM.UPDATE_PROJECT_DECISION_PACKAGE),
+        touchOnBlur: false,
+        enableReinitialize: true,
+      }}
+      onSubmit={(values) => {
         const submitPayload = {
-          ...props.formValues,
+          ...values,
           documents: props.displayValues?.documents,
         };
-        return props.handleSubmit(e, submitPayload);
+        return props.onSubmit(submitPayload);
       }}
       onValuesChange
     >
@@ -63,7 +68,7 @@ export const UpdateDecisionPackageStatusForm = (props) => {
         <Alert
           message={
             props.displayValues.projectDecisionPackageStatusCodesHash[
-              props.displayValues?.status_code
+            props.displayValues?.status_code
             ]
           }
           description={
@@ -78,24 +83,19 @@ export const UpdateDecisionPackageStatusForm = (props) => {
                 </p>
               </Col>
               <Col xs={24} md={6}>
-                <Form.Item>
-                  <Field
-                    id="status_code"
-                    name="status_code"
-                    label=""
-                    placeholder="Action"
-                    component={renderConfig.SELECT}
-                    validate={[required]}
-                    data={props.dropdownProjectDecisionPackageStatusCodes}
-                  />
-                </Form.Item>
-                {!props.pristine && (
-                  <div className="right center-mobile">
-                    <Button className="full-mobile" type="primary" htmlType="submit">
-                      Update Status
-                    </Button>
-                  </div>
-                )}
+                <Field
+                  id="status_code"
+                  name="status_code"
+                  label=""
+                  placeholder="Action"
+                  component={renderConfig.SELECT}
+                  required
+                  validate={[required]}
+                  data={props.dropdownProjectDecisionPackageStatusCodes}
+                />
+                <div className="right center-mobile">
+                  <RenderSubmitButton />
+                </div>
               </Col>
             </Row>
           }
@@ -103,7 +103,7 @@ export const UpdateDecisionPackageStatusForm = (props) => {
           showIcon
         />
       </Col>
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -111,13 +111,6 @@ UpdateDecisionPackageStatusForm.propTypes = propTypes;
 
 export default compose(
   connect((state) => ({
-    formValues: getFormValues(FORM.UPDATE_PROJECT_DECISION_PACKAGE)(state) || {},
     dropdownProjectDecisionPackageStatusCodes: getDropdownProjectDecisionPackageStatusCodes(state),
-  })),
-  reduxForm({
-    form: FORM.UPDATE_PROJECT_DECISION_PACKAGE,
-    onSubmitSuccess: resetForm(FORM.UPDATE_PROJECT_DECISION_PACKAGE),
-    touchOnBlur: false,
-    enableReinitialize: true,
-  })
+  }))
 )(UpdateDecisionPackageStatusForm);

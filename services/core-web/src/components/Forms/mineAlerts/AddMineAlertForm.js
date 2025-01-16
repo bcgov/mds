@@ -1,10 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm, getFormValues } from "redux-form";
+import { Field, getFormValues } from "redux-form";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Form } from "@ant-design/compatible";
-import { Button, Col, Row, Popconfirm, Typography } from "antd";
+import { Col, Row, Typography } from "antd";
 import {
   required,
   dateNotBeforeOther,
@@ -13,16 +12,18 @@ import {
   phoneNumber,
   alertStartDateNotBeforeHistoric,
   alertNotInFutureIfCurrentActive,
-} from "@common/utils/Validate";
-import { resetForm, normalizePhone } from "@common/utils/helpers";
+} from "@mds/common/redux/utils/Validate";
+import { normalizePhone } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   formValues: PropTypes.objectOf(PropTypes.any),
   title: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
@@ -42,22 +43,30 @@ export const AddMineAlertForm = (props) => {
   const startDateValidation = () => {
     return formValues?.mine_alert_guid
       ? [
-          required,
-          dateNotAfterOther(props.formValues.stop_date),
-          alertStartDateNotBeforeHistoric(mineAlerts),
-        ]
+        required,
+        dateNotAfterOther(props.formValues.stop_date),
+        alertStartDateNotBeforeHistoric(mineAlerts),
+      ]
       : [
-          required,
-          dateNotAfterOther(props.formValues.stop_date),
-          alertStartDateNotBeforeHistoric(mineAlerts),
-          dateNotBeforeOther(activeMineAlert.start_date),
-          alertNotInFutureIfCurrentActive(activeMineAlert),
-        ];
+        required,
+        dateNotAfterOther(props.formValues.stop_date),
+        alertStartDateNotBeforeHistoric(mineAlerts),
+        dateNotBeforeOther(activeMineAlert.start_date),
+        alertNotInFutureIfCurrentActive(activeMineAlert),
+      ];
   };
 
   return (
     <div>
-      <Form layout="vertical" onSubmit={props.handleSubmit}>
+      <FormWrapper
+        name={FORM.ADD_EDIT_MINE_ALERT}
+        isModal
+        reduxFormConfig={{
+          touchOnBlur: false,
+          enableReinitialize: true,
+        }}
+        onSubmit={props.onSubmit}
+        initialValues={props.initialValues}>
         <Typography.Paragraph>
           <Typography.Text>{text}</Typography.Text>
         </Typography.Paragraph>
@@ -67,94 +76,70 @@ export const AddMineAlertForm = (props) => {
         </Typography.Paragraph>
         <Row gutter={16}>
           <Col md={12} xs={24}>
-            <Form.Item>
-              <Field
-                id="contact_name"
-                name="contact_name"
-                label="Contact Name"
-                component={renderConfig.FIELD}
-                validate={[required, maxLength(200)]}
-              />
-            </Form.Item>
+            <Field
+              id="contact_name"
+              name="contact_name"
+              label="Contact Name"
+              component={renderConfig.FIELD}
+              required
+              validate={[required, maxLength(200)]}
+            />
           </Col>
           <Col md={12} xs={24}>
-            <Form.Item>
-              <Field
-                id="contact_phone"
-                name="contact_phone"
-                label="Contact Number"
-                component={renderConfig.FIELD}
-                validate={[required, phoneNumber, maxLength(12)]}
-                normalize={normalizePhone}
-              />
-            </Form.Item>
+            <Field
+              id="contact_phone"
+              name="contact_phone"
+              label="Contact Number"
+              component={renderConfig.FIELD}
+              required
+              validate={[required, phoneNumber, maxLength(12)]}
+              normalize={normalizePhone}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={24}>
-            <Form.Item>
-              <Field
-                id="message"
-                name="message"
-                label="Message"
-                component={renderConfig.AUTO_SIZE_FIELD}
-                validate={[required, maxLength(300)]}
-                maximumCharacters={300}
-              />
-            </Form.Item>
+            <Field
+              id="message"
+              name="message"
+              label="Message"
+              component={renderConfig.AUTO_SIZE_FIELD}
+              required
+              validate={[required, maxLength(300)]}
+              maximumCharacters={300}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item>
-              <Field
-                id="start_date"
-                name="start_date"
-                label="Start Date"
-                placeholder="Select Date"
-                component={renderConfig.DATE}
-                validate={startDateValidation()}
-                format={null}
-              />
-            </Form.Item>
+            <Field
+              id="start_date"
+              name="start_date"
+              label="Start Date"
+              placeholder="Select Date"
+              component={renderConfig.DATE}
+              required
+              validate={startDateValidation()}
+              format={null}
+            />
           </Col>
           <Col span={12}>
-            <Form.Item>
-              <Field
-                id="end_date"
-                name="end_date"
-                label="Expiry Date (optional)"
-                placeholder="Select Date"
-                component={renderConfig.DATE}
-                validate={[dateNotBeforeOther(props.formValues.start_date)]}
-                format={null}
-              />
-            </Form.Item>
+            <Field
+              id="end_date"
+              name="end_date"
+              label="Expiry Date"
+              placeholder="Select Date"
+              component={renderConfig.DATE}
+              validate={[dateNotBeforeOther(props.formValues.start_date)]}
+              format={null}
+            />
           </Col>
         </Row>
         <div className="right center-mobile">
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            loading={props.submitting}
-          >
-            {title}
-          </Button>
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            onConfirm={props.closeModal}
-            okText="Yes"
-            cancelText="No"
-            disabled={props.submitting}
-          >
-            <Button className="full-mobile" type="secondary" disabled={props.submitting}>
-              Cancel
-            </Button>
-          </Popconfirm>
+          <RenderCancelButton />
+          <RenderSubmitButton buttonText={title} />
         </div>
-      </Form>
+      </FormWrapper>
     </div>
   );
 };
@@ -165,11 +150,5 @@ AddMineAlertForm.defaultProps = defaultProps;
 export default compose(
   connect((state) => ({
     formValues: getFormValues(FORM.ADD_EDIT_MINE_ALERT)(state) || {},
-  })),
-  reduxForm({
-    form: FORM.ADD_EDIT_MINE_ALERT,
-    onSubmitSuccess: resetForm(FORM.ADD_EDIT_MINE_ALERT),
-    touchOnBlur: false,
-    enableReinitialize: true,
-  })
+  }))
 )(AddMineAlertForm);

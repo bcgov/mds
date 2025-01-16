@@ -3,16 +3,13 @@ import { Link, useHistory, useParams, withRouter } from "react-router-dom";
 import React, { FC, useEffect, useState } from "react";
 import { bindActionCreators, compose } from "redux";
 import { createDam, updateDam } from "@mds/common/redux/actionCreators/damActionCreator";
-import { getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm, submit } from "redux-form";
-
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
-import Step from "@common/components/Step";
-import SteppedForm from "@common/components/SteppedForm";
+import SteppedForm from "@mds/common/components/forms/SteppedForm";
+import Step from "@mds/common/components/forms/Step";
 import { connect } from "react-redux";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getDam } from "@mds/common/redux/selectors/damSelectors";
 import { getTsf } from "@mds/common/redux/selectors/tailingsSelectors";
-import { resetForm } from "@common/utils/helpers";
 import { storeDam } from "@mds/common/redux/actions/damActions";
 import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
@@ -31,18 +28,15 @@ interface DamsPageProps {
   storeTsf: typeof storeTsf;
   storeDam: typeof storeDam;
   fetchMineRecordById: ActionCreator<typeof fetchMineRecordById>;
-  formValues: IDam;
-  formErrors: any;
-  submit: () => void;
   createDam: ActionCreator<typeof createDam>;
   updateDam: ActionCreator<typeof updateDam>;
   initialValues: IDam;
   userRoles: string[];
 }
 
-const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
+const DamsPage: React.FC<DamsPageProps> = (props) => {
   const history = useHistory();
-  const { tsf, formValues, formErrors, initialValues } = props;
+  const { tsf, initialValues } = props;
   const { tailingsStorageFacilityGuid, damGuid, mineGuid, parentTSFFormMode, userAction } =
     useParams<{
       tailingsStorageFacilityGuid: string;
@@ -92,17 +86,13 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
     handleBack();
   };
 
-  const handleSave = async () => {
-    if (Object.keys(formErrors).length > 0) {
-      props.submit();
-      return;
-    }
+  const handleSave = async (values, newActiveTab) => {
     if (damGuid) {
-      const updatedDam = await props.updateDam(damGuid, formValues);
+      const updatedDam = await props.updateDam(damGuid, values);
       handleCompleteSubmit(updatedDam.data);
     } else {
       const newDam = await props.createDam({
-        ...formValues,
+        ...values,
         mine_tailings_storage_facility_guid: tailingsStorageFacilityGuid,
       });
       handleCompleteSubmit(newDam.data);
@@ -142,7 +132,8 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
       </Row>
       <Divider />
       <SteppedForm
-        errors={[]}
+        initialValues={initialValues}
+        name={ADD_EDIT_DAM}
         handleSaveData={handleSave}
         handleTabChange={() => { }}
         activeTab="basic-dam-information"
@@ -151,6 +142,11 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
         cancelConfirmMessage={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
           } dam?
         All unsaved data on this page will be lost.`}
+        reduxFormConfig={{
+          touchOnBlur: true,
+          destroyOnUnmount: true,
+          enableReinitialize: true,
+        }}
       >
         {[
           <Step key="basic-dam-information">
@@ -171,26 +167,12 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
 const mapStateToProps = (state: RootState) => ({
   initialValues: getDam(state),
   tsf: getTsf(state),
-  formValues: getFormValues(ADD_EDIT_DAM)(state),
-  formErrors: getFormSyncErrors(ADD_EDIT_DAM)(state),
   userRoles: getUserAccessData(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    { createDam, updateDam, fetchMineRecordById, storeTsf, storeDam, submit },
-    dispatch
-  );
+  bindActionCreators({ createDam, updateDam, fetchMineRecordById, storeTsf, storeDam }, dispatch);
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: ADD_EDIT_DAM,
-    touchOnBlur: true,
-    destroyOnUnmount: true,
-    enableReinitialize: true,
-    onSubmit: () => {
-      resetForm(ADD_EDIT_DAM);
-    },
-  })
-)(withRouter(FeatureFlagGuard(Feature.TSF_V2)(DamsPage)) as any) as FC<DamsPageProps>;
+export default compose(connect(mapStateToProps, mapDispatchToProps))(
+  withRouter(FeatureFlagGuard(Feature.TSF_V2)(DamsPage)) as any
+) as FC<DamsPageProps>;

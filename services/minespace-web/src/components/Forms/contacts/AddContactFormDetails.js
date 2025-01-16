@@ -6,32 +6,25 @@ import {
 } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import { getParties } from "@mds/common/redux/selectors/partiesSelectors";
 import { compose, bindActionCreators } from "redux";
-import { Field, reduxForm, initialize, isDirty, reset, getFormValues, change } from "redux-form";
+import { Field, isDirty, getFormValues, change } from "redux-form";
 import { connect } from "react-redux";
 import { Col, Row, Typography, Popconfirm, Button, Divider } from "antd";
-import { Form } from "@ant-design/compatible";
 import { debounce } from "lodash";
 import { getPartyRelationshipTypesList } from "@mds/common/redux/selectors/staticContentSelectors";
 
-import {
-  required,
-  email,
-  phoneNumber,
-  validateSelectOptions,
-  maxLength,
-} from "@common/utils/Validate";
+import { required, email, phoneNumber, maxLength } from "@mds/common/redux/utils/Validate";
 import { normalizePhone } from "@common/utils/helpers";
 import PropTypes from "prop-types";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { party as PartyPropType, partyRelationshipType } from "@/customPropTypes/parties";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   createParty: PropTypes.func.isRequired,
   updateParty: PropTypes.func.isRequired,
   fetchParties: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
   handleSelectChange: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
@@ -40,8 +33,6 @@ const propTypes = {
   organizations: PropTypes.arrayOf(PartyPropType).isRequired,
   contacts: PropTypes.arrayOf(PartyPropType),
   partyRelationshipTypesList: PropTypes.arrayOf(partyRelationshipType).isRequired,
-
-  // eslint-disable-next-line react/no-unused-prop-types
   initialValues: PropTypes.objectOf(PartyPropType).isRequired,
 };
 
@@ -121,7 +112,17 @@ export const AddContactFormDetails = (props) => {
   };
 
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit(onSubmit)}>
+    <FormWrapper
+      initialValues={props.initialValues}
+      name={FORM.ADD_CONTACT}
+      onSubmit={onSubmit}
+      reduxFormConfig={{
+        destroyOnUnmount: true,
+        forceUnregisterOnUnmount: true,
+        enableReinitialize: true,
+        touchOnBlur: true,
+      }}
+    >
       <Row gutter={16}>
         <Col span={24}>
           <Typography.Paragraph>
@@ -130,17 +131,15 @@ export const AddContactFormDetails = (props) => {
           </Typography.Paragraph>
         </Col>
         <Col span={12}>
-          <Form.Item label="Select Contact">
-            <Field
-              id="party_guid"
-              name="party_guid"
-              placeholder="Select a contact"
-              component={renderConfig.SELECT}
-              onChange={props.handleSelectChange}
-              data={props.contacts}
-              validate={[validateSelectOptions(props.contacts, true)]}
-            />
-          </Form.Item>
+          <Field
+            label="Select Contact"
+            id="party_guid"
+            name="party_guid"
+            placeholder="Select a contact"
+            component={renderConfig.SELECT}
+            onChange={props.handleSelectChange}
+            data={props.contacts}
+          />
         </Col>
         <Col span={24}>
           <Divider plain style={{ marginTop: 0 }} />
@@ -157,86 +156,82 @@ export const AddContactFormDetails = (props) => {
           </Typography.Paragraph>
         </Col>
         <Col span={12}>
-          <Form.Item label="First Name">
-            <Field
-              id="first_name"
-              name="first_name"
-              placeholder="First Name"
-              component={renderConfig.FIELD}
-              validate={[required, maxLength(200)]}
-            />
-          </Form.Item>
+          <Field
+            label="First Name"
+            id="first_name"
+            name="first_name"
+            placeholder="First Name"
+            component={renderConfig.FIELD}
+            required
+            validate={[required, maxLength(200)]}
+          />
         </Col>
         <Col span={12}>
-          <Form.Item label="Last Name">
-            <Field
-              id="party_name"
-              name="party_name"
-              placeholder="Last Name"
-              component={renderConfig.FIELD}
-              validate={[required, maxLength(200)]}
-            />
-          </Form.Item>
+          <Field
+            label="Last Name"
+            id="party_name"
+            name="party_name"
+            placeholder="Last Name"
+            component={renderConfig.FIELD}
+            required
+            validate={[required, maxLength(200)]}
+          />
         </Col>
         <Col span={12}>
-          <Form.Item label="Job Title (optional)">
-            <Field
-              id="job_title_code"
-              name="job_title_code"
-              placeholder="Select a job title"
-              onChange={handleSelectChange}
-              component={renderConfig.SELECT}
-              data={props.partyRelationshipTypesList}
-              validate={[validateSelectOptions(props.partyRelationshipTypesList)]}
-            />
-          </Form.Item>
+          <Field
+            label="Job Title"
+            id="job_title_code"
+            name="job_title_code"
+            placeholder="Select a job title"
+            onChange={handleSelectChange}
+            component={renderConfig.SELECT}
+            data={props.partyRelationshipTypesList}
+          />
         </Col>
         <Col span={12}>
-          <Form.Item label="Company Affiliation (optional)">
-            <Field
-              id="organization_guid"
-              name="organization_guid"
-              onChange={handleSelectChange}
-              component={renderConfig.AUTOCOMPLETE}
-              placeholder="Search organizations"
-              data={transformOrganizations(props.organizations)}
-              handleChange={searchOrganizations}
-            />
-          </Form.Item>
+          <Field
+            label="Company Affiliation"
+            id="organization_guid"
+            name="organization_guid"
+            onChange={handleSelectChange}
+            component={renderConfig.AUTOCOMPLETE}
+            placeholder="Search organizations"
+            data={transformOrganizations(props.organizations)}
+            handleChange={searchOrganizations}
+          />
         </Col>
 
         <Col span={12}>
-          <Form.Item label="Email">
-            <Field
-              id="email"
-              name="email"
-              component={renderConfig.FIELD}
-              placeholder="example@example.com"
-              validate={[email, required]}
-            />
-          </Form.Item>
+          <Field
+            label="Email"
+            id="email"
+            name="email"
+            component={renderConfig.FIELD}
+            placeholder="example@example.com"
+            required
+            validate={[email, required]}
+          />
         </Col>
         <Col span={8}>
-          <Form.Item label="Phone Number">
-            <Field
-              name="phone_no"
-              id="phone_no"
-              placeholder="XXX-XXX-XXXX"
-              component={renderConfig.FIELD}
-              validate={[required, phoneNumber, maxLength(12)]}
-              normalize={normalizePhone}
-            />
-          </Form.Item>
+          <Field
+            label="Phone Number"
+            name="phone_no"
+            id="phone_no"
+            placeholder="XXX-XXX-XXXX"
+            component={renderConfig.FIELD}
+            required
+            validate={[required, phoneNumber, maxLength(12)]}
+            normalize={normalizePhone}
+          />
         </Col>
         <Col span={4}>
-          <Form.Item label="Ext. (optional)">
-            <Field
-              name="phone_ext"
-              id="phone_ext"
-              component={renderConfig.FIELD}
-              validate={[maxLength(6)]}
-            />
-          </Form.Item>
+          <Field
+            label="Ext."
+            name="phone_ext"
+            id="phone_ext"
+            component={renderConfig.FIELD}
+            validate={[maxLength(6)]}
+          />
         </Col>
       </Row>
       <Row justify="space-between">
@@ -255,7 +250,7 @@ export const AddContactFormDetails = (props) => {
           {getSubmitText()}
         </Button>
       </Row>
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -268,8 +263,6 @@ const mapDispatchToProps = (dispatch) =>
       createParty,
       updateParty,
       fetchParties: (...args) => debounce(() => dispatch(fetchParties(...args)), 1000),
-      initialize: (data) => initialize(FORM.ADD_CONTACT, data),
-      reset,
       change,
     },
     dispatch
@@ -282,13 +275,4 @@ const mapStateToProps = (state) => ({
   organizations: getParties(state),
 });
 
-export default compose(
-  reduxForm({
-    form: FORM.ADD_CONTACT,
-    destroyOnUnmount: true,
-    forceUnregisterOnUnmount: true,
-    enableReinitialize: true,
-    touchOnBlur: true,
-  }),
-  connect(mapStateToProps, mapDispatchToProps)
-)(AddContactFormDetails);
+export default compose(connect(mapStateToProps, mapDispatchToProps))(AddContactFormDetails);

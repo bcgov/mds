@@ -28,7 +28,7 @@ exports[`UpdateStatusGenerateLetterModal renders properly 1`] = `
   </Steps>
   <br />
   <div>
-    <Connect(ReduxForm)
+    <Connect(GenerateDocumentForm)
       additionalTitle="and Process"
       allowDocx={true}
       closeModal={[MockFunction]}

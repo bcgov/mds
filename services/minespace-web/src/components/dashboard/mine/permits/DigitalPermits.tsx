@@ -20,7 +20,7 @@ interface DigitalPermitsProps {
   fetchExplosivesPermits: ActionCreator<typeof fetchExplosivesPermits>;
   openModal: (payload) => any;
 }
-export const Permits: FC<DigitalPermitsProps> = ({
+export const DigitalPermits: FC<DigitalPermitsProps> = ({
   mine,
   permits,
   explosivesPermits,
@@ -167,4 +167,4 @@ const mapDispatchToProps = {
   openModal,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Permits);
+export default connect(mapStateToProps, mapDispatchToProps)(DigitalPermits);

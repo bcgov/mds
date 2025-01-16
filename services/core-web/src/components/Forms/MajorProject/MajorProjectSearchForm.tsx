@@ -1,35 +1,44 @@
 import React, { FC } from "react";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
-import { Field, reduxForm } from "redux-form";
-import { Button, Col, Row, Form } from "antd";
-
+import { Field } from "redux-form";
+import { Button, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderDate from "@mds/common/components/forms/RenderDate";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderResetButton from "@mds/common/components/forms/RenderResetButton";
 
 interface MajorProjectsSearchFormProps {
-  handleSubmit: (params: any) => void;
+  onSubmit: (params: any) => void;
   toggleAdvancedSearch: () => void;
   handleReset: () => void;
-  reset: any;
   isAdvanceSearch: boolean;
+  initialValues: any;
 }
 
-
 export const MajorProjectsSearchForm: FC<MajorProjectsSearchFormProps> = ({
-  handleSubmit,
+  onSubmit,
   toggleAdvancedSearch,
   handleReset,
-  reset,
   isAdvanceSearch,
+  initialValues
 }) => {
+
   const handleSearchFormReset = () => {
-    reset();
     handleReset();
   };
 
   return (
-    <Form layout="vertical" onReset={handleSearchFormReset}>
+    <FormWrapper
+      initialValues={initialValues}
+      name={FORM.MAJOR_MINE_APPLICATION_ADVANCED_SEARCH}
+      reduxFormConfig={{
+        touchOnBlur: false,
+        enableReinitialize: true,
+      }}
+      onSubmit={onSubmit}
+      onReset={handleSearchFormReset}
+    >
       <Row gutter={6}>
         <Col md={24} xs={24}>
           <Field
@@ -53,7 +62,7 @@ export const MajorProjectsSearchForm: FC<MajorProjectsSearchFormProps> = ({
               <Field
                 id="project_lead_name"
                 name="project_lead_name"
-                placeholder="Search by EMLI project lead"
+                placeholder="Search by MCM project lead"
                 component={RenderField}
               />
             </Col>
@@ -68,20 +77,13 @@ export const MajorProjectsSearchForm: FC<MajorProjectsSearchFormProps> = ({
       </div>
 
       <div className="right center-mobile">
-        {/* @ts-ignore */}
-        <Button className="full-mobile" type="secondary" htmlType="reset">
-          Clear Filters
-        </Button>
-        <Button className="full-mobile" type="primary" htmlType="submit" onClick={handleSubmit}>
+        <RenderResetButton buttonText="Clear Filters" className="full-mobile" />
+        <Button className="full-mobile" type="primary" htmlType="submit">
           Apply Filters
         </Button>
       </div>
-    </Form>
+    </FormWrapper>
   );
 }
 
-export default reduxForm({
-  form: FORM.MAJOR_MINE_APPLICATION_ADVANCED_SEARCH,
-  touchOnBlur: false,
-  enableReinitialize: true,
-})(MajorProjectsSearchForm as any)
+export default MajorProjectsSearchForm;

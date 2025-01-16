@@ -31,7 +31,8 @@ exports[`ReportsHomePage renders properly 1`] = `
                 class="advanced-search__container"
               >
                 <form
-                  class="ant-form ant-form-vertical"
+                  class="ant-form ant-form-vertical common-form common-form-REPORT_ADVANCED_SEARCH form-edit"
+                  id="REPORT_ADVANCED_SEARCH"
                 >
                   <div
                     class="ant-row"
@@ -42,26 +43,25 @@ exports[`ReportsHomePage renders properly 1`] = `
                       style="padding-left: 3px; padding-right: 3px;"
                     >
                       <div
-                        class="ant-row ant-legacy-form-item"
+                        class="ant-form-item ant-form-item-with-help"
                       >
                         <div
-                          class="ant-col ant-legacy-form-item-control-wrapper"
+                          class="ant-row ant-form-item-row"
                         >
                           <div
-                            class="ant-legacy-form-item-control"
+                            class="ant-col ant-form-item-control"
                           >
-                            <span
-                              class="ant-legacy-form-item-children"
+                            <div
+                              class="ant-form-item-control-input"
                             >
                               <div
-                                class="inline-flex"
-                                style="flex-direction: column;"
+                                class="ant-form-item-control-input-content"
                               >
-                                
                                 <span
                                   class="ant-input-affix-wrapper"
                                 >
                                   <input
+                                    aria-label="search"
                                     class="ant-input"
                                     id="search"
                                     name="search"
@@ -100,9 +100,21 @@ exports[`ReportsHomePage renders properly 1`] = `
                                     </span>
                                   </span>
                                 </span>
-                                
                               </div>
-                            </span>
+                            </div>
+                            <div
+                              style="display: flex; flex-wrap: nowrap;"
+                            >
+                              <div
+                                class="ant-form-item-explain ant-form-item-explain-connected"
+                                id="REPORT_ADVANCED_SEARCH_search_help"
+                                role="alert"
+                              >
+                                <div
+                                  class=""
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -144,7 +156,7 @@ exports[`ReportsHomePage renders properly 1`] = `
                     class="right center-mobile"
                   >
                     <button
-                      class="ant-btn ant-btn-secondary full-mobile"
+                      class="ant-btn ant-btn-default full-mobile"
                       type="reset"
                     >
                       <span>

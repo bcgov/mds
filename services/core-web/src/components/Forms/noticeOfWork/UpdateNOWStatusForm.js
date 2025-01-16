@@ -1,20 +1,20 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
+import { Field } from "redux-form";
 import { Popconfirm, Button } from "antd";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import PropTypes from "prop-types";
-import { required } from "@common/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { resetForm } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   dropdownNoticeOfWorkApplicationStatusOptions: CustomPropTypes.options.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   closeModal: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
@@ -23,21 +23,27 @@ const propTypes = {
 const UpdateNOWStatusForm = (props) => {
   return (
     <div>
-      <Form layout="vertical" onSubmit={props.handleSubmit}>
-        <Form.Item>
-          <Field
-            id="now_application_status_code"
-            name="now_application_status_code"
-            label="Previous Status*"
-            component={renderConfig.SELECT}
-            placeholder="Select the status"
-            validate={[required]}
-            data={props.dropdownNoticeOfWorkApplicationStatusOptions.filter(
-              ({ value }) => value !== "AIA"
-            )}
-            disabled
-          />
-        </Form.Item>
+      <FormWrapper
+        name={FORM.UPDATE_NOW_STATUS}
+        reduxFormConfig={{
+          touchOnBlur: false,
+          onSubmitSuccess: resetForm(FORM.UPDATE_NOW_STATUS),
+        }}
+        initialValues={props.initialValues}
+        onSubmit={props.onSubmit}>
+        <Field
+          id="now_application_status_code"
+          name="now_application_status_code"
+          label="Previous Status"
+          component={renderConfig.SELECT}
+          placeholder="Select the status"
+          required
+          validate={[required]}
+          data={props.dropdownNoticeOfWorkApplicationStatusOptions.filter(
+            ({ value }) => value !== "AIA"
+          )}
+          disabled
+        />
         <div className="right center-mobile">
           <Popconfirm
             placement="topRight"
@@ -61,15 +67,11 @@ const UpdateNOWStatusForm = (props) => {
             </Button>
           </AuthorizationWrapper>
         </div>
-      </Form>
+      </FormWrapper>
     </div>
   );
 };
 
 UpdateNOWStatusForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.UPDATE_NOW_STATUS,
-  touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.UPDATE_NOW_STATUS),
-})(UpdateNOWStatusForm);
+export default UpdateNOWStatusForm;

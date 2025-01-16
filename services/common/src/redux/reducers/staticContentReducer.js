@@ -56,7 +56,7 @@ const initialState = {
   explosivesPermitStatus: [],
   explosivesPermitDocumentType: [],
   explosivesPermitMagazineType: [],
-  EMLIContactTypes: [],
+  MinistryContactTypes: [],
   projectSummaryAuthorizationTypes: [],
   projectSummaryPermitTypes: [],
   projectDecisionPackageStatusCodes: [],
@@ -165,7 +165,7 @@ export const getExplosivesPermitDocumentType = (state) =>
 export const getExplosivesPermitStatus = (state) => state[STATIC_CONTENT].explosivesPermitStatus;
 export const getExplosivesPermitMagazineType = (state) =>
   state[STATIC_CONTENT].explosivesPermitMagazineType;
-export const getEMLIContactTypes = (state) => state[STATIC_CONTENT].EMLIContactTypes;
+export const getMinistryContactTypes = (state) => state[STATIC_CONTENT].MinistryContactTypes;
 export const getProjectSummaryAuthorizationTypes = (state) =>
   state[STATIC_CONTENT].projectSummaryAuthorizationTypes;
 export const getProjectSummaryPermitTypes = (state) =>

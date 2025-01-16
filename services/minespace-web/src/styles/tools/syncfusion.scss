@@ -41,7 +41,8 @@ $error-font: $error-color; //#f44336;
 }
 
 #pdfviewer-container_fileUploadElement,
-#pdfviewer-container_annotationContainer {
+#pdfviewer-container_annotationContainer,
+#preview-permit-amendment-pdf_fileUploadElement {
   display: none;
 }
 

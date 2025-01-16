@@ -15,7 +15,7 @@ exports[`Project Management renders properly 1`] = `
       <h3
         class="ant-typography color-primary"
       >
-        EMLI Status
+        MCM Status
       </h3>
       <h4
         class="ant-typography"

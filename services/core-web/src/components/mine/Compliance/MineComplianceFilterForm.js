@@ -1,30 +1,32 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field } from "redux-form";
 import { Button, Col, Row } from "antd";
 import { compareCodes } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderResetButton from "@mds/common/components/forms/RenderResetButton";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  reset: PropTypes.func.isRequired,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
 export class MineComplianceFilterForm extends Component {
   handleReset = () => {
-    this.props.reset();
     this.props.onSubmit();
   };
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
+      <FormWrapper
+        name={FORM.MINE_COMPLIANCE_FILTER}
+        reduxFormConfig={{
+          touchOnBlur: false,
+        }}
+        onSubmit={this.props.onSubmit} onReset={this.handleReset}>
         <div>
           <Row gutter={6}>
             <Col md={8} xs={24} sm={12}>
@@ -95,21 +97,16 @@ export class MineComplianceFilterForm extends Component {
           </Row>
         </div>
         <div className="right center-mobile">
-          <Button className="full-mobile" type="secondary" htmlType="reset">
-            Clear Filters
-          </Button>
+          <RenderResetButton buttonText="Clear Filters" className="full-mobile" />
           <Button className="full-mobile" type="primary" htmlType="submit">
             Apply Filters
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
 
 MineComplianceFilterForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.MINE_COMPLIANCE_FILTER,
-  touchOnBlur: false,
-})(MineComplianceFilterForm);
+export default MineComplianceFilterForm;

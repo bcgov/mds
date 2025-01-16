@@ -2,7 +2,7 @@
 
 exports[`ChangeNOWMineModal renders properly 1`] = `
 <div>
-  <Connect(ReduxForm)
+  <ChangeNOWMineForm
     fetchMineNameList={[MockFunction]}
     fetchMineRecordById={[MockFunction]}
     mineNameList={

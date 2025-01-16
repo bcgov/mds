@@ -1,11 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`IncidentForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  name="ADD_EDIT_INCIDENT"
   onSubmit={[Function]}
+  reduxFormConfig={
+    Object {
+      "enableReinitialize": true,
+      "touchOnBlur": true,
+      "touchOnChange": true,
+    }
+  }
 >
   <Row>
     <Col>
@@ -55,95 +60,82 @@ exports[`IncidentForm renders properly 1`] = `
           md={10}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="reported_by_name"
             label="Reported by"
-          >
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="reported_by_name"
-              name="reported_by_name"
-              placeholder="Enter name of reporter"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
+            name="reported_by_name"
+            placeholder="Enter name of reporter"
+            required={true}
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
         </Col>
         <Col
           md={10}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="reported_by_phone_no"
             label="Phone number"
-          >
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="reported_by_phone_no"
-              name="reported_by_phone_no"
-              normalize={[Function]}
-              placeholder="xxx-xxx-xxxx"
-              validate={
-                Array [
-                  [Function],
-                  [Function],
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
+            name="reported_by_phone_no"
+            normalize={[Function]}
+            placeholder="xxx-xxx-xxxx"
+            required={true}
+            validate={
+              Array [
+                [Function],
+                [Function],
+                [Function],
+              ]
+            }
+          />
         </Col>
         <Col
           md={4}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
-            label="Ext. (optional)"
-          >
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="reported_by_phone_ext"
-              name="reported_by_phone_ext"
-              placeholder="xxxxxx"
-              validate={
-                Array [
-                  [Function],
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="reported_by_phone_ext"
+            label="Ext."
+            name="reported_by_phone_ext"
+            placeholder="xxxxxx"
+            validate={
+              Array [
+                [Function],
+                [Function],
+              ]
+            }
+          />
         </Col>
         <Col
           md={10}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
-            label="* Email"
-          >
-            <Field
-              blockLabelText="Notification of record creation and updates will be sent to this address"
-              component={[Function]}
-              disabled={true}
-              id="reported_by_email"
-              name="reported_by_email"
-              placeholder="example@domain.com"
-              validate={
-                Array [
-                  [Function],
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
+          <Field
+            blockLabelText="Notification of record creation and updates will be sent to this address"
+            component={[Function]}
+            disabled={true}
+            id="reported_by_email"
+            label="Email"
+            name="reported_by_email"
+            placeholder="example@domain.com"
+            required={true}
+            validate={
+              Array [
+                [Function],
+                [Function],
+              ]
+            }
+          />
         </Col>
       </Row>
       <br />
@@ -170,223 +162,190 @@ exports[`IncidentForm renders properly 1`] = `
         <Col
           span={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <Field
+            component={[Function]}
+            customOptions={
+              Array [
+                Object {
+                  "label": "Surface",
+                  "value": "surface",
+                },
+                Object {
+                  "label": "Underground",
+                  "value": "underground",
+                },
+                Object {
+                  "label": "Not Specified",
+                  "value": "",
+                },
+              ]
+            }
+            disabled={true}
+            id="incident_location"
             label="Incident Location"
-          >
-            <Field
-              component={[Function]}
-              customOptions={
-                Array [
-                  Object {
-                    "label": "Surface",
-                    "value": "surface",
-                  },
-                  Object {
-                    "label": "Underground",
-                    "value": "underground",
-                  },
-                  Object {
-                    "label": "Not Specified",
-                    "value": "",
-                  },
-                ]
-              }
-              disabled={true}
-              id="incident_location"
-              name="incident_location"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
+            name="incident_location"
+            required={true}
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <Field
+            component={
+              Object {
+                "$$typeof": Symbol(react.memo),
+                "WrappedComponent": [Function],
+                "compare": null,
+                "displayName": "Connect(RenderDateTimeTz)",
+                "type": [Function],
+              }
+            }
+            disabled={true}
+            id="incident_timestamp"
             label="Incident date and time"
-          >
-            <Field
-              component={
-                Object {
-                  "$$typeof": Symbol(react.memo),
-                  "WrappedComponent": [Function],
-                  "compare": null,
-                  "displayName": "Connect(RenderDateTimeTz)",
-                  "type": [Function],
-                }
+            name="incident_timestamp"
+            normalize={[Function]}
+            props={
+              Object {
+                "timezoneFieldProps": Object {
+                  "name": "incident_timezone",
+                },
               }
-              disabled={true}
-              id="incident_timestamp"
-              name="incident_timestamp"
-              normalize={[Function]}
-              props={
-                Object {
-                  "timezoneFieldProps": Object {
-                    "name": "incident_timezone",
-                  },
-                }
-              }
-              validate={
-                Array [
-                  [Function],
-                  [Function],
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
+            }
+            required={true}
+            validate={
+              Array [
+                [Function],
+                [Function],
+                [Function],
+              ]
+            }
+          />
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
-            label="Proponent incident number (optional)"
-          >
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="proponent_incident_no"
-              name="proponent_incident_no"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="proponent_incident_no"
+            label="Proponent incident number"
+            name="proponent_incident_no"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
-            label="Number of injuries (optional)"
-          >
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="number_of_injuries"
-              name="number_of_injuries"
-              validate={
-                Array [
-                  [Function],
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="number_of_injuries"
+            label="Number of injuries"
+            name="number_of_injuries"
+            validate={
+              Array [
+                [Function],
+                [Function],
+              ]
+            }
+          />
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
-            label="Number of fatalities (optional)"
-          >
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="number_of_fatalities"
-              name="number_of_fatalities"
-              validate={
-                Array [
-                  [Function],
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="number_of_fatalities"
+            label="Number of fatalities"
+            name="number_of_fatalities"
+            validate={
+              Array [
+                [Function],
+                [Function],
+              ]
+            }
+          />
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
-            label="Were emergency services called? (optional)"
-          >
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="emergency_services_called"
-              name="emergency_services_called"
-              placeholder="Please choose one"
-            />
-          </FormItem>
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="emergency_services_called"
+            label="Were emergency services called?"
+            name="emergency_services_called"
+            placeholder="Please choose one"
+          />
         </Col>
         <Col
           span={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="incident_description"
             label="Description of incident"
-          >
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="incident_description"
-              name="incident_description"
-              placeholder="Provide a detailed description of the incident"
-              validate={
-                Array [
-                  [Function],
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
+            name="incident_description"
+            placeholder="Provide a detailed description of the incident"
+            required={true}
+            validate={
+              Array [
+                [Function],
+                [Function],
+              ]
+            }
+          />
         </Col>
         <Col
           span={24}
         >
-          <FormItem
-            hasFeedback={false}
-            label="Immediate measures taken (optional)"
-          >
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="immediate_measures_taken"
-              name="immediate_measures_taken"
-              placeholder="Provide a detailed description of any immediate measures taken"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="immediate_measures_taken"
+            label="Immediate measures taken"
+            name="immediate_measures_taken"
+            placeholder="Provide a detailed description of any immediate measures taken"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
         </Col>
         <Col
           span={24}
         >
-          <FormItem
-            hasFeedback={false}
-            label="If any injuries, please describe (optional)"
-          >
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="injuries_description"
-              name="injuries_description"
-              placeholder="Provide a detailed description of any injuries"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="injuries_description"
+            label="If any injuries, please describe"
+            name="injuries_description"
+            placeholder="Provide a detailed description of any injuries"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
         </Col>
         <Divider />
         <Col
@@ -418,22 +377,19 @@ exports[`IncidentForm renders properly 1`] = `
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="verbal_notification_provided"
             label="Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)?"
-          >
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="verbal_notification_provided"
-              name="verbal_notification_provided"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
+            name="verbal_notification_provided"
+            required={true}
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
         </Col>
         <Col
           span={24}
@@ -449,39 +405,31 @@ exports[`IncidentForm renders properly 1`] = `
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
-            label="OHSC Worker Rep Name (optional)"
-          >
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="johsc_worker_rep_name"
-              name="johsc_worker_rep_name"
-              placeholder="Enter name"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="johsc_worker_rep_name"
+            label="OHSC Worker Rep Name"
+            name="johsc_worker_rep_name"
+            placeholder="Enter name"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="johsc_worker_rep_contacted"
             label="Has this person already been informed of the incident?"
-          >
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="johsc_worker_rep_contacted"
-              name="johsc_worker_rep_contacted"
-            />
-          </FormItem>
+            name="johsc_worker_rep_contacted"
+          />
         </Col>
         <Col
           span={24}
@@ -497,39 +445,31 @@ exports[`IncidentForm renders properly 1`] = `
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
-            label="OHSC Management Rep Name (optional)"
-          >
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="johsc_management_rep_name"
-              name="johsc_management_rep_name"
-              placeholder="Enter name"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="johsc_management_rep_name"
+            label="OHSC Management Rep Name"
+            name="johsc_management_rep_name"
+            placeholder="Enter name"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="johsc_management_rep_contacted"
             label="Has this person already been informed of the incident?"
-          >
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="johsc_management_rep_contacted"
-              name="johsc_management_rep_contacted"
-            />
-          </FormItem>
+            name="johsc_management_rep_contacted"
+          />
         </Col>
       </Row>
       <br />
@@ -703,81 +643,64 @@ exports[`IncidentForm renders properly 1`] = `
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="followup_inspection"
             label="Was there a follow-up inspection?"
-          >
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="followup_inspection"
-              name="followup_inspection"
-            />
-          </FormItem>
+            name="followup_inspection"
+          />
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
-            label="Follow-up inspection date"
-          >
-            <Field
-              component={
-                Object {
-                  "$$typeof": Symbol(react.memo),
-                  "WrappedComponent": [Function],
-                  "compare": null,
-                  "displayName": "Connect(RenderDateTimeTz)",
-                  "type": [Function],
-                }
+          <Field
+            component={
+              Object {
+                "$$typeof": Symbol(react.memo),
+                "WrappedComponent": [Function],
+                "compare": null,
+                "displayName": "Connect(RenderDateTimeTz)",
+                "type": [Function],
               }
-              disabled={true}
-              id="followup_inspection_date"
-              name="followup_inspection_date"
-              normalize={[Function]}
-              showTime={false}
-            />
-          </FormItem>
+            }
+            disabled={true}
+            id="followup_inspection_date"
+            label="Follow-up inspection date"
+            name="followup_inspection_date"
+            normalize={[Function]}
+            showTime={false}
+          />
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
-            label="Was it escalated to EMLI investigation?"
-          >
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="followup_investigation_type_code"
-              name="followup_investigation_type_code"
-            />
-          </FormItem>
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="followup_investigation_type_code"
+            label="Was it escalated to MCM investigation?"
+            name="followup_investigation_type_code"
+          />
         </Col>
         <Col
           md={12}
           xs={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="status_code"
             label="Incident Status"
-          >
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="status_code"
-              name="status_code"
-            />
-          </FormItem>
+            name="status_code"
+          />
         </Col>
         <Col
           span={24}
         >
-          <FormItem
-            hasFeedback={false}
+          <InternalFormItem
             label="Mine manager's recommendations"
           >
             <FieldArray
@@ -786,10 +709,10 @@ exports[`IncidentForm renders properly 1`] = `
               id="recommendations"
               name="recommendations"
             />
-          </FormItem>
+          </InternalFormItem>
         </Col>
       </Row>
     </Col>
   </Row>
-</Form>
+</Connect(ReduxForm)>
 `;

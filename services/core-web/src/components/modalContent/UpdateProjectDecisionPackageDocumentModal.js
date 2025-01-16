@@ -7,7 +7,7 @@ import { formatDate, dateSorter, nullableStringSorter } from "@common/utils/help
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   projectGuid: PropTypes.string.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   optionalProps: PropTypes.shape({
@@ -131,7 +131,7 @@ export const UpdateProjectDecisionPackageDocumentModal = (props) => {
                   status_code: props?.optionalProps?.status_code,
                   documents: files,
                 };
-                props.handleSubmit(event, submitPayload);
+                props.onSubmit(submitPayload);
                 return props.closeModal();
               }}
               loading={props.submitting}

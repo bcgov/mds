@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RenderField renders properly with required, invalid state + label 1`] = `
+<div>
+  <div
+    class="ant-form-item ant-form-item-with-help ant-form-item-has-error"
+  >
+    <div
+      class="ant-row ant-form-item-row"
+    >
+      <div
+        class="ant-col ant-form-item-label"
+      >
+        <label
+          class="ant-form-item-required"
+          for="field"
+          title=""
+        >
+          <div
+            style="width: 100%;"
+          >
+            Mock Label
+          </div>
+        </label>
+      </div>
+      <div
+        class="ant-col ant-form-item-control"
+      >
+        <div
+          class="ant-form-item-control-input"
+        >
+          <div
+            class="ant-form-item-control-input-content"
+          >
+            <input
+              aria-label="field"
+              class="ant-input ant-input-status-error"
+              id="field"
+              name="field"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div
+          style="display: flex; flex-wrap: nowrap;"
+        >
+          <div
+            class="ant-form-item-explain ant-form-item-explain-connected"
+            id="field_help"
+            role="alert"
+          >
+            <div
+              class="ant-form-item-explain-error"
+            >
+              <span>
+                Error message
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

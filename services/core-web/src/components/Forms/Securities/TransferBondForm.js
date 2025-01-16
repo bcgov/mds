@@ -1,73 +1,59 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
-import { required } from "@common/utils/Validate";
-import { resetForm } from "@common/utils/helpers";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import { Field } from "redux-form";
+import { Col, Row } from "antd";
+import { required } from "@mds/common/redux/utils/Validate";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import * as FORM from "@/constants/forms";
-import RenderSelect from "@/components/common/RenderSelect";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import CustomPropTypes from "@/customPropTypes";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   title: PropTypes.string.isRequired,
-  submitting: PropTypes.bool.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
 
 export const TransferBondForm = (props) => (
-  <Form layout="vertical" onSubmit={props.handleSubmit}>
+  <FormWrapper onSubmit={props.onSubmit} initialValues={props.initialValues}
+    name={FORM.TRANSFER_BOND}
+    isModal
+    reduxFormConfig={{
+      touchOnBlur: false,
+      enableReinitialize: true,
+    }}
+  >
     <Row>
       <Col span={24}>
-        <Form.Item>
-          <Field
-            id="permit_guid"
-            name="permit_guid"
-            label="Permit *"
-            component={RenderSelect}
-            data={props.permits.map((p) => {
-              return { value: p.permit_guid, label: p.permit_no };
-            })}
-            validate={[required]}
-          />
-        </Form.Item>
+        <Field
+          id="permit_guid"
+          name="permit_guid"
+          label="Permit"
+          required
+          component={RenderSelect}
+          data={props.permits.map((p) => {
+            return { value: p.permit_guid, label: p.permit_no };
+          })}
+          validate={[required]}
+        />
       </Col>
     </Row>
     <Row>
       <Col md={24}>
-        <Form.Item>
-          <Field id="note" name="note" label="Notes" component={RenderAutoSizeField} />
-        </Form.Item>
+        <Field id="note" name="note" label="Notes" component={RenderAutoSizeField} />
       </Col>
     </Row>
     <div className="right center-mobile">
-      <Popconfirm
-        placement="topRight"
-        title="Are you sure you want to cancel?"
-        onConfirm={props.closeModal}
-        okText="Yes"
-        cancelText="No"
-      >
-        <Button className="full-mobile" type="secondary">
-          Cancel
-        </Button>
-      </Popconfirm>
-      <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
-        {props.title}
-      </Button>
+      <RenderCancelButton />
+      <RenderSubmitButton buttonText={props.title} />
     </div>
-  </Form>
+  </FormWrapper>
 );
 
 TransferBondForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.TRANSFER_BOND,
-  touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.TRANSFER_BOND),
-  enableReinitialize: true,
-})(TransferBondForm);
+export default TransferBondForm;

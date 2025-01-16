@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Field } from "redux-form";
 import { Button, Col, Row } from "antd";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
-import { yearNotInFuture } from "@common/utils/Validate";
+import { yearNotInFuture } from "@mds/common/redux/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderResetButton from "@mds/common/components/forms/RenderResetButton";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   toggleAdvancedSearch: PropTypes.func.isRequired,
   handleReset: PropTypes.func.isRequired,
-  reset: PropTypes.func.isRequired,
   isAdvanceSearch: PropTypes.bool,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
@@ -28,13 +28,20 @@ const defaultProps = {
 
 export class IncidentSearchForm extends Component {
   handleReset = () => {
-    this.props.reset();
     this.props.handleReset();
   };
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
+      <FormWrapper
+        initialValues={this.props.initialValues}
+        name={FORM.INCIDENT_ADVANCED_SEARCH}
+        reduxFormConfig={{
+          touchOnBlur: false,
+          enableReinitialize: true,
+        }}
+        onSubmit={this.props.onSubmit}
+        onReset={this.handleReset}>
         <Row gutter={6}>
           <Col md={24} xs={24}>
             <Field
@@ -122,14 +129,12 @@ export class IncidentSearchForm extends Component {
         </div>
 
         <div className="right center-mobile">
-          <Button className="full-mobile" type="secondary" htmlType="reset">
-            Clear Filters
-          </Button>
+          <RenderResetButton className="full-mobile" buttonText="Clear Filters" />
           <Button className="full-mobile" type="primary" htmlType="submit">
             Apply Filters
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -137,8 +142,4 @@ export class IncidentSearchForm extends Component {
 IncidentSearchForm.propTypes = propTypes;
 IncidentSearchForm.defaultProps = defaultProps;
 
-export default reduxForm({
-  form: FORM.INCIDENT_ADVANCED_SEARCH,
-  touchOnBlur: false,
-  enableReinitialize: true,
-})(IncidentSearchForm);
+export default IncidentSearchForm;

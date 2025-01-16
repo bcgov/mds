@@ -60,7 +60,7 @@ export const {
   getExplosivesPermitMagazineType,
   getProjectSummaryStatusCodes,
   getProjectSummaryDocumentTypes,
-  getEMLIContactTypes,
+  getMinistryContactTypes,
   getProjectSummaryAuthorizationTypes,
   getProjectSummaryPermitTypes,
   getInformationRequirementsTableStatusCodes,
@@ -333,10 +333,8 @@ export const getHSRCMComplianceCodesHash = createSelector([getCurrentComplianceC
     .filter(({ article_act_code }) => article_act_code === "HSRCM")
     .reduce((map, code) => {
       const composedValue = formatComplianceCodeValueOrLabel(code, true);
-      return {
-        [code.compliance_article_id]: composedValue,
-        ...map,
-      };
+      map[code.compliance_article_id] = composedValue;
+      return map;
     }, {})
 );
 
@@ -914,14 +912,14 @@ export const getMajorMinesApplicationDocumentTypesHash = createSelector(
   createLabelHash
 );
 
-export const getDropdownEMLIContactTypes = createSelectorWrapper(
-  getEMLIContactTypes,
+export const getDropdownMinistryContactTypes = createSelectorWrapper(
+  getMinistryContactTypes,
   createDropDownList,
   ["description", "emli_contact_type_code", "active_ind"]
 );
 
-export const getEMLIContactTypesHash = createSelector(
-  [getDropdownEMLIContactTypes],
+export const getMinistryContactTypesHash = createSelector(
+  [getDropdownMinistryContactTypes],
   createLabelHash
 );
 

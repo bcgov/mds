@@ -30,7 +30,7 @@ exports[`AddNoticeOfDepartureForm renders properly 1`] = `
     }
   }
 >
-  <Connect(ReduxForm)
+  <AddNoticeOfDepartureForm
     incidentDeterminationOptions={Object {}}
     initialValues={Object {}}
     mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"

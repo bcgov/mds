@@ -4,9 +4,8 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import { isEmpty, some, negate } from "lodash";
-import { Field, reduxForm } from "redux-form";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Form } from "antd";
+import { Field } from "redux-form";
+import { Button, Col, Row } from "antd";
 import {
   getDropdownMineReportStatusOptions,
   getDropdownMineReportCategoryOptions,
@@ -17,11 +16,12 @@ import { sortListObjectsByPropertyLocaleCompare } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderResetButton from "@mds/common/components/forms/RenderResetButton";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   handleReset: PropTypes.func.isRequired,
-  reset: PropTypes.func.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   dropdownMineReportStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
@@ -37,7 +37,6 @@ export class ReportSearchForm extends Component {
   };
 
   handleReset = () => {
-    this.props.reset();
     this.props.handleReset();
   };
 
@@ -84,7 +83,14 @@ export class ReportSearchForm extends Component {
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
+      <FormWrapper
+        initialValues={this.props.initialValues}
+        name={FORM.REPORT_ADVANCED_SEARCH}
+        reduxFormConfig={{
+          touchOnBlur: false,
+          enableReinitialize: true,
+        }}
+        onSubmit={this.props.onSubmit} onReset={this.handleReset}>
         <Row gutter={6}>
           <Col md={24} xs={24}>
             <Field
@@ -234,14 +240,12 @@ export class ReportSearchForm extends Component {
           </Button>
         </div>
         <div className="right center-mobile">
-          <Button className="full-mobile" type="secondary" htmlType="reset">
-            Clear Filters
-          </Button>
+          <RenderResetButton className="full-mobile" buttonText="Clear Filters" />
           <Button className="full-mobile" type="primary" htmlType="submit">
             Apply Filters
           </Button>
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -254,10 +258,5 @@ export default compose(
     dropdownMineReportStatusOptions: getDropdownMineReportStatusOptions(state, false),
     dropdownMineReportCategoryOptions: getDropdownMineReportCategoryOptions(state, false),
     dropdownMineReportDefinitionOptions: getDropdownMineReportDefinitionOptions(state, false),
-  })),
-  reduxForm({
-    form: FORM.REPORT_ADVANCED_SEARCH,
-    touchOnBlur: false,
-    enableReinitialize: true,
-  })
+  }))
 )(ReportSearchForm);

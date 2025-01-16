@@ -9,6 +9,7 @@ from app.api.parties.party_appt.models.mine_party_appt import (
     MinePartyAppointmentStatus,
 )
 from app.api.parties.response_models import PARTY
+from app.api.users.response_models import USER_MODEL
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.extensions import api
 from flask_restx import fields, marshal
@@ -267,7 +268,8 @@ PERMIT_CONDITION_CATEGORY_MODEL = api.model(
         'condition_category_code': fields.String,
         'step': fields.String,
         'description': fields.String,
-        'display_order': fields.Integer
+        'display_order': fields.Integer,
+        'assigned_review_user': fields.Nested(USER_MODEL)
     })
 
 PERMIT_AMENDMENT_MODEL = api.model(
@@ -778,10 +780,7 @@ MINE_REPORT_MODEL = api.model(
             fields.String,
         'permit_number':
             fields.String,
-        # TODO: Remove with CODE_REQUIRED_REPORTS feature flag- slows down API dramatically
-        'mine_report_submissions':
-            fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL)),
-        'latest_submission':
+       'latest_submission':
             fields.Nested(MINE_REPORT_SUBMISSION_MODEL),
         'mine_guid':
             fields.String,

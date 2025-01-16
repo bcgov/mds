@@ -233,7 +233,7 @@ exports[`AddSpatialDocumentsModal renders properly 1`] = `
     >
       <button
         aria-label="Cancel"
-        class="ant-btn ant-btn-default core-btn core-btn-default"
+        class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
         type="button"
       >
         <span>
@@ -242,7 +242,7 @@ exports[`AddSpatialDocumentsModal renders properly 1`] = `
       </button>
       <button
         aria-label="Submit"
-        class="ant-btn ant-btn-primary"
+        class="ant-btn ant-btn-primary  form-btn"
         disabled=""
         type="submit"
       >

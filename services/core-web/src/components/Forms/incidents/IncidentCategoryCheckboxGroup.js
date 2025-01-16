@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Typography, Alert, Checkbox, Row, Col } from "antd";
+import { Typography, Alert, Checkbox, Row, Col, Form } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
@@ -54,7 +52,6 @@ const IncidentCategoryCheckboxGroup = (props) => {
       <Checkbox.Group
         onChange={onChange}
         defaultValue={initial}
-        value={input.value}
         disabled={disabled}
       >
         {historicalCategories.length > 0 && (

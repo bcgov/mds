@@ -14,33 +14,16 @@ exports[`TransferBondModal renders properly 1`] = `
     type="info"
   />
   <br />
-  <ReduxForm
+  <TransferBondForm
     closeModal={[MockFunction]}
-    destroyOnUnmount={true}
-    enableReinitialize={true}
-    forceUnregisterOnUnmount={false}
-    form="TRANSFER_BOND"
-    getFormState={[Function]}
     initialValues={
       Object {
         "note": null,
       }
     }
-    keepDirtyOnReinitialize={false}
     onSubmit={[Function]}
-    onSubmitSuccess={[Function]}
     permits={Array []}
-    persistentSubmitErrors={false}
-    pure={true}
-    shouldAsyncValidate={[Function]}
-    shouldError={[Function]}
-    shouldValidate={[Function]}
-    shouldWarn={[Function]}
-    submitAsSideEffect={false}
     title="Transfer Bond"
-    touchOnBlur={false}
-    touchOnChange={false}
-    updateUnregisteredFields={false}
   />
 </div>
 `;

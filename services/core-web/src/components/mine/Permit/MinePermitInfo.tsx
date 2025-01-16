@@ -101,8 +101,10 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
     setModifiedPermits(true);
 
     return props.createPermit(props.mineGuid, payload).then((data) => {
-      const siteProperties = { ...values.site_properties, permit_guid: data.data.permit_guid };
-      props.createMineTypes(props.mineGuid, [siteProperties]).then(closePermitModal);
+      if (data) {
+        const siteProperties = { ...values.site_properties, permit_guid: data.data.permit_guid };
+        props.createMineTypes(props.mineGuid, [siteProperties]).then(closePermitModal);
+      }
     });
   };
 

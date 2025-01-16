@@ -72,7 +72,7 @@ export const ProjectManagement: FC = () => {
         <div>
           <Typography.Title level={3}>Project Management</Typography.Title>
           <Title level={3} className="color-primary">
-            EMLI Status
+            MCM Status
           </Title>
           <Title level={4}>Project Status</Title>
           <Paragraph>
@@ -150,7 +150,6 @@ export const ProjectManagement: FC = () => {
                   renderEditor={true}
                   onSubmit={submitComment}
                   loading={false}
-                  maxLength={500}
                   comments={ministryComments?.map((comment: IProjectSummaryMinistryComment) => ({
                     key: comment.project_summary_ministry_comment_guid,
                     author: comment.update_user,

@@ -3,8 +3,8 @@ import { Alert, Button, Col, Form, Row, Typography } from "antd";
 import { formatDate } from "@common/utils/helpers";
 import { Field } from "redux-form";
 import { renderConfig } from "@/components/common/config";
-import { required } from "@common/utils/Validate";
 import { IMineIncident } from "@mds/common/interfaces";
+import { required } from "@mds/common/redux/utils/Validate";
 
 interface IncidentFormUpdateIncidentStatusProps {
   incident: IMineIncident;
@@ -53,7 +53,7 @@ const IncidentFormUpdateIncidentStatus: FC<IncidentFormUpdateIncidentStatusProps
           text = `The incident requires a final report to be submitted before 60 days from creation time of the incident.`;
           break;
         case "INV":
-          text = `This incident currently is under EMLI investigation.`;
+          text = `This incident currently is under MCM investigation.`;
           break;
         case "MIU":
           text = `This incident currently is under MIU investigation.`;

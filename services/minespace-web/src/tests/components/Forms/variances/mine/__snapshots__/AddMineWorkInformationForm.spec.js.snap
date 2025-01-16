@@ -1,11 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddMineWorkInformationForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  initialValues={Object {}}
+  name="ADD_MINE_WORK_INFORMATION"
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "enableReinitialize": true,
+      "touchOnBlur": false,
+    }
+  }
+  scrollOnToggleEdit={false}
 >
   <Row
     gutter={16}
@@ -52,24 +58,20 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
             </React.Fragment>
           }
         >
-          <FormItem
-            hasFeedback={false}
-          >
-            <Field
-              component={[Function]}
-              disabled={false}
-              format={null}
-              id="work_start_date"
-              name="work_start_date"
-              placeholder="Select Work Start Date"
-              validate={
-                Array [
-                  [Function],
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
+          <Field
+            component={[Function]}
+            disabled={false}
+            format={null}
+            id="work_start_date"
+            name="work_start_date"
+            placeholder="Select Work Start Date"
+            validate={
+              Array [
+                [Function],
+                [Function],
+              ]
+            }
+          />
         </DescriptionsItem>
         <DescriptionsItem
           label={
@@ -106,24 +108,20 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
             </React.Fragment>
           }
         >
-          <FormItem
-            hasFeedback={false}
-          >
-            <Field
-              component={[Function]}
-              disabled={false}
-              format={null}
-              id="work_stop_date"
-              name="work_stop_date"
-              placeholder="Select Work Stop Date"
-              validate={
-                Array [
-                  [Function],
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>
+          <Field
+            component={[Function]}
+            disabled={false}
+            format={null}
+            id="work_stop_date"
+            name="work_stop_date"
+            placeholder="Select Work Stop Date"
+            validate={
+              Array [
+                [Function],
+                [Function],
+              ]
+            }
+          />
         </DescriptionsItem>
         <DescriptionsItem
           label="Work Status"
@@ -142,48 +140,26 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          disabled={false}
-          id="work_comments"
-          label="Comments"
-          minRows={3}
-          name="work_comments"
-          placeholder="Enter Comments"
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        disabled={false}
+        id="work_comments"
+        label="Comments"
+        minRows={3}
+        name="work_comments"
+        placeholder="Enter Comments"
+      />
     </Col>
   </Row>
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      disabled={false}
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile margin-small"
-        disabled={false}
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile margin-small"
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      testing title
-    </Button>
+    <RenderCancelButton
+      cancelFunction={[MockFunction]}
+    />
+    <RenderSubmitButton
+      buttonText="testing title"
+    />
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

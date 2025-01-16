@@ -8,6 +8,7 @@ export interface IFormContext {
   isEditMode: boolean;
   isModal: boolean;
   formName: string;
+  onReset: () => void | Promise<void>;
 }
 /**
  * The values in FormProvider (from FormWrapper props) will be passed down to child components
@@ -19,6 +20,7 @@ export const FormContext = React.createContext<IFormContext>({
   isEditMode: true,
   isModal: false,
   formName: null,
+  onReset: undefined,
 });
 export const { Provider: FormProvider, Consumer: FormConsumer } = FormContext;
 
@@ -61,6 +63,7 @@ export interface FormWrapperProps {
   initialValues?: any;
   reduxFormConfig?: Partial<ConfigProps>;
   onSubmit: (values) => void | Promise<void>;
+  onReset?: () => void | Promise<void>;
   children: any;
   isModal?: boolean;
   loading?: boolean;
@@ -75,13 +78,16 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
   scrollOnToggleEdit = true,
   children,
   layout,
+  onReset,
   ...props
 }) => {
   const providerValues = {
     isEditMode,
     isModal,
     formName: props.name,
+    onReset
   };
+  console.log('open form', props.name)
   const dispatch = useDispatch();
   const formErrors = useSelector(getFormSubmitErrors(props.name));
 
@@ -92,6 +98,7 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
   }, [isEditMode]);
 
   const handleSubmit = async (values) => {
+    console.log('handleSubmit', props.name, values)
     dispatch(submit(props.name));
     if (!formErrors) {
       await props.onSubmit(values);

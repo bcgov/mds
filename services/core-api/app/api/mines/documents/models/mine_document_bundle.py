@@ -32,6 +32,15 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
     @classmethod
     def find_by_docman_bundle_guid(cls, docman_bundle_guid):
         return cls.query.filter_by(docman_bundle_guid=docman_bundle_guid).first()
+    
+    @staticmethod
+    def parse_and_update_spatial_documents(documents):
+        spatial_docs = [doc for doc in documents if doc.get('docman_bundle_guid') is not None]
+        updated_spatial_docs = MineDocumentBundle.update_spatial_mine_document_with_bundle_id(spatial_docs)
+
+        all_documents = [doc for doc in documents if doc.get('docman_bundle_guid') is None]
+        all_documents.extend(updated_spatial_docs)
+        return all_documents
 
     @staticmethod
     def update_spatial_mine_document_with_bundle_id(spatial_docs):

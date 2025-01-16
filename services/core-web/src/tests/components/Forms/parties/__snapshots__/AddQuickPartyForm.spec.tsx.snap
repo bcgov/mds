@@ -16,11 +16,26 @@ exports[`AddQuickPartyForm renders properly 1`] = `
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item"
+            class="ant-form-item ant-form-item-with-help"
           >
             <div
               class="ant-row ant-form-item-row"
             >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="ADD_QUICK_PARTY_first_name"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    First Name
+                  </div>
+                </label>
+              </div>
               <div
                 class="ant-col ant-form-item-control"
               >
@@ -30,47 +45,27 @@ exports[`AddQuickPartyForm renders properly 1`] = `
                   <div
                     class="ant-form-item-control-input-content"
                   >
+                    <input
+                      aria-label="first_name"
+                      class="ant-input"
+                      id="first_name"
+                      name="first_name"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_QUICK_PARTY_first_name_help"
+                    role="alert"
+                  >
                     <div
-                      class="ant-row ant-legacy-form-item"
-                    >
-                      <div
-                        class="ant-col ant-legacy-form-item-label"
-                      >
-                        <label
-                          class=""
-                          title="First Name*"
-                        >
-                          First Name*
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-legacy-form-item-control-wrapper"
-                      >
-                        <div
-                          class="ant-legacy-form-item-control"
-                        >
-                          <span
-                            class="ant-legacy-form-item-children"
-                          >
-                            <div
-                              class="inline-flex"
-                              style="flex-direction: column;"
-                            >
-                              
-                              <input
-                                class="ant-input"
-                                id="first_name"
-                                name="first_name"
-                                placeholder=""
-                                type="text"
-                                value=""
-                              />
-                              
-                            </div>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      class=""
+                    />
                   </div>
                 </div>
               </div>
@@ -82,11 +77,26 @@ exports[`AddQuickPartyForm renders properly 1`] = `
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item"
+            class="ant-form-item ant-form-item-with-help"
           >
             <div
               class="ant-row ant-form-item-row"
             >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="ADD_QUICK_PARTY_party_name"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    Surname
+                  </div>
+                </label>
+              </div>
               <div
                 class="ant-col ant-form-item-control"
               >
@@ -96,47 +106,27 @@ exports[`AddQuickPartyForm renders properly 1`] = `
                   <div
                     class="ant-form-item-control-input-content"
                   >
+                    <input
+                      aria-label="party_name"
+                      class="ant-input"
+                      id="party_name"
+                      name="party_name"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_QUICK_PARTY_party_name_help"
+                    role="alert"
+                  >
                     <div
-                      class="ant-row ant-legacy-form-item"
-                    >
-                      <div
-                        class="ant-col ant-legacy-form-item-label"
-                      >
-                        <label
-                          class=""
-                          title="Surname*"
-                        >
-                          Surname*
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-legacy-form-item-control-wrapper"
-                      >
-                        <div
-                          class="ant-legacy-form-item-control"
-                        >
-                          <span
-                            class="ant-legacy-form-item-children"
-                          >
-                            <div
-                              class="inline-flex"
-                              style="flex-direction: column;"
-                            >
-                              
-                              <input
-                                class="ant-input"
-                                id="party_name"
-                                name="party_name"
-                                placeholder=""
-                                type="text"
-                                value=""
-                              />
-                              
-                            </div>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      class=""
+                    />
                   </div>
                 </div>
               </div>
@@ -153,11 +143,30 @@ exports[`AddQuickPartyForm renders properly 1`] = `
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item"
+            class="ant-form-item ant-form-item-with-help"
           >
             <div
               class="ant-row ant-form-item-row"
             >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_QUICK_PARTY_email"
+                  title=""
+                >
+                  <div>
+                    Primary Email
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
               <div
                 class="ant-col ant-form-item-control"
               >
@@ -167,47 +176,27 @@ exports[`AddQuickPartyForm renders properly 1`] = `
                   <div
                     class="ant-form-item-control-input-content"
                   >
+                    <input
+                      aria-label="email"
+                      class="ant-input"
+                      id="email"
+                      name="email"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_QUICK_PARTY_email_help"
+                    role="alert"
+                  >
                     <div
-                      class="ant-row ant-legacy-form-item"
-                    >
-                      <div
-                        class="ant-col ant-legacy-form-item-label"
-                      >
-                        <label
-                          class=""
-                          title="Primary Email"
-                        >
-                          Primary Email
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-legacy-form-item-control-wrapper"
-                      >
-                        <div
-                          class="ant-legacy-form-item-control"
-                        >
-                          <span
-                            class="ant-legacy-form-item-children"
-                          >
-                            <div
-                              class="inline-flex"
-                              style="flex-direction: column;"
-                            >
-                              
-                              <input
-                                class="ant-input"
-                                id="email"
-                                name="email"
-                                placeholder=""
-                                type="text"
-                                value=""
-                              />
-                              
-                            </div>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      class=""
+                    />
                   </div>
                 </div>
               </div>
@@ -224,11 +213,30 @@ exports[`AddQuickPartyForm renders properly 1`] = `
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item"
+            class="ant-form-item ant-form-item-with-help"
           >
             <div
               class="ant-row ant-form-item-row"
             >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_QUICK_PARTY_email_sec"
+                  title=""
+                >
+                  <div>
+                    Secondary Email
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
               <div
                 class="ant-col ant-form-item-control"
               >
@@ -238,47 +246,27 @@ exports[`AddQuickPartyForm renders properly 1`] = `
                   <div
                     class="ant-form-item-control-input-content"
                   >
+                    <input
+                      aria-label="email_sec"
+                      class="ant-input"
+                      id="email_sec"
+                      name="email_sec"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_QUICK_PARTY_email_sec_help"
+                    role="alert"
+                  >
                     <div
-                      class="ant-row ant-legacy-form-item"
-                    >
-                      <div
-                        class="ant-col ant-legacy-form-item-label"
-                      >
-                        <label
-                          class=""
-                          title="Secondary Email"
-                        >
-                          Secondary Email
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-legacy-form-item-control-wrapper"
-                      >
-                        <div
-                          class="ant-legacy-form-item-control"
-                        >
-                          <span
-                            class="ant-legacy-form-item-children"
-                          >
-                            <div
-                              class="inline-flex"
-                              style="flex-direction: column;"
-                            >
-                              
-                              <input
-                                class="ant-input"
-                                id="email_sec"
-                                name="email_sec"
-                                placeholder=""
-                                type="text"
-                                value=""
-                              />
-                              
-                            </div>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      class=""
+                    />
                   </div>
                 </div>
               </div>
@@ -295,11 +283,26 @@ exports[`AddQuickPartyForm renders properly 1`] = `
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item"
+            class="ant-form-item ant-form-item-with-help"
           >
             <div
               class="ant-row ant-form-item-row"
             >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="ADD_QUICK_PARTY_phone_no"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    Primary Phone Number
+                  </div>
+                </label>
+              </div>
               <div
                 class="ant-col ant-form-item-control"
               >
@@ -309,47 +312,28 @@ exports[`AddQuickPartyForm renders properly 1`] = `
                   <div
                     class="ant-form-item-control-input-content"
                   >
+                    <input
+                      aria-label="phone_no"
+                      class="ant-input"
+                      id="phone_no"
+                      name="phone_no"
+                      placeholder="e.g. xxx-xxx-xxxx"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_QUICK_PARTY_phone_no_help"
+                    role="alert"
+                  >
                     <div
-                      class="ant-row ant-legacy-form-item"
-                    >
-                      <div
-                        class="ant-col ant-legacy-form-item-label"
-                      >
-                        <label
-                          class=""
-                          title="Primary Phone Number*"
-                        >
-                          Primary Phone Number*
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-legacy-form-item-control-wrapper"
-                      >
-                        <div
-                          class="ant-legacy-form-item-control"
-                        >
-                          <span
-                            class="ant-legacy-form-item-children"
-                          >
-                            <div
-                              class="inline-flex"
-                              style="flex-direction: column;"
-                            >
-                              
-                              <input
-                                class="ant-input"
-                                id="phone_no"
-                                name="phone_no"
-                                placeholder="e.g. xxx-xxx-xxxx"
-                                type="text"
-                                value=""
-                              />
-                              
-                            </div>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      class=""
+                    />
                   </div>
                 </div>
               </div>
@@ -361,11 +345,30 @@ exports[`AddQuickPartyForm renders properly 1`] = `
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item"
+            class="ant-form-item ant-form-item-with-help"
           >
             <div
               class="ant-row ant-form-item-row"
             >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_QUICK_PARTY_phone_ext"
+                  title=""
+                >
+                  <div>
+                    Ext
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
               <div
                 class="ant-col ant-form-item-control"
               >
@@ -375,47 +378,27 @@ exports[`AddQuickPartyForm renders properly 1`] = `
                   <div
                     class="ant-form-item-control-input-content"
                   >
+                    <input
+                      aria-label="phone_ext"
+                      class="ant-input"
+                      id="phone_ext"
+                      name="phone_ext"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_QUICK_PARTY_phone_ext_help"
+                    role="alert"
+                  >
                     <div
-                      class="ant-row ant-legacy-form-item"
-                    >
-                      <div
-                        class="ant-col ant-legacy-form-item-label"
-                      >
-                        <label
-                          class=""
-                          title="Ext"
-                        >
-                          Ext
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-legacy-form-item-control-wrapper"
-                      >
-                        <div
-                          class="ant-legacy-form-item-control"
-                        >
-                          <span
-                            class="ant-legacy-form-item-children"
-                          >
-                            <div
-                              class="inline-flex"
-                              style="flex-direction: column;"
-                            >
-                              
-                              <input
-                                class="ant-input"
-                                id="phone_ext"
-                                name="phone_ext"
-                                placeholder=""
-                                type="text"
-                                value=""
-                              />
-                              
-                            </div>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      class=""
+                    />
                   </div>
                 </div>
               </div>
@@ -432,11 +415,30 @@ exports[`AddQuickPartyForm renders properly 1`] = `
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item"
+            class="ant-form-item ant-form-item-with-help"
           >
             <div
               class="ant-row ant-form-item-row"
             >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_QUICK_PARTY_phone_no_sec"
+                  title=""
+                >
+                  <div>
+                    Secondary Phone Number
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
               <div
                 class="ant-col ant-form-item-control"
               >
@@ -446,47 +448,28 @@ exports[`AddQuickPartyForm renders properly 1`] = `
                   <div
                     class="ant-form-item-control-input-content"
                   >
+                    <input
+                      aria-label="phone_no_sec"
+                      class="ant-input"
+                      id="phone_no_sec"
+                      name="phone_no_sec"
+                      placeholder="e.g. xxx-xxx-xxxx"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_QUICK_PARTY_phone_no_sec_help"
+                    role="alert"
+                  >
                     <div
-                      class="ant-row ant-legacy-form-item"
-                    >
-                      <div
-                        class="ant-col ant-legacy-form-item-label"
-                      >
-                        <label
-                          class=""
-                          title="Secondary Phone Number"
-                        >
-                          Secondary Phone Number
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-legacy-form-item-control-wrapper"
-                      >
-                        <div
-                          class="ant-legacy-form-item-control"
-                        >
-                          <span
-                            class="ant-legacy-form-item-children"
-                          >
-                            <div
-                              class="inline-flex"
-                              style="flex-direction: column;"
-                            >
-                              
-                              <input
-                                class="ant-input"
-                                id="phone_no_sec"
-                                name="phone_no_sec"
-                                placeholder="e.g. xxx-xxx-xxxx"
-                                type="text"
-                                value=""
-                              />
-                              
-                            </div>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      class=""
+                    />
                   </div>
                 </div>
               </div>
@@ -498,11 +481,30 @@ exports[`AddQuickPartyForm renders properly 1`] = `
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item"
+            class="ant-form-item ant-form-item-with-help"
           >
             <div
               class="ant-row ant-form-item-row"
             >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_QUICK_PARTY_phone_sec_ext"
+                  title=""
+                >
+                  <div>
+                    Ext
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
               <div
                 class="ant-col ant-form-item-control"
               >
@@ -512,47 +514,27 @@ exports[`AddQuickPartyForm renders properly 1`] = `
                   <div
                     class="ant-form-item-control-input-content"
                   >
+                    <input
+                      aria-label="phone_sec_ext"
+                      class="ant-input"
+                      id="phone_sec_ext"
+                      name="phone_sec_ext"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_QUICK_PARTY_phone_sec_ext_help"
+                    role="alert"
+                  >
                     <div
-                      class="ant-row ant-legacy-form-item"
-                    >
-                      <div
-                        class="ant-col ant-legacy-form-item-label"
-                      >
-                        <label
-                          class=""
-                          title="Ext"
-                        >
-                          Ext
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-legacy-form-item-control-wrapper"
-                      >
-                        <div
-                          class="ant-legacy-form-item-control"
-                        >
-                          <span
-                            class="ant-legacy-form-item-children"
-                          >
-                            <div
-                              class="inline-flex"
-                              style="flex-direction: column;"
-                            >
-                              
-                              <input
-                                class="ant-input"
-                                id="phone_sec_ext"
-                                name="phone_sec_ext"
-                                placeholder=""
-                                type="text"
-                                value=""
-                              />
-                              
-                            </div>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      class=""
+                    />
                   </div>
                 </div>
               </div>
@@ -569,11 +551,30 @@ exports[`AddQuickPartyForm renders properly 1`] = `
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item"
+            class="ant-form-item ant-form-item-with-help"
           >
             <div
               class="ant-row ant-form-item-row"
             >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_QUICK_PARTY_phone_no_ter"
+                  title=""
+                >
+                  <div>
+                    Tertiary Phone Number
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
               <div
                 class="ant-col ant-form-item-control"
               >
@@ -583,47 +584,28 @@ exports[`AddQuickPartyForm renders properly 1`] = `
                   <div
                     class="ant-form-item-control-input-content"
                   >
+                    <input
+                      aria-label="phone_no_ter"
+                      class="ant-input"
+                      id="phone_no_ter"
+                      name="phone_no_ter"
+                      placeholder="e.g. xxx-xxx-xxxx"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_QUICK_PARTY_phone_no_ter_help"
+                    role="alert"
+                  >
                     <div
-                      class="ant-row ant-legacy-form-item"
-                    >
-                      <div
-                        class="ant-col ant-legacy-form-item-label"
-                      >
-                        <label
-                          class=""
-                          title="Tertiary Phone Number"
-                        >
-                          Tertiary Phone Number
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-legacy-form-item-control-wrapper"
-                      >
-                        <div
-                          class="ant-legacy-form-item-control"
-                        >
-                          <span
-                            class="ant-legacy-form-item-children"
-                          >
-                            <div
-                              class="inline-flex"
-                              style="flex-direction: column;"
-                            >
-                              
-                              <input
-                                class="ant-input"
-                                id="phone_no_ter"
-                                name="phone_no_ter"
-                                placeholder="e.g. xxx-xxx-xxxx"
-                                type="text"
-                                value=""
-                              />
-                              
-                            </div>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      class=""
+                    />
                   </div>
                 </div>
               </div>
@@ -635,11 +617,30 @@ exports[`AddQuickPartyForm renders properly 1`] = `
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item"
+            class="ant-form-item ant-form-item-with-help"
           >
             <div
               class="ant-row ant-form-item-row"
             >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_QUICK_PARTY_phone_ter_ext"
+                  title=""
+                >
+                  <div>
+                    Ext
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
               <div
                 class="ant-col ant-form-item-control"
               >
@@ -649,47 +650,27 @@ exports[`AddQuickPartyForm renders properly 1`] = `
                   <div
                     class="ant-form-item-control-input-content"
                   >
+                    <input
+                      aria-label="phone_ter_ext"
+                      class="ant-input"
+                      id="phone_ter_ext"
+                      name="phone_ter_ext"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_QUICK_PARTY_phone_ter_ext_help"
+                    role="alert"
+                  >
                     <div
-                      class="ant-row ant-legacy-form-item"
-                    >
-                      <div
-                        class="ant-col ant-legacy-form-item-label"
-                      >
-                        <label
-                          class=""
-                          title="Ext"
-                        >
-                          Ext
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-legacy-form-item-control-wrapper"
-                      >
-                        <div
-                          class="ant-legacy-form-item-control"
-                        >
-                          <span
-                            class="ant-legacy-form-item-children"
-                          >
-                            <div
-                              class="inline-flex"
-                              style="flex-direction: column;"
-                            >
-                              
-                              <input
-                                class="ant-input"
-                                id="phone_ter_ext"
-                                name="phone_ter_ext"
-                                placeholder=""
-                                type="text"
-                                value=""
-                              />
-                              
-                            </div>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      class=""
+                    />
                   </div>
                 </div>
               </div>
@@ -706,11 +687,30 @@ exports[`AddQuickPartyForm renders properly 1`] = `
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item"
+            class="ant-form-item ant-form-item-with-help"
           >
             <div
               class="ant-row ant-form-item-row"
             >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_QUICK_PARTY_suite_no"
+                  title=""
+                >
+                  <div>
+                    Suite No.
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
               <div
                 class="ant-col ant-form-item-control"
               >
@@ -720,47 +720,27 @@ exports[`AddQuickPartyForm renders properly 1`] = `
                   <div
                     class="ant-form-item-control-input-content"
                   >
+                    <input
+                      aria-label="suite_no"
+                      class="ant-input"
+                      id="suite_no"
+                      name="suite_no"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_QUICK_PARTY_suite_no_help"
+                    role="alert"
+                  >
                     <div
-                      class="ant-row ant-legacy-form-item"
-                    >
-                      <div
-                        class="ant-col ant-legacy-form-item-label"
-                      >
-                        <label
-                          class=""
-                          title="Suite No."
-                        >
-                          Suite No.
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-legacy-form-item-control-wrapper"
-                      >
-                        <div
-                          class="ant-legacy-form-item-control"
-                        >
-                          <span
-                            class="ant-legacy-form-item-children"
-                          >
-                            <div
-                              class="inline-flex"
-                              style="flex-direction: column;"
-                            >
-                              
-                              <input
-                                class="ant-input"
-                                id="suite_no"
-                                name="suite_no"
-                                placeholder=""
-                                type="text"
-                                value=""
-                              />
-                              
-                            </div>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      class=""
+                    />
                   </div>
                 </div>
               </div>
@@ -772,11 +752,30 @@ exports[`AddQuickPartyForm renders properly 1`] = `
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item"
+            class="ant-form-item ant-form-item-with-help"
           >
             <div
               class="ant-row ant-form-item-row"
             >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_QUICK_PARTY_address_line_1"
+                  title=""
+                >
+                  <div>
+                    Street Address 1
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
               <div
                 class="ant-col ant-form-item-control"
               >
@@ -786,47 +785,27 @@ exports[`AddQuickPartyForm renders properly 1`] = `
                   <div
                     class="ant-form-item-control-input-content"
                   >
+                    <input
+                      aria-label="address_line_1"
+                      class="ant-input"
+                      id="address_line_1"
+                      name="address_line_1"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_QUICK_PARTY_address_line_1_help"
+                    role="alert"
+                  >
                     <div
-                      class="ant-row ant-legacy-form-item"
-                    >
-                      <div
-                        class="ant-col ant-legacy-form-item-label"
-                      >
-                        <label
-                          class=""
-                          title="Street Address 1"
-                        >
-                          Street Address 1
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-legacy-form-item-control-wrapper"
-                      >
-                        <div
-                          class="ant-legacy-form-item-control"
-                        >
-                          <span
-                            class="ant-legacy-form-item-children"
-                          >
-                            <div
-                              class="inline-flex"
-                              style="flex-direction: column;"
-                            >
-                              
-                              <input
-                                class="ant-input"
-                                id="address_line_1"
-                                name="address_line_1"
-                                placeholder=""
-                                type="text"
-                                value=""
-                              />
-                              
-                            </div>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      class=""
+                    />
                   </div>
                 </div>
               </div>
@@ -843,11 +822,30 @@ exports[`AddQuickPartyForm renders properly 1`] = `
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item"
+            class="ant-form-item ant-form-item-with-help"
           >
             <div
               class="ant-row ant-form-item-row"
             >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_QUICK_PARTY_address_line_2"
+                  title=""
+                >
+                  <div>
+                    Street Address 2
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
               <div
                 class="ant-col ant-form-item-control"
               >
@@ -857,47 +855,27 @@ exports[`AddQuickPartyForm renders properly 1`] = `
                   <div
                     class="ant-form-item-control-input-content"
                   >
+                    <input
+                      aria-label="address_line_2"
+                      class="ant-input"
+                      id="address_line_2"
+                      name="address_line_2"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_QUICK_PARTY_address_line_2_help"
+                    role="alert"
+                  >
                     <div
-                      class="ant-row ant-legacy-form-item"
-                    >
-                      <div
-                        class="ant-col ant-legacy-form-item-label"
-                      >
-                        <label
-                          class=""
-                          title="Street Address 2"
-                        >
-                          Street Address 2
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-legacy-form-item-control-wrapper"
-                      >
-                        <div
-                          class="ant-legacy-form-item-control"
-                        >
-                          <span
-                            class="ant-legacy-form-item-children"
-                          >
-                            <div
-                              class="inline-flex"
-                              style="flex-direction: column;"
-                            >
-                              
-                              <input
-                                class="ant-input"
-                                id="address_line_2"
-                                name="address_line_2"
-                                placeholder=""
-                                type="text"
-                                value=""
-                              />
-                              
-                            </div>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      class=""
+                    />
                   </div>
                 </div>
               </div>
@@ -909,11 +887,30 @@ exports[`AddQuickPartyForm renders properly 1`] = `
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item"
+            class="ant-form-item ant-form-item-with-help"
           >
             <div
               class="ant-row ant-form-item-row"
             >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_QUICK_PARTY_sub_division_code"
+                  title=""
+                >
+                  <div>
+                    Province
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
               <div
                 class="ant-col ant-form-item-control"
               >
@@ -924,88 +921,75 @@ exports[`AddQuickPartyForm renders properly 1`] = `
                     class="ant-form-item-control-input-content"
                   >
                     <div
-                      class="ant-row ant-legacy-form-item"
+                      class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                      data-cy="sub_division_code"
                     >
                       <div
-                        class="ant-col ant-legacy-form-item-label"
+                        class="ant-select-selector"
                       >
-                        <label
-                          class=""
-                          for="sub_division_code"
-                          title="Province"
+                        <span
+                          class="ant-select-selection-search"
                         >
-                          Province
-                        </label>
+                          <input
+                            aria-activedescendant="sub_division_code_list_0"
+                            aria-autocomplete="list"
+                            aria-controls="sub_division_code_list"
+                            aria-haspopup="listbox"
+                            aria-owns="sub_division_code_list"
+                            autocomplete="off"
+                            class="ant-select-selection-search-input"
+                            id="sub_division_code"
+                            role="combobox"
+                            type="search"
+                            value=""
+                          />
+                        </span>
+                        <span
+                          class="ant-select-selection-placeholder"
+                        >
+                          Please select
+                        </span>
                       </div>
-                      <div
-                        class="ant-col ant-legacy-form-item-control-wrapper"
+                      <span
+                        aria-hidden="true"
+                        class="ant-select-arrow"
+                        style="user-select: none;"
+                        unselectable="on"
                       >
-                        <div
-                          class="ant-legacy-form-item-control"
+                        <span
+                          aria-label="down"
+                          class="anticon anticon-down ant-select-suffix"
+                          role="img"
                         >
-                          <span
-                            class="ant-legacy-form-item-children"
+                          <svg
+                            aria-hidden="true"
+                            data-icon="down"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
                           >
-                            <div
-                              class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
-                            >
-                              <div
-                                class="ant-select-selector"
-                              >
-                                <span
-                                  class="ant-select-selection-search"
-                                >
-                                  <input
-                                    aria-activedescendant="sub_division_code_list_0"
-                                    aria-autocomplete="list"
-                                    aria-controls="sub_division_code_list"
-                                    aria-haspopup="listbox"
-                                    aria-owns="sub_division_code_list"
-                                    autocomplete="off"
-                                    class="ant-select-selection-search-input"
-                                    id="sub_division_code"
-                                    role="combobox"
-                                    type="search"
-                                    value=""
-                                  />
-                                </span>
-                                <span
-                                  class="ant-select-selection-placeholder"
-                                >
-                                  Please select
-                                </span>
-                              </div>
-                              <span
-                                aria-hidden="true"
-                                class="ant-select-arrow"
-                                style="user-select: none;"
-                                unselectable="on"
-                              >
-                                <span
-                                  aria-label="down"
-                                  class="anticon anticon-down ant-select-suffix"
-                                  role="img"
-                                >
-                                  <svg
-                                    aria-hidden="true"
-                                    data-icon="down"
-                                    fill="currentColor"
-                                    focusable="false"
-                                    height="1em"
-                                    viewBox="64 64 896 896"
-                                    width="1em"
-                                  >
-                                    <path
-                                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
-                                    />
-                                  </svg>
-                                </span>
-                              </span>
-                            </div>
-                          </span>
-                        </div>
-                      </div>
+                            <path
+                              d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
                     </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_QUICK_PARTY_sub_division_code_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
                   </div>
                 </div>
               </div>
@@ -1022,11 +1006,30 @@ exports[`AddQuickPartyForm renders properly 1`] = `
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item"
+            class="ant-form-item ant-form-item-with-help"
           >
             <div
               class="ant-row ant-form-item-row"
             >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_QUICK_PARTY_city"
+                  title=""
+                >
+                  <div>
+                    City
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
               <div
                 class="ant-col ant-form-item-control"
               >
@@ -1036,47 +1039,27 @@ exports[`AddQuickPartyForm renders properly 1`] = `
                   <div
                     class="ant-form-item-control-input-content"
                   >
+                    <input
+                      aria-label="city"
+                      class="ant-input"
+                      id="city"
+                      name="city"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_QUICK_PARTY_city_help"
+                    role="alert"
+                  >
                     <div
-                      class="ant-row ant-legacy-form-item"
-                    >
-                      <div
-                        class="ant-col ant-legacy-form-item-label"
-                      >
-                        <label
-                          class=""
-                          title="City"
-                        >
-                          City
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-legacy-form-item-control-wrapper"
-                      >
-                        <div
-                          class="ant-legacy-form-item-control"
-                        >
-                          <span
-                            class="ant-legacy-form-item-children"
-                          >
-                            <div
-                              class="inline-flex"
-                              style="flex-direction: column;"
-                            >
-                              
-                              <input
-                                class="ant-input"
-                                id="city"
-                                name="city"
-                                placeholder=""
-                                type="text"
-                                value=""
-                              />
-                              
-                            </div>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      class=""
+                    />
                   </div>
                 </div>
               </div>
@@ -1088,11 +1071,30 @@ exports[`AddQuickPartyForm renders properly 1`] = `
           style="padding-left: 8px; padding-right: 8px;"
         >
           <div
-            class="ant-form-item"
+            class="ant-form-item ant-form-item-with-help"
           >
             <div
               class="ant-row ant-form-item-row"
             >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_QUICK_PARTY_post_code"
+                  title=""
+                >
+                  <div>
+                    Postal Code
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
               <div
                 class="ant-col ant-form-item-control"
               >
@@ -1102,47 +1104,28 @@ exports[`AddQuickPartyForm renders properly 1`] = `
                   <div
                     class="ant-form-item-control-input-content"
                   >
+                    <input
+                      aria-label="post_code"
+                      class="ant-input"
+                      id="post_code"
+                      name="post_code"
+                      placeholder="e.g xxxxxx"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_QUICK_PARTY_post_code_help"
+                    role="alert"
+                  >
                     <div
-                      class="ant-row ant-legacy-form-item"
-                    >
-                      <div
-                        class="ant-col ant-legacy-form-item-label"
-                      >
-                        <label
-                          class=""
-                          title="Postal Code"
-                        >
-                          Postal Code
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-legacy-form-item-control-wrapper"
-                      >
-                        <div
-                          class="ant-legacy-form-item-control"
-                        >
-                          <span
-                            class="ant-legacy-form-item-children"
-                          >
-                            <div
-                              class="inline-flex"
-                              style="flex-direction: column;"
-                            >
-                              
-                              <input
-                                class="ant-input"
-                                id="post_code"
-                                name="post_code"
-                                placeholder="e.g xxxxxx"
-                                type="text"
-                                value=""
-                              />
-                              
-                            </div>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      class=""
+                    />
                   </div>
                 </div>
               </div>

@@ -1,17 +1,13 @@
 import React, { FC, useEffect, useState } from "react";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { compose } from "redux";
 import {
   Field,
   formValueSelector,
   getFormValues,
-  InjectedFormProps,
-  reduxForm,
   change,
 } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Alert, Button, Col, Popconfirm, Row, Table, Typography, Radio } from "antd";
+import { Alert, Button, Col, Row, Table, Typography, Radio, Form, Popconfirm } from "antd";
 import {
   IPermit,
   IExplosivesPermit,
@@ -30,8 +26,8 @@ import {
   maxLength,
   number,
   required,
-} from "@common/utils/Validate";
-import { createDropDownList, formatDate, resetForm } from "@common/utils/helpers";
+} from "@mds/common/redux/utils/Validate";
+import { createDropDownList, formatDate } from "@common/utils/helpers";
 import { getAllPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getIsFormLoading } from "@mds/common/redux/reducers/modalReducer";
@@ -45,6 +41,11 @@ import {
 } from "@mds/common/components/explosivespermits/ExplosivesPermitViewModal";
 import ExplosivesPermitMap from "@mds/common/components/explosivespermits/ExplosivesPermitMap";
 import { ESUP_DOCUMENT_GENERATED_TYPES } from "@mds/common/constants/strings";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
+import { resetForm } from "@mds/common/redux/utils/helpers";
+import { closeModal } from "@mds/common/redux/actions/modalActions";
 
 export enum EsupFormMode {
   select_type_modal,
@@ -55,7 +56,7 @@ export enum EsupFormMode {
 }
 
 interface ExplosivesPermitFormProps {
-  closeModal: () => void;
+  onSubmit: any;
   initialValues: any;
   mineGuid: string;
   documentTypeDropdownOptions: IOption[];
@@ -63,7 +64,6 @@ interface ExplosivesPermitFormProps {
   formMode?: EsupFormMode;
   inspectors: IGroupedDropdownList[];
   documents: IExplosivesPermitDocument[];
-  dispatch: any;
 }
 
 interface StateProps {
@@ -72,19 +72,17 @@ interface StateProps {
   formValues: IExplosivesPermit;
   allPartyRelationships: IPermitPartyRelationship[];
   noticeOfWorkApplications: IimportedNOWApplication[];
-  submitting: boolean;
-  handleSubmit: any;
 }
 
 export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
-  StateProps &
-  InjectedFormProps<any>> = ({
+  StateProps> = ({
     initialValues = {},
     mines_permit_guid = null,
     formMode = EsupFormMode.select_type_modal,
     documents,
     ...props
   }) => {
+    const dispatch = useDispatch();
     const [generatedDocs, setGeneratedDocs] = useState([]);
     const [supportingDocs, setSupportingDocs] = useState([]);
 
@@ -113,7 +111,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
 
     useEffect(() => {
       if (currentFormMode === EsupFormMode.select_type_modal) {
-        props.dispatch(change(FORM.EXPLOSIVES_PERMIT_NEW, "is_historic", isHistoric));
+        dispatch(change(FORM.EXPLOSIVES_PERMIT_NEW, "is_historic", isHistoric));
       }
     }, [isHistoric]);
 
@@ -172,7 +170,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
     const cancelButtonText = showBackButton ? "Back" : "Close";
     const cancelButtonFunc = showBackButton
       ? () => setCurrentFormMode(EsupFormMode.select_type_modal)
-      : props.closeModal;
+      : () => dispatch(closeModal());
 
     const descriptionListElement = (
       <div>
@@ -268,7 +266,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
             title="Are you sure you want to cancel?"
             okText="Yes"
             cancelText="No"
-            onConfirm={props.closeModal}
+            onConfirm={() => dispatch(closeModal())}
           >
             <Button className="full-mobile" type="ghost">
               Cancel
@@ -351,7 +349,14 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
     const dynamicText = textOptions[currentFormMode] ?? textOptions[EsupFormMode.create_new];
 
     const permitForm = (
-      <Form layout="vertical" onSubmit={props.handleSubmit}>
+      <FormWrapper
+        initialValues={{ ...initialValues, is_historic: isHistoric }}
+        name={FORM.EXPLOSIVES_PERMIT_NEW}
+        reduxFormConfig={{
+          touchOnBlur: true,
+          onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT_NEW)
+        }}
+        onSubmit={props.onSubmit}>
         <Alert
           className="ant-alert-grey bullet"
           message={dynamicText.alertTitle}
@@ -373,44 +378,41 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
               <>
                 <Row gutter={6}>
                   <Col span={12}>
-                    <Form.Item>
-                      <Field
-                        id="issue_date"
-                        name="issue_date"
-                        label="Issue Date*"
-                        component={renderConfig.DATE}
-                        validate={[required, dateNotInFuture]}
-                        disabled={disabled || isAmendment}
-                      />
-                    </Form.Item>
+                    <Field
+                      id="issue_date"
+                      name="issue_date"
+                      label="Issue Date"
+                      component={renderConfig.DATE}
+                      required
+                      validate={[required, dateNotInFuture]}
+                      disabled={disabled || isAmendment}
+                    />
                   </Col>
                   <Col span={12}>
-                    <Form.Item>
-                      <Field
-                        id="expiry_date"
-                        name="expiry_date"
-                        label="Expiry Date*"
-                        component={renderConfig.DATE}
-                        validate={[required]}
-                        disabled={disabled}
-                      />
-                    </Form.Item>
+                    <Field
+                      id="expiry_date"
+                      name="expiry_date"
+                      label="Expiry Date"
+                      component={renderConfig.DATE}
+                      required
+                      validate={[required]}
+                      disabled={disabled}
+                    />
                   </Col>
                 </Row>
                 <Row gutter={6}>
                   <Col span={24}>
-                    <Form.Item>
-                      <Field
-                        id="issuing_inspector_party_guid"
-                        name="issuing_inspector_party_guid"
-                        label="Issuing Inspector*"
-                        component={renderConfig.GROUPED_SELECT}
-                        placeholder="Start typing the Issuing Inspector's name"
-                        validate={[required]}
-                        data={props.inspectors}
-                        disabled={disabled}
-                      />
-                    </Form.Item>
+                    <Field
+                      id="issuing_inspector_party_guid"
+                      name="issuing_inspector_party_guid"
+                      label="Issuing Inspector"
+                      component={renderConfig.GROUPED_SELECT}
+                      placeholder="Start typing the Issuing Inspector's name"
+                      required
+                      validate={[required]}
+                      data={props.inspectors}
+                      disabled={disabled}
+                    />
                   </Col>
                 </Row>
               </>
@@ -418,122 +420,111 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
             <Row gutter={6}>
               {isHistoric && (
                 <Col span={12}>
-                  <Form.Item>
-                    <Field
-                      id="permit_number"
-                      name="permit_number"
-                      placeholder="Explosives Permit Number"
-                      label="Explosives Permit Number*"
-                      component={renderConfig.FIELD}
-                      validate={[required]}
-                      disabled={disabled || isAmendment}
-                    />
-                  </Form.Item>
-                </Col>
-              )}
-              <Col span={isHistoric ? 12 : 24}>
-                <Form.Item>
                   <Field
-                    id="permit_guid"
-                    name="permit_guid"
-                    placeholder="Select a Permit"
-                    label="Mines Act Permit*"
-                    component={renderConfig.SELECT}
-                    data={permitDropdown}
+                    id="permit_number"
+                    name="permit_number"
+                    placeholder="Explosives Permit Number"
+                    label="Explosives Permit Number"
+                    component={renderConfig.FIELD}
+                    required
                     validate={[required]}
                     disabled={disabled || isAmendment}
                   />
-                </Form.Item>
+                </Col>
+              )}
+              <Col span={isHistoric ? 12 : 24}>
+                <Field
+                  id="permit_guid"
+                  name="permit_guid"
+                  placeholder="Select a Permit"
+                  label="Mines Act Permit"
+                  component={renderConfig.SELECT}
+                  data={permitDropdown}
+                  required
+                  validate={[required]}
+                  disabled={disabled || isAmendment}
+                />
               </Col>
             </Row>
-            <Form.Item>
-              <Field
-                id="now_application_guid"
-                name="now_application_guid"
-                placeholder="Select a NoW"
-                label="Notice of Work Number"
-                component={renderConfig.SELECT}
-                data={nowDropdown}
-                disabled={disabled}
-              />
-            </Form.Item>
+            <Field
+              id="now_application_guid"
+              name="now_application_guid"
+              placeholder="Select a NoW"
+              label="Notice of Work Number"
+              component={renderConfig.SELECT}
+              data={nowDropdown}
+              disabled={disabled}
+            />
             <Row gutter={6}>
               <Col span={12}>
-                <Form.Item>
-                  <Field
-                    id="mine_manager_mine_party_appt_id"
-                    name="mine_manager_mine_party_appt_id"
-                    label={isHistoric ? "Mine Manager" : "Mine Manager*"}
-                    placeholder="Select Mine Manager"
-                    partyLabel="Mine Manager"
-                    validate={isHistoric ? [] : [required]}
-                    component={renderConfig.SELECT}
-                    data={mineManagersDropdown}
-                    disabled={disabled}
-                  />
-                </Form.Item>
+                <Field
+                  id="mine_manager_mine_party_appt_id"
+                  name="mine_manager_mine_party_appt_id"
+                  label="Mine Manager"
+                  placeholder="Select Mine Manager"
+                  partyLabel="Mine Manager"
+                  required={!isHistoric}
+                  validate={isHistoric ? [] : [required]}
+                  component={renderConfig.SELECT}
+                  data={mineManagersDropdown}
+                  disabled={disabled}
+                />
               </Col>
               <Col span={12}>
-                <Form.Item>
-                  <Field
-                    id="permittee_mine_party_appt_id"
-                    name="permittee_mine_party_appt_id"
-                    label="Permittee*"
-                    component={renderConfig.SELECT}
-                    placeholder="Select Permittee"
-                    validate={[required]}
-                    data={permitteeDropdown}
-                    disabled={disabled || !mines_permit_guid}
-                  />
-                </Form.Item>
+                <Field
+                  id="permittee_mine_party_appt_id"
+                  name="permittee_mine_party_appt_id"
+                  label="Permittee"
+                  component={renderConfig.SELECT}
+                  placeholder="Select Permittee"
+                  required
+                  validate={[required]}
+                  data={permitteeDropdown}
+                  disabled={disabled || !mines_permit_guid}
+                />
               </Col>
             </Row>
-            <Form.Item>
-              <Field
-                id="application_date"
-                name="application_date"
-                label="Application Date*"
-                component={renderConfig.DATE}
-                validate={[required, dateNotInFuture]}
-                disabled={disabled}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="description"
-                name="description"
-                label="Other Information"
-                component={renderConfig.AUTO_SIZE_FIELD}
-                disabled={disabled}
-              />
-            </Form.Item>
+            <Field
+              id="application_date"
+              name="application_date"
+              label="Application Date"
+              component={renderConfig.DATE}
+              required
+              validate={[required, dateNotInFuture]}
+              disabled={disabled}
+            />
+            <Field
+              id="description"
+              name="description"
+              label="Other Information"
+              component={renderConfig.AUTO_SIZE_FIELD}
+              disabled={disabled}
+            />
             <Typography.Title level={3} className="purple">
               Storage Details
             </Typography.Title>
             <Row gutter={6}>
               <Col span={12}>
-                <Form.Item>
-                  <Field
-                    id="latitude"
-                    name="latitude"
-                    label="Latitude*"
-                    validate={[number, maxLength(10), lat, required]}
-                    component={renderConfig.FIELD}
-                    disabled={disabled}
-                  />
-                </Form.Item>
+                <Field
+                  id="latitude"
+                  name="latitude"
+                  label="Latitude"
+                  required
+                  validate={[number, maxLength(10), lat, required]}
+                  component={renderConfig.FIELD}
+                  disabled={disabled}
+                />
               </Col>
               <Col span={12}>
-                <Form.Item>
-                  <Field
-                    id="longitude"
-                    name="longitude"
-                    label="Longitude*"
-                    validate={[number, maxLength(12), lon, required, lonNegative]}
-                    component={renderConfig.FIELD}
-                    disabled={disabled}
-                  />
-                </Form.Item>
+                <Field
+                  id="longitude"
+                  name="longitude"
+                  label="Longitude"
+                  required
+                  validate={[number, maxLength(12), lon, required, lonNegative]}
+                  component={renderConfig.FIELD}
+                  disabled={disabled}
+                />
               </Col>
             </Row>
             <ExplosivesPermitMap pin={[props.formValues?.latitude, props.formValues?.longitude]} />
@@ -575,7 +566,6 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                 </>
               )}
             </Row>
-
             <DocumentCategoryForm
               categories={props.documentTypeDropdownOptions}
               mineGuid={props.mineGuid}
@@ -587,49 +577,29 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
           </Col>
           <Col md={12} sm={24} className="border--left--layout">
             {isHistoric && (
-              <>
-                <Row gutter={16}>
-                  <Col span={12}>
-                    <Typography.Title level={4} className="purple">
-                      Permit Status
-                    </Typography.Title>
-                    <Typography.Paragraph strong className="margin-none">
-                      Permit Status
-                    </Typography.Paragraph>
-                    <Typography.Paragraph>
-                      {initialValues?.is_closed ? "Closed" : "-"}
-                    </Typography.Paragraph>
-                  </Col>
-                </Row>
-              </>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Typography.Title level={4} className="purple">
+                    Permit Status
+                  </Typography.Title>
+                  <Typography.Paragraph strong className="margin-none">
+                    Permit Status
+                  </Typography.Paragraph>
+                  <Typography.Paragraph>
+                    {initialValues?.is_closed ? "Closed" : "-"}
+                  </Typography.Paragraph>
+                </Col>
+              </Row>
             )}
             <br />
             <MagazineFormNew isProcessed={disabled} />
           </Col>
         </Row>
         <Row className="flex-between form-button-container-row">
-          <Popconfirm
-            placement="topRight"
-            title={`Are you sure you want to cancel?`}
-            okText="Yes"
-            cancelText="No"
-            onConfirm={cancelButtonFunc}
-          >
-            <Button className="full-mobile" type="ghost">
-              {cancelButtonText}
-            </Button>
-          </Popconfirm>
-          <Button
-            type="primary"
-            className="full-mobile"
-            htmlType="submit"
-            style={{ marginLeft: "auto" }}
-            loading={props.submitting || isDocumentUploading}
-          >
-            {showIssueModal ? "Finish And Generate Certificate" : "Submit"}
-          </Button>
+          <RenderCancelButton buttonText={cancelButtonText} cancelFunction={cancelButtonFunc} />
+          <RenderSubmitButton loading={isDocumentUploading} buttonText={showIssueModal ? "Finish And Generate Certificate" : "Submit"} disableOnClean={false} />
         </Row>
-      </Form>
+      </FormWrapper>
     );
 
     return currentFormMode === EsupFormMode.select_type_modal ? selectPermitTypeForm : permitForm;
@@ -645,10 +615,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default compose(
-  connect(mapStateToProps),
-  reduxForm({
-    form: FORM.EXPLOSIVES_PERMIT_NEW,
-    touchOnBlur: true,
-    onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT_NEW),
-  })
+  connect(mapStateToProps)
 )(ExplosivesPermitFormNew as any) as FC<ExplosivesPermitFormProps>;

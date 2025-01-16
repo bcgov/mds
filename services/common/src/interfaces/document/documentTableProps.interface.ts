@@ -1,6 +1,7 @@
 import { FileOperations, MineDocument } from "@mds/common/models/documents/document";
 import { ColumnType } from "antd/es/table";
 import { IMineDocument } from "../mineDocument.interface";
+import { ReactNode } from "react";
 
 export interface GenericDocTableProps<T> {
   additionalColumnProps?: { key: string; colProps: any }[];
@@ -24,6 +25,7 @@ export interface GenericDocTableProps<T> {
   showVersionHistory?: boolean;
   userRoles?: string[];
   view?: "standard" | "minimal";
+  header?: string | ReactNode;
 }
 
 interface DocumentTableProps extends GenericDocTableProps<MineDocument> {

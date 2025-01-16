@@ -1125,11 +1125,10 @@ export const MINE_TSF_REQUIRED_REPORTS_HASH = {
 
 export const PERMIT_CONDITION_EXTRACTION = [
   {
-    "task_id": "abc123",
-    "task_status": "SUCCESS",
-  }
-]
-
+    task_id: "abc123",
+    task_status: "SUCCESS",
+  },
+];
 
 export const PERMITS: IPermit[] = [
   {
@@ -1161,14 +1160,22 @@ export const PERMITS: IPermit[] = [
             condition_category_code: "HSC",
             description: "Health and Safety",
             display_order: 0,
-            step: 'A.'
+            step: "A.",
+            assigned_review_user: {
+              sub: "bce4ffa4b63641c79afa82287bfffbc8@idir",
+              email: "test.testerson@gov.bc.ca",
+              given_name: "Test",
+              family_name: "Testerson",
+              display_name: "Testerson, Test MCM:EX",
+              last_logged_in: "2024-12-20T17:09:03.200417+00:00",
+            },
           },
           {
             condition_category_code: "RCC",
             description: "Reclamation",
             display_order: 1,
-            step: 'B.'
-          }
+            step: "B.",
+          },
         ],
         conditions: [
           {
@@ -1504,10 +1511,13 @@ export const PERMITS: IPermit[] = [
   },
 ];
 
-export const PERMIT_AMENDMENT_STATE: { [permitGuid: string]: IPermitAmendment } = PERMITS.reduce((acc, permit) => {
-  acc[permit.permit_guid] = permit.permit_amendments[0];
-  return acc;
-}, {});
+export const PERMIT_AMENDMENT_STATE: { [permitGuid: string]: IPermitAmendment } = PERMITS.reduce(
+  (acc, permit) => {
+    acc[permit.permit_guid] = permit.permit_amendments[0];
+    return acc;
+  },
+  {}
+);
 
 export const USER_ACCESS_DATA = [
   "core_view_all",
@@ -3241,7 +3251,7 @@ export const MINE_REPORT_STATUS_OPTIONS_HASH = {
 };
 
 export const BULK_STATIC_CONTENT_RESPONSE = {
-  EMLIContactTypes: [
+  MinistryContactTypes: [
     {
       emli_contact_type_code: "SHI",
       description: "Senior Health, Safety and Environment Inspector",
@@ -4564,7 +4574,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
             type: "LABEL",
             required: false,
             "context-value":
-              "and you may wish to take the opportunity to post your security at this time to avoid any delays.  Safekeeping Agreements backed by GIC’s may be used for bonds under $25,000 with the enclosed template. Complete the form with your banker, using the 'Instructions on Completing a Safekeeping Agreement' and return it to this office for our signature.  A copy of the completed form will be returned to you and your financial institution.  Irrevocable Letters of Credit, certified cheque, bank draft or money order made payable to the Minister of Finance, at the undernoted address, are also acceptable. Payments made by EFT can also be arranged. Please do not send cash. For reclamation surety bonds, the bond shall be with a surety licensed to transact the business of a surety in Canada. For the surety bond template and more please visit our Reclamation Security website. Personal information collected by the Ministry of Energy, Mines, and Low Carbon Innovation is under the authority of section 26(c) of the Freedom of Information and Protection of Privacy Act for the purpose of collecting Bond and Securities Data. If you have any questions about the collection, use and disclosure of your personal information, please contact: Mines Digital Services by email at mds@gov.bc.ca, by phone at: 778-698-7233, or by mail at: PO Box 9380, STN PROV GOVT, Victoria, BC, V8W 9M6.",
+              "and you may wish to take the opportunity to post your security at this time to avoid any delays.  Safekeeping Agreements backed by GIC’s may be used for bonds under $25,000 with the enclosed template. Complete the form with your banker, using the 'Instructions on Completing a Safekeeping Agreement' and return it to this office for our signature.  A copy of the completed form will be returned to you and your financial institution.  Irrevocable Letters of Credit, certified cheque, bank draft or money order made payable to the Minister of Finance, at the undernoted address, are also acceptable. Payments made by EFT can also be arranged. Please do not send cash. For reclamation surety bonds, the bond shall be with a surety licensed to transact the business of a surety in Canada. For the surety bond template and more please visit our Reclamation Security website. Personal information collected by the Ministry of Mining and Critical Minerals is under the authority of section 26(c) of the Freedom of Information and Protection of Privacy Act for the purpose of collecting Bond and Securities Data. If you have any questions about the collection, use and disclosure of your personal information, please contact: Mines Digital Services by email at mds@gov.bc.ca, by phone at: 778-698-7233, or by mail at: PO Box 9380, STN PROV GOVT, Victoria, BC, V8W 9M6.",
             "read-only": false,
           },
           {
@@ -6722,8 +6732,7 @@ export const ORGBOOK_CREDENTIAL = {
       name: "BC Corporate Registry",
       abbreviation: "BCReg",
       email: "bcregistries@gov.bc.ca",
-      url:
-        "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services/bc-registries-online-services",
+      url: "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services/bc-registries-online-services",
       endpoint: null,
     },
     has_logo: true,
@@ -6732,8 +6741,7 @@ export const ORGBOOK_CREDENTIAL = {
     description: "Registration",
     credential_def_id: "HR6vs6GEZ8rHaVgjg2WodM:3:CL:41051:tag",
     last_issue_date: "2020-05-06T12:30:45.967739-07:00",
-    url:
-      "https://bcreg-x-proxy-devex-von-bc-registries-agent-prod.pathfinder.gov.bc.ca/bcreg/incorporation",
+    url: "https://bcreg-x-proxy-devex-von-bc-registries-agent-prod.pathfinder.gov.bc.ca/bcreg/incorporation",
     schema: {
       id: 1,
       create_timestamp: "2019-06-25T14:52:20.397843-07:00",
@@ -6913,8 +6921,7 @@ export const ORGBOOK_CREDENTIAL = {
             name: "BC Corporate Registry",
             abbreviation: "BCReg",
             email: "bcregistries@gov.bc.ca",
-            url:
-              "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services/bc-registries-online-services",
+            url: "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services/bc-registries-online-services",
             endpoint: null,
           },
           has_logo: true,
@@ -6923,8 +6930,7 @@ export const ORGBOOK_CREDENTIAL = {
           description: "Registration",
           credential_def_id: "HR6vs6GEZ8rHaVgjg2WodM:3:CL:41051:tag",
           last_issue_date: "2020-05-06T12:30:45.967739-07:00",
-          url:
-            "https://bcreg-x-proxy-devex-von-bc-registries-agent-prod.pathfinder.gov.bc.ca/bcreg/incorporation",
+          url: "https://bcreg-x-proxy-devex-von-bc-registries-agent-prod.pathfinder.gov.bc.ca/bcreg/incorporation",
           schema: {
             id: 1,
             create_timestamp: "2019-06-25T14:52:20.397843-07:00",
@@ -7371,7 +7377,7 @@ export const EXPLOSIVES_PERMITS = {
   },
 };
 
-export const EMLI_CONTACTS_BY_REGION = [
+export const MINISTRY_CONTACTS_BY_REGION = [
   {
     contact_guid: "7f107cdd-974c-4505-b076-9a88438a2fce",
     contact_id: 1,
@@ -7725,7 +7731,7 @@ export const PROJECT_SUMMARY: IProjectSummary = {
           archived_date: null,
           archived_by: null,
           mine_document_bundle_id: null,
-          versions: []
+          versions: [],
         },
         {
           project_summary_id: null,
@@ -7741,8 +7747,8 @@ export const PROJECT_SUMMARY: IProjectSummary = {
           archived_date: null,
           archived_by: null,
           mine_document_bundle_id: null,
-          versions: []
-        }
+          versions: [],
+        },
       ],
       discharge_documents: [
         {
@@ -7759,8 +7765,8 @@ export const PROJECT_SUMMARY: IProjectSummary = {
           archived_date: null,
           archived_by: null,
           mine_document_bundle_id: null,
-          versions: []
-        }
+          versions: [],
+        },
       ],
       location_documents: [
         {
@@ -7777,10 +7783,10 @@ export const PROJECT_SUMMARY: IProjectSummary = {
           archived_date: null,
           archived_by: null,
           mine_document_bundle_id: null,
-          versions: []
-        }
+          versions: [],
+        },
       ],
-      support_documents: []
+      support_documents: [],
     },
     {
       project_summary_authorization_guid: "624d3acc-b62b-491e-82a3-67ef3b1bbf88",
@@ -8629,7 +8635,8 @@ export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_DROPDOWN = [
   },
 ];
 
-export const MAJOR_MINES_APPLICATION_STATUS_CODES_DROPDOWN = INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_DROPDOWN;
+export const MAJOR_MINES_APPLICATION_STATUS_CODES_DROPDOWN =
+  INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_DROPDOWN;
 
 export const MAJOR_MINES_APPLICATION = {
   major_mine_application_id: 1,
@@ -8680,9 +8687,10 @@ export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPES_HASH = {
   SPR: "Supporting",
 };
 
-export const MAJOR_MINES_APPLICATION_STATUS_CODES_HASH = INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH
+export const MAJOR_MINES_APPLICATION_STATUS_CODES_HASH =
+  INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH;
 
-export const EMLI_TYPE_CODES_DROPDOWN = [
+export const MINISTRY_TYPE_CODES_DROPDOWN = [
   {
     value: "HSI",
     label: "Health and Safety Inspector",
@@ -8715,7 +8723,7 @@ export const EMLI_TYPE_CODES_DROPDOWN = [
   },
 ];
 
-export const EMLI_TYPE_CODES_HASH = {
+export const MINISTRY_TYPE_CODES_HASH = {
   HSI: "Health and Safety Inspector",
   RDR: "Regional Director",
   ROE: "Regional Office",
@@ -9031,10 +9039,10 @@ export const HELP_GUIDE_MS = {
 };
 
 export const USER = {
-  sub: '1234',
-  displayName: 'Testerson, Test EMLI:EX',
-  email: 'test@test.ca',
-  family_name: 'Testerson',
-  given_name: 'Test',
-  last_logged_in: '2022-08-08T20:59:01.482461+00:00',
-}
+  sub: "1234",
+  displayName: "Testerson, Test MCM:EX",
+  email: "test@test.ca",
+  family_name: "Testerson",
+  given_name: "Test",
+  last_logged_in: "2022-08-08T20:59:01.482461+00:00",
+};

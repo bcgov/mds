@@ -3,10 +3,10 @@ import { PropTypes } from "prop-types";
 import { Field } from "redux-form";
 import { Row, Col } from "antd";
 import { currencyMask } from "@common/utils/helpers";
-import { maxLength, number, required } from "@common/utils/Validate";
-import RenderField from "@/components/common/RenderField";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
-import RenderRadioButtons from "@/components/common/RenderRadioButtons";
+import { maxLength, number, required } from "@mds/common/redux/utils/Validate";
+import RenderField from "@mds/common/components/forms/RenderField";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
+import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 

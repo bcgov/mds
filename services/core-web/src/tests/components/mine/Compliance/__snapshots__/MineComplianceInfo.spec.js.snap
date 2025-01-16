@@ -42,12 +42,7 @@ exports[`MineComplianceInfo renders properly 1`] = `
           <h4>
             Filter By
           </h4>
-          <ReduxForm
-            destroyOnUnmount={true}
-            enableReinitialize={false}
-            forceUnregisterOnUnmount={false}
-            form="MINE_COMPLIANCE_FILTER"
-            getFormState={[Function]}
+          <MineComplianceFilterForm
             initialValues={
               Object {
                 "due_date": "",
@@ -58,18 +53,7 @@ exports[`MineComplianceInfo renders properly 1`] = `
                 "violation": Array [],
               }
             }
-            keepDirtyOnReinitialize={false}
             onSubmit={[Function]}
-            persistentSubmitErrors={false}
-            pure={true}
-            shouldAsyncValidate={[Function]}
-            shouldError={[Function]}
-            shouldValidate={[Function]}
-            shouldWarn={[Function]}
-            submitAsSideEffect={false}
-            touchOnBlur={false}
-            touchOnChange={false}
-            updateUnregisteredFields={false}
           />
         </div>
         <ComplianceOrdersTable

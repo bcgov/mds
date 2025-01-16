@@ -13,8 +13,7 @@ import {
   number,
   required,
   requiredList,
-  validateSelectOptions,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { useHistory, useParams } from "react-router-dom";
 
 import { Field } from "redux-form";
@@ -57,8 +56,9 @@ const DamForm: FC<DamFormProps> = (props) => {
       <div className="margin-large--bottom">
         <Typography.Title level={4}>Associated Dams - {dam.dam_name}</Typography.Title>
         <Popconfirm
-          title={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-            } dam?
+          title={`Are you sure you want to cancel ${
+            tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+          } dam?
         All unsaved data on this page will be lost.`}
           cancelText="No"
           okText="Yes"
@@ -77,7 +77,8 @@ const DamForm: FC<DamFormProps> = (props) => {
         label="Dam Type"
         component={renderConfig.SELECT}
         data={DAM_TYPES}
-        validate={[requiredList, validateSelectOptions(DAM_TYPES)]}
+        required
+        validate={[requiredList]}
         disabled={!canEditTSFAndEditMode}
       />
       <Field
@@ -85,6 +86,7 @@ const DamForm: FC<DamFormProps> = (props) => {
         name="dam_name"
         label="Dam Name"
         component={renderConfig.FIELD}
+        required
         validate={[required, maxLength(60)]}
         disabled={!canEditTSFAndEditMode}
       />
@@ -95,6 +97,7 @@ const DamForm: FC<DamFormProps> = (props) => {
             name="latitude"
             label="Latitude"
             component={renderConfig.FIELD}
+            required
             validate={[required, lat]}
             disabled={!canEditTSFAndEditMode}
           />
@@ -105,6 +108,7 @@ const DamForm: FC<DamFormProps> = (props) => {
             name="longitude"
             label="Longitude"
             component={renderConfig.FIELD}
+            required
             validate={[required, lon]}
             disabled={!canEditTSFAndEditMode}
           />
@@ -116,7 +120,8 @@ const DamForm: FC<DamFormProps> = (props) => {
         label="Operating Status"
         component={renderConfig.SELECT}
         data={DAM_OPERATING_STATUS}
-        validate={[requiredList, validateSelectOptions(DAM_OPERATING_STATUS)]}
+        required
+        validate={[requiredList]}
         disabled={!canEditTSFAndEditMode}
       />
       <Field
@@ -125,7 +130,8 @@ const DamForm: FC<DamFormProps> = (props) => {
         label="Dam Consequence Classification"
         component={renderConfig.SELECT}
         data={CONSEQUENCE_CLASSIFICATION_STATUS_CODE}
-        validate={[requiredList, validateSelectOptions(CONSEQUENCE_CLASSIFICATION_STATUS_CODE)]}
+        required
+        validate={[requiredList]}
         disabled={!canEditTSFAndEditMode}
       />
       <Field
@@ -133,6 +139,7 @@ const DamForm: FC<DamFormProps> = (props) => {
         name="permitted_dam_crest_elevation"
         label="Permitted Dam Crest Elevation (meters above sea level)"
         component={renderConfig.FIELD}
+        required
         validate={[required, decimalPlaces(2), number, maxDigits(10)]}
         disabled={!canEditTSFAndEditMode}
       />
@@ -141,6 +148,7 @@ const DamForm: FC<DamFormProps> = (props) => {
         name="current_dam_height"
         label="Current Dam Height (downstream toe to crest in meters)"
         component={renderConfig.FIELD}
+        required
         validate={[required, decimalPlaces(2), number, maxDigits(10)]}
         disabled={!canEditTSFAndEditMode}
       />
@@ -149,6 +157,7 @@ const DamForm: FC<DamFormProps> = (props) => {
         name="current_elevation"
         label="Current Elevation (elevation at the top of the dam in meters)"
         component={renderConfig.FIELD}
+        required
         validate={[required, decimalPlaces(2), number, maxDigits(10)]}
         disabled={!canEditTSFAndEditMode}
       />
@@ -157,6 +166,7 @@ const DamForm: FC<DamFormProps> = (props) => {
         name="max_pond_elevation"
         label="Maximum Pond Elevation (meters above sea level recorded in the previous 12 months)"
         component={renderConfig.FIELD}
+        required
         validate={[required, decimalPlaces(2), number, maxDigits(10)]}
         disabled={!canEditTSFAndEditMode}
       />
@@ -165,6 +175,7 @@ const DamForm: FC<DamFormProps> = (props) => {
         name="min_freeboard_required"
         label="Minimum Freeboard Required (water surface to the crest of the dam, in meters)"
         component={renderConfig.FIELD}
+        required
         validate={[required, decimalPlaces(2), number, maxDigits(10)]}
         disabled={!canEditTSFAndEditMode}
       />

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { destroy } from "redux-form";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
@@ -50,7 +49,6 @@ const propTypes = {
   inspectors: CustomPropTypes.groupOptions.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  destroy: PropTypes.func.isRequired,
   fetchMineIncidents: PropTypes.func.isRequired,
   createMineIncident: PropTypes.func.isRequired,
   updateMineIncident: PropTypes.func.isRequired,
@@ -169,7 +167,6 @@ const mapDispatchToProps = (dispatch) =>
       createMineIncident,
       updateMineIncident,
       deleteMineIncident,
-      destroy,
       openModal,
       closeModal,
     },

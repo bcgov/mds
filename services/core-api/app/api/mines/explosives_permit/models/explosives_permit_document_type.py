@@ -6,6 +6,9 @@ from app.api.utils.helpers import create_image_with_aspect_ratio
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 from app.api.mines.exceptions.mine_exceptions import MineException
+from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment_magazine import ExplosivesPermitAmendmentMagazine
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
+from app.api.mines.permits.permit.models.permit import Permit
 
 PERMIT_SIGNATURE_IMAGE_HEIGHT_INCHES = 0.8
 LETTER_SIGNATURE_IMAGE_HEIGHT_INCHES = 0.8
@@ -40,7 +43,7 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
 
         return document_type
 
-    def transform_template_data(self, template_data, explosives_permit):
+    def transform_template_data(self, template_data, explosives_permit, explosives_permit_amendment_id=None):
         def validate_issuing_inspector(explosives_permit):
             if not explosives_permit.issuing_inspector:
                 raise MineException("No Issuing Inspector has been assigned",
@@ -50,23 +53,42 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
 
         is_draft = template_data.get('is_draft', True)
         template_data['is_draft'] = is_draft
-
         template_data['mine_name'] = explosives_permit.mine.mine_name
         template_data['mine_number'] = explosives_permit.mine.mine_no
-
         issuing_inspector = None
+
+        mine_manager = explosives_permit.mine_manager
+        permittee = explosives_permit.permittee
+
         if is_draft:
             issuing_inspector_party_guid = template_data['issuing_inspector_party_guid']
             issuing_inspector = Party.find_by_party_guid(issuing_inspector_party_guid)
             if issuing_inspector is None:
                 raise MineException("Can't find the provided issuing inspector",
                                               status_code = 404)
+            
+            mine_manager_mine_party_appt_id = template_data.get('mine_manager_mine_party_appt_id', None)
+            permittee_mine_party_appt_id = template_data.get('permittee_mine_party_appt_id', None)
+
+            if mine_manager_mine_party_appt_id:
+                if mine_manager_mine_party_appt_id != explosives_permit.mine_manager_mine_party_appt_id:
+                    mine_party_appt = MinePartyAppointment.find_by_mine_party_appt_id(mine_manager_mine_party_appt_id)
+                    if (mine_party_appt.mine_guid == explosives_permit.mine_guid and mine_party_appt.mine_party_appt_type_code == 'MMG'):
+                        mine_manager = mine_party_appt
+                del template_data['mine_manager_mine_party_appt_id']
+
+            if permittee_mine_party_appt_id:
+                if permittee_mine_party_appt_id != explosives_permit.permittee_mine_party_appt_id:
+                    permittee_party_appt = MinePartyAppointment.find_by_mine_party_appt_id(permittee_mine_party_appt_id)
+                    permittee_permit = Permit.find_by_permit_id(permittee_party_appt.permit_id)
+                    if (permittee_permit.permit_guid == explosives_permit.permit_guid and permittee_party_appt.mine_party_appt_type_code == 'PMT'):
+                        permittee = permittee_party_appt
+                del template_data['permittee_mine_party_appt_id']
         else:
             validate_issuing_inspector(explosives_permit)
             issuing_inspector = explosives_permit.issuing_inspector
         template_data['issuing_inspector_name'] = issuing_inspector.name
 
-        mine_manager = explosives_permit.mine_manager
         if mine_manager is None:
             raise MineException("Provided Mine Manager not found",
                                               status_code = 404)
@@ -77,7 +99,6 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
         template_data['mine_manager_address'] = mine_manager.party.first_address.full
         template_data['mine_manager_name'] = mine_manager.party.name
 
-        permittee = explosives_permit.permittee
         if permittee is None:
             raise MineException("Provided permittee not found",
                                               status_code = 404)
@@ -172,9 +193,16 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
                         }
                         transformed_magazines.append(transformed_magazine)
                 return transformed_magazines
+            untransformed_explosive_magazines = explosives_permit.explosive_magazines
+            untransformed_detonator_magazines = explosives_permit.detonator_magazines
 
-            explosive_magazines = transform_magazines(explosives_permit.explosive_magazines or [])
-            detonator_magazines = transform_magazines(explosives_permit.detonator_magazines or [])
+            explosives_permit_amendment_magazines = ExplosivesPermitAmendmentMagazine.find_by_explosives_permit_amendment_id(explosives_permit_amendment_id)
+            if explosives_permit_amendment_id and len(explosives_permit_amendment_magazines) > 0:
+                untransformed_explosive_magazines = list(filter(lambda mag: mag.explosives_permit_amendment_magazine_type_code == "EXP", explosives_permit_amendment_magazines))
+                untransformed_detonator_magazines = list(filter(lambda mag: mag.explosives_permit_amendment_magazine_type_code == "DET", explosives_permit_amendment_magazines))
+            
+            explosive_magazines = transform_magazines(untransformed_explosive_magazines or [])
+            detonator_magazines = transform_magazines(untransformed_detonator_magazines or [])
             magazines = explosive_magazines + detonator_magazines
             template_data['magazines'] = magazines
 

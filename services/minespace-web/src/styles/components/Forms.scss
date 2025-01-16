@@ -116,6 +116,10 @@ form .ant-row>button+button {
     margin-left: 1em;
 }
 
+.form-btn+.form-btn {
+    margin-left: 1em;
+}
+
 .ant-steps+* {
     margin-top: 0.5em;
 }

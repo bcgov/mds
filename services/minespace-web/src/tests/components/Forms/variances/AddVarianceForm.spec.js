@@ -13,7 +13,7 @@ const setupProps = () => {
 };
 
 const setupDispatchProps = () => {
-  dispatchProps.handleSubmit = jest.fn();
+  dispatchProps.onSubmit = jest.fn();
   dispatchProps.onSubmit = jest.fn();
   dispatchProps.closeModal = jest.fn();
 };

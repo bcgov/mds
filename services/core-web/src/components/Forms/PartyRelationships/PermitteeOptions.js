@@ -1,9 +1,7 @@
 import React from "react";
 import { Field } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { Col, Row } from "antd";
-import { required } from "@common/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 import { createDropDownList } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -26,19 +24,18 @@ export const PermitteeOptions = (props) => {
   return (
     <Row gutter={16}>
       <Col md={12} xs={24}>
-        <Form.Item>
-          <Field
-            id="related_guid"
-            name="related_guid"
-            label={`Permit ${props.isPermitRequired ? "*" : ""}`}
-            placeholder="Select a Permit"
-            doNotPinDropdown
-            component={renderConfig.SELECT}
-            data={permitDropdown}
-            disabled={props.isPermitDropDownDisabled}
-            validate={props.isPermitRequired ? [required] : []}
-          />
-        </Form.Item>
+        <Field
+          id="related_guid"
+          name="related_guid"
+          label="Permit"
+          placeholder="Select a Permit"
+          doNotPinDropdown
+          component={renderConfig.SELECT}
+          data={permitDropdown}
+          disabled={props.isPermitDropDownDisabled}
+          required={props.isPermitRequired}
+          validate={props.isPermitRequired ? [required] : []}
+        />
       </Col>
     </Row>
   );

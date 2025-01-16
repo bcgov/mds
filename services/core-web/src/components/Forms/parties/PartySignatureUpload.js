@@ -1,5 +1,3 @@
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "filepond-polyfill";
@@ -37,24 +35,22 @@ export const PartySignatureUpload = (props) => {
   const [files, setFiles] = useState([]);
 
   return (
-    <Form.Item>
-      <FilePond
-        files={props.signature ? [props.signature] : files}
-        allowImagePreview
-        allowRevert
-        labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
+    <FilePond
+      files={props.signature ? [props.signature] : files}
+      allowImagePreview
+      allowRevert
+      labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
         <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>'
-        acceptedFileTypes={Object.values(IMAGE)}
-        onupdatefiles={(fileItems) => {
-          const item = fileItems && fileItems[0];
-          props.onFileChange(item ? item.getFileEncodeDataURL() : null);
-          setFiles(fileItems);
-        }}
-        labelButtonDownloadItem="Download signature"
-        maxFileSize="350KB"
-        minFileSize="6KB"
-      />
-    </Form.Item>
+      acceptedFileTypes={Object.values(IMAGE)}
+      onupdatefiles={(fileItems) => {
+        const item = fileItems && fileItems[0];
+        props.onFileChange(item ? item.getFileEncodeDataURL() : null);
+        setFiles(fileItems);
+      }}
+      labelButtonDownloadItem="Download signature"
+      maxFileSize="350KB"
+      minFileSize="6KB"
+    />
   );
 };
 PartySignatureUpload.propTypes = propTypes;

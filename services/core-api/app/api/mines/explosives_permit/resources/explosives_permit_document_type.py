@@ -6,6 +6,7 @@ from flask.globals import current_app
 
 from app.extensions import api, cache
 from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit
+from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import ExplosivesPermitAmendment
 from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.include.user_info import User
@@ -47,6 +48,7 @@ class ExplosivesPermitDocumentTypeResource(Resource, UserMixin):
 class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument('explosives_permit_guid', type=str, location='json', required=True)
+    parser.add_argument('explosives_permit_amendment_id', type=str, location='json', required=False)
     parser.add_argument('template_data', type=dict, location='json', required=True)
 
     @api.doc(
@@ -70,12 +72,24 @@ class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
 
             explosives_permit_guid = data['explosives_permit_guid']
             explosives_permit = ExplosivesPermit.find_by_explosives_permit_guid(explosives_permit_guid)
+            explosives_permit_id = explosives_permit.explosives_permit_id
+            explosives_permit_amendment_id = data.get('explosives_permit_amendment_id', None)
+            explosives_permit_amendments = ExplosivesPermitAmendment.find_by_explosives_permit_id(explosives_permit_id)
+            if explosives_permit_amendment_id:
+                is_amendment_matched_with_permit = any(
+                    amendments.explosives_permit_amendment_id == int(explosives_permit_amendment_id)
+                    for amendments in explosives_permit_amendments
+                    )
+                
+                if is_amendment_matched_with_permit == False:
+                    raise MineException("Provided Explosive Permit Amendment Id does not exist under this Explosive Permit", status_code = 400)
+                
             if not explosives_permit:
                 raise MineException("Explosives Permit not found",
                                                     status_code = 404)
 
             template_data = data['template_data']
-            template_data = document_type.transform_template_data(template_data, explosives_permit)
+            template_data = document_type.transform_template_data(template_data, explosives_permit, explosives_permit_amendment_id)
 
             form_spec_with_context = document_template._form_spec_with_context(explosives_permit_guid)
             enforced_data = [x for x in form_spec_with_context if x.get('read-only') == True]

@@ -152,7 +152,7 @@ export const ProjectOverviewTab: FC = () => {
           let title;
 
           if (isProjectLeadContact) {
-            title = "EMLI Project Lead";
+            title = "MCM Project Lead";
           } else if (isPrimary) {
             title = "Primary Contact";
           } else if (hasJobTitle) {

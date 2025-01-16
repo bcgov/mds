@@ -4,7 +4,7 @@ exports[`TailingsSummaryPage renders properly 1`] = `
 <ContextProvider
   value={
     Object {
-      "children": <Memo(Connect(ReduxForm))
+      "children": <Memo(Connect(withRouter(featureFlagGuard)))
         TSFOperatingStatusCodeHash={Object {}}
         clearTsf={[MockFunction]}
         consequenceClassificationStatusCodeHash={Object {}}
@@ -149,7 +149,7 @@ exports[`TailingsSummaryPage renders properly 1`] = `
     }
   }
 >
-  <Connect(ReduxForm)
+  <Connect(withRouter(featureFlagGuard))
     TSFOperatingStatusCodeHash={Object {}}
     clearTsf={[MockFunction]}
     consequenceClassificationStatusCodeHash={Object {}}

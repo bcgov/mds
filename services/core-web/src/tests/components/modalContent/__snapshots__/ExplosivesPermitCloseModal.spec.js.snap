@@ -2,26 +2,9 @@
 
 exports[`ExplosivesPermitCloseModal renders properly 1`] = `
 <div>
-  <ReduxForm
+  <ExplosivesPermitCloseForm
     closeModal={[MockFunction]}
-    destroyOnUnmount={true}
-    enableReinitialize={true}
-    forceUnregisterOnUnmount={false}
-    form="EXPLOSIVES_PERMIT_CLOSE"
-    getFormState={[Function]}
-    keepDirtyOnReinitialize={false}
     onSubmit={[MockFunction]}
-    onSubmitSuccess={[Function]}
-    persistentSubmitErrors={false}
-    pure={true}
-    shouldAsyncValidate={[Function]}
-    shouldError={[Function]}
-    shouldValidate={[Function]}
-    shouldWarn={[Function]}
-    submitAsSideEffect={false}
-    touchOnBlur={false}
-    touchOnChange={false}
-    updateUnregisteredFields={false}
   />
 </div>
 `;

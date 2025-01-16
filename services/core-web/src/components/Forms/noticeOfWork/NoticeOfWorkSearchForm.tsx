@@ -1,24 +1,28 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
+import { Field } from "redux-form";
 import PropTypes from "prop-types";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  // initialValues is used by reduxForm magic
-  // eslint-disable-next-line react/no-unused-prop-types
+  onSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 // this should be stateful once fully implemented
 export const NoticeOfWorkSearchForm = (props) => {
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <FormWrapper
+      initialValues={props.initialValues}
+      name={FORM.NOTICE_OF_WORK_SEARCH}
+      reduxFormConfig={{
+        touchOnBlur: false,
+        enableReinitialize: true,
+      }}
+      onSubmit={props.onSubmit}>
       <Row gutter={6}>
         <Col md={24} xs={24}>
           <Field
@@ -34,14 +38,10 @@ export const NoticeOfWorkSearchForm = (props) => {
           <SearchOutlined />
         </Button>
       </div>
-    </Form>
+    </FormWrapper>
   );
 };
 
 NoticeOfWorkSearchForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.NOTICE_OF_WORK_SEARCH,
-  touchOnBlur: false,
-  enableReinitialize: true,
-})(NoticeOfWorkSearchForm);
+export default NoticeOfWorkSearchForm;

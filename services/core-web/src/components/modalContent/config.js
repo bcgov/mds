@@ -10,8 +10,6 @@ import EditPartyModal from "./EditPartyModal";
 import AddVarianceModal from "./AddVarianceModal";
 import ViewVarianceModal from "./ViewVarianceModal";
 import EditVarianceModal from "./EditVarianceModal";
-import AddIncidentModal from "./AddIncidentModal";
-import AddReportModal from "./AddReportModal";
 import AddMineWorkInformationModal from "./AddMineWorkInformationModal";
 import EditNoticeOfWorkDocumentModal from "./EditNoticeOfWorkDocumentModal";
 import ChangeNOWMineModal from "./ChangeNOWMineModal";
@@ -43,13 +41,12 @@ import NoPermitRequiredSelectionModal from "./NoPermitRequiredSelectionModal";
 import AddExplosivesPermitModal from "./AddExplosivesPermitModal";
 import ExplosivesPermitApplicationDecisionModal from "./ExplosivesPermitApplicationDecisionModal";
 import ViewMagazineModal from "./ViewMagazineModal";
-import ExplosivesPermitStatusModal from "./ExplosivesPermitStatusModal";
 import ExplosivesPermitCloseModal from "./ExplosivesPermitCloseModal";
 import ExplosivesPermitViewModal from "@mds/common/components/explosivespermits/ExplosivesPermitViewModal";
 import MergePartyConfirmationModal from "./MergePartyConfirmationModal";
 import ViewAllConditionsModal from "./ViewAllConditionsModal";
 import UpdateNoWDateModal from "./UpdateNoWDateModal";
-import EMLIContactModal from "./EMLIContactModal";
+import MinistryContactModal from "./MinistryContactModal";
 import UpdateMinespaceUserModal from "./UpdateMinespaceUserModal";
 import ManageDocumentsDownloadPackageModal from "./ManageDocumentsDownloadPackageModal";
 import NoticeOfDepartureModal from "./NoticeOfDepartureModal";
@@ -57,9 +54,6 @@ import UploadProjectDecisionPackageDocumentModal from "./UploadProjectDecisionPa
 import UpdateProjectDecisionPackageDocumentModal from "./UpdateProjectDecisionPackageDocumentModal";
 import AddMineAlertModal from "./AddMineAlertModal";
 import ViewPastMineAlertModal from "./ViewPastMineAlertModal";
-import ArchiveDocumentModal from "@common/components/documents/ArchiveDocumentModal";
-import DeleteDocumentModal from "@mds/common/components/documents/DeleteDocumentModal";
-import ReplaceDocumentModal from "@mds/common/components/documents/ReplaceDocumentModal";
 import UpdateMineReportSubmissionStatusModal from "./UpdateMineReportSubmissionStatusModal";
 import RevokeCredentialModal from "@/components/mine/DigitalPermitCredential/RevokeCredentialModal";
 import CredentialContentModal from "@/components/mine/DigitalPermitCredential/CredentialContentModal";
@@ -70,9 +64,6 @@ export const modalConfig = {
   ADD_PARTY_RELATIONSHIP: AddPartyRelationshipModal,
   ADD_QUICK_PARTY: AddQuickPartyModal,
   MERGE_PARTY_CONFIRMATION: MergePartyConfirmationModal,
-  ARCHIVE_DOCUMENT: ArchiveDocumentModal,
-  DELETE_DOCUMENT: DeleteDocumentModal,
-  REPLACE_DOCUMENT: ReplaceDocumentModal,
   EDIT_PARTY_RELATIONSHIP: EditPartyRelationshipModal,
   ADD_CONTACT: AddPartyModal,
   ADD_PERMIT: AddPermitModal,
@@ -82,8 +73,6 @@ export const modalConfig = {
   ADD_VARIANCE: AddVarianceModal,
   VIEW_VARIANCE: ViewVarianceModal,
   EDIT_VARIANCE: EditVarianceModal,
-  MINE_INCIDENT: AddIncidentModal,
-  ADD_REPORT: AddReportModal,
   ADD_MINE_WORK_INFORMATION: AddMineWorkInformationModal,
   GENERATE_DOCUMENT: GenerateDocumentModal,
   EDIT_NOTICE_OF_WORK_DOCUMENT: EditNoticeOfWorkDocumentModal,
@@ -116,10 +105,9 @@ export const modalConfig = {
   EXPLOSIVES_PERMIT_DECISION_MODAL: ExplosivesPermitApplicationDecisionModal,
   EXPLOSIVES_PERMIT_VIEW_MODAL: ExplosivesPermitViewModal,
   VIEW_MAGAZINE_MODAL: ViewMagazineModal,
-  EXPLOSIVES_PERMIT_STATUS_MODAL: ExplosivesPermitStatusModal,
   EXPLOSIVES_PERMIT_CLOSE_MODAL: ExplosivesPermitCloseModal,
   UPDATE_NOW_DATE_MODAL: UpdateNoWDateModal,
-  EMLI_CONTACT_MODAL: EMLIContactModal,
+  MINISTRY_CONTACT_MODAL: MinistryContactModal,
   UPDATE_MINESPACE_USERS: UpdateMinespaceUserModal,
   NOW_MANAGE_DOCUMENTS_DOWNLOAD_PACKAGE_MODAL: ManageDocumentsDownloadPackageModal,
   NOTICE_OF_DEPARTURE_MODAL: NoticeOfDepartureModal,

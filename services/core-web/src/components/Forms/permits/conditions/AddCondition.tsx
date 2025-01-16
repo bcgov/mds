@@ -218,7 +218,7 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(AddCondition) as FC<
+  connect(mapStateToProps, mapDispatchToProps)(AddCondition as any) as FC<
     AddCondtionProps & RouteComponentProps
   >
 );

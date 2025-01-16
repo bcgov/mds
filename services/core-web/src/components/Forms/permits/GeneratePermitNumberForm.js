@@ -1,16 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, Alert } from "antd";
-import { resetForm } from "@common/utils/helpers";
+import { Col, Row, Alert } from "antd";
 import * as FORM from "@/constants/forms";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
 };
 
@@ -19,7 +16,13 @@ const defaultProps = {
 };
 
 export const GeneratePermitNumberForm = (props) => (
-  <Form layout="vertical" onSubmit={props.handleSubmit}>
+  <FormWrapper
+    isModal
+    name={FORM.GENERATE_PERMIT_NUMBER}
+    reduxFormConfig={{
+      touchOnBlur: true,
+    }}
+    onSubmit={props.onSubmit}>
     <Alert
       message="This action is final"
       description="The generated permit number will be assigned to the current draft permit."
@@ -36,36 +39,13 @@ export const GeneratePermitNumberForm = (props) => (
       </Col>
     </Row>
     <div className="right center-mobile">
-      <Popconfirm
-        placement="topRight"
-        title="Are you sure you want to cancel?"
-        onConfirm={props.closeModal}
-        okText="Yes"
-        cancelText="No"
-      >
-        <Button className="full-mobile" type="secondary">
-          Cancel
-        </Button>
-      </Popconfirm>
-      <Button
-        className="full-mobile"
-        htmlType="submit"
-        type="primary"
-        loading={props.submitting}
-        disabled={props.disabled}
-        on
-      >
-        Generate Permit Number
-      </Button>
+      <RenderCancelButton />
+      <RenderSubmitButton buttonText="Generate Permit Number" disabled={props.disabled} disableOnClean={false} />
     </div>
-  </Form>
+  </FormWrapper>
 );
 
 GeneratePermitNumberForm.propTypes = propTypes;
 GeneratePermitNumberForm.defaultProps = defaultProps;
 
-export default reduxForm({
-  form: FORM.GENERATE_PERMIT_NUMBER,
-  touchOnBlur: true,
-  onSubmitSuccess: resetForm(FORM.GENERATE_PERMIT_NUMBER),
-})(GeneratePermitNumberForm);
+export default GeneratePermitNumberForm;

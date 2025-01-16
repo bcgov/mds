@@ -15,7 +15,7 @@ import {
   dateNotInFuture,
   required,
   validateDateRanges,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { formatDateTime, truncateFilename } from "@common/utils/helpers";
 import { PDF } from "@mds/common/constants/fileTypes";
 
@@ -371,9 +371,10 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
               <Field
                 id="engineer_of_record.start_date"
                 name="engineer_of_record.start_date"
-                label={!fieldsDisabled ? "Start Date *" : "Start Date"}
+                label="Start Date"
                 disabled={fieldsDisabled}
                 component={renderConfig.DATE}
+                required={!fieldsDisabled}
                 validate={
                   !fieldsDisabled && [required, dateNotInFuture, validateEorStartDateOverlap]
                 }
@@ -383,7 +384,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
               <Field
                 id="engineer_of_record.end_date"
                 name="engineer_of_record.end_date"
-                label="End Date (Optional)"
+                label="End Date"
                 disabled={fieldsDisabled}
                 validate={!fieldsDisabled && [dateInFuture]}
                 component={renderConfig.DATE}

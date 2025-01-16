@@ -202,15 +202,6 @@ export const lonNegative = (value) =>
 export const phoneNumber = (value) =>
   value && !Validate.checkPhone(value) ? "Invalid phone number e.g. xxx-xxx-xxxx" : undefined;
 
-// relies on provinceOptions being passed as props rather than through a selector
-export const postalCode = (value, allValues, formProps) => {
-  const { sub_division_code } = allValues;
-  const country = formProps.provinceOptions.find((prov) => prov.value === sub_division_code)
-    ?.subType;
-  return value && !Validate.checkPostalCode(value, country)
-    ? "Invalid postal code or zip code"
-    : undefined;
-};
 
 export const postalCodeWithCountry = memoize((address_type_code = "CAN") => (value) => {
   const code_type = address_type_code === "USA" ? "zip code" : "postal code";
@@ -230,9 +221,6 @@ export const email = (value) =>
 
 export const currency = (value) =>
   value && !Validate.checkCurrency(value) ? "Invalid dollar amount" : undefined;
-
-export const validSearchSelection = ({ key, err }) => (value, allValues, formProps) =>
-  !Object.keys(formProps[key]).includes(value) ? err || "Invalid Selection" : undefined;
 
 export const validateStartDate = memoize((previousStartDate) => (value) =>
   value <= previousStartDate
@@ -324,21 +312,6 @@ export const validateIncidentDate = memoize((reportedDate) => (value) =>
     : undefined
 );
 
-/**
- * @param data: options to choose from
- * @param allowEmptyData: perform validation with empty data array (free text on empty data set will be invalid)
- */
-export const validateSelectOptions = memoize((data: IOption[], allowEmptyData = false) => (value):
-  | string
-  | undefined => {
-  if (value && (data?.length > 0 || allowEmptyData)) {
-    return data?.find((opt) => opt.value === value) !== undefined
-      ? undefined
-      : "Invalid. Select an option provided in the dropdown.";
-  }
-  return undefined;
-});
-
 export const decimalPlaces = memoize((places) => (value) => {
   if (value && !Validate.checkWholeNumber(value)) {
     const valueDecimalPlaces = value.split(".")[1];
@@ -370,7 +343,7 @@ export const validateDateRanges = (
   existingAppointments,
   newAppt,
   apptType,
-  isCurrentAppointment
+  isCurrentAppointment = false
 ) => {
   const errorMessages: any = {};
   const toDate = (dateString) => (dateString ? moment(dateString, "YYYY-MM-DD").toDate() : null);
@@ -431,3 +404,8 @@ export const validateIfApplicationTypeCorrespondsToPermitNumber = (
   }
   return undefined;
 };
+
+export const assessedLiabilityNegativeWarning = (value) =>
+  positiveNumber(value)
+    ? "A negative value will decrease the current assessed liability"
+    : undefined;

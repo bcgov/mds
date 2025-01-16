@@ -1,7 +1,7 @@
 import React from "react";
 import { Field } from "redux-form";
 import { currencyMask } from "@common/utils/helpers";
-import { required, number, currency } from "@common/utils/Validate";
+import { required, number, currency } from "@mds/common/redux/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -25,7 +25,6 @@ const FIELDS_COMPONENT = {
   MULTI_SELECT: renderConfig.MULTI_SELECT,
   RADIO: renderConfig.RADIO,
   GROUPED_SELECT: renderConfig.GROUPED_SELECT,
-  MINE_SELECT: renderConfig.MINE_SELECT,
   LABEL: renderConfig.LABEL,
 };
 
@@ -36,6 +35,7 @@ const GenerateDocumentFormField = (props) => (
     label={props.field.label}
     placeholder={props.field.placeholder}
     component={FIELDS_COMPONENT[props.field.type]}
+    required={props.field.required}
     validate={props.field.required ? [required] : null}
     {...props}
   />
@@ -72,7 +72,6 @@ const FIELDS = {
   MULTI_SELECT: GenerateDocumentFormField,
   RADIO: GenerateDocumentFormField,
   GROUPED_SELECT: GenerateDocumentFormField,
-  MINE_SELECT: GenerateDocumentFormField,
   LABEL: GenerateDocumentFormLabel,
 };
 

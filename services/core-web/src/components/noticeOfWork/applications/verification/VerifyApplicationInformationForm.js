@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-import { reduxForm, formValueSelector, reset, change } from "redux-form";
+import { formValueSelector, reset, change } from "redux-form";
 import { Button, Divider, Popconfirm } from "antd";
-import { Form } from "@ant-design/compatible";
 import CustomPropTypes from "@/customPropTypes";
 
 import { clearAllSearchResults } from "@mds/common/redux/actionCreators/searchActionCreator";
@@ -15,13 +14,15 @@ import * as FORM from "@/constants/forms";
 import { resetForm } from "@common/utils/helpers";
 import EditNOWMineAndLocation from "@/components/Forms/noticeOfWork/EditNOWMineAndLocation";
 import VerifyNoWContacts from "@/components/Forms/noticeOfWork/VerifyNoWContacts";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   contactFormValues: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   mineGuid: PropTypes.string.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.any,
   isImporting: PropTypes.bool.isRequired,
   longitude: PropTypes.string,
   latitude: PropTypes.string,
@@ -38,19 +39,19 @@ const defaultProps = {
 };
 
 export const VerifyApplicationInformationForm = (props) => {
-  const [wasFormReset, setReset] = useState(false);
-  const values = {
+  const [wasFormReset, setWasFormReset] = useState(false);
+  const values = props.initialValues ?? {
     mine_guid: props.mineGuid,
     longitude: props.noticeOfWork.longitude,
     latitude: props.noticeOfWork.latitude,
   };
 
   useEffect(() => {
-    setReset(false);
+    setWasFormReset(false);
   }, [props.contactFormValues]);
 
   const handleReset = () => {
-    setReset(true);
+    setWasFormReset(true);
     props.reset(FORM.VERIFY_NOW_APPLICATION_FORM);
     props.change(FORM.VERIFY_NOW_APPLICATION_FORM, "contacts", props.originalNoticeOfWork.contacts);
     props.clearAllSearchResults();
@@ -61,7 +62,14 @@ export const VerifyApplicationInformationForm = (props) => {
   const disabled = props.contactFormValues.length > formValuesWithParty || !props.mine_guid;
   const noMine = props.mine_guid ? "" : "A mine must be associated to this application";
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <FormWrapper
+      name={FORM.VERIFY_NOW_APPLICATION_FORM}
+      reduxFormConfig={{
+        enableReinitialize: true,
+        onSubmitSuccess: resetForm(FORM.VERIFY_NOW_APPLICATION_FORM),
+      }}
+      initialValues={values}
+      onSubmit={props.onSubmit}>
       <h4>Verify Mine</h4>
       <p>
         Review the information below to confirm that this Notice of Work belongs with this mine
@@ -107,7 +115,7 @@ export const VerifyApplicationInformationForm = (props) => {
         <p className="violet">{confirmed}</p>
         <p className="red">{noMine}</p>
       </div>
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -133,10 +141,5 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: FORM.VERIFY_NOW_APPLICATION_FORM,
-    enableReinitialize: true,
-    onSubmitSuccess: resetForm(FORM.VERIFY_NOW_APPLICATION_FORM),
-  })
+  connect(mapStateToProps, mapDispatchToProps)
 )(VerifyApplicationInformationForm);
