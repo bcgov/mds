@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS permit_condition_status_code
     );
 
     ALTER TABLE permit_condition_status_code OWNER TO mds;
-    ALTER TABLE ONLY permit_condition_status_code
+    ALTER TABLE permit_condition_status_code
     ADD CONSTRAINT permit_condition_status_code_pkey PRIMARY KEY
     (permit_condition_status_code);
 
