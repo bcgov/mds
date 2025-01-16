@@ -3,7 +3,7 @@ import { EXTERNAL_AUTHS } from "@mds/common/constants/reducerTypes";
 
 /**
  * @file externalAuthorizationReducer.js
- * All data associated with authorizations and applications from other ministries or sources outside of EMLI.
+ * All data associated with authorizations and applications from other ministries or sources outside of MCM.
  */
 
 const initialState = {

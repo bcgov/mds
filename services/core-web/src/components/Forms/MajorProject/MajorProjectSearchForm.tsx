@@ -53,7 +53,7 @@ export const MajorProjectsSearchForm: FC<MajorProjectsSearchFormProps> = ({
               <Field
                 id="project_lead_name"
                 name="project_lead_name"
-                placeholder="Search by EMLI project lead"
+                placeholder="Search by MCM project lead"
                 component={RenderField}
               />
             </Col>

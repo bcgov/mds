@@ -169,7 +169,7 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
       </Typography.Paragraph>
       <Typography.Paragraph>
         <Alert
-          description="This section will not identify the Agent as defined under the Mines Act, unless the Ministry of Energy, Mines and Low Carbon Innovation is otherwise notified by the owner."
+          description="This section will not identify the Agent as defined under the Mines Act, unless the Ministry of Mining and Critical Minerals is otherwise notified by the owner."
           type="warning"
           showIcon
         />

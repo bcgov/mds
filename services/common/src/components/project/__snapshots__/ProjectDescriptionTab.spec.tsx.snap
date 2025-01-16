@@ -58,6 +58,19 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
           This project step has not been formally submitted by the proponent through MineSpace. MineSpace users can update text fields and add documents.
         </p>
       </div>
+      <div
+        class="bcgov-callout--danger bcgov-callout"
+      >
+        <p
+          class="bcgov-callout-title"
+        >
+          Environmental Management Act Submission Unsuccessful
+        </p>
+        <p>
+          One or more of your environment authorization applications has not been
+                      submitted successfully.
+        </p>
+      </div>
       <h3
         class="ant-typography font-colour"
       >
@@ -300,6 +313,245 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
         </div>
       </div>
       <br />
+      <h5
+        class="ant-typography primary-colour"
+      >
+        Ministry of Environment
+      </h5>
+      <span
+        class="ant-typography desktop-bold"
+      >
+        Environmental Management Act
+      </span>
+      <div
+        class="ant-typography"
+      >
+        An Environmental Protection Officer will contact you once your application is reviewed and accepted. In the meantime, to learn about the ministry’s structured application process and timelines to get a waste discharge authorization, please visit
+         
+        <a
+          href="https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/process"
+          target="_blank"
+        >
+          The waste discharge authorization process
+        </a>
+        .
+      </div>
+      <div
+        class="ant-alert ant-alert-error ant-alert-with-description"
+        data-show="true"
+        role="alert"
+        style="margin-bottom: 12px;"
+      >
+        <span
+          aria-label="close-circle"
+          class="anticon anticon-close-circle ant-alert-icon"
+          role="img"
+        >
+          <svg
+            aria-hidden="true"
+            data-icon="close-circle"
+            fill="currentColor"
+            fill-rule="evenodd"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
+          >
+            <path
+              d="M512 64c247.4 0 448 200.6 448 448S759.4 960 512 960 64 759.4 64 512 264.6 64 512 64zm0 76c-205.4 0-372 166.6-372 372s166.6 372 372 372 372-166.6 372-372-166.6-372-372-372zm128.01 198.83c.03 0 .05.01.09.06l45.02 45.01a.2.2 0 01.05.09.12.12 0 010 .07c0 .02-.01.04-.05.08L557.25 512l127.87 127.86a.27.27 0 01.05.06v.02a.12.12 0 010 .07c0 .03-.01.05-.05.09l-45.02 45.02a.2.2 0 01-.09.05.12.12 0 01-.07 0c-.02 0-.04-.01-.08-.05L512 557.25 384.14 685.12c-.04.04-.06.05-.08.05a.12.12 0 01-.07 0c-.03 0-.05-.01-.09-.05l-45.02-45.02a.2.2 0 01-.05-.09.12.12 0 010-.07c0-.02.01-.04.06-.08L466.75 512 338.88 384.14a.27.27 0 01-.05-.06l-.01-.02a.12.12 0 010-.07c0-.03.01-.05.05-.09l45.02-45.02a.2.2 0 01.09-.05.12.12 0 01.07 0c.02 0 .04.01.08.06L512 466.75l127.86-127.86c.04-.05.06-.06.08-.06a.12.12 0 01.07 0z"
+            />
+          </svg>
+        </span>
+        <div
+          class="ant-alert-content"
+        >
+          <div
+            class="ant-alert-message"
+          >
+            Submission Unsuccessful
+          </div>
+          <div
+            class="ant-alert-description"
+          >
+            <div>
+              <span
+                class="ant-typography"
+              >
+                One or more of the environment authorization application was not submitted successfully. Please 
+                <b>
+                  retry the failed submission
+                </b>
+                 or 
+                <b>
+                  start a new application
+                </b>
+                 for the rejected authorization(s). You can link this submission to the new application on the Related Projects page.
+              </span>
+              <div
+                class="ant-list ant-list-split project-description-tab-errors"
+              >
+                <div
+                  class="ant-spin-nested-loading"
+                >
+                  <div
+                    class="ant-spin-container"
+                  >
+                    <ul
+                      class="ant-list-items"
+                    >
+                      <li>
+                        <div
+                          class="inline-flex"
+                        >
+                          <div
+                            class="flex-4"
+                          >
+                            <div
+                              class="ant-row"
+                            >
+                              <div
+                                class="ant-col ant-col-21"
+                              >
+                                Refuse Discharge Permit 
+        Amendment(1234): "Some error"
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-table-wrapper  core-table"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <thead
+                      class="ant-table-thead"
+                    >
+                      <tr>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Type
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Authorization
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Tracking #
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Date
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Status
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="ant-table-tbody"
+                    >
+                      <tr
+                        class="ant-table-row ant-table-row-level-0 fade-in"
+                        data-row-key="c47161c0-8860-4125-8e68-fac3d98cf429"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="project_type-column"
+                            title="Type"
+                          >
+                            undefined - undefined
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="permit_no-column"
+                            title="Authorization"
+                          >
+                            1234
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="ams_tracking_number-column"
+                            title="Tracking #"
+                          >
+                            N/A
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="date_submitted-column"
+                            title="Date"
+                          >
+                            May 24 2024, 12:17 (PDT)
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <span
+                            class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                          >
+                            <span
+                              class="ant-badge-status-dot ant-badge-status-error"
+                            />
+                            <span
+                              class="ant-badge-status-text"
+                            >
+                              Rejected
+                            </span>
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

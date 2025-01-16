@@ -10,12 +10,12 @@ export const storeMinespaceUserMineList = (payload) => ({
   payload,
 });
 
-export const storeEMLIContacts = (payload) => ({
-  type: actionTypes.STORE_EMLI_CONTACTS,
+export const storeMinistryContacts = (payload) => ({
+  type: actionTypes.STORE_MINISTRY_CONTACTS,
   payload,
 });
 
-export const storeEMLIContactsByRegion = (payload) => ({
-  type: actionTypes.STORE_EMLI_CONTACTS_BY_REGION,
+export const storeMinistryContactsByRegion = (payload) => ({
+  type: actionTypes.STORE_MINISTRY_CONTACTS_BY_REGION,
   payload,
 });

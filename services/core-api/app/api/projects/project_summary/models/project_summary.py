@@ -1316,11 +1316,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             email_recipients = emails.get(self.status_code)
 
             if email_recipients is not None:
-                emli_body = open("app/templates/email/projects/emli_project_summary_email.html", "r").read()
+                ministry_body = open("app/templates/email/projects/ministry_project_summary_email.html", "r").read()
                 subject = f'Project Description Documents Notification for {mine.mine_name}'
                 cc = [MDS_EMAIL]
 
-                emli_context = {
+                ministry_context = {
                     "project_summary": {
                         "project_summary_description": self.project_summary_description,
                     },
@@ -1331,14 +1331,14 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     "message": message,
                     "core_project_summary_link": f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/overview'
                 }
-                EmailService.send_template_email(subject, email_recipients, emli_body, emli_context, cc=cc)
+                EmailService.send_template_email(subject, email_recipients, ministry_body, ministry_context, cc=cc)
 
 
     def send_project_summary_email(self, mine, message) -> None:
 
         project_lead_email = self.project_lead_email
 
-        emli_emails = {
+        ministry_emails = {
             'SUB': [PERM_RECL_EMAIL] + PROJECT_SUMMARY_EMAILS,
             'ASG': [project_lead_email],
             'OHD': [PERM_RECL_EMAIL, project_lead_email],
@@ -1348,15 +1348,15 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         send_ms_email = self.status_code != "DFT" and self.status_code != "ASG"
         
-        emli_recipients = emli_emails.get(self.status_code)
+        ministry_recipients = ministry_emails.get(self.status_code)
         cc = [MDS_EMAIL]
         minespace_recipients = [contact.email for contact in self.contacts if contact.is_primary]
 
-        emli_body = open("app/templates/email/projects/emli_project_summary_email.html", "r").read()
+        ministry_body = open("app/templates/email/projects/ministry_project_summary_email.html", "r").read()
         minespace_body = open("app/templates/email/projects/minespace_project_summary_email.html", "r").read()
         subject = f'Project Description Notification for {mine.mine_name}'
 
-        emli_context = {
+        ministry_context = {
             "project_summary": {
                 "project_summary_description": self.project_summary_description,
             },
@@ -1378,6 +1378,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             "ema_auth_link": f'{Config.EMA_AUTH_LINK}',
         }
 
-        EmailService.send_template_email(subject, emli_recipients, emli_body, emli_context, cc=cc)
+        EmailService.send_template_email(subject, ministry_recipients, ministry_body, ministry_context, cc=cc)
         if send_ms_email:
             EmailService.send_template_email(subject, minespace_recipients, minespace_body, minespace_context, cc=cc)

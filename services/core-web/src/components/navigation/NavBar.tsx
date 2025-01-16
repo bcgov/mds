@@ -170,10 +170,10 @@ export const NavBar: FC<NavBarProps> = ({ activeButton, isMenuOpen, toggleHambur
       permission: Permission.ADMINISTRATIVE_USERS,
     },
     {
-      key: "emli-contact-management",
-      label: "MineSpace EMLI Contacts",
-      route: router.ADMIN_EMLI_CONTACT_MANAGEMENT.route,
-      permission: Permission.EDIT_EMLI_CONTACTS,
+      key: "ministry-contact-management",
+      label: "MineSpace MCM Contacts",
+      route: router.ADMIN_MINISTRY_CONTACT_MANAGEMENT.route,
+      permission: Permission.EDIT_MINISTRY_CONTACTS,
     },
   ].map(renderFullNavMenuItem);
 
@@ -314,9 +314,9 @@ export const NavBar: FC<NavBarProps> = ({ activeButton, isMenuOpen, toggleHambur
       permission: Permission.ADMINISTRATIVE_USERS,
     },
     {
-      label: "MineSpace EMLI Contacts",
-      route: router.ADMIN_EMLI_CONTACT_MANAGEMENT.route,
-      permission: Permission.EDIT_EMLI_CONTACTS,
+      label: "MineSpace MCM Contacts",
+      route: router.ADMIN_MINISTRY_CONTACT_MANAGEMENT.route,
+      permission: Permission.EDIT_MINISTRY_CONTACTS,
     },
     {
       label: "Reporting Dashboard",

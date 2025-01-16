@@ -23,7 +23,7 @@ EDIT_SUBMISSIONS = "core_edit_submissions"
 EDIT_HISTORICAL_PERMIT_AMENDMENTS = "core_edit_historical_amendments"
 GIS = "core_gis"
 EDIT_NOW_DATES = "core_edit_now_dates"
-EDIT_EMLI_CONTACTS = "core_edit_emli_contacts"
+EDIT_MINISTRY_CONTACTS = "core_edit_emli_contacts"
 EDIT_PROJECT_SUMMARIES = "core_edit_project_summaries"
 EDIT_REQUIREMENTS = "core_edit_requirements"
 EDIT_INFORMATION_REQUIREMENTS_TABLE = "core_edit_information_requirements_table"
@@ -52,8 +52,8 @@ def bceid_username():
     return getJwtManager().get_bceid_user_name()
 
 
-def requires_role_edit_emli_contacts(func):
-    return _inner_wrapper(func, EDIT_EMLI_CONTACTS)
+def requires_role_edit_ministry_contacts(func):
+    return _inner_wrapper(func, EDIT_MINISTRY_CONTACTS)
 
 
 def requires_role_edit_project_summaries(func):

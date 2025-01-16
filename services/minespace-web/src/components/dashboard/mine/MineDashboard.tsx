@@ -8,7 +8,7 @@ import { MINE_DASHBOARD } from "@/constants/routes";
 import { getMineDashboardRoutes } from "./MineDashboardRoutes";
 import SidebarWrapper, { SidebarNavigation } from "@mds/common/components/common/SidebarWrapper";
 import Loading from "@/components/common/Loading";
-import { fetchEMLIContactsByRegion } from "@mds/common/redux/actionCreators/minespaceActionCreator";
+import { fetchMinistryContactsByRegion } from "@mds/common/redux/actionCreators/minespaceActionCreator";
 import { fetchPartyRelationships } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
 
@@ -24,7 +24,7 @@ const MineDashboard: FC = () => {
     return Promise.all([
       dispatch(fetchMineRecordById(mine_guid))
         .then(({ data }) => {
-          dispatch(fetchEMLIContactsByRegion(data.mine_region, data.major_mine_ind));
+          dispatch(fetchMinistryContactsByRegion(data.mine_region, data.major_mine_ind));
         })
         .catch(() => setMineNotFound(true)),
       dispatch(

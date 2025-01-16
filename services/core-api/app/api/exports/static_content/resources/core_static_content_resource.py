@@ -61,7 +61,7 @@ from app.api.mines.explosives_permit.models.explosives_permit_magazine_type impo
 from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
 from app.api.projects.project_summary.models.project_summary_status_code import ProjectSummaryStatusCode
 from app.api.projects.project_summary.models.project_summary_document_type import ProjectSummaryDocumentType
-from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
+from app.api.ministry_contacts.models.ministry_contact_type import MinistryContactType
 from app.api.projects.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
 from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 from app.api.projects.information_requirements_table.models.information_requirements_table_status_code import InformationRequirementsTableStatusCode
@@ -86,7 +86,7 @@ MODELS_GET_ACTIVE = [
     ApplicationSourceTypeCode, ApplicationTypeCode, GovernmentAgencyType, TSFOperatingStatusCode,
     ConsequenceClassificationStatusCode, ITRBExemptionStatusCode, ExplosivesPermitStatus,
     ExplosivesPermitMagazineType, ExplosivesPermitDocumentType, ProjectSummaryDocumentType,
-    ProjectSummaryStatusCode, EMLIContactType, ProjectSummaryAuthorizationType,
+    ProjectSummaryStatusCode, MinistryContactType, ProjectSummaryAuthorizationType,
     ProjectSummaryPermitType, InformationRequirementsTableStatusCode, InformationRequirementsTableDocumentType,
     MajorMineApplicationStatusCode, MajorMineApplicationDocumentType, ProjectDecisionPackageStatusCode, ProjectDecisionPackageDocumentType, Municipality
 ]

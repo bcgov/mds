@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MinistryContactsTable renders properly 1`] = `
+<CoreTable
+  columns={
+    Array [
+      Object {
+        "dataIndex": "mine_region_code",
+        "render": [Function],
+        "sorter": [Function],
+        "title": "Region",
+      },
+      Object {
+        "dataIndex": "is_major_mine",
+        "render": [Function],
+        "sorter": [Function],
+        "title": "Major or Regional Contact",
+      },
+      Object {
+        "dataIndex": "is_general_contact",
+        "render": [Function],
+        "title": <span>
+          General Contact
+          <CoreTooltip
+            title="General Contacts will be shown on MineSpace in addition to the Regional Contacts."
+          />
+        </span>,
+      },
+      Object {
+        "dataIndex": "emli_contact_type_code",
+        "render": [Function],
+        "sorter": [Function],
+        "title": "Contact Type",
+      },
+      Object {
+        "className": "",
+        "dataIndex": "name",
+        "render": [Function],
+        "title": "Name",
+      },
+      Object {
+        "dataIndex": "email",
+        "key": "email",
+        "render": [Function],
+        "sorter": [Function],
+        "title": "Email",
+      },
+      Object {
+        "dataIndex": "phone_number",
+        "key": "phone_number",
+        "render": [Function],
+        "title": "Phone Number",
+      },
+      Object {
+        "className": "column-hide",
+        "dataIndex": "fax_number",
+        "render": [Function],
+        "title": "Fax Number",
+      },
+      Object {
+        "className": "column-hide",
+        "dataIndex": "mailing_address_line_1",
+        "render": [Function],
+        "title": "Address",
+      },
+      Object {
+        "dataIndex": "delete",
+        "render": [Function],
+        "title": "",
+      },
+    ]
+  }
+  condition={true}
+  dataSource={Array []}
+/>
+`;

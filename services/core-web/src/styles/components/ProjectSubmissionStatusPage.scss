@@ -25,3 +25,12 @@
     @extend .status-icon;
     color: $alert-red;
 }
+
+.project-description-tab-errors {
+    padding-left: 30px;
+
+    li {
+        list-style-position: outside;
+        list-style-type: disc;
+    }
+}

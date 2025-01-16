@@ -70,11 +70,8 @@ export const LandingPage = (props: { isAuthenticated: boolean }) => (
       <Col sm={{ span: 24 }} xl={{ span: 12 }} xxl={{ span: 10 }}>
         <Typography.Title level={4}>What is MineSpace?</Typography.Title>
         <Typography.Paragraph>
-          The{" "}
-          <Typography.Text strong>
-            Ministry of Energy, Mines and Low Carbon Innovation
-          </Typography.Text>{" "}
-          is developing a system to make it easier for the public, industry and government to see
+          The <Typography.Text strong>Ministry of Mining and Critical Minerals</Typography.Text> is
+          developing a system to make it easier for the public, industry and government to see
           what&apos;s happening in the mining industry across British Columbia. The system is
           called&nbsp;
           <Typography.Text strong>Mines Digital Services (MDS)</Typography.Text>.

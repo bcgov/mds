@@ -95,19 +95,19 @@ const IncidentFormMinistryFollowup: FC<IncidentFormMinistryFollowupProps> = ({
             )}
           {formValues?.determination_type_code ===
             INCIDENT_DETERMINATION_TYPES.dangerousOccurance && (
-            <Col xs={24} md={12}>
-              <Field
-                label="Which section(s) of the code apply to this dangerous occurrence?"
-                id="dangerous_occurrence_subparagraph_ids"
-                name="dangerous_occurrence_subparagraph_ids"
-                placeholder="Please choose one or more..."
-                component={renderConfig.MULTI_SELECT}
-                data={dangerousOccurenceSubparagraphOptions}
-                validate={[requiredList]}
-                disabled={!isEditMode}
-              />
-            </Col>
-          )}
+              <Col xs={24} md={12}>
+                <Field
+                  label="Which section(s) of the code apply to this dangerous occurrence?"
+                  id="dangerous_occurrence_subparagraph_ids"
+                  name="dangerous_occurrence_subparagraph_ids"
+                  placeholder="Please choose one or more..."
+                  component={renderConfig.MULTI_SELECT}
+                  data={dangerousOccurenceSubparagraphOptions}
+                  validate={[requiredList]}
+                  disabled={!isEditMode}
+                />
+              </Col>
+            )}
           {formValues.verbal_notification_provided && (
             <Col md={12} xs={24}>
               <Field
@@ -129,7 +129,7 @@ const IncidentFormMinistryFollowup: FC<IncidentFormMinistryFollowupProps> = ({
           )}
           <Col span={24}>
             <Field
-              label="Was it escalated to EMLI investigation?"
+              label="Was it escalated to MCM investigation?"
               id="followup_investigation_type_code"
               name="followup_investigation_type_code"
               component={renderConfig.RADIO}

@@ -56,9 +56,9 @@ export const MineProjectTable = (props) => {
     },
     {
       key: "project_lead_name",
-      title: "EMLI Project Lead",
+      title: "MCM Project Lead",
       dataIndex: "project_lead_name",
-      render: (text) => <div title="EMLI Project Lead">{text}</div>,
+      render: (text) => <div title="MCM Project Lead">{text}</div>,
     },
     {
       key: "project_contact",

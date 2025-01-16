@@ -1,0 +1,216 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MinistryContactForm renders properly 1`] = `
+<div>
+  <Form
+    colon={true}
+    hideRequiredMark={false}
+    layout="vertical"
+    onSubmit={[MockFunction]}
+  >
+    <Row
+      gutter={16}
+    >
+      <Col
+        span={12}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="is_major_mine"
+            label="Is this a Major Mine Contact?*"
+            name="is_major_mine"
+            type="checkbox"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+      </Col>
+    </Row>
+    <Row
+      gutter={16}
+    >
+      <Col
+        md={12}
+        xs={24}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            data={Array []}
+            disabled={true}
+            id="mine_region_code"
+            label="Mine Region*"
+            name="mine_region_code"
+            placeholder="Select a mine Region"
+            validate={
+              Array [
+                [Function],
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+      </Col>
+      <Col
+        md={12}
+        xs={24}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            data={Array []}
+            disabled={true}
+            id="emli_contact_type_code"
+            label="Contact Type*"
+            name="emli_contact_type_code"
+            placeholder="Select a contact type"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+      </Col>
+    </Row>
+    <Row
+      gutter={16}
+    >
+      <Col
+        md={12}
+        xs={24}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="first_name"
+            label="First Name*"
+            name="first_name"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+      </Col>
+      <Col
+        md={12}
+        xs={24}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="last_name"
+            label="Surname*"
+            name="last_name"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+      </Col>
+    </Row>
+    <Row
+      gutter={16}
+    >
+      <Col
+        span={24}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="email"
+            label="Email*"
+            name="email"
+            validate={
+              Array [
+                [Function],
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+      </Col>
+    </Row>
+    <Row
+      gutter={16}
+    >
+      <Col
+        span={24}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="phone_number"
+            label="Phone Number*"
+            name="phone_number"
+            normalize={[Function]}
+            placeholder="e.g. xxx-xxx-xxxx"
+            validate={
+              Array [
+                [Function],
+                [Function],
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+      </Col>
+    </Row>
+    <div
+      className="right center-mobile"
+    >
+      <ForwardRef
+        cancelText="No"
+        disabled={false}
+        okText="Yes"
+        onConfirm={[MockFunction]}
+        placement="topRight"
+        title="Are you sure you want to cancel?"
+      >
+        <Button
+          className="full-mobile"
+          disabled={false}
+          type="secondary"
+        >
+          Cancel
+        </Button>
+      </ForwardRef>
+      <Button
+        className="full-mobile"
+        htmlType="submit"
+        loading={false}
+        type="primary"
+      >
+        Update MCM Contact
+      </Button>
+    </div>
+  </Form>
+</div>
+`;

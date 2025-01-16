@@ -79,7 +79,7 @@ const StepForms = (
           onRemoveFile={onRemoveFile}
         />
         <Alert
-          message="You are required to contact the EMLI on call inspector at (888)-348-0299 in addition to submitting this report."
+          message="You are required to contact the MCM on call inspector at (888)-348-0299 in addition to submitting this report."
           description={
             <>
               <Checkbox
@@ -87,7 +87,7 @@ const StepForms = (
                 checked={state.hasConfirm}
                 onChange={(event) => handleCheckboxChange(event)}
               >
-                Click here to acknowledge that you understand and have contacted the EMLI On Call
+                Click here to acknowledge that you understand and have contacted the MCM On Call
                 Inspector
               </Checkbox>
             </>

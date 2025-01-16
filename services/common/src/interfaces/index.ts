@@ -40,7 +40,7 @@ export * from "./verifiableCredentials";
 export * from "./mineComplianceInfo.interface";
 export * from "./complianceOrder.interface";
 export * from "./variance";
-export * from "./emli_contact.interface";
+export * from "./ministryContact.interface";
 export * from "./mineStatus.interface";
 export * from "./mineCommodityOption.interface";
 export * from "./mineDisturbanceOption.interface";

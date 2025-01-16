@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MinistryContactModal renders properly 1`] = `
+<div>
+  <Connect(ReduxForm)
+    MinistryContactTypes={Array []}
+    closeModal={[MockFunction]}
+    initialValues={Object {}}
+    isEdit={true}
+    oSubmit={[MockFunction]}
+    regionDropdownOptions={Array []}
+  />
+</div>
+`;

@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { useSelector } from "react-redux";
 import { Card, Col, Descriptions, Row, Typography } from "antd";
-import { getEMLIContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
+import { getMinistryContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
 import {
   getInformationRequirementsTableStatusCodesHash,
   getMajorMinesApplicationStatusCodesHash,
@@ -23,7 +23,7 @@ interface ProjectOverviewTabProps {
 
 export const ProjectOverviewTab: FC<ProjectOverviewTabProps> = ({ navigateForward }) => {
   const projectSummary = useSelector(getProjectSummary);
-  const EMLIcontactInfo = useSelector(getEMLIContactsByRegion);
+  const MinistryContactInfo = useSelector(getMinistryContactsByRegion);
   const project = useSelector(getProject);
   const projectSummaryStatusCodesHash = useSelector(getProjectSummaryStatusCodesHash);
   const informationRequirementsTable = project?.information_requirements_table;
@@ -162,7 +162,7 @@ export const ProjectOverviewTab: FC<ProjectOverviewTabProps> = ({ navigateForwar
           <Col span={24}>{renderProjectContactsCard(project.contacts)}</Col>
           <Col span={24}>
             <Card title="Ministry Contacts">
-              {EMLIcontactInfo.map((contact) => (
+              {MinistryContactInfo.map((contact) => (
                 <MinistryContactItem contact={contact} key={contact.contact_id} />
               ))}
             </Card>

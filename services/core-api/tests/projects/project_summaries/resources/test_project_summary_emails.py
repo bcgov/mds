@@ -29,7 +29,7 @@ def test_sub_to_asg(mock_send_template_email, test_client, db_session, auth_head
         headers=auth_headers['full_auth_header'],
         json=data
     )
-    emli_context = {
+    ministry_context = {
             "project_summary": {
                 "project_summary_description": project_summary.project_summary_description,
             },
@@ -42,8 +42,8 @@ def test_sub_to_asg(mock_send_template_email, test_client, db_session, auth_head
         }
     
     # ARGS: subject, recipients, body, context, cc (ignore comparison with ANY)
-    emli_call = call(f'Project Description Notification for {project_summary.mine_name}', ANY, ANY, emli_context, cc=[MDS_EMAIL])
+    ministry_call = call(f'Project Description Notification for {project_summary.mine_name}', ANY, ANY, ministry_context, cc=[MDS_EMAIL])
 
     assert put_resp.status_code == 200
-    calls = [emli_call]
+    calls = [ministry_call]
     mock_send_template_email.assert_has_calls(calls, True)

@@ -821,7 +821,7 @@ exports[`Dashboard renders properly 1`] = `
                 <ForwardRef>
                   <div>
                     <h3>
-                      EMLI GIS Links
+                      MCM GIS Links
                     </h3>
                     <a
                       href="https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6"
