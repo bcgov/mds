@@ -7,6 +7,7 @@ from app.api.mines.permits.permit_conditions.models.permit_conditions import (
     PermitConditions,
 )
 from app.api.mines.permits.permit_conditions.services.permit_condition_comparer import (
+    ConditionComparison,
     PermitConditionComparer,
 )
 from app.extensions import db
@@ -44,7 +45,9 @@ class PermitConditionCreator:
     def create_condition(
         self,
         condition: PermitConditionResult,
-    ) -> Tuple[PermitConditions, Optional[PermitConditions]]:
+    ) -> Tuple[
+        PermitConditions, Optional[PermitConditions], Optional[ConditionComparison]
+    ]:
         current_category = self.get_current_category()
 
         parent = self._determine_parent(condition)
@@ -77,8 +80,7 @@ class PermitConditionCreator:
             _step=(condition.step if not condition.condition_title else ""),
         )
 
-        db.session.add(main_condition)
-        db.session.flush()
+        comparison = None
 
         if self.previous_amendment:
             condition_comparer = PermitConditionComparer(
@@ -88,13 +90,16 @@ class PermitConditionCreator:
             main_condition.meta = main_condition.meta or {}
             main_condition.meta.update({"condition_comparison": comparison.to_dict()})
 
+        db.session.add(main_condition)
+        db.session.flush()
+
         # Update tracking
         number_key = ".".join(condition.numbering_structure)
         self.last_condition_id_by_number_structure[number_key] = (
             main_condition.permit_condition_id
         )
 
-        return main_condition, title_condition
+        return main_condition, title_condition, comparison
 
     def _create_title_condition(
         self,

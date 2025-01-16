@@ -39,7 +39,7 @@ def test_create_basic_condition(permit_condition_creator, db_session):
         meta={},
     )
 
-    main_condition, title_condition = permit_condition_creator.create_condition(
+    main_condition, title_condition, _ = permit_condition_creator.create_condition(
         condition_result
     )
 
@@ -61,7 +61,7 @@ def test_create_condition_with_title(permit_condition_creator, db_session):
         meta={},
     )
 
-    main_condition, title_condition = permit_condition_creator.create_condition(
+    main_condition, title_condition, _ = permit_condition_creator.create_condition(
         condition_result
     )
 
@@ -86,7 +86,7 @@ def test_create_nested_conditions(permit_condition_creator, db_session):
         meta={},
     )
 
-    parent_condition, _ = permit_condition_creator.create_condition(parent_result)
+    parent_condition, _, _ = permit_condition_creator.create_condition(parent_result)
 
     # Create child condition
     child_result = PermitConditionResult(
@@ -98,7 +98,7 @@ def test_create_nested_conditions(permit_condition_creator, db_session):
         meta={},
     )
 
-    child_condition, _ = permit_condition_creator.create_condition(child_result)
+    child_condition, _, _ = permit_condition_creator.create_condition(child_result)
 
     assert (
         child_condition.parent_permit_condition_id
@@ -135,7 +135,7 @@ def test_condition_comparison_with_previous_amendment(
         meta={},
     )
 
-    main_condition, _ = permit_condition_creator.create_condition(condition_result)
+    main_condition, _, _ = permit_condition_creator.create_condition(condition_result)
 
     assert main_condition.meta.get("condition_comparison") is not None
     assert main_condition.meta["condition_comparison"]["change_type"] == "unchanged"
@@ -195,8 +195,8 @@ def test_condition_comparison_with_previous_amendment_nested(
         meta={},
     )
 
-    parent_condition, _ = permit_condition_creator.create_condition(parent_result)
-    child_condition, _ = permit_condition_creator.create_condition(child_result)
+    parent_condition, _, _ = permit_condition_creator.create_condition(parent_result)
+    child_condition, _, _ = permit_condition_creator.create_condition(child_result)
 
     assert parent_condition.meta["condition_comparison"]["change_type"] == "unchanged"
     assert parent_condition.meta["condition_comparison"][
@@ -249,7 +249,7 @@ def test_condition_comparison_with_previous_amendment_modified(
         meta={},
     )
 
-    modified_child_condition, _ = permit_condition_creator.create_condition(
+    modified_child_condition, _, _ = permit_condition_creator.create_condition(
         child_result_modified
     )
 
@@ -310,7 +310,7 @@ def test_condition_comparison_with_previous_amendment_added(
         meta={},
     )
 
-    modified_child_condition, _ = permit_condition_creator.create_condition(
+    modified_child_condition, _, _ = permit_condition_creator.create_condition(
         child_result_added
     )
 
@@ -347,6 +347,6 @@ def test_no_condition_comparison_without_previous_amendment(
         meta={},
     )
 
-    main_condition, _ = creator.create_condition(condition_result)
+    main_condition, _, _ = creator.create_condition(condition_result)
 
     assert "condition_comparison" not in main_condition.meta

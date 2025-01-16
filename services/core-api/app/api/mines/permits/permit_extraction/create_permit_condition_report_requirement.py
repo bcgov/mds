@@ -6,6 +6,7 @@ from app.api.mines.reports.models.mine_report_permit_requirement import (
 from dateutil.parser import parse
 from flask import current_app
 
+from ..permit_conditions.services.permit_condition_comparer import ConditionChangeType
 from .models.permit_condition_result import PermitConditionResult
 
 
@@ -139,3 +140,33 @@ def _parse_initial_due_date(condition_id, initial_due_date):
             )
             initial_due_date = None
     return initial_due_date
+
+
+def create_or_copy_permit_condition_report_requirements(
+    task, condition: PermitConditionResult, condition_id, comparison
+):
+    if (
+        comparison
+        and comparison.previous_condition
+        and comparison.change_type
+        in [ConditionChangeType.MODIFIED, ConditionChangeType.MOVED]
+    ):
+
+        # Copy existing report requirements from previous condition
+        existing_requirements = MineReportPermitRequirement.query.filter_by(
+            permit_condition_id=comparison.previous_condition.permit_condition_id,
+            deleted_ind=False,
+        ).first()
+
+        if existing_requirements:
+            return MineReportPermitRequirement(
+                report_name=existing_requirements.report_name,
+                permit_condition_id=condition_id,
+                permit_amendment_id=task.permit_amendment.permit_amendment_id,
+                cim_or_cpo=existing_requirements.cim_or_cpo,
+                due_date_period_months=existing_requirements.due_date_period_months,
+                initial_due_date=existing_requirements.initial_due_date,
+                ministry_recipient=existing_requirements.ministry_recipient,
+            )
+    # No match found, create new requirement
+    return create_permit_condition_report_requirement(task, condition, condition_id)
