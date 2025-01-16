@@ -381,20 +381,6 @@ VALUES
     ('RMT', 'Remitted', 20, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO permit_condition_status_code
-    (
-    permit_condition_status_code,
-    description,
-    display_order,
-    create_user,
-    update_user
-    )
-VALUES
-    ('NST', 'Not Started', 10, 'system-mds', 'system-mds'),
-    ('INP', 'In Progress', 20, 'system-mds', 'system-mds'),
-    ('COM', 'Complete', 30, 'system-mds', 'system-mds')
-ON CONFLICT DO NOTHING;
-
 
 INSERT INTO mine_incident_followup_investigation_type
 	(
