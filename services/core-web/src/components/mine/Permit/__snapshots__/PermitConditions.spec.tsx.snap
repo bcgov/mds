@@ -476,7 +476,7 @@ exports[`PermitConditions renders properly 1`] = `
                                           <span
                                             class="ant-typography faded-text"
                                           >
-                                            Assigned to Testerson, Test EMLI:EX
+                                            Assigned to Testerson, Test MCM:EX
                                           </span>
                                         </div>
                                       </div>
