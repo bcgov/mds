@@ -4,9 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClipboard } from "@fortawesome/pro-light-svg-icons";
 import { CheckCircleOutlined, RedoOutlined, CheckOutlined } from "@ant-design/icons";
 import CoreButton from "@mds/common/components/common/CoreButton";
-import { IPermitCondition, PERMIT_CONDITION_STATUS_CODE } from "@mds/common";
 import { useDispatch } from "react-redux";
 import { updatePermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { IPermitCondition } from "@mds/common/interfaces/permits";
+import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
 
 interface PermitConditionStatusProps {
   condition: IPermitCondition;
@@ -26,11 +27,11 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
 
   const handleCompleteReview = async (values) => {
     const payload = values.step
-        ? {
-            ...values,
-            _step: values.step,
-            permit_condition_status_code: PERMIT_CONDITION_STATUS_CODE.COM
-        } : values;
+      ? {
+        ...values,
+        _step: values.step,
+        permit_condition_status_code: PERMIT_CONDITION_STATUS_CODE.COM
+      } : values;
     await dispatch(updatePermitCondition(values.permit_condition_guid, permitAmendmentGuid, payload));
     await refreshData();
   };
@@ -50,23 +51,23 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
   };
 
   const requirements = getConditionsWithRequirements([condition]);
-  
+
   const dispatch = useDispatch();
 
   return <Col span={24}>
-    <Row justify="space-between"> 
+    <Row justify="space-between">
       <Space>
-        { condition.permit_condition_status_code === PERMIT_CONDITION_STATUS_CODE.COM ? 
-          <Tag className="condition-tag" color="success" icon={<CheckCircleOutlined/>}>Review Completed</Tag> :
+        {condition.permit_condition_status_code === PERMIT_CONDITION_STATUS_CODE.COM ?
+          <Tag className="condition-tag" color="success" icon={<CheckCircleOutlined />}>Review Completed</Tag> :
           <Tag className="condition-tag" color="error" icon={<RedoOutlined />}>Needs Review</Tag>
         }
-        { requirements.length > 0 && 
-          <Tag className="condition-tag" color="purple" icon={<FontAwesomeIcon className="margin-small--right" icon={faClipboard}/>}>
+        {requirements.length > 0 &&
+          <Tag className="condition-tag" color="purple" icon={<FontAwesomeIcon className="margin-small--right" icon={faClipboard} />}>
             Has {requirements.length} report{requirements.length > 1 && "s"}
           </Tag>
         }
       </Space>
-      { canEditPermitConditions && condition.permit_condition_status_code !== PERMIT_CONDITION_STATUS_CODE.COM &&            
+      {canEditPermitConditions && condition.permit_condition_status_code !== PERMIT_CONDITION_STATUS_CODE.COM &&
         <CoreButton
           type="primary"
           disabled={isDisabled}
@@ -75,6 +76,6 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
           <CheckOutlined /> Complete Review
         </CoreButton>
       }
-      </Row>
+    </Row>
   </Col>
 };

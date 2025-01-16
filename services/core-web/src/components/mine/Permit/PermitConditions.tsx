@@ -56,8 +56,7 @@ import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import PermitConditionReviewAssignment from "@/components/mine/Permit/PermitConditionReviewAssignment";
 import { getUser } from "@mds/common/redux/slices/userSlice";
 import { createDropDownList } from "@common/utils/helpers";
-import { COLOR } from "@/constants/styles";
-import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common";
+import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
 
 const { Title } = Typography;
 
@@ -132,9 +131,9 @@ const PermitConditions: FC<PermitConditionProps> = ({
   );
 
   const PERMIT_CONDITION_STATUS = {
-    complete: {icon: faCheckCircle, color: "color-success", text: "Complete"},
-    in_progress: {icon: faClock, color: "color-primary", text: "In Progress"},
-    not_started: {icon: faBan, color: "color-gov-grey", text:"Not Started"}
+    complete: { icon: faCheckCircle, color: "color-success", text: "Complete" },
+    in_progress: { icon: faClock, color: "color-primary", text: "In Progress" },
+    not_started: { icon: faBan, color: "color-gov-grey", text: "Not Started" }
   }
 
   const getPermitConditionCategories = (categories, conditions) => {
@@ -189,9 +188,9 @@ const PermitConditions: FC<PermitConditionProps> = ({
 
         let status = PERMIT_CONDITION_STATUS.not_started;
 
-        if ( allComplete ) {
+        if (allComplete) {
           status = PERMIT_CONDITION_STATUS.complete;
-        } else if ( someComplete ) {
+        } else if (someComplete) {
           status = PERMIT_CONDITION_STATUS.in_progress;
         }
 
@@ -205,10 +204,10 @@ const PermitConditions: FC<PermitConditionProps> = ({
             </Typography.Text>
           ),
           titleText: cat.description,
-          description: ( 
+          description: (
             <Space direction="vertical">
               <Typography.Text>{status.text}</Typography.Text>
-              <Typography.Text className="faded-text">{cat.assigned_review_user?.display_name ? "Assigned to "+cat.assigned_review_user.display_name : "Not Assigned"}</Typography.Text>
+              <Typography.Text className="faded-text">{cat.assigned_review_user?.display_name ? "Assigned to " + cat.assigned_review_user.display_name : "Not Assigned"}</Typography.Text>
             </Space>
           ),
           conditions: formattedConditions || [],
