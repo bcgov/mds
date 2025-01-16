@@ -19,8 +19,15 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
     result = task.task_result
     try:
         result = CreatePermitConditionsResult.model_validate(result)
-        condition_creator = PermitConditionCreator(task.permit_amendment, db.session)
         category_creator = PermitConditionCategoryCreator(task.permit_amendment)
+
+        previous_amendment = _find_previous_amendment(
+            task.permit_amendment, task.permit.permit_amendments
+        )
+
+        condition_creator = PermitConditionCreator(
+            task.permit_amendment, previous_amendment
+        )
 
         conditions = add_toplevel_category_if_missing(result)
 
@@ -50,6 +57,17 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
     except Exception as e:
         db.session.rollback()
         raise e
+
+
+def _find_previous_amendment(permit_amendment, all_permit_amendments):
+    current_amendment_index = all_permit_amendments.index(permit_amendment)
+    previous_amendment = (
+        all_permit_amendments[current_amendment_index - 1]
+        if current_amendment_index > 0
+        else None
+    )
+
+    return previous_amendment
 
 
 def _create_default_category(condition_creator, category_creator):

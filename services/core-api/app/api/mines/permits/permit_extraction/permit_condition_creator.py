@@ -1,5 +1,4 @@
 from typing import Dict, Optional, Tuple
-from uuid import uuid4
 
 from app.api.mines.permits.permit_amendment.models.permit_amendment import (
     PermitAmendment,
@@ -7,16 +6,23 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import (
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
     PermitConditions,
 )
-from sqlalchemy.orm import Session
+from app.api.mines.permits.permit_conditions.services.permit_condition_comparer import (
+    PermitConditionComparer,
+)
+from app.extensions import db
 
 from .category_mapper import CategoryMapper
 from .models.permit_condition_result import PermitConditionResult
 
 
 class PermitConditionCreator:
-    def __init__(self, permit_amendment: PermitAmendment, db_session: Session):
+    def __init__(
+        self,
+        permit_amendment: PermitAmendment,
+        previous_amendment: Optional[PermitAmendment],
+    ):
         self.permit_amendment = permit_amendment
-        self.db = db_session
+        self.previous_amendment = previous_amendment
         self.last_condition_id_by_number_structure: Dict[str, str] = {}
         self.display_order_by_parent: Dict[str, int] = {}
         self.current_category = None
@@ -36,7 +42,7 @@ class PermitConditionCreator:
             self.current_category = category_code.condition_category_code
 
     def create_condition(
-        self, 
+        self,
         condition: PermitConditionResult,
     ) -> Tuple[PermitConditions, Optional[PermitConditions]]:
         current_category = self.get_current_category()
@@ -47,18 +53,18 @@ class PermitConditionCreator:
         # Create title condition if present
         if condition.condition_title:
             title_condition = self._create_title_condition(
-                condition=condition,
-                category_code=current_category,
-                parent=parent
+                condition=condition, category_code=current_category, parent=parent
             )
             # Title becomes parent for main condition
             parent = title_condition
 
         # Create main condition
-        display_order = self._get_next_display_order(parent.permit_condition_id if parent else None)
-        
+        display_order = self._get_next_display_order(
+            parent.permit_condition_id if parent else None
+        )
+
         condition_type = self._determine_condition_type(condition)
-        
+
         main_condition = PermitConditions(
             permit_amendment_id=self.permit_amendment.permit_amendment_id,
             condition_category_code=current_category,
@@ -68,17 +74,25 @@ class PermitConditionCreator:
             parent_permit_condition_id=parent.permit_condition_id if parent else None,
             deleted_ind=False,
             meta=condition.meta,
-            _step=(
-                condition.step if not condition.condition_title else ""
-            )
+            _step=(condition.step if not condition.condition_title else ""),
         )
 
-        self.db.add(main_condition)
-        self.db.flush()
+        db.session.add(main_condition)
+        db.session.flush()
+
+        if self.previous_amendment:
+            condition_comparer = PermitConditionComparer(
+                previous_amendment_conditions=list(self.previous_amendment.conditions)
+            )
+            comparison = condition_comparer.compare_condition(main_condition)
+            main_condition.meta = main_condition.meta or {}
+            main_condition.meta.update({"condition_comparison": comparison.to_dict()})
 
         # Update tracking
         number_key = ".".join(condition.numbering_structure)
-        self.last_condition_id_by_number_structure[number_key] = main_condition.permit_condition_id
+        self.last_condition_id_by_number_structure[number_key] = (
+            main_condition.permit_condition_id
+        )
 
         return main_condition, title_condition
 
@@ -86,12 +100,12 @@ class PermitConditionCreator:
         self,
         condition: PermitConditionResult,
         category_code: Optional[str],
-        parent: Optional[PermitConditions]
+        parent: Optional[PermitConditions],
     ) -> PermitConditions:
         display_order = self._get_next_display_order(
             parent.permit_condition_id if parent else None
         )
-        
+
         title_condition = PermitConditions(
             permit_amendment_id=self.permit_amendment.permit_amendment_id,
             condition_category_code=category_code,
@@ -101,18 +115,20 @@ class PermitConditionCreator:
             parent_permit_condition_id=parent.permit_condition_id if parent else None,
             deleted_ind=False,
             meta=condition.meta,
-            _step=condition.step
+            _step=condition.step,
         )
 
-        self.db.add(title_condition)
-        self.db.flush()
+        db.session.add(title_condition)
+        db.session.flush()
         return title_condition
 
     def _determine_condition_type(self, condition: PermitConditionResult) -> str:
         type_code = CategoryMapper.map_indentation_to_type(condition)
         return type_code
 
-    def _determine_parent(self, condition: PermitConditionResult) -> Optional[PermitConditions]:
+    def _determine_parent(
+        self, condition: PermitConditionResult
+    ) -> Optional[PermitConditions]:
         number_structure = condition.numbering_structure
         parent_number_structure = [item for item in number_structure if item][:-1]
 
@@ -123,9 +139,9 @@ class PermitConditionCreator:
 
         parent_key = ".".join(parent_number_structure)
         parent_id = self.last_condition_id_by_number_structure.get(parent_key)
-        
+
         if parent_id:
-            return self.db.query(PermitConditions).get(parent_id)
+            return db.session.query(PermitConditions).get(parent_id)
         return None
 
     def _get_next_display_order(self, parent_id: Optional[str]) -> int:

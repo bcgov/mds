@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from difflib import SequenceMatcher
 from enum import Enum
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
     PermitConditions,
@@ -14,6 +14,12 @@ class ConditionChangeType(Enum):
     UNCHANGED = "unchanged"
     MOVED = "moved"
 
+    def __str__(self):
+        return str(self.value)
+
+    def __repr__(self):
+        return str(self)
+
 
 @dataclass
 class ConditionComparison:
@@ -23,6 +29,19 @@ class ConditionComparison:
     structure_similarity: float
     combined_score: float
     change_type: ConditionChangeType
+
+    def to_dict(self):
+        return {
+            "previous_condition_guid": (
+                str(self.previous_condition.permit_condition_guid)
+                if self.previous_condition
+                else None
+            ),
+            "text_similarity": self.text_similarity,
+            "structure_similarity": self.structure_similarity,
+            "combined_score": self.combined_score,
+            "change_type": str(self.change_type),
+        }
 
 
 SIMILARITY_SCORE_MATCH_THRESHOLD = 0.8
@@ -52,18 +71,20 @@ class PermitConditionComparer:
             text_similarity = self._calculate_text_similarity(
                 condition.condition, previous_condition.condition
             )
-            return ConditionComparison(
-                current_condition=condition,
-                previous_condition=previous_condition,
-                text_similarity=text_similarity,
-                structure_similarity=1.0,
-                combined_score=(text_similarity + 1.0) / 2,
-                change_type=(
-                    ConditionChangeType.MODIFIED
-                    if text_similarity < 1
-                    else ConditionChangeType.UNCHANGED
-                ),
-            )
+
+            if text_similarity > SIMILARITY_SCORE_MATCH_THRESHOLD:
+                return ConditionComparison(
+                    current_condition=condition,
+                    previous_condition=previous_condition,
+                    text_similarity=text_similarity,
+                    structure_similarity=1.0,
+                    combined_score=(text_similarity + 1.0) / 2,
+                    change_type=(
+                        ConditionChangeType.MODIFIED
+                        if text_similarity < 1
+                        else ConditionChangeType.UNCHANGED
+                    ),
+                )
 
         # If no exact step match, look for similar text
         best_match = None
