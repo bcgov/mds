@@ -10,7 +10,7 @@ describe("RenderLargeSelect", () => {
             label="Mock Label"
             required
             input={{ value: "", name: "field", ...inputProps }}
-            meta={{ ...errorInputMeta, error: "This input is invalid" }}
+            meta={errorInputMeta}
             dataSource={[
                 { label: "Opt 1", value: "opt1" },
                 { label: "Opt 2", value: "opt2" },

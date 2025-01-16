@@ -54,7 +54,7 @@ exports[`RenderField renders properly with required, invalid state + label 1`] =
               class="ant-form-item-explain-error"
             >
               <span>
-                This is a required field
+                Error message
               </span>
             </div>
           </div>

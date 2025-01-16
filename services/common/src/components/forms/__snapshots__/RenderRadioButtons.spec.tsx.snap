@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RenderRadioButtons renders properly 1`] = `
+<div>
+  <div
+    class="ant-form-item ant-form-item-with-help"
+  >
+    <div
+      class="ant-row ant-form-item-row"
+    >
+      <div
+        class="ant-col ant-form-item-label"
+      >
+        <label
+          class=""
+          for="radioInput"
+          title=""
+        >
+          <div>
+            Mock Label
+             
+            <span
+              class="form-item-optional"
+            >
+               (optional)
+            </span>
+          </div>
+        </label>
+      </div>
+      <div
+        class="ant-col ant-form-item-control"
+      >
+        <div
+          class="ant-form-item-control-input"
+        >
+          <div
+            class="ant-form-item-control-input-content"
+          >
+            <div
+              class="ant-radio-group ant-radio-group-solid"
+            >
+              <label
+                class="ant-radio-wrapper ant-radio-wrapper-checked ant-radio-wrapper-in-form-item"
+              >
+                <span
+                  class="ant-radio ant-radio-checked"
+                >
+                  <input
+                    checked=""
+                    class="ant-radio-input"
+                    name="radioInput"
+                    type="radio"
+                    value="opt1"
+                  />
+                  <span
+                    class="ant-radio-inner"
+                  />
+                </span>
+                <span>
+                  Opt 1
+                </span>
+              </label>
+              <label
+                class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+              >
+                <span
+                  class="ant-radio"
+                >
+                  <input
+                    class="ant-radio-input"
+                    name="radioInput"
+                    type="radio"
+                    value="opt2"
+                  />
+                  <span
+                    class="ant-radio-inner"
+                  />
+                </span>
+                <span>
+                  Opt 2
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          style="display: flex; flex-wrap: nowrap;"
+        >
+          <div
+            class="ant-form-item-explain ant-form-item-explain-connected"
+            id="radioInput_help"
+            role="alert"
+          >
+            <div
+              class=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

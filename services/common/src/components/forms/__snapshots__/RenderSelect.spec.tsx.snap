@@ -1,23 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RenderLargeSelect renders properly without required (optional), failed validation + label 1`] = `
+exports[`RenderSelect renders properly 1`] = `
 <div>
   <div
-    class="ant-form-item ant-form-item-with-help ant-form-item-has-error"
+    class="ant-form-item ant-form-item-with-help"
   >
     <div
       class="ant-row ant-form-item-row"
     >
-      <div
-        class="ant-col ant-form-item-label"
-      >
-        <label
-          class="ant-form-item-required"
-          title="Mock Label"
-        >
-          Mock Label
-        </label>
-      </div>
       <div
         class="ant-col ant-form-item-control"
       >
@@ -28,8 +18,8 @@ exports[`RenderLargeSelect renders properly without required (optional), failed 
             class="ant-form-item-control-input-content"
           >
             <div
-              class="ant-select ant-select-in-form-item ant-select-status-error ant-select-single ant-select-show-arrow ant-select-show-search"
-              style="width: 100%;"
+              class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+              data-cy="selectInput"
             >
               <div
                 class="ant-select-selector"
@@ -38,14 +28,14 @@ exports[`RenderLargeSelect renders properly without required (optional), failed 
                   class="ant-select-selection-search"
                 >
                   <input
-                    aria-activedescendant="field_list_0"
+                    aria-activedescendant="selectInput_list_0"
                     aria-autocomplete="list"
-                    aria-controls="field_list"
+                    aria-controls="selectInput_list"
                     aria-haspopup="listbox"
-                    aria-owns="field_list"
+                    aria-owns="selectInput_list"
                     autocomplete="off"
                     class="ant-select-selection-search-input"
-                    id="field"
+                    id="selectInput"
                     role="combobox"
                     type="search"
                     value=""
@@ -53,9 +43,9 @@ exports[`RenderLargeSelect renders properly without required (optional), failed 
                 </span>
                 <span
                   class="ant-select-selection-item"
-                  title="Opt 4"
+                  title="Opt 1"
                 >
-                  Opt 4
+                  Opt 1
                 </span>
               </div>
               <span
@@ -84,6 +74,33 @@ exports[`RenderLargeSelect renders properly without required (optional), failed 
                   </svg>
                 </span>
               </span>
+              <span
+                aria-hidden="true"
+                class="ant-select-clear"
+                style="user-select: none;"
+                unselectable="on"
+              >
+                <span
+                  aria-label="close-circle"
+                  class="anticon anticon-close-circle"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    data-icon="close-circle"
+                    fill="currentColor"
+                    fill-rule="evenodd"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M512 64c247.4 0 448 200.6 448 448S759.4 960 512 960 64 759.4 64 512 264.6 64 512 64zm127.98 274.82h-.04l-.08.06L512 466.75 384.14 338.88c-.04-.05-.06-.06-.08-.06a.12.12 0 00-.07 0c-.03 0-.05.01-.09.05l-45.02 45.02a.2.2 0 00-.05.09.12.12 0 000 .07v.02a.27.27 0 00.06.06L466.75 512 338.88 639.86c-.05.04-.06.06-.06.08a.12.12 0 000 .07c0 .03.01.05.05.09l45.02 45.02a.2.2 0 00.09.05.12.12 0 00.07 0c.02 0 .04-.01.08-.05L512 557.25l127.86 127.87c.04.04.06.05.08.05a.12.12 0 00.07 0c.03 0 .05-.01.09-.05l45.02-45.02a.2.2 0 00.05-.09.12.12 0 000-.07v-.02a.27.27 0 00-.05-.06L557.25 512l127.87-127.86c.04-.04.05-.06.05-.08a.12.12 0 000-.07c0-.03-.01-.05-.05-.09l-45.02-45.02a.2.2 0 00-.09-.05.12.12 0 00-.07 0z"
+                    />
+                  </svg>
+                </span>
+              </span>
             </div>
           </div>
         </div>
@@ -92,15 +109,12 @@ exports[`RenderLargeSelect renders properly without required (optional), failed 
         >
           <div
             class="ant-form-item-explain ant-form-item-explain-connected"
+            id="selectInput_help"
             role="alert"
           >
             <div
-              class="ant-form-item-explain-error"
-            >
-              <span>
-                Error message
-              </span>
-            </div>
+              class=""
+            />
           </div>
         </div>
       </div>

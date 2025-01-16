@@ -18,7 +18,7 @@ export const inputMeta = {
 
 export const errorInputMeta = {
     touched: true,
-    error: "This is a required field",
+    error: "Error message",
     warning: false,
     autofilled: false,
     asyncValidating: false,
