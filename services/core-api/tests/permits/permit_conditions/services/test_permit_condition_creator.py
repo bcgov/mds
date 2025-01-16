@@ -328,3 +328,25 @@ def test_condition_comparison_with_previous_amendment_added(
         modified_child_condition.meta["condition_comparison"]["previous_condition_guid"]
         == None
     )
+
+
+def test_no_condition_comparison_without_previous_amendment(
+    test_client, db_session, permit_amendments
+):
+    # Create creator without previous amendment
+    creator = PermitConditionCreator(
+        permit_amendment=permit_amendments[0], previous_amendment=None
+    )
+    creator.current_category = "GEC"
+
+    condition_result = PermitConditionResult(
+        section="A",
+        paragraph="1",
+        condition_text="Test condition",
+        condition_title=None,
+        meta={},
+    )
+
+    main_condition, _ = creator.create_condition(condition_result)
+
+    assert "condition_comparison" not in main_condition.meta
