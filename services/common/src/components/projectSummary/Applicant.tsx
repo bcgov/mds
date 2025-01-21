@@ -30,6 +30,7 @@ import { getOrgBookCredential } from "@mds/common/redux/selectors/orgbookSelecto
 import { PaymentContact } from "@mds/common/components/projectSummary/PaymentContact";
 import { IProjectSummaryForm } from "@mds/common/interfaces";
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
+import { COLOR } from "@mds/common/constants/styles";
 
 const { Title, Paragraph } = Typography;
 interface IVerifiedCredential {
@@ -141,7 +142,7 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
 
     if ((!checkingStatus && verified) || verifiedCredential) {
       icon = faCircleCheck;
-      color = "#45A766";
+      color = COLOR.successGreen;
       text = "Verified on Orgbook BC";
     } else {
       icon = faCircleX;

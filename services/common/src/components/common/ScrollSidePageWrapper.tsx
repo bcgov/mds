@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { FC, ReactNode, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ScrollSideMenu, { ScrollSideMenuProps } from "./ScrollSideMenu";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
@@ -90,7 +90,7 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
           {/* the 24 matches the margin/padding on the menu/content. Looks nicer */}
           <ScrollSideMenu offsetTop={topOffset + contentPaddingY} {...menuProps} view={view} />
 
-          {extraItems ? extraItems : ''}
+          {extraItems ?? ''}
         </div>
       )}
       <div className={contentClass} style={{ top: contentTopOffset }}>

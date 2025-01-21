@@ -290,6 +290,14 @@
   padding: 0 7px !important;
   margin-right: 8px !important;
   line-height: 1.5 !important;
+
+  &-success {
+    color: variables.$success-dark;
+  }
+
+  &-error {
+    color: variables.$error-dark;
+  }
 }
 
 // RESULTS

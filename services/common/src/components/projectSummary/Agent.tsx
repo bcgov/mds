@@ -28,6 +28,7 @@ import { faCircleCheck, faCircleX, faSpinner } from "@fortawesome/pro-light-svg-
 import { IProjectSummaryForm } from "@mds/common/interfaces";
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
 import { FORM } from "@mds/common/constants/forms";
+import { COLOR } from "@mds/common/constants/styles";
 
 export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => {
   const dispatch = useDispatch();
@@ -125,7 +126,7 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
     if (!checkingStatus) {
       if (verified) {
         icon = faCircleCheck;
-        color = "#45A766";
+        color = COLOR.successGreen;
         text = "Verified on Orgbook BC";
       } else {
         icon = faCircleX;
