@@ -4,7 +4,7 @@ export const COLOR = {
   violet: "#5e46a1",
   fuschia: "#f736fb",
   yellow: "#fcba05",
-  errorRed: "#D40D0D",
+  errorRed: "#D8292F",
   successGreen: "#2E8540",
   mediumGrey: "#6b6363",
   layoutGrey: "#e8e8e8",
@@ -18,7 +18,7 @@ export const COLOR = {
   blue: "#3d6ee6",
   greyGradient: "linear-gradient(90deg, #6B6363 0%, #6B6363 28.89%, rgba(136,129,129,0.32) 99.93%)",
   greenGradient: "linear-gradient(90deg, #2E8540 0%, #2E8540 28.89%, rgba(127,254,0,0.13) 100%)",
-  redGradient: "linear-gradient(77.2deg, #D40D0D 0%, #E70000 28.89%, #FFFFFF 100%)",
+  redGradient: "linear-gradient(77.2deg, #D8292F 0%, #E70000 28.89%, #FFFFFF 100%)",
   yellowGradient: "linear-gradient(90deg, #FDBC00 0%, #FDBC00 28.89%, #FFF1A7 100%)",
   violetGradient: "linear-gradient(90deg, #5D46A1 0%, rgba(255,255,255,0.5) 100%)",
 };
