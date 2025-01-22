@@ -110,6 +110,27 @@ cleandb:
 	@docker volume rm mds_postgres_data -f
 	@docker compose $(DC_FILE) up -d postgres flyway
 
+updatedb:
+	@echo "+\n++ Updating database from postgres 13 to 16"
+	@echo "+\n++ Stopping postgres"
+	@docker compose $(DC_FILE) stop postgres flyway
+	@if docker volume ls -q | grep -q "mds_postgres_data_bkp"; then \
+		echo "+\n++ Backup volume 'mds_postgres_data_bkp' already exists"; \
+	else \
+		echo "+\n++ Creating a backup volume"; \
+		docker volume create --name mds_postgres_data_bkp; \
+		docker run --rm -it -v mds_postgres_data:/from -v mds_postgres_data_bkp:/to alpine ash -c 'cd /from ; cp -av . /to'; \
+	fi
+	@echo "+\n++ Backup complete, wiping mds_postgres_data volume"
+	@docker run --rm -v mds_postgres_data:/tmp alpine sh -c "rm -rf /tmp/*"
+	@echo "+\n++ Updating postgres and copying result to the mds_postgres_data volume"
+	@docker compose $(DC_FILE) up postgres_update
+	@echo "+\n++ Deleting old postgres image & update image"
+	@docker compose $(DC_FILE) rm -f -v -s postgres postgres_update
+	@docker rmi -f mds-postgres
+	@echo "+\n++ Starting new postgres image"
+	@docker compose $(DC_FILE) up -d postgres flyway
+
 reglogin:
 	@echo "+\n++ Initiating Openshift registry login...\n+"
 	@./bin/registry-login.sh

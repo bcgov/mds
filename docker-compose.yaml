@@ -69,6 +69,20 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  
+  postgres_update:
+    container_name: mds_postgres_update
+    user: postgres
+    build:
+      context: services/postgres
+      dockerfile: Dockerfile_update
+    environment:
+    - PGUSER=mds
+    - POSTGRES_PASSWORD=test
+    - POSTGRES_INITDB_ARGS=-U mds
+    volumes:
+    - mds_postgres_data_bkp:/var/lib/postgresql/13/data
+    - postgres_data:/var/lib/postgresql/16/data
 
   ####################### Flyway Migration Definition #######################
   flyway:
@@ -332,6 +346,8 @@ networks:
 ####################### Volumes Definition #######################
 volumes:
   postgres_data: {}
+  mds_postgres_data_bkp: 
+    external: true
   core_api_logs: {}
   core_web_logs: {}
   document_manager_logs: {}
