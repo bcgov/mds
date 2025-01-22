@@ -1,12 +1,12 @@
-FROM postgis/postgis:13-3.4
+FROM postgis/postgis:16-3.5
 
 # The Git ref (branch/tag) specifying the version of oracle-fdw to use
 # This is referencing a specific revision (master as of 2021.06.01)
 # because there is not a tagged version that works with the 
 # Oracle 21.x client libraries yet
 
-ARG ORACLE_FDW_VERSION=3035e4453404a143b8154d7b77c6db793fad0e06
-ARG oracle_fdw_version=2_1_0
+ARG ORACLE_FDW_VERSION=ORACLE_FDW_2_6_0
+ARG oracle_fdw_version=2_6_0
 ARG instantclient_version=21_6
 
 # =================================== # 
@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     unzip \
     wget \ 
     ca-certificates \ 
-    postgresql-server-dev-13 \ 
+    postgresql-server-dev-16 \ 
     libaio1 \
     libaio-dev
 
@@ -55,7 +55,7 @@ ENV LD_LIBRARY_PATH /pgexts/oraclelibs/instantclient_${instantclient_version}
 # =================================== # 
 
 RUN cd /pgexts && \
-    wget -nv https://github.com/laurenz/oracle_fdw/archive/${ORACLE_FDW_VERSION}.tar.gz && \
+    wget -nv https://github.com/laurenz/oracle_fdw/archive/refs/tags/${ORACLE_FDW_VERSION}.tar.gz && \
     tar -xzf ${ORACLE_FDW_VERSION}.tar.gz && \
     cd oracle_fdw-${ORACLE_FDW_VERSION} && \
     make && \
@@ -71,7 +71,13 @@ RUN rm -rf /pgexts/oraclelibs/*.zip /pgexts/${ORACLE_FDW_VERSION}.tar.gz /tmp/or
 
 COPY init.sql /docker-entrypoint-initdb.d/init.sql
 COPY postgresql.conf      /tmp/postgresql.conf
-COPY updateConfig.sh      /docker-entrypoint-initdb.d/_updateConfig.sh
+COPY pg_hba.conf      /tmp/pg_hba.conf
 
-# Set the working directory to container entrypoint
-WORKDIR /docker-entrypoint-initdb.d
+RUN mkdir -p /pg_log
+RUN chown -R postgres:postgres /pg_log
+
+COPY updateConfig.sh      /docker-entrypoint-initdb.d/_updateConfig.sh
+RUN chmod +x /docker-entrypoint-initdb.d/_updateConfig.sh
+ENTRYPOINT ["sh", "-c", "/docker-entrypoint-initdb.d/_updateConfig.sh && docker-entrypoint.sh postgres"]
+
+CMD ["postgres"]
