@@ -77,6 +77,14 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         "and_(PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id, PermitConditions.deleted_ind == False, PermitConditions.parent_permit_condition_id.is_(None))",
         order_by='asc(PermitConditions.display_order)',
         back_populates='permit_amendment')
+    
+    all_conditions = db.relationship(
+        'PermitConditions',
+        lazy='select',
+        primaryjoin=
+        "and_(PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id, PermitConditions.deleted_ind == False)",
+        order_by='asc(PermitConditions.display_order)'
+    )
     permit_conditions_last_updated_date = db.Column(db.DateTime)
     permit_conditions_last_updated_by = db.Column(db.String(60))
     is_generated_in_core = db.Column(db.Boolean)

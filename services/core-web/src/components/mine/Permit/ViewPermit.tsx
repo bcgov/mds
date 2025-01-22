@@ -50,6 +50,9 @@ const ViewPermit: FC = () => {
 
   const { is_generated_in_core } = latestAmendment ?? {};
   const isExtracted = !is_generated_in_core;
+  const previousAmendmentIndex = permit?.permit_amendments?.findIndex(a => a.permit_amendment_id === latestAmendment.permit_amendment_id) + 1 || -1;
+  const previousAmendment = previousAmendmentIndex > 0 ? permit.permit_amendments[previousAmendmentIndex] : null;
+
   const userCanEditConditions = useSelector((state) =>
     userHasRole(state, USER_ROLES.role_edit_template_conditions)
   );
@@ -156,6 +159,7 @@ const ViewPermit: FC = () => {
           isReviewComplete={isReviewComplete}
           isExtracted={isExtracted}
           latestAmendment={latestAmendment}
+          previousAmendment={previousAmendment}
           canStartExtraction={canStartExtraction}
           userCanEdit={userCanEditConditions}
         />
@@ -217,19 +221,19 @@ const ViewPermit: FC = () => {
 
   const headerActions = [
     onConditionsTab &&
-      userCanEditConditions && {
-        key: "extract",
-        label: "Extract Permit Conditions",
-        disabled: !canStartExtraction,
-        clickFunction: handleInitiateExtraction,
-      },
+    userCanEditConditions && {
+      key: "extract",
+      label: "Extract Permit Conditions",
+      disabled: !canStartExtraction,
+      clickFunction: handleInitiateExtraction,
+    },
     onConditionsTab &&
-      userCanEditConditions && {
-        key: "delete_conditions",
-        label: "Delete Permit Conditions",
-        disabled: !hasConditions,
-        clickFunction: handleDeleteConditions,
-      },
+    userCanEditConditions && {
+      key: "delete_conditions",
+      label: "Delete Permit Conditions",
+      disabled: !hasConditions,
+      clickFunction: handleDeleteConditions,
+    },
   ].filter(Boolean);
 
   const showHeaderActions =

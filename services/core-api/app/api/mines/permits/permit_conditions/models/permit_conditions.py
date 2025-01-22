@@ -10,6 +10,7 @@ from sqlalchemy.schema import FetchedValue
 
 from . import permit_condition_status_code
 
+
 class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "permit_conditions"
 
@@ -51,6 +52,13 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
     parent_permit_condition_id = db.Column(
         db.Integer, db.ForeignKey("permit_conditions.permit_condition_id")
     )
+
+    parent_permit_condition = db.relationship(
+        "PermitConditions",
+        remote_side=[permit_condition_id],
+        foreign_keys=[parent_permit_condition_id],
+    )
+
     top_level_parent_permit_condition_id = db.Column(
         db.Integer, db.ForeignKey("permit_conditions.permit_condition_id")
     )

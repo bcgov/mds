@@ -80,7 +80,7 @@ class PermitConditionCreator:
             display_order=display_order,
             parent_permit_condition_id=parent.permit_condition_id if parent else None,
             deleted_ind=False,
-            top_parent_id=top_parent_id,
+            top_level_parent_permit_condition_id=top_parent_id,
             meta=condition.meta,
             _step=(condition.step if not condition.condition_title else ""),
         )

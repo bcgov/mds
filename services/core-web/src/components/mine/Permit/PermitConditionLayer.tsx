@@ -11,6 +11,7 @@ import { Collapse, Typography } from "antd";
 import { getConditionsWithRequirements } from "@mds/common/utils/helpers";
 
 const { Title } = Typography;
+import { IPermitAmendment } from "@mds/common/interfaces";
 
 interface PermitConditionLayerProps {
   isExtracted: boolean;
@@ -28,8 +29,10 @@ interface PermitConditionLayerProps {
   refreshData: () => Promise<void>;
   conditionSelected?: (condition: IPermitCondition) => void;
   categoryOptions?: IGroupedDropdownList[];
+  previousAmendment?: IPermitAmendment;
+  mineGuid?: string;
+  permitAmendment: IPermitAmendment;
   permitGuid: string;
-  mineGuid: string;
 }
 
 const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
@@ -48,6 +51,8 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   permitAmendmentGuid,
   refreshData,
   categoryOptions,
+  previousAmendment,
+  permitAmendment,
   permitGuid,
   mineGuid,
 }) => {
@@ -98,6 +103,13 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
 
   const requirements = getConditionsWithRequirements([condition]);
 
+  let matchingCondition = null;
+  if (level === 0) {
+    matchingCondition = previousAmendment?.conditions.find(c => {
+      return !c.parent_permit_condition_id && c.step === condition.step && c.condition === condition.condition;
+    });
+  }
+
   return (
     <div
       className={`${className} ${editingCondition ? "condition-layer--editing" : ""}`}
@@ -125,6 +137,8 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
             <div key={subCondition.permit_condition_id}>
               <PermitConditionLayer
                 isExtracted={isExtracted}
+                mineGuid={mineGuid}
+                permitAmendment={permitAmendment}
                 permitAmendmentGuid={permitAmendmentGuid}
                 condition={subCondition}
                 level={level + 1}
@@ -138,7 +152,6 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
                 refreshData={refreshData}
                 conditionSelected={conditionSelected}
                 permitGuid={permitGuid}
-                mineGuid={mineGuid}
               />
             </div>
           );
@@ -190,6 +203,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
           )}
           <PermitConditionStatus
             condition={condition}
+            previousCondition={matchingCondition}
             canEditPermitConditions={canEditPermitConditions}
             isDisabled={isAddingListItem || isExpanded}
             permitAmendmentGuid={permitAmendmentGuid}

@@ -32,6 +32,7 @@ class ConditionComparison:
 
     def to_dict(self):
         return {
+            "condition_guid": str(self.current_condition.permit_condition_guid),
             "previous_condition_guid": (
                 str(self.previous_condition.permit_condition_guid)
                 if self.previous_condition
@@ -50,6 +51,7 @@ SIMILARITY_SCORE_MATCH_THRESHOLD = 0.8
 class PermitConditionComparer:
     def __init__(self, previous_amendment_conditions: List[PermitConditions]):
         self.previous_conditions = previous_amendment_conditions
+        
         self.previous_conditions_by_step = self._index_conditions_by_step(
             previous_amendment_conditions
         )
@@ -67,10 +69,27 @@ class PermitConditionComparer:
         # Try to find match by step path first
         previous_condition = self.previous_conditions_by_step.get(step_path)
 
+        if condition.condition.endswith("and be made available at the mine site at all times."):
+            print("Current condition:", condition.condition)
+            print("Previous condition:", previous_condition)
+            print("Parent", condition.parent_permit_condition_id)
+            print("Step:", condition._step)
+            print("ParentStep:", condition.parent_permit_condition._step)
+            print("StepPath:", step_path)
+            print(self.previous_conditions_by_step)
+
+
         if previous_condition:
             text_similarity = self._calculate_text_similarity(
                 condition.condition, previous_condition.condition
             )
+            if condition.condition.endswith("and be made available at the mine site at all times."):
+                print("Current condition:", condition.condition)
+                print("Previous condition:", previous_condition.condition)
+                print(text_similarity)
+                print(step_path)
+                print(self.previous_conditions_by_step)
+
 
             if text_similarity > SIMILARITY_SCORE_MATCH_THRESHOLD:
                 return ConditionComparison(
@@ -120,6 +139,19 @@ class PermitConditionComparer:
             combined_score=0.0,
             change_type=ConditionChangeType.ADDED,
         )
+    
+    def compare_all_conditions(self, conditions: List[PermitConditions], step=None) -> List[ConditionComparison]:
+        """Compare all conditions in a list to previous conditions"""
+        comparisons = []
+
+        for condition in conditions:
+            comparison = self.compare_condition(condition)
+            comparisons.append(comparison)
+            
+            if condition.sub_conditions:
+                sub_comparison = self.compare_all_conditions(condition.sub_conditions)
+                comparisons = comparisons + sub_comparison
+        return comparisons
 
     def _index_conditions_by_step(
         self, conditions: List[PermitConditions]
@@ -127,6 +159,7 @@ class PermitConditionComparer:
         """Index conditions by their step path for quick lookup"""
         indexed = {}
         for condition in conditions:
+            print(condition.condition)
             step_path = self._get_condition_step_path(condition)
             if step_path:
                 indexed[step_path] = condition
@@ -138,9 +171,11 @@ class PermitConditionComparer:
         current = condition
         while current:
             if current._step:
-                steps.insert(0, current._step)
-            current = current.parent
-        return ".".join(steps) if steps else ""
+                steps = steps + [current._step]
+            current = current.parent_permit_condition
+        if condition.condition.endswith("and be made available at the mine site at all times."):
+            print("Steps Steps:", steps)
+        return ".".join([str(condition.condition_category.description)] + steps) if steps else ""
 
     def _calculate_text_similarity(self, text1: str, text2: str) -> float:
         """Calculate similarity between two text strings"""
