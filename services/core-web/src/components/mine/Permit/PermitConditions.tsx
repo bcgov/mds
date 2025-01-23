@@ -266,8 +266,8 @@ const PermitConditions: FC<PermitConditionProps> = ({
     groupName: "Standard Categories",
     opt: standardCategories
   }]
-  // TODO: figure out what's off by 4
-  const bannerHeight = 27;
+
+  const bannerHeight = 30;
   const topOffset = 99 + 45 + bannerHeight; // header + tab nav
 
   const handleAddCondition = async () => {

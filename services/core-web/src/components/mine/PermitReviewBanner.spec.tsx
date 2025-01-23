@@ -3,7 +3,7 @@ import { render } from "@testing-library/react";
 import { PermitReviewBanner } from "./Permit/PermitReviewBanner";
 
 it("renders correctly", () => {
-    const height = 27;
+    const height = 30;
     const { container } = render(<>
         <p>AI: review complete</p>
         <PermitReviewBanner height={height} isReviewComplete={true} isExtracted={true} />

@@ -37,6 +37,7 @@ export const PermitReviewBanner: FC<PermitReviewBannerProps> = ({
     return (<>
         <Row
             justify="center"
+            align="middle"
             className={`permit-status-banner permit-status-banner--${paramsToUse.className}`}
             style={{
                 height,

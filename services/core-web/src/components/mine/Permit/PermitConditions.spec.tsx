@@ -23,6 +23,8 @@ const GENERATED_PERMIT = {
   ...MOCK.PERMITS[0],
   permit_amendments: MOCK.PERMITS[0].permit_amendments.map((pa) => ({ ...pa, is_generated_in_core: true }))
 };
+
+// permit was generated in Core
 const generatedState = {
   ...initialState,
   [PERMITS]: { permits: [GENERATED_PERMIT], permitAmendments: { [GENERATED_PERMIT.permit_guid]: GENERATED_PERMIT.permit_amendments[0] } },
