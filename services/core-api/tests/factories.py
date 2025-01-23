@@ -1295,7 +1295,6 @@ class ProjectFactory(BaseFactory):
 
     class Params:
         mine = factory.SubFactory(MineFactory, minimal=True)
-        project_lead = factory.SubFactory(MinePartyAppointmentFactory)
 
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     project_guid = GUID

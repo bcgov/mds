@@ -48,7 +48,7 @@ def test_major_mine_application_notifications(mock_send_template_email, mock_tri
         documents) > 1 else 'A new application document has'
     document_message = f'{document_message_start} been uploaded for the project {project.project_title} for {project.mine_name}.'
     document_subject = f'Application documents updated for {project.mine_name}:{project.project_title}'
-    minespace_link = f'{Config.MINESPACE_LOCAL_URL}/projects/{project.project_guid}/overview'
+    minespace_link = f'{Config.MINESPACE_PROD_URL}/projects/{project.project_guid}/overview'
     core_link = f'{Config.CORE_WEB_URL}/pre-applications/{project.project_guid}/app'
 
     status_subject = f'Application Status Updated for {project.mine_name}:{project.project_title}'

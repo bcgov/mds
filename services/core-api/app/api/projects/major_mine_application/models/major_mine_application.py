@@ -223,8 +223,8 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
             }
         }
 
-        minespace_body = open("app/templates/email/projects/minespace_status_email.html", "r").read()
-        core_body = open("app/templates/email/projects/ministry_status_update_email.html", "r").read()
+        minespace_body = open("app/templates/email/projects/minespace_project_section_email.html", "r").read()
+        core_body = open("app/templates/email/projects/ministry_project_section_email.html", "r").read()
 
         if core_recipients != []:
             EmailService.send_template_email(subject, core_recipients, core_body, context)

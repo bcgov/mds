@@ -28,7 +28,7 @@ def test_information_requirements_table_notifications(mock_send_template_email, 
         data=data,
         headers=auth_headers['full_auth_header'])
 
-    minespace_link = f'{Config.MINESPACE_LOCAL_URL}/projects/{project.project_guid}/overview'
+    minespace_link = f'{Config.MINESPACE_PROD_URL}/projects/{project.project_guid}/overview'
     core_link = f'{Config.CORE_WEB_URL}/pre-applications/{project.project_guid}/information-requirements-table'
 
     message = f'The status of the IRT for the project {project.project_title} for {project.mine_name} has been updated to {parse_status_code_to_text(status_code)}.'

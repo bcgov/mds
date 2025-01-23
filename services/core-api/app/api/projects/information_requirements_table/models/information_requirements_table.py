@@ -123,8 +123,8 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
             }
         }
 
-        minespace_body = open("app/templates/email/projects/minespace_status_email.html", "r").read()
-        core_body = open("app/templates/email/projects/ministry_status_update_email.html", "r").read()
+        minespace_body = open("app/templates/email/projects/minespace_project_section_email.html", "r").read()
+        core_body = open("app/templates/email/projects/ministry_project_section_email.html", "r").read()
 
         subject = f'IRT Status Updated for {project.mine_name}:{project.project_title}'
 
