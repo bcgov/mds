@@ -98,7 +98,7 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
         EmailService.send_email(subject, recipients, body)
 
     def send_irt_status_notifications(self, project_guid: str, status_code: str):
-        project: Project = Project.find_by_project_guid(project_guid)
+        project: Project = self.project
         minespace_recipients = [contact.email for contact in project.contacts]
         core_recipients = []
 

@@ -232,7 +232,7 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
             EmailService.send_template_email(subject, minespace_recipients, minespace_body, context)
 
     def send_mma_status_notifications(self, status_code):
-            project: Project = Project.find_by_project_guid(self.project.project_guid)
+            project: Project = self.project
 
             subject = f'Application Status Updated for {project.mine_name}:{project.project_title}'
             message = f'The status of the Application for the project {project.project_title} for {project.mine_name} has been updated to {parse_status_code_to_text(status_code)}.'
