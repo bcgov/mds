@@ -29,6 +29,7 @@ import {
 } from "@mds/common/redux/slices/permitServiceSlice";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common/constants/environment";
+import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
 
 const tabs = ["overview", "conditions"];
 
@@ -45,6 +46,8 @@ const ViewPermit: FC = () => {
     getPermitExtractionByGuid(latestAmendment?.permit_amendment_id)
   );
 
+  const { is_generated_in_core } = latestAmendment ?? {};
+  const isExtracted = !is_generated_in_core;
   const userCanEditConditions = useSelector((state) =>
     userHasRole(state, USER_ROLES.role_edit_template_conditions)
   );
@@ -57,6 +60,8 @@ const ViewPermit: FC = () => {
   const [pollForStatus, setPollForStatus] = useState(false);
 
   const hasConditions = latestAmendment?.conditions?.length > 0;
+  const isReviewComplete = latestAmendment?.conditions?.every((con) => con.permit_condition_status_code === PERMIT_CONDITION_STATUS_CODE.COM);
+
 
   const canStartExtraction =
     ((documents.length > 0 && !permitExtraction?.status) ||
@@ -127,7 +132,10 @@ const ViewPermit: FC = () => {
   }, [pollForStatus, permitExtraction?.task_id]);
 
   const getConditionBadge = () => {
-    const conditionStatus: PresetStatusColorType = hasConditions ? "success" : "error";
+    let conditionStatus: PresetStatusColorType = hasConditions ? "success" : "error";
+    if (hasConditions && !isReviewComplete) {
+      conditionStatus = "warning";
+    }
     return <Badge status={conditionStatus} />;
   };
 
@@ -142,6 +150,8 @@ const ViewPermit: FC = () => {
       label: <>{getConditionBadge()} Permit Conditions</>,
       children: (
         <PermitConditions
+          isReviewComplete={isReviewComplete}
+          isExtracted={isExtracted}
           latestAmendment={latestAmendment}
           canStartExtraction={canStartExtraction}
           userCanEdit={userCanEditConditions}
@@ -191,10 +201,11 @@ const ViewPermit: FC = () => {
     },
   ].filter(Boolean);
 
-  const headerActionComponent =
-    enablePermitConditionsTab && headerActions.length > 0 ? (
-      <ActionMenuButton actions={headerActions} />
-    ) : null;
+  const showHeaderActions = !is_generated_in_core && enablePermitConditionsTab && headerActions.length > 0;
+
+  const headerActionComponent = showHeaderActions ? (
+    <ActionMenuButton actions={headerActions} />
+  ) : null;
 
   return (
     <div className="fixed-tabs-container">

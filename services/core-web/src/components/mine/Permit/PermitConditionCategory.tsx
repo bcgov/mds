@@ -5,15 +5,16 @@ import { FORM } from "@mds/common/constants/forms";
 import { IPermitConditionCategory } from "@mds/common/interfaces";
 import { Button, Col, Popconfirm, Row, Tooltip, Typography } from "antd";
 import React, { useState } from "react";
-import { Field } from "redux-form";
+import { Field, reset } from "redux-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown, faArrowUp, faCheck, faTrash, faXmark } from "@fortawesome/pro-light-svg-icons";
 import PermitConditionCategorySelector from "./PermitConditionCategorySelector";
 import { required } from "@mds/common/redux/utils/Validate";
-import { reset } from 'redux-form';
 import { useDispatch } from "react-redux";
+import { formatPermitConditionStep } from "@mds/common/utils/helpers";
 
 export interface IPermitConditionCategoryProps {
+  canEdit: boolean;
   onChange: (category: IPermitConditionCategory) => void | Promise<void>;
   onDelete: (category: IPermitConditionCategory) => void | Promise<void>;
   moveUp: (category: IPermitConditionCategory) => void | Promise<void>;
@@ -52,12 +53,16 @@ export const EditPermitConditionCategoryInline = (props: IPermitConditionCategor
     setIsEditMode(false);
   }
 
+  const titleElement = <Typography.Title style={{ marginBottom: 0 }} level={3}>{formatPermitConditionStep(props.category.step)} {props.category.description} ({props.conditionCount})</Typography.Title>;
+  if (!props.canEdit) {
+    return titleElement;
+  }
 
   if (!isEditMode) {
     return (
       <Tooltip title="Click to edit">
         <div onClick={enableEditMode} onKeyDown={enableEditMode}>
-          <Typography.Title style={{ marginBottom: 0 }} level={3}>{props.category.step ? `${props.category.step}. ` : ''}{props.category.description} ({props.conditionCount})</Typography.Title>
+          {titleElement}
         </div>
       </Tooltip>
     );
