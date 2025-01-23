@@ -118,7 +118,7 @@ updatedb:
 		echo "+\n++ Backup volume 'mds_postgres_data_bkp' already exists"; \
 	else \
 		echo "+\n++ Creating a backup volume"; \
-		docker volume create --name mds_postgres_data_bkp; \
+		docker volume create --name mds_postgres_data_bkp --label com.docker.compose.project=mds --label com.docker.compose.volume=postgres_data_bkp; \
 		docker run --rm -it -v mds_postgres_data:/from -v mds_postgres_data_bkp:/to alpine ash -c 'cd /from ; cp -av . /to'; \
 	fi
 	@echo "+\n++ Backup complete, wiping mds_postgres_data volume"

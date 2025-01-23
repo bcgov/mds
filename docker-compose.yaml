@@ -81,7 +81,7 @@ services:
     - POSTGRES_PASSWORD=test
     - POSTGRES_INITDB_ARGS=-U mds
     volumes:
-    - mds_postgres_data_bkp:/var/lib/postgresql/13/data
+    - postgres_data_bkp:/var/lib/postgresql/13/data
     - postgres_data:/var/lib/postgresql/16/data
 
   ####################### Flyway Migration Definition #######################
@@ -346,8 +346,7 @@ networks:
 ####################### Volumes Definition #######################
 volumes:
   postgres_data: {}
-  mds_postgres_data_bkp: 
-    external: true
+  postgres_data_bkp: {}
   core_api_logs: {}
   core_web_logs: {}
   document_manager_logs: {}
