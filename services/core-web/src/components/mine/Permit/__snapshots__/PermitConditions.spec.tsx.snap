@@ -384,8 +384,8 @@ exports[`PermitConditions renders properly 1`] = `
               tabindex="0"
             >
               <div
-                class="ant-row ant-row-center permit-status-banner permit-status-banner--incomplete"
-                style="height: 27px;"
+                class="ant-row ant-row-center ant-row-middle permit-status-banner permit-status-banner--incomplete"
+                style="height: 30px;"
               >
                 <div
                   class="ant-col"
@@ -413,7 +413,7 @@ exports[`PermitConditions renders properly 1`] = `
                 </div>
               </div>
               <div
-                style="height: 27px;"
+                style="height: 30px;"
               />
               <div
                 class="ant-row"
@@ -431,7 +431,7 @@ exports[`PermitConditions renders properly 1`] = `
                       <div>
                         <div
                           class="ant-anchor-wrapper"
-                          style="max-height: calc(100vh - 277px);"
+                          style="max-height: calc(100vh - 280px);"
                         >
                           <div
                             class="ant-anchor ant-anchor-fixed"

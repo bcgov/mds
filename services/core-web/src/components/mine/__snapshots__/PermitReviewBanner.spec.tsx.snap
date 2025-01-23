@@ -6,8 +6,8 @@ exports[`renders correctly 1`] = `
     AI: review complete
   </p>
   <div
-    class="ant-row ant-row-center permit-status-banner permit-status-banner--complete"
-    style="height: 27px;"
+    class="ant-row ant-row-center ant-row-middle permit-status-banner permit-status-banner--complete"
+    style="height: 30px;"
   >
     <div
       class="ant-col"
@@ -35,14 +35,14 @@ exports[`renders correctly 1`] = `
     </div>
   </div>
   <div
-    style="height: 27px;"
+    style="height: 30px;"
   />
   <p>
     AI: requires review
   </p>
   <div
-    class="ant-row ant-row-center permit-status-banner permit-status-banner--incomplete"
-    style="height: 27px;"
+    class="ant-row ant-row-center ant-row-middle permit-status-banner permit-status-banner--incomplete"
+    style="height: 30px;"
   >
     <div
       class="ant-col"
@@ -70,14 +70,14 @@ exports[`renders correctly 1`] = `
     </div>
   </div>
   <div
-    style="height: 27px;"
+    style="height: 30px;"
   />
   <p>
     Drafted in core, cannot be modified
   </p>
   <div
-    class="ant-row ant-row-center permit-status-banner permit-status-banner--complete"
-    style="height: 27px;"
+    class="ant-row ant-row-center ant-row-middle permit-status-banner permit-status-banner--complete"
+    style="height: 30px;"
   >
     <div
       class="ant-col"
@@ -105,7 +105,7 @@ exports[`renders correctly 1`] = `
     </div>
   </div>
   <div
-    style="height: 27px;"
+    style="height: 30px;"
   />
 </div>
 `;
