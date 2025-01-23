@@ -84,7 +84,6 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
         except ValueError:
             return None
 
-    @classmethod
     def send_irt_submit_email(self):
         project_lead_email = self.project.project_lead.email if self.project.project_lead else None
         recipients = [MAJOR_MINES_OFFICE_EMAIL, project_lead_email
