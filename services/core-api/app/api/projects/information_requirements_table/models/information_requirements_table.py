@@ -141,7 +141,6 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
                              'InformationRequirementsTable', self.irt_guid, extra_data)
 
 
-    @classmethod
     def send_irt_approval_email(self):
         recipients = [contact.email for contact in self.project.contacts]
         link = f'{Config.MINESPACE_PROD_URL}/projects/{self.project.project_guid}/information-requirements-table/{self.irt_guid}/review/intro-project-overview'
