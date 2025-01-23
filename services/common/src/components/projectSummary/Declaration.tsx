@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Collapse, Row, Typography } from "antd";
 import { useSelector } from "react-redux";
-import { Field, getFormValues } from "redux-form";
+import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { getAmsAuthorizationTypes } from "@mds/common/redux/selectors/projectSelectors";
 import { required } from "@mds/common/redux/utils/Validate";
 import RenderCheckbox from "../forms/RenderCheckbox";

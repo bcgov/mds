@@ -1,5 +1,5 @@
 import React from "react";
-import { FieldArray, getFormValues } from "redux-form";
+import { FieldArray, getFormValues } from "@mds/common/components/forms/form";
 import { useSelector } from "react-redux";
 import { Row, Col, Typography, Button, Collapse, Popconfirm } from "antd";
 import { ReportDefinitionFieldSelect } from "@mds/common/components/reports/ReportDefinitionFieldSelect";

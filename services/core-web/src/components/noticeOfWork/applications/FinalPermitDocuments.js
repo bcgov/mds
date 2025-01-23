@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { FormSection } from "redux-form";
+import { FormSection } from "@mds/common/components/forms/form";
 import { connect } from "react-redux";
 import { getNOWProgress } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import CustomPropTypes from "@/customPropTypes";

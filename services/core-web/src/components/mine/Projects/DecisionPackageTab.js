@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
-import { getFormValues } from "redux-form";
+import { getFormValues } from "@mds/common/components/forms/form";
 import { withRouter } from "react-router-dom";
 import { Row, Col, Typography, Button } from "antd";
 import { LockOutlined, FolderViewOutlined } from "@ant-design/icons";

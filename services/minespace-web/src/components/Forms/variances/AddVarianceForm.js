@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { Typography, Form } from "antd";
 import { required, maxLength } from "@mds/common/redux/utils/Validate";
 import * as FORM from "@/constants/forms";

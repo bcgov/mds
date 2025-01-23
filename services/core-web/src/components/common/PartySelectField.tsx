@@ -6,7 +6,7 @@ import { faHashtag } from "@fortawesome/pro-light-svg-icons";
 
 import { Divider } from "antd";
 import { MailOutlined, PhoneOutlined, PlusOutlined } from "@ant-design/icons";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { getSearchResults } from "@mds/common/redux/selectors/searchSelectors";
 import { getLastCreatedParty } from "@mds/common/redux/selectors/partiesSelectors";
 import { fetchSearchResults } from "@mds/common/redux/actionCreators/searchActionCreator";

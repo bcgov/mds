@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { PropTypes } from "prop-types";
-import { Field, getFormValues } from "redux-form";
+import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { Link } from "react-router-dom";
 import { Row, Col, Alert, Button } from "antd";
 import { requiredRadioButton, required } from "@mds/common/redux/utils/Validate";

@@ -2,7 +2,7 @@ import { Alert, Button, Col, Drawer, Row, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
 import { Route, Switch, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { isDirty, submit } from "redux-form";
+import { isDirty, submit } from "@mds/common/components/forms/form";
 import {
   getSystemFlag,
   isAuthenticated,

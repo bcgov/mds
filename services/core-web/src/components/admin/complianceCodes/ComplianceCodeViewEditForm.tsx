@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getFormValues, change, touch } from "redux-form";
+import { getFormValues, change, touch } from "@mds/common/components/forms/form";
 import { Row, Button, Steps } from "antd";
 import * as FORM from "@/constants/forms";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Alert } from "antd";
-import { getFormValues } from "redux-form";
+import { getFormValues } from "@mds/common/components/forms/form";
 import {
   getDropdownProvinceOptions,
   getBondTypeDropDownOptions,
@@ -42,9 +42,9 @@ export const AddBondModal = (props) => {
       : props.onSubmit(values, props.permitGuid);
   const initialPartyValue = props.editBond
     ? {
-        value: props.bond.payer_party_guid,
-        label: props.bond.payer.name,
-      }
+      value: props.bond.payer_party_guid,
+      label: props.bond.payer.name,
+    }
     : "";
   const projectIdChanged = props.bond.project_id !== props.formValues.project_id;
   return (

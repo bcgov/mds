@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Prompt, useHistory, useLocation, useParams } from "react-router-dom";
-import { reset } from "redux-form";
+import { reset } from "@mds/common/components/forms/form";
 import { Col, Divider, Row, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";

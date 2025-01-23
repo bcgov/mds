@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { remove } from "lodash";
 import { bindActionCreators } from "redux";
 import { Button, Col, Popconfirm, Row, Typography, Form } from "antd";
-import { arrayPush, change, Field, FieldArray, formValueSelector } from "redux-form";
+import { arrayPush, change, Field, FieldArray, formValueSelector } from "@mds/common/components/forms/form";
 import { required } from "@mds/common/redux/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import { TRASHCAN } from "@/constants/assets";

@@ -5,12 +5,11 @@ import { FORM } from "@mds/common/constants/forms";
 import { IPermitConditionCategory } from "@mds/common/interfaces";
 import { Button, Col, Popconfirm, Row, Tooltip, Typography } from "antd";
 import React, { useState } from "react";
-import { Field } from "redux-form";
+import { Field, reset } from "@mds/common/components/forms/form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown, faArrowUp, faCheck, faTrash, faXmark } from "@fortawesome/pro-light-svg-icons";
 import PermitConditionCategorySelector from "./PermitConditionCategorySelector";
 import { required } from "@mds/common/redux/utils/Validate";
-import { reset } from 'redux-form';
 import { useDispatch } from "react-redux";
 
 export interface IPermitConditionCategoryProps {

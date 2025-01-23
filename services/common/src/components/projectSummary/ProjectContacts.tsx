@@ -5,7 +5,7 @@ import { Typography, Button, Row, Col, Popconfirm } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/pro-light-svg-icons";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
-import { Field, FieldArray, arrayPush, getFormValues, change } from "redux-form";
+import { Field, FieldArray, arrayPush, getFormValues, change } from "@mds/common/components/forms/form";
 import {
   maxLength,
   phoneNumber,

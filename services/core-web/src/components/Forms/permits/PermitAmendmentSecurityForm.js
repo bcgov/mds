@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose, bindActionCreators } from "redux";
-import { Field, formValueSelector, change } from "redux-form";
+import { Field, formValueSelector, change } from "@mds/common/components/forms/form";
 import { Col, Row } from "antd";
 import {
   currency,

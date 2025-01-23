@@ -1,5 +1,5 @@
 import React from "react";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { Button, Popconfirm, Row, Col } from "antd";
 import PropTypes from "prop-types";
 import { ClockCircleOutlined } from "@ant-design/icons";

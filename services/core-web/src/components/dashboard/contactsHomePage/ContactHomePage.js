@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { change } from "redux-form";
+import { change } from "@mds/common/components/forms/form";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";

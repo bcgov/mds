@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
-import { Field, change, getFormValues, FieldArray } from "redux-form";
+import { Field, change, getFormValues, FieldArray } from "@mds/common/components/forms/form";
 import { Card, Checkbox, Col, Row, Typography, Divider, Button, Form } from "antd";
 import {
   required,

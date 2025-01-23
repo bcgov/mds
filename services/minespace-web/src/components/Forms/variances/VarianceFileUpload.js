@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { DOCUMENT, EXCEL } from "@mds/common/constants/fileTypes";
 import { VARIANCE_DOCUMENTS } from "@/constants/API";
 import FileUpload from "@/components/common/FileUpload";

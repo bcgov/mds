@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import RenderRichTextEditor from "../forms/RenderRichTextEditor";
 import { FORM } from "@mds/common/constants/forms";
 import FormWrapper from "../forms/FormWrapper";

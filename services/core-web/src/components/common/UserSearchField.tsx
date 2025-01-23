@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { debounce } from "lodash";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { getSearchUsers, searchUsers } from "@mds/common/redux/slices/userSlice";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import { IOption } from "@mds/common/interfaces";

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
 import { isEmpty } from "lodash";
 import { getNoticeOfWorkUnitTypeOptionsHash } from "@mds/common/redux/selectors/staticContentSelectors";
-import { Field, FieldArray } from "redux-form";
+import { Field, FieldArray } from "@mds/common/components/forms/form";
 import { Button } from "antd";
 import * as Strings from "@mds/common/constants/strings";
 import { TRASHCAN } from "@/constants/assets";

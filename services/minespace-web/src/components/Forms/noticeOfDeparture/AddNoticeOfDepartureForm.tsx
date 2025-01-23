@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { change, Field, FieldArray, FieldArrayFieldsProps } from "redux-form";
+import {
+  change,
+  Field,
+  FieldArray,
+  FieldArrayFieldsProps,
+} from "@mds/common/components/forms/form";
 import { Alert, Col, Row, Typography } from "antd";
 import {
   email,

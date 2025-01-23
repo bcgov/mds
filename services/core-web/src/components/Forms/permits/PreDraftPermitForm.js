@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Field, getFormValues, change } from "redux-form";
+import { Field, getFormValues, change } from "@mds/common/components/forms/form";
 import { Col, Row, Tooltip, Alert } from "antd";
 import { createDropDownList } from "@common/utils/helpers";
 import {

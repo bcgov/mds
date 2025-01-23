@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import { Row, Col } from "antd";
-import { Field, formValueSelector, FormSection } from "redux-form";
+import { Field, formValueSelector, FormSection } from "@mds/common/components/forms/form";
 import { connect } from "react-redux";
 import RenderMultiSelect from "@mds/common/components/forms/RenderMultiSelect";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";

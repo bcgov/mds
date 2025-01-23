@@ -18,7 +18,7 @@ import {
   updateNoticeOfDeparture,
 } from "@mds/common/redux/actionCreators/noticeOfDepartureActionCreator";
 import { getNoticeOfDeparture } from "@mds/common/redux/selectors/noticeOfDepartureSelectors";
-import { Field, FieldArray, change } from "redux-form";
+import { Field, FieldArray, change } from "@mds/common/components/forms/form";
 import {
   email,
   maxLength,

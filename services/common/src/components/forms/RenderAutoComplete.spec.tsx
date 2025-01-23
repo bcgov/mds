@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import FormWrapper from "./FormWrapper";
 import RenderAutoComplete from "./RenderAutoComplete";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";

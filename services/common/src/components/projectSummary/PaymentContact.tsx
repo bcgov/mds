@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Col, Row, Typography } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { Field, getFormValues, change } from "redux-form";
+import { Field, getFormValues, change } from "@mds/common/components/forms/form";
 
 import RenderField from "@mds/common/components/forms/RenderField";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";

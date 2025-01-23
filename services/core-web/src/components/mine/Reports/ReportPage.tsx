@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { isDirty, reset } from "redux-form";
+import { isDirty, reset } from "@mds/common/components/forms/form";
 import { Alert, Button, Modal, Row, Tag, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
