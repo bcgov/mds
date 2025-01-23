@@ -56,7 +56,7 @@ services:
     user: postgres
     build:
       context: services/postgres
-      dockerfile: Dockerfile_new
+      dockerfile: Dockerfile
     environment:
       - POSTGRES_USER=mds
       - POSTGRES_PASSWORD=test
@@ -346,4 +346,3 @@ volumes:
   core_api_logs: {}
   core_web_logs: {}
   document_manager_logs: {}
-  
