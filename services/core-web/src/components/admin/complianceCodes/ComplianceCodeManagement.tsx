@@ -4,7 +4,6 @@ import { change, Field, initialize, reset } from "redux-form";
 import SearchOutlined from "@ant-design/icons/SearchOutlined";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import { Button, Input, Row, Table, Tag, Typography } from "antd";
-
 import CoreTable from "@mds/common/components/common/CoreTable";
 import {
   renderActionsColumn,
@@ -20,7 +19,6 @@ import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import { IComplianceArticle, ItemMap } from "@mds/common/interfaces/";
 import { sortComplianceCodesByArticleNumber } from "@mds/common/redux/utils/helpers";
-import PermitConditionsNavigation from "../permitConditions/PermitConditionsNavigation";
 import {
   fetchComplianceCodes,
   getFormattedComplianceCodes,
@@ -92,7 +90,7 @@ const ComplianceCodeManagement: FC = () => {
     dispatch(
       openModal({
         props: {
-          title: "Add Health and Safety Reclamation Code",
+          title: "Add Health, Safety and Reclamation Code",
           onSave: handleModalSave,
         },
         content: ComplianceCodeViewEditForm,
@@ -104,7 +102,7 @@ const ComplianceCodeManagement: FC = () => {
     dispatch(
       openModal({
         props: {
-          title: "View Health and Safety Reclamation Code",
+          title: "View Health, Safety and Reclamation Code",
           isEditMode: false,
           initialValues: record,
         },
@@ -275,81 +273,71 @@ const ComplianceCodeManagement: FC = () => {
 
   return (
     <div>
-      <div className="landing-page__header">
-        <h1>Permit Condition Management</h1>
-      </div>
-      <PermitConditionsNavigation
-        activeButton="hsrc-management"
-        openSubMenuKey={["submenu-compliance-codes"]}
-      />
-      <div className="tab__content">
-        <h2>Health and Safety Reclamation Code</h2>
-        <Typography.Text>
-          Manage HSRC in the system that are associated with <b>Incidents, Variances,</b> and{" "}
-          <b>Reports</b>. View the code to see long description and the regulatory authority.
-        </Typography.Text>
-        <Row justify="end">
-          <Button
-            onClick={() => openAddModal()}
-            disabled={isEditMode}
-            loading={isLoading}
-            type="primary"
-            icon={<PlusOutlined />}
-          >
-            Add Code
-          </Button>
-        </Row>
-        <FormWrapper
-          name={FORM.COMPLIANCE_CODE_BULK_EDIT}
-          onSubmit={handleSubmit}
-          initialValues={complianceCodes}
+      <Typography.Text>
+        Manage HSRC in the system that are associated with <b>Incidents, Variances,</b> and{" "}
+        <b>Reports</b>. View the code to see long description and the regulatory authority.
+      </Typography.Text>
+      <Row justify="end">
+        <Button
+          onClick={() => openAddModal()}
+          disabled={isEditMode}
+          loading={isLoading}
+          type="primary"
+          icon={<PlusOutlined />}
         >
-          <CoreTable
-            loading={isLoading}
-            dataSource={filteredRecordsList}
-            columns={columns}
-            rowClassName={setExpiredRowBackground}
-            rowKey="compliance_article_id"
-            pagination={{
-              total: filteredRecordsList.length,
-              defaultPageSize: 50,
-              position: ["bottomCenter"],
-              disabled: isEditMode,
-            }}
-            summary={() => (
-              <Table.Summary fixed={"bottom"}>
-                <Table.Summary.Row>
-                  <Table.Summary.Cell index={0} colSpan={columns.length}>
-                    <Row justify="end">
-                      {isEditMode ? (
-                        <>
-                          <RenderCancelButton cancelFunction={handleCancel} />
-                          <Button
-                            type="primary"
-                            htmlType="submit"
-                            disabled={editedIds.length === 0}
-                          >
-                            Save Changes
-                          </Button>
-                        </>
-                      ) : (
+          Add Code
+        </Button>
+      </Row>
+      <FormWrapper
+        name={FORM.COMPLIANCE_CODE_BULK_EDIT}
+        onSubmit={handleSubmit}
+        initialValues={complianceCodes}
+      >
+        <CoreTable
+          loading={isLoading}
+          dataSource={filteredRecordsList}
+          columns={columns}
+          rowClassName={setExpiredRowBackground}
+          rowKey="compliance_article_id"
+          pagination={{
+            total: filteredRecordsList.length,
+            defaultPageSize: 50,
+            position: ["bottomCenter"],
+            disabled: isEditMode,
+          }}
+          summary={() => (
+            <Table.Summary fixed={"bottom"}>
+              <Table.Summary.Row>
+                <Table.Summary.Cell index={0} colSpan={columns.length}>
+                  <Row justify="end">
+                    {isEditMode ? (
+                      <>
+                        <RenderCancelButton cancelFunction={handleCancel} />
                         <Button
-                          onClick={() => setIsEditMode(true)}
                           type="primary"
-                          loading={isLoading}
+                          htmlType="submit"
+                          disabled={editedIds.length === 0}
                         >
-                          Edit Expiry Dates
+                          Save Changes
                         </Button>
-                      )}
-                    </Row>
-                  </Table.Summary.Cell>
-                </Table.Summary.Row>
-              </Table.Summary>
-            )}
-            sticky
-          />
-        </FormWrapper>
-      </div>
+                      </>
+                    ) : (
+                      <Button
+                        onClick={() => setIsEditMode(true)}
+                        type="primary"
+                        loading={isLoading}
+                      >
+                        Edit Expiry Dates
+                      </Button>
+                    )}
+                  </Row>
+                </Table.Summary.Cell>
+              </Table.Summary.Row>
+            </Table.Summary>
+          )}
+          sticky
+        />
+      </FormWrapper>
     </div>
   );
 };

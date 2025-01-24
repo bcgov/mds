@@ -53,7 +53,7 @@ import DamsDetailsPage from "@/components/mine/Tailings/DamsDetailsPage";
 import ReportPage from "@/components/mine/Reports/ReportPage";
 import ReportSteps from "@mds/common/components/reports/ReportSteps";
 import ViewDigitalPermitCredential from "@/components/mine/DigitalPermitCredential/ViewDigitalPermitCredential";
-import ComplianceCodeManagement from "@/components/admin/complianceCodes/ComplianceCodeManagement";
+import ComplianceManagement from "@/components/admin/complianceCodes/ComplianceManagement";
 import ProjectSubmissionStatusPage from "@mds/common/components/projectSummary/ProjectSubmissionStatusPage";
 import ViewPermit from "@/components/mine/Permit/ViewPermit";
 import { getEnvironment } from "@mds/common/utils/environmentUtils";
@@ -500,8 +500,9 @@ export const ADMIN_CONTACT_MANAGEMENT = {
 };
 
 export const ADMIN_HSRC_COMPLIANCE_CODE_MANAGEMENT = {
-  route: "/admin/hsrc-management",
-  component: ComplianceCodeManagement,
+  route: "/admin/hsrc-management/:tab",
+  component: ComplianceManagement,
+  dynamicRoute: (tab: string) => `/admin/hsrc-management/${tab}`,
   helpKey: "HSRC-Code-Management",
 };
 
