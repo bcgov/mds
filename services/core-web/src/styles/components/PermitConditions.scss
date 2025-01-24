@@ -5,14 +5,14 @@ div.condition-layer {
   padding-left: 24px;
   font-weight: normal;
 
+  .ant-form {
+    margin-bottom: 0;
+  }
+
   .condition-content {
     &.editable:hover {
       cursor: pointer;
       background-color: #F4F0F0;
-    }
-
-    .view-item {
-      margin-bottom: 0;
     }
 
     .condition-column {
@@ -87,10 +87,29 @@ div.condition-layer {
 .condition-tag {
   border-radius: 25px;
   border: none;
-  font-weight: 400 !important;
-
+  font-weight: 600 !important;
   font-size: 11px;
   padding: 4px 8px !important;
   margin-right: -8px !important;
   margin-left: 5px;
+}
+
+.permit-status-banner {
+  position: fixed;
+  width: 100%;
+  z-index: 999;
+  font-weight: 600;
+
+  svg {
+    margin-right: 0.25em;
+  }
+
+  &--complete {
+    background-color: $success-light;
+    color: $success-dark;
+  }
+
+  &--incomplete {
+    @extend .bg-color-warning;
+  }
 }

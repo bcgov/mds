@@ -35,9 +35,7 @@ const permitHandlers = [
     })
   }),
   http.get("/%3CAPI_URL%3E/mines/permits/condition-category-codes", async () => {
-    return HttpResponse.json({
-      "tasks": MINE_REPORT_CATEGORY_OPTIONS
-    })
+    return HttpResponse.json(MINE_REPORT_CATEGORY_OPTIONS)
   }),
 
 

@@ -71,9 +71,11 @@ class MajorMineApplicationResource(Resource, UserMixin):
         if current_status_code == "CHR" and new_status_code == "SUB":
             new_status_code = "UNR"
 
+        documents = data.get('documents', [])
+
         major_mine_application.update(project,
                                       new_status_code,
-                                      data.get('documents', []))
+                                      documents)
 
         major_mine_application.save()
         if current_status_code != "SUB" and new_status_code == "SUB":
@@ -82,5 +84,12 @@ class MajorMineApplicationResource(Resource, UserMixin):
             message = f'A Major Mine Application for ({project.project_title}) has been submitted for ({project.mine_name})'
             extra_data = {'project': {'project_guid': str(project.project_guid)}}
             trigger_notification(message, ActivityType.major_mine_app_submitted, project.mine, 'MajorMineApplication', major_mine_application.major_mine_application_guid, extra_data)
+
+        if current_status_code != new_status_code and new_status_code != 'DFT':
+            major_mine_application.send_mma_status_notifications(new_status_code)
+
+            if len(documents) > 0:
+                major_mine_application.send_application_document_updated_notifications(len(documents))
+
 
         return major_mine_application

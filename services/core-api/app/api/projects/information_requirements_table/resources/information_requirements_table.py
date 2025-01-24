@@ -56,7 +56,7 @@ class InformationRequirementsTableResource(Resource, UserMixin):
         document_guid = request.form.get('document_guid')
         status_code = request.form.get('status_code')
 
-        irt = InformationRequirementsTable.find_by_irt_guid(irt_guid)
+        irt: InformationRequirementsTable = InformationRequirementsTable.find_by_irt_guid(irt_guid)
         current_status_code = irt.status_code
 
         if irt is None:
@@ -64,6 +64,8 @@ class InformationRequirementsTableResource(Resource, UserMixin):
         if import_file and document_guid:
             return self.update_irt_document(irt, import_file, document_guid)
         if status_code and current_status_code != status_code:
+            if status_code != 'DFT':
+                irt.send_irt_status_notifications(project_guid, status_code)
             return irt.update({"status_code": status_code})
         else:
             current_app.logger.error("Error occurred while updating IRT")

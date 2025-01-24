@@ -99,3 +99,18 @@ def get_current_core_or_ms_env_url(app):
     elif app == 'ms':
         ms_config_property = f'MINESPACE_{(Config.ENVIRONMENT_NAME).upper()}_URL'
         return getattr(Config, ms_config_property)
+
+def parse_status_code_to_text(status_code: str) -> str:
+    # Mapping of status codes to user-friendly text
+    status_mapping = {
+        "DFT": "Draft",
+        "WDN": "Withdrawn",
+        "COM": "Complete",
+        "OHD": "On Hold",
+        "SUB": "Submitted",
+        "UNR": "Under review",
+        "CHR": "Change Requested",
+        "ASG": "Assigned",
+    }
+
+    return status_mapping.get(status_code, "Unknown Status Code")

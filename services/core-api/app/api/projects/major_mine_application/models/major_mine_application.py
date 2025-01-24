@@ -1,19 +1,24 @@
 from multiprocessing.sharedctypes import Value
 from sqlalchemy.dialects.postgresql import UUID
-
 from sqlalchemy.schema import FetchedValue
 from werkzeug.exceptions import NotFound
 
+from app.api.activity.models.activity_notification import ActivityType, ActivityRecipients
+from app.api.activity.utils import trigger_notification
+from app.api.constants import MAJOR_MINES_OFFICE_EMAIL
+from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
+from app.api.mines.mine.models.mine import Mine
+from app.api.projects.major_mine_application.models.major_mine_application_document_xref import \
+    MajorMineApplicationDocumentXref
+from app.api.projects.project.models.project import Project
+from app.api.projects.project.project_util import notify_file_updates
+from app.api.services.email_service import EmailService
+from app.api.utils.helpers import parse_status_code_to_text, format_datetime_to_string
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
+from app.config import Config
 from app.extensions import db
 
-from app.config import Config
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
-from app.api.services.email_service import EmailService
-from app.api.projects.major_mine_application.models.major_mine_application_document_xref import MajorMineApplicationDocumentXref
-from app.api.mines.documents.models.mine_document import MineDocument
-from app.api.mines.mine.models.mine import Mine
-from app.api.projects.project.project_util import notify_file_updates
 
 class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'major_mine_application'
@@ -193,3 +198,66 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
             self.mine_documents.remove(doc.mine_document)
             doc.mine_document.delete(False)
         return super(MajorMineApplication, self).delete(commit)
+
+    def send_application_emails(self, status_code: str, project: Project, subject: str, message: str):
+        minespace_recipients = [contact.email for contact in project.contacts]
+        core_recipients = []
+        if status_code not in ['CHR', 'UNR']:
+            core_recipients.append(MAJOR_MINES_OFFICE_EMAIL)
+        if project.project_lead and status_code != 'CHR':
+            core_recipients.append(project.project_lead.email)
+
+        minespace_link = f'{Config.MINESPACE_PROD_URL}/projects/{self.project.project_guid}/overview'
+        core_link = f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/app'
+
+        context = {
+            'message': message,
+            'minespace_link': minespace_link,
+            'core_link': core_link,
+            'project_section': 'Application',
+            'project': {
+                'mine_name': project.mine_name,
+                'mine_no': project.mine_no,
+                'project_title': project.project_title,
+                'submitted': format_datetime_to_string(self.update_timestamp)
+            }
+        }
+
+        minespace_body = open("app/templates/email/projects/minespace_project_section_email.html", "r").read()
+        core_body = open("app/templates/email/projects/ministry_project_section_email.html", "r").read()
+
+        if core_recipients != []:
+            EmailService.send_template_email(subject, core_recipients, core_body, context)
+        if minespace_recipients != []:
+            EmailService.send_template_email(subject, minespace_recipients, minespace_body, context)
+
+    def send_mma_status_notifications(self, status_code):
+            project: Project = self.project
+
+            subject = f'Application Status Updated for {project.mine_name}:{project.project_title}'
+            message = f'The status of the Application for the project {project.project_title} for {project.mine_name} has been updated to {parse_status_code_to_text(status_code)}.'
+
+            self.send_application_emails(status_code, project, subject, message)
+
+            mine = Mine.find_by_mine_guid(project.mine_guid)
+            extra_data = {'project': {'project_guid': str(project.project_guid)}}
+            trigger_notification(message, ActivityType.project_app_status_updated, mine,
+                                 'MajorMineApplication', self.major_mine_application_guid, extra_data)
+
+
+    def send_application_document_updated_notifications(self, document_count=1, status_code=None):
+        mine: Mine = Mine.find_by_mine_guid(self.project.mine_guid)
+        project: Project = Project.find_by_project_guid(self.project.project_guid)
+
+        message_start = 'New application documents have' if document_count > 1 else 'A new application document has'
+        message = f'{message_start} been uploaded for the project {self.project.project_title} for {self.project.mine_name}.'
+        subject = f'Application documents updated for {project.mine_name}:{project.project_title}'
+
+        self.send_application_emails(status_code, project, subject, message)
+
+        extra_data = {'project': {'project_guid': str(self.project.project_guid)}}
+        idempotency_key = f'{self.project_guid}-{self.major_mine_application_guid}'
+        print('SHOULD TRIGGER NOTIFICATIONS')
+        trigger_notification(message, ActivityType.project_app_documents_updated, mine,
+                             'MajorMineApplication', self.major_mine_application_guid, extra_data, idempotency_key,
+                             ActivityRecipients.all_users, True, 24 * 60)

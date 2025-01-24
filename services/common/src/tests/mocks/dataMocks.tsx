@@ -21,6 +21,22 @@ export const createMockHeader = () => ({
 
 export const ERROR = { message: "Errors", status: 400 };
 
+export const USERS = [{
+  sub: "1234",
+  display_name: "Testerson, Test MCM:EX",
+  email: "test@test.ca",
+  family_name: "Testerson",
+  given_name: "Test",
+  last_logged_in: "2022-08-08T20:59:01.482461+00:00",
+}, {
+  sub: "4321",
+  display_name: "McOther, Other MCM:EX",
+  email: "other@test.ca",
+  family_name: "McOther",
+  given_name: "Other",
+  last_logged_in: "2022-08-08T20:59:01.482461+00:00",
+}];
+
 // used for testing selectors
 export const MINE_RESPONSE = {
   mines: [
@@ -1148,27 +1164,21 @@ export const PERMITS: IPermit[] = [
         security_not_required: false,
         security_not_required_reason: "",
         issuing_inspector_title: "Inspector Gadget",
+        is_generated_in_core: false,
         regional_office: "region",
         now_application_guid: "",
         now_application_documents: [],
         imported_now_application_documents: [],
         permit_conditions_last_updated_by: "Condition Updater",
         permit_conditions_last_updated_date: "2019-04-04",
-        has_permit_conditions: false,
+        has_permit_conditions: true,
         condition_categories: [
           {
             condition_category_code: "HSC",
             description: "Health and Safety",
             display_order: 0,
             step: "A.",
-            assigned_review_user: {
-              sub: "bce4ffa4b63641c79afa82287bfffbc8@idir",
-              email: "test.testerson@gov.bc.ca",
-              given_name: "Test",
-              family_name: "Testerson",
-              display_name: "Testerson, Test MCM:EX",
-              last_logged_in: "2024-12-20T17:09:03.200417+00:00",
-            },
+            assigned_review_user: USERS[0],
           },
           {
             condition_category_code: "RCC",
@@ -1176,6 +1186,12 @@ export const PERMITS: IPermit[] = [
             display_order: 1,
             step: "B.",
           },
+          {
+            condition_category_code: "ELC",
+            description: "Environmental Land and Watercourses",
+            display_order: 2,
+            step: "C."
+          }
         ],
         conditions: [
           {
@@ -1189,6 +1205,7 @@ export const PERMITS: IPermit[] = [
             sub_conditions: [],
             step: "1.",
             display_order: 1,
+            permit_condition_status_code: "NST"
           },
           {
             permit_condition_id: 1646,
@@ -1201,6 +1218,7 @@ export const PERMITS: IPermit[] = [
             sub_conditions: [],
             step: "1.",
             display_order: 1,
+            permit_condition_status_code: "NST"
           },
           {
             permit_condition_id: 1650,
@@ -1219,6 +1237,7 @@ export const PERMITS: IPermit[] = [
                 condition_type_code: "CON",
                 condition_category_code: "ELC",
                 parent_permit_condition_id: 1650,
+                permit_condition_status_code: "NST",
                 sub_conditions: [
                   {
                     permit_condition_id: 1644,
@@ -1231,6 +1250,7 @@ export const PERMITS: IPermit[] = [
                     sub_conditions: [],
                     step: "i.",
                     display_order: 1,
+                    permit_condition_status_code: "NST"
                   },
                 ],
                 step: "a.",
@@ -1249,60 +1269,60 @@ export const PERMITS: IPermit[] = [
                     permit_condition_id: 12509,
                     permit_amendment_id: 2,
                     permit_condition_guid: "c2d7133c-a1ee-4542-8a66-bb9f6501838e",
-                    condition:
-                      "a condition added underneath the section, with a lot of detail added to it, which is probably important for documents like permits",
+                    condition: "a condition added underneath the section, with a lot of detail added to it, which is probably important for documents like permits",
                     condition_type_code: "CON",
                     condition_category_code: "ELC",
                     parent_permit_condition_id: 12507,
+                    permit_condition_status_code: "NST",
                     sub_conditions: [
                       {
                         permit_condition_id: 12510,
                         permit_amendment_id: 2,
                         permit_condition_guid: "3ba99ce6-d4bc-42ef-8a1c-03b2be315c43",
-                        condition:
-                          "a detailed list item desribing exactly what must be done to accomplish the parent condition",
+                        condition: "a detailed list item desribing exactly what must be done to accomplish the parent condition",
                         condition_type_code: "LIS",
                         condition_category_code: "ELC",
                         parent_permit_condition_id: 12509,
                         sub_conditions: [],
                         step: "1.",
                         display_order: 1,
+                        permit_condition_status_code: "NST"
                       },
                       {
                         permit_condition_id: 12511,
                         permit_amendment_id: 2,
                         permit_condition_guid: "25603323-f16b-4316-a79b-5561227aad55",
-                        condition:
-                          "but, that wasn't quite enough information, another list item will expand on other responsibilities associated with this permit",
+                        condition: "but, that wasn't quite enough information, another list item will expand on other responsibilities associated with this permit",
                         condition_type_code: "LIS",
                         condition_category_code: "ELC",
                         parent_permit_condition_id: 12509,
                         sub_conditions: [],
                         step: "2.",
                         display_order: 2,
+                        permit_condition_status_code: "NST"
                       },
                       {
                         permit_condition_id: 12512,
                         permit_amendment_id: 2,
                         permit_condition_guid: "5d012c32-6af5-4b7d-912a-36e7d02157a9",
-                        condition:
-                          "good things come in 3s, so another list item is added to the condition",
+                        condition: "good things come in 3s, so another list item is added to the condition",
                         condition_type_code: "LIS",
                         condition_category_code: "ELC",
                         parent_permit_condition_id: 12509,
+                        permit_condition_status_code: "NST",
                         sub_conditions: [
                           {
                             permit_condition_id: 12513,
                             permit_amendment_id: 2,
                             permit_condition_guid: "bd79804e-4953-4fe9-89fb-7c5bba8dd587",
-                            condition:
-                              "we want to show nesting to 5 levels, so one list item gets a child",
+                            condition: "we want to show nesting to 5 levels, so one list item gets a child",
                             condition_type_code: "LIS",
                             condition_category_code: "ELC",
                             parent_permit_condition_id: 12512,
                             sub_conditions: [],
                             step: "a.",
                             display_order: 1,
+                            permit_condition_status_code: "NST"
                           },
                         ],
                         step: "3.",
@@ -1315,17 +1335,18 @@ export const PERMITS: IPermit[] = [
                 ],
                 step: "b.",
                 display_order: 2,
+                permit_condition_status_code: "NST"
               },
             ],
             step: "1.",
             display_order: 1,
+            permit_condition_status_code: "COM"
           },
           {
             permit_condition_id: 12514,
             permit_amendment_id: 2,
             permit_condition_guid: "3fdc069d-d0b1-4678-b663-2c29848b4c64",
-            condition:
-              "Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines",
+            condition: "Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines",
             condition_type_code: "SEC",
             condition_category_code: "ELC",
             parent_permit_condition_id: null,
@@ -1334,21 +1355,21 @@ export const PERMITS: IPermit[] = [
                 permit_condition_id: 12515,
                 permit_amendment_id: 2,
                 permit_condition_guid: "f1f53337-dc2f-4b9c-be15-2727141e9a63",
-                condition:
-                  "It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?",
+                condition: "It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?",
                 condition_type_code: "CON",
                 condition_category_code: "ELC",
                 parent_permit_condition_id: 12514,
                 sub_conditions: [],
                 step: "a.",
                 display_order: 1,
+                permit_condition_status_code: ""
               },
             ],
             step: "2.",
             display_order: 2,
+            permit_condition_status_code: "COM"
           },
         ],
-        is_generated_in_core: false,
         preamble_text: "words",
         vc_credential_exch_state: VC_CRED_ISSUE_STATES.issued,
         permit_amendment_guid: "8729830e-5e9a-4be8-9eef-dac4af775f1d",
@@ -9036,13 +9057,4 @@ export const HELP_GUIDE_MS = {
       system: SystemFlagEnum.ms,
     },
   ],
-};
-
-export const USER = {
-  sub: "1234",
-  displayName: "Testerson, Test MCM:EX",
-  email: "test@test.ca",
-  family_name: "Testerson",
-  given_name: "Test",
-  last_logged_in: "2022-08-08T20:59:01.482461+00:00",
 };

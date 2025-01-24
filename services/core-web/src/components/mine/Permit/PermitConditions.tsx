@@ -57,16 +57,21 @@ import PermitConditionReviewAssignment from "@/components/mine/Permit/PermitCond
 import { getUser } from "@mds/common/redux/slices/userSlice";
 import { createDropDownList } from "@common/utils/helpers";
 import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
+import { PermitReviewBanner } from "./PermitReviewBanner";
 
 const { Title } = Typography;
 
 interface PermitConditionProps {
+  isReviewComplete: boolean;
+  isExtracted: boolean;
   latestAmendment: IPermitAmendment;
   canStartExtraction: boolean;
   userCanEdit: boolean;
 }
 
 const PermitConditions: FC<PermitConditionProps> = ({
+  isReviewComplete,
+  isExtracted,
   latestAmendment,
   canStartExtraction,
   userCanEdit,
@@ -76,7 +81,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const user = useSelector(getUser);
 
   const userIsAssigned = (category?: IPermitConditionCategory): boolean => {
-    return user?.sub === category?.assigned_review_user?.sub;
+    return user?.sub && (user.sub === category?.assigned_review_user?.sub);
   };
 
   const canEditPermitConditions = (category: IPermitConditionCategory): boolean =>
@@ -181,6 +186,24 @@ const PermitConditions: FC<PermitConditionProps> = ({
         // Initialize the step paths for all top-level conditions
         const formattedConditions = catConditions.map((condition) => getStepPath(condition));
 
+        const category = {
+          href: cat.condition_category_code.toLowerCase().replace("-", ""),
+          titleText: cat.description,
+          conditions: formattedConditions || [],
+          condition_category_code: cat.condition_category_code,
+          condition_category: cat,
+        };
+        const categoryTitle = `${formatPermitConditionStep(cat.step)} ${cat.description}`;
+        if (isReviewComplete) {
+          return {
+            ...category,
+            title: (
+              <Typography.Text style={{ fontSize: "16px", fontWeight: "600" }}>
+                {categoryTitle}
+              </Typography.Text>
+            ),
+          };
+        }
         //Set the text and icon based on the Status of all the top level conditions
         const statuses = catConditions.map(con => con.permit_condition_status_code);
         const allComplete = statuses.every(s => s === PERMIT_CONDITION_STATUS_CODE.COM);
@@ -195,24 +218,19 @@ const PermitConditions: FC<PermitConditionProps> = ({
         }
 
         return {
-          href: cat.condition_category_code.toLowerCase().replace("-", ""),
+          ...category,
           icon: <FontAwesomeIcon icon={status.icon} className={status.color} style={{ fontSize: "20px" }} />,
           title: (
             <Typography.Text style={{ fontSize: "16px", fontWeight: "600" }}>
-              {formatPermitConditionStep(cat.step)}
-              {cat.description}
+              {categoryTitle}
             </Typography.Text>
           ),
-          titleText: cat.description,
           description: (
             <Space direction="vertical">
               <Typography.Text>{status.text}</Typography.Text>
               <Typography.Text className="faded-text">{cat.assigned_review_user?.display_name ? "Assigned to " + cat.assigned_review_user.display_name : "Not Assigned"}</Typography.Text>
             </Space>
           ),
-          conditions: formattedConditions || [],
-          condition_category_code: cat.condition_category_code,
-          condition_category: cat,
         };
       })
       .filter(Boolean)
@@ -249,7 +267,8 @@ const PermitConditions: FC<PermitConditionProps> = ({
     opt: standardCategories
   }]
 
-  const topOffset = 99 + 49; // header + tab nav
+  const bannerHeight = 30;
+  const topOffset = 99 + 45 + bannerHeight; // header + tab nav
 
   const handleAddCondition = async () => {
     setAddingToCategoryCode(null);
@@ -382,7 +401,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
       {showLoading ? (
         <Skeleton active paragraph={{ rows: 1 }} />
       ) : (
-        <Typography.Link onClick={openCreateCategoryModal} className="fade-in">
+        <Typography.Link onClick={openCreateCategoryModal} className="fade-in" title="Add Condition Category">
           + Add Condition Category
         </Typography.Link>
       )}
@@ -391,16 +410,17 @@ const PermitConditions: FC<PermitConditionProps> = ({
 
   const canViewPdfSplitScreen =
     viewPdf && pdfSplitViewEnabled && permitExtraction?.permit_amendment_document_guid;
-
-  return (
+  const hasConditions = latestAmendment?.conditions?.length > 0;
+  return (<>
+    {hasConditions && <PermitReviewBanner isExtracted={isExtracted} height={bannerHeight} isReviewComplete={isReviewComplete} />}
     <Row>
       <Col span={canViewPdfSplitScreen ? 16 : 24}>
         <ScrollSidePageWrapper
           header={null}
           headerHeight={topOffset}
           menuProps={scrollSideMenuProps}
-          extraItems={AddConditionModalContent}
-          view={"steps"}
+          extraItems={userCanEdit && isExtracted ? AddConditionModalContent : null}
+          view={isReviewComplete ? "anchor" : "steps"}
           content={
             <Row align="middle" justify="space-between" gutter={[10, 16]}>
               <Col span={24}>
@@ -461,6 +481,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                             <Row justify="space-between">
                               <Title level={3} className="margin-none" id={category.href}>
                                 <EditPermitConditionCategoryInline
+                                  canEdit={isExtracted && canEditPermitConditions(category.condition_category)}
                                   onDelete={handleDeleteConditionCategory}
                                   onChange={handleUpdateConditionCategory}
                                   moveUp={(cat) => handleMove(cat, idx - 1)}
@@ -471,7 +492,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                                   conditionCount={category?.conditions.length || 0}
                                 />
                               </Title>
-                              {canEditPermitConditions(category.condition_category) && (
+                              {canEditPermitConditions(category.condition_category) && isExtracted && (
                                 <CoreButton
                                   type="primary"
                                   disabled={
@@ -485,7 +506,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                                 </CoreButton>
                               )}
                             </Row>
-                            {isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && (
+                            {isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && userCanEdit && (
                               <PermitConditionReviewAssignment
                                 category={category?.condition_category}
                                 refreshData={refreshData}
@@ -495,6 +516,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                           {category.conditions.map((sc, idx) => (
                             <Col span={24} key={sc.permit_condition_id} className="fade-in">
                               <PermitConditionLayer
+                                isExtracted={isExtracted}
                                 permitAmendmentGuid={latestAmendment.permit_amendment_guid}
                                 condition={sc}
                                 isExpanded={isExpanded}
@@ -574,6 +596,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
         ""
       )}
     </Row>
+  </>
   );
 };
 

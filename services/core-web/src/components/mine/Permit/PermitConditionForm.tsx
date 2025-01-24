@@ -31,6 +31,7 @@ import RenderGroupedSelect from "@mds/common/components/forms/RenderGroupedSelec
 
 
 interface PermitConditionFormProps {
+    isExtracted: boolean;
     permitAmendmentGuid: string;
     condition: IPermitCondition;
     canEditPermitConditions: boolean;
@@ -45,6 +46,7 @@ interface PermitConditionFormProps {
     categoryOptions?: IGroupedDropdownList[];
 }
 const PermitConditionForm: FC<PermitConditionFormProps> = ({
+    isExtracted,
     permitAmendmentGuid,
     canEditPermitConditions,
     condition,
@@ -157,7 +159,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
 
     return (
         <FormWrapper
-            isEditMode={isEditMode}
+            isEditMode={isEditMode && isExtracted}
             onSubmit={handleSubmit}
             name={formName}
             initialValues={condition}
@@ -166,7 +168,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 enableReinitialize: true
             }}
         >
-            {(isEditMode && categoryOptions) && <Row>
+            {(isEditMode && isExtracted && categoryOptions) && <Row>
                 <Col span={24}>
                     <Field
                         showOptional={false}
@@ -211,14 +213,14 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                         <Row gutter={8}
                             className="condition-edit-buttons"
                         >
-                            <Col>
+                            {isExtracted && <Col>
                                 <Button
                                     className="fa-icon-container btn-sm-padding"
                                     type="default"
                                     icon={<FontAwesomeIcon icon={faPlus} />}
                                     onClick={handleAddListItem}
                                 >List Item</Button>
-                            </Col>
+                            </Col>}
                             {/* <Col>
                                     <Button
                                         className="fa-icon-container btn-sm-padding"
@@ -260,7 +262,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                             </Col>
                         </Row>
                     </Col>
-                    <Col>
+                    {isExtracted && <Col>
                         <Row gutter={8} align="middle" className="condition-edit-buttons">
                             <Col>
                                 <Button
@@ -292,7 +294,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                 />
                             </Col>
                         </Row>
-                    </Col>
+                    </Col>}
                 </Row>
             )}
         </FormWrapper>

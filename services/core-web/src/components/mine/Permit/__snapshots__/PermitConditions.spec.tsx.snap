@@ -321,7 +321,7 @@ exports[`PermitConditions renders properly 1`] = `
                     class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
                   >
                     <span
-                      class="ant-badge-status-dot ant-badge-status-success"
+                      class="ant-badge-status-dot ant-badge-status-warning"
                     />
                   </span>
                    Permit Conditions
@@ -384,6 +384,38 @@ exports[`PermitConditions renders properly 1`] = `
               tabindex="0"
             >
               <div
+                class="ant-row ant-row-center ant-row-middle permit-status-banner permit-status-banner--incomplete"
+                style="height: 30px;"
+              >
+                <div
+                  class="ant-col"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-triangle-exclamation "
+                    data-icon="triangle-exclamation"
+                    data-prefix="far"
+                    focusable="false"
+                    role="img"
+                    viewBox="0 0 512 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M248.4 84.3c1.6-2.7 4.5-4.3 7.6-4.3s6 1.6 7.6 4.3L461.9 410c1.4 2.3 2.1 4.9 2.1 7.5c0 8-6.5 14.5-14.5 14.5H62.5c-8 0-14.5-6.5-14.5-14.5c0-2.7 .7-5.3 2.1-7.5L248.4 84.3zm-41-25L9.1 385c-6 9.8-9.1 21-9.1 32.5C0 452 28 480 62.5 480h387c34.5 0 62.5-28 62.5-62.5c0-11.5-3.2-22.7-9.1-32.5L304.6 59.3C294.3 42.4 275.9 32 256 32s-38.3 10.4-48.6 27.3zM288 368a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm-8-184c0-13.3-10.7-24-24-24s-24 10.7-24 24v96c0 13.3 10.7 24 24 24s24-10.7 24-24V184z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </div>
+                <div
+                  class="ant-col"
+                >
+                  Conditions and their report requirements have been extracted using AI and require review and verification.
+                </div>
+              </div>
+              <div
+                style="height: 30px;"
+              />
+              <div
                 class="ant-row"
               >
                 <div
@@ -399,7 +431,7 @@ exports[`PermitConditions renders properly 1`] = `
                       <div>
                         <div
                           class="ant-anchor-wrapper"
-                          style="max-height: calc(100vh - 254px);"
+                          style="max-height: calc(100vh - 280px);"
                         >
                           <div
                             class="ant-anchor ant-anchor-fixed"
@@ -450,8 +482,7 @@ exports[`PermitConditions renders properly 1`] = `
                                       class="ant-typography"
                                       style="font-size: 16px; font-weight: 600;"
                                     >
-                                      A.
-                                      Health and Safety
+                                      A. Health and Safety
                                     </span>
                                     <span
                                       class="side-nav-description"
@@ -523,8 +554,7 @@ exports[`PermitConditions renders properly 1`] = `
                                       class="ant-typography"
                                       style="font-size: 16px; font-weight: 600;"
                                     >
-                                      B.
-                                      Reclamation
+                                      B. Reclamation
                                     </span>
                                     <span
                                       class="side-nav-description"
@@ -574,8 +604,8 @@ exports[`PermitConditions renders properly 1`] = `
                                   >
                                     <svg
                                       aria-hidden="true"
-                                      class="svg-inline--fa fa-ban color-gov-grey"
-                                      data-icon="ban"
+                                      class="svg-inline--fa fa-circle-check color-success"
+                                      data-icon="circle-check"
                                       data-prefix="fal"
                                       focusable="false"
                                       role="img"
@@ -584,7 +614,7 @@ exports[`PermitConditions renders properly 1`] = `
                                       xmlns="http://www.w3.org/2000/svg"
                                     >
                                       <path
-                                        d="M402.7 425.3l-316-316C52.6 148.6 32 199.9 32 256c0 123.7 100.3 224 224 224c56.1 0 107.4-20.6 146.7-54.7zm22.6-22.6C459.4 363.4 480 312.1 480 256C480 132.3 379.7 32 256 32c-56.1 0-107.4 20.6-146.7 54.7l316 316zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"
+                                        d="M256 32a224 224 0 1 1 0 448 224 224 0 1 1 0-448zm0 480A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM363.3 203.3c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0L224 297.4l-52.7-52.7c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6l64 64c6.2 6.2 16.4 6.2 22.6 0l128-128z"
                                         fill="currentColor"
                                       />
                                     </svg>
@@ -596,8 +626,7 @@ exports[`PermitConditions renders properly 1`] = `
                                       class="ant-typography"
                                       style="font-size: 16px; font-weight: 600;"
                                     >
-                                      
-                                      Environmental Land and Watercourses
+                                      C. Environmental Land and Watercourses
                                     </span>
                                     <span
                                       class="side-nav-description"
@@ -613,7 +642,7 @@ exports[`PermitConditions renders properly 1`] = `
                                           <span
                                             class="ant-typography"
                                           >
-                                            Not Started
+                                            Complete
                                           </span>
                                         </div>
                                         <div
@@ -640,6 +669,7 @@ exports[`PermitConditions renders properly 1`] = `
                       >
                         <a
                           class="ant-typography fade-in"
+                          title="Add Condition Category"
                         >
                           + Add Condition Category
                         </a>
@@ -789,7 +819,8 @@ exports[`PermitConditions renders properly 1`] = `
                                         class="ant-typography"
                                         style="margin-bottom: 0px;"
                                       >
-                                        A.. 
+                                        A.
+                                         
                                         Health and Safety
                                          (
                                         1
@@ -797,10 +828,18 @@ exports[`PermitConditions renders properly 1`] = `
                                       </h3>
                                     </div>
                                   </h3>
+                                  <button
+                                    class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                    type="button"
+                                  >
+                                    <span>
+                                      Add Condition
+                                    </span>
+                                  </button>
                                 </div>
                                 <form
-                                  class="ant-form ant-form-horizontal common-form common-form-PERMIT_CONDITION_REVIEW_ASSIGNMENT}-HSC form-edit"
-                                  id="PERMIT_CONDITION_REVIEW_ASSIGNMENT}-HSC"
+                                  class="ant-form ant-form-horizontal common-form common-form-PERMIT_CONDITION_REVIEW_ASSIGNMENT-HSC form-edit"
+                                  id="PERMIT_CONDITION_REVIEW_ASSIGNMENT-HSC"
                                 >
                                   <div
                                     class="ant-row ant-row-start ant-row-top"
@@ -846,14 +885,14 @@ exports[`PermitConditions renders properly 1`] = `
                                                       class="ant-select-selection-search"
                                                     >
                                                       <input
-                                                        aria-activedescendant="assigned_review_user_list_0"
+                                                        aria-activedescendant="assigned_review_user-HSC_list_0"
                                                         aria-autocomplete="list"
-                                                        aria-controls="assigned_review_user_list"
+                                                        aria-controls="assigned_review_user-HSC_list"
                                                         aria-haspopup="listbox"
-                                                        aria-owns="assigned_review_user_list"
+                                                        aria-owns="assigned_review_user-HSC_list"
                                                         autocomplete="off"
                                                         class="ant-select-selection-search-input"
-                                                        id="assigned_review_user"
+                                                        id="assigned_review_user-HSC"
                                                         role="combobox"
                                                         type="search"
                                                         value=""
@@ -900,7 +939,7 @@ exports[`PermitConditions renders properly 1`] = `
                                             >
                                               <div
                                                 class="ant-form-item-explain ant-form-item-explain-connected"
-                                                id="PERMIT_CONDITION_REVIEW_ASSIGNMENT}-HSC_assigned_review_user_help"
+                                                id="PERMIT_CONDITION_REVIEW_ASSIGNMENT-HSC_assigned_review_user_help"
                                                 role="alert"
                                               >
                                                 <div
@@ -995,7 +1034,9 @@ exports[`PermitConditions renders properly 1`] = `
                                           </div>
                                         </div>
                                         <div
+                                          aria-label="Edit Condition"
                                           class="ant-col condition-column"
+                                          title="Edit Condition"
                                         >
                                           <div
                                             class="view-item ant-form-item"
@@ -1027,32 +1068,55 @@ exports[`PermitConditions renders properly 1`] = `
                                           <span
                                             class="ant-tag ant-tag-error condition-tag"
                                           >
-                                            <span
-                                              aria-label="redo"
-                                              class="anticon anticon-redo"
+                                            <svg
+                                              aria-hidden="true"
+                                              class="svg-inline--fa fa-clock-rotate-left margin-small--right"
+                                              data-icon="clock-rotate-left"
+                                              data-prefix="far"
+                                              focusable="false"
                                               role="img"
+                                              viewBox="0 0 512 512"
+                                              xmlns="http://www.w3.org/2000/svg"
                                             >
-                                              <svg
-                                                aria-hidden="true"
-                                                class=""
-                                                data-icon="redo"
+                                              <path
+                                                d="M48 106.7V56c0-13.3-10.7-24-24-24S0 42.7 0 56V168c0 13.3 10.7 24 24 24H136c13.3 0 24-10.7 24-24s-10.7-24-24-24H80.7c37-57.8 101.7-96 175.3-96c114.9 0 208 93.1 208 208s-93.1 208-208 208c-42.5 0-81.9-12.7-114.7-34.5c-11-7.3-25.9-4.3-33.3 6.7s-4.3 25.9 6.7 33.3C155.2 496.4 203.8 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C170.3 0 94.4 42.1 48 106.7zM256 128c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"
                                                 fill="currentColor"
-                                                focusable="false"
-                                                height="1em"
-                                                viewBox="64 64 896 896"
-                                                width="1em"
-                                              >
-                                                <path
-                                                  d="M758.2 839.1C851.8 765.9 912 651.9 912 523.9 912 303 733.5 124.3 512.6 124 291.4 123.7 112 302.8 112 523.9c0 125.2 57.5 236.9 147.6 310.2 3.5 2.8 8.6 2.2 11.4-1.3l39.4-50.5c2.7-3.4 2.1-8.3-1.2-11.1-8.1-6.6-15.9-13.7-23.4-21.2a318.64 318.64 0 01-68.6-101.7C200.4 609 192 567.1 192 523.9s8.4-85.1 25.1-124.5c16.1-38.1 39.2-72.3 68.6-101.7 29.4-29.4 63.6-52.5 101.7-68.6C426.9 212.4 468.8 204 512 204s85.1 8.4 124.5 25.1c38.1 16.1 72.3 39.2 101.7 68.6 29.4 29.4 52.5 63.6 68.6 101.7 16.7 39.4 25.1 81.3 25.1 124.5s-8.4 85.1-25.1 124.5a318.64 318.64 0 01-68.6 101.7c-9.3 9.3-19.1 18-29.3 26L668.2 724a8 8 0 00-14.1 3l-39.6 162.2c-1.2 5 2.6 9.9 7.7 9.9l167 .8c6.7 0 10.5-7.7 6.3-12.9l-37.3-47.9z"
-                                                />
-                                              </svg>
-                                            </span>
+                                              />
+                                            </svg>
                                             <span>
-                                              Needs Review
+                                              Requires Review
                                             </span>
                                           </span>
                                         </div>
                                       </div>
+                                      <button
+                                        class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                        type="button"
+                                      >
+                                        <span
+                                          aria-label="check"
+                                          class="anticon anticon-check"
+                                          role="img"
+                                        >
+                                          <svg
+                                            aria-hidden="true"
+                                            class=""
+                                            data-icon="check"
+                                            fill="currentColor"
+                                            focusable="false"
+                                            height="1em"
+                                            viewBox="64 64 896 896"
+                                            width="1em"
+                                          >
+                                            <path
+                                              d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 00-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z"
+                                            />
+                                          </svg>
+                                        </span>
+                                        <span>
+                                           Complete Review
+                                        </span>
+                                      </button>
                                     </div>
                                   </div>
                                 </div>
@@ -1068,31 +1132,22 @@ exports[`PermitConditions renders properly 1`] = `
                                     class="ant-typography margin-none"
                                     id="rcc"
                                   >
-                                    <div>
-                                      <h3
-                                        class="ant-typography"
-                                        style="margin-bottom: 0px;"
-                                      >
-                                        B.. 
-                                        Reclamation
-                                         (
-                                        1
-                                        )
-                                      </h3>
-                                    </div>
+                                    <h3
+                                      class="ant-typography"
+                                      style="margin-bottom: 0px;"
+                                    >
+                                      B.
+                                       
+                                      Reclamation
+                                       (
+                                      1
+                                      )
+                                    </h3>
                                   </h3>
-                                  <button
-                                    class="ant-btn ant-btn-primary core-btn core-btn-primary"
-                                    type="button"
-                                  >
-                                    <span>
-                                      Add Condition
-                                    </span>
-                                  </button>
                                 </div>
                                 <form
-                                  class="ant-form ant-form-horizontal common-form common-form-PERMIT_CONDITION_REVIEW_ASSIGNMENT}-RCC form-edit"
-                                  id="PERMIT_CONDITION_REVIEW_ASSIGNMENT}-RCC"
+                                  class="ant-form ant-form-horizontal common-form common-form-PERMIT_CONDITION_REVIEW_ASSIGNMENT-RCC form-edit"
+                                  id="PERMIT_CONDITION_REVIEW_ASSIGNMENT-RCC"
                                 >
                                   <div
                                     class="ant-row ant-row-start ant-row-top"
@@ -1138,14 +1193,14 @@ exports[`PermitConditions renders properly 1`] = `
                                                       class="ant-select-selection-search"
                                                     >
                                                       <input
-                                                        aria-activedescendant="assigned_review_user_list_0"
+                                                        aria-activedescendant="assigned_review_user-RCC_list_0"
                                                         aria-autocomplete="list"
-                                                        aria-controls="assigned_review_user_list"
+                                                        aria-controls="assigned_review_user-RCC_list"
                                                         aria-haspopup="listbox"
-                                                        aria-owns="assigned_review_user_list"
+                                                        aria-owns="assigned_review_user-RCC_list"
                                                         autocomplete="off"
                                                         class="ant-select-selection-search-input"
-                                                        id="assigned_review_user"
+                                                        id="assigned_review_user-RCC"
                                                         role="combobox"
                                                         type="search"
                                                         value=""
@@ -1191,7 +1246,7 @@ exports[`PermitConditions renders properly 1`] = `
                                             >
                                               <div
                                                 class="ant-form-item-explain ant-form-item-explain-connected"
-                                                id="PERMIT_CONDITION_REVIEW_ASSIGNMENT}-RCC_assigned_review_user_help"
+                                                id="PERMIT_CONDITION_REVIEW_ASSIGNMENT-RCC_assigned_review_user_help"
                                                 role="alert"
                                               >
                                                 <div
@@ -1266,9 +1321,7 @@ exports[`PermitConditions renders properly 1`] = `
                                           </div>
                                         </div>
                                         <div
-                                          aria-label="Edit Condition"
                                           class="ant-col condition-column"
-                                          title="Edit Condition"
                                         >
                                           <div
                                             class="view-item ant-form-item"
@@ -1300,60 +1353,27 @@ exports[`PermitConditions renders properly 1`] = `
                                           <span
                                             class="ant-tag ant-tag-error condition-tag"
                                           >
-                                            <span
-                                              aria-label="redo"
-                                              class="anticon anticon-redo"
+                                            <svg
+                                              aria-hidden="true"
+                                              class="svg-inline--fa fa-clock-rotate-left margin-small--right"
+                                              data-icon="clock-rotate-left"
+                                              data-prefix="far"
+                                              focusable="false"
                                               role="img"
+                                              viewBox="0 0 512 512"
+                                              xmlns="http://www.w3.org/2000/svg"
                                             >
-                                              <svg
-                                                aria-hidden="true"
-                                                class=""
-                                                data-icon="redo"
+                                              <path
+                                                d="M48 106.7V56c0-13.3-10.7-24-24-24S0 42.7 0 56V168c0 13.3 10.7 24 24 24H136c13.3 0 24-10.7 24-24s-10.7-24-24-24H80.7c37-57.8 101.7-96 175.3-96c114.9 0 208 93.1 208 208s-93.1 208-208 208c-42.5 0-81.9-12.7-114.7-34.5c-11-7.3-25.9-4.3-33.3 6.7s-4.3 25.9 6.7 33.3C155.2 496.4 203.8 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C170.3 0 94.4 42.1 48 106.7zM256 128c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"
                                                 fill="currentColor"
-                                                focusable="false"
-                                                height="1em"
-                                                viewBox="64 64 896 896"
-                                                width="1em"
-                                              >
-                                                <path
-                                                  d="M758.2 839.1C851.8 765.9 912 651.9 912 523.9 912 303 733.5 124.3 512.6 124 291.4 123.7 112 302.8 112 523.9c0 125.2 57.5 236.9 147.6 310.2 3.5 2.8 8.6 2.2 11.4-1.3l39.4-50.5c2.7-3.4 2.1-8.3-1.2-11.1-8.1-6.6-15.9-13.7-23.4-21.2a318.64 318.64 0 01-68.6-101.7C200.4 609 192 567.1 192 523.9s8.4-85.1 25.1-124.5c16.1-38.1 39.2-72.3 68.6-101.7 29.4-29.4 63.6-52.5 101.7-68.6C426.9 212.4 468.8 204 512 204s85.1 8.4 124.5 25.1c38.1 16.1 72.3 39.2 101.7 68.6 29.4 29.4 52.5 63.6 68.6 101.7 16.7 39.4 25.1 81.3 25.1 124.5s-8.4 85.1-25.1 124.5a318.64 318.64 0 01-68.6 101.7c-9.3 9.3-19.1 18-29.3 26L668.2 724a8 8 0 00-14.1 3l-39.6 162.2c-1.2 5 2.6 9.9 7.7 9.9l167 .8c6.7 0 10.5-7.7 6.3-12.9l-37.3-47.9z"
-                                                />
-                                              </svg>
-                                            </span>
+                                              />
+                                            </svg>
                                             <span>
-                                              Needs Review
+                                              Requires Review
                                             </span>
                                           </span>
                                         </div>
                                       </div>
-                                      <button
-                                        class="ant-btn ant-btn-primary core-btn core-btn-primary"
-                                        type="button"
-                                      >
-                                        <span
-                                          aria-label="check"
-                                          class="anticon anticon-check"
-                                          role="img"
-                                        >
-                                          <svg
-                                            aria-hidden="true"
-                                            class=""
-                                            data-icon="check"
-                                            fill="currentColor"
-                                            focusable="false"
-                                            height="1em"
-                                            viewBox="64 64 896 896"
-                                            width="1em"
-                                          >
-                                            <path
-                                              d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 00-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z"
-                                            />
-                                          </svg>
-                                        </span>
-                                        <span>
-                                           Complete Review
-                                        </span>
-                                      </button>
                                     </div>
                                   </div>
                                 </div>
@@ -1369,31 +1389,22 @@ exports[`PermitConditions renders properly 1`] = `
                                     class="ant-typography margin-none"
                                     id="elc"
                                   >
-                                    <div>
-                                      <h3
-                                        class="ant-typography"
-                                        style="margin-bottom: 0px;"
-                                      >
-                                        
-                                        Environmental Land and Watercourses
-                                         (
-                                        2
-                                        )
-                                      </h3>
-                                    </div>
+                                    <h3
+                                      class="ant-typography"
+                                      style="margin-bottom: 0px;"
+                                    >
+                                      C.
+                                       
+                                      Environmental Land and Watercourses
+                                       (
+                                      2
+                                      )
+                                    </h3>
                                   </h3>
-                                  <button
-                                    class="ant-btn ant-btn-primary core-btn core-btn-primary"
-                                    type="button"
-                                  >
-                                    <span>
-                                      Add Condition
-                                    </span>
-                                  </button>
                                 </div>
                                 <form
-                                  class="ant-form ant-form-horizontal common-form common-form-PERMIT_CONDITION_REVIEW_ASSIGNMENT}-ELC form-edit"
-                                  id="PERMIT_CONDITION_REVIEW_ASSIGNMENT}-ELC"
+                                  class="ant-form ant-form-horizontal common-form common-form-PERMIT_CONDITION_REVIEW_ASSIGNMENT-ELC form-edit"
+                                  id="PERMIT_CONDITION_REVIEW_ASSIGNMENT-ELC"
                                 >
                                   <div
                                     class="ant-row ant-row-start ant-row-top"
@@ -1439,14 +1450,14 @@ exports[`PermitConditions renders properly 1`] = `
                                                       class="ant-select-selection-search"
                                                     >
                                                       <input
-                                                        aria-activedescendant="assigned_review_user_list_0"
+                                                        aria-activedescendant="assigned_review_user-ELC_list_0"
                                                         aria-autocomplete="list"
-                                                        aria-controls="assigned_review_user_list"
+                                                        aria-controls="assigned_review_user-ELC_list"
                                                         aria-haspopup="listbox"
-                                                        aria-owns="assigned_review_user_list"
+                                                        aria-owns="assigned_review_user-ELC_list"
                                                         autocomplete="off"
                                                         class="ant-select-selection-search-input"
-                                                        id="assigned_review_user"
+                                                        id="assigned_review_user-ELC"
                                                         role="combobox"
                                                         type="search"
                                                         value=""
@@ -1492,7 +1503,7 @@ exports[`PermitConditions renders properly 1`] = `
                                             >
                                               <div
                                                 class="ant-form-item-explain ant-form-item-explain-connected"
-                                                id="PERMIT_CONDITION_REVIEW_ASSIGNMENT}-ELC_assigned_review_user_help"
+                                                id="PERMIT_CONDITION_REVIEW_ASSIGNMENT-ELC_assigned_review_user_help"
                                                 role="alert"
                                               >
                                                 <div
@@ -1567,9 +1578,7 @@ exports[`PermitConditions renders properly 1`] = `
                                           </div>
                                         </div>
                                         <div
-                                          aria-label="Edit Condition"
                                           class="ant-col condition-column"
-                                          title="Edit Condition"
                                         >
                                           <div
                                             class="view-item ant-form-item"
@@ -1614,9 +1623,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                 </div>
                                               </div>
                                               <div
-                                                aria-label="Edit Condition"
                                                 class="ant-col condition-column"
-                                                title="Edit Condition"
                                               >
                                                 <div
                                                   class="view-item ant-form-item"
@@ -1661,9 +1668,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                       </div>
                                                     </div>
                                                     <div
-                                                      aria-label="Edit Condition"
                                                       class="ant-col condition-column"
-                                                      title="Edit Condition"
                                                     >
                                                       <div
                                                         class="view-item ant-form-item"
@@ -1714,9 +1719,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                 </div>
                                               </div>
                                               <div
-                                                aria-label="Edit Condition"
                                                 class="ant-col condition-column"
-                                                title="Edit Condition"
                                               >
                                                 <div
                                                   class="view-item ant-form-item"
@@ -1761,9 +1764,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                       </div>
                                                     </div>
                                                     <div
-                                                      aria-label="Edit Condition"
                                                       class="ant-col condition-column"
-                                                      title="Edit Condition"
                                                     >
                                                       <div
                                                         class="view-item ant-form-item"
@@ -1808,9 +1809,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                             </div>
                                                           </div>
                                                           <div
-                                                            aria-label="Edit Condition"
                                                             class="ant-col condition-column"
-                                                            title="Edit Condition"
                                                           >
                                                             <div
                                                               class="view-item ant-form-item"
@@ -1858,9 +1857,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                             </div>
                                                           </div>
                                                           <div
-                                                            aria-label="Edit Condition"
                                                             class="ant-col condition-column"
-                                                            title="Edit Condition"
                                                           >
                                                             <div
                                                               class="view-item ant-form-item"
@@ -1908,9 +1905,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                             </div>
                                                           </div>
                                                           <div
-                                                            aria-label="Edit Condition"
                                                             class="ant-col condition-column"
-                                                            title="Edit Condition"
                                                           >
                                                             <div
                                                               class="view-item ant-form-item"
@@ -1955,9 +1950,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                                   </div>
                                                                 </div>
                                                                 <div
-                                                                  aria-label="Edit Condition"
                                                                   class="ant-col condition-column"
-                                                                  title="Edit Condition"
                                                                 >
                                                                   <div
                                                                     class="view-item ant-form-item"
@@ -1999,17 +1992,17 @@ exports[`PermitConditions renders properly 1`] = `
                                           class="ant-space-item"
                                         >
                                           <span
-                                            class="ant-tag ant-tag-error condition-tag"
+                                            class="ant-tag ant-tag-success condition-tag"
                                           >
                                             <span
-                                              aria-label="redo"
-                                              class="anticon anticon-redo"
+                                              aria-label="check-circle"
+                                              class="anticon anticon-check-circle"
                                               role="img"
                                             >
                                               <svg
                                                 aria-hidden="true"
                                                 class=""
-                                                data-icon="redo"
+                                                data-icon="check-circle"
                                                 fill="currentColor"
                                                 focusable="false"
                                                 height="1em"
@@ -2017,44 +2010,19 @@ exports[`PermitConditions renders properly 1`] = `
                                                 width="1em"
                                               >
                                                 <path
-                                                  d="M758.2 839.1C851.8 765.9 912 651.9 912 523.9 912 303 733.5 124.3 512.6 124 291.4 123.7 112 302.8 112 523.9c0 125.2 57.5 236.9 147.6 310.2 3.5 2.8 8.6 2.2 11.4-1.3l39.4-50.5c2.7-3.4 2.1-8.3-1.2-11.1-8.1-6.6-15.9-13.7-23.4-21.2a318.64 318.64 0 01-68.6-101.7C200.4 609 192 567.1 192 523.9s8.4-85.1 25.1-124.5c16.1-38.1 39.2-72.3 68.6-101.7 29.4-29.4 63.6-52.5 101.7-68.6C426.9 212.4 468.8 204 512 204s85.1 8.4 124.5 25.1c38.1 16.1 72.3 39.2 101.7 68.6 29.4 29.4 52.5 63.6 68.6 101.7 16.7 39.4 25.1 81.3 25.1 124.5s-8.4 85.1-25.1 124.5a318.64 318.64 0 01-68.6 101.7c-9.3 9.3-19.1 18-29.3 26L668.2 724a8 8 0 00-14.1 3l-39.6 162.2c-1.2 5 2.6 9.9 7.7 9.9l167 .8c6.7 0 10.5-7.7 6.3-12.9l-37.3-47.9z"
+                                                  d="M699 353h-46.9c-10.2 0-19.9 4.9-25.9 13.3L469 584.3l-71.2-98.8c-6-8.3-15.6-13.3-25.9-13.3H325c-6.5 0-10.3 7.4-6.5 12.7l124.6 172.8a31.8 31.8 0 0051.7 0l210.6-292c3.9-5.3.1-12.7-6.4-12.7z"
+                                                />
+                                                <path
+                                                  d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
                                                 />
                                               </svg>
                                             </span>
                                             <span>
-                                              Needs Review
+                                              Review Completed
                                             </span>
                                           </span>
                                         </div>
                                       </div>
-                                      <button
-                                        class="ant-btn ant-btn-primary core-btn core-btn-primary"
-                                        type="button"
-                                      >
-                                        <span
-                                          aria-label="check"
-                                          class="anticon anticon-check"
-                                          role="img"
-                                        >
-                                          <svg
-                                            aria-hidden="true"
-                                            class=""
-                                            data-icon="check"
-                                            fill="currentColor"
-                                            focusable="false"
-                                            height="1em"
-                                            viewBox="64 64 896 896"
-                                            width="1em"
-                                          >
-                                            <path
-                                              d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 00-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z"
-                                            />
-                                          </svg>
-                                        </span>
-                                        <span>
-                                           Complete Review
-                                        </span>
-                                      </button>
                                     </div>
                                   </div>
                                 </div>
@@ -2092,9 +2060,7 @@ exports[`PermitConditions renders properly 1`] = `
                                           </div>
                                         </div>
                                         <div
-                                          aria-label="Edit Condition"
                                           class="ant-col condition-column"
-                                          title="Edit Condition"
                                         >
                                           <div
                                             class="view-item ant-form-item"
@@ -2139,9 +2105,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                 </div>
                                               </div>
                                               <div
-                                                aria-label="Edit Condition"
                                                 class="ant-col condition-column"
-                                                title="Edit Condition"
                                               >
                                                 <div
                                                   class="view-item ant-form-item"
@@ -2174,17 +2138,17 @@ exports[`PermitConditions renders properly 1`] = `
                                           class="ant-space-item"
                                         >
                                           <span
-                                            class="ant-tag ant-tag-error condition-tag"
+                                            class="ant-tag ant-tag-success condition-tag"
                                           >
                                             <span
-                                              aria-label="redo"
-                                              class="anticon anticon-redo"
+                                              aria-label="check-circle"
+                                              class="anticon anticon-check-circle"
                                               role="img"
                                             >
                                               <svg
                                                 aria-hidden="true"
                                                 class=""
-                                                data-icon="redo"
+                                                data-icon="check-circle"
                                                 fill="currentColor"
                                                 focusable="false"
                                                 height="1em"
@@ -2192,44 +2156,19 @@ exports[`PermitConditions renders properly 1`] = `
                                                 width="1em"
                                               >
                                                 <path
-                                                  d="M758.2 839.1C851.8 765.9 912 651.9 912 523.9 912 303 733.5 124.3 512.6 124 291.4 123.7 112 302.8 112 523.9c0 125.2 57.5 236.9 147.6 310.2 3.5 2.8 8.6 2.2 11.4-1.3l39.4-50.5c2.7-3.4 2.1-8.3-1.2-11.1-8.1-6.6-15.9-13.7-23.4-21.2a318.64 318.64 0 01-68.6-101.7C200.4 609 192 567.1 192 523.9s8.4-85.1 25.1-124.5c16.1-38.1 39.2-72.3 68.6-101.7 29.4-29.4 63.6-52.5 101.7-68.6C426.9 212.4 468.8 204 512 204s85.1 8.4 124.5 25.1c38.1 16.1 72.3 39.2 101.7 68.6 29.4 29.4 52.5 63.6 68.6 101.7 16.7 39.4 25.1 81.3 25.1 124.5s-8.4 85.1-25.1 124.5a318.64 318.64 0 01-68.6 101.7c-9.3 9.3-19.1 18-29.3 26L668.2 724a8 8 0 00-14.1 3l-39.6 162.2c-1.2 5 2.6 9.9 7.7 9.9l167 .8c6.7 0 10.5-7.7 6.3-12.9l-37.3-47.9z"
+                                                  d="M699 353h-46.9c-10.2 0-19.9 4.9-25.9 13.3L469 584.3l-71.2-98.8c-6-8.3-15.6-13.3-25.9-13.3H325c-6.5 0-10.3 7.4-6.5 12.7l124.6 172.8a31.8 31.8 0 0051.7 0l210.6-292c3.9-5.3.1-12.7-6.4-12.7z"
+                                                />
+                                                <path
+                                                  d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
                                                 />
                                               </svg>
                                             </span>
                                             <span>
-                                              Needs Review
+                                              Review Completed
                                             </span>
                                           </span>
                                         </div>
                                       </div>
-                                      <button
-                                        class="ant-btn ant-btn-primary core-btn core-btn-primary"
-                                        type="button"
-                                      >
-                                        <span
-                                          aria-label="check"
-                                          class="anticon anticon-check"
-                                          role="img"
-                                        >
-                                          <svg
-                                            aria-hidden="true"
-                                            class=""
-                                            data-icon="check"
-                                            fill="currentColor"
-                                            focusable="false"
-                                            height="1em"
-                                            viewBox="64 64 896 896"
-                                            width="1em"
-                                          >
-                                            <path
-                                              d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 00-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z"
-                                            />
-                                          </svg>
-                                        </span>
-                                        <span>
-                                           Complete Review
-                                        </span>
-                                      </button>
                                     </div>
                                   </div>
                                 </div>

@@ -8,6 +8,7 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import { Feature } from "@mds/common/utils/featureFlag";
 
 interface PermitConditionLayerProps {
+  isExtracted: boolean;
   condition: IPermitCondition;
   level?: number;
   isExpanded?: boolean;
@@ -25,11 +26,12 @@ interface PermitConditionLayerProps {
 }
 
 const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
+  isExtracted,
   condition,
   isExpanded,
   conditionSelected,
   level = 0,
-  setParentExpand = () => {},
+  setParentExpand = () => { },
   canEditPermitConditions = false,
   setEditingConditionGuid,
   editingConditionGuid,
@@ -47,7 +49,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   );
   const className = `condition-layer condition-layer--${level} condition-${condition.condition_type_code} fade-in`;
   const { isFeatureEnabled } = useFeatureFlag();
-  
+
   const handleSetParentExpand = () => {
     if (level === 0) {
       return;
@@ -93,6 +95,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
     >
       <div className={expandClass}>
         <PermitConditionForm
+          isExtracted={isExtracted}
           onEdit={setParentExpand}
           condition={condition}
           canEditPermitConditions={canEditPermitConditions}
@@ -110,6 +113,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
           return (
             <div key={subCondition.permit_condition_id}>
               <PermitConditionLayer
+                isExtracted={isExtracted}
                 permitAmendmentGuid={permitAmendmentGuid}
                 condition={subCondition}
                 level={level + 1}
@@ -143,7 +147,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
           isDisabled={isAddingListItem || isExpanded}
           permitAmendmentGuid={permitAmendmentGuid}
           refreshData={refreshData}
-      />
+        />
       )}
       {/* Content added here will show up at the top level when conditions are collapsed */}
     </div>

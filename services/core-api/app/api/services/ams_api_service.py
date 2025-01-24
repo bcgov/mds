@@ -151,17 +151,21 @@ class AMSApiService():
 
     @classmethod
     def __set_agent_details(cls, agent):
+        address = {}
+        if agent:
+            address_data = agent.get('address')
+            address = address_data[0] if isinstance(address_data, list) else address_data
         agent_details = {
             'em_lastname': agent.get('party_name', '') if agent else '',
             'em_firstname': agent.get('first_name', '') if agent else '',
             'em_email': agent.get('email', '') if agent else '',
             'em_companyname': agent.get('party_name', '') if agent else '',
             'em_mailingaddress': cls.__create_full_address(
-                agent.get('address').get('address_line_1', ''),
-                agent.get('address').get('city', ''),
-                agent.get('address').get('sub_division_code', ''),
-                agent.get('address').get('post_code'),
-                agent.get('address').get('suite_no', '')) if agent else '',
+                address.get('address_line_1', ''),
+                address.get('city', ''),
+                address.get('sub_division_code', ''),
+                address.get('post_code'),
+                address.get('suite_no', '')) if agent else '',
             'em_businessphone': cls.__format_phone_number(agent.get('phone_no')) if agent else '',
             'em_title': agent.get('job_title', '') if agent else '',
         }
@@ -169,21 +173,23 @@ class AMSApiService():
 
     @classmethod
     def __set_facility_address_details(cls, facility_operator, address_type=None):
+        address_data = facility_operator.get('address')
+        address = address_data[0] if isinstance(address_data, list) else address_data
         facility_address = {
-            'suitenumber': facility_operator.get('address').get('suite_no', ''),
-            'streetnumber': facility_operator.get('address').get('suite_no', ''),
-            'street': facility_operator.get('address').get('address_line_1', ''),
-            'line2': facility_operator.get('address').get('address_line_2', ''),
-            'municipality': facility_operator.get('address').get('city', ''),
+            'suitenumber': address.get('suite_no', ''),
+            'streetnumber': address.get('suite_no', ''),
+            'street': address.get('address_line_1', ''),
+            'line2': address.get('address_line_2', ''),
+            'municipality': address.get('city', ''),
             'province': 'British Columbia',
             'country': 'Canada',
-            'postalcode': facility_operator.get('address').get('post_code'),
+            'postalcode': address.get('post_code'),
             'otheraddress': cls.__create_full_address(
-                facility_operator.get('address').get('address_line_1'),
-                facility_operator.get('address').get('city'),
-                facility_operator.get('address').get('sub_division_code'),
-                facility_operator.get('address').get('post_code'),
-                facility_operator.get('address').get('suite_no', ''))
+                address.get('address_line_1'),
+                address.get('city'),
+                address.get('sub_division_code'),
+                address.get('post_code'),
+                address.get('suite_no', ''))
         }
         if address_type is not None:
             facility_address['addresstype'] = address_type

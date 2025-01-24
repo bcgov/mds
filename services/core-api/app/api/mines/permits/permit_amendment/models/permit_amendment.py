@@ -253,6 +253,13 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             new_pa.save(commit=False)
         return new_pa
 
+    def update_permit_condition_status(self, permit_condition_status_code):
+        # Only updates the top-level condition that it's called on,
+        # as we are not tracking the status code of sub-conditions
+        for condition in self.conditions:
+            condition.permit_condition_status_code = permit_condition_status_code
+        self.save()
+
     @classmethod
     def find_by_permit_amendment_id(cls, _id):
         return cls.query.filter_by(permit_amendment_id=_id).filter_by(deleted_ind=False).first()

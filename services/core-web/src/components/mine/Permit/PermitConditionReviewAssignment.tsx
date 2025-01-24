@@ -54,7 +54,7 @@ const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> 
   const userCanUnassignReviewer =
     user?.sub === category?.assigned_review_user?.sub || userCanAssignReviewers;
 
-  const formName = `${FORM.PERMIT_CONDITION_REVIEW_ASSIGNMENT}}-${category.condition_category_code}`;
+  const formName = `${FORM.PERMIT_CONDITION_REVIEW_ASSIGNMENT}-${category.condition_category_code}`;
 
   const handleSubmit = (values) => {
     // @ts-ignore
@@ -104,7 +104,7 @@ const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> 
           <UserSearchField
             disabled={!userCanAssignReviewers}
             initialDataSource={assignedReviewUserInitialValues}
-            id="assigned_review_user"
+            id={`assigned_review_user-${category.condition_category_code}`}
             name="assigned_review_user"
           />
         </Col>

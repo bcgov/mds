@@ -11,6 +11,7 @@ const mockCategory = {
 };
 
 const mockProps = {
+  canEdit: true,
   category: mockCategory,
   conditionCount: 0,
   currentPosition: 1,

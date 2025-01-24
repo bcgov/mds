@@ -32,6 +32,7 @@ describe("PermitConditionForm", () => {
     it("renders properly in edit mode", async () => {
         const { container, findByText } = render(<ReduxWrapper initialState={initialState}>
             <PermitConditionForm
+                isExtracted
                 permitAmendmentGuid={MOCK.PERMITS[0].permit_amendments[0].permit_amendment_guid}
                 condition={condition}
                 canEditPermitConditions={true}
@@ -54,6 +55,7 @@ describe("PermitConditionForm", () => {
     it("does not allow edit when it shouldn't", async () => {
         const { container } = render(<ReduxWrapper initialState={initialState}>
             <PermitConditionForm
+                isExtracted
                 permitAmendmentGuid={MOCK.PERMITS[0].permit_amendments[0].permit_amendment_guid}
                 condition={condition}
                 canEditPermitConditions={false}

@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 import { Col, Row, Space, Tag } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClipboard } from "@fortawesome/pro-light-svg-icons";
-import { CheckCircleOutlined, RedoOutlined, CheckOutlined } from "@ant-design/icons";
+import { faClipboard, faClockRotateLeft } from "@fortawesome/pro-regular-svg-icons";
+import { CheckCircleOutlined, CheckOutlined } from "@ant-design/icons";
 import CoreButton from "@mds/common/components/common/CoreButton";
 import { useDispatch } from "react-redux";
 import { updatePermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
@@ -59,7 +59,7 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
       <Space>
         {condition.permit_condition_status_code === PERMIT_CONDITION_STATUS_CODE.COM ?
           <Tag className="condition-tag" color="success" icon={<CheckCircleOutlined />}>Review Completed</Tag> :
-          <Tag className="condition-tag" color="error" icon={<RedoOutlined />}>Needs Review</Tag>
+          <Tag className="condition-tag" color="error" icon={<FontAwesomeIcon icon={faClockRotateLeft} className="margin-small--right" />}>Requires Review</Tag>
         }
         {requirements.length > 0 &&
           <Tag className="condition-tag" color="purple" icon={<FontAwesomeIcon className="margin-small--right" icon={faClipboard} />}>
