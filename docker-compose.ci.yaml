@@ -63,6 +63,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    stop_grace_period: 30s
 
   ####################### Flyway Migration Definition #######################
   flyway:

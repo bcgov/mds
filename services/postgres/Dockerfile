@@ -78,6 +78,5 @@ RUN chown -R postgres:postgres /pg_log
 
 COPY updateConfig.sh      /docker-entrypoint-initdb.d/_updateConfig.sh
 RUN chmod +x /docker-entrypoint-initdb.d/_updateConfig.sh
-ENTRYPOINT ["sh", "-c", "/docker-entrypoint-initdb.d/_updateConfig.sh && docker-entrypoint.sh postgres"]
 
-CMD ["postgres"]
+WORKDIR /docker-entrypoint-initdb.d
