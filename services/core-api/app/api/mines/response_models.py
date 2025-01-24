@@ -820,10 +820,6 @@ MINE_REPORT_DEFINITION_BASE_MODEL = api.model(
         'is_prr_only': fields.Boolean,
     })
 
-MINE_REPORT_DEFINITION_MODEL = api.inherit('MineReportDefinition', MINE_REPORT_DEFINITION_BASE_MODEL, {
-    'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL)),
-})
-
 PAGINATED_LIST = api.model(
     'List', {
         'current_page': fields.Integer,
@@ -831,6 +827,10 @@ PAGINATED_LIST = api.model(
         'items_per_page': fields.Integer,
         'total': fields.Integer,
     })
+
+PAGINATED_MINE_REPORT_DEFINITION_MODEL = api.inherit('MineReportDefinition', PAGINATED_LIST, {
+    'records': fields.List(fields.Nested(MINE_REPORT_DEFINITION_BASE_MODEL)),
+})
 
 PAGINATED_REPORT_LIST = api.inherit('ReportList', PAGINATED_LIST, {
     'records': fields.List(fields.Nested(MINE_REPORT_MODEL)),

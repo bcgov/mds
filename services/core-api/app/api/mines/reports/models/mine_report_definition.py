@@ -4,6 +4,7 @@ from dateutil.relativedelta import relativedelta
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy_filters import apply_pagination
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
@@ -74,6 +75,18 @@ class MineReportDefinition(Base, AuditMixin):
             return cls.query.all()
         except ValueError:
             return None
+
+    @classmethod
+    def get_paginated(cls, page, per_page):
+        query = cls.query.filter_by(active_ind=True)
+        records, pagination_details = apply_pagination(query, page, per_page)
+        return {
+            'records': records.all(),
+            'current_page': pagination_details.page_number,
+            'total_pages': pagination_details.num_pages,
+            'items_per_page': pagination_details.page_size,
+            'total': pagination_details.total_results,
+        }
 
     @classmethod
     def find_required_reports_by_category(cls, _mine_report_category):
