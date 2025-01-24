@@ -125,6 +125,8 @@ updatedb:
 	@docker run --rm -v mds_postgres_data:/tmp alpine sh -c "rm -rf /tmp/*"
 	@echo "+\n++ Updating postgres and copying result to the mds_postgres_data volume"
 	@docker compose $(DC_FILE) up postgres_update
+	@echo "+\n++ Copying conf files"
+	@docker run --rm -v ./services/postgres/:/tmp -v mds_postgres_data:/data alpine sh -c "cp -v /tmp/postgresql.conf /data/postgresql.conf && cp -v /tmp/pg_hba.conf /data/pg_hba.conf"
 	@echo "+\n++ Deleting old postgres image & update image"
 	@docker compose $(DC_FILE) rm -f -v -s postgres postgres_update
 	@docker rmi -f mds-postgres

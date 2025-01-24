@@ -70,6 +70,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    stop_grace_period: 30s
 
   postgres_update:
     platform: linux/amd64
