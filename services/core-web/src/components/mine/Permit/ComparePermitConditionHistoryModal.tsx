@@ -7,7 +7,7 @@ import PermitConditionReportRequirements from "./PermitConditionReportRequiremen
 import { getMineReportPermitRequirements } from "@mds/common/redux/selectors/permitSelectors";
 import { useSelector } from "react-redux";
 
-interface ComparePermitConditionHistoryModalProps {
+export interface ComparePermitConditionHistoryModalProps {
     currentAmendmentCondition: IPermitCondition;
     previousAmendmentCondition: IPermitCondition;
     mineGuid: string;
@@ -24,8 +24,7 @@ const ComparePermitConditionHistoryModal: FC<ComparePermitConditionHistoryModalP
 
     const oldReports = getConditionsWithRequirements([props.previousAmendmentCondition], mineReportPermitRequirements);
     const newReports = getConditionsWithRequirements([props.currentAmendmentCondition], mineReportPermitRequirements);
-    console.log("oldReports", oldReports, mineReportPermitRequirements);
-    console.log("newReports", newReports);
+
     return (
         <FormWrapper name={"test"} isModal onSubmit={() => { }}>
             <Row gutter={6}>

@@ -49,14 +49,14 @@ export const getConditionsWithRequirements = (conditions: IPermitCondition[], re
   }, {}) : {};
 
   conditions.forEach((condition) => {
-    if (requirements) {
+    if (requirements && condition?.permit_condition_id) {
       const req = requirementsByCondition[condition.permit_condition_id];
       result = [...result, ...(req || [])];
-    } else if (condition.mineReportPermitRequirement) {
+    } else if (condition?.mineReportPermitRequirement) {
       result.push(condition);
     }
 
-    if (condition.sub_conditions && condition.sub_conditions.length > 0) {
+    if (condition?.sub_conditions && condition?.sub_conditions.length > 0) {
       result = result.concat(getConditionsWithRequirements(condition.sub_conditions));
     }
   });

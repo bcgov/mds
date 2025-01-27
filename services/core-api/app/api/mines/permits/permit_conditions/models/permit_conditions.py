@@ -1,3 +1,5 @@
+from typing import Optional
+
 from app.api.utils.field_template import FieldTemplate
 from app.api.utils.list_lettering_helpers import num_to_letter, num_to_roman
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
@@ -105,6 +107,32 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
             return num_to_letter(self.display_order) + "."
         elif step_format == 2:
             return num_to_roman(self.display_order) + "."
+
+    @hybrid_property
+    def condition_comparison(self):
+        return self.meta.get("condition_comparison") if self.meta else None
+
+    @hybrid_property
+    def comparison_match(self) -> Optional["PermitConditions"]:
+        comparison = self.condition_comparison
+
+        if comparison:
+            previous_condition_guid = comparison.get("previous_condition_guid")
+
+            if previous_condition_guid:
+                return PermitConditions.find_by_permit_condition_guid(
+                    previous_condition_guid
+                )
+
+        return None
+
+    @hybrid_property
+    def is_unchanged(self):
+        if not self.condition_comparison or self.condition_comparison.get("change_type") != "UNCHANGED":
+            return False
+        
+        # Recursively check all sub_conditions
+        return all(sub_condition.is_unchanged for sub_condition in self.sub_conditions)
 
     def __repr__(self):
         return "<PermitConditions %r, %r, %r>" % (

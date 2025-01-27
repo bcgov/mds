@@ -55,12 +55,14 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
                 if not condition_creator.get_current_category():
                     _create_default_category(condition_creator, category_creator)
 
+                # Create the condition
                 main_condition, title_condition, comparison = (
                     condition_creator.create_condition(
                         condition=condition,
                     )
                 )
 
+                # Copy over the report requirements from the previous amendment or create new report records if needed
                 report_requirement = (
                     create_or_copy_permit_condition_report_requirements(
                         task, condition, main_condition.permit_condition_id, comparison
@@ -70,6 +72,15 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
                 if report_requirement:
                     db.session.add(report_requirement)
                     db.session.flush()
+
+        # Update the status code for top level conditions that are unchaged from the previous amendment.
+        for condition in task.permit_amendment.conditions:
+            if condition.is_unchanged:
+                mtch = condition.comparison_match
+                if mtch:
+                    condition.permit_condition_status_code = mtch.condition
+                    db.session.add(condition)
+
         db.session.commit()
         return True
 

@@ -69,7 +69,7 @@ class PermitConditionComparer:
         # Try to find match by step path first
         previous_condition = self.previous_conditions_by_step.get(step_path)
 
-        if condition.condition.endswith("and be made available at the mine site at all times."):
+        if condition.condition.startswith("Previous child condition"):
             print("Current condition:", condition.condition)
             print("Previous condition:", previous_condition)
             print("Parent", condition.parent_permit_condition_id)
@@ -84,7 +84,7 @@ class PermitConditionComparer:
             text_similarity = self._calculate_text_similarity(
                 condition.condition, previous_condition.condition
             )
-            if condition.condition.endswith("and be made available at the mine site at all times."):
+            if condition.condition.startswith("Previous child condition"):
                 print("Current condition:", condition.condition)
                 print("Previous condition:", previous_condition.condition)
                 print(text_similarity)
