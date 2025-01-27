@@ -645,6 +645,74 @@ exports[`MinePermitInfo renders properly 1`] = `
                           </div>
                         </td>
                       </tr>
+                      <tr
+                        class="ant-table-row ant-table-row-level-0"
+                        data-row-key="64caef0e-060d-4875-a470-6c225b242723"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="inline-flex flex-between file-name-container"
+                            title="File Name"
+                          >
+                            <div
+                              class="file-name-text"
+                            >
+                              <a
+                                class="ant-dropdown-trigger ant-dropdown-link"
+                                role="button"
+                                tabindex="0"
+                              >
+                                Adams_amendment_2.pdf
+                                 
+                                <span
+                                  aria-label="down"
+                                  class="anticon anticon-down"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class=""
+                                    data-icon="down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                    />
+                                  </svg>
+                                </span>
+                              </a>
+                            </div>
+                            <span
+                              class="file-history-container"
+                            />
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="create_user-column"
+                            title="Created By"
+                          >
+                            N/A
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Updated"
+                          >
+                            N/A
+                          </div>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
