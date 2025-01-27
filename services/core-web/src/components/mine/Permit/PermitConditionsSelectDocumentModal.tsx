@@ -28,7 +28,6 @@ const PermitConditionsSelectDocumentModal: FC<PermitConditionsSelectDocumentModa
         dataSource={documents}
         columns={[
           documentNameColumn("document_name", "File Name"),
-          renderTextColumn("document_name", "File Name"),
           renderTextColumn("create_user", "Created By"),
           renderDateColumn("create_timestamp", "Uploaded"),
           {

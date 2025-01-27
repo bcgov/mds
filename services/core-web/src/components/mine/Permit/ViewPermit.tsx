@@ -189,7 +189,6 @@ const ViewPermit: FC = () => {
           onSubmit: handleSelectedDocumentExtraction,
         },
         content: PermitConditionsSelectDocumentModal,
-        width: "75vw",
       })
     );
   };
