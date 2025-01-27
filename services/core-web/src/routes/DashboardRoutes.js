@@ -17,6 +17,11 @@ const DashboardRoutes = () => {
       />
       <Route
         exact
+        path={routes.VIEW_MINE_PERMIT_AMENDMENT.route}
+        component={routes.VIEW_MINE_PERMIT_AMENDMENT.component}
+      />
+      <Route
+        exact
         path={routes.MINE_DASHBOARD.route}
         render={({ match }) => <Redirect to={routes.MINE_GENERAL.dynamicRoute(match.params.id)} />}
       />

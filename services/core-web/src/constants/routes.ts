@@ -57,6 +57,7 @@ import ComplianceCodeManagement from "@/components/admin/complianceCodes/Complia
 import ProjectSubmissionStatusPage from "@mds/common/components/projectSummary/ProjectSubmissionStatusPage";
 import ViewPermit from "@/components/mine/Permit/ViewPermit";
 import { getEnvironment } from "@mds/common/utils/environmentUtils";
+import ViewPermitRedirect from "@/components/mine/Permit/ViewPermitRedirect";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -165,13 +166,25 @@ export const MINE_PERMITS = {
   helpKey: "Mine-Permits",
 };
 
+
+export const VIEW_MINE_PERMIT_AMENDMENT = {
+  route: "/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/permit-amendment/:permitAmendmentGuid/:tab",
+  dynamicRoute: (id, permitGuid, permitAmendmentGuid, tab = "overview") =>
+    `/mine-dashboard/${id}/permits-and-approvals/permits/${permitGuid}/permit-amendment/${permitAmendmentGuid}/${tab}`,
+  hashRoute: (id, permitGuid, permitAmendmentGuid, tab = "overview", link = "") =>
+    `/mine-dashboard/${id}/permits-and-approvals/permits/${permitGuid}/permit-amendment/${permitAmendmentGuid}/${tab}/${link}`,
+  component: ViewPermit,
+  helpKey: "View-Permit",
+  priority: 1,
+};
+
 export const VIEW_MINE_PERMIT = {
   route: "/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/:tab",
   dynamicRoute: (id, permitGuid, tab = "overview") =>
     `/mine-dashboard/${id}/permits-and-approvals/permits/${permitGuid}/${tab}`,
   hashRoute: (id, permitGuid, tab = "overview", link = "") =>
     `/mine-dashboard/${id}/permits-and-approvals/permits/${permitGuid}/${tab}/${link}`,
-  component: ViewPermit,
+  component: ViewPermitRedirect,
   helpKey: "View-Permit",
   priority: 1,
 };

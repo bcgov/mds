@@ -2,6 +2,7 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getAmendment,
   getLatestAmendmentByPermitGuid,
   getPermitByGuid,
 } from "@mds/common/redux/selectors/permitSelectors";
@@ -29,6 +30,7 @@ import {
 } from "@mds/common/redux/slices/permitServiceSlice";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common/constants/environment";
+import Loading from "@mds/common/components/common/Loading";
 import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import PermitConditionsSelectDocumentModal from "@/components/mine/Permit/PermitConditionsSelectDocumentModal";
@@ -38,9 +40,20 @@ const tabs = ["overview", "conditions"];
 const ViewPermit: FC = () => {
   const dispatch = useDispatch();
 
-  const { id, permitGuid, tab } = useParams<{ id: string; permitGuid: string; tab: string }>();
+  const { id, permitGuid, tab, permitAmendmentGuid } = useParams<{ id: string; permitGuid: string; permitAmendmentGuid: string; tab: string }>();
   const permit: IPermit = useSelector(getPermitByGuid(permitGuid));
+  const currentAmendment: IPermitAmendment = useSelector(getAmendment(permitGuid, permitAmendmentGuid));
   const latestAmendment: IPermitAmendment = useSelector(getLatestAmendmentByPermitGuid(permitGuid));
+
+  const amendments = permit?.permit_amendments;
+  let amendmentToViewConditions = currentAmendment;
+  if (latestAmendment && !latestAmendment?.conditions_review_completed && currentAmendment?.permit_amendment_guid) {
+    const latestCompletedAmendment = amendments?.find(a => a.conditions_review_completed);
+    if (latestCompletedAmendment) {
+      amendmentToViewConditions = latestCompletedAmendment;
+    }
+  }
+
   const mine: IMine = useSelector((state) => getMineById(state, id));
   const { isFeatureEnabled } = useFeatureFlag();
   const enablePermitConditionsTab = isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE);
@@ -50,9 +63,8 @@ const ViewPermit: FC = () => {
 
   const { is_generated_in_core } = latestAmendment ?? {};
   const isExtracted = !is_generated_in_core;
-  const previousAmendmentIndex = permit?.permit_amendments?.findIndex(a => a.permit_amendment_id === latestAmendment.permit_amendment_id) + 1 || -1;
+  const previousAmendmentIndex = permit?.permit_amendments?.findIndex(a => a.permit_amendment_id === latestAmendment?.permit_amendment_id) + 1 || -1;
   const previousAmendment = previousAmendmentIndex > 0 ? permit.permit_amendments[previousAmendmentIndex] : null;
-
   const userCanEditConditions = useSelector((state) =>
     userHasRole(state, USER_ROLES.role_edit_template_conditions)
   );
@@ -149,7 +161,7 @@ const ViewPermit: FC = () => {
     {
       key: tabs[0],
       label: "Permit Overview",
-      children: <ViewPermitOverview latestAmendment={latestAmendment} />,
+      children: !latestAmendment ? <Loading /> : <ViewPermitOverview latestAmendment={latestAmendment} />,
     },
     enablePermitConditionsTab && {
       key: tabs[1],
@@ -159,6 +171,7 @@ const ViewPermit: FC = () => {
           isReviewComplete={isReviewComplete}
           isExtracted={isExtracted}
           latestAmendment={latestAmendment}
+          currentAmendment={currentAmendment}
           previousAmendment={previousAmendment}
           canStartExtraction={canStartExtraction}
           userCanEdit={userCanEditConditions}
@@ -169,7 +182,9 @@ const ViewPermit: FC = () => {
 
   const handleTabChange = (newActiveTab: string) => {
     setActiveTab(newActiveTab);
-    return history.push(routes.VIEW_MINE_PERMIT.dynamicRoute(id, permitGuid, newActiveTab));
+    const amendmentGuid = newActiveTab === tabs[1] ? amendmentToViewConditions?.permit_amendment_guid : latestAmendment?.permit_amendment_guid;
+
+    return history.push(routes.VIEW_MINE_PERMIT_AMENDMENT.dynamicRoute(id, permitGuid, amendmentGuid, newActiveTab));
   };
 
   const onConditionsTab = tab === tabs[1];

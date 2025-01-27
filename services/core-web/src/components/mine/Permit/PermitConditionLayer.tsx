@@ -52,7 +52,6 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   refreshData,
   categoryOptions,
   previousAmendment,
-  permitAmendment,
   permitGuid,
   mineGuid,
 }) => {
@@ -138,7 +137,6 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
               <PermitConditionLayer
                 isExtracted={isExtracted}
                 mineGuid={mineGuid}
-                permitAmendment={permitAmendment}
                 permitAmendmentGuid={permitAmendmentGuid}
                 condition={subCondition}
                 level={level + 1}
@@ -205,7 +203,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
             condition={condition}
             previousCondition={matchingCondition}
             canEditPermitConditions={canEditPermitConditions}
-            isDisabled={isAddingListItem || isExpanded}
+            isDisabled={isAddingListItem}
             permitAmendmentGuid={permitAmendmentGuid}
             refreshData={refreshData}
           />

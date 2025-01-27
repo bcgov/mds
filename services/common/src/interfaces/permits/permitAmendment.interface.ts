@@ -34,4 +34,32 @@ export interface IPermitAmendment {
   vc_credential_exch_state: VC_CRED_ISSUE_STATES;
   mine_report_permit_requirements?: IMineReportPermitRequirement[];
   condition_categories: IPermitConditionCategory[];
+  conditions_review_completed: boolean;
 }
+
+export const getConditionsWithRequirements = (conditions: IPermitCondition[], requirements?: IMineReportPermitRequirement[]) => {
+  let result = [];
+
+  const requirementsByCondition = requirements?.length ? requirements.reduce((acc, requirement) => {
+    if (!acc[requirement.permit_condition_id]) {
+      acc[requirement.permit_condition_id] = [];
+    }
+    acc[requirement.permit_condition_id].push(requirement);
+    return acc;
+  }, {}) : {};
+
+  conditions.forEach((condition) => {
+    if (requirements) {
+      const req = requirementsByCondition[condition.permit_condition_id];
+      result = [...result, ...(req || [])];
+    } else if (condition.mineReportPermitRequirement) {
+      result.push(condition);
+    }
+
+    if (condition.sub_conditions && condition.sub_conditions.length > 0) {
+      result = result.concat(getConditionsWithRequirements(condition.sub_conditions));
+    }
+  });
+
+  return result;
+};

@@ -74,7 +74,8 @@ class PermitConditionComparer:
             print("Previous condition:", previous_condition)
             print("Parent", condition.parent_permit_condition_id)
             print("Step:", condition._step)
-            print("ParentStep:", condition.parent_permit_condition._step)
+            if condition.parent_permit_condition:
+                print("ParentStep:", condition.parent_permit_condition._step)
             print("StepPath:", step_path)
             print(self.previous_conditions_by_step)
 
@@ -170,12 +171,22 @@ class PermitConditionComparer:
         steps = []
         current = condition
         while current:
-            if current._step:
-                steps = steps + [current._step]
+            step = current._step
+            if step == "" and current.parent_permit_condition:
+                # If step is empty, determine it based on position in parent's sub_conditions
+                parent = current.parent_permit_condition
+                if parent.sub_conditions:
+                    try:
+                        step = f'sub_{str(parent.sub_conditions.index(current) + 1)}'
+                    except ValueError:
+                        step = None
+            if step:
+                steps = steps + [step]
             current = current.parent_permit_condition
         if condition.condition.endswith("and be made available at the mine site at all times."):
             print("Steps Steps:", steps)
-        return ".".join([str(condition.condition_category.description)] + steps) if steps else ""
+        cat = condition.condition_category.description if condition.condition_category else ""
+        return ".".join([str(cat)] + steps) if steps else ""
 
     def _calculate_text_similarity(self, text1: str, text2: str) -> float:
         """Calculate similarity between two text strings"""

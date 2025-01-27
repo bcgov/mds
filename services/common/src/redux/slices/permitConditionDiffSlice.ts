@@ -6,7 +6,7 @@ import { createAppSlice, rejectHandler } from "@mds/common/redux/createAppSlice"
 import { IPermitConditionComparison } from "@mds/common/interfaces/permits";
 
 interface IPermitConditionDiffState {
-    diffs: { [key: string]: IPermitConditionComparison };
+    diffs: { [key: string]: IPermitConditionComparison[] };
     isLoading: boolean;
 }
 
@@ -22,7 +22,7 @@ const permitConditionDiffSlice = createAppSlice({
     initialState,
     reducers: (create) => ({
         fetchPermitConditionDiff: create.asyncThunk(
-            async (params: { mineGuid: string; permitGuid: string; amendmentGuid: string }, thunkApi) => {
+            async (params: { mineGuid: string; permitGuid: string; amendmentGuid: string }, thunkApi): Promise<{ key: string, data: IPermitConditionComparison[] }> => {
                 const { mineGuid, permitGuid, amendmentGuid } = params;
                 const headers = createRequestHeader();
                 const response = await CustomAxios().get(

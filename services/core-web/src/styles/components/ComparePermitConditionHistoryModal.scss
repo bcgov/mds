@@ -4,33 +4,29 @@
 
 .condition-added {
     background-color: #e6ffe6;
-    padding: 8px;
-    margin: 4px 0;
 }
 
-.condition-modified {
-    background-color: #fff3e6;
-    padding: 8px;
-    margin: 4px 0;
-}
 
 .condition-moved {
     background-color: #e6f7ff;
-    padding: 8px;
-    margin: 4px 0;
 }
 
 .condition-removed {
     background-color: #ffe6e6;
-    padding: 8px;
-    margin: 4px 0;
-}
-
-.condition-unchanged {
-    padding: 8px;
-    margin: 4px 0;
 }
 
 .condition-text {
     display: block;
+}
+
+.diff-added {
+    background-color: #d4edda;
+    text-decoration: none;
+    padding: 0 2px;
+}
+
+.diff-removed {
+    background-color: #f8d7da;
+    text-decoration: line-through;
+    padding: 0 2px;
 }

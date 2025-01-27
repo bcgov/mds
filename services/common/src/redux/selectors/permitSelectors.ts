@@ -78,6 +78,11 @@ export const getLatestAmendmentByPermitGuid = (permitGuid) =>
     return amendments ? amendments[permitGuid] : null;
   });
 
+export const getAmendment = (permitGuid, amendmentGuid) =>
+  createSelector([getPermitByGuid(permitGuid)], (permit) => {
+    return permit?.permit_amendments?.find((amendment) => amendment.permit_amendment_guid === amendmentGuid);
+  });
+
 export const getPermits = createSelector([getUnformattedPermits], (permits) => {
   const formattedPermits = permits.map((permit) => formatPermit(permit));
   return formattedPermits;

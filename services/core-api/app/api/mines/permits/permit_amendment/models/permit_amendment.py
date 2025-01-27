@@ -166,6 +166,10 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             parent_permit_condition_id=None,
             deleted_ind=False).count()
         return permit_conditions > 0
+    
+    @hybrid_property
+    def conditions_review_completed(self):
+        return len(self.conditions) and all([x.permit_condition_status_code == "COM" for x in self.conditions])
 
     @hybrid_property
     def vc_credential_exch_state(self):
