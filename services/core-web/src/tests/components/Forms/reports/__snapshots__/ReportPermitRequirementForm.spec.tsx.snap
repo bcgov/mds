@@ -182,7 +182,7 @@ exports[`RequestReportForm renders form properly 1`] = `
                           disabled=""
                           name="cim_or_cpo"
                           type="radio"
-                          value="BOTH"
+                          value="Both"
                         />
                         <span
                           class="ant-radio-inner"
@@ -358,15 +358,8 @@ exports[`RequestReportForm renders form properly 1`] = `
       </div>
     </div>
     <div
-      class="ant-row"
-    >
-      <div
-        class="ant-col ant-col-sm-24 ant-col-md-12"
-      />
-      <div
-        class="ant-col ant-col-sm-24 ant-col-md-12"
-      />
-    </div>
+      class="ant-row ant-row-end"
+    />
   </form>
 </div>
 `;

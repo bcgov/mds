@@ -8,6 +8,7 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import { Feature } from "@mds/common/utils/featureFlag";
 import ReportPermitRequirementForm from "@/components/Forms/reports/ReportPermitRequirementForm";
 import { Collapse, Typography } from "antd";
+import { getConditionsWithRequirements } from "@common/utils/helpers";
 
 const { Title } = Typography;
 
@@ -93,20 +94,6 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
 
   const moveDown = async (condition: IPermitCondition) => {
     await handleMoveCondition(condition, false);
-  };
-
-  const getConditionsWithRequirements = (conditions: IPermitCondition[]) => {
-    let result = [];
-    conditions.forEach((condition) => {
-      if (condition.mineReportPermitRequirement) {
-        result.push(condition);
-      }
-
-      if (condition.sub_conditions && condition.sub_conditions.length > 0) {
-        result = result.concat(getConditionsWithRequirements(condition.sub_conditions));
-      }
-    });
-    return result;
   };
 
   const requirements = getConditionsWithRequirements([condition]);

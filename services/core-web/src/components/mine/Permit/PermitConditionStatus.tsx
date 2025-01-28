@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { updatePermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { IPermitCondition } from "@mds/common/interfaces/permits";
 import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
+import { getConditionsWithRequirements } from "@common/utils/helpers";
 
 interface PermitConditionStatusProps {
   condition: IPermitCondition;
@@ -34,20 +35,6 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
       } : values;
     await dispatch(updatePermitCondition(values.permit_condition_guid, permitAmendmentGuid, payload));
     await refreshData();
-  };
-
-  const getConditionsWithRequirements = (conditions: IPermitCondition[]) => {
-    let result = [];
-    conditions.forEach((condition) => {
-      if (condition.mineReportPermitRequirement) {
-        result.push(condition);
-      }
-
-      if (condition.sub_conditions && condition.sub_conditions.length > 0) {
-        result = result.concat(getConditionsWithRequirements(condition.sub_conditions));
-      }
-    });
-    return result;
   };
 
   const requirements = getConditionsWithRequirements([condition]);

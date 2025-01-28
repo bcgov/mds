@@ -51,13 +51,12 @@ describe("mineReportPermitRequirementSlice", () => {
                 mine_report_permit_requirement_id: 5,
             };
 
-            const response = await store.dispatch(deleteMineReportPermitRequirement(payload));
+            await store.dispatch(deleteMineReportPermitRequirement(payload));
 
             // Verify loading state management
             expect(showLoadingMock).toHaveBeenCalledTimes(1);
             expect(hideLoadingMock).toHaveBeenCalledTimes(1);
 
-            expect(response.status === 204);
             expect(CustomAxios).toHaveBeenCalledWith({
                 errorToastMessage: "default",
                 successToastMessage: "Successfully deleted report requirement",
@@ -67,7 +66,7 @@ describe("mineReportPermitRequirementSlice", () => {
         it("should handle API error when deleting a report requirement", async () => {
             const error = new Error("API Error");
             (CustomAxios as jest.Mock).mockImplementation(() => ({
-                post: jest.fn().mockRejectedValue(error),
+                delete: jest.fn().mockRejectedValue(error),
             }));
 
             const payload = {
@@ -114,15 +113,11 @@ describe("mineReportPermitRequirementSlice", () => {
                 }
             };
 
-            const response = await store.dispatch(updateMineReportPermitRequirement(payload));
+            await store.dispatch(updateMineReportPermitRequirement(payload));
 
             // Verify loading state management
             expect(showLoadingMock).toHaveBeenCalledTimes(1);
             expect(hideLoadingMock).toHaveBeenCalledTimes(1);
-
-            expect(response.status === 200);
-            expect(response.mine_report_permit_requirement_id === 5);
-            expect(response.permit_condition_id === 37815);
 
             expect(CustomAxios).toHaveBeenCalledWith({
                 errorToastMessage: "default",

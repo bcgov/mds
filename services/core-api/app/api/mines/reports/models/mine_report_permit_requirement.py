@@ -11,7 +11,7 @@ from sqlalchemy.schema import FetchedValue
 class CimOrCpo(str, Enum):
     CIM = "CIM"
     CPO = "CPO"
-    BOTH = "BOTH"
+    Both = "Both"
 
     def __str__(self):
         return self.value

@@ -7,7 +7,6 @@ import {
   IMineReportPermitRequirement,
   IPermitCondition,
 } from "@mds/common/interfaces";
-
 import { required, requiredRadioButton, maxLength } from "@mds/common/redux/utils/Validate";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
@@ -27,6 +26,7 @@ import {
   deleteMineReportPermitRequirement,
   updateMineReportPermitRequirement,
 } from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
+import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 
 interface ReportPermitRequirementProps {
   onSubmit?: (values: Partial<IMineReport>) => void | Promise<void>;
@@ -60,11 +60,13 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
   }, [canEditPermitConditions]);
 
   const handleDeleteReportRequirement = async ({ mine_report_permit_requirement_id }) => {
-    // @ts-ignore
-    await dispatch(deleteMineReportPermitRequirement({ mineGuid, mine_report_permit_requirement_id })).then(async () => {
-      await refreshData();
-      setIsEditMode(false);
-    });
+    deleteConfirmWrapper("Report Requirement", async () => {
+      // @ts-ignore
+      await dispatch(deleteMineReportPermitRequirement({ mineGuid, mine_report_permit_requirement_id })).then(async () => {
+        await refreshData();
+        setIsEditMode(false);
+      });
+    })
   };
 
   const handleEditReportRequirement = async (values) => {
@@ -202,41 +204,36 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
             )}
           </Col>
         </Row>
-        <Row>
-          <Col md={12} sm={24}>
-            {(isEditMode && mineReportPermitRequirement) && (
-              <LinkButton
-                class="report-delete-button"
-                onClick={() => handleDeleteReportRequirement(mineReportPermitRequirement)}
-              >
-                Delete Report
-              </LinkButton>
-            )
-            }
-          </Col>
-          <Col md={12} sm={24}>
-            {isEditMode ? (
-              <div className="float-right">
-                <RenderCancelButton
-                  cancelFunction={!modalView ? () => setIsEditMode(false) : undefined}
-                />
-                <Button type="primary" htmlType="submit">
-                  {mineReportPermitRequirement ? "Update" : "Add"} Report
-                </Button>
-              </div>
-            ) : (canEditPermitConditions &&
-              <Button
-                type="primary"
-                className="float-right"
-                onClick={(event) => {
-                  event.preventDefault();
-                  setIsEditMode(true);
-                }}
-              >
-                Edit Report
+        <Row justify={isEditMode && mineReportPermitRequirement ? "space-between" : "end"}>
+          {(isEditMode && mineReportPermitRequirement) && (
+            <LinkButton
+              className="report-delete-button"
+              onClick={() => handleDeleteReportRequirement(mineReportPermitRequirement)}
+            >
+              Delete Report
+            </LinkButton>
+          )
+          }
+          {isEditMode ? (
+            <div>
+              <RenderCancelButton
+                cancelFunction={!modalView ? () => setIsEditMode(false) : undefined}
+              />
+              <Button type="primary" htmlType="submit">
+                {mineReportPermitRequirement ? "Update" : "Add"} Report
               </Button>
-            )}
-          </Col>
+            </div>
+          ) : (canEditPermitConditions &&
+            <Button
+              type="primary"
+              onClick={(event) => {
+                event.preventDefault();
+                setIsEditMode(true);
+              }}
+            >
+              Edit Report
+            </Button>
+          )}
         </Row>
       </FormWrapper>
     </div >

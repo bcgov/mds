@@ -123,11 +123,9 @@ class MineReportPermitRequirementResource(Resource, UserMixin):
                     "The report requirement to be deleted is not part of a permit associated with the given mine"
                 )
         
-        mine_report_permit_requirement.deleted_ind = True
-        mine_report_permit_requirement.active_ind = False
+        mine_report_permit_requirement.delete()
         current_app.logger.info(f'Deleting {mine_report_permit_requirement}')
 
-        mine_report_permit_requirement.save()
         return ('', 204)
     
     @api.expect(parser)

@@ -9,6 +9,7 @@ import { createNumberMask } from "redux-form-input-masks";
 import moment from "moment-timezone";
 import { reset } from "redux-form";
 import { ItemMap } from "@mds/common/interfaces/common/itemMap.interface";
+import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
 
 /**
  * Helper function to clear redux form after submissions
@@ -591,4 +592,18 @@ export const getHighestConsequence = (tsf) => {
     CONSEQUENCE_CLASSIFICATION_RANK_HASH[tsf.consequence_classification_status_code]
     ? CONSEQUENCE_CLASSIFICATION_CODE_HASH[highestRankedDam.consequence_classification]
     : CONSEQUENCE_CLASSIFICATION_CODE_HASH[tsf.consequence_classification_status_code];
+};
+
+export const getConditionsWithRequirements = (conditions: IPermitCondition[]) => {
+  let result = [];
+  conditions.forEach((condition) => {
+    if (condition.mineReportPermitRequirement) {
+      result.push(condition);
+    }
+
+    if (condition.sub_conditions && condition.sub_conditions.length > 0) {
+      result = result.concat(getConditionsWithRequirements(condition.sub_conditions));
+    }
+  });
+  return result;
 };

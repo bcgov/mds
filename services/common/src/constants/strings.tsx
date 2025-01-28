@@ -474,7 +474,7 @@ export const WASTE_DISCHARGE_AUTHORIZATION_PROCESS =
 export const REPORT_REGULATORY_AUTHORITY_CODES_HASH = {
   CPO: "Chief Permitting Officer",
   CIM: "Chief Inspector of Mines",
-  BOTH: "Both",
+  Both: "Both",
   NONE: "Not Specified",
 };
 
