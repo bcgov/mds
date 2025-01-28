@@ -70,13 +70,8 @@ RUN rm -rf /pgexts/oraclelibs/*.zip /pgexts/${ORACLE_FDW_VERSION}.tar.gz /tmp/or
 # Init Scripts
 
 COPY init.sql /docker-entrypoint-initdb.d/init.sql
-COPY postgresql.conf      /tmp/postgresql.conf
-COPY pg_hba.conf      /tmp/pg_hba.conf
 
 RUN mkdir -p /pg_log
 RUN chown -R postgres:postgres /pg_log
-
-COPY updateConfig.sh      /docker-entrypoint-initdb.d/_updateConfig.sh
-RUN chmod +x /docker-entrypoint-initdb.d/_updateConfig.sh
 
 WORKDIR /docker-entrypoint-initdb.d
