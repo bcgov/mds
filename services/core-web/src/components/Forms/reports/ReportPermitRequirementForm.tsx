@@ -1,7 +1,7 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { Field } from "redux-form";
 import { Button, Col, Row, Typography } from "antd";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   IMineReport,
   IMineReportPermitRequirement,
@@ -22,13 +22,21 @@ import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons"
 import { FORM } from "@mds/common/constants/forms";
 import { MINE_REPORT_SUBMISSION_CODES, REPORT_TYPE_CODES } from "@mds/common/constants/enums";
 import { REPORT_FREQUENCY_HASH, REPORT_MINISTRY_RECIPIENT_HASH, REPORT_REGULATORY_AUTHORITY_CODES_HASH } from "@mds/common/constants/strings";
+import LinkButton from "@mds/common/components/common/LinkButton";
+import {
+  deleteMineReportPermitRequirement,
+  updateMineReportPermitRequirement,
+} from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
 
 interface ReportPermitRequirementProps {
-  onSubmit: (values: Partial<IMineReport>) => void | Promise<void>;
+  onSubmit?: (values: Partial<IMineReport>) => void | Promise<void>;
   permitGuid: string;
   condition: IPermitCondition;
   modalView?: boolean;
   mineReportPermitRequirement?: IMineReportPermitRequirement;
+  canEditPermitConditions: boolean;
+  refreshData: () => Promise<void>;
+  mineGuid: string;
 }
 
 export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
@@ -37,15 +45,41 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
   permitGuid,
   modalView = true,
   mineReportPermitRequirement,
+  canEditPermitConditions,
+  refreshData,
+  mineGuid,
 }) => {
+  const dispatch = useDispatch();
   const [isEditMode, setIsEditMode] = React.useState(modalView);
   const latestPermitAmendment = useSelector(getLatestAmendmentByPermitGuid(permitGuid));
+
+  useEffect(() => {
+    if (!canEditPermitConditions) {
+      setIsEditMode(false);
+    }
+  }, [canEditPermitConditions]);
+
+  const handleDeleteReportRequirement = async ({ mine_report_permit_requirement_id }) => {
+    // @ts-ignore
+    await dispatch(deleteMineReportPermitRequirement({ mineGuid, mine_report_permit_requirement_id })).then(async () => {
+      await refreshData();
+      setIsEditMode(false);
+    });
+  };
+
+  const handleEditReportRequirement = async (values) => {
+    // @ts-ignore
+    await dispatch(updateMineReportPermitRequirement({ mineGuid, values })).then(async () => {
+      await refreshData();
+      setIsEditMode(false);
+    });
+  };
 
   return (
     <div style={{ minHeight: modalView ? "380px" : "" }}>
       <FormWrapper
         name={`${FORM.ADD_REPORT_TO_PERMIT_CONDITION}-${condition.permit_condition_id}`}
-        onSubmit={onSubmit}
+        onSubmit={!modalView ? handleEditReportRequirement : onSubmit}
         isModal={modalView}
         isEditMode={isEditMode}
         scrollOnToggleEdit={false}
@@ -168,30 +202,44 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
             )}
           </Col>
         </Row>
-        <Row justify="end">
-          {isEditMode ? (
-            <div>
-              <RenderCancelButton
-                cancelFunction={!modalView ? () => setIsEditMode(false) : undefined}
-              />
-              <Button type="primary" htmlType="submit">
-                {mineReportPermitRequirement ? "Update" : "Add"} Report
+        <Row>
+          <Col md={12} sm={24}>
+            {(isEditMode && mineReportPermitRequirement) && (
+              <LinkButton
+                class="report-delete-button"
+                onClick={() => handleDeleteReportRequirement(mineReportPermitRequirement)}
+              >
+                Delete Report
+              </LinkButton>
+            )
+            }
+          </Col>
+          <Col md={12} sm={24}>
+            {isEditMode ? (
+              <div className="float-right">
+                <RenderCancelButton
+                  cancelFunction={!modalView ? () => setIsEditMode(false) : undefined}
+                />
+                <Button type="primary" htmlType="submit">
+                  {mineReportPermitRequirement ? "Update" : "Add"} Report
+                </Button>
+              </div>
+            ) : (canEditPermitConditions &&
+              <Button
+                type="primary"
+                className="float-right"
+                onClick={(event) => {
+                  event.preventDefault();
+                  setIsEditMode(true);
+                }}
+              >
+                Edit Report
               </Button>
-            </div>
-          ) : (
-            <Button
-              type="primary"
-              onClick={(event) => {
-                event.preventDefault();
-                setIsEditMode(true);
-              }}
-            >
-              Edit Report
-            </Button>
-          )}
+            )}
+          </Col>
         </Row>
       </FormWrapper>
-    </div>
+    </div >
   );
 };
 

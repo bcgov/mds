@@ -43,12 +43,12 @@ class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin):
     permit_amendment_id: int = db.Column(db.Integer, db.ForeignKey('permit_amendment.permit_amendment_id'))
 
     def __repr__(self):
-        return '<MineReportPermitRequirement %r>' % self.permit_report_requirement_id
+        return '<MineReportPermitRequirement %r>' % self.mine_report_permit_requirement_id
 
     @classmethod
-    def find_by_permit_report_requirement_id(cls, _id) -> "MineReportPermitRequirement":
+    def find_by_mine_report_permit_requirement_id(cls, _id) -> "MineReportPermitRequirement":
         try:
-            return cls.query.filter_by(permit_report_requirement_id=_id).first()
+            return cls.query.filter_by(mine_report_permit_requirement_id=_id, deleted_ind=False).first()
         except ValueError:
             return None
 

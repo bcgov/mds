@@ -7,6 +7,7 @@ const propTypes = {
   children: PropTypes.any,
   disabled: PropTypes.bool,
   title: PropTypes.string,
+  class: PropTypes.string,
 };
 
 const defaultProps = {
@@ -22,6 +23,7 @@ const LinkButton = (props) => (
     onKeyPress={props.onClick}
     tabIndex={props.tabIndex}
     disabled={props.disabled}
+    class={props.class}
     {...props}
   >
     {props.children}
