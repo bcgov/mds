@@ -15,6 +15,7 @@ export enum PermitExtractionStatus {
   in_progress = "In Progress",
   complete = "Extraction Complete",
   error = "Error Extracting",
+  deleted = "Deleted",
 }
 
 const permitExtractionStatusMap = {

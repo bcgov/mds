@@ -32,6 +32,8 @@ const PermitConditionsSelectDocumentModal: FC<PermitConditionsSelectDocumentModa
           renderDateColumn("create_timestamp", "Uploaded"),
           {
             key: "action",
+            className: "actions-column",
+            width: 0,
             render: (record: IPermitAmendmentDocument) => {
               return (
                 <Button type="primary" onClick={() => onSubmit(record)}>

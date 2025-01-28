@@ -68,7 +68,7 @@ const ViewPermit: FC = () => {
 
   const canStartExtraction =
     ((documents.length > 0 && !permitExtraction?.task_status) ||
-      [PermitExtractionStatus.error, PermitExtractionStatus.not_started].includes(
+      [PermitExtractionStatus.error, PermitExtractionStatus.not_started, PermitExtractionStatus.deleted].includes(
         permitExtraction?.task_status
       )) &&
     !hasConditions;

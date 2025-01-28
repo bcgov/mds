@@ -208,3 +208,9 @@ td.ant-table-cell {
     background-color: $disabled-grey !important;
   }
 }
+
+// actions menu
+.actions-column {
+  text-align: right;
+  width: 0; // effectively "fit-content"
+}
