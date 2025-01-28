@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { updatePermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { IPermitCondition } from "@mds/common/interfaces/permits";
 import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
-import { getConditionsWithRequirements } from "@common/utils/helpers";
+import { getConditionsWithRequirements } from "@mds/common/utils/helpers";
 
 interface PermitConditionStatusProps {
   condition: IPermitCondition;

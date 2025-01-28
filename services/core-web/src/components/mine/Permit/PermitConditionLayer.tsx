@@ -8,7 +8,7 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import { Feature } from "@mds/common/utils/featureFlag";
 import ReportPermitRequirementForm from "@/components/Forms/reports/ReportPermitRequirementForm";
 import { Collapse, Typography } from "antd";
-import { getConditionsWithRequirements } from "@common/utils/helpers";
+import { getConditionsWithRequirements } from "@mds/common/utils/helpers";
 
 const { Title } = Typography;
 
