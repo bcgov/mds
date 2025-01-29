@@ -1,5 +1,4 @@
 import uuid
-from unittest.mock import Mock
 
 import pytest
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
@@ -11,7 +10,7 @@ from app.api.mines.permits.permit_extraction.models.permit_condition_result impo
 from app.api.mines.permits.permit_extraction.permit_condition_creator import (
     PermitConditionCreator,
 )
-from tests.factories import PermitAmendmentFactory, create_mine_and_permit
+from tests.factories import create_mine_and_permit
 
 
 @pytest.fixture(scope="function")
@@ -27,6 +26,7 @@ def permit_condition_creator(test_client, db_session, permit_amendments):
         permit_amendment=permit_amendments[0], previous_amendment=permit_amendments[1]
     )
     creator.current_category = "GEC"
+    creator.default_section = "GEC"
     yield creator
 
 
@@ -226,6 +226,9 @@ def test_condition_comparison_with_previous_amendment_modified(
         display_order=1,
         _step="1",
     )
+
+    db_session.add(previous_parent)
+    db_session.flush()
     previous_child = PermitConditions(
         permit_condition_guid=child_gid,
         permit_amendment_id=previous_amendment.permit_amendment_id,
@@ -236,15 +239,15 @@ def test_condition_comparison_with_previous_amendment_modified(
         _step="a",
         parent_permit_condition_id=previous_parent.permit_condition_id,
     )
-    db_session.add_all([previous_parent, previous_child])
-    db_session.commit()
+    db_session.add(previous_child)
+    db_session.flush()
 
     # Test with modified child condition text
     child_result_modified = PermitConditionResult(
         section="A",
         paragraph="1",
         subparagraph="a",
-        condition_text="Previous child condition mod",
+        condition_text="Previous child condition md",
         condition_title=None,
         meta={},
     )

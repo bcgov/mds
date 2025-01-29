@@ -69,28 +69,10 @@ class PermitConditionComparer:
         # Try to find match by step path first
         previous_condition = self.previous_conditions_by_step.get(step_path)
 
-        if condition.condition.startswith("Previous child condition"):
-            print("Current condition:", condition.condition)
-            print("Previous condition:", previous_condition)
-            print("Parent", condition.parent_permit_condition_id)
-            print("Step:", condition._step)
-            if condition.parent_permit_condition:
-                print("ParentStep:", condition.parent_permit_condition._step)
-            print("StepPath:", step_path)
-            print(self.previous_conditions_by_step)
-
-
         if previous_condition:
             text_similarity = self._calculate_text_similarity(
                 condition.condition, previous_condition.condition
             )
-            if condition.condition.startswith("Previous child condition"):
-                print("Current condition:", condition.condition)
-                print("Previous condition:", previous_condition.condition)
-                print(text_similarity)
-                print(step_path)
-                print(self.previous_conditions_by_step)
-
 
             if text_similarity > SIMILARITY_SCORE_MATCH_THRESHOLD:
                 return ConditionComparison(

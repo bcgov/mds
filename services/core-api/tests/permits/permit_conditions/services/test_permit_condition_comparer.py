@@ -12,9 +12,8 @@ from tests.factories import create_mine_and_permit
 
 
 @pytest.fixture
-def previous_conditions(db_session):
-    mine, permit = create_mine_and_permit()
-    permit_amendment_id = permit.permit_amendments[0].permit_amendment_id
+def previous_conditions(db_session, permit_amendment):
+    permit_amendment_id = permit_amendment.permit_amendment_id
 
     conditions = []
 
@@ -59,8 +58,9 @@ def previous_conditions(db_session):
 
 
 @pytest.fixture
-def new_root(db_session):
+def new_root(db_session, permit_amendment):
     root = PermitConditions(
+        permit_amendment_id=permit_amendment.permit_amendment_id,
         condition="Section 1",
         condition_category_code="GEC",
         condition_type_code="SEC",
@@ -70,23 +70,30 @@ def new_root(db_session):
 
     return root
 
+@pytest.fixture
+def permit_amendment(db_session):
+    mine, permit = create_mine_and_permit()
+    return permit.permit_amendments[0]
 
 @pytest.fixture
 def comparer(previous_conditions):
     return PermitConditionComparer(previous_conditions)
 
 
-def test_compare_condition_unchanged(comparer, db_session, new_root):
+def test_compare_condition_unchanged(comparer, db_session, new_root, permit_amendment):
     """Test condition with same text and step is marked unchanged"""
     current = PermitConditions(
-        permit_amendment_id=2,
+        permit_amendment_id=permit_amendment.permit_amendment_id,
         condition="Keep mining area clean",
-        condition_category_code="CAT1",
+        condition_category_code="GEC",
         condition_type_code="CON",
         display_order=1,
         parent=new_root,
         _step="1",
     )
+
+    db_session.add(current)
+    db_session.flush()
 
     comparison = comparer.compare_condition(current)
     assert comparison.change_type == ConditionChangeType.UNCHANGED
@@ -95,10 +102,32 @@ def test_compare_condition_unchanged(comparer, db_session, new_root):
     assert comparison.combined_score == 1.0
 
 
-def test_compare_condition_modified(comparer, db_session, new_root):
+def test_compare_condition_moved_category(comparer, db_session, new_root, permit_amendment):
+    """Test condition with same text and step but different category is marked moved"""
+    current = PermitConditions(
+        permit_amendment_id=permit_amendment.permit_amendment_id,
+        condition="Keep mining area clean",
+        condition_category_code="HSC",
+        condition_type_code="CON",
+        display_order=1,
+        parent=new_root,
+        _step="1",
+    )
+
+    db_session.add(current)
+    db_session.flush()
+
+    comparison = comparer.compare_condition(current)
+    assert comparison.change_type == ConditionChangeType.MOVED
+    assert comparison.text_similarity == 1.0
+    assert comparison.structure_similarity == 0.0
+    assert comparison.combined_score == 0.8
+
+
+def test_compare_condition_modified(comparer, db_session, new_root, permit_amendment):
     """Test condition with different text but same step is marked modified"""
     current = PermitConditions(
-        permit_amendment_id=2,
+        permit_amendment_id=permit_amendment.permit_amendment_id,
         condition="Keep mining area cclean",
         condition_category_code="GEC",
         condition_type_code="CON",
@@ -106,19 +135,20 @@ def test_compare_condition_modified(comparer, db_session, new_root):
         _step="1",
         parent=new_root,
     )
-
+    db_session.add(current)
+    db_session.flush()
     comparison = comparer.compare_condition(current)
     assert comparison.change_type == ConditionChangeType.MODIFIED
     assert 0.8 < comparison.text_similarity < 1.0
     assert comparison.structure_similarity == 1.0
 
 
-def test_compare_condition_moved(comparer, db_session, new_root):
+def test_compare_condition_moved(comparer, db_session, new_root, permit_amendment):
     """Test condition with same text but different step is marked moved"""
 
     new_root._step = "2"
     current = PermitConditions(
-        permit_amendment_id=2,
+        permit_amendment_id=permit_amendment.permit_amendment_id,
         condition="Keep mining area clean",
         condition_category_code="GEC",
         condition_type_code="CON",
@@ -127,16 +157,19 @@ def test_compare_condition_moved(comparer, db_session, new_root):
         parent=new_root,
     )
 
+    db_session.add(current)
+    db_session.flush()
+
     comparison = comparer.compare_condition(current)
     assert comparison.change_type == ConditionChangeType.MOVED
     assert comparison.text_similarity > 0.9
     assert comparison.structure_similarity == 0.0
 
 
-def test_compare_condition_added(comparer, db_session, new_root):
+def test_compare_condition_added(comparer, db_session, new_root, permit_amendment):
     """Test new condition is marked as added"""
     current = PermitConditions(
-        permit_amendment_id=2,
+        permit_amendment_id=permit_amendment.permit_amendment_id,
         condition="Brand new condition",
         condition_category_code="GEC",
         condition_type_code="CON",
@@ -144,6 +177,8 @@ def test_compare_condition_added(comparer, db_session, new_root):
         _step="3",
         parent=new_root,
     )
+    db_session.add(current)
+    db_session.flush()
 
     comparison = comparer.compare_condition(current)
     assert comparison.change_type == ConditionChangeType.ADDED
@@ -152,24 +187,30 @@ def test_compare_condition_added(comparer, db_session, new_root):
     assert comparison.combined_score == 0.0
 
 
-def test_compare_condition_multiple_levels(comparer, db_session, new_root):
+def test_compare_condition_multiple_levels(comparer, db_session, new_root, permit_amendment):
     """Test condition with multiple parent levels."""
     sub_condition = PermitConditions(
+        permit_amendment_id=permit_amendment.permit_amendment_id,
         condition="Level 2 condition",
-        condition_category_code="MULTI",
+        condition_category_code="HSC",
         condition_type_code="CON",
         display_order=1,
         _step="1",
         parent=new_root,
     )
     nested_sub_condition = PermitConditions(
+        permit_amendment_id=permit_amendment.permit_amendment_id,
         condition="Level 3 condition",
-        condition_category_code="MULTI",
+        condition_category_code="HSC",
         condition_type_code="CON",
         display_order=1,
         _step="1",
         parent=sub_condition,
     )
+
+    db_session.add(sub_condition)
+    db_session.add(nested_sub_condition)
+    db_session.flush()
 
     comparison = comparer.compare_condition(nested_sub_condition)
     assert comparison.change_type == ConditionChangeType.ADDED

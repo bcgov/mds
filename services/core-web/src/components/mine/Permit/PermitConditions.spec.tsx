@@ -4,11 +4,13 @@ import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { MINES, STATIC_CONTENT, PERMITS, AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import ViewPermit from "./ViewPermit";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, MemoryRouter } from "react-router-dom";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
 import { userReducerType } from "@mds/common/redux/slices/userSlice";
 
+import Routes from "@/routes/Routes";
+import { VIEW_MINE_PERMIT_AMENDMENT } from "@/constants/routes";
 const initialState = {
   [MINES]: MOCK.MINES,
   [userReducerType]: { user: MOCK.USERS[0] },
@@ -189,10 +191,10 @@ describe("PermitConditions", () => {
   it("enables adding a condition category in a modal", async () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState} >
-        <BrowserRouter>
+        <MemoryRouter initialEntries={[VIEW_MINE_PERMIT_AMENDMENT.dynamicRoute(MOCK.PERMITS[0].mine_guid, MOCK.PERMITS[0].permit_guid, MOCK.PERMITS[0].permit_amendments[0].permit_amendment_guid, "conditions")]}>
           <ModalWrapper />
           <ViewPermit />
-        </BrowserRouter>
+        </MemoryRouter>
       </ReduxWrapper>
     );
 
