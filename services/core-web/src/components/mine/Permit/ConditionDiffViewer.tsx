@@ -18,6 +18,9 @@ interface Props {
     previousAmendment?: IPermitAmendment;
 }
 
+/**
+ * A component that displays the diff between two permit conditions and their sub-conditions in a side-by-side view.
+ */
 const ConditionDiffViewer: FC<Props> = ({
     currentCondition,
     previousCondition,
@@ -42,7 +45,11 @@ const ConditionDiffViewer: FC<Props> = ({
         return diffs?.find(diff => diff.previous_condition_guid === conditionGuid);
     };
 
+    /**
+     * Find a condition recursively by guid in the given list of conditions.
+     */
     const findCondition = (permit_condition_guid: string, conditions: IPermitCondition[]) => {
+
         const findConditionRecursive = (guid: string, condition: IPermitCondition): IPermitCondition | null => {
             if (condition?.permit_condition_guid === guid) {
                 return condition;
@@ -64,6 +71,11 @@ const ConditionDiffViewer: FC<Props> = ({
         return null;
     }
 
+    /**
+     * Render the condition and its sub-conditions recursively.
+     * Highlights the condition based on whether it was added, removed, or modified.
+     * If the condition was modified, shows the textual diff between the old and new condition text.
+     */
     const renderCondition = (condition: IPermitCondition, isPrevious: boolean = false, level = 0) => {
         const comparison = isPrevious
             ? getComparisonForPreviousCondition(condition?.permit_condition_guid)

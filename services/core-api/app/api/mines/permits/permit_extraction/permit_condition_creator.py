@@ -91,6 +91,8 @@ class PermitConditionCreator:
         db.session.flush()
 
         if self.previous_amendment:
+            # Compare condition to previous amendment
+            # and record the result
             condition_comparer = PermitConditionComparer(
                 previous_amendment_conditions=list(self.previous_amendment.all_conditions)
             )
@@ -145,6 +147,7 @@ class PermitConditionCreator:
     def _determine_parent(
         self, condition: PermitConditionResult
     ) -> Optional[PermitConditions]:
+        # Determine the parent condition based on the numbering structure of the condition extraction result
         number_structure = condition.numbering_structure
         parent_number_structure = [item for item in number_structure if item][:-1]
 

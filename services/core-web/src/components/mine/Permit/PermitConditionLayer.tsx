@@ -104,6 +104,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
 
   let matchingCondition = null;
   if (level === 0) {
+    // Find the matching condition in the previous amendment
     matchingCondition = previousAmendment?.conditions.find(c => {
       return !c.parent_permit_condition_id && c.step === condition.step && c.condition === condition.condition;
     });

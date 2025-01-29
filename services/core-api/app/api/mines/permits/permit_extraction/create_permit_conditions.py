@@ -26,20 +26,6 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
             task.permit_amendment, task.permit_amendment.permit._all_permit_amendments
         )
 
-        current_app.logger.error(
-            "Previous amendment: {}".format(
-                str(previous_amendment.permit_amendment_id)
-                if previous_amendment
-                else "not found"
-            )
-        )
-
-        current_app.logger.error(
-            "Number of amendments for permit: {}".format(
-                str(len(task.permit_amendment.permit._all_permit_amendments))
-            )
-        )
-
         condition_creator = PermitConditionCreator(
             task.permit_amendment, previous_amendment
         )

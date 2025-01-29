@@ -124,7 +124,7 @@ class PermitConditionComparer:
         )
     
     def compare_all_conditions(self, conditions: List[PermitConditions], step=None) -> List[ConditionComparison]:
-        """Compare all conditions in a list to previous conditions"""
+        """Compare all conditions and sub-conditions to previous conditions"""
         comparisons = []
 
         for condition in conditions:
@@ -164,8 +164,6 @@ class PermitConditionComparer:
             if step:
                 steps = steps + [step]
             current = current.parent_permit_condition
-        if condition.condition.endswith("and be made available at the mine site at all times."):
-            print("Steps Steps:", steps)
         cat = condition.condition_category.description if condition.condition_category else ""
         return ".".join([str(cat)] + steps) if steps else ""
 

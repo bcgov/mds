@@ -113,8 +113,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
     getMineReportPermitRequirements(permitGuid)
   );
 
-  console.log('CurrentAmendment', currentAmendment?.permit_amendment_guid);
-
   const isLoading = useSelector(getIsFetching(NetworkReducerTypes.GET_PERMITS));
 
   const permitConditions = currentAmendment?.conditions;

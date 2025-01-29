@@ -39,20 +39,16 @@ const tabs = ["overview", "conditions"];
 
 const ViewPermit: FC = () => {
   const dispatch = useAppDispatch();
-  const pars = useParams();
   const { id, permitGuid, tab, permitAmendmentGuid } = useParams<{ id: string; permitGuid: string; permitAmendmentGuid: string; tab: string }>();
   const permit: IPermit = useAppSelector(getPermitByGuid(permitGuid));
+
+  // The current amendment you're viewing. This always matches the URL amendment guid.
   const currentAmendment: IPermitAmendment = useAppSelector(getAmendment(permitGuid, permitAmendmentGuid));
+
+  // The latest amendment for the permit. This may differ from currentAmendment if you're viewing an older amendment.
   const latestAmendment: IPermitAmendment = useAppSelector(getLatestAmendmentByPermitGuid(permitGuid));
 
   const amendments = permit?.permit_amendments;
-  let amendmentToViewConditions = currentAmendment;
-  if (latestAmendment && !latestAmendment?.conditions_review_completed && currentAmendment?.permit_amendment_guid) {
-    const latestCompletedAmendment = amendments?.find(a => a.conditions_review_completed);
-    if (latestCompletedAmendment) {
-      amendmentToViewConditions = latestCompletedAmendment;
-    }
-  }
 
   const mine: IMine = useAppSelector((state) => getMineById(state, id));
   const { isFeatureEnabled } = useFeatureFlag();
@@ -182,6 +178,17 @@ const ViewPermit: FC = () => {
 
   const handleTabChange = (newActiveTab: string) => {
     setActiveTab(newActiveTab);
+
+    // If navigating to the conditions tab, and the latest amendment is not reviewed, show the conditions from the last reviewed amendment.
+    // fall back to the current amendment if no reviewed amendments exist.
+    let amendmentToViewConditions = currentAmendment;
+    if (latestAmendment && !latestAmendment?.conditions_review_completed && currentAmendment?.permit_amendment_guid) {
+      const latestCompletedAmendment = amendments?.find(a => a.conditions_review_completed);
+      if (latestCompletedAmendment) {
+        amendmentToViewConditions = latestCompletedAmendment;
+      }
+    }
+
     const amendmentGuid = newActiveTab === tabs[1] ? amendmentToViewConditions?.permit_amendment_guid : latestAmendment?.permit_amendment_guid;
 
     return history.push(routes.VIEW_MINE_PERMIT_AMENDMENT.dynamicRoute(id, permitGuid, amendmentGuid, newActiveTab));

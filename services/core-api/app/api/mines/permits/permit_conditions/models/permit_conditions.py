@@ -110,10 +110,18 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def condition_comparison(self):
+        """
+        The comparison of this condition to the matching condition in the previous amendment, if any
+        This property is only available for permit condition extracted using the permit service
+        """
         return self.meta.get("condition_comparison") if self.meta else None
 
     @hybrid_property
     def comparison_match(self) -> Optional["PermitConditions"]:
+        """
+        The matching condition in the previous amendment, if any
+        This property is only available for permit condition extracted using the permit service
+        """
         comparison = self.condition_comparison
 
         if comparison:
@@ -128,6 +136,10 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def is_unchanged(self):
+        """
+        Was this condition unchanged from the matching condition in the previous amendment?
+        This property is only available for permit condition extracted using the permit service
+        """
         if not self.condition_comparison or self.condition_comparison.get("change_type") != "UNCHANGED":
             return False
         

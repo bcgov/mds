@@ -70,6 +70,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         primaryjoin='and_(PermitAmendment.permit_amendment_id==PermitConditionCategory.permit_amendment_id, PermitConditionCategory.deleted_ind==False)',
     )
 
+    # This relationship is used to get all *top level* conditions for a permit amendment
     conditions = db.relationship(
         'PermitConditions',
         lazy='select',
@@ -78,6 +79,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         order_by='asc(PermitConditions.display_order)',
         back_populates='permit_amendment')
     
+    # This relationship is used to get all conditions for a permit amendment, including sub-conditions
     all_conditions = db.relationship(
         'PermitConditions',
         lazy='select',

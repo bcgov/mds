@@ -1,22 +1,19 @@
-from datetime import datetime
 
+from app.api.mines.mine.models.mine import Mine
+from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import (
     PermitAmendment,
 )
 from app.api.mines.permits.permit_conditions.services.permit_condition_comparer import (
-    ConditionComparison,
     PermitConditionComparer,
 )
-from app.api.services.issue_to_orgbook_service import OrgBookIssuerService
-from app.api.utils.access_decorators import (
-    requires_role_mine_admin,
-    requires_role_view_all,
-)
+from app.api.utils.access_decorators import requires_role_view_all
 from app.api.utils.resources_mixins import UserMixin
 from app.extensions import api
-from flask import current_app, request
-from flask_restx import Resource, reqparse
-from werkzeug.exceptions import BadRequest
+from flask_restx import Resource
+from werkzeug.exceptions import BadRequest, NotFound
+
+from .response_models import PERMIT_CONDITION_DIFF_LIST_MODEL
 
 
 def _find_previous_amendment(permit_amendment, all_permit_amendments):
@@ -33,8 +30,25 @@ class PermitAmendmentDiffResource(Resource, UserMixin):
 
     @api.response(200, "Returns the diff between the given permit amendment and the previous one")
     @requires_role_view_all
+    @api.marshal_with(PERMIT_CONDITION_DIFF_LIST_MODEL, code=200)
     def get(self, mine_guid, permit_guid, permit_amendment_guid):
+        mine = Mine.find_by_mine_guid(mine_guid)
+        
+        if mine is None:
+            raise NotFound('Mine')
+        
+        permit = Permit.find_by_permit_guid(permit_guid, mine_guid=mine_guid)
+
+        if permit is None:
+            raise NotFound('Permit')
+
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
+
+        if permit_amendment is None:
+            raise NotFound('Permit Amendment')
+        
+        if str(permit_amendment.permit_guid) != str(permit_guid):
+            raise BadRequest("Permit Amendment does not belong to the given permit")
 
         previous_amendment = _find_previous_amendment(permit_amendment, permit_amendment.permit._all_permit_amendments)
 
@@ -42,4 +56,4 @@ class PermitAmendmentDiffResource(Resource, UserMixin):
             differ = PermitConditionComparer(previous_amendment.all_conditions)
             comparison = differ.compare_all_conditions(permit_amendment.conditions)
 
-        return {"comparison": [c.to_dict() for c in comparison] if comparison else None}
+        return {"comparison": comparison if comparison else None}

@@ -16,6 +16,10 @@ export interface ComparePermitConditionHistoryModalProps {
     previousAmendment?: IPermitAmendment;
 }
 
+/**
+ * View that compares the current permit condition (including children conditions) with the previous permit condition
+ * in a diff viewer. Also displays the reports associated with the current and previous permit conditions.
+ */
 const ComparePermitConditionHistoryModal: FC<ComparePermitConditionHistoryModalProps> = (props) => {
 
     const mineReportPermitRequirements: IMineReportPermitRequirement[] = useSelector(
