@@ -5,7 +5,7 @@ import { createRequestHeader } from "../utils/RequestHeaders";
 import { createAppSlice, rejectHandler } from "@mds/common/redux/createAppSlice";
 import { IPermitConditionComparison } from "@mds/common/interfaces/permits";
 
-interface IPermitConditionDiffState {
+export interface IPermitConditionDiffState {
     diffs: { [key: string]: IPermitConditionComparison[] };
     isLoading: boolean;
 }
