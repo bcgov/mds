@@ -61,6 +61,7 @@ div.condition-layer {
 
 .report-collapse-container {
   width: 100%;
+  margin-bottom: 15px;
 }
 
 .report-collapse-container>div {
@@ -70,6 +71,17 @@ div.condition-layer {
 .report-collapse {
   width: 100%;
   background-color: #f9f9f9;
+}
+
+.report-delete-button {
+  padding: 6px 0px;
+  border: none;
+  color: $primary-color;
+  text-underline-offset: 4px;
+
+  &:hover {
+    color: $primary-color;
+  }
 }
 
 .icon-button-container {

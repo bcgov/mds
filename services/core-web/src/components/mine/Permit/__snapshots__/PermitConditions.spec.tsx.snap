@@ -1052,71 +1052,73 @@ exports[`PermitConditions renders properly 1`] = `
                                       </div>
                                     </form>
                                   </div>
-                                  <div
-                                    class="ant-col ant-col-24"
-                                    style="padding: 8px 8px 8px 8px;"
-                                  >
+                                  <div>
                                     <div
-                                      class="ant-row ant-row-space-between"
+                                      class="ant-col ant-col-24"
+                                      style="padding: 8px 8px 8px 8px;"
                                     >
                                       <div
-                                        class="ant-space ant-space-horizontal ant-space-align-center"
+                                        class="ant-row ant-row-space-between"
                                       >
                                         <div
-                                          class="ant-space-item"
+                                          class="ant-space ant-space-horizontal ant-space-align-center"
+                                        >
+                                          <div
+                                            class="ant-space-item"
+                                          >
+                                            <span
+                                              class="ant-tag ant-tag-error condition-tag"
+                                            >
+                                              <svg
+                                                aria-hidden="true"
+                                                class="svg-inline--fa fa-clock-rotate-left margin-small--right"
+                                                data-icon="clock-rotate-left"
+                                                data-prefix="far"
+                                                focusable="false"
+                                                role="img"
+                                                viewBox="0 0 512 512"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                              >
+                                                <path
+                                                  d="M48 106.7V56c0-13.3-10.7-24-24-24S0 42.7 0 56V168c0 13.3 10.7 24 24 24H136c13.3 0 24-10.7 24-24s-10.7-24-24-24H80.7c37-57.8 101.7-96 175.3-96c114.9 0 208 93.1 208 208s-93.1 208-208 208c-42.5 0-81.9-12.7-114.7-34.5c-11-7.3-25.9-4.3-33.3 6.7s-4.3 25.9 6.7 33.3C155.2 496.4 203.8 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C170.3 0 94.4 42.1 48 106.7zM256 128c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"
+                                                  fill="currentColor"
+                                                />
+                                              </svg>
+                                              <span>
+                                                Requires Review
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </div>
+                                        <button
+                                          class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                          type="button"
                                         >
                                           <span
-                                            class="ant-tag ant-tag-error condition-tag"
+                                            aria-label="check"
+                                            class="anticon anticon-check"
+                                            role="img"
                                           >
                                             <svg
                                               aria-hidden="true"
-                                              class="svg-inline--fa fa-clock-rotate-left margin-small--right"
-                                              data-icon="clock-rotate-left"
-                                              data-prefix="far"
+                                              class=""
+                                              data-icon="check"
+                                              fill="currentColor"
                                               focusable="false"
-                                              role="img"
-                                              viewBox="0 0 512 512"
-                                              xmlns="http://www.w3.org/2000/svg"
+                                              height="1em"
+                                              viewBox="64 64 896 896"
+                                              width="1em"
                                             >
                                               <path
-                                                d="M48 106.7V56c0-13.3-10.7-24-24-24S0 42.7 0 56V168c0 13.3 10.7 24 24 24H136c13.3 0 24-10.7 24-24s-10.7-24-24-24H80.7c37-57.8 101.7-96 175.3-96c114.9 0 208 93.1 208 208s-93.1 208-208 208c-42.5 0-81.9-12.7-114.7-34.5c-11-7.3-25.9-4.3-33.3 6.7s-4.3 25.9 6.7 33.3C155.2 496.4 203.8 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C170.3 0 94.4 42.1 48 106.7zM256 128c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"
-                                                fill="currentColor"
+                                                d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 00-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z"
                                               />
                                             </svg>
-                                            <span>
-                                              Requires Review
-                                            </span>
                                           </span>
-                                        </div>
+                                          <span>
+                                             Complete Review
+                                          </span>
+                                        </button>
                                       </div>
-                                      <button
-                                        class="ant-btn ant-btn-primary core-btn core-btn-primary"
-                                        type="button"
-                                      >
-                                        <span
-                                          aria-label="check"
-                                          class="anticon anticon-check"
-                                          role="img"
-                                        >
-                                          <svg
-                                            aria-hidden="true"
-                                            class=""
-                                            data-icon="check"
-                                            fill="currentColor"
-                                            focusable="false"
-                                            height="1em"
-                                            viewBox="64 64 896 896"
-                                            width="1em"
-                                          >
-                                            <path
-                                              d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 00-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z"
-                                            />
-                                          </svg>
-                                        </span>
-                                        <span>
-                                           Complete Review
-                                        </span>
-                                      </button>
                                     </div>
                                   </div>
                                 </div>
@@ -1337,41 +1339,43 @@ exports[`PermitConditions renders properly 1`] = `
                                       </div>
                                     </form>
                                   </div>
-                                  <div
-                                    class="ant-col ant-col-24"
-                                    style="padding: 8px 8px 8px 8px;"
-                                  >
+                                  <div>
                                     <div
-                                      class="ant-row ant-row-space-between"
+                                      class="ant-col ant-col-24"
+                                      style="padding: 8px 8px 8px 8px;"
                                     >
                                       <div
-                                        class="ant-space ant-space-horizontal ant-space-align-center"
+                                        class="ant-row ant-row-space-between"
                                       >
                                         <div
-                                          class="ant-space-item"
+                                          class="ant-space ant-space-horizontal ant-space-align-center"
                                         >
-                                          <span
-                                            class="ant-tag ant-tag-error condition-tag"
+                                          <div
+                                            class="ant-space-item"
                                           >
-                                            <svg
-                                              aria-hidden="true"
-                                              class="svg-inline--fa fa-clock-rotate-left margin-small--right"
-                                              data-icon="clock-rotate-left"
-                                              data-prefix="far"
-                                              focusable="false"
-                                              role="img"
-                                              viewBox="0 0 512 512"
-                                              xmlns="http://www.w3.org/2000/svg"
+                                            <span
+                                              class="ant-tag ant-tag-error condition-tag"
                                             >
-                                              <path
-                                                d="M48 106.7V56c0-13.3-10.7-24-24-24S0 42.7 0 56V168c0 13.3 10.7 24 24 24H136c13.3 0 24-10.7 24-24s-10.7-24-24-24H80.7c37-57.8 101.7-96 175.3-96c114.9 0 208 93.1 208 208s-93.1 208-208 208c-42.5 0-81.9-12.7-114.7-34.5c-11-7.3-25.9-4.3-33.3 6.7s-4.3 25.9 6.7 33.3C155.2 496.4 203.8 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C170.3 0 94.4 42.1 48 106.7zM256 128c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"
-                                                fill="currentColor"
-                                              />
-                                            </svg>
-                                            <span>
-                                              Requires Review
+                                              <svg
+                                                aria-hidden="true"
+                                                class="svg-inline--fa fa-clock-rotate-left margin-small--right"
+                                                data-icon="clock-rotate-left"
+                                                data-prefix="far"
+                                                focusable="false"
+                                                role="img"
+                                                viewBox="0 0 512 512"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                              >
+                                                <path
+                                                  d="M48 106.7V56c0-13.3-10.7-24-24-24S0 42.7 0 56V168c0 13.3 10.7 24 24 24H136c13.3 0 24-10.7 24-24s-10.7-24-24-24H80.7c37-57.8 101.7-96 175.3-96c114.9 0 208 93.1 208 208s-93.1 208-208 208c-42.5 0-81.9-12.7-114.7-34.5c-11-7.3-25.9-4.3-33.3 6.7s-4.3 25.9 6.7 33.3C155.2 496.4 203.8 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C170.3 0 94.4 42.1 48 106.7zM256 128c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"
+                                                  fill="currentColor"
+                                                />
+                                              </svg>
+                                              <span>
+                                                Requires Review
+                                              </span>
                                             </span>
-                                          </span>
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
@@ -1978,49 +1982,51 @@ exports[`PermitConditions renders properly 1`] = `
                                       </div>
                                     </div>
                                   </div>
-                                  <div
-                                    class="ant-col ant-col-24"
-                                    style="padding: 8px 8px 8px 8px;"
-                                  >
+                                  <div>
                                     <div
-                                      class="ant-row ant-row-space-between"
+                                      class="ant-col ant-col-24"
+                                      style="padding: 8px 8px 8px 8px;"
                                     >
                                       <div
-                                        class="ant-space ant-space-horizontal ant-space-align-center"
+                                        class="ant-row ant-row-space-between"
                                       >
                                         <div
-                                          class="ant-space-item"
+                                          class="ant-space ant-space-horizontal ant-space-align-center"
                                         >
-                                          <span
-                                            class="ant-tag ant-tag-success condition-tag"
+                                          <div
+                                            class="ant-space-item"
                                           >
                                             <span
-                                              aria-label="check-circle"
-                                              class="anticon anticon-check-circle"
-                                              role="img"
+                                              class="ant-tag ant-tag-success condition-tag"
                                             >
-                                              <svg
-                                                aria-hidden="true"
-                                                class=""
-                                                data-icon="check-circle"
-                                                fill="currentColor"
-                                                focusable="false"
-                                                height="1em"
-                                                viewBox="64 64 896 896"
-                                                width="1em"
+                                              <span
+                                                aria-label="check-circle"
+                                                class="anticon anticon-check-circle"
+                                                role="img"
                                               >
-                                                <path
-                                                  d="M699 353h-46.9c-10.2 0-19.9 4.9-25.9 13.3L469 584.3l-71.2-98.8c-6-8.3-15.6-13.3-25.9-13.3H325c-6.5 0-10.3 7.4-6.5 12.7l124.6 172.8a31.8 31.8 0 0051.7 0l210.6-292c3.9-5.3.1-12.7-6.4-12.7z"
-                                                />
-                                                <path
-                                                  d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
-                                                />
-                                              </svg>
+                                                <svg
+                                                  aria-hidden="true"
+                                                  class=""
+                                                  data-icon="check-circle"
+                                                  fill="currentColor"
+                                                  focusable="false"
+                                                  height="1em"
+                                                  viewBox="64 64 896 896"
+                                                  width="1em"
+                                                >
+                                                  <path
+                                                    d="M699 353h-46.9c-10.2 0-19.9 4.9-25.9 13.3L469 584.3l-71.2-98.8c-6-8.3-15.6-13.3-25.9-13.3H325c-6.5 0-10.3 7.4-6.5 12.7l124.6 172.8a31.8 31.8 0 0051.7 0l210.6-292c3.9-5.3.1-12.7-6.4-12.7z"
+                                                  />
+                                                  <path
+                                                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                                                  />
+                                                </svg>
+                                              </span>
+                                              <span>
+                                                Review Completed
+                                              </span>
                                             </span>
-                                            <span>
-                                              Review Completed
-                                            </span>
-                                          </span>
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
@@ -2124,49 +2130,51 @@ exports[`PermitConditions renders properly 1`] = `
                                       </div>
                                     </div>
                                   </div>
-                                  <div
-                                    class="ant-col ant-col-24"
-                                    style="padding: 8px 8px 8px 8px;"
-                                  >
+                                  <div>
                                     <div
-                                      class="ant-row ant-row-space-between"
+                                      class="ant-col ant-col-24"
+                                      style="padding: 8px 8px 8px 8px;"
                                     >
                                       <div
-                                        class="ant-space ant-space-horizontal ant-space-align-center"
+                                        class="ant-row ant-row-space-between"
                                       >
                                         <div
-                                          class="ant-space-item"
+                                          class="ant-space ant-space-horizontal ant-space-align-center"
                                         >
-                                          <span
-                                            class="ant-tag ant-tag-success condition-tag"
+                                          <div
+                                            class="ant-space-item"
                                           >
                                             <span
-                                              aria-label="check-circle"
-                                              class="anticon anticon-check-circle"
-                                              role="img"
+                                              class="ant-tag ant-tag-success condition-tag"
                                             >
-                                              <svg
-                                                aria-hidden="true"
-                                                class=""
-                                                data-icon="check-circle"
-                                                fill="currentColor"
-                                                focusable="false"
-                                                height="1em"
-                                                viewBox="64 64 896 896"
-                                                width="1em"
+                                              <span
+                                                aria-label="check-circle"
+                                                class="anticon anticon-check-circle"
+                                                role="img"
                                               >
-                                                <path
-                                                  d="M699 353h-46.9c-10.2 0-19.9 4.9-25.9 13.3L469 584.3l-71.2-98.8c-6-8.3-15.6-13.3-25.9-13.3H325c-6.5 0-10.3 7.4-6.5 12.7l124.6 172.8a31.8 31.8 0 0051.7 0l210.6-292c3.9-5.3.1-12.7-6.4-12.7z"
-                                                />
-                                                <path
-                                                  d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
-                                                />
-                                              </svg>
+                                                <svg
+                                                  aria-hidden="true"
+                                                  class=""
+                                                  data-icon="check-circle"
+                                                  fill="currentColor"
+                                                  focusable="false"
+                                                  height="1em"
+                                                  viewBox="64 64 896 896"
+                                                  width="1em"
+                                                >
+                                                  <path
+                                                    d="M699 353h-46.9c-10.2 0-19.9 4.9-25.9 13.3L469 584.3l-71.2-98.8c-6-8.3-15.6-13.3-25.9-13.3H325c-6.5 0-10.3 7.4-6.5 12.7l124.6 172.8a31.8 31.8 0 0051.7 0l210.6-292c3.9-5.3.1-12.7-6.4-12.7z"
+                                                  />
+                                                  <path
+                                                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                                                  />
+                                                </svg>
+                                              </span>
+                                              <span>
+                                                Review Completed
+                                              </span>
                                             </span>
-                                            <span>
-                                              Review Completed
-                                            </span>
-                                          </span>
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
