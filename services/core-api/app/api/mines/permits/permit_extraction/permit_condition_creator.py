@@ -20,7 +20,7 @@ class PermitConditionCreator:
     def __init__(
         self,
         permit_amendment: PermitAmendment,
-        previous_amendment: Optional[PermitAmendment],
+        previous_amendment: Optional[PermitAmendment]
     ):
         self.permit_amendment = permit_amendment
         self.previous_amendment = previous_amendment
@@ -87,9 +87,12 @@ class PermitConditionCreator:
 
         comparison = None
 
+        db.session.add(main_condition)
+        db.session.flush()
+
         if self.previous_amendment:
             condition_comparer = PermitConditionComparer(
-                previous_amendment_conditions=list(self.previous_amendment.conditions)
+                previous_amendment_conditions=list(self.previous_amendment.all_conditions)
             )
             comparison = condition_comparer.compare_condition(main_condition)
             main_condition.meta = main_condition.meta or {}
@@ -152,7 +155,7 @@ class PermitConditionCreator:
 
         parent_key = ".".join(parent_number_structure)
         parent_id = self.last_condition_id_by_number_structure.get(parent_key)
-        
+
         if parent_id:
             return db.session.query(PermitConditions).get(parent_id)
         return None

@@ -142,7 +142,6 @@ class PermitConditionComparer:
         """Index conditions by their step path for quick lookup"""
         indexed = {}
         for condition in conditions:
-            print(condition.condition)
             step_path = self._get_condition_step_path(condition)
             if step_path:
                 indexed[step_path] = condition

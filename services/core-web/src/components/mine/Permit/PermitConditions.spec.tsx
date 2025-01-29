@@ -4,7 +4,7 @@ import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { MINES, STATIC_CONTENT, PERMITS, AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import ViewPermit from "./ViewPermit";
-import { BrowserRouter, MemoryRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
 import { userReducerType } from "@mds/common/redux/slices/userSlice";
@@ -53,6 +53,7 @@ function mockFunction() {
     useParams: jest.fn().mockReturnValue({
       id: MOCK.MINES.mineIds[0],
       permitGuid: MOCK.PERMITS[0].permit_guid,
+      permitAmendmentGuid: MOCK.PERMITS[0].permit_amendments[0].permit_amendment_guid,
       tab: "conditions",
     }),
     useLocation: jest.fn().mockReturnValue({
@@ -191,10 +192,10 @@ describe("PermitConditions", () => {
   it("enables adding a condition category in a modal", async () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState} >
-        <MemoryRouter initialEntries={[VIEW_MINE_PERMIT_AMENDMENT.dynamicRoute(MOCK.PERMITS[0].mine_guid, MOCK.PERMITS[0].permit_guid, MOCK.PERMITS[0].permit_amendments[0].permit_amendment_guid, "conditions")]}>
+        <BrowserRouter>
           <ModalWrapper />
           <ViewPermit />
-        </MemoryRouter>
+        </BrowserRouter>
       </ReduxWrapper>
     );
 

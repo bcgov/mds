@@ -1159,6 +1159,7 @@ export const PERMITS: IPermit[] = [
     permit_amendments: [
       {
         permit_amendment_id: 2,
+        permit_amendment_guid: "b1b1b1b1-b1b1-b1b1-b1b1-b1b1b1b1b1b1",
         permit_no: "C-12345",
         security_received_date: "2019-04-03",
         security_not_required: false,

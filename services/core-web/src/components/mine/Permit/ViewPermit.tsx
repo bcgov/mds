@@ -39,7 +39,7 @@ const tabs = ["overview", "conditions"];
 
 const ViewPermit: FC = () => {
   const dispatch = useAppDispatch();
-
+  const pars = useParams();
   const { id, permitGuid, tab, permitAmendmentGuid } = useParams<{ id: string; permitGuid: string; permitAmendmentGuid: string; tab: string }>();
   const permit: IPermit = useAppSelector(getPermitByGuid(permitGuid));
   const currentAmendment: IPermitAmendment = useAppSelector(getAmendment(permitGuid, permitAmendmentGuid));
@@ -54,11 +54,9 @@ const ViewPermit: FC = () => {
     }
   }
 
-  console.error(currentAmendment)
-
   const mine: IMine = useAppSelector((state) => getMineById(state, id));
   const { isFeatureEnabled } = useFeatureFlag();
-  const enablePermitConditionsTab = isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE);
+  const enablePermitConditionsTab = true || isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE);
   const permitExtraction = useAppSelector(
     getPermitExtractionByGuid(latestAmendment?.permit_amendment_id)
   );

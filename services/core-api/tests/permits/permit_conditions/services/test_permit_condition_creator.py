@@ -209,7 +209,7 @@ def test_condition_comparison_with_previous_amendment_nested(
 
 
 def test_condition_comparison_with_previous_amendment_modified(
-    test_client, db_session, permit_amendments, permit_condition_creator
+    test_client, db_session, permit_amendments
 ):
     current_amendment, previous_amendment = permit_amendments
 
@@ -227,8 +227,8 @@ def test_condition_comparison_with_previous_amendment_modified(
         _step="1",
     )
 
-    db_session.add(previous_parent)
-    db_session.flush()
+    previous_parent.save()
+
     previous_child = PermitConditions(
         permit_condition_guid=child_gid,
         permit_amendment_id=previous_amendment.permit_amendment_id,
@@ -239,9 +239,17 @@ def test_condition_comparison_with_previous_amendment_modified(
         _step="a",
         parent_permit_condition_id=previous_parent.permit_condition_id,
     )
-    db_session.add(previous_child)
-    db_session.flush()
+    previous_child.save()
 
+    # Test with modified child condition text
+    parent_result = PermitConditionResult(
+        section="A",
+        paragraph="1",
+        subparagraph="",
+        condition_text="Previous parent",
+        condition_title=None,
+        meta={},
+    )
     # Test with modified child condition text
     child_result_modified = PermitConditionResult(
         section="A",
@@ -252,7 +260,17 @@ def test_condition_comparison_with_previous_amendment_modified(
         meta={},
     )
 
-    modified_child_condition, _, _ = permit_condition_creator.create_condition(
+    creator = PermitConditionCreator(
+        permit_amendment=current_amendment, previous_amendment=previous_amendment,
+    )
+    creator.current_category = "GEC"
+    creator.default_section = "GEC"
+
+    creator.create_condition(
+        parent_result
+    )
+
+    modified_child_condition, _, _ = creator.create_condition(
         child_result_modified
     )
 
