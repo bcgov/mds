@@ -5,12 +5,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
-    path="/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/:tab"
+    path="/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/permit-amendment/:permitAmendmentGuid/:tab"
   />
   <Route
     component={[Function]}
     exact={true}
-    path="/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/permit-amendment/:permitAmendmentGuid/:tab"
+    path="/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/:tab"
   />
   <Route
     exact={true}
