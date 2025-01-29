@@ -64,9 +64,11 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./services/postgres/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
-      - ./services/postgres/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ./services/postgres/postgresql.conf:/config/postgresql.conf
+      - ./services/postgres/pg_hba.conf:/config/pg_hba.conf
       - postgres_data:/var/lib/postgresql/data
+    command:
+      postgres -c 'config_file=/config/postgresql.conf' -c 'hba_file=/config/pg_hba.conf'
     healthcheck:
       test: [ "CMD", "pg_isready" ]
       interval: 5s
