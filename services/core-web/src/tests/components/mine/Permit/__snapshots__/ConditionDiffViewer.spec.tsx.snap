@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ConditionDiffViewer renders correctly 1`] = `
+exports[`ConditionDiffViewer applies correct class for unchanged conditions 1`] = `
 <div>
   <div
     class="diff-container"
@@ -19,24 +19,36 @@ exports[`ConditionDiffViewer renders correctly 1`] = `
           Previous Version
         </h4>
         <div
-          class="ant-skeleton ant-skeleton-active"
+          class="condition-unchanged"
         >
           <div
-            class="ant-skeleton-content"
+            class="condition-text"
+            style="margin-left: 0px; margin-bottom: 8px;"
           >
-            <h3
-              class="ant-skeleton-title"
-              style="width: 38%;"
-            />
-            <ul
-              class="ant-skeleton-paragraph"
+            <div
+              class="ant-row ant-row-no-wrap ant-row-top condition-content"
             >
-              <li />
-              <li />
-              <li
-                style="width: 61%;"
-              />
-            </ul>
+              <div
+                class="ant-col step-column"
+                style="flex-shrink: 0;"
+              >
+                <span
+                  class="ant-typography view-item-value"
+                >
+                  1.
+                    
+                </span>
+              </div>
+              <div
+                class="ant-col condition-column"
+              >
+                <span
+                  class="ant-typography view-item-value"
+                >
+                  Section decade check including.
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -50,24 +62,36 @@ exports[`ConditionDiffViewer renders correctly 1`] = `
           Current Version
         </h4>
         <div
-          class="ant-skeleton ant-skeleton-active"
+          class="condition-unchanged"
         >
           <div
-            class="ant-skeleton-content"
+            class="condition-text"
+            style="margin-left: 0px; margin-bottom: 8px;"
           >
-            <h3
-              class="ant-skeleton-title"
-              style="width: 38%;"
-            />
-            <ul
-              class="ant-skeleton-paragraph"
+            <div
+              class="ant-row ant-row-no-wrap ant-row-top condition-content"
             >
-              <li />
-              <li />
-              <li
-                style="width: 61%;"
-              />
-            </ul>
+              <div
+                class="ant-col step-column"
+                style="flex-shrink: 0;"
+              >
+                <span
+                  class="ant-typography view-item-value"
+                >
+                  1.
+                    
+                </span>
+              </div>
+              <div
+                class="ant-col condition-column"
+              >
+                <span
+                  class="ant-typography view-item-value"
+                >
+                  Section decade check including.
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

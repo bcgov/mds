@@ -105,6 +105,7 @@ describe('ConditionDiffViewer', () => {
 
         await waitFor(() => {
             expect(container.querySelector('.condition-unchanged')).toBeInTheDocument();
+            expect(container).toMatchSnapshot();
         });
     });
 
@@ -147,15 +148,4 @@ describe('ConditionDiffViewer', () => {
         });
     });
 
-    it('renders correctly', async () => {
-        const { container } = render(
-            <ReduxWrapper initialState={initialState}>
-                <ConditionDiffViewer {...mockProps} />
-            </ReduxWrapper>
-        );
-
-        await waitFor(() => {
-            expect(container).toMatchSnapshot();
-        });
-    })
 });
