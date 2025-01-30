@@ -78,8 +78,6 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
     });
   };
 
-  console.log("AFSAAAAAAAAA")
-  console.log(currentAmendment)
   return (
     <div style={{ minHeight: modalView ? "380px" : "" }}>
       <FormWrapper
