@@ -4,7 +4,7 @@ import { getConditionsWithRequirements, IMineReportPermitRequirement, IPermitAme
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import ConditionDiffViewer from "./ConditionDiffViewer";
 import PermitConditionReportRequirements from "./PermitConditionReportRequirements";
-import { getMineReportPermitRequirements } from "@mds/common/redux/selectors/permitSelectors";
+import { getMineReportPermitRequirements, getMineReportPermitRequirementsByAmendment } from "@mds/common/redux/selectors/permitSelectors";
 import { useSelector } from "react-redux";
 
 export interface ComparePermitConditionHistoryModalProps {
@@ -22,12 +22,16 @@ export interface ComparePermitConditionHistoryModalProps {
  */
 const ComparePermitConditionHistoryModal: FC<ComparePermitConditionHistoryModalProps> = (props) => {
 
-    const mineReportPermitRequirements: IMineReportPermitRequirement[] = useSelector(
+    const newMineReportPermitRequirements: IMineReportPermitRequirement[] = useSelector(
         getMineReportPermitRequirements(props.permitGuid)
     );
 
-    const oldReports = getConditionsWithRequirements([props.previousAmendmentCondition], mineReportPermitRequirements);
-    const newReports = getConditionsWithRequirements([props.currentAmendmentCondition], mineReportPermitRequirements);
+    const previousMineReportPermitRequirements: IMineReportPermitRequirement[] = useSelector(
+        getMineReportPermitRequirementsByAmendment(props.permitGuid, props.previousAmendment?.permit_amendment_guid)
+    );
+
+    const oldReports = getConditionsWithRequirements([props.currentAmendmentCondition], previousMineReportPermitRequirements);
+    const newReports = getConditionsWithRequirements([props.currentAmendmentCondition], newMineReportPermitRequirements);
 
     return (
         <FormWrapper name={"test"} isModal onSubmit={() => { }}>

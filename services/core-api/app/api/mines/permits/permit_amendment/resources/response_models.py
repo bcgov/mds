@@ -11,8 +11,7 @@ PERMIT_CONDITION_DIFF_MODEL = api.model('PermitConditionDiff', {
     'text_similarity': fields.Float(min=0, max=1, description='Text similarity score between conditions'),
     'structure_similarity': fields.Float(min=0, max=1, description='Structure similarity score between conditions'),
     'combined_score': fields.Float(min=0, max=1, description='Combined similarity score'),
-    'change_type': fields.String(enum=ConditionChangeType, attribute='change_type.name', 
-                                description='Type of change detected (added/modified/unchanged/moved)')
+    'change_type': fields.String(description='Type of change detected (added/modified/unchanged/moved)')
 })
 
 PERMIT_CONDITION_DIFF_LIST_MODEL = api.model('PermitConditionDiffList', {

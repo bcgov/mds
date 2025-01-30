@@ -1,4 +1,4 @@
-from typing import Dict, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from app.api.mines.permits.permit_amendment.models.permit_amendment import (
     PermitAmendment,
@@ -29,6 +29,13 @@ class PermitConditionCreator:
         self.current_category = None
         self.default_section = None
 
+        if previous_amendment:
+            self.condition_comparer = PermitConditionComparer(
+                previous_amendment_conditions=list(previous_amendment.all_conditions)
+            )
+        else:
+            self.condition_comparer = None
+
     def set_default_section(self, section) -> None:
         self.default_section = section.condition_category_code
 
@@ -46,7 +53,7 @@ class PermitConditionCreator:
         self,
         condition: PermitConditionResult,
     ) -> Tuple[
-        PermitConditions, Optional[PermitConditions], Optional[ConditionComparison]
+        PermitConditions, Optional[PermitConditions], List[ConditionComparison]
     ]:
         current_category = self.get_current_category()
 
@@ -85,20 +92,6 @@ class PermitConditionCreator:
             _step=(condition.step if not condition.condition_title else ""),
         )
 
-        comparison = None
-
-        db.session.add(main_condition)
-        db.session.flush()
-
-        if self.previous_amendment:
-            # Compare condition to previous amendment
-            # and record the result
-            condition_comparer = PermitConditionComparer(
-                previous_amendment_conditions=list(self.previous_amendment.all_conditions)
-            )
-            comparison = condition_comparer.compare_condition(main_condition)
-            main_condition.meta = main_condition.meta or {}
-            main_condition.meta.update({"condition_comparison": comparison.to_dict()})
 
         db.session.add(main_condition)
         db.session.flush()
@@ -109,7 +102,25 @@ class PermitConditionCreator:
             main_condition.permit_condition_id
         )
 
-        return main_condition, title_condition, comparison
+        comparisons = self.compare_conditions_to_previous_amendment([x for x in [title_condition, main_condition] if x])
+        return main_condition, title_condition, comparisons
+
+    def compare_conditions_to_previous_amendment(self, created_cond: List[PermitConditions]) -> List[ConditionComparison]:
+        if not self.condition_comparer:
+            return []
+        comparisons = self.condition_comparer.compare_all_conditions(
+            conditions=created_cond,
+        )
+    
+        for comparison in comparisons:
+            mt = {
+                **(comparison.current_condition.meta or {}),
+                "condition_comparison": comparison.to_dict()
+            }
+
+            comparison.current_condition.meta = mt
+            
+        return comparisons
 
     def _create_title_condition(
         self,

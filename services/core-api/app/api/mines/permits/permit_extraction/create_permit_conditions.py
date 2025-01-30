@@ -1,3 +1,4 @@
+
 from app.api.mines.permits.permit_extraction.models.permit_extraction_task import (
     PermitExtractionTask,
 )
@@ -32,6 +33,8 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
 
         conditions = _add_toplevel_category_if_missing(result)
 
+        created_cond = []
+        comparisons = []
         for condition in conditions:
             if condition.is_top_level_section:
                 _create_top_level_category(
@@ -42,37 +45,46 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
                     _create_default_category(condition_creator, category_creator)
 
                 # Create the condition
-                main_condition, title_condition, comparison = (
-                    condition_creator.create_condition(
-                        condition=condition,
-                    )
+                main_cond, title_cond, created_comparisons = condition_creator.create_condition(
+                    condition=condition,
                 )
+                comparisons = comparisons + created_comparisons
+                created_cond.append(main_cond)
+                if title_cond:
+                    created_cond.append(title_cond)
+        
+        comparison_by_id = {}
 
-                # Copy over the report requirements from the previous amendment or create new report records if needed
-                report_requirement = (
-                    create_or_copy_permit_condition_report_requirements(
-                        task, condition, main_condition.permit_condition_id, comparison
-                    )
-                )
+        comparison_by_id = {comp.current_condition.permit_condition_id: comp for comp in comparisons}
 
-                if report_requirement:
-                    db.session.add(report_requirement)
-                    db.session.flush()
 
-        # Update the status code for top level conditions that are unchaged from the previous amendment.
-        for condition in task.permit_amendment.conditions:
-            if condition.is_unchanged:
-                mtch = condition.comparison_match
-                if mtch:
-                    condition.permit_condition_status_code = mtch.condition
-                    db.session.add(condition)
+        for condition in created_cond:
+            comparison = comparison_by_id.get(condition.permit_condition_id)
+            report_requirement = create_or_copy_permit_condition_report_requirements(task, condition, comparison)
+            if report_requirement:
+                db.session.add(report_requirement)
+
+            _update_condition_approval_status(condition, comparison_by_id)
 
         db.session.commit()
+
         return True
 
     except Exception as e:
+        current_app.logger.error("Failed to create permit conditions from task", e)
         db.session.rollback()
         raise e
+
+
+def _update_condition_approval_status(condition, comparison_by_id):
+    """
+    - Update the approval status of the top level conditions if it is unchanged since the previous amendment
+    """
+    comparison = comparison_by_id.get(condition.permit_condition_id)
+
+    if comparison:
+        if not condition.parent_permit_condition_id and condition.is_unchanged:
+            condition.permit_condition_status_code = comparison.previous_condition.permit_condition_status_code
 
 
 def _find_previous_amendment(permit_amendment, all_permit_amendments):

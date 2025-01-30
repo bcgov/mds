@@ -1,3 +1,4 @@
+import json
 from dataclasses import dataclass
 from difflib import SequenceMatcher
 from enum import Enum
@@ -6,6 +7,7 @@ from typing import Dict, List, Optional
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
     PermitConditions,
 )
+from app.extensions import db
 
 
 class ConditionChangeType(Enum):
@@ -64,7 +66,8 @@ class PermitConditionComparer:
             - A condition is considered 'moved' if it has text that matches a condition with a score > SIMILARITY_SCORE_MATCH_THRESHOLD but the numbering structure is different
             - A condition is considered 'added' if it does not match any previous conditions with a score > SIMILARITY_SCORE_MATCH_THRESHOLD
         """
-        step_path = self._get_condition_step_path(condition)
+        step_path = condition.step_path
+
 
         # Try to find match by step path first
         previous_condition = self.previous_conditions_by_step.get(step_path)
@@ -123,7 +126,7 @@ class PermitConditionComparer:
             change_type=ConditionChangeType.ADDED,
         )
     
-    def compare_all_conditions(self, conditions: List[PermitConditions], step=None) -> List[ConditionComparison]:
+    def compare_all_conditions(self, conditions: List[PermitConditions]) -> List[ConditionComparison]:
         """Compare all conditions and sub-conditions to previous conditions"""
         comparisons = []
 
@@ -142,7 +145,7 @@ class PermitConditionComparer:
         """Index conditions by their step path for quick lookup"""
         indexed = {}
         for condition in conditions:
-            step_path = self._get_condition_step_path(condition)
+            step_path = condition.step_path
             if step_path:
                 indexed[step_path] = condition
         return indexed

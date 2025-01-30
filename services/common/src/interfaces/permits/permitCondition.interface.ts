@@ -16,6 +16,7 @@ export enum IPermitConditionChangeType {
 }
 
 export interface IPermitConditionComparison {
+  condition_guid: string;
   previous_condition_guid: string;
   text_similarity: number;
   structure_similarity: number;

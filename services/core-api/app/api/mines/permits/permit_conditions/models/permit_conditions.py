@@ -140,7 +140,7 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         Was this condition unchanged from the matching condition in the previous amendment?
         This property is only available for permit condition extracted using the permit service
         """
-        if not self.condition_comparison or self.condition_comparison.get("change_type") != "UNCHANGED":
+        if not self.condition_comparison or self.condition_comparison.get("change_type") != "unchanged":
             return False
         
         # Recursively check all sub_conditions
@@ -265,3 +265,23 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         for root_condition in root_conditions:
             all_conditions.extend(get_all_conditions(root_condition))
         return all_conditions
+
+    @hybrid_property
+    def step_path(self):
+        steps = []
+        current = self
+        while current:
+            step = current._step
+            if step == "" and current.parent_permit_condition:
+                # If step is empty, determine it based on position in parent's sub_conditions
+                parent = current.parent_permit_condition
+                if parent.sub_conditions:
+                    try:
+                        step = f'sub_{str(parent.sub_conditions.index(current) + 1)}'
+                    except ValueError:
+                        step = None
+            if step:
+                steps = steps + [step]
+            current = current.parent_permit_condition
+        cat = self.condition_category.description if self.condition_category else ""
+        return ".".join([str(cat)] + steps) if steps else ""

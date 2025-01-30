@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useMemo, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { Alert, Button, Col, Collapse, Row, Skeleton, Space, Typography } from "antd";
+import { useSelector } from "react-redux";
+import { Alert, Button, Col, Row, Skeleton, Space, Typography } from "antd";
 import FileOutlined from "@ant-design/icons/FileOutlined";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -35,7 +35,7 @@ import {
   RenderExtractionProgress,
   RenderExtractionStart,
 } from "./PermitConditionExtraction";
-import { getMineReportPermitRequirements } from "@mds/common/redux/selectors/permitSelectors";
+import { getMineReportPermitRequirementsByAmendment } from "@mds/common/redux/selectors/permitSelectors";
 import PermitConditionCategoryEditModal from "./PermitConditionCategoryEditModal";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { uniqBy } from "lodash";
@@ -58,7 +58,6 @@ import { getUser } from "@mds/common/redux/slices/userSlice";
 import { createDropDownList } from "@common/utils/helpers";
 import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
 import { PermitReviewBanner } from "./PermitReviewBanner";
-import { COLOR } from "@/constants/styles";
 import { PermitConditionsProvider } from "./PermitConditionsContext";
 import PermitConditionReportRequirements from "./PermitConditionReportRequirements";
 import { useAppDispatch } from "@mds/common/redux/rootState";
@@ -110,7 +109,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const [addingToCategoryCode, setAddingToCategoryCode] = useState<string>();
 
   const mineReportPermitRequirements: IMineReportPermitRequirement[] = useSelector(
-    getMineReportPermitRequirements(permitGuid)
+    getMineReportPermitRequirementsByAmendment(permitGuid, currentAmendment?.permit_amendment_guid)
   );
 
   const isLoading = useSelector(getIsFetching(NetworkReducerTypes.GET_PERMITS));

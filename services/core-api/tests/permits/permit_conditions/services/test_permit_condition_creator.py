@@ -76,6 +76,54 @@ def test_create_condition_with_title(permit_condition_creator, db_session):
     assert main_condition._step == ""
 
 
+def test_create_condition_with_title_comparison(permit_amendments, db_session):
+    current_amendment, previous_amendment = permit_amendments
+
+    gid = uuid.uuid4()
+    previous_condition = PermitConditions(
+        permit_condition_guid=gid,
+        permit_amendment_id=previous_amendment.permit_amendment_id,
+        condition="matching-title",
+        condition_type_code="SEC",
+        condition_category_code="GEC",
+        display_order=1,
+        _step="1",
+    )
+    db_session.add(previous_condition)
+    db_session.commit()
+
+    condition_result = PermitConditionResult(
+        section="A",
+        paragraph="1",
+        condition_text="Test condition",
+        condition_title="matching-title",
+        meta={},
+    )
+
+    permit_condition_creator = PermitConditionCreator(
+        permit_amendment=permit_amendments[0], previous_amendment=permit_amendments[1]
+    )
+    permit_condition_creator.current_category = "GEC"
+    permit_condition_creator.default_section = "GEC"
+
+    main_condition, title_condition, _ = permit_condition_creator.create_condition(
+        condition_result
+    )
+
+    assert main_condition.condition == "Test condition"
+    assert main_condition._step == ""
+    assert main_condition.parent_permit_condition_id == title_condition.permit_condition_id
+
+    assert title_condition.meta.get("condition_comparison") is not None
+    assert title_condition.meta["condition_comparison"]["change_type"] == "unchanged"
+    assert title_condition.meta["condition_comparison"]["text_similarity"] == 1.0
+    # assert title_condition.meta["condition_comparison"]["condition_guid"] == str(previous_condition.permit_condition_guid)
+
+    assert main_condition.meta.get("condition_comparison") is not None
+    assert main_condition.meta["condition_comparison"]["change_type"] == "added"
+    assert main_condition.meta["condition_comparison"]["text_similarity"] == 0.0
+    assert main_condition.meta["condition_comparison"]["previous_condition_guid"] == None
+
 def test_create_nested_conditions(permit_condition_creator, db_session):
     # Create parent condition
     parent_result = PermitConditionResult(
@@ -109,7 +157,7 @@ def test_create_nested_conditions(permit_condition_creator, db_session):
 
 
 def test_condition_comparison_with_previous_amendment(
-    test_client, db_session, permit_amendments, permit_condition_creator
+    test_client, db_session, permit_amendments
 ):
     current_amendment, previous_amendment = permit_amendments
 
@@ -135,6 +183,12 @@ def test_condition_comparison_with_previous_amendment(
         meta={},
     )
 
+    permit_condition_creator = PermitConditionCreator(
+        permit_amendment=current_amendment, previous_amendment=previous_amendment
+    )
+    permit_condition_creator.current_category = "GEC"
+    permit_condition_creator.default_section = "GEC"
+
     main_condition, _, _ = permit_condition_creator.create_condition(condition_result)
 
     assert main_condition.meta.get("condition_comparison") is not None
@@ -148,7 +202,7 @@ def test_condition_comparison_with_previous_amendment(
 
 
 def test_condition_comparison_with_previous_amendment_nested(
-    test_client, db_session, permit_amendments, permit_condition_creator
+    test_client, db_session, permit_amendments
 ):
     current_amendment, previous_amendment = permit_amendments
 
@@ -194,6 +248,11 @@ def test_condition_comparison_with_previous_amendment_nested(
         condition_title=None,
         meta={},
     )
+    permit_condition_creator = PermitConditionCreator(
+        permit_amendment=current_amendment, previous_amendment=previous_amendment
+    )
+    permit_condition_creator.current_category = "GEC"
+    permit_condition_creator.default_section = "GEC"
 
     parent_condition, _, _ = permit_condition_creator.create_condition(parent_result)
     child_condition, _, _ = permit_condition_creator.create_condition(child_result)
@@ -291,7 +350,7 @@ def test_condition_comparison_with_previous_amendment_modified(
 
 
 def test_condition_comparison_with_previous_amendment_added(
-    test_client, db_session, permit_amendments, permit_condition_creator
+    test_client, db_session, permit_amendments
 ):
     current_amendment, previous_amendment = permit_amendments
 
@@ -330,6 +389,12 @@ def test_condition_comparison_with_previous_amendment_added(
         condition_title=None,
         meta={},
     )
+
+    permit_condition_creator = PermitConditionCreator(
+        permit_amendment=current_amendment, previous_amendment=previous_amendment
+    )
+    permit_condition_creator.current_category = "GEC"
+    permit_condition_creator.default_section = "GEC"
 
     modified_child_condition, _, _ = permit_condition_creator.create_condition(
         child_result_added

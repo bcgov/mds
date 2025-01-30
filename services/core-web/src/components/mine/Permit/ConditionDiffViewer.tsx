@@ -1,5 +1,5 @@
-import React, { FC, useEffect } from 'react';
-import { Row, Col, Typography } from 'antd';
+import React, { FC, useEffect, useState } from 'react';
+import { Row, Col, Typography, Skeleton } from 'antd';
 import { IPermitAmendment, IPermitCondition, IPermitConditionChangeType, IPermitConditionComparison } from '@mds/common/interfaces';
 import { formatPermitConditionStep } from '@mds/common/utils/helpers';
 import {
@@ -33,8 +33,17 @@ const ConditionDiffViewer: FC<Props> = ({
 
     const diffs: IPermitConditionComparison[] = useAppSelector(state => getPermitConditionDiff(state, latestAmendment?.permit_amendment_guid));
 
+    const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
-        dispatch(fetchPermitConditionDiff({ mineGuid, permitGuid, amendmentGuid: latestAmendment?.permit_amendment_guid }));
+        setIsLoading(true);
+        (async () => {
+            try {
+                await dispatch(fetchPermitConditionDiff({ mineGuid, permitGuid, amendmentGuid: latestAmendment?.permit_amendment_guid, permitConditionGuid: currentCondition.permit_condition_guid }));
+            } finally {
+                setIsLoading(false);
+            }
+        })();
+
     }, [mineGuid, permitGuid, latestAmendment?.permit_amendment_guid]);
 
     const getComparisonForCondition = (conditionGuid: string) => {
@@ -77,6 +86,11 @@ const ConditionDiffViewer: FC<Props> = ({
      * If the condition was modified, shows the textual diff between the old and new condition text.
      */
     const renderCondition = (condition: IPermitCondition, isPrevious: boolean = false, level = 0) => {
+
+        if (isLoading) {
+            return <Skeleton active />;
+        }
+
         const comparison = isPrevious
             ? getComparisonForPreviousCondition(condition?.permit_condition_guid)
             : getComparisonForCondition(condition?.permit_condition_guid);
@@ -115,7 +129,7 @@ const ConditionDiffViewer: FC<Props> = ({
                                 </Typography.Text>
                             </Col>
                             <Col className="condition-column">
-                                {comparison?.change_type === IPermitConditionChangeType.MODIFIED ? (
+                                {[IPermitConditionChangeType.MODIFIED, IPermitConditionChangeType.MOVED].includes(comparison?.change_type) ? (
                                     <DiffText
                                         oldText={relatedCondition?.condition || ''}
                                         newText={condition.condition}

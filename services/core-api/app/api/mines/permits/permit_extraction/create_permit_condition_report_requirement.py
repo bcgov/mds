@@ -1,5 +1,8 @@
 from typing import Optional
 
+from app.api.mines.permits.permit_conditions.models.permit_conditions import (
+    PermitConditions,
+)
 from app.api.mines.reports.models.mine_report_permit_requirement import (
     MineReportPermitRequirement,
 )
@@ -11,7 +14,7 @@ from .models.permit_condition_result import PermitConditionResult
 
 
 def create_permit_condition_report_requirement(
-    task, condition: PermitConditionResult, condition_id
+    task, condition: PermitConditions
 ) -> Optional[MineReportPermitRequirement]:
     """
     Creates a MineReportPermitRequirement based on permit condition details.
@@ -55,7 +58,7 @@ def create_permit_condition_report_requirement(
     if not require_report:
         return None
 
-    initial_due_date = _parse_initial_due_date(condition_id, initial_due_date)
+    initial_due_date = _parse_initial_due_date(condition.permit_condition_id, initial_due_date)
 
     # Determine cim_or_cpo based on mentions
     cim_or_cpo = _parse_cim_cpo(
@@ -68,7 +71,7 @@ def create_permit_condition_report_requirement(
     # Create the MineReportPermitRequirement
     mine_report_permit_requirement = MineReportPermitRequirement(
         report_name=report_name,
-        permit_condition_id=condition_id,
+        permit_condition_id=condition.permit_condition_id,
         permit_amendment_id=task.permit_amendment.permit_amendment_id,
         cim_or_cpo=cim_or_cpo,
         due_date_period_months=due_date_period_months or 0,
@@ -143,13 +146,13 @@ def _parse_initial_due_date(condition_id, initial_due_date):
 
 
 def create_or_copy_permit_condition_report_requirements(
-    task, condition: PermitConditionResult, condition_id, comparison
+    task, condition, comparison
 ):
     if (
         comparison
         and comparison.previous_condition
         and comparison.change_type
-        in [ConditionChangeType.MODIFIED, ConditionChangeType.MOVED]
+        in [ConditionChangeType.MODIFIED, ConditionChangeType.MOVED, ConditionChangeType.UNCHANGED]
     ):
 
         # Copy existing report requirements from previous condition
@@ -161,7 +164,7 @@ def create_or_copy_permit_condition_report_requirements(
         if existing_requirements:
             return MineReportPermitRequirement(
                 report_name=existing_requirements.report_name,
-                permit_condition_id=condition_id,
+                permit_condition_id=condition.permit_condition_id,
                 permit_amendment_id=task.permit_amendment.permit_amendment_id,
                 cim_or_cpo=existing_requirements.cim_or_cpo,
                 due_date_period_months=existing_requirements.due_date_period_months,
@@ -169,4 +172,4 @@ def create_or_copy_permit_condition_report_requirements(
                 ministry_recipient=existing_requirements.ministry_recipient,
             )
     # No match found, create new requirement
-    return create_permit_condition_report_requirement(task, condition, condition_id)
+    return create_permit_condition_report_requirement(task, condition)

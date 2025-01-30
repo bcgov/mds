@@ -88,6 +88,15 @@ export const getPermits = createSelector([getUnformattedPermits], (permits) => {
   return formattedPermits;
 });
 
+export const getMineReportPermitRequirementsByAmendment = (permitGuid, amendmentGuid) =>
+  createSelector(
+    [getAmendment(permitGuid, amendmentGuid)],
+    (amendment): IMineReportPermitRequirement[] => {
+      return (amendment && amendment.mine_report_permit_requirements) ?? [];
+    }
+  );
+
+
 export const getMineReportPermitRequirements = (permitGuid) =>
   createSelector(
     [getLatestAmendmentByPermitGuid(permitGuid)],

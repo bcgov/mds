@@ -29,6 +29,7 @@ describe("permitConditionDiffSlice", () => {
     const mockResponse: { data: { comparison: IPermitConditionComparison[] } } = {
         data: {
             comparison: [{
+                condition_guid: "test-condition-guid",
                 previous_condition_guid: "test-previous-condition-guid",
                 text_similarity: 0.5,
                 structure_similarity: 0.5,

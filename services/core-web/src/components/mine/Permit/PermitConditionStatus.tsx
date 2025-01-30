@@ -89,7 +89,7 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
       </Space>
 
       <Col>
-        <CoreButton type="default" onClick={openConditionHistoryModal} icon={<ClockCircleOutlined />}>View Changes</CoreButton>
+        {previousCondition ? <CoreButton type="default" onClick={openConditionHistoryModal} icon={<ClockCircleOutlined />}>View Changes</CoreButton> : ""}
         {
           canEditPermitConditions && condition.permit_condition_status_code !== PERMIT_CONDITION_STATUS_CODE.COM &&
           <CoreButton

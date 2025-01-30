@@ -22,11 +22,12 @@ const permitConditionDiffSlice = createAppSlice({
     initialState,
     reducers: (create) => ({
         fetchPermitConditionDiff: create.asyncThunk(
-            async (params: { mineGuid: string; permitGuid: string; amendmentGuid: string }, thunkApi): Promise<{ key: string, data: IPermitConditionComparison[] }> => {
-                const { mineGuid, permitGuid, amendmentGuid } = params;
+            async (params: { mineGuid: string; permitGuid: string; amendmentGuid: string, permitConditionGuid?: string }, thunkApi): Promise<{ key: string, data: IPermitConditionComparison[] }> => {
+                const { mineGuid, permitGuid, amendmentGuid, permitConditionGuid } = params;
                 const headers = createRequestHeader();
+                const getParam = permitConditionGuid ? `?permit_condition_guid=${params.permitConditionGuid}` : '';
                 const response = await CustomAxios().get(
-                    `${ENVIRONMENT.apiUrl}${MINE}/${mineGuid}/permits/${permitGuid}/amendments/${amendmentGuid}/diff`,
+                    `${ENVIRONMENT.apiUrl}${MINE}/${mineGuid}/permits/${permitGuid}/amendments/${amendmentGuid}/diff${getParam}`,
                     headers
                 );
 
