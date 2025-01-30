@@ -52,17 +52,13 @@ const ComparePermitConditionHistoryModal: FC<ComparePermitConditionHistoryModalP
                 <Col span={12}>
                     <Typography.Title level={4}>Reports</Typography.Title>
                     <PermitConditionReportRequirements
-                        conditionsWithRequirements={oldReports}
-                        permitGuid={props.permitGuid}
-                        handleEditReportRequirement={() => { }} />
+                        conditionsWithRequirements={oldReports} />
 
                 </Col>
                 <Col span={12}>
                     <Typography.Title level={4}>Reports</Typography.Title>
                     <PermitConditionReportRequirements
-                        conditionsWithRequirements={newReports}
-                        permitGuid={props.permitGuid}
-                        handleEditReportRequirement={() => { }} />
+                        conditionsWithRequirements={newReports} />
 
                 </Col>
             </Row>

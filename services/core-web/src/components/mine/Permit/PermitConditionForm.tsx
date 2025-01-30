@@ -28,6 +28,7 @@ import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import { formatPermitConditionStep, parsePermitConditionStep } from "@mds/common/utils/helpers";
 import { FORM } from "@mds/common/constants/forms";
 import RenderGroupedSelect from "@mds/common/components/forms/RenderGroupedSelect";
+import { usePermitConditions } from "./PermitConditionsContext";
 
 
 interface PermitConditionFormProps {
@@ -63,6 +64,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const dispatch = useDispatch();
     const { id: mineGuid, permitGuid } = useParams<{ id: string; permitGuid: string }>();
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
+    const { currentAmendment } = usePermitConditions();
     // the form fails to re-initialize when the category is changed, so concatenating it forces it to make a new one
     const formName = `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`;
 
@@ -135,6 +137,8 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                     condition: reportCondition,
                     canEditPermitConditions: canEditPermitConditions,
                     permitGuid,
+                    mineGuid,
+                    currentAmendment
                 },
                 content: ReportPermitRequirementForm,
             })

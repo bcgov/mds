@@ -15,7 +15,6 @@ import {
 import { getPermitConditionCategoryOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import PermitConditionLayer from "./PermitConditionLayer";
 import {
-  getConditionsWithRequirements,
   IMineReportPermitRequirement,
   IPermitAmendment,
   IPermitCondition,
@@ -439,7 +438,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const hasConditions = latestAmendment?.conditions?.length > 0;
   return (<>
     {hasConditions && <PermitReviewBanner isExtracted={isExtracted} height={bannerHeight} isReviewComplete={isReviewComplete} />}
-    <PermitConditionsProvider value={{ mineGuid, permitGuid, latestAmendment, previousAmendment }}>
+    <PermitConditionsProvider value={{ mineGuid, permitGuid, latestAmendment, previousAmendment, currentAmendment }}>
       <Row>
         <Col span={canViewPdfSplitScreen ? 16 : 24}>
           <ScrollSidePageWrapper
@@ -501,8 +500,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
                       {showLoading && <Skeleton active paragraph={{ rows: 10 }} />}
 
                       {permitConditionCategories.map((category, idx) => {
-                        const conditionsWithRequirements: IPermitCondition[] =
-                          getConditionsWithRequirements(category.conditions);
                         return (
                           <React.Fragment key={category.href}>
                             <Col span={24}>
@@ -559,8 +556,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                                   conditionSelected={setSelectedCondition}
                                   categoryOptions={dropdownCategories}
                                   mineGuid={mineGuid}
-                                  permitAmendment={latestAmendment}
-                                />
+                                  permitGuid={permitGuid} />
                               </Col>
                             ))}
                             {addingToCategoryCode === category.condition_category_code && (
@@ -572,18 +568,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
                                   onSubmit={handleAddCondition}
                                   categoryOptions={dropdownCategories}
                                 /></Col>)}
-                            {conditionsWithRequirements?.length > 0 && (
-                              <div className="report-collapse-container ">
-                                <Title level={4} className="primary-colour">
-                                  Report Requirements
-                                </Title>
-                                <PermitConditionReportRequirements
-                                  conditionsWithRequirements={conditionsWithRequirements}
-                                  handleEditReportRequirement={handleEditReportRequirement}
-                                  permitGuid={permitGuid}
-                                />
-                              </div>
-                            )}
                           </React.Fragment>
                         );
                       })}

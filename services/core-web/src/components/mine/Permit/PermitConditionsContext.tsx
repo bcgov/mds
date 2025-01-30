@@ -6,6 +6,7 @@ interface PermitConditionsContextType {
     permitGuid: string;
     latestAmendment: IPermitAmendment;
     previousAmendment: IPermitAmendment;
+    currentAmendment: IPermitAmendment;
 }
 
 const PermitConditionsContext = React.createContext<PermitConditionsContextType | undefined>(undefined);

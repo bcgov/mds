@@ -6,12 +6,13 @@ import { IGroupedDropdownList } from "@mds/common/interfaces/common/option.inter
 import { PermitConditionStatus } from "./PermitConditionStatus";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
-import ReportPermitRequirementForm from "@/components/Forms/reports/ReportPermitRequirementForm";
-import { Collapse, Typography } from "antd";
+import { Typography } from "antd";
 import { getConditionsWithRequirements } from "@mds/common/utils/helpers";
 
 const { Title } = Typography;
 import { IPermitAmendment } from "@mds/common/interfaces";
+import { usePermitConditions } from "./PermitConditionsContext";
+import PermitConditionReportRequirements from "./PermitConditionReportRequirements";
 
 interface PermitConditionLayerProps {
   isExtracted: boolean;
@@ -31,7 +32,6 @@ interface PermitConditionLayerProps {
   categoryOptions?: IGroupedDropdownList[];
   previousAmendment?: IPermitAmendment;
   mineGuid?: string;
-  permitAmendment: IPermitAmendment;
   permitGuid: string;
 }
 
@@ -62,6 +62,8 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   );
   const className = `condition-layer condition-layer--${level} condition-${condition.condition_type_code} fade-in`;
   const { isFeatureEnabled } = useFeatureFlag();
+
+  const { currentAmendment } = usePermitConditions();
 
   const handleSetParentExpand = () => {
     if (level === 0) {
@@ -172,32 +174,11 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
               <Title level={4} className="primary-colour">
                 Report Requirements
               </Title>
-              <Collapse expandIconPosition="end">
-                {requirements.map((cond: IPermitCondition, index) => (
-                  <Collapse.Panel
-                    key={cond.permit_condition_id}
-                    header={
-                      <Typography.Text strong>
-                        Report #{index + 1}
-                        {cond.mineReportPermitRequirement?.report_name
-                          ? ` - ${cond.mineReportPermitRequirement.report_name}`
-                          : ""}
-                      </Typography.Text>
-                    }
-                    className="report-collapse"
-                  >
-                    <ReportPermitRequirementForm
-                      modalView={false}
-                      condition={cond}
-                      permitGuid={permitGuid}
-                      mineReportPermitRequirement={cond.mineReportPermitRequirement}
-                      canEditPermitConditions={canEditPermitConditions}
-                      refreshData={refreshData}
-                      mineGuid={mineGuid}
-                    />
-                  </Collapse.Panel>
-                ))}
-              </Collapse>
+
+              <PermitConditionReportRequirements
+                conditionsWithRequirements={requirements}
+                refreshData={refreshData}
+                canEditPermitConditions={canEditPermitConditions} />
             </div>
           )}
           <PermitConditionStatus

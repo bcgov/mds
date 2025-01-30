@@ -4,18 +4,23 @@ import {
     IPermitCondition,
 } from "@mds/common/interfaces/permits";
 import ReportPermitRequirementForm from "@/components/Forms/reports/ReportPermitRequirementForm";
+import { usePermitConditions } from "./PermitConditionsContext";
 
 interface PermitConditionReportRequirementsProps {
     conditionsWithRequirements: IPermitCondition[];
-    handleEditReportRequirement: (values: any) => void;
-    permitGuid: string;
+    refreshData?: () => Promise<void>;
+    canEditPermitConditions?: boolean;
 }
 
 const PermitConditionReportRequirements: FC<PermitConditionReportRequirementsProps> = ({
     conditionsWithRequirements,
-    handleEditReportRequirement,
-    permitGuid,
+    refreshData,
+    canEditPermitConditions = false
 }) => {
+    const { mineGuid, permitGuid, currentAmendment } = usePermitConditions();
+
+    refreshData = refreshData || (() => Promise.resolve());
+
     return (
         <Collapse expandIconPosition="end">
             {conditionsWithRequirements.map((cond: IPermitCondition, index) => (
@@ -33,10 +38,13 @@ const PermitConditionReportRequirements: FC<PermitConditionReportRequirementsPro
                 >
                     <ReportPermitRequirementForm
                         modalView={false}
-                        onSubmit={handleEditReportRequirement}
                         condition={cond}
                         permitGuid={permitGuid}
                         mineReportPermitRequirement={cond.mineReportPermitRequirement}
+                        canEditPermitConditions={canEditPermitConditions}
+                        refreshData={refreshData}
+                        currentAmendment={currentAmendment}
+                        mineGuid={mineGuid}
                     />
                 </Collapse.Panel>
             ))}
