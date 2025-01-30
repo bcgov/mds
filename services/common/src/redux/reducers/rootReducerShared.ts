@@ -42,7 +42,7 @@ import searchConditionCategoriesReducer, {
 } from "../slices/permitConditionCategorySlice";
 import helpReducer, { helpReducerType } from "../slices/helpSlice";
 import userReducer, { userReducerType } from "@mds/common/redux/slices/userSlice";
-
+import mineReportPermitRequirementReducer, { mineReportPermitRequirementReducerType } from "../slices/mineReportPermitRequirementSlice";
 
 const networkReducers = Object.fromEntries(Object.entries(NetworkReducerTypes).map(([key, value]) =>
   [NetworkReducerTypes[key], createReducer(networkReducer, value)]
@@ -86,5 +86,6 @@ export const sharedReducer = {
   [helpReducerType]: helpReducer,
   [searchConditionCategoriesType]: searchConditionCategoriesReducer,
   [userReducerType]: userReducer,
+  [mineReportPermitRequirementReducerType]: mineReportPermitRequirementReducer,
   ...networkReducers
 };

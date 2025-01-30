@@ -1,13 +1,12 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { Field } from "redux-form";
 import { Button, Col, Row, Typography } from "antd";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   IMineReport,
   IMineReportPermitRequirement,
   IPermitCondition,
 } from "@mds/common/interfaces";
-
 import { required, requiredRadioButton, maxLength } from "@mds/common/redux/utils/Validate";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
@@ -22,13 +21,22 @@ import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons"
 import { FORM } from "@mds/common/constants/forms";
 import { MINE_REPORT_SUBMISSION_CODES, REPORT_TYPE_CODES } from "@mds/common/constants/enums";
 import { REPORT_FREQUENCY_HASH, REPORT_MINISTRY_RECIPIENT_HASH, REPORT_REGULATORY_AUTHORITY_CODES_HASH } from "@mds/common/constants/strings";
+import LinkButton from "@mds/common/components/common/LinkButton";
+import {
+  deleteMineReportPermitRequirement,
+  updateMineReportPermitRequirement,
+} from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
+import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 
 interface ReportPermitRequirementProps {
-  onSubmit: (values: Partial<IMineReport>) => void | Promise<void>;
+  onSubmit?: (values: Partial<IMineReport>) => void | Promise<void>;
   permitGuid: string;
   condition: IPermitCondition;
   modalView?: boolean;
   mineReportPermitRequirement?: IMineReportPermitRequirement;
+  canEditPermitConditions: boolean;
+  refreshData: () => Promise<void>;
+  mineGuid: string;
 }
 
 export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
@@ -37,15 +45,43 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
   permitGuid,
   modalView = true,
   mineReportPermitRequirement,
+  canEditPermitConditions,
+  refreshData,
+  mineGuid,
 }) => {
+  const dispatch = useDispatch();
   const [isEditMode, setIsEditMode] = React.useState(modalView);
   const latestPermitAmendment = useSelector(getLatestAmendmentByPermitGuid(permitGuid));
+
+  useEffect(() => {
+    if (!canEditPermitConditions) {
+      setIsEditMode(false);
+    }
+  }, [canEditPermitConditions]);
+
+  const handleDeleteReportRequirement = async ({ mine_report_permit_requirement_id }) => {
+    deleteConfirmWrapper("Report Requirement", async () => {
+      // @ts-ignore
+      await dispatch(deleteMineReportPermitRequirement({ mineGuid, mine_report_permit_requirement_id })).then(async () => {
+        await refreshData();
+        setIsEditMode(false);
+      });
+    })
+  };
+
+  const handleEditReportRequirement = async (values) => {
+    // @ts-ignore
+    await dispatch(updateMineReportPermitRequirement({ mineGuid, values })).then(async () => {
+      await refreshData();
+      setIsEditMode(false);
+    });
+  };
 
   return (
     <div style={{ minHeight: modalView ? "380px" : "" }}>
       <FormWrapper
         name={`${FORM.ADD_REPORT_TO_PERMIT_CONDITION}-${condition.permit_condition_id}`}
-        onSubmit={onSubmit}
+        onSubmit={!modalView ? handleEditReportRequirement : onSubmit}
         isModal={modalView}
         isEditMode={isEditMode}
         scrollOnToggleEdit={false}
@@ -168,7 +204,16 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
             )}
           </Col>
         </Row>
-        <Row justify="end">
+        <Row justify={isEditMode && mineReportPermitRequirement ? "space-between" : "end"}>
+          {(isEditMode && mineReportPermitRequirement) && (
+            <LinkButton
+              className="report-delete-button"
+              onClick={() => handleDeleteReportRequirement(mineReportPermitRequirement)}
+            >
+              Delete Report
+            </LinkButton>
+          )
+          }
           {isEditMode ? (
             <div>
               <RenderCancelButton
@@ -178,7 +223,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
                 {mineReportPermitRequirement ? "Update" : "Add"} Report
               </Button>
             </div>
-          ) : (
+          ) : (canEditPermitConditions &&
             <Button
               type="primary"
               onClick={(event) => {
@@ -191,7 +236,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
           )}
         </Row>
       </FormWrapper>
-    </div>
+    </div >
   );
 };
 

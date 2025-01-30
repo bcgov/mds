@@ -11,7 +11,7 @@ from app.api.mines.documents.models.mine_document_bundle import MineDocumentBund
 from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import ExplosivesPermitAmendment
 from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import \
     MineReportDefinitionComplianceArticleXref
-from app.api.mines.reports.models.mine_report_permit_requirement import MineReportPermitRequirement, OfficeDestination
+from app.api.mines.reports.models.mine_report_permit_requirement import MineReportPermitRequirement, OfficeDestination, CimOrCpo
 from app.api.projects.project_link.models.project_link import ProjectLink
 from app.api.projects.project_summary.models.project_summary_ministry_comment import ProjectSummaryMinistryComment
 from app.api.users.models.user import User
@@ -1673,12 +1673,18 @@ class MineReportPermitRequirementFactory(BaseFactory):
     class Meta:
         model = MineReportPermitRequirement
 
-    due_date_period_months = factory.LazyFunction(lambda: randint(1, 12))
-    initial_due_date = factory.LazyFunction(lambda: date.today())
-    active_ind = factory.LazyFunction(lambda: choice([True, False]))
-    cim_or_cpo = factory.LazyFunction(lambda: choice(list(CimOrCpo)))
+    class Params:
+        permit_amendment = factory.SubFactory(PermitAmendmentFactory)
+        permit_condition = factory.SubFactory(PermitConditionsFactory)
+
+    due_date_period_months = factory.LazyFunction(lambda: random.randint(1, 12))
+    initial_due_date = TODAY
+    active_ind = factory.LazyFunction(lambda: random.choice([True, False]))
+    deleted_ind = False
+    cim_or_cpo = factory.LazyFunction(lambda: random.choice(list(CimOrCpo)))
     ministry_recipient = factory.LazyFunction(
-        lambda: [choice(list(OfficeDestination))]
+        lambda: [random.choice(list(OfficeDestination))]
     )
-    permit_condition_id = factory.SubFactory(PermitConditionsFactory)
-    permit_id = factory.SubFactory(PermitFactory)
+    mine_report_permit_requirement_id = factory.LazyFunction(lambda: random.randint(1, 12))
+    permit_condition_id = factory.SelfAttribute('permit_condition.permit_condition_id')
+    permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')

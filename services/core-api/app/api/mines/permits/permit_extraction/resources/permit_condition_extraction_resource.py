@@ -122,6 +122,12 @@ class PermitConditionExtractionResource(Resource, UserMixin):
         PermitConditions.delete_all_by_permit_amendment_id(args['permit_amendment_id'], commit=True)
         PermitConditionCategory.delete_all_by_permit_amendment_id(args['permit_amendment_id'])
 
+        permit_amendment = PermitAmendment.find_by_permit_amendment_id(args['permit_amendment_id'])
+        permit_extraction_tasks = PermitExtractionTask.get_by_permit_amendment_guid(permit_amendment.permit_amendment_guid)
+        if permit_extraction_tasks:
+            permit_extraction_tasks[0].task_status = 'Deleted'
+            permit_extraction_tasks[0].save()
+
 
 class PermitConditionExtractionProgressResource(Resource, UserMixin):
     api.doc('Returns the status of the permit extraction task')
