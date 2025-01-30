@@ -16,7 +16,7 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
     class _ModelSchema(Base._ModelSchema):
         permit_condition_id = fields.Integer(dump_only=True)
         permit_condition_guid = fields.UUID(dump_only=True)
-        condition_category_code = fields.String(dump_only=True)
+        condition_category_code = fields.String(dump_only=False)
         condition_type_code = FieldTemplate(
             field=fields.String, one_of="PermitConditionType"
         )
