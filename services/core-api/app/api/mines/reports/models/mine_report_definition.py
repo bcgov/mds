@@ -10,6 +10,7 @@ from app.api.mines.reports.models.mine_report_permit_requirement import CimOrCpo
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import MineReportDefinitionComplianceArticleXref
+from app.api.mines.reports.models.mine_report_due_date_type import MineReportDueDateType
 from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.extensions import db
 
@@ -24,7 +25,7 @@ class MineReportDefinition(Base, AuditMixin):
     due_date_period_months = db.Column(db.Integer, nullable=False)
     mine_report_due_date_type = db.Column(
         db.String,
-        db.ForeignKey('mine_report_due_date_type.mine_report_due_date_type'),
+        db.ForeignKey(MineReportDueDateType.mine_report_due_date_type),
         nullable=False)
     active_ind = db.Column(db.Boolean, server_default=FetchedValue(), nullable=False)
     is_common = db.Column(db.Boolean, server_default=FetchedValue(), nullable=False)
@@ -155,10 +156,7 @@ class MineReportDefinition(Base, AuditMixin):
 
     @classmethod
     def get_all(cls):
-        try:
-            return cls.query.all()
-        except ValueError:
-            return None
+        return cls.query.all()
 
     @classmethod
     def find_required_reports_by_category(cls, _mine_report_category):
