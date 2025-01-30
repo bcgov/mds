@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import { updatePermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { openModal } from "@mds/common/redux/actions/modalActions";
 import ComparePermitConditionHistoryModal from "./ComparePermitConditionHistoryModal";
-import { usePermitConditions } from "./PermitConditionsContext";
+import { PermitConditionsProvider, usePermitConditions } from "./PermitConditionsContext";
 
 interface PermitConditionStatusProps {
   condition: IPermitCondition;
@@ -32,7 +32,7 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
   refreshData,
 }) => {
 
-  const { mineGuid, permitGuid, latestAmendment, previousAmendment } = usePermitConditions();
+  const { mineGuid, permitGuid, latestAmendment, previousAmendment, currentAmendment } = usePermitConditions();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -64,7 +64,11 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
           previousAmendment,
         },
         width: 2048,
-        content: ComparePermitConditionHistoryModal,
+        content: (props) => {
+          const value = { mineGuid, permitGuid, latestAmendment, previousAmendment, currentAmendment };
+          return <PermitConditionsProvider value={value} > <ComparePermitConditionHistoryModal {...props} /></PermitConditionsProvider>;
+        }
+
       })
     );
 
