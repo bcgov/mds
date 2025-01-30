@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConditionDiffViewer renders correctly 1`] = `
+<div>
+  <div
+    class="diff-container"
+  >
+    <div
+      class="ant-row"
+      style="margin-left: -8px; margin-right: -8px;"
+    >
+      <div
+        class="ant-col ant-col-12"
+        style="padding-left: 8px; padding-right: 8px;"
+      >
+        <h4
+          class="ant-typography"
+        >
+          Previous Version
+        </h4>
+        <div
+          class="ant-skeleton ant-skeleton-active"
+        >
+          <div
+            class="ant-skeleton-content"
+          >
+            <h3
+              class="ant-skeleton-title"
+              style="width: 38%;"
+            />
+            <ul
+              class="ant-skeleton-paragraph"
+            >
+              <li />
+              <li />
+              <li
+                style="width: 61%;"
+              />
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-12"
+        style="padding-left: 8px; padding-right: 8px;"
+      >
+        <h4
+          class="ant-typography"
+        >
+          Current Version
+        </h4>
+        <div
+          class="ant-skeleton ant-skeleton-active"
+        >
+          <div
+            class="ant-skeleton-content"
+          >
+            <h3
+              class="ant-skeleton-title"
+              style="width: 38%;"
+            />
+            <ul
+              class="ant-skeleton-paragraph"
+            >
+              <li />
+              <li />
+              <li
+                style="width: 61%;"
+              />
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

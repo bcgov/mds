@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DiffText renders correctly 1`] = `
+<div>
+  <span
+    class="ant-typography"
+  >
+    <span>
+      Hello 
+    </span>
+    <span
+      class="diff-removed"
+    >
+      Beautiful
+    </span>
+    <span
+      class="diff-added"
+    >
+      Amazing
+    </span>
+    <span>
+       World
+    </span>
+  </span>
+</div>
+`;

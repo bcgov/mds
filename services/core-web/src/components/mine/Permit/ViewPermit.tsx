@@ -52,7 +52,7 @@ const ViewPermit: FC = () => {
 
   const mine: IMine = useAppSelector((state) => getMineById(state, id));
   const { isFeatureEnabled } = useFeatureFlag();
-  const enablePermitConditionsTab = true || isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE);
+  const enablePermitConditionsTab = isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE);
   const permitExtraction = useAppSelector(
     getPermitExtractionByGuid(latestAmendment?.permit_amendment_id)
   );
