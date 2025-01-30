@@ -4,13 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { arrayPush, change, Field, FieldArray, getFormValues } from "redux-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/pro-light-svg-icons";
-
 import {
   getDropdownPermitConditionCategoryOptions,
-  getMineReportDefinitionOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
 import ReportFileUpload from "@mds/common/components/reports/ReportFileUpload";
-
 import { FORM } from "@mds/common/constants/forms";
 import {
   email,

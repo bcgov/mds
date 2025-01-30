@@ -15,9 +15,8 @@ import { required, requiredRadioButton } from "@mds/common/redux/utils/Validate"
 import RenderSelect from "../forms/RenderSelect";
 import {
   getDropdownPermitConditionCategoryOptions,
-  getFormattedMineReportDefinitionOptions,
-  getMineReportDefinitionByGuid,
 } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getFormattedMineReportDefinitionOptions, getMineReportDefinitionByGuid } from "@mds/common/redux/slices/complianceReportsSlice";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";

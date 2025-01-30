@@ -6,11 +6,9 @@ import { ReportDefinitionFieldSelect } from "@mds/common/components/reports/Repo
 import { ReportInfoBox } from "@mds/common/components/reports/ReportGetStarted";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
-import { getMineReportDefinitionOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-import { IComplianceArticle } from "@mds/common/interfaces";
+import { getMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
 
 export interface ReportEditProps {
-  complianceCodes: IComplianceArticle[];
   isEditMode: boolean;
 }
 
@@ -74,14 +72,12 @@ export const ReportEditForm = (props: ReportEditProps) => {
             >
               <Row style={{ width: "100%" }}>
                 <Col span="24">
-                  <>
-                    <ReportDefinitionFieldSelect
-                      id={`${report}.mine_report_definition_guid`}
-                      label="Report Name"
-                      required={true}
-                      name={`${report}.mine_report_definition_guid`}
-                    />
-                  </>
+                  <ReportDefinitionFieldSelect
+                    id={`${report}.mine_report_definition_guid`}
+                    label="Report Name"
+                    required={true}
+                    name={`${report}.mine_report_definition_guid`}
+                  />
                 </Col>
                 <Col span="24">
                   {reportData?.mine_report_definition_guid ? (

@@ -7,10 +7,7 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
-import {
-  getFormattedMineReportDefinitionOptions,
-  getMineReportDefinitionByGuid,
-} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getFormattedMineReportDefinitionOptions, getMineReportDefinitionByGuid } from "@mds/common/redux/slices/complianceReportsSlice";
 import { RenderPRRFields, ReportInfoBox } from "@mds/common/components/reports/ReportGetStarted";
 import { IMineReport, IMineReportDefinition } from "@mds/common/interfaces";
 import { MINE_REPORT_SUBMISSION_CODES, REPORT_TYPE_CODES } from "@mds/common/constants/enums";

@@ -4,18 +4,18 @@ import { createAppSlice, rejectHandler } from "@mds/common/redux/createAppSlice"
 import CustomAxios from "@mds/common/redux/customAxios";
 import * as API from "@mds/common/constants/API";
 import { IMineReportDefinition, IPageData, ItemMap } from "@mds/common/interfaces";
-import { createItemMap } from "@mds/common/redux/utils/helpers";
+import { createDropDownList, createItemMap, formatComplianceCodeReportName } from "@mds/common/redux/utils/helpers";
+import { createSelectorWrapper } from "../selectors/staticContentSelectors";
+import { createSelector } from "@reduxjs/toolkit";
 
 
 export const complianceReportReducerType = 'complianceReports'
 
 interface ComplianceReportState {
-    complianceReportMap: ItemMap<IMineReportDefinition>;
     reportPageData: IPageData<IMineReportDefinition>,
 };
 
 const initialState: ComplianceReportState = {
-    complianceReportMap: null,
     reportPageData: {
         records: [],
         current_page: 0,
@@ -39,15 +39,12 @@ const complianceReportSlice = createAppSlice({
                     errorToastMessage: "Failed to load compliance reports",
                 }).get(`${ENVIRONMENT.apiUrl}${API.MINE_REPORT_DEFINITIONS(searchParams)}`, headers);
                 thunkApi.dispatch(hideLoading());
-                console.log(resp);
                 return resp.data;
             },
             {
                 fulfilled: (state: ComplianceReportState, action) => {
                     const records: IMineReportDefinition[] = action.payload.records ?? [];
                     const { current_page, items_per_page, total, total_pages } = action.payload;
-                    const itemMap = createItemMap(records, "mine_report_definition_guid")
-                    state.complianceReportMap = itemMap;
                     state.reportPageData = { records, current_page, items_per_page, total, total_pages };
                 },
                 rejected: (_state: ComplianceReportState, action) => {
@@ -57,22 +54,53 @@ const complianceReportSlice = createAppSlice({
         )
     }),
     selectors: {
-        getComplianceReports: (state): ItemMap<IMineReportDefinition> => {
-            return state.complianceReportMap;
+        getMineReportDefinitionHash: (state): ItemMap<IMineReportDefinition> => {
+            return createItemMap(state.reportPageData.records, "mine_report_definition_guid")
         },
-        getComplianceReportsAsList: (state): IMineReportDefinition[] => {
-            return Object.values(state.complianceReportMap);
+        getMineReportDefinitionOptions: (state): IMineReportDefinition[] => {
+            return state.reportPageData.records;
         },
         getComplianceReportPageData: (state): IPageData<IMineReportDefinition> => {
             return state.reportPageData;
-        }
+        },
+
     }
 });
+
+export const { getMineReportDefinitionHash, getMineReportDefinitionOptions, getComplianceReportPageData,
+} = complianceReportSlice.selectors;
+
+export const getDropdownMineReportDefinitionOptions = createSelectorWrapper(
+    getMineReportDefinitionOptions,
+    createDropDownList, ["report_name", "mine_report_definition_guid", "active_ind"]
+);
+
+export const getFormattedMineReportDefinitionOptions = createSelectorWrapper(
+    getMineReportDefinitionOptions,
+    (options: IMineReportDefinition[]) => {
+        return options
+            .map((item) => {
+                return {
+                    label: formatComplianceCodeReportName(item),
+                    value: item.mine_report_definition_guid,
+                    isActive: item.active_ind,
+                    is_common: item.is_common,
+                    report_name: item.report_name,
+                };
+            })
+            .sort((a, b) => a.label.localeCompare(b.label));
+    }
+);
+
+export const getMineReportDefinitionByGuid = (mineReportDefinitionGuid: string) =>
+    createSelector([getMineReportDefinitionHash], (reportMap) => {
+        return reportMap[mineReportDefinitionGuid]
+    });
 
 export const {
     fetchComplianceReports
 } = complianceReportSlice.actions;
-export const { getComplianceReports, getComplianceReportsAsList, getComplianceReportPageData } = complianceReportSlice.selectors;
+
 
 const complianceReportReducer = complianceReportSlice.reducer;
 export default complianceReportReducer;

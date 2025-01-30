@@ -20,7 +20,7 @@ import {
 import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
 import { getMineGuid, getMines } from "@mds/common/redux/selectors/mineSelectors";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
-import { getMineReportDefinitionOptions } from "@mds/common/redux/reducers/staticContentReducer";
+import { getMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
 import * as Strings from "@mds/common/constants/strings";
 import DamsPage from "@common/components/tailings/dam/DamsPage";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";

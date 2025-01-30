@@ -10,7 +10,7 @@ export interface IMineReportDefinition {
   active_ind: boolean;
   categories: IMineReportDefinitionCategory[];
   compliance_articles: IComplianceArticle[];
-  default_due_date?: number;
+  default_due_date?: string;
   description: string;
   due_date_period_months?: number;
   is_common: boolean;

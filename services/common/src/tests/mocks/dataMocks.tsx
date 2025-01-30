@@ -10,6 +10,7 @@ import {
   IPermit,
   IMineDocument,
   IPermitAmendment,
+  IMineReportDefinition,
 } from "@mds/common/interfaces";
 
 export const createMockHeader = () => ({
@@ -527,6 +528,529 @@ export const PAGE_DATA = {
   total_pages: 360,
   records: [],
 };
+
+export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
+  {
+    mine_report_definition_guid: "5f4f4727-4ecd-4a04-8929-2e8a5e03996d",
+    report_name: "TSF, WSF or Dam As-built Report",
+    description: "",
+    due_date_period_months: 12,
+    mine_report_due_date_type: "FIS",
+    default_due_date: "2020-03-31",
+    categories: [
+      {
+        mine_report_category: "GTC", description: "Geotechnical",
+        active_ind: true
+      },
+      {
+        mine_report_category: "TSF", description: "Tailings Storage Facility",
+        active_ind: true
+      },
+    ],
+    compliance_articles: [
+      {
+        compliance_article_id: 157,
+        article_act_code: "HSRCM",
+        section: "10",
+        sub_section: "5",
+        paragraph: "1",
+        sub_paragraph: "1",
+        description: "General",
+        long_description: "General",
+        effective_date: "1970-01-01",
+        expiry_date: "2016-07-19",
+        help_reference_link: "",
+        cim_or_cpo: "Both",
+        reports: []
+      },
+    ],
+    active_ind: false,
+    is_common: false,
+    is_prr_only: false
+  },
+  {
+    mine_report_definition_guid: "6eda0c36-8748-4072-83c9-0fcdf270d36f",
+    report_name: "Annual DSI",
+    description: "",
+    due_date_period_months: 12,
+    mine_report_due_date_type: "FIS",
+    default_due_date: "2020-03-31",
+    categories: [
+      {
+        mine_report_category: "GTC", description: "Geotechnical",
+        active_ind: true
+      },
+      {
+        mine_report_category: "TSF", description: "Tailings Storage Facility",
+        active_ind: true
+      },
+    ],
+    compliance_articles: [
+      {
+        compliance_article_id: 155,
+        article_act_code: "HSRCM",
+        section: "10",
+        sub_section: "4",
+        paragraph: "4",
+        sub_paragraph: null,
+        description: "General",
+        long_description: "General",
+        effective_date: "2016-07-20",
+        expiry_date: "9999-12-31",
+        help_reference_link: "",
+        cim_or_cpo: null,
+        reports: []
+      },
+    ],
+    active_ind: false,
+    is_common: false,
+    is_prr_only: false
+  },
+  {
+    mine_report_definition_guid: "a1f02190-908b-4459-9dfe-6382282dfd30",
+    report_name: "OHSC Annual Report",
+    description: "",
+    due_date_period_months: 12,
+    mine_report_due_date_type: "FIS",
+    default_due_date: "2020-03-31",
+    categories: [{
+      mine_report_category: "H&S", description: "Health and Safety",
+      active_ind: true
+    }],
+    compliance_articles: [
+      {
+        compliance_article_id: 114,
+        article_act_code: "HSRCM",
+        section: "1",
+        sub_section: "9",
+        paragraph: "3",
+        sub_paragraph: null,
+        description: "General",
+        long_description: "General",
+        effective_date: "1970-01-01",
+        expiry_date: "9999-12-31",
+        help_reference_link: "",
+        cim_or_cpo: "CIM",
+        reports: []
+      },
+    ],
+    active_ind: false,
+    is_common: false,
+    is_prr_only: false
+  },
+  {
+    mine_report_definition_guid: "1f4dac68-2131-4b12-9cdd-9e2bb86e50a2",
+    report_name: "Right to Refuse Report",
+    description: "",
+    due_date_period_months: null,
+    mine_report_due_date_type: "EVT",
+    default_due_date: null,
+    categories: [{
+      mine_report_category: "H&S", description: "Health and Safety",
+      active_ind: true
+    }],
+    compliance_articles: [
+      {
+        compliance_article_id: 59,
+        article_act_code: "HSRCM",
+        section: "1",
+        sub_section: "10",
+        paragraph: "7",
+        sub_paragraph: null,
+        description: "Manager Investigates",
+        long_description: "Manager Investigates",
+        effective_date: "1970-01-01",
+        expiry_date: "9999-12-31",
+        help_reference_link: "",
+        cim_or_cpo: "CPO",
+        reports: []
+      },
+    ],
+    active_ind: false,
+    is_common: false,
+    is_prr_only: false
+  },
+  {
+    mine_report_definition_guid: "f650d2b6-96e4-43f0-9d15-6fbead2d5978",
+    report_name: "Report of MERP Test",
+    description: "",
+    due_date_period_months: 12,
+    mine_report_due_date_type: "FIS",
+    default_due_date: "2020-03-31",
+    categories: [{
+      mine_report_category: "H&S", description: "Health and Safety",
+      active_ind: true
+    }],
+    compliance_articles: [
+      {
+        compliance_article_id: 370,
+        article_act_code: "HSRCM",
+        section: "3",
+        sub_section: "7",
+        paragraph: "1",
+        sub_paragraph: null,
+        description: "Mine Emergency Response Plan",
+        long_description: "Mine Emergency Response Plan",
+        effective_date: "1970-01-01",
+        expiry_date: "9999-12-31",
+        help_reference_link: "",
+        cim_or_cpo: "Both",
+        reports: []
+      },
+    ],
+    active_ind: false,
+    is_common: false,
+    is_prr_only: false
+  },
+  {
+    mine_report_definition_guid: "c9baac63-1578-47eb-847d-a992e0aeba67",
+    report_name: "Underground Fueling Station Report",
+    description: "",
+    due_date_period_months: null,
+    mine_report_due_date_type: "PMT",
+    default_due_date: null,
+    categories: [
+      {
+        mine_report_category: "GSE", description: "Geoscience and Environmental",
+        active_ind: true
+      },
+      {
+        mine_report_category: "GTC", description: "Geotechnical",
+        active_ind: true
+      },
+    ],
+    compliance_articles: [
+      {
+        compliance_article_id: 510,
+        article_act_code: "HSRCM",
+        section: "4",
+        sub_section: "3",
+        paragraph: "3",
+        sub_paragraph: null,
+        description: "Underground Fuelling Stations",
+        long_description: "Underground Fuelling Stations",
+        effective_date: "1970-01-01",
+        expiry_date: "9999-12-31",
+        help_reference_link: "",
+        cim_or_cpo: null,
+        reports: []
+      },
+    ],
+    active_ind: false,
+    is_common: false,
+    is_prr_only: false
+  },
+  {
+    mine_report_definition_guid: "f5dec476-cb13-430a-a85e-81e5bbe666e4",
+    report_name: "Underground Oil and Grease Storage Area Report",
+    description: "",
+    due_date_period_months: null,
+    mine_report_due_date_type: "PMT",
+    default_due_date: null,
+    categories: [
+      {
+        mine_report_category: "GSE", description: "Geoscience and Environmental",
+        active_ind: true
+      },
+      {
+        mine_report_category: "GTC", description: "Geotechnical",
+        active_ind: true
+      },
+    ],
+    compliance_articles: [
+      {
+        compliance_article_id: 511,
+        article_act_code: "HSRCM",
+        section: "4",
+        sub_section: "3",
+        paragraph: "4",
+        sub_paragraph: null,
+        description: "Underground Oil and Grease Storage Areas",
+        long_description: "Underground Oil and Grease Storage Areas",
+        effective_date: "1970-01-01",
+        expiry_date: "9999-12-31",
+        help_reference_link: "",
+        cim_or_cpo: "CIM",
+        reports: []
+      },
+    ],
+    active_ind: false,
+    is_common: false,
+    is_prr_only: false
+  },
+  {
+    mine_report_definition_guid: "ec11deae-1187-42e7-a13c-17a25743448f",
+    report_name: "Flammable Gas Report",
+    description: "",
+    due_date_period_months: null,
+    mine_report_due_date_type: "EVT",
+    default_due_date: null,
+    categories: [{
+      mine_report_category: "H&S", description: "Health and Safety",
+      active_ind: true
+    }],
+    compliance_articles: [
+      {
+        compliance_article_id: 702,
+        article_act_code: "HSRCM",
+        section: "6",
+        sub_section: "42",
+        paragraph: "3",
+        sub_paragraph: null,
+        description: "Reporting",
+        long_description: "Reporting",
+        effective_date: "1970-01-01",
+        expiry_date: "9999-12-31",
+        help_reference_link: "",
+        cim_or_cpo: "CPO",
+        reports: []
+      },
+    ],
+    active_ind: false,
+    is_common: false,
+    is_prr_only: false
+  },
+  {
+    mine_report_definition_guid: "e2f72b23-d7d9-4a11-9139-e86b3c6f4bc4",
+    report_name: "Free Fall Tests Report",
+    description: "",
+    due_date_period_months: null,
+    mine_report_due_date_type: "EVT",
+    default_due_date: null,
+    categories: [{
+      mine_report_category: "H&S", description: "Health and Safety",
+      active_ind: true
+    }],
+    compliance_articles: [
+      {
+        compliance_article_id: 793,
+        article_act_code: "HSRCM",
+        section: "7",
+        sub_section: "5",
+        paragraph: "13",
+        sub_paragraph: null,
+        description: "Free Fall Tests - Report",
+        long_description: "Free Fall Tests - Report",
+        effective_date: "1970-01-01",
+        expiry_date: "9999-12-31",
+        help_reference_link: "",
+        cim_or_cpo: "Both",
+        reports: []
+      },
+    ],
+    active_ind: false,
+    is_common: false,
+    is_prr_only: false
+  },
+  {
+    mine_report_definition_guid: "b820a0e0-1d0c-4460-8787-c813484742c6",
+    report_name: "Defective Explosives Report",
+    description: "",
+    due_date_period_months: null,
+    mine_report_due_date_type: "EVT",
+    default_due_date: null,
+    categories: [{
+      mine_report_category: "H&S", description: "Health and Safety",
+      active_ind: true
+    }],
+    compliance_articles: [
+      {
+        compliance_article_id: 909,
+        article_act_code: "HSRCM",
+        section: "8",
+        sub_section: "3",
+        paragraph: "4",
+        sub_paragraph: null,
+        description: "Defective Explosives",
+        long_description: "Defective Explosives",
+        effective_date: "1970-01-01",
+        expiry_date: "9999-12-31",
+        help_reference_link: "",
+        cim_or_cpo: "CIM",
+        reports: []
+      },
+    ],
+    active_ind: false,
+    is_common: false,
+    is_prr_only: false
+  },
+  {
+    mine_report_definition_guid: "82abcaf9-e432-423d-b110-73acbfa9c94f",
+    report_name: "Careless Acts Report",
+    description: "",
+    due_date_period_months: null,
+    mine_report_due_date_type: "EVT",
+    default_due_date: null,
+    categories: [{
+      mine_report_category: "H&S", description: "Health and Safety",
+      active_ind: true
+    }],
+    compliance_articles: [
+      {
+        compliance_article_id: 914,
+        article_act_code: "HSRCM",
+        section: "8",
+        sub_section: "3",
+        paragraph: "9",
+        sub_paragraph: null,
+        description: "Careless Acts",
+        long_description: "Careless Acts",
+        effective_date: "1970-01-01",
+        expiry_date: "9999-12-31",
+        help_reference_link: "",
+        cim_or_cpo: "CPO",
+        reports: []
+      },
+    ],
+    active_ind: false,
+    is_common: false,
+    is_prr_only: false
+  },
+  {
+    mine_report_definition_guid: "d7f7b95c-4f60-4125-8f8c-f843d1be462e",
+    report_name: "Drilling Precaution Procedures Report",
+    description: "",
+    due_date_period_months: null,
+    mine_report_due_date_type: "PMT",
+    default_due_date: null,
+    categories: [{
+      mine_report_category: "H&S", description: "Health and Safety",
+      active_ind: true
+    }],
+    compliance_articles: [
+      {
+        compliance_article_id: 955,
+        article_act_code: "HSRCM",
+        section: "8",
+        sub_section: "7",
+        paragraph: "2",
+        sub_paragraph: null,
+        description: "Misfired Holes and Bootlegs - Drilling Precautions",
+        long_description: "Misfired Holes and Bootlegs - Drilling Precautions",
+        effective_date: "1970-01-01",
+        expiry_date: "9999-12-31",
+        help_reference_link: "",
+        cim_or_cpo: "Both",
+        reports: []
+      },
+    ],
+    active_ind: false,
+    is_common: false,
+    is_prr_only: false
+  },
+  {
+    mine_report_definition_guid: "61b87acf-8604-4975-8172-282bbf2b59fc",
+    report_name: "Annual Summary of Exploration Activities",
+    description: "",
+    due_date_period_months: 12,
+    mine_report_due_date_type: "FIS",
+    default_due_date: "2020-03-31",
+    categories: [
+      {
+        mine_report_category: "H&S", description: "Health and Safety",
+        active_ind: true
+      },
+      {
+        mine_report_category: "GSE", description: "Geoscience and Environmental",
+        active_ind: true
+      },
+      {
+        mine_report_category: "GTC", description: "Geotechnical",
+        active_ind: true
+      },
+    ],
+    compliance_articles: [
+      {
+        compliance_article_id: 969,
+        article_act_code: "HSRCM",
+        section: "9",
+        sub_section: "2",
+        paragraph: "1",
+        sub_paragraph: null,
+        description: "Notice Requirements",
+        long_description: "Notice Requirements",
+        effective_date: "1970-01-01",
+        expiry_date: "9999-12-31",
+        help_reference_link: "",
+        cim_or_cpo: null,
+        reports: []
+      },
+    ],
+    active_ind: false,
+    is_common: false,
+    is_prr_only: false
+  },
+  {
+    mine_report_definition_guid: "ba6f37df-5ced-4664-9a5e-5a5e93a09748",
+    report_name: "Management Plan for Riparian Area",
+    description: "",
+    due_date_period_months: null,
+    mine_report_due_date_type: "PMT",
+    default_due_date: null,
+    categories: [{
+      mine_report_category: "GSE", description: "Geoscience and Environmental",
+      active_ind: true
+    }],
+    compliance_articles: [
+      {
+        compliance_article_id: 978,
+        article_act_code: "HSRCM",
+        section: "9",
+        sub_section: "5",
+        paragraph: "1",
+        sub_paragraph: null,
+        description: "Riparian Setback Distances",
+        long_description: "Riparian Setback Distances",
+        effective_date: "1970-01-01",
+        expiry_date: "9999-12-31",
+        help_reference_link: "",
+        cim_or_cpo: "CIM",
+        reports: []
+      },
+    ],
+    active_ind: false,
+    is_common: false,
+    is_prr_only: false
+  },
+  {
+    mine_report_definition_guid: "c387b2a2-7bf4-4a29-9e9a-faa38a838b2d",
+    report_name: "Terrain Stability Remediation Plan",
+    description: "",
+    due_date_period_months: null,
+    mine_report_due_date_type: "EVT",
+    default_due_date: null,
+    categories: [
+      {
+        mine_report_category: "GSE", description: "Geoscience and Environmental",
+        active_ind: true
+      },
+      {
+        mine_report_category: "H&S", description: "Health and Safety",
+        active_ind: true
+      },
+    ],
+    compliance_articles: [
+      {
+        compliance_article_id: 980,
+        article_act_code: "HSRCM",
+        section: "9",
+        sub_section: "7",
+        paragraph: "1",
+        sub_paragraph: null,
+        description: "Terrain",
+        long_description: "Terrain",
+        effective_date: "1970-01-01",
+        expiry_date: "9999-12-31",
+        help_reference_link: "",
+        cim_or_cpo: "CPO",
+        reports: []
+      },
+    ],
+    active_ind: false,
+    is_common: false,
+    is_prr_only: false
+  },
+];
 
 export const COORDINATES = [48.70707, -122.489504];
 export const STATUS_OPTIONS = {
@@ -3966,372 +4490,6 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       active_ind: true,
     },
   ],
-  mineReportDefinitionOptions: [
-    {
-      mine_report_definition_guid: "5f4f4727-4ecd-4a04-8929-2e8a5e03996d",
-      report_name: "TSF, WSF or Dam As-built Report",
-      description: "",
-      due_date_period_months: 12,
-      mine_report_due_date_type: "FIS",
-      default_due_date: "2020-03-31",
-      categories: [
-        { mine_report_category: "GTC", description: "Geotechnical" },
-        { mine_report_category: "TSF", description: "Tailings Storage Facility" },
-      ],
-      compliance_articles: [
-        {
-          compliance_article_id: 157,
-          article_act_code: "HSRCM",
-          section: "10",
-          sub_section: "5",
-          paragraph: "1",
-          sub_paragraph: "1",
-          description: "General",
-          long_description: "General",
-          effective_date: "1970-01-01",
-          expiry_date: "2016-07-19",
-        },
-      ],
-    },
-    {
-      mine_report_definition_guid: "6eda0c36-8748-4072-83c9-0fcdf270d36f",
-      report_name: "Annual DSI",
-      description: "",
-      due_date_period_months: 12,
-      mine_report_due_date_type: "FIS",
-      default_due_date: "2020-03-31",
-      categories: [
-        { mine_report_category: "GTC", description: "Geotechnical" },
-        { mine_report_category: "TSF", description: "Tailings Storage Facility" },
-      ],
-      compliance_articles: [
-        {
-          compliance_article_id: 155,
-          article_act_code: "HSRCM",
-          section: "10",
-          sub_section: "4",
-          paragraph: "4",
-          sub_paragraph: null,
-          description: "General",
-          long_description: "General",
-          effective_date: "2016-07-20",
-          expiry_date: "9999-12-31",
-        },
-      ],
-    },
-    {
-      mine_report_definition_guid: "a1f02190-908b-4459-9dfe-6382282dfd30",
-      report_name: "OHSC Annual Report",
-      description: "",
-      due_date_period_months: 12,
-      mine_report_due_date_type: "FIS",
-      default_due_date: "2020-03-31",
-      categories: [{ mine_report_category: "H&S", description: "Health and Safety" }],
-      compliance_articles: [
-        {
-          compliance_article_id: 114,
-          article_act_code: "HSRCM",
-          section: "1",
-          sub_section: "9",
-          paragraph: "3",
-          sub_paragraph: null,
-          description: "General",
-          long_description: "General",
-          effective_date: "1970-01-01",
-          expiry_date: "9999-12-31",
-        },
-      ],
-    },
-    {
-      mine_report_definition_guid: "1f4dac68-2131-4b12-9cdd-9e2bb86e50a2",
-      report_name: "Right to Refuse Report",
-      description: "",
-      due_date_period_months: null,
-      mine_report_due_date_type: "EVT",
-      default_due_date: null,
-      categories: [{ mine_report_category: "H&S", description: "Health and Safety" }],
-      compliance_articles: [
-        {
-          compliance_article_id: 59,
-          article_act_code: "HSRCM",
-          section: "1",
-          sub_section: "10",
-          paragraph: "7",
-          sub_paragraph: null,
-          description: "Manager Investigates",
-          long_description: "Manager Investigates",
-          effective_date: "1970-01-01",
-          expiry_date: "9999-12-31",
-        },
-      ],
-    },
-    {
-      mine_report_definition_guid: "f650d2b6-96e4-43f0-9d15-6fbead2d5978",
-      report_name: "Report of MERP Test",
-      description: "",
-      due_date_period_months: 12,
-      mine_report_due_date_type: "FIS",
-      default_due_date: "2020-03-31",
-      categories: [{ mine_report_category: "H&S", description: "Health and Safety" }],
-      compliance_articles: [
-        {
-          compliance_article_id: 370,
-          article_act_code: "HSRCM",
-          section: "3",
-          sub_section: "7",
-          paragraph: "1",
-          sub_paragraph: null,
-          description: "Mine Emergency Response Plan",
-          long_description: "Mine Emergency Response Plan",
-          effective_date: "1970-01-01",
-          expiry_date: "9999-12-31",
-        },
-      ],
-    },
-    {
-      mine_report_definition_guid: "c9baac63-1578-47eb-847d-a992e0aeba67",
-      report_name: "Underground Fueling Station Report",
-      description: "",
-      due_date_period_months: null,
-      mine_report_due_date_type: "PMT",
-      default_due_date: null,
-      categories: [
-        { mine_report_category: "GSE", description: "Geoscience and Environmental" },
-        { mine_report_category: "GTC", description: "Geotechnical" },
-      ],
-      compliance_articles: [
-        {
-          compliance_article_id: 510,
-          article_act_code: "HSRCM",
-          section: "4",
-          sub_section: "3",
-          paragraph: "3",
-          sub_paragraph: null,
-          description: "Underground Fuelling Stations",
-          long_description: "Underground Fuelling Stations",
-          effective_date: "1970-01-01",
-          expiry_date: "9999-12-31",
-        },
-      ],
-    },
-    {
-      mine_report_definition_guid: "f5dec476-cb13-430a-a85e-81e5bbe666e4",
-      report_name: "Underground Oil and Grease Storage Area Report",
-      description: "",
-      due_date_period_months: null,
-      mine_report_due_date_type: "PMT",
-      default_due_date: null,
-      categories: [
-        { mine_report_category: "GSE", description: "Geoscience and Environmental" },
-        { mine_report_category: "GTC", description: "Geotechnical" },
-      ],
-      compliance_articles: [
-        {
-          compliance_article_id: 511,
-          article_act_code: "HSRCM",
-          section: "4",
-          sub_section: "3",
-          paragraph: "4",
-          sub_paragraph: null,
-          description: "Underground Oil and Grease Storage Areas",
-          long_description: "Underground Oil and Grease Storage Areas",
-          effective_date: "1970-01-01",
-          expiry_date: "9999-12-31",
-        },
-      ],
-    },
-    {
-      mine_report_definition_guid: "ec11deae-1187-42e7-a13c-17a25743448f",
-      report_name: "Flammable Gas Report",
-      description: "",
-      due_date_period_months: null,
-      mine_report_due_date_type: "EVT",
-      default_due_date: null,
-      categories: [{ mine_report_category: "H&S", description: "Health and Safety" }],
-      compliance_articles: [
-        {
-          compliance_article_id: 702,
-          article_act_code: "HSRCM",
-          section: "6",
-          sub_section: "42",
-          paragraph: "3",
-          sub_paragraph: null,
-          description: "Reporting",
-          long_description: "Reporting",
-          effective_date: "1970-01-01",
-          expiry_date: "9999-12-31",
-        },
-      ],
-    },
-    {
-      mine_report_definition_guid: "e2f72b23-d7d9-4a11-9139-e86b3c6f4bc4",
-      report_name: "Free Fall Tests Report",
-      description: "",
-      due_date_period_months: null,
-      mine_report_due_date_type: "EVT",
-      default_due_date: null,
-      categories: [{ mine_report_category: "H&S", description: "Health and Safety" }],
-      compliance_articles: [
-        {
-          compliance_article_id: 793,
-          article_act_code: "HSRCM",
-          section: "7",
-          sub_section: "5",
-          paragraph: "13",
-          sub_paragraph: null,
-          description: "Free Fall Tests - Report",
-          long_description: "Free Fall Tests - Report",
-          effective_date: "1970-01-01",
-          expiry_date: "9999-12-31",
-        },
-      ],
-    },
-    {
-      mine_report_definition_guid: "b820a0e0-1d0c-4460-8787-c813484742c6",
-      report_name: "Defective Explosives Report",
-      description: "",
-      due_date_period_months: null,
-      mine_report_due_date_type: "EVT",
-      default_due_date: null,
-      categories: [{ mine_report_category: "H&S", description: "Health and Safety" }],
-      compliance_articles: [
-        {
-          compliance_article_id: 909,
-          article_act_code: "HSRCM",
-          section: "8",
-          sub_section: "3",
-          paragraph: "4",
-          sub_paragraph: null,
-          description: "Defective Explosives",
-          long_description: "Defective Explosives",
-          effective_date: "1970-01-01",
-          expiry_date: "9999-12-31",
-        },
-      ],
-    },
-    {
-      mine_report_definition_guid: "82abcaf9-e432-423d-b110-73acbfa9c94f",
-      report_name: "Careless Acts Report",
-      description: "",
-      due_date_period_months: null,
-      mine_report_due_date_type: "EVT",
-      default_due_date: null,
-      categories: [{ mine_report_category: "H&S", description: "Health and Safety" }],
-      compliance_articles: [
-        {
-          compliance_article_id: 914,
-          article_act_code: "HSRCM",
-          section: "8",
-          sub_section: "3",
-          paragraph: "9",
-          sub_paragraph: null,
-          description: "Careless Acts",
-          long_description: "Careless Acts",
-          effective_date: "1970-01-01",
-          expiry_date: "9999-12-31",
-        },
-      ],
-    },
-    {
-      mine_report_definition_guid: "d7f7b95c-4f60-4125-8f8c-f843d1be462e",
-      report_name: "Drilling Precaution Procedures Report",
-      description: "",
-      due_date_period_months: null,
-      mine_report_due_date_type: "PMT",
-      default_due_date: null,
-      categories: [{ mine_report_category: "H&S", description: "Health and Safety" }],
-      compliance_articles: [
-        {
-          compliance_article_id: 955,
-          article_act_code: "HSRCM",
-          section: "8",
-          sub_section: "7",
-          paragraph: "2",
-          sub_paragraph: null,
-          description: "Misfired Holes and Bootlegs - Drilling Precautions",
-          long_description: "Misfired Holes and Bootlegs - Drilling Precautions",
-          effective_date: "1970-01-01",
-          expiry_date: "9999-12-31",
-        },
-      ],
-    },
-    {
-      mine_report_definition_guid: "61b87acf-8604-4975-8172-282bbf2b59fc",
-      report_name: "Annual Summary of Exploration Activities",
-      description: "",
-      due_date_period_months: 12,
-      mine_report_due_date_type: "FIS",
-      default_due_date: "2020-03-31",
-      categories: [
-        { mine_report_category: "H&S", description: "Health and Safety" },
-        { mine_report_category: "GSE", description: "Geoscience and Environmental" },
-        { mine_report_category: "GTC", description: "Geotechnical" },
-      ],
-      compliance_articles: [
-        {
-          compliance_article_id: 969,
-          article_act_code: "HSRCM",
-          section: "9",
-          sub_section: "2",
-          paragraph: "1",
-          sub_paragraph: null,
-          description: "Notice Requirements",
-          long_description: "Notice Requirements",
-          effective_date: "1970-01-01",
-          expiry_date: "9999-12-31",
-        },
-      ],
-    },
-    {
-      mine_report_definition_guid: "ba6f37df-5ced-4664-9a5e-5a5e93a09748",
-      report_name: "Management Plan for Riparian Area",
-      description: "",
-      due_date_period_months: null,
-      mine_report_due_date_type: "PMT",
-      default_due_date: null,
-      categories: [{ mine_report_category: "GSE", description: "Geoscience and Environmental" }],
-      compliance_articles: [
-        {
-          compliance_article_id: 978,
-          article_act_code: "HSRCM",
-          section: "9",
-          sub_section: "5",
-          paragraph: "1",
-          sub_paragraph: null,
-          description: "Riparian Setback Distances",
-          long_description: "Riparian Setback Distances",
-          effective_date: "1970-01-01",
-          expiry_date: "9999-12-31",
-        },
-      ],
-    },
-    {
-      mine_report_definition_guid: "c387b2a2-7bf4-4a29-9e9a-faa38a838b2d",
-      report_name: "Terrain Stability Remediation Plan",
-      description: "",
-      due_date_period_months: null,
-      mine_report_due_date_type: "EVT",
-      default_due_date: null,
-      categories: [
-        { mine_report_category: "GSE", description: "Geoscience and Environmental" },
-        { mine_report_category: "H&S", description: "Health and Safety" },
-      ],
-      compliance_articles: [
-        {
-          compliance_article_id: 980,
-          article_act_code: "HSRCM",
-          section: "9",
-          sub_section: "7",
-          paragraph: "1",
-          sub_paragraph: null,
-          description: "Terrain",
-          long_description: "Terrain",
-          effective_date: "1970-01-01",
-          expiry_date: "9999-12-31",
-        },
-      ],
-    },
-  ],
   mineReportStatusOptions: [
     { mine_report_submission_status_code: "NRQ", description: "Not Requested" },
     { mine_report_submission_status_code: "REQ", description: "Changes Requested" },
@@ -5995,9 +6153,9 @@ export const MINE_REPORT_SUBMISSIONS = [
     comments: [],
     report_type: "CRR",
     mine_report_definition_guid:
-      BULK_STATIC_CONTENT_RESPONSE.mineReportDefinitionOptions[0].mine_report_definition_guid,
+      MINE_REPORT_DEFINITION_OPTIONS[0].mine_report_definition_guid,
     mine_report_category: ["H&S"],
-    report_name: BULK_STATIC_CONTENT_RESPONSE.mineReportDefinitionOptions[0].report_name,
+    report_name: MINE_REPORT_DEFINITION_OPTIONS[0].report_name,
     due_date: "2024-02-07",
     received_date: "2024-02-06",
     submission_year: 2024,

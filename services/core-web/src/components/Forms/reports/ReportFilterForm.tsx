@@ -6,8 +6,8 @@ import {
   getDropdownMineReportCategoryOptions,
   getDropdownMineReportStatusOptions,
   getDropdownPermitConditionCategoryOptions,
-  getMineReportDefinitionOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
 import { createDropDownList, sortListObjectsByPropertyLocaleCompare } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";

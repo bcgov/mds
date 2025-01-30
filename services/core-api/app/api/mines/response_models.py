@@ -1,4 +1,4 @@
-from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
+from app.api.compliance.response_models import COMPLIANCE_ARTICLE_BASE_MODEL
 from app.api.dams.dto import DAM_MODEL
 from app.api.mines.reports.models.mine_report_permit_requirement import (
     CimOrCpo,
@@ -10,7 +10,6 @@ from app.api.parties.party_appt.models.mine_party_appt import (
 )
 from app.api.parties.response_models import PARTY
 from app.api.users.response_models import USER_MODEL
-from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.extensions import api
 from flask_restx import fields, marshal
 
@@ -806,7 +805,7 @@ MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesMod
     'active_ind': fields.Boolean
 })
 
-MINE_REPORT_DEFINITION_BASE_MODEL = api.model(
+MINE_REPORT_DEFINITION_MODEL = api.model(
     'MineReportDefinitionBase', {
         'mine_report_definition_guid': fields.String,
         'report_name': fields.String,
@@ -818,6 +817,7 @@ MINE_REPORT_DEFINITION_BASE_MODEL = api.model(
         'categories': fields.List(fields.Nested(MINE_REPORT_DEFINITION_CATEGORIES)),
         'is_common': fields.Boolean,
         'is_prr_only': fields.Boolean,
+        'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_BASE_MODEL))
     })
 
 PAGINATED_LIST = api.model(
@@ -829,7 +829,7 @@ PAGINATED_LIST = api.model(
     })
 
 PAGINATED_MINE_REPORT_DEFINITION_MODEL = api.inherit('MineReportDefinition', PAGINATED_LIST, {
-    'records': fields.List(fields.Nested(MINE_REPORT_DEFINITION_BASE_MODEL)),
+    'records': fields.List(fields.Nested(MINE_REPORT_DEFINITION_MODEL)),
 })
 
 PAGINATED_REPORT_LIST = api.inherit('ReportList', PAGINATED_LIST, {

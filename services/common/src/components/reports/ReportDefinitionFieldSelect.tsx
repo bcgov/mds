@@ -2,9 +2,7 @@ import { formatComplianceCodeReportName } from "@mds/common/redux/utils/helpers"
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Field } from "redux-form";
-
-import { getMineReportDefinitionOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-
+import { getMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
 import RenderSelect from "../forms/RenderSelect";
 import { uniqBy } from "lodash";
 import moment from "moment";

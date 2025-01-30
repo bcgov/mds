@@ -9,9 +9,9 @@ import { Button, Col, Row } from "antd";
 import {
   getDropdownMineReportStatusOptions,
   getDropdownMineReportCategoryOptions,
-  getDropdownMineReportDefinitionOptions,
   getMineRegionDropdownOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getDropdownMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
 import { sortListObjectsByPropertyLocaleCompare } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";

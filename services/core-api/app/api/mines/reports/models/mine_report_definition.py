@@ -4,9 +4,13 @@ from dateutil.relativedelta import relativedelta
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy import or_, cast, Integer
 from sqlalchemy_filters import apply_pagination
+from app.api.mines.reports.models.mine_report_permit_requirement import CimOrCpo
 
 from app.api.utils.models_mixins import Base, AuditMixin
+from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import MineReportDefinitionComplianceArticleXref
+from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.extensions import db
 
 
@@ -70,23 +74,91 @@ class MineReportDefinition(Base, AuditMixin):
             return None
 
     @classmethod
+    def _apply_sort(cls, query, sort_field, sort_dir):
+        if sort_field and sort_dir:
+            field = {
+                'report_name': MineReportDefinition.report_name,
+                'section': [cast(ComplianceArticle.section, Integer), cast(ComplianceArticle.sub_section, Integer)],
+                'regulatory_authority': ComplianceArticle.cim_or_cpo
+            }
+
+            if sort_field in ['section', 'regulatory_authority']:
+                if sort_field == 'section':
+                    sort_func = [cast(ComplianceArticle.section, Integer), cast(ComplianceArticle.sub_section, Integer)]
+                    if sort_dir == 'desc':
+                        sort_func = [cast(ComplianceArticle.section, Integer).desc(), cast(ComplianceArticle.sub_section, Integer).desc()]
+                    return query.order_by(*sort_func)
+                
+            sort_func = field[sort_field].asc() if sort_dir == 'asc' else field[sort_field].desc()    
+            query = query.order_by(sort_func)
+
+            
+        return query
+    
+    @classmethod
+    def _apply_filters(cls, query, regulatory_authority, is_prr_only, section):
+        filters = []
+        if regulatory_authority:
+            reg_auth_filter = []
+            if "NONE" in regulatory_authority:
+                regulatory_authority.remove("NONE")
+                reg_auth_filter.append(ComplianceArticle.cim_or_cpo.is_(None))
+            if len(regulatory_authority) > 0:
+                reg_auth_filter.append(ComplianceArticle.cim_or_cpo.in_(regulatory_authority))
+            
+            # if the query is either reg_auth = None or reg_auth in (list)
+            if len(reg_auth_filter) == 1:
+                reg_auth_filter = reg_auth_filter[0]
+            
+            # ex: query is reg auth in [None, CIM]
+            else:
+                reg_auth_filter = or_(*reg_auth_filter)
+            filters.append(reg_auth_filter)
+        if is_prr_only is not None:
+            filters.append(MineReportDefinition.is_prr_only.is_(is_prr_only))
+        return query.filter(*filters)
+
+    @classmethod
+    def _apply_pagination(cls, query, page, per_page):
+        if per_page != 0:
+            records, pagination_details = apply_pagination(query, page, per_page)
+            return {
+                'records': records.all(),
+                'current_page': pagination_details.page_number,
+                'total_pages': pagination_details.num_pages,
+                'items_per_page': pagination_details.page_size,
+                'total': pagination_details.total_results,
+            }
+        return {
+            'records': query.all(),
+            'current_page': 1,
+            'total_pages': 1,
+            'items_per_page': query.count(),
+            'total': query.count(),
+        }
+    
+    @classmethod
+    def apply_filters_and_pagination(cls, query, page, per_page, sort_field, sort_dir, regulatory_authority, is_prr_only, section):
+        
+        regulatory_authority = None if len(regulatory_authority) == 0 or len(regulatory_authority) == len(CimOrCpo) + 1 else regulatory_authority
+
+        compliance_sort = True if sort_field in ['section', 'regulatory_authority'] else False
+        compliance_filter = True if regulatory_authority or section else False
+        
+        if compliance_sort or compliance_filter:
+            query = query.join(MineReportDefinitionComplianceArticleXref, MineReportDefinitionComplianceArticleXref.mine_report_definition_id == MineReportDefinition.mine_report_definition_id)
+            query = query.join(ComplianceArticle, ComplianceArticle.compliance_article_id == MineReportDefinitionComplianceArticleXref.compliance_article_id)
+
+        query = cls._apply_sort(query, sort_field, sort_dir)
+        query = cls._apply_filters(query, regulatory_authority, is_prr_only, section)
+        return cls._apply_pagination(query, page, per_page)
+
+    @classmethod
     def get_all(cls):
         try:
             return cls.query.all()
         except ValueError:
             return None
-
-    @classmethod
-    def get_paginated(cls, page, per_page):
-        query = cls.query.filter_by(active_ind=True)
-        records, pagination_details = apply_pagination(query, page, per_page)
-        return {
-            'records': records.all(),
-            'current_page': pagination_details.page_number,
-            'total_pages': pagination_details.num_pages,
-            'items_per_page': pagination_details.page_size,
-            'total': pagination_details.total_results,
-        }
 
     @classmethod
     def find_required_reports_by_category(cls, _mine_report_category):
