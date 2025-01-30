@@ -1,11 +1,12 @@
 import React, { FC } from "react";
 import { Col, Row, Typography } from "antd";
-import { getConditionsWithRequirements, IMineReportPermitRequirement, IPermitAmendment, IPermitCondition } from "@mds/common/interfaces";
+import { IMineReportPermitRequirement, IPermitAmendment, IPermitCondition } from "@mds/common/interfaces";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import ConditionDiffViewer from "./ConditionDiffViewer";
 import PermitConditionReportRequirements from "./PermitConditionReportRequirements";
 import { getMineReportPermitRequirements, getMineReportPermitRequirementsByAmendment } from "@mds/common/redux/selectors/permitSelectors";
 import { useSelector } from "react-redux";
+import { getConditionsWithRequirements } from "@mds/common/utils/helpers";
 
 export interface ComparePermitConditionHistoryModalProps {
     currentAmendmentCondition: IPermitCondition;

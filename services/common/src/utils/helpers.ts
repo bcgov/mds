@@ -2,6 +2,7 @@ import { isArray } from "lodash";
 import { removeNullValuesRecursive } from "@mds/common/constants/utils";
 import { AMS_AUTHORIZATION_TYPES } from "@mds/common/constants/enums";
 import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
+import { IMineReportPermitRequirement } from "../interfaces/permits";
 
 const transformAuthorizations = (
   valuesFromForm: any,
@@ -83,16 +84,29 @@ export const formatPermitConditionStep = (step: string) => {
   return "";
 }
 
-export const getConditionsWithRequirements = (conditions: IPermitCondition[]) => {
+export const getConditionsWithRequirements = (conditions: IPermitCondition[], requirements?: IMineReportPermitRequirement[]) => {
   let result = [];
+
+  const requirementsByCondition = requirements?.length ? requirements.reduce((acc, requirement) => {
+    if (!acc[requirement.permit_condition_id]) {
+      acc[requirement.permit_condition_id] = [];
+    }
+    acc[requirement.permit_condition_id].push(requirement);
+    return acc;
+  }, {}) : {};
+
   conditions.forEach((condition) => {
-    if (condition.mineReportPermitRequirement) {
+    if (requirements && condition?.permit_condition_id) {
+      const req = requirementsByCondition[condition.permit_condition_id];
+      result = [...result, ...(req || [])];
+    } else if (condition?.mineReportPermitRequirement) {
       result.push(condition);
     }
 
-    if (condition.sub_conditions && condition.sub_conditions.length > 0) {
+    if (condition?.sub_conditions && condition?.sub_conditions.length > 0) {
       result = result.concat(getConditionsWithRequirements(condition.sub_conditions));
     }
   });
+
   return result;
 };

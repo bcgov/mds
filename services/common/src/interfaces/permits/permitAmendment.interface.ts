@@ -36,30 +36,3 @@ export interface IPermitAmendment {
   condition_categories: IPermitConditionCategory[];
   conditions_review_completed: boolean;
 }
-
-export const getConditionsWithRequirements = (conditions: IPermitCondition[], requirements?: IMineReportPermitRequirement[]) => {
-  let result = [];
-
-  const requirementsByCondition = requirements?.length ? requirements.reduce((acc, requirement) => {
-    if (!acc[requirement.permit_condition_id]) {
-      acc[requirement.permit_condition_id] = [];
-    }
-    acc[requirement.permit_condition_id].push(requirement);
-    return acc;
-  }, {}) : {};
-
-  conditions.forEach((condition) => {
-    if (requirements && condition?.permit_condition_id) {
-      const req = requirementsByCondition[condition.permit_condition_id];
-      result = [...result, ...(req || [])];
-    } else if (condition?.mineReportPermitRequirement) {
-      result.push(condition);
-    }
-
-    if (condition?.sub_conditions && condition?.sub_conditions.length > 0) {
-      result = result.concat(getConditionsWithRequirements(condition.sub_conditions));
-    }
-  });
-
-  return result;
-};
