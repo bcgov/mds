@@ -36,8 +36,6 @@ class PermitAmendmentDiffResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(PERMIT_CONDITION_DIFF_LIST_MODEL, code=200)
     def get(self, mine_guid, permit_guid, permit_amendment_guid):
-
-
         mine = Mine.find_by_mine_guid(mine_guid)
         
         if mine is None:
