@@ -97,7 +97,7 @@ class MineReportDefinition(Base, AuditMixin):
         return query
     
     @classmethod
-    def _apply_filters(cls, query, regulatory_authority, is_prr_only, section):
+    def _apply_filters(cls, query, regulatory_authority, is_prr_only, active_ind, section):
         filters = []
         if regulatory_authority:
             reg_auth_filter = []
@@ -115,8 +115,17 @@ class MineReportDefinition(Base, AuditMixin):
             else:
                 reg_auth_filter = or_(*reg_auth_filter)
             filters.append(reg_auth_filter)
-        if is_prr_only is not None:
-            filters.append(MineReportDefinition.is_prr_only.is_(is_prr_only))
+        # only filter if there is one value for is_prr
+        if len(is_prr_only) == 1:
+            is_prr_value = True if is_prr_only[0] == "true" else False
+            filters.append(MineReportDefinition.is_prr_only.is_(is_prr_value))
+        # filter active index unless value is [true, false]
+        if len(active_ind) < 2:
+            current_app.logger.info('HI TARA')
+            current_app.logger.info(active_ind)
+            active_filter_value = True if False not in active_ind else False
+            filters.append(MineReportDefinition.active_ind.is_(active_filter_value))
+
         return query.filter(*filters)
 
     @classmethod
@@ -139,7 +148,7 @@ class MineReportDefinition(Base, AuditMixin):
         }
     
     @classmethod
-    def apply_filters_and_pagination(cls, query, page, per_page, sort_field, sort_dir, regulatory_authority, is_prr_only, section):
+    def apply_filters_and_pagination(cls, query, page, per_page, sort_field, sort_dir, regulatory_authority, is_prr_only, active_ind, section):
         
         regulatory_authority = None if len(regulatory_authority) == 0 or len(regulatory_authority) == len(CimOrCpo) + 1 else regulatory_authority
 
@@ -151,7 +160,7 @@ class MineReportDefinition(Base, AuditMixin):
             query = query.join(ComplianceArticle, ComplianceArticle.compliance_article_id == MineReportDefinitionComplianceArticleXref.compliance_article_id)
 
         query = cls._apply_sort(query, sort_field, sort_dir)
-        query = cls._apply_filters(query, regulatory_authority, is_prr_only, section)
+        query = cls._apply_filters(query, regulatory_authority, is_prr_only, active_ind, section)
         return cls._apply_pagination(query, page, per_page)
 
     @classmethod

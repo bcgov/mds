@@ -1,6 +1,6 @@
 import uuid
 from flask_restx import Resource, reqparse
-from flask import request
+from flask import request, current_app
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
@@ -28,7 +28,10 @@ class MineReportDefinitionListResource(Resource, UserMixin):
         'regulatory_authority', type=list, help='CIM, CPO, Both, NONE', location='args', store_missing=False
     )
     parser.add_argument(
-        'is_prr_only', type=bool, help='True for only PRR, False for only CRR', location='args', store_missing=False
+        'is_prr_only', type=list, help='[true] for only prr, [false] to exclude, [true, false] for both', location='args', store_missing=False
+    )
+    parser.add_argument(
+        'active_ind', type=list, help='[true] for only active (default), [false] for only inactive, [true, false] for both', location='args', store_missing=False
     )
     parser.add_argument(
         'section', type=str, help='article # of compliance report', location='args', store_missing=False
@@ -47,10 +50,18 @@ class MineReportDefinitionListResource(Resource, UserMixin):
         sort_field = request.args.get('sort_field', None, type=str)
         sort_dir = request.args.get('sort_dir', None, type=str)
         regulatory_authority = request.args.getlist('regulatory_authority', type=str)
-        is_prr_only = request.args.get('is_prr_only', type=bool)
+        is_prr_only = request.args.getlist('is_prr_only', type=str)
+        active_ind = request.args.getlist('active_ind', type=str)
         section = request.args.get('section', None, type=str)
 
-        base_query = MineReportDefinition.query.filter_by(active_ind=True)
+        if (page and page < 1) or per_page and per_page < 0:
+            raise BadRequest(f'Invalid pagination values: page {page}, per_page {per_page}')
+
+        valid_sort_fields = ['report_name', 'section', 'regulatory_authority', ]
+        if sort_field and sort_field not in valid_sort_fields:
+            raise BadRequest(f'Invalid sort_field. Valid options: {valid_sort_fields}')
+
+        base_query = MineReportDefinition.query
         return MineReportDefinition.apply_filters_and_pagination(
             base_query,
             page,
@@ -59,5 +70,6 @@ class MineReportDefinitionListResource(Resource, UserMixin):
             sort_dir,
             regulatory_authority,
             is_prr_only,
+            active_ind,
             section
         )
