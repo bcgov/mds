@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { Button, Row, Typography } from "antd";
+import { Button, Input, Row, Typography } from "antd";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
@@ -10,6 +10,7 @@ import { REPORT_REGULATORY_AUTHORITY_CODES, REPORT_REGULATORY_AUTHORITY_ENUM } f
 import { formatComplianceCodeArticleNumber } from "@mds/common/redux/utils/helpers";
 import { EMPTY_FIELD, REPORT_REGULATORY_AUTHORITY_CODES_HASH } from "@mds/common/constants/strings";
 import { removeNullValues } from "@mds/common/constants/utils";
+import SearchOutlined from "@ant-design/icons/SearchOutlined";
 
 
 const defaultParams = {
@@ -21,6 +22,7 @@ const ComplianceReportManagement: FC = () => {
     const dispatch = useDispatch();
     const reportPageData = useSelector(getComplianceReportPageData);
     const reportDefinitions = reportPageData?.records ?? [];
+    const [sectionSearchText, setSectionSearchText] = useState(null);
     const [queryParams, setQueryParams] = useState<ComplianceReportParams>(defaultParams);
     const isLoaded = useSelector(getReportDefinitionsLoaded(queryParams));
 
@@ -54,6 +56,15 @@ const ComplianceReportManagement: FC = () => {
         setQueryParams(newParams)
     };
 
+    const handleSectionSearch = (confirm, searchInputText: string) => {
+        const newParams = {
+            ...queryParams,
+            section: searchInputText
+        };
+        setQueryParams(removeNullValues(newParams));
+        confirm();
+    };
+
     const openAddModal = () => {
         console.log('not implemented');
     };
@@ -69,10 +80,48 @@ const ComplianceReportManagement: FC = () => {
     }];
 
     const regulatoryAuthorityFilter = Object.entries(REPORT_REGULATORY_AUTHORITY_CODES_HASH).map(([value, text]) => ({ value, text }));
+    const sectionSearchActive = queryParams?.section?.length > 0;
 
+    const sectionFilter = {
+        filterIcon: () => <SearchOutlined className={sectionSearchActive ? "color-primary" : ""} />,
+        filterDropdown: ({ confirm }) => {
+            return (
+                <div className="column-search" style={{ padding: 8 }}>
+                    <Row style={{ minWidth: 240 }}
+                        gutter={[0, 16]}
+                    >
+                        <Input
+                            placeholder="Search Compliance Article"
+                            onChange={(e) => setSectionSearchText(e.target.value)}
+                            onPressEnter={() => handleSectionSearch(confirm, sectionSearchText)}
+                        />
+                        <Button
+                            onClick={() => handleSectionSearch(confirm, sectionSearchText)}
+                            icon={<SearchOutlined />}
+                            size="small"
+                            type="primary"
+                        >Search</Button>
+                        <Button
+                            onClick={() => {
+                                setSectionSearchText(null);
+                                handleSectionSearch(confirm, null);
+                            }}
+                            size="small"
+                        >
+                            Reset
+                        </Button>
+                    </Row>
+                </div>
+            );
+        }
+    }
     const columns = [
         renderTextColumn("report_name", "Report Name", true),
-        { ...renderTextColumn("section", "Section"), sorter: true }, // filter
+        {
+            ...renderTextColumn("section", "Section"),
+            sorter: true,
+            ...sectionFilter
+        },
         {
             ...renderTextColumn("is_prr_only", "Report Type"),
             filters: [

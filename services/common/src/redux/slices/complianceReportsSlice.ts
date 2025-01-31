@@ -16,6 +16,7 @@ export interface ComplianceReportParams extends ISearchParams {
     is_prr_only?: boolean[];
     regulatory_authority?: "CPO" | "CIM" | "Both" | "NONE"[];
     active_ind?: boolean[];
+    section?: string;
 };
 
 export const reportParamsGetAll: ComplianceReportParams = {
@@ -62,8 +63,10 @@ const complianceReportSlice = createAppSlice({
                     state.reportPageData = { records, current_page, items_per_page, total, total_pages };
                     state.params = action.meta.arg;
                 },
-                rejected: (_state: ComplianceReportState, action) => {
+                rejected: (state: ComplianceReportState, action) => {
                     rejectHandler(action);
+                    // don't show loading forever if there's an error
+                    state.params = action.meta.arg;
                 }
             }
         )
