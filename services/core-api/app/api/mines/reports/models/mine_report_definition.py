@@ -121,7 +121,7 @@ class MineReportDefinition(Base, AuditMixin):
             filters.append(MineReportDefinition.is_prr_only.is_(is_prr_value))
         # filter active index unless value is [true, false]
         if len(active_ind) < 2:
-            active_filter_value = True if False not in active_ind else False
+            active_filter_value = True if "false" not in active_ind else False
             filters.append(MineReportDefinition.active_ind.is_(active_filter_value))
 
         return query.filter(*filters)
