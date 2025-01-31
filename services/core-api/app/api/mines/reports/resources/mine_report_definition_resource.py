@@ -1,6 +1,6 @@
 import uuid
 from flask_restx import Resource, reqparse
-from flask import request, current_app
+from flask import request
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api

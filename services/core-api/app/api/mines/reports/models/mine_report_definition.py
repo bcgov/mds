@@ -121,8 +121,6 @@ class MineReportDefinition(Base, AuditMixin):
             filters.append(MineReportDefinition.is_prr_only.is_(is_prr_value))
         # filter active index unless value is [true, false]
         if len(active_ind) < 2:
-            current_app.logger.info('HI TARA')
-            current_app.logger.info(active_ind)
             active_filter_value = True if False not in active_ind else False
             filters.append(MineReportDefinition.active_ind.is_(active_filter_value))
 
