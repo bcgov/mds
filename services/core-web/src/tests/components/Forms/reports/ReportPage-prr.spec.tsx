@@ -7,7 +7,7 @@ import ReportPage from "@/components/mine/Reports/ReportPage";
 import { BrowserRouter } from "react-router-dom";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
-import { complianceReportReducerType } from "@mds/common/redux/slices/complianceReportsSlice";
+import { complianceReportReducerType, reportParamsGetAll } from "@mds/common/redux/slices/complianceReportsSlice";
 
 const mineReportSubmission = MOCK.MINE_REPORT_SUBMISSIONS[1];
 const initialState = {
@@ -28,7 +28,8 @@ const initialState = {
       items_per_page: MOCK.MINE_REPORT_DEFINITION_OPTIONS.length,
       total: MOCK.MINE_REPORT_DEFINITION_OPTIONS.length,
       total_pages: 1
-    }
+    },
+    params: reportParamsGetAll
   },
   [AUTHENTICATION]: {
     systemFlag: SystemFlagEnum.core,

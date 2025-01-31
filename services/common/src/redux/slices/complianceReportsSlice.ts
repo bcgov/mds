@@ -18,6 +18,11 @@ export interface ComplianceReportParams extends ISearchParams {
     active_ind?: boolean[];
 };
 
+export const reportParamsGetAll: ComplianceReportParams = {
+    per_page: 0,
+    active_ind: [true, false]
+};
+
 interface ComplianceReportState {
     reportPageData: IPageData<IMineReportDefinition>,
     params: ComplianceReportParams;

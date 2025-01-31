@@ -6,7 +6,7 @@ import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { ReportPermitRequirementForm } from "@/components/Forms/reports/ReportPermitRequirementForm";
-import { complianceReportReducerType } from "@mds/common/redux/slices/complianceReportsSlice";
+import { complianceReportReducerType, reportParamsGetAll } from "@mds/common/redux/slices/complianceReportsSlice";
 
 const initialState = {
   [STATIC_CONTENT]: {
@@ -21,7 +21,8 @@ const initialState = {
       items_per_page: MOCK.MINE_REPORT_DEFINITION_OPTIONS.length,
       total: MOCK.MINE_REPORT_DEFINITION_OPTIONS.length,
       total_pages: 1
-    }
+    },
+    params: reportParamsGetAll,
   },
   [MINES]: MOCK.MINES,
   [PERMITS]: {
@@ -42,6 +43,9 @@ describe("RequestReportForm", () => {
           permitGuid={MOCK.PERMITS[0].permit_guid}
           onSubmit={() => { }}
           condition={MOCK.PERMITS[0].permit_amendments[0].conditions[0]}
+          canEditPermitConditions
+          refreshData={jest.fn()}
+          mineGuid={MOCK.PERMITS[0].mine_guid}
         />
       </ReduxWrapper>
     );

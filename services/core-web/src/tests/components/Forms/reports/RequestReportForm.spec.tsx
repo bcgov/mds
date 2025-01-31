@@ -6,7 +6,7 @@ import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { RequestReportForm } from "@/components/Forms/reports/RequestReportForm";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { REPORT_TYPE_CODES, SystemFlagEnum } from "@mds/common/constants/enums";
-import { complianceReportReducerType } from "@mds/common/redux/slices/complianceReportsSlice";
+import { complianceReportReducerType, reportParamsGetAll } from "@mds/common/redux/slices/complianceReportsSlice";
 
 const initialState = {
   [STATIC_CONTENT]: {
@@ -21,7 +21,8 @@ const initialState = {
       items_per_page: MOCK.MINE_REPORT_DEFINITION_OPTIONS.length,
       total: MOCK.MINE_REPORT_DEFINITION_OPTIONS.length,
       total_pages: 1
-    }
+    },
+    params: reportParamsGetAll,
   },
   [MINES]: MOCK.MINES,
   [AUTHENTICATION]: {

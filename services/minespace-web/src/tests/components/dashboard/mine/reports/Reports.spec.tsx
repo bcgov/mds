@@ -5,7 +5,10 @@ import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { SidebarProvider } from "@mds/common/components/common/SidebarWrapper";
 import { REPORTS } from "@mds/common/constants/reducerTypes";
-import { complianceReportReducerType } from "@mds/common/redux/slices/complianceReportsSlice";
+import {
+  complianceReportReducerType,
+  reportParamsGetAll,
+} from "@mds/common/redux/slices/complianceReportsSlice";
 
 const initialState = {
   [REPORTS]: { mineReports: MOCK.MINE_REPORTS, reportsPageData: MOCK.PAGE_DATA },
@@ -17,6 +20,7 @@ const initialState = {
       total: MOCK.MINE_REPORT_DEFINITION_OPTIONS.length,
       total_pages: 1,
     },
+    params: reportParamsGetAll,
   },
 };
 

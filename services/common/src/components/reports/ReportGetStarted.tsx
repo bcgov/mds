@@ -2,7 +2,7 @@ import { Alert, Button, Col, Row, Typography } from "antd";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { Field, getFormValues, change } from "redux-form";
 import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { IMine, IMineReportDefinition, IMineReportSubmission } from "@mds/common/interfaces";
 import {
   createDropDownList,
@@ -16,7 +16,7 @@ import RenderSelect from "../forms/RenderSelect";
 import {
   getDropdownPermitConditionCategoryOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getFormattedMineReportDefinitionOptions, getMineReportDefinitionByGuid } from "@mds/common/redux/slices/complianceReportsSlice";
+import { fetchComplianceReports, getFormattedMineReportDefinitionOptions, getMineReportDefinitionByGuid, getReportDefinitionsLoaded, reportParamsGetAll } from "@mds/common/redux/slices/complianceReportsSlice";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
@@ -170,9 +170,16 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
   const selectedReportDefinition: IMineReportDefinition = useSelector(
     getMineReportDefinitionByGuid(formValues?.mine_report_definition_guid)
   );
+  const reportDefinitionsLoaded = useSelector(getReportDefinitionsLoaded(reportParamsGetAll));
 
   useEffect(() => {
-    if (selectedReportDefinition && selectedReportDefinition.is_prr_only) {
+    if (!reportDefinitionsLoaded) {
+      dispatch(fetchComplianceReports(reportParamsGetAll));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (selectedReportDefinition?.is_prr_only) {
       setDisableNextButton(true);
     } else {
       setDisableNextButton(false);
