@@ -86,7 +86,7 @@ class MineReportDefinition(Base, AuditMixin):
             if sort_dir == 'desc':
                 sort_func = [field.desc() for field in sort_func]
             query = query.order_by(*sort_func)
-            
+
         return query
     
     @classmethod
@@ -116,7 +116,19 @@ class MineReportDefinition(Base, AuditMixin):
         if len(active_ind) < 2:
             active_filter_value = True if "false" not in active_ind else False
             filters.append(MineReportDefinition.active_ind.is_(active_filter_value))
+        
+        if section:
+            section_parts = section.split(".")
+            section_order = [
+                ComplianceArticle.section, 
+                ComplianceArticle.sub_section, 
+                ComplianceArticle.paragraph, 
+                ComplianceArticle.sub_paragraph]
 
+            for index, part in enumerate(section_parts):
+                field_name = section_order[index]
+                filters.append(field_name.ilike(part))
+        
         return query.filter(*filters)
 
     @classmethod

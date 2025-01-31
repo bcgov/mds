@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { change, Field, initialize, reset } from "redux-form";
 import SearchOutlined from "@ant-design/icons/SearchOutlined";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
@@ -8,7 +8,6 @@ import CoreTable from "@mds/common/components/common/CoreTable";
 import {
   renderActionsColumn,
   renderDateColumn,
-  renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { required } from "@mds/common/redux/utils/Validate";
@@ -131,7 +130,7 @@ const ComplianceCodeManagement: FC = () => {
   };
 
   const handleSearch = (confirm, field, searchInputText) => {
-    if (searchInputText && searchInputText.length) {
+    if (searchInputText?.length) {
       const filteredRecords = Object.values(complianceCodes)
         .filter((code) => {
           return code[field]
@@ -232,7 +231,6 @@ const ComplianceCodeManagement: FC = () => {
         );
       },
     },
-    renderTextColumn("description", "Description"),
     { ...renderDateColumn("effective_date", "Date Active"), width: 150 },
     {
       title: "Date Expire",
