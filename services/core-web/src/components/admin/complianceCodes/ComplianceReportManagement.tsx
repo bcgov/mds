@@ -3,7 +3,7 @@ import { Button, Row, Typography } from "antd";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
-import { fetchComplianceReports, getComplianceReportPageData } from "@mds/common/redux/slices/complianceReportsSlice";
+import { ComplianceReportParams, fetchComplianceReports, getComplianceReportPageData, getReportDefinitionsLoaded } from "@mds/common/redux/slices/complianceReportsSlice";
 import { renderActionsColumn, renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { IComplianceArticle, IMineReportDefinition } from "@mds/common/interfaces";
 import { REPORT_REGULATORY_AUTHORITY_CODES, REPORT_REGULATORY_AUTHORITY_ENUM } from "@mds/common/constants/enums";
@@ -21,13 +21,18 @@ const ComplianceReportManagement: FC = () => {
     const dispatch = useDispatch();
     const reportPageData = useSelector(getComplianceReportPageData);
     const reportDefinitions = reportPageData?.records ?? [];
-    const defaultLoaded = reportPageData.total > 0;
-    const [isLoading, setIsLoading] = useState(false);
+    const [queryParams, setQueryParams] = useState<ComplianceReportParams>(defaultParams);
+    const isLoaded = useSelector(getReportDefinitionsLoaded(queryParams));
 
-    const fetchData = (params = defaultParams) => {
-        setIsLoading(true);
-        dispatch(fetchComplianceReports(params)).then(() => setIsLoading(false))
+    const fetchData = () => {
+        dispatch(fetchComplianceReports(queryParams));
     };
+
+    useEffect(() => {
+        if (!isLoaded) {
+            fetchData();
+        }
+    }, [queryParams]);
 
     const onTableChange = (pagination, filters, sorter) => {
         const { current: page, pageSize: per_page } = pagination;
@@ -46,14 +51,8 @@ const ComplianceReportManagement: FC = () => {
             ...sortParams,
             ...activeFilters,
         }
-        fetchData(newParams);
+        setQueryParams(newParams)
     };
-
-    useEffect(() => {
-        if (!defaultLoaded) {
-            fetchData();
-        }
-    }, []);
 
     const openAddModal = () => {
         console.log('not implemented');
@@ -129,16 +128,16 @@ const ComplianceReportManagement: FC = () => {
                 </Button>
             </Row>
             <CoreTable
-                loading={isLoading}
+                loading={!isLoaded}
                 dataSource={transformData(reportDefinitions)}
                 columns={columns}
                 rowKey="mine_report_definition_guid"
                 onChange={onTableChange}
-                pagination={!isLoading && {
+                pagination={isLoaded && {
                     total: reportPageData.total,
                     defaultPageSize: 50,
                     position: ['bottomCenter'],
-                    disabled: isLoading,
+                    disabled: !isLoaded,
                 }}
             />
         </div>

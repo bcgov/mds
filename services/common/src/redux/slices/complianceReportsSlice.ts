@@ -7,12 +7,20 @@ import { IMineReportDefinition, IPageData, ItemMap } from "@mds/common/interface
 import { createDropDownList, createItemMap, formatComplianceCodeReportName } from "@mds/common/redux/utils/helpers";
 import { createSelectorWrapper } from "../selectors/staticContentSelectors";
 import { createSelector } from "@reduxjs/toolkit";
+import { ISearchParams } from "@mds/common/interfaces/common/searchParams.interface";
 
 
 export const complianceReportReducerType = 'complianceReports'
 
+export interface ComplianceReportParams extends ISearchParams {
+    is_prr_only?: boolean[];
+    regulatory_authority?: "CPO" | "CIM" | "Both" | "NONE"[];
+    active_ind?: boolean[];
+};
+
 interface ComplianceReportState {
     reportPageData: IPageData<IMineReportDefinition>,
+    params: ComplianceReportParams;
 };
 
 const initialState: ComplianceReportState = {
@@ -22,7 +30,8 @@ const initialState: ComplianceReportState = {
         items_per_page: 0,
         total: 0,
         total_pages: 0
-    }
+    },
+    params: {}
 };
 
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;
@@ -32,12 +41,12 @@ const complianceReportSlice = createAppSlice({
     initialState,
     reducers: (create) => ({
         fetchComplianceReports: create.asyncThunk(
-            async (searchParams = {}, thunkApi) => {
+            async (searchParams: ComplianceReportParams, thunkApi) => {
                 const headers = createRequestHeader();
                 thunkApi.dispatch(showLoading());
                 const resp = await CustomAxios({
                     errorToastMessage: "Failed to load compliance reports",
-                }).get(`${ENVIRONMENT.apiUrl}${API.MINE_REPORT_DEFINITIONS(searchParams)}`, headers);
+                }).get(`${ENVIRONMENT.apiUrl}${API.MINE_REPORT_DEFINITIONS(searchParams ?? {})}`, headers);
                 thunkApi.dispatch(hideLoading());
                 return resp.data;
             },
@@ -46,6 +55,7 @@ const complianceReportSlice = createAppSlice({
                     const records: IMineReportDefinition[] = action.payload.records ?? [];
                     const { current_page, items_per_page, total, total_pages } = action.payload;
                     state.reportPageData = { records, current_page, items_per_page, total, total_pages };
+                    state.params = action.meta.arg;
                 },
                 rejected: (_state: ComplianceReportState, action) => {
                     rejectHandler(action);
@@ -63,11 +73,13 @@ const complianceReportSlice = createAppSlice({
         getComplianceReportPageData: (state): IPageData<IMineReportDefinition> => {
             return state.reportPageData;
         },
-
+        getReportSearchParams: (state): ComplianceReportParams => {
+            return state.params;
+        },
     }
 });
 
-export const { getMineReportDefinitionHash, getMineReportDefinitionOptions, getComplianceReportPageData,
+export const { getMineReportDefinitionHash, getMineReportDefinitionOptions, getComplianceReportPageData, getReportSearchParams
 } = complianceReportSlice.selectors;
 
 export const getDropdownMineReportDefinitionOptions = createSelectorWrapper(
@@ -96,6 +108,11 @@ export const getMineReportDefinitionByGuid = (mineReportDefinitionGuid: string) 
     createSelector([getMineReportDefinitionHash], (reportMap) => {
         return reportMap[mineReportDefinitionGuid]
     });
+
+export const getReportDefinitionsLoaded = (params: ComplianceReportParams) =>
+    createSelector([getReportSearchParams], (currentParams) => {
+        return params === currentParams;
+    })
 
 export const {
     fetchComplianceReports
