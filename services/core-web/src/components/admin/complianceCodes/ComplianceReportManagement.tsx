@@ -136,6 +136,7 @@ const ComplianceReportManagement: FC = () => {
                 pagination={isLoaded && {
                     total: reportPageData.total,
                     defaultPageSize: 50,
+                    pageSize: queryParams.per_page,
                     position: ['bottomCenter'],
                     disabled: !isLoaded,
                 }}

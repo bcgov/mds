@@ -78,21 +78,14 @@ class MineReportDefinition(Base, AuditMixin):
     def _apply_sort(cls, query, sort_field, sort_dir):
         if sort_field and sort_dir:
             field = {
-                'report_name': MineReportDefinition.report_name,
-                'section': [cast(ComplianceArticle.section, Integer), cast(ComplianceArticle.sub_section, Integer)],
-                'regulatory_authority': ComplianceArticle.cim_or_cpo
+                'report_name': [MineReportDefinition.report_name],
+                'section': [cast(ComplianceArticle.section, Integer), cast(ComplianceArticle.sub_section, Integer), cast(ComplianceArticle.paragraph, Integer), ComplianceArticle.sub_paragraph],
+                'regulatory_authority': [ComplianceArticle.cim_or_cpo]
             }
-
-            if sort_field in ['section', 'regulatory_authority']:
-                if sort_field == 'section':
-                    sort_func = [cast(ComplianceArticle.section, Integer), cast(ComplianceArticle.sub_section, Integer)]
-                    if sort_dir == 'desc':
-                        sort_func = [cast(ComplianceArticle.section, Integer).desc(), cast(ComplianceArticle.sub_section, Integer).desc()]
-                    return query.order_by(*sort_func)
-                
-            sort_func = field[sort_field].asc() if sort_dir == 'asc' else field[sort_field].desc()    
-            query = query.order_by(sort_func)
-
+            sort_func = field[sort_field]
+            if sort_dir == 'desc':
+                sort_func = [field.desc() for field in sort_func]
+            query = query.order_by(*sort_func)
             
         return query
     
