@@ -185,7 +185,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
             <Row
                 wrap={false}
                 align="top"
-                className={`condition-content ${!editingConditionGuid ? "editable" : ""} ${!condition.parent_permit_condition_id ? "top-level-condition" : ""}`}
+                className={`condition-content ${!editingConditionGuid ? "editable" : ""}${!condition.parent_permit_condition_id ? " top-level-condition" : ""}`}
             >
                 <Col className="step-column" style={{ flexShrink: 0 }}>
                     <Field

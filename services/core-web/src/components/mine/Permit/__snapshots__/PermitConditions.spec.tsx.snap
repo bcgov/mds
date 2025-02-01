@@ -1609,7 +1609,7 @@ exports[`PermitConditions renders properly 1`] = `
                                             id="EDIT_PERMIT_CONDITION_1641_ELC"
                                           >
                                             <div
-                                              class="ant-row ant-row-no-wrap ant-row-top condition-content editable "
+                                              class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                             >
                                               <div
                                                 class="ant-col step-column"
@@ -1654,7 +1654,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                   id="EDIT_PERMIT_CONDITION_1644_ELC"
                                                 >
                                                   <div
-                                                    class="ant-row ant-row-no-wrap ant-row-top condition-content editable "
+                                                    class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                                   >
                                                     <div
                                                       class="ant-col step-column"
@@ -1705,7 +1705,7 @@ exports[`PermitConditions renders properly 1`] = `
                                             id="EDIT_PERMIT_CONDITION_12507_ELC"
                                           >
                                             <div
-                                              class="ant-row ant-row-no-wrap ant-row-top condition-content editable "
+                                              class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                             >
                                               <div
                                                 class="ant-col step-column"
@@ -1750,7 +1750,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                   id="EDIT_PERMIT_CONDITION_12509_ELC"
                                                 >
                                                   <div
-                                                    class="ant-row ant-row-no-wrap ant-row-top condition-content editable "
+                                                    class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                                   >
                                                     <div
                                                       class="ant-col step-column"
@@ -1795,7 +1795,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                         id="EDIT_PERMIT_CONDITION_12510_ELC"
                                                       >
                                                         <div
-                                                          class="ant-row ant-row-no-wrap ant-row-top condition-content editable "
+                                                          class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                                         >
                                                           <div
                                                             class="ant-col step-column"
@@ -1843,7 +1843,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                         id="EDIT_PERMIT_CONDITION_12511_ELC"
                                                       >
                                                         <div
-                                                          class="ant-row ant-row-no-wrap ant-row-top condition-content editable "
+                                                          class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                                         >
                                                           <div
                                                             class="ant-col step-column"
@@ -1891,7 +1891,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                         id="EDIT_PERMIT_CONDITION_12512_ELC"
                                                       >
                                                         <div
-                                                          class="ant-row ant-row-no-wrap ant-row-top condition-content editable "
+                                                          class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                                         >
                                                           <div
                                                             class="ant-col step-column"
@@ -1936,7 +1936,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                               id="EDIT_PERMIT_CONDITION_12513_ELC"
                                                             >
                                                               <div
-                                                                class="ant-row ant-row-no-wrap ant-row-top condition-content editable "
+                                                                class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                                               >
                                                                 <div
                                                                   class="ant-col step-column"
@@ -2093,7 +2093,7 @@ exports[`PermitConditions renders properly 1`] = `
                                             id="EDIT_PERMIT_CONDITION_12515_ELC"
                                           >
                                             <div
-                                              class="ant-row ant-row-no-wrap ant-row-top condition-content editable "
+                                              class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                             >
                                               <div
                                                 class="ant-col step-column"
