@@ -51,8 +51,10 @@ const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> 
     userHasRole(state, USER_ROLES.role_edit_template_conditions)
   );
 
+  const isUserAssigned = user?.sub === category?.assigned_review_user?.sub;
+
   const userCanUnassignReviewer =
-    user?.sub === category?.assigned_review_user?.sub || userCanAssignReviewers;
+    isUserAssigned || userCanAssignReviewers;
 
   const formName = `${FORM.PERMIT_CONDITION_REVIEW_ASSIGNMENT}-${category.condition_category_code}`;
 
@@ -96,7 +98,9 @@ const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> 
         condition_category_code: category.condition_category_code,
       }}
     >
-      <Row align="top" justify="start" gutter={16}>
+      <Row align="top" justify="start" gutter={16}
+        className={`${isUserAssigned ? "" : "condition-category-reviewer-row"}`}
+      >
         <Col>
           <Typography.Paragraph>Assigned Reviewer</Typography.Paragraph>
         </Col>
