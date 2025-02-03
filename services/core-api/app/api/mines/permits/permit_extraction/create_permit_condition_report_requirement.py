@@ -118,7 +118,7 @@ def _parse_due_date_period(recurring, frequency):
 def _parse_cim_cpo(mention_chief_inspector, mention_chief_permitting_officer):
     cim_or_cpo = None
     if mention_chief_inspector and mention_chief_permitting_officer:
-        cim_or_cpo = "BOTH"
+        cim_or_cpo = "Both"
     elif mention_chief_inspector:
         cim_or_cpo = "CIM"
     elif mention_chief_permitting_officer:

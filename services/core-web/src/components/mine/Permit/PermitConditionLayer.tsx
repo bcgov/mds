@@ -6,6 +6,11 @@ import { IGroupedDropdownList } from "@mds/common/interfaces/common/option.inter
 import { PermitConditionStatus } from "./PermitConditionStatus";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
+import ReportPermitRequirementForm from "@/components/Forms/reports/ReportPermitRequirementForm";
+import { Collapse, Typography } from "antd";
+import { getConditionsWithRequirements } from "@mds/common/utils/helpers";
+
+const { Title } = Typography;
 
 interface PermitConditionLayerProps {
   isExtracted: boolean;
@@ -23,6 +28,8 @@ interface PermitConditionLayerProps {
   refreshData: () => Promise<void>;
   conditionSelected?: (condition: IPermitCondition) => void;
   categoryOptions?: IGroupedDropdownList[];
+  permitGuid: string;
+  mineGuid: string;
 }
 
 const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
@@ -41,6 +48,8 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   permitAmendmentGuid,
   refreshData,
   categoryOptions,
+  permitGuid,
+  mineGuid,
 }) => {
   const editingCondition = editingConditionGuid === condition.permit_condition_guid;
   const [isAddingListItem, setIsAddingListItem] = useState<boolean>(false);
@@ -87,6 +96,8 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
     await handleMoveCondition(condition, false);
   };
 
+  const requirements = getConditionsWithRequirements([condition]);
+
   return (
     <div
       className={`${className} ${editingCondition ? "condition-layer--editing" : ""}`}
@@ -126,6 +137,8 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
                 conditionCount={condition.sub_conditions.length}
                 refreshData={refreshData}
                 conditionSelected={conditionSelected}
+                permitGuid={permitGuid}
+                mineGuid={mineGuid}
               />
             </div>
           );
@@ -141,13 +154,48 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
         />
       )}
       {level == 0 && isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && (
-        <PermitConditionStatus
-          condition={condition}
-          canEditPermitConditions={canEditPermitConditions}
-          isDisabled={isAddingListItem || isExpanded}
-          permitAmendmentGuid={permitAmendmentGuid}
-          refreshData={refreshData}
-        />
+        <div>
+          {(!condition?.parent_permit_condition_id && requirements.length > 0) && (
+            <div className="report-collapse-container ">
+              <Title level={4} className="primary-colour">
+                Report Requirements
+              </Title>
+              <Collapse expandIconPosition="end">
+                {requirements.map((cond: IPermitCondition, index) => (
+                  <Collapse.Panel
+                    key={cond.permit_condition_id}
+                    header={
+                      <Typography.Text strong>
+                        Report #{index + 1}
+                        {cond.mineReportPermitRequirement?.report_name
+                          ? ` - ${cond.mineReportPermitRequirement.report_name}`
+                          : ""}
+                      </Typography.Text>
+                    }
+                    className="report-collapse"
+                  >
+                    <ReportPermitRequirementForm
+                      modalView={false}
+                      condition={cond}
+                      permitGuid={permitGuid}
+                      mineReportPermitRequirement={cond.mineReportPermitRequirement}
+                      canEditPermitConditions={canEditPermitConditions}
+                      refreshData={refreshData}
+                      mineGuid={mineGuid}
+                    />
+                  </Collapse.Panel>
+                ))}
+              </Collapse>
+            </div>
+          )}
+          <PermitConditionStatus
+            condition={condition}
+            canEditPermitConditions={canEditPermitConditions}
+            isDisabled={isAddingListItem || isExpanded}
+            permitAmendmentGuid={permitAmendmentGuid}
+            refreshData={refreshData}
+          />
+        </div>
       )}
       {/* Content added here will show up at the top level when conditions are collapsed */}
     </div>
