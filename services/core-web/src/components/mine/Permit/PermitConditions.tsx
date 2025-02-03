@@ -35,7 +35,6 @@ import {
   RenderExtractionStart,
 } from "./PermitConditionExtraction";
 import { getMineReportPermitRequirements } from "@mds/common/redux/selectors/permitSelectors";
-import ReportPermitRequirementForm from "@/components/Forms/reports/ReportPermitRequirementForm";
 import PermitConditionCategoryEditModal from "./PermitConditionCategoryEditModal";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { uniqBy } from "lodash";
@@ -138,7 +137,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const PERMIT_CONDITION_STATUS = {
     complete: { icon: faCheckCircle, color: "color-success", text: "Complete" },
     in_progress: { icon: faClock, color: "color-primary", text: "In Progress" },
-    not_started: { icon: faBan, color: "color-gov-grey", text: "Not Started" }
+    not_started: { icon: faBan, color: "color-gov-grey", text: "Not Started" },
   }
 
   const getPermitConditionCategories = (categories, conditions) => {
@@ -275,10 +274,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
     await refreshData();
   };
 
-  const handleEditReportRequirement = (values) => {
-    console.log("not implemented", values);
-  };
-
   const toggleViewPdf = () => {
     setViewPdf(!viewPdf);
   };
@@ -377,22 +372,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
 
   const showLoading = !latestAmendment || isLoading;
 
-  const getConditionsWithRequirements = (conditions: IPermitCondition[]) => {
-    let result = [];
-
-    conditions.forEach((condition) => {
-      if (condition.mineReportPermitRequirement) {
-        result.push(condition);
-      }
-
-      if (condition.sub_conditions && condition.sub_conditions.length > 0) {
-        result = result.concat(getConditionsWithRequirements(condition.sub_conditions));
-      }
-    });
-
-    return result;
-  };
-
   const AddConditionModalContent = (
     <Typography.Paragraph
       className="no_link_styling grey"
@@ -473,8 +452,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
                     {showLoading && <Skeleton active paragraph={{ rows: 10 }} />}
 
                     {permitConditionCategories.map((category, idx) => {
-                      const conditionsWithRequirements: IPermitCondition[] =
-                        getConditionsWithRequirements(category.conditions);
                       return (
                         <React.Fragment key={category.href}>
                           <Col span={24}>
@@ -529,6 +506,8 @@ const PermitConditions: FC<PermitConditionProps> = ({
                                 refreshData={refreshData}
                                 conditionSelected={setSelectedCondition}
                                 categoryOptions={dropdownCategories}
+                                permitGuid={permitGuid}
+                                mineGuid={mineGuid}
                               />
                             </Col>
                           ))}
@@ -541,37 +520,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
                                 onSubmit={handleAddCondition}
                                 categoryOptions={dropdownCategories}
                               /></Col>)}
-                          {conditionsWithRequirements?.length > 0 && (
-                            <div className="report-collapse-container ">
-                              <Title level={4} className="primary-colour">
-                                Report Requirements
-                              </Title>
-                              <Collapse expandIconPosition="end">
-                                {conditionsWithRequirements.map((cond: IPermitCondition, index) => (
-                                  <Collapse.Panel
-                                    key={cond.permit_condition_id}
-                                    header={
-                                      <Typography.Text strong>
-                                        Report #{index + 1}
-                                        {cond.mineReportPermitRequirement?.report_name
-                                          ? ` - ${cond.mineReportPermitRequirement.report_name}`
-                                          : ""}
-                                      </Typography.Text>
-                                    }
-                                    className="report-collapse"
-                                  >
-                                    <ReportPermitRequirementForm
-                                      modalView={false}
-                                      onSubmit={handleEditReportRequirement}
-                                      condition={cond}
-                                      permitGuid={permitGuid}
-                                      mineReportPermitRequirement={cond.mineReportPermitRequirement}
-                                    />
-                                  </Collapse.Panel>
-                                ))}
-                              </Collapse>
-                            </div>
-                          )}
                         </React.Fragment>
                       );
                     })}
