@@ -42,8 +42,8 @@ COPY --from=builder /app/services/minespace-web/runner ./runner
 
 WORKDIR /app/runner 
 
-# Install node runner deps. and ignore devDependencies with --production flag
-RUN npm ci --production
+# Install node runner deps. and ignore devDependencies with --omit=dev flag
+RUN npm install --omit=dev --legacy-peer-deps
 
 EXPOSE 3020
 CMD [ "node", "server.js" ]
