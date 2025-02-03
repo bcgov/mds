@@ -34,7 +34,6 @@ div.condition-layer {
     border: 1px solid $transparent-dark-grey;
     border-radius: 4px;
     padding: 16px;
-    font-weight: 700;
 
     p.condition-layer--0 {
       font-weight: 600;
@@ -55,17 +54,27 @@ div.condition-layer {
   }
 }
 
+.top-level-condition {
+  font-weight: 600;
+}
+
 .condition-edit-buttons {
   padding: 0 8px;
 }
 
 .report-collapse-container {
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
+  margin-top: 16px;
 }
 
 .report-collapse-container>div {
   border: 1px solid #d9d9d9;
+}
+
+.report-collapse-container>h4 {
+  font-size: 1rem;
+  margin-bottom: 16px;
 }
 
 .report-collapse {
@@ -124,4 +133,8 @@ div.condition-layer {
   &--incomplete {
     @extend .bg-color-warning;
   }
+}
+
+.condition-category-reviewer-row {
+  margin-top: 10px;
 }

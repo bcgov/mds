@@ -1016,7 +1016,7 @@ exports[`PermitConditions renders properly 1`] = `
                                       id="EDIT_PERMIT_CONDITION_1639_HSC"
                                     >
                                       <div
-                                        class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                        class="ant-row ant-row-no-wrap ant-row-top condition-content editable top-level-condition"
                                       >
                                         <div
                                           class="ant-col step-column"
@@ -1152,7 +1152,7 @@ exports[`PermitConditions renders properly 1`] = `
                                   id="PERMIT_CONDITION_REVIEW_ASSIGNMENT-RCC"
                                 >
                                   <div
-                                    class="ant-row ant-row-start ant-row-top"
+                                    class="ant-row ant-row-start ant-row-top condition-category-reviewer-row"
                                     style="margin-left: -8px; margin-right: -8px;"
                                   >
                                     <div
@@ -1305,7 +1305,7 @@ exports[`PermitConditions renders properly 1`] = `
                                       id="EDIT_PERMIT_CONDITION_1646_RCC"
                                     >
                                       <div
-                                        class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                        class="ant-row ant-row-no-wrap ant-row-top condition-content editable top-level-condition"
                                       >
                                         <div
                                           class="ant-col step-column"
@@ -1411,7 +1411,7 @@ exports[`PermitConditions renders properly 1`] = `
                                   id="PERMIT_CONDITION_REVIEW_ASSIGNMENT-ELC"
                                 >
                                   <div
-                                    class="ant-row ant-row-start ant-row-top"
+                                    class="ant-row ant-row-start ant-row-top condition-category-reviewer-row"
                                     style="margin-left: -8px; margin-right: -8px;"
                                   >
                                     <div
@@ -1564,7 +1564,7 @@ exports[`PermitConditions renders properly 1`] = `
                                       id="EDIT_PERMIT_CONDITION_1650_ELC"
                                     >
                                       <div
-                                        class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                        class="ant-row ant-row-no-wrap ant-row-top condition-content editable top-level-condition"
                                       >
                                         <div
                                           class="ant-col step-column"
@@ -2048,7 +2048,7 @@ exports[`PermitConditions renders properly 1`] = `
                                       id="EDIT_PERMIT_CONDITION_12514_ELC"
                                     >
                                       <div
-                                        class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                        class="ant-row ant-row-no-wrap ant-row-top condition-content editable top-level-condition"
                                       >
                                         <div
                                           class="ant-col step-column"

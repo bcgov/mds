@@ -185,7 +185,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
             <Row
                 wrap={false}
                 align="top"
-                className={`condition-content ${!editingConditionGuid ? "editable" : ""}`}
+                className={`condition-content ${!editingConditionGuid ? "editable" : ""}${!condition.parent_permit_condition_id ? " top-level-condition" : ""}`}
             >
                 <Col className="step-column" style={{ flexShrink: 0 }}>
                     <Field
@@ -238,8 +238,9 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                     type="default"
                                     icon={<FontAwesomeIcon icon={faClipboard} />}
                                     onClick={(e) => handleOpenAddReportModal(e, condition)}
+                                    disabled={condition?.mineReportPermitRequirement !== undefined}
                                 >
-                                    Add Report Requirement
+                                    {condition?.mineReportPermitRequirement ? "Report Added" : "Add Report Requirement"}
                                 </Button>
                             </Col>
                             <Col>

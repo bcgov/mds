@@ -156,7 +156,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
       {level == 0 && isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && (
         <div>
           {(!condition?.parent_permit_condition_id && requirements.length > 0) && (
-            <div className="report-collapse-container ">
+            <div className="report-collapse-container">
               <Title level={4} className="primary-colour">
                 Report Requirements
               </Title>
