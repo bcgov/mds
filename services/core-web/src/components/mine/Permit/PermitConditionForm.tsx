@@ -133,6 +133,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                     onSubmit: addNewReport,
                     title: `Add Permit Required Report to Condition`,
                     condition: reportCondition,
+                    canEditPermitConditions: canEditPermitConditions,
                     permitGuid,
                 },
                 content: ReportPermitRequirementForm,

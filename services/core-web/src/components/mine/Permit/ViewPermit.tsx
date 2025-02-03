@@ -5,7 +5,7 @@ import {
   getLatestAmendmentByPermitGuid,
   getPermitByGuid,
 } from "@mds/common/redux/selectors/permitSelectors";
-import { IMine, IPermit, IPermitAmendment } from "@mds/common/interfaces";
+import { IMine, IPermit, IPermitAmendment, IPermitAmendmentDocument } from "@mds/common/interfaces";
 import ViewPermitOverview from "@/components/mine/Permit/ViewPermitOverview";
 import PermitConditions from "@/components/mine/Permit/PermitConditions";
 
@@ -30,6 +30,8 @@ import {
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
+import PermitConditionsSelectDocumentModal from "@/components/mine/Permit/PermitConditionsSelectDocumentModal";
 
 const tabs = ["overview", "conditions"];
 
@@ -60,13 +62,14 @@ const ViewPermit: FC = () => {
   const [pollForStatus, setPollForStatus] = useState(false);
 
   const hasConditions = latestAmendment?.conditions?.length > 0;
-  const isReviewComplete = latestAmendment?.conditions?.every((con) => con.permit_condition_status_code === PERMIT_CONDITION_STATUS_CODE.COM);
-
+  const isReviewComplete = latestAmendment?.conditions?.every(
+    (con) => con.permit_condition_status_code === PERMIT_CONDITION_STATUS_CODE.COM
+  );
 
   const canStartExtraction =
-    ((documents.length > 0 && !permitExtraction?.status) ||
-      [PermitExtractionStatus.error, PermitExtractionStatus.not_started].includes(
-        permitExtraction?.status
+    ((documents.length > 0 && !permitExtraction?.task_status) ||
+      [PermitExtractionStatus.error, PermitExtractionStatus.not_started, PermitExtractionStatus.deleted].includes(
+        permitExtraction?.task_status
       )) &&
     !hasConditions;
 
@@ -167,7 +170,35 @@ const ViewPermit: FC = () => {
 
   const onConditionsTab = tab === tabs[1];
 
+  const handleSelectedDocumentExtraction = async (document: IPermitAmendmentDocument) => {
+    dispatch(closeModal());
+    await dispatch(
+      initiatePermitExtraction({
+        permit_amendment_id: latestAmendment?.permit_amendment_id,
+        permit_amendment_document_guid: document.permit_amendment_document_guid,
+      })
+    );
+  };
+
+  const handleOpenFileSelectionModal = () => {
+    dispatch(
+      openModal({
+        props: {
+          title: `Extract Permit Conditions`,
+          documents: documents,
+          onSubmit: handleSelectedDocumentExtraction,
+        },
+        content: PermitConditionsSelectDocumentModal,
+      })
+    );
+  };
+
   const handleInitiateExtraction = async () => {
+    if (documents.length > 1) {
+      handleOpenFileSelectionModal();
+      return;
+    }
+
     await dispatch(
       initiatePermitExtraction({
         permit_amendment_id: latestAmendment?.permit_amendment_id,
@@ -186,22 +217,23 @@ const ViewPermit: FC = () => {
 
   const headerActions = [
     onConditionsTab &&
-    userCanEditConditions && {
-      key: "extract",
-      label: "Extract Permit Conditions",
-      disabled: !canStartExtraction,
-      clickFunction: handleInitiateExtraction,
-    },
+      userCanEditConditions && {
+        key: "extract",
+        label: "Extract Permit Conditions",
+        disabled: !canStartExtraction,
+        clickFunction: handleInitiateExtraction,
+      },
     onConditionsTab &&
-    userCanEditConditions && {
-      key: "delete_conditions",
-      label: "Delete Permit Conditions",
-      disabled: !hasConditions,
-      clickFunction: handleDeleteConditions,
-    },
+      userCanEditConditions && {
+        key: "delete_conditions",
+        label: "Delete Permit Conditions",
+        disabled: !hasConditions,
+        clickFunction: handleDeleteConditions,
+      },
   ].filter(Boolean);
 
-  const showHeaderActions = !is_generated_in_core && enablePermitConditionsTab && headerActions.length > 0;
+  const showHeaderActions =
+    !is_generated_in_core && enablePermitConditionsTab && headerActions.length > 0;
 
   const headerActionComponent = showHeaderActions ? (
     <ActionMenuButton actions={headerActions} />

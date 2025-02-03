@@ -1,6 +1,7 @@
 import { isArray } from "lodash";
 import { removeNullValuesRecursive } from "@mds/common/constants/utils";
 import { AMS_AUTHORIZATION_TYPES } from "@mds/common/constants/enums";
+import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
 
 const transformAuthorizations = (
   valuesFromForm: any,
@@ -81,3 +82,17 @@ export const formatPermitConditionStep = (step: string) => {
   }
   return "";
 }
+
+export const getConditionsWithRequirements = (conditions: IPermitCondition[]) => {
+  let result = [];
+  conditions.forEach((condition) => {
+    if (condition.mineReportPermitRequirement) {
+      result.push(condition);
+    }
+
+    if (condition.sub_conditions && condition.sub_conditions.length > 0) {
+      result = result.concat(getConditionsWithRequirements(condition.sub_conditions));
+    }
+  });
+  return result;
+};

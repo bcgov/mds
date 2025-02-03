@@ -1392,6 +1392,17 @@ export const PERMITS: IPermit[] = [
             preamble_title: "Preamble Title",
             preamble_date: "2019-04-02",
           },
+          {
+            permit_id: 1,
+            mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+            permit_amendment_document_guid: "31204ba5-5207-4fb5-b6c3-d47e55a0971b",
+            document_name: "Adams_amendment_2.pdf",
+            document_manager_guid: "64caef0e-060d-4875-a470-6c225b242723",
+            active_ind: true,
+            preamble_author: "Preamble Author",
+            preamble_title: "Preamble Title",
+            preamble_date: "2019-04-02",
+          },
         ],
       },
       {

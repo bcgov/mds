@@ -67,7 +67,7 @@ def test_create_report_requirement_both_cim_cpo(mock_task):
 
     result = create_permit_condition_report_requirement(mock_task, condition, "test-id")
     assert result is not None
-    assert result.cim_or_cpo == "BOTH"
+    assert result.cim_or_cpo == "Both"
 
 
 def test_create_report_requirement_various_frequencies(mock_task):
