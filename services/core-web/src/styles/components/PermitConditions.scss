@@ -138,3 +138,16 @@ div.condition-layer {
 .condition-category-reviewer-row {
   margin-top: 10px;
 }
+
+
+.markdown-viewer>blockquote {
+  border-left: 4px solid $primary-color;
+  margin: 16px 0;
+  padding: 8px 16px;
+  background-color: #f9f9f9;
+  font-style: italic;
+
+  p {
+    margin-bottom: 0;
+  }
+}

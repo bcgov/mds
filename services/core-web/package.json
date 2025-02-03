@@ -54,6 +54,7 @@
     "react-filepond": "7.1.0",
     "react-highlighter": "0.4.3",
     "react-idle-timer": "5.5.2",
+    "react-markdown": "8.0.7",
     "react-redux": "7.2.1",
     "react-redux-loading-bar": "5.0.0",
     "react-responsive": "8.0.1",

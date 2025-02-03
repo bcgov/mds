@@ -1,3 +1,4 @@
+import json
 import os
 import tempfile
 import uuid
@@ -15,7 +16,7 @@ from werkzeug.exceptions import InternalServerError
 JWT_OIDC_WELL_KNOWN_CONFIG = os.getenv('JWT_OIDC_WELL_KNOWN_CONFIG')
 
 oidc_configuration = requests.get(JWT_OIDC_WELL_KNOWN_CONFIG).json()
-SEARCH_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit/query'
+SEARCH_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit_conditions/search'
 EXTRACTION_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit_conditions'
 EXTRACTION_STATUS_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit_conditions/status'
 EXTRACTION_RESULTS_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit_conditions/results'
@@ -32,8 +33,11 @@ class PermitSearchService:
         """
         Performs a search against the permit service by the `search_term`.
         """
-        results = self.session.post(SEARCH_ENDPOINT, json={'query': search_term,'debug': False, 'params': {}}).json()
-        return results['documents']
+        print(f'Searching for permit conditions with term: {search_term}')
+        results = self.session.post(SEARCH_ENDPOINT, data=json.dumps({'query': search_term['query']})).json()
+
+        print(results)
+        return results
 
     def initialize_permit_extraction(self, permit_amendment_document):
         """

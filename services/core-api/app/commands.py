@@ -134,7 +134,8 @@ def register_commands(app):
     def notify_and_update_expired_party_appointments():
         from app import auth
         from app.api.parties.party_appt import (
-            notify_and_update_expired_party_appointments, )
+            notify_and_update_expired_party_appointments,
+        )
         auth.apply_security = False
 
         with current_app.app_context():
@@ -146,7 +147,8 @@ def register_commands(app):
     def revoke_mines_act_permits_for_permit(credential_exchange_id, permit_guid):
         from app import auth
         from app.api.verifiable_credentials.manager import (
-            revoke_all_credentials_for_permit, )
+            revoke_all_credentials_for_permit,
+        )
         auth.apply_security = False
         with current_app.app_context():
             permit = Permit.query.unbound_unsafe().filter_by(permit_guid=permit_guid).first()
@@ -158,7 +160,8 @@ def register_commands(app):
     def process_all_untp_map_for_orgbook():
         from app import auth
         from app.api.verifiable_credentials.manager import (
-            process_all_untp_map_for_orgbook, )
+            process_all_untp_map_for_orgbook,
+        )
         auth.apply_security = False
         with current_app.app_context() as app:
             result = process_all_untp_map_for_orgbook.apply_async()
@@ -168,7 +171,8 @@ def register_commands(app):
     def forward_all_pending_untp_vc_to_orgbook():
         from app import auth
         from app.api.verifiable_credentials.manager import (
-            forward_all_pending_untp_vc_to_orgbook, )
+            forward_all_pending_untp_vc_to_orgbook,
+        )
         auth.apply_security = False
         with current_app.app_context():
             result = forward_all_pending_untp_vc_to_orgbook.apply_async()
@@ -178,7 +182,8 @@ def register_commands(app):
     def push_untp_map_data_to_publisher():
         from app import auth
         from app.api.verifiable_credentials.manager import (
-            push_untp_map_data_to_publisher, )
+            push_untp_map_data_to_publisher,
+        )
         auth.apply_security = False
         with current_app.app_context():
             result = push_untp_map_data_to_publisher.apply_async()
@@ -188,8 +193,7 @@ def register_commands(app):
     @click.argument('live', required=False, default=False)
     def cleanup_untp_map_data_failures(live: bool = False):
         from app import auth
-        from app.api.verifiable_credentials.manager import (
-            VerifiableCredentialManager, )
+        from app.api.verifiable_credentials.manager import VerifiableCredentialManager
         auth.apply_security = False
         with current_app.app_context():
             if not live:
@@ -225,3 +229,13 @@ def register_commands(app):
             flask generate_table_migration mine_tailings_storage_facility
         """
         generate_table_migration(table)
+
+    @app.cli.command('export_permit_conditions')
+    @click.argument('permit_amendment_guid')
+    def export_permit_conditions(permit_amendment_guid):
+        from app import auth
+        from app.api.verifiable_credentials.manager import VerifiableCredentialManager
+        auth.apply_security = False
+        with current_app.app_context():
+            from .cli_commands.export_permit_conditions import export_permit_conditions
+            export_permit_conditions(permit_amendment_guid)

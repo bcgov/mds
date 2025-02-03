@@ -885,6 +885,30 @@ MINE_COMPLIANCE_RESPONSE_MODEL = api.model(
         'orders': fields.List(fields.Nested(ORDER_MODEL)),
     })
 
+PERMIT_CONDITION_SEARCH_MODEL = api.model(
+    'PermitConditionSearch', {
+        'query': fields.String,
+    })
+
+PERMIT_SERVICE_DOCUMENT_MODEL = api.model(
+    'PermitServiceDocumentModel', {
+        "id": fields.String,
+        "content": fields.String,
+        "meta": fields.Raw,
+        "score": fields.Float,
+    })
+
+PERMIT_SERVICE_LLM_RESPONSE_MODEL = api.model(
+    'PermitServiceLLMResponseModel', {
+        'answers': fields.List(fields.String),
+    })
+
+PERMIT_CONDITION_SEARCH_RESULT_MODEL = api.model(
+    'PermitConditionSearchResult', {
+        "documents": fields.List(fields.Nested(PERMIT_SERVICE_DOCUMENT_MODEL)),
+        "prompt": fields.Raw(),
+
+    })
 
 PERMIT_CONDITION_MODEL = api.model(
     'PermitCondition', {

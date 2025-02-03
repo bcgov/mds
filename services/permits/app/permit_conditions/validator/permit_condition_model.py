@@ -80,8 +80,6 @@ class PermitCondition(BaseModel):
 
 
         formatted_text = "    " * indent_level + formatted_text
-
-
         return formatted_text
 
 class PermitConditions(BaseModel):
