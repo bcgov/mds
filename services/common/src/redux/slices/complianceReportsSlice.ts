@@ -8,6 +8,7 @@ import { createDropDownList, createItemMap, formatComplianceCodeReportName } fro
 import { createSelectorWrapper } from "../selectors/staticContentSelectors";
 import { createSelector } from "@reduxjs/toolkit";
 import { ISearchParams } from "@mds/common/interfaces/common/searchParams.interface";
+import { isEqual } from "lodash";
 
 
 export const complianceReportReducerType = 'complianceReports'
@@ -118,7 +119,7 @@ export const getMineReportDefinitionByGuid = (mineReportDefinitionGuid: string) 
 
 export const getReportDefinitionsLoaded = (params: ComplianceReportParams) =>
     createSelector([getReportSearchParams], (currentParams) => {
-        return params === currentParams;
+        return isEqual(params, currentParams);
     })
 
 export const {
