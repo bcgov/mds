@@ -1,17 +1,16 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import {
     complianceReportReducerType,
 } from "@mds/common/redux/slices/complianceReportsSlice";
-import { REPORTS } from "@mds/common/constants/reducerTypes";
 import ComplianceManagement from "./ComplianceManagement";
 import queryString from "query-string";
 
 const reportParams = {
-    page: '1',
-    per_page: '50',
+    page: 1,
+    per_page: 10,
     is_prr_only: 'false',
     regulatory_authority: ['CIM', 'CPO'],
     section: '1.1',
@@ -19,20 +18,19 @@ const reportParams = {
     sort_field: 'report_name'
 };
 const reportParamsString = queryString.stringify(reportParams);
+
 const initialState = {
-    [REPORTS]: { mineReports: MOCK.MINE_REPORTS, reportsPageData: MOCK.PAGE_DATA },
     [complianceReportReducerType]: {
         reportPageData: {
-            records: MOCK.MINE_REPORT_DEFINITION_OPTIONS,
-            current_page: 1,
-            items_per_page: MOCK.MINE_REPORT_DEFINITION_OPTIONS.length,
-            total: MOCK.MINE_REPORT_DEFINITION_OPTIONS.length,
-            total_pages: 1,
+            records: [],
+            current_page: 0,
+            items_per_page: 0,
+            total: 0,
+            total_pages: 0
         },
-        params: reportParams,
+        params: {}
     },
 };
-
 
 function mockFunction() {
     const original = jest.requireActual("react-router-dom");
@@ -52,12 +50,17 @@ function mockFunction() {
 jest.mock("react-router-dom", () => mockFunction());
 
 describe("ComplianceReportManagement", () => {
-    it("renders properly", () => {
+    it("renders properly", async () => {
         const { container } = render(
             <ReduxWrapper initialState={initialState}>
                 <ComplianceManagement />
             </ReduxWrapper>
         );
+
+        const spinner = container.querySelector(".ant-spin-spinning");
+        await waitFor(() => {
+            expect(spinner).not.toBeInTheDocument();
+        })
 
         expect(container).toMatchSnapshot();
     });
