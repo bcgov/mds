@@ -16,7 +16,7 @@ class MineReportDefinitionListResource(Resource, UserMixin):
         'page', type=int, help='page for pagination', location='args', store_missing=False
     )
     parser.add_argument(
-        'per_page', type=int, help='records per page- 0 to retrieve all records', location='args', store_missing=False
+        'per_page', type=int, help='records per page to retrieve all records', location='args', store_missing=False
     )
     parser.add_argument(
         'sort_field', type=str, help='field to sort by', location='args', store_missing=False
@@ -38,8 +38,14 @@ class MineReportDefinitionListResource(Resource, UserMixin):
     )
     @api.doc(
         params={
-            'page': 'The page number of paginated records to return. Default',
-            'per_page': 'The number of records to return per page',
+            'page': 'The page number of paginated records to return',
+            'per_page': 'The number of records to return per page. None for all records',
+            'sort_field': 'field to sort by',
+            'sort_dir': 'direction to sort by: asc or desc',
+            'regulatory_authority': 'CIM, CPO, Both, NONE',
+            'is_prr_only': '[true] for only prr, [false] to exclude, [true, false] for both',
+            'active_ind': '[true] for only active (default), [false] for only inactive, [true, false] for both',
+            'section': 'article # of compliance report'
         },
         description='returns the report definitions for possible reports.')
     @api.marshal_with(PAGINATED_MINE_REPORT_DEFINITION_MODEL, code=200)

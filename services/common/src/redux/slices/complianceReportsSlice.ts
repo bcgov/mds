@@ -20,7 +20,6 @@ export interface ComplianceReportParams extends ISearchParams {
 };
 
 export const reportParamsGetAll: ComplianceReportParams = {
-    per_page: 0,
     active_ind: [true, false]
 };
 
