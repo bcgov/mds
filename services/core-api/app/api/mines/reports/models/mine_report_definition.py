@@ -4,7 +4,7 @@ from dateutil.relativedelta import relativedelta
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy import or_, cast, Integer
+from sqlalchemy import or_, cast, Integer, nullsfirst, nullslast
 from sqlalchemy_filters import apply_pagination
 from app.api.mines.reports.models.mine_report_permit_requirement import CimOrCpo
 
@@ -85,6 +85,10 @@ class MineReportDefinition(Base, AuditMixin):
             sort_func = field[sort_field]
             if sort_dir == 'desc':
                 sort_func = [field.desc() for field in sort_func]
+            # sort section asc with nulls first because linguistically we want section 1 before 1.1 but we don't want None before CPO
+            if sort_field == 'section':
+                nullfunc = nullsfirst if sort_dir == 'asc' else nullslast
+                sort_func = [nullfunc(field) for field in sort_func]
             query = query.order_by(*sort_func)
 
         return query
