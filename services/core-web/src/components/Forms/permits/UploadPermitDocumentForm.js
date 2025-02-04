@@ -59,7 +59,7 @@ export class UploadPermitDocumentFrom extends Component {
         </Row>
         <div className="right center-mobile">
           <RenderCancelButton />
-          <RenderSubmitButton buttonText={this.props.title} />
+          <RenderSubmitButton buttonText={this.props.title} disableOnClean={false} />
         </div>
       </FormWrapper>
     );

@@ -245,7 +245,7 @@ export const MergePartyConfirmationForm = (props) => {
         <div className="right center-mobile">
           <RenderCancelButton />
           <AuthorizationWrapper permission={Permission.ADMINISTRATIVE_USERS}>
-            <RenderSubmitButton buttonText={props.title} />
+            <RenderSubmitButton buttonText={props.title} disableOnClean={false} />
           </AuthorizationWrapper>
         </div>
       </FormWrapper>
