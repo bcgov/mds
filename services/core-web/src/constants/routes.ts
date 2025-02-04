@@ -502,7 +502,7 @@ export const ADMIN_CONTACT_MANAGEMENT = {
 export const ADMIN_HSRC_COMPLIANCE_CODE_MANAGEMENT = {
   route: "/admin/hsrc-management/:tab",
   component: ComplianceManagement,
-  dynamicRoute: (tab: string) => `/admin/hsrc-management/${tab}`,
+  dynamicRoute: (tab: string, params = {}) => `/admin/hsrc-management/${tab}?${queryString.stringify(params)}`,
   helpKey: "HSRC-Code-Management",
 };
 

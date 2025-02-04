@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { Button, Input, Row, Typography } from "antd";
+import queryString from "query-string";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
@@ -11,6 +12,8 @@ import { formatComplianceCodeArticleNumber } from "@mds/common/redux/utils/helpe
 import { EMPTY_FIELD, REPORT_REGULATORY_AUTHORITY_CODES_HASH } from "@mds/common/constants/strings";
 import { removeNullValues } from "@mds/common/constants/utils";
 import SearchOutlined from "@ant-design/icons/SearchOutlined";
+import { useHistory, useLocation } from "react-router-dom";
+import { ADMIN_HSRC_COMPLIANCE_CODE_MANAGEMENT } from "@/constants/routes";
 
 
 const defaultParams = {
@@ -20,10 +23,13 @@ const defaultParams = {
 
 const ComplianceReportManagement: FC = () => {
     const dispatch = useDispatch();
+    const { search } = useLocation();
+    const history = useHistory();
+    const initialParams = queryString.parse(search);
     const reportPageData = useSelector(getComplianceReportPageData);
     const reportDefinitions = reportPageData?.records ?? [];
     const [sectionSearchText, setSectionSearchText] = useState(null);
-    const [queryParams, setQueryParams] = useState<ComplianceReportParams>(defaultParams);
+    const [queryParams, setQueryParams] = useState<ComplianceReportParams>({ ...defaultParams, ...initialParams });
     const isLoaded = useSelector(getReportDefinitionsLoaded(queryParams));
 
     const fetchData = () => {
@@ -31,6 +37,7 @@ const ComplianceReportManagement: FC = () => {
     };
 
     useEffect(() => {
+        history.replace(ADMIN_HSRC_COMPLIANCE_CODE_MANAGEMENT.dynamicRoute("reports", queryParams))
         if (!isLoaded) {
             fetchData();
         }
@@ -39,7 +46,7 @@ const ComplianceReportManagement: FC = () => {
     const onTableChange = (pagination, filters, sorter) => {
         const { current: page, pageSize: per_page } = pagination;
         const { order, field: sort_field } = sorter;
-        const activeFilters = removeNullValues(filters);
+        const activeFilters = removeNullValues({ ...filters, section: sectionSearchText });
 
         const sortParams = order ? {
             sort_dir: order.replace("end", ""),
