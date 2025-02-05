@@ -191,4 +191,4 @@ def test_post_additional_mine_report_submission(test_client, db_session, auth_he
 
     # fields that should not change
     assert previous_submission['received_date'] == latest_submission['received_date']
-    assert parser.parse(previous_submission['create_timestamp']) == parser.parse(latest_submission['create_timestamp'])
+    assert parser.parse(previous_submission['create_timestamp']).replace(tzinfo=None) == parser.parse(latest_submission['create_timestamp']).replace(tzinfo=None)
