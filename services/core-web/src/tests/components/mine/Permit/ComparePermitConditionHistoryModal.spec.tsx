@@ -1,7 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
 import ComparePermitConditionHistoryModal, { ComparePermitConditionHistoryModalProps } from '@/components/mine/Permit/ComparePermitConditionHistoryModal';
 import { ReduxWrapper } from '@mds/common/tests/utils/ReduxWrapper';
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";

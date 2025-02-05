@@ -58,7 +58,6 @@ import { createDropDownList } from "@common/utils/helpers";
 import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
 import { PermitReviewBanner } from "./PermitReviewBanner";
 import { PermitConditionsProvider } from "./PermitConditionsContext";
-import PermitConditionReportRequirements from "./PermitConditionReportRequirements";
 import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const { Title } = Typography;

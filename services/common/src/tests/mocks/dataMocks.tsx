@@ -11,7 +11,6 @@ import {
   IMineDocument,
   IPermitAmendment,
 } from "@mds/common/interfaces";
-import moment from "moment";
 
 export const createMockHeader = () => ({
   headers: {

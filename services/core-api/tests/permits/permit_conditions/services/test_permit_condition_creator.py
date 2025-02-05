@@ -15,7 +15,7 @@ from tests.factories import create_mine_and_permit
 
 @pytest.fixture(scope="function")
 def permit_amendments(db_session):
-    mine, permit = create_mine_and_permit(num_permit_amendments=2)
+    _, permit = create_mine_and_permit(num_permit_amendments=2)
 
     return [permit.permit_amendments[0], permit.permit_amendments[1]]
 
@@ -77,7 +77,7 @@ def test_create_condition_with_title(permit_condition_creator, db_session):
 
 
 def test_create_condition_with_title_comparison(permit_amendments, db_session):
-    current_amendment, previous_amendment = permit_amendments
+    _, previous_amendment = permit_amendments
 
     gid = uuid.uuid4()
     previous_condition = PermitConditions(
@@ -112,16 +112,17 @@ def test_create_condition_with_title_comparison(permit_amendments, db_session):
 
     assert main_condition.condition == "Test condition"
     assert main_condition._step == ""
+
+    assert title_condition is not None
     assert main_condition.parent_permit_condition_id == title_condition.permit_condition_id
 
     assert title_condition.meta.get("condition_comparison") is not None
     assert title_condition.meta["condition_comparison"]["change_type"] == "unchanged"
-    assert title_condition.meta["condition_comparison"]["text_similarity"] == 1.0
-    # assert title_condition.meta["condition_comparison"]["condition_guid"] == str(previous_condition.permit_condition_guid)
+    assert title_condition.meta["condition_comparison"]["text_similarity"] == 1
 
     assert main_condition.meta.get("condition_comparison") is not None
     assert main_condition.meta["condition_comparison"]["change_type"] == "added"
-    assert main_condition.meta["condition_comparison"]["text_similarity"] == 0.0
+    assert main_condition.meta["condition_comparison"]["text_similarity"] == 0
     assert main_condition.meta["condition_comparison"]["previous_condition_guid"] == None
 
 def test_create_nested_conditions(permit_condition_creator, db_session):
@@ -193,9 +194,9 @@ def test_condition_comparison_with_previous_amendment(
 
     assert main_condition.meta.get("condition_comparison") is not None
     assert main_condition.meta["condition_comparison"]["change_type"] == "unchanged"
-    assert main_condition.meta["condition_comparison"]["text_similarity"] == 1.0
-    assert main_condition.meta["condition_comparison"]["structure_similarity"] == 1.0
-    assert main_condition.meta["condition_comparison"]["combined_score"] == 1.0
+    assert main_condition.meta["condition_comparison"]["text_similarity"] == 1
+    assert main_condition.meta["condition_comparison"]["structure_similarity"] == 1
+    assert main_condition.meta["condition_comparison"]["combined_score"] == 1
     assert main_condition.meta["condition_comparison"][
         "previous_condition_guid"
     ] == str(gid)
@@ -342,7 +343,7 @@ def test_condition_comparison_with_previous_amendment_modified(
     )
     assert (
         modified_child_condition.meta["condition_comparison"]["structure_similarity"]
-        == 1.0
+        == 1
     )
     assert modified_child_condition.meta["condition_comparison"][
         "previous_condition_guid"
@@ -404,11 +405,11 @@ def test_condition_comparison_with_previous_amendment_added(
         modified_child_condition.meta["condition_comparison"]["change_type"] == "added"
     )
     assert (
-        modified_child_condition.meta["condition_comparison"]["text_similarity"] == 0.0
+        modified_child_condition.meta["condition_comparison"]["text_similarity"] == 0
     )
     assert (
         modified_child_condition.meta["condition_comparison"]["structure_similarity"]
-        == 0.0
+        == 0
     )
     assert (
         modified_child_condition.meta["condition_comparison"]["previous_condition_guid"]

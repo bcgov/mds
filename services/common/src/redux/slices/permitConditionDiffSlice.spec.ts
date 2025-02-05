@@ -1,4 +1,4 @@
-import { fetchPermitConditionDiff, getPermitConditionDiff, IPermitConditionDiffState } from "./permitConditionDiffSlice";
+import { fetchPermitConditionDiff, getPermitConditionDiff } from "./permitConditionDiffSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import CustomAxios from "../customAxios";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
@@ -72,7 +72,7 @@ describe("permitConditionDiffSlice", () => {
             mockAxios.get.mockRejectedValue(error);
 
             const res = await mockStore.dispatch(fetchPermitConditionDiff(mockParams));
-            expect(res.error?.message).toBe("API Error");
+            expect((<any>res).error?.message).toBe("API Error");
         });
     });
 
