@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Row, Steps, Typography } from "antd";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { reset } from "redux-form";
+import { reset } from "@mds/common/components/forms/form";
 import { IMine, IMineReportSubmission } from "@mds/common/interfaces";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";

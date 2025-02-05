@@ -12,7 +12,7 @@ import LinkButton from "@mds/common/components/common/LinkButton";
 import ContactDetails from "@common/components/ContactDetails";
 import Loading from "@/components/common/Loading";
 import * as Routes from "@/constants/routes";
-import { reduxForm } from "redux-form";
+import { reduxForm } from "@mds/common/components/forms/form";
 window.scrollTo = jest.fn();
 
 const tsf = MINE_RESPONSE.mines[0].mine_tailings_storage_facilities[0];

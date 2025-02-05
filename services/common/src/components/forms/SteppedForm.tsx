@@ -1,6 +1,6 @@
 import React, { FC, ReactElement, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getFormSyncErrors, getFormValues, submit } from "redux-form";
+import { getFormSyncErrors, getFormValues, submit } from "@mds/common/components/forms/form";
 import { Button, Col, Menu, Popconfirm, Row, StepProps } from "antd";
 import LeftOutlined from "@ant-design/icons/LeftOutlined";
 import RightOutlined from "@ant-design/icons/RightOutlined";

@@ -1,7 +1,7 @@
 import { EMPTY_FIELD } from "@mds/common/constants/strings";
 import { Form, Typography } from "antd";
 import React, { FC, ReactNode } from "react";
-import { WrappedFieldProps, WrappedFieldMetaProps, WrappedFieldInputProps } from "redux-form";
+import { WrappedFieldProps, WrappedFieldMetaProps, WrappedFieldInputProps } from "@mds/common/components/forms/form";
 
 /**
  BaseInput:

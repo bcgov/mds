@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Field, change, FormSection, getFormValues } from "redux-form";
+import { Field, change, FormSection, getFormValues } from "@mds/common/components/forms/form";
 import { Col, Row, Divider, Alert, Typography } from "antd";
 import {
   required,

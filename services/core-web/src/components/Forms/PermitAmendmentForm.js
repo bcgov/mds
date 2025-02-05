@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { remove } from "lodash";
 import { connect } from "react-redux";
 import { compose, bindActionCreators } from "redux";
-import { Field, change, formValueSelector } from "redux-form";
+import { Field, change, formValueSelector } from "@mds/common/components/forms/form";
 import { Alert, Col, Row, Divider, Form } from "antd";
 import {
   required,

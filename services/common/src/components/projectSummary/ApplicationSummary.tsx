@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { getFormValues } from "redux-form";
+import { getFormValues } from "@mds/common/components/forms/form";
 import { useSelector } from "react-redux";
 import { ColumnsType } from "antd/es/table";
 import { Button, Alert, Typography, Col, Row } from "antd";

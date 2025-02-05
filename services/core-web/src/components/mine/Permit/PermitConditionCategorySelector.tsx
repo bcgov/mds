@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Form } from "antd";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { maxLength, required } from "@mds/common/redux/utils/Validate";
 import { IPermitConditionCategory } from "@mds/common/interfaces";
 import RenderAutoComplete from "@mds/common/components/forms/RenderAutoComplete";

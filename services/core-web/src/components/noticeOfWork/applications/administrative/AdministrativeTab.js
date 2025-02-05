@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Button, Menu, Dropdown } from "antd";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { getFormValues } from "redux-form";
+import { getFormValues } from "@mds/common/components/forms/form";
 import { formatDate } from "@common/utils/helpers";
 import { DownOutlined } from "@ant-design/icons";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
@@ -144,7 +144,7 @@ export class AdministrativeTab extends Component {
       payload,
       "Successfully created the preview document",
       true,
-      () => {}
+      () => { }
     );
   };
 

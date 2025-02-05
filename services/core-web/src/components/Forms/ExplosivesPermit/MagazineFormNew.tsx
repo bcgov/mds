@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, FieldArray } from "redux-form";
+import { Field, FieldArray } from "@mds/common/components/forms/form";
 import {
   lat,
   lon,

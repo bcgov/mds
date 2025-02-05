@@ -6,7 +6,7 @@ import {
   formValueSelector,
   getFormValues,
   change,
-} from "redux-form";
+} from "@mds/common/components/forms/form";
 import { Alert, Button, Col, Row, Table, Typography, Radio, Form, Popconfirm } from "antd";
 import {
   IPermit,

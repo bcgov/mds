@@ -5,7 +5,7 @@ import { isNil } from "lodash";
 import { Alert, Button, Drawer } from "antd";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderDate from "@mds/common/components/forms/RenderDate";
-import { change, Field } from "redux-form";
+import { change, Field } from "@mds/common/components/forms/form";
 import { CloseOutlined } from "@ant-design/icons";
 import { dateNotAfterOther, dateNotBeforeOther, number } from "@mds/common/redux/utils/Validate";
 import {

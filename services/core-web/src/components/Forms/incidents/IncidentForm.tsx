@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { change, formValueSelector, getFormValues } from "redux-form";
+import { change, formValueSelector, getFormValues } from "@mds/common/components/forms/form";
 import { Col, Row } from "antd";
 import { IMineIncident } from "@mds/common/interfaces";
 import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";

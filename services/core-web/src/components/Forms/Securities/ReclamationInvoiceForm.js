@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { Col, Row } from "antd";
 import { required, number, currency } from "@mds/common/redux/utils/Validate";
 import { currencyMask } from "@common/utils/helpers";

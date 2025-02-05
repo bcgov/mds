@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { change, Field, reset } from "redux-form";
+import { change, Field, reset } from "@mds/common/components/forms/form";
 import { Row, Col, Button } from "antd";
 import {
     faArrowDown,

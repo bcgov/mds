@@ -1,6 +1,6 @@
 import { Alert, Button, Col, Row, Typography } from "antd";
 import React, { FC, ReactNode, useEffect, useState } from "react";
-import { Field, getFormValues, change } from "redux-form";
+import { Field, getFormValues, change } from "@mds/common/components/forms/form";
 import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
 import { useSelector, useDispatch } from "react-redux";
 import { IMine, IMineReportDefinition, IMineReportSubmission } from "@mds/common/interfaces";

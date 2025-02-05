@@ -4,7 +4,7 @@ import { FORM } from "@mds/common/constants/forms";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { maxLength, required } from "@mds/common/redux/utils/Validate";
 import RenderField from "@mds/common/components/forms/RenderField";
 import { IPermitConditionCategory } from "@mds/common/interfaces";

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Alert, Popconfirm, Button, Steps, Radio, Row, Col } from "antd";
 import { SafetyCertificateOutlined, RocketOutlined } from "@ant-design/icons";
-import { getFormValues, submit } from "redux-form";
+import { getFormValues, submit } from "@mds/common/components/forms/form";
 import { isEmpty } from "lodash";
 import { bindActionCreators } from "redux";
 import Highlight from "react-highlighter";

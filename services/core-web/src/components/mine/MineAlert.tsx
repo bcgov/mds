@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Action, bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
-import { getFormValues, getFormSyncErrors } from "redux-form";
+import { getFormValues, getFormSyncErrors } from "@mds/common/components/forms/form";
 import { Alert, Button, Col, Row, Menu, Dropdown, Popconfirm } from "antd";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { formatDate } from "@common/utils/helpers";
@@ -199,8 +199,8 @@ export class MineAlert extends Component<MineAlertProps, MineAlertState> {
               title={`Are you sure you want to delete alarm? ${formatDate(
                 this.state.activeMineAlert?.start_date
               )} ${this.state.activeMineAlert.end_date
-                  ? `-  ${formatDate(this.state.activeMineAlert?.end_date)}`
-                  : ""
+                ? `-  ${formatDate(this.state.activeMineAlert?.end_date)}`
+                : ""
                 }`}
               onConfirm={() => this.handleRemoveAlert(this.state.activeMineAlert?.mine_alert_guid)}
               okText="Delete"

@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { Field, FormSection, formValueSelector } from "redux-form";
+import { Field, FormSection, formValueSelector } from "@mds/common/components/forms/form";
 import { Row, Col } from "antd";
 import {
   getNoticeOfWorkApplicationProgressStatusCodeOptions,

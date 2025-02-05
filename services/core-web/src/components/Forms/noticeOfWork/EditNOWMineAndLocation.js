@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { Col, Row, Badge } from "antd";
 import { required, lat, lon, lonNegative } from "@mds/common/redux/utils/Validate";
 import RenderMineSelect from "@/components/common/RenderMineSelect";

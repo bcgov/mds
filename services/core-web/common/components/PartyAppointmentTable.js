@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Col, Row, Typography } from "antd";
 import PropTypes from "prop-types";
-import { Field, FieldArray, change } from "redux-form";
+import { Field, FieldArray, change } from "@mds/common/components/forms/form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import {

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
 import { Col, Row, Tooltip, Typography, Descriptions } from "antd";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { wholeNumber } from "@mds/common/redux/utils/Validate";
 import { wholeNumberMask } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";

@@ -1,6 +1,6 @@
 import { Col, Divider, Row, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
-import { Field, getFormValues } from "redux-form";
+import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { renderConfig } from "@/components/common/config";
 import { useSelector } from "react-redux";
 import {

@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { reduxForm } from "redux-form";
+import { reduxForm } from "@mds/common/components/forms/form";
 import { ExplosivesPermitFileUpload } from "@/components/Forms/ExplosivesPermit/ExplosivesPermitFileUpload";
 import { store } from "@/App";
 import { EXPLOSIVES_PERMIT_NEW } from "@/constants/forms";
