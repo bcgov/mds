@@ -145,6 +145,7 @@ exports[`PermitConditionForm renders properly in edit mode 1`] = `
           >
             <button
               class="ant-btn ant-btn-default fa-icon-container btn-sm-padding"
+              disabled=""
               type="button"
             >
               <svg
@@ -163,7 +164,7 @@ exports[`PermitConditionForm renders properly in edit mode 1`] = `
                 />
               </svg>
               <span>
-                Add Report Requirement
+                Report Added
               </span>
             </button>
           </div>

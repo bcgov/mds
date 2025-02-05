@@ -1214,7 +1214,7 @@ export const PERMITS: IPermit[] = [
               ministry_recipient: ["MMO"],
               permit_condition_id: 1639,
               due_date_period_months: 12,
-              initial_due_date: moment("2024-01-01").toDate(),
+              initial_due_date: "2024-01-01",
             }
           },
           {

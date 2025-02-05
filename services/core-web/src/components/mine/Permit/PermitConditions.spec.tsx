@@ -9,8 +9,6 @@ import { USER_ROLES } from "@mds/common/constants/environment";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
 import { userReducerType } from "@mds/common/redux/slices/userSlice";
 
-import Routes from "@/routes/Routes";
-import { VIEW_MINE_PERMIT_AMENDMENT } from "@/constants/routes";
 const initialState = {
   [MINES]: MOCK.MINES,
   [userReducerType]: { user: MOCK.USERS[0] },

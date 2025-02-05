@@ -35,7 +35,7 @@ const ComparePermitConditionHistoryModal: FC<ComparePermitConditionHistoryModalP
     const newReports = getConditionsWithRequirements([props.currentAmendmentCondition], newMineReportPermitRequirements);
 
     return (
-        <FormWrapper name={"test"} isModal onSubmit={() => { }}>
+        <FormWrapper name={"compare-conditions-form"} isModal>
             <Row gutter={6}>
                 <Col span={24}>
                     <Typography.Title level={3}>Compare Conditions</Typography.Title>
@@ -63,7 +63,6 @@ const ComparePermitConditionHistoryModal: FC<ComparePermitConditionHistoryModalP
 
                 </Col>
             </Row>
-            <div className="ant-modal-footer" />
         </FormWrapper>
     );
 };

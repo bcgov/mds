@@ -1,19 +1,8 @@
-import logging
 import os
 import tempfile
 import uuid
-from io import BytesIO
-from time import sleep
 
 import requests
-from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
-from app.api.mines.permits.permit.models.permit import Permit
-from app.api.mines.permits.permit_amendment.models.permit_amendment import (
-    PermitAmendment,
-)
-from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
-    PermitAmendmentDocument,
-)
 from app.api.mines.permits.permit_extraction.models.permit_extraction_task import (
     PermitExtractionTask,
 )

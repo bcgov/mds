@@ -61,7 +61,7 @@ describe("PermitConditionForm", () => {
 
         const editElement = container.querySelector("[aria-label='Edit Condition']")
         fireEvent.click(editElement);
-        await findByText("Add Report Requirement");
+        await findByText("Report Added");
         expect(container).toMatchSnapshot()
     });
     it("does not allow edit when it shouldn't", async () => {

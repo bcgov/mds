@@ -62,7 +62,7 @@ export interface FormWrapperProps {
   name: string;
   initialValues?: any;
   reduxFormConfig?: Partial<ConfigProps>;
-  onSubmit: (values) => void | Promise<void>;
+  onSubmit?: (values) => void | Promise<void>;
   onReset?: () => void | Promise<void>;
   children: any;
   isModal?: boolean;
@@ -100,7 +100,7 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
   const handleSubmit = async (values) => {
     console.log('handleSubmit', props.name, values)
     dispatch(submit(props.name));
-    if (!formErrors) {
+    if (!formErrors && props.onSubmit) {
       await props.onSubmit(values);
     }
   };
