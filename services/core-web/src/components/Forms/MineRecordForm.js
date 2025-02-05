@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose, bindActionCreators } from "redux";
-import { Field, FieldArray, formValueSelector, change } from "redux-form";
+import { Field, FieldArray, formValueSelector, change } from "@mds/common/components/forms/form";
 import { Button, Col, Row, Popconfirm, Collapse, notification, Tag, Radio, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { difference, map, isEmpty, uniq } from "lodash";

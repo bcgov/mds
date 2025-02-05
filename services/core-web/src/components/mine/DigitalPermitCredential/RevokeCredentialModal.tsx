@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Popconfirm, Typography } from "antd";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
 import { useDispatch } from "react-redux";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import { maxLength } from "@mds/common/redux/utils/Validate";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";

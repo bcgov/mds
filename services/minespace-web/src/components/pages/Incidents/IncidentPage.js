@@ -3,7 +3,14 @@ import { bindActionCreators } from "redux";
 import { flattenObject } from "@common/utils/helpers";
 import { connect, useSelector } from "react-redux";
 import { Link, useParams, withRouter } from "react-router-dom";
-import { destroy, getFormSyncErrors, getFormValues, isDirty, submit, touch } from "redux-form";
+import {
+  destroy,
+  getFormSyncErrors,
+  getFormValues,
+  isDirty,
+  submit,
+  touch,
+} from "@mds/common/components/forms/form";
 import { Col, Row, Steps, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import PropTypes from "prop-types";

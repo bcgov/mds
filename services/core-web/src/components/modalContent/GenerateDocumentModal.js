@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Alert } from "antd";
 import { connect } from "react-redux";
-import { getFormSyncErrors, hasSubmitFailed } from "redux-form";
+import { getFormSyncErrors, hasSubmitFailed } from "@mds/common/components/forms/form";
 import GenerateDocumentForm from "@/components/Forms/GenerateDocumentForm";
 import * as FORM from "@/constants/forms";
 
@@ -59,9 +59,8 @@ export class GenerateDocumentModal extends Component {
         {showErrors && (
           <div className="error center">
             <Alert
-              message={`You have ${errorsLength} ${
-                errorsLength === 1 ? "issue" : "issues"
-              } that must be fixed before proceeding.`}
+              message={`You have ${errorsLength} ${errorsLength === 1 ? "issue" : "issues"
+                } that must be fixed before proceeding.`}
               type="error"
               showIcon
             />

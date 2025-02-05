@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Field, change, getFormValues } from "redux-form";
+import { Field, change, getFormValues } from "@mds/common/components/forms/form";
 import { Col, Row, Typography, Button } from "antd";
 import {
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE,

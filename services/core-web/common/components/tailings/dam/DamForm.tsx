@@ -16,7 +16,7 @@ import {
 } from "@mds/common/redux/utils/Validate";
 import { useHistory, useParams } from "react-router-dom";
 
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import React, { FC } from "react";
 import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import { renderConfig } from "@/components/common/config";

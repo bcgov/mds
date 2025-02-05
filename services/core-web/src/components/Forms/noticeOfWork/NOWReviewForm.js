@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";

@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Field, getFormValues } from "redux-form";
+import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { Button, Col, Row, Form } from "antd";
 import {
   getDropdownMineReportCategoryOptions,

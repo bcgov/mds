@@ -1,5 +1,5 @@
 import React from "react";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { currencyMask } from "@common/utils/helpers";
 import { required, number, currency } from "@mds/common/redux/utils/Validate";
 import { renderConfig } from "@/components/common/config";

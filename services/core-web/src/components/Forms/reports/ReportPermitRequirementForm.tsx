@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from "react";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { Button, Col, Row, Typography } from "antd";
 import { useDispatch } from "react-redux";
 import {

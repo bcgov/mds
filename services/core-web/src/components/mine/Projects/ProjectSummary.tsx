@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { withRouter, Link, Prompt, useParams, useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { reset, getFormValues, isDirty } from "redux-form";
+import { reset, getFormValues, isDirty } from "@mds/common/components/forms/form";
 import * as routes from "@/constants/routes";
 import { Button, Col, Row, Tag } from "antd";
 import EnvironmentOutlined from "@ant-design/icons/EnvironmentOutlined";

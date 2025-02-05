@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, getFormValues } from "redux-form";
+import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Col, Row } from "antd";

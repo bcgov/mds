@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@mds/common/constants/fileTypes";
 import { PROJECT_SUMMARY_DOCUMENTS } from "@mds/common/constants/API";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";

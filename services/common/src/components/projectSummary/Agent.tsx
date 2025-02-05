@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Field, change, getFormValues } from "redux-form";
+import { Field, change, getFormValues } from "@mds/common/components/forms/form";
 import { Col, Row, Typography, Alert } from "antd";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";

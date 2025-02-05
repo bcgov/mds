@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getFormValues, isDirty, submit } from "redux-form";
+import { getFormValues, isDirty, submit } from "@mds/common/components/forms/form";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { Button, Row, Col, Popconfirm, Steps, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";

@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Field, getFormValues } from "redux-form";
+import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { Alert, Col, Row, Typography } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/pro-regular-svg-icons";

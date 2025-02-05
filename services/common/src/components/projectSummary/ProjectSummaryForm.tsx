@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { useSelector } from "react-redux";
-import { getFormValues } from "redux-form";
+import { getFormValues } from "@mds/common/components/forms/form";
 import { FORM } from "@mds/common/constants/forms";
 import DocumentUpload from "@mds/common/components/projectSummary/DocumentUpload";
 import ProjectContacts from "@mds/common/components/projectSummary/ProjectContacts";

@@ -1,5 +1,5 @@
 import React from "react";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import PropTypes from "prop-types";
 import { Button, Col, Row } from "antd";
 import { SearchOutlined } from "@ant-design/icons";

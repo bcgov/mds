@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { useDispatch } from "react-redux";
 import { Alert, Col, notification, Row, Typography } from "antd";
 import { MineDocument } from "@mds/common/models/documents/document";

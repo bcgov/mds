@@ -2,7 +2,7 @@ import React, { FC, useEffect } from "react";
 import { Form } from "antd";
 import { compose } from "@reduxjs/toolkit";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { reduxForm, submit, getFormSubmitErrors, InjectedFormProps, ConfigProps } from "redux-form";
+import { reduxForm, submit, getFormSubmitErrors, InjectedFormProps, ConfigProps } from "@mds/common/components/forms/form";
 
 export interface IFormContext {
   isEditMode: boolean;

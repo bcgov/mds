@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Field, getFormValues, isSubmitting } from "redux-form";
+import { Field, getFormValues, isSubmitting } from "@mds/common/components/forms/form";
 import { Button, Col, Popconfirm, Row, Form } from "antd";
 import { required } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";

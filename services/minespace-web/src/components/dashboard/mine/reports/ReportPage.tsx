@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { getFormSubmitErrors, getFormValues, isDirty, submit } from "redux-form";
+import {
+  getFormSubmitErrors,
+  getFormValues,
+  isDirty,
+  submit,
+} from "@mds/common/components/forms/form";
 
 import { Button, Col, Row, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";

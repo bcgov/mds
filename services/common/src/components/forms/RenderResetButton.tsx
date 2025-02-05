@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { isDirty, isSubmitting, reset } from "redux-form";
+import { isDirty, isSubmitting, reset } from "@mds/common/components/forms/form";
 import { FormContext } from "./FormWrapper";
 import { Button } from "antd";
 import { ButtonProps } from "antd/lib/button/button";

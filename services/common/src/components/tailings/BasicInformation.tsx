@@ -10,7 +10,7 @@ import {
   requiredList,
 } from "@mds/common/redux/utils/Validate";
 
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { connect } from "react-redux";
 import { formatDateTime } from "@mds/common/redux/utils/helpers";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";

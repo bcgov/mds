@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
-import { getFormValues, Field, change } from "redux-form";
+import { getFormValues, Field, change } from "@mds/common/components/forms/form";
 import { Col, Row } from "antd";
 import { currency, required, maxLength } from "@mds/common/redux/utils/Validate";
 import { determineExemptionFeeStatus, currencyMask } from "@common/utils/helpers";

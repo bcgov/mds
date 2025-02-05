@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect } from "react";
-import { change, Field, getFormValues } from "redux-form";
+import { change, Field, getFormValues } from "@mds/common/components/forms/form";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Typography } from "antd";
 import { CSV, DOCUMENT, EXCEL, IMAGE, OTHER_SPATIAL, XML } from "@mds/common/constants/fileTypes";

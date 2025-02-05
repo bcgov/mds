@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, isSubmitting } from "redux-form";
+import { Field, isSubmitting } from "@mds/common/components/forms/form";
 import { formatDate, formatMoney } from "@common/utils/helpers";
 import { Button, Col, Row, Alert } from "antd";
 import { maxLength } from "@mds/common/redux/utils/Validate";

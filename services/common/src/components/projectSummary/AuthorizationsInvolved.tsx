@@ -9,7 +9,7 @@ import {
   FieldArray,
   FormSection,
   getFormValues,
-} from "redux-form";
+} from "@mds/common/components/forms/form";
 import { Alert, Button, Checkbox, Col, Row, Tooltip, Typography } from "antd";
 import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";

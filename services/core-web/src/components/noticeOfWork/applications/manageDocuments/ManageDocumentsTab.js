@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { getFormValues } from "redux-form";
+import { getFormValues } from "@mds/common/components/forms/form";
 import { Button } from "antd";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
@@ -119,7 +119,7 @@ export class ManageDocumentsTab extends Component {
         onSubmit: this.downloadDocumentPackage,
         title: "Download NoW Documents",
         closeModal: this.props.closeModal,
-        afterClose: () => {},
+        afterClose: () => { },
       },
       content: modalConfig.NOW_MANAGE_DOCUMENTS_DOWNLOAD_PACKAGE_MODAL,
       width: "75vw",

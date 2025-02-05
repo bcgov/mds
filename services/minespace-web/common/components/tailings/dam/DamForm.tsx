@@ -16,7 +16,7 @@ import {
 } from "@mds/common/redux/utils/Validate";
 import { useHistory, useParams } from "react-router-dom";
 
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import React, { FC } from "react";
 import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import { renderConfig } from "@/components/common/config";
@@ -56,8 +56,9 @@ const DamForm: FC<DamFormProps> = (props) => {
       <div className="margin-large--bottom">
         <Typography.Title level={4}>Associated Dams - {dam.dam_name}</Typography.Title>
         <Popconfirm
-          title={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-            } dam?
+          title={`Are you sure you want to cancel ${
+            tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+          } dam?
         All unsaved data on this page will be lost.`}
           cancelText="No"
           okText="Yes"

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { remove } from "lodash";
 import PropTypes from "prop-types";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentFileUpload";
