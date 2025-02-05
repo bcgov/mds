@@ -138,8 +138,8 @@ class NOWApplicationReviewResource(Resource, UserMixin):
         for doc in new_documents:
             new_mine_doc = MineDocument(
                 mine_guid=now_app_review.now_application.mine_guid,
-                document_manager_guid=doc[0],
-                document_name=doc[1])
+                document_manager_guid=doc.get('document_manager_guid'),
+                document_name=doc.get('document_name'))
 
             new_now_mine_doc = NOWApplicationDocumentXref(
                 mine_document=new_mine_doc,
