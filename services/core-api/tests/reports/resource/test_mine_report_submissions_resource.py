@@ -1,12 +1,13 @@
 import json
 
-from app.api.mines.reports.models.mine_report import MineReport
-from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
-from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
-from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
 from app.api.constants import MINE_REPORT_TYPE
-
-from tests.factories import MineFactory, MineDocumentFactory, MineReportFactory
+from app.api.mines.reports.models.mine_report import MineReport
+from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
+from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
+from app.api.mines.reports.models.mine_report_submission_status_code import (
+    MineReportSubmissionStatusCode,
+)
+from tests.factories import MineDocumentFactory, MineFactory, MineReportFactory
 
 
 # GET
@@ -189,4 +190,4 @@ def test_post_additional_mine_report_submission(test_client, db_session, auth_he
 
     # fields that should not change
     assert previous_submission['received_date'] == latest_submission['received_date']
-    assert previous_submission['create_timestamp'] + '+00:00' == latest_submission['create_timestamp']
+    assert previous_submission['create_timestamp'] == latest_submission['create_timestamp']
