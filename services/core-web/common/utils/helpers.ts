@@ -7,7 +7,7 @@ import {
 import { get, isEmpty, isNil, sortBy } from "lodash";
 import { createNumberMask } from "redux-form-input-masks";
 import moment from "moment-timezone";
-import { reset } from "redux-form";
+import { reset } from "@mds/common/components/forms/form";
 import { ItemMap } from "@mds/common/interfaces/common/itemMap.interface";
 
 /**

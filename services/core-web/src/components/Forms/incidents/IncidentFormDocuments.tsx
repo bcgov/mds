@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Col, Empty, Form, Row, Typography } from "antd";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { useParams } from "react-router-dom";
 import IncidentFileUpload from "@/components/Forms/incidents/IncidentFileUpload";
 import {

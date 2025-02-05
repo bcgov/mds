@@ -7,10 +7,27 @@ export interface IBoundingBox {
   bottom: number;
   left: number;
 }
+
+export enum IPermitConditionChangeType {
+  ADDED = "added",
+  MODIFIED = "modified",
+  UNCHANGED = "unchanged",
+  MOVED = "moved"
+}
+
+export interface IPermitConditionComparison {
+  condition_guid: string;
+  previous_condition_guid: string;
+  text_similarity: number;
+  structure_similarity: number;
+  combined_score: number;
+  change_type: IPermitConditionChangeType;
+}
 export interface IPermitConditionMeta {
   page: number;
   role?: string;
   bounding_box?: IBoundingBox;
+  condition_comparison?: IPermitConditionComparison
 }
 export interface IPermitCondition {
   permit_condition_id: number;

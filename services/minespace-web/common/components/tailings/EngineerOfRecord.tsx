@@ -1,5 +1,5 @@
 import { Alert, Button, Col, Empty, Popconfirm, Row, Typography } from "antd";
-import { change, ChangeAction, Field, getFormValues } from "redux-form";
+import { change, ChangeAction, Field, getFormValues } from "@mds/common/components/forms/form";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { IDocument, IMine, IMinePartyAppt } from "@mds/common/interfaces";

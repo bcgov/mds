@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { Col, Row, Typography } from "antd";
 import { dateTimezoneRequired, dateNotInFutureTZ, required } from "@mds/common/redux/utils/Validate";
 import { normalizeDatetime } from "@common/utils/helpers";

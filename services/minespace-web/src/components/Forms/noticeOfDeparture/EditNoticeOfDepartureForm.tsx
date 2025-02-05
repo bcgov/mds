@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { change, Field, FieldArray, getFormSyncErrors, isPristine } from "redux-form";
+import {
+  change,
+  Field,
+  FieldArray,
+  getFormSyncErrors,
+  isPristine,
+} from "@mds/common/components/forms/form";
 import { Alert, Button, Col, Popconfirm, Row, Typography } from "antd";
 import { maxLength, required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";

@@ -34,4 +34,5 @@ export interface IPermitAmendment {
   vc_credential_exch_state: VC_CRED_ISSUE_STATES;
   mine_report_permit_requirements?: IMineReportPermitRequirement[];
   condition_categories: IPermitConditionCategory[];
+  conditions_review_completed: boolean;
 }

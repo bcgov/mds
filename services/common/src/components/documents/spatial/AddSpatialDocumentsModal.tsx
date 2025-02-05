@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import FormWrapper from "../../forms/FormWrapper";
-import { change, Field, getFormValues, reset, touch } from "redux-form";
+import { change, Field, getFormValues, reset, touch } from "@mds/common/components/forms/form";
 import RenderFileUpload from "../../forms/RenderFileUpload";
 import { spatialDocumentBundle } from "@mds/common/redux/utils/Validate";
 import { Alert, Button, Row, Steps, Typography } from "antd";

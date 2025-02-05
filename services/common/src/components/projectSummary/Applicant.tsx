@@ -1,7 +1,7 @@
 import { Col, Row, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Field, getFormValues, change } from "redux-form";
+import { Field, getFormValues, change } from "@mds/common/components/forms/form";
 import {
   email,
   maxLength,

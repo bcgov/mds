@@ -1,6 +1,6 @@
 import { createReducer } from "@mds/common/redux/utils/helpers";
 import networkReducer from "@mds/common/redux/reducers/networkReducer";
-import { reducer as formReducer } from "redux-form";
+import { reducer as formReducer } from "@mds/common/components/forms/form";
 import { loadingBarReducer } from "react-redux-loading-bar";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import {
@@ -32,6 +32,7 @@ import {
 } from "../reducers";
 import reportSubmissionReducer from "@mds/common/components/reports/reportSubmissionSlice";
 import verifiableCredentialsReducer from "@mds/common/redux/slices/verifiableCredentialsSlice";
+
 import regionsReducer from "@mds/common/redux/slices/regionsSlice";
 import complianceCodeReducer, { complianceCodeReducerType } from "../slices/complianceCodesSlice";
 import complianceReportReducer, { complianceReportReducerType } from "../slices/complianceReportsSlice";
@@ -43,6 +44,8 @@ import searchConditionCategoriesReducer, {
 import helpReducer, { helpReducerType } from "../slices/helpSlice";
 import userReducer, { userReducerType } from "@mds/common/redux/slices/userSlice";
 import mineReportPermitRequirementReducer, { mineReportPermitRequirementReducerType } from "../slices/mineReportPermitRequirementSlice";
+import permitConditionDiffReducer, { permitConditionDiffReducerType } from "../slices/permitConditionDiffSlice";
+
 
 const networkReducers = Object.fromEntries(Object.entries(NetworkReducerTypes).map(([key, value]) =>
   [NetworkReducerTypes[key], createReducer(networkReducer, value)]
@@ -87,5 +90,6 @@ export const sharedReducer = {
   [searchConditionCategoriesType]: searchConditionCategoriesReducer,
   [userReducerType]: userReducer,
   [mineReportPermitRequirementReducerType]: mineReportPermitRequirementReducer,
+  [permitConditionDiffReducerType]: permitConditionDiffReducer,
   ...networkReducers
 };

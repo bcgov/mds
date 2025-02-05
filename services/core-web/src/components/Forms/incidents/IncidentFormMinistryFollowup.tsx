@@ -4,7 +4,7 @@ import {
 } from "@mds/common/constants/strings";
 import React, { FC } from "react";
 import { useSelector } from "react-redux";
-import { Field, FieldArray, getFormValues } from "redux-form";
+import { Field, FieldArray, getFormValues } from "@mds/common/components/forms/form";
 import { ADD_EDIT_INCIDENT } from "@/constants/forms";
 import { Button, Col, Row, Typography } from "antd";
 import { renderConfig } from "@/components/common/config";

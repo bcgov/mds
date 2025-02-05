@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Field, getFormValues } from "redux-form";
+import { Field, getFormValues } from "@mds/common/components/forms/form";
 
 
 import { Button, Col, Row, Alert } from "antd";

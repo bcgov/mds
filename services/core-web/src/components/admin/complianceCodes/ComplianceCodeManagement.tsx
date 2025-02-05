@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
-import { change, Field, initialize, reset } from "redux-form";
+import { change, Field, initialize, reset } from "@mds/common/components/forms/form";
 import SearchOutlined from "@ant-design/icons/SearchOutlined";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import { Button, Input, Row, Table, Tag, Typography } from "antd";

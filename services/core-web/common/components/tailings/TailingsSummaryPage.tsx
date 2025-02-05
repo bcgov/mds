@@ -14,7 +14,7 @@ import {
   fetchTailingsStorageFacility,
   updateTailingsStorageFacility,
 } from "@mds/common/redux/actionCreators/mineActionCreator";
-import { isDirty } from "redux-form";
+import { isDirty } from "@mds/common/components/forms/form";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import BasicInformation from "@mds/common/components/tailings/BasicInformation";
 import Step from "@mds/common/components/forms/Step";

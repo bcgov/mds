@@ -1,7 +1,7 @@
 import { Alert, Button, Col, Row, Typography } from "antd";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
-import { arrayPush, change, Field, FieldArray, getFormValues } from "redux-form";
+import { arrayPush, change, Field, FieldArray, getFormValues } from "@mds/common/components/forms/form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/pro-light-svg-icons";
 import {

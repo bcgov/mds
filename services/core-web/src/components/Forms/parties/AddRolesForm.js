@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { Button, Col, Collapse, Popconfirm, Row, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { required } from "@mds/common/redux/utils/Validate";

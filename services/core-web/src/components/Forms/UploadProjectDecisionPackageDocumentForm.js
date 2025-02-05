@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { compose } from "redux";
-import { Field, getFormValues } from "redux-form";
+import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { connect } from "react-redux";
 import { Col, Row, Typography, Divider, Checkbox } from "antd";
 import * as FORM from "@/constants/forms";

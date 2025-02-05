@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-import { formValueSelector, reset, change } from "redux-form";
+import { formValueSelector, reset, change } from "@mds/common/components/forms/form";
 import { Button, Divider, Popconfirm } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 

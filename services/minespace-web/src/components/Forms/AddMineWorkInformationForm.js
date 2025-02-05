@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
-import { Field, getFormValues } from "redux-form";
+import { Field, getFormValues } from "@mds/common/components/forms/form";
 import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
 import { Row, Col, Descriptions, Typography, Badge, Tooltip } from "antd";
 import { dateNotBeforeOther, dateNotAfterOther, date } from "@mds/common/redux/utils/Validate";

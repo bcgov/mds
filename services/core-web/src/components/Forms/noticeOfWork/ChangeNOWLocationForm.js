@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { formValueSelector } from "redux-form";
+import { formValueSelector } from "@mds/common/components/forms/form";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import MineCard from "@/components/mine/NoticeOfWork/MineCard";

@@ -2,7 +2,7 @@ import { IMineIncident, IMineIncidentDocument } from "@mds/common/interfaces";
 import React, { FC } from "react";
 import { Col, Divider, Empty, Form, Row, Typography } from "antd";
 import { LockOutlined } from "@ant-design/icons";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import {
   documentColumns,
   formatDocumentRecords,

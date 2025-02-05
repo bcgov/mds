@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { getFormValues, submit, reset, change } from "redux-form";
+import { getFormValues, submit, reset, change } from "@mds/common/components/forms/form";
 import { Row, Col, Steps, Button, Popconfirm } from "antd";
 import { createParty, addPartyRelationship } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import { fetchMineNameList } from "@mds/common/redux/actionCreators/mineActionCreator";

@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { isEmpty, startCase } from "lodash";
 import { Col, Row, Button, Card, Result, Input, Alert } from "antd";
 import { PlusOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
-import { FieldArray, Field, change } from "redux-form";
+import { FieldArray, Field, change } from "@mds/common/components/forms/form";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 
 import * as FORM from "@/constants/forms";

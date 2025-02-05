@@ -47,6 +47,8 @@
 @forward "./components/HelpGuide.scss";
 @forward "./components/RichTextEditor.scss";
 
+@forward "./components/ComparePermitConditionHistoryModal.scss";
+
 // UTILITIES - utilities and helper classes. This layer has the highest specificity.
 
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");

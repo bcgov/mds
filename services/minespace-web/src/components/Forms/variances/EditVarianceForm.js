@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, change } from "redux-form";
+import { Field, change } from "@mds/common/components/forms/form";
 import { remove } from "lodash";
 import { Typography, Form } from "antd";
 import * as FORM from "@/constants/forms";

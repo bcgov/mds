@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Field, formValueSelector } from "redux-form";
+import { Field, formValueSelector } from "@mds/common/components/forms/form";
 import { Alert, Col, Row, Typography } from "antd";
 import { remove } from "lodash";
 import { IFileInfo, IProject } from "@mds/common/interfaces";

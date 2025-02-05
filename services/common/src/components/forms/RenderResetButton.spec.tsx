@@ -3,7 +3,7 @@ import { render, fireEvent } from "@testing-library/react";
 import RenderResetButton from "./RenderResetButton";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import FormWrapper from "./FormWrapper";
-import * as reduxForm from "redux-form";
+import * as reduxForm from "@mds/common/components/forms/form";
 
 const initialState = {
     form: {

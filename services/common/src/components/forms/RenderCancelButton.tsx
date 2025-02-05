@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { isDirty } from "redux-form";
+import { isDirty } from "@mds/common/components/forms/form";
 import { FormContext } from "./FormWrapper";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
 import { Modal, ModalFuncProps } from "antd";

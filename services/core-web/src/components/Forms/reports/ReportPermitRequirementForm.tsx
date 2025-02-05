@@ -1,10 +1,11 @@
 import React, { FC, useEffect } from "react";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { Button, Col, Row, Typography } from "antd";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   IMineReport,
   IMineReportPermitRequirement,
+  IPermitAmendment,
   IPermitCondition,
 } from "@mds/common/interfaces";
 import { required, requiredRadioButton, maxLength } from "@mds/common/redux/utils/Validate";
@@ -16,7 +17,6 @@ import RenderField from "@mds/common/components/forms/RenderField";
 import RenderGroupCheckbox, {
   normalizeGroupCheckBox,
 } from "@mds/common/components/forms/RenderGroupCheckbox";
-import { getLatestAmendmentByPermitGuid } from "@mds/common/redux/selectors/permitSelectors";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import { FORM } from "@mds/common/constants/forms";
 import { MINE_REPORT_SUBMISSION_CODES, REPORT_TYPE_CODES } from "@mds/common/constants/enums";
@@ -36,22 +36,23 @@ interface ReportPermitRequirementProps {
   mineReportPermitRequirement?: IMineReportPermitRequirement;
   canEditPermitConditions: boolean;
   refreshData: () => Promise<void>;
+  currentAmendment: IPermitAmendment;
   mineGuid: string;
 }
 
 export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
   onSubmit,
   condition,
-  permitGuid,
   modalView = true,
   mineReportPermitRequirement,
   canEditPermitConditions,
   refreshData,
+  permitGuid,
+  currentAmendment,
   mineGuid,
 }) => {
   const dispatch = useDispatch();
   const [isEditMode, setIsEditMode] = React.useState(modalView);
-  const latestPermitAmendment = useSelector(getLatestAmendmentByPermitGuid(permitGuid));
 
   useEffect(() => {
     if (!canEditPermitConditions) {
@@ -90,7 +91,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
             ? {
               ...mineReportPermitRequirement,
               stepPath: condition.stepPath,
-              permit_amendment_id: latestPermitAmendment.permit_amendment_id,
+              permit_amendment_id: currentAmendment?.permit_amendment_id,
             }
             : {
               mine_report_status_code: MINE_REPORT_SUBMISSION_CODES.NON,
@@ -99,7 +100,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
               permit_condition_type_code: REPORT_TYPE_CODES.PRR,
               permit_condition_id: condition.permit_condition_id,
               permit_guid: permitGuid,
-              permit_amendment_id: latestPermitAmendment.permit_amendment_id,
+              permit_amendment_id: currentAmendment?.permit_amendment_id,
             }
         }
       >

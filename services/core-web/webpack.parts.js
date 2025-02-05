@@ -39,6 +39,7 @@ exports.devServer = ({ host, port } = {}) => ({
   ignoreWarnings: [/Serializing big strings/],
   devServer: {
     historyApiFallback: true,
+    hot: true,
     host,
     port,
     headers: {

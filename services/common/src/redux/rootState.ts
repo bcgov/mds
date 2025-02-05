@@ -4,7 +4,7 @@ import { loadingBarReducer } from "react-redux-loading-bar";
 
 import type { TypedUseSelectorHook } from 'react-redux'
 import { useDispatch, useSelector, useStore } from 'react-redux'
-import type { FormAction } from 'redux-form';
+import type { FormAction } from "@mds/common/components/forms/form";
 
 export const getStore = (preloadedState = {}) =>
   configureStore({

@@ -1,6 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Field, change } from "redux-form";
+import { Field, change } from "@mds/common/components/forms/form";
 import { Button, Col, Row, Typography } from "antd";
 import ProjectLinksTable from "@mds/common/components/projectSummary/ProjectLinksTable";
 import { ILinkedProject, IProject } from "@mds/common/interfaces";

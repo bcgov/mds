@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, FormSection, getFormValues } from "redux-form";
+import { Field, FormSection, getFormValues } from "@mds/common/components/forms/form";
 import { Col, Row, Alert } from "antd";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { formatDate, normalizePhone, upperCase } from "@common/utils/helpers";

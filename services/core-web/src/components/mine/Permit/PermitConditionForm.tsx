@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { change, Field, reset } from "redux-form";
-import { Row, Col, Button } from "antd";
+import { change, Field, reset } from "@mds/common/components/forms/form";
+import { Row, Col, Button, Typography } from "antd";
 import {
     faArrowDown,
     faArrowUp,
@@ -28,6 +28,7 @@ import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import { formatPermitConditionStep, parsePermitConditionStep } from "@mds/common/utils/helpers";
 import { FORM } from "@mds/common/constants/forms";
 import RenderGroupedSelect from "@mds/common/components/forms/RenderGroupedSelect";
+import { usePermitConditions } from "./PermitConditionsContext";
 
 
 interface PermitConditionFormProps {
@@ -63,6 +64,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const dispatch = useDispatch();
     const { id: mineGuid, permitGuid } = useParams<{ id: string; permitGuid: string }>();
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
+    const { currentAmendment } = usePermitConditions();
     // the form fails to re-initialize when the category is changed, so concatenating it forces it to make a new one
     const formName = `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`;
 
@@ -135,6 +137,8 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                     condition: reportCondition,
                     canEditPermitConditions: canEditPermitConditions,
                     permitGuid,
+                    mineGuid,
+                    currentAmendment
                 },
                 content: ReportPermitRequirementForm,
             })
@@ -159,70 +163,88 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     };
 
     return (
-        <FormWrapper
-            isEditMode={isEditMode && isExtracted}
-            onSubmit={handleSubmit}
-            name={formName}
-            initialValues={condition}
-            scrollOnToggleEdit={false}
-            reduxFormConfig={{
-                enableReinitialize: true
-            }}
-        >
-            {(isEditMode && isExtracted && categoryOptions) && <Row>
-                <Col span={24}>
-                    <Field
-                        showOptional={false}
-                        label="Condition Category:"
-                        component={RenderGroupedSelect}
-                        name="condition_category_code"
-                        data={categoryOptions}
-                        allowClear={false}
-                        className="horizontal-form-item"
-                    />
-                </Col>
-            </Row>}
-            <Row
+        !isEditMode ?
+
+            (<Row
                 wrap={false}
                 align="top"
                 className={`condition-content ${!editingConditionGuid ? "editable" : ""}`}
             >
                 <Col className="step-column" style={{ flexShrink: 0 }}>
-                    <Field
-                        format={(value: string) => formatPermitConditionStep(value)}
-                        parse={(value: string) => parsePermitConditionStep(value)}
-                        name="step"
-                        component={RenderField}
-                        showNA={false}
-                        disabled={isAddingListItem}
-                        onChange={handleBackSpace}
-                    />
+                    <Typography.Paragraph className="view-item-value">{formatPermitConditionStep(condition.step)}</Typography.Paragraph>
                 </Col>
                 <Col className="condition-column"
                     {...editableProps}
                 >
-                    <Field
-                        name="condition"
-                        component={RenderAutoSizeField}
-                        disabled={isAddingListItem}
-                    />
+                    <Typography.Paragraph className="view-item-value">{condition.condition}</Typography.Paragraph>
                 </Col>
-            </Row>
-            {isEditMode && !isAddingListItem && (
-                <Row justify="space-between" align="middle">
-                    <Col>
-                        <Row gutter={8}
-                            className="condition-edit-buttons"
-                        >
-                            {isExtracted && <Col>
-                                <Button
-                                    className="fa-icon-container btn-sm-padding"
-                                    type="default"
-                                    icon={<FontAwesomeIcon icon={faPlus} />}
-                                    onClick={handleAddListItem}
-                                >List Item</Button>
-                            </Col>}
-                            {/* <Col>
+            </Row>) :
+
+
+            <FormWrapper
+                isEditMode={isEditMode && isExtracted}
+                onSubmit={handleSubmit}
+                name={formName}
+                initialValues={condition}
+                scrollOnToggleEdit={false}
+                reduxFormConfig={{
+                    enableReinitialize: true
+                }}
+            >
+                {(isEditMode && isExtracted && categoryOptions) && <Row>
+                    <Col span={24}>
+                        <Field
+                            showOptional={false}
+                            label="Condition Category:"
+                            component={RenderGroupedSelect}
+                            name="condition_category_code"
+                            data={categoryOptions}
+                            allowClear={false}
+                            className="horizontal-form-item"
+                        />
+                    </Col>
+                </Row>}
+                <Row
+                    wrap={false}
+                    align="top"
+                    className={`condition-content ${!editingConditionGuid ? "editable" : ""}${!condition.parent_permit_condition_id ? " top-level-condition" : ""}`}
+                >
+                    <Col className="step-column" style={{ flexShrink: 0 }}>
+                        <Field
+                            format={(value: string) => formatPermitConditionStep(value)}
+                            parse={(value: string) => parsePermitConditionStep(value)}
+                            name="step"
+                            component={RenderField}
+                            showNA={false}
+                            disabled={isAddingListItem}
+                            onChange={handleBackSpace}
+                        />
+                    </Col>
+                    <Col className="condition-column"
+                        {...editableProps}
+                    >
+                        <Field
+                            name="condition"
+                            component={RenderAutoSizeField}
+                            disabled={isAddingListItem}
+                        />
+                    </Col>
+                </Row>
+                {isEditMode && !isAddingListItem && (
+                    <Row justify="space-between" align="middle">
+                        <Col>
+                            <Row gutter={8}
+                                className="condition-edit-buttons"
+                            >
+                                {isExtracted && <Col>
+                                    <Button
+                                        className="fa-icon-container btn-sm-padding"
+                                        type="default"
+                                        icon={<FontAwesomeIcon icon={faPlus} />}
+                                        onClick={handleAddListItem}
+                                    >List Item</Button>
+                                </Col>}
+                                {/* <Col>
                                     <Button
                                         className="fa-icon-container btn-sm-padding"
                                         type="default"
@@ -232,73 +254,74 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                         Link Document
                                     </Button>
                                 </Col> */}
-                            <Col>
-                                <Button
-                                    className="fa-icon-container btn-sm-padding"
-                                    type="default"
-                                    icon={<FontAwesomeIcon icon={faClipboard} />}
-                                    onClick={(e) => handleOpenAddReportModal(e, condition)}
-                                >
-                                    Add Report Requirement
-                                </Button>
-                            </Col>
-                            <Col>
-                                <RenderCancelButton
-                                    cancelFunction={handleCancel}
-                                    buttonProps={{
-                                        type: "primary",
-                                        icon: <FontAwesomeIcon icon={faXmark} />,
-                                    }}
-                                    iconButton
+                                <Col>
+                                    <Button
+                                        className="fa-icon-container btn-sm-padding"
+                                        type="default"
+                                        icon={<FontAwesomeIcon icon={faClipboard} />}
+                                        onClick={(e) => handleOpenAddReportModal(e, condition)}
+                                        disabled={condition?.mineReportPermitRequirement !== undefined}
+                                    >
+                                        {condition?.mineReportPermitRequirement ? "Report Added" : "Add Report Requirement"}
+                                    </Button>
+                                </Col>
+                                <Col>
+                                    <RenderCancelButton
+                                        cancelFunction={handleCancel}
+                                        buttonProps={{
+                                            type: "primary",
+                                            icon: <FontAwesomeIcon icon={faXmark} />,
+                                        }}
+                                        iconButton
 
-                                />
-                            </Col>
-                            <Col>
-                                <RenderSubmitButton
-                                    buttonProps={{
-                                        icon: <FontAwesomeIcon icon={faCheck} />,
-                                    }}
-                                    iconButton
-                                />
-                            </Col>
-                        </Row>
-                    </Col>
-                    {isExtracted && <Col>
-                        <Row gutter={8} align="middle" className="condition-edit-buttons">
-                            <Col>
-                                <Button
-                                    className="fa-icon-container"
-                                    aria-label="Delete Condition"
-                                    type="default"
-                                    icon={<FontAwesomeIcon icon={faTrashCan} />}
-                                    onClick={handleDelete}
-                                />
-                            </Col>
-                            <Col>
-                                <Button
-                                    className="fa-icon-container"
-                                    aria-label="Move Condition Up"
-                                    type="default"
-                                    disabled={!moveUp}
-                                    icon={<FontAwesomeIcon icon={faArrowUp} />}
-                                    onClick={() => moveUp(condition)}
-                                />
-                            </Col>
-                            <Col>
-                                <Button
-                                    className="fa-icon-container"
-                                    aria-label="Move Condition Down"
-                                    type="default"
-                                    disabled={!moveDown}
-                                    icon={<FontAwesomeIcon icon={faArrowDown} />}
-                                    onClick={() => moveDown(condition)}
-                                />
-                            </Col>
-                        </Row>
-                    </Col>}
-                </Row>
-            )}
-        </FormWrapper>
+                                    />
+                                </Col>
+                                <Col>
+                                    <RenderSubmitButton
+                                        buttonProps={{
+                                            icon: <FontAwesomeIcon icon={faCheck} />,
+                                        }}
+                                        iconButton
+                                    />
+                                </Col>
+                            </Row>
+                        </Col>
+                        {isExtracted && <Col>
+                            <Row gutter={8} align="middle" className="condition-edit-buttons">
+                                <Col>
+                                    <Button
+                                        className="fa-icon-container"
+                                        aria-label="Delete Condition"
+                                        type="default"
+                                        icon={<FontAwesomeIcon icon={faTrashCan} />}
+                                        onClick={handleDelete}
+                                    />
+                                </Col>
+                                <Col>
+                                    <Button
+                                        className="fa-icon-container"
+                                        aria-label="Move Condition Up"
+                                        type="default"
+                                        disabled={!moveUp}
+                                        icon={<FontAwesomeIcon icon={faArrowUp} />}
+                                        onClick={() => moveUp(condition)}
+                                    />
+                                </Col>
+                                <Col>
+                                    <Button
+                                        className="fa-icon-container"
+                                        aria-label="Move Condition Down"
+                                        type="default"
+                                        disabled={!moveDown}
+                                        icon={<FontAwesomeIcon icon={faArrowDown} />}
+                                        onClick={() => moveDown(condition)}
+                                    />
+                                </Col>
+                            </Row>
+                        </Col>}
+                    </Row>
+                )}
+            </FormWrapper>
     );
 };
 

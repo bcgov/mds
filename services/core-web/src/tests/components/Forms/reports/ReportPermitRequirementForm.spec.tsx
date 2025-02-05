@@ -42,6 +42,10 @@ describe("RequestReportForm", () => {
         <ReportPermitRequirementForm
           permitGuid={MOCK.PERMITS[0].permit_guid}
           onSubmit={() => { }}
+          canEditPermitConditions={true}
+          refreshData={() => Promise.resolve()}
+          currentAmendment={MOCK.PERMITS[0].permit_amendments[0]}
+          mineGuid={MOCK.PERMITS[0].mine_guid}
           condition={MOCK.PERMITS[0].permit_amendments[0].conditions[0]}
           canEditPermitConditions
           refreshData={jest.fn()}

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getFormValues } from "redux-form";
+import { getFormValues } from "@mds/common/components/forms/form";
 import * as FORM from "@/constants/forms";
 import AddNoticeOfDepartureForm, {
   AddNoticeOfDepartureFormProps,

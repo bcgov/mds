@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Alert, Popconfirm, Button } from "antd";
 import Highlight from "react-highlighter";
 import { connect } from "react-redux";
-import { getFormValues } from "redux-form";
+import { getFormValues } from "@mds/common/components/forms/form";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import * as FORM from "@/constants/forms";
