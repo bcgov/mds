@@ -2,6 +2,7 @@ from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.orm import backref
 from sqlalchemy.schema import FetchedValue
 
 
@@ -26,7 +27,9 @@ class PermitExtractionTask(AuditMixin, Base):
     permit_amendment_document_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('permit_amendment_document.permit_amendment_document_guid'), nullable=False)
 
-    permit_amendment = db.relationship('PermitAmendment', lazy='select')
+    permit_amendment = db.relationship('PermitAmendment', lazy='select', backref=backref('permit_extraction_tasks', lazy='select', order_by='PermitExtractionTask.create_timestamp.desc()'))
+
+    permit_amendment_document = db.relationship('PermitAmendmentDocument', lazy='select')
 
     @staticmethod
     def get_by_task_id(task_id):

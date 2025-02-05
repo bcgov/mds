@@ -38,6 +38,18 @@ def export_permit_conditions(permit_amendment_guid):
         print(f'Permit amendment {permit_amendment_guid} has no associated permit')
         return
 
+    tasks = amendment.permit_extraction_tasks
+
+    latest_task = tasks[0] if tasks else None
+
+    document_name = ''
+    document_guid = ''
+
+    if latest_task and latest_task.permit_amendment_document:
+        doc = latest_task.permit_amendment_document
+        document_name = doc.document_name
+        document_guid = doc.document_manager_guid
+
     # Create filename with timestamp
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f'permit_conditions_{permit_amendment_guid}.csv'
@@ -52,7 +64,9 @@ def export_permit_conditions(permit_amendment_guid):
         'permit',
         'mine_number',
         'mine_name',
-        'condition_guid',
+        'document_name',
+        'document_manager_guid',
+        'id',
         'condition',
     ]
 
@@ -71,7 +85,9 @@ def export_permit_conditions(permit_amendment_guid):
                 'permit': permit.permit_no,
                 'mine_number': mine.mine_no,
                 'mine_name': mine.mine_name,
-                'condition_guid': str(condition.permit_condition_guid),
+                'document_name': document_name,
+                'document_manager_guid': document_guid,
+                'id': str(condition.permit_condition_guid),
                 'condition': condition.condition,
             })
 

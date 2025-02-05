@@ -8,6 +8,7 @@ from app.permit_conditions.pipelines.permit_condition_search_pipeline import (
 from app.permit_conditions.resources.job_status import JobStatus
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from haystack import Document
+from haystack.components.generators.utils import print_streaming_chunk
 from haystack.dataclasses import ChatMessage
 from pydantic import BaseModel
 
@@ -42,7 +43,7 @@ async def index_permit_conditions(file: UploadFile = File(...)) -> JobStatus:
     tmp = store_temporary(file, suffix=".csv")
 
     try:
-        pipeline = permit_condition_search_indexing_pipeline()
+        pipeline = permit_condition_search_indexing_pipeline
 
         res = pipeline.run(
             {
@@ -79,11 +80,13 @@ class SearchResponse(BaseModel):
 async def search_permit_conditions(params: SearchParams):
         pipeline = permit_condition_search_retrieval_pipeline
 
+
         res = pipeline.run(
             {
                 "text_embedder": {"text": params.query},
                 "retriever": {"query": params.query},
                 "prompt_builder": {"question": params.query},
+                # "llm": {"streaming_callback": print_streaming_chunk}
             }
         )
 

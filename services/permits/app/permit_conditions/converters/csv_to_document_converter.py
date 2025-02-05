@@ -28,12 +28,13 @@ class CSVToDocument:
                 for row in reader:
                     # Extract condition text
                     condition_text = row.pop('condition', '')
+                    id = row.pop('id', None)
                     
                     document_meta = {
                          k: v for k, v in row.items() if v
                     }
                     # Create document object
-                    document = Document(content=condition_text, meta=document_meta)
+                    document = Document(content=condition_text, meta=document_meta, id=id)
                         
 
                     documents.append(document)

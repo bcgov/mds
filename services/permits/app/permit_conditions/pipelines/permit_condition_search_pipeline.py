@@ -5,6 +5,9 @@ from datetime import datetime
 import yaml
 from app.permit_conditions.converters.csv_to_document_converter import CSVToDocument
 from app.permit_conditions.converters.pdf_to_text_converter import PDFToTextConverter
+from app.permit_conditions.pipelines.ai_search_document_store import (
+    AzureSearchDocumentStore,
+)
 from app.permit_conditions.pipelines.cached_embedding import EmbeddingCache
 from app.permit_conditions.pipelines.CachedAzureOpenAIChatGenerator import (
     CachedAzureOpenAIChatGenerator,
@@ -40,6 +43,7 @@ from haystack.components.generators.chat import (
     AzureOpenAIChatGenerator,
     OpenAIChatGenerator,
 )
+from haystack.components.generators.utils import print_streaming_chunk
 from haystack.components.joiners import DocumentJoiner
 from haystack.components.writers import DocumentWriter
 from haystack.dataclasses import ChatMessage
@@ -87,11 +91,26 @@ doc_metadata_fields = {
     "mine_name": str,
     "document_name": str,
     "document_manager_guid": str,
+    "step": str,
+    "step_path": str,
+}
+
+extra_field_config = {
+    "category": {"filterable": True, "sortable": True, "facetable": True},
+    "issue_date": {"filterable": True, "sortable": True, "facetable": True},
+    "permit": {"filterable": True, "sortable": True, "facetable": True},
+    "mine_number": {"filterable": True, "sortable": True, "facetable": True},
+    "mine_name": {"filterable": True, "sortable": True, "facetable": True},
+    "document_name": {"filterable": True, "sortable": True, "facetable": True},
+    "document_manager_guid": {"filterable": True, "sortable": True, "facetable": True},
+    "step": {"filterable": True, "sortable": True, "facetable": True},
+    "step_path": {"filterable": True, "sortable": True, "facetable": True},
 }
 
 vector_search_config = VectorSearch()
 
-azure_search_document_store = AzureAISearchDocumentStore(
+azure_search_document_store = AzureSearchDocumentStore(
+    extra_field_config=extra_field_config,
     api_key=search_api_key,
     azure_endpoint=search_azure_endpoint,
     index_name="permit-conditions",
@@ -127,11 +146,12 @@ llm = AzureOpenAIChatGenerator(
     azure_deployment=deployment_name,
     api_key=api_key,
     api_version=api_version,
-    generation_kwargs={"temperature": 0, "max_tokens": 16384},
+    generation_kwargs={"temperature": 0, "max_tokens": 16384, "n": 1},
+    streaming_callback=print_streaming_chunk,
 )
 
 
-def permit_condition_search_indexing_pipeline():
+def permit_condition_search_indexing_pipelinecre():
     """
     This function creates and returns a pipeline for extracting permit conditions.
 
@@ -166,6 +186,7 @@ def permit_condition_search_indexing_pipeline():
 
     return index_pipeline
 
+
 template = [
     ChatMessage.from_system("""
         You are an expert assistant that helps users find information about permit conditions and reason about them. When answering a question or searching, you can only use the information in the sources provided. \n
@@ -197,7 +218,10 @@ def permit_condition_search_retrieval_pipelinecre():
         api_key=api_key
     )
 
-    retriever = AzureAISearchHybridRetriever(document_store=azure_search_document_store)
+    retriever = AzureAISearchHybridRetriever(
+        document_store=azure_search_document_store,
+        facets=[k for k in extra_field_config if extra_field_config[k].get("facetable", False)],
+    )
 
     """
     This function creates and returns a pipeline for extracting permit conditions.
@@ -222,3 +246,4 @@ def permit_condition_search_retrieval_pipelinecre():
     return retrieval_pipeline
 
 permit_condition_search_retrieval_pipeline = permit_condition_search_retrieval_pipelinecre()
+permit_condition_search_indexing_pipeline = permit_condition_search_indexing_pipelinecre()
