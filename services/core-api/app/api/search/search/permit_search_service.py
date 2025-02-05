@@ -1,18 +1,8 @@
-import logging
 import os
 import tempfile
 import uuid
-from io import BytesIO
 
 import requests
-from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
-from app.api.mines.permits.permit.models.permit import Permit
-from app.api.mines.permits.permit_amendment.models.permit_amendment import (
-    PermitAmendment,
-)
-from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
-    PermitAmendmentDocument,
-)
 from app.api.mines.permits.permit_extraction.models.permit_extraction_task import (
     PermitExtractionTask,
 )
@@ -92,7 +82,7 @@ class PermitSearchService:
 
         if not task:
             raise InternalServerError('Task not found')
-        
+
         result = self.session.get(f'{EXTRACTION_STATUS_ENDPOINT}?task_id={task.task_id}')
 
         if result.status_code != 200:
@@ -104,7 +94,7 @@ class PermitSearchService:
         if task.task_status != data['status']:
             current_app.logger.info(f'Updating permit condition extract task status for task {task.task_id} from {task.task_status} to {data["status"]}')
 
-        task.task_status = data['status']
+        task_status = data['status']
         task.meta = data['meta']
 
         if data['status'] == 'SUCCESS':
@@ -118,4 +108,4 @@ class PermitSearchService:
 
             task.task_result = data
 
-        return task
+        return task, task_status

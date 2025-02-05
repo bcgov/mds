@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { hot } from "react-hot-loader";
 import Routes from "./routes/Routes";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
 import DocumentViewer from "@mds/common/components/syncfusion/DocumentViewer";
@@ -45,4 +44,4 @@ const App = () => {
   );
 };
 
-export default hot(module)(App);
+export default App;

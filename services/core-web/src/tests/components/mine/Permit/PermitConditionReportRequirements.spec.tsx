@@ -1,0 +1,94 @@
+import React from "react";
+import { render, fireEvent } from "@testing-library/react";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { PermitConditionsProvider } from "@/components/mine/Permit/PermitConditionsContext";
+import PermitConditionReportRequirements from "@/components/mine/Permit/PermitConditionReportRequirements";
+
+const conditionsWithRequirements = [
+    MOCK.PERMITS[0].permit_amendments[0].conditions[0],
+
+];
+
+const params = {
+    mineGuid: MOCK.PERMITS[0].mine_guid,
+    permitGuid: MOCK.PERMITS[0].permit_guid,
+    currentAmendment: MOCK.PERMITS[0].permit_amendments[0],
+    latestAmendment: MOCK.PERMITS[0].permit_amendments[0],
+    previousAmendment: MOCK.PERMITS[0].permit_amendments[0],
+};
+
+describe("PermitConditionReportRequirements", () => {
+    it("renders report requirements correctly", () => {
+        const { getByText } = render(
+            <ReduxWrapper>
+                <PermitConditionsProvider value={params}>
+                    <PermitConditionReportRequirements
+                        conditionsWithRequirements={conditionsWithRequirements}
+                    />
+                </PermitConditionsProvider>
+            </ReduxWrapper>
+        );
+
+        expect(getByText("Report #1 - Test Report")).toBeInTheDocument();
+    });
+
+    it("expands collapse panel on click", () => {
+        const { getByText, container } = render(
+            <ReduxWrapper>
+                <PermitConditionsProvider value={params}>
+                    <PermitConditionReportRequirements
+                        conditionsWithRequirements={conditionsWithRequirements}
+                    />
+                </PermitConditionsProvider>
+            </ReduxWrapper>
+        );
+
+        const panel = getByText("Report #1 - Test Report");
+        fireEvent.click(panel);
+
+        expect(container.querySelector(".ant-collapse-content-active")).toBeInTheDocument();
+        expect(container).toMatchSnapshot();
+    });
+
+    it("calls refreshData when provided", async () => {
+        const refreshData = jest.fn().mockResolvedValue(undefined);
+
+        render(
+            <ReduxWrapper>
+                <PermitConditionsProvider value={params}>
+                    <PermitConditionReportRequirements
+                        conditionsWithRequirements={conditionsWithRequirements}
+                        refreshData={refreshData}
+                        canEditPermitConditions={true}
+                    />
+                </PermitConditionsProvider>
+            </ReduxWrapper>
+        );
+
+        expect(refreshData).not.toHaveBeenCalled();
+    });
+
+    it("renders without report name when not provided", () => {
+        const conditionsWithoutReportName = [{
+            ...conditionsWithRequirements[0],
+            mineReportPermitRequirement: {
+                ...conditionsWithRequirements[0].mineReportPermitRequirement,
+                report_name: undefined
+            }
+        }];
+
+        const { getByText } = render(
+            <ReduxWrapper>
+                <PermitConditionsProvider value={params}>
+                    <PermitConditionReportRequirements
+                        conditionsWithRequirements={conditionsWithoutReportName}
+                    />
+                </PermitConditionsProvider>
+            </ReduxWrapper>
+        );
+
+        expect(getByText("Report #1")).toBeInTheDocument();
+    });
+
+});

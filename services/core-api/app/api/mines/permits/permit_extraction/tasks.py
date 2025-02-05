@@ -1,6 +1,4 @@
 
-import json
-
 from app.api.mines.permits.permit_extraction.create_permit_conditions import (
     create_permit_conditions_from_task,
 )
@@ -10,6 +8,7 @@ from app.api.mines.permits.permit_extraction.models.permit_extraction_task impor
 from app.api.search.search.permit_search_service import PermitSearchService
 from app.tasks.celery import celery
 from celery import Task
+from flask import current_app
 from werkzeug.exceptions import InternalServerError
 
 
@@ -44,13 +43,17 @@ def poll_update_permit_extraction_status(permit_extraction_task_id):
     Poll the permit conditions service for the status of the extraction task every 10s
     until the task is complete (SUCCESS or FAILURE).
     """
-    task = PermitSearchService().update_task_status(permit_extraction_task_id)
+    task, task_status = PermitSearchService().update_task_status(permit_extraction_task_id)
 
-    if task.task_status == 'SUCCESS' or task.task_status == 'FAILURE':
-        if task.task_status == 'SUCCESS':
+    if task_status == 'SUCCESS' or task_status == 'FAILURE':
+        if task_status == 'SUCCESS':
             create_permit_conditions_from_task(task)
+
+        task.task_status = task_status
         task.save()
+        current_app.logger.info(f'Permit extraction task {task.task_id} has completed with status {task_status}')
         return task
     else:
+        task.task_status = task_status
         task.save()
         poll_update_permit_extraction_status.retry(countdown=10)

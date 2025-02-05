@@ -1205,7 +1205,16 @@ export const PERMITS: IPermit[] = [
             sub_conditions: [],
             step: "1.",
             display_order: 1,
-            permit_condition_status_code: "NST"
+            permit_condition_status_code: "NST",
+            mineReportPermitRequirement: {
+              report_name: "Test Report",
+              mine_report_permit_requirement_id: 1,
+              cim_or_cpo: "cpo",
+              ministry_recipient: ["MMO"],
+              permit_condition_id: 1639,
+              due_date_period_months: 12,
+              initial_due_date: "2024-01-01",
+            }
           },
           {
             permit_condition_id: 1646,
@@ -1404,6 +1413,7 @@ export const PERMITS: IPermit[] = [
             preamble_date: "2019-04-02",
           },
         ],
+        conditions_review_completed: false
       },
       {
         permit_amendment_id: 1,
@@ -1445,6 +1455,7 @@ export const PERMITS: IPermit[] = [
             preamble_date: "2019-04-02",
           },
         ],
+        conditions_review_completed: false
       },
     ],
     site_properties: {
@@ -1518,6 +1529,7 @@ export const PERMITS: IPermit[] = [
         is_generated_in_core: false,
         preamble_text: null,
         condition_categories: [],
+        conditions_review_completed: false
       },
     ],
     remaining_static_liability: null,

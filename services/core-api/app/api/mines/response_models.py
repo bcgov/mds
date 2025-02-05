@@ -328,7 +328,8 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'preamble_text':
             fields.String,
         'mine_report_permit_requirements': fields.List(fields.Nested(MINE_REPORT_PERMIT_REQUIREMENT)),
-        'condition_categories': fields.List(fields.Nested(PERMIT_CONDITION_CATEGORY_MODEL))
+        'condition_categories': fields.List(fields.Nested(PERMIT_CONDITION_CATEGORY_MODEL)),
+        'conditions_review_completed': fields.Boolean,
     })
 
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})

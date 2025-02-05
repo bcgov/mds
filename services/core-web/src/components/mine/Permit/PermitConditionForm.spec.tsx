@@ -4,6 +4,7 @@ import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { PERMITS } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import PermitConditionForm from "./PermitConditionForm";
+import { PermitConditionsProvider } from "./PermitConditionsContext";
 
 const condition = MOCK.PERMITS[0].permit_amendments[0].conditions[0];
 const initialState = {
@@ -29,45 +30,58 @@ function mockFunction() {
 jest.mock("react-router-dom", () => mockFunction());
 
 describe("PermitConditionForm", () => {
+    const params = {
+        mineGuid: MOCK.PERMITS[0].mine_guid,
+        permitGuid: MOCK.PERMITS[0].permit_guid,
+        amendmentGuid: MOCK.PERMITS[0].permit_amendments[0].permit_amendment_guid,
+        latestAmendment: MOCK.PERMITS[0].permit_amendments[0],
+        previousAmendment: MOCK.PERMITS[0].permit_amendments[1],
+        currentAmendment: MOCK.PERMITS[0].permit_amendments[0],
+    };
+
     it("renders properly in edit mode", async () => {
         const { container, findByText } = render(<ReduxWrapper initialState={initialState}>
-            <PermitConditionForm
-                isExtracted
-                permitAmendmentGuid={MOCK.PERMITS[0].permit_amendments[0].permit_amendment_guid}
-                condition={condition}
-                canEditPermitConditions={true}
-                onEdit={jest.fn()}
-                setEditingConditionGuid={jest.fn()}
-                editingConditionGuid={undefined}
-                moveUp={jest.fn()}
-                moveDown={jest.fn()}
-                refreshData={jest.fn()}
-                setIsAddingListItem={jest.fn()}
-                isAddingListItem={false}
-            />
+            <PermitConditionsProvider value={params}>
+                <PermitConditionForm
+                    isExtracted
+                    permitAmendmentGuid={MOCK.PERMITS[0].permit_amendments[0].permit_amendment_guid}
+                    condition={condition}
+                    canEditPermitConditions={true}
+                    onEdit={jest.fn()}
+                    setEditingConditionGuid={jest.fn()}
+                    editingConditionGuid={undefined}
+                    moveUp={jest.fn()}
+                    moveDown={jest.fn()}
+                    refreshData={jest.fn()}
+                    setIsAddingListItem={jest.fn()}
+                    isAddingListItem={false}
+                />
+            </PermitConditionsProvider>
         </ReduxWrapper>);
 
         const editElement = container.querySelector("[aria-label='Edit Condition']")
         fireEvent.click(editElement);
-        await findByText("Add Report Requirement");
+        await findByText("Report Added");
         expect(container).toMatchSnapshot()
     });
     it("does not allow edit when it shouldn't", async () => {
         const { container } = render(<ReduxWrapper initialState={initialState}>
-            <PermitConditionForm
-                isExtracted
-                permitAmendmentGuid={MOCK.PERMITS[0].permit_amendments[0].permit_amendment_guid}
-                condition={condition}
-                canEditPermitConditions={false}
-                onEdit={jest.fn()}
-                setEditingConditionGuid={jest.fn()}
-                editingConditionGuid={undefined}
-                moveUp={jest.fn()}
-                moveDown={jest.fn()}
-                refreshData={jest.fn()}
-                setIsAddingListItem={jest.fn()}
-                isAddingListItem={false}
-            />
+            <PermitConditionsProvider value={params}>
+                <PermitConditionForm
+                    isExtracted
+                    permitAmendmentGuid={MOCK.PERMITS[0].permit_amendments[0].permit_amendment_guid}
+                    condition={condition}
+                    canEditPermitConditions={false}
+                    onEdit={jest.fn()}
+                    setEditingConditionGuid={jest.fn()}
+                    editingConditionGuid={undefined}
+                    moveUp={jest.fn()}
+                    moveDown={jest.fn()}
+                    refreshData={jest.fn()}
+                    setIsAddingListItem={jest.fn()}
+                    isAddingListItem={false}
+                />
+            </PermitConditionsProvider>
         </ReduxWrapper>);
 
         const editElements = container.querySelectorAll("[aria-label='Edit Condition']");

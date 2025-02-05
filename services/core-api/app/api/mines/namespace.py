@@ -87,6 +87,9 @@ from app.api.mines.permits.permit_amendment.resources.permit_amendment import (
     PermitAmendmentListResource,
     PermitAmendmentResource,
 )
+from app.api.mines.permits.permit_amendment.resources.permit_amendment_diff import (
+    PermitAmendmentDiffResource,
+)
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import (
     PermitAmendmentDocumentListResource,
     PermitAmendmentDocumentResource,
@@ -100,8 +103,9 @@ from app.api.mines.permits.permit_conditions.resources.permit_amendment_conditio
 from app.api.mines.permits.permit_conditions.resources.permit_amendment_condition_category_resource import (
     PermitAmendmentConditionCategoryResource,
 )
-from app.api.mines.permits.permit_conditions.resources.permit_amendment_condition_category_user_resource import \
-    AssignUserToPermitConditionCategory
+from app.api.mines.permits.permit_conditions.resources.permit_amendment_condition_category_user_resource import (
+    AssignUserToPermitConditionCategory,
+)
 from app.api.mines.permits.permit_conditions.resources.permit_condition_category_resource import (
     PermitConditionCategoryResource,
 )
@@ -298,6 +302,10 @@ api.add_resource(PermitConditionExtractionProgressResource, '/permits/condition-
 api.add_resource(
     PermitAmendmentVCResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/verifiable-credential'
+)
+api.add_resource(
+    PermitAmendmentDiffResource,
+    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/diff'
 )
 
 api.add_resource(

@@ -32,6 +32,7 @@ import {
 } from "../reducers";
 import reportSubmissionReducer from "@mds/common/components/reports/reportSubmissionSlice";
 import verifiableCredentialsReducer from "@mds/common/redux/slices/verifiableCredentialsSlice";
+
 import regionsReducer from "@mds/common/redux/slices/regionsSlice";
 import complianceCodeReducer, { complianceCodeReducerType } from "../slices/complianceCodesSlice";
 import spatialDataReducer, { spatialDataReducerType } from "../slices/spatialDataSlice";
@@ -47,6 +48,7 @@ const networkReducers = Object.fromEntries(Object.entries(NetworkReducerTypes).m
 ));
 
 import userReducer, { userReducerType } from "@mds/common/redux/slices/userSlice";
+import permitConditionDiffReducer, { permitConditionDiffReducerType } from "../slices/permitConditionDiffSlice";
 
 export const sharedReducer = {
   ...activityReducer,
@@ -86,5 +88,6 @@ export const sharedReducer = {
   [searchConditionCategoriesType]: searchConditionCategoriesReducer,
   [userReducerType]: userReducer,
   [mineReportPermitRequirementReducerType]: mineReportPermitRequirementReducer,
+  [permitConditionDiffReducerType]: permitConditionDiffReducer,
   ...networkReducers
 };

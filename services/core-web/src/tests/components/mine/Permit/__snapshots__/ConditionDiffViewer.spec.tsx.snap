@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConditionDiffViewer applies correct class for unchanged conditions 1`] = `
+<div>
+  <div
+    class="diff-container"
+  >
+    <div
+      class="ant-row"
+      style="margin-left: -8px; margin-right: -8px;"
+    >
+      <div
+        class="ant-col ant-col-12"
+        style="padding-left: 8px; padding-right: 8px;"
+      >
+        <h4
+          class="ant-typography"
+        >
+          Previous Version
+        </h4>
+        <div
+          class="condition-unchanged"
+        >
+          <div
+            class="condition-text"
+            style="margin-left: 0px; margin-bottom: 8px;"
+          >
+            <div
+              class="ant-row ant-row-no-wrap ant-row-top condition-content"
+            >
+              <div
+                class="ant-col step-column"
+                style="flex-shrink: 0;"
+              >
+                <span
+                  class="ant-typography view-item-value"
+                >
+                  1.
+                    
+                </span>
+              </div>
+              <div
+                class="ant-col condition-column"
+              >
+                <span
+                  class="ant-typography view-item-value"
+                >
+                  Section decade check including.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-12"
+        style="padding-left: 8px; padding-right: 8px;"
+      >
+        <h4
+          class="ant-typography"
+        >
+          Current Version
+        </h4>
+        <div
+          class="condition-unchanged"
+        >
+          <div
+            class="condition-text"
+            style="margin-left: 0px; margin-bottom: 8px;"
+          >
+            <div
+              class="ant-row ant-row-no-wrap ant-row-top condition-content"
+            >
+              <div
+                class="ant-col step-column"
+                style="flex-shrink: 0;"
+              >
+                <span
+                  class="ant-typography view-item-value"
+                >
+                  1.
+                    
+                </span>
+              </div>
+              <div
+                class="ant-col condition-column"
+              >
+                <span
+                  class="ant-typography view-item-value"
+                >
+                  Section decade check including.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

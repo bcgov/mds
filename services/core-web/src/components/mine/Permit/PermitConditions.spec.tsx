@@ -51,6 +51,7 @@ function mockFunction() {
     useParams: jest.fn().mockReturnValue({
       id: MOCK.MINES.mineIds[0],
       permitGuid: MOCK.PERMITS[0].permit_guid,
+      permitAmendmentGuid: MOCK.PERMITS[0].permit_amendments[0].permit_amendment_guid,
       tab: "conditions",
     }),
     useLocation: jest.fn().mockReturnValue({

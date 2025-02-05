@@ -2,11 +2,11 @@ from datetime import datetime
 from unittest.mock import MagicMock, patch
 
 import pytest
+from app.api.mines.permits.permit_conditions.models.permit_conditions import (
+    PermitConditions,
+)
 from app.api.mines.permits.permit_extraction.create_permit_condition_report_requirement import (
     create_permit_condition_report_requirement,
-)
-from app.api.mines.permits.permit_extraction.models.permit_condition_result import (
-    PermitConditionResult,
 )
 
 
@@ -18,18 +18,20 @@ def mock_task():
 
 
 def test_create_report_requirement_with_no_report_required(mock_task):
-    condition = PermitConditionResult(
-        condition_text="Test condition text",
+    condition = PermitConditions(
+        permit_condition_id="test-id",
+        condition="Test condition text",
         meta={"questions": [{"question_key": "require_report", "answer": False}]},
     )
 
-    result = create_permit_condition_report_requirement(mock_task, condition, "test-id")
+    result = create_permit_condition_report_requirement(mock_task, condition)
     assert result is None
 
 
 def test_create_report_requirement_basic(mock_task):
-    condition = PermitConditionResult(
-        condition_text="Test condition text",
+    condition = PermitConditions(
+        permit_condition_id="test-id",
+        condition="Test condition text",
         meta={
             "questions": [
                 {"question_key": "require_report", "answer": True},
@@ -43,7 +45,7 @@ def test_create_report_requirement_basic(mock_task):
         },
     )
 
-    result = create_permit_condition_report_requirement(mock_task, condition, "test-id")
+    result = create_permit_condition_report_requirement(mock_task, condition)
     assert result is not None
     assert result.report_name == "Test Report"
     assert result.permit_condition_id == "test-id"
@@ -54,8 +56,9 @@ def test_create_report_requirement_basic(mock_task):
 
 
 def test_create_report_requirement_both_cim_cpo(mock_task):
-    condition = PermitConditionResult(
-        condition_text="Test condition text",
+    condition = PermitConditions(
+        condition="Test condition text",
+        permit_condition_id="test-id",
         meta={
             "questions": [
                 {"question_key": "require_report", "answer": True},
@@ -65,7 +68,7 @@ def test_create_report_requirement_both_cim_cpo(mock_task):
         },
     )
 
-    result = create_permit_condition_report_requirement(mock_task, condition, "test-id")
+    result = create_permit_condition_report_requirement(mock_task, condition)
     assert result is not None
     assert result.cim_or_cpo == "Both"
 
@@ -80,8 +83,9 @@ def test_create_report_requirement_various_frequencies(mock_task):
     ]
 
     for frequency, expected_months in test_cases:
-        condition = PermitConditionResult(
-            condition_text="Test condition text",
+        condition = PermitConditions(
+            permit_condition_id="test-id",
+            condition="Test condition text",
             meta={
                 "questions": [
                     {"question_key": "require_report", "answer": True},
@@ -92,7 +96,7 @@ def test_create_report_requirement_various_frequencies(mock_task):
         )
 
         result = create_permit_condition_report_requirement(
-            mock_task, condition, "test-id"
+            mock_task, condition
         )
         assert result is not None
         assert result.due_date_period_months == expected_months
@@ -104,8 +108,9 @@ def test_create_report_requirement_various_frequencies(mock_task):
 def test_create_report_requirement_invalid_date(
     mock_current_app, mock_task, test_client
 ):
-    condition = PermitConditionResult(
-        condition_text="Test condition text",
+    condition = PermitConditions(
+        permit_condition_id="test-id",
+        condition="Test condition text",
         meta={
             "questions": [
                 {"question_key": "require_report", "answer": True},
@@ -114,7 +119,7 @@ def test_create_report_requirement_invalid_date(
         },
     )
 
-    result = create_permit_condition_report_requirement(mock_task, condition, "test-id")
+    result = create_permit_condition_report_requirement(mock_task, condition)
     assert result is not None
     assert result.initial_due_date is None
     mock_current_app.logger.error.assert_called_once()
