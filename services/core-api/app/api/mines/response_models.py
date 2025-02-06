@@ -899,8 +899,8 @@ QUERY_FILTER_MODEL = api.model('QueryFilter', {
 
 PERMIT_CONDITION_SEARCH_MODEL = api.model(
     'PermitConditionSearch', {
-        'query': fields.String,
-        'filter': fields.Nested(QUERY_FILTER_MODEL),
+        'query': fields.String(required=True),
+        'filters': fields.Nested(QUERY_FILTER_MODEL, required=False),
     })
 
 
