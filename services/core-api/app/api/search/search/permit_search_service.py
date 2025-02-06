@@ -36,7 +36,6 @@ class PermitSearchService:
         print(f'Searching for permit conditions with term: {search_term}')
         results = self.session.post(SEARCH_ENDPOINT, data=json.dumps({'query': search_term['query'], 'filters': search_term.get('filters')})).json()
 
-        print(results)
         return results
 
     def initialize_permit_extraction(self, permit_amendment_document):

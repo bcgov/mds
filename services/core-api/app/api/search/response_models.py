@@ -1,7 +1,9 @@
-from flask_restx import fields
+from app.api.parties.response_models import (
+    PARTY_BUSINESS_ROLE_APPT,
+    PARTY_ORGBOOK_ENTITY,
+)
 from app.extensions import api
-
-from app.api.parties.response_models import PARTY_ORGBOOK_ENTITY, PARTY_BUSINESS_ROLE_APPT
+from flask_restx import fields
 
 SEARCH_RESULT_MODEL = api.model('SearchResult', {
     'score': fields.Integer,
@@ -128,7 +130,6 @@ SEARCH_RESULTS_LIST_MODEL = api.model(
         'permit': fields.List(fields.Nested(PERMIT_SEARCH_RESULT_MODEL)),
         'mine_documents': fields.List(fields.Nested(MINE_DOCUMENT_SEARCH_RESULT_MODEL)),
         'permit_documents': fields.List(fields.Nested(PERMIT_DOCUMENT_SEARCH_RESULT_MODEL)),
-        'mines_act_permits': fields.List(fields.Raw()),
     })
 
 SEARCH_RESULT_RETURN_MODEL = api.model(
