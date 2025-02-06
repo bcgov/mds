@@ -32,6 +32,7 @@ export const ConditionForm = (props) => {
       <Col span={formSpan}>
         <FormWrapper
           name={FORM.CONDITION_SECTION}
+          scrollOnToggleEdit={false}
           reduxFormConfig={{
             onSubmitSuccess: resetForm(FORM.CONDITION_SECTION),
           }}
