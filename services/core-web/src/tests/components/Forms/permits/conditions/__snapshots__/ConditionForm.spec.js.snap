@@ -24,6 +24,7 @@ exports[`ConditionForm renders properly 1`] = `
           "onSubmitSuccess": [Function],
         }
       }
+      scrollOnToggleEdit={false}
     >
       <Field
         component={[Function]}

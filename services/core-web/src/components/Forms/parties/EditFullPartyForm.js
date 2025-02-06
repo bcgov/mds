@@ -241,7 +241,7 @@ export const EditFullPartyForm = (props) => {
                   name="sub_division_code"
                   label="Province"
                   component={renderConfig.SELECT}
-                  data={[props.provinceOptions]}
+                  data={props.provinceOptions}
                 />
               </Col>
             </Row>
