@@ -52,7 +52,7 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
                         <Tag
                             color="blue"
                             style={{ cursor: 'pointer' }}
-                            onClick={() => onFilterClick?.('mine', meta.mine_name)}
+                            onClick={() => onFilterClick?.('mine_name', meta.mine_name)}
                         >
                             {meta.mine_name}
                         </Tag>

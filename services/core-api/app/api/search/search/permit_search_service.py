@@ -34,7 +34,7 @@ class PermitSearchService:
         Performs a search against the permit service by the `search_term`.
         """
         print(f'Searching for permit conditions with term: {search_term}')
-        results = self.session.post(SEARCH_ENDPOINT, data=json.dumps({'query': search_term['query']})).json()
+        results = self.session.post(SEARCH_ENDPOINT, data=json.dumps({'query': search_term['query'], 'filters': search_term.get('filters')})).json()
 
         print(results)
         return results

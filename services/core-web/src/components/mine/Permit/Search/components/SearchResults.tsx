@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { List, Typography, Space, Tag, Select, Empty, Collapse, Row, Col, Button, Card, Badge, Skeleton } from 'antd';
-import { SearchResultsProps } from '../services/types';
+import { SearchResult } from '../services/types';
 import ResultItem from './ResultItem';
 import FacetFilters from './FacetFilters';
 import { DownOutlined, FilterOutlined, UpOutlined } from '@ant-design/icons';
@@ -28,28 +28,51 @@ interface SelectedFilter {
     value: string;
 }
 
-const SearchResults: React.FC<SearchResultsProps & { loading?: boolean }> = ({
+interface SearchResultsProps {
+    results: SearchResult & { allFacets?: { [key: string]: any[] } };
+    loading?: boolean;
+    setFilters: (filters: Array<{ category: string; value: string }>) => void;
+    selectedFilters: SelectedFilter[];
+}
+
+const SearchResults: React.FC<SearchResultsProps> = ({
     results,
-    loading
+    loading,
+    setFilters,
+    selectedFilters
 }) => {
-    const [selectedFilters, setSelectedFilters] = useState<SelectedFilter[]>([]);
+    const [localFilters, setLocalFilters] = useState<SelectedFilter[]>(selectedFilters || []);
     const [filtersVisible, setFiltersVisible] = useState(false);
+    const [hasFilterChanges, setHasFilterChanges] = useState(false);
     const totalResults = results?.documents?.length || 0;
+
+    // Update local filters when prop changes
+    useEffect(() => {
+        setLocalFilters(selectedFilters || []);
+    }, [selectedFilters]);
 
     const handleFilterChange = (category: string, value: string, checked: boolean) => {
         if (checked) {
-            setSelectedFilters(prev => [...prev, { category, value }]);
+            setLocalFilters(prev => [...prev, { category, value }]);
         } else {
-            setSelectedFilters(prev =>
+            setLocalFilters(prev =>
                 prev.filter(f => !(f.category === category && f.value === value))
             );
         }
+        setHasFilterChanges(true);
     };
 
     const removeFilter = (category: string, value: string) => {
-        setSelectedFilters(prev =>
-            prev.filter(f => !(f.category === category && f.value === value))
+        const updatedFilters = localFilters.filter(
+            f => !(f.category === category && f.value === value)
         );
+        setLocalFilters(updatedFilters);
+        setFilters(updatedFilters); // Apply immediately when removing
+    };
+
+    const applyFilters = () => {
+        setFilters(localFilters);
+        setHasFilterChanges(false);
     };
 
     if (!results && !loading) {
@@ -70,9 +93,36 @@ const SearchResults: React.FC<SearchResultsProps & { loading?: boolean }> = ({
     }
 
     const handleTagFilter = (category: string, value: string) => {
-        if (!selectedFilters.some(f => f.category === category && f.value === value)) {
-            setSelectedFilters(prev => [...prev, { category, value }]);
+        if (!localFilters.some(f => f.category === category && f.value === value)) {
+            setLocalFilters(prev => [...prev, { category, value }]);
+            setHasFilterChanges(true); // Add this line to enable the Apply button
         }
+    };
+
+    const renderFacets = () => {
+        if (!results?.allFacets) return null;
+
+        return Object.entries(results.allFacets).map(([facetKey, facets]) => {
+            // Get current facet counts
+            const currentFacets = results.facets?.[facetKey] || [];
+
+            // Update counts while preserving all options
+            const updatedFacets = facets.map(facet => ({
+                ...facet,
+                count: currentFacets.find(cf => cf.value === facet.value)?.count || 0
+            }));
+
+            return (
+                <Col span={8} key={facetKey}>
+                    <FacetFilters
+                        title={facetKey.replace(/_/g, ' ')}
+                        facets={{ [facetKey]: updatedFacets }}
+                        selectedFilters={localFilters}
+                        onFilterChange={handleFilterChange}
+                    />
+                </Col>
+            );
+        });
     };
 
     return (
@@ -102,8 +152,8 @@ const SearchResults: React.FC<SearchResultsProps & { loading?: boolean }> = ({
                     <Space>
                         <FilterOutlined />
                         <span>Filters</span>
-                        {selectedFilters?.length > 0 && (
-                            <Badge count={selectedFilters?.length} style={{ backgroundColor: '#1890ff' }} />
+                        {localFilters?.length > 0 && (
+                            <Badge count={localFilters?.length} style={{ backgroundColor: '#1890ff' }} />
                         )}
                     </Space>
                     {filtersVisible ? <UpOutlined /> : <DownOutlined />}
@@ -124,40 +174,36 @@ const SearchResults: React.FC<SearchResultsProps & { loading?: boolean }> = ({
                         })
                     }}>
                         <Row gutter={[24, 16]}>
-                            <Col span={8}>
-                                <FacetFilters
-                                    facets={{ categories: mockFacets.categories }}
-                                    title="Categories"
-                                    selectedFilters={selectedFilters}
-                                    onFilterChange={handleFilterChange}
-                                />
-                            </Col>
-                            <Col span={8}>
-                                <FacetFilters
-                                    facets={{ mines: mockFacets.mines }}
-                                    title="Mines"
-                                    selectedFilters={selectedFilters}
-                                    onFilterChange={handleFilterChange}
-
-                                />
-                            </Col>
-                            <Col span={8}>
-                                <FacetFilters
-                                    facets={{ years: mockFacets.years }}
-                                    title="Years"
-                                    selectedFilters={selectedFilters}
-                                    onFilterChange={handleFilterChange}
-                                />
-                            </Col>
+                            {renderFacets()}
                         </Row>
+                        {(localFilters.length > 0 || hasFilterChanges) && (
+                            <Row justify="end" style={{ marginTop: 16 }}>
+                                <Space>
+                                    <Button onClick={() => {
+                                        setLocalFilters([]);
+                                        setFilters([]);
+                                        setHasFilterChanges(false);
+                                    }}>
+                                        Clear All
+                                    </Button>
+                                    <Button
+                                        type="primary"
+                                        onClick={applyFilters}
+                                        disabled={!hasFilterChanges}
+                                    >
+                                        Apply Filters
+                                    </Button>
+                                </Space>
+                            </Row>
+                        )}
                     </div>
                 </div>
             </div>
 
-            {selectedFilters.length > 0 && (
+            {localFilters.length > 0 && (
                 <div style={{ padding: '8px 16px', borderTop: '1px solid #e8e8e8' }}>
                     <Space wrap>
-                        {selectedFilters.map(({ category, value }) => (
+                        {localFilters.map(({ category, value }) => (
                             <Tag
                                 key={`${category}-${value}`}
                                 closable
@@ -166,8 +212,8 @@ const SearchResults: React.FC<SearchResultsProps & { loading?: boolean }> = ({
                                 {`${category}: ${value}`}
                             </Tag>
                         ))}
-                        {selectedFilters.length > 0 && (
-                            <Typography.Link onClick={() => setSelectedFilters([])}>
+                        {localFilters.length > 0 && (
+                            <Typography.Link onClick={() => setLocalFilters([])}>
                                 Clear all
                             </Typography.Link>
                         )}

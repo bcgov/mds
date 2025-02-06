@@ -10,10 +10,11 @@ export const searchApi = async (query: SearchQuery): Promise<SearchResult> => {
     try {
         const response = await CustomAxios().post(`${ENVIRONMENT.apiUrl}/${AZURE_SEARCH_ENDPOINT}`, {
             query: query.query,
-            // Add other parameters as needed
+            filters: query.filters,
+            sortBy: query.sortBy
         }, createRequestHeader());
 
-        return response.data; // Adjust based on the actual response structure
+        return response.data;
     } catch (error) {
         console.error('Error fetching search results:', error);
         throw error;

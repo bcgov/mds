@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Typography, Row, Col, Card, Input, Space } from 'antd';
+import { Layout, Typography, Row, Col, Card, Input, Space, Form } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import SearchBox from './components/SearchBox';
 import SearchResults from './components/SearchResults';
@@ -49,91 +49,100 @@ const { Content } = Layout;
 const { Title } = Typography;
 
 const PermitConditionSearch: React.FC = () => {
-    const { results, loading, setQuery } = useSearch();
+    const [form] = Form.useForm();
+    const { results, loading, setQuery, setFilters, query, filters } = useSearch();
     const hasSearched = results || loading;
 
     return (
         <Layout style={{ padding: '32px', minHeight: '100vh', background: '#fff' }}>
             <Content style={{ width: '100%', margin: '0 auto' }}>
-                {!hasSearched ? (
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        <Space direction="vertical" size="large" align="center" style={{ maxWidth: 900 }}>
-                            <Title level={1}>Search Permit Conditions</Title>
-                            <Typography.Paragraph style={{ textAlign: 'center', fontSize: '16px' }}>
-                                Search across all permit conditions and get AI-powered insights.
-                                Try searching for specific requirements, locations, or environmental concerns.
-                            </Typography.Paragraph>
-                            <div style={{ width: '100%' }}>
-                                <SearchBox onSearch={setQuery} loading={loading} size="large" />
-                            </div>
+                <Form form={form} initialValues={{ search: query }}>
 
-                            <div style={{ marginTop: 48 }}>
-                                <Typography.Title level={4} style={{ textAlign: 'center', marginBottom: 32 }}>
-                                    Try these example searches
-                                </Typography.Title>
+                    {!hasSearched ? (
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            <Space direction="vertical" size="large" align="center" style={{ maxWidth: 900 }}>
+                                <Title level={1}>Search Permit Conditions</Title>
+                                <Typography.Paragraph style={{ textAlign: 'center', fontSize: '16px' }}>
+                                    Search across all permit conditions and get AI-powered insights.
+                                    Try searching for specific requirements, locations, or environmental concerns.
+                                </Typography.Paragraph>
+                                <div style={{ width: '100%' }}>
+                                    <SearchBox onSearch={setQuery} loading={loading} size="large" value={query} />
+                                </div>
 
-                                <Row gutter={[24, 24]}>
-                                    {Object.entries(exampleQueries).map(([key, category]) => (
-                                        <Col xs={24} sm={12} key={key}>
-                                            <Card
-                                                hoverable
-                                                style={{ height: '100%' }}
-                                                bodyStyle={{ height: '100%' }}
-                                            >
-                                                <Space direction="vertical" size="middle" style={{ width: '100%' }}>
-                                                    <Space align="center">
-                                                        {category.icon}
-                                                        <Typography.Text strong>{category.title}</Typography.Text>
+                                <div style={{ marginTop: 48 }}>
+                                    <Typography.Title level={4} style={{ textAlign: 'center', marginBottom: 32 }}>
+                                        Try these example searches
+                                    </Typography.Title>
+
+                                    <Row gutter={[24, 24]}>
+                                        {Object.entries(exampleQueries).map(([key, category]) => (
+                                            <Col xs={24} sm={12} key={key}>
+                                                <Card
+                                                    hoverable
+                                                    style={{ height: '100%' }}
+                                                    bodyStyle={{ height: '100%' }}
+                                                >
+                                                    <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+                                                        <Space align="center">
+                                                            {category.icon}
+                                                            <Typography.Text strong>{category.title}</Typography.Text>
+                                                        </Space>
+
+                                                        <Space direction="vertical" style={{ width: '100%' }}>
+                                                            {category.queries.map((query, idx) => (
+                                                                <Typography.Link
+                                                                    key={idx}
+                                                                    onClick={() => setQuery(query)}
+                                                                    style={{
+                                                                        display: 'block',
+                                                                        borderRadius: '4px',
+                                                                        ':hover': {
+                                                                            backgroundColor: '#f5f5f5'
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    {query}
+                                                                </Typography.Link>
+                                                            ))}
+                                                        </Space>
                                                     </Space>
-
-                                                    <Space direction="vertical" style={{ width: '100%' }}>
-                                                        {category.queries.map((query, idx) => (
-                                                            <Typography.Link
-                                                                key={idx}
-                                                                onClick={() => setQuery(query)}
-                                                                style={{
-                                                                    display: 'block',
-                                                                    borderRadius: '4px',
-                                                                    ':hover': {
-                                                                        backgroundColor: '#f5f5f5'
-                                                                    }
-                                                                }}
-                                                            >
-                                                                {query}
-                                                            </Typography.Link>
-                                                        ))}
-                                                    </Space>
-                                                </Space>
-                                            </Card>
-                                        </Col>
-                                    ))}
-                                </Row>
-                            </div>
+                                                </Card>
+                                            </Col>
+                                        ))}
+                                    </Row>
+                                </div>
+                            </Space>
+                        </div>
+                    ) : (
+                        <Space direction="vertical" size="large" style={{ width: '100%' }}>
+                            <Title level={2} style={{ marginBottom: 0 }}>Permit Condition Search</Title>
+                            <SearchBox onSearch={setQuery} loading={loading} value={query} />
+                            <Row gutter={32}>
+                                <Col span={16}>
+                                    <SearchResults
+                                        results={results}
+                                        loading={loading}
+                                        setFilters={setFilters}
+                                        selectedFilters={filters} // Add this prop
+                                    />
+                                </Col>
+                                <Col span={8}>
+                                    <Card title="AI-Generated Response" loading={loading}>
+                                        {results?.prompt?.answers?.map((result, idx) => (
+                                            <MarkdownViewer key={`prompt-${idx}`} markdown={result} />
+                                        ))}
+                                    </Card>
+                                </Col>
+                            </Row>
                         </Space>
-                    </div>
-                ) : (
-                    <Space direction="vertical" size="large" style={{ width: '100%' }}>
-                        <Title level={2} style={{ marginBottom: 0 }}>Permit Condition Search</Title>
-                        <SearchBox onSearch={setQuery} loading={loading} />
-                        <Row gutter={32}>
-                            <Col span={16}>
-                                <SearchResults results={results} loading={loading} />
-                            </Col>
-                            <Col span={8}>
-                                <Card title="AI-Generated Response" loading={loading}>
-                                    {results?.prompt?.answers?.map((result, idx) => (
-                                        <MarkdownViewer key={`prompt-${idx}`} markdown={result} />
-                                    ))}
-                                </Card>
-                            </Col>
-                        </Row>
-                    </Space>
-                )}
+                    )}
+                </Form>
             </Content>
         </Layout>
     );

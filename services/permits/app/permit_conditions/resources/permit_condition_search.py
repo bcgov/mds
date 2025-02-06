@@ -59,7 +59,7 @@ async def index_permit_conditions(file: UploadFile = File(...)) -> JobStatus:
 
 class SearchParams(BaseModel):
     query: str
-    filters: Optional[dict] = None
+    filters: Optional[Dict[str, Any]] = None
 
 
 class SearchDocumentResponse(BaseModel):
@@ -71,26 +71,34 @@ class SearchDocumentResponse(BaseModel):
 class SearchPromptResponse(BaseModel):
     answers: List[str]
 
+class Facet(BaseModel):
+    value: str
+    count: int
+
 class SearchResponse(BaseModel):
     documents: List[SearchDocumentResponse]
     prompt: Optional[SearchPromptResponse]
+    facets: Optional[Dict[str, List[Facet]]]
 
 
 @router.post("/permit_conditions/search")
-async def search_permit_conditions(params: SearchParams):
+async def search_permit_conditions(params: SearchParams) -> SearchResponse:
         pipeline = permit_condition_search_retrieval_pipeline
 
 
         res = pipeline.run(
             {
                 "text_embedder": {"text": params.query},
-                "retriever": {"query": params.query},
+                "retriever": {"query": params.query, "filters": params.filters},
                 "prompt_builder": {"question": params.query},
                 # "llm": {"streaming_callback": print_streaming_chunk}
             }
         )
 
         doc_response = []
+        facets = res['output']['documents'][0].meta.get("facets") if len(res["output"]["documents"]) else None
+
+        facet_responses = {k: [Facet(value=facet["value"], count=facet["count"]) for facet in v] for k, v in facets.items()} if facets else None
 
         for doc in res['output']['documents']:
             doc_response.append(SearchDocumentResponse(
@@ -106,6 +114,7 @@ async def search_permit_conditions(params: SearchParams):
 
         resp = SearchResponse(
             documents=doc_response,
-            prompt=prompt_response
+            prompt=prompt_response,
+            facets=facet_responses
         )
         return resp

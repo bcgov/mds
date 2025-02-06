@@ -1,6 +1,7 @@
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from azure.search.documents.indexes.models import SimpleField
+from azure.search.documents.models import VectorizedQuery
 from haystack import Document, component
 from haystack_integrations.document_stores.azure_ai_search import (
     AzureAISearchDocumentStore,
@@ -14,14 +15,13 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
         self.extra_field_config = extra_field_config
     
     def _convert_search_result_to_documents(self, azure_docs: List[Dict[str, Any]]) -> List[Document]:
+
         # Get base documents from parent class
         documents: List[Document] = super()._convert_search_result_to_documents(azure_docs)
         
         # Update each document with score and facets
         for doc in documents:
             azure_doc = next(azure_doc for azure_doc in azure_docs if azure_doc["id"] == doc.id)
-
-            print({i:azure_doc[i] for i in azure_doc if i!='embedding'})
 
             if azure_doc:
                 doc.meta.update({
@@ -46,3 +46,54 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
                 field.facetable = field_options.get("facetable", field.facetable)
 
         return index_fields
+    
+
+    def _hybrid_retrieval(
+        self,
+        query: str,
+        query_embedding: List[float],
+        top_k: int = 10,
+        filters: Optional[Dict[str, Any]] = None,
+        **kwargs,
+    ) -> List[Document]:
+        """
+        Retrieves documents similar to query using the vector configuration in the document store and
+        the BM25 algorithm. This method combines vector similarity and BM25 for improved retrieval.
+
+        This method is not meant to be part of the public interface of
+        `AzureAISearchDocumentStore` nor called directly.
+        `AzureAISearchHybridRetriever` uses this method directly and is the public interface for it.
+
+        :param query: Text of the query.
+        :param query_embedding: Embedding of the query.
+        :param filters: Filters applied to the retrieved Documents.
+        :param top_k: Maximum number of Documents to return.
+        :param kwargs: Optional keyword arguments to pass to the Azure AI's search endpoint.
+
+        :raises ValueError: If `query` or `query_embedding` is empty.
+        :returns: List of Document that are most similar to `query`.
+        """
+
+        if query is None:
+            msg = "query must not be None"
+            raise ValueError(msg)
+        if not query_embedding:
+            msg = "query_embedding must be a non-empty list of floats"
+            raise ValueError(msg)
+
+        vector_query = VectorizedQuery(vector=query_embedding, k_nearest_neighbors=top_k, fields="embedding")
+        result = self.client.search(
+            search_text=query,
+            vector_queries=[vector_query],
+            filter=filters,
+            top=top_k,
+            query_type="simple",
+            **kwargs,
+        )
+
+        facets = result.get_facets()
+        azure_docs = list(result)
+
+        for doc in azure_docs:
+            doc["@search.facets"] = facets
+        return self._convert_search_result_to_documents(azure_docs)

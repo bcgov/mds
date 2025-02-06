@@ -147,7 +147,6 @@ llm = AzureOpenAIChatGenerator(
     api_key=api_key,
     api_version=api_version,
     generation_kwargs={"temperature": 0, "max_tokens": 16384, "n": 1},
-    streaming_callback=print_streaming_chunk,
 )
 
 
@@ -220,7 +219,7 @@ def permit_condition_search_retrieval_pipelinecre():
 
     retriever = AzureAISearchHybridRetriever(
         document_store=azure_search_document_store,
-        facets=[k for k in extra_field_config if extra_field_config[k].get("facetable", False)],
+        facets=["category", "issue_date", "permit", "mine_number", "mine_name", "document_name"],
     )
 
     """

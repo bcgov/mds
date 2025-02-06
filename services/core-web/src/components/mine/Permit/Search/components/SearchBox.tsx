@@ -1,26 +1,27 @@
 import React from 'react';
-import { Input, Space } from 'antd';
+import { Input, Space, Form } from 'antd';
 
 interface Props {
     onSearch: (query: string) => void;
     loading?: boolean;
     size?: 'large' | 'middle';
-    query: string;
+    value: string;
 }
 
-const SearchBox: React.FC<Props> = ({ onSearch, loading, size = 'middle', query }) => {
+const SearchBox: React.FC<Props> = ({ onSearch, loading, size = 'middle', value }) => {
     return (
         <Space direction="vertical" style={{ width: '100%' }}>
-            <Input.Search
-                placeholder="Search permit conditions..."
-                allowClear
-                enterButton
-                size={size}
-                loading={loading}
-                value={query}
-                onSearch={(value) => value.trim() && onSearch(value.trim())}
-                style={size === 'large' ? { fontSize: '16px', height: '50px', width: '400px' } : undefined}
-            />
+            <Form.Item name="search">
+                <Input.Search
+                    placeholder="Search permit conditions..."
+                    allowClear
+                    enterButton
+                    size={size}
+                    loading={loading}
+                    onSearch={(value) => value.trim() && onSearch(value.trim())}
+                    style={size === 'large' ? { fontSize: '16px', height: '50px', width: '400px' } : undefined}
+                />
+            </Form.Item>
         </Space>
     );
 };

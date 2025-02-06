@@ -1,39 +1,98 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { searchApi } from '../services/searchApi';
-import { SearchResult } from '../services/types';
+import { SearchResult, SearchQuery, FilterOperator, ConditionOperator } from '../services/types';
 
 const useSearch = () => {
     const [query, setQuery] = useState<string>('');
-    const [results, setResults] = useState<SearchResult>(null);
+    const [filters, setFilters] = useState<Array<{ category: string; value: string }>>([]);
+    const [results, setResults] = useState<SearchResult | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+    const searchTimeout = useRef<NodeJS.Timeout>();
 
-    const handleSearch = async (searchQuery: string) => {
+    const handleSearch = useCallback(async (searchQuery: string, currentFilters: typeof filters) => {
+        if (!searchQuery.trim()) return;
+
         setLoading(true);
-        setError(null);
+
+        // Group filters by category
+        const filtersByCategory = currentFilters.reduce((acc, filter) => {
+            acc[filter.category] = acc[filter.category] || [];
+            acc[filter.category].push(filter.value);
+            return acc;
+        }, {} as Record<string, string[]>);
+
         try {
-            const data = await searchApi({ query: searchQuery });
-            setResults(data);
-        } catch (err) {
-            setError('Failed to fetch results');
+            const data = await searchApi({
+                query: searchQuery,
+                filters: currentFilters.length > 0 ? {
+                    operator: FilterOperator.AND,
+                    conditions: Object.entries(filtersByCategory).map(([category, values]) => ({
+                        field: category,
+                        operator: values.length > 1 ? ConditionOperator.IN : ConditionOperator.EQUALS,
+                        value: values.length > 1 ? values : values[0]
+                    }))
+                } : undefined
+            });
+
+            // Merge new facets with existing ones
+            const currentFacets = data.facets || {};
+            const existingAllFacets = results?.allFacets || {};
+
+            setResults({
+                ...data,
+                allFacets: {
+                    ...existingAllFacets,
+                    ...Object.fromEntries(
+                        Object.entries(currentFacets).map(([key, values]) => [
+                            key,
+                            Array.from(
+                                new Map([
+                                    ...(existingAllFacets[key] || []),
+                                    ...values
+                                ].map(item => [item.value, item])).values()
+                            )
+                        ])
+                    )
+                }
+            });
+        } catch (error) {
+            console.error('Search error:', error);
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
+    // Debounced search effect
     useEffect(() => {
-        if (query) {
-            handleSearch(query);
+        if (!query) return;
+
+        setLoading(true);
+
+        // Clear any existing timeout
+        if (searchTimeout.current) {
+            clearTimeout(searchTimeout.current);
         }
-    }, [query]);
+
+        // Set new timeout
+        searchTimeout.current = setTimeout(() => {
+            handleSearch(query, filters);
+        }, 300);
+
+        // Cleanup
+        return () => {
+            if (searchTimeout.current) {
+                clearTimeout(searchTimeout.current);
+            }
+        };
+    }, [query, filters, handleSearch]);
 
     return {
         query,
         setQuery,
+        filters,
+        setFilters,
         results,
         loading,
-        error,
-        handleSearch,
     };
 };
 
