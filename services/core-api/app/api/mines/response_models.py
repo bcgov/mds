@@ -904,7 +904,6 @@ PERMIT_CONDITION_SEARCH_MODEL = api.model(
     })
 
 
-
 PERMIT_SERVICE_DOCUMENT_MODEL = api.model(
     'PermitServiceDocumentModel', {
         "id": fields.String,
