@@ -16,7 +16,7 @@ interface PermitConditionCategoryEditModalProps {
 
 const PermitConditionCategoryEditModal: FC<PermitConditionCategoryEditModalProps> = ({ handleSubmit }) => {
   return (
-    <FormWrapper name={FORM.ADD_PERMIT_CONDITION_CATEGORY} isModal onSubmit={handleSubmit}>
+    <FormWrapper name={FORM.ADD_PERMIT_CONDITION_CATEGORY} isModal onSubmit={handleSubmit} scrollOnToggleEdit={false}>
       <Row gutter={6}>
         <Col span={24}>
           <Form.Item>

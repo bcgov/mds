@@ -88,9 +88,7 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
           style={{ top: menuTopOffset }}
         >
           {/* the 24 matches the margin/padding on the menu/content. Looks nicer */}
-          <ScrollSideMenu offsetTop={topOffset + contentPaddingY} {...menuProps} view={view} />
-
-          {extraItems ?? ''}
+          <ScrollSideMenu offsetTop={topOffset + contentPaddingY} {...menuProps} view={view} extraItems={extraItems} />
         </div>
       )}
       <div className={contentClass} style={{ top: contentTopOffset }}>
