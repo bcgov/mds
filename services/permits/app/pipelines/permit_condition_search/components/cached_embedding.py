@@ -1,26 +1,20 @@
 import hashlib
 import json
-import logging
-import os
 from typing import List
 
 from haystack import Document, component
 from haystack.components.caching import CacheChecker
 
-ROOT_DIR = os.path.abspath(os.curdir)
-logger = logging.getLogger(__name__)
-
-
 
 def hash_message(message):
     """
-    Calculates the SHA256 hash digest of a list of messages.
+    Calculates the SHA256 hash digest of the given message.
 
     Args:
-        messages (list): A list of messages.
+        message (str): The message to hash.
 
     Returns:
-        str: The SHA256 hash digest of the messages.
+        str: The SHA256 hash digest of the message.
     """
 
     return hashlib.sha256(message.encode('utf-8')).hexdigest()
@@ -39,15 +33,16 @@ class EmbeddingCache:
     @component.output_types(hits=List[Document], misses=List[Document])
     def run(self, documents: List[Document]):
         """
-        Runs the chat generation process in parallel with max 3 concurrent executions.
+        Runs the given documents through the cache checker to determine which documents have previously been embedded.
+        If a document has been embedded, the embedding is loaded from the cache and added to the document.
+
+        The purpose of this component is to avoid generating OpenAI embeddings for queries already embedded as it comes with a cost.
 
         Args:
-            data (ChatData): The input chat data.
-            generation_kwargs (dict, optional): Additional generation parameters.
-            iteration (int, optional): The current iteration count.
-
+            documents (List[Document]): The documents to check the cache for.
         Returns:
-            dict: The output chat data.
+            hits (List[Document]): The documents that were found in the cache.
+            misses (List[Document]): The documents that were not found in the cache.
         """
         hits = []
         misses = []

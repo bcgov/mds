@@ -5,6 +5,7 @@ import pytest
 from app.pipelines.permit_condition_search.components.csv_to_document_converter import (
     CSVToDocument,
 )
+from haystack import Pipeline
 
 
 @pytest.fixture
@@ -59,3 +60,15 @@ def test_csv_to_document_multiple_rows(tmp_path):
     assert len(documents) == 2
     assert documents[0].content == 'first condition'
     assert documents[1].content == 'second condition'
+
+def test_csv_to_document_in_pipeline(csv_converter, mock_csv_file):
+    
+    pipeline = Pipeline()
+    pipeline.add_component("CSVConverter",csv_converter)
+    
+    output = pipeline.run({"CSVConverter": {"file_path": mock_csv_file}})
+    documents = output["CSVConverter"]["documents"]
+    
+    assert len(documents) == 1
+    assert documents[0].content == 'test condition'
+    assert documents[0].meta == {'field1': 'value1', 'field2': 'value2'}

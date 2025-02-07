@@ -16,7 +16,7 @@ class CSVToDocument:
         meta: Optional[Dict[str, Any]] = None,
     ) -> dict:
         """
-        Convert CSV file to list of document objects
+        Convert CSV file to list of document objects, one for each row. The 'condition' column is used as the text of the document, the 'id' column is used as the document id, and all other columns are used as meta data.
         Returns: List of dicts with 'text' and 'meta' properties
         """
         documents = []
@@ -29,17 +29,15 @@ class CSVToDocument:
                     
                     if row.get('invalid'):
                         raise Exception(f"Invalid row found in CSV file: {row}")
-                    # Extract condition text
+
                     condition_text = row.pop('condition', '')
                     id = row.pop('id', None)
                     
                     document_meta = {
                          k: v for k, v in row.items() if v
                     }
-                    # Create document object
-                    document = Document(content=condition_text, meta=document_meta, id=id)
-                        
 
+                    document = Document(content=condition_text, meta=document_meta, id=id)
                     documents.append(document)
                     
         except FileNotFoundError:

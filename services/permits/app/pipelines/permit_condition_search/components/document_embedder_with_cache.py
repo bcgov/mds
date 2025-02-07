@@ -10,22 +10,10 @@ from haystack.document_stores.types import DuplicatePolicy
 @component
 class DocumentEmbedderCache(AzureOpenAIDocumentEmbedder):
     """
-    A component for embedding strings using OpenAI models on Azure.
+    A wrapper around the AzureOpenAIDocumentEmbedder that generates embeddings for documents using OpenAI models.
 
-    Usage example:
-    ```python
-    from haystack.components.embedders import AzureOpenAITextEmbedder
+    The DocumentEmbedderCache expands on this and writes the generated embedinngs to the given document store for caching purposes using the CacheChecker component.
 
-    text_to_embed = "I love pizza!"
-
-    text_embedder = AzureOpenAITextEmbedder()
-
-    print(text_embedder.run(text_to_embed))
-
-    # {'embedding': [0.017020374536514282, -0.023255806416273117, ...],
-    # 'meta': {'model': 'text-embedding-ada-002-v2',
-    #          'usage': {'prompt_tokens': 4, 'total_tokens': 4}}}
-    ```
     """
 
     def __init__(
