@@ -1,5 +1,3 @@
-// src/services/types.ts
-
 export interface HaystackDocumentMeta {
     permit: string;
     mine_name: string;

@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { Layout, Typography, Row, Col, Card, Input, Space, Form } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import React from 'react';
+import { Layout, Typography, Row, Col, Card, Space, Form } from 'antd';
 import SearchBox from './components/SearchBox';
 import SearchResults from './components/SearchResults';
 import useSearch from './hooks/useSearch';
 import MarkdownViewer from './components/MarkdownViewer';
 import { SafetyOutlined, EnvironmentOutlined, AuditOutlined, BuildOutlined } from '@ant-design/icons';
+import { useAppSelector } from '@mds/common/redux/rootState';
+import { selectSearchResults, selectSearchLoading, selectSearchQuery, selectSearchFilters } from '@mds/common/redux/slices/permitSearchSlice';
 
 const exampleQueries = {
     environmental: {
@@ -50,36 +51,43 @@ const { Title } = Typography;
 
 const PermitConditionSearch: React.FC = () => {
     const [form] = Form.useForm();
-    const { results, loading, setQuery, setFilters, query, filters } = useSearch();
-    const hasSearched = results || loading;
+    const { setQuery } = useSearch();
+    const results = useAppSelector(selectSearchResults);
+    const loading = useAppSelector(selectSearchLoading);
+    const query = useAppSelector(selectSearchQuery);
+    const selectedFilters = useAppSelector(selectSearchFilters);
+
+    const handleQueryClick = (queryText: string) => {
+        form.setFieldValue('search', queryText);
+        setQuery(queryText);
+    };
+
+    const hasActiveSearch = query || selectedFilters?.length > 0;
+    const isLoading = loading;
+    const shouldShowSplash = !hasActiveSearch && !isLoading;
 
     return (
-        <Layout style={{ padding: '32px', minHeight: '100vh', background: '#fff' }}>
-            <Content style={{ width: '100%', margin: '0 auto' }}>
+        <Layout className="permit-search__layout">
+            <Content className="permit-search__content">
                 <Form form={form} initialValues={{ search: query }}>
-
-                    {!hasSearched ? (
-                        <div style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
+                    {shouldShowSplash ? (
+                        <Row justify="center" align="middle">
                             <Space direction="vertical" size="large" align="center" style={{ maxWidth: 900 }}>
                                 <Title level={1}>Search Permit Conditions</Title>
                                 <Typography.Paragraph style={{ textAlign: 'center', fontSize: '16px' }}>
                                     Search across all permit conditions and get AI-powered insights.
                                     Try searching for specific requirements, locations, or environmental concerns.
                                 </Typography.Paragraph>
-                                <div style={{ width: '100%' }}>
+                                <Row justify="center">
                                     <SearchBox onSearch={setQuery} loading={loading} size="large" value={query} />
-                                </div>
+                                </Row>
 
                                 <div style={{ marginTop: 48 }}>
-                                    <Typography.Title level={4} style={{ textAlign: 'center', marginBottom: 32 }}>
-                                        Try these example searches
-                                    </Typography.Title>
-
+                                    <Row justify="center">
+                                        <Typography.Title level={4} style={{ marginBottom: 32 }}>
+                                            Try these example searches
+                                        </Typography.Title>
+                                    </Row>
                                     <Row gutter={[24, 24]}>
                                         {Object.entries(exampleQueries).map(([key, category]) => (
                                             <Col xs={24} sm={12} key={key}>
@@ -97,15 +105,9 @@ const PermitConditionSearch: React.FC = () => {
                                                         <Space direction="vertical" style={{ width: '100%' }}>
                                                             {category.queries.map((query, idx) => (
                                                                 <Typography.Link
-                                                                    key={idx}
-                                                                    onClick={() => setQuery(query)}
-                                                                    style={{
-                                                                        display: 'block',
-                                                                        borderRadius: '4px',
-                                                                        ':hover': {
-                                                                            backgroundColor: '#f5f5f5'
-                                                                        }
-                                                                    }}
+                                                                    key={`${key}-${idx}`}
+                                                                    onClick={() => handleQueryClick(query)}
+                                                                    className="permit-search__example-link"
                                                                 >
                                                                     {query}
                                                                 </Typography.Link>
@@ -118,24 +120,19 @@ const PermitConditionSearch: React.FC = () => {
                                     </Row>
                                 </div>
                             </Space>
-                        </div>
+                        </Row>
                     ) : (
                         <Space direction="vertical" size="large" style={{ width: '100%' }}>
-                            <Title level={2} style={{ marginBottom: 0 }}>Permit Condition Search</Title>
+                            <Title level={1} style={{ marginBottom: 0 }}>Permit Condition Search</Title>
                             <SearchBox onSearch={setQuery} loading={loading} value={query} />
                             <Row gutter={32}>
                                 <Col span={16}>
-                                    <SearchResults
-                                        results={results}
-                                        loading={loading}
-                                        setFilters={setFilters}
-                                        selectedFilters={filters} // Add this prop
-                                    />
+                                    <SearchResults />
                                 </Col>
                                 <Col span={8}>
                                     <Card title="AI-Generated Response" loading={loading}>
-                                        {results?.prompt?.answers?.map((result, idx) => (
-                                            <MarkdownViewer key={`prompt-${idx}`} markdown={result} />
+                                        {results?.prompt?.answers?.map((result) => (
+                                            <MarkdownViewer key={`prompt-${result.substring(0, 20)}`} markdown={result} />
                                         ))}
                                     </Card>
                                 </Col>

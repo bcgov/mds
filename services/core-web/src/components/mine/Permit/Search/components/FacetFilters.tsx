@@ -1,23 +1,24 @@
 import React from 'react';
 import { Typography, Checkbox, Space } from 'antd';
-import { Facet } from '../services/types';
+import { Facet } from '@mds/common/interfaces/search/facet-search.interface';
 
 const { Title } = Typography;
 
 interface FacetFiltersProps {
     facets: {
+        // key: The name of the category (e.g. "mine_name")
         [key: string]: Facet[];
     };
     title: string;
-    selectedFilters: Array<{ category: string; value: string }>;
     onFilterChange: (category: string, value: string, checked: boolean) => void;
+    pendingFilters: Array<{ category: string; value: string }>; // Filters that have been checked, but not yet applied (e.g. user hasn't clicked "Apply")
 }
 
 const FacetFilters: React.FC<FacetFiltersProps> = ({
     facets,
     title,
-    selectedFilters,
-    onFilterChange
+    onFilterChange,
+    pendingFilters
 }) => {
     return (
         <Space direction="vertical" size="middle" style={{ width: '100%' }}>
@@ -27,14 +28,14 @@ const FacetFilters: React.FC<FacetFiltersProps> = ({
                     {items.map(item => (
                         <Checkbox
                             key={item.value}
-                            checked={selectedFilters.some(f =>
+                            checked={pendingFilters.some(f =>
                                 f.category === category && f.value === item.value
                             )}
                             onChange={(e) => onFilterChange(category, item.value, e.target.checked)}
                         >
                             <Space>
                                 {item.value}
-                                <Typography.Text type="secondary">({item.count})</Typography.Text>
+                                <Typography.Text type="secondary" style={{ whiteSpace: 'nowrap' }}>({item.count})</Typography.Text>
                             </Space>
                         </Checkbox>
                     ))}

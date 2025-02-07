@@ -1,6 +1,6 @@
 import React from 'react';
-import { Typography, Space, Tag, Breadcrumb } from 'antd';
-import { HaystackDocumentSearchResult } from '../services/types';
+import { Typography, Space, Tag, Row } from 'antd';
+import { HaystackDocumentSearchResult } from '@mds/common/src/interfaces/search/facet-search.interface';
 import dayjs from 'dayjs';
 import { formatPermitConditionStep } from '@mds/common/utils/helpers';
 
@@ -21,32 +21,24 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
     ].filter(Boolean);
 
     return (
-        <div style={{
-            padding: '20px 0',
-            borderBottom: '1px solid #f0f0f0'
-        }}>
+        <Row
+            style={{
+                marginBottom: '16px',
+                paddingBottom: '16px',
+                borderBottom: '1px solid #f0f0f0'
+            }}
+        >
             <Space direction="vertical" size="small" style={{ width: '100%' }}>
                 {/* Breadcrumb path */}
                 {pathParts?.join(' > ')}
 
                 {/* Main content */}
-                <Paragraph
-                    style={{
-                        fontSize: '15px',
-                        lineHeight: '1.6',
-                        marginBottom: '12px',
-                        color: '#262626'
-                    }}
-                >
+                <Paragraph>
                     {formatPermitConditionStep(meta.step, content)}
                 </Paragraph>
 
                 {/* Metadata section */}
-                <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                }}>
+                <Row justify="space-between" align="middle">
                     {/* Interactive filter tags */}
                     <Space size={[0, 8]} wrap>
                         <Tag
@@ -74,17 +66,17 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
 
                     {/* Document info & date */}
                     <Space size="middle">
-                        <Text type="secondary" style={{ fontSize: '13px' }}>
+                        <Text type="secondary" style={{ fontSize: '12px' }}>
                             {meta.document_name}
                         </Text>
-                        <Text type="secondary" style={{ fontSize: '13px' }}>
+                        <Text type="secondary" style={{ fontSize: '12px' }}>
                             {dayjs(meta.issue_date).format('MMM D, YYYY')}
                         </Text>
                         <Tag color="green">{Math.round(score * 100)}% match</Tag>
                     </Space>
-                </div>
+                </Row>
             </Space>
-        </div>
+        </Row>
     );
 };
 

@@ -50,6 +50,7 @@ import permitConditionDiffReducer, { permitConditionDiffReducerType } from "../s
 const networkReducers = Object.fromEntries(Object.entries(NetworkReducerTypes).map(([key, value]) =>
   [NetworkReducerTypes[key], createReducer(networkReducer, value)]
 ));
+import permitSearchReducer, { permitSearchReducerType } from "../slices/permitSearchSlice";
 
 export const sharedReducer = {
   ...activityReducer,
@@ -91,5 +92,6 @@ export const sharedReducer = {
   [userReducerType]: userReducer,
   [mineReportPermitRequirementReducerType]: mineReportPermitRequirementReducer,
   [permitConditionDiffReducerType]: permitConditionDiffReducer,
+  [permitSearchReducerType]: permitSearchReducer,
   ...networkReducers
 };

@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { SearchQuery, SearchResult } from './types';
+import { SearchQuery, SearchResult } from '@mds/common/src/interfaces/search/facet-search.interface';
 import CustomAxios from '@mds/common/redux/customAxios';
 import { createRequestHeader } from '@mds/common/redux/utils/RequestHeaders';
 import { ENVIRONMENT } from '@mds/common/constants/environment';

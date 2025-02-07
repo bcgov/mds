@@ -1,100 +1,76 @@
 import React, { useState, useEffect } from 'react';
-import { List, Typography, Space, Tag, Select, Empty, Collapse, Row, Col, Button, Card, Badge, Skeleton } from 'antd';
-import { SearchResult } from '../services/types';
+import { List, Space, Tag, Empty, Row, Col, Button, Badge, Skeleton } from 'antd';
 import ResultItem from './ResultItem';
 import FacetFilters from './FacetFilters';
 import { DownOutlined, FilterOutlined, UpOutlined } from '@ant-design/icons';
-
-const { Title, Text } = Typography;
-
-const mockFacets = {
-    categories: [
-        { name: 'Environmental', count: 45 },
-        { name: 'Safety', count: 32 },
-        { name: 'Operations', count: 28 }
-    ],
-    mines: [
-        { name: 'Highland Valley Copper', count: 25 },
-        { name: 'Mount Polley', count: 18 }
-    ],
-    years: [
-        { name: '2023', count: 35 },
-        { name: '2022', count: 42 }
-    ]
-};
+import { useAppSelector, useAppDispatch } from '@mds/common/redux/rootState';
+import { selectSearchResults, selectSearchLoading, selectSearchFilters, setFilters } from '@mds/common/redux/slices/permitSearchSlice';
+import { HaystackDocumentSearchResult } from '@mds/common/interfaces/search/facet-search.interface';
 
 interface SelectedFilter {
     category: string;
     value: string;
 }
 
-interface SearchResultsProps {
-    results: SearchResult & { allFacets?: { [key: string]: any[] } };
-    loading?: boolean;
-    setFilters: (filters: Array<{ category: string; value: string }>) => void;
-    selectedFilters: SelectedFilter[];
-}
+const SearchResults: React.FC = () => {
+    const dispatch = useAppDispatch();
+    const results = useAppSelector(selectSearchResults);
+    const loading = useAppSelector(selectSearchLoading);
+    const selectedFilters = useAppSelector(selectSearchFilters);
 
-const SearchResults: React.FC<SearchResultsProps> = ({
-    results,
-    loading,
-    setFilters,
-    selectedFilters
-}) => {
-    const [localFilters, setLocalFilters] = useState<SelectedFilter[]>(selectedFilters || []);
+    const [pendingFilters, setPendingFilters] = useState<SelectedFilter[]>(selectedFilters);
     const [filtersVisible, setFiltersVisible] = useState(false);
     const [hasFilterChanges, setHasFilterChanges] = useState(false);
-    const totalResults = results?.documents?.length || 0;
 
-    // Update local filters when prop changes
     useEffect(() => {
-        setLocalFilters(selectedFilters || []);
+        setPendingFilters(selectedFilters);
     }, [selectedFilters]);
 
     const handleFilterChange = (category: string, value: string, checked: boolean) => {
+        let newFilters: SelectedFilter[];
         if (checked) {
-            setLocalFilters(prev => [...prev, { category, value }]);
+            newFilters = [...pendingFilters, { category, value }];
         } else {
-            setLocalFilters(prev =>
-                prev.filter(f => !(f.category === category && f.value === value))
-            );
+            newFilters = pendingFilters.filter(f => !(f.category === category && f.value === value));
         }
+        setPendingFilters(newFilters);
         setHasFilterChanges(true);
     };
 
     const removeFilter = (category: string, value: string) => {
-        const updatedFilters = localFilters.filter(
+        const updatedFilters = pendingFilters.filter(
             f => !(f.category === category && f.value === value)
         );
-        setLocalFilters(updatedFilters);
-        setFilters(updatedFilters); // Apply immediately when removing
+        setPendingFilters(updatedFilters);
+        dispatch(setFilters(updatedFilters)); // Apply immediately when removing
+        setHasFilterChanges(false);
     };
 
     const applyFilters = () => {
-        setFilters(localFilters);
+        dispatch(setFilters(pendingFilters));
         setHasFilterChanges(false);
+    };
+
+    const clearAllFilters = () => {
+        setPendingFilters([]); // Clear pending filters (checkboxes)
+        setHasFilterChanges(true); // Show apply button
+        // Don't dispatch to Redux yet - wait for user to click Apply
     };
 
     if (!results && !loading) {
         return (
-            <div style={{
-                width: '100%',
-                minHeight: '400px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-            }}>
+            <Row className="permit-search__empty-state" justify="center" align="middle">
                 <Empty
                     image={Empty.PRESENTED_IMAGE_SIMPLE}
                     description="Enter a search term to find permit conditions"
                 />
-            </div>
+            </Row>
         );
     }
 
     const handleTagFilter = (category: string, value: string) => {
-        if (!localFilters.some(f => f.category === category && f.value === value)) {
-            setLocalFilters(prev => [...prev, { category, value }]);
+        if (!pendingFilters.some(f => f.category === category && f.value === value)) {
+            setPendingFilters(prev => [...prev, { category, value }]);
             setHasFilterChanges(true); // Add this line to enable the Apply button
         }
     };
@@ -117,8 +93,8 @@ const SearchResults: React.FC<SearchResultsProps> = ({
                     <FacetFilters
                         title={facetKey.replace(/_/g, ' ')}
                         facets={{ [facetKey]: updatedFacets }}
-                        selectedFilters={localFilters}
                         onFilterChange={handleFilterChange}
+                        pendingFilters={pendingFilters}  // Add this prop
                     />
                 </Col>
             );
@@ -128,62 +104,27 @@ const SearchResults: React.FC<SearchResultsProps> = ({
     return (
         <Space direction="vertical" size="large" style={{ width: '100%' }}>
 
-            {totalResults > 0 && (
-                <Text style={{ color: '#00000073' }}>
-                    Found {totalResults} permit condition{totalResults === 1 ? '' : 's'}
-                </Text>
-            )}
-
-            <div style={{
-                background: '#fafafa',
-                borderRadius: '8px',
-                marginBottom: 24,
-                width: '100%',
-                boxShadow: '0 1px 2px rgba(0,0,0,0.03)'
-            }}>
-                {/* Filter Header */}
-                <div style={{
-                    padding: '12px 16px',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    cursor: 'pointer',
-                }} onClick={() => setFiltersVisible(!filtersVisible)}>
+            <div className="permit-search__filter-section">
+                <Row justify="space-between" align="middle" className="permit-search__filter-header" onClick={() => setFiltersVisible(!filtersVisible)}>
                     <Space>
                         <FilterOutlined />
                         <span>Filters</span>
-                        {localFilters?.length > 0 && (
-                            <Badge count={localFilters?.length} style={{ backgroundColor: '#1890ff' }} />
+                        {selectedFilters?.length > 0 && (
+                            <Badge count={selectedFilters?.length} style={{ backgroundColor: '#1890ff' }} />
                         )}
                     </Space>
                     {filtersVisible ? <UpOutlined /> : <DownOutlined />}
-                </div>
+                </Row>
 
-                {/* Filter Content */}
-                <div style={{
-                    maxHeight: filtersVisible ? '500px' : '0',
-                    overflow: 'hidden',
-                    transition: 'all 0.3s ease-in-out',
-                    position: 'relative'
-                }}>
-                    <div style={{
-                        padding: '0 16px 16px',
-                        ...(filtersVisible ? {} : {
-                            maskImage: 'linear-gradient(to bottom, black 30%, transparent 100%)',
-                            WebkitMaskImage: 'linear-gradient(to bottom, black 30%, transparent 100%)',
-                        })
-                    }}>
+                <div className={`permit-search__filter-content ${filtersVisible ? 'permit-search__filter-content--visible' : 'permit-search__filter-content--hidden'}`}>
+                    <div className={`permit-search__filter-inner ${!filtersVisible && 'permit-search__filter-inner--hidden'}`}>
                         <Row gutter={[24, 16]}>
                             {renderFacets()}
                         </Row>
-                        {(localFilters.length > 0 || hasFilterChanges) && (
+                        {(pendingFilters.length > 0 || hasFilterChanges) && (
                             <Row justify="end" style={{ marginTop: 16 }}>
                                 <Space>
-                                    <Button onClick={() => {
-                                        setLocalFilters([]);
-                                        setFilters([]);
-                                        setHasFilterChanges(false);
-                                    }}>
+                                    <Button onClick={clearAllFilters}>
                                         Clear All
                                     </Button>
                                     <Button
@@ -200,10 +141,10 @@ const SearchResults: React.FC<SearchResultsProps> = ({
                 </div>
             </div>
 
-            {localFilters.length > 0 && (
-                <div style={{ padding: '8px 16px', borderTop: '1px solid #e8e8e8' }}>
+            {selectedFilters.length > 0 && (
+                <div className="permit-search__selected-filters">
                     <Space wrap>
-                        {localFilters.map(({ category, value }) => (
+                        {selectedFilters.map(({ category, value }) => (
                             <Tag
                                 key={`${category}-${value}`}
                                 closable
@@ -212,20 +153,14 @@ const SearchResults: React.FC<SearchResultsProps> = ({
                                 {`${category}: ${value}`}
                             </Tag>
                         ))}
-                        {localFilters.length > 0 && (
-                            <Typography.Link onClick={() => setLocalFilters([])}>
-                                Clear all
-                            </Typography.Link>
-                        )}
                     </Space>
                 </div>
             )}
 
-            {/* Results list */}
             {loading ? (
                 <Skeleton active paragraph={{ rows: 4 }} />
             ) : (
-                <List
+                <List<HaystackDocumentSearchResult>
                     itemLayout="vertical"
                     dataSource={results?.documents || []}
                     locale={{ emptyText: 'No results found' }}
@@ -240,6 +175,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
                             onFilterClick={handleTagFilter}
                         />
                     )}
+                    className="permit-search__results-list"
                 />
             )}
         </Space >
