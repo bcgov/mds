@@ -7,8 +7,8 @@ from haystack.dataclasses import ChatMessage
 @component
 class SearchOutputFormatter:
     @component.output_types(documents=List[Document], replies=List[ChatMessage])
-    def run(self, documents: List[Document], replies: List[ChatMessage]) -> Dict[str, Any]:
+    def run(self, documents: List[Document], replies: List[str]) -> Dict[str, Any]:
         return {
             "documents": documents,
-            "replies": replies
+            "replies": [ChatMessage.from_assistant(text=reply) for reply in replies],
         }

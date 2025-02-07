@@ -19,8 +19,9 @@ from app.pipelines.permit_condition_search.stores.ai_search_document_store impor
 )
 from azure.search.documents.indexes.models import VectorSearch
 from haystack import Pipeline
-from haystack.components.builders import ChatPromptBuilder
+from haystack.components.builders import ChatPromptBuilder, PromptBuilder
 from haystack.components.embedders import AzureOpenAITextEmbedder
+from haystack.components.generators import AzureOpenAIGenerator
 from haystack.components.generators.chat import AzureOpenAIChatGenerator
 from haystack.components.joiners import DocumentJoiner
 from haystack.components.writers import DocumentWriter
@@ -84,71 +85,68 @@ extra_field_config = {
 
 vector_search_config = VectorSearch()
 
-azure_search_document_store = AzureSearchDocumentStore(
-    extra_field_config=extra_field_config,
-    api_key=search_api_key,
-    azure_endpoint=search_azure_endpoint,
-    index_name="permit-conditions",
-    embedding_dimension=3072,
-    metadata_fields=doc_metadata_fields,
-    # vector_search_configuration=vector_search_config,
-)
 
-elasticsearch_document_store = ElasticsearchDocumentStore(
-    hosts=host,
-    basic_auth=(username, password),
-    index="permit_condition_embeddings",
-    embedding_similarity_function="cosine",
-    ca_certs=ca_cert if ca_cert else None,
-    verify_certs=True if ca_cert else False,
-)
+def create_azure_search_document_store():
+    return AzureSearchDocumentStore(
+        extra_field_config=extra_field_config,
+        api_key=search_api_key,
+        azure_endpoint=search_azure_endpoint,
+        index_name="permit-conditions",
+        embedding_dimension=3072,
+        metadata_fields=doc_metadata_fields,
+        vector_search_configuration=vector_search_config,
+    )
 
+def create_elasticsearch_document_store():
+    return ElasticsearchDocumentStore(
+        hosts=host,
+        basic_auth=(username, password),
+        index="permit_condition_embeddings",
+        embedding_similarity_function="cosine",
+        ca_certs=ca_cert if ca_cert else None,
+        verify_certs=True if ca_cert else False,
+    )
 
-document_embedder = DocumentEmbedderCache(
-    document_store=elasticsearch_document_store,
-    cache_field="condition",
-    azure_endpoint=base_url,
-    azure_deployment="text-embedding-3-large",
-    api_key=api_key,
-)
+template = """
+    You are an expert assistant that helps users find information about permit conditions and reason about them. When answering a question or searching, you can only use the information in the sources provided. \n
+    You must cite all your sources in square brackets with the prefix "doc" for example: Paris is the capital of france [doc:1].\n You must represent the information in the sources accurately and not modify the content at all. \n
+    When you find a matching permit condition, you should enclose it in a Markdown blockquotes (>) to make it clear that it is a direct quote from the source. \n 
+    
+    You will be given a list of permit conditions (sources) with the content of the condition and and ID you can use to cite the source.
+    
+    Sources:
+    {% for document in documents %}
+        ID: {{ document.id }}
+        Content: {{ document.content }}
+    {% endfor %}
+                        
+    Question: {{question}}
+"""
 
-cache_checker = EmbeddingCache(document_store=elasticsearch_document_store, cache_field="condition")
-document_writer = DocumentWriter(document_store=azure_search_document_store, policy=DuplicatePolicy.OVERWRITE)
-document_joiner = DocumentJoiner()
-
-llm = AzureOpenAIChatGenerator(
-    azure_endpoint=base_url,
-    azure_deployment=deployment_name,
-    api_key=api_key,
-    api_version=api_version,
-    generation_kwargs={"temperature": 0, "max_tokens": 16384, "n": 1},
-)
-
-
-def permit_condition_search_indexing_pipelinecre():
+def create_permit_condition_search_indexing_pipeline():
     """
-    This function creates and returns a pipeline for extracting permit conditions.
-
-    Returns:
-        Pipeline: The pipeline object for extracting permit conditions.
+    Creates a pipeline for indexing permit conditions for search in Azure AI Search from a CSV file.
     """
     index_pipeline = Pipeline()
 
-    csv_converter = CSVToDocument()
-    llm = AzureOpenAIChatGenerator(
-        azure_endpoint=base_url,
-        azure_deployment=deployment_name,
-        api_key=api_key,
-        api_version=api_version,
-        generation_kwargs={"temperature": 0, "max_tokens": 16384},
-    )
+    elasticsearch_document_store = create_elasticsearch_document_store()
+    azure_search_document_store = create_azure_search_document_store()
 
+    csv_converter = CSVToDocument()
+    cache_checker = EmbeddingCache(document_store=elasticsearch_document_store, cache_field="condition")
+    document_embedder = DocumentEmbedderCache(
+        document_store=elasticsearch_document_store,
+        cache_field="condition",
+        azure_endpoint=base_url,
+        azure_deployment="text-embedding-3-large",
+        api_key=api_key,
+    )
+    document_joiner = DocumentJoiner()
+    document_writer = DocumentWriter(document_store=azure_search_document_store, policy=DuplicatePolicy.OVERWRITE)
 
     index_pipeline.add_component("csv_converter", csv_converter)
     index_pipeline.add_component("cache_checker", cache_checker)
-
     index_pipeline.add_component("document_embedder", document_embedder)
-
     index_pipeline.add_component("document_joiner", document_joiner)
     index_pipeline.add_component("document_writer", document_writer)
 
@@ -160,50 +158,36 @@ def permit_condition_search_indexing_pipelinecre():
 
     return index_pipeline
 
+def create_permit_condition_search_retrieval_pipeline():
+    """
+    Creates a RAG pipeline for retrieving permit conditions
+    """
+    retrieval_pipeline = Pipeline()
 
-template = [
-    ChatMessage.from_system("""
-        You are an expert assistant that helps users find information about permit conditions and reason about them. When answering a question or searching, you can only use the information in the sources provided. \n
-        You must cite all your sources in square brackets with the prefix "doc" for example: Paris is the capital of france [doc:1].\n You must represent the information in the sources accurately and not modify the content at all. \n
-        When you find a matching permit condition, you should enclose it in a Markdown blockquotes (>) to make it clear that it is a direct quote from the source. \n 
-        
-        You will be given a list of permit conditions (sources) with the content of the condition and and ID you can use to cite the source.
-    """),
-    ChatMessage.from_system("""
-        Sources:
-        {% for document in documents %}
-            ID: {{ document.id }}
-            Content: {{ document.content }}
-        {% endfor %}
-    """),
-    ChatMessage.from_user("""
-                          
-    Question: {{question}}
-    """)
-]
+    azure_search_document_store = create_azure_search_document_store()
 
-prompt_builder = ChatPromptBuilder(template=template)
-output_formatter = SearchOutputFormatter()
-
-def permit_condition_search_retrieval_pipelinecre():
     text_embedder = AzureOpenAITextEmbedder(
         azure_endpoint=base_url,
         azure_deployment="text-embedding-3-large",
         api_key=api_key
     )
-
+    
     retriever = AzureAISearchHybridRetriever(
         document_store=azure_search_document_store,
         facets=["category", "issue_date", "permit", "mine_number", "mine_name", "document_name"],
     )
-
-    """
-    This function creates and returns a pipeline for extracting permit conditions.
-
-    Returns:
-        Pipeline: The pipeline object for extracting permit conditions.
-    """
-    retrieval_pipeline = Pipeline()
+    
+    prompt_builder = PromptBuilder(template=template)
+    
+    llm = AzureOpenAIGenerator(
+        azure_endpoint=base_url,
+        azure_deployment=deployment_name,
+        api_key=api_key,
+        api_version=api_version,
+        generation_kwargs={"temperature": 0, "max_tokens": 16384, "n": 1},
+    )
+    
+    output_formatter = SearchOutputFormatter()
 
     retrieval_pipeline.add_component("text_embedder", text_embedder)
     retrieval_pipeline.add_component("retriever", retriever)
@@ -212,12 +196,12 @@ def permit_condition_search_retrieval_pipelinecre():
     retrieval_pipeline.add_component("output", output_formatter)
 
     retrieval_pipeline.connect("text_embedder.embedding", "retriever.query_embedding")
-    retrieval_pipeline.connect("retriever", "prompt_builder")
-    retrieval_pipeline.connect("prompt_builder.prompt", "llm.messages")
+    retrieval_pipeline.connect("retriever", "prompt_builder.documents")
+    retrieval_pipeline.connect("prompt_builder", "llm")
     retrieval_pipeline.connect("retriever.documents", "output.documents")
     retrieval_pipeline.connect("llm.replies", "output.replies")
 
     return retrieval_pipeline
 
-permit_condition_search_retrieval_pipeline = permit_condition_search_retrieval_pipelinecre()
-permit_condition_search_indexing_pipeline = permit_condition_search_indexing_pipelinecre()
+permit_condition_search_retrieval_pipeline = create_permit_condition_search_retrieval_pipeline()
+permit_condition_search_indexing_pipeline = create_permit_condition_search_indexing_pipeline()

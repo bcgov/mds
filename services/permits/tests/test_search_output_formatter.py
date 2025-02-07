@@ -8,7 +8,7 @@ from haystack.dataclasses import ChatMessage
 def test_search_output_formatter():
     formatter = SearchOutputFormatter()
     documents = [Document(content="test doc")]
-    replies = [ChatMessage.from_user(text="test reply")]
+    replies = ["test reply"]
 
     result = formatter.run(documents=documents, replies=replies)
 
@@ -35,7 +35,7 @@ def test_search_output_formatter_in_pipeline():
     pipeline.add_component("formatter", formatter)
     
     documents = [Document(content="test doc")]
-    replies = [ChatMessage.from_user(text="test reply")]
+    replies = ["test reply"]
     
     result = pipeline.run({
         "formatter": {
