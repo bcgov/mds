@@ -738,7 +738,7 @@ describe("`createPermitCondition` action creator", () => {
         expect(requestSpy).toHaveBeenCalledWith("CREATE_PERMIT_CONDITION_CATEGORY");
         expect(successSpy).toHaveBeenCalledTimes(1);
         expect(successSpy).toHaveBeenCalledWith("CREATE_PERMIT_CONDITION_CATEGORY");
-        expect(dispatch).toHaveBeenCalledTimes(5);
+        expect(dispatch).toHaveBeenCalledTimes(6);
       });
     });
 
@@ -839,7 +839,7 @@ describe("`createPermitCondition` action creator", () => {
         expect(requestSpy).toHaveBeenCalledWith("DELETE_PERMIT_CONDITION_CATEGORY");
         expect(successSpy).toHaveBeenCalledTimes(1);
         expect(successSpy).toHaveBeenCalledWith("DELETE_PERMIT_CONDITION_CATEGORY");
-        expect(dispatch).toHaveBeenCalledTimes(5);
+        expect(dispatch).toHaveBeenCalledTimes(6);
       });
     });
 
