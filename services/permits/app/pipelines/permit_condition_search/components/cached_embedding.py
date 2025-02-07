@@ -1,20 +1,11 @@
-import concurrent.futures
 import hashlib
 import json
 import logging
 import os
-import struct
-from typing import List, Optional
+from typing import List
 
-from app.permit_conditions.pipelines.chat_data import ChatData
 from haystack import Document, component
 from haystack.components.caching import CacheChecker
-from haystack.components.generators.chat import AzureOpenAIChatGenerator
-from haystack.dataclasses import ChatMessage
-from haystack.document_stores.types import DuplicatePolicy
-from haystack_integrations.document_stores.elasticsearch import (
-    ElasticsearchDocumentStore,
-)
 
 ROOT_DIR = os.path.abspath(os.curdir)
 logger = logging.getLogger(__name__)

@@ -3,12 +3,9 @@ import logging
 import os
 from typing import List
 
-from app.permit_conditions.context import context
-from app.permit_conditions.pipelines.chat_data import ChatData
-from app.permit_conditions.validator.permit_condition_model import (
-    PermitCondition,
-    PermitConditions,
-)
+from app.common.types.chat_data import ChatData
+from app.common.types.context import context
+from app.common.types.permit_condition_model import PermitCondition, PermitConditions
 from haystack import component, logging
 
 logger = logging.getLogger(__name__)
@@ -44,7 +41,7 @@ class ConditionsMetadataCombiner:
         paragraphs = []
 
         flattened_messages = [msg for group in data.messages for msg in group]
-        content = [json.loads(msg.content) for msg in flattened_messages]
+        content = [json.loads(msg.text) for msg in flattened_messages]
 
         # sometimes the paragraphs are nested in the output from GPT4
         for paragraph in content:

@@ -2,11 +2,8 @@ import logging
 import os
 from typing import List, Optional
 
-from app.permit_conditions.pipelines.chat_data import ChatData
-from app.permit_conditions.validator.permit_condition_model import (
-    PermitCondition,
-    PermitConditions,
-)
+from app.common.types.chat_data import ChatData
+from app.common.types.permit_condition_model import PermitCondition, PermitConditions
 from haystack import Document, component
 from haystack.components.builders import ChatPromptBuilder
 
@@ -64,7 +61,7 @@ class PaginatedChatPromptBuilder(ChatPromptBuilder):
                     f"debug/paginated_chat_puilder_output_{idx + 1}.txt", "a"
                 ) as f:
                     for prompt in output["prompt"]:
-                        f.write(prompt.content + "\n\n")
+                        f.write(prompt.text + "\n\n")
 
         return {"data": ChatData(prompts, kwargs["documents"])}
 

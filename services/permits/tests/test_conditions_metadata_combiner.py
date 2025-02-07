@@ -3,16 +3,12 @@ import os
 from unittest.mock import MagicMock
 
 import pytest
-from app.permit_conditions.converters.metadata_converter import (
+from app.common.types.chat_data import ChatData
+from app.common.types.permit_condition_model import PermitCondition, PermitConditions
+from app.pipelines.permit_condition_extraction.components.metadata_converter import (
     ConditionsMetadataCombiner,
 )
-from app.permit_conditions.pipelines.chat_data import ChatData
-from app.permit_conditions.tasks.tasks import task_context
-from app.permit_conditions.validator.permit_condition_model import (
-    PermitCondition,
-    PermitConditions,
-)
-from haystack import Document
+from app.tasks.tasks import task_context
 from haystack.dataclasses import ChatMessage
 from tests.mocks import MockContext
 
@@ -39,7 +35,7 @@ def test_conditions_metadata_combiner():
         messages=[
             [
                 ChatMessage.from_system(
-                    content=json.dumps(
+                    text=json.dumps(
                         {
                             "paragraphs": [
                                 {"id": "abc123", "meta": {"question": "Answer 1"}},
@@ -80,7 +76,7 @@ def test_conditions_metadata_combiner_with_multiple_message_groups():
         messages=[
             [
                 ChatMessage.from_system(
-                    content=json.dumps(
+                    text=json.dumps(
                         {
                             "paragraphs": [
                                 {"id": "abc123", "meta": {"question": "Answer 1"}}
@@ -91,7 +87,7 @@ def test_conditions_metadata_combiner_with_multiple_message_groups():
             ],
             [
                 ChatMessage.from_system(
-                    content=json.dumps(
+                    text=json.dumps(
                         {
                             "paragraphs": [
                                 {

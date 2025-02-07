@@ -3,8 +3,10 @@ import logging
 import os
 from typing import Any, Dict, List, Optional
 
-from app.permit_conditions.context import context
-from app.permit_conditions.validator.parse_hierarchy import split_numbering
+from app.common.types.context import context
+from app.pipelines.permit_condition_extraction.components.parse_hierarchy import (
+    split_numbering,
+)
 from haystack import Document, component, logging
 
 logger = logging.getLogger(__name__)

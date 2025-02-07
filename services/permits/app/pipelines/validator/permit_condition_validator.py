@@ -5,16 +5,14 @@ import os
 from functools import reduce
 from typing import List, Optional
 
-from app.permit_conditions.pipelines.chat_data import ChatData
-from app.permit_conditions.validator.permit_condition_model import (
+from app.common.types.chat_data import ChatData
+from app.common.types.permit_condition_model import (
     PermitCondition,
     PermitConditions,
     PromptResponse,
-    RootPromptResponse,
 )
-from haystack import Document, component
-from haystack.dataclasses import ChatMessage
-from pydantic import BaseModel, Field
+from haystack import component
+from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
 
@@ -105,7 +103,7 @@ class PermitConditionValidator:
 
     def _parse_reply(self, reply) -> List[PromptResponse]:
         try:
-            content = json.loads(reply.content)
+            content = json.loads(reply.text)
 
             conditions = []
 
@@ -129,5 +127,5 @@ class PermitConditionValidator:
             logger.error(
                 f"Failed to parse permit condition. Content is not valid json. {e}"
             )
-            logger.error(reply.content)
+            logger.error(reply.text)
             raise

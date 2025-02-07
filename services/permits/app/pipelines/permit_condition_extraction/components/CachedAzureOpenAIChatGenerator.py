@@ -5,7 +5,7 @@ import os
 import struct
 from typing import List, Optional
 
-from app.permit_conditions.pipelines.chat_data import ChatData
+from app.common.types.chat_data import ChatData
 from haystack import Document, component
 from haystack.components.caching import CacheChecker
 from haystack.components.generators.chat import AzureOpenAIChatGenerator
@@ -47,8 +47,8 @@ def hash_messages(messages):
 
     hsh = hashlib.sha256()
     for message in to_hash:
-        hsh.update(struct.pack("I", len(message.content)))
-        hsh.update(message.content.encode())
+        hsh.update(struct.pack("I", len(message.text)))
+        hsh.update(message.text.encode())
 
     return hsh.hexdigest()
 
@@ -102,10 +102,8 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
             logger.info("cached_result: %s", cached_result)
             res = {
                 "replies": [
-                    ChatMessage(
-                        content=cached_result["hits"][0].content,
-                        name=cached_result["hits"][0].meta["name"],
-                        role=cached_result["hits"][0].meta["role"],
+                    ChatMessage.from_assistant(
+                        text=cached_result["hits"][0].content,
                         meta=cached_result["hits"][0].meta,
                     )
                 ]
@@ -119,25 +117,15 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
 
                 documents = [
                     Document(
-                        content=res["replies"][0].content,
+                        content=res["replies"][0].text,  # Document still uses content
                         meta={
                             "cache_key": cache_key,
                             "name": res["replies"][0].name,
                             "role": res["replies"][0].role,
                             "model": res["replies"][0].meta["model"],
                             "index": res["replies"][0].meta["index"],
-                            "finish_reason": res["replies"][0].meta["finish_reason"],  #
-                            "usage": {
-                                "completion_tokens": res["replies"][0].meta["usage"][
-                                    "completion_tokens"
-                                ],
-                                "prompt_tokens": res["replies"][0].meta["usage"][
-                                    "prompt_tokens"
-                                ],
-                                "total_tokens": res["replies"][0].meta["usage"][
-                                    "total_tokens"
-                                ],
-                            },
+                            "finish_reason": res["replies"][0].meta["finish_reason"],
+                            "usage": res["replies"][0].meta["usage"],
                         },
                     )
                 ]
@@ -185,7 +173,7 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
             with open("debug/cached_azure_openai_chat_generator_output.txt", "w") as f:
                 for reply in results:
                     for r in reply:
-                        f.write(r.content)
+                        f.write(r.text)
                         f.write("\n")
 
         return {"data": ChatData(messages=results, documents=data.documents)}
@@ -204,9 +192,9 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
                 f"debug/cached_azure_openai_chat_generator_output_{iteration}.txt",
                 "w",
             ) as f:
-                f.write(reply.content)
+                f.write(reply.text)
 
-        content = reply.content
+        content = reply.text
         completion_tokens = reply.meta["usage"]["completion_tokens"]
         prompt_tokens = reply.meta["usage"]["prompt_tokens"]
         total_tokens = reply.meta["usage"]["total_tokens"]
@@ -237,7 +225,7 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
             if reply is None:
                 reply = None
                 continue
-            content += reply.content
+            content += reply.text
 
             # Sum up the usage tokens to make this continuation process transparent to the other components
             completion_tokens += reply.meta["usage"]["completion_tokens"]
@@ -250,16 +238,37 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
                     f"debug/cached_azure_openai_chat_generator_output_{iteration}_{lp}.txt",
                     "w",
                 ) as f:
-                    f.write(reply.content)
+                    f.write(reply.text)
 
         if reply is None:
-            reply = ChatMessage(
-                content=content, role=messages[0].role, name=messages[0].name
+            reply = ChatMessage.from_assistant(
+                text=content,
+                meta={
+                    "usage": {
+                        "completion_tokens": completion_tokens,
+                        "prompt_tokens": prompt_tokens,
+                        "total_tokens": total_tokens,
+                    }
+                }
             )
 
-        reply.content = content
-        reply.meta["usage"]["completion_tokens"] = completion_tokens
-        reply.meta["usage"]["prompt_tokens"] = prompt_tokens
-        reply.meta["usage"]["total_tokens"] = total_tokens
-
-        return reply
+        return ChatMessage.from_assistant(
+            text=content,
+            meta={
+                # Include original usage statistics from the first reply
+                "usage": {
+                    "completion_tokens": completion_tokens,
+                    "prompt_tokens": prompt_tokens,
+                    "total_tokens": total_tokens,
+                },
+                # Keep all other meta information from the original reply
+                "model": reply.meta.get("model", ""),
+                "index": reply.meta.get("index", ""),
+                "finish_reason": "stop",  # Always stop since this is the final concatenated response
+                **(
+                    {k: v for k, v in reply.meta.items() if k not in ["usage", "finish_reason"]}
+                    if reply
+                    else {}
+                ),
+            }
+        )

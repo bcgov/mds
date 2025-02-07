@@ -3,10 +3,9 @@ import logging
 import os
 from typing import List
 
-from app.permit_conditions.validator.parse_hierarchy import parse_hierarchy
-from app.permit_conditions.validator.permit_condition_model import (
-    PermitCondition,
-    PermitConditions,
+from app.common.types.permit_condition_model import PermitCondition, PermitConditions
+from app.pipelines.permit_condition_extraction.components.parse_hierarchy import (
+    parse_hierarchy,
 )
 from haystack import Document, component
 from pydantic import BaseModel

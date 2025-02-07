@@ -5,20 +5,14 @@ import tempfile
 from io import StringIO
 from typing import Optional, Union
 
+from app.common.types.job_status import InProgressJobStatusResponse, JobStatus
+from app.common.types.permit_condition_model import PermitCondition, PermitConditions
 from app.helpers.celery_task_status import CeleryTaskStatus
 from app.helpers.temporary_file import store_temporary
-from app.permit_conditions.pipelines.permit_condition_pipeline import (
+from app.pipelines.permit_condition_extraction.permit_condition_pipeline import (
     permit_condition_pipeline,
 )
-from app.permit_conditions.resources.job_status import (
-    InProgressJobStatusResponse,
-    JobStatus,
-)
-from app.permit_conditions.tasks.tasks import run_permit_condition_pipeline
-from app.permit_conditions.validator.permit_condition_model import (
-    PermitCondition,
-    PermitConditions,
-)
+from app.tasks.tasks import run_permit_condition_pipeline
 from fastapi import APIRouter, File, HTTPException, Response, UploadFile
 from fastapi.responses import JSONResponse
 
@@ -112,7 +106,7 @@ def results(task_id: str) -> JSONResponse | PermitConditions:
     "/permit_conditions/results/csv",
     responses={202: {"model": InProgressJobStatusResponse}},
 )
-def csv_results(task_id: str) -> JSONResponse:
+def csv_results(task_id: str) -> Response:
     """
     Get the results of a permit conditions extraction job in a csv format
     Args:

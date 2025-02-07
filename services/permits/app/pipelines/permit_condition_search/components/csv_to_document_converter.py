@@ -26,6 +26,9 @@ class CSVToDocument:
                 reader = csv.DictReader(csvfile)
                 
                 for row in reader:
+                    
+                    if row.get('invalid'):
+                        raise Exception(f"Invalid row found in CSV file: {row}")
                     # Extract condition text
                     condition_text = row.pop('condition', '')
                     id = row.pop('id', None)

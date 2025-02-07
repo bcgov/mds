@@ -2,48 +2,26 @@ import logging
 import os
 from datetime import datetime
 
-import yaml
-from app.permit_conditions.converters.csv_to_document_converter import CSVToDocument
-from app.permit_conditions.converters.pdf_to_text_converter import PDFToTextConverter
-from app.permit_conditions.pipelines.ai_search_document_store import (
-    AzureSearchDocumentStore,
+from app.pipelines.permit_condition_search.components.cached_embedding import (
+    EmbeddingCache,
 )
-from app.permit_conditions.pipelines.cached_embedding import EmbeddingCache
-from app.permit_conditions.pipelines.CachedAzureOpenAIChatGenerator import (
-    CachedAzureOpenAIChatGenerator,
+from app.pipelines.permit_condition_search.components.csv_to_document_converter import (
+    CSVToDocument,
 )
-from app.permit_conditions.pipelines.document_embedder_with_cache import (
+from app.pipelines.permit_condition_search.components.document_embedder_with_cache import (
     DocumentEmbedderCache,
 )
-from app.permit_conditions.pipelines.PaginatedChatPromptBuilder import (
-    PaginatedChatPromptBuilder,
-)
-from app.permit_conditions.pipelines.search_output_formatter import (
+from app.pipelines.permit_condition_search.components.search_output_formatter import (
     SearchOutputFormatter,
 )
-from app.permit_conditions.validator.json_fixer import JSONRepair
-from app.permit_conditions.validator.permit_condition_validator import (
-    PermitConditionValidator,
+from app.pipelines.permit_condition_search.stores.ai_search_document_store import (
+    AzureSearchDocumentStore,
 )
-from azure.search.documents.indexes.models import (
-    HnswAlgorithmConfiguration,
-    HnswParameters,
-    SearchableField,
-    SearchField,
-    SearchFieldDataType,
-    SearchIndex,
-    SimpleField,
-    VectorSearch,
-)
-from haystack import Document, Pipeline
+from azure.search.documents.indexes.models import VectorSearch
+from haystack import Pipeline
 from haystack.components.builders import ChatPromptBuilder
-from haystack.components.caching import CacheChecker
 from haystack.components.embedders import AzureOpenAITextEmbedder
-from haystack.components.generators.chat import (
-    AzureOpenAIChatGenerator,
-    OpenAIChatGenerator,
-)
-from haystack.components.generators.utils import print_streaming_chunk
+from haystack.components.generators.chat import AzureOpenAIChatGenerator
 from haystack.components.joiners import DocumentJoiner
 from haystack.components.writers import DocumentWriter
 from haystack.dataclasses import ChatMessage
@@ -51,9 +29,6 @@ from haystack.document_stores.types import DuplicatePolicy
 from haystack.utils import Secret
 from haystack_integrations.components.retrievers.azure_ai_search import (
     AzureAISearchHybridRetriever,
-)
-from haystack_integrations.document_stores.azure_ai_search import (
-    AzureAISearchDocumentStore,
 )
 from haystack_integrations.document_stores.elasticsearch import (
     ElasticsearchDocumentStore,

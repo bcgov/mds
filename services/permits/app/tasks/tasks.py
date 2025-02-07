@@ -1,10 +1,8 @@
 from contextlib import contextmanager
-from contextvars import ContextVar
-from time import sleep
 
 from app.celery import celery_app
-from app.permit_conditions.context import context
-from app.permit_conditions.pipelines.permit_condition_pipeline import (
+from app.common.types.context import context
+from app.pipelines.permit_condition_extraction.permit_condition_pipeline import (
     permit_condition_pipeline,
 )
 
@@ -16,7 +14,7 @@ def task_context(task):
     # usage:
     # with task_context(self):
     #  ....
-    # from app.permit_conditions.context import context
+    # from app.pipelines.common.types.context import context
     # context.get().update_state(state="PROGRESS", meta={"stage": "pdf_to_text_converter"})
 
     t = context.set(task)

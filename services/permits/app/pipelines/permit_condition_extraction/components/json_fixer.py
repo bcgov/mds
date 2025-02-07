@@ -1,11 +1,10 @@
-import io
 import json
 import logging
 import os
 
-import pandas as pd
-from app.permit_conditions.pipelines.chat_data import ChatData
+from app.common.types.chat_data import ChatData
 from haystack import component
+from haystack.dataclasses import ChatMessage
 from json_repair import repair_json
 
 logger = logging.getLogger(__name__)
@@ -28,22 +27,38 @@ class JSONRepair:
         Returns:
             dict: A dictionary containing the repaired ChatData object.
         """
-
-        for group in data.messages:
-            for msg in group:
-                msg.content = json.dumps(json.loads(str(repair_json(msg.content))))
+        for i, group in enumerate(data.messages):
+            data.messages[i] = [
+                self._create_message_with_same_role(
+                    msg,
+                    json.dumps(json.loads(str(repair_json(msg.text))))
+                )
+                for msg in group
+            ]
 
         if DEBUG_MODE:
             with open("debug/json_repair_output.txt", "a") as f:
                 f.write(
                     json.dumps(
                         [
-                            json.loads(msg.content)
+                            json.loads(msg.text)
+                            for group in data.messages
                             for msg in group
-                            for _ in data.messages
                         ],
                         indent=4,
                     )
                 )
 
         return {"data": data}
+
+    def _create_message_with_same_role(self, original_msg: ChatMessage, new_text: str) -> ChatMessage:
+        """Creates a new ChatMessage with the same role as the original message"""
+        factory_methods = {
+            "assistant": ChatMessage.from_assistant,
+            "user": ChatMessage.from_user,
+            "system": ChatMessage.from_system,
+            "tool": ChatMessage.from_tool,
+        }
+        
+        create_message = factory_methods.get(original_msg.role, ChatMessage.from_assistant)
+        return create_message(text=new_text, meta=original_msg.meta)

@@ -7,7 +7,7 @@ import shutil
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from app.permit_conditions.context import context
+from app.common.types.context import context
 from azure.ai.formrecognizer import AnalyzeResult, DocumentAnalysisClient
 from azure.core.credentials import AzureKeyCredential
 from haystack import Document, component, logging

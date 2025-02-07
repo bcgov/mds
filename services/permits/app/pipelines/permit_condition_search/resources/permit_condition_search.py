@@ -1,11 +1,11 @@
 from typing import Any, Dict, List, Optional
 
+from app.common.types.job_status import JobStatus
 from app.helpers.temporary_file import store_temporary
-from app.permit_conditions.pipelines.permit_condition_search_pipeline import (
+from app.pipelines.permit_condition_search.permit_condition_search_pipeline import (
     permit_condition_search_indexing_pipeline,
     permit_condition_search_retrieval_pipeline,
 )
-from app.permit_conditions.resources.job_status import JobStatus
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from haystack import Document
 from haystack.components.generators.utils import print_streaming_chunk
@@ -83,10 +83,7 @@ class SearchResponse(BaseModel):
 
 @router.post("/permit_conditions/search")
 async def search_permit_conditions(params: SearchParams) -> SearchResponse:
-        pipeline = permit_condition_search_retrieval_pipeline
-
-
-        res = pipeline.run(
+        res = permit_condition_search_retrieval_pipeline.run(
             {
                 "text_embedder": {"text": params.query},
                 "retriever": {"query": params.query, "filters": params.filters},
