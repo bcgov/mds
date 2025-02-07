@@ -4,7 +4,7 @@ import CustomAxios from "@mds/common/redux/customAxios";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { RootState } from "../rootState";
 import { createRequestHeader } from "../utils/RequestHeaders";
-import { Facet, SearchResult } from "@mds/common/interfaces/search/facet-search.interface";
+import { Facet, SearchQuery, SearchResult } from "@mds/common/interfaces/search/facet-search.interface";
 
 export const permitSearchReducerType = "permitSearch";
 
@@ -72,7 +72,7 @@ const permitSearchSlice = createAppSlice({
                                 Array.from(
                                     new Map([
                                         ...(state.allFacets[key] || []),
-                                        ...values
+                                        ...(values as Facet[])
                                     ].map(item => [item.value, item])).values()
                                 )
                             ])
@@ -92,10 +92,11 @@ const permitSearchSlice = createAppSlice({
 
 export const { searchPermitConditions, setQuery, setFilters } = permitSearchSlice.actions;
 
-export const selectSearchQuery = (state: RootState) => state.permitSearch.query;
-export const selectSearchFilters = (state: RootState) => state.permitSearch.filters;
-export const selectSearchResults = (state: RootState) => state.permitSearch.results;
-export const selectSearchLoading = (state: RootState) => state.permitSearch.loading;
-export const selectAllFacets = (state: RootState) => state.permitSearch.allFacets;
+// Type the selectors
+export const selectSearchQuery = (state: RootState): string => state.permitSearch.query;
+export const selectSearchFilters = (state: RootState): Array<{ category: string; value: string }> => state.permitSearch.filters;
+export const selectSearchResults = (state: RootState): SearchResult | null => state.permitSearch.results;
+export const selectSearchLoading = (state: RootState): boolean => state.permitSearch.loading;
+export const selectAllFacets = (state: RootState): { [key: string]: Facet[] } => state.permitSearch.allFacets;
 
 export default permitSearchSlice.reducer;

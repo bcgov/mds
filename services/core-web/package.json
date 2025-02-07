@@ -16,8 +16,6 @@
     "@mds/common": "0.1.0",
     "@react-keycloak/web": "3.4.0",
     "@reduxjs/toolkit": "2.0.1",
-    "@testing-library/jest-dom": "6.4.8",
-    "@testing-library/react": "12.1.5",
     "antd": "4.24.10",
     "array-move": "3.0.1",
     "axios": "1.7.2",
@@ -79,6 +77,9 @@
   },
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
+    "@testing-library/jest-dom": "6.4.8",
+    "@testing-library/react": "12.1.5",
+    "@testing-library/user-event": "14.6.1",
     "@types/jest": "24.9.1",
     "@types/lodash": "4.17.5",
     "@types/react": "16.9.49",

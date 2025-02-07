@@ -43,6 +43,51 @@ const permitHandlers = [
 
 ]
 
+
+const permitSearchHandlers = [
+  http.post(
+    `/%3CAPI_URL%3E/search/permit-conditions`,
+    async ({ request, params }) => {
+      const requestBody = await request.json() as { query: string };
+
+      // Mock different responses based on search query
+      if (requestBody?.query?.includes('water')) {
+        return HttpResponse.json(
+          {
+            documents: [
+              {
+                id: '1',
+                content: 'Water quality monitoring must be conducted monthly',
+                meta: {
+                  permit: 'M-123',
+                  mine_name: 'Test Mine',
+                  category: 'Environmental',
+                },
+                score: 0.95,
+              },
+            ],
+            prompt: {
+              answers: ['The permit requires monthly water quality monitoring.'],
+            },
+            facets: {
+              category: [
+                { value: 'Environmental', count: 1 },
+                { value: 'Safety', count: 0 },
+              ],
+              mine_name: [
+                { value: 'Test Mine', count: 1 },
+              ],
+            },
+          }
+        );
+      }
+
+      return HttpResponse.json({ documents: [], prompt: { answers: [] }, facets: {} });
+    }
+  )
+
+]
+
 const helpHandler = http.get("/%3CAPI_URL%3E/help/:helpKey", async ({ request, params }) => {
   const { helpKey } = params;
   const url = new URL(request.url);
@@ -71,6 +116,6 @@ const complianceReportHandler = http.get("/%3CAPI_URL%3E/mines/reports/definitio
   return HttpResponse.json(response);
 });
 
-const commonHandlers = [...geoSpatialHandlers, ...projectHandlers, helpHandler, ...permitHandlers, complianceReportHandler];
+const commonHandlers = [...geoSpatialHandlers, ...projectHandlers, helpHandler, ...permitHandlers, ...permitSearchHandlers, complianceReportHandler];
 
 export default commonHandlers;

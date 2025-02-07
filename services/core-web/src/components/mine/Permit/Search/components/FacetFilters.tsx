@@ -18,10 +18,11 @@ const FacetFilters: React.FC<FacetFiltersProps> = ({
     facets,
     title,
     onFilterChange,
-    pendingFilters
+    pendingFilters,
+    ...props
 }) => {
     return (
-        <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+        <Space direction="vertical" size="middle" style={{ width: '100%' }} {...props}>
             <Title level={5} style={{ marginBottom: 0 }}>{title}</Title>
             {Object.entries(facets).map(([category, items]) => (
                 <Space key={category} direction="vertical" style={{ width: '100%' }} size="small">
@@ -32,6 +33,7 @@ const FacetFilters: React.FC<FacetFiltersProps> = ({
                                 f.category === category && f.value === item.value
                             )}
                             onChange={(e) => onFilterChange(category, item.value, e.target.checked)}
+                            data-testid={`filter-checkbox-${category}-${item.value}`}
                         >
                             <Space>
                                 {item.value}

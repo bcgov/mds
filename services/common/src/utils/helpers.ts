@@ -79,8 +79,9 @@ export const formatPermitConditionStep = (step: string, condition?: string) => {
   if (step?.length > 0) {
     if (step.endsWith(".")) {
       formattedStep = step;
+    } else {
+      formattedStep = `${step}.`;
     }
-    formattedStep = `${step}.`;
   }
 
   if (!condition) {

@@ -95,6 +95,7 @@ const SearchResults: React.FC = () => {
                         facets={{ [facetKey]: updatedFacets }}
                         onFilterChange={handleFilterChange}
                         pendingFilters={pendingFilters}  // Add this prop
+                        data-testid={`facet-group-${facetKey}`}
                     />
                 </Col>
             );
@@ -149,6 +150,7 @@ const SearchResults: React.FC = () => {
                                 key={`${category}-${value}`}
                                 closable
                                 onClose={() => removeFilter(category, value)}
+                                data-testid={`selected-filter-${category}-${value}`}
                             >
                                 {`${category}: ${value}`}
                             </Tag>
