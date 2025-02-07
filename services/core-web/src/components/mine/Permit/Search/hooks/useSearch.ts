@@ -28,8 +28,8 @@ const useSearch = () => {
                     operator: FilterOperator.AND,
                     conditions: Object.entries(filtersByCategory).map(([category, values]) => ({
                         field: category,
-                        operator: values.length > 1 ? ConditionOperator.IN : ConditionOperator.EQUALS,
-                        value: values.length > 1 ? values : values[0]
+                        operator: ConditionOperator.IN,
+                        value: values
                     }))
                 } : undefined
             });
