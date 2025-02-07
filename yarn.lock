@@ -1721,6 +1721,7 @@ __metadata:
     "@reduxjs/toolkit": 2.0.1
     "@testing-library/jest-dom": 6.4.8
     "@testing-library/react": 12.1.5
+    "@testing-library/user-event": 14.6.1
     "@types/jest": 24.9.1
     "@types/lodash": 4.17.5
     "@types/react": 16.9.49
@@ -2839,6 +2840,15 @@ __metadata:
     react: <18.0.0
     react-dom: <18.0.0
   checksum: 4abd0490405e709a7df584a0db604e508a4612398bb1326e8fa32dd9393b15badc826dcf6d2f7525437886d507871f719f127b9860ed69ddd204d1fa834f576a
+  languageName: node
+  linkType: hard
+
+"@testing-library/user-event@npm:14.6.1":
+  version: 14.6.1
+  resolution: "@testing-library/user-event@npm:14.6.1"
+  peerDependencies:
+    "@testing-library/dom": ">=7.21.4"
+  checksum: 4cb8a81fea1fea83a42619e9545137b51636bb7a3182c596bb468e5664f1e4699a275c2d0fb8b6dcc3fe2684f9d87b0637ab7cb4f566051539146872c9141fcb
   languageName: node
   linkType: hard
 

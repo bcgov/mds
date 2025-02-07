@@ -117,7 +117,7 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
 
                 documents = [
                     Document(
-                        content=res["replies"][0].text,  # Document still uses content
+                        content=res["replies"][0].text,
                         meta={
                             "cache_key": cache_key,
                             "name": res["replies"][0].name,

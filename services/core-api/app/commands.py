@@ -234,7 +234,6 @@ def register_commands(app):
     @click.argument('permit_amendment_guid')
     def export_permit_conditions(permit_amendment_guid):
         from app import auth
-        from app.api.verifiable_credentials.manager import VerifiableCredentialManager
         auth.apply_security = False
         with current_app.app_context():
             from .cli_commands.export_permit_conditions import export_permit_conditions
