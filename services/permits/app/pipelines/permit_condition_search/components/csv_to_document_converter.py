@@ -2,6 +2,7 @@ import csv
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from fastapi import HTTPException
 from haystack import Document, component, logging
 
 logger = logging.getLogger(__name__)
@@ -28,21 +29,21 @@ class CSVToDocument:
                 for row in reader:
                     
                     if row.get('invalid'):
-                        raise Exception(f"Invalid row found in CSV file: {row}")
+                        raise HTTPException(500, f"Invalid row found in CSV file: {row}")
 
                     condition_text = row.pop('condition', '')
-                    id = row.pop('id', None)
+                    document_id = row.pop('id', None)
                     
                     document_meta = {
                          k: v for k, v in row.items() if v
                     }
 
-                    document = Document(content=condition_text, meta=document_meta, id=id)
+                    document = Document(content=condition_text, meta=document_meta, id=document_id)
                     documents.append(document)
                     
         except FileNotFoundError:
-            raise Exception(f"CSV file not found at: {file_path}")
+            raise HTTPException(500, f"CSV file not found at: {file_path}")
         except csv.Error as e:
-            raise Exception(f"Error processing CSV file: {str(e)}")
+            raise HTTPException(500, f"Error processing CSV file: {str(e)}")
             
         return {"documents": documents}

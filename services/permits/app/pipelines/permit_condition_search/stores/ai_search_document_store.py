@@ -56,24 +56,7 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
         filters: Optional[Dict[str, Any]] = None,
         **kwargs,
     ) -> List[Document]:
-        """
-        Retrieves documents similar to query using the vector configuration in the document store and
-        the BM25 algorithm. This method combines vector similarity and BM25 for improved retrieval.
-
-        This method is not meant to be part of the public interface of
-        `AzureAISearchDocumentStore` nor called directly.
-        `AzureAISearchHybridRetriever` uses this method directly and is the public interface for it.
-
-        :param query: Text of the query.
-        :param query_embedding: Embedding of the query.
-        :param filters: Filters applied to the retrieved Documents.
-        :param top_k: Maximum number of Documents to return.
-        :param kwargs: Optional keyword arguments to pass to the Azure AI's search endpoint.
-
-        :raises ValueError: If `query` or `query_embedding` is empty.
-        :returns: List of Document that are most similar to `query`.
-        """
-
+        """Retrieves documents similar to query using vector configuration and BM25."""
         if query is None:
             msg = "query must not be None"
             raise ValueError(msg)
@@ -90,10 +73,17 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
             query_type="simple",
             **kwargs,
         )
+        try:
+            facets = result.get_facets()
+        except AttributeError:
+            facets = {}  # Handle case where facets are not available
 
-        facets = result.get_facets()
+
+        # Convert results to list and extract facets
         azure_docs = list(result)
 
+        # Add facets to each document
         for doc in azure_docs:
             doc["@search.facets"] = facets
+
         return self._convert_search_result_to_documents(azure_docs)
