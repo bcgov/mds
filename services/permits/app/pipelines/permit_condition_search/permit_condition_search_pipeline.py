@@ -193,13 +193,13 @@ def create_permit_condition_search_retrieval_pipeline():
     retrieval_pipeline.add_component("retriever", retriever)
     retrieval_pipeline.add_component("prompt_builder", prompt_builder)
     retrieval_pipeline.add_component("llm", llm)
-    retrieval_pipeline.add_component("output", output_formatter)
+    retrieval_pipeline.add_component("output_formatter", output_formatter)
 
     retrieval_pipeline.connect("text_embedder.embedding", "retriever.query_embedding")
     retrieval_pipeline.connect("retriever", "prompt_builder.documents")
     retrieval_pipeline.connect("prompt_builder", "llm")
-    retrieval_pipeline.connect("retriever.documents", "output.documents")
-    retrieval_pipeline.connect("llm.replies", "output.replies")
+    retrieval_pipeline.connect("retriever.documents", "output_formatter.documents")
+    retrieval_pipeline.connect("llm.replies", "output_formatter.replies")
 
     return retrieval_pipeline
 

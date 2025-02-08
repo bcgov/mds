@@ -61,6 +61,7 @@ const permitSearchHandlers = [
                 meta: {
                   permit: 'M-123',
                   mine_name: 'Test Mine',
+                  issue_date: '2025-02-07',
                   category: 'Environmental',
                 },
                 score: 0.95,
