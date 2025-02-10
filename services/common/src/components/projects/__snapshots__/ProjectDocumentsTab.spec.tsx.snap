@@ -12,7 +12,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
       <div>
         <div
           class="ant-anchor-wrapper"
-          style="max-height: calc(100vh - 278px);"
+          style="max-height: calc(100vh - 304px);"
         >
           <div
             class="ant-anchor ant-anchor-fixed"
@@ -239,10 +239,10 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                 </div>
               </a>
             </div>
+            
           </div>
         </div>
       </div>
-      
     </div>
     <div
       class="side-menu--content"

@@ -84,7 +84,7 @@ exports[`ReportPage renders view mode properly 1`] = `
     <div>
       <div
         class="ant-anchor-wrapper"
-        style="max-height: calc(100vh - 226px);"
+        style="max-height: calc(100vh - 250px);"
       >
         <div
           class="ant-anchor ant-anchor-fixed"
@@ -211,10 +211,10 @@ exports[`ReportPage renders view mode properly 1`] = `
               </div>
             </a>
           </div>
+          
         </div>
       </div>
     </div>
-    
   </div>
   <div
     class="side-menu--content"

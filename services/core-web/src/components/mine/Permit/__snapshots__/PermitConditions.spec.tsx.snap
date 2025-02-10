@@ -431,7 +431,7 @@ exports[`PermitConditions renders properly 1`] = `
                       <div>
                         <div
                           class="ant-anchor-wrapper"
-                          style="max-height: calc(100vh - 280px);"
+                          style="max-height: calc(100vh - 306px);"
                         >
                           <div
                             class="ant-anchor ant-anchor-fixed"
@@ -660,19 +660,19 @@ exports[`PermitConditions renders properly 1`] = `
                                 </div>
                               </a>
                             </div>
+                            <div
+                              class="ant-typography no_link_styling grey"
+                              style="font-size: 14px; text-align: center; margin: 20px;"
+                            >
+                              <a
+                                class="ant-typography fade-in"
+                                title="Add Condition Category"
+                              >
+                                + Add Condition Category
+                              </a>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div
-                        class="ant-typography no_link_styling grey"
-                        style="font-size: 14px; text-align: center;"
-                      >
-                        <a
-                          class="ant-typography fade-in"
-                          title="Add Condition Category"
-                        >
-                          + Add Condition Category
-                        </a>
                       </div>
                     </div>
                     <div
