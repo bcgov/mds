@@ -1,13 +1,19 @@
 import { Alert, Button, Col, Row, Typography } from "antd";
 import React, { FC, ReactNode, useEffect, useState } from "react";
-import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
-import { arrayPush, change, Field, FieldArray, getFormValues } from "@mds/common/components/forms/form";
+import {
+  useAppDispatch as useDispatch,
+  useAppSelector as useSelector,
+} from "@mds/common/redux/rootState";
+import { arrayPush, change, Field, FieldArray, getFormValues } from "redux-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/pro-light-svg-icons";
+import { getDropdownPermitConditionCategoryOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import {
-  getDropdownPermitConditionCategoryOptions,
-} from "@mds/common/redux/selectors/staticContentSelectors";
-import { fetchComplianceReports, getMineReportDefinitionOptions, getReportDefinitionsLoaded, reportParamsGetAll } from "@mds/common/redux/slices/complianceReportsSlice";
+  fetchComplianceReports,
+  getMineReportDefinitionOptions,
+  getReportDefinitionsLoaded,
+  reportParamsGetAll,
+} from "@mds/common/redux/slices/complianceReportsSlice";
 import ReportFileUpload from "@mds/common/components/reports/ReportFileUpload";
 import { FORM } from "@mds/common/constants/forms";
 import {
@@ -58,7 +64,15 @@ import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchMinistryContactsByRegion } from "@mds/common/redux/actionCreators/minespaceActionCreator";
 import { getMinistryContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
 import { useParams } from "react-router-dom";
-import { MINE_REPORT_SUBMISSION_CODES, MINE_REPORTS_ENUM, MinePartyAppointmentTypeCodeEnum, REPORT_REGULATORY_AUTHORITY_CODES, REPORT_REGULATORY_AUTHORITY_ENUM, REPORT_TYPE_CODES, SystemFlagEnum } from "@mds/common/constants/enums";
+import {
+  MINE_REPORT_SUBMISSION_CODES,
+  MINE_REPORTS_ENUM,
+  MinePartyAppointmentTypeCodeEnum,
+  REPORT_REGULATORY_AUTHORITY_CODES,
+  REPORT_REGULATORY_AUTHORITY_ENUM,
+  REPORT_TYPE_CODES,
+  SystemFlagEnum,
+} from "@mds/common/constants/enums";
 
 const RenderContacts: FC<any> = ({ fields, isEditMode, mineSpaceEdit, hasSubmissions }) => {
   const canEdit = isEditMode && (!mineSpaceEdit || !hasSubmissions);
@@ -150,7 +164,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   } = formValues;
 
   const [selectedReportCode, setSelectedReportCode] = useState("");
-  const [formattedMineReportDefinitionOptions, setFormattedMineReportDefinitionOptions] = useState([]);
+  const [formattedMineReportDefinitionOptions, setFormattedMineReportDefinitionOptions] = useState(
+    []
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const partyRelationships: IPartyAppt[] = useSelector((state) => getPartyRelationships(state));
@@ -189,7 +205,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   useEffect(() => {
     if (isMS && mine && MinistryContactsByRegion.length) {
       const contactCode = mine.major_mine_ind ? "MMO" : "ROE";
-      const contact = MinistryContactsByRegion.find((c) => c.emli_contact_type_code === contactCode);
+      const contact = MinistryContactsByRegion.find(
+        (c) => c.emli_contact_type_code === contactCode
+      );
       setContactEmail(contact?.email);
     }
   }, [MinistryContactsByRegion, mine]);
@@ -236,21 +254,27 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   }, [parties]);
 
   useEffect(() => {
-    // Format the mine report definition options for the search bar
-    const newFormattedMineReportDefinitionOptions = mineReportDefinitionOptions
-      .map((report) => {
-        return {
-          label: formatComplianceCodeReportName(report),
-          value: report.mine_report_definition_guid,
-        };
-      })
-      .sort((a, b) => a.label.localeCompare(b.label));
-    setFormattedMineReportDefinitionOptions(uniqBy(newFormattedMineReportDefinitionOptions, "value"));
+    if (mineReportDefinitionOptions.length) {
+      console.log("mine_report_definition_options", mineReportDefinitionOptions);
+      // Format the mine report definition options for the search bar
+      const newFormattedMineReportDefinitionOptions = mineReportDefinitionOptions
+        ?.map((report) => {
+          if (!report) return null;
+          return {
+            label: formatComplianceCodeReportName(report),
+            value: report.mine_report_definition_guid,
+          };
+        })
+        .sort((a, b) => a.label.localeCompare(b.label));
+      setFormattedMineReportDefinitionOptions(
+        uniqBy(newFormattedMineReportDefinitionOptions, "value")
+      );
+    }
   }, [mineReportDefinitionOptions]);
 
   useEffect(() => {
     // update compliance article options when "Report Name" changes
-    if (mine_report_definition_guid) {
+    if (mine_report_definition_guid && mineReportDefinitionOptions.length) {
       const newReportComplianceArticle = mineReportDefinitionOptions.find((opt) => {
         return opt.mine_report_definition_guid === mine_report_definition_guid;
       });
@@ -260,7 +284,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     } else {
       setSelectedReportCode("");
     }
-  }, [mine_report_definition_guid]);
+  }, [mine_report_definition_guid, mineReportDefinitionOptions]);
 
   useEffect(() => {
     if (system === SystemFlagEnum.core) {

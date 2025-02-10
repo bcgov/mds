@@ -806,6 +806,11 @@ MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesMod
     'active_ind': fields.Boolean
 })
 
+MINE_REPORT_DUE_DATE_TYPE_MODEL = api.model('MineReportDueDateTypeModel', {
+    'mine_report_due_date_type': fields.String,
+    'description': fields.String,
+})
+
 MINE_REPORT_DEFINITION_MODEL = api.model(
     'MineReportDefinitionBase', {
         'mine_report_definition_guid': fields.String,

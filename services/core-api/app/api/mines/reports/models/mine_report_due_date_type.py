@@ -1,6 +1,4 @@
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
-from sqlalchemy.ext.associationproxy import association_proxy
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
@@ -14,3 +12,7 @@ class MineReportDueDateType(Base, AuditMixin):
 
     def __repr__(self):
         return '<MineReportDueDateType %r>' % self.mine_report_due_date_type
+
+    @classmethod
+    def find_by_mine_report_due_date_type(cls, _code):
+        return cls.query.filter_by(mine_report_due_date_type=_code).first()
