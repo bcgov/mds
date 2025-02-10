@@ -88,15 +88,22 @@ const permitSearchSlice = createAppSlice({
             }
         ),
     }),
+    selectors: {
+        selectSearchQuery: (state: PermitSearchState): string => state.query,
+        selectSearchFilters: (state: PermitSearchState): Array<{ category: string; value: string }> => state.filters,
+        selectSearchResults: (state: PermitSearchState): SearchResult | null => state.results,
+        selectSearchLoading: (state: PermitSearchState): boolean => state.loading,
+        selectAllFacets: (state: PermitSearchState): { [key: string]: Facet[] } => state.allFacets,
+    },
 });
 
 export const { searchPermitConditions, setQuery, setFilters } = permitSearchSlice.actions;
-
-// Type the selectors
-export const selectSearchQuery = (state: RootState): string => state.permitSearch.query;
-export const selectSearchFilters = (state: RootState): Array<{ category: string; value: string }> => state.permitSearch.filters;
-export const selectSearchResults = (state: RootState): SearchResult | null => state.permitSearch.results;
-export const selectSearchLoading = (state: RootState): boolean => state.permitSearch.loading;
-export const selectAllFacets = (state: RootState): { [key: string]: Facet[] } => state.permitSearch.allFacets;
+export const {
+    selectSearchQuery,
+    selectSearchFilters,
+    selectSearchResults,
+    selectSearchLoading,
+    selectAllFacets,
+} = permitSearchSlice.selectors;
 
 export default permitSearchSlice.reducer;

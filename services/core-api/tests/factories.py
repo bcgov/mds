@@ -42,6 +42,9 @@ from app.api.mines.permits.permit_conditions.models.permit_conditions import (
 from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import (
     StandardPermitConditions,
 )
+from app.api.mines.permits.permit_extraction.models.permit_extraction_task import (
+    PermitExtractionTask,
+)
 from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_comment import MineReportComment
 from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import (
@@ -1172,8 +1175,7 @@ class PermitAmendmentDocumentFactory(BaseFactory):
     class Meta:
         model = PermitAmendmentDocument
     
-    class Params:
-        permit_amendment = factory.SubFactory(PermitAmendmentFactory)
+    permit_amendment = factory.SubFactory(PermitAmendmentFactory)
 
 
     permit_amendment_document_guid = GUID
@@ -1741,3 +1743,35 @@ class MineReportPermitRequirementFactory(BaseFactory):
     mine_report_permit_requirement_id = factory.LazyFunction(lambda: random.randint(1, 12))
     permit_condition_id = factory.SelfAttribute('permit_condition.permit_condition_id')
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
+
+class PermitExtractionTaskFactory(BaseFactory):
+    class Meta:
+        model = PermitExtractionTask
+
+    class Params:
+        permit_amendment = factory.SubFactory(PermitAmendmentFactory)
+        permit_amendment_document = factory.SubFactory(
+            PermitAmendmentDocumentFactory,
+            permit_amendment=factory.SelfAttribute('..permit_amendment'))
+
+    permit_extraction_task_id = GUID
+    task_id = factory.Faker('uuid4')
+    task_status = 'COMPLETE'
+    task_meta = factory.LazyFunction(lambda: {})
+    task_result = {
+        "conditions": [
+            {
+                "section": "A",
+                "paragraph": None,
+                "subparagraph": None,
+                "clause": None,
+                "subclause": None,
+                "subsubclause": None,
+                "condition_title": None,
+                "condition_text": "General",
+            }
+        ]
+    }
+    core_status_task_id = factory.Faker('uuid4')
+    permit_amendment_guid = factory.SelfAttribute('permit_amendment.permit_amendment_guid')
+    permit_amendment_document_guid = factory.SelfAttribute('permit_amendment_document.permit_amendment_document_guid')
