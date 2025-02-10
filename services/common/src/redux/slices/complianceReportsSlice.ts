@@ -17,6 +17,7 @@ import {
 import { createSelectorWrapper } from "../selectors/staticContentSelectors";
 import { createSelector } from "@reduxjs/toolkit";
 import { ISearchParams } from "@mds/common/interfaces/common/searchParams.interface";
+import { notification } from "antd";
 
 export const complianceReportReducerType = "complianceReports";
 
@@ -81,7 +82,7 @@ const complianceReportSlice = createAppSlice({
       }
     ),
     createMineReportDefinition: create.asyncThunk(
-      async (reportDefinition: IMineReportDefinition, thunkApi) => {
+      async (reportDefinition, thunkApi) => {
         const headers = createRequestHeader();
         thunkApi.dispatch(showLoading());
         try {
@@ -99,6 +100,10 @@ const complianceReportSlice = createAppSlice({
       },
       {
         fulfilled: (state: ComplianceReportState, action) => {
+          notification.success({
+            message: `Successfully create new report definition`,
+            duration: 10,
+          });
           const newDefinition: IMineReportDefinition = action.payload;
           state.reportPageData.records.push(newDefinition);
         },

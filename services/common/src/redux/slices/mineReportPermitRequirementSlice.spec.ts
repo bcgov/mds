@@ -6,10 +6,10 @@ import {
 import CustomAxios from "@mds/common/redux/customAxios";
 import { configureStore } from "@reduxjs/toolkit";
 
-const showLoadingMock = jest
+export const showLoadingMock = jest
     .fn()
     .mockReturnValue({ type: "SHOW_LOADING", payload: { show: true } });
-const hideLoadingMock = jest
+export const hideLoadingMock = jest
     .fn()
     .mockReturnValue({ type: "HIDE_LOADING", payload: { show: false } });
 const notificationSuccessMock = jest.fn();
