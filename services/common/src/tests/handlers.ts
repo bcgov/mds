@@ -4,10 +4,12 @@ import {
   HELP_GUIDE_CORE,
   HELP_GUIDE_MS,
   MINE_REPORT_CATEGORY_OPTIONS,
+  MINE_REPORT_DEFINITION_OPTIONS,
   PERMIT_CONDITION_EXTRACTION,
   PROJECT,
   PROJECT_SUMMARY_MINISTRY_COMMENTS,
 } from "@mds/common/tests/mocks/dataMocks";
+import queryString from "query-string";
 import { SystemFlagEnum } from "../constants/enums";
 
 const geoSpatialHandlers = [
@@ -52,6 +54,23 @@ const helpHandler = http.get("/%3CAPI_URL%3E/help/:helpKey", async ({ request, p
   return HttpResponse.json(response);
 });
 
-const commonHandlers = [...geoSpatialHandlers, ...projectHandlers, helpHandler, ...permitHandlers];
+const complianceReportHandler = http.get("/%3CAPI_URL%3E/mines/reports/definitions", async ({ request }) => {
+  const url = new URL(request.url);
+  const paramString = queryString.parse(url.searchParams.toString())
+  const { page = 1, per_page = MINE_REPORT_DEFINITION_OPTIONS.length } = paramString;
+
+  const complianceReportData = MINE_REPORT_DEFINITION_OPTIONS.slice(0, per_page);
+
+  const response = {
+    records: complianceReportData,
+    current_page: page,
+    items_per_Page: per_page,
+    total: MINE_REPORT_DEFINITION_OPTIONS.length,
+    total_pages: Math.ceil(per_page / page)
+  };
+  return HttpResponse.json(response);
+});
+
+const commonHandlers = [...geoSpatialHandlers, ...projectHandlers, helpHandler, ...permitHandlers, complianceReportHandler];
 
 export default commonHandlers;

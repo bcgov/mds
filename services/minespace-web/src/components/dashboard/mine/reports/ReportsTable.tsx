@@ -1,8 +1,7 @@
 import React, { FC } from "react";
-import { connect } from "react-redux";
 import { Badge, TablePaginationConfig } from "antd";
 import { formatComplianceCodeValueOrLabel } from "@mds/common/redux/utils/helpers";
-import { getMineReportDefinitionHash } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getMineReportDefinitionHash } from "@mds/common/redux/slices/complianceReportsSlice";
 import {
   renderActionsColumn,
   renderTextColumn,
@@ -13,13 +12,13 @@ import CoreTable from "@mds/common/components/common/CoreTable";
 import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants/enums";
 import { IMineReport } from "@mds/common/interfaces/reports/mineReport.interface";
 import { MINE_REPORT_STATUS_HASH } from "@mds/common/constants/strings";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 
 interface ReportsTableProps {
   mineReports: IMineReport[];
-  mineReportDefinitionHash: any;
   openReport: (record: IMineReport) => void;
   isLoaded: boolean;
-  backendPaginated: boolean;
+  backendPaginated?: boolean;
 }
 
 const DEFAULT_PAGE_SIZE = 10;
@@ -41,6 +40,7 @@ export const reportStatusSeverity = (status: MINE_REPORT_SUBMISSION_CODES) => {
 };
 
 export const ReportsTable: FC<ReportsTableProps> = (props) => {
+  const mineReportDefinitionHash = useSelector(getMineReportDefinitionHash);
   const actions = [
     {
       key: "view",
@@ -60,8 +60,7 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
       render: (record) => (
         <div title="Code Section">
           {formatComplianceCodeValueOrLabel(
-            props.mineReportDefinitionHash[record.mine_report_definition_guid]
-              .compliance_articles[0],
+            mineReportDefinitionHash[record.mine_report_definition_guid].compliance_articles[0],
             false
           )}
         </div>
@@ -111,8 +110,4 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  mineReportDefinitionHash: getMineReportDefinitionHash(state),
-});
-
-export default connect(mapStateToProps, null)(ReportsTable);
+export default ReportsTable;

@@ -1,16 +1,14 @@
 import { Alert, Button, Col, Row, Typography } from "antd";
 import React, { FC, ReactNode, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { arrayPush, change, Field, FieldArray, getFormValues } from "@mds/common/components/forms/form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/pro-light-svg-icons";
-
 import {
   getDropdownPermitConditionCategoryOptions,
-  getMineReportDefinitionOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
+import { fetchComplianceReports, getMineReportDefinitionOptions, getReportDefinitionsLoaded, reportParamsGetAll } from "@mds/common/redux/slices/complianceReportsSlice";
 import ReportFileUpload from "@mds/common/components/reports/ReportFileUpload";
-
 import { FORM } from "@mds/common/constants/forms";
 import {
   email,
@@ -152,7 +150,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   } = formValues;
 
   const [selectedReportCode, setSelectedReportCode] = useState("");
-  const [formattedMineReportDefinitionOptions, setFormatMineReportDefinitionOptions] = useState([]);
+  const [formattedMineReportDefinitionOptions, setFormattedMineReportDefinitionOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const partyRelationships: IPartyAppt[] = useSelector((state) => getPartyRelationships(state));
@@ -164,6 +162,8 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
   const MinistryContactsByRegion: IMinistryContact[] = useSelector(getMinistryContactsByRegion);
   const [contactEmail, setContactEmail] = useState<string>();
+
+  const reportDefinitionsLoaded = useSelector(getReportDefinitionsLoaded(reportParamsGetAll));
 
   // PRR
   const permit = useSelector(getPermitByGuid(permit_guid));
@@ -245,7 +245,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         };
       })
       .sort((a, b) => a.label.localeCompare(b.label));
-    setFormatMineReportDefinitionOptions(uniqBy(newFormattedMineReportDefinitionOptions, "value"));
+    setFormattedMineReportDefinitionOptions(uniqBy(newFormattedMineReportDefinitionOptions, "value"));
   }, [mineReportDefinitionOptions]);
 
   useEffect(() => {
@@ -286,6 +286,12 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
       fetchComments();
     }
   }, [formValues.mine_report_guid, formValues.mine_report_submission_guid]);
+
+  useEffect(() => {
+    if (!reportDefinitionsLoaded) {
+      dispatch(fetchComplianceReports(reportParamsGetAll));
+    }
+  }, []);
 
   const handleAddComment = async (values) => {
     const formVals = {

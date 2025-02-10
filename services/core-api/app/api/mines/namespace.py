@@ -134,7 +134,7 @@ from app.api.mines.reports.resources.mine_report_comment import (
     MineReportCommentListResource,
     MineReportCommentResource,
 )
-from app.api.mines.reports.resources.mine_report_definition import (
+from app.api.mines.reports.resources.mine_report_definition_resource import (
     MineReportDefinitionListResource,
 )
 from app.api.mines.reports.resources.mine_report_definition_compliance_article_xref_resource import (

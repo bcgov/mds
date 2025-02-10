@@ -35,20 +35,21 @@ import verifiableCredentialsReducer from "@mds/common/redux/slices/verifiableCre
 
 import regionsReducer from "@mds/common/redux/slices/regionsSlice";
 import complianceCodeReducer, { complianceCodeReducerType } from "../slices/complianceCodesSlice";
+import complianceReportReducer, { complianceReportReducerType } from "../slices/complianceReportsSlice";
 import spatialDataReducer, { spatialDataReducerType } from "../slices/spatialDataSlice";
 import permitServiceReducer, { permitServiceReducerType } from "../slices/permitServiceSlice";
 import searchConditionCategoriesReducer, {
   searchConditionCategoriesType,
 } from "../slices/permitConditionCategorySlice";
 import helpReducer, { helpReducerType } from "../slices/helpSlice";
+import userReducer, { userReducerType } from "@mds/common/redux/slices/userSlice";
 import mineReportPermitRequirementReducer, { mineReportPermitRequirementReducerType } from "../slices/mineReportPermitRequirementSlice";
+import permitConditionDiffReducer, { permitConditionDiffReducerType } from "../slices/permitConditionDiffSlice";
+
 
 const networkReducers = Object.fromEntries(Object.entries(NetworkReducerTypes).map(([key, value]) =>
   [NetworkReducerTypes[key], createReducer(networkReducer, value)]
 ));
-
-import userReducer, { userReducerType } from "@mds/common/redux/slices/userSlice";
-import permitConditionDiffReducer, { permitConditionDiffReducerType } from "../slices/permitConditionDiffSlice";
 
 export const sharedReducer = {
   ...activityReducer,
@@ -83,6 +84,7 @@ export const sharedReducer = {
   regions: regionsReducer,
   [spatialDataReducerType]: spatialDataReducer,
   [complianceCodeReducerType]: complianceCodeReducer,
+  [complianceReportReducerType]: complianceReportReducer,
   [permitServiceReducerType]: permitServiceReducer,
   [helpReducerType]: helpReducer,
   [searchConditionCategoriesType]: searchConditionCategoriesReducer,
