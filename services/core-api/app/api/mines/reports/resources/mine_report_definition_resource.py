@@ -124,6 +124,6 @@ class MineReportDefinitionListResource(Resource, UserMixin):
                                                              data.get('mine_report_due_date_period_months'),
                                                              data.get('report_type'),
                                                              data.get('is_common'))
-        return mine_report_definition
+        return mine_report_definition, 201
 
 

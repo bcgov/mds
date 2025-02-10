@@ -7,6 +7,8 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import or_, cast, Integer, nullsfirst, nullslast
 from sqlalchemy_filters import apply_pagination
+from werkzeug.exceptions import BadRequest
+
 from app.api.mines.reports.models.mine_report_permit_requirement import CimOrCpo
 
 from app.api.utils.models_mixins import Base, AuditMixin
@@ -67,12 +69,12 @@ class MineReportDefinition(Base, AuditMixin):
             mine_report_due_date_type_code)
 
         if not mine_report_due_date_type:
-            raise Exception('Mine Report Due Date Type not found.')
+            raise BadRequest('Mine Report Due Date Type not found.')
 
         # Check if a report with the same name already exists
         existing_report = cls.query.filter_by(report_name=report_name).first()
         if existing_report:
-            raise Exception(f"A report with the name '{report_name}' already exists.")
+            raise BadRequest(f"A report with the name '{report_name}' already exists.")
 
         is_prr_only = True if report_type == 'PRR' else False
 
