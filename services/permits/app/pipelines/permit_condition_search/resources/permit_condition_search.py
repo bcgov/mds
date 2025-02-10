@@ -93,11 +93,11 @@ async def search_permit_conditions(params: SearchParams) -> SearchResponse:
         )
 
         doc_response = []
-        facets = res['output']['documents'][0].meta.get("facets") if len(res["output"]["documents"]) else None
+        facets = res['output_formatter']['documents'][0].meta.get("facets") if len(res["output_formatter"]["documents"]) else None
 
         facet_responses = {k: [Facet(value=facet["value"], count=facet["count"]) for facet in v] for k, v in facets.items()} if facets else None
 
-        for doc in res['output']['documents']:
+        for doc in res['output_formatter']['documents']:
             doc_response.append(SearchDocumentResponse(
                 id=doc.id,
                 content=doc.content,
@@ -106,7 +106,7 @@ async def search_permit_conditions(params: SearchParams) -> SearchResponse:
             ))
 
         prompt_response = SearchPromptResponse(
-            answers=[res.text for res in res['output']['replies']]
+            answers=[res.text for res in res['output_formatter']['replies']]
         )
 
         resp = SearchResponse(
