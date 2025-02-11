@@ -2,7 +2,6 @@ import React from "react";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { ADD_REPORT_DEFINITION } from "@/constants/forms";
 import { Col, Row, Typography } from "antd";
-import { Field } from "redux-form";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
@@ -12,6 +11,7 @@ import { getMineReportDueDateTypes } from "@mds/common/redux/slices/complianceRe
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import { required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
+import { Field } from "@mds/common/components/forms/form";
 
 const { Title, Paragraph } = Typography;
 

@@ -17,9 +17,18 @@ import {
 import { createSelectorWrapper } from "../selectors/staticContentSelectors";
 import { createSelector } from "@reduxjs/toolkit";
 import { ISearchParams } from "@mds/common/interfaces/common/searchParams.interface";
-import { notification } from "antd";
+import { isEqual } from "lodash";
 
 export const complianceReportReducerType = "complianceReports";
+
+export interface ReportDefinitionSubmission {
+  report_name: string;
+  description: string;
+  mine_report_due_date_type_code: string;
+  mine_report_due_date_months?: number;
+  report_type: string;
+  is_common: boolean;
+}
 
 export interface ComplianceReportParams extends ISearchParams {
   is_prr_only?: boolean[];
@@ -29,7 +38,6 @@ export interface ComplianceReportParams extends ISearchParams {
 }
 
 export const reportParamsGetAll: ComplianceReportParams = {
-  per_page: 0,
   active_ind: [true, false],
 };
 
@@ -82,28 +90,17 @@ const complianceReportSlice = createAppSlice({
       }
     ),
     createMineReportDefinition: create.asyncThunk(
-      async (reportDefinition, thunkApi) => {
+      async (reportDefinition: ReportDefinitionSubmission, thunkApi) => {
         const headers = createRequestHeader();
         thunkApi.dispatch(showLoading());
-        try {
-          const resp = await CustomAxios().post(
-            `${ENVIRONMENT.apiUrl}${API.MINE_REPORT_DEFINITION}`,
-            reportDefinition,
-            headers
-          );
-          return resp.data;
-        } catch (error) {
-          throw error;
-        } finally {
-          thunkApi.dispatch(hideLoading());
-        }
+        const resp = await CustomAxios({
+          successToastMessage: `Successfully create new report definition`,
+        }).post(`${ENVIRONMENT.apiUrl}${API.MINE_REPORT_DEFINITION}`, reportDefinition, headers);
+        thunkApi.dispatch(hideLoading());
+        return resp.data;
       },
       {
         fulfilled: (state: ComplianceReportState, action) => {
-          notification.success({
-            message: `Successfully create new report definition`,
-            duration: 10,
-          });
           const newDefinition: IMineReportDefinition = action.payload;
           state.reportPageData.records.push(newDefinition);
         },
@@ -189,7 +186,7 @@ export const getMineReportDefinitionByGuid = (mineReportDefinitionGuid: string) 
 
 export const getReportDefinitionsLoaded = (params: ComplianceReportParams) =>
   createSelector([getReportSearchParams], (currentParams) => {
-    return params === currentParams;
+    return isEqual(params, currentParams);
   });
 
 export const { fetchComplianceReports, fetchMineReportDueDateTypes, createMineReportDefinition } =
