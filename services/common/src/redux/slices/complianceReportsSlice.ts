@@ -26,7 +26,7 @@ export interface ReportDefinitionSubmission {
   description: string;
   mine_report_due_date_type_code: string;
   mine_report_due_date_months?: number;
-  report_type: string;
+  is_prr_only: boolean;
   is_common: boolean;
 }
 

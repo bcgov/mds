@@ -5,6 +5,7 @@ import complianceReportReducer, {
   createMineReportDefinition,
   fetchComplianceReports,
   fetchMineReportDueDateTypes,
+  ReportDefinitionSubmission,
 } from "./complianceReportsSlice";
 import {
   hideLoadingMock,
@@ -123,7 +124,7 @@ describe("complianceReportsSlice", () => {
         post: jest.fn().mockResolvedValue(mockReportDefinition),
       }));
 
-      const payload = {
+      const payload: ReportDefinitionSubmission = {
         report_name: "New Report",
         description: "New Report Description",
         mine_report_due_date_type_code: "ANV",
