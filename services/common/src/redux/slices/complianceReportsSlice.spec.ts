@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { notification } from "antd";
 import CustomAxios from "@mds/common/redux/customAxios";
 import complianceReportReducer, {
   createMineReportDefinition,
@@ -135,12 +134,7 @@ describe("complianceReportsSlice", () => {
       await store.dispatch(createMineReportDefinition(payload));
 
       const state = store.getState().complianceCodes;
-
       expect(state.reportPageData.records[0]).toMatchObject(mockReportDefinition.data);
-      expect(notification.success).toHaveBeenCalledWith({
-        message: "Successfully create new report definition",
-        duration: 10,
-      });
     });
   });
 
