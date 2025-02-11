@@ -5,7 +5,7 @@ import { Divider, Tabs } from "antd";
 import {
   deleteMineReport,
   fetchMineReports,
-  updateMineReport,
+  // updateMineReport,
 } from "@mds/common/redux/actionCreators/reportActionCreator";
 import {
   createTailingsStorageFacility,
@@ -48,7 +48,7 @@ interface MineTailingsInfoTabsProps {
   mineGuid: string;
   mineReports: IMineReport[];
   mineReportDefinitionOptions: any[];
-  updateMineReport: ActionCreator<typeof updateMineReport>;
+  // updateMineReport: ActionCreator<typeof updateMineReport>;
   deleteMineReport: ActionCreator<typeof deleteMineReport>;
   fetchMineReports: ActionCreator<typeof fetchMineReports>;
   openModal: typeof openModal;
@@ -90,14 +90,14 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
     });
   }, []);
 
-  const handleEditReport = (report) => {
-    return props
-      .updateMineReport(report.mine_guid, report.mine_report_guid, report)
-      .then(() => props.closeModal())
-      .then(() =>
-        props.fetchMineReports(report.mine_guid, defaultParams.mineReportType, defaultParams)
-      );
-  };
+  // const handleEditReport = (report) => {
+  //   return props
+  //     .updateMineReport(report.mine_guid, report.mine_report_guid, report)
+  //     .then(() => props.closeModal())
+  //     .then(() =>
+  //       props.fetchMineReports(report.mine_guid, defaultParams.mineReportType, defaultParams)
+  //     );
+  // };
 
   const handleEditTailings = (values) => {
     return props
@@ -121,19 +121,19 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
       );
   };
 
-  const openEditReportModal = (event, onSubmit, report) => {
-    event.preventDefault();
-    props.openModal({
-      props: {
-        initialValues: report,
-        onSubmit,
-        title: `Edit report for ${mine.mine_name}`,
-        mineGuid: props.mineGuid,
-        mineReportsType: Strings.MINE_REPORTS_TYPE.tailingsReports,
-      },
-      content: modalConfig.ADD_REPORT,
-    });
-  };
+  // const openEditReportModal = (event, onSubmit, report) => {
+  //   event.preventDefault();
+  //   props.openModal({
+  //     props: {
+  //       initialValues: report,
+  //       onSubmit,
+  //       title: `Edit report for ${mine.mine_name}`,
+  //       mineGuid: props.mineGuid,
+  //       mineReportsType: Strings.MINE_REPORTS_TYPE.tailingsReports,
+  //     },
+  //     content: modalConfig.ADD_REPORT,
+  //   });
+  // };
 
   const openEditTailingsModal = (event, onSubmit, record) => {
     const initialPartyValue = {
@@ -266,8 +266,8 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
               <MineReportTable
                 isLoaded={isLoaded}
                 mineReports={filteredReports}
-                openEditReportModal={openEditReportModal}
-                handleEditReport={handleEditReport}
+                // openEditReportModal={openEditReportModal}
+                // handleEditReport={handleEditReport}
                 handleRemoveReport={handleRemoveReport}
                 handleTableChange={handleReportFilterSubmit}
                 sortField={params.sort_field}
@@ -345,7 +345,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineReports,
-      updateMineReport,
+      // updateMineReport,
       deleteMineReport,
       createTailingsStorageFacility,
       updateTailingsStorageFacility,
