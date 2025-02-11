@@ -4,8 +4,6 @@ import MineReportTable from "@/components/mine/Reports/MineReportTable";
 import { IMineReport, IPageData, MineReportParams } from "@mds/common/interfaces";
 
 interface ReportsTableProps {
-  // openEditReportModal: (event, onSubmit, report) => void;
-  // handleEditReport: (updateNOWList, tableFilters) => void;
   handleRemoveReport: (updateNOWList, tableFilters) => void;
   handlePageChange: (updateNOWList, tableFilters) => void;
   handleSearch: (updateNOWList, tableFilters) => void;
@@ -19,8 +17,6 @@ interface ReportsTableProps {
 }
 
 export const ReportsTable: FC<ReportsTableProps> = ({
-  // openEditReportModal,
-  // handleEditReport,
   handleRemoveReport,
   handlePageChange,
   handleSearch,
@@ -32,22 +28,12 @@ export const ReportsTable: FC<ReportsTableProps> = ({
   sortField = undefined,
   sortDir = undefined,
 }) => {
-
-
-  // const { reportType = "code-required-reports" } = useParams<{ reportType: string }>();
-
-  // const mine_reports_type: MineReportType = MineReportType[reportType];
-
-  console.log("this uses reportsTable component")
-
   return (
     <div className="tab__content">
       <MineReportTable
         isLoaded={isLoaded}
         mineReports={reports}
         handleTableChange={handleSearch}
-        // openEditReportModal={openEditReportModal}
-        // handleEditReport={handleEditReport}
         handleRemoveReport={handleRemoveReport}
         filters={params}
         sortField={sortField}

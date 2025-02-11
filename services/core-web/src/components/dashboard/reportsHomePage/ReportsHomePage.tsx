@@ -5,15 +5,12 @@ import * as Strings from "@mds/common/constants/strings";
 import {
   deleteMineReport,
   fetchReports,
-  // updateMineReport,
 } from "@mds/common/redux/actionCreators/reportActionCreator";
-// import { changeModalTitle, closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { getReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
 import { PageTracker } from "@common/utils/trackers";
 import * as routes from "@/constants/routes";
 import ReportsTable from "@/components/dashboard/reportsHomePage/ReportsTable";
 import ReportsSearch from "@/components/dashboard/reportsHomePage/ReportsSearch";
-// import { modalConfig } from "@/components/modalContent/config";
 import { useHistory, useLocation } from "react-router-dom";
 import { MineReportParams } from "@mds/common/interfaces";
 
@@ -85,33 +82,9 @@ export const ReportsHomePage = () => {
     });
   };
 
-  // const handleEditReport = async (report) => {
-  //   await dispatch(updateMineReport(report.mine_guid, report.mine_report_guid, report));
-  //   dispatch(closeModal());
-  // };
-
   const handleRemoveReport = async (report) => {
     await dispatch(deleteMineReport(report.mine_guid, report.mine_report_guid));
   };
-
-  // const openEditReportModal = (event, onSubmit, report) => {
-  //   event.preventDefault();
-  //   dispatch(
-  //     openModal({
-  //       props: {
-  //         initialValues: {
-  //           ...report,
-  //           mine_report_submission_status: report.mine_report_status_code,
-  //         },
-  //         title: `Edit ${report.submission_year} ${report.report_name}`,
-  //         mineGuid: report.mine_guid,
-  //         changeModalTitle: dispatch(changeModalTitle),
-  //         onSubmit,
-  //       },
-  //       content: modalConfig.ADD_REPORT,
-  //     })
-  //   );
-  // };
 
   return (
     <div className="landing-page">
@@ -138,8 +111,6 @@ export const ReportsHomePage = () => {
               sortDir={params.sort_dir}
               handlePageChange={onPageChange}
               pageData={pageData}
-              // openEditReportModal={openEditReportModal}
-              // handleEditReport={handleEditReport}
               handleRemoveReport={handleRemoveReport}
               isDashboardView
             />
