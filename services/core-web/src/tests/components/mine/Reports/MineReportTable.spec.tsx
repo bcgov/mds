@@ -10,7 +10,7 @@ import { MINE_REPORTS_ENUM } from "@mds/common/constants/enums";
 const props = {
   mineReports: MOCK.MINE_REPORTS,
   mineReportType: MINE_REPORTS_ENUM.CRR,
-  isLoaded: false,
+  isLoaded: true,
   handleRemoveReport: jest.fn(),
 };
 
