@@ -3,17 +3,27 @@ import { Button, Input, Row, Typography } from "antd";
 import queryString from "query-string";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
+import {
+  useAppDispatch as useDispatch,
+  useAppSelector as useSelector,
+} from "@mds/common/redux/rootState";
 import {
   ComplianceReportParams,
   createMineReportDefinition,
-  fetchComplianceReports, fetchMineReportDueDateTypes,
+  fetchComplianceReports,
+  fetchMineReportDueDateTypes,
   getComplianceReportPageData,
   getReportDefinitionsLoaded,
 } from "@mds/common/redux/slices/complianceReportsSlice";
-import { renderActionsColumn, renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import {
+  renderActionsColumn,
+  renderTextColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import { IComplianceArticle, IMineReportDefinition } from "@mds/common/interfaces";
-import { REPORT_REGULATORY_AUTHORITY_CODES, REPORT_REGULATORY_AUTHORITY_ENUM } from "@mds/common/constants/enums";
+import {
+  REPORT_REGULATORY_AUTHORITY_CODES,
+  REPORT_REGULATORY_AUTHORITY_ENUM,
+} from "@mds/common/constants/enums";
 import { formatComplianceCodeArticleNumber } from "@mds/common/redux/utils/helpers";
 import { EMPTY_FIELD, REPORT_REGULATORY_AUTHORITY_CODES_HASH } from "@mds/common/constants/strings";
 import { removeNullValues } from "@mds/common/constants/utils";
@@ -23,10 +33,9 @@ import { ADMIN_HSRC_COMPLIANCE_CODE_MANAGEMENT } from "@/constants/routes";
 import AddReportDefinitionForm from "@/components/admin/complianceCodes/AddReportDefinitionForm";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 
-
 const defaultParams = {
   page: 1,
-  per_page: 50
+  per_page: 50,
 };
 
 const ComplianceReportManagement: FC = () => {
@@ -37,16 +46,22 @@ const ComplianceReportManagement: FC = () => {
   const reportPageData = useSelector(getComplianceReportPageData);
   const reportDefinitions = reportPageData?.records ?? [];
   const [sectionSearchText, setSectionSearchText] = useState(null);
-  const [queryParams, setQueryParams] = useState<ComplianceReportParams>({ ...defaultParams, ...initialParams });
+  const [queryParams, setQueryParams] = useState<ComplianceReportParams>({
+    ...defaultParams,
+    ...initialParams,
+  });
   const isLoaded = useSelector(getReportDefinitionsLoaded(queryParams));
 
   const fetchData = () => {
     dispatch(fetchComplianceReports(queryParams));
-    dispatch(fetchMineReportDueDateTypes({}));
   };
 
   useEffect(() => {
-    history.replace(ADMIN_HSRC_COMPLIANCE_CODE_MANAGEMENT.dynamicRoute("reports", queryParams))
+    dispatch(fetchMineReportDueDateTypes({}));
+  }, []);
+
+  useEffect(() => {
+    history.replace(ADMIN_HSRC_COMPLIANCE_CODE_MANAGEMENT.dynamicRoute("reports", queryParams));
     if (!isLoaded) {
       fetchData();
     }
@@ -57,10 +72,12 @@ const ComplianceReportManagement: FC = () => {
     const { order, field: sort_field } = sorter;
     const activeFilters = removeNullValues({ ...filters, section: sectionSearchText });
 
-    const sortParams = order ? {
-      sort_dir: order.replace("end", ""),
-      sort_field
-    } : {};
+    const sortParams = order
+      ? {
+          sort_dir: order.replace("end", ""),
+          sort_field,
+        }
+      : {};
 
     const newParams = {
       page,
@@ -68,14 +85,14 @@ const ComplianceReportManagement: FC = () => {
       sort_field,
       ...sortParams,
       ...activeFilters,
-    }
-    setQueryParams(newParams)
+    };
+    setQueryParams(newParams);
   };
 
   const handleSectionSearch = (confirm, searchInputText: string) => {
     const newParams = {
       ...queryParams,
-      section: searchInputText
+      section: searchInputText,
     };
     setQueryParams(removeNullValues(newParams));
     confirm();
@@ -97,16 +114,20 @@ const ComplianceReportManagement: FC = () => {
   };
 
   const openViewModal = (record) => {
-    console.log('record', record)
+    console.log("record", record);
   };
 
-  const actions = [{
-    key: "view",
-    label: "View",
-    clickFunction: (_, record) => openViewModal(record)
-  }];
+  const actions = [
+    {
+      key: "view",
+      label: "View",
+      clickFunction: (_, record) => openViewModal(record),
+    },
+  ];
 
-  const regulatoryAuthorityFilter = Object.entries(REPORT_REGULATORY_AUTHORITY_CODES_HASH).map(([value, text]) => ({ value, text }));
+  const regulatoryAuthorityFilter = Object.entries(REPORT_REGULATORY_AUTHORITY_CODES_HASH).map(
+    ([value, text]) => ({ value, text })
+  );
   const sectionSearchActive = queryParams?.section?.length > 0;
 
   const sectionFilter = {
@@ -114,9 +135,7 @@ const ComplianceReportManagement: FC = () => {
     filterDropdown: ({ confirm }) => {
       return (
         <div className="column-search" style={{ padding: 8 }}>
-          <Row style={{ minWidth: 240 }}
-               gutter={[0, 16]}
-          >
+          <Row style={{ minWidth: 240 }} gutter={[0, 16]}>
             <Input
               placeholder="Search Compliance Article"
               onChange={(e) => setSectionSearchText(e.target.value)}
@@ -127,7 +146,9 @@ const ComplianceReportManagement: FC = () => {
               icon={<SearchOutlined />}
               size="small"
               type="primary"
-            >Search</Button>
+            >
+              Search
+            </Button>
             <Button
               onClick={() => {
                 setSectionSearchText(null);
@@ -140,42 +161,44 @@ const ComplianceReportManagement: FC = () => {
           </Row>
         </div>
       );
-    }
-  }
+    },
+  };
   const columns = [
     renderTextColumn("report_name", "Report Name", true),
     {
       ...renderTextColumn("section", "Section"),
       sorter: true,
-      ...sectionFilter
+      ...sectionFilter,
     },
     {
       ...renderTextColumn("is_prr_only", "Report Type"),
       filters: [
         { value: false, text: "Code Required Report" },
-        { value: true, text: "Permit Required Report" }
-      ]
+        { value: true, text: "Permit Required Report" },
+      ],
     },
     {
       ...renderTextColumn("regulatory_authority", "Regulatory Authority"),
       filters: regulatoryAuthorityFilter,
-      sorter: true
+      sorter: true,
     },
-    renderActionsColumn({ actions })
+    renderActionsColumn({ actions }),
   ];
 
   const formatCode = (article: IComplianceArticle) => {
     if (!article) {
       return {
         regulatory_authority: EMPTY_FIELD,
-        section: EMPTY_FIELD
-      }
+        section: EMPTY_FIELD,
+      };
     }
     return {
-      regulatory_authority: REPORT_REGULATORY_AUTHORITY_ENUM[article.cim_or_cpo] ?? REPORT_REGULATORY_AUTHORITY_CODES.NONE,
-      section: formatComplianceCodeArticleNumber(article)
-    }
-  }
+      regulatory_authority:
+        REPORT_REGULATORY_AUTHORITY_ENUM[article.cim_or_cpo] ??
+        REPORT_REGULATORY_AUTHORITY_CODES.NONE,
+      section: formatComplianceCodeArticleNumber(article),
+    };
+  };
 
   const transformData = (reports: IMineReportDefinition[]) => {
     return reports.map((r) => {
@@ -184,22 +207,19 @@ const ComplianceReportManagement: FC = () => {
       return {
         ...r,
         is_prr_only,
-        ...formattedComplianceArticle
+        ...formattedComplianceArticle,
       };
-    })
-  }
+    });
+  };
 
   return (
     <div>
       <Typography.Text>
-        Manage Code Required Reports that are associated to HSRC. Create a new report before adding it to a code in Health, Safety and Reclamation Code page.
+        Manage Code Required Reports that are associated to HSRC. Create a new report before adding
+        it to a code in Health, Safety and Reclamation Code page.
       </Typography.Text>
       <Row justify="end">
-        <Button
-          onClick={() => openAddModal()}
-          type="primary"
-          icon={<PlusOutlined />}
-        >
+        <Button onClick={() => openAddModal()} type="primary" icon={<PlusOutlined />}>
           Create Report
         </Button>
       </Row>
@@ -209,13 +229,15 @@ const ComplianceReportManagement: FC = () => {
         columns={columns}
         rowKey="mine_report_definition_guid"
         onChange={onTableChange}
-        pagination={isLoaded && {
-          total: reportPageData.total,
-          defaultPageSize: 50,
-          pageSize: queryParams.per_page,
-          position: ['bottomCenter'],
-          disabled: !isLoaded,
-        }}
+        pagination={
+          isLoaded && {
+            total: reportPageData.total,
+            defaultPageSize: 50,
+            pageSize: queryParams.per_page,
+            position: ["bottomCenter"],
+            disabled: !isLoaded,
+          }
+        }
       />
     </div>
   );
