@@ -12,8 +12,6 @@ import PermitConditionCategorySelector from "./PermitConditionCategorySelector";
 import { required } from "@mds/common/redux/utils/Validate";
 import { useDispatch } from "react-redux";
 import { formatPermitConditionStep } from "@mds/common/utils/helpers";
-import { isUserAssignedToReviewCategory } from "@mds/common/redux/slices/permitConditionCategorySlice";
-import { usePermitConditions } from "./PermitConditionsContext";
 
 export interface IPermitConditionCategoryProps {
   canEdit: boolean;
@@ -29,10 +27,7 @@ export interface IPermitConditionCategoryProps {
 
 export const EditPermitConditionCategoryInline: FC<IPermitConditionCategoryProps> = ({ category, ...props }) => {
   const [isEditMode, setIsEditMode] = useState(false);
-  const { currentAmendment } = usePermitConditions();
   const { condition_category_code } = category;
-  const isAssigned = isUserAssignedToReviewCategory(currentAmendment.permit_amendment_id, condition_category_code)
-  const canEditConditions = props.canEdit && isAssigned;
 
   const dispatch = useDispatch();
   const formName = `${FORM.INLINE_EDIT_PERMIT_CONDITION_CATEGORY}}-${condition_category_code}`;
@@ -60,7 +55,7 @@ export const EditPermitConditionCategoryInline: FC<IPermitConditionCategoryProps
   }
 
   const titleElement = <Typography.Title style={{ marginBottom: 0 }} level={3}>{formatPermitConditionStep(category.step)} {category.description} ({props.conditionCount})</Typography.Title>;
-  if (!canEditConditions) {
+  if (!props.canEdit) {
     return titleElement;
   }
 

@@ -2,8 +2,6 @@ import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { EditPermitConditionCategoryInline } from "./PermitConditionCategory";
-import { PERMITS } from "@mds/common/tests/mocks/dataMocks";
-import { PermitConditionsProvider } from "./PermitConditionsContext";
 
 const mockCategory = {
   condition_category_code: "TEST-CAT",
@@ -25,21 +23,12 @@ const mockProps = {
 };
 
 const initialState = {};
-const providerValues = {
-  mineGuid: "",
-  permitGuid: "",
-  latestAmendment: PERMITS[0].permit_amendments[0],
-  previousAmendment: null,
-  currentAmendment: PERMITS[0].permit_amendments[0]
-}
 
 describe("PermitConditionCategory", () => {
   it("renders category title with count in view mode", () => {
     render(
       <ReduxWrapper initialState={initialState}>
-        <PermitConditionsProvider value={providerValues}>
-          <EditPermitConditionCategoryInline {...mockProps} />
-        </PermitConditionsProvider>
+        <EditPermitConditionCategoryInline {...mockProps} />
       </ReduxWrapper>
     );
 
@@ -49,9 +38,7 @@ describe("PermitConditionCategory", () => {
   it("switches to edit mode on click", () => {
     render(
       <ReduxWrapper initialState={initialState}>
-        <PermitConditionsProvider value={providerValues}>
-          <EditPermitConditionCategoryInline {...mockProps} />
-        </PermitConditionsProvider>
+        <EditPermitConditionCategoryInline {...mockProps} />
       </ReduxWrapper>
     );
 
@@ -62,9 +49,7 @@ describe("PermitConditionCategory", () => {
   it("calls moveUp when up arrow clicked", () => {
     render(
       <ReduxWrapper initialState={initialState}>
-        <PermitConditionsProvider value={providerValues}>
-          <EditPermitConditionCategoryInline {...mockProps} />
-        </PermitConditionsProvider>
+        <EditPermitConditionCategoryInline {...mockProps} />
       </ReduxWrapper>
     );
 
@@ -78,9 +63,7 @@ describe("PermitConditionCategory", () => {
   it("calls moveDown when down arrow clicked", () => {
     render(
       <ReduxWrapper initialState={initialState}>
-        <PermitConditionsProvider value={providerValues}>
-          <EditPermitConditionCategoryInline {...mockProps} />
-        </PermitConditionsProvider>
+        <EditPermitConditionCategoryInline {...mockProps} />
       </ReduxWrapper>
     );
 
@@ -94,9 +77,7 @@ describe("PermitConditionCategory", () => {
   it("disables delete button when condition count > 0", () => {
     render(
       <ReduxWrapper initialState={initialState}>
-        <PermitConditionsProvider value={providerValues}>
-          <EditPermitConditionCategoryInline {...mockProps} conditionCount={1} />
-        </PermitConditionsProvider>
+        <EditPermitConditionCategoryInline {...mockProps} conditionCount={1} />
       </ReduxWrapper>
     );
 
@@ -109,9 +90,7 @@ describe("PermitConditionCategory", () => {
   it("enables delete button when condition count = 0", () => {
     render(
       <ReduxWrapper initialState={initialState}>
-        <PermitConditionsProvider value={providerValues}>
-          <EditPermitConditionCategoryInline {...mockProps} conditionCount={0} />
-        </PermitConditionsProvider>
+        <EditPermitConditionCategoryInline {...mockProps} conditionCount={0} />
       </ReduxWrapper>
     );
 
@@ -131,9 +110,7 @@ describe("PermitConditionCategory", () => {
   it("submits form with updated values", async () => {
     render(
       <ReduxWrapper initialState={initialState}>
-        <PermitConditionsProvider value={providerValues}>
-          <EditPermitConditionCategoryInline {...mockProps} />
-        </PermitConditionsProvider>
+        <EditPermitConditionCategoryInline {...mockProps} />
       </ReduxWrapper>
     );
 
