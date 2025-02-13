@@ -262,7 +262,6 @@ describe("permitConditionCategorySlice", () => {
 
       expect(CustomAxios).toHaveBeenCalledWith({
         errorToastMessage: "default",
-        // successToastMessage: `Successfully assigned ${mockResponse.data.assigned_review_user.display_name} to review ${mockResponse.data.description}`
       });
     });
 

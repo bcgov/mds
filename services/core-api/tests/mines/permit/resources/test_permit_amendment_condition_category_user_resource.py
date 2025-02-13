@@ -67,7 +67,7 @@ def test_post_assign_user_to_permit_condition_category_missing_user(test_client,
     assert post_data["message"] == "Input payload validation failed"
 
 def test_post_assign_user_to_permit_condition_category_missing_amendment(test_client, db_session, auth_headers):
-    """Should return 400 if assigned_review_user is missing."""
+    """Should return 400 if amendment id is missing."""
     _, permit = create_mine_and_permit()
     permit_amendment = permit.permit_amendments[0]
     PermitConditionCategory.create(
