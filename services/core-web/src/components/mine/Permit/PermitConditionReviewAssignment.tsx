@@ -89,7 +89,7 @@ const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> 
           <UserSearchField
             disabled={!isLoaded}
             loading={!isLoaded}
-            initialDataSource={initialValues ? [initialValues] : []}
+            initialDataSource={reviewer ? [initialValues] : []}
             id={`assigned_review_user-${category.condition_category_code}`}
             name="assigned_review_user"
           />
