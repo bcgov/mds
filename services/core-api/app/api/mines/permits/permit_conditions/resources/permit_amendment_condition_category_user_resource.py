@@ -13,8 +13,9 @@ from app.api.utils.include.user_info import User as UserUtils
 
 
 class AssignUserToPermitConditionCategory(Resource):
-
-    @api.doc("Get a list of review assignments")
+    @api.doc(
+            description="Get a list of review assignments",
+            params={'permit_amendment_id': "The permit amendment for the reviewer assignment"})
     @requires_role_edit_standard_permit_conditions
     @api.marshal_with(PERMIT_CONDITION_REVIEW_ASSIGNMENT_MODEL, envelope='records', code=200)
     def get(self):
@@ -31,7 +32,12 @@ class AssignUserToPermitConditionCategory(Resource):
         assignments = PermitConditionReviewAssignment.get_by_permit_amendment_id(permit_amendment_id)
         return assignments
 
-    @api.doc(description='Assign a user to a permit condition category')
+    @api.doc(
+            description='Assign a user to a permit condition category',
+            params={
+                'assigned_review_user': 'The user sub to be assigned to a permit condition category',
+                'permit_amendment_id': 'The permit amendment for the reviewer assignment',
+                'condition_category_code': 'The permit_condition_category_code to which a user will be assigned'  })
     @requires_role_edit_standard_permit_conditions
     @api.marshal_with(PERMIT_CONDITION_REVIEW_ASSIGNMENT_MODEL, code=200)
     def post(self):
@@ -82,7 +88,9 @@ class AssignUserToPermitConditionCategory(Resource):
 
         return assignment
 
-    @api.doc(description='Unassign a user from a permit condition category')
+    @api.doc(
+            description='Unassign a user from a permit condition category',
+            params={'condition_review_assignment_guid': 'The guid of the assignment to unassign'})
     @requires_role_view_all
     @api.marshal_with(PERMIT_CONDITION_REVIEW_ASSIGNMENT_MODEL, code=200)
     def put(self):
