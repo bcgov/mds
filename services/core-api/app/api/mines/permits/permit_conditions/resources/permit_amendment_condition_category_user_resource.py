@@ -84,7 +84,7 @@ class AssignUserToPermitConditionCategory(Resource):
 
     @api.doc(description='Unassign a user from a permit condition category')
     @requires_role_view_all
-    @api.marshal_with(PERMIT_CONDITION_CATEGORY_MODEL, code=200)
+    @api.marshal_with(PERMIT_CONDITION_REVIEW_ASSIGNMENT_MODEL, code=200)
     def put(self):
         user_util = UserUtils()
         parser = reqparse.RequestParser()
@@ -102,7 +102,7 @@ class AssignUserToPermitConditionCategory(Resource):
         # fetch review assignment
         review_assignment = PermitConditionReviewAssignment.get_by_assignment_guid(condition_review_assignment_guid)
 
-        if not review_assignment:
+        if review_assignment is None:
             raise NotFound('Review assignment not found')
         
         user_info = user_util.get_user_raw_info()
