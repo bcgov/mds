@@ -4,7 +4,7 @@ import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton"
 import { FORM } from "@mds/common/constants/forms";
 import { IPermitConditionCategory } from "@mds/common/interfaces";
 import { Button, Col, Popconfirm, Row, Tooltip, Typography } from "antd";
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import { Field, reset } from "@mds/common/components/forms/form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown, faArrowUp, faCheck, faTrash, faXmark } from "@fortawesome/pro-light-svg-icons";
@@ -12,6 +12,8 @@ import PermitConditionCategorySelector from "./PermitConditionCategorySelector";
 import { required } from "@mds/common/redux/utils/Validate";
 import { useDispatch } from "react-redux";
 import { formatPermitConditionStep } from "@mds/common/utils/helpers";
+import { isUserAssignedToReviewCategory } from "@mds/common/redux/slices/permitConditionCategorySlice";
+import { usePermitConditions } from "./PermitConditionsContext";
 
 export interface IPermitConditionCategoryProps {
   canEdit: boolean;
@@ -25,11 +27,15 @@ export interface IPermitConditionCategoryProps {
   categoryCount: number;
 }
 
-export const EditPermitConditionCategoryInline = (props: IPermitConditionCategoryProps) => {
+export const EditPermitConditionCategoryInline: FC<IPermitConditionCategoryProps> = ({ category, ...props }) => {
   const [isEditMode, setIsEditMode] = useState(false);
+  const { currentAmendment } = usePermitConditions();
+  const { condition_category_code } = category;
+  const isAssigned = isUserAssignedToReviewCategory(currentAmendment.permit_amendment_id, condition_category_code)
+  const canEditConditions = props.canEdit && isAssigned;
 
   const dispatch = useDispatch();
-  const formName = `${FORM.INLINE_EDIT_PERMIT_CONDITION_CATEGORY}}-${props.category.condition_category_code}`;
+  const formName = `${FORM.INLINE_EDIT_PERMIT_CONDITION_CATEGORY}}-${condition_category_code}`;
   const enableEditMode = (evt) => {
     evt.stopPropagation();
     evt.preventDefault();
@@ -53,8 +59,8 @@ export const EditPermitConditionCategoryInline = (props: IPermitConditionCategor
     setIsEditMode(false);
   }
 
-  const titleElement = <Typography.Title style={{ marginBottom: 0 }} level={3}>{formatPermitConditionStep(props.category.step)} {props.category.description} ({props.conditionCount})</Typography.Title>;
-  if (!props.canEdit) {
+  const titleElement = <Typography.Title style={{ marginBottom: 0 }} level={3}>{formatPermitConditionStep(category.step)} {category.description} ({props.conditionCount})</Typography.Title>;
+  if (!canEditConditions) {
     return titleElement;
   }
 
@@ -69,7 +75,7 @@ export const EditPermitConditionCategoryInline = (props: IPermitConditionCategor
   }
 
   return (
-    <FormWrapper scrollOnToggleEdit={false} name={formName} onSubmit={handleSubmit} initialValues={props.category} isEditMode={isEditMode}>
+    <FormWrapper scrollOnToggleEdit={false} name={formName} onSubmit={handleSubmit} initialValues={category} isEditMode={isEditMode}>
       <Row style={{ gap: '0.5em' }}>
         <Col flex-shrink="1" style={{ maxWidth: '40px' }}>
           <Field name="step" component={RenderField} required={true} validate={[required]} style={{ marginRight: 0, }} />
@@ -93,11 +99,11 @@ export const EditPermitConditionCategoryInline = (props: IPermitConditionCategor
             placement="topRight"
             title={
               <>
-                <Typography.Paragraph>Are you sure you want to delete {props.category.description}?</Typography.Paragraph>
+                <Typography.Paragraph>Are you sure you want to delete {category.description}?</Typography.Paragraph>
                 <Typography.Paragraph>This action cannot be undone.</Typography.Paragraph>
               </>
             }
-            onConfirm={() => handleDelete(props.category)}
+            onConfirm={() => handleDelete(category)}
             okText="Yes, Delete Category"
             cancelText="No"
           >
@@ -112,7 +118,7 @@ export const EditPermitConditionCategoryInline = (props: IPermitConditionCategor
             disabled={props.currentPosition <= 0}
             onClick={(event) => {
               event.stopPropagation();
-              props.moveUp(props.category);
+              props.moveUp(category);
             }}
             type="default"
             aria-label="Move Category Up"
@@ -124,7 +130,7 @@ export const EditPermitConditionCategoryInline = (props: IPermitConditionCategor
             aria-label="Move Category Down"
             onClick={(event) => {
               event.stopPropagation();
-              props.moveDown(props.category);
+              props.moveDown(category);
             }}
             icon={<FontAwesomeIcon icon={faArrowDown} />}
           />

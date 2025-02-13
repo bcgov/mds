@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Button, Col, Popconfirm, Row, Typography } from "antd";
 import { faCheck } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,93 +8,74 @@ import UserSearchField from "@/components/common/UserSearchField";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import {
   assignReviewer,
+  fetchReviewAssignments,
+  getCategoryReviewAssignment,
+  getPermitReviewAssignmentsIsLoaded,
+  isUserAssignedToReviewCategory,
   unassignReviewer,
 } from "@mds/common/redux/slices/permitConditionCategorySlice";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import { faXmark } from "@fortawesome/pro-light-svg-icons";
-import { getUser } from "@mds/common/redux/slices/userSlice";
 import { IPermitConditionCategory } from "@mds/common/interfaces";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { FORM } from "@mds/common/constants/forms";
+import { usePermitConditions } from "./PermitConditionsContext";
 
 interface PermitConditionReviewAssignmentProps {
   category: IPermitConditionCategory;
-  refreshData: () => Promise<void>;
 }
 
 const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> = ({
   category,
-  refreshData,
 }) => {
+  const { currentAmendment } = usePermitConditions();
+  const { permit_amendment_id } = currentAmendment;
+  const reviewAssignment = useSelector(getCategoryReviewAssignment(permit_amendment_id, category.condition_category_code));
+  const isUserAssigned = useSelector(isUserAssignedToReviewCategory(permit_amendment_id, category.condition_category_code));
+  const isLoaded = useSelector(getPermitReviewAssignmentsIsLoaded(permit_amendment_id));
+  const reviewer = reviewAssignment?.assigned_review_user;
+
   const dispatch = useDispatch();
-  const user = useSelector(getUser);
-  const [assignedReviewUserInitialValues, setAssignedReviewUserIntitialValues] = useState<
-    | [
-      {
-        label: string;
-        value: string;
-      },
-    ]
-    | undefined
-  >(
-    category?.assigned_review_user?.sub
-      ? [
-        {
-          value: category?.assigned_review_user?.sub || "",
-          label: category?.assigned_review_user?.display_name || "",
-        },
-      ]
-      : undefined
-  );
+  const initialValues = { value: reviewer?.sub ?? "", label: reviewer?.display_name ?? "" }
 
   const userCanAssignReviewers = useSelector((state) =>
     userHasRole(state, USER_ROLES.role_edit_template_conditions)
   );
 
-  const isUserAssigned = user?.sub === category?.assigned_review_user?.sub;
-
-  const userCanUnassignReviewer =
-    isUserAssigned || userCanAssignReviewers;
-
   const formName = `${FORM.PERMIT_CONDITION_REVIEW_ASSIGNMENT}-${category.condition_category_code}`;
 
+  const refreshData = () => {
+    dispatch(fetchReviewAssignments({ permit_amendment_id }));
+  };
+
   const handleSubmit = (values) => {
-    // @ts-ignore
-    dispatch(assignReviewer(values)).then(() => {
+    dispatch(assignReviewer({ permit_amendment_id, description: category.description, ...values })).then(() => {
       refreshData();
     });
   };
 
   const handleUnassign = () => {
-    // @ts-ignore
-    dispatch(unassignReviewer({ condition_category_code: category.condition_category_code })).then(
+    dispatch(unassignReviewer({
+      permit_amendment_id,
+      description: category.description,
+      condition_review_assignment_guid: reviewAssignment?.condition_review_assignment_guid
+    })).then(
       () => {
-        setAssignedReviewUserIntitialValues(undefined);
         refreshData();
       }
     );
   };
 
-  useEffect(() => {
-    if (category?.assigned_review_user?.sub) {
-      setAssignedReviewUserIntitialValues([
-        {
-          value: category?.assigned_review_user?.sub,
-          label: category?.assigned_review_user?.display_name,
-        },
-      ]);
-    }
-  }, [category?.assigned_review_user?.sub]);
-
   return (
     <FormWrapper
       layout="horizontal"
+      isEditMode={userCanAssignReviewers}
       scrollOnToggleEdit={false}
       name={formName}
       onSubmit={handleSubmit}
       reduxFormConfig={{ enableReinitialize: true }}
       initialValues={{
-        assigned_review_user: assignedReviewUserInitialValues?.[0]?.value ?? null,
+        assigned_review_user: initialValues.value,
         condition_category_code: category.condition_category_code,
       }}
     >
@@ -102,26 +83,29 @@ const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> 
         className={`${isUserAssigned ? "" : "condition-category-reviewer-row"}`}
       >
         <Col>
-          <Typography.Paragraph>Assigned Reviewer</Typography.Paragraph>
+          <Typography.Paragraph>Assigned Reviewer:</Typography.Paragraph>
         </Col>
         <Col span={12}>
           <UserSearchField
-            disabled={!userCanAssignReviewers}
-            initialDataSource={assignedReviewUserInitialValues}
+            disabled={!isLoaded}
+            loading={!isLoaded}
+            initialDataSource={initialValues ? [initialValues] : []}
             id={`assigned_review_user-${category.condition_category_code}`}
             name="assigned_review_user"
           />
         </Col>
         <Col>
           <RenderSubmitButton iconButton={true} icon={<FontAwesomeIcon icon={faCheck} />} />
-          {!!category.assigned_review_user?.display_name && (
+          {reviewer && userCanAssignReviewers && (
             <Popconfirm
               title="Are you sure you want to unassign this reviewer?"
               onConfirm={handleUnassign}
+              className={!isLoaded ? "form-btn" : ""}
             >
               <Button
                 icon={<FontAwesomeIcon icon={faXmark} />}
-                disabled={!userCanUnassignReviewer}
+                disabled={!isLoaded}
+                className="tara-test"
               />
             </Popconfirm>
           )}

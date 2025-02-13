@@ -10,7 +10,6 @@ from app.api.parties.party_appt.models.mine_party_appt import (
 )
 from app.api.parties.response_models import PARTY
 from app.api.users.response_models import USER_MODEL
-from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.extensions import api
 from flask_restx import fields, marshal
 
@@ -269,9 +268,17 @@ PERMIT_CONDITION_CATEGORY_MODEL = api.model(
         'step': fields.String,
         'description': fields.String,
         'display_order': fields.Integer,
-        'assigned_review_user': fields.Nested(USER_MODEL),
         'permit_condition_status_code': fields.String
     })
+
+PERMIT_CONDITION_REVIEW_ASSIGNMENT_MODEL = api.model(
+    'PermitConditionReviewAssignment', {
+        'condition_review_assignment_guid': fields.String,
+        'permit_amendment_id': fields.Integer,
+        'condition_category_code': fields.String,
+        'assigned_review_user': fields.Nested(USER_MODEL),
+    }
+)
 
 PERMIT_AMENDMENT_MODEL = api.model(
     'PermitAmendment', {

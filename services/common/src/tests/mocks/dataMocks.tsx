@@ -10,6 +10,7 @@ import {
   IPermit,
   IMineDocument,
   IPermitAmendment,
+  IPermitConditionReviewAssignment,
 } from "@mds/common/interfaces";
 
 export const createMockHeader = () => ({
@@ -1178,7 +1179,6 @@ export const PERMITS: IPermit[] = [
             description: "Health and Safety",
             display_order: 0,
             step: "A.",
-            assigned_review_user: USERS[0],
           },
           {
             condition_category_code: "RCC",
@@ -1553,6 +1553,15 @@ export const PERMITS: IPermit[] = [
     update_user: "update-user",
     update_timestamp: "2019-04-05 21:05:40.123456+00:00",
   },
+];
+
+export const PERMIT_CONDITION_REVIEW_ASSIGNMENTS: IPermitConditionReviewAssignment[] = [
+  {
+    assigned_review_user: USERS[0],
+    condition_category_code: PERMITS[0].permit_amendments[0].condition_categories[0].condition_category_code,
+    condition_review_assignment_guid: "",
+    permit_amendment_id: PERMITS[0].permit_amendments[0].permit_amendment_id
+  }
 ];
 
 export const PERMIT_AMENDMENT_STATE: { [permitGuid: string]: IPermitAmendment } = PERMITS.reduce(
