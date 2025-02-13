@@ -6,7 +6,6 @@ import {
   IDocument,
   IMine,
   IMinePartyAppt,
-  ITailingsStorageFacility,
   ITailingsStorageFacilityForm,
 } from "@mds/common/interfaces";
 
