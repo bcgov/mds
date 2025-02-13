@@ -73,9 +73,7 @@ const ViewPermit: FC = () => {
   const [pollForStatus, setPollForStatus] = useState(false);
 
   const hasConditions = latestAmendment?.conditions?.length > 0;
-  const isReviewComplete = latestAmendment?.conditions?.every(
-    (con) => con.permit_condition_status_code === PERMIT_CONDITION_STATUS_CODE.COM
-  );
+  const isReviewComplete = latestAmendment?.conditions_review_completed;
 
   const canStartExtraction =
     ((documents.length > 0 && !permitExtraction?.task_status) ||

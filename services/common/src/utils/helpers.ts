@@ -2,7 +2,7 @@ import { isArray } from "lodash";
 import { removeNullValuesRecursive } from "@mds/common/constants/utils";
 import { AMS_AUTHORIZATION_TYPES } from "@mds/common/constants/enums";
 import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
-import { IMineReportPermitRequirement } from "../interfaces/permits";
+import { IMineReportPermitRequirement, IPermitAmendment } from "../interfaces/permits";
 
 const transformAuthorizations = (
   valuesFromForm: any,
@@ -110,3 +110,41 @@ export const getConditionsWithRequirements = (conditions: IPermitCondition[], re
 
   return result;
 };
+
+export const getCategoriesWithReports = (amendment: IPermitAmendment) => {
+  amendment.mine_report_permit_requirements.forEach( (report) => {
+    let category = amendment.condition_categories.find( cat => cat.condition_category_code === report.condition_category_code);
+    if(category.reports === undefined){
+      category.reports = [];
+    }
+    category.reports.push(report);
+  })
+  return amendment.condition_categories;
+}
+
+/**
+     * Find a condition recursively by guid or id in the given list of conditions.
+     */
+export const findCondition = (permit_condition: string | number, conditions: IPermitCondition[]) => {
+
+  const findConditionRecursive = (value: string | number, condition: IPermitCondition): IPermitCondition | null => {
+      // Check if either permit_condition_guid or permit_condition_id matches the given value
+      if (condition?.permit_condition_guid === value || condition?.permit_condition_id === value) {
+          return condition;
+      }
+
+      if (condition.sub_conditions) {
+          for (const sub of condition.sub_conditions) {
+              const found = findConditionRecursive(value, sub);
+              if (found) return found;
+          }
+      }
+      return null;
+  };
+
+  for (const condition of conditions) {
+      const found = findConditionRecursive(permit_condition, condition);
+      if (found) return found;
+  }
+  return null;
+}

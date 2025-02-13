@@ -54,4 +54,5 @@ export interface IPermitConditionCategory {
   step: string;
   assigned_review_user?: IUser
   conditions?: IPermitCondition[]
+  reports?: IMineReportPermitRequirement[]
 }

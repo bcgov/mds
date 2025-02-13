@@ -1,9 +1,9 @@
 import { Alert, Button, Col, Row, Typography } from "antd";
-import React, { FC, ReactNode, useEffect, useState } from "react";
+import React, { FC, ReactNode, useEffect, useMemo, useState } from "react";
 import { Field, getFormValues, change } from "@mds/common/components/forms/form";
 import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
-import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
-import { IMine, IMineReportDefinition, IMineReportSubmission } from "@mds/common/interfaces";
+import { useSelector, useDispatch } from "react-redux";
+import { IMine, IMineReportDefinition, IMineReportPermitRequirement, IMineReportSubmission, IPermitAmendment, IPermitCondition, IPermitConditionCategory } from "@mds/common/interfaces";
 import {
   createDropDownList,
   formatComplianceCodeReportName,
@@ -16,14 +16,16 @@ import RenderSelect from "../forms/RenderSelect";
 import {
   getDropdownPermitConditionCategoryOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { fetchComplianceReports, getFormattedMineReportDefinitionOptions, getMineReportDefinitionByGuid, getReportDefinitionsLoaded, reportParamsGetAll } from "@mds/common/redux/slices/complianceReportsSlice";
-import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
+import { getLatestAmendmentByPermitGuid, getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { useParams } from "react-router-dom";
 import { MINE_REPORTS_ENUM, MineReportType, REPORT_TYPE_CODES, SystemFlagEnum } from "@mds/common/constants/enums";
 import { FORM } from "@mds/common/constants/forms";
-import { MMO_EMAIL } from "@mds/common/constants/strings";
+import { MMO_EMAIL, REPORT_FREQUENCY_HASH } from "@mds/common/constants/strings";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import { findCondition, getCategoriesWithReports } from "@mds/common/utils/helpers";
+import { getReportDefinitionsLoaded, reportParamsGetAll, fetchComplianceReports, getMineReportDefinitionByGuid, getFormattedMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
 
 interface ReportGetStartedProps {
   mine: IMine;
@@ -79,12 +81,152 @@ export const ReportInfoBox: FC<{ mineReportDefinition: IMineReportDefinition; ve
   );
 };
 
+export const PermitReportInfoBox: FC<{ permitCondition: IPermitCondition, permitCategory: IPermitConditionCategory, permitReport: IMineReportPermitRequirement }> = ({
+  permitCondition,
+  permitCategory,
+  permitReport
+}) => {
+
+  return (
+    <div className="report-info-box">
+      {permitCondition && permitReport && permitCategory && (
+        <div>
+          <Typography.Title level={4} className="primary-colour">
+            You are submitting
+          </Typography.Title>
+          <Typography.Title level={5}>
+            {permitReport.report_name}
+          </Typography.Title>
+
+          <Typography.Title level={5}>Condition:</Typography.Title>
+          <Typography.Paragraph>
+            {permitCategory.description + " - " + permitCondition.step}
+          </Typography.Paragraph>
+
+          <Typography.Title level={5}>Frequency:</Typography.Title>
+          <Typography.Paragraph>
+            {Object.keys(REPORT_FREQUENCY_HASH).find(key => REPORT_FREQUENCY_HASH[key] === permitReport.due_date_period_months)}
+          </Typography.Paragraph>
+
+          <Typography.Title level={5}>Due Date:</Typography.Title>
+          <Typography.Paragraph>
+            {permitReport.initial_due_date}
+          </Typography.Paragraph>
+
+          <Typography.Title level={5}>Regulatory Authority:</Typography.Title>
+          <Typography.Paragraph>
+            {permitReport.cim_or_cpo}
+          </Typography.Paragraph>
+
+          <Typography.Title level={5}>Ministry Recipient:</Typography.Title>
+          <Typography.Paragraph>
+            {permitReport.ministry_recipient}
+          </Typography.Paragraph>
+
+          <Button
+            target="_blank"
+            rel="noopener noreferrer"
+            href={"/permit/"+permitCondition.permit_condition_id}
+            type="default"
+          >
+            View Permit Condition <ExportOutlined />
+          </Button>
+          
+        </div>
+      )}
+    </div>
+  );
+};
+
+export const ValidatedRequirement: FC<{amendment: IPermitAmendment, formValues: any }> = ({
+  amendment,
+  formValues
+}) => {
+
+  const dispatch = useAppDispatch();
+  const reports = amendment?.mine_report_permit_requirements;
+  const reportOptions = createDropDownList(reports, "report_name", "mine_report_permit_requirement_id");
+  const conditionCategories = useMemo( () => getCategoriesWithReports(amendment), [amendment])
+
+  //TODO need steps added to conditions
+
+  const selectedReport = reports ? reports.find( report => report.mine_report_permit_requirement_id === formValues.mine_report_permit_requirement_id) : null;
+  const selectedCategory = selectedReport ? conditionCategories.find( cat => cat.condition_category_code === selectedReport?.condition_category_code) : null;
+  const selectedCondition = selectedReport ? findCondition(selectedReport.permit_condition_id, amendment.conditions) : null;
+
+  function handleSelectedReportChange(value: any): void {
+    dispatch(change(FORM.VIEW_EDIT_REPORT, "mine_report_permit_requirement_id", value));
+  }
+
+  return (
+  
+    <Row gutter={24} className="margin-large--bottom">
+      <Col span={12}>
+        <div className="light-grey-border">
+          <Field
+            name="mine_report_permit_requirement_id"
+            placeholder="Enter code reference number or report name"
+            required
+            validate={[required]}
+            props={{
+              label: (
+                <Typography.Title level={5} style={{ display: "inline" }}>
+                  Report Code Requirement
+                </Typography.Title>
+              ),
+              labelSubtitle:
+                "Search for a code section or the report name you would like to submit.",
+              data: reportOptions,
+            }}
+            component={RenderSelect}
+          />
+
+          { conditionCategories.map((category) => (
+            <div key={category.condition_category_code}>
+              <Typography.Paragraph
+                strong
+                className="margin-large--top"
+                style={{ marginBottom: 0 }}
+              >
+                {category.description}
+              </Typography.Paragraph>
+
+              {category.reports && category.reports.map((report) => (
+                <Row key={report.report_name}>
+                  <Col span={24}>
+                    <Button
+                      onClick={() => handleSelectedReportChange(report.mine_report_permit_requirement_id)}
+                      type="text"
+                      className="report-link btn-sm-padding"
+                    >
+                      <Typography.Text>{report.report_name}</Typography.Text>
+                      <span className="margin-large--left">
+                        <ArrowRightOutlined />
+                      </span>
+                    </Button>
+                  </Col>
+                </Row>
+              ))}
+            
+            </div>
+          
+        ))}
+
+        </div>
+      </Col>
+      <Col span={12}>
+        <PermitReportInfoBox permitCondition={selectedCondition} permitCategory={selectedCategory} permitReport={selectedReport} />
+      </Col>
+    </Row>
+  )
+}
+
 export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean }> = ({
   mineGuid,
   fullWidth = false,
 }) => {
   const system = useSelector(getSystemFlag);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const dropdownPermitConditionCategoryOptions = useSelector(
     getDropdownPermitConditionCategoryOptions
   );
@@ -92,8 +234,10 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean }> = ({
   const permitDropdown = createDropDownList(permits, "permit_no", "permit_guid");
   const permitMineGuid = permits[0]?.mine_guid;
   const [loaded, setLoaded] = useState(permits.length > 0 && permitMineGuid === mineGuid);
-
   const isCore = system === SystemFlagEnum.core;
+  const formValues = useSelector(getFormValues(FORM.VIEW_EDIT_REPORT));
+  const latestAmendment = useAppSelector(getLatestAmendmentByPermitGuid(formValues.permit_guid));
+  const hasValidatedReports = latestAmendment?.conditions_review_completed && latestAmendment?.mine_report_permit_requirements.length > 0;
 
   useEffect(() => {
     if (!loaded || permitMineGuid !== mineGuid) {
@@ -126,7 +270,7 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean }> = ({
         />
       </Col>
 
-      {!isCore && (
+      {!isCore && !hasValidatedReports && (
         <Col span={24} className="radio-two-column-container">
           <Field
             name="permit_condition_category_code"
@@ -139,10 +283,10 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean }> = ({
           />
         </Col>
       )}
-      {isCore && (
+      {isCore && !hasValidatedReports && (
         <Col md={!fullWidth && 12} sm={24}>
           <Field
-            name="permit_condition_category_code"
+            name="mine_report_permit_requirement_id"
             required
             validate={[required]}
             label="Permit Condition Category"
@@ -150,6 +294,12 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean }> = ({
             data={dropdownPermitConditionCategoryOptions}
           />
         </Col>
+      )}
+      {hasValidatedReports && (
+       <ValidatedRequirement 
+        amendment={latestAmendment}
+        formValues={formValues}
+       />
       )}
     </>
   );
