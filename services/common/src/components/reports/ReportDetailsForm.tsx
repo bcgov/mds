@@ -134,8 +134,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const coreEditReportPermission = USER_ROLES.role_edit_reports;
   const coreViewAllPermission = USER_ROLES.role_view;
   const dispatch = useDispatch();
-  const formValues: IMineReportSubmission =
-    useSelector((state) => getFormValues(FORM.VIEW_EDIT_REPORT)(state)) ?? {};
+  const formValues = useSelector((state) => getFormValues(FORM.VIEW_EDIT_REPORT)(state)) as IMineReportSubmission;
   const [mineManager, setMineManager] = useState<IParty>();
   const [mineManagerGuid, setMineManagerGuid] = useState<string>("");
 

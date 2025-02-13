@@ -47,7 +47,6 @@ describe("RequestReportForm", () => {
           currentAmendment={MOCK.PERMITS[0].permit_amendments[0]}
           mineGuid={MOCK.PERMITS[0].mine_guid}
           condition={MOCK.PERMITS[0].permit_amendments[0].conditions[0]}
-          canEditPermitConditions
           refreshData={jest.fn()}
           mineGuid={MOCK.PERMITS[0].mine_guid}
         />

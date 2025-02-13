@@ -1,5 +1,5 @@
 import React, { FC, useContext } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Row, Col, Typography, Button } from "antd";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
@@ -20,12 +20,13 @@ import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSel
 import { IMine } from "@mds/common/interfaces/mine.interface";
 import { Feature } from "@mds/common/utils/featureFlag";
 import { USER_ROLES } from "@mds/common/constants/environment";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const { Paragraph, Title, Text } = Typography;
 
 export const Tailings: FC = () => {
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const { isFeatureEnabled } = useFeatureFlag();
   const tsfV2Enabled = isFeatureEnabled(Feature.TSF_V2);

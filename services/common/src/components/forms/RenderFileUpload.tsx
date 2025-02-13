@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import "filepond-polyfill";
 import { FilePond, registerPlugin } from "react-filepond";
 import { Form, notification, Popover, Switch } from "antd";
@@ -28,6 +28,7 @@ import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { APPLICATION_OCTET_STREAM } from "@mds/common/constants/fileTypes";
 import { Feature } from "@mds/common/utils/featureFlag";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -114,7 +115,7 @@ export const FileUpload: FC<FileUploadProps> = ({
   shouldAbortUpload,
 }) => {
   const system = useSelector(getSystemFlag);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { isFeatureEnabled } = useFeatureFlag();
   const { isEditMode } = useContext(FormContext);
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, Prompt, useHistory, useLocation, useParams } from "react-router-dom";
 import { reset } from "@mds/common/components/forms/form";
 import { Col, Divider, Row, Typography } from "antd";
@@ -43,6 +43,7 @@ import {
   AMS_STATUS_CODES_SUCCESS,
   PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION,
 } from "@mds/common/constants/strings";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 
 interface IParams {
   mineGuid?: string;
@@ -52,14 +53,14 @@ interface IParams {
 }
 
 export const ProjectSummaryPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const location = useLocation();
   const systemFlag = useSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;
 
   const { mineGuid, projectGuid, projectSummaryGuid, tab } = useParams<IParams>();
-  const anyTouched = useSelector(
+  const anyTouched = useAppSelector(
     (state) => state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.anyTouched || false
   );
 
@@ -145,7 +146,7 @@ export const ProjectSummaryPage = () => {
       const areAuthorizationsSuccessful = authorizations
         .filter((authorization) =>
           Object.values(AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES).includes(
-            authorization.project_summary_authorization_type
+            authorization.project_summary_authorization_type as AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES
           )
         )
         .every((auth) => auth.ams_status_code === "200");

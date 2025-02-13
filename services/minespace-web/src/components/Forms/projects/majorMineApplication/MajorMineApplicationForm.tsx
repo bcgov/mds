@@ -20,7 +20,7 @@ import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import RenderField from "@mds/common/components/forms/RenderField";
 import ArchivedDocumentsSection from "@mds/common/components/projects/ArchivedDocumentsSection";
 import { required } from "@mds/common/redux/utils/Validate";
-import { IProject } from "@mds/common/interfaces/projects";
+import { IMajorMinesApplication, IProject } from "@mds/common/interfaces/projects";
 import { FORM } from "@mds/common/constants/forms";
 import { DOCUMENT, MODERN_EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
@@ -38,7 +38,7 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
   const dispatch = useDispatch();
 
   const { primary_documents, spatial_documents, supporting_documents } =
-    useSelector(getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION)) || {};
+    (useSelector(getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION)) as IMajorMinesApplication) || {};
   const canModifyMmaDocs = !areDocumentFieldsDisabled(
     SystemFlagEnum.ms,
     project?.major_mine_application?.status_code

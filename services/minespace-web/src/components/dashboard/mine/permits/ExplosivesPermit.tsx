@@ -1,7 +1,12 @@
 import ExplosivesPermitViewModal from "@mds/common/components/explosivespermits/ExplosivesPermitViewModal";
-import { IExplosivesPermit, IExplosivesPermitAmendment, IMine } from "@mds/common/interfaces";
+import {
+  IExplosivesPermit,
+  IExplosivesPermitAmendment,
+  IMine,
+  ItemMap,
+} from "@mds/common/interfaces";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
-import { connect } from "react-redux";
+import { ConnectedProps, connect } from "react-redux";
 import React, { FC, useEffect, useState } from "react";
 import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
 import { Link, useParams } from "react-router-dom";
@@ -21,7 +26,7 @@ interface ExplosivesPermitProps {
   mines?: IMine[];
 }
 
-const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
+const ExplosivesPermit: FC<ExplosivesPermitProps & PropsFromRedux> = ({
   handleOpenExplosivesPermitCloseModal,
   explosivesPermits,
   mines,
@@ -103,4 +108,7 @@ const mapDispatchToProps = {
   fetchExplosivesPermits,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExplosivesPermit);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(ExplosivesPermit);
