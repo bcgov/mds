@@ -1,4 +1,4 @@
-from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
+from app.api.compliance.response_models import COMPLIANCE_ARTICLE_BASE_MODEL
 from app.api.dams.dto import DAM_MODEL
 from app.api.mines.reports.models.mine_report_permit_requirement import (
     CimOrCpo,
@@ -814,7 +814,7 @@ MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesMod
     'active_ind': fields.Boolean
 })
 
-MINE_REPORT_DEFINITION_BASE_MODEL = api.model(
+MINE_REPORT_DEFINITION_MODEL = api.model(
     'MineReportDefinitionBase', {
         'mine_report_definition_guid': fields.String,
         'report_name': fields.String,
@@ -826,11 +826,8 @@ MINE_REPORT_DEFINITION_BASE_MODEL = api.model(
         'categories': fields.List(fields.Nested(MINE_REPORT_DEFINITION_CATEGORIES)),
         'is_common': fields.Boolean,
         'is_prr_only': fields.Boolean,
+        'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_BASE_MODEL))
     })
-
-MINE_REPORT_DEFINITION_MODEL = api.inherit('MineReportDefinition', MINE_REPORT_DEFINITION_BASE_MODEL, {
-    'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL)),
-})
 
 PAGINATED_LIST = api.model(
     'List', {
@@ -839,6 +836,10 @@ PAGINATED_LIST = api.model(
         'items_per_page': fields.Integer,
         'total': fields.Integer,
     })
+
+PAGINATED_MINE_REPORT_DEFINITION_MODEL = api.inherit('MineReportDefinition', PAGINATED_LIST, {
+    'records': fields.List(fields.Nested(MINE_REPORT_DEFINITION_MODEL)),
+})
 
 PAGINATED_REPORT_LIST = api.inherit('ReportList', PAGINATED_LIST, {
     'records': fields.List(fields.Nested(MINE_REPORT_MODEL)),

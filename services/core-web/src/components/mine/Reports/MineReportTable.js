@@ -11,8 +11,8 @@ import {
 import {
   getMineReportCategoryOptionsHash,
   getMineReportStatusOptionsHash,
-  getMineReportDefinitionHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getMineReportDefinitionHash } from "@mds/common/redux/slices/complianceReportsSlice";
 import { Link, useHistory } from "react-router-dom";
 import { Badge, notification } from "antd";
 import CustomPropTypes from "@/customPropTypes";

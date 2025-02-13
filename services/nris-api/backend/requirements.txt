@@ -21,3 +21,4 @@ uwsgi==2.0.23
 requests==2.32.3
 uwsgitop==0.11
 Werkzeug==3.0.3
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability

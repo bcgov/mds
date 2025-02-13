@@ -1,10 +1,8 @@
 import { formatComplianceCodeReportName } from "@mds/common/redux/utils/helpers";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { Field } from "@mds/common/components/forms/form";
-
-import { getMineReportDefinitionOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-
+import { fetchComplianceReports, getMineReportDefinitionOptions, getReportDefinitionsLoaded, reportParamsGetAll } from "@mds/common/redux/slices/complianceReportsSlice";
 import RenderSelect from "../forms/RenderSelect";
 import { uniqBy } from "lodash";
 import moment from "moment";
@@ -20,9 +18,10 @@ export interface ReportDefinitionFieldSelectProps {
 }
 
 export const ReportDefinitionFieldSelect = (props: ReportDefinitionFieldSelectProps) => {
+  const dispatch = useDispatch();
   const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
-
-  const [formattedMineReportDefinitionOptions, setFormatMineReportDefinitionOptions] = useState([]);
+  const [formattedMineReportDefinitionOptions, setFormattedMineReportDefinitionOptions] = useState([]);
+  const reportDefinitionsLoaded = useSelector(getReportDefinitionsLoaded(reportParamsGetAll));
 
   useEffect(() => {
     // Format the mine report definition options for the search bar
@@ -39,8 +38,14 @@ export const ReportDefinitionFieldSelect = (props: ReportDefinitionFieldSelectPr
         };
       })
       .sort((a, b) => a.label.localeCompare(b.label));
-    setFormatMineReportDefinitionOptions(uniqBy(newFormattedMineReportDefinitionOptions, "value"));
+    setFormattedMineReportDefinitionOptions(uniqBy(newFormattedMineReportDefinitionOptions, "value"));
   }, [mineReportDefinitionOptions]);
+
+  useEffect(() => {
+    if (!reportDefinitionsLoaded) {
+      dispatch(fetchComplianceReports(reportParamsGetAll));
+    }
+  }, []);
 
   return (
     <Field

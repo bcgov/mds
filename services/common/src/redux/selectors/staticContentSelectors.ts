@@ -5,11 +5,9 @@ import {
   createLabelHash,
   createDropDownList,
   compareCodes,
-  formatComplianceCodeReportName,
 } from "../utils/helpers";
 import { RootState } from "@mds/common/redux/rootState";
 import { getMunicipalityOptions } from "../reducers/staticContentReducer";
-import { IMineReportDefinition } from "@mds/common/interfaces/reports/mineReportDefinition.interface";
 
 export const {
   getStaticContentLoadingIsComplete,
@@ -18,7 +16,6 @@ export const {
   getMineTenureTypeOptions,
   getMineCommodityOptions,
   getMineDisturbanceOptions,
-  getMineReportDefinitionOptions,
   getMineReportStatusOptions,
   getMineReportCategoryOptions,
   getProvinceOptions,
@@ -80,7 +77,7 @@ const getOptions = (transformOptionsFunc, showActiveOnly) => {
     : options;
 };
 
-const createSelectorWrapper = (
+export const createSelectorWrapper = (
   getOptionsMethod,
   transformOptionsMethod,
   transformOptionsFuncArgs = []
@@ -458,46 +455,6 @@ export const getDropdownVarianceDocumentCategoryOptions = createSelectorWrapper(
 export const getVarianceDocumentCategoryOptionsHash = createSelector(
   [getDropdownVarianceDocumentCategoryOptions],
   createLabelHash
-);
-
-export const getDropdownMineReportDefinitionOptions = createSelectorWrapper(
-  getMineReportDefinitionOptions,
-  createDropDownList,
-  ["report_name", "mine_report_definition_guid", "active_ind"]
-);
-
-export const getFormattedMineReportDefinitionOptions = createSelectorWrapper(
-  getMineReportDefinitionOptions,
-  (options: IMineReportDefinition[]) => {
-    return options
-      .map((item) => {
-        return {
-          label: formatComplianceCodeReportName(item),
-          value: item.mine_report_definition_guid,
-          isActive: item.active_ind,
-          is_common: item.is_common,
-          report_name: item.report_name,
-        };
-      })
-      .sort((a, b) => a.label.localeCompare(b.label));
-  }
-);
-
-export const getMineReportDefinitionByGuid = (mineReportDefinitionGuid: string) =>
-  createSelector([getMineReportDefinitionOptions], (reportDefs) => {
-    return reportDefs.find((r) => r.mine_report_definition_guid === mineReportDefinitionGuid);
-  });
-
-export const getMineReportDefinitionHash = createSelector(
-  getMineReportDefinitionOptions,
-  (options) =>
-    options.reduce(
-      (map, mine_report_definition) => ({
-        [mine_report_definition.mine_report_definition_guid]: mine_report_definition,
-        ...map,
-      }),
-      {}
-    )
 );
 
 export const getDropdownMineReportCategoryOptions = createSelectorWrapper(

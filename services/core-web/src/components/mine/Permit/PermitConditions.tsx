@@ -424,7 +424,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const AddConditionModalContent = (
     <Typography.Paragraph
       className="no_link_styling grey"
-      style={{ fontSize: "14px", textAlign: "center" }}
+      style={{ fontSize: "14px", textAlign: "center", margin: "20px" }}
     >
       {showLoading ? (
         <Skeleton active paragraph={{ rows: 1 }} />

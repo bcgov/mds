@@ -227,6 +227,8 @@ export enum REPORT_REGULATORY_AUTHORITY_CODES {
 export enum REPORT_REGULATORY_AUTHORITY_ENUM {
   CPO = "Chief Permitting Officer",
   CIM = "Chief Inspector of Mines",
+  Both = "Both",
+  
 }
 
 export enum MineReportType {

@@ -250,6 +250,7 @@ export const createPermitAmendmentConditionCategory = (
 
         dispatch(success(NetworkReducerTypes.CREATE_PERMIT_CONDITION_CATEGORY));
         dispatch(fetchPermitAmendmentConditionCategories(mineGuid, permitGuid, permitAmdendmentGuid));
+        dispatch(fetchPermits(mineGuid));
         return response.data;
       })
       .catch(() => dispatch(error(NetworkReducerTypes.CREATE_PERMIT_CONDITION_CATEGORY)))
@@ -309,6 +310,7 @@ export const deletePermitAmendmentConditionCategory = (
 
         dispatch(success(NetworkReducerTypes.DELETE_PERMIT_CONDITION_CATEGORY));
         dispatch(fetchPermitAmendmentConditionCategories(mineGuid, permitGuid, permitAmdendmentGuid));
+        dispatch(fetchPermits(mineGuid));
         return response.data;
       })
       .catch(() => dispatch(error(NetworkReducerTypes.DELETE_PERMIT_CONDITION_CATEGORY)))

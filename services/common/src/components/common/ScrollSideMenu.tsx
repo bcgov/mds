@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, ReactNode, useEffect } from "react";
 import { useParams, useHistory, useLocation } from "react-router-dom";
 import { Anchor } from "antd";
 import { ISideMenuOption } from "../../interfaces/common/sideMenuOption.interface";
@@ -14,12 +14,14 @@ export interface ScrollSideMenuProps {
   tabSection?: string;
   offsetTop?: number;
   view?: "default" | "steps" | "anchor";
+  extraItems?: ReactNode;
 }
 
 export const ScrollSideMenu: FC<ScrollSideMenuProps> = ({
   tabSection = "",
   offsetTop = 180,
   view = "anchor",
+  extraItems,
   ...props
 }) => {
   const history = useHistory();
@@ -101,6 +103,7 @@ export const ScrollSideMenu: FC<ScrollSideMenuProps> = ({
             />
           );
         })}
+        {extraItems ?? ''}
       </Anchor>
     </div>
   );
