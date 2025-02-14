@@ -149,7 +149,7 @@ export const getHelpByKey = (helpKey: string, pageTab?: string) =>
   createSelector([getHelp], (help) => {
     const pageHelp = help[helpKey];
     const defaultHelpGuides = help[EMPTY_HELP_KEY];
-    let defaultHelp = defaultHelpGuides?.length > 0 ? defaultHelpGuides[0] : {content: "", help_key: null};
+    let defaultHelp = defaultHelpGuides?.length > 0 ? defaultHelpGuides[0] : null;
 
     if (!pageHelp || pageHelp.length === 0) {
       return defaultHelp;

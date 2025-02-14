@@ -50,7 +50,7 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
   const [open, setOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const canEditHelp = useSelector((state) => userHasRole(state, USER_ROLES.role_edit_helpdesk));
-  const helpGuide = useAppSelector(getHelpByKey(helpKey, pageTab));
+  const helpGuide = useAppSelector(getHelpByKey(helpKey, pageTab)) ?? {help_guid: null, help_key: helpKey, content: ""};
   const { help_guid, help_key } = helpGuide;
   const hasHelpGuide = Boolean(help_guid);
   const defaultGuide = help_key === EMPTY_HELP_KEY;
