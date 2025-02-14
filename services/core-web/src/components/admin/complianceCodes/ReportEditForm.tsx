@@ -13,7 +13,7 @@ export interface ReportEditProps {
 }
 
 export const ReportEditForm = (props: ReportEditProps) => {
-  const formValues = useSelector(getFormValues(FORM.ADD_COMPLIANCE_CODE));
+  const formValues: any = useSelector(getFormValues(FORM.ADD_COMPLIANCE_CODE));
   const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
 
   const renderPanelHeader = (fields, index, isEditMode) => {

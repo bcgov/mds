@@ -163,19 +163,21 @@ export const isDateRangeValid = (start, end) => {
   return Math.sign(milliseconds) !== -1;
 };
 
-export const dateSorter = (key: string, ascending = true) => (a: any, b: any) => {
-  if (a[key] === b[key]) {
-    return 0;
-  }
-  if (!a[key]) {
-    return 1;
-  }
-  if (!b[key]) {
-    return -1;
-  }
+export const dateSorter =
+  (key: string, ascending = true) =>
+  (a: any, b: any) => {
+    if (a[key] === b[key]) {
+      return 0;
+    }
+    if (!a[key]) {
+      return 1;
+    }
+    if (!b[key]) {
+      return -1;
+    }
 
-  return ascending ? moment(a[key]).diff(moment(b[key])) : moment(b[key]).diff(moment(a[key]));
-};
+    return ascending ? moment(a[key]).diff(moment(b[key])) : moment(b[key]).diff(moment(a[key]));
+  };
 
 export const nullableStringSorter = (path) => (a, b) => {
   const aObj = get(a, path, null);
@@ -359,6 +361,7 @@ export const formatComplianceCodeArticleNumber = (code: IComplianceArticle) => {
 };
 
 export const formatComplianceCodeReportName = (report: IMineReportDefinition) => {
+  if (!report?.compliance_articles[0]?.section) return report.report_name;
   const { section, sub_section, paragraph, sub_paragraph } = report?.compliance_articles[0];
   const formattedSubSection = sub_section ? `.${sub_section}` : "";
   const formattedParagraph = paragraph ? `.${paragraph}` : "";
@@ -655,7 +658,7 @@ export const getHighestConsequence = (tsf) => {
 
   const highestRankedDam = tsf.dams.reduce((prev, current) =>
     CONSEQUENCE_CLASSIFICATION_RANK_HASH[prev.consequence_classification] >
-      CONSEQUENCE_CLASSIFICATION_RANK_HASH[current.consequence_classification]
+    CONSEQUENCE_CLASSIFICATION_RANK_HASH[current.consequence_classification]
       ? prev
       : current
   );
@@ -672,17 +675,20 @@ export const getMineReportStatusDescription = (
   const update_timestamp = latestSubmission?.update_timestamp;
   const updatedDate = moment(update_timestamp).format("YYYY-MM-DD");
   const MINE_REPORT_STATUS_DESCRIPTION_HASH = {
-    [MINE_REPORT_SUBMISSION_CODES.NON]: `The ministry has requested for the report from the proponent through MineSpace. Requested by ${latestSubmission?.update_user
-      } on ${formatDate(updatedDate)}`,
+    [MINE_REPORT_SUBMISSION_CODES.NON]: `The ministry has requested for the report from the proponent through MineSpace. Requested by ${
+      latestSubmission?.update_user
+    } on ${formatDate(updatedDate)}`,
     [MINE_REPORT_SUBMISSION_CODES.ACC]:
       "The Ministry has reviewed the report, no more revision is required",
     [MINE_REPORT_SUBMISSION_CODES.REC]:
       "Ministry has received changes after requesting for more information. The revised information has not been reviewed.",
-    [MINE_REPORT_SUBMISSION_CODES.REQ]: `Requesting more information from the proponent through MineSpace. Requested by ${latestSubmission?.update_user
-      } on ${formatDate(updatedDate)}`,
+    [MINE_REPORT_SUBMISSION_CODES.REQ]: `Requesting more information from the proponent through MineSpace. Requested by ${
+      latestSubmission?.update_user
+    } on ${formatDate(updatedDate)}`,
     [MINE_REPORT_SUBMISSION_CODES.INI]: "The report has been submitted successfully",
-    [MINE_REPORT_SUBMISSION_CODES.WTD]: `The report has been withdrawn. Withdrew by ${latestSubmission?.update_user
-      } on ${formatDate(updatedDate)}`,
+    [MINE_REPORT_SUBMISSION_CODES.WTD]: `The report has been withdrawn. Withdrew by ${
+      latestSubmission?.update_user
+    } on ${formatDate(updatedDate)}`,
     [MINE_REPORT_SUBMISSION_CODES.NRQ]: "This report is not requested",
   };
   return MINE_REPORT_STATUS_DESCRIPTION_HASH[statusCode] || "";
