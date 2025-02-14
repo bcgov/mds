@@ -6367,6 +6367,9 @@ export const MINE_REPORTS = [
     update_timestamp: "2024-02-07T19:15:38.505482+00:00",
     mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
     mine_name: "Abbott Inc",
+    mine_report_contacts: [],
+    submitter_name: "test",
+    submitter_email: "test@bceid",
   },
   {
     mine_report_id: 124,
@@ -6401,6 +6404,9 @@ export const MINE_REPORTS = [
     update_timestamp: "2024-02-07T19:15:38.505482+00:00",
     mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
     mine_name: "Abbott Inc",
+    mine_report_contacts: [],
+    submitter_name: "test",
+    submitter_email: "test@bceid",
   },
   {
     mine_report_id: 125,
@@ -6421,6 +6427,9 @@ export const MINE_REPORTS = [
     update_timestamp: "2024-02-07T19:15:38.505482+00:00",
     mine_name: "Abbott Inc",
     mine_report_status_code: "NON",
+    mine_report_contacts: [],
+    submitter_name: "test",
+    submitter_email: "test@bceid",
   },
 ];
 
