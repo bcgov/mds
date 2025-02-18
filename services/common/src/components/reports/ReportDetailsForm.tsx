@@ -123,12 +123,12 @@ interface ReportDetailsFormProps {
 }
 
 const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
-  isEditMode = true,
-  initialValues,
-  mineGuid,
-  formButtons,
-  handleSubmit,
-}) => {
+                                                         isEditMode = true,
+                                                         initialValues,
+                                                         mineGuid,
+                                                         formButtons,
+                                                         handleSubmit,
+                                                       }) => {
   const { reportGuid } = useParams<{ reportGuid?: string }>();
 
   const coreEditReportPermission = USER_ROLES.role_edit_reports;
@@ -250,7 +250,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
 
   useEffect(() => {
     // update compliance article options when "Report Name" changes
-    if (mine_report_definition_guid) {
+    if (mine_report_definition_guid && mineReportDefinitionOptions.length) {
       const newReportComplianceArticle = mineReportDefinitionOptions.find((opt) => {
         return opt.mine_report_definition_guid === mine_report_definition_guid;
       });
@@ -260,7 +260,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     } else {
       setSelectedReportCode("");
     }
-  }, [mine_report_definition_guid]);
+  }, [mine_report_definition_guid, mineReportDefinitionOptions]);
 
   useEffect(() => {
     if (system === SystemFlagEnum.core) {

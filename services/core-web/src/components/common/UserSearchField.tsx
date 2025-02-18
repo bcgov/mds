@@ -15,6 +15,7 @@ interface UserSelectFieldProps {
   disabled?: boolean;
   required?: boolean;
   onSelect?: (value: any, option: any) => void;
+  loading?: boolean;
 }
 
 const transformUserData = (users) => {
@@ -30,6 +31,7 @@ export const UserSelectField: FC<UserSelectFieldProps> = ({
   validate = [],
   disabled = false,
   required = false,
+  loading = false,
   label = "User",
   initialDataSource,
   ...rest
@@ -73,28 +75,15 @@ export const UserSelectField: FC<UserSelectFieldProps> = ({
     }
   };
 
-  const validateOption = (value: any) => {
-    if (
-      initialDataSource &&
-      initialDataSource.length &&
-      initialDataSource.find((user) => user?.value)
-    )
-      return undefined;
-
-    if (value && userDataSource && !userDataSource.find((user) => user.value === value)) {
-      return "Invalid user selected";
-    }
-    return undefined;
-  };
 
   return (
     <Field
       name={rest.name}
-      validate={validate.concat(validateOption)}
+      validate={validate}
       id={rest.id}
       data={userDataSource}
       placeholder="Search for a user"
-      loading={searching}
+      loading={searching || loading}
       disabled={disabled}
       required={required}
       allowClear={false}

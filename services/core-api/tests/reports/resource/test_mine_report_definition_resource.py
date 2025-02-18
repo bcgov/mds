@@ -242,3 +242,76 @@ def test_mine_report_definition_sort_by_regulatory_authority(test_client, db_ses
         if index > 0:
             prev_val = reg_auth_values[index - 1]
             assert reg_auth_val >= prev_val
+
+def test_post_mine_report_definition_success(test_client, db_session, auth_headers):
+    request_data = {
+        "report_name": "Test Report Name",
+        "description": "This is a test description for the report.",
+        "mine_report_due_date_type_code": 'ANV',
+        "mine_report_due_date_period_months": 12,
+        "report_type": "CRR",
+        "is_common": True
+    }
+
+    post_resp = test_client.post(
+        '/mines/reports/definitions',
+        headers=auth_headers['core_edit_code'],
+        json=request_data
+    )
+    post_data = json.loads(post_resp.data.decode())
+
+    # Assertions
+    assert post_resp.status_code == 201
+    assert post_data['report_name'] == request_data['report_name']
+    assert post_data['description'] == request_data['description']
+    assert post_data['mine_report_due_date_type'] == request_data['mine_report_due_date_type_code']
+    assert post_data['due_date_period_months'] == request_data['mine_report_due_date_period_months']
+    assert post_data['is_prr_only'] == False
+    assert post_data['is_common'] == request_data['is_common']
+
+    # Ensure the object was created in the database
+    db_object = db_session.query(MineReportDefinition).filter_by(report_name="Test Report Name").first()
+    assert db_object is not None
+    assert db_object.description == request_data['description']
+
+# Test missing required fields in POST request
+def test_post_mine_report_definition_missing_required_fields(test_client, auth_headers):
+    request_data = {
+        "description": "Missing required fields",
+        "mine_report_due_date_type_code": "ANV",
+        "mine_report_due_date_period_months": 12,
+    }
+
+    post_resp = test_client.post(
+        '/mines/reports/definitions',
+        headers=auth_headers['core_edit_code'],
+        json=request_data
+    )
+    post_data = json.loads(post_resp.data.decode())
+
+    # Assertions
+    assert post_resp.status_code == 400
+    assert "Input payload validation failed" in post_data['message']
+
+
+def test_post_mine_report_definition_duplicate_report_name(test_client, db_session, auth_headers):
+    mine_report_definition = db_session.query(MineReportDefinition).first()
+
+    request_data = {
+        "report_name": mine_report_definition.report_name,
+        "description": "This is a test description for the report.",
+        "mine_report_due_date_type_code": 'ANV',
+        "mine_report_due_date_period_months": 12,
+        "report_type": "CRR",
+        "is_common": False
+    }
+
+    post_resp = test_client.post(
+        '/mines/reports/definitions',
+        headers=auth_headers['core_edit_code'],
+        json=request_data
+    )
+
+    # Assertions
+    assert post_resp.status_code == 400
+

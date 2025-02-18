@@ -57,14 +57,17 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
     {
       title: "Code Section",
       key: "code_section",
-      render: (record) => (
-        <div title="Code Section">
-          {formatComplianceCodeValueOrLabel(
-            mineReportDefinitionHash[record.mine_report_definition_guid].compliance_articles[0],
-            false
-          )}
-        </div>
-      ),
+      render: (record: any) => {
+        return mineReportDefinitionHash[record?.mine_report_definition_guid]
+          ?.compliance_articles[0] ? (
+          <div title="Code Section">
+            {formatComplianceCodeValueOrLabel(
+              mineReportDefinitionHash[record.mine_report_definition_guid].compliance_articles[0],
+              false
+            )}
+          </div>
+        ) : null;
+      },
     },
     renderTextColumn("submission_year", "Compliance Year", !props.backendPaginated, null, 5),
     renderTextColumn("due_date", "Due", true, null, 5),

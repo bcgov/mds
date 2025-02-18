@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useMemo, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { Alert, Button, Col, Row, Skeleton, Space, Typography } from "antd";
 import FileOutlined from "@ant-design/icons/FileOutlined";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -46,19 +45,23 @@ import {
   updatePermitCondition,
 } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { EditPermitConditionCategoryInline } from "./PermitConditionCategory";
-import { searchConditionCategories } from "@mds/common/redux/slices/permitConditionCategorySlice";
+import {
+  fetchReviewAssignments,
+  getReviewAssignmentsByAmendment,
+  getUserReviewAssignmentsByAmendment,
+  searchConditionCategories
+} from "@mds/common/redux/slices/permitConditionCategorySlice";
 import { PreviewPermitAmendmentDocument } from "./PreviewPermitAmendmentDocument";
 import { formatPermitConditionStep } from "@mds/common/utils/helpers";
 import SubConditionForm from "./SubConditionForm";
 import { getIsFetching } from "@mds/common/redux/reducers/networkReducer";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import PermitConditionReviewAssignment from "@/components/mine/Permit/PermitConditionReviewAssignment";
-import { getUser } from "@mds/common/redux/slices/userSlice";
 import { createDropDownList } from "@common/utils/helpers";
 import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
 import { PermitReviewBanner } from "./PermitReviewBanner";
 import { PermitConditionsProvider } from "./PermitConditionsContext";
-import { useAppDispatch } from "@mds/common/redux/rootState";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 
 const { Title } = Typography;
 
@@ -83,16 +86,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
 }) => {
   const { isFeatureEnabled } = useFeatureFlag();
   const dispatch = useAppDispatch();
-  const user = useSelector(getUser);
   const history = useHistory();
-
-  const userIsAssigned = (category?: IPermitConditionCategory): boolean => {
-    return user?.sub && (user.sub === category?.assigned_review_user?.sub);
-  };
-
-
-  const canEditPermitConditions = (category: IPermitConditionCategory): boolean =>
-    isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && userCanEdit && userIsAssigned(category);
 
   const { id: mineGuid, permitGuid } = useParams<{
     id: string;
@@ -106,16 +100,26 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const [editingConditionGuid, setEditingConditionGuid] = useState<string>();
   const [addingToCategoryCode, setAddingToCategoryCode] = useState<string>();
 
-  const mineReportPermitRequirements: IMineReportPermitRequirement[] = useSelector(
+  const mineReportPermitRequirements: IMineReportPermitRequirement[] = useAppSelector(
     getMineReportPermitRequirementsByAmendment(permitGuid, currentAmendment?.permit_amendment_guid)
   );
 
-  const isLoading = useSelector(getIsFetching(NetworkReducerTypes.GET_PERMITS));
+  const reviewAssignments = useAppSelector(getReviewAssignmentsByAmendment(currentAmendment.permit_amendment_id));
+  const userReviewAssignments = useAppSelector(getUserReviewAssignmentsByAmendment(currentAmendment.permit_amendment_id));
+
+  const permitsLoading = useAppSelector(getIsFetching(NetworkReducerTypes.GET_PERMITS));
+  const showLoading = permitsLoading;
 
   const permitConditions = currentAmendment?.conditions;
-  const permitExtraction = useSelector(
+  const permitExtraction = useAppSelector(
     getPermitExtractionByGuid(currentAmendment?.permit_amendment_id)
   );
+
+  const userReviewCategoryCodes = userReviewAssignments.map((assignment) => assignment.condition_category_code);
+
+  const canEditPermitConditions = (category: IPermitConditionCategory): boolean =>
+    isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && userCanEdit
+    && userReviewCategoryCodes.includes(category.condition_category_code);
 
   const refreshData = async () => {
     await dispatch(fetchPermits(mineGuid));
@@ -123,9 +127,10 @@ const PermitConditions: FC<PermitConditionProps> = ({
 
   useEffect(() => {
     dispatch(searchConditionCategories({}));
+    dispatch(fetchReviewAssignments({ permit_amendment_id: currentAmendment.permit_amendment_id }));
   }, []);
 
-  const defaultPermitConditionCategories = useSelector(getPermitConditionCategoryOptions);
+  const defaultPermitConditionCategories = useAppSelector(getPermitConditionCategoryOptions);
   const condWithoutConditionsText = defaultPermitConditionCategories?.map((cat) => {
     return {
       ...cat,
@@ -224,6 +229,9 @@ const PermitConditions: FC<PermitConditionProps> = ({
           status = PERMIT_CONDITION_STATUS.in_progress;
         }
 
+        const reviewAssignment = reviewAssignments.find((assignment) => assignment.condition_category_code === category.condition_category_code);
+        const assigned_review_user = reviewAssignment?.assigned_review_user;
+
         return {
           ...category,
           icon: <FontAwesomeIcon icon={status.icon} className={status.color} style={{ fontSize: "20px" }} />,
@@ -235,7 +243,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
           description: (
             <Space direction="vertical">
               <Typography.Text>{status.text}</Typography.Text>
-              <Typography.Text className="faded-text">{cat.assigned_review_user?.display_name ? "Assigned to " + cat.assigned_review_user.display_name : "Not Assigned"}</Typography.Text>
+              <Typography.Text className="faded-text">{assigned_review_user?.display_name ? "Assigned to " + assigned_review_user.display_name : "Not Assigned"}</Typography.Text>
             </Space>
           ),
         };
@@ -413,10 +421,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
     return <><LatestAmendmentWarning /><RenderExtractionStart /></>;
   }
 
-  const showLoading = !currentAmendment || isLoading;
-
-
-
   const AddConditionModalContent = (
     <Typography.Paragraph
       className="no_link_styling grey"
@@ -498,7 +502,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                     <Row gutter={[16, 16]}>
                       {showLoading && <Skeleton active paragraph={{ rows: 10 }} />}
 
-                      {permitConditionCategories.map((category, idx) => {
+                      {!showLoading && permitConditionCategories.map((category, idx) => {
                         return (
                           <React.Fragment key={category.href}>
                             <Col span={24}>
@@ -533,7 +537,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
                               {isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && userCanEdit && (
                                 <PermitConditionReviewAssignment
                                   category={category?.condition_category}
-                                  refreshData={refreshData}
                                 />
                               )}
                             </Col>

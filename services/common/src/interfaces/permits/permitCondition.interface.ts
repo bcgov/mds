@@ -47,11 +47,17 @@ export interface IPermitCondition {
   top_level_parent_permit_condition_id?: number;
 }
 
+export interface IPermitConditionReviewAssignment {
+  assigned_review_user: IUser;
+  condition_category_code: string;
+  condition_review_assignment_guid: string;
+  permit_amendment_id: number;
+}
+
 export interface IPermitConditionCategory {
   condition_category_code: string;
   description: string;
   display_order: number;
   step: string;
-  assigned_review_user?: IUser
   conditions?: IPermitCondition[]
 }
