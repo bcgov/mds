@@ -46,6 +46,13 @@
   line-height: 32px;
   border: none !important;
   margin: 0 !important;
+  text-wrap: wrap;
+  height: unset;
+  text-align: left;
+}
+
+.report-link span{
+  display: inline;
 }
 
 .report-instructions {
