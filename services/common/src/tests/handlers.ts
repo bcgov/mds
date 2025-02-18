@@ -8,6 +8,7 @@ import {
   PERMIT_CONDITION_EXTRACTION,
   PROJECT,
   PROJECT_SUMMARY_MINISTRY_COMMENTS,
+  SEARCH_PERMIT_CONDITIONS_RESPONSE,
 } from "@mds/common/tests/mocks/dataMocks";
 import queryString from "query-string";
 import { SystemFlagEnum } from "../constants/enums";
@@ -39,10 +40,7 @@ const permitHandlers = [
   http.get("/%3CAPI_URL%3E/mines/permits/condition-category-codes", async () => {
     return HttpResponse.json(MINE_REPORT_CATEGORY_OPTIONS)
   }),
-
-
-]
-
+];
 
 const permitSearchHandlers = [
   http.post(
@@ -52,42 +50,13 @@ const permitSearchHandlers = [
 
       // Mock different responses based on search query
       if (requestBody?.query?.includes('water')) {
-        return HttpResponse.json(
-          {
-            documents: [
-              {
-                id: '1',
-                content: 'Water quality monitoring must be conducted monthly',
-                meta: {
-                  permit: 'M-123',
-                  mine_name: 'Test Mine',
-                  issue_date: '2025-02-07',
-                  category: 'Environmental',
-                },
-                score: 0.95,
-              },
-            ],
-            prompt: {
-              answers: ['The permit requires monthly water quality monitoring.'],
-            },
-            facets: {
-              category: [
-                { value: 'Environmental', count: 1 },
-                { value: 'Safety', count: 0 },
-              ],
-              mine_name: [
-                { value: 'Test Mine', count: 1 },
-              ],
-            },
-          }
-        );
+        return HttpResponse.json(SEARCH_PERMIT_CONDITIONS_RESPONSE);
       }
 
       return HttpResponse.json({ documents: [], prompt: { answers: [] }, facets: {} });
     }
   )
-
-]
+];
 
 const helpHandler = http.get("/%3CAPI_URL%3E/help/:helpKey", async ({ request, params }) => {
   const { helpKey } = params;

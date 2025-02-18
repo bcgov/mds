@@ -1,8 +1,7 @@
-import { createAppSlice } from "@mds/common/redux/createAppSlice";
+import { createAppSlice, rejectHandler } from "@mds/common/redux/createAppSlice";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import CustomAxios from "@mds/common/redux/customAxios";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
-import { RootState } from "../rootState";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import { Facet, SearchQuery, SearchResult } from "@mds/common/interfaces/search/facet-search.interface";
 
@@ -48,10 +47,10 @@ const permitSearchSlice = createAppSlice({
 
                     thunkApi.dispatch(hideLoading());
                     return response.data;
-                } catch (error) {
+                } finally {
                     thunkApi.dispatch(hideLoading());
-                    throw error;
                 }
+
             },
             {
                 pending: (state) => {
@@ -82,8 +81,9 @@ const permitSearchSlice = createAppSlice({
                     // Also update the results allFacets
                     state.results.allFacets = state.allFacets;
                 },
-                rejected: (state) => {
+                rejected: (state, action) => {
                     state.loading = false;
+                    rejectHandler(action)
                 },
             }
         ),
