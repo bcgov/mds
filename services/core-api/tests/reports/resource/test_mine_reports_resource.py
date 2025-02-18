@@ -66,7 +66,7 @@ def test_get_code_required_reports_for_mine(test_client, db_session, auth_header
     for report in get_data['records']:
         received_date = datetime.strptime(report['received_date'], '%Y-%m-%d')
 
-        assert (start_date <= received_date.date())
+        assert (start_date.date() <= received_date.date())
         assert (received_date.date() <= end_date)
 
 
