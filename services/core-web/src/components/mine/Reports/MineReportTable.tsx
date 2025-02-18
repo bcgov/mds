@@ -1,6 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { connect, useSelector } from "react-redux";
+import React, { FC, useState } from "react";
+import { useSelector } from "react-redux";
 import * as Strings from "@mds/common/constants/strings";
 import {
   formatDate,
@@ -12,10 +11,8 @@ import {
   getMineReportCategoryOptionsHash,
   getMineReportStatusOptionsHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getMineReportDefinitionHash } from "@mds/common/redux/slices/complianceReportsSlice";
 import { Link, useHistory } from "react-router-dom";
-import { Badge, notification } from "antd";
-import CustomPropTypes from "@/customPropTypes";
+import { Badge } from "antd";
 import DocumentLink from "@/components/common/DocumentLink";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import * as router from "@/constants/routes";
@@ -26,36 +23,45 @@ import DownloadOutlined from "@ant-design/icons/DownloadOutlined";
 import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
-import { getDocumentDownloadToken } from "@mds/common/redux/utils/actionlessNetworkCalls";
-import { waitFor, downloadDocument } from "@/components/common/downloads/helpers";
 import { USER_ROLES } from "@mds/common/constants/environment";
+import { IMineReport } from "@mds/common/interfaces";
+import { TablePaginationConfig } from "antd/es/table";
+import DocumentCompression from "@mds/common/components/documents/DocumentCompression";
+import { MineDocument } from "@mds/common/models/documents/document";
+import { getMineReportDefinitionHash } from "@mds/common/redux/slices/complianceReportsSlice";
 
-const propTypes = {
-  mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
-  mineReportCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  mineReportStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  mineReportDefinitionHash: PropTypes.objectOf(PropTypes.any).isRequired,
-  handleRemoveReport: PropTypes.func.isRequired,
-  isLoaded: PropTypes.bool.isRequired,
-  handleTableChange: PropTypes.func,
-  filters: PropTypes.objectOf(PropTypes.any),
-  sortField: PropTypes.string,
-  sortDir: PropTypes.string,
-  isPaginated: PropTypes.bool,
-  isDashboardView: PropTypes.bool,
-  mineReportType: PropTypes.string,
-};
+interface MineReportTableProps {
+  mineReports: IMineReport[];
+  handleRemoveReport: any;
+  isLoaded: boolean;
+  handleTableChange?: any;
+  filters?: any;
+  sortField?: string;
+  sortDir?: string;
+  isPaginated?: false | TablePaginationConfig;
+  isDashboardView?: boolean;
+  mineReportType?: string;
+}
 
-const defaultProps = {
-  handleTableChange: () => { },
-  filters: {},
-  sortField: undefined,
-  sortDir: undefined,
-  isPaginated: false,
-  isDashboardView: false,
-};
+export const MineReportTable: FC<MineReportTableProps> = ({
+  mineReports,
+  handleRemoveReport,
+  isLoaded,
+  mineReportType,
+  handleTableChange = () => { },
+  filters = {},
+  sortField = undefined,
+  sortDir = undefined,
+  isPaginated = false,
+  isDashboardView = false,
+}) => {
+  const [documentsToDownload, setDocumentsToDownload] = useState([]);
+  const [isCompressionModalVisible, setIsCompressionModalVisible] = useState(false);
 
-export const MineReportTable = (props) => {
+  const mineReportCategoryOptionsHash = useSelector(getMineReportCategoryOptionsHash);
+  const mineReportStatusOptionsHash = useSelector(getMineReportStatusOptionsHash);
+  const mineReportDefinitionHash = useSelector(getMineReportDefinitionHash);
+
   const hideColumn = (condition) => (condition ? "column-hide" : "");
 
   const userIsCoreEditReports = useSelector((state) =>
@@ -68,30 +74,11 @@ export const MineReportTable = (props) => {
       router.REPORT_VIEW_EDIT.dynamicRoute(mineReport.mine_guid, mineReport.mine_report_guid)
     );
   };
-  // from DownloadAllDocumentsButton- I think there is a new way to accomplish this
+
   const handleDownloadAll = (mineReport) => {
-    const documents = mineReport.documents;
-    const docURLS = [];
-
-    const totalFiles = documents.length;
-    if (totalFiles === 0) {
-      return;
-    }
-    documents.forEach((doc) =>
-      getDocumentDownloadToken(doc.document_manager_guid, doc.document_name, docURLS)
-    );
-
-    waitFor(() => docURLS.length === documents.length).then(async () => {
-      for (const url of docURLS) {
-        downloadDocument(url);
-
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-      }
-      notification.success({
-        message: `Successfully Downloaded: ${totalFiles} files.`,
-        duration: 10,
-      });
-    });
+    const mineDocuments = (mineReport.documents).map((doc) => new MineDocument(doc));
+    setDocumentsToDownload(mineDocuments);
+    setIsCompressionModalVisible(true);
   };
 
   const getRecordActions = () => {
@@ -119,7 +106,7 @@ export const MineReportTable = (props) => {
         clickFunction: (event, record) => {
           deleteConfirmWrapper(
             `${record.report.submission_year} ${record.report.report_name}`,
-            () => props.handleRemoveReport(record)
+            () => handleRemoveReport(record)
           );
         },
       },
@@ -127,9 +114,9 @@ export const MineReportTable = (props) => {
   };
 
   const getComplianceCodeValue = (guid) => {
-    return props.mineReportDefinitionHash && props.mineReportDefinitionHash[guid]
+    return mineReportDefinitionHash && mineReportDefinitionHash[guid]
       ? formatComplianceCodeValueOrLabel(
-        props.mineReportDefinitionHash[guid].compliance_articles[0],
+        mineReportDefinitionHash[guid].compliance_articles[0],
         false
       )
       : null;
@@ -141,23 +128,23 @@ export const MineReportTable = (props) => {
       key: "mine_name",
       dataIndex: "mine_name",
       sortField: "mine_name",
-      sorter: props.isDashboardView,
-      className: hideColumn(!props.isDashboardView),
+      sorter: isDashboardView,
+      className: hideColumn(!isDashboardView),
       render: (text, record) => (
-        <div title="Mine" className={hideColumn(!props.isDashboardView)}>
+        <div title="Mine" className={hideColumn(!isDashboardView)}>
           <Link to={router.MINE_DASHBOARD.dynamicRoute(record.mine_guid)}>{text}</Link>
         </div>
       ),
     },
     {
       title:
-        props.mineReportType === Strings.MINE_REPORTS_TYPE.permitRequiredReports
+        mineReportType === Strings.MINE_REPORTS_TYPE.permitRequiredReports
           ? "Report Type"
           : "Report Name",
       key: "report_name",
       dataIndex: "report_name",
       sortField: "report_name",
-      sorter: props.isDashboardView || ((a, b) => a.report_name.localeCompare(b.report_name)),
+      sorter: isDashboardView || ((a, b) => a.report_name.localeCompare(b.report_name)),
       render: (text) => <div title="Report Name">{text}</div>,
     },
     {
@@ -165,7 +152,7 @@ export const MineReportTable = (props) => {
       key: "submission_year",
       dataIndex: "submission_year",
       sortField: "submission_year",
-      sorter: props.isDashboardView || ((a, b) => (a.submission_year < b.submission_year ? -1 : 1)),
+      sorter: isDashboardView || ((a, b) => (a.submission_year < b.submission_year ? -1 : 1)),
       render: (text) => <div title="Compliance Year">{text}</div>,
     },
     {
@@ -173,7 +160,7 @@ export const MineReportTable = (props) => {
       key: "mine_report_status",
       dataIndex: "mine_report_status",
       sortField: "mine_report_status",
-      sorter: props.isDashboardView || nullableStringSorter("mine_report_status"),
+      sorter: isDashboardView || nullableStringSorter("mine_report_status"),
       render: (text) => (
         <div title="Status">
           <Badge
@@ -188,7 +175,7 @@ export const MineReportTable = (props) => {
       key: "due_date",
       dataIndex: "due_date",
       sortField: "due_date",
-      sorter: props.isDashboardView || dateSorter("due_date"),
+      sorter: isDashboardView || dateSorter("due_date"),
       render: (text) => <div title="Due">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
@@ -196,7 +183,7 @@ export const MineReportTable = (props) => {
       key: "received_date",
       dataIndex: "received_date",
       sortField: "received_date",
-      sorter: props.isDashboardView || dateSorter("received_date"),
+      sorter: isDashboardView || dateSorter("received_date"),
       render: (text) => <div title="Received">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
@@ -205,10 +192,10 @@ export const MineReportTable = (props) => {
       key: "created_by_idir",
       sortField: "created_by_idir",
       sorter:
-        props.isDashboardView || ((a, b) => a.created_by_idir.localeCompare(b.created_by_idir)),
-      className: hideColumn(props.isDashboardView),
+        isDashboardView || ((a, b) => a.created_by_idir.localeCompare(b.created_by_idir)),
+      className: hideColumn(isDashboardView),
       render: (text) => (
-        <div title="Requested By" className={hideColumn(props.isDashboardView)}>
+        <div title="Requested By" className={hideColumn(isDashboardView)}>
           {text}
         </div>
       ),
@@ -248,7 +235,8 @@ export const MineReportTable = (props) => {
     key: "code_section",
     render: (record) => (
       <div title="Code Section">{getComplianceCodeValue(record.mine_report_definition_guid)}</div>
-    ),
+    )
+    ,
   };
 
   const permitColumn = {
@@ -256,17 +244,19 @@ export const MineReportTable = (props) => {
     key: "permit_number",
     dataIndex: "permit_number",
     sortField: "permit_number",
-    sorter: props.isDashboardView || nullableStringSorter("permit_number"),
+    sorter: isDashboardView || nullableStringSorter("permit_number"),
     render: (text, record) => (
       <Link to={router.MINE_PERMITS.dynamicRoute(record.mine_guid)}>{text}</Link>
     ),
   };
 
-  if (props.mineReportType === Strings.MINE_REPORTS_TYPE.codeRequiredReports) {
+  if (mineReportType === Strings.MINE_REPORTS_TYPE.codeRequiredReports) {
+    // @ts-ignore
     columns.splice(2, 0, codeSectionColumn);
   }
 
-  if (props.mineReportType === Strings.MINE_REPORTS_TYPE.permitRequiredReports) {
+  if (mineReportType === Strings.MINE_REPORTS_TYPE.permitRequiredReports) {
+    // @ts-ignore
     columns.splice(2, 0, permitColumn);
   }
 
@@ -281,7 +271,7 @@ export const MineReportTable = (props) => {
         (report.mine_report_category &&
           report.mine_report_category.length > 0 &&
           report.mine_report_category
-            .map((category) => props.mineReportCategoryOptionsHash[category])
+            .map((category) => mineReportCategoryOptionsHash[category])
             .join(", ")) ||
         Strings.EMPTY_FIELD,
       report_name: report.report_name,
@@ -291,7 +281,7 @@ export const MineReportTable = (props) => {
       created_by_idir: report.created_by_idir,
       permit_guid: report.permit_guid || Strings.EMPTY_FIELD,
       mine_report_status:
-        props.mineReportStatusOptionsHash[report.mine_report_status_code] || Strings.EMPTY_FIELD,
+        mineReportStatusOptionsHash[report.mine_report_status_code] || Strings.EMPTY_FIELD,
       documents: report.latest_submission?.documents ?? [],
       mine_guid: report.mine_guid,
       mine_name: report.mine_name,
@@ -304,7 +294,7 @@ export const MineReportTable = (props) => {
       sortOrder: dir && column.sortField === field ? dir.concat("end") : false,
     }));
 
-  const handleTableChange = (updateReportList, tableFilters) => (pagination, filters, sorter) => {
+  const mineReportHandleTableChange = (updateReportList, tableFilters) => (pagination, filters, sorter) => {
     const params = {
       ...tableFilters,
       sort_field: sorter.order ? sorter.field : undefined,
@@ -314,24 +304,23 @@ export const MineReportTable = (props) => {
   };
 
   return (
-    <CoreTable
-      condition={props.isLoaded}
-      columns={applySortIndicator(columns, props.sortField, props.sortDir)}
-      classPrefix="mine-reports"
-      dataSource={transformRowData(props.mineReports)}
-      pagination={props.isPaginated}
-      onChange={handleTableChange(props.handleTableChange, props.filters)}
-    />
+    <div>
+      <DocumentCompression
+        mineDocuments={documentsToDownload}
+        setCompressionModalVisible={setIsCompressionModalVisible}
+        isCompressionModalVisible={isCompressionModalVisible}
+        showDownloadWarning={false}
+      />
+      <CoreTable
+        condition={isLoaded}
+        columns={applySortIndicator(columns, sortField, sortDir)}
+        classPrefix="mine-reports"
+        dataSource={transformRowData(mineReports)}
+        pagination={isPaginated}
+        onChange={mineReportHandleTableChange(handleTableChange, filters)}
+      />
+    </div>
   );
 };
 
-MineReportTable.propTypes = propTypes;
-MineReportTable.defaultProps = defaultProps;
-
-const mapStateToProps = (state) => ({
-  mineReportCategoryOptionsHash: getMineReportCategoryOptionsHash(state),
-  mineReportStatusOptionsHash: getMineReportStatusOptionsHash(state),
-  mineReportDefinitionHash: getMineReportDefinitionHash(state),
-});
-
-export default connect(mapStateToProps)(MineReportTable);
+export default MineReportTable;

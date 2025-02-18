@@ -22,7 +22,7 @@
 .ant-checkbox-group-item {
   min-width: 0;
 
-  &>span {
+  & > span {
     max-width: 100%;
   }
 }
@@ -52,13 +52,13 @@
 }
 
 .ant-form-item-required,
-.ant-form-item-label>label.ant-form-item-required:not(.ant-form-item-required-mark-optional) {
+.ant-form-item-label > label.ant-form-item-required:not(.ant-form-item-required-mark-optional) {
   &::before {
     font-family: $font-family;
   }
 }
 
-.ant-form-item-checkbox-required .ant-checkbox+span {
+.ant-form-item-checkbox-required .ant-checkbox + span {
   &::after {
     content: "*";
     font-family: $font-family;
@@ -72,7 +72,7 @@
   }
 }
 
-.ant-form-vertical .ant-form-item-label>label {
+.ant-form-vertical .ant-form-item-label > label {
   // to make * appear on the same line when label is an HTML element
   display: flex;
   align-items: baseline;
@@ -87,7 +87,6 @@
 }
 
 .ant-form-inline {
-
   .ant-form-item,
   .ant-form-item-row,
   .ant-btn {
@@ -108,7 +107,7 @@
   }
 }
 
-.form-btn+.form-btn {
+.form-btn + .form-btn {
   margin-left: 1em;
 }
 
@@ -133,6 +132,7 @@
 .vertical-radio-group {
   display: flex;
   flex-direction: column;
+  gap: 16px;
 }
 
 .radio-two-column-container {
@@ -162,7 +162,7 @@ label .info-tooltip {
     padding-bottom: 0;
   }
 
-  .view-group-checkbox label>span {
+  .view-group-checkbox label > span {
     color: $input-text;
   }
 
@@ -192,7 +192,7 @@ label .info-tooltip {
   border-bottom: 1px dotted;
 }
 
-.ant-steps+* {
+.ant-steps + * {
   margin-top: 0.5em;
 }
 

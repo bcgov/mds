@@ -1,4 +1,14 @@
-import { MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES, MINE_INCIDENT_DOCUMENT_TYPE_CODE, NodStatusSaveEnum, NoDTypeSaveEnum, PROJECT_STATUS_CODES, PROJECT_SUMMARY_STATUS_CODES, SystemFlagEnum, VC_CONNECTION_STATES, VC_CRED_ISSUE_STATES } from "@mds/common/constants/enums";
+import {
+  MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES,
+  MINE_INCIDENT_DOCUMENT_TYPE_CODE,
+  NodStatusSaveEnum,
+  NoDTypeSaveEnum,
+  PROJECT_STATUS_CODES,
+  PROJECT_SUMMARY_STATUS_CODES,
+  SystemFlagEnum,
+  VC_CONNECTION_STATES,
+  VC_CRED_ISSUE_STATES,
+} from "@mds/common/constants/enums";
 import {
   IExplosivesPermit,
   INoticeOfDeparture,
@@ -11,6 +21,7 @@ import {
   IMineDocument,
   IPermitAmendment,
   IMineReportDefinition,
+  IMineReportDueDateType,
 } from "@mds/common/interfaces";
 
 export const createMockHeader = () => ({
@@ -22,21 +33,24 @@ export const createMockHeader = () => ({
 
 export const ERROR = { message: "Errors", status: 400 };
 
-export const USERS = [{
-  sub: "1234",
-  display_name: "Testerson, Test MCM:EX",
-  email: "test@test.ca",
-  family_name: "Testerson",
-  given_name: "Test",
-  last_logged_in: "2022-08-08T20:59:01.482461+00:00",
-}, {
-  sub: "4321",
-  display_name: "McOther, Other MCM:EX",
-  email: "other@test.ca",
-  family_name: "McOther",
-  given_name: "Other",
-  last_logged_in: "2022-08-08T20:59:01.482461+00:00",
-}];
+export const USERS = [
+  {
+    sub: "1234",
+    display_name: "Testerson, Test MCM:EX",
+    email: "test@test.ca",
+    family_name: "Testerson",
+    given_name: "Test",
+    last_logged_in: "2022-08-08T20:59:01.482461+00:00",
+  },
+  {
+    sub: "4321",
+    display_name: "McOther, Other MCM:EX",
+    email: "other@test.ca",
+    family_name: "McOther",
+    given_name: "Other",
+    last_logged_in: "2022-08-08T20:59:01.482461+00:00",
+  },
+];
 
 // used for testing selectors
 export const MINE_RESPONSE = {
@@ -529,6 +543,29 @@ export const PAGE_DATA = {
   records: [],
 };
 
+export const MINE_REPORT_DUE_DATE_TYPES: IMineReportDueDateType[] = [
+  {
+    mine_report_due_date_type: "FIS",
+    description: "Reports due on fiscal year-end",
+  },
+  {
+    mine_report_due_date_type: "ANV",
+    description: "Reports due on an anniversary of an operation, permit, etc.",
+  },
+  {
+    mine_report_due_date_type: "AVA",
+    description: "Reports that are available on request",
+  },
+  {
+    mine_report_due_date_type: "PMT",
+    description: "Reports that are indicated via permit requirements",
+  },
+  {
+    mine_report_due_date_type: "EVT",
+    description: "Reports that are related to an event that occurred",
+  },
+];
+
 export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
   {
     mine_report_definition_guid: "5f4f4727-4ecd-4a04-8929-2e8a5e03996d",
@@ -539,12 +576,14 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
     default_due_date: "2020-03-31",
     categories: [
       {
-        mine_report_category: "GTC", description: "Geotechnical",
-        active_ind: true
+        mine_report_category: "GTC",
+        description: "Geotechnical",
+        active_ind: true,
       },
       {
-        mine_report_category: "TSF", description: "Tailings Storage Facility",
-        active_ind: true
+        mine_report_category: "TSF",
+        description: "Tailings Storage Facility",
+        active_ind: true,
       },
     ],
     compliance_articles: [
@@ -561,12 +600,12 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
         expiry_date: "2016-07-19",
         help_reference_link: "",
         cim_or_cpo: "Both",
-        reports: []
+        reports: [],
       },
     ],
     active_ind: false,
     is_common: false,
-    is_prr_only: false
+    is_prr_only: false,
   },
   {
     mine_report_definition_guid: "6eda0c36-8748-4072-83c9-0fcdf270d36f",
@@ -577,12 +616,14 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
     default_due_date: "2020-03-31",
     categories: [
       {
-        mine_report_category: "GTC", description: "Geotechnical",
-        active_ind: true
+        mine_report_category: "GTC",
+        description: "Geotechnical",
+        active_ind: true,
       },
       {
-        mine_report_category: "TSF", description: "Tailings Storage Facility",
-        active_ind: true
+        mine_report_category: "TSF",
+        description: "Tailings Storage Facility",
+        active_ind: true,
       },
     ],
     compliance_articles: [
@@ -599,12 +640,12 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
         expiry_date: "9999-12-31",
         help_reference_link: "",
         cim_or_cpo: null,
-        reports: []
+        reports: [],
       },
     ],
     active_ind: false,
     is_common: false,
-    is_prr_only: false
+    is_prr_only: false,
   },
   {
     mine_report_definition_guid: "a1f02190-908b-4459-9dfe-6382282dfd30",
@@ -613,10 +654,13 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
     due_date_period_months: 12,
     mine_report_due_date_type: "FIS",
     default_due_date: "2020-03-31",
-    categories: [{
-      mine_report_category: "H&S", description: "Health and Safety",
-      active_ind: true
-    }],
+    categories: [
+      {
+        mine_report_category: "H&S",
+        description: "Health and Safety",
+        active_ind: true,
+      },
+    ],
     compliance_articles: [
       {
         compliance_article_id: 114,
@@ -631,12 +675,12 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
         expiry_date: "9999-12-31",
         help_reference_link: "",
         cim_or_cpo: "CIM",
-        reports: []
+        reports: [],
       },
     ],
     active_ind: false,
     is_common: false,
-    is_prr_only: false
+    is_prr_only: false,
   },
   {
     mine_report_definition_guid: "1f4dac68-2131-4b12-9cdd-9e2bb86e50a2",
@@ -645,10 +689,13 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
     due_date_period_months: null,
     mine_report_due_date_type: "EVT",
     default_due_date: null,
-    categories: [{
-      mine_report_category: "H&S", description: "Health and Safety",
-      active_ind: true
-    }],
+    categories: [
+      {
+        mine_report_category: "H&S",
+        description: "Health and Safety",
+        active_ind: true,
+      },
+    ],
     compliance_articles: [
       {
         compliance_article_id: 59,
@@ -663,12 +710,12 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
         expiry_date: "9999-12-31",
         help_reference_link: "",
         cim_or_cpo: "CPO",
-        reports: []
+        reports: [],
       },
     ],
     active_ind: false,
     is_common: false,
-    is_prr_only: false
+    is_prr_only: false,
   },
   {
     mine_report_definition_guid: "f650d2b6-96e4-43f0-9d15-6fbead2d5978",
@@ -677,10 +724,13 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
     due_date_period_months: 12,
     mine_report_due_date_type: "FIS",
     default_due_date: "2020-03-31",
-    categories: [{
-      mine_report_category: "H&S", description: "Health and Safety",
-      active_ind: true
-    }],
+    categories: [
+      {
+        mine_report_category: "H&S",
+        description: "Health and Safety",
+        active_ind: true,
+      },
+    ],
     compliance_articles: [
       {
         compliance_article_id: 370,
@@ -695,12 +745,12 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
         expiry_date: "9999-12-31",
         help_reference_link: "",
         cim_or_cpo: "Both",
-        reports: []
+        reports: [],
       },
     ],
     active_ind: false,
     is_common: false,
-    is_prr_only: false
+    is_prr_only: false,
   },
   {
     mine_report_definition_guid: "c9baac63-1578-47eb-847d-a992e0aeba67",
@@ -711,12 +761,14 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
     default_due_date: null,
     categories: [
       {
-        mine_report_category: "GSE", description: "Geoscience and Environmental",
-        active_ind: true
+        mine_report_category: "GSE",
+        description: "Geoscience and Environmental",
+        active_ind: true,
       },
       {
-        mine_report_category: "GTC", description: "Geotechnical",
-        active_ind: true
+        mine_report_category: "GTC",
+        description: "Geotechnical",
+        active_ind: true,
       },
     ],
     compliance_articles: [
@@ -733,12 +785,12 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
         expiry_date: "9999-12-31",
         help_reference_link: "",
         cim_or_cpo: null,
-        reports: []
+        reports: [],
       },
     ],
     active_ind: false,
     is_common: false,
-    is_prr_only: false
+    is_prr_only: false,
   },
   {
     mine_report_definition_guid: "f5dec476-cb13-430a-a85e-81e5bbe666e4",
@@ -749,12 +801,14 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
     default_due_date: null,
     categories: [
       {
-        mine_report_category: "GSE", description: "Geoscience and Environmental",
-        active_ind: true
+        mine_report_category: "GSE",
+        description: "Geoscience and Environmental",
+        active_ind: true,
       },
       {
-        mine_report_category: "GTC", description: "Geotechnical",
-        active_ind: true
+        mine_report_category: "GTC",
+        description: "Geotechnical",
+        active_ind: true,
       },
     ],
     compliance_articles: [
@@ -771,12 +825,12 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
         expiry_date: "9999-12-31",
         help_reference_link: "",
         cim_or_cpo: "CIM",
-        reports: []
+        reports: [],
       },
     ],
     active_ind: false,
     is_common: false,
-    is_prr_only: false
+    is_prr_only: false,
   },
   {
     mine_report_definition_guid: "ec11deae-1187-42e7-a13c-17a25743448f",
@@ -785,10 +839,13 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
     due_date_period_months: null,
     mine_report_due_date_type: "EVT",
     default_due_date: null,
-    categories: [{
-      mine_report_category: "H&S", description: "Health and Safety",
-      active_ind: true
-    }],
+    categories: [
+      {
+        mine_report_category: "H&S",
+        description: "Health and Safety",
+        active_ind: true,
+      },
+    ],
     compliance_articles: [
       {
         compliance_article_id: 702,
@@ -803,12 +860,12 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
         expiry_date: "9999-12-31",
         help_reference_link: "",
         cim_or_cpo: "CPO",
-        reports: []
+        reports: [],
       },
     ],
     active_ind: false,
     is_common: false,
-    is_prr_only: false
+    is_prr_only: false,
   },
   {
     mine_report_definition_guid: "e2f72b23-d7d9-4a11-9139-e86b3c6f4bc4",
@@ -817,10 +874,13 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
     due_date_period_months: null,
     mine_report_due_date_type: "EVT",
     default_due_date: null,
-    categories: [{
-      mine_report_category: "H&S", description: "Health and Safety",
-      active_ind: true
-    }],
+    categories: [
+      {
+        mine_report_category: "H&S",
+        description: "Health and Safety",
+        active_ind: true,
+      },
+    ],
     compliance_articles: [
       {
         compliance_article_id: 793,
@@ -835,12 +895,12 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
         expiry_date: "9999-12-31",
         help_reference_link: "",
         cim_or_cpo: "Both",
-        reports: []
+        reports: [],
       },
     ],
     active_ind: false,
     is_common: false,
-    is_prr_only: false
+    is_prr_only: false,
   },
   {
     mine_report_definition_guid: "b820a0e0-1d0c-4460-8787-c813484742c6",
@@ -849,10 +909,13 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
     due_date_period_months: null,
     mine_report_due_date_type: "EVT",
     default_due_date: null,
-    categories: [{
-      mine_report_category: "H&S", description: "Health and Safety",
-      active_ind: true
-    }],
+    categories: [
+      {
+        mine_report_category: "H&S",
+        description: "Health and Safety",
+        active_ind: true,
+      },
+    ],
     compliance_articles: [
       {
         compliance_article_id: 909,
@@ -867,12 +930,12 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
         expiry_date: "9999-12-31",
         help_reference_link: "",
         cim_or_cpo: "CIM",
-        reports: []
+        reports: [],
       },
     ],
     active_ind: false,
     is_common: false,
-    is_prr_only: false
+    is_prr_only: false,
   },
   {
     mine_report_definition_guid: "82abcaf9-e432-423d-b110-73acbfa9c94f",
@@ -881,10 +944,13 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
     due_date_period_months: null,
     mine_report_due_date_type: "EVT",
     default_due_date: null,
-    categories: [{
-      mine_report_category: "H&S", description: "Health and Safety",
-      active_ind: true
-    }],
+    categories: [
+      {
+        mine_report_category: "H&S",
+        description: "Health and Safety",
+        active_ind: true,
+      },
+    ],
     compliance_articles: [
       {
         compliance_article_id: 914,
@@ -899,12 +965,12 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
         expiry_date: "9999-12-31",
         help_reference_link: "",
         cim_or_cpo: "CPO",
-        reports: []
+        reports: [],
       },
     ],
     active_ind: false,
     is_common: false,
-    is_prr_only: false
+    is_prr_only: false,
   },
   {
     mine_report_definition_guid: "d7f7b95c-4f60-4125-8f8c-f843d1be462e",
@@ -913,10 +979,13 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
     due_date_period_months: null,
     mine_report_due_date_type: "PMT",
     default_due_date: null,
-    categories: [{
-      mine_report_category: "H&S", description: "Health and Safety",
-      active_ind: true
-    }],
+    categories: [
+      {
+        mine_report_category: "H&S",
+        description: "Health and Safety",
+        active_ind: true,
+      },
+    ],
     compliance_articles: [
       {
         compliance_article_id: 955,
@@ -931,12 +1000,12 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
         expiry_date: "9999-12-31",
         help_reference_link: "",
         cim_or_cpo: "Both",
-        reports: []
+        reports: [],
       },
     ],
     active_ind: false,
     is_common: false,
-    is_prr_only: false
+    is_prr_only: false,
   },
   {
     mine_report_definition_guid: "61b87acf-8604-4975-8172-282bbf2b59fc",
@@ -947,16 +1016,19 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
     default_due_date: "2020-03-31",
     categories: [
       {
-        mine_report_category: "H&S", description: "Health and Safety",
-        active_ind: true
+        mine_report_category: "H&S",
+        description: "Health and Safety",
+        active_ind: true,
       },
       {
-        mine_report_category: "GSE", description: "Geoscience and Environmental",
-        active_ind: true
+        mine_report_category: "GSE",
+        description: "Geoscience and Environmental",
+        active_ind: true,
       },
       {
-        mine_report_category: "GTC", description: "Geotechnical",
-        active_ind: true
+        mine_report_category: "GTC",
+        description: "Geotechnical",
+        active_ind: true,
       },
     ],
     compliance_articles: [
@@ -973,12 +1045,12 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
         expiry_date: "9999-12-31",
         help_reference_link: "",
         cim_or_cpo: null,
-        reports: []
+        reports: [],
       },
     ],
     active_ind: false,
     is_common: false,
-    is_prr_only: false
+    is_prr_only: false,
   },
   {
     mine_report_definition_guid: "ba6f37df-5ced-4664-9a5e-5a5e93a09748",
@@ -987,10 +1059,13 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
     due_date_period_months: null,
     mine_report_due_date_type: "PMT",
     default_due_date: null,
-    categories: [{
-      mine_report_category: "GSE", description: "Geoscience and Environmental",
-      active_ind: true
-    }],
+    categories: [
+      {
+        mine_report_category: "GSE",
+        description: "Geoscience and Environmental",
+        active_ind: true,
+      },
+    ],
     compliance_articles: [
       {
         compliance_article_id: 978,
@@ -1005,12 +1080,12 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
         expiry_date: "9999-12-31",
         help_reference_link: "",
         cim_or_cpo: "CIM",
-        reports: []
+        reports: [],
       },
     ],
     active_ind: false,
     is_common: false,
-    is_prr_only: false
+    is_prr_only: false,
   },
   {
     mine_report_definition_guid: "c387b2a2-7bf4-4a29-9e9a-faa38a838b2d",
@@ -1021,12 +1096,14 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
     default_due_date: null,
     categories: [
       {
-        mine_report_category: "GSE", description: "Geoscience and Environmental",
-        active_ind: true
+        mine_report_category: "GSE",
+        description: "Geoscience and Environmental",
+        active_ind: true,
       },
       {
-        mine_report_category: "H&S", description: "Health and Safety",
-        active_ind: true
+        mine_report_category: "H&S",
+        description: "Health and Safety",
+        active_ind: true,
       },
     ],
     compliance_articles: [
@@ -1043,12 +1120,12 @@ export const MINE_REPORT_DEFINITION_OPTIONS: IMineReportDefinition[] = [
         expiry_date: "9999-12-31",
         help_reference_link: "",
         cim_or_cpo: "CPO",
-        reports: []
+        reports: [],
       },
     ],
     active_ind: false,
     is_common: false,
-    is_prr_only: false
+    is_prr_only: false,
   },
 ];
 
@@ -1714,8 +1791,8 @@ export const PERMITS: IPermit[] = [
             condition_category_code: "ELC",
             description: "Environmental Land and Watercourses",
             display_order: 2,
-            step: "C."
-          }
+            step: "C.",
+          },
         ],
         conditions: [
           {
@@ -1752,7 +1829,7 @@ export const PERMITS: IPermit[] = [
             sub_conditions: [],
             step: "1.",
             display_order: 1,
-            permit_condition_status_code: "NST"
+            permit_condition_status_code: "NST",
           },
           {
             permit_condition_id: 1650,
@@ -1784,7 +1861,7 @@ export const PERMITS: IPermit[] = [
                     sub_conditions: [],
                     step: "i.",
                     display_order: 1,
-                    permit_condition_status_code: "NST"
+                    permit_condition_status_code: "NST",
                   },
                 ],
                 step: "a.",
@@ -1803,7 +1880,8 @@ export const PERMITS: IPermit[] = [
                     permit_condition_id: 12509,
                     permit_amendment_id: 2,
                     permit_condition_guid: "c2d7133c-a1ee-4542-8a66-bb9f6501838e",
-                    condition: "a condition added underneath the section, with a lot of detail added to it, which is probably important for documents like permits",
+                    condition:
+                      "a condition added underneath the section, with a lot of detail added to it, which is probably important for documents like permits",
                     condition_type_code: "CON",
                     condition_category_code: "ELC",
                     parent_permit_condition_id: 12507,
@@ -1813,33 +1891,36 @@ export const PERMITS: IPermit[] = [
                         permit_condition_id: 12510,
                         permit_amendment_id: 2,
                         permit_condition_guid: "3ba99ce6-d4bc-42ef-8a1c-03b2be315c43",
-                        condition: "a detailed list item desribing exactly what must be done to accomplish the parent condition",
+                        condition:
+                          "a detailed list item desribing exactly what must be done to accomplish the parent condition",
                         condition_type_code: "LIS",
                         condition_category_code: "ELC",
                         parent_permit_condition_id: 12509,
                         sub_conditions: [],
                         step: "1.",
                         display_order: 1,
-                        permit_condition_status_code: "NST"
+                        permit_condition_status_code: "NST",
                       },
                       {
                         permit_condition_id: 12511,
                         permit_amendment_id: 2,
                         permit_condition_guid: "25603323-f16b-4316-a79b-5561227aad55",
-                        condition: "but, that wasn't quite enough information, another list item will expand on other responsibilities associated with this permit",
+                        condition:
+                          "but, that wasn't quite enough information, another list item will expand on other responsibilities associated with this permit",
                         condition_type_code: "LIS",
                         condition_category_code: "ELC",
                         parent_permit_condition_id: 12509,
                         sub_conditions: [],
                         step: "2.",
                         display_order: 2,
-                        permit_condition_status_code: "NST"
+                        permit_condition_status_code: "NST",
                       },
                       {
                         permit_condition_id: 12512,
                         permit_amendment_id: 2,
                         permit_condition_guid: "5d012c32-6af5-4b7d-912a-36e7d02157a9",
-                        condition: "good things come in 3s, so another list item is added to the condition",
+                        condition:
+                          "good things come in 3s, so another list item is added to the condition",
                         condition_type_code: "LIS",
                         condition_category_code: "ELC",
                         parent_permit_condition_id: 12509,
@@ -1849,14 +1930,15 @@ export const PERMITS: IPermit[] = [
                             permit_condition_id: 12513,
                             permit_amendment_id: 2,
                             permit_condition_guid: "bd79804e-4953-4fe9-89fb-7c5bba8dd587",
-                            condition: "we want to show nesting to 5 levels, so one list item gets a child",
+                            condition:
+                              "we want to show nesting to 5 levels, so one list item gets a child",
                             condition_type_code: "LIS",
                             condition_category_code: "ELC",
                             parent_permit_condition_id: 12512,
                             sub_conditions: [],
                             step: "a.",
                             display_order: 1,
-                            permit_condition_status_code: "NST"
+                            permit_condition_status_code: "NST",
                           },
                         ],
                         step: "3.",
@@ -1869,18 +1951,19 @@ export const PERMITS: IPermit[] = [
                 ],
                 step: "b.",
                 display_order: 2,
-                permit_condition_status_code: "NST"
+                permit_condition_status_code: "NST",
               },
             ],
             step: "1.",
             display_order: 1,
-            permit_condition_status_code: "COM"
+            permit_condition_status_code: "COM",
           },
           {
             permit_condition_id: 12514,
             permit_amendment_id: 2,
             permit_condition_guid: "3fdc069d-d0b1-4678-b663-2c29848b4c64",
-            condition: "Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines",
+            condition:
+              "Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines",
             condition_type_code: "SEC",
             condition_category_code: "ELC",
             parent_permit_condition_id: null,
@@ -1889,19 +1972,20 @@ export const PERMITS: IPermit[] = [
                 permit_condition_id: 12515,
                 permit_amendment_id: 2,
                 permit_condition_guid: "f1f53337-dc2f-4b9c-be15-2727141e9a63",
-                condition: "It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?",
+                condition:
+                  "It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?",
                 condition_type_code: "CON",
                 condition_category_code: "ELC",
                 parent_permit_condition_id: 12514,
                 sub_conditions: [],
                 step: "a.",
                 display_order: 1,
-                permit_condition_status_code: ""
+                permit_condition_status_code: "",
               },
             ],
             step: "2.",
             display_order: 2,
-            permit_condition_status_code: "COM"
+            permit_condition_status_code: "COM",
           },
         ],
         preamble_text: "words",
@@ -1938,7 +2022,7 @@ export const PERMITS: IPermit[] = [
             preamble_date: "2019-04-02",
           },
         ],
-        conditions_review_completed: false
+        conditions_review_completed: false,
       },
       {
         permit_amendment_id: 1,
@@ -1980,7 +2064,7 @@ export const PERMITS: IPermit[] = [
             preamble_date: "2019-04-02",
           },
         ],
-        conditions_review_completed: false
+        conditions_review_completed: false,
       },
     ],
     site_properties: {
@@ -2054,7 +2138,7 @@ export const PERMITS: IPermit[] = [
         is_generated_in_core: false,
         preamble_text: null,
         condition_categories: [],
-        conditions_review_completed: false
+        conditions_review_completed: false,
       },
     ],
     remaining_static_liability: null,
@@ -6176,8 +6260,7 @@ export const MINE_REPORT_SUBMISSIONS = [
     ],
     comments: [],
     report_type: "CRR",
-    mine_report_definition_guid:
-      MINE_REPORT_DEFINITION_OPTIONS[0].mine_report_definition_guid,
+    mine_report_definition_guid: MINE_REPORT_DEFINITION_OPTIONS[0].mine_report_definition_guid,
     mine_report_category: ["H&S"],
     report_name: MINE_REPORT_DEFINITION_OPTIONS[0].report_name,
     due_date: "2024-02-07",
@@ -6285,6 +6368,9 @@ export const MINE_REPORTS = [
     update_timestamp: "2024-02-07T19:15:38.505482+00:00",
     mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
     mine_name: "Abbott Inc",
+    mine_report_contacts: [],
+    submitter_name: "test",
+    submitter_email: "test@bceid",
   },
   {
     mine_report_id: 124,
@@ -6319,6 +6405,9 @@ export const MINE_REPORTS = [
     update_timestamp: "2024-02-07T19:15:38.505482+00:00",
     mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
     mine_name: "Abbott Inc",
+    mine_report_contacts: [],
+    submitter_name: "test",
+    submitter_email: "test@bceid",
   },
   {
     mine_report_id: 125,
@@ -6339,6 +6428,9 @@ export const MINE_REPORTS = [
     update_timestamp: "2024-02-07T19:15:38.505482+00:00",
     mine_name: "Abbott Inc",
     mine_report_status_code: "NON",
+    mine_report_contacts: [],
+    submitter_name: "test",
+    submitter_email: "test@bceid",
   },
 ];
 
