@@ -8,20 +8,8 @@ exports[`AddReportDefinitionForm renders properly 1`] = `
   <h3
     class="ant-typography"
   >
-    Create Report
-  </h3>
-  <h4
-    class="ant-typography"
-  >
     Report Details
-  </h4>
-  <div
-    class="ant-typography margin-small--bottom"
-  >
-    <strong>
-      Report Name
-    </strong>
-  </div>
+  </h3>
   <div
     class="ant-form-item ant-form-item-with-help"
   >
