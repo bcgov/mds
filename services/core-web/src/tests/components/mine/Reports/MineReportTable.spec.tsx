@@ -7,24 +7,23 @@ import { BrowserRouter } from "react-router-dom";
 import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import { MINE_REPORTS_ENUM } from "@mds/common/constants/enums";
 
-const props = {
-  mineReports: MOCK.MINE_REPORTS,
-  mineReportType: MINE_REPORTS_ENUM.CRR,
-  isLoaded: true,
-  handleRemoveReport: jest.fn(),
-};
-
 const initialState = {
   [AUTHENTICATION]: {
     userAccessData: MOCK.USER_ACCESS_DATA,
   },
 };
+
 describe("MineReportTable", () => {
   it("renders properly", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
         <BrowserRouter>
-          <MineReportTable {...props} />
+          <MineReportTable
+            mineReports={MOCK.MINE_REPORTS}
+            mineReportType={MINE_REPORTS_ENUM.CRR}
+            isLoaded
+            handleRemoveReport={jest.fn()}
+          />
         </BrowserRouter>
       </ReduxWrapper>
     );
