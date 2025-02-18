@@ -811,7 +811,7 @@ exports[`MineReportTable renders properly 1`] = `
                       <div
                         title="Received"
                       >
-                        N/A
+                        Feb 01 2025
                       </div>
                     </td>
                     <td

@@ -11,7 +11,6 @@ import { getConditionsWithRequirements } from "@mds/common/utils/helpers";
 
 const { Title } = Typography;
 import { IPermitAmendment } from "@mds/common/interfaces";
-import { usePermitConditions } from "./PermitConditionsContext";
 import PermitConditionReportRequirements from "./PermitConditionReportRequirements";
 
 interface PermitConditionLayerProps {
@@ -62,8 +61,6 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   );
   const className = `condition-layer condition-layer--${level} condition-${condition.condition_type_code} fade-in`;
   const { isFeatureEnabled } = useFeatureFlag();
-
-  const { currentAmendment } = usePermitConditions();
 
   const handleSetParentExpand = () => {
     if (level === 0) {
