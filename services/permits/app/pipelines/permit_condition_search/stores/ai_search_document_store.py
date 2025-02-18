@@ -6,13 +6,38 @@ from haystack import Document, component
 from haystack_integrations.document_stores.azure_ai_search import (
     AzureAISearchDocumentStore,
 )
+from pygments import highlight
 
 
+class AdditionalAISearchConfig:
+    highlight_fields: Optional[str] = None
+    highlight_post_tag: Optional[str] = None
+    highlight_pre_tag: Optional[str] = None
+
+    def __init__(
+        self,
+        highlight_fields: Optional[str] = None,
+        highlight_post_tag: Optional[str] = None,
+        highlight_pre_tag: Optional[str] = None,
+    ):
+        self.highlight_fields = highlight_fields
+        self.highlight_post_tag = highlight_post_tag
+        self.highlight_pre_tag = highlight_pre_tag
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "highlight_fields": self.highlight_fields,
+            "highlight_post_tag": self.highlight_post_tag,
+            "highlight_pre_tag": self.highlight_pre_tag,
+        }
 class AzureSearchDocumentStore(AzureAISearchDocumentStore):
 
-    def __init__(self, extra_field_config: Dict[str, Any], **kwargs):
+        
+
+    def __init__(self, extra_field_config: Dict[str, Any], search_config: Optional[AdditionalAISearchConfig],  **kwargs):
         super(AzureSearchDocumentStore, self).__init__(**kwargs)
         self.extra_field_config = extra_field_config
+        self.search_config = search_config or AdditionalAISearchConfig()
     
     def _convert_search_result_to_documents(self, azure_docs: List[Dict[str, Any]]) -> List[Document]:
 
@@ -25,7 +50,8 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
 
             if azure_doc:
                 doc.meta.update({
-                    "facets": azure_doc.get('@search.facets', {})
+                    "facets": azure_doc.get('@search.facets', {}),
+                    "highlights": azure_doc.get('@search.highlights', {})
                 })
 
                 doc.score = azure_doc.get('@search.score', 0.0)
@@ -71,13 +97,13 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
             filter=filters,
             top=top_k,
             query_type="simple",
+            **self.search_config.to_dict(),
             **kwargs,
         )
         try:
             facets = result.get_facets()
         except AttributeError:
             facets = {}  # Handle case where facets are not available
-
 
         # Convert results to list and extract facets
         azure_docs = list(result)

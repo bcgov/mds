@@ -59,6 +59,7 @@ import ViewPermit from "@/components/mine/Permit/ViewPermit";
 import PermitConditionSearch from "@/components/mine/Permit/Search/PermitConditionSearch";
 import { getEnvironment } from "@mds/common/utils/environmentUtils";
 import ViewPermitRedirect from "@/components/mine/Permit/ViewPermitRedirect";
+import PermitExtractionDashboard from "@/components/permit-extraction-dashboard/permit-extraction-dashboard";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -188,6 +189,12 @@ export const VIEW_MINE_PERMIT = {
   component: ViewPermitRedirect,
   helpKey: "View-Permit",
   priority: 1,
+};
+
+export const PERMIT_CONDITION_DASHBOARD = {
+  route: "/permit-conditions/dashboard",
+  component: PermitExtractionDashboard,
+  helpKey: "Permit-Condition-Dashboard"
 };
 
 export const MINE_PERMIT_DIGITAL_CREDENTIALS = {

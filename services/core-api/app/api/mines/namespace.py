@@ -126,6 +126,9 @@ from app.api.mines.permits.permit_extraction.resources.permit_condition_extracti
     PermitConditionExtractionProgressResource,
     PermitConditionExtractionResource,
 )
+from app.api.mines.permits.permit_extraction.resources.permit_extraction_dashboard import (
+    PermitExtractionDashboardResource,
+)
 from app.api.mines.region.resources.region import MineRegionResource
 from app.api.mines.reports.resources.mine_report_category import (
     MineReportCategoryListResource,
@@ -134,12 +137,12 @@ from app.api.mines.reports.resources.mine_report_comment import (
     MineReportCommentListResource,
     MineReportCommentResource,
 )
-from app.api.mines.reports.resources.mine_report_definition_resource import (
-    MineReportDefinitionListResource,
-)
 from app.api.mines.reports.resources.mine_report_definition_compliance_article_xref_resource import (
     MineReportDefinitionComplianceArticleCreateResource,
     MineReportDefinitionComplianceArticleUpdateResource,
+)
+from app.api.mines.reports.resources.mine_report_definition_resource import (
+    MineReportDefinitionListResource,
 )
 from app.api.mines.reports.resources.mine_report_document import (
     MineReportDocumentListResource,
@@ -298,6 +301,7 @@ api.add_resource(
 )
 
 api.add_resource(PermitConditionExtractionResource, '/permits/condition-extraction')
+api.add_resource(PermitExtractionDashboardResource, '/permits/condition-extraction-dashboard')
 api.add_resource(PermitConditionExtractionProgressResource, '/permits/condition-extraction/<string:task_id>')
 api.add_resource(
     PermitAmendmentVCResource,

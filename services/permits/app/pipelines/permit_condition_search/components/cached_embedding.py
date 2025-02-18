@@ -52,7 +52,7 @@ class EmbeddingCache:
         docs_by_content = {doc.content: doc for doc in documents}
 
         for miss in cached_results["misses"]:
-            doc = docs_by_content[miss.meta[self.cache_field]]
+            doc = docs_by_content[miss]
             misses.append(doc)
 
         for hit in cached_results["hits"]:

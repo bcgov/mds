@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from "react";
+import React, { FC, useMemo, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Alert, Button, Col, Row, Skeleton, Space, Typography } from "antd";
@@ -26,6 +26,7 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import { Feature } from "@mds/common/utils/featureFlag";
 import CoreButton from "@mds/common/components/common/CoreButton";
 import {
+  fetchPermitExtractionTasks,
   getPermitExtractionByGuid,
   PermitExtractionStatus,
 } from "@mds/common/redux/slices/permitServiceSlice";
@@ -70,6 +71,11 @@ interface PermitConditionProps {
   currentAmendment: IPermitAmendment;
   canStartExtraction: boolean;
   userCanEdit: boolean;
+  permitGuid?: string;
+  mineGuid?: string;
+  forceViewConditions?: boolean;
+  extractionTaskGuid?: string;
+  permitAmendmentDocumentGuid?: string;
 }
 
 const PermitConditions: FC<PermitConditionProps> = ({
@@ -80,6 +86,10 @@ const PermitConditions: FC<PermitConditionProps> = ({
   previousAmendment,
   canStartExtraction,
   userCanEdit,
+  permitGuid,
+  mineGuid,
+  forceViewConditions,
+  permitAmendmentDocumentGuid,
 }) => {
   const { isFeatureEnabled } = useFeatureFlag();
   const dispatch = useAppDispatch();
@@ -94,11 +104,15 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const canEditPermitConditions = (category: IPermitConditionCategory): boolean =>
     isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && userCanEdit && userIsAssigned(category);
 
-  const { id: mineGuid, permitGuid } = useParams<{
+  const { id: mineGuidParam, permitGuid: permitGuidParam } = useParams<{
     id: string;
     permitGuid: string;
     mineGuid: string;
   }>();
+
+  mineGuid = mineGuid ?? mineGuidParam;
+  permitGuid = permitGuid ?? permitGuidParam;
+
   const pdfSplitViewEnabled = isFeatureEnabled(Feature.PERMIT_CONDITIONS_PDF_SPLIT_VIEW);
   const [isExpanded, setIsExpanded] = useState(false);
   const [viewPdf, setViewPdf] = useState(false);
@@ -138,7 +152,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const isExtractionComplete = permitExtraction?.task_status === PermitExtractionStatus.complete;
 
   const permitConditionCategoryOptions: IPermitConditionCategory[] = uniqBy(
-    currentAmendment?.condition_categories.concat(condWithoutConditionsText) ?? [],
+    currentAmendment?.condition_categories?.concat(condWithoutConditionsText) ?? [],
     "condition_category_code"
   );
 
@@ -400,19 +414,21 @@ const PermitConditions: FC<PermitConditionProps> = ({
       </Col>) : <></>;
 
   }
+  console.log(currentAmendment)
 
   const isViewingLatestAmendment = latestAmendment?.permit_amendment_guid === currentAmendment?.permit_amendment_guid;
 
-  if (isViewingLatestAmendment && isExtractionInProgress) {
-    return <><LatestAmendmentWarning /><RenderExtractionProgress /></>;
+  if (!forceViewConditions) {
+    if (isViewingLatestAmendment && isExtractionInProgress) {
+      return <><LatestAmendmentWarning /><RenderExtractionProgress /></>;
+    }
+    if (isViewingLatestAmendment && !isExtractionComplete && permitExtraction?.task_status === "Error Extracting") {
+      return <><LatestAmendmentWarning /><RenderExtractionError /></>;
+    }
+    if (isViewingLatestAmendment && canStartExtraction) {
+      return <><LatestAmendmentWarning /><RenderExtractionStart /></>;
+    }
   }
-  if (isViewingLatestAmendment && !isExtractionComplete && permitExtraction?.task_status === "Error Extracting") {
-    return <><LatestAmendmentWarning /><RenderExtractionError /></>;
-  }
-  if (isViewingLatestAmendment && canStartExtraction) {
-    return <><LatestAmendmentWarning /><RenderExtractionStart /></>;
-  }
-
   const showLoading = !currentAmendment || isLoading;
 
 
@@ -433,8 +449,10 @@ const PermitConditions: FC<PermitConditionProps> = ({
   );
 
   const canViewPdfSplitScreen =
-    viewPdf && pdfSplitViewEnabled && permitExtraction?.permit_amendment_document_guid;
-  const hasConditions = latestAmendment?.conditions?.length > 0;
+    viewPdf && pdfSplitViewEnabled && (permitExtraction?.permit_amendment_document_guid || permitAmendmentDocumentGuid);
+
+  const hasConditions = currentAmendment?.conditions?.length > 0;
+
   return (<>
     {hasConditions && <PermitReviewBanner isExtracted={isExtracted} height={bannerHeight} isReviewComplete={isReviewComplete} />}
     <PermitConditionsProvider value={{ mineGuid, permitGuid, latestAmendment, previousAmendment, currentAmendment }}>
@@ -583,7 +601,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
               <div style={{ position: "sticky", top: "225px" }}>
                 <PreviewPermitAmendmentDocument
                   amendment={currentAmendment}
-                  documentGuid={permitExtraction.permit_amendment_document_guid}
+                  documentGuid={permitExtraction?.permit_amendment_document_guid || permitAmendmentDocumentGuid}
                   selectedCondition={selectedCondition}
                 />
               </div>

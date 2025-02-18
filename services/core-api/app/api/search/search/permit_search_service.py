@@ -38,7 +38,7 @@ class PermitSearchService:
 
         return results
 
-    def initialize_permit_extraction(self, permit_amendment_document):
+    def initialize_permit_extraction(self, permit_amendment_document, with_internal_auth=False):
         """
         Begins the process of extracting permit conditions from a the PDF document.
 
@@ -50,8 +50,13 @@ class PermitSearchService:
 
         current_app.logger.info(f'Initiating permit extraction for document {document_manager_guid}')
 
+        headers = None
+        if with_internal_auth:
+            token = self.session.fetch_token()
+            headers = {'Authorization': f'Bearer {token["access_token"]}'}
+
         with tempfile.NamedTemporaryFile() as file:
-            file_name, fle = DocumentManagerService().download_document_to_file(document_manager_guid, file)
+            file_name, fle = DocumentManagerService().download_document_to_file(document_manager_guid, file, headers=headers)
             fle.seek(0)
 
             try:

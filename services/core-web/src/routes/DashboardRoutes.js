@@ -26,6 +26,13 @@ const DashboardRoutes = () => {
         path={routes.PERMIT_CONDITION_SEARCH.route}
         component={routes.PERMIT_CONDITION_SEARCH.component}
       />
+
+      <Route
+        exact
+        path={routes.PERMIT_CONDITION_DASHBOARD.route}
+        component={routes.PERMIT_CONDITION_DASHBOARD.component}
+      />
+
       <Route
         exact
         path={routes.MINE_DASHBOARD.route}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Space, Tag, Row } from 'antd';
 import { HaystackDocumentSearchResult } from '@mds/common/src/interfaces/search/facet-search.interface';
 import dayjs from 'dayjs';
@@ -12,7 +12,24 @@ interface ResultItemProps {
 }
 
 const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
+    const [isHighlighted, setIsHighlighted] = useState(false);
     const { content, meta, score } = result;
+
+    useEffect(() => {
+        // Check if this item's ID is in the URL hash
+        const handleHashChange = () => {
+            const hash = window.location.hash;
+            if (hash === `#condition-${result.id}`) {
+                setIsHighlighted(true);
+                // Reset highlight after animation
+                setTimeout(() => setIsHighlighted(false), 2000);
+            }
+        };
+
+        handleHashChange(); // Check initial hash
+        window.addEventListener('hashchange', handleHashChange);
+        return () => window.removeEventListener('hashchange', handleHashChange);
+    }, [result.id]);
 
     // Build breadcrumb path from category and step_path
     const pathParts = [
@@ -22,6 +39,8 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
 
     return (
         <Row
+            id={`condition-${result.id}`}
+            className={isHighlighted ? 'highlight-condition' : ''}
             style={{
                 marginBottom: '16px',
                 paddingBottom: '16px',

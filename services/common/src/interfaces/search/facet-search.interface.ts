@@ -8,6 +8,9 @@ export interface HaystackDocumentMeta {
     category: string;
     step_path: string;
     step: string;
+    highlights: {
+        [field: string]: string[];
+    }
 }
 export interface HaystackDocumentSearchResult {
     id: string;

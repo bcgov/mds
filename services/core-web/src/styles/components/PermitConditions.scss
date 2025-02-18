@@ -151,3 +151,27 @@ div.condition-layer {
     margin-bottom: 0;
   }
 }
+
+.permit-search__markdown a {
+  color: #1890ff;
+  text-decoration: none;
+}
+
+.permit-search__markdown a:hover {
+  text-decoration: underline;
+}
+
+.highlight-condition {
+  scroll-margin-top: 100px;
+  animation: highlight-fade 5s;
+}
+
+@keyframes highlight-fade {
+  0% {
+    background-color: #ffd54f33;
+  }
+
+  100% {
+    background-color: transparent;
+  }
+}

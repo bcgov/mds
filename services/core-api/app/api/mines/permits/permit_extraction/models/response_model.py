@@ -19,3 +19,25 @@ PERMIT_CONDITION_EXTRACTION_TASK = api.model(
         'permit_amendment_document_guid': fields.String,
         'core_status_task_id': fields.String
     })
+
+RECENT_TASK = api.model(
+    'RecentTask', {
+        'task_id': fields.String,
+        'status': fields.String,
+        'created': fields.String,
+        'updated': fields.String,
+        'mine_name': fields.String,
+        'mine_no': fields.String,
+        'permit_no': fields.String,
+        'amendment_issue_date': fields.String,
+        'document_name': fields.String,
+        'document_guid': fields.String
+    })
+
+EXTRACTION_DASHBOARD = api.model(
+    'ExtractionDashboard', {
+        'total_counts': fields.Raw(description='Total count of tasks by status'),
+        'last_24h': fields.Raw(description='Count of tasks from last 24 hours by status'),
+        'recent_tasks': fields.List(fields.Nested(RECENT_TASK)),
+        'mines': fields.List(fields.Raw(description='Hierarchical mine data'))
+    })

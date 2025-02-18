@@ -18,8 +18,14 @@ from app.pipelines.permit_condition_extraction.components.metadata_converter imp
 from app.pipelines.permit_condition_extraction.components.PaginatedChatPromptBuilder import (
     PaginatedChatPromptBuilder,
 )
+from app.pipelines.permit_condition_extraction.components.permit_condition_extractor import (
+    PermitConditionExtractor,
+)
 from app.pipelines.permit_condition_extraction.components.permit_condition_section_combiner import (
     PermitConditionSectionCombiner,
+)
+from app.pipelines.permit_condition_extraction.components.permit_condition_validator import (
+    PermitConditionValidator,
 )
 from haystack import Pipeline
 from haystack.dataclasses import ChatMessage
@@ -45,7 +51,8 @@ with open(f"{ROOT_DIR}/app/permit_condition_prompts.yaml", "r") as file:
 system_prompt = prompts["system_prompt"]
 user_prompt = prompts["user_prompt_meta_questions"]
 permit_document_prompt = prompts["permit_document_prompt_meta_questions"]
-
+permit_condition_post_combine_validation_prompt = prompts["permit_condition_post_combine_validation_prompt"]
+permit_extraction_prompt2 = prompts["permit_extraction_prompt2"]
 assert system_prompt
 assert user_prompt
 assert permit_document_prompt
@@ -96,10 +103,22 @@ def permit_condition_pipeline():
     json_fixer = JSONRepair()
 
     combine_metadata = ConditionsMetadataCombiner()
+    
+    extractor = PermitConditionExtractor(
+        chat_generator=llm,
+        template=permit_extraction_prompt2,
+    )
+    # Add validator component
+    validator = PermitConditionValidator(
+        chat_generator=llm,
+        template=permit_condition_post_combine_validation_prompt,
+        condition_extractor=extractor,
+    )
 
     index_pipeline.add_component("pdf_converter", pdf_converter)
     index_pipeline.add_component("filter_paragraphs", filter_paragraphs)
     index_pipeline.add_component("parse_hierarchy", parse_hierarchy)
+    index_pipeline.add_component("validator", validator)  # Add validator
     index_pipeline.add_component("prompt_builder", prompt_builder)
     index_pipeline.add_component("llm", llm)
     index_pipeline.add_component("json_fixer", json_fixer)
@@ -108,13 +127,15 @@ def permit_condition_pipeline():
     index_pipeline.connect("pdf_converter.documents", "filter_paragraphs")
     index_pipeline.connect("filter_paragraphs", "parse_hierarchy")
 
-    index_pipeline.connect(
-        "parse_hierarchy.conditions", "prompt_builder.conditions"
-    )
+    # Insert validator between parse_hierarchy and prompt_builder
+    index_pipeline.connect("parse_hierarchy.conditions", "validator.conditions")
+    index_pipeline.connect("pdf_converter.documents", "validator.documents")
+    index_pipeline.connect("validator.conditions", "prompt_builder.conditions")
+
     index_pipeline.connect("prompt_builder", "llm")
     index_pipeline.connect("llm", "json_fixer")
 
     index_pipeline.connect("json_fixer.data", "combine_metadata.data")
-    index_pipeline.connect("parse_hierarchy.conditions", "combine_metadata.conditions")
+    index_pipeline.connect("validator.conditions", "combine_metadata.conditions")
 
     return index_pipeline

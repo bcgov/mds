@@ -15,6 +15,7 @@ from app.pipelines.permit_condition_search.components.search_output_formatter im
     SearchOutputFormatter,
 )
 from app.pipelines.permit_condition_search.stores.ai_search_document_store import (
+    AdditionalAISearchConfig,
     AzureSearchDocumentStore,
 )
 from azure.search.documents.indexes.models import VectorSearch
@@ -95,6 +96,11 @@ def create_azure_search_document_store():
         embedding_dimension=3072,
         metadata_fields=doc_metadata_fields,
         vector_search_configuration=vector_search_config,
+        search_config=AdditionalAISearchConfig(
+            highlight_fields="content",
+            highlight_pre_tag="**",
+            highlight_post_tag="**",
+        )
     )
 
 def create_elasticsearch_document_store():

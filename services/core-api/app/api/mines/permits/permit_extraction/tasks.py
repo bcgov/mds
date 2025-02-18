@@ -1,4 +1,3 @@
-
 from app.api.mines.permits.permit_extraction.create_permit_conditions import (
     create_permit_conditions_from_task,
 )
@@ -35,6 +34,38 @@ class PermitExtractionTaskBase(Task):
 
             task.task_status = 'FAILURE'
             task.save()
+
+
+@celery.task(base=PermitExtractionTaskBase)
+def initialize_single_permit_extraction(document_name, permit_amendment_guid):
+    """
+    Initialize permit extraction for a single document.
+    """
+    from app.api.mines.permits.permit_amendment.models.permit_amendment import (
+        PermitAmendment,
+    )
+    from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
+        PermitAmendmentDocument,
+    )
+    
+    document = PermitAmendmentDocument.find_by_permit_amendment_document_name(document_name)
+    if not document:
+        raise ValueError(f"Invalid document {document_name}")
+        
+    amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
+    if not amendment:
+        raise ValueError(f"Invalid amendment {permit_amendment_guid}")
+        
+    if amendment and len(amendment.conditions) > 0:
+        raise ValueError(f"Amendment {permit_amendment_guid} already has conditions")
+        
+    task = PermitSearchService().initialize_permit_extraction(document, with_internal_auth=True)
+    if task:
+        core_task = poll_update_permit_extraction_status.delay(task.permit_extraction_task_id)
+        task.core_status_task_id = core_task.id
+        task.save()
+        return task.permit_extraction_task_id
+    return None
 
 
 @celery.task(base=PermitExtractionTaskBase, max_retries=360)

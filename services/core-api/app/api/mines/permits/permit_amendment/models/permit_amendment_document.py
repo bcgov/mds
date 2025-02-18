@@ -1,10 +1,9 @@
-from sqlalchemy.schema import FetchedValue
-from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.dialects.postgresql import UUID
-
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
+from app.api.constants import PERMIT_AMENDMENT_EDIT_GROUP, PERMIT_EDIT_GROUP
+from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.extensions import db
-from app.api.constants import PERMIT_EDIT_GROUP, PERMIT_AMENDMENT_EDIT_GROUP
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.schema import FetchedValue
 
 
 class PermitAmendmentDocument(SoftDeleteMixin, AuditMixin, Base):
@@ -39,6 +38,10 @@ class PermitAmendmentDocument(SoftDeleteMixin, AuditMixin, Base):
     @classmethod
     def find_by_permit_amendment_document_guid(cls, _guid):
         return cls.query.filter_by(permit_amendment_document_guid=_guid, deleted_ind=False).first()
+    
+    @classmethod
+    def find_by_permit_amendment_document_name(cls, document_name):
+        return cls.query.filter_by(document_name=document_name, deleted_ind=False).first()
 
     @classmethod
     def find_by_permit_amendment_id(cls, id):
