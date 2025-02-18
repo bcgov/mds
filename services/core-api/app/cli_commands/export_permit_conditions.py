@@ -58,8 +58,6 @@ def export_permit_conditions(permit_amendment_guid):
         document_name = doc.document_name
         document_guid = doc.document_manager_guid
 
-    # Create filename with timestamp
-    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f'permit_conditions_{permit_amendment_guid}.csv'
     
     # Define CSV headers
