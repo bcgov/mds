@@ -260,7 +260,10 @@ export const MINE_WORK_INFORMATION = (mineGuid, mineWorkInformationGuid) =>
 export const REPORTS = (params = {}) => `/mines/reports?${queryString.stringify(params)}`;
 export const REPORT_SUBMISSIONS = (params?) =>
   `/mines/reports/submissions?${queryString.stringify(params)}`;
-export const MINE_REPORT_DEFINITIONS = (params = {}) => `/mines/reports/definitions?${queryString.stringify(params)}`;
+export const MINE_REPORT_DEFINITIONS = (params = {}) =>
+  `/mines/reports/definitions?${queryString.stringify(params)}`;
+export const MINE_REPORT_DEFINITION = "/mines/reports/definitions";
+export const MINE_REPORT_DUE_DATE_TYPES = "/mines/reports/due-date-types";
 export const MINE_REPORTS = (mineGuid, params?) =>
   `/mines/${mineGuid}/reports?${queryString.stringify(params)}`;
 export const MINE_REPORT = (mineGuid, mineReportGuid) =>

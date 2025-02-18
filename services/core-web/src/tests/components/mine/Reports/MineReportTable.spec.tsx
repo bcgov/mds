@@ -5,12 +5,13 @@ import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { render } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
+import { MINE_REPORTS_ENUM } from "@mds/common/constants/enums";
 
 const props = {
-  mine: MOCK.MINES.mines[MOCK.MINES.mineIds[0]],
   mineReports: MOCK.MINE_REPORTS,
-  mineReportCategoryOptionsHash: MOCK.MINE_REPORT_CATEGORY_OPTIONS_HASH,
-  mineReportStatusOptionsHash: MOCK.MINE_REPORT_STATUS_OPTIONS_HASH,
+  mineReportType: MINE_REPORTS_ENUM.CRR,
+  isLoaded: true,
+  handleRemoveReport: jest.fn(),
 };
 
 const initialState = {

@@ -1,17 +1,17 @@
-import uuid
 from flask_restx import Resource, reqparse
 from flask import request
-from werkzeug.exceptions import BadRequest, NotFound
+from werkzeug.exceptions import BadRequest
 
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, EDIT_CODE
 
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
-from app.api.mines.response_models import PAGINATED_MINE_REPORT_DEFINITION_MODEL
+from app.api.mines.response_models import PAGINATED_MINE_REPORT_DEFINITION_MODEL, MINE_REPORT_DEFINITION_MODEL
+
 
 class MineReportDefinitionListResource(Resource, UserMixin):
-    parser = reqparse.RequestParser()   
+    parser = reqparse.RequestParser()
     parser.add_argument(
         'page', type=int, help='page for pagination', location='args', store_missing=False
     )
@@ -79,3 +79,51 @@ class MineReportDefinitionListResource(Resource, UserMixin):
             active_ind,
             section
         )
+
+
+    @api.doc(description='Creates a new mine report definition.')
+    @api.marshal_with(MINE_REPORT_DEFINITION_MODEL, code=201)
+    @requires_any_of([EDIT_CODE])
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('report_name',
+                            type=str,
+                            location='json',
+                            required=True,
+                            help='Report name')
+        parser.add_argument('description',
+                            type=str,
+                            location='json',
+                            required=True,
+                            help='Report description')
+        parser.add_argument('mine_report_due_date_type_code',
+                            type=str,
+                            location='json',
+                            required=True,
+                            help='Due date type')
+        parser.add_argument('mine_report_due_date_period_months',
+                            type=int,
+                            location='json',
+                            required=False,
+                            help='Due date period months')
+        parser.add_argument('report_type',
+                            type=str,
+                            location='json',
+                            required=True,
+                            help='Compliance Article ID')
+        parser.add_argument('is_common',
+                            type=bool,
+                            location='json',
+                            required=True,
+                            help='Is Common')
+        data = parser.parse_args()
+
+        mine_report_definition = MineReportDefinition.create(data.get('report_name'),
+                                                             data.get('description'),
+                                                             data.get('mine_report_due_date_type_code'),
+                                                             data.get('mine_report_due_date_period_months'),
+                                                             data.get('report_type'),
+                                                             data.get('is_common'))
+        return mine_report_definition, 201
+
+
