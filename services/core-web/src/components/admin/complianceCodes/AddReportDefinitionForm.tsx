@@ -10,7 +10,7 @@ import { useAppSelector } from "@mds/common/redux/rootState";
 import { getMineReportDueDateTypes } from "@mds/common/redux/slices/complianceReportsSlice";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
-import { required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
+import { maxLength, required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
 import { Field } from "@mds/common/components/forms/form";
 
 const { Title, Paragraph } = Typography;
@@ -36,15 +36,16 @@ const AddReportDefinitionForm = ({ handleSubmit, isModal = false }) => {
         component={RenderField}
         name="report_name"
         label="Report Name"
-        validate={[required]}
+        validate={[required, maxLength(100)]}
       />
       <Field
         required
         component={RenderAutoSizeField}
         name="description"
         label="Description"
+        maximumCharacter={300}
         placeholder="Describe the report's definition / purpose for the mine proponent"
-        validate={[required]}
+        validate={[required, maxLength(300)]}
       />
       <Row gutter={16}>
         <Col span={12}>
