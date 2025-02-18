@@ -1,6 +1,7 @@
 import csv
 import datetime
 import os
+import uuid
 
 from app.api.mines.permits.permit_amendment.models.permit_amendment import (
     PermitAmendment,
@@ -15,6 +16,13 @@ def export_permit_conditions(permit_amendment_guid):
     """
     Export permit conditions for the specified permit amendment to a CSV file.
     """
+    # Validate UUID format
+    try:
+        uuid.UUID(str(permit_amendment_guid))
+    except (ValueError, AttributeError, TypeError):
+        print(f'Invalid permit amendment GUID format: {permit_amendment_guid}')
+        return None
+
     amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
 
     if amendment is None:
