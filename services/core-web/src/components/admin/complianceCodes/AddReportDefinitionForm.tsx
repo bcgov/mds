@@ -26,11 +26,7 @@ const AddReportDefinitionForm = ({ handleSubmit, isModal = false }) => {
 
   return (
     <FormWrapper name={ADD_REPORT_DEFINITION} onSubmit={handleSubmit} isModal={isModal}>
-      <Title level={3}>Create Report</Title>
-      <Title level={4}>Report Details</Title>
-      <Paragraph strong className="margin-small--bottom">
-        Report Name
-      </Paragraph>
+      <Title level={3}>Report Details</Title>
       <Field
         required
         component={RenderField}
