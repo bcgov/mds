@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { getFormValues, change, touch } from "@mds/common/components/forms/form";
 import { Row, Button, Steps } from "antd";
 import * as FORM from "@/constants/forms";
@@ -17,6 +16,7 @@ import { ReportEditForm } from "./ReportEditForm";
 import CoreButton from "@mds/common/components/common/CoreButton";
 import { IComplianceArticle } from "@mds/common/interfaces";
 import { REPORT_REGULATORY_AUTHORITY_CODES } from "@mds/common/constants/enums";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 
 const ComplianceCodeViewEditForm: FC<{
   initialValues: IComplianceArticle;
@@ -24,10 +24,10 @@ const ComplianceCodeViewEditForm: FC<{
   onSave: (values: IComplianceArticle) => void | Promise<void>;
 }> = ({ initialValues = {}, isEditMode = true, onSave = null }) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const dispatch = useDispatch();
-  const complianceCodes = useSelector(getActiveComplianceCodesList);
-  const formValues = useSelector(getFormValues(FORM.ADD_COMPLIANCE_CODE)) ?? {};
-  const { section, sub_section, paragraph, sub_paragraph } = formValues;
+  const dispatch = useAppDispatch();
+  const complianceCodes = useAppSelector(getActiveComplianceCodesList);
+  const formValues = useAppSelector(getFormValues(FORM.ADD_COMPLIANCE_CODE)) as IComplianceArticle;
+  const { section, sub_section, paragraph, sub_paragraph } = formValues ?? {};
 
   const generateArticleNumber = () => {
     const articleNumber = [section, sub_section, paragraph, sub_paragraph]
@@ -59,7 +59,7 @@ const ComplianceCodeViewEditForm: FC<{
     {
       title: "Report Details",
       content: (
-        <ReportEditForm complianceCodes={complianceCodes} isEditMode={isEditMode}></ReportEditForm>
+        <ReportEditForm isEditMode={isEditMode}></ReportEditForm>
       ),
     },
   ];
@@ -91,42 +91,39 @@ const ComplianceCodeViewEditForm: FC<{
         isEditMode={isEditMode}
         isModal={true}
       >
-        <Row>
-          <Steps current={currentStep}>
-            {steps.map((step) => (
-              <Steps.Step key={step.title} title={step.title} />
-            ))}
-          </Steps>
+        <Steps current={currentStep}>
+          {steps.map((step) => (
+            <Steps.Step key={step.title} title={step.title} />
+          ))}
+        </Steps>
+        {steps[currentStep].content}
+        <Row style={{ width: "100%" }} justify="end">
+          <RenderCancelButton />
+          {currentStep > 0 && (
+            <CoreButton
+              className="full-mobile"
+              type="filled-tertiary"
+              onClick={previous}
+              disabled={false}
+            >
+              Back
+            </CoreButton>
+          )}
 
-          <Row style={{ marginTop: "16px", width: "100%" }}>{steps[currentStep].content}</Row>
-          <Row style={{ width: "100%" }} justify="end">
-            <RenderCancelButton />
-            {currentStep > 0 && (
-              <CoreButton
-                className="full-mobile"
-                type="filled-tertiary"
-                onClick={previous}
-                disabled={false}
-              >
-                Back
-              </CoreButton>
-            )}
-
-            {isEditMode ? (
-              <RenderSubmitButton
-                buttonText={currentStep === steps.length - 1 ? "Save Code" : "Continue"}
-              />
-            ) : (
-              ""
-            )}
-            {!isEditMode && currentStep < steps.length - 1 ? (
-              <Button type="primary" onClick={next}>
-                Continue
-              </Button>
-            ) : (
-              ""
-            )}
-          </Row>
+          {isEditMode ? (
+            <RenderSubmitButton
+              buttonText={currentStep === steps.length - 1 ? "Save Code" : "Continue"}
+            />
+          ) : (
+            ""
+          )}
+          {!isEditMode && currentStep < steps.length - 1 ? (
+            <Button type="primary" onClick={next}>
+              Continue
+            </Button>
+          ) : (
+            ""
+          )}
         </Row>
       </FormWrapper>
     </div>

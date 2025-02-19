@@ -1,6 +1,5 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
-import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import {
     complianceReportReducerType,

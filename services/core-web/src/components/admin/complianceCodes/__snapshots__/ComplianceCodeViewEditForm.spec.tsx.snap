@@ -1,0 +1,1443 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ComplianceCodeViewEditForm renders properly 1`] = `
+<div>
+  <div>
+    <form
+      class="ant-form ant-form-vertical common-form common-form-ADD_COMPLIANCE_CODE form-edit"
+      id="ADD_COMPLIANCE_CODE"
+    >
+      <div
+        class="ant-steps ant-steps-horizontal ant-steps-label-horizontal"
+      >
+        <div
+          class="ant-steps-item ant-steps-item-process ant-steps-item-active"
+        >
+          <div
+            class="ant-steps-item-container"
+          >
+            <div
+              class="ant-steps-item-tail"
+            />
+            <div
+              class="ant-steps-item-icon"
+            >
+              <span
+                class="ant-steps-icon"
+              >
+                1
+              </span>
+            </div>
+            <div
+              class="ant-steps-item-content"
+            >
+              <div
+                class="ant-steps-item-title"
+              >
+                HSRC Details
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-steps-item ant-steps-item-wait"
+        >
+          <div
+            class="ant-steps-item-container"
+          >
+            <div
+              class="ant-steps-item-tail"
+            />
+            <div
+              class="ant-steps-item-icon"
+            >
+              <span
+                class="ant-steps-icon"
+              >
+                2
+              </span>
+            </div>
+            <div
+              class="ant-steps-item-content"
+            >
+              <div
+                class="ant-steps-item-title"
+              >
+                Report Details
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row form-row-margin"
+        style="margin: -8px -8px -8px -8px;"
+      >
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <span
+            class="ant-typography"
+          >
+            <strong>
+              HSRC Details
+            </strong>
+          </span>
+        </div>
+        <div
+          class="ant-col ant-col-sm-10 ant-col-md-5"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="ADD_COMPLIANCE_CODE_section"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    Section
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="section"
+                      class="ant-input"
+                      name="section"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_COMPLIANCE_CODE_section_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-12 ant-col-md-6"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_COMPLIANCE_CODE_sub_section"
+                  title=""
+                >
+                  <div>
+                    Subsection
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="sub_section"
+                      class="ant-input"
+                      name="sub_section"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_COMPLIANCE_CODE_sub_section_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-12 ant-col-md-6"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_COMPLIANCE_CODE_paragraph"
+                  title=""
+                >
+                  <div>
+                    Paragraph
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="paragraph"
+                      class="ant-input"
+                      name="paragraph"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_COMPLIANCE_CODE_paragraph_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-14 ant-col-md-7"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_COMPLIANCE_CODE_sub_paragraph"
+                  title=""
+                >
+                  <div>
+                    Subparagraph
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="sub_paragraph"
+                      class="ant-input"
+                      name="sub_paragraph"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_COMPLIANCE_CODE_sub_paragraph_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row form-row-margin"
+        style="margin: -8px -8px -8px -8px;"
+      >
+        <div
+          class="ant-col ant-col-24 hide-required-indicator"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_COMPLIANCE_CODE_articleNumber"
+                  title=""
+                >
+                  <div>
+                    Section Displayed
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="articleNumber"
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="articleNumber"
+                      name="articleNumber"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_COMPLIANCE_CODE_articleNumber_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row form-row-margin"
+        style="margin: -8px -8px -8px -8px;"
+      >
+        <div
+          class="ant-col ant-col-12"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="ADD_COMPLIANCE_CODE_effective_date"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    Date Active
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-picker"
+                    >
+                      <div
+                        class="ant-picker-input"
+                      >
+                        <input
+                          aria-required="true"
+                          autocomplete="off"
+                          id="ADD_COMPLIANCE_CODE_effective_date"
+                          name="effective_date"
+                          placeholder="Select date"
+                          readonly=""
+                          size="12"
+                          title=""
+                          value=""
+                        />
+                        <span
+                          class="ant-picker-suffix"
+                        >
+                          <span
+                            aria-label="calendar"
+                            class="anticon anticon-calendar"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="calendar"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_COMPLIANCE_CODE_effective_date_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-12"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_COMPLIANCE_CODE_expiry_date"
+                  title=""
+                >
+                  <div>
+                    Date Expire
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-picker"
+                    >
+                      <div
+                        class="ant-picker-input"
+                      >
+                        <input
+                          autocomplete="off"
+                          id="ADD_COMPLIANCE_CODE_expiry_date"
+                          name="expiry_date"
+                          placeholder="Select date"
+                          readonly=""
+                          size="12"
+                          title=""
+                          value=""
+                        />
+                        <span
+                          class="ant-picker-suffix"
+                        >
+                          <span
+                            aria-label="calendar"
+                            class="anticon anticon-calendar"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="calendar"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_COMPLIANCE_CODE_expiry_date_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+        style="margin: -8px -8px -8px -8px;"
+      >
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="ADD_COMPLIANCE_CODE_description"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    Description
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="description"
+                      class="ant-input"
+                      name="description"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_COMPLIANCE_CODE_description_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="ADD_COMPLIANCE_CODE_long_description"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    Long Description
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input"
+                      name="long_description"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                    <div
+                      class="ant-row ant-row-space-between form-item-help long_description-form-help"
+                    >
+                      <span>
+                        Maximum 3000 characters
+                      </span>
+                      <span
+                        class="flex-end"
+                      >
+                        3000 / 3000
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_COMPLIANCE_CODE_long_description_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <span
+            class="ant-typography"
+          >
+            <strong>
+              Regulatory Authority
+            </strong>
+          </span>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="ADD_COMPLIANCE_CODE_cim_or_cpo"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    Who is the report for?
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-radio-group ant-radio-group-solid vertical-radio-group"
+                    >
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            name="cim_or_cpo"
+                            type="radio"
+                            value="CPO"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Chief Permitting Officer
+                        </span>
+                      </label>
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            name="cim_or_cpo"
+                            type="radio"
+                            value="CIM"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Chief Inspector of Mines
+                        </span>
+                      </label>
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            name="cim_or_cpo"
+                            type="radio"
+                            value="Both"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Both
+                        </span>
+                      </label>
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            name="cim_or_cpo"
+                            type="radio"
+                            value="Not specified"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Not specified
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_COMPLIANCE_CODE_cim_or_cpo_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_COMPLIANCE_CODE_help_reference_link"
+                  title=""
+                >
+                  <div>
+                    Resource Information Link
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="help_reference_link"
+                      class="ant-input"
+                      name="help_reference_link"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_COMPLIANCE_CODE_help_reference_link_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row ant-row-end"
+        style="width: 100%;"
+      >
+        <button
+          aria-label="Cancel"
+          class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
+          type="button"
+        >
+          <span>
+            Cancel
+          </span>
+        </button>
+        <button
+          aria-label="Submit"
+          class="ant-btn ant-btn-primary  form-btn"
+          disabled=""
+          type="submit"
+        >
+          <span>
+            Continue
+          </span>
+        </button>
+        
+      </div>
+    </form>
+  </div>
+  <div>
+    <form
+      class="ant-form ant-form-vertical common-form common-form-ADD_COMPLIANCE_CODE form-view"
+      id="ADD_COMPLIANCE_CODE"
+    >
+      <div
+        class="ant-steps ant-steps-horizontal ant-steps-label-horizontal"
+      >
+        <div
+          class="ant-steps-item ant-steps-item-process ant-steps-item-active"
+        >
+          <div
+            class="ant-steps-item-container"
+          >
+            <div
+              class="ant-steps-item-tail"
+            />
+            <div
+              class="ant-steps-item-icon"
+            >
+              <span
+                class="ant-steps-icon"
+              >
+                1
+              </span>
+            </div>
+            <div
+              class="ant-steps-item-content"
+            >
+              <div
+                class="ant-steps-item-title"
+              >
+                HSRC Details
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-steps-item ant-steps-item-wait"
+        >
+          <div
+            class="ant-steps-item-container"
+          >
+            <div
+              class="ant-steps-item-tail"
+            />
+            <div
+              class="ant-steps-item-icon"
+            >
+              <span
+                class="ant-steps-icon"
+              >
+                2
+              </span>
+            </div>
+            <div
+              class="ant-steps-item-content"
+            >
+              <div
+                class="ant-steps-item-title"
+              >
+                Report Details
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row form-row-margin"
+        style="margin: -8px -8px -8px -8px;"
+      >
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <span
+            class="ant-typography"
+          >
+            <strong>
+              HSRC Details
+            </strong>
+          </span>
+        </div>
+        <div
+          class="ant-col ant-col-sm-10 ant-col-md-5"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="view-item ant-form-item"
+          >
+            <div
+              class="ant-typography view-item-label"
+            >
+              Section
+            </div>
+            <div
+              class="ant-typography view-item-value"
+            >
+              N/A
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-12 ant-col-md-6"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="view-item ant-form-item"
+          >
+            <div
+              class="ant-typography view-item-label"
+            >
+              Subsection
+            </div>
+            <div
+              class="ant-typography view-item-value"
+            >
+              N/A
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-12 ant-col-md-6"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="view-item ant-form-item"
+          >
+            <div
+              class="ant-typography view-item-label"
+            >
+              Paragraph
+            </div>
+            <div
+              class="ant-typography view-item-value"
+            >
+              N/A
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-14 ant-col-md-7"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="view-item ant-form-item"
+          >
+            <div
+              class="ant-typography view-item-label"
+            >
+              Subparagraph
+            </div>
+            <div
+              class="ant-typography view-item-value"
+            >
+              N/A
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row form-row-margin"
+        style="margin: -8px -8px -8px -8px;"
+      >
+        <div
+          class="ant-col ant-col-24 hide-required-indicator"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="view-item ant-form-item"
+          >
+            <div
+              class="ant-typography view-item-label"
+            >
+              Section Displayed
+            </div>
+            <div
+              class="ant-typography view-item-value"
+            >
+              N/A
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row form-row-margin"
+        style="margin: -8px -8px -8px -8px;"
+      >
+        <div
+          class="ant-col ant-col-12"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="view-item ant-form-item"
+          >
+            <div
+              class="ant-typography view-item-label"
+            >
+              Date Active
+            </div>
+            <div
+              class="ant-typography view-item-value"
+            >
+              N/A
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-12"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="view-item ant-form-item"
+          >
+            <div
+              class="ant-typography view-item-label"
+            >
+              Date Expire
+            </div>
+            <div
+              class="ant-typography view-item-value"
+            >
+              N/A
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+        style="margin: -8px -8px -8px -8px;"
+      >
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="view-item ant-form-item"
+          >
+            <div
+              class="ant-typography view-item-label"
+            >
+              Description
+            </div>
+            <div
+              class="ant-typography view-item-value"
+            >
+              N/A
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="view-item ant-form-item"
+          >
+            <div
+              class="ant-typography view-item-label"
+            >
+              Long Description
+            </div>
+            <div
+              class="ant-typography view-item-value"
+            >
+              N/A
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <span
+            class="ant-typography"
+          >
+            <strong>
+              Regulatory Authority
+            </strong>
+          </span>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="ant-form-item view-item"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_COMPLIANCE_CODE_cim_or_cpo"
+                  title=""
+                >
+                  <div
+                    class="view-item-label"
+                  >
+                    <div>
+                      Who is the report for?
+                       
+                    </div>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-radio-group ant-radio-group-solid vertical-radio-group view-item"
+                    >
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="cim_or_cpo"
+                            type="radio"
+                            value="CPO"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Chief Permitting Officer
+                        </span>
+                      </label>
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="cim_or_cpo"
+                            type="radio"
+                            value="CIM"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Chief Inspector of Mines
+                        </span>
+                      </label>
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="cim_or_cpo"
+                            type="radio"
+                            value="Both"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Both
+                        </span>
+                      </label>
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="cim_or_cpo"
+                            type="radio"
+                            value="Not specified"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Not specified
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="view-item ant-form-item"
+          >
+            <div
+              class="ant-typography view-item-label"
+            >
+              Resource Information Link
+            </div>
+            <div
+              class="ant-typography view-item-value"
+            >
+              N/A
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row ant-row-end"
+        style="width: 100%;"
+      >
+        <button
+          aria-label="Cancel"
+          class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
+          type="button"
+        >
+          <span>
+            Close
+          </span>
+        </button>
+        
+        <button
+          class="ant-btn ant-btn-primary"
+          type="button"
+        >
+          <span>
+            Continue
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;

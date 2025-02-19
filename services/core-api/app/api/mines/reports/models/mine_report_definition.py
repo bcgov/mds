@@ -201,9 +201,11 @@ class MineReportDefinition(Base, AuditMixin):
 
         if compliance_sort or compliance_filter:
             query = query.join(MineReportDefinitionComplianceArticleXref,
-                               MineReportDefinitionComplianceArticleXref.mine_report_definition_id == MineReportDefinition.mine_report_definition_id)
+                               MineReportDefinitionComplianceArticleXref.mine_report_definition_id == MineReportDefinition.mine_report_definition_id,
+                               isouter=True)
             query = query.join(ComplianceArticle,
-                               ComplianceArticle.compliance_article_id == MineReportDefinitionComplianceArticleXref.compliance_article_id)
+                               ComplianceArticle.compliance_article_id == MineReportDefinitionComplianceArticleXref.compliance_article_id,
+                               isouter=True)
 
         query = cls._apply_sort(query, sort_field, sort_dir)
         query = cls._apply_filters(query, regulatory_authority, is_prr_only, active_ind, section)
