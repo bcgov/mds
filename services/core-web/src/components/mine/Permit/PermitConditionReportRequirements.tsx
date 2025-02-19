@@ -23,22 +23,15 @@ const PermitConditionReportRequirements: FC<PermitConditionReportRequirementsPro
 
     return (
         <Collapse expandIconPosition="end">
-            {conditionsWithRequirements.map((cond, index) => {
-                let reportName = null;
-                if (cond.mineReportPermitRequirement?.report_name) {
-                    reportName = cond.mineReportPermitRequirement?.report_name;
-                } else if (cond["report_name"]) {
-                    reportName = cond["report_name"];
-                }
-
+            {conditionsWithRequirements.map((cond: IPermitCondition, index) => {
                 return (
                     <Collapse.Panel
                         key={cond.permit_condition_id}
                         header={
                             <Typography.Text strong>
                                 Report #{index + 1}
-                                {reportName
-                                    ? ` - ${reportName}`
+                                {cond.mineReportPermitRequirement?.report_name
+                                    ? ` - ${cond.mineReportPermitRequirement.report_name}`
                                     : ""}
                             </Typography.Text>
                         }
