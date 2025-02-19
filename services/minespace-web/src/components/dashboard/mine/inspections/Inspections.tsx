@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import moment from "moment";
 import { Row, Col, Typography } from "antd";
 import { formatDate } from "@common/utils/helpers";
@@ -16,9 +16,10 @@ import {
   ExclamationCircleOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 export const Inspections: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
   const mineComplianceInfo = useSelector(getMineComplianceInfo);
   const [isLoaded, setIsLoaded] = useState(false);

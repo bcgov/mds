@@ -2,14 +2,14 @@ import React, { FC } from "react";
 import { Typography } from "antd";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import { Feature } from "@mds/common/utils/featureFlag";
-import { MineDocument } from "@mds/common/models/documents/document";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import DocumentTable from "../documents/DocumentTable";
 import { renderCategoryColumn } from "../common/CoreTableCommonColumns";
 import { CATEGORY_CODE } from "@mds/common/constants/strings";
+import { IMineDocument } from "@mds/common/interfaces/mineDocument.interface";
 
 interface ArchivedDocumentsSectionProps {
-  documents: MineDocument[];
+  documents: IMineDocument[];
   titleLevel?: 1 | 2 | 3 | 4 | 5;
   href?: string;
   showCategory?: boolean;

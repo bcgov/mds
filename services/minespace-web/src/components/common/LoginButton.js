@@ -29,7 +29,7 @@ const LoginButton = (props) => {
       type="primary"
       size="large"
       className={props.className || "login"}
-      style={{ "margin-right": "10px" }}
+      style={{ marginRight: "10px" }}
     >
       <a onClick={kcLogin}>Log in with BCeID</a>
     </Button>

@@ -41,7 +41,6 @@ const AddNoticeOfDepartureModal: React.FC<AddNoticeOfDepartureModalProps> = (pro
         permits={permits}
         onSubmit={onSubmit}
         mineGuid={mineGuid}
-        closeModal={close}
         initialValues={initialValues}
       />
     </div>

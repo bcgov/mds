@@ -18,6 +18,7 @@ import { FormContext } from "../forms/FormWrapper";
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
 import { FORM } from "@mds/common/constants/forms";
 import { USER_ROLES } from "@mds/common/constants/environment";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 interface ProjectLinksProps extends ProjectSummaryFormComponentProps {
   viewProject: (record: ILinkedProject) => string;
@@ -25,7 +26,7 @@ interface ProjectLinksProps extends ProjectSummaryFormComponentProps {
 }
 // outside of component to sneak past "hooks can't be rendered conditionally"
 const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [currentSelection, setCurrentSelection] = useState([]);
   const formName = FORM.ADD_EDIT_PROJECT_SUMMARY;
   const fieldName = "linked-projects";

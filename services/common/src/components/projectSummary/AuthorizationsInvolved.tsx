@@ -55,9 +55,10 @@ import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
 import { areAuthEnvFieldsDisabled, areDocumentFieldsDisabled, isDocumentDeletionEnabled } from "../projects/projectUtils";
 import { removeDocumentFromProjectSummary } from "@mds/common/redux/actionCreators/projectActionCreator";
 import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE, ENVIRONMENTAL_MANAGMENT_ACT, WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL, WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL } from "@mds/common/constants/strings";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const purposeLabel = isAmendment
     ? "Additional Amendment Request Information"
     : "Purpose of Application";

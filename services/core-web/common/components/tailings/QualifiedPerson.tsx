@@ -1,12 +1,12 @@
 import { Alert, Button, Col, Empty, Popconfirm, Row, Typography } from "antd";
-import { change, ChangeAction, Field, getFormValues } from "@mds/common/components/forms/form";
+import { change, Field, FormAction, getFormValues } from "@mds/common/components/forms/form";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { bindActionCreators } from "redux";
-import { connect, useSelector } from "react-redux";
+import { ConnectedProps, connect, useSelector } from "react-redux";
 import {
   dateInFuture,
   dateNotInFuture,
@@ -16,16 +16,17 @@ import {
 import ContactDetails from "@common/components/ContactDetails";
 import TailingsContext from "@common/components/tailings/TailingsContext";
 import moment from "moment";
+import { ICreateTailingsStorageFacility } from "@mds/common/interfaces";
 
-interface QualifiedPersonProps {
+interface QualifiedPersonProps extends PropsFromRedux {
   change: (
     field: string,
     value: any,
     touch?: boolean,
     persistentSubmitErrors?: boolean
-  ) => ChangeAction;
-  openModal: (value: any) => void;
-  closeModal: () => void;
+  ) => FormAction;
+  openModal: (value: any) => { type: string; payload: unknown };
+  closeModal: () => { type: string };
   formValues: any;
   partyRelationships: any[];
   mineGuid: string;
@@ -38,7 +39,9 @@ interface QualifiedPersonProps {
 export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
   const { isCore, mineGuid, partyRelationships, canEditTSF, isEditMode } = props;
   const { renderConfig, addContactModalConfig, tsfFormName } = useContext(TailingsContext);
-  const formValues = useSelector((state) => getFormValues(tsfFormName)(state));
+  const formValues = useSelector((state) =>
+    getFormValues(tsfFormName)(state)
+  ) as ICreateTailingsStorageFacility;
   const [currentQp, setCurrentQp] = useState(null);
 
   const canEditTSFAndEditMode = canEditTSF && isEditMode;
@@ -260,4 +263,7 @@ const mapStateToProps = (state, ownProps) => ({
   partyRelationships: getPartyRelationships(state),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(QualifiedPerson);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(QualifiedPerson);
