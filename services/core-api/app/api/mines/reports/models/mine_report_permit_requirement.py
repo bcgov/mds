@@ -51,6 +51,13 @@ class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin):
             return cls.query.filter_by(mine_report_permit_requirement_id=_id, deleted_ind=False).first()
         except ValueError:
             return None
+        
+    @classmethod
+    def find_by_permit_condition_id(cls, _id) -> "MineReportPermitRequirement":
+        try:
+            return cls.query.filter_by(permit_condition_id=_id, deleted_ind=False).first()
+        except ValueError:
+            return None
 
     @classmethod
     def find_by_report_name(cls, _report_name) -> "MineReportPermitRequirement":

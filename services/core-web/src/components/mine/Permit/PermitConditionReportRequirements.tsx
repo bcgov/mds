@@ -23,31 +23,41 @@ const PermitConditionReportRequirements: FC<PermitConditionReportRequirementsPro
 
     return (
         <Collapse expandIconPosition="end">
-            {conditionsWithRequirements.map((cond: IPermitCondition, index) => (
-                <Collapse.Panel
-                    key={cond.permit_condition_id}
-                    header={
-                        <Typography.Text strong>
-                            Report #{index + 1}
-                            {cond.mineReportPermitRequirement?.report_name
-                                ? ` - ${cond.mineReportPermitRequirement.report_name}`
-                                : ""}
-                        </Typography.Text>
-                    }
-                    className="report-collapse"
-                >
-                    <ReportPermitRequirementForm
-                        modalView={false}
-                        condition={cond}
-                        permitGuid={permitGuid}
-                        mineReportPermitRequirement={cond.mineReportPermitRequirement}
-                        canEditPermitConditions={canEditPermitConditions}
-                        refreshData={refreshData}
-                        currentAmendment={currentAmendment}
-                        mineGuid={mineGuid}
-                    />
-                </Collapse.Panel>
-            ))}
+            {conditionsWithRequirements.map((cond, index) => {
+                let reportName = null;
+                if (cond.mineReportPermitRequirement?.report_name) {
+                    reportName = cond.mineReportPermitRequirement?.report_name;
+                } else if (cond["report_name"]) {
+                    reportName = cond["report_name"];
+                }
+
+                return (
+                    <Collapse.Panel
+                        key={cond.permit_condition_id}
+                        header={
+                            <Typography.Text strong>
+                                Report #{index + 1}
+                                {reportName
+                                    ? ` - ${reportName}`
+                                    : ""}
+                            </Typography.Text>
+                        }
+                        className="report-collapse"
+                    >
+                        <ReportPermitRequirementForm
+                            modalView={false}
+                            condition={cond}
+                            permitGuid={permitGuid}
+                            mineReportPermitRequirement={cond.mineReportPermitRequirement}
+                            canEditPermitConditions={canEditPermitConditions}
+                            refreshData={refreshData}
+                            currentAmendment={currentAmendment}
+                            mineGuid={mineGuid}
+                        />
+                    </Collapse.Panel>
+                )
+            }
+            )}
         </Collapse>
     );
 };

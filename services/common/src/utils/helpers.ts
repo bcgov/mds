@@ -104,7 +104,7 @@ export const getConditionsWithRequirements = (conditions: IPermitCondition[], re
     }
 
     if (condition?.sub_conditions?.length > 0) {
-      result = result.concat(getConditionsWithRequirements(condition.sub_conditions));
+      result = result.concat(getConditionsWithRequirements(condition.sub_conditions, requirements));
     }
   });
 

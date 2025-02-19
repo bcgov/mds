@@ -15,6 +15,9 @@ from .models.permit_condition_result import (
 )
 from .permit_condition_category_creator import PermitConditionCategoryCreator
 from .permit_condition_creator import PermitConditionCreator
+from app.api.mines.reports.models.mine_report_permit_requirement import (
+    MineReportPermitRequirement,
+)
 
 
 def create_permit_conditions_from_task(task: PermitExtractionTask):
@@ -49,9 +52,10 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
                     condition=condition,
                 )
                 comparisons = comparisons + created_comparisons
-                created_cond.append(main_cond)
                 if title_cond:
                     created_cond.append(title_cond)
+                
+                created_cond.append(main_cond)
         
         comparison_by_id = {}
 
@@ -60,7 +64,19 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
 
         for condition in created_cond:
             comparison = comparison_by_id.get(condition.permit_condition_id)
-            report_requirement = create_or_copy_permit_condition_report_requirements(task, condition, comparison)
+            parent_mine_report = MineReportPermitRequirement.find_by_permit_condition_id(condition.parent_permit_condition_id)
+            is_duplicate_of_parent_report = False
+            report_requirement = None
+
+            if parent_mine_report:
+                meta = condition.meta or {}
+                questions = meta.get("questions", [])
+                condition_report_name = next((q for q in questions if (q and q["question_key"] == "report_name")), None)
+                if condition_report_name:
+                    is_duplicate_of_parent_report = parent_mine_report.report_name == condition_report_name['answer']
+            
+            if not is_duplicate_of_parent_report:
+                report_requirement = create_or_copy_permit_condition_report_requirements(task, condition, comparison)
             if report_requirement:
                 db.session.add(report_requirement)
 
