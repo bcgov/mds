@@ -11,23 +11,34 @@ interface MarkdownViewerProps {
 const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ markdown }) => {
     const processedMarkdown = useMemo(() => {
         let refCount = 0;
-        const processed = markdown.replace(/\[doc:([a-f0-9]+)\]/g, (match, hash) => {
+
+        // First, escape any existing markdown brackets to prevent conflicts
+        let processed = markdown.replace(/\[([^\]]*)\]/g, (match) => {
+            if (!match.includes('doc:')) {
+                return `\\${match}`;
+            }
+            return match;
+        });
+
+        // Then process our special doc references
+        processed = processed.replace(/\[doc:([a-f0-9-]+)\]|\[\[doc:([a-f0-9-]+)\]\]/g, (match, hash1, hash2) => {
             refCount++;
-            // Add onclick handler via data attribute
+            const hash = hash1 || hash2;
             return `[[${refCount}]](#condition-${hash})`;
         });
+
         return processed;
     }, [markdown]);
 
     const handleClick = (event: React.MouseEvent) => {
         const target = event.target as HTMLAnchorElement;
-        if (target.tagName === 'A' && target.dataset.conditionId) {
+        if (target.tagName === 'A' && target.href.includes('#condition-')) {
             event.preventDefault();
-            const elementId = `condition-${target.dataset.conditionId}`;
-            const element = document.getElementById(elementId);
+            const hash = target.href.split('#')[1];
+            const element = document.getElementById(hash);
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth' });
-                window.location.hash = elementId; // This will trigger the highlight
+                window.location.hash = hash;
             }
         }
     };

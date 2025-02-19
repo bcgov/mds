@@ -5,8 +5,8 @@ import SearchResults from './components/SearchResults';
 import useSearch from './hooks/useSearch';
 import MarkdownViewer from './components/MarkdownViewer';
 import { SafetyOutlined, EnvironmentOutlined, AuditOutlined, BuildOutlined } from '@ant-design/icons';
-import { useAppSelector } from '@mds/common/redux/rootState';
-import { selectSearchResults, selectSearchLoading, selectSearchQuery, selectSearchFilters } from '@mds/common/redux/slices/permitSearchSlice';
+import { useAppSelector, useAppDispatch } from '@mds/common/redux/rootState';
+import { selectSearchResults, selectSearchLoading, selectSearchQuery, selectSearchFilters, setSearchFilters } from '@mds/common/redux/slices/permitSearchSlice';
 
 const exampleQueries = {
     environmental: {
@@ -56,10 +56,15 @@ const PermitConditionSearch: React.FC = () => {
     const loading = useAppSelector(selectSearchLoading);
     const query = useAppSelector(selectSearchQuery);
     const selectedFilters = useAppSelector(selectSearchFilters);
+    const dispatch = useAppDispatch();
 
     const handleQueryClick = (queryText: string) => {
         form.setFieldValue('search', queryText);
         setQuery(queryText);
+    };
+
+    const handleFilterChange = (filters: Array<{ category: string; value: string }>) => {
+        dispatch(setSearchFilters(filters));
     };
 
     const hasActiveSearch = query || selectedFilters?.length > 0;
@@ -127,7 +132,7 @@ const PermitConditionSearch: React.FC = () => {
                             <SearchBox onSearch={setQuery} loading={loading} value={query} />
                             <Row gutter={32}>
                                 <Col span={16}>
-                                    <SearchResults />
+                                    <SearchResults onFilterChange={handleFilterChange} />
                                 </Col>
                                 <Col span={8}>
                                     <Card title="AI-Generated Response" loading={loading}>
