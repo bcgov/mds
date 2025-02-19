@@ -43,12 +43,10 @@ describe("RequestReportForm", () => {
           permitGuid={MOCK.PERMITS[0].permit_guid}
           onSubmit={() => { }}
           canEditPermitConditions={true}
-          refreshData={() => Promise.resolve()}
+          refreshData={jest.fn()}
           currentAmendment={MOCK.PERMITS[0].permit_amendments[0]}
           mineGuid={MOCK.PERMITS[0].mine_guid}
           condition={MOCK.PERMITS[0].permit_amendments[0].conditions[0]}
-          refreshData={jest.fn()}
-          mineGuid={MOCK.PERMITS[0].mine_guid}
         />
       </ReduxWrapper>
     );

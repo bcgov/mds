@@ -94,8 +94,8 @@ export const STANDARD_PERMIT_CONDITIONS = (noticeOfWorkType) =>
 export const STANDARD_PERMIT_CONDITION = (permitConditionGuid) =>
   `/mines/permits/standard-conditions/${permitConditionGuid}`;
 
-export const PERMIT_AMENDMENT_CONDITION_ASSIGN_REVIEWER =
-  "mines/permits/condition-category/assign-review-user";
+export const PERMIT_AMENDMENT_CONDITION_ASSIGN_REVIEWER = (params?: { permit_amendment_id: number }) =>
+  `mines/permits/condition-category/assign-review-user?${queryString.stringify(params ?? {})}`;
 
 export const PERMIT_SERVICE_EXTRACTION = `/mines/permits/condition-extraction`;
 export const POLL_PERMIT_SERVICE_EXTRACTION = (taskId: string) =>

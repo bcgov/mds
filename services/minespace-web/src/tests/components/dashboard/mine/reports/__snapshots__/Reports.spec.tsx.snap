@@ -679,7 +679,7 @@ exports[`Reports renders properly 1`] = `
                                 class="latest_submission,received_date-column"
                                 title="Submitted On"
                               >
-                                N/A
+                                2025-02-01
                               </div>
                             </td>
                             <td

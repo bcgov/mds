@@ -1,11 +1,5 @@
-import uuid
-from datetime import datetime
-
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.extensions import db
-from flask.globals import current_app
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import validates, relationship
 from sqlalchemy.schema import FetchedValue
 
 
@@ -21,13 +15,7 @@ class PermitConditionCategory(SoftDeleteMixin, AuditMixin, Base):
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     display_order = db.Column(db.Integer, nullable=False)
 
-    user_sub = db.Column(db.String, db.ForeignKey('user.sub', ondelete='SET NULL', onupdate="CASCADE"))
 
-    assigned_review_user = db.relationship(
-        'User',
-        back_populates='permit_condition_categories',
-        lazy='selectin'
-    )
 
     # For Mines Act Permits, condition categories can be unique to a mine.
     # This is not the case for other permit types where the condition categories are standard (e.g. General Health and Safety etc.)
