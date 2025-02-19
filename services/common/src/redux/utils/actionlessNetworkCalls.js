@@ -112,24 +112,6 @@ export const downloadFileFromDocumentManager = (props) => {
     });
 };
 
-export const getDocumentDownloadToken = (documentManagerGuid, filename, UrlArray) => {
-  if (!documentManagerGuid) {
-    throw new Error("Must provide documentManagerGuid");
-  }
-
-  return CustomAxios()
-    .get(
-      `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_TOKEN_GET_URL(documentManagerGuid)}`,
-      createRequestHeader()
-    )
-    .then((response) => {
-      const token = { token: response.data.token_guid };
-      const url = `${`${ENVIRONMENT.docManUrl +
-        DOCUMENT_MANAGER_FILE_GET_URL(token)}&as_attachment=true`}`;
-      UrlArray.push({ filename, url });
-    });
-};
-
 export const getDocument = (documentManagerGuid) => {
   return CustomAxios()
     .get(

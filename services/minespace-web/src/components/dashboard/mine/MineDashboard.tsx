@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
@@ -11,9 +11,10 @@ import Loading from "@/components/common/Loading";
 import { fetchMinistryContactsByRegion } from "@mds/common/redux/actionCreators/minespaceActionCreator";
 import { fetchPartyRelationships } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const MineDashboard: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { id, activeTab } = useParams<{ id: string; activeTab: string }>();
   const mine: IMine = useSelector((state) => getMineById(state, id));
   const defaultIsLoadedValue: boolean = mine?.mine_guid === id;

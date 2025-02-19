@@ -147,6 +147,7 @@ from app.api.mines.reports.resources.mine_report_definition_resource import (
 from app.api.mines.reports.resources.mine_report_document import (
     MineReportDocumentListResource,
 )
+from app.api.mines.reports.resources.mine_report_due_date_type_resource import MineReportDueDateTypeResource
 from app.api.mines.reports.resources.mine_report_permit_requirement import (
     MineReportPermitRequirementResource,
 )
@@ -271,6 +272,7 @@ api.add_resource(
     '/<string:mine_guid>/reports/documents',
 )
 api.add_resource(MineReportPermitRequirementResource, '/<string:mine_guid>/reports/permit-requirements')
+api.add_resource(MineReportDueDateTypeResource, '/reports/due-date-types')
 
 api.add_resource(PermitResource, '/<string:mine_guid>/permits/<string:permit_guid>')
 api.add_resource(PermitListResource, '/<string:mine_guid>/permits')

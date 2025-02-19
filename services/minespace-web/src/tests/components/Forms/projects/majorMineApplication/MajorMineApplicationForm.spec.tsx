@@ -8,15 +8,14 @@ import { ReduxWrapper as CommonReduxWrapper } from "@mds/common/tests/utils/Redu
 import { ReduxWrapper as MinespaceReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { BrowserRouter } from "react-router-dom";
 
-import { useSelector } from "react-redux";
-
 const mockDispatch = jest.fn();
+const mockUseSelector = jest.fn();
 
 jest.mock("react-redux", () => {
   const actualReactRedux = jest.requireActual("react-redux");
   return {
     ...actualReactRedux,
-    useSelector: jest.fn(),
+    useSelector: () => mockUseSelector,
     useDispatch: () => mockDispatch,
   };
 });
@@ -69,7 +68,7 @@ const initialState = {
 };
 
 const props: any = {};
-useSelector.mockReturnValue([MOCK.MINEDOCUMENTS.records[0]]);
+mockUseSelector.mockReturnValue([MOCK.MINEDOCUMENTS.records[0]]);
 
 beforeEach(() => {
   props.project = MOCK.PROJECTS.records[0];

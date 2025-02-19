@@ -1,6 +1,5 @@
 import React, { FC, useState } from "react";
 import { Field } from "@mds/common/components/forms/form";
-import { useDispatch } from "react-redux";
 import { Alert, Col, notification, Row, Typography } from "antd";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { formatDate } from "@mds/common/redux/utils/helpers";
@@ -15,6 +14,7 @@ import { FORM } from "@mds/common/constants/forms";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
 import RenderCancelButton from "../forms/RenderCancelButton";
 import RenderSubmitButton from "../forms/RenderSubmitButton";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 interface ReplaceDocumentModalProps {
   document: MineDocument;
@@ -23,7 +23,7 @@ interface ReplaceDocumentModalProps {
 }
 
 const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { document, alertMessage } = props;
   const [versionGuid, setVersionGuid] = useState<string>();
   const [disableReplace, setDisableReplace] = useState<boolean>(true);

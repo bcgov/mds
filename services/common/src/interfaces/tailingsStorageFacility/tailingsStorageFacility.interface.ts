@@ -33,3 +33,9 @@ export interface IEngineerOfRecord extends IPartyAppt {
   mine_party_acknowledgement_status: string;
   status?: string;
 }
+
+export interface ITailingsStorageFacilityForm{
+  engineer_of_record?: IEngineerOfRecord;
+  engineers_of_record?: IEngineerOfRecord[];
+  mine_tailings_storage_facility_guid: string;
+}

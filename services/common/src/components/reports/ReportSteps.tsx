@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row, Steps, Typography } from "antd";
 import { Link, useHistory, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { reset } from "@mds/common/components/forms/form";
 import { IMine, IMineReportSubmission } from "@mds/common/interfaces";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
@@ -13,11 +13,12 @@ import { createReportSubmission } from "./reportSubmissionSlice";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { FORM } from "@mds/common/constants/forms";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const ReportSteps = () => {
   const system = useSelector(getSystemFlag);
   const history = useHistory();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { mineGuid, reportType } = useParams<{ mineGuid: string; reportType: string }>();
   const [currentStep, setCurrentStep] = useState(0);

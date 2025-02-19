@@ -24,6 +24,7 @@ import { Feature } from "@mds/common/utils";
 import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE } from "@mds/common/constants/strings";
 import { FORM } from "@mds/common/constants/forms";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const RenderOldDocuments = ({
   documents,
@@ -71,7 +72,7 @@ interface DocumentUploadProps {
 }
 
 export const DocumentUpload: FC<DocumentUploadProps> = ({ docFieldsDisabled, deleteEnabled }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     spatial_documents = [],
     support_documents = [],

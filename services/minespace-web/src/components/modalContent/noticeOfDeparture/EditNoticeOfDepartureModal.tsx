@@ -25,7 +25,6 @@ const AddNoticeOfDepartureModal: React.FC<EditNoticeOfDepartureModalProps> = (pr
         initialValues={initialValues}
         mineGuid={mineGuid}
         onSubmit={onSubmit}
-        closeModal={close}
         noticeOfDeparture={noticeOfDeparture}
       />
     </div>

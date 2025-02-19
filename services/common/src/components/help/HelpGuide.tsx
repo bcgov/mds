@@ -32,13 +32,14 @@ import { cancelConfirmWrapper } from "../forms/RenderCancelButton";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { FORM } from "@mds/common/constants/forms";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 
 interface HelpGuideProps {
   helpKey: string;
 }
 
 export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const system: SystemFlagEnum = useSelector(getSystemFlag);
   const params = useParams<any>();
   const { tab, activeTab } = params;
@@ -49,11 +50,10 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
   const [open, setOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const canEditHelp = useSelector((state) => userHasRole(state, USER_ROLES.role_edit_helpdesk));
-  const helpGuide = useSelector(getHelpByKey(helpKey, pageTab)) ?? {};
+  const helpGuide = useAppSelector(getHelpByKey(helpKey, pageTab)) ?? {help_guid: null, help_key: helpKey, content: ""};
   const { help_guid, help_key } = helpGuide;
   const hasHelpGuide = Boolean(help_guid);
   const defaultGuide = help_key === EMPTY_HELP_KEY;
-  const { content = "" } = helpGuide ?? {};
   const [isLoaded, setIsLoaded] = useState(hasHelpGuide);
   const unformattedTitle = pageTab ?? helpKey;
   const title = formatSnakeCaseToSentenceCase(unformattedTitle);
@@ -142,7 +142,7 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
     return <Row justify={justify}>{buttons}</Row>;
   };
   const initialValues =
-    hasHelpGuide && !defaultGuide ? helpGuide : { help_key: helpKey, page_tab: pageTab };
+    hasHelpGuide && !defaultGuide ? helpGuide : { help_key: helpKey, page_tab: pageTab, content: "" };
   const mainContent = isEditMode ? (
     <HelpGuideForm
       initialValues={initialValues}
@@ -150,7 +150,7 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
       pageTab={pageTab}
     />
   ) : (
-    parse(DOMPurify.sanitize(content))
+    parse(DOMPurify.sanitize(helpGuide.content))
   );
 
   return (

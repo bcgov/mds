@@ -6,6 +6,7 @@ import {
   MINE_REPORT_CATEGORY_OPTIONS,
   MINE_REPORT_DEFINITION_OPTIONS,
   PERMIT_CONDITION_EXTRACTION,
+  PERMIT_CONDITION_REVIEW_ASSIGNMENTS,
   PROJECT,
   PROJECT_SUMMARY_MINISTRY_COMMENTS,
 } from "@mds/common/tests/mocks/dataMocks";
@@ -117,6 +118,18 @@ const complianceReportHandler = http.get("/%3CAPI_URL%3E/mines/reports/definitio
   return HttpResponse.json(response);
 });
 
-const commonHandlers = [...geoSpatialHandlers, ...projectHandlers, helpHandler, ...permitHandlers, ...permitSearchHandlers, complianceReportHandler];
+const reviewAssignmentHandler = http.get("/%3CAPI_URL%3E/mines/permits/condition-category/assign-review-user", async ({ request }) => {
+  const url = new URL(request.url);
+  const paramString = queryString.parse(url.searchParams.toString())
+  const { permit_amendment_id } = paramString;
+
+  const assignments = PERMIT_CONDITION_REVIEW_ASSIGNMENTS.filter((assignment) => assignment.permit_amendment_id == permit_amendment_id);
+  const response = {
+    records: assignments
+  };
+  return HttpResponse.json(response);
+});
+
+const commonHandlers = [...geoSpatialHandlers, ...projectHandlers, helpHandler, ...permitHandlers, ...permitSearchHandlers, complianceReportHandler, reviewAssignmentHandler];
 
 export default commonHandlers;

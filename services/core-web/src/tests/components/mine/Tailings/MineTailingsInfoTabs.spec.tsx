@@ -39,7 +39,6 @@ const setupProps = () => {
 
 const setupDispatchProps = () => {
   dispatchProps.updateMineRecord = jest.fn();
-  dispatchProps.updateMineReport = jest.fn();
   dispatchProps.deleteMineReport = jest.fn();
   dispatchProps.createTailingsStorageFacility = jest.fn();
   dispatchProps.fetchMineRecordById = jest.fn();
