@@ -31,7 +31,7 @@ const ComparePermitConditionHistoryModal: FC<ComparePermitConditionHistoryModalP
         getMineReportPermitRequirementsByAmendment(props.permitGuid, props.previousAmendment?.permit_amendment_guid)
     );
 
-    const oldReports = getConditionsWithRequirements([props.currentAmendmentCondition], previousMineReportPermitRequirements);
+    const oldReports = getConditionsWithRequirements([props.previousAmendmentCondition], previousMineReportPermitRequirements);
     const newReports = getConditionsWithRequirements([props.currentAmendmentCondition], newMineReportPermitRequirements);
 
     return (
