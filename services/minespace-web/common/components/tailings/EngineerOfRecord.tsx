@@ -2,12 +2,17 @@ import { Alert, Button, Col, Empty, Popconfirm, Row, Typography } from "antd";
 import { change, ChangeAction, Field, getFormValues } from "@mds/common/components/forms/form";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
-import { IDocument, IMine, IMinePartyAppt } from "@mds/common/interfaces";
+import {
+  IDocument,
+  IMine,
+  IMinePartyAppt,
+  ITailingsStorageFacilityForm,
+} from "@mds/common/interfaces";
 
 import { MINE_PARTY_APPOINTMENT_DOCUMENTS } from "@mds/common/constants/API";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { bindActionCreators } from "redux";
-import { connect, useSelector } from "react-redux";
+import { ConnectedProps, connect, useSelector } from "react-redux";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import {
@@ -63,7 +68,7 @@ const columns = (LinkButton): ColumnsType<IDocument> => [
   },
 ];
 
-export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
+export const EngineerOfRecord: FC<EngineerOfRecordProps & PropsFromRedux> = (props) => {
   const {
     mineGuid,
     uploadedFiles,
@@ -88,7 +93,9 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
     isCore,
   } = useContext(TailingsContext);
 
-  const formValues = useSelector((state) => getFormValues(tsfFormName)(state));
+  const formValues = useSelector((state) =>
+    getFormValues(tsfFormName)(state)
+  ) as ITailingsStorageFacilityForm;
 
   const { LinkButton, ContactDetails } = components;
 
@@ -421,4 +428,7 @@ const mapStateToProps = (state) => ({
   mines: getMines(state),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(EngineerOfRecord);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(EngineerOfRecord);

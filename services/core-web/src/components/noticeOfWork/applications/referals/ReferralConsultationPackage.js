@@ -5,7 +5,6 @@ import { bindActionCreators } from "redux";
 import { Button, notification } from "antd";
 
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
-import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
 import {
   createNoticeOfWorkApplicationReview,
   fetchNoticeOfWorkApplicationReviews,

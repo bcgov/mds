@@ -88,29 +88,6 @@ export const fetchReports = (params = {}) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const updateMineReport = (mineGuid, mineReportGuid, payload) => (dispatch) => {
-  dispatch(request(NetworkReducerTypes.UPDATE_MINE_REPORT));
-  dispatch(showLoading("modal"));
-  return CustomAxios()
-    .put(
-      `${ENVIRONMENT.apiUrl}${API.MINE_REPORT(mineGuid, mineReportGuid)}`,
-      payload,
-      createRequestHeader()
-    )
-    .then((response) => {
-      notification.success({
-        message: "Successfully updated report.",
-        duration: 10,
-      });
-      dispatch(success(NetworkReducerTypes.UPDATE_MINE_REPORT));
-      return response;
-    })
-    .catch(() => {
-      dispatch(error(NetworkReducerTypes.UPDATE_MINE_REPORT));
-    })
-    .finally(() => dispatch(hideLoading("modal")));
-};
-
 export const fetchMineReport = (mineGuid, mineReportGuid) => (dispatch) => {
   dispatch(request(NetworkReducerTypes.GET_MINE_REPORT));
   dispatch(showLoading());

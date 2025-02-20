@@ -8,12 +8,19 @@ import { BrowserRouter } from "react-router-dom";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
 import { userReducerType } from "@mds/common/redux/slices/userSlice";
+import { searchConditionCategoriesType } from "@mds/common/redux/slices/permitConditionCategorySlice";
 
 const initialState = {
   [MINES]: MOCK.MINES,
   [userReducerType]: { user: MOCK.USERS[0] },
   [PERMITS]: { permits: MOCK.PERMITS, permitAmendments: { [MOCK.PERMITS[0].permit_guid]: MOCK.PERMITS[0].permit_amendments[0] } },
   [STATIC_CONTENT]: MOCK.BULK_STATIC_CONTENT_RESPONSE,
+  [searchConditionCategoriesType]: {
+    review_assignments: {
+      [MOCK.PERMITS[0].permit_amendments[0].permit_amendment_id.toString()]: MOCK.PERMIT_CONDITION_REVIEW_ASSIGNMENTS
+    },
+    review_assignments_loading: false,
+  },
   [AUTHENTICATION]: {
     userAccessData: [USER_ROLES.role_admin, USER_ROLES.role_edit_template_conditions],
   },

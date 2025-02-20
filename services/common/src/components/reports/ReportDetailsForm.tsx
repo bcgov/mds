@@ -123,19 +123,18 @@ interface ReportDetailsFormProps {
 }
 
 const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
-  isEditMode = true,
-  initialValues,
-  mineGuid,
-  formButtons,
-  handleSubmit,
-}) => {
+                                                         isEditMode = true,
+                                                         initialValues,
+                                                         mineGuid,
+                                                         formButtons,
+                                                         handleSubmit,
+                                                       }) => {
   const { reportGuid } = useParams<{ reportGuid?: string }>();
 
   const coreEditReportPermission = USER_ROLES.role_edit_reports;
   const coreViewAllPermission = USER_ROLES.role_view;
   const dispatch = useDispatch();
-  const formValues: IMineReportSubmission =
-    useSelector((state) => getFormValues(FORM.VIEW_EDIT_REPORT)(state)) ?? {};
+  const formValues = useSelector((state) => getFormValues(FORM.VIEW_EDIT_REPORT)(state) ?? {}) as IMineReportSubmission;
   const [mineManager, setMineManager] = useState<IParty>();
   const [mineManagerGuid, setMineManagerGuid] = useState<string>("");
 
@@ -250,7 +249,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
 
   useEffect(() => {
     // update compliance article options when "Report Name" changes
-    if (mine_report_definition_guid) {
+    if (mine_report_definition_guid && mineReportDefinitionOptions.length) {
       const newReportComplianceArticle = mineReportDefinitionOptions.find((opt) => {
         return opt.mine_report_definition_guid === mine_report_definition_guid;
       });
@@ -260,7 +259,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     } else {
       setSelectedReportCode("");
     }
-  }, [mine_report_definition_guid]);
+  }, [mine_report_definition_guid, mineReportDefinitionOptions]);
 
   useEffect(() => {
     if (system === SystemFlagEnum.core) {

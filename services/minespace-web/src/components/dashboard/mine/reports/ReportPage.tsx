@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useLocation, useParams } from "react-router-dom";
 import {
   getFormSubmitErrors,
@@ -28,9 +28,10 @@ import { MINE_REPORT_STATUS_HASH } from "@mds/common/constants/strings";
 import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants/enums";
 import { IMineReportSubmission } from "@mds/common/interfaces/reports/mineReportSubmission.interface";
 import { IMine } from "@mds/common/interfaces/mine.interface";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const ReportPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { state: routeState } = useLocation<{ isEditMode: boolean }>();
   const defaultEditMode = routeState?.isEditMode ?? false;
 

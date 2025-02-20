@@ -160,7 +160,7 @@ const ViewPermit: FC = () => {
     enablePermitConditionsTab && {
       key: tabs[1],
       label: <>{getConditionBadge()} Permit Conditions</>,
-      children: (
+      children: !currentAmendment ? <Loading /> : (
         <PermitConditions
           isReviewComplete={isReviewComplete}
           isExtracted={isExtracted}

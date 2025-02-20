@@ -1,11 +1,6 @@
 
 import uuid
 
-from app.api.mines.mine.models.mine import Mine
-from app.api.mines.permits.permit.models.permit import Permit
-from app.api.mines.permits.permit_amendment.models.permit_amendment import (
-    PermitAmendment,
-)
 from app.api.mines.permits.permit_conditions.models.permit_condition_category import (
     PermitConditionCategory,
 )
@@ -13,9 +8,7 @@ from app.api.mines.response_models import PERMIT_CONDITION_CATEGORY_MODEL
 from app.api.utils.access_decorators import requires_role_view_all
 from app.api.utils.resources_mixins import UserMixin
 from app.extensions import api
-from flask import request
 from flask_restx import Resource, reqparse
-from werkzeug.exceptions import BadRequest
 
 from .permit_amendment_condition_category_resource_base import (
     validate_permit_amendment_category,

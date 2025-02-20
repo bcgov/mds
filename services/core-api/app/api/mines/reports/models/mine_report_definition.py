@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -6,10 +7,13 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import or_, cast, Integer, nullsfirst, nullslast
 from sqlalchemy_filters import apply_pagination
+from werkzeug.exceptions import BadRequest
+
 from app.api.mines.reports.models.mine_report_permit_requirement import CimOrCpo
 
 from app.api.utils.models_mixins import Base, AuditMixin
-from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import MineReportDefinitionComplianceArticleXref
+from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import \
+    MineReportDefinitionComplianceArticleXref
 from app.api.mines.reports.models.mine_report_due_date_type import MineReportDueDateType
 from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.extensions import db
@@ -19,8 +23,8 @@ class MineReportDefinition(Base, AuditMixin):
     __tablename__ = "mine_report_definition"
     mine_report_definition_id = db.Column(
         db.Integer, primary_key=True, server_default=FetchedValue())
-    mine_report_definition_guid = db.Column(UUID(as_uuid=True), nullable=False)
-    report_name = db.Column(db.String, nullable=False)
+    mine_report_definition_guid = db.Column(UUID(as_uuid=True), nullable=False, default=uuid.uuid4())
+    report_name = db.Column(db.String, nullable=False, unique=True)
     description = db.Column(db.String, nullable=False)
     due_date_period_months = db.Column(db.Integer, nullable=False)
     mine_report_due_date_type = db.Column(
@@ -54,6 +58,36 @@ class MineReportDefinition(Base, AuditMixin):
             return None
 
     @classmethod
+    def create(cls,
+               report_name,
+               description,
+               mine_report_due_date_type_code,
+               due_date_period_months,
+               report_type,
+               is_common):
+        mine_report_due_date_type: MineReportDueDateType = MineReportDueDateType.find_by_mine_report_due_date_type(
+            mine_report_due_date_type_code)
+
+        if not mine_report_due_date_type:
+            raise BadRequest('Mine Report Due Date Type not found.')
+
+        # Check if a report with the same name already exists
+        existing_report = cls.query.filter_by(report_name=report_name).first()
+        if existing_report:
+            raise BadRequest(f"A report with the name '{report_name}' already exists.")
+
+        is_prr_only = True if report_type == 'PRR' else False
+
+        mine_report_definition = cls(report_name=report_name,
+                                     description=description,
+                                     mine_report_due_date_type=mine_report_due_date_type.mine_report_due_date_type,
+                                     due_date_period_months=due_date_period_months,
+                                     is_prr_only=is_prr_only,
+                                     is_common=is_common)
+        mine_report_definition.save(commit=True)
+        return mine_report_definition
+
+    @classmethod
     def find_by_mine_report_definition_id(cls, _id):
         try:
             return cls.query.filter_by(mine_report_definition_id=_id).first()
@@ -79,7 +113,8 @@ class MineReportDefinition(Base, AuditMixin):
         if sort_field and sort_dir:
             field = {
                 'report_name': [MineReportDefinition.report_name],
-                'section': [cast(ComplianceArticle.section, Integer), cast(ComplianceArticle.sub_section, Integer), cast(ComplianceArticle.paragraph, Integer), ComplianceArticle.sub_paragraph],
+                'section': [cast(ComplianceArticle.section, Integer), cast(ComplianceArticle.sub_section, Integer),
+                            cast(ComplianceArticle.paragraph, Integer), ComplianceArticle.sub_paragraph],
                 'regulatory_authority': [ComplianceArticle.cim_or_cpo]
             }
             sort_func = field[sort_field]
@@ -92,7 +127,7 @@ class MineReportDefinition(Base, AuditMixin):
             query = query.order_by(*sort_func)
 
         return query
-    
+
     @classmethod
     def _apply_filters(cls, query, regulatory_authority, is_prr_only, active_ind, section):
         filters = []
@@ -103,11 +138,11 @@ class MineReportDefinition(Base, AuditMixin):
                 reg_auth_filter.append(ComplianceArticle.cim_or_cpo.is_(None))
             if len(regulatory_authority) > 0:
                 reg_auth_filter.append(ComplianceArticle.cim_or_cpo.in_(regulatory_authority))
-            
+
             # if the query is either reg_auth = None or reg_auth in (list)
             if len(reg_auth_filter) == 1:
                 reg_auth_filter = reg_auth_filter[0]
-            
+
             # ex: query is reg auth in [None, CIM]
             else:
                 reg_auth_filter = or_(*reg_auth_filter)
@@ -120,19 +155,19 @@ class MineReportDefinition(Base, AuditMixin):
         if len(active_ind) < 2:
             active_filter_value = True if "false" not in active_ind else False
             filters.append(MineReportDefinition.active_ind.is_(active_filter_value))
-        
+
         if section:
             section_parts = section.split(".")
             section_order = [
-                ComplianceArticle.section, 
-                ComplianceArticle.sub_section, 
-                ComplianceArticle.paragraph, 
+                ComplianceArticle.section,
+                ComplianceArticle.sub_section,
+                ComplianceArticle.paragraph,
                 ComplianceArticle.sub_paragraph]
 
             for index, part in enumerate(section_parts):
                 field_name = section_order[index]
                 filters.append(field_name.ilike(part))
-        
+
         return query.filter(*filters)
 
     @classmethod
@@ -153,18 +188,24 @@ class MineReportDefinition(Base, AuditMixin):
             'items_per_page': query.count(),
             'total': query.count(),
         }
-    
+
     @classmethod
-    def apply_filters_and_pagination(cls, query, page, per_page, sort_field, sort_dir, regulatory_authority, is_prr_only, active_ind, section):
-        
-        regulatory_authority = None if len(regulatory_authority) == 0 or len(regulatory_authority) == len(CimOrCpo) + 1 else regulatory_authority
+    def apply_filters_and_pagination(cls, query, page, per_page, sort_field, sort_dir, regulatory_authority,
+                                     is_prr_only, active_ind, section):
+
+        regulatory_authority = None if len(regulatory_authority) == 0 or len(regulatory_authority) == len(
+            CimOrCpo) + 1 else regulatory_authority
 
         compliance_sort = True if sort_field in ['section', 'regulatory_authority'] else False
         compliance_filter = True if regulatory_authority or section else False
-        
+
         if compliance_sort or compliance_filter:
-            query = query.join(MineReportDefinitionComplianceArticleXref, MineReportDefinitionComplianceArticleXref.mine_report_definition_id == MineReportDefinition.mine_report_definition_id)
-            query = query.join(ComplianceArticle, ComplianceArticle.compliance_article_id == MineReportDefinitionComplianceArticleXref.compliance_article_id)
+            query = query.join(MineReportDefinitionComplianceArticleXref,
+                               MineReportDefinitionComplianceArticleXref.mine_report_definition_id == MineReportDefinition.mine_report_definition_id,
+                               isouter=True)
+            query = query.join(ComplianceArticle,
+                               ComplianceArticle.compliance_article_id == MineReportDefinitionComplianceArticleXref.compliance_article_id,
+                               isouter=True)
 
         query = cls._apply_sort(query, sort_field, sort_dir)
         query = cls._apply_filters(query, regulatory_authority, is_prr_only, active_ind, section)
@@ -195,13 +236,13 @@ def _calculate_due_date(current_date, due_date_type, period_in_months):
     if due_date_type == 'FIS':
 
         fiscal_year_end = datetime(current_year, march, day, hour, minute, second)
-        if current_date < fiscal_year_end:       #Jan - Mar
+        if current_date < fiscal_year_end:  # Jan - Mar
             tmp_date = fiscal_year_end - relativedelta(years=1)
         else:
             tmp_date = fiscal_year_end
 
         due_date = tmp_date + \
-                relativedelta(months=int(period_in_months))
+                   relativedelta(months=int(period_in_months))
 
         return due_date
 
