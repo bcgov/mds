@@ -237,6 +237,7 @@ const ViewPermit: FC = () => {
     await dispatch(
       deletePermitConditions({ permit_amendment_id: latestAmendment?.permit_amendment_id })
     );
+
     dispatch(fetchPermits(id));
   };
 
