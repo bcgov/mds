@@ -123,6 +123,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
 
   const refreshData = async () => {
     await dispatch(fetchPermits(mineGuid));
+    setEditingConditionGuid(null);
   };
 
   useEffect(() => {
