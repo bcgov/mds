@@ -4,9 +4,10 @@ import CaretDownOutlined from "@ant-design/icons/CaretDownOutlined";
 import DownOutlined from "@ant-design/icons/DownOutlined";
 import { ITableAction } from "@mds/common/components/common/CoreTableCommonColumns";
 
-export const deleteConfirmWrapper = (recordDescription: string, onOk: () => void) => {
+export const deleteConfirmWrapper = (recordDescription: string, onOk: () => void, plural = false) => {
   const title = `Confirm Deletion`;
-  const content = `Are you sure you want to delete this ${recordDescription}?`;
+  const article = plural ? "these" : "this"
+  const content = `Are you sure you want to delete ${article} ${recordDescription}?`;
   const modalContent = {
     title,
     content,
