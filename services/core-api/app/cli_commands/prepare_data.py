@@ -177,7 +177,7 @@ class DataPreparation:
             
             # Get local file path - use same directory structure but with filename
             object_path = Path(row['object_store_path'])
-            local_path = self.csv_path.parent / '/'.join(object_path.parts[1:-1]) / row['document_name']
+            local_path = 'permit_indexing/' + self.csv_path.parent / '/'.join(object_path.parts[1:-1]) / row['document_name']
 
             if not local_path.exists():
                 logger.error(f"Local file not found: {local_path}")

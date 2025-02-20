@@ -84,3 +84,7 @@ export interface FacetGroup {
     field: string;
     options: Facet[];
 }
+
+export interface SelectedFilters {
+    [key: string]: string[];
+}

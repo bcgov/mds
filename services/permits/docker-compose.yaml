@@ -44,7 +44,7 @@ services:
     command: >-
       python -m watchdog.watchmedo auto-restart
       -d app/ -p '*.py' --recursive --
-      celery -A app.celery worker --loglevel=info -n permit_service@%h --concurrency=1 -Q permits
+      celery -A app.celery worker --loglevel=info -n permit_service@%h --concurrency=3 -Q permits
     restart: on-failure
     environment:
       - DOCUMENTSTORE_PARAMS_HOST=elasticsearch

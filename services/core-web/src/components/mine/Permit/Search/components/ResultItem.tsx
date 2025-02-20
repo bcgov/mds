@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Space, Tag, Row } from 'antd';
+import { Typography, Space, Tag, Row, Col } from 'antd';
 import { HaystackDocumentSearchResult } from '@mds/common/src/interfaces/search/facet-search.interface';
 import dayjs from 'dayjs';
 import { formatPermitConditionStep } from '@mds/common/utils/helpers';
+import MarkdownViewer from './MarkdownViewer';
 
 const { Text, Paragraph } = Typography;
 
@@ -14,6 +15,8 @@ interface ResultItemProps {
 const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
     const [isHighlighted, setIsHighlighted] = useState(false);
     const { content, meta, score } = result;
+
+    const highlightedResult = meta?.highlights?.content?.join('\n');
 
     useEffect(() => {
         // Check if this item's ID is in the URL hash
@@ -37,6 +40,8 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
         ...(meta.step_path ? meta.step_path.split('/') : [])
     ].filter(Boolean);
 
+    const contentToDisplay = formatPermitConditionStep(meta.step, highlightedResult || content);
+
     return (
         <Row
             id={`condition-${result.id}`}
@@ -47,18 +52,16 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
                 borderBottom: '1px solid #f0f0f0'
             }}
         >
-            <Space direction="vertical" size="small" style={{ width: '100%' }}>
-                {/* Breadcrumb path */}
+            <Col span={24}>
                 {pathParts?.join(' > ')}
 
-                {/* Main content */}
                 <Paragraph>
-                    {formatPermitConditionStep(meta.step, content)}
+                    {highlightedResult ? <MarkdownViewer markdown={contentToDisplay} /> : contentToDisplay}
                 </Paragraph>
+            </Col>
 
-                {/* Metadata section */}
+            <Col span={24}>
                 <Row justify="space-between" align="middle">
-                    {/* Interactive filter tags */}
                     <Space size={[0, 8]} wrap>
                         <Tag
                             color="blue"
@@ -83,7 +86,6 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
                         </Tag>
                     </Space>
 
-                    {/* Document info & date */}
                     <Space size="middle">
                         <Text type="secondary" style={{ fontSize: '12px' }}>
                             {meta.document_name}
@@ -94,7 +96,7 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
                         <Tag color="green">{Math.round(score * 100)}% match</Tag>
                     </Space>
                 </Row>
-            </Space>
+            </Col>
         </Row>
     );
 };

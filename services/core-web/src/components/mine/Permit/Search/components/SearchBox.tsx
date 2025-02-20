@@ -5,10 +5,9 @@ interface Props {
     onSearch: (query: string) => void;
     loading?: boolean;
     size?: 'large' | 'middle';
-    value: string;
 }
 
-const SearchBox: React.FC<Props> = ({ onSearch, loading, size = 'middle', value }) => {
+const SearchBox: React.FC<Props> = ({ onSearch, loading, size = 'middle' }) => {
     return (
         <Space direction="vertical" style={{ width: '100%' }}>
             <Form.Item name="search">

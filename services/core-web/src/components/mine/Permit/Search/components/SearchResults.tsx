@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { List, Space, Tag, Empty, Row, Col, Button, Badge, Skeleton, Typography, Divider } from 'antd';
 import ResultItem from './ResultItem';
-import FacetFilters from './FacetFilters';
-import { DownOutlined, FilterOutlined, UpOutlined } from '@ant-design/icons';
+import { FilterOutlined } from '@ant-design/icons';
 import { useAppSelector } from '@mds/common/redux/rootState';
 import { selectSearchResults, selectSearchLoading, selectSearchFilters, selectSearchQuery } from '@mds/common/redux/slices/permitSearchSlice';
 import { HaystackDocumentSearchResult } from '@mds/common/interfaces/search/facet-search.interface';
 import FilterDrawer from './FilterDrawer';
+import { startCase } from 'lodash';
+import dayjs from 'dayjs';
 
 export interface SelectedFilter {
     category: string;
@@ -16,6 +17,7 @@ export interface SelectedFilter {
 export interface SearchResultsProps {
     onFilterChange: (selectedFilters: SelectedFilter[]) => void;
 }
+
 /**
  * Component to display search results and filter options.
  * 
@@ -31,7 +33,6 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
     const query = useAppSelector(selectSearchQuery);
 
     const [pendingFilters, setPendingFilters] = useState<SelectedFilter[]>(selectedFilters);
-    const [filtersVisible, setFiltersVisible] = useState(false);
     const [hasFilterChanges, setHasFilterChanges] = useState(false);
     const [drawerVisible, setDrawerVisible] = useState(false);
 
@@ -56,10 +57,12 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
         );
         setPendingFilters(updatedFilters);
         onFilterChange(updatedFilters) // Apply immediately when removing
+        onFilterChange(updatedFilters) // Apply immediately when removing
         setHasFilterChanges(false);
     };
 
     const applyFilters = () => {
+        onFilterChange(pendingFilters);
         onFilterChange(pendingFilters);
         setHasFilterChanges(false);
     };
@@ -77,6 +80,13 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
         }
     };
 
+    const formatFilterValue = (category: string, value: string) => {
+        if (category.toLowerCase().includes('date') && dayjs(value).isValid()) {
+            return dayjs(value).format('YYYY-MM-DD');
+        }
+        return value;
+    };
+
     if (!results && !loading) {
         return (
             <Row className="permit-search__empty-state" justify="center" align="middle">
@@ -87,33 +97,6 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
             </Row>
         );
     }
-
-    const renderFacets = () => {
-        if (!results?.allFacets) return null;
-
-        return Object.entries(results.allFacets).map(([facetKey, facets]) => {
-            // Get current facet counts
-            const currentFacets = results.facets?.[facetKey] || [];
-
-            // Update counts while preserving all options
-            const updatedFacets = facets.map(facet => ({
-                ...facet,
-                count: currentFacets.find(cf => cf.value === facet.value)?.count || 0
-            }));
-
-            return (
-                <Col span={8} key={facetKey}>
-                    <FacetFilters
-                        title={facetKey.replace(/_/g, ' ')}
-                        facets={{ [facetKey]: updatedFacets }}
-                        onFilterChange={handleFilterChange}
-                        pendingFilters={pendingFilters}  // Add this prop
-                        data-testid={`facet-group-${facetKey}`}
-                    />
-                </Col>
-            );
-        });
-    };
 
     return (
         <Row gutter={[0, 24]}>
@@ -134,31 +117,41 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
                         >
                             Filters
                             {selectedFilters?.length > 0 && (
-                                <Badge count={selectedFilters?.length} style={{ backgroundColor: '#1890ff' }} />
+                                <Badge
+                                    count={selectedFilters?.length}
+                                    style={{
+                                        backgroundColor: '#1890ff',
+                                        marginLeft: '8px',
+                                        marginRight: '-8px'
+                                    }}
+                                />
                             )}
                         </Button>
                     </Col>
                 </Row>
+
+                <Row>
+                    <Col span={24}>
+                        {selectedFilters.length > 0 && (
+                            <Col span={24} className="permit-search__selected-filters">
+                                <Space wrap>
+                                    {selectedFilters.map(({ category, value }) => (
+                                        <Tag
+                                            key={`${category}-${value}`}
+                                            closable
+                                            onClose={() => removeFilter(category, value)}
+                                            data-testid={`selected-filter-${category}-${value}`}
+                                        >
+                                            {`${startCase(category)}: ${formatFilterValue(category, value)}`}
+                                        </Tag>
+                                    ))}
+                                </Space>
+                            </Col>)
+                        }
+                    </Col>
+                </Row>
                 <Divider style={{ margin: '12px 0 0' }} />
             </Col>
-
-            {selectedFilters.length > 0 && (
-                <Col span={24} className="permit-search__selected-filters">
-                    <Space wrap>
-                        {selectedFilters.map(({ category, value }) => (
-                            <Tag
-                                key={`${category}-${value}`}
-                                closable
-                                onClose={() => removeFilter(category, value)}
-                                data-testid={`selected-filter-${category}-${value}`}
-                            >
-                                {`${category}: ${value}`}
-                            </Tag>
-                        ))}
-                    </Space>
-                </Col>
-            )}
-
             <Col span={24}>
                 {loading ? (
                     <Skeleton active paragraph={{ rows: 4 }} />
@@ -196,7 +189,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
                 onClearFilters={clearAllFilters}
                 hasFilterChanges={hasFilterChanges}
             />
-        </Row>
+        </Row >
     );
 };
 
