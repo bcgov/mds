@@ -1817,7 +1817,6 @@ export const PERMITS: IPermit[] = [
               permit_condition_id: 1639,
               due_date_period_months: 12,
               initial_due_date: "2024-01-01",
-              condition_category_code: "HSC"
             }
           },
           {
