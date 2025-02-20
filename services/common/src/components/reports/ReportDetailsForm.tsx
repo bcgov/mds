@@ -419,7 +419,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                   ]}
                 />
               </Col>
-              {isPRR && <RenderPRRFields mineGuid={initialValues?.mine_guid} />}
+              {isPRR && <RenderPRRFields mineGuid={initialValues?.mine_guid} summary={true} />}
               {isCRR && (
                 <Col span={12}>
                   <Field

@@ -81,20 +81,27 @@ export const ReportInfoBox: FC<{ mineReportDefinition: IMineReportDefinition; ve
   );
 };
 
-export const PermitReportInfoBox: FC<{ permitCondition: IPermitCondition, permitCategory: IPermitConditionCategory, permitReport: IMineReportPermitRequirement }> = ({
+export const PermitReportInfoBox: FC<{ summary: boolean, permitGuid: string, mineGuid: string, permitAmendment: IPermitAmendment, permitCondition: IPermitCondition, permitCategory: IPermitConditionCategory, permitReport: IMineReportPermitRequirement }> = ({
+  summary,
+  permitGuid,
+  mineGuid,
+  permitAmendment,
   permitCondition,
   permitCategory,
   permitReport
 }) => {
 
+  const systemFlag = useSelector(getSystemFlag);
+  const isCore = systemFlag === SystemFlagEnum.core;
+
   return (
-    <div className="report-info-box">
+    <div className={`${summary ? "report-summary-box" : "report-info-box"}`}>
       {permitCondition && permitReport && permitCategory && (
         <div>
           <Typography.Title level={4} className="primary-colour">
-            You are submitting
+            You are submitting:
           </Typography.Title>
-          <Typography.Title level={5}>
+          <Typography.Title level={4}>
             {permitReport.report_name}
           </Typography.Title>
 
@@ -123,14 +130,21 @@ export const PermitReportInfoBox: FC<{ permitCondition: IPermitCondition, permit
             {permitReport.ministry_recipient}
           </Typography.Paragraph>
 
-          <Button
-            target="_blank"
-            rel="noopener noreferrer"
-            href={"/permit/"+permitCondition.permit_condition_id}
-            type="default"
-          >
-            View Permit Condition <ExportOutlined />
-          </Button>
+          { isCore && ( <Button
+              target="_blank"
+              rel="noopener noreferrer"
+              href={GLOBAL_ROUTES?.VIEW_MINE_PERMIT_AMENDMENT.hashRoute(
+                mineGuid,
+                permitGuid,
+                permitAmendment.permit_amendment_guid,
+                "conditions",
+                "#"+permitCategory.condition_category_code
+              ).toString()}
+              type="default"
+            >
+              View Permit Condition <ExportOutlined />
+            </Button>
+          )}
           
         </div>
       )}
@@ -138,7 +152,10 @@ export const PermitReportInfoBox: FC<{ permitCondition: IPermitCondition, permit
   );
 };
 
-export const ValidatedRequirement: FC<{amendment: IPermitAmendment, formValues: any }> = ({
+export const ValidatedRequirement: FC<{summary: boolean, permitGuid: string, mineGuid: string, amendment: IPermitAmendment, formValues: any }> = ({
+  summary,
+  permitGuid,
+  mineGuid,
   amendment,
   formValues
 }) => {
@@ -158,10 +175,16 @@ export const ValidatedRequirement: FC<{amendment: IPermitAmendment, formValues: 
     dispatch(change(FORM.VIEW_EDIT_REPORT, "mine_report_permit_requirement_id", value));
   }
 
+  useEffect( () => {
+    if(selectedReport){
+      dispatch(change(FORM.VIEW_EDIT_REPORT, "permit_condition_category_code", selectedCategory.condition_category_code));
+    }
+  }, [formValues.mine_report_permit_requirement_id])
+
   return (
   
-    <Row gutter={24} className="margin-large--bottom">
-      <Col span={12}>
+    <>
+      <Col span={ summary ? 24 : 12}>
         <div className="light-grey-border">
           <Field
             name="mine_report_permit_requirement_id"
@@ -181,7 +204,7 @@ export const ValidatedRequirement: FC<{amendment: IPermitAmendment, formValues: 
             component={RenderSelect}
           />
 
-          { conditionCategories.map((category) => (
+          { !summary && conditionCategories.map((category) => (
             <div key={category.condition_category_code}>
               <Typography.Paragraph
                 strong
@@ -191,7 +214,7 @@ export const ValidatedRequirement: FC<{amendment: IPermitAmendment, formValues: 
                 {category.description}
               </Typography.Paragraph>
 
-              {category.reports && category.reports.map((report) => (
+              { category.reports?.map((report) => (
                 <Row key={report.report_name}>
                   <Col span={24}>
                     <Button
@@ -214,16 +237,18 @@ export const ValidatedRequirement: FC<{amendment: IPermitAmendment, formValues: 
 
         </div>
       </Col>
-      <Col span={12}>
-        <PermitReportInfoBox permitCondition={selectedCondition} permitCategory={selectedCategory} permitReport={selectedReport} />
+      <Col span={ summary ? 24 : 12 }>
+        <PermitReportInfoBox summary={summary} permitGuid={permitGuid} mineGuid={mineGuid} permitAmendment={amendment} permitCondition={selectedCondition} permitCategory={selectedCategory} permitReport={selectedReport} />
       </Col>
-    </Row>
+    </>
   )
 }
 
-export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean }> = ({
+//Rendered on ReportDetailsForm too!!
+export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean, summary?: boolean }> = ({
   mineGuid,
   fullWidth = false,
+  summary = false
 }) => {
   const system = useSelector(getSystemFlag);
   const dispatch = useAppDispatch();
@@ -286,7 +311,7 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean }> = ({
       {isCore && !hasValidatedReports && (
         <Col md={!fullWidth && 12} sm={24}>
           <Field
-            name="mine_report_permit_requirement_id"
+            name="permit_condition_category_code"
             required
             validate={[required]}
             label="Permit Condition Category"
@@ -296,10 +321,15 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean }> = ({
         </Col>
       )}
       {hasValidatedReports && (
-       <ValidatedRequirement 
-        amendment={latestAmendment}
-        formValues={formValues}
-       />
+        <Row gutter={24} className="margin-large--bottom">
+          <ValidatedRequirement 
+            amendment={latestAmendment}
+            mineGuid={mineGuid}
+            permitGuid={formValues.permit_guid}
+            summary={summary}
+            formValues={formValues}
+          />
+       </Row>
       )}
     </>
   );
