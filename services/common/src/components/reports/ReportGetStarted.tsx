@@ -7,6 +7,7 @@ import { IMine, IMineReportDefinition, IMineReportPermitRequirement, IMineReport
 import {
   createDropDownList,
   formatComplianceCodeReportName,
+  formatDate,
 } from "@mds/common/redux/utils/helpers";
 import ExportOutlined from "@ant-design/icons/ExportOutlined";
 import FormWrapper from "../forms/FormWrapper";
@@ -22,9 +23,9 @@ import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelecto
 import { useParams } from "react-router-dom";
 import { MINE_REPORTS_ENUM, MineReportType, REPORT_TYPE_CODES, SystemFlagEnum } from "@mds/common/constants/enums";
 import { FORM } from "@mds/common/constants/forms";
-import { MMO_EMAIL, REPORT_FREQUENCY_HASH } from "@mds/common/constants/strings";
+import { MMO_EMAIL} from "@mds/common/constants/strings";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
-import { findCondition, getCategoriesWithReports } from "@mds/common/utils/helpers";
+import { findCondition, getCategoriesWithReports, transformPermitReportRequirement } from "@mds/common/utils/helpers";
 import { getReportDefinitionsLoaded, reportParamsGetAll, fetchComplianceReports, getMineReportDefinitionByGuid, getFormattedMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
 
 interface ReportGetStartedProps {
@@ -93,16 +94,17 @@ export const PermitReportInfoBox: FC<{ summary: boolean, permitGuid: string, min
 
   const systemFlag = useSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;
+  const transformedReport = transformPermitReportRequirement(permitReport);
 
   return (
     <div className={`${summary ? "report-summary-box" : "report-info-box"}`}>
-      {permitCondition && permitReport && permitCategory && (
+      {permitCondition && transformedReport && permitCategory && (
         <div>
           <Typography.Title level={4} className="primary-colour">
             You are submitting:
           </Typography.Title>
           <Typography.Title level={4}>
-            {permitReport.report_name}
+            {transformedReport.report_name}
           </Typography.Title>
 
           <Typography.Title level={5}>Condition:</Typography.Title>
@@ -110,25 +112,30 @@ export const PermitReportInfoBox: FC<{ summary: boolean, permitGuid: string, min
             {permitCategory.description + " - " + permitCondition.step}
           </Typography.Paragraph>
 
-          <Typography.Title level={5}>Frequency:</Typography.Title>
-          <Typography.Paragraph>
-            {Object.keys(REPORT_FREQUENCY_HASH).find(key => REPORT_FREQUENCY_HASH[key] === permitReport.due_date_period_months)}
-          </Typography.Paragraph>
+          <Row>
+            <Col span={summary ? 12 : 24}>
+              <Typography.Title level={5}>Frequency:</Typography.Title>
+              <Typography.Paragraph>
+                {transformedReport.frequency}
+              </Typography.Paragraph>
 
-          <Typography.Title level={5}>Due Date:</Typography.Title>
-          <Typography.Paragraph>
-            {permitReport.initial_due_date}
-          </Typography.Paragraph>
+              <Typography.Title level={5}>Due Date:</Typography.Title>
+              <Typography.Paragraph>
+                {transformedReport.initial_due_date ? formatDate(transformedReport.initial_due_date) : "Not Specified"}
+              </Typography.Paragraph>
+            </Col>
+            <Col span={summary ? 12 : 24}>
+              <Typography.Title level={5}>Regulatory Authority:</Typography.Title>
+              <Typography.Paragraph>
+                {transformedReport.regulatory_authority}
+              </Typography.Paragraph>
 
-          <Typography.Title level={5}>Regulatory Authority:</Typography.Title>
-          <Typography.Paragraph>
-            {permitReport.cim_or_cpo}
-          </Typography.Paragraph>
-
-          <Typography.Title level={5}>Ministry Recipient:</Typography.Title>
-          <Typography.Paragraph>
-            {permitReport.ministry_recipient}
-          </Typography.Paragraph>
+              <Typography.Title level={5}>Ministry Recipient:</Typography.Title>
+              <Typography.Paragraph>
+                {transformedReport.ministry_recipient}
+              </Typography.Paragraph>
+            </Col>
+          </Row>
 
           { isCore && ( <Button
               target="_blank"
@@ -261,7 +268,8 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean, summar
   const [loaded, setLoaded] = useState(permits.length > 0 && permitMineGuid === mineGuid);
   const isCore = system === SystemFlagEnum.core;
   const formValues = useSelector(getFormValues(FORM.VIEW_EDIT_REPORT));
-  const latestAmendment = useAppSelector(getLatestAmendmentByPermitGuid(formValues.permit_guid));
+  
+  const latestAmendment = useAppSelector(getLatestAmendmentByPermitGuid(formValues?.permit_guid));
   const hasValidatedReports = latestAmendment?.conditions_review_completed && latestAmendment?.mine_report_permit_requirements.length > 0;
 
   useEffect(() => {
@@ -325,7 +333,7 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean, summar
           <ValidatedRequirement 
             amendment={latestAmendment}
             mineGuid={mineGuid}
-            permitGuid={formValues.permit_guid}
+            permitGuid={formValues?.permit_guid}
             summary={summary}
             formValues={formValues}
           />

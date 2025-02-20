@@ -3,6 +3,7 @@ import { removeNullValuesRecursive } from "@mds/common/constants/utils";
 import { AMS_AUTHORIZATION_TYPES } from "@mds/common/constants/enums";
 import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
 import { IMineReportPermitRequirement, IPermitAmendment } from "../interfaces/permits";
+import { REPORT_FREQUENCY_HASH, REPORT_MINISTRY_RECIPIENT_HASH, REPORT_REGULATORY_AUTHORITY_CODES_HASH } from "../constants/strings";
 
 const transformAuthorizations = (
   valuesFromForm: any,
@@ -147,5 +148,27 @@ export const findCondition = (permit_condition: string | number, conditions: IPe
       const found = findConditionRecursive(permit_condition, condition);
       if (found) return found;
   }
+  return null;
+}
+
+/** IMineReportPermitRequirement transformer */
+/** Logic from ReportPermitRequirementForm TODO use this transformer too? */
+
+export const transformPermitReportRequirement = (report : IMineReportPermitRequirement) => {
+  if(report){
+    return {
+      report_name: report.report_name,
+      mine_report_permit_requirement_id: report.mine_report_permit_requirement_id,
+      regulatory_authority: report.cim_or_cpo ? REPORT_REGULATORY_AUTHORITY_CODES_HASH[report.cim_or_cpo] : "Not Specified",
+      ministry_recipient: report.ministry_recipient?.map(
+        (dest,index) => 
+        `${REPORT_MINISTRY_RECIPIENT_HASH[dest]}${index < report.ministry_recipient.length - 1 ? ", " : ""} `
+      ) ?? "None Specified",
+      permit_condition_id: report.permit_condition_id,
+      frequency: Object.keys(REPORT_FREQUENCY_HASH).find(key => REPORT_FREQUENCY_HASH[key] === report.due_date_period_months),
+      initial_due_date: report.initial_due_date,
+      condition_category_code: report.condition_category_code
+    }
+  } 
   return null;
 }
