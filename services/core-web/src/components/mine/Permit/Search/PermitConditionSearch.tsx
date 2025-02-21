@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout, Typography, Row, Col, Card, Space } from 'antd';
 import SearchBox from './components/SearchBox';
 import SearchResults, { SelectedFilter } from './components/SearchResults';
@@ -10,8 +10,8 @@ import FormWrapper from '@mds/common/components/forms/FormWrapper';
 import { FORM } from '@mds/common/constants/forms';
 import { debounce } from 'lodash';
 import { change } from '@mds/common/components/forms/form';
-
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExpand, faCompress } from '@fortawesome/pro-solid-svg-icons';
 
 const PermitConditionSearch: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -19,6 +19,7 @@ const PermitConditionSearch: React.FC = () => {
     const loading = useAppSelector(selectSearchLoading);
     const query = useAppSelector(selectSearchQuery);
     const selectedFilters = useAppSelector(selectSearchFilters);
+    const [isAIResponseExpanded, setIsAIResponseExpanded] = useState(false);
 
     const hasActiveSearch = query || selectedFilters?.length > 0;
     const isLoading = loading;
@@ -44,20 +45,36 @@ const PermitConditionSearch: React.FC = () => {
                     />
                 ) : (
                     <Space direction="vertical" size="large" style={{ width: '100%' }}>
-                        <Typography.Title level={1} style={{ marginBottom: 0 }}>Permit Condition Search</Typography.Title>
-                        <SearchBox onSearch={query => debouncedSearch(query, selectedFilters)} loading={loading} />
-                        <Row gutter={32}>
-                            <Col span={16}>
-                                <SearchResults onFilterChange={filters => debouncedSearch(query, filters)} />
-                            </Col>
-                            <Col span={8}>
-                                <Card title="AI-Generated Response" loading={loading}>
-                                    {results?.prompt?.answers?.map((result) => (
-                                        <MarkdownViewer key={`prompt-${result.substring(0, 20)}`} markdown={result} />
-                                    ))}
-                                </Card>
-                            </Col>
-                        </Row>
+                        <Typography.Title level={1} style={{ marginBottom: 0 }}>
+                            Permit Condition Search
+                        </Typography.Title>
+                        <SearchBox
+                            onSearch={query => debouncedSearch(query, selectedFilters)}
+                            loading={loading}
+                        />
+                        <div className="permit-search__results-container">
+                            <SearchResults
+                                onFilterChange={filters => debouncedSearch(query, filters)}
+                            />
+                            <Card
+                                title="AI-Generated Response"
+                                loading={loading}
+                                className={`permit-search__ai-response ${isAIResponseExpanded ? 'permit-search__ai-response--expanded' : ''}`}
+                            >
+                                <FontAwesomeIcon
+                                    icon={isAIResponseExpanded ? faCompress : faExpand}
+                                    onClick={() => setIsAIResponseExpanded(!isAIResponseExpanded)}
+                                    className="expand-button"
+                                    title={isAIResponseExpanded ? "Compress" : "Expand"}
+                                />
+                                {results?.prompt?.answers?.map((result) => (
+                                    <MarkdownViewer
+                                        key={`prompt-${result.substring(0, 20)}`}
+                                        markdown={result}
+                                    />
+                                ))}
+                            </Card>
+                        </div>
                     </Space>
                 )}
             </Layout.Content>

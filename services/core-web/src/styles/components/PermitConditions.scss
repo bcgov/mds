@@ -175,3 +175,102 @@ div.condition-layer {
     background-color: transparent;
   }
 }
+
+.markdown-viewer {
+
+  /* Make the table span the full width of its container and collapse borders */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    /* or any preferred font */
+    margin: 1em 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: #333;
+    /* text color */
+  }
+
+  /* Table header styling */
+  thead th {
+    background-color: #f2f2f2;
+    color: #000;
+    font-weight: bold;
+    text-align: left;
+    padding: 0.75em 1em;
+    border-bottom: 2px solid #ddd;
+  }
+
+  /* Table body row styling */
+  tbody tr {
+    border-bottom: 1px solid #ddd;
+    /* subtle row separator */
+  }
+
+  /* Table data cell styling */
+  td {
+    padding: 0.75em 1em;
+    vertical-align: top;
+  }
+
+  /* Hover effect on table rows */
+  tbody tr:hover {
+    background-color: #f9f9f9;
+  }
+
+  /* Alternating row colors */
+  tbody tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+}
+
+.permit-search {
+  &__layout {
+    height: 100%;
+  }
+
+  &__content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  &__results-container {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(300px, 1fr);
+    gap: 32px;
+    align-items: start;
+  }
+
+  &__ai-response {
+    position: sticky;
+    top: 24px;
+    overflow: auto;
+    transition: width 0.3s ease;
+    width: 100%;
+
+    &--expanded {
+      width: 200%; // Increase from 150% to 200%
+      margin-left: -100%; // Adjust margin to match new width
+      z-index: 100; // Add z-index to ensure it appears above other content
+    }
+
+    .expand-button {
+      position: absolute;
+      left: 16px;
+      top: 22px;
+      z-index: 1;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    .ant-card-head {
+      padding-left: 48px;
+      min-height: auto;
+    }
+  }
+}

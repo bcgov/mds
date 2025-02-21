@@ -14,17 +14,34 @@ from app.pipelines.permit_condition_search.components.document_embedder_with_cac
 from app.pipelines.permit_condition_search.components.search_output_formatter import (
     SearchOutputFormatter,
 )
+from app.pipelines.permit_condition_search.create_search_index import (
+    create_or_update_index,
+)
+from app.pipelines.permit_condition_search.create_search_indexer import (
+    create_search_indexer,
+)
 from app.pipelines.permit_condition_search.stores.ai_search_document_store import (
     AdditionalAISearchConfig,
     AzureSearchDocumentStore,
 )
-from azure.search.documents.indexes.models import VectorSearch
+from azure.search.documents.indexes.models import (
+    AzureOpenAIVectorizer,
+    AzureOpenAIVectorizerParameters,
+    HnswAlgorithmConfiguration,
+    HnswParameters,
+    ScalarQuantizationCompression,
+    ScalarQuantizationParameters,
+    VectorSearch,
+    VectorSearchAlgorithmMetric,
+    VectorSearchProfile,
+)
 from haystack import Pipeline
 from haystack.components.builders import ChatPromptBuilder, PromptBuilder
 from haystack.components.embedders import AzureOpenAITextEmbedder
 from haystack.components.generators import AzureOpenAIGenerator
 from haystack.components.generators.chat import AzureOpenAIChatGenerator
 from haystack.components.joiners import DocumentJoiner
+from haystack.components.preprocessors import DocumentSplitter, document_splitter
 from haystack.components.writers import DocumentWriter
 from haystack.dataclasses import ChatMessage
 from haystack.document_stores.types import DuplicatePolicy
@@ -59,6 +76,9 @@ assert deployment_name
 assert base_url
 assert api_version
 
+create_or_update_index()
+create_search_indexer()
+
 
 doc_metadata_fields = {
     "category": str,
@@ -68,34 +88,43 @@ doc_metadata_fields = {
     "mine_name": str,
     "document_name": str,
     "document_manager_guid": str,
+    "mine_guid": str,
+    "permit_guid": str,
+    "permit_condition_guid": str,
+    "permit_amendment_guid": str,
     "step": str,
     "step_path": str,
 }
 
-extra_field_config = {
-    "category": {"filterable": True, "sortable": True, "facetable": True},
-    "issue_date": {"filterable": True, "sortable": True, "facetable": True},
-    "permit": {"filterable": True, "sortable": True, "facetable": True},
-    "mine_number": {"filterable": True, "sortable": True, "facetable": True},
-    "mine_name": {"filterable": True, "sortable": True, "facetable": True},
-    "document_name": {"filterable": True, "sortable": True, "facetable": True},
-    "document_manager_guid": {"filterable": True, "sortable": True, "facetable": True},
-    "step": {"filterable": True, "sortable": True, "facetable": True},
-    "step_path": {"filterable": True, "sortable": True, "facetable": True},
-}
+# extra_field_config = {
+#     "category": {"filterable": True, "sortable": True, "facetable": True},
+#     "issue_date": {"filterable": True, "sortable": True, "facetable": True},
+#     "permit": {"filterable": True, "sortable": True, "facetable": True},
+#     "mine_number": {"filterable": True, "sortable": True, "facetable": True},
+#     "mine_name": {"filterable": True, "sortable": True, "facetable": True},
+#     "document_name": {"filterable": True, "sortable": True, "facetable": True},
+#     "document_manager_guid": {"filterable": True, "sortable": True, "facetable": True},
+#     "step": {"filterable": True, "sortable": True, "facetable": True},
+#     "step_path": {"filterable": True, "sortable": True, "facetable": True},
+#     "permit_guid": {"filterable": True, "sortable": False, "facetable": False, "searchable": False},
+#     "mine_guid": {"filterable": True, "sortable": False, "facetable": False, "searchable": False},
+#     "permit_condition_guid": {"filterable": True, "sortable": False, "facetable": False, "searchable": False},
+#     "permit_amendment_guid": {"filterable": True, "sortable": False, "facetable": False, "searchable": False},
+#}
+
+
 
 vector_search_config = VectorSearch()
 
-
 def create_azure_search_document_store():
     return AzureSearchDocumentStore(
-        extra_field_config=extra_field_config,
         api_key=search_api_key,
         azure_endpoint=search_azure_endpoint,
         index_name="permit-conditions",
         embedding_dimension=3072,
         metadata_fields=doc_metadata_fields,
         vector_search_configuration=vector_search_config,
+        semantic_configuration_name="permit-semantic-config",
         search_config=AdditionalAISearchConfig(
             highlight_fields="content",
             highlight_pre_tag="**",

@@ -1,0 +1,190 @@
+import os
+
+from azure.core.credentials import AzureKeyCredential
+from azure.search.documents.indexes import SearchIndexerClient
+from azure.search.documents.indexes.models import (
+    AzureOpenAIEmbeddingSkill,
+    BlobIndexerParsingMode,
+    DataChangeDetectionPolicy,
+    FieldMapping,
+    HighWaterMarkChangeDetectionPolicy,
+    IndexingParameters,
+    IndexingParametersConfiguration,
+    InputFieldMappingEntry,
+    OutputFieldMappingEntry,
+    SearchIndexer,
+    SearchIndexerDataContainer,
+    SearchIndexerDataSourceConnection,
+    SearchIndexerKnowledgeStore,
+    SearchIndexerSkillset,
+    SplitSkill,
+)
+from haystack.utils import Secret
+from more_itertools import first
+
+# Environment variables
+AZURE_SEARCH_ENDPOINT = os.environ.get("AZURE_SEARCH_SERVICE_ENDPOINT")
+AZURE_OPENAI_ENDPOINT = os.environ.get("AZURE_BASE_URL")
+SEARCH_API_KEY = os.environ.get("AZURE_SEARCH_API_KEY")
+STORAGE_CONNECTION_STRING = os.environ.get("AZURE_STORAGE_CONNECTION_STRING")
+CONTAINER_NAME = os.environ.get("AZURE_STORAGE_CONTAINER")
+AZURE_API_KEY = Secret.from_env_var("AZURE_API_KEY", strict=True).resolve_value()
+assert AZURE_SEARCH_ENDPOINT, "Missing environment variable AZURE_SEARCH_SERVICE_ENDPOINT"
+assert SEARCH_API_KEY, "Missing environment variable AZURE_SEARCH_API_KEY"
+assert STORAGE_CONNECTION_STRING, "Missing environment variable AZURE_STORAGE_CONNECTION_STRING"
+assert CONTAINER_NAME, "Missing environment variable AZURE_STORAGE_CONTAINER"
+assert AZURE_OPENAI_ENDPOINT, "Missing environment variable AZURE_BASE_URL"
+
+
+# Initialize clients
+credential = AzureKeyCredential(SEARCH_API_KEY)
+indexer_client = SearchIndexerClient(endpoint=AZURE_SEARCH_ENDPOINT, credential=credential)
+
+def create_data_source():
+    # Create a data source for the CSV file in blob storage
+    data_source = SearchIndexerDataSourceConnection(
+        name="permit-conditions-data",
+        type="azureblob",
+        connection_string=STORAGE_CONNECTION_STRING,
+        container=SearchIndexerDataContainer(name=CONTAINER_NAME, query="indexing"),
+        # data_change_detection_policy=HighWaterMarkChangeDetectionPolicy()
+    )
+    
+    return indexer_client.create_or_update_data_source_connection(data_source)
+
+def create_skillset():
+    # Extract just the hostname from the endpoint URL
+    endpoint_parts = AZURE_OPENAI_ENDPOINT.replace('https://', '').split('/')
+    resource_uri = endpoint_parts[0]  # This will get just the hostname part
+    
+    # Create a skillset with text splitting and embedding generation
+    skillset = SearchIndexerSkillset(
+        name="permit-conditions-skillset",
+        description="Skillset for processing permit conditions",
+        skills=[
+            AzureOpenAIEmbeddingSkill(
+                name="ChunkEmbedder",
+                description="Generate embeddings for chunks",
+                context="/document",
+                resource_url=AZURE_OPENAI_ENDPOINT,  # Use the cleaned hostname
+                api_key=AZURE_API_KEY,
+                model_name="text-embedding-3-large",
+                deployment_name="text-embedding-3-large",
+                inputs=[
+                    InputFieldMappingEntry(
+                        name="text",
+                        source="/document/condition"
+                    )
+                ],
+                outputs=[
+                    OutputFieldMappingEntry(
+                        name="embedding",
+                        target_name="embedding"
+                    )
+                ]
+            )
+        ]
+    )
+
+    print(skillset.skills[0])
+
+    return indexer_client.create_or_update_skillset(skillset)
+
+def create_indexer():
+    # Create an indexer that uses the skillset
+    indexer = SearchIndexer(
+        name="permit-conditions-indexer",
+        data_source_name="permit-conditions-data",
+        target_index_name="permit-conditions",
+        skillset_name="permit-conditions-skillset",
+        parameters=IndexingParameters(
+            batch_size=100,
+            configuration=IndexingParametersConfiguration(
+                parsing_mode=BlobIndexerParsingMode.DELIMITED_TEXT,
+                first_line_contains_headers=True,
+                query_timeout=None
+            )
+        ),
+        output_field_mappings=[
+            FieldMapping(
+                source_field_name="/document/id",
+                target_field_name="id"
+            ),
+            FieldMapping(
+                source_field_name="/document/condition",
+                target_field_name="content"
+            ),
+            FieldMapping(
+                source_field_name="/document/category",
+                target_field_name="category"
+            ),
+            FieldMapping(
+                source_field_name="/document/issue_date",
+                target_field_name="issue_date"
+            ),
+            FieldMapping(
+                source_field_name="/document/permit",
+                target_field_name="permit"
+            ),
+            FieldMapping(
+                source_field_name="/document/mine_number",
+                target_field_name="mine_number"
+            ),
+            FieldMapping(
+                source_field_name="/document/mine_name",
+                target_field_name="mine_name"
+            ),
+            FieldMapping(
+                source_field_name="/document/document_name",
+                target_field_name="document_name"
+            ),
+            FieldMapping(
+                source_field_name="/document/document_manager_guid",
+                target_field_name="document_manager_guid"
+            ),
+            FieldMapping(
+                source_field_name="/document/step",
+                target_field_name="step"
+            ),
+            FieldMapping(
+                source_field_name="/document/step_path",
+                target_field_name="step_path"
+            ),
+            FieldMapping(
+                source_field_name="/document/permit_guid",
+                target_field_name="permit_guid"
+            ),
+            FieldMapping(
+                source_field_name="/document/mine_guid",
+                target_field_name="mine_guid"
+            ),
+            FieldMapping(
+                source_field_name="/document/permit_condition_guid",
+                target_field_name="permit_condition_guid"
+            ),
+            FieldMapping(
+                source_field_name="/document/permit_amendment_guid",
+                target_field_name="permit_amendment_guid"
+            ),
+            FieldMapping(
+                source_field_name="/document/embedding",
+                target_field_name="embedding"
+            )
+        ],
+    )
+    
+    return indexer_client.create_or_update_indexer(indexer)
+
+def create_search_indexer():
+    # Create all components in order
+    print("Creating data source...")
+    create_data_source()
+    
+    print("Creating skillset...")
+    create_skillset()
+    
+    print("Creating indexer...")
+    indexer = create_indexer()
+    
+    print(f"Created indexer: {indexer.name}")
+    print("You can now run the indexer to process your CSV file")

@@ -78,6 +78,7 @@ interface PermitConditionProps {
   forceViewConditions?: boolean;
   extractionTaskGuid?: string;
   permitAmendmentDocumentGuid?: string;
+  selectedConditionId?: string; // Add this line
 }
 
 const PermitConditions: FC<PermitConditionProps> = ({
@@ -92,6 +93,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   mineGuid,
   forceViewConditions,
   permitAmendmentDocumentGuid,
+  selectedConditionId, // Add this line
 }) => {
   const { isFeatureEnabled } = useFeatureFlag();
   const dispatch = useAppDispatch();
@@ -464,6 +466,26 @@ const PermitConditions: FC<PermitConditionProps> = ({
     viewPdf && pdfSplitViewEnabled && (permitExtraction?.permit_amendment_document_guid || permitAmendmentDocumentGuid);
 
   const hasConditions = currentAmendment?.conditions?.length > 0;
+
+  useEffect(() => {
+    // Only attempt to scroll when:
+    // 1. We have a selectedConditionId
+    // 2. The conditions are loaded (not loading)
+    // 3. The currentAmendment exists and has conditions
+    if (selectedConditionId && !showLoading && currentAmendment?.conditions?.length > 0) {
+      // Add a small delay to ensure the DOM is fully rendered
+      setTimeout(() => {
+        const element = document.getElementById(`condition-${selectedConditionId}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          element.classList.add('highlight-condition');
+          setTimeout(() => {
+            element.classList.remove('highlight-condition');
+          }, 20000);
+        }
+      }, 100);
+    }
+  }, [selectedConditionId, showLoading, currentAmendment?.conditions]);
 
   return (<>
     {hasConditions && <PermitReviewBanner isExtracted={isExtracted} height={bannerHeight} isReviewComplete={isReviewComplete} />}

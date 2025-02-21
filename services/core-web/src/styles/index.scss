@@ -47,7 +47,7 @@
 @forward "./components/PermitSearch.scss";
 @forward "./components/HelpGuide.scss";
 @forward "./components/RichTextEditor.scss";
-
+@use "./components/markdown";
 @forward "./components/ComparePermitConditionHistoryModal.scss";
 
 // UTILITIES - utilities and helper classes. This layer has the highest specificity.

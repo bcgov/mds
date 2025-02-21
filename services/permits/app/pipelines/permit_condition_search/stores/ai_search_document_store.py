@@ -1,7 +1,11 @@
 from typing import Any, Dict, List, Optional
 
 from azure.search.documents.indexes.models import SimpleField
-from azure.search.documents.models import VectorizedQuery
+from azure.search.documents.models import (
+    QueryType,
+    VectorizableTextQuery,
+    VectorizedQuery,
+)
 from haystack import Document, component
 from haystack_integrations.document_stores.azure_ai_search import (
     AzureAISearchDocumentStore,
@@ -34,10 +38,11 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
 
         
 
-    def __init__(self, extra_field_config: Dict[str, Any], search_config: Optional[AdditionalAISearchConfig],  **kwargs):
+    def __init__(self, extra_field_config: Optional[Dict[str, Any]]=None, search_config: Optional[AdditionalAISearchConfig]=None, semantic_configuration_name=None,  **kwargs):
         super(AzureSearchDocumentStore, self).__init__(**kwargs)
         self.extra_field_config = extra_field_config
         self.search_config = search_config or AdditionalAISearchConfig()
+        self.semantic_configuration_name = semantic_configuration_name
     
     def _convert_search_result_to_documents(self, azure_docs: List[Dict[str, Any]]) -> List[Document]:
 
@@ -54,7 +59,7 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
                     "highlights": azure_doc.get('@search.highlights', {})
                 })
 
-                doc.score = azure_doc.get('@search.score', 0.0)
+                doc.score = azure_doc.get('@search.rerankerScore', 0.0)
         
         return documents
 
@@ -90,13 +95,15 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
             msg = "query_embedding must be a non-empty list of floats"
             raise ValueError(msg)
 
-        vector_query = VectorizedQuery(vector=query_embedding, k_nearest_neighbors=top_k, fields="embedding")
+        vector_query = VectorizableTextQuery(text=query, k_nearest_neighbors=top_k, fields="embedding", exhaustive=True)
+
         result = self.client.search(
             search_text=query,
             vector_queries=[vector_query],
             filter=filters,
             top=top_k,
-            query_type="simple",
+            query_type=QueryType.SEMANTIC,
+            semantic_configuration_name=self.semantic_configuration_name,
             **self.search_config.to_dict(),
             **kwargs,
         )

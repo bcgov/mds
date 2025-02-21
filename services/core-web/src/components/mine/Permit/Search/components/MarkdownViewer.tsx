@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Typography } from 'antd';
+import remarkGfm from 'remark-gfm'
 
 const { Title } = Typography;
 
@@ -20,11 +21,16 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ markdown }) => {
             return match;
         });
 
-        // Then process our special doc references
-        processed = processed.replace(/\[doc:([a-f0-9-]+)\]|\[\[doc:([a-f0-9-]+)\]\]/g, (match, hash1, hash2) => {
-            refCount++;
-            const hash = hash1 || hash2;
-            return `[[${refCount}]](#condition-${hash})`;
+        // Handle both single and comma-separated doc references
+        processed = processed.replace(/\[(?:doc:([a-f0-9-]+)(?:\s*,\s*doc:([a-f0-9-]+))*)\]|\[\[doc:([a-f0-9-]+)\]\]/g, (match, ...args) => {
+            // Remove undefined values and the last two items (offset, string) from args
+            const hashes = args.slice(0, -2).filter(Boolean);
+
+            // Create references for each hash
+            return hashes.map(hash => {
+                refCount++;
+                return `[[${refCount}]](#condition-${hash})`;
+            }).join(' ');
         });
 
         return processed;
@@ -45,7 +51,7 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ markdown }) => {
 
     return (
         <div className="permit-search__markdown" onClick={handleClick}>
-            <ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {processedMarkdown}
             </ReactMarkdown>
         </div>
