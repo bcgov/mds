@@ -43,9 +43,9 @@ import { getParties, getPartyRelationships } from "@mds/common/redux/selectors/p
 import { uniqBy } from "lodash";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import ExportOutlined from "@ant-design/icons/ExportOutlined";
-import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
+import { getMineReportPermitRequirementById, getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
-import { RenderPRRFields } from "./ReportGetStarted";
+import { PermitReportInfoBox, RenderPRRFields } from "./ReportGetStarted";
 import MinistryCommentPanel from "@mds/common/components/comments/MinistryCommentPanel";
 import { getMineReportComments } from "@mds/common/redux/selectors//reportSelectors";
 import {
@@ -174,6 +174,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     dropdownPermitConditionCategoryOptions.find(
       (opt) => opt.value === permit_condition_category_code
     );
+  const selectedPermitReportDefinition = useSelector(
+    getMineReportPermitRequirementById(formValues?.permit_guid,formValues?.mine_report_permit_requirement_id)
+  )
 
   const isCRR = report_type === REPORT_TYPE_CODES.CRR;
   const isPRR = report_type === REPORT_TYPE_CODES.PRR;
@@ -418,7 +421,10 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                   ]}
                 />
               </Col>
-              {isPRR && <RenderPRRFields mineGuid={initialValues?.mine_guid} summary={true} />}
+              {isPRR && (<Col span={24}>
+                <RenderPRRFields mineGuid={initialValues?.mine_guid} summary={true} /> 
+                <PermitReportInfoBox href={null} permitReport={selectedPermitReportDefinition} summary={true} verb="submitting" />
+              </Col>)}
               {isCRR && (
                 <Col span={12}>
                   <Field
@@ -450,10 +456,12 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                   label="Report Type"
                   value={report_type && MINE_REPORTS_ENUM[report_type]}
                 />
+                {isPRR && <BaseViewInput label="Permit Condition Category" value={permit?.permit_no} />}
               </Col>
               {isPRR && (
                 <Col md={12} sm={24}>
                   <BaseViewInput label="Permit Number" value={permit?.permit_no} />
+                  <BaseViewInput label="Permit Condition Reference" value={permit?.permit_no} />
                 </Col>
               )}
               {selectedPermitCategory && (
@@ -464,6 +472,12 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                   />
                 </Col>
               )}
+              {isPRR && (
+                <Col span={24}>
+                  <PermitReportInfoBox href={null} permitReport={selectedPermitReportDefinition} summary={true} verb="submitting" />
+                </Col>
+              )
+              }
             </>
           )}
 

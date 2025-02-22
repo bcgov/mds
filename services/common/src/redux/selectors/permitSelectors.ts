@@ -104,3 +104,21 @@ export const getMineReportPermitRequirements = (permitGuid) =>
       return (latestAmendment && latestAmendment.mine_report_permit_requirements) ?? [];
     }
   );
+
+export const getMineReportPermitRequirementById = (permitGuid,reportId) =>
+  createSelector(
+    [getLatestAmendmentByPermitGuid(permitGuid)],
+    (latestAmendment): IMineReportPermitRequirement => {
+      return latestAmendment?.mine_report_permit_requirements?.find((report) => report.mine_report_permit_requirement_id === reportId);
+    }
+  );
+
+export const getCategoriesWithReports = (permitGuid) => createSelector([getLatestAmendmentByPermitGuid(permitGuid)], (latestAmendment) => {
+  return latestAmendment?.condition_categories.map((category) => {
+    const reports = latestAmendment.mine_report_permit_requirements.filter( (report) => category.condition_category_code === report.condition_category_code );
+    return {
+      ...category,
+      reports
+    }
+  })
+})

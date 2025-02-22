@@ -113,17 +113,6 @@ export const getConditionsWithRequirements = (conditions: IPermitCondition[], re
   return result;
 };
 
-export const getCategoriesWithReports = (amendment: IPermitAmendment) => {
-  amendment.mine_report_permit_requirements.forEach( (report) => {
-    let category = amendment.condition_categories.find( cat => cat.condition_category_code === report.condition_category_code);
-    if(category.reports === undefined){
-      category.reports = [];
-    }
-    category.reports.push(report);
-  })
-  return amendment.condition_categories;
-}
-
 /**
      * Find a condition recursively by guid or id in the given list of conditions.
      */

@@ -8,10 +8,11 @@ import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import { getFormattedMineReportDefinitionOptions, getMineReportDefinitionByGuid } from "@mds/common/redux/slices/complianceReportsSlice";
-import { RenderPRRFields, ReportInfoBox } from "@mds/common/components/reports/ReportGetStarted";
-import { IMineReport, IMineReportDefinition } from "@mds/common/interfaces";
+import { PermitReportInfoBox, RenderPRRFields, ReportInfoBox } from "@mds/common/components/reports/ReportGetStarted";
+import { IMineReport, IMineReportDefinition, IMineReportSubmission } from "@mds/common/interfaces";
 import { MINE_REPORT_SUBMISSION_CODES, REPORT_TYPE_CODES } from "@mds/common/constants/enums";
 import { FORM } from "@mds/common/constants/forms";
+import { getMineReportPermitRequirementById } from "@mds/common/redux/selectors/permitSelectors";
 
 interface RequestReportFormProps {
   onSubmit: (values: Partial<IMineReport>) => void | Promise<void>;
@@ -24,10 +25,13 @@ export const RequestReportForm: FC<RequestReportFormProps> = ({
   mineGuid,
 }) => {
   const mineReportDefinitionOptions = useSelector(getFormattedMineReportDefinitionOptions);
-  const formValues = useSelector(getFormValues(FORM.REQUEST_REPORT));
-  const selectedReportDefinition: IMineReportDefinition = useSelector(
+  const formValues = useSelector(getFormValues(FORM.REQUEST_REPORT)) as IMineReportSubmission;
+  const selectedCodeReportDefinition: IMineReportDefinition = useSelector(
     getMineReportDefinitionByGuid(formValues?.mine_report_definition_guid)
   );
+  const selectedPermitReportDefinition = useSelector(
+    getMineReportPermitRequirementById(formValues?.permit_guid,formValues?.mine_report_permit_requirement_id)
+  )
 
   return (
     <div style={{ minHeight: "380px" }}>
@@ -57,7 +61,7 @@ export const RequestReportForm: FC<RequestReportFormProps> = ({
             </Col>
           )}
           {mineReportsType === REPORT_TYPE_CODES.PRR && (
-            <RenderPRRFields mineGuid={mineGuid} fullWidth />
+            <RenderPRRFields summary mineGuid={mineGuid} fullWidth formName={FORM.REQUEST_REPORT} />
           )}
           <Col md={12} sm={24}>
             <Field
@@ -83,9 +87,14 @@ export const RequestReportForm: FC<RequestReportFormProps> = ({
               component={RenderDate}
             />
           </Col>
-          {selectedReportDefinition && (
+          {selectedCodeReportDefinition && (
             <Col span={24}>
-              <ReportInfoBox mineReportDefinition={selectedReportDefinition} verb="requesting" />
+              <ReportInfoBox mineReportDefinition={selectedCodeReportDefinition} verb="requesting" />
+            </Col>
+          )}
+          {selectedPermitReportDefinition && (
+            <Col span={24} className="margin-large--bottom">
+              <PermitReportInfoBox href={null} permitReport={selectedPermitReportDefinition} verb="requesting" />
             </Col>
           )}
         </Row>
