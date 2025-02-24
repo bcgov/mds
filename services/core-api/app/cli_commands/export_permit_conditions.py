@@ -64,6 +64,10 @@ def export_permit_conditions(permit_amendment_guid, csv_writer=None):
             'mine_name': mine.mine_name,
             'document_name': document_name,
             'document_manager_guid': document_guid,
+            'permit_guid': str(permit.permit_guid),
+            'mine_guid': str(mine.mine_guid),
+            'permit_amendment_guid': str(amendment.permit_amendment_guid),
+            'permit_condition_guid': str(condition.permit_condition_guid),
             'id': str(condition.permit_condition_guid),
             'condition': condition.condition,
         }
@@ -105,7 +109,8 @@ def bulk_export_permit_conditions(csv_path):
     headers = [
         'step', 'category', 'status', 'display_order', 'issue_date',
         'permit', 'mine_number', 'mine_name', 'document_name',
-        'document_manager_guid', 'id', 'condition'
+        'document_manager_guid', 'id', 'condition', 'permit_guid',
+        'mine_guid', 'permit_amendment_guid', 'permit_condition_guid'
     ]
 
     with open(output_filename, 'w', newline='') as outfile:

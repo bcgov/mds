@@ -147,7 +147,7 @@ template = """
     You must cite all your sources in square brackets with the prefix "doc" for example: Paris is the capital of france [doc:1].\n You must represent the information in the sources accurately and not modify the content at all. \n
     When you find a matching permit condition, you should enclose it in a Markdown blockquotes (>) to make it clear that it is a direct quote from the source. \n 
     
-    You will be given a list of permit conditions (sources) with the content of the condition and and ID you can use to cite the source.
+    You will be given a list of permit conditions (sources) with the content of the condition and ID you can use to cite the source.
     
     Sources:
     {% for document in documents %}

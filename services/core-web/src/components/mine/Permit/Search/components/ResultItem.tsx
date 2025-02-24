@@ -11,6 +11,7 @@ import { VIEW_MINE_PERMIT_AMENDMENT } from '@/constants/routes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faArrowUpRightFromSquare } from '@fortawesome/pro-solid-svg-icons';
 import PermitAmendmentPreviewModal from './PermitAmendmentPreviewModal';
+import DocumentLink from '@mds/common/components/documents/DocumentLink';
 
 const { Text, Paragraph } = Typography;
 
@@ -171,7 +172,12 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
 
                     <Space size="middle">
                         <Text type="secondary" style={{ fontSize: '12px' }}>
-                            {meta.document_name}
+                            <DocumentLink
+                                unstyled={true}
+                                documentManagerGuid={meta.document_manager_guid}
+                                documentName={meta.document_name}
+                                truncateDocumentName={false}
+                            />
                         </Text>
                         <Text type="secondary" style={{ fontSize: '12px' }}>
                             {dayjs(meta.issue_date).format('MMM D, YYYY')}

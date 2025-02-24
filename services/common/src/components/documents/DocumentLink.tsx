@@ -22,6 +22,7 @@ const propTypes = {
   onClickAlternative: PropTypes.func,
   linkTitleOverride: PropTypes.string,
   truncateDocumentName: PropTypes.bool,
+  unstyled: PropTypes.bool,
   // difference on MS: this is also accepted as a boolean
   deletePermission: PropTypes.string,
   handleDelete: PropTypes.func,
@@ -103,7 +104,7 @@ export const DocumentLink = (props) => {
       }
     >
       <a
-        className="ant-dropdown-link"
+        className={`ant-dropdown-link${props.unstyled ? ' ant-dropdown-link--unstyled' : ''}`}
         role="button"
         onClick={linkOnClick}
         onKeyDown={linkOnClick}

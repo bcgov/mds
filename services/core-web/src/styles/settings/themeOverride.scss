@@ -815,3 +815,11 @@ select {
   top: 50%;
   transform: translateY(-50%);
 }
+
+.ant-typography a.ant-dropdown-link {
+  &--unstyled {
+    font-size: inherit;
+    color: inherit;
+    text-decoration: inherit;
+  }
+}
