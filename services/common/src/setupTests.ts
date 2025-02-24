@@ -26,6 +26,11 @@ Enzyme.configure({ adapter: new Adapter() });
     dynamicRoute: () => "test",
     helpKey: "Mine-Dashboard",
   },
+  EDIT_TAILINGS_STORAGE_FACILITY: {
+    route: "test",
+    dynamicRoute: () => "test",
+    helpKey: "Edit-TSF"
+  }
 };
 
 beforeAll(() => {

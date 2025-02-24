@@ -105,7 +105,6 @@ const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> 
               <Button
                 icon={<FontAwesomeIcon icon={faXmark} />}
                 disabled={!isLoaded}
-                className="tara-test"
               />
             </Popconfirm>
           )}
