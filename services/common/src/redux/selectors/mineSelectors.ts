@@ -2,7 +2,6 @@ import { createSelector } from "reselect";
 import * as mineReducer from "../reducers/mineReducer";
 
 export const getMines = (state) => mineReducer.getMines(state);
-export const getMineById = (state, mineGuid) => mineReducer.getMineById(state, mineGuid);
 export const getMineIds = (state) => mineReducer.getMineIds(state);
 export const getMineNames = (state) => mineReducer.getMineNames(state);
 export const getMinesPageData = (state) => mineReducer.getMinesPageData(state);
@@ -13,6 +12,10 @@ export const getSubscribedMines = (state) => mineReducer.getSubscribedMines(stat
 export const getSubscribedMinesLoaded = (state) => mineReducer.getSubscribedMines(state).loaded;
 export const getMineComments = (state) => mineReducer.getMineComments(state);
 
+export const getMineById = (mineGuid: string) =>
+  createSelector([getMines], (mines) => {
+    return mines[mineGuid];
+  });
 export const getIsUserSubscribed = createSelector(
   [getSubscribedMines, getMineGuid],
   (subscribedMines, mineGuid) =>

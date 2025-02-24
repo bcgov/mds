@@ -51,7 +51,7 @@ const ViewPermitOverview: FC<ViewPermitOverviewProps> = ({ latestAmendment }) =>
 
   const { id, permitGuid } = useParams<{ id: string; permitGuid: string }>();
   const permit: IPermit = useSelector(getPermitByGuid(permitGuid));
-  const mine: IMine = useSelector((state) => getMineById(state, id));
+  const mine: IMine = useSelector(getMineById(id));
 
   const documentColumns: ColumnsType<IPermitAmendmentDocument> = [
     renderDocumentLinkColumn("document_name", "File Name", true),

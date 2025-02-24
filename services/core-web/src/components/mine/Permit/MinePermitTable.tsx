@@ -125,15 +125,15 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
   const permitStatusOptionsHash = useSelector(getDropdownPermitStatusOptionsHash);
   const permitAmendmentTypeOptionsHash = useSelector(getPermitAmendmentTypeOptionsHash);
 
-  const userCanEditPermits = useSelector((state) =>
-    userHasRole(state, USER_ROLES.role_edit_permits)
+  const userCanEditPermits = useSelector(
+    userHasRole(USER_ROLES.role_edit_permits)
   );
-  const userIsAdmin = useSelector((state) => userHasRole(state, USER_ROLES.role_admin));
-  const userHistorical = useSelector((state) =>
-    userHasRole(state, USER_ROLES.role_edit_historical_amendments)
+  const userIsAdmin = useSelector(userHasRole(USER_ROLES.role_admin));
+  const userHistorical = useSelector(
+    userHasRole(USER_ROLES.role_edit_historical_amendments)
   );
-  const userSecurities = useSelector((state) =>
-    userHasRole(state, USER_ROLES.role_edit_securities)
+  const userSecurities = useSelector(
+    userHasRole(USER_ROLES.role_edit_securities)
   );
 
   const transformRowData = (permit) => {

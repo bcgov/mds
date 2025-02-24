@@ -39,7 +39,7 @@ const ReportPage = () => {
   const latestSubmission: IMineReportSubmission = useSelector((state) =>
     getLatestReportSubmission(state, reportGuid)
   );
-  const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
+  const mine: IMine = useSelector(getMineById(mineGuid));
   const [loaded, setLoaded] = useState(Boolean(latestSubmission && mine));
   const [isEditMode, setIsEditMode] = useState(defaultEditMode);
 

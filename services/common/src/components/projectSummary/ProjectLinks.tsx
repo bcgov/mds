@@ -5,7 +5,7 @@ import { Button, Col, Row, Typography } from "antd";
 import ProjectLinksTable from "@mds/common/components/projectSummary/ProjectLinksTable";
 import { ILinkedProject, IProject } from "@mds/common/interfaces";
 import { getProjectStatusDescription } from "../projects/projectUtils";
-import { isProponent, userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
+import { isProponent, userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import {
   createProjectLinks,
   fetchProjectsByMine,
@@ -95,8 +95,8 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, fieldsDisabled, tabl
   const project = useSelector(getProject);
   const mineProjects = useSelector(getProjects);
   const isUserProponent = useSelector(isProponent);
-  const canEditProjects = useSelector((state) =>
-    userHasRole(state, USER_ROLES.role_edit_project_summaries)
+  const canEditProjects = useSelector(
+    userHasRole(USER_ROLES.role_edit_project_summaries)
   );
   const { isEditMode } = useContext(FormContext);
   const hasModifyPermission = isUserProponent || canEditProjects;
