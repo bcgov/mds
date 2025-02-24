@@ -6,11 +6,7 @@ from typing import List, Optional
 from app.common.types.chat_data import ChatData
 from app.common.types.permit_condition_model import PermitCondition, PermitConditions
 from haystack import Document, component
-from haystack.components.builders import (
-    ChatPromptBuilder,
-    PromptBuilder,
-    prompt_builder,
-)
+from haystack.components.builders import ChatPromptBuilder
 from haystack.dataclasses import ChatMessage
 
 logger = logging.getLogger(__name__)
@@ -21,6 +17,8 @@ DEBUG_MODE = os.environ.get("DEBUG_MODE", "False").lower() == "true"
 class PermitConditionExtractor:
     """
     Component that extracts permit conditions from documents using the OpenAI chat generator.
+
+    This is intended as a fallback for documents that do not have structured permit conditions.
     """
 
     def __init__(self, chat_generator, validator=None, template=None):
@@ -30,6 +28,7 @@ class PermitConditionExtractor:
         Args:
             chat_generator: The chat generator component to use
             validator: Optional validator component for validation step
+            template: Optional template to use for the chat prompt
         """
         self.chat_generator = chat_generator
         self.validator = validator
@@ -55,7 +54,6 @@ class PermitConditionExtractor:
             PermitConditions object containing the extracted conditions
         """
         # Store original document metadata
-
         parsed_docs = []
         self.docs_with_meta = []
 
@@ -65,10 +63,9 @@ class PermitConditionExtractor:
             self.docs_with_meta.append({doc.id: doc.meta})
         self.docs_with_meta = {doc.id: doc.meta for doc in documents}
 
-        logger.info(self.docs_with_meta)
-
         docs_to_extract_from = []
 
+        # Reconstruct text (with indentation) from documents retrieved from document intelligence
         for doc in parsed_docs:
             logger.info(self.docs_with_meta[doc['id']])
             bb = self.docs_with_meta[doc['id']].get('bounding_box', {})
@@ -78,17 +75,14 @@ class PermitConditionExtractor:
             text = f"{indented_text} (id: {doc['id']})"
             docs_to_extract_from.append(Document(content=text))
 
+        # Generate chat prompt
         prompt: List[ChatMessage] = ChatPromptBuilder(template=[ChatMessage.from_system(template or self.template)]).run(template_variables={"documents": docs_to_extract_from})["prompt"]
 
-        # Write prompt to debug folder if enabled
         if DEBUG_MODE:
-            os.makedirs("debug", exist_ok=True)
             with open("debug/extractor_prompt.json", "w") as f:
                 f.write("\n".join([msg.text for msg in prompt]))
 
-        # Create ChatData object for generator
         chat_data = ChatData(messages=[prompt], documents=documents)
-
         # Generate response from chat model
         result = self.chat_generator.run(data=chat_data)
 

@@ -3,6 +3,7 @@ import logging
 import os
 from typing import Dict, List, Optional
 
+from app.common.types.chat_data import ChatData
 from app.common.types.permit_condition_model import PermitCondition, PermitConditions
 from haystack import Document, component
 from haystack.components.builders import ChatPromptBuilder
@@ -16,8 +17,12 @@ DEBUG_MODE = os.environ.get("DEBUG_MODE", "False").lower() == "true"
 @component
 class PermitConditionValidator:
     """
-    Component that validates and corrects permit conditions after section combining.
-    Can trigger complete reprocessing if needed.
+    Component that validates and corrects permit conditions after extraction.
+    Can trigger complete reprocessing of the permit document if needed.
+
+    - Validates extracted conditions against original document text
+    - Attempts to correct any issues found (e.g. missing conditions, incorrect numbering)
+    - Optionally triggers reprocessing if significant issues are found
     """
 
     def __init__(
@@ -110,27 +115,12 @@ class PermitConditionValidator:
             "conditions_json": conditions_json
         })
 
-
+        # Create prompt to be used for validation
         prompt: List[ChatMessage] = self.prompt_builder.run(
             template=[ChatMessage.from_system(self.template)],
             template_variables=variables,
         )["prompt"]
 
-        # # Create messages directly without prompt builder
-        # messages = []
-        # # Add template messages if they exist
-        # if self.template_messages:
-        #     messages.extend(self.template_messages)
-        # # Add user message with variables replaced
-        # user_text = (template or "").replace(
-        #     "{{original_text}}", variables["original_text"]
-        # ).replace(
-        #     "{{conditions_json}}", variables["conditions_json"]
-        # )
-        # messages.append(ChatMessage.from_user(user_text))
-
-        # Use ChatData for the generator
-        from app.common.types.chat_data import ChatData
         chat_data = ChatData(messages=[[m] for m in prompt], documents=documents)
         
         # Write raw prompt to debug if enabled
@@ -148,7 +138,7 @@ class PermitConditionValidator:
                     "variables": variables
                 }, f, indent=2)
 
-        # Generate validation response
+        # Run validation using the generated prompt
         result = self.chat_generator.run(data=chat_data)
         if not result or not result.get("data"):
             return {"conditions": conditions}
