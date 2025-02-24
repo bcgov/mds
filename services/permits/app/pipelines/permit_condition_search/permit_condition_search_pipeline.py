@@ -1,19 +1,16 @@
 import logging
-import os
 from datetime import datetime
 
-from app.pipelines.permit_condition_search.components.cached_embedding import (
-    EmbeddingCache,
+from app.pipelines.permit_condition_search.components.azure_blob_upload import (
+    AzureBlobUploader,
 )
-from app.pipelines.permit_condition_search.components.csv_to_document_converter import (
-    CSVToDocument,
-)
-from app.pipelines.permit_condition_search.components.document_embedder_with_cache import (
-    DocumentEmbedderCache,
+from app.pipelines.permit_condition_search.components.indexer_runner import (
+    IndexerRunner,
 )
 from app.pipelines.permit_condition_search.components.search_output_formatter import (
     SearchOutputFormatter,
 )
+from app.pipelines.permit_condition_search.config import config
 from app.pipelines.permit_condition_search.create_search_index import (
     create_or_update_index,
 )
@@ -24,28 +21,11 @@ from app.pipelines.permit_condition_search.stores.ai_search_document_store impor
     AdditionalAISearchConfig,
     AzureSearchDocumentStore,
 )
-from azure.search.documents.indexes.models import (
-    AzureOpenAIVectorizer,
-    AzureOpenAIVectorizerParameters,
-    HnswAlgorithmConfiguration,
-    HnswParameters,
-    ScalarQuantizationCompression,
-    ScalarQuantizationParameters,
-    VectorSearch,
-    VectorSearchAlgorithmMetric,
-    VectorSearchProfile,
-)
+from azure.search.documents.indexes.models import VectorSearch
 from haystack import Pipeline
-from haystack.components.builders import ChatPromptBuilder, PromptBuilder
+from haystack.components.builders import PromptBuilder
 from haystack.components.embedders import AzureOpenAITextEmbedder
 from haystack.components.generators import AzureOpenAIGenerator
-from haystack.components.generators.chat import AzureOpenAIChatGenerator
-from haystack.components.joiners import DocumentJoiner
-from haystack.components.preprocessors import DocumentSplitter, document_splitter
-from haystack.components.writers import DocumentWriter
-from haystack.dataclasses import ChatMessage
-from haystack.document_stores.types import DuplicatePolicy
-from haystack.utils import Secret
 from haystack_integrations.components.retrievers.azure_ai_search import (
     AzureAISearchHybridRetriever,
 )
@@ -55,31 +35,11 @@ from haystack_integrations.document_stores.elasticsearch import (
 
 logger = logging.getLogger(__name__)
 
-ROOT_DIR = os.path.abspath(os.curdir)
-
-api_key = Secret.from_env_var("AZURE_API_KEY", strict=True)
-deployment_name = os.environ.get("AZURE_DEPLOYMENT_NAME")
-base_url = os.environ.get("AZURE_BASE_URL")
-api_version = os.environ.get("AZURE_API_VERSION","")
-
-search_api_key = Secret.from_env_var("AZURE_SEARCH_API_KEY", strict=True)
-search_azure_endpoint = Secret.from_env_var("AZURE_SEARCH_SERVICE_ENDPOINT", strict=True)
-
-ca_cert = os.environ.get("ELASTICSEARCH_CA_CERT", None)
-host = os.environ.get("ELASTICSEARCH_HOST", None) or "https://elasticsearch:9200"
-username = os.environ.get("ELASTICSEARCH_USERNAME", "")
-password = os.environ.get("ELASTICSEARCH_PASSWORD", "")
-
-
-assert api_key and api_key is not None
-assert deployment_name
-assert base_url
-assert api_version
-
+# Initialize required infrastructure
 create_or_update_index()
 create_search_indexer()
 
-
+# Metadata field definitions
 doc_metadata_fields = {
     "category": str,
     "issue_date": datetime,
@@ -96,32 +56,14 @@ doc_metadata_fields = {
     "step_path": str,
 }
 
-# extra_field_config = {
-#     "category": {"filterable": True, "sortable": True, "facetable": True},
-#     "issue_date": {"filterable": True, "sortable": True, "facetable": True},
-#     "permit": {"filterable": True, "sortable": True, "facetable": True},
-#     "mine_number": {"filterable": True, "sortable": True, "facetable": True},
-#     "mine_name": {"filterable": True, "sortable": True, "facetable": True},
-#     "document_name": {"filterable": True, "sortable": True, "facetable": True},
-#     "document_manager_guid": {"filterable": True, "sortable": True, "facetable": True},
-#     "step": {"filterable": True, "sortable": True, "facetable": True},
-#     "step_path": {"filterable": True, "sortable": True, "facetable": True},
-#     "permit_guid": {"filterable": True, "sortable": False, "facetable": False, "searchable": False},
-#     "mine_guid": {"filterable": True, "sortable": False, "facetable": False, "searchable": False},
-#     "permit_condition_guid": {"filterable": True, "sortable": False, "facetable": False, "searchable": False},
-#     "permit_amendment_guid": {"filterable": True, "sortable": False, "facetable": False, "searchable": False},
-#}
-
-
-
 vector_search_config = VectorSearch()
 
 def create_azure_search_document_store():
     return AzureSearchDocumentStore(
-        api_key=search_api_key,
-        azure_endpoint=search_azure_endpoint,
-        index_name="permit-conditions",
-        embedding_dimension=3072,
+        api_key=config.search.api_key,
+        azure_endpoint=config.search.endpoint,
+        index_name=config.search.index_name,
+        embedding_dimension=config.search.embedding_dimension,
         metadata_fields=doc_metadata_fields,
         vector_search_configuration=vector_search_config,
         semantic_configuration_name="permit-semantic-config",
@@ -134,12 +76,12 @@ def create_azure_search_document_store():
 
 def create_elasticsearch_document_store():
     return ElasticsearchDocumentStore(
-        hosts=host,
-        basic_auth=(username, password),
-        index="permit_condition_embeddings",
+        hosts=config.elasticsearch.host,
+        basic_auth=(config.elasticsearch.username, config.elasticsearch.password),
+        index=config.elasticsearch.index_name,
         embedding_similarity_function="cosine",
-        ca_certs=ca_cert if ca_cert else None,
-        verify_certs=True if ca_cert else False,
+        ca_certs=config.elasticsearch.ca_cert if config.elasticsearch.ca_cert else None,
+        verify_certs=bool(config.elasticsearch.ca_cert),
     )
 
 template = """
@@ -160,37 +102,25 @@ template = """
 
 def create_permit_condition_search_indexing_pipeline():
     """
-    Creates a pipeline for indexing permit conditions for search in Azure AI Search from a CSV file.
+    Creates a pipeline for indexing permit conditions by uploading to blob storage and running the indexer
     """
     index_pipeline = Pipeline()
-
-    elasticsearch_document_store = create_elasticsearch_document_store()
-    azure_search_document_store = create_azure_search_document_store()
-
-    csv_converter = CSVToDocument()
-    cache_checker = EmbeddingCache(document_store=elasticsearch_document_store, cache_field="condition")
-    document_embedder = DocumentEmbedderCache(
-        document_store=elasticsearch_document_store,
-        cache_field="condition",
-        azure_endpoint=base_url,
-        azure_deployment="text-embedding-3-large",
-        api_key=api_key,
+    
+    blob_uploader = AzureBlobUploader(
+        connection_string=config.storage.connection_string,
+        container_name=config.storage.container_name
     )
-    document_joiner = DocumentJoiner()
-    document_writer = DocumentWriter(document_store=azure_search_document_store, policy=DuplicatePolicy.OVERWRITE)
-
-    index_pipeline.add_component("csv_converter", csv_converter)
-    index_pipeline.add_component("cache_checker", cache_checker)
-    index_pipeline.add_component("document_embedder", document_embedder)
-    index_pipeline.add_component("document_joiner", document_joiner)
-    index_pipeline.add_component("document_writer", document_writer)
-
-    index_pipeline.connect("csv_converter", "cache_checker")
-    index_pipeline.connect("cache_checker.misses", "document_embedder.documents")
-    index_pipeline.connect("cache_checker.hits", "document_joiner")
-    index_pipeline.connect("document_embedder", "document_joiner")
-    index_pipeline.connect("document_joiner", "document_writer")
-
+    
+    indexer_runner = IndexerRunner(
+        search_endpoint=config.search.endpoint,
+        search_api_key=config.search.api_key.resolve_value()
+    )
+    
+    index_pipeline.add_component("blob_uploader", blob_uploader)
+    index_pipeline.add_component("indexer_runner", indexer_runner)
+    
+    index_pipeline.connect("blob_uploader.blob_url", "indexer_runner.blob_url")
+    
     return index_pipeline
 
 def create_permit_condition_search_retrieval_pipeline():
@@ -202,9 +132,9 @@ def create_permit_condition_search_retrieval_pipeline():
     azure_search_document_store = create_azure_search_document_store()
 
     text_embedder = AzureOpenAITextEmbedder(
-        azure_endpoint=base_url,
-        azure_deployment="text-embedding-3-large",
-        api_key=api_key
+        azure_endpoint=config.openai.endpoint,
+        azure_deployment=config.openai.embedding_model,
+        api_key=config.openai.api_key
     )
     
     retriever = AzureAISearchHybridRetriever(
@@ -215,10 +145,10 @@ def create_permit_condition_search_retrieval_pipeline():
     prompt_builder = PromptBuilder(template=template)
     
     llm = AzureOpenAIGenerator(
-        azure_endpoint=base_url,
-        azure_deployment=deployment_name,
-        api_key=api_key,
-        api_version=api_version,
+        azure_endpoint=config.openai.endpoint,
+        azure_deployment=config.openai.deployment_name,
+        api_key=config.openai.api_key,
+        api_version=config.openai.api_version,
         generation_kwargs={"temperature": 0, "max_tokens": 16384, "n": 1},
     )
     

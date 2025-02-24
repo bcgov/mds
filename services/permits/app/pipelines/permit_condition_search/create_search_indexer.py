@@ -1,13 +1,13 @@
 import os
+from re import search
 
+from app.pipelines.permit_condition_search.config import config
 from azure.core.credentials import AzureKeyCredential
 from azure.search.documents.indexes import SearchIndexerClient
 from azure.search.documents.indexes.models import (
     AzureOpenAIEmbeddingSkill,
     BlobIndexerParsingMode,
-    DataChangeDetectionPolicy,
     FieldMapping,
-    HighWaterMarkChangeDetectionPolicy,
     IndexingParameters,
     IndexingParametersConfiguration,
     InputFieldMappingEntry,
@@ -15,48 +15,28 @@ from azure.search.documents.indexes.models import (
     SearchIndexer,
     SearchIndexerDataContainer,
     SearchIndexerDataSourceConnection,
-    SearchIndexerKnowledgeStore,
     SearchIndexerSkillset,
-    SplitSkill,
 )
 from haystack.utils import Secret
-from more_itertools import first
 
-# Environment variables
-AZURE_SEARCH_ENDPOINT = os.environ.get("AZURE_SEARCH_SERVICE_ENDPOINT")
-AZURE_OPENAI_ENDPOINT = os.environ.get("AZURE_BASE_URL")
-SEARCH_API_KEY = os.environ.get("AZURE_SEARCH_API_KEY")
-STORAGE_CONNECTION_STRING = os.environ.get("AZURE_STORAGE_CONNECTION_STRING")
-CONTAINER_NAME = os.environ.get("AZURE_STORAGE_CONTAINER")
-AZURE_API_KEY = Secret.from_env_var("AZURE_API_KEY", strict=True).resolve_value()
-assert AZURE_SEARCH_ENDPOINT, "Missing environment variable AZURE_SEARCH_SERVICE_ENDPOINT"
-assert SEARCH_API_KEY, "Missing environment variable AZURE_SEARCH_API_KEY"
-assert STORAGE_CONNECTION_STRING, "Missing environment variable AZURE_STORAGE_CONNECTION_STRING"
-assert CONTAINER_NAME, "Missing environment variable AZURE_STORAGE_CONTAINER"
-assert AZURE_OPENAI_ENDPOINT, "Missing environment variable AZURE_BASE_URL"
-
-
+search_api_key = config.search.api_key.resolve_value()
+assert search_api_key is not None, "Search API key is required"
 # Initialize clients
-credential = AzureKeyCredential(SEARCH_API_KEY)
-indexer_client = SearchIndexerClient(endpoint=AZURE_SEARCH_ENDPOINT, credential=credential)
+credential = AzureKeyCredential(search_api_key)
+indexer_client = SearchIndexerClient(endpoint=config.search.endpoint, credential=credential)
 
 def create_data_source():
     # Create a data source for the CSV file in blob storage
     data_source = SearchIndexerDataSourceConnection(
         name="permit-conditions-data",
         type="azureblob",
-        connection_string=STORAGE_CONNECTION_STRING,
-        container=SearchIndexerDataContainer(name=CONTAINER_NAME, query="indexing"),
-        # data_change_detection_policy=HighWaterMarkChangeDetectionPolicy()
+        connection_string=config.storage.connection_string,
+        container=SearchIndexerDataContainer(name=config.storage.container_name, query="indexing"),
     )
     
     return indexer_client.create_or_update_data_source_connection(data_source)
 
 def create_skillset():
-    # Extract just the hostname from the endpoint URL
-    endpoint_parts = AZURE_OPENAI_ENDPOINT.replace('https://', '').split('/')
-    resource_uri = endpoint_parts[0]  # This will get just the hostname part
-    
     # Create a skillset with text splitting and embedding generation
     skillset = SearchIndexerSkillset(
         name="permit-conditions-skillset",
@@ -66,10 +46,10 @@ def create_skillset():
                 name="ChunkEmbedder",
                 description="Generate embeddings for chunks",
                 context="/document",
-                resource_url=AZURE_OPENAI_ENDPOINT,  # Use the cleaned hostname
-                api_key=AZURE_API_KEY,
-                model_name="text-embedding-3-large",
-                deployment_name="text-embedding-3-large",
+                resource_url=config.openai.endpoint,
+                api_key=config.openai.api_key.resolve_value(),
+                model_name=config.openai.embedding_model,
+                deployment_name=config.openai.embedding_model,
                 inputs=[
                     InputFieldMappingEntry(
                         name="text",

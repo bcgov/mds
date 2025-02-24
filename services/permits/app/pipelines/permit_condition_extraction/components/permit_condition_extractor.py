@@ -114,8 +114,6 @@ class PermitConditionExtractor:
             conditions_data = json.loads(reply.text)
             conditions = []
 
-            
-
             # Convert the flat JSON structure into hierarchical PermitCondition objects
             for item in conditions_data:
                 meta, text = self._find_text_by_id(item["id"], parsed_docs)

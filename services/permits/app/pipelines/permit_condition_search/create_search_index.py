@@ -1,8 +1,7 @@
 import os
-from datetime import datetime
 
+from app.pipelines.permit_condition_search.config import config
 from azure.core.credentials import AzureKeyCredential
-from azure.identity import DefaultAzureCredential
 from azure.search.documents.indexes import SearchIndexClient
 from azure.search.documents.indexes.models import (
     AzureOpenAIVectorizer,
@@ -10,7 +9,6 @@ from azure.search.documents.indexes.models import (
     HnswAlgorithmConfiguration,
     ScalarQuantizationCompression,
     ScalarQuantizationParameters,
-    ScoringProfile,
     SearchField,
     SearchFieldDataType,
     SearchIndex,
@@ -18,23 +16,17 @@ from azure.search.documents.indexes.models import (
     SemanticField,
     SemanticPrioritizedFields,
     SemanticSearch,
-    TagScoringFunction,
-    TagScoringParameters,
     VectorSearch,
     VectorSearchProfile,
 )
 from haystack.utils import Secret
 
-# Environment variables
-AZURE_SEARCH_ENDPOINT = os.environ.get("AZURE_SEARCH_SERVICE_ENDPOINT")
-AZURE_OPENAI_ENDPOINT = os.environ.get("AZURE_BASE_URL")
-SEARCH_API_KEY = Secret.from_env_var("AZURE_SEARCH_API_KEY", strict=True).resolve_value()
-AZURE_OPENAI_API_KEY = Secret.from_env_var("AZURE_API_KEY", strict=True)
-assert AZURE_SEARCH_ENDPOINT, "Missing environment variable AZURE_SEARCH_SERVICE_ENDPOINT"
-assert SEARCH_API_KEY, "Missing environment variable AZURE_SEARCH_API_KEY"
+search_api_key = config.search.api_key.resolve_value()
+assert search_api_key is not None, "Search API key is required"
+
 # Initialize the search client
-credential = AzureKeyCredential(SEARCH_API_KEY)
-index_client = SearchIndexClient(endpoint=AZURE_SEARCH_ENDPOINT, credential=credential)
+credential = AzureKeyCredential(search_api_key)
+index_client = SearchIndexClient(endpoint=config.search.endpoint, credential=credential)
 
 # Define fields with explicit settings
 fields = [
@@ -192,8 +184,8 @@ vector_search = VectorSearch(
             vectorizer_name="text-embedding-vectorizer",
             kind="azureOpenAI",
             parameters=AzureOpenAIVectorizerParameters(
-                api_key=AZURE_OPENAI_API_KEY.resolve_value(),
-                resource_url=AZURE_OPENAI_ENDPOINT,
+                api_key=config.openai.api_key.resolve_value(),
+                resource_url=config.openai.endpoint,
                 deployment_name="text-embedding-3-large",
                 model_name="text-embedding-3-large"
             ),

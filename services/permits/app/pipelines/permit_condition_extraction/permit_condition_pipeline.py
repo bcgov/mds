@@ -27,6 +27,7 @@ from app.pipelines.permit_condition_extraction.components.permit_condition_secti
 from app.pipelines.permit_condition_extraction.components.permit_condition_validator import (
     PermitConditionValidator,
 )
+from app.pipelines.permit_condition_search.config import config
 from haystack import Pipeline
 from haystack.dataclasses import ChatMessage
 from haystack.utils import Secret
@@ -34,16 +35,6 @@ from haystack.utils import Secret
 logger = logging.getLogger(__name__)
 
 ROOT_DIR = os.path.abspath(os.curdir)
-
-api_key = os.environ.get("AZURE_API_KEY", "")
-deployment_name = os.environ.get("AZURE_DEPLOYMENT_NAME")
-base_url = os.environ.get("AZURE_BASE_URL")
-api_version = os.environ.get("AZURE_API_VERSION","")
-
-assert api_key and api_key is not None
-assert deployment_name
-assert base_url
-assert api_version
 
 with open(f"{ROOT_DIR}/app/permit_condition_prompts.yaml", "r") as file:
     prompts = yaml.safe_load(file)
@@ -67,7 +58,11 @@ def permit_condition_pipeline():
     """
     index_pipeline = Pipeline()
 
-    pdf_converter = AzureDocumentIntelligenceConverter()
+    pdf_converter = AzureDocumentIntelligenceConverter(
+        endpoint=config.document_intelligence.endpoint,
+        api_key=config.document_intelligence.api_key,
+        api_version=config.document_intelligence.api_version
+    )
 
     prompt_builder = PaginatedChatPromptBuilder(
         template=[
@@ -81,10 +76,10 @@ def permit_condition_pipeline():
     max_tokens = 16384
 
     llm = CachedAzureOpenAIChatGenerator(
-        azure_endpoint=base_url,
-        api_version=api_version,
-        azure_deployment=deployment_name,
-        api_key=Secret.from_token(api_key),
+        azure_endpoint=config.openai.endpoint,
+        api_version=config.openai.api_version,
+        azure_deployment=config.openai.deployment_name,
+        api_key=config.openai.api_key,
         timeout=600,
         generation_kwargs={"temperature": temperature, "max_tokens": max_tokens},
     )
@@ -92,9 +87,9 @@ def permit_condition_pipeline():
     logger.info(
         "Initialized Azure OpenAI Chat Generator with the following parameters:"
     )
-    logger.info(f"Endpoint: {base_url}")
-    logger.info(f"API Version: {api_version}")
-    logger.info(f"Deployment: {deployment_name}")
+    logger.info(f"Endpoint: {config.openai.endpoint}")
+    logger.info(f"API Version: {config.openai.api_version}")
+    logger.info(f"Deployment: {config.openai.deployment_name}")
     logger.info(f"Temperature: {temperature}")
     logger.info(f"Max Tokens: {max_tokens}")
 

@@ -34,3 +34,4 @@ azure-ai-documentintelligence==1.0.0
 azure-core==1.30.2
 numpy<2
 azure-search-documents==11.5.2
+azure-storage-blob==12.24.1

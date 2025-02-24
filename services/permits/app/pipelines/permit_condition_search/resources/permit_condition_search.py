@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from app.common.types.job_status import JobStatus
@@ -7,9 +8,6 @@ from app.pipelines.permit_condition_search.permit_condition_search_pipeline impo
     permit_condition_search_retrieval_pipeline,
 )
 from fastapi import APIRouter, File, HTTPException, UploadFile
-from haystack import Document
-from haystack.components.generators.utils import print_streaming_chunk
-from haystack.dataclasses import ChatMessage
 from pydantic import BaseModel
 
 router = APIRouter()
@@ -18,20 +16,30 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+class IndexStats(BaseModel):
+    document_count: int
+    success_count: int
+    error_count: int
+    warnings: List[str]
+    duration_in_ms: float
+
+class IndexingResponse(JobStatus):
+    stats: Optional[IndexStats]
 
 @router.post("/permit_conditions/search/index")
-async def index_permit_conditions(file: UploadFile = File(...)) -> JobStatus:
+async def index_permit_conditions(file: UploadFile = File(...)) -> IndexingResponse:
     """
-    Asynchronously extracts permit conditions from the given PDF file.
+    Asynchronously indexes permit conditions from the given CSV file by uploading it to blob storage
+    and running the Azure Search indexer.
 
     Args:
-        file (UploadFile): The file to extract permit conditions from.
+        file (UploadFile): The CSV file containing permit conditions to index.
 
     Returns:
-        dict: A dictionary containing the id of the job and its status.
+        IndexingResponse: Status of the indexing job including statistics.
 
     Raises:
-        Any exceptions that occur during the extraction process.
+        HTTPException: If file type is invalid or processing fails.
     """
     if file.content_type != "text/csv":
         raise HTTPException(
@@ -39,22 +47,26 @@ async def index_permit_conditions(file: UploadFile = File(...)) -> JobStatus:
         )
 
     # Write the uploaded file to a temporary file
-    # so it can be processed by the pipeline.
     tmp = store_temporary(file, suffix=".csv")
 
     try:
         pipeline = permit_condition_search_indexing_pipeline
+        logger.info(f"Starting indexing pipeline for file {file.filename}")
 
-        res = pipeline.run(
-            {
-                "csv_converter": {"file_path": tmp.name, "meta": {"original_file_name": file.filename}},
-            }
+        res = pipeline.run({"blob_uploader": { "file_path": Path(tmp.name)}})
+        logger.debug(f"Pipeline response: {res}")
+        
+        return IndexingResponse(
+            id="",
+            status=res["indexer_runner"]["status"],
+            stats=IndexStats(**res["indexer_runner"]["stats"]) if "stats" in res["indexer_runner"] else None,
         )
 
-        return JobStatus(id="", status="SUCCESS", meta=dict(res))
+    except Exception as e:
+        logger.error(f"Error during indexing: {str(e)}", exc_info=True)
+        raise HTTPException(500, f"Error during indexing: {str(e)}")
     finally:
         tmp.close()
-
 
 
 class SearchParams(BaseModel):
@@ -88,7 +100,6 @@ async def search_permit_conditions(params: SearchParams) -> SearchResponse:
                 "text_embedder": {"text": params.query},
                 "retriever": {"query": params.query, "filters": params.filters},
                 "prompt_builder": {"question": params.query},
-                # "llm": {"streaming_callback": print_streaming_chunk}
             }
         )
 
