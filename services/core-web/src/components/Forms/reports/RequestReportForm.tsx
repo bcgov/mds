@@ -94,7 +94,7 @@ export const RequestReportForm: FC<RequestReportFormProps> = ({
           )}
           {selectedPermitReportDefinition && (
             <Col span={24} className="margin-large--bottom">
-              <PermitReportInfoBox href={null} permitReport={selectedPermitReportDefinition} verb="requesting" />
+              <PermitReportInfoBox twoColumn href={null} permitReport={selectedPermitReportDefinition} verb="requesting" />
             </Col>
           )}
         </Row>

@@ -82,8 +82,9 @@ export const ReportInfoBox: FC<{ mineReportDefinition: IMineReportDefinition; ve
   );
 };
 
-export const PermitReportInfoBox: FC<{ summary?: boolean, href: string, permitReport: IMineReportPermitRequirement, verb: string }> = ({
+export const PermitReportInfoBox: FC<{ summary?: boolean, twoColumn?: boolean, href: string, permitReport: IMineReportPermitRequirement, verb: string }> = ({
   summary = false,
+  twoColumn = false,
   href,
   permitReport,
   verb,
@@ -100,17 +101,17 @@ export const PermitReportInfoBox: FC<{ summary?: boolean, href: string, permitRe
           <Typography.Title level={4} className="primary-colour">
             You are {verb}:
           </Typography.Title>
-          <Typography.Title level={4}>
+          <Typography.Title level={5}>
             {transformedReport.report_name}
           </Typography.Title>
 
           <Typography.Title level={5}>Condition:</Typography.Title>
           <Typography.Paragraph>
-            {transformedReport.conditionName}
+            {transformedReport.conditionName ?? "Not Specified"}
           </Typography.Paragraph>
 
           <Row>
-            <Col span={summary ? 12 : 24}>
+            <Col span={twoColumn ? 12 : 24}>
               <Typography.Title level={5}>Frequency:</Typography.Title>
               <Typography.Paragraph>
                 {transformedReport.frequency}
@@ -121,7 +122,7 @@ export const PermitReportInfoBox: FC<{ summary?: boolean, href: string, permitRe
                 {transformedReport.initial_due_date ? formatDate(transformedReport.initial_due_date) : "Not Specified"}
               </Typography.Paragraph>
             </Col>
-            <Col span={summary ? 12 : 24}>
+            <Col span={twoColumn ? 12 : 24}>
               <Typography.Title level={5}>Regulatory Authority:</Typography.Title>
               <Typography.Paragraph>
                 {transformedReport.regulatory_authority}
@@ -196,10 +197,11 @@ export const ConditionCategories: FC<{permitGuid: string, formName: FORM}> = ({
   )
 }
 
-export const PermitReportCodeRequirement: FC<{ permitGuid: string, amendment: IPermitAmendment, formValues: IMineReportSubmission, formName: FORM}> = ({
+export const PermitReportCodeRequirement: FC<{ permitGuid: string, amendment: IPermitAmendment, formValues: IMineReportSubmission, formName: FORM, summary?: boolean}> = ({
   permitGuid,
   amendment,
   formValues,
+  summary = false,
   formName
 }) => {
 
@@ -223,16 +225,16 @@ export const PermitReportCodeRequirement: FC<{ permitGuid: string, amendment: IP
   return (
     <Field
       name="mine_report_permit_requirement_id"
-      placeholder="Enter code reference number or report name"
+      placeholder="Enter code section number or report name"
       required
       validate={[required]}
       props={{
-        label: (
+        label: summary ? "Report Code Requirement" : (
           <Typography.Title level={5} style={{ display: "inline" }}>
             Report Code Requirement
           </Typography.Title>
         ),
-        labelSubtitle:
+        labelSubtitle: summary ? "" :
           "Search for a code section or the report name you would like to submit.",
         data: reportOptions,
       }}
@@ -330,6 +332,7 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean, summar
             permitGuid={formValues?.permit_guid}
             formValues={formValues}
             formName={formName}
+            summary={summary}
           />
         </Col>
       )}
