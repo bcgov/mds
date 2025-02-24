@@ -154,7 +154,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
                   Regulatory Authority
                 </Typography.Paragraph>
                 <Typography.Paragraph>
-                  {mineReportPermitRequirement.cim_or_cpo
+                  {mineReportPermitRequirement?.cim_or_cpo
                     ? REPORT_REGULATORY_AUTHORITY_CODES_HASH[mineReportPermitRequirement.cim_or_cpo]
                     : "Not Specified"}
                 </Typography.Paragraph>
@@ -183,7 +183,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
                   Ministry Recipient
                 </Typography.Paragraph>
                 <Typography.Paragraph>
-                  {mineReportPermitRequirement.ministry_recipient?.map(
+                  {mineReportPermitRequirement?.ministry_recipient?.map(
                     (dest, index) =>
                       `${REPORT_MINISTRY_RECIPIENT_HASH[dest]}${index < mineReportPermitRequirement.ministry_recipient.length - 1 ? ", " : ""} `
                   ) ?? "None Specified"}

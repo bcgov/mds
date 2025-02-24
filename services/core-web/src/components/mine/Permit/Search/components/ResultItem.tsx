@@ -39,7 +39,6 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
     };
 
     const handlePreviewPermit = () => {
-        console.log(result, meta)
         dispatch(openModal({
             props: {
                 title: 'Permit Amendment Preview',
@@ -183,10 +182,10 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
                             {dayjs(meta.issue_date).format('MMM D, YYYY')}
                         </Text>
                         <Tag color="green">{score}% match</Tag>
-                    </Space>
-                </Row>
-            </Col>
-        </Row>
+                    </Space >
+                </Row >
+            </Col >
+        </Row >
     );
 };
 

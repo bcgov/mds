@@ -31,11 +31,11 @@ const ComparePermitConditionHistoryModal: FC<ComparePermitConditionHistoryModalP
         getMineReportPermitRequirementsByAmendment(props.permitGuid, props.previousAmendment?.permit_amendment_guid)
     );
 
-    const oldReports = getConditionsWithRequirements([props.currentAmendmentCondition], previousMineReportPermitRequirements);
+    const oldReports = getConditionsWithRequirements([props.previousAmendmentCondition], previousMineReportPermitRequirements);
     const newReports = getConditionsWithRequirements([props.currentAmendmentCondition], newMineReportPermitRequirements);
 
     return (
-        <FormWrapper name={"compare-conditions-form"} isModal>
+        <FormWrapper name={"compare-conditions-form"} isModal scrollOnToggleEdit={false}>
             <Row gutter={6}>
                 <Col span={24}>
                     <Typography.Title level={3}>Compare Conditions</Typography.Title>

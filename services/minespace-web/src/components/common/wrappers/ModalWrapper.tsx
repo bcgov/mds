@@ -30,6 +30,7 @@ const ModalWrapper: FC = () => {
           // TODO: this really doesn't belong here, but too many downstream effects to take out
           closeModal={dispatchCloseModal}
           {...childProps}
+          isModal
         />
       )}
     </CommonModalWrapper>

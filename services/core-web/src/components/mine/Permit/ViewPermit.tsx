@@ -18,7 +18,7 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import { Feature } from "@mds/common/utils/featureFlag";
 import { PresetStatusColorType } from "antd/es/_util/colors";
 import { Badge } from "antd";
-import { ActionMenuButton } from "@mds/common/components/common/ActionMenu";
+import { ActionMenuButton, deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import {
   getPermitExtractionByGuid,
   initiatePermitExtraction,
@@ -234,11 +234,12 @@ const ViewPermit: FC = () => {
   };
 
   const handleDeleteConditions = async () => {
-    await dispatch(
-      deletePermitConditions({ permit_amendment_id: latestAmendment?.permit_amendment_id })
-    );
-
-    dispatch(fetchPermits(id));
+    deleteConfirmWrapper("permit conditions", async () => {
+      await dispatch(
+        deletePermitConditions({ permit_amendment_id: latestAmendment?.permit_amendment_id })
+      );
+      dispatch(fetchPermits(id));
+    }, true);
   };
 
   const headerActions = [

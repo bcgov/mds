@@ -1,9 +1,6 @@
 import React, { useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Typography } from 'antd';
 import remarkGfm from 'remark-gfm'
-
-const { Title } = Typography;
 
 interface MarkdownViewerProps {
     markdown: string;
