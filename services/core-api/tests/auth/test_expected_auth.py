@@ -1,72 +1,199 @@
 import pytest
-
-from app.api.mines.permits.permit_conditions.resources.permit_amendment_condition_category_user_resource import \
- AssignUserToPermitConditionCategory
-from app.api.mines.reports.resources.mine_report_permit_requirement import MineReportPermitRequirementResource
+from app.api.compliance.resources.compliance_article import ComplianceArticleResource
+from app.api.download_token.resources.download_token import DownloadTokenResource
+from app.api.exports.now_application.resources.now_application_gis_export_resource import (
+    NowApplicationGisExportResource,
+)
+from app.api.help.resources.help_resource import HelpListResource, HelpResource
+from app.api.incidents.resources.mine_incident_notes import (
+    MineIncidentNoteListResource,
+    MineIncidentNoteResource,
+)
+from app.api.mines.alerts.resources.mine_alert import GlobalMineAlertListResource
+from app.api.mines.comments.resources.mine_comment import (
+    MineCommentListResource,
+    MineCommentResource,
+)
+from app.api.mines.compliance.resources.compliance import MineComplianceSummaryResource
+from app.api.mines.documents.resources.mine_document_bundle import (
+    MineDocumentBundleResource,
+)
+from app.api.mines.documents.resources.mine_document_resource import (
+    MineDocumentListResource,
+)
+from app.api.mines.documents.resources.mine_document_version_resource import (
+    MineDocumentVersionListResource,
+    MineDocumentVersionUploadResource,
+)
+from app.api.mines.mine.resources.mine import (
+    MineListResource,
+    MineListSearch,
+    MineResource,
+)
+from app.api.mines.mine.resources.mine_commodity_code import MineCommodityCodeResource
+from app.api.mines.mine.resources.mine_disturbance_code import (
+    MineDisturbanceCodeResource,
+)
+from app.api.mines.mine.resources.mine_map import MineMapResource
+from app.api.mines.mine.resources.mine_tenure_type_code import (
+    MineTenureTypeCodeResource,
+)
+from app.api.mines.mine.resources.mine_type import (
+    MineTypeListResource,
+    MineTypeResource,
+)
+from app.api.mines.permits.permit.resources.permit import (
+    PermitListResource,
+    PermitResource,
+)
+from app.api.mines.permits.permit.resources.permit_document_upload import (
+    PermitDocumentUploadInitializationResource,
+)
+from app.api.mines.permits.permit_amendment.resources.permit_amendment import (
+    PermitAmendmentListResource,
+    PermitAmendmentResource,
+)
+from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import (
+    PermitAmendmentDocumentListResource,
+    PermitAmendmentDocumentResource,
+)
+from app.api.mines.permits.permit_conditions.resources.permit_amendment_condition_category_user_resource import (
+    AssignUserToPermitConditionCategory,
+)
+from app.api.mines.permits.permit_conditions.resources.permit_conditions_resource import (
+    PermitConditionsListResource,
+    PermitConditionsResource,
+)
+from app.api.mines.permits.permit_conditions.resources.permit_conditions_search_resource import (
+    PermitConditionsSearchResource,
+)
+from app.api.mines.permits.permit_conditions.resources.standard_permit_conditions_list_resource import (
+    StandardPermitConditionsListResource,
+)
+from app.api.mines.permits.permit_conditions.resources.standard_permit_conditions_resource import (
+    StandardPermitConditionsResource,
+)
+from app.api.mines.region.resources.region import MineRegionResource
+from app.api.mines.reports.resources.mine_report_permit_requirement import (
+    MineReportPermitRequirementResource,
+)
+from app.api.mines.reports.resources.mine_reports import (
+    MineReportListResource,
+    MineReportResource,
+)
+from app.api.mines.status.resources.status import MineStatusXrefListResource
+from app.api.mines.tailings.resources.tailings import (
+    MineTailingsStorageFacilityResource,
+)
+from app.api.mines.tailings.resources.tailings_list import (
+    MineTailingsStorageFacilityListResource,
+)
+from app.api.mines.variances.resources.variance import MineVarianceResource
+from app.api.mines.variances.resources.variance_document_upload import (
+    MineVarianceDocumentUploadResource,
+)
+from app.api.mines.variances.resources.variance_list import MineVarianceListResource
+from app.api.mines.variances.resources.variance_uploaded_documents import (
+    MineVarianceUploadedDocumentsResource,
+)
+from app.api.now_applications.resources.now_activity_type_resource import (
+    NOWActivityTypeResource,
+)
+from app.api.now_applications.resources.now_application_document_resource import (
+    NOWApplicationDocumentIdentityResource,
+    NOWApplicationDocumentResource,
+    NOWApplicationDocumentUploadResource,
+)
+from app.api.now_applications.resources.now_application_document_type_resource import (
+    NOWApplicationDocumentGenerateResource,
+    NOWApplicationDocumentTypeListResource,
+    NOWApplicationDocumentTypeResource,
+)
+from app.api.now_applications.resources.now_application_import_resource import (
+    NOWApplicationImportResource,
+)
+from app.api.now_applications.resources.now_application_list_resource import (
+    NOWApplicationListResource,
+)
+from app.api.now_applications.resources.now_application_resource import (
+    NOWApplicationResource,
+)
+from app.api.now_submissions.resources.application_list_resource import (
+    ApplicationListResource,
+)
+from app.api.now_submissions.resources.application_nda_list_resource import (
+    ApplicationNDAListResource,
+)
+from app.api.parties.party.resources.party_list_resource import PartyListResource
+from app.api.parties.party.resources.party_resource import PartyResource
+from app.api.parties.party_appt.resources.mine_party_appt_resource import (
+    MinePartyApptResource,
+)
+from app.api.parties.party_appt.resources.mine_party_appt_type_resource import (
+    MinePartyApptTypeResource,
+)
+from app.api.projects.information_requirements_table.resources.information_requirements_table import (
+    InformationRequirementsTableResource,
+)
+from app.api.projects.information_requirements_table.resources.requirements import (
+    RequirementsResource,
+)
+from app.api.projects.major_mine_application.resources.major_mine_application import (
+    MajorMineApplicationResource,
+)
+from app.api.projects.project_decision_package.resources.project_decision_package import (
+    ProjectDecisionPackageListResource,
+    ProjectDecisionPackageResource,
+)
+from app.api.projects.project_summary.resources.project_summary import (
+    ProjectSummaryResource,
+)
+from app.api.projects.project_summary.resources.project_summary_list import (
+    ProjectSummaryListGetResource,
+    ProjectSummaryListPostResource,
+)
+from app.api.search.search.resources.search import SearchOptionsResource, SearchResource
+from app.api.search.search.resources.simple_search import SimpleSearchResource
+from app.api.securities.resources.bond import (
+    BondListResource,
+    BondResource,
+    BondTransferResource,
+)
+from app.api.users.minespace.resources.minespace_user import (
+    MinespaceUserListResource,
+    MinespaceUserResource,
+)
+from app.api.users.minespace.resources.minespace_user_mine import (
+    MinespaceUserMineListResource,
+    MinespaceUserMineResource,
+)
 from app.api.users.resources.user_list_resource import UserListResource
 from app.api.users.resources.user_resource import UserResource
-from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, \
- EDIT_PERMIT, EDIT_STANDARD_PERMIT_CONDITIONS, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES, \
- GIS, EDIT_PROJECT_SUMMARIES, EDIT_INCIDENTS, EDIT_TSF, EDIT_INFORMATION_REQUIREMENTS_TABLE, EDIT_REQUIREMENTS, \
- EDIT_MAJOR_MINE_APPLICATIONS, EDIT_PROJECT_DECISION_PACKAGES, EDIT_CODE, EDIT_HELPDESK
+from app.api.utils.access_decorators import (
+    EDIT_CODE,
+    EDIT_DO,
+    EDIT_HELPDESK,
+    EDIT_INCIDENTS,
+    EDIT_INFORMATION_REQUIREMENTS_TABLE,
+    EDIT_MAJOR_MINE_APPLICATIONS,
+    EDIT_PARTY,
+    EDIT_PERMIT,
+    EDIT_PROJECT_DECISION_PACKAGES,
+    EDIT_PROJECT_SUMMARIES,
+    EDIT_REPORT,
+    EDIT_REQUIREMENTS,
+    EDIT_SECURITIES,
+    EDIT_STANDARD_PERMIT_CONDITIONS,
+    EDIT_SUBMISSIONS,
+    EDIT_TSF,
+    EDIT_VARIANCE,
+    GIS,
+    MINE_ADMIN,
+    MINE_EDIT,
+    MINESPACE_PROPONENT,
+    VIEW_ALL,
+)
 
-from app.api.mines.documents.resources.mine_document_bundle import MineDocumentBundleResource
-from app.api.download_token.resources.download_token import DownloadTokenResource
-from app.api.mines.documents.resources.mine_document_version_resource import MineDocumentVersionListResource, MineDocumentVersionUploadResource
-from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource
-from app.api.mines.compliance.resources.compliance import MineComplianceSummaryResource
-from app.api.compliance.resources.compliance_article import ComplianceArticleResource
-from app.api.mines.mine.resources.mine_commodity_code import MineCommodityCodeResource
-from app.api.mines.mine.resources.mine_disturbance_code import MineDisturbanceCodeResource
-from app.api.mines.mine.resources.mine_tenure_type_code import MineTenureTypeCodeResource
-from app.api.mines.mine.resources.mine_type import MineTypeResource, MineTypeListResource
-from app.api.mines.mine.resources.mine import MineResource, MineListSearch, MineListResource
-from app.api.mines.mine.resources.mine_map import MineMapResource
-from app.api.mines.variances.resources.variance import MineVarianceResource
-from app.api.mines.variances.resources.variance_list import MineVarianceListResource
-from app.api.mines.variances.resources.variance_document_upload import MineVarianceDocumentUploadResource
-from app.api.mines.variances.resources.variance_uploaded_documents import MineVarianceUploadedDocumentsResource
-from app.api.incidents.resources.mine_incident_notes import MineIncidentNoteResource, MineIncidentNoteListResource
-from app.api.mines.region.resources.region import MineRegionResource
-from app.api.mines.status.resources.status import MineStatusXrefListResource
-from app.api.mines.tailings.resources.tailings_list import MineTailingsStorageFacilityListResource
-from app.api.mines.tailings.resources.tailings import MineTailingsStorageFacilityResource
-from app.api.parties.party_appt.resources.mine_party_appt_resource import MinePartyApptResource
-from app.api.parties.party_appt.resources.mine_party_appt_type_resource import MinePartyApptTypeResource
-from app.api.parties.party.resources.party_resource import PartyResource
-from app.api.parties.party.resources.party_list_resource import PartyListResource
-from app.api.mines.permits.permit.resources.permit import PermitResource, PermitListResource
-from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
-from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentResource, PermitAmendmentDocumentListResource
-from app.api.mines.permits.permit.resources.permit_document_upload import PermitDocumentUploadInitializationResource
-from app.api.users.minespace.resources.minespace_user import MinespaceUserResource, MinespaceUserListResource
-from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserMineResource, MinespaceUserMineListResource
-from app.api.search.search.resources.search import SearchResource, SearchOptionsResource
-from app.api.search.search.resources.simple_search import SimpleSearchResource
-from app.api.mines.reports.resources.mine_reports import MineReportResource, MineReportListResource
-from app.api.now_submissions.resources.application_list_resource import ApplicationListResource
-from app.api.now_submissions.resources.application_nda_list_resource import ApplicationNDAListResource
-from app.api.securities.resources.bond import BondResource, BondListResource, BondTransferResource
-from app.api.mines.comments.resources.mine_comment import MineCommentResource, MineCommentListResource
-from app.api.mines.permits.permit_conditions.resources.permit_conditions_resource import PermitConditionsListResource, PermitConditionsResource
-from app.api.mines.permits.permit_conditions.resources.standard_permit_conditions_resource import StandardPermitConditionsResource
-from app.api.mines.permits.permit_conditions.resources.standard_permit_conditions_list_resource import StandardPermitConditionsListResource
-from app.api.now_applications.resources.now_activity_type_resource import NOWActivityTypeResource
-from app.api.now_applications.resources.now_application_import_resource import NOWApplicationImportResource
-from app.api.now_applications.resources.now_application_document_type_resource import NOWApplicationDocumentTypeListResource, NOWApplicationDocumentTypeResource, NOWApplicationDocumentGenerateResource
-from app.api.now_applications.resources.now_application_document_resource import NOWApplicationDocumentUploadResource, NOWApplicationDocumentResource
-from app.api.now_applications.resources.now_application_list_resource import NOWApplicationListResource
-from app.api.now_applications.resources.now_application_resource import NOWApplicationResource
-from app.api.projects.project_summary.resources.project_summary_list import ProjectSummaryListGetResource, ProjectSummaryListPostResource
-from app.api.projects.project_summary.resources.project_summary import ProjectSummaryResource
-from app.api.projects.information_requirements_table.resources.information_requirements_table import InformationRequirementsTableResource
-from app.api.projects.information_requirements_table.resources.requirements import RequirementsResource
-from app.api.projects.major_mine_application.resources.major_mine_application import MajorMineApplicationResource
-from app.api.projects.project_decision_package.resources.project_decision_package import ProjectDecisionPackageResource, ProjectDecisionPackageListResource
-from app.api.now_applications.resources.now_application_document_resource import NOWApplicationDocumentIdentityResource
-from app.api.mines.alerts.resources.mine_alert import GlobalMineAlertListResource
-from app.api.help.resources.help_resource import HelpResource, HelpListResource
-from app.api.exports.now_application.resources.now_application_gis_export_resource import NowApplicationGisExportResource
 
 @pytest.mark.parametrize(
     "resource,method,expected_roles",
@@ -151,6 +278,7 @@ from app.api.exports.now_application.resources.now_application_gis_export_resour
      (PermitConditionsResource, 'get', [EDIT_PERMIT]),
      (PermitConditionsResource, 'put', [EDIT_PERMIT]),
      (PermitConditionsResource, 'delete', [EDIT_PERMIT]),
+     (PermitConditionsSearchResource, 'post', [VIEW_ALL]),
      (AssignUserToPermitConditionCategory, 'post', [EDIT_STANDARD_PERMIT_CONDITIONS]),
      (AssignUserToPermitConditionCategory, 'put', [VIEW_ALL]),
      (StandardPermitConditionsListResource, 'post', [EDIT_STANDARD_PERMIT_CONDITIONS]),

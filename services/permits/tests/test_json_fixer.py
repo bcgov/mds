@@ -1,6 +1,6 @@
 import pytest
-from app.permit_conditions.pipelines.chat_data import ChatData
-from app.permit_conditions.validator.json_fixer import JSONRepair
+from app.common.types.chat_data import ChatData
+from app.pipelines.permit_condition_extraction.components.json_fixer import JSONRepair
 from haystack.dataclasses import ChatMessage
 
 

@@ -1,0 +1,101 @@
+import csv
+import datetime
+import os
+import uuid
+
+from app.api.mines.permits.permit_amendment.models.permit_amendment import (
+    PermitAmendment,
+)
+from app.api.mines.permits.permit_conditions.models.permit_conditions import (
+    PermitConditions,
+)
+from app.extensions import db
+
+
+def export_permit_conditions(permit_amendment_guid):
+    """
+    Export permit conditions for the specified permit amendment to a CSV file.
+    """
+    # Validate UUID format
+    try:
+        uuid.UUID(str(permit_amendment_guid))
+    except (ValueError, AttributeError, TypeError):
+        print(f'Invalid permit amendment GUID format: {permit_amendment_guid}')
+        return None
+
+    amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
+
+    if amendment is None:
+        print(f'Permit amendment with guid {permit_amendment_guid} not found.')
+        return
+
+    # Get all conditions in hierarchical order
+    conditions = PermitConditions.find_by_permit_amendment_id_ordered(amendment.permit_amendment_id)
+    
+    if not conditions:
+        print(f'No conditions found for permit amendment {permit_amendment_guid}')
+        return
+    
+    mine = amendment.mine
+    if not mine:
+        print(f'Permit amendment {permit_amendment_guid} has no associated mine')
+        return
+
+    permit = amendment.permit
+    if not permit:
+        print(f'Permit amendment {permit_amendment_guid} has no associated permit')
+        return
+
+    tasks = amendment.permit_extraction_tasks
+
+    latest_task = tasks[0] if tasks else None
+
+    document_name = ''
+    document_guid = ''
+
+    if latest_task and latest_task.permit_amendment_document:
+        doc = latest_task.permit_amendment_document
+        document_name = doc.document_name
+        document_guid = doc.document_manager_guid
+
+    filename = f'permit_conditions_{permit_amendment_guid}.csv'
+    
+    # Define CSV headers
+    headers = [
+        'step',
+        'category',
+        'status',
+        'display_order',
+        'issue_date',
+        'permit',
+        'mine_number',
+        'mine_name',
+        'document_name',
+        'document_manager_guid',
+        'id',
+        'condition',
+    ]
+
+    # Write to CSV
+    with open(filename, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=headers)
+        writer.writeheader()
+        
+        for condition in conditions:
+            writer.writerow({
+                'step': condition.step or '',
+                'category': condition.condition_category.description,
+                'status': condition.permit_condition_status.description,
+                'display_order': condition.display_order,
+                'issue_date': amendment.issue_date,
+                'permit': permit.permit_no,
+                'mine_number': mine.mine_no,
+                'mine_name': mine.mine_name,
+                'document_name': document_name,
+                'document_manager_guid': document_guid,
+                'id': str(condition.permit_condition_guid),
+                'condition': condition.condition,
+            })
+
+    print(f'Successfully exported {len(conditions)} conditions to {filename}')
+    return filename

@@ -1,13 +1,16 @@
-from sqlalchemy import desc, or_, func
-from app.extensions import db
 import json
-from app.api.mines.mine.models.mine import Mine
-from app.api.parties.party.models.party import Party
-from app.api.mines.permits.permit.models.permit import Permit
+
 from app.api.mines.documents.models.mine_document import MineDocument
-from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
+from app.api.mines.mine.models.mine import Mine
+from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
+    PermitAmendmentDocument,
+)
+from app.api.parties.party.models.party import Party
 from app.api.search.search.permit_search_service import PermitSearchService
-from app.api.utils.feature_flag import is_feature_enabled, Feature
+from app.api.utils.feature_flag import Feature, is_feature_enabled
+from app.extensions import db
+from sqlalchemy import desc, func, or_
 
 common_search_targets = {
     'mine': {
@@ -104,20 +107,6 @@ full_additional_search_targets = {
     }
 }
 
-if is_feature_enabled(Feature.PERMIT_DOCUMENT_KEYWORD_SEARCH):
-    full_additional_search_targets['mines_act_permits'] = {
-        'model': None,
-        'primary_column': None,
-        'description': 'Mines Act Permit Documents',
-        'entities_to_return': [],
-        'columns_to_search': [],
-        'has_deleted_ind': True,
-        'id_field': 'answer',
-        'party_guid': None,
-        'value_field': 'answer',
-        'score_multiplier': 1000
-    }
-
 simple_search_targets = dict(**common_search_targets, **simple_additional_search_targets)
 search_targets = dict(**common_search_targets, **full_additional_search_targets)
 
@@ -164,41 +153,29 @@ def execute_search(app,
     """
 
     with app.app_context():
-        if type == 'mines_act_permits' and is_feature_enabled(Feature.PERMIT_DOCUMENT_KEYWORD_SEARCH):
-            # Mines act permit document search happens in the permit search service,
-            # so proxy the request through instead of performing a search against the database.
-            results = PermitSearchService().search(search_term)
-            for res in results:
-                search_results.append(
-                    SearchResult(10, type, {
-                        'id': '',
-                        'value': res
-                    })
-                )
-        else:
-            for term in search_terms:
-                if len(term) > 2:
-                    for column in type_config['columns_to_search']:
+        for term in search_terms:
+            if len(term) > 2:
+                for column in type_config['columns_to_search']:
 
-                        # Query should return with the calculated column "score", as well as the columns defined in the configuration
-                        similarity = db.session.query(type_config['model']).with_entities(
-                            func.similarity(column, term).label('score'),
-                            *type_config['entities_to_return']).filter(column.ilike(f'%{term}%'))
+                    # Query should return with the calculated column "score", as well as the columns defined in the configuration
+                    similarity = db.session.query(type_config['model']).with_entities(
+                        func.similarity(column, term).label('score'),
+                        *type_config['entities_to_return']).filter(column.ilike(f'%{term}%'))
 
-                        if type_config['has_deleted_ind']:
-                            similarity = similarity.filter_by(deleted_ind=False)
+                    if type_config['has_deleted_ind']:
+                        similarity = similarity.filter_by(deleted_ind=False)
 
-                        similarity = similarity.order_by(desc(func.similarity(column, term)))
+                    similarity = similarity.order_by(desc(func.similarity(column, term)))
 
-                        if limit_results:
-                            similarity = similarity.limit(limit_results)
+                    if limit_results:
+                        similarity = similarity.limit(limit_results)
 
-                        similarity = similarity.all()
+                    similarity = similarity.all()
 
-                        for item in similarity:
-                            append_result(search_results, search_term, type, item,
-                                        type_config['id_field'], type_config['value_field'],
-                                        type_config['score_multiplier'])
+                    for item in similarity:
+                        append_result(search_results, search_term, type, item,
+                                    type_config['id_field'], type_config['value_field'],
+                                    type_config['score_multiplier'])
 
 
 class SearchResult:

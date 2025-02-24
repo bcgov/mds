@@ -1,6 +1,6 @@
 import pytest
-from app.permit_conditions.validator.permit_condition_model import PermitConditions
-from app.permit_conditions.validator.permit_condition_section_combiner import (
+from app.common.types.permit_condition_model import PermitConditions
+from app.pipelines.permit_condition_extraction.components.permit_condition_section_combiner import (
     PermitConditionSectionCombiner,
 )
 from haystack import Document
