@@ -3,7 +3,7 @@ import { FieldArray, getFormValues } from "@mds/common/components/forms/form";
 import { useSelector } from "react-redux";
 import { Row, Col, Typography, Button, Collapse, Popconfirm } from "antd";
 import { ReportDefinitionFieldSelect } from "@mds/common/components/reports/ReportDefinitionFieldSelect";
-import { ReportInfoBox } from "@mds/common/components/reports/ReportGetStarted";
+import { CodeReportInfoBox } from "@mds/common/components/reports/ReportGetStarted";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
 import { getMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
@@ -81,7 +81,7 @@ export const ReportEditForm = (props: ReportEditProps) => {
                 </Col>
                 <Col span="24">
                   {reportData?.mine_report_definition_guid ? (
-                    <ReportInfoBox mineReportDefinition={reportWCompliance} verb="requesting" />
+                    <CodeReportInfoBox mineReportDefinition={reportWCompliance} verb="requesting" />
                   ) : (
                     ""
                   )}

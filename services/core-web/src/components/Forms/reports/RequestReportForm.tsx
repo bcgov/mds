@@ -8,7 +8,7 @@ import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import { getFormattedMineReportDefinitionOptions, getMineReportDefinitionByGuid } from "@mds/common/redux/slices/complianceReportsSlice";
-import { PermitReportInfoBox, RenderPRRFields, ReportInfoBox } from "@mds/common/components/reports/ReportGetStarted";
+import { PermitReportInfoBox, RenderPRRFields, CodeReportInfoBox } from "@mds/common/components/reports/ReportGetStarted";
 import { IMineReport, IMineReportDefinition, IMineReportSubmission } from "@mds/common/interfaces";
 import { MINE_REPORT_SUBMISSION_CODES, REPORT_TYPE_CODES } from "@mds/common/constants/enums";
 import { FORM } from "@mds/common/constants/forms";
@@ -89,12 +89,12 @@ export const RequestReportForm: FC<RequestReportFormProps> = ({
           </Col>
           {selectedCodeReportDefinition && (
             <Col span={24}>
-              <ReportInfoBox mineReportDefinition={selectedCodeReportDefinition} verb="requesting" />
+              <CodeReportInfoBox mineReportDefinition={selectedCodeReportDefinition} verb="requesting" />
             </Col>
           )}
           {selectedPermitReportDefinition && (
             <Col span={24} className="margin-large--bottom">
-              <PermitReportInfoBox twoColumn href={null} permitReport={selectedPermitReportDefinition} verb="requesting" />
+              <PermitReportInfoBox twoColumn permitReport={selectedPermitReportDefinition} verb="requesting" />
             </Col>
           )}
         </Row>

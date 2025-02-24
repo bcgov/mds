@@ -421,9 +421,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                   ]}
                 />
               </Col>
-              {isPRR && (<Col span={24}>
+              {isPRR && selectedPermitReportDefinition && (<Col span={24}>
                 <RenderPRRFields mineGuid={initialValues?.mine_guid} summary={true} /> 
-                <PermitReportInfoBox href={null} twoColumn permitReport={selectedPermitReportDefinition} summary verb="submitting" />
+                <PermitReportInfoBox twoColumn permitReport={selectedPermitReportDefinition} summary verb="submitting" />
               </Col>)}
               {isCRR && (
                 <Col span={12}>
@@ -472,9 +472,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                   />
                 </Col>
               )}
-              {isPRR && (
+              {isPRR && selectedPermitReportDefinition && (
                 <Col span={24}>
-                  <PermitReportInfoBox href={null} permitReport={selectedPermitReportDefinition} twoColumn summary verb="submitting" />
+                  <PermitReportInfoBox permitReport={selectedPermitReportDefinition} twoColumn summary verb="submitting" />
                 </Col>
               )
               }

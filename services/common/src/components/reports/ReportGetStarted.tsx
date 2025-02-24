@@ -1,5 +1,5 @@
 import { Alert, Button, Col, Row, Typography } from "antd";
-import React, { FC, ReactNode, useEffect, useMemo, useState } from "react";
+import React, { FC, ReactNode, useEffect, useState } from "react";
 import { Field, getFormValues, change } from "@mds/common/components/forms/form";
 import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
 import { useSelector, useDispatch } from "react-redux";
@@ -35,7 +35,7 @@ interface ReportGetStartedProps {
   setDisableNextButton?: (value: boolean) => void;
 }
 
-export const ReportInfoBox: FC<{ mineReportDefinition: IMineReportDefinition; verb: string }> = ({
+export const CodeReportInfoBox: FC<{ mineReportDefinition: IMineReportDefinition; verb: string }> = ({
   mineReportDefinition,
   verb,
 }) => {
@@ -82,10 +82,10 @@ export const ReportInfoBox: FC<{ mineReportDefinition: IMineReportDefinition; ve
   );
 };
 
-export const PermitReportInfoBox: FC<{ summary?: boolean, twoColumn?: boolean, href: string, permitReport: IMineReportPermitRequirement, verb: string }> = ({
+export const PermitReportInfoBox: FC<{ summary?: boolean, twoColumn?: boolean, getConditionHref?: () => string, permitReport: IMineReportPermitRequirement, verb: string }> = ({
   summary = false,
   twoColumn = false,
-  href,
+  getConditionHref,
   permitReport,
   verb,
 }) => {
@@ -135,10 +135,10 @@ export const PermitReportInfoBox: FC<{ summary?: boolean, twoColumn?: boolean, h
             </Col>
           </Row>
 
-          { isCore && href && ( <Button
+          { isCore && getConditionHref && ( <Button
               target="_blank"
               rel="noopener noreferrer"
-              href={href}
+              href={getConditionHref()}
               type="default"
             >
               View Permit Condition <ExportOutlined />
@@ -243,7 +243,6 @@ export const PermitReportCodeRequirement: FC<{ permitGuid: string, amendment: IP
   )
 }
 
-//Rendered on ReportDetailsForm too!!
 export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean, summary?: boolean, formName?: FORM }> = ({
   mineGuid,
   fullWidth = false,
@@ -268,6 +267,16 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean, summar
   const selectedPermitReportDefinition = useSelector(
     getMineReportPermitRequirementById(formValues?.permit_guid,formValues?.mine_report_permit_requirement_id)
   )
+
+  function getConditionHref(){
+    return GLOBAL_ROUTES?.VIEW_MINE_PERMIT_AMENDMENT.hashRoute(
+      mineGuid,
+      formValues?.permit_guid,
+      latestAmendment?.permit_amendment_guid,
+      "conditions",
+      "#"+selectedPermitReportDefinition?.condition_category_code
+    ).toString()
+  } 
 
   useEffect(() => {
     if (!loaded || permitMineGuid !== mineGuid) {
@@ -353,7 +362,7 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean, summar
             </div>
           </Col>
           <Col span={12}>
-              <PermitReportInfoBox href={null} permitReport={selectedPermitReportDefinition} verb="submitting"/>
+              <PermitReportInfoBox getConditionHref={getConditionHref} permitReport={selectedPermitReportDefinition} verb="submitting"/>
           </Col>
         </Row>
       )}
@@ -377,17 +386,6 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
     getMineReportDefinitionByGuid(formValues?.mine_report_definition_guid)
   );
   const reportDefinitionsLoaded = useSelector(getReportDefinitionsLoaded(reportParamsGetAll));
-
-  /*
-  const href = GLOBAL_ROUTES?.VIEW_MINE_PERMIT_AMENDMENT.hashRoute(
-    mineGuid,
-    permitGuid,
-    amendment.permit_amendment_guid,
-    "conditions",
-    "#"+selectedCategory.condition_category_code
-  ).toString()
-  */
-  const href = "";
 
   useEffect(() => {
     if (!reportDefinitionsLoaded) {
@@ -548,7 +546,7 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
                 </div>
               </Col>
               <Col span={12}>
-                <ReportInfoBox mineReportDefinition={selectedCodeReportDefinition} verb="submitting" />
+                <CodeReportInfoBox mineReportDefinition={selectedCodeReportDefinition} verb="submitting" />
               </Col>
             </Row>
           </>
