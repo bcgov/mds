@@ -268,6 +268,20 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         for root_condition in root_conditions:
             all_conditions.extend(get_all_conditions(root_condition))
         return all_conditions
+    
+    @hybrid_property
+    def full_step_path(self):
+        steps = []
+        current = self
+        while current:
+            step = current.step
+            if step:
+                steps = [step] + steps
+            current = current.parent_permit_condition
+
+        cat = self.condition_category.description if self.condition_category else ""
+
+        return ".".join([str(cat)] + steps) if steps else ""
 
     @hybrid_property
     def step_path(self):

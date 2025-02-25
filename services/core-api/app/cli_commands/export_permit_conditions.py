@@ -8,8 +8,45 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import (
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
     PermitConditions,
 )
+from app.api.mines.reports.models.mine_report_permit_requirement import (
+    MineReportPermitRequirement,
+)
 from app.extensions import db
 
+
+def should_merge_with_parent(condition):
+    """Check if condition should be merged with its parent"""
+    return (condition._step == '' and 
+            condition.parent_permit_condition and 
+            condition.parent_permit_condition._step)
+
+def merge_condition_with_parent(condition, parent):
+    """Merge child condition text with parent condition"""
+    return {
+        'id': str(condition.permit_condition_guid),  # Keep child's ID
+        'step': parent.step,
+        'category': parent.condition_category.description,
+        'status': condition.permit_condition_status.description,
+        'display_order': parent.display_order,
+        'condition': f"{parent.condition}\n{condition.condition}",  # Combine texts
+        'step_path': parent.full_step_path,
+        # Merge relationships - remove the parent from parent_ids since we're merging
+        'parent_ids': [str(p.permit_condition_guid) for p in get_parent_chain(parent)[1:]],
+        'sibling_ids': [
+            str(c.permit_condition_guid) for c in parent.parent_permit_condition.sub_conditions
+            if c.permit_condition_guid != parent.permit_condition_guid
+        ] if parent.parent_permit_condition else [],
+        'child_ids': [str(c.permit_condition_guid) for c in condition.sub_conditions],
+    }
+
+def get_parent_chain(condition):
+    """Get list of parents from immediate to root"""
+    chain = []
+    current = condition
+    while current.parent_permit_condition:
+        current = current.parent_permit_condition
+        chain.append(current)
+    return chain
 
 def export_permit_conditions(permit_amendment_guid, csv_writer=None):
     """
@@ -52,25 +89,67 @@ def export_permit_conditions(permit_amendment_guid, csv_writer=None):
         document_guid = doc.document_manager_guid
 
     condition_rows = []
+    processed_ids = set()  # Track which conditions we've processed
+
     for condition in conditions:
-        row = {
-            'step': condition.step or '',
-            'category': condition.condition_category.description,
-            'status': condition.permit_condition_status.description,
-            'display_order': condition.display_order,
-            'issue_date': amendment.issue_date,
-            'permit': permit.permit_no,
-            'mine_number': mine.mine_no,
-            'mine_name': mine.mine_name,
-            'document_name': document_name,
-            'document_manager_guid': document_guid,
-            'permit_guid': str(permit.permit_guid),
-            'mine_guid': str(mine.mine_guid),
-            'permit_amendment_guid': str(amendment.permit_amendment_guid),
-            'permit_condition_guid': str(condition.permit_condition_guid),
-            'id': str(condition.permit_condition_guid),
-            'condition': condition.condition,
-        }
+        # Skip if we've already processed this condition (as part of a merge)
+        if str(condition.permit_condition_guid) in processed_ids:
+            continue
+
+        # Get report requirement if exists
+        report_requirement = condition.mine_report_permit_requirement
+        report_name = report_requirement.report_name if report_requirement else None
+
+        if should_merge_with_parent(condition):
+            parent = condition.parent_permit_condition
+            merged_data = merge_condition_with_parent(condition, parent)
+            
+            row = {
+                'issue_date': amendment.issue_date,
+                'permit': permit.permit_no,
+                'mine_number': mine.mine_no,
+                'mine_name': mine.mine_name,
+                'document_name': document_name,
+                'document_manager_guid': document_guid,
+                'permit_guid': str(permit.permit_guid),
+                'mine_guid': str(mine.mine_guid),
+                'permit_amendment_guid': str(amendment.permit_amendment_guid),
+                'permit_condition_guid': str(condition.permit_condition_guid),
+                'report_name': report_name,
+                **merged_data  # Include merged data
+            }
+            processed_ids.add(str(condition.permit_condition_guid))
+            processed_ids.add(str(parent.permit_condition_guid))
+        else:
+            # Original export logic for non-merged conditions
+            row = {
+                'step': condition.step or '',
+                'category': condition.condition_category.description,
+                'status': condition.permit_condition_status.description,
+                'display_order': condition.display_order,
+                'issue_date': amendment.issue_date,
+                'permit': permit.permit_no,
+                'mine_number': mine.mine_no,
+                'mine_name': mine.mine_name,
+                'document_name': document_name,
+                'document_manager_guid': document_guid,
+                'permit_guid': str(permit.permit_guid),
+                'mine_guid': str(mine.mine_guid),
+                'permit_amendment_guid': str(amendment.permit_amendment_guid),
+                'permit_condition_guid': str(condition.permit_condition_guid),
+                'id': str(condition.permit_condition_guid),
+                'condition': condition.condition,
+                'report_name': report_name,
+                'step_path': condition.full_step_path,
+                'parent_ids': [str(p.permit_condition_guid) for p in get_parent_chain(condition)],
+                'sibling_ids': [
+                    str(c.permit_condition_guid) for c in condition.parent_permit_condition.sub_conditions
+                    if c.permit_condition_guid != condition.permit_condition_guid
+                ] if condition.parent_permit_condition else [],
+                'child_ids': [str(c.permit_condition_guid) for c in condition.sub_conditions]
+            }
+            processed_ids.add(str(condition.permit_condition_guid))
+
         if csv_writer:
             csv_writer.writerow(row)
         condition_rows.append(row)
@@ -110,7 +189,8 @@ def bulk_export_permit_conditions(csv_path):
         'step', 'category', 'status', 'display_order', 'issue_date',
         'permit', 'mine_number', 'mine_name', 'document_name',
         'document_manager_guid', 'id', 'condition', 'permit_guid',
-        'mine_guid', 'permit_amendment_guid', 'permit_condition_guid'
+        'mine_guid', 'permit_amendment_guid', 'permit_condition_guid',
+        'step_path', 'parent_ids', 'sibling_ids', 'child_ids', 'report_name'
     ]
 
     with open(output_filename, 'w', newline='') as outfile:

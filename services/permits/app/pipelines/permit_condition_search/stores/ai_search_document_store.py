@@ -51,7 +51,7 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
         
         # Update each document with score and facets
         for doc in documents:
-            azure_doc = next(azure_doc for azure_doc in azure_docs if azure_doc["id"] == doc.id)
+            azure_doc = next((azure_doc for azure_doc in azure_docs if azure_doc["id"] == doc.id), None)
 
             if azure_doc:
                 doc.meta.update({

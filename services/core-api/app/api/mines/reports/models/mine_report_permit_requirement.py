@@ -5,6 +5,7 @@ from typing import Optional
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.extensions import db
 from sqlalchemy.dialects.postgresql import ARRAY
+from sqlalchemy.orm import backref
 from sqlalchemy.schema import FetchedValue
 
 
@@ -41,6 +42,8 @@ class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin):
         ARRAY(db.Enum(OfficeDestination, name='ministry_recipient_type')), nullable=True)
     permit_condition_id: int = db.Column(db.Integer, db.ForeignKey('permit_conditions.permit_condition_id'))
     permit_amendment_id: int = db.Column(db.Integer, db.ForeignKey('permit_amendment.permit_amendment_id'))
+
+    permit_condition = db.relationship('PermitConditions', backref=backref('mine_report_permit_requirement', uselist=False))
 
     def __repr__(self):
         return '<MineReportPermitRequirement %r>' % self.mine_report_permit_requirement_id

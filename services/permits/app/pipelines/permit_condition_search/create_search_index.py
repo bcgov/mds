@@ -161,6 +161,38 @@ fields = [
         sortable=False,
         facetable=False,
         stored=False
+    ),
+    SearchField(
+        name="parent_ids",
+        type="Collection(Edm.String)",
+        searchable=False,
+        filterable=True,
+        sortable=False,
+        facetable=False
+    ),
+    SearchField(
+        name="sibling_ids",
+        type="Collection(Edm.String)",
+        searchable=False,
+        filterable=True,
+        sortable=False,
+        facetable=False
+    ),
+    SearchField(
+        name="child_ids",
+        type="Collection(Edm.String)",
+        searchable=False,
+        filterable=True,
+        sortable=False,
+        facetable=False
+    ),
+    SearchField(
+        name="report_name",
+        type=SearchFieldDataType.String,
+        searchable=True,
+        filterable=True,
+        sortable=True,
+        facetable=True
     )
 ]
 

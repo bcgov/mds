@@ -1,8 +1,12 @@
 import logging
 from datetime import datetime
+from typing import List
 
 from app.pipelines.permit_condition_search.components.azure_blob_upload import (
     AzureBlobUploader,
+)
+from app.pipelines.permit_condition_search.components.context_enricher import (
+    ContextEnricher,
 )
 from app.pipelines.permit_condition_search.components.indexer_runner import (
     IndexerRunner,
@@ -54,6 +58,10 @@ doc_metadata_fields = {
     "permit_amendment_guid": str,
     "step": str,
     "step_path": str,
+    "parent_ids": List[str],  # Changed from parent_id to parent_ids
+    "sibling_ids": List[str],  # Add sibling_ids
+    "child_ids": List[str],    # Add child_ids
+    "report_name": str,  # Add report_name field
 }
 
 vector_search_config = VectorSearch()
@@ -85,16 +93,61 @@ def create_elasticsearch_document_store():
     )
 
 template = """
-    You are an expert assistant that helps users find information about permit conditions and reason about them. When answering a question or searching, you can only use the information in the sources provided. \n
-    You must cite all your sources in square brackets with the prefix "doc" for example: Paris is the capital of france [doc:1].\n You must represent the information in the sources accurately and not modify the content at all. \n
-    When you find a matching permit condition, you should enclose it in a Markdown blockquotes (>) to make it clear that it is a direct quote from the source. \n 
-    
-    You will be given a list of permit conditions (sources) with the content of the condition and ID you can use to cite the source.
+    You are an expert assistant that helps users retrieve and reason about permit conditions in the mining industry. When answering questions, use only the information provided in the sources and cite them using square brackets with the prefix "doc" (e.g., [doc:1]).
+
+    Follow these guidelines:
+    1. Focus on directly answering the user's question using the most relevant permit conditions
+    2. Use context from parent, sibling, or child conditions only when it helps clarify the meaning or implications of the main condition
+    3. If a report requirement exists, mention it as it's an important compliance requirement
+    4. Present information in a clear, concise manner
+    5. Use Markdown blockquotes (>) for direct quotes from permit conditions
+    6. Always maintain the exact wording from the source documents
+    7. If you're unsure or the information isn't in the sources, say so
+    8. Wherever possible, provide the information itself such that the full permit condition is shown as a direct quote
+    9. Output the results as markdown, with appropriate headings.
     
     Sources:
     {% for document in documents %}
         ID: {{ document.id }}
-        Content: {{ document.content }}
+        {% if document.meta.report_name %}
+        Report Required: {{ document.meta.report_name }}
+        {% endif %}
+        
+        Main Condition:
+        > {{ document.content }}
+        
+        {% if document.meta.context %}
+            {# Only include context if it adds value to understanding the condition #}
+            {% if document.meta.context.parent_contexts %}
+                {% for level_num in range(1, document.meta.context.parent_contexts|length + 1) %}
+                    {% set level = document.meta.context.parent_contexts["level_" ~ level_num] %}
+                    {% if level.content and level.content|length > 0 %}
+        Related Context:
+        > {{ level.content }}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            {# Include children/siblings only if they provide essential context #}
+            {% if document.meta.context.child_contexts or document.meta.context.sibling_contexts %}
+        Additional Context:
+                {% if document.meta.context.sibling_contexts.previous %}
+                    {% for sibling in document.meta.context.sibling_contexts.previous %}
+        > {{ sibling.content }}
+                    {% endfor %}
+                {% endif %}
+                {% if document.meta.context.sibling_contexts.next %}
+                    {% for sibling in document.meta.context.sibling_contexts.next %}
+        > {{ sibling.content }}
+                    {% endfor %}
+                {% endif %}
+                {% if document.meta.context.child_contexts %}
+                    {% for child in document.meta.context.child_contexts %}
+        > {{ child.content }}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
     {% endfor %}
                         
     Question: {{question}}
@@ -142,6 +195,8 @@ def create_permit_condition_search_retrieval_pipeline():
         facets=["category", "issue_date", "permit", "mine_number", "mine_name", "document_name"],
     )
     
+    context_enricher = ContextEnricher(document_store=azure_search_document_store)
+    
     prompt_builder = PromptBuilder(template=template)
     
     llm = AzureOpenAIGenerator(
@@ -156,12 +211,14 @@ def create_permit_condition_search_retrieval_pipeline():
 
     retrieval_pipeline.add_component("text_embedder", text_embedder)
     retrieval_pipeline.add_component("retriever", retriever)
+    retrieval_pipeline.add_component("context_enricher", context_enricher)
     retrieval_pipeline.add_component("prompt_builder", prompt_builder)
     retrieval_pipeline.add_component("llm", llm)
     retrieval_pipeline.add_component("output_formatter", output_formatter)
 
     retrieval_pipeline.connect("text_embedder.embedding", "retriever.query_embedding")
-    retrieval_pipeline.connect("retriever", "prompt_builder.documents")
+    retrieval_pipeline.connect("retriever", "context_enricher")
+    retrieval_pipeline.connect("context_enricher", "prompt_builder.documents")
     retrieval_pipeline.connect("prompt_builder", "llm")
     retrieval_pipeline.connect("retriever.documents", "output_formatter.documents")
     retrieval_pipeline.connect("llm.replies", "output_formatter.replies")

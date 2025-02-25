@@ -14,7 +14,29 @@ export interface HaystackDocumentMeta {
     highlights: {
         [field: string]: string[];
     }
+    context: {
+        parent_contexts?: ParentContext;
+        sibling_contexts?: SiblingContexts;
+        child_contexts?: ContextItem[];
+    }
 }
+
+export interface ContextItem {
+    id: string;
+    content: string;
+    step: string;
+    hierarchy: string;
+}
+
+export interface ParentContext {
+    [level: string]: ContextItem;
+}
+
+export interface SiblingContexts {
+    previous: ContextItem[];
+    next: ContextItem[];
+}
+
 export interface HaystackDocumentSearchResult {
     id: string;
     content: string;
