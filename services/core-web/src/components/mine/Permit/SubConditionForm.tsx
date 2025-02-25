@@ -12,10 +12,11 @@ import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeFiel
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 import { createPermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { FORM } from "@mds/common/constants/forms";
 import RenderGroupedSelect from "@mds/common/components/forms/RenderGroupedSelect";
+import { usePermitConditions } from "./PermitConditionsContext";
 
 interface SubConditionFormProps {
     level?: number;
@@ -28,17 +29,19 @@ interface SubConditionFormProps {
 };
 
 const SubConditionForm: FC<SubConditionFormProps> = ({ level = 1, parentCondition, conditionCategory, permitAmendmentGuid, categoryOptions, handleCancel, onSubmit }) => {
-    const dispatch = useDispatch();
-
+    const dispatch = useAppDispatch();
+    const { loading, setLoading } = usePermitConditions();
     const handleSubmit = async (values) => {
+        setLoading(true);
         const resp = await dispatch(createPermitCondition(
             permitAmendmentGuid,
             values
         ));
         // @ts-ignore
         if (resp?.type !== ERROR) {
-            onSubmit();
+            await onSubmit();
         }
+        setLoading(false);
     }
 
     const getConditionTypeCode = () => {
@@ -88,6 +91,7 @@ const SubConditionForm: FC<SubConditionFormProps> = ({ level = 1, parentConditio
                             data={categoryOptions}
                             allowClear={false}
                             className="horizontal-form-item"
+                            disabled={loading}
                         />
                     </Col>
                 </Row>}
@@ -98,6 +102,7 @@ const SubConditionForm: FC<SubConditionFormProps> = ({ level = 1, parentConditio
                             name="condition"
                             component={RenderAutoSizeField}
                             autoFocus
+                            disabled={loading}
                         />
                     </Col>
                 </Row>
@@ -106,6 +111,7 @@ const SubConditionForm: FC<SubConditionFormProps> = ({ level = 1, parentConditio
                 >
                     <Col>
                         <RenderCancelButton
+                            disabled={loading}
                             cancelFunction={handleCancel}
                             buttonProps={{
                                 type: "primary",
@@ -116,6 +122,7 @@ const SubConditionForm: FC<SubConditionFormProps> = ({ level = 1, parentConditio
                     </Col>
                     <Col>
                         <RenderSubmitButton
+                            disabled={loading}
                             buttonProps={{
                                 icon: <FontAwesomeIcon icon={faCheck} />
                             }}

@@ -7,6 +7,7 @@ import { USER_ROLES } from "@mds/common/constants/environment";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { ReportPermitRequirementForm } from "@/components/Forms/reports/ReportPermitRequirementForm";
 import { complianceReportReducerType, reportParamsGetAll } from "@mds/common/redux/slices/complianceReportsSlice";
+import { PermitConditionsProvider } from "@/components/mine/Permit/PermitConditionsContext";
 
 const initialState = {
   [STATIC_CONTENT]: {
@@ -35,19 +36,31 @@ const initialState = {
   },
 };
 
+const providerParams = {
+  mineGuid: "mineGuid",
+  permitGuid: "permitGuid",
+  latestAmendment: null,
+  previousAmendment: null,
+  currentAmendment: null,
+  loading: false,
+  setLoading: jest.fn(),
+};
+
 describe("RequestReportForm", () => {
   it("renders form properly", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
-        <ReportPermitRequirementForm
-          permitGuid={MOCK.PERMITS[0].permit_guid}
-          onSubmit={() => { }}
-          canEditPermitConditions={true}
-          refreshData={jest.fn()}
-          currentAmendment={MOCK.PERMITS[0].permit_amendments[0]}
-          mineGuid={MOCK.PERMITS[0].mine_guid}
-          condition={MOCK.PERMITS[0].permit_amendments[0].conditions[0]}
-        />
+        <PermitConditionsProvider value={providerParams}>
+          <ReportPermitRequirementForm
+            permitGuid={MOCK.PERMITS[0].permit_guid}
+            onSubmit={() => { }}
+            canEditPermitConditions={true}
+            refreshData={jest.fn()}
+            currentAmendment={MOCK.PERMITS[0].permit_amendments[0]}
+            mineGuid={MOCK.PERMITS[0].mine_guid}
+            condition={MOCK.PERMITS[0].permit_amendments[0].conditions[0]}
+          />
+        </PermitConditionsProvider>
       </ReduxWrapper>
     );
 

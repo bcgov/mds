@@ -12,6 +12,7 @@ import PermitConditionCategorySelector from "./PermitConditionCategorySelector";
 import { required } from "@mds/common/redux/utils/Validate";
 import { useDispatch } from "react-redux";
 import { formatPermitConditionStep } from "@mds/common/utils/helpers";
+import { usePermitConditions } from "./PermitConditionsContext";
 
 export interface IPermitConditionCategoryProps {
   canEdit: boolean;
@@ -28,6 +29,7 @@ export interface IPermitConditionCategoryProps {
 export const EditPermitConditionCategoryInline: FC<IPermitConditionCategoryProps> = ({ category, ...props }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const { condition_category_code } = category;
+  const { loading } = usePermitConditions();
 
   const dispatch = useDispatch();
   const formName = `${FORM.INLINE_EDIT_PERMIT_CONDITION_CATEGORY}}-${condition_category_code}`;
@@ -73,13 +75,21 @@ export const EditPermitConditionCategoryInline: FC<IPermitConditionCategoryProps
     <FormWrapper scrollOnToggleEdit={false} name={formName} onSubmit={handleSubmit} initialValues={category} isEditMode={isEditMode}>
       <Row style={{ gap: '0.5em' }}>
         <Col flex-shrink="1" style={{ maxWidth: '40px' }}>
-          <Field name="step" component={RenderField} required={true} validate={[required]} style={{ marginRight: 0, }} />
+          <Field
+            name="step"
+            component={RenderField}
+            required={true}
+            validate={[required]}
+            style={{ marginRight: 0, }}
+            disabled={loading}
+          />
         </Col>
         <Col>
           <PermitConditionCategorySelector showLabel={false} />
         </Col>
         <Col flex="auto" style={{ display: 'flex', gap: '0.5em' }}>
           <Button
+            disabled={loading}
             className="icon-button-container"
             style={{ marginRight: 0 }}
             onClick={cancel}
@@ -87,7 +97,11 @@ export const EditPermitConditionCategoryInline: FC<IPermitConditionCategoryProps
             icon={<FontAwesomeIcon icon={faXmark} />}
           />
 
-          <RenderSubmitButton buttonText="" buttonProps={{ "aria-label": "Confirm", className: "icon-button-container", style: { marginRight: 0, marginLeft: 0 }, icon: <FontAwesomeIcon icon={faCheck} /> }} />
+          <RenderSubmitButton
+            disabled={loading}
+            icon={<FontAwesomeIcon icon={faCheck} />}
+            buttonProps={{ "aria-label": "Confirm", className: "fa-icon-container", style: { marginRight: 0, marginLeft: 0 } }}
+          />
 
           <Popconfirm
             disabled={props.conditionCount > 0}
@@ -103,6 +117,7 @@ export const EditPermitConditionCategoryInline: FC<IPermitConditionCategoryProps
             cancelText="No"
           >
             <Button
+              loading={loading}
               disabled={props.conditionCount > 0}
               danger={true}
               icon={<FontAwesomeIcon icon={faTrash} />}
@@ -110,7 +125,7 @@ export const EditPermitConditionCategoryInline: FC<IPermitConditionCategoryProps
           </Popconfirm>
 
           <Button
-            disabled={props.currentPosition <= 0}
+            disabled={props.currentPosition <= 0 || loading}
             onClick={(event) => {
               event.stopPropagation();
               props.moveUp(category);
@@ -121,7 +136,7 @@ export const EditPermitConditionCategoryInline: FC<IPermitConditionCategoryProps
           />
           <Button
             style={{ marginLeft: 0 }}
-            disabled={props.currentPosition >= props.categoryCount - 1}
+            disabled={props.currentPosition >= props.categoryCount - 1 || loading}
             aria-label="Move Category Down"
             onClick={(event) => {
               event.stopPropagation();

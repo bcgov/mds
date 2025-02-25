@@ -32,6 +32,8 @@ interface RenderCancelButtonProps {
   cancelFunction?: () => void | Promise<void>;
   cancelModalProps?: ModalFuncProps;
   iconButton?: boolean;
+  disabled?: boolean;
+  loading?: boolean;
 }
 
 /**
@@ -48,7 +50,9 @@ const RenderCancelButton: FC<RenderCancelButtonProps> = ({
   buttonProps = { type: "default" },
   cancelFunction,
   cancelModalProps,
-  iconButton = false
+  iconButton = false,
+  disabled = false,
+  loading = false,
 }) => {
   const dispatch = useDispatch();
   const { formName, isModal, isEditMode } = useContext(FormContext);
@@ -72,7 +76,7 @@ const RenderCancelButton: FC<RenderCancelButtonProps> = ({
   const className = `${buttonProps?.className ?? ""} form-btn`;
 
   return (
-    <CoreButton aria-label="Cancel" {...buttonProps} className={className} type={buttonType} onClick={() => buttonCancelFunction()}>
+    <CoreButton aria-label="Cancel" loading={loading} disabled={disabled} {...buttonProps} className={className} type={buttonType} onClick={() => buttonCancelFunction()}>
       {!iconButton && buttonLabel}
     </CoreButton>
   );

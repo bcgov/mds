@@ -7,6 +7,8 @@ interface PermitConditionsContextType {
     latestAmendment: IPermitAmendment;
     previousAmendment: IPermitAmendment;
     currentAmendment: IPermitAmendment;
+    loading: boolean;
+    setLoading: (loading: boolean) => void;
 }
 
 const PermitConditionsContext = React.createContext<PermitConditionsContextType | undefined>(undefined);

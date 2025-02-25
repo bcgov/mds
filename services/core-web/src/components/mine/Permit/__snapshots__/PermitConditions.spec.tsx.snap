@@ -664,12 +664,14 @@ exports[`PermitConditions renders properly 1`] = `
                               class="ant-typography no_link_styling grey"
                               style="font-size: 14px; text-align: center; margin: 20px;"
                             >
-                              <a
-                                class="ant-typography fade-in"
-                                title="Add Condition Category"
+                              <button
+                                class="ant-btn ant-btn-link core-btn core-btn-link fade-in category-add-btn"
+                                type="button"
                               >
-                                + Add Condition Category
-                              </a>
+                                <span>
+                                  + Add Condition Category
+                                </span>
+                              </button>
                             </div>
                           </div>
                         </div>
@@ -956,26 +958,34 @@ exports[`PermitConditions renders properly 1`] = `
                                         style="display: inline-block; cursor: not-allowed;"
                                       >
                                         <button
-                                          class="ant-btn ant-btn-default ant-btn-icon-only"
+                                          class="ant-btn ant-btn-default ant-btn-icon-only ant-btn-loading"
                                           disabled=""
                                           style="pointer-events: none;"
                                           type="button"
                                         >
-                                          <svg
-                                            aria-hidden="true"
-                                            class="svg-inline--fa fa-xmark "
-                                            data-icon="xmark"
-                                            data-prefix="fal"
-                                            focusable="false"
-                                            role="img"
-                                            viewBox="0 0 384 512"
-                                            xmlns="http://www.w3.org/2000/svg"
+                                          <span
+                                            class="ant-btn-loading-icon"
                                           >
-                                            <path
-                                              d="M324.5 411.1c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L214.6 256 347.1 123.5c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0L192 233.4 59.5 100.9c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6L169.4 256 36.9 388.5c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0L192 278.6 324.5 411.1z"
-                                              fill="currentColor"
-                                            />
-                                          </svg>
+                                            <span
+                                              aria-label="loading"
+                                              class="anticon anticon-loading anticon-spin"
+                                              role="img"
+                                            >
+                                              <svg
+                                                aria-hidden="true"
+                                                data-icon="loading"
+                                                fill="currentColor"
+                                                focusable="false"
+                                                height="1em"
+                                                viewBox="0 0 1024 1024"
+                                                width="1em"
+                                              >
+                                                <path
+                                                  d="M988 548c-19.9 0-36-16.1-36-36 0-59.4-11.6-117-34.6-171.3a440.45 440.45 0 00-94.3-139.9 437.71 437.71 0 00-139.9-94.3C629 83.6 571.4 72 512 72c-19.9 0-36-16.1-36-36s16.1-36 36-36c69.1 0 136.2 13.5 199.3 40.3C772.3 66 827 103 874 150c47 47 83.9 101.8 109.7 162.7 26.7 63.1 40.2 130.2 40.2 199.3.1 19.9-16 36-35.9 36z"
+                                                />
+                                              </svg>
+                                            </span>
+                                          </span>
                                         </button>
                                       </span>
                                     </div>
@@ -1274,7 +1284,7 @@ exports[`PermitConditions renders properly 1`] = `
                                     class="condition-collapsed"
                                   >
                                     <div
-                                      class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                      class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                     >
                                       <div
                                         class="ant-col step-column"
@@ -1525,7 +1535,7 @@ exports[`PermitConditions renders properly 1`] = `
                                     class="condition-collapsed"
                                   >
                                     <div
-                                      class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                      class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                     >
                                       <div
                                         class="ant-col step-column"
@@ -1555,7 +1565,7 @@ exports[`PermitConditions renders properly 1`] = `
                                           class="condition-collapsed"
                                         >
                                           <div
-                                            class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                            class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                           >
                                             <div
                                               class="ant-col step-column"
@@ -1585,7 +1595,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                 class="condition-collapsed"
                                               >
                                                 <div
-                                                  class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                                  class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                                 >
                                                   <div
                                                     class="ant-col step-column"
@@ -1621,7 +1631,7 @@ exports[`PermitConditions renders properly 1`] = `
                                           class="condition-collapsed"
                                         >
                                           <div
-                                            class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                            class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                           >
                                             <div
                                               class="ant-col step-column"
@@ -1651,7 +1661,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                 class="condition-collapsed"
                                               >
                                                 <div
-                                                  class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                                  class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                                 >
                                                   <div
                                                     class="ant-col step-column"
@@ -1681,7 +1691,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                       class="condition-collapsed"
                                                     >
                                                       <div
-                                                        class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                                        class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                                       >
                                                         <div
                                                           class="ant-col step-column"
@@ -1714,7 +1724,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                       class="condition-collapsed"
                                                     >
                                                       <div
-                                                        class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                                        class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                                       >
                                                         <div
                                                           class="ant-col step-column"
@@ -1747,7 +1757,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                       class="condition-collapsed"
                                                     >
                                                       <div
-                                                        class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                                        class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                                       >
                                                         <div
                                                           class="ant-col step-column"
@@ -1777,7 +1787,7 @@ exports[`PermitConditions renders properly 1`] = `
                                                             class="condition-collapsed"
                                                           >
                                                             <div
-                                                              class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                                              class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                                             >
                                                               <div
                                                                 class="ant-col step-column"
@@ -1879,7 +1889,7 @@ exports[`PermitConditions renders properly 1`] = `
                                     class="condition-collapsed"
                                   >
                                     <div
-                                      class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                      class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                     >
                                       <div
                                         class="ant-col step-column"
@@ -1909,7 +1919,7 @@ exports[`PermitConditions renders properly 1`] = `
                                           class="condition-collapsed"
                                         >
                                           <div
-                                            class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                            class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                           >
                                             <div
                                               class="ant-col step-column"

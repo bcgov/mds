@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useMemo, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { Alert, Button, Col, Row, Skeleton, Space, Typography } from "antd";
+import { Alert, Button, Col, Row, Space, Typography } from "antd";
 import FileOutlined from "@ant-design/icons/FileOutlined";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -98,7 +98,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const [selectedCondition, setSelectedCondition] = useState<IPermitCondition | null>(null);
   const [editingConditionGuid, setEditingConditionGuid] = useState<string>();
   const [addingToCategoryCode, setAddingToCategoryCode] = useState<string>();
-
+  const [loading, setLoading] = useState(false);
   const mineReportPermitRequirements: IMineReportPermitRequirement[] = useAppSelector(
     getMineReportPermitRequirementsByAmendment(permitGuid, currentAmendment?.permit_amendment_guid)
   );
@@ -107,7 +107,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const userReviewAssignments = useAppSelector(getUserReviewAssignmentsByAmendment(currentAmendment.permit_amendment_id));
 
   const permitsLoading = useAppSelector(getIsFetching(NetworkReducerTypes.GET_PERMITS));
-  const showLoading = permitsLoading;
+  const showLoading = permitsLoading || loading;
 
   const permitConditions = currentAmendment?.conditions;
   const permitExtraction = useAppSelector(
@@ -322,6 +322,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   };
 
   const handleUpdateConditionCategory = (category: IPermitConditionCategory) => {
+    setLoading(true);
     dispatch(
       updatePermitAmendmentConditionCategory(
         mineGuid,
@@ -329,10 +330,11 @@ const PermitConditions: FC<PermitConditionProps> = ({
         currentAmendment.permit_amendment_guid,
         category
       )
-    );
+    ).finally(() => setLoading(false));
   };
 
   const handleDeleteConditionCategory = (category: IPermitConditionCategory) => {
+    setLoading(true);
     dispatch(
       deletePermitAmendmentConditionCategory(
         mineGuid,
@@ -340,7 +342,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
         currentAmendment.permit_amendment_guid,
         category.condition_category_code
       )
-    );
+    ).finally(() => setLoading(false));
   };
 
   const handleMove = (category: IPermitConditionCategory, newOrder: number) => {
@@ -426,13 +428,12 @@ const PermitConditions: FC<PermitConditionProps> = ({
       className="no_link_styling grey"
       style={{ fontSize: "14px", textAlign: "center", margin: "20px" }}
     >
-      {showLoading ? (
-        <Skeleton active paragraph={{ rows: 1 }} />
-      ) : (
-        <Typography.Link onClick={openCreateCategoryModal} className="fade-in" title="Add Condition Category">
-          + Add Condition Category
-        </Typography.Link>
-      )}
+      <CoreButton
+        type="link"
+        loading={showLoading}
+        onClick={openCreateCategoryModal}
+        className="fade-in category-add-btn"
+      >+ Add Condition Category</CoreButton>
     </Typography.Paragraph>
   );
 
@@ -441,7 +442,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const hasConditions = latestAmendment?.conditions?.length > 0;
   return (<>
     {hasConditions && <PermitReviewBanner isExtracted={isExtracted} height={bannerHeight} isReviewComplete={isReviewComplete} />}
-    <PermitConditionsProvider value={{ mineGuid, permitGuid, latestAmendment, previousAmendment, currentAmendment }}>
+    <PermitConditionsProvider value={{ mineGuid, permitGuid, latestAmendment, previousAmendment, currentAmendment, loading: showLoading, setLoading }}>
       <Row>
         <Col span={canViewPdfSplitScreen ? 16 : 24}>
           <ScrollSidePageWrapper
@@ -463,7 +464,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                   <Row gutter={10}>
                     <Col>
                       <CoreButton
-                        disabled={showLoading}
+                        loading={showLoading}
                         type="tertiary"
                         className="fa-icon-container"
                         icon={
@@ -478,7 +479,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                       <CoreButton
                         type="tertiary"
                         icon={<FileOutlined />}
-                        disabled={showLoading}
+                        loading={showLoading}
                         onClick={toggleViewPdf}
                       >
                         Open Permit in Document Viewer
@@ -489,9 +490,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                 <Col span={24}>
                   <div className="core-page-content">
                     <Row gutter={[16, 16]}>
-                      {showLoading && <Skeleton active paragraph={{ rows: 10 }} />}
-
-                      {!showLoading && permitConditionCategories.map((category, idx) => {
+                      {permitConditionCategories.map((category, idx) => {
                         return (
                           <React.Fragment key={category.href}>
                             <Col span={24}>
@@ -512,6 +511,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                                 {canEditPermitConditions(category.condition_category) && isExtracted && (
                                   <CoreButton
                                     type="primary"
+                                    loading={showLoading}
                                     disabled={
                                       Boolean(addingToCategoryCode) || Boolean(editingConditionGuid)
                                     }
