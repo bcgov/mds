@@ -43,7 +43,7 @@ import { getParties, getPartyRelationships } from "@mds/common/redux/selectors/p
 import { uniqBy } from "lodash";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import ExportOutlined from "@ant-design/icons/ExportOutlined";
-import { getMineReportPermitRequirementById, getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
+import { getLatestAmendmentByPermitGuid, getMineReportPermitRequirementById, getPermitByGuid, getPermitConditionCategories } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { PermitReportInfoBox, RenderPRRFields } from "./ReportGetStarted";
 import MinistryCommentPanel from "@mds/common/components/comments/MinistryCommentPanel";
@@ -177,6 +177,17 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const selectedPermitReportDefinition = useSelector(
     getMineReportPermitRequirementById(formValues?.permit_guid,formValues?.mine_report_permit_requirement_id)
   )
+  const latestAmendment = useSelector(getLatestAmendmentByPermitGuid(formValues?.permit_guid));
+
+  function getConditionHref(){
+    return GLOBAL_ROUTES?.VIEW_MINE_PERMIT_AMENDMENT.hashRoute(
+      mineGuid,
+      formValues?.permit_guid,
+      permit?.permit_amendment_guid,
+      "conditions",
+      "#"+selectedPermitReportDefinition?.condition_category_code
+    ).toString()
+  } 
 
   const isCRR = report_type === REPORT_TYPE_CODES.CRR;
   const isPRR = report_type === REPORT_TYPE_CODES.PRR;
@@ -423,7 +434,15 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               </Col>
               {isPRR && selectedPermitReportDefinition && (<Col span={24}>
                 <RenderPRRFields mineGuid={initialValues?.mine_guid} summary={true} /> 
-                <PermitReportInfoBox twoColumn permitReport={selectedPermitReportDefinition} summary verb="submitting" />
+                <PermitReportInfoBox
+                  twoColumn 
+                  permitAmendmentGuid={latestAmendment.permit_amendment_guid}
+                  permitGuid={formValues?.permit_guid}
+                  mineGuid={mineGuid}
+                  permitReport={selectedPermitReportDefinition}
+                  summary
+                  verb="submitting"
+                />
               </Col>)}
               {isCRR && (
                 <Col span={12}>

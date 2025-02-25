@@ -147,6 +147,7 @@ export const transformPermitReportRequirement = (report : IMineReportPermitRequi
   if(report){
     return {
       report_name: report.report_name,
+      formattedConditionStep: "",
       mine_report_permit_requirement_id: report.mine_report_permit_requirement_id,
       regulatory_authority: report.cim_or_cpo ? REPORT_REGULATORY_AUTHORITY_CODES_HASH[report.cim_or_cpo] : "Not Specified",
       ministry_recipient: report.ministry_recipient?.map(

@@ -1,7 +1,10 @@
 import { createSelector } from "reselect";
 import { getNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import * as permitReducer from "../reducers/permitReducer";
-import { IMineReportPermitRequirement } from "@mds/common/interfaces";
+import { IMineReportPermitRequirement, IPermitCondition, IPermitConditionCategory } from "@mds/common/interfaces";
+import { getPermitConditionCategoryOptions } from "./staticContentSelectors";
+import { uniqBy } from "lodash";
+import { formatPermitConditionStep } from "@mds/common/utils/helpers";
 
 const draft = "DFT";
 
@@ -122,3 +125,84 @@ export const getCategoriesWithReports = (permitGuid) => createSelector([getLates
     }
   })
 })
+
+export const getPermitConditionCategories = (permitGuid, permitAmendmentGuid) =>
+  createSelector(
+    [getAmendment(permitGuid, permitAmendmentGuid), getPermitConditionCategoryOptions, getMineReportPermitRequirementsByAmendment(permitGuid, permitAmendmentGuid)],
+    (currentAmendment, defaultPermitConditionCategories, mineReportPermitRequirements) => {
+
+      const condWithoutConditionsText = defaultPermitConditionCategories?.map((cat) => ({
+        ...cat,
+        description: cat.description.replace("Conditions", "").trim(),
+      }));
+
+      const permitConditionCategoryOptions: IPermitConditionCategory[] = uniqBy(
+        currentAmendment?.condition_categories.concat(condWithoutConditionsText) ?? [],
+        "condition_category_code"
+      );
+
+      const conditionMap: { [permit_condition_id: string]: IPermitCondition } = {};
+
+      const categoriesWithConditions = permitConditionCategoryOptions
+        .map((cat) => {
+          const catConditions = currentAmendment?.conditions?.filter(
+            (c) => c.condition_category_code === cat.condition_category_code
+          ) ?? [];
+
+          const isDefaultConditionCategory = !!condWithoutConditionsText?.find(
+            (x) => x.condition_category_code === cat.condition_category_code
+          );
+
+          if (!catConditions.length && isDefaultConditionCategory) {
+            return null;
+          }
+
+          const getStepPath = (condition, parentPath = ""): IPermitCondition => {
+            const formattedStep = formatPermitConditionStep(condition.step);
+
+            const currentPath = parentPath
+              ? `${parentPath}${formattedStep}`
+              : `${cat.description} - ${formattedStep}`;
+            const stepPath = currentPath.replace(/\.+$/, "");
+
+            const mineReportPermitRequirement = mineReportPermitRequirements.find(
+              (requirement) => requirement.permit_condition_id === condition.permit_condition_id
+            );
+
+            const sub_conditions =
+              condition.sub_conditions?.map((subCondition) =>
+                getStepPath(subCondition, currentPath)
+              ) ?? [];
+
+            conditionMap[condition.permit_condition_id] = {
+              ...condition,
+              formattedStep,
+              stepPath,
+              mineReportPermitRequirement,
+              sub_conditions,
+            };
+
+            return {
+              ...condition,
+              formattedStep,
+              stepPath,
+              mineReportPermitRequirement,
+              sub_conditions,
+            };
+          };
+
+          const formattedConditions = catConditions.map((condition) => getStepPath(condition));
+
+          return {
+            ...cat,
+            conditions: formattedConditions,
+          };
+        })
+        .filter(Boolean);
+
+      return {
+        categoriesWithConditions,
+        conditionMap,
+      };
+    }
+  );

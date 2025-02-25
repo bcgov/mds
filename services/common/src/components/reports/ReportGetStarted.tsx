@@ -17,7 +17,7 @@ import RenderSelect from "../forms/RenderSelect";
 import {
   getDropdownPermitConditionCategoryOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getCategoriesWithReports, getLatestAmendmentByPermitGuid, getMineReportPermitRequirementById, getPermits } from "@mds/common/redux/selectors/permitSelectors";
+import { getCategoriesWithReports, getLatestAmendmentByPermitGuid, getMineReportPermitRequirementById, getPermitConditionCategories, getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { useParams } from "react-router-dom";
@@ -82,17 +82,31 @@ export const CodeReportInfoBox: FC<{ mineReportDefinition: IMineReportDefinition
   );
 };
 
-export const PermitReportInfoBox: FC<{ summary?: boolean, twoColumn?: boolean, getConditionHref?: () => string, permitReport: IMineReportPermitRequirement, verb: string }> = ({
+export const PermitReportInfoBox: FC<{ summary?: boolean, twoColumn?: boolean, mineGuid: string, permitGuid: string, permitAmendmentGuid: string, permitReport: IMineReportPermitRequirement, verb: string }> = ({
   summary = false,
   twoColumn = false,
-  getConditionHref,
   permitReport,
+  mineGuid,
+  permitGuid,
+  permitAmendmentGuid,
   verb,
 }) => {
 
   const systemFlag = useSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;
   const transformedReport = transformPermitReportRequirement(permitReport);
+  const {conditionMap} = useAppSelector(getPermitConditionCategories(permitGuid,permitAmendmentGuid));
+  const condition = conditionMap[permitReport?.permit_condition_id]
+
+  function getConditionHref(){
+    return GLOBAL_ROUTES?.VIEW_MINE_PERMIT_AMENDMENT.hashRoute(
+      mineGuid,
+      permitGuid,
+      permitAmendmentGuid,
+      "conditions",
+      "#"+permitReport?.condition_category_code
+    ).toString()
+  } 
 
   return (
     <div className={`${summary ? "report-summary-box" : "report-info-box"}`}>
@@ -107,7 +121,7 @@ export const PermitReportInfoBox: FC<{ summary?: boolean, twoColumn?: boolean, g
 
           <Typography.Title level={5}>Condition:</Typography.Title>
           <Typography.Paragraph>
-            {transformedReport.conditionName ?? "Not Specified"}
+            {condition.stepPath ?? "Not Specified"}
           </Typography.Paragraph>
 
           <Row>
@@ -209,12 +223,8 @@ export const PermitReportCodeRequirement: FC<{ permitGuid: string, amendment: IP
   const conditionCategories = useSelector( getCategoriesWithReports(permitGuid));
   const reports = amendment?.mine_report_permit_requirements;
   const reportOptions = createDropDownList(reports, "report_name", "mine_report_permit_requirement_id");
-
-  //TODO need steps added to conditions
-
   const selectedReport = reports ? reports.find( report => report.mine_report_permit_requirement_id === formValues?.mine_report_permit_requirement_id) : null;
   const selectedCategory = selectedReport ? conditionCategories.find( cat => cat.condition_category_code === selectedReport?.condition_category_code) : null;
-  //const selectedCondition = selectedReport ? findCondition(selectedReport.permit_condition_id, amendment.conditions) : null;
 
   useEffect( () => {
     if(selectedReport){
@@ -249,34 +259,24 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean, summar
   summary = false,
   formName = FORM.VIEW_EDIT_REPORT
 }) => {
-  const system = useSelector(getSystemFlag);
+  const system = useAppSelector(getSystemFlag);
   const dispatch = useAppDispatch();
-  const dropdownPermitConditionCategoryOptions = useSelector(
+  const dropdownPermitConditionCategoryOptions = useAppSelector(
     getDropdownPermitConditionCategoryOptions
   );
-  const permits = useSelector(getPermits);
+  const permits = useAppSelector(getPermits);
   const permitDropdown = createDropDownList(permits, "permit_no", "permit_guid");
   const permitMineGuid = permits[0]?.mine_guid;
   const [loaded, setLoaded] = useState(permits.length > 0 && permitMineGuid === mineGuid);
   const isCore = system === SystemFlagEnum.core;
 
-  const formValues = useSelector(getFormValues(formName)) as IMineReportSubmission;  
+  const formValues = useAppSelector(getFormValues(formName)) as IMineReportSubmission;  
   const latestAmendment = useAppSelector(getLatestAmendmentByPermitGuid(formValues?.permit_guid));
   const hasValidatedReports = latestAmendment?.conditions_review_completed && latestAmendment?.mine_report_permit_requirements.length > 0;
 
-  const selectedPermitReportDefinition = useSelector(
+  const selectedPermitReportDefinition = useAppSelector(
     getMineReportPermitRequirementById(formValues?.permit_guid,formValues?.mine_report_permit_requirement_id)
   )
-
-  function getConditionHref(){
-    return GLOBAL_ROUTES?.VIEW_MINE_PERMIT_AMENDMENT.hashRoute(
-      mineGuid,
-      formValues?.permit_guid,
-      latestAmendment?.permit_amendment_guid,
-      "conditions",
-      "#"+selectedPermitReportDefinition?.condition_category_code
-    ).toString()
-  } 
 
   useEffect(() => {
     if (!loaded || permitMineGuid !== mineGuid) {
@@ -362,7 +362,13 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean, summar
             </div>
           </Col>
           <Col span={12}>
-              <PermitReportInfoBox getConditionHref={getConditionHref} permitReport={selectedPermitReportDefinition} verb="submitting"/>
+              <PermitReportInfoBox
+                mineGuid={mineGuid}
+                permitGuid={formValues?.permit_guid}
+                permitAmendmentGuid={latestAmendment?.permit_amendment_guid}
+                permitReport={selectedPermitReportDefinition}
+                verb="submitting"
+              />
           </Col>
         </Row>
       )}

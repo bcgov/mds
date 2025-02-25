@@ -12,7 +12,7 @@ import { PermitReportInfoBox, RenderPRRFields, CodeReportInfoBox } from "@mds/co
 import { IMineReport, IMineReportDefinition, IMineReportSubmission } from "@mds/common/interfaces";
 import { MINE_REPORT_SUBMISSION_CODES, REPORT_TYPE_CODES } from "@mds/common/constants/enums";
 import { FORM } from "@mds/common/constants/forms";
-import { getMineReportPermitRequirementById } from "@mds/common/redux/selectors/permitSelectors";
+import { getLatestAmendmentByPermitGuid, getMineReportPermitRequirementById, getPermitConditionCategories } from "@mds/common/redux/selectors/permitSelectors";
 
 interface RequestReportFormProps {
   onSubmit: (values: Partial<IMineReport>) => void | Promise<void>;
@@ -32,6 +32,7 @@ export const RequestReportForm: FC<RequestReportFormProps> = ({
   const selectedPermitReportDefinition = useSelector(
     getMineReportPermitRequirementById(formValues?.permit_guid,formValues?.mine_report_permit_requirement_id)
   )
+  const latestAmendment = useSelector(getLatestAmendmentByPermitGuid(formValues?.permit_guid));
 
   return (
     <div style={{ minHeight: "380px" }}>
@@ -94,7 +95,14 @@ export const RequestReportForm: FC<RequestReportFormProps> = ({
           )}
           {selectedPermitReportDefinition && (
             <Col span={24} className="margin-large--bottom">
-              <PermitReportInfoBox twoColumn permitReport={selectedPermitReportDefinition} verb="requesting" />
+              <PermitReportInfoBox
+                twoColumn
+                mineGuid={mineGuid}
+                permitGuid={formValues?.permit_guid}
+                permitAmendmentGuid={latestAmendment?.permit_amendment_guid}
+                permitReport={selectedPermitReportDefinition}
+                verb="requesting" 
+              />
             </Col>
           )}
         </Row>
