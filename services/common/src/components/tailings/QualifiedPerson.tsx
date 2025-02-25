@@ -17,8 +17,7 @@ import { ICreateTailingsStorageFacility } from "@mds/common/interfaces";
 import RenderDate from "../forms/RenderDate";
 import { FORM } from "@mds/common/constants/forms";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
-import { getSystemFlag } from "@mds/common/redux/reducers/authenticationReducer";
-import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
 
 interface QualifiedPersonProps {
     mineGuid: string;
@@ -34,8 +33,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
     const tsfFormName = FORM.ADD_TAILINGS_STORAGE_FACILITY;
     const formValues = useAppSelector(getFormValues(tsfFormName)) as ICreateTailingsStorageFacility;
     const partyRelationships = useAppSelector(getPartyRelationships);
-    const systemFlag = useAppSelector(getSystemFlag);
-    const isCore = systemFlag === SystemFlagEnum.core;
+    const isCore = useAppSelector(getIsCore);
     const [currentQp, setCurrentQp] = useState(null);
 
     const canEditTSFAndEditMode = canEditTSF && isEditMode;
