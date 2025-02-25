@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { Field } from "@mds/common/components/forms/form";
 import { Button, Col, Row, Typography } from "antd";
 import { useAppDispatch } from "@mds/common/redux/rootState";
@@ -56,6 +56,12 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
   const { loading } = usePermitConditions();
   const dispatch = useAppDispatch();
   const [isEditMode, setIsEditMode] = React.useState(modalView && canEditPermitConditions);
+
+  useEffect(() => {
+    if (!canEditPermitConditions) {
+      setIsEditMode(false);
+    }
+  }, [canEditPermitConditions]);
 
   const handleDeleteReportRequirement = async ({ mine_report_permit_requirement_id }) => {
     deleteConfirmWrapper("Report Requirement", async () => {

@@ -64,7 +64,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const dispatch = useAppDispatch();
     const { id: mineGuid, permitGuid } = useParams<{ id: string; permitGuid: string }>();
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
-    const { currentAmendment, loading } = usePermitConditions();
+    const { currentAmendment, loading, setLoading } = usePermitConditions();
     // the form fails to re-initialize when the category is changed, so concatenating it forces it to make a new one
     const formName = `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`;
 
@@ -89,6 +89,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     }, [canEditPermitConditions]);
 
     const handleSubmit = async (values) => {
+        setLoading(true);
         const payload = values.step
             ? {
                 ...values,
@@ -99,8 +100,9 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
         // @ts-ignore
         if (resp?.type !== ERROR) {
             cancelEdit();
-            return refreshData();
+            refreshData();
         }
+        setLoading(false);
     };
     const handleCancel = () => {
         cancelEdit();
