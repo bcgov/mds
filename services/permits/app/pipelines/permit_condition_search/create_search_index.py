@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 from app.pipelines.permit_condition_search.config import config
 from azure.core.credentials import AzureKeyCredential
@@ -6,9 +7,15 @@ from azure.search.documents.indexes import SearchIndexClient
 from azure.search.documents.indexes.models import (
     AzureOpenAIVectorizer,
     AzureOpenAIVectorizerParameters,
+    FreshnessScoringFunction,
+    FreshnessScoringParameters,
     HnswAlgorithmConfiguration,
     ScalarQuantizationCompression,
     ScalarQuantizationParameters,
+    ScoringFunction,
+    ScoringFunctionAggregation,
+    ScoringFunctionInterpolation,
+    ScoringProfile,
     SearchField,
     SearchFieldDataType,
     SearchIndex,
@@ -31,136 +38,136 @@ index_client = SearchIndexClient(endpoint=config.search.endpoint, credential=cre
 # Define fields with explicit settings
 fields = [
     SearchField(
-        name="id", 
-        type=SearchFieldDataType.String, 
+        name="id",
+        type=SearchFieldDataType.String,
         key=True,
         searchable=True,
         filterable=True,
         sortable=True,
-        facetable=False
+        facetable=False,
     ),
     SearchField(
-        name="content", 
-        type=SearchFieldDataType.String, 
+        name="content",
+        type=SearchFieldDataType.String,
         searchable=True,
         filterable=False,
         sortable=False,
-        facetable=False
+        facetable=False,
     ),
     SearchField(
-        name="category", 
-        type=SearchFieldDataType.String, 
+        name="category",
+        type=SearchFieldDataType.String,
         searchable=True,
-        filterable=True, 
-        sortable=True, 
-        facetable=True
+        filterable=True,
+        sortable=True,
+        facetable=True,
     ),
     SearchField(
-        name="issue_date", 
-        type=SearchFieldDataType.DateTimeOffset, 
+        name="issue_date",
+        type=SearchFieldDataType.DateTimeOffset,
         searchable=False,
-        filterable=True, 
-        sortable=True, 
-        facetable=True
+        filterable=True,
+        sortable=True,
+        facetable=True,
     ),
     SearchField(
-        name="permit", 
-        type=SearchFieldDataType.String, 
+        name="permit",
+        type=SearchFieldDataType.String,
         searchable=True,
-        filterable=True, 
-        sortable=True, 
-        facetable=True
+        filterable=True,
+        sortable=True,
+        facetable=True,
     ),
     SearchField(
-        name="mine_number", 
-        type=SearchFieldDataType.String, 
+        name="mine_number",
+        type=SearchFieldDataType.String,
         searchable=True,
-        filterable=True, 
-        sortable=True, 
-        facetable=True
+        filterable=True,
+        sortable=True,
+        facetable=True,
     ),
     SearchField(
-        name="mine_name", 
-        type=SearchFieldDataType.String, 
+        name="mine_name",
+        type=SearchFieldDataType.String,
         searchable=True,
-        filterable=True, 
-        sortable=True, 
-        facetable=True
+        filterable=True,
+        sortable=True,
+        facetable=True,
     ),
     SearchField(
-        name="document_name", 
-        type=SearchFieldDataType.String, 
+        name="document_name",
+        type=SearchFieldDataType.String,
         searchable=True,
-        filterable=True, 
-        sortable=True, 
-        facetable=True
+        filterable=True,
+        sortable=True,
+        facetable=True,
     ),
     SearchField(
-        name="document_manager_guid", 
-        type=SearchFieldDataType.String, 
+        name="document_manager_guid",
+        type=SearchFieldDataType.String,
         searchable=True,
-        filterable=True, 
-        sortable=True, 
-        facetable=True
+        filterable=True,
+        sortable=True,
+        facetable=True,
     ),
     SearchField(
-        name="step", 
-        type=SearchFieldDataType.String, 
+        name="step",
+        type=SearchFieldDataType.String,
         searchable=True,
-        filterable=True, 
-        sortable=True, 
-        facetable=True
+        filterable=True,
+        sortable=True,
+        facetable=True,
     ),
     SearchField(
-        name="step_path", 
-        type=SearchFieldDataType.String, 
+        name="step_path",
+        type=SearchFieldDataType.String,
         searchable=True,
-        filterable=True, 
-        sortable=True, 
-        facetable=True
+        filterable=True,
+        sortable=True,
+        facetable=True,
     ),
     SearchField(
-        name="permit_guid", 
-        type=SearchFieldDataType.String, 
+        name="permit_guid",
+        type=SearchFieldDataType.String,
         searchable=False,
         filterable=True,
         sortable=False,
-        facetable=False
+        facetable=False,
     ),
     SearchField(
-        name="mine_guid", 
-        type=SearchFieldDataType.String, 
+        name="mine_guid",
+        type=SearchFieldDataType.String,
         searchable=False,
         filterable=True,
         sortable=False,
-        facetable=False
+        facetable=False,
     ),
     SearchField(
-        name="permit_condition_guid", 
-        type=SearchFieldDataType.String, 
+        name="permit_condition_guid",
+        type=SearchFieldDataType.String,
         searchable=False,
         filterable=True,
         sortable=False,
-        facetable=False
+        facetable=False,
     ),
     SearchField(
-        name="permit_amendment_guid", 
-        type=SearchFieldDataType.String, 
+        name="permit_amendment_guid",
+        type=SearchFieldDataType.String,
         searchable=False,
         filterable=True,
         sortable=False,
-        facetable=False
+        facetable=False,
     ),
     SearchField(
-        name="embedding", 
-        type="Collection(Edm.Half)", 
-        vector_search_dimensions=3072, 
+        name="embedding",
+        type="Collection(Edm.Half)",
+        vector_search_dimensions=3072,
         vector_search_profile_name="vector-profile",
         searchable=True,
         filterable=False,
         sortable=False,
         facetable=False,
-        stored=False
+        stored=False,
     ),
     SearchField(
         name="parent_ids",
@@ -168,7 +175,7 @@ fields = [
         searchable=False,
         filterable=True,
         sortable=False,
-        facetable=False
+        facetable=False,
     ),
     SearchField(
         name="sibling_ids",
@@ -176,7 +183,7 @@ fields = [
         searchable=False,
         filterable=True,
         sortable=False,
-        facetable=False
+        facetable=False,
     ),
     SearchField(
         name="child_ids",
@@ -184,7 +191,7 @@ fields = [
         searchable=False,
         filterable=True,
         sortable=False,
-        facetable=False
+        facetable=False,
     ),
     SearchField(
         name="report_name",
@@ -192,8 +199,8 @@ fields = [
         searchable=True,
         filterable=True,
         sortable=True,
-        facetable=True
-    )
+        facetable=True,
+    ),
 ]
 
 # Vector search configuration
@@ -208,7 +215,7 @@ vector_search = VectorSearch(
             name="vector-profile",
             algorithm_configuration_name="vector-algorithm",
             vectorizer_name="text-embedding-vectorizer",
-            compression_name="vector-compression"
+            compression_name="vector-compression",
         )
     ],
     vectorizers=[
@@ -219,7 +226,7 @@ vector_search = VectorSearch(
                 api_key=config.openai.api_key.resolve_value(),
                 resource_url=config.openai.endpoint,
                 deployment_name="text-embedding-3-large",
-                model_name="text-embedding-3-large"
+                model_name="text-embedding-3-large",
             ),
         ),
     ],
@@ -230,7 +237,7 @@ vector_search = VectorSearch(
             default_oversampling=10,
             parameters=ScalarQuantizationParameters(quantized_data_type="int8"),
         )
-    ]
+    ],
 )
 
 # Semantic search configuration
@@ -244,27 +251,31 @@ semantic_config = SemanticConfiguration(
             SemanticField(field_name="mine_number"),
             SemanticField(field_name="permit"),
             SemanticField(field_name="step_path"),
-            SemanticField(field_name="document_name")
+            SemanticField(field_name="document_name"),
         ],
-        content_fields=[SemanticField(field_name="content")]
-    )
+        content_fields=[SemanticField(field_name="content")],
+    ),
 )
 
 semantic_search = SemanticSearch(configurations=[semantic_config])
 
 # Scoring profile
-# scoring_profile = ScoringProfile(
-#     name="permit-scoring",
-#     functions=[
-#         TagScoringFunction(
-#             field_name="category",
-#             boost=2.0,
-#             parameters=TagScoringParameters(
-#                 tags_parameter="categories",
-#             ),
-#         )
-#     ]
-# )
+scoring_profile = ScoringProfile(
+    name="recency-boost-profile",
+    functions=[
+        FreshnessScoringFunction(
+            field_name="issue_date",
+            boost=3.0,
+            parameters=FreshnessScoringParameters(
+                boosting_duration=timedelta(
+                    days=365 * 70
+                )  # Boost documents within the last 70 years
+            ),
+            interpolation=ScoringFunctionInterpolation.LINEAR,
+        )
+    ],
+    function_aggregation=ScoringFunctionAggregation.SUM,
+)
 
 # Create or update index
 index = SearchIndex(
@@ -272,8 +283,10 @@ index = SearchIndex(
     fields=fields,
     vector_search=vector_search,
     semantic_search=semantic_search,
-    # scoring_profiles=[scoring_profile]
+    scoring_profiles=[scoring_profile],
+    default_scoring_profile="recency-boost-profile",  # Make this the default scoring profile
 )
+
 
 def create_or_update_index():
     result = index_client.create_or_update_index(index)

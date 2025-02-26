@@ -2,6 +2,7 @@ from typing import Any, Dict, List, Optional
 
 from azure.search.documents.indexes.models import SimpleField
 from azure.search.documents.models import (
+    QueryCaptionType,
     QueryType,
     VectorizableTextQuery,
     VectorizedQuery,
@@ -34,36 +35,53 @@ class AdditionalAISearchConfig:
             "highlight_post_tag": self.highlight_post_tag,
             "highlight_pre_tag": self.highlight_pre_tag,
         }
+
+
 class AzureSearchDocumentStore(AzureAISearchDocumentStore):
 
-        
-
-    def __init__(self, extra_field_config: Optional[Dict[str, Any]]=None, search_config: Optional[AdditionalAISearchConfig]=None, semantic_configuration_name=None,  **kwargs):
+    def __init__(
+        self,
+        extra_field_config: Optional[Dict[str, Any]] = None,
+        search_config: Optional[AdditionalAISearchConfig] = None,
+        semantic_configuration_name=None,
+        **kwargs,
+    ):
         super(AzureSearchDocumentStore, self).__init__(**kwargs)
         self.extra_field_config = extra_field_config
         self.search_config = search_config or AdditionalAISearchConfig()
         self.semantic_configuration_name = semantic_configuration_name
-    
-    def _convert_search_result_to_documents(self, azure_docs: List[Dict[str, Any]]) -> List[Document]:
+
+    def _convert_search_result_to_documents(
+        self, azure_docs: List[Dict[str, Any]]
+    ) -> List[Document]:
 
         # Get base documents from parent class
-        documents: List[Document] = super()._convert_search_result_to_documents(azure_docs)
-        
+        documents: List[Document] = super()._convert_search_result_to_documents(
+            azure_docs
+        )
+
         # Update each document with score and facets
         for doc in documents:
-            azure_doc = next((azure_doc for azure_doc in azure_docs if azure_doc["id"] == doc.id), None)
+            azure_doc = next(
+                (azure_doc for azure_doc in azure_docs if azure_doc["id"] == doc.id),
+                None,
+            )
 
             if azure_doc:
-                doc.meta.update({
-                    "facets": azure_doc.get('@search.facets', {}),
-                    "highlights": azure_doc.get('@search.highlights', {})
-                })
+                doc.meta.update(
+                    {
+                        "facets": azure_doc.get("@search.facets", {}),
+                        "highlights": azure_doc.get("@search.highlights", {}),
+                    }
+                )
 
-                doc.score = azure_doc.get('@search.rerankerScore', 0.0)
-        
+                doc.score = azure_doc.get("@search.reranker_score", 0.0)
+
         return documents
 
-    def _create_metadata_index_fields(self, metadata: Dict[str, Any]) -> List[SimpleField]:
+    def _create_metadata_index_fields(
+        self, metadata: Dict[str, Any]
+    ) -> List[SimpleField]:
         """Create a list of index fields for storing metadata values."""
 
         index_fields = super()._create_metadata_index_fields(metadata)
@@ -77,7 +95,6 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
                 field.facetable = field_options.get("facetable", field.facetable)
 
         return index_fields
-    
 
     def _hybrid_retrieval(
         self,
@@ -95,7 +112,9 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
             msg = "query_embedding must be a non-empty list of floats"
             raise ValueError(msg)
 
-        vector_query = VectorizableTextQuery(text=query, k_nearest_neighbors=top_k, fields="embedding", exhaustive=True)
+        vector_query = VectorizableTextQuery(
+            text=query, k_nearest_neighbors=top_k, fields="embedding", exhaustive=True
+        )
 
         result = self.client.search(
             search_text=query,
@@ -103,6 +122,7 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
             filter=filters,
             top=top_k,
             query_type=QueryType.SEMANTIC,
+            query_caption=QueryCaptionType.EXTRACTIVE,
             semantic_configuration_name=self.semantic_configuration_name,
             **self.search_config.to_dict(),
             **kwargs,
