@@ -1675,7 +1675,7 @@ __metadata:
     style-loader: 4.0.0
     ts-jest: 29.2.5
     ts-loader: 9.5.1
-    typescript: 4.7.4
+    typescript: 5.7.3
     undici: 6.19.7
     webpack: 5.95.0
     webpack-cli: 5.1.4
@@ -1834,7 +1834,7 @@ __metadata:
     ts-node: ^10.9.1
     tsconfig-paths-webpack-plugin: ^4.1.0
     tus-js-client: 3.1.0
-    typescript: 4.7.4
+    typescript: 5.7.3
     undici: ^6.19.7
     url-loader: 4.1.1
     uuid: 8.3.1
@@ -1966,7 +1966,7 @@ __metadata:
     ts-loader: 9.5.1
     ts-node: 10.9.1
     tus-js-client: 3.1.0
-    typescript: 4.7.4
+    typescript: 5.7.3
     undici: 6.19.7
     url-loader: 4.1.1
     webpack: 5.95.0
@@ -20177,23 +20177,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.7.4":
-  version: 4.7.4
-  resolution: "typescript@npm:4.7.4"
+"typescript@npm:5.7.3":
+  version: 5.7.3
+  resolution: "typescript@npm:5.7.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 5750181b1cd7e6482c4195825547e70f944114fb47e58e4aa7553e62f11b3f3173766aef9c281783edfd881f7b8299cf35e3ca8caebe73d8464528c907a164df
+  checksum: 6c38b1e989918e576f0307e6ee013522ea480dfce5f3ca85c9b2d8adb1edeffd37f4f30cd68de0c38a44563d12ba922bdb7e36aa2dac9c51de5d561e6e9a2e9c
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.7.4#~builtin<compat/typescript>":
-  version: 4.7.4
-  resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=701156"
+"typescript@patch:typescript@5.7.3#~builtin<compat/typescript>":
+  version: 5.7.3
+  resolution: "typescript@patch:typescript@npm%3A5.7.3#~builtin<compat/typescript>::version=5.7.3&hash=701156"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 9096d8f6c16cb80ef3bf96fcbbd055bf1c4a43bd14f3b7be45a9fbe7ada46ec977f604d5feed3263b4f2aa7d4c7477ce5f9cd87de0d6feedec69a983f3a4f93e
+  checksum: 633cd749d6cd7bc842c6b6245847173bba99742a60776fae3c0fbcc0d1733cd51a733995e5f4dadd8afb0e64e57d3c7dbbeae953a072ee303940eca69e22f311
   languageName: node
   linkType: hard
 
