@@ -58,6 +58,9 @@ class MineReportSubmission(Base, AuditMixin):
     permit_condition_category = db.relationship('PermitConditionCategory', lazy='joined')
     permit_condition_category_code = db.Column(
         db.String, db.ForeignKey('permit_condition_category.condition_category_code'))
+    mine_report_permit_requirement_id = db.Column(
+        db.String, db.ForeignKey('mine_report_permit_requirement.mine_report_permit_requirement_id')
+    )
     permit_condition_category_description = association_proxy('permit_condition_category',
                                                               'description')
     description_comment = db.Column(db.String)

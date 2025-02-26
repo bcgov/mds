@@ -2,7 +2,7 @@ import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants/enums";
 import { IMineDocument } from "@mds/common/interfaces";
 
 export interface IMineReportSubmission {
-  mine_report_permit_requirement_id: any;
+  mine_report_permit_requirement_id: string;
   comments: any[];
   create_timestamp: string;
   create_user: string;

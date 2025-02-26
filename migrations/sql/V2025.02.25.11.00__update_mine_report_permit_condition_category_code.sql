@@ -1,0 +1,2 @@
+ALTER TABLE mine_report ALTER COLUMN permit_condition_category_code TYPE character varying;
+ALTER TABLE mine_report_submission ALTER COLUMN permit_condition_category_code TYPE character varying;

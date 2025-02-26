@@ -758,6 +758,7 @@ MINE_REPORT_SUBMISSION_MODEL = api.model(
         'mine_guid': fields.String,
         'mine_name': fields.String,
         'permit_condition_category_code': fields.String,
+        'mine_report_permit_requirement_id': fields.String,
         'description_comment': fields.String,
         'submitter_name': fields.String,
         'submitter_email': fields.String,
