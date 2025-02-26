@@ -162,7 +162,8 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
             ) : (
               <Field
                 name="cim_or_cpo"
-                label="Who is the report for?"
+                labelSubtitle="Who is the report for?"
+                label="Regulatory Authority"
                 required
                 customOptions={Object.keys(REPORT_REGULATORY_AUTHORITY_CODES_HASH).map((key) => {
                   return {
@@ -192,7 +193,8 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
             ) : (
               <Field
                 name="ministry_recipient"
-                label="What office is the report for?"
+                labelSubtitle="What office is the report for?"
+                label="Ministry Recipient"
                 normalize={normalizeGroupCheckBox}
                 component={RenderGroupCheckbox}
                 options={Object.keys(REPORT_MINISTRY_RECIPIENT_HASH).map((key) => {
