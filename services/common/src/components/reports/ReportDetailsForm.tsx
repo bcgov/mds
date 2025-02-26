@@ -43,7 +43,7 @@ import { getParties, getPartyRelationships } from "@mds/common/redux/selectors/p
 import { uniqBy } from "lodash";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import ExportOutlined from "@ant-design/icons/ExportOutlined";
-import { getLatestAmendmentByPermitGuid, getMineReportPermitRequirementById, getPermitByGuid, getPermitConditionCategories } from "@mds/common/redux/selectors/permitSelectors";
+import { getLatestAmendmentByPermitGuid, getMineReportPermitRequirementById, getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { PermitReportInfoBox, RenderPRRFields } from "./ReportGetStarted";
 import MinistryCommentPanel from "@mds/common/components/comments/MinistryCommentPanel";
@@ -178,16 +178,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     getMineReportPermitRequirementById(formValues?.permit_guid,formValues?.mine_report_permit_requirement_id)
   )
   const latestAmendment = useSelector(getLatestAmendmentByPermitGuid(formValues?.permit_guid));
-
-  function getConditionHref(){
-    return GLOBAL_ROUTES?.VIEW_MINE_PERMIT_AMENDMENT.hashRoute(
-      mineGuid,
-      formValues?.permit_guid,
-      permit?.permit_amendment_guid,
-      "conditions",
-      "#"+selectedPermitReportDefinition?.condition_category_code
-    ).toString()
-  } 
 
   const isCRR = report_type === REPORT_TYPE_CODES.CRR;
   const isPRR = report_type === REPORT_TYPE_CODES.PRR;
@@ -481,12 +471,10 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                   label="Report Type"
                   value={report_type && MINE_REPORTS_ENUM[report_type]}
                 />
-                {isPRR && <BaseViewInput label="Permit Condition Category" value={permit?.permit_no} />}
               </Col>
               {isPRR && (
                 <Col md={12} sm={24}>
                   <BaseViewInput label="Permit Number" value={permit?.permit_no} />
-                  <BaseViewInput label="Permit Condition Reference" value={permit?.permit_no} />
                 </Col>
               )}
               {selectedPermitCategory && (
@@ -499,7 +487,14 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               )}
               {isPRR && selectedPermitReportDefinition && (
                 <Col span={24}>
-                  <PermitReportInfoBox permitReport={selectedPermitReportDefinition} twoColumn summary verb="submitting" />
+                  <PermitReportInfoBox
+                    permitAmendmentGuid={latestAmendment.permit_amendment_guid}
+                    permitGuid={formValues?.permit_guid}
+                    mineGuid={mineGuid}
+                    permitReport={selectedPermitReportDefinition}
+                    twoColumn
+                    summary
+                    verb="submitting" />
                 </Col>
               )
               }

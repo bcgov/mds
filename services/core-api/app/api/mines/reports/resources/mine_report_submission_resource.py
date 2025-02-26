@@ -178,7 +178,7 @@ class ReportSubmissionResource(Resource, UserMixin):
         self.parser.add_argument('mine_report_guid', type=str, location='json')
         self.parser.add_argument('mine_report_submission_guid', type=str, location='json')
         self.parser.add_argument('mine_report_submission_status_code', type=str, location='json')
-        self.parser.add_argument('mine_report_permit_requirement_id', type=str, location='json')
+        self.parser.add_argument('mine_report_permit_requirement_id', type=int, location='json')
         self.parser.add_argument('permit_condition_category_code', type=str, location='json')
         self.parser.add_argument('permit_guid', type=str, location='json')
         self.parser.add_argument(

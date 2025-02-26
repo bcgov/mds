@@ -120,7 +120,7 @@ export const PermitReportInfoBox: FC<{ summary?: boolean, twoColumn?: boolean, m
 
           <Typography.Title level={5}>Condition:</Typography.Title>
           <Typography.Paragraph>
-            {condition.stepPath ?? "Not Specified"}
+            {condition?.stepPath ?? "Not Specified"}
           </Typography.Paragraph>
 
           <Row>
@@ -334,7 +334,7 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean, summar
         </Col>
       )}
       {hasValidatedReports && summary && (
-        <Col span={24}>
+        <Col md={!fullWidth && 12} sm={24}>
           <PermitReportCodeRequirement
             amendment={latestAmendment}
             permitGuid={formValues?.permit_guid}
