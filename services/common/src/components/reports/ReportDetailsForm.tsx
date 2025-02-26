@@ -432,18 +432,24 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                   ]}
                 />
               </Col>
-              {isPRR && selectedPermitReportDefinition && (<Col span={24}>
-                <RenderPRRFields mineGuid={initialValues?.mine_guid} summary={true} /> 
-                <PermitReportInfoBox
-                  twoColumn 
-                  permitAmendmentGuid={latestAmendment.permit_amendment_guid}
-                  permitGuid={formValues?.permit_guid}
-                  mineGuid={mineGuid}
-                  permitReport={selectedPermitReportDefinition}
-                  summary
-                  verb="submitting"
-                />
-              </Col>)}
+              {isPRR && (
+                <>
+                  <RenderPRRFields mineGuid={initialValues?.mine_guid} summary={true} /> 
+                  {selectedPermitReportDefinition && isEditMode &&
+                    <Col span={24}>
+                      <PermitReportInfoBox
+                        twoColumn 
+                        permitAmendmentGuid={latestAmendment.permit_amendment_guid}
+                        permitGuid={formValues?.permit_guid}
+                        mineGuid={mineGuid}
+                        permitReport={selectedPermitReportDefinition}
+                        summary
+                        verb="submitting"
+                      />
+                    </Col>
+                  }
+                </>
+              )}
               {isCRR && (
                 <Col span={12}>
                   <Field
