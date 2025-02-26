@@ -12,7 +12,7 @@ import { resetForm } from "@common/utils/helpers";
 import { storeTsf, clearTsf } from "@mds/common/redux/actions/tailingsActions";
 import { modalConfig } from "@/components/modalContent/config";
 import { EDIT_TAILINGS_STORAGE_FACILITY, ADD_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
-import * as FORM from "@/constants/forms";
+import { FORM } from "@mds/common/constants/forms";
 import TailingsTable from "./TailingsTable";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";

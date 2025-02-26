@@ -37,7 +37,7 @@ export const ViewDigitalPermitCredential: FC = () => {
   const activePermitCredential = minesActPermitIssuance.find((mapi) =>
     VC_ACTIVE_CREDENTIAL_STATES.includes(mapi.cred_exch_state)
   );
-  const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
+  const mine: IMine = useSelector(getMineById(mineGuid));
 
   useEffect(() => {
     if (permitRecord) {

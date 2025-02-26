@@ -7,6 +7,8 @@ import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import * as routes from "@/constants/routes";
 import Loading from "@/components/common/Loading";
 import ColumnWrapper from "@/HOC/ColumnWrapper";
+import FeatureFlagGuard from "@/components/common/featureFlag.guard";
+import { Feature } from "@mds/common/utils";
 
 const Routes = () => (
   <Suspense fallback={<Loading></Loading>}>
@@ -118,7 +120,9 @@ const Routes = () => (
       <Route
         path={routes.ADD_TAILINGS_STORAGE_FACILITY.route}
         component={ColumnWrapper()(
-          AuthenticationGuard()(routes.ADD_TAILINGS_STORAGE_FACILITY.component)
+          FeatureFlagGuard(Feature.TSF_V2)(
+            AuthenticationGuard()(routes.ADD_TAILINGS_STORAGE_FACILITY.component)
+          )
         )}
       />
       <Route
@@ -129,11 +133,15 @@ const Routes = () => (
       />
       <Route
         path={routes.ADD_DAM.route}
-        component={ColumnWrapper()(AuthenticationGuard()(routes.ADD_DAM.component))}
+        component={ColumnWrapper()(
+          FeatureFlagGuard(Feature.TSF_V2)(AuthenticationGuard()(routes.ADD_DAM.component))
+        )}
       />
       <Route
         path={routes.EDIT_DAM.route}
-        component={ColumnWrapper()(AuthenticationGuard()(routes.EDIT_DAM.component))}
+        component={ColumnWrapper()(
+          FeatureFlagGuard(Feature.TSF_V2)(AuthenticationGuard()(routes.EDIT_DAM.component))
+        )}
       />
       <Route
         path={routes.ADD_MINE_INCIDENT.route}

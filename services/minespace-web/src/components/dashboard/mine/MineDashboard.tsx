@@ -16,7 +16,7 @@ import { useAppDispatch } from "@mds/common/redux/rootState";
 const MineDashboard: FC = () => {
   const dispatch = useAppDispatch();
   const { id, activeTab } = useParams<{ id: string; activeTab: string }>();
-  const mine: IMine = useSelector((state) => getMineById(state, id));
+  const mine: IMine = useSelector(getMineById(id));
   const defaultIsLoadedValue: boolean = mine?.mine_guid === id;
   const [isLoaded, setIsLoaded] = useState(defaultIsLoadedValue);
   const [mineNotFound, setMineNotFound] = useState(false);

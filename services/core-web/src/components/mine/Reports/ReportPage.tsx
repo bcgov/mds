@@ -33,7 +33,7 @@ import { MineReportTypeUrlParam } from "@mds/common/constants/enums";
 const ReportPage: FC = () => {
   const dispatch = useDispatch();
   const { mineGuid, reportGuid } = useParams<{ mineGuid: string; reportGuid: string }>();
-  const mine = useSelector((state) => getMineById(state, mineGuid));
+  const mine = useSelector(getMineById(mineGuid));
   const mineReportStatusOptions = useSelector(getDropdownMineReportStatusOptions);
   const latestSubmission: IMineReportSubmission = useSelector((state) =>
     getLatestReportSubmission(state, reportGuid)

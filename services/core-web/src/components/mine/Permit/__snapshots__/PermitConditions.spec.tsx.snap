@@ -952,7 +952,7 @@ exports[`PermitConditions renders properly 1`] = `
                                         </svg>
                                       </button>
                                       <span
-                                        class="tara-test ant-popover-disabled-compatible-wrapper form-btn"
+                                        class="ant-popover-disabled-compatible-wrapper form-btn"
                                         style="display: inline-block; cursor: not-allowed;"
                                       >
                                         <button

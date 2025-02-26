@@ -123,12 +123,12 @@ interface ReportDetailsFormProps {
 }
 
 const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
-                                                         isEditMode = true,
-                                                         initialValues,
-                                                         mineGuid,
-                                                         formButtons,
-                                                         handleSubmit,
-                                                       }) => {
+  isEditMode = true,
+  initialValues,
+  mineGuid,
+  formButtons,
+  handleSubmit,
+}) => {
   const { reportGuid } = useParams<{ reportGuid?: string }>();
 
   const coreEditReportPermission = USER_ROLES.role_edit_reports;
@@ -158,7 +158,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const [mineReportDefinition, setMineReportDefinition] = useState<IMineReportDefinition>(null);
 
   const system = useSelector(getSystemFlag);
-  const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
+  const mine: IMine = useSelector(getMineById(mineGuid));
   const MinistryContactsByRegion: IMinistryContact[] = useSelector(getMinistryContactsByRegion);
   const [contactEmail, setContactEmail] = useState<string>();
 
