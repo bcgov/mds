@@ -48,6 +48,10 @@ jest.mock("react", () => {
   };
 });
 
+jest.mock("keycloak-js", () => {
+  return jest.fn()
+});
+
 jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
   useFeatureFlag: () => ({
     isFeatureEnabled: () => true,

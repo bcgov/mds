@@ -31,6 +31,10 @@ jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
   }),
 }));
 
+jest.mock("keycloak-js", () => {
+  return jest.fn();
+});
+
 const location = JSON.stringify(window.location);
 delete window.location;
 
