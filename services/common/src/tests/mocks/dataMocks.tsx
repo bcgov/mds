@@ -1817,7 +1817,6 @@ export const PERMITS: IPermit[] = [
               permit_condition_id: 1639,
               due_date_period_months: 12,
               initial_due_date: "2024-01-01",
-              condition_category_code: "HSC"
             }
           },
           {
@@ -9390,3 +9389,31 @@ export const HELP_GUIDE_MS = {
     },
   ],
 };
+
+export const SEARCH_PERMIT_CONDITIONS_RESPONSE = {
+  documents: [
+    {
+      id: '1',
+      content: 'Water quality monitoring must be conducted monthly',
+      meta: {
+        permit: 'M-123',
+        mine_name: 'Test Mine',
+        issue_date: '2025-02-07',
+        category: 'Environmental',
+      },
+      score: 0.95,
+    },
+  ],
+  prompt: {
+    answers: ['The permit requires monthly water quality monitoring.'],
+  },
+  facets: {
+    category: [
+      { value: 'Environmental', count: 1 },
+      { value: 'Safety', count: 0 },
+    ],
+    mine_name: [
+      { value: 'Test Mine', count: 1 },
+    ],
+  },
+}

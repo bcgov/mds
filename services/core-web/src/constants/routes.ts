@@ -56,6 +56,7 @@ import ViewDigitalPermitCredential from "@/components/mine/DigitalPermitCredenti
 import ComplianceManagement from "@/components/admin/complianceCodes/ComplianceManagement";
 import ProjectSubmissionStatusPage from "@mds/common/components/projectSummary/ProjectSubmissionStatusPage";
 import ViewPermit from "@/components/mine/Permit/ViewPermit";
+import PermitConditionSearch from "@/components/mine/Permit/Search/PermitConditionSearch";
 import { getEnvironment } from "@mds/common/utils/environmentUtils";
 import ViewPermitRedirect from "@/components/mine/Permit/ViewPermitRedirect";
 
@@ -525,6 +526,13 @@ export const SEARCH_RESULTS = {
   component: SearchResults,
   helpKey: "Search-Results",
 };
+
+export const PERMIT_CONDITION_SEARCH = {
+  route: "/permit-conditions/search",
+  component: PermitConditionSearch,
+  helpKey: "Permit-Condition-Search-Results",
+};
+
 
 export const NOTICE_OF_WORK_APPLICATIONS = {
   route: "/dashboard/reporting/notice-of-work",

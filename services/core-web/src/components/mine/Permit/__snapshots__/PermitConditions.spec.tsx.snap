@@ -765,34 +765,6 @@ exports[`PermitConditions renders properly 1`] = `
                           </div>
                         </div>
                         <div
-                          class="ant-col"
-                          style="padding: 8px 5px 8px 5px;"
-                        >
-                          <button
-                            class="ant-btn ant-btn-dashed core-btn core-btn-tertiary fa-icon-container"
-                            type="button"
-                          >
-                            <svg
-                              aria-hidden="true"
-                              class="svg-inline--fa fa-bars-staggered "
-                              data-icon="bars-staggered"
-                              data-prefix="fal"
-                              focusable="false"
-                              role="img"
-                              viewBox="0 0 512 512"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M0 80c0-8.8 7.2-16 16-16H432c8.8 0 16 7.2 16 16s-7.2 16-16 16H16C7.2 96 0 88.8 0 80zM64 240c0-8.8 7.2-16 16-16H496c8.8 0 16 7.2 16 16s-7.2 16-16 16H80c-8.8 0-16-7.2-16-16zM448 400c0 8.8-7.2 16-16 16H16c-8.8 0-16-7.2-16-16s7.2-16 16-16H432c8.8 0 16 7.2 16 16z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                            <span>
-                              Reorder
-                            </span>
-                          </button>
-                        </div>
-                        <div
                           class="ant-col ant-col-24"
                           style="padding: 8px 5px 8px 5px;"
                         >

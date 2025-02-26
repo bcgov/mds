@@ -44,6 +44,9 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
     permit_condition_status_code = db.Column(
         db.String(3), db.ForeignKey('permit_condition_status_code.permit_condition_status_code'), nullable=False, server_default=FetchedValue())
 
+    permit_condition_status = db.relationship(
+        "PermitConditionStatusCode", lazy="select")
+
     condition_category = db.relationship("PermitConditionCategory", lazy="select")
 
     condition_type_code = db.Column(

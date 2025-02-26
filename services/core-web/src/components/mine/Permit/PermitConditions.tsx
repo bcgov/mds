@@ -7,7 +7,6 @@ import {
   faArrowsFromLine,
   faArrowsToLine,
   faBan,
-  faBarsStaggered,
   faCheckCircle,
   faClock
 } from "@fortawesome/pro-light-svg-icons";
@@ -116,6 +115,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
 
   const refreshData = async () => {
     await dispatch(fetchPermits(mineGuid));
+    setEditingConditionGuid(null);
   };
 
   useEffect(() => {
@@ -432,17 +432,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
                       </CoreButton>
                     </Col>
                   </Row>
-                </Col>
-
-                <Col>
-                  <CoreButton
-                    type="tertiary"
-                    className="fa-icon-container"
-                    disabled={showLoading}
-                    icon={<FontAwesomeIcon icon={faBarsStaggered} />}
-                  >
-                    Reorder
-                  </CoreButton>
                 </Col>
                 <Col span={24}>
                   <div className="core-page-content">

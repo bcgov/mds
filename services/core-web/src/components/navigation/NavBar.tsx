@@ -19,6 +19,8 @@ import SearchBar from "@/components/search/SearchBar";
 import { LOGO, HAMBURGER, CLOSE, SUCCESS_CHECKMARK, YELLOW_HAZARD } from "@/constants/assets";
 import NotificationDrawer from "@/components/navigation/NotificationDrawer";
 import HelpGuide from "@mds/common/components/help/HelpGuide";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils";
 
 /**
  * @React.FC NavBar - fixed and responsive navigation
@@ -35,6 +37,8 @@ export const NavBar: FC<NavBarProps> = ({ activeButton, isMenuOpen, toggleHambur
   const userInfo = useSelector(getUserInfo);
   const currentUserVerifiedMines = useSelector(getCurrentUserVerifiedMines) ?? [];
   const currentUserUnverifiedMines = useSelector(getCurrentUserUnverifiedMines) ?? [];
+
+  const { isFeatureEnabled } = useFeatureFlag();
 
   useEffect(() => {
     dispatch(fetchMineVerifiedStatuses(`idir\\${userInfo.preferred_username}`));
@@ -148,7 +152,13 @@ export const NavBar: FC<NavBarProps> = ({ activeButton, isMenuOpen, toggleHambur
       label: "Major Projects",
       route: router.MAJOR_PROJECTS_DASHBOARD.route,
     },
-  ].map((item) => renderFullNavMenuItem(item));
+    isFeatureEnabled(Feature.PERMIT_CONDITION_SEARCH) && {
+      key: "permit-condition-search",
+      label: "Permit Conditions",
+      route: router.PERMIT_CONDITION_SEARCH.route,
+    },
+
+  ].filter(Boolean).map((item) => renderFullNavMenuItem(item));
 
   const adminDropdownItems: MenuProps["items"] = [
     {

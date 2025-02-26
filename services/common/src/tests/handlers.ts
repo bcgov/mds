@@ -9,6 +9,7 @@ import {
   PERMIT_CONDITION_REVIEW_ASSIGNMENTS,
   PROJECT,
   PROJECT_SUMMARY_MINISTRY_COMMENTS,
+  SEARCH_PERMIT_CONDITIONS_RESPONSE,
 } from "@mds/common/tests/mocks/dataMocks";
 import queryString from "query-string";
 import { SystemFlagEnum } from "../constants/enums";
@@ -40,9 +41,23 @@ const permitHandlers = [
   http.get("/%3CAPI_URL%3E/mines/permits/condition-category-codes", async () => {
     return HttpResponse.json(MINE_REPORT_CATEGORY_OPTIONS)
   }),
+];
 
+const permitSearchHandlers = [
+  http.post(
+    `/%3CAPI_URL%3E/search/permit-conditions`,
+    async ({ request, params }) => {
+      const requestBody = await request.json() as { query: string };
 
-]
+      // Mock different responses based on search query
+      if (requestBody?.query?.includes('water')) {
+        return HttpResponse.json(SEARCH_PERMIT_CONDITIONS_RESPONSE);
+      }
+
+      return HttpResponse.json({ documents: [], prompt: { answers: [] }, facets: {} });
+    }
+  )
+];
 
 const helpHandler = http.get("/%3CAPI_URL%3E/help/:helpKey", async ({ request, params }) => {
   const { helpKey } = params;
@@ -84,6 +99,6 @@ const reviewAssignmentHandler = http.get("/%3CAPI_URL%3E/mines/permits/condition
   return HttpResponse.json(response);
 });
 
-const commonHandlers = [...geoSpatialHandlers, ...projectHandlers, helpHandler, ...permitHandlers, complianceReportHandler, reviewAssignmentHandler];
+const commonHandlers = [...geoSpatialHandlers, ...projectHandlers, helpHandler, ...permitHandlers, ...permitSearchHandlers, complianceReportHandler, reviewAssignmentHandler];
 
 export default commonHandlers;

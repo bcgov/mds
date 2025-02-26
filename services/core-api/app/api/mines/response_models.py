@@ -901,6 +901,45 @@ MINE_COMPLIANCE_RESPONSE_MODEL = api.model(
     })
 
 
+FILTER_CONDITION_MODEL = api.model('FilterCondition', {
+    'field': fields.String,
+    'operator': fields.String(enum=["==", "!=", ">", ">=", "<", "<=", "in", "not in"]),
+    'value': fields.List(fields.String)
+})
+
+QUERY_FILTER_MODEL = api.model('QueryFilter', {
+    'operator': fields.String(enum=['AND', 'OR', 'NOT']),
+    'conditions': fields.List(fields.Nested(FILTER_CONDITION_MODEL))
+})
+
+PERMIT_CONDITION_SEARCH_MODEL = api.model(
+    'PermitConditionSearch', {
+        'query': fields.String(required=True),
+        'filters': fields.Nested(QUERY_FILTER_MODEL, required=False),
+    })
+
+
+PERMIT_SERVICE_DOCUMENT_MODEL = api.model(
+    'PermitServiceDocumentModel', {
+        "id": fields.String,
+        "content": fields.String,
+        "meta": fields.Raw,
+        "score": fields.Float,
+    })
+
+PERMIT_SERVICE_LLM_RESPONSE_MODEL = api.model(
+    'PermitServiceLLMResponseModel', {
+        'answers': fields.List(fields.String),
+    })
+
+PERMIT_CONDITION_SEARCH_RESULT_MODEL = api.model(
+    'PermitConditionSearchResult', {
+        "documents": fields.List(fields.Nested(PERMIT_SERVICE_DOCUMENT_MODEL)),
+        "prompt": fields.Raw(),
+        "facets": fields.Raw(),
+
+    })
+
 PERMIT_CONDITION_MODEL = api.model(
     'PermitCondition', {
         'permit_condition_id': fields.Integer,

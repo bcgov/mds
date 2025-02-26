@@ -75,14 +75,21 @@ export const parsePermitConditionStep = (step: string) => {
   return step;
 }
 
-export const formatPermitConditionStep = (step: string) => {
+export const formatPermitConditionStep = (step: string, condition?: string) => {
+  let formattedStep = "";
   if (step?.length > 0) {
     if (step.endsWith(".")) {
-      return step;
+      formattedStep = step;
+    } else {
+      formattedStep = `${step}.`;
     }
-    return `${step}.`
   }
-  return "";
+
+  if (!condition) {
+    return formattedStep;
+  }
+
+  return formattedStep != "" ? `${formattedStep} ${condition}` : condition;
 }
 
 export const getConditionsWithRequirements = (conditions: IPermitCondition[], requirements?: IMineReportPermitRequirement[]) => {

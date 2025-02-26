@@ -6,12 +6,12 @@ from unittest.mock import MagicMock, patch
 
 import pandas as pd
 import pytest
-from app.permit_conditions.converters.filter_conditions_paragraphs import (
+from app.pipelines.permit_condition_extraction.components.filter_conditions_paragraphs import (
     FilterConditionsParagraphsConverter,
     _identify_bottom_of_first_page_header,
     filter_paragraphs,
 )
-from app.permit_conditions.tasks.tasks import task_context
+from app.tasks.tasks import task_context
 from haystack import Document
 from tests.mocks import MockContext
 

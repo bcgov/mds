@@ -3,10 +3,10 @@ import os
 from unittest import mock
 
 import pytest
-from app.permit_conditions.converters.azure_document_intelligence_converter import (
+from app.pipelines.permit_condition_extraction.components.azure_document_intelligence_converter import (
     AzureDocumentIntelligenceConverter,
 )
-from app.permit_conditions.tasks.tasks import task_context
+from app.tasks.tasks import task_context
 from tests.mocks import MockContext
 
 
@@ -21,11 +21,11 @@ def set_env():
 
 
 @mock.patch(
-    "app.permit_conditions.converters.azure_document_intelligence_converter.DEBUG_MODE",
+    "app.pipelines.permit_condition_extraction.components.azure_document_intelligence_converter.DEBUG_MODE",
     False,
 )
 @mock.patch(
-    "app.permit_conditions.converters.azure_document_intelligence_converter.DocumentAnalysisClient"
+    "app.pipelines.permit_condition_extraction.components.azure_document_intelligence_converter.DocumentAnalysisClient"
 )
 def test_run(mock_client, converter, tmp_path):
     os.environ["DEBUG_MODE"] = "faalse"

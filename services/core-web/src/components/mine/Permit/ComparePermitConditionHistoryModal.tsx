@@ -35,7 +35,7 @@ const ComparePermitConditionHistoryModal: FC<ComparePermitConditionHistoryModalP
     const newReports = getConditionsWithRequirements([props.currentAmendmentCondition], newMineReportPermitRequirements);
 
     return (
-        <FormWrapper name={"compare-conditions-form"} isModal>
+        <FormWrapper name={"compare-conditions-form"} isModal scrollOnToggleEdit={false}>
             <Row gutter={6}>
                 <Col span={24}>
                     <Typography.Title level={3}>Compare Conditions</Typography.Title>

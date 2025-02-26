@@ -1,5 +1,5 @@
 import pytest
-from app.permit_conditions.pipelines.permit_condition_pipeline import (
+from app.pipelines.permit_condition_extraction.permit_condition_pipeline import (
     permit_condition_pipeline,
 )
 
