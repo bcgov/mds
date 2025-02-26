@@ -2,6 +2,7 @@ import logging
 from datetime import datetime
 from typing import List
 
+from app.common.streaming.formatters import DocumentResultStreamer, LLMResultStreamer
 from app.pipelines.permit_condition_search.components.azure_blob_upload import (
     AzureBlobUploader,
 )
@@ -10,9 +11,6 @@ from app.pipelines.permit_condition_search.components.context_enricher import (
 )
 from app.pipelines.permit_condition_search.components.indexer_runner import (
     IndexerRunner,
-)
-from app.pipelines.permit_condition_search.components.search_output_formatter import (
-    SearchOutputFormatter,
 )
 from app.pipelines.permit_condition_search.config import config
 from app.pipelines.permit_condition_search.create_search_index import (
@@ -60,11 +58,12 @@ doc_metadata_fields = {
     "step_path": str,
     "parent_ids": List[str],  # Changed from parent_id to parent_ids
     "sibling_ids": List[str],  # Add sibling_ids
-    "child_ids": List[str],    # Add child_ids
+    "child_ids": List[str],  # Add child_ids
     "report_name": str,  # Add report_name field
 }
 
 vector_search_config = VectorSearch()
+
 
 def create_azure_search_document_store():
     return AzureSearchDocumentStore(
@@ -79,8 +78,9 @@ def create_azure_search_document_store():
             highlight_fields="content",
             highlight_pre_tag="**",
             highlight_post_tag="**",
-        )
+        ),
     )
+
 
 def create_elasticsearch_document_store():
     return ElasticsearchDocumentStore(
@@ -91,6 +91,7 @@ def create_elasticsearch_document_store():
         ca_certs=config.elasticsearch.ca_cert if config.elasticsearch.ca_cert else None,
         verify_certs=bool(config.elasticsearch.ca_cert),
     )
+
 
 template = """
     You are an expert assistant that helps users retrieve and reason about permit conditions in the mining industry. When answering questions, use only the information provided in the sources and cite them using square brackets with the prefix "doc" (e.g., [doc:1]).
@@ -153,52 +154,69 @@ template = """
     Question: {{question}}
 """
 
+
 def create_permit_condition_search_indexing_pipeline():
     """
     Creates a pipeline for indexing permit conditions by uploading to blob storage and running the indexer
     """
     index_pipeline = Pipeline()
-    
+
     blob_uploader = AzureBlobUploader(
         connection_string=config.storage.connection_string,
-        container_name=config.storage.container_name
+        container_name=config.storage.container_name,
     )
-    
+
     indexer_runner = IndexerRunner(
         search_endpoint=config.search.endpoint,
-        search_api_key=config.search.api_key.resolve_value()
+        search_api_key=config.search.api_key.resolve_value(),
     )
-    
+
     index_pipeline.add_component("blob_uploader", blob_uploader)
     index_pipeline.add_component("indexer_runner", indexer_runner)
-    
+
     index_pipeline.connect("blob_uploader.blob_url", "indexer_runner.blob_url")
-    
+
     return index_pipeline
+
 
 def create_permit_condition_search_retrieval_pipeline():
     """
     Creates a RAG pipeline for retrieving permit conditions
     """
+    print("Creating permit condition search retrieval pipeline")
     retrieval_pipeline = Pipeline()
 
-    azure_search_document_store = create_azure_search_document_store()
+    print("Initializing document store")
+    try:
+        azure_search_document_store = create_azure_search_document_store()
+        print("Document store initialized successfully")
+    except Exception as e:
+        print(f"Error initializing document store: {str(e)}")
+        raise
 
+    logger.info("Adding components to pipeline")
     text_embedder = AzureOpenAITextEmbedder(
         azure_endpoint=config.openai.endpoint,
         azure_deployment=config.openai.embedding_model,
-        api_key=config.openai.api_key
+        api_key=config.openai.api_key,
     )
-    
+
     retriever = AzureAISearchHybridRetriever(
         document_store=azure_search_document_store,
-        facets=["category", "issue_date", "permit", "mine_number", "mine_name", "document_name"],
+        facets=[
+            "category",
+            "issue_date",
+            "permit",
+            "mine_number",
+            "mine_name",
+            "document_name",
+        ],
     )
-    
+
     context_enricher = ContextEnricher(document_store=azure_search_document_store)
-    
+
     prompt_builder = PromptBuilder(template=template)
-    
+
     llm = AzureOpenAIGenerator(
         azure_endpoint=config.openai.endpoint,
         azure_deployment=config.openai.deployment_name,
@@ -206,24 +224,63 @@ def create_permit_condition_search_retrieval_pipeline():
         api_version=config.openai.api_version,
         generation_kwargs={"temperature": 0, "max_tokens": 16384, "n": 1},
     )
-    
-    output_formatter = SearchOutputFormatter()
 
+    # Use our newer streamer components
+    document_result_streamer = DocumentResultStreamer()
+
+    # Use the enhanced streamer
+    llm_result_streamer = LLMResultStreamer()
+
+    logger.info("Adding components to pipeline")
+    # Add components to pipeline
     retrieval_pipeline.add_component("text_embedder", text_embedder)
     retrieval_pipeline.add_component("retriever", retriever)
     retrieval_pipeline.add_component("context_enricher", context_enricher)
+    retrieval_pipeline.add_component(
+        "document_result_streamer", document_result_streamer
+    )
     retrieval_pipeline.add_component("prompt_builder", prompt_builder)
     retrieval_pipeline.add_component("llm", llm)
-    retrieval_pipeline.add_component("output_formatter", output_formatter)
+    retrieval_pipeline.add_component("llm_result_streamer", llm_result_streamer)
 
+    logger.info("Connecting pipeline components")
+    # Connect components
     retrieval_pipeline.connect("text_embedder.embedding", "retriever.query_embedding")
     retrieval_pipeline.connect("retriever", "context_enricher")
     retrieval_pipeline.connect("context_enricher", "prompt_builder.documents")
+    retrieval_pipeline.connect(
+        "context_enricher.documents", "document_result_streamer.documents"
+    )
     retrieval_pipeline.connect("prompt_builder", "llm")
-    retrieval_pipeline.connect("retriever.documents", "output_formatter.documents")
-    retrieval_pipeline.connect("llm.replies", "output_formatter.replies")
+    retrieval_pipeline.connect("llm.replies", "llm_result_streamer.replies")
 
+    # Validate the pipeline
+    try:
+        retrieval_pipeline._validate_input(
+            {
+                "text_embedder": {"text": "test"},
+                "retriever": {"query": "test", "filters": []},
+                "prompt_builder": {"question": "test"},
+                "llm": {"streaming_callback": lambda x: x},
+                "document_result_streamer": {"stream": lambda x: x},
+                "llm_result_streamer": {"stream": lambda x: x},
+            }
+        )
+        print("Pipeline validation successful!")
+    except Exception as e:
+        print(f"Pipeline validation failed: {str(e)}")
+        raise
+
+    logger.info("Permit condition search retrieval pipeline created successfully")
     return retrieval_pipeline
 
-permit_condition_search_retrieval_pipeline = create_permit_condition_search_retrieval_pipeline()
-permit_condition_search_indexing_pipeline = create_permit_condition_search_indexing_pipeline()
+
+# Log when the pipeline is initialized
+logger.info("Initializing permit condition search pipelines")
+permit_condition_search_retrieval_pipeline = (
+    create_permit_condition_search_retrieval_pipeline()
+)
+permit_condition_search_indexing_pipeline = (
+    create_permit_condition_search_indexing_pipeline()
+)
+logger.info("Pipelines initialized successfully")

@@ -3,7 +3,7 @@ import { List, Space, Tag, Empty, Row, Col, Button, Badge, Skeleton, Typography,
 import ResultItem from './ResultItem';
 import { FilterOutlined } from '@ant-design/icons';
 import { useAppSelector } from '@mds/common/redux/rootState';
-import { selectSearchResults, selectSearchLoading, selectSearchFilters, selectSearchQuery } from '@mds/common/redux/slices/permitSearchSlice';
+import { selectSearchResults, selectSearchLoading, selectSearchFilters, selectSearchQuery, selectSearchStreaming, selectAiLoading, selectDocumentLoading } from '@mds/common/redux/slices/permitSearchSlice';
 import { HaystackDocumentSearchResult } from '@mds/common/interfaces/search/facet-search.interface';
 import FilterDrawer from './FilterDrawer';
 import { startCase } from 'lodash';
@@ -29,6 +29,9 @@ export interface SearchResultsProps {
 const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
     const results = useAppSelector(selectSearchResults);
     const loading = useAppSelector(selectSearchLoading);
+    const streaming = useAppSelector(selectSearchStreaming);
+    const aiLoading = useAppSelector(selectAiLoading);
+    const documentLoading = useAppSelector(selectDocumentLoading);
     const selectedFilters = useAppSelector(selectSearchFilters);
     const query = useAppSelector(selectSearchQuery);
 
@@ -86,6 +89,10 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
         }
         return value;
     };
+
+    // Separate loading indicators for documents and AI
+    const isDocumentsLoading = documentLoading;
+    const isAiLoading = aiLoading;
 
     if (!results && !loading) {
         return (
@@ -153,7 +160,8 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
                 <Divider style={{ margin: '12px 0 0' }} />
             </Col>
             <Col span={24}>
-                {loading ? (
+                {/* Document results section */}
+                {isDocumentsLoading ? (
                     <Skeleton active paragraph={{ rows: 4 }} />
                 ) : (
                     <List<HaystackDocumentSearchResult>

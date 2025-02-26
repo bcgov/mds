@@ -12,6 +12,9 @@ export type PermitSearchFilters = Array<{ category: string; value: string }>;
 interface PermitSearchState {
     results: SearchResult | null;
     loading: boolean;
+    documentLoading: boolean; // New state for document loading
+    aiLoading: boolean;  // Already existing state for AI loading
+    streaming: boolean;
     query: string;
     filters: PermitSearchFilters;
     allFacets: { [key: string]: Facet[] };
@@ -20,9 +23,12 @@ interface PermitSearchState {
 const initialState: PermitSearchState = {
     results: null,
     loading: false,
+    documentLoading: false, // Add initial state
+    streaming: false,
     query: '',
     filters: [],
     allFacets: {},
+    aiLoading: false,
 };
 
 const permitSearchSlice = createAppSlice({
@@ -35,9 +41,29 @@ const permitSearchSlice = createAppSlice({
         setFilters: create.reducer((state, action: { payload: PermitSearchFilters }) => {
             state.filters = action.payload;
         }),
+        updateSearchResults: create.reducer((state, action: { payload: SearchResult }) => {
+            state.results = action.payload;
+        }),
+        updatePromptResults: create.reducer((state, action: { payload: any }) => {
+            if (state.results) {
+                state.results.prompt = action.payload;
+            }
+        }),
+        setStreaming: create.reducer((state, action: { payload: boolean }) => {
+            state.streaming = action.payload;
+        }),
+        setAiLoading: create.reducer((state, action: { payload: boolean }) => {
+            state.aiLoading = action.payload;
+        }),
+        setDocumentLoading: create.reducer((state, action: { payload: boolean }) => {
+            state.documentLoading = action.payload;
+        }),
         searchPermitConditions: create.asyncThunk(
             async (payload: { query: string, filters: PermitSearchFilters }, thunkApi) => {
                 thunkApi.dispatch(showLoading());
+                thunkApi.dispatch(setStreaming(true));
+                thunkApi.dispatch(setDocumentLoading(true)); // Start document loading
+                thunkApi.dispatch(setAiLoading(false)); // Reset AI loading
 
                 thunkApi.dispatch(setQuery(payload.query));
                 thunkApi.dispatch(setFilters(payload.filters));
@@ -50,9 +76,6 @@ const permitSearchSlice = createAppSlice({
                     return acc;
                 }, {} as Record<string, string[]>);
 
-                thunkApi.dispatch(setFilters(payload.filters));
-
-                // Convert filters selected into a format understood by Azure AI Search.
                 const searchQuery: SearchQuery = {
                     query: payload.query,
                     filters: payload.filters.length > 0 ? {
@@ -69,47 +92,148 @@ const permitSearchSlice = createAppSlice({
                     const response = await CustomAxios().post(
                         `${ENVIRONMENT.apiUrl}/search/permit-conditions`,
                         searchQuery,
-                        headers
+                        {
+                            ...headers,
+                            headers: {
+                                ...headers.headers,
+                                'Accept': 'text/event-stream',
+                            },
+                            responseType: 'stream',
+                            adapter: 'fetch',
+                        }
                     );
 
+                    const stream = response.data;
+                    const reader = stream.pipeThrough(new TextDecoderStream()).getReader();
+                    let buffer = '';
+
+                    console.log("Starting to read search stream...");
+
+                    // Parse events using ENDMESSAGE delimiter instead of relying on newlines
+                    const parseEvents = (input: string) => {
+                        console.log("Parsing buffer:", input.substring(0, 100) + (input.length > 100 ? '...' : ''));
+
+                        // Split by ENDMESSAGE and process each complete message
+                        const messageParts = input.split('ENDMESSAGE');
+                        const events: Array<{ type: string, data: string }> = [];
+
+                        // Process all complete messages (all but the last part which might be incomplete)
+                        for (let i = 0; i < messageParts.length - 1; i++) {
+                            const message = messageParts[i].trim();
+                            if (!message || message.startsWith(':')) continue; // Skip empty or comment lines
+                            const [_, eventMatch, dataMatch] = message.match(/event:\s*([^\n]+)data:\s*([^\n]+)/) || [];
+                            if (eventMatch && dataMatch) {
+                                const eventType = eventMatch.trim();
+                                const eventData = dataMatch.trim();
+                                events.push({ type: eventType, data: eventData });
+                            }
+                        }
+
+                        // Return both the events and the remaining part that might be incomplete
+                        return {
+                            events,
+                            remainingBuffer: messageParts[messageParts.length - 1]
+                        };
+                    };
+
+                    while (true) {
+                        const { value, done } = await reader.read();
+                        if (done) {
+                            console.log("Stream ended");
+                            break;
+                        }
+
+                        buffer += value;
+
+                        // Only process if we have at least one complete message
+                        if (buffer.includes('ENDMESSAGE')) {
+                            console.log(`Processing buffer chunk with ${buffer.split('ENDMESSAGE').length - 1} potential messages`);
+
+                            const { events, remainingBuffer } = parseEvents(buffer);
+                            console.log(`Found ${events.length} complete events`);
+
+                            // Process each event
+                            for (const event of events) {
+                                try {
+                                    console.log(`Processing event type: ${event.type}`);
+
+                                    switch (event.type) {
+                                        case 'documents':
+                                            const documentsData = JSON.parse(event.data);
+                                            console.log("Documents received:", documentsData?.documents?.length || 0);
+                                            thunkApi.dispatch(updateSearchResults(documentsData));
+                                            thunkApi.dispatch(setDocumentLoading(false)); // End document loading when received
+                                            break;
+
+                                        case 'ai_start':
+                                            console.log("AI processing started");
+                                            thunkApi.dispatch(setAiLoading(true));
+                                            break;
+
+                                        case 'prompt':
+                                            const promptData = JSON.parse(event.data);
+                                            console.log("Prompt response received");
+                                            thunkApi.dispatch(updatePromptResults(promptData));
+                                            break;
+
+                                        case 'ai_complete':
+                                            console.log("AI processing completed");
+                                            thunkApi.dispatch(setAiLoading(false));
+                                            break;
+
+                                        case 'complete':
+                                            console.log("Search completed");
+                                            thunkApi.dispatch(setStreaming(false));
+                                            // Force a reader.cancel() to end the stream properly
+                                            reader.cancel("Stream complete");
+                                            break;
+
+                                        case 'error':
+                                            console.error('Error from server:', event.data);
+                                            thunkApi.dispatch(setStreaming(false));
+                                            // Force a reader.cancel() to end the stream properly
+                                            reader.cancel("Stream error");
+                                            break;
+                                    }
+                                } catch (e) {
+                                    console.error(`Error processing event ${event.type}:`, e);
+                                    console.error("Event data:", event.data);
+                                }
+                            }
+
+                            // Keep only the part that might be an incomplete message
+                            buffer = remainingBuffer;
+                        }
+                    }
+
                     thunkApi.dispatch(hideLoading());
-                    return response.data;
+                    thunkApi.dispatch(setStreaming(false));
+                    return null;
                 } catch (error) {
+                    console.error('Search error:', error);
                     thunkApi.dispatch(hideLoading());
+                    thunkApi.dispatch(setStreaming(false));
+                    thunkApi.dispatch(setDocumentLoading(false));
+                    thunkApi.dispatch(setAiLoading(false));
                     throw error;
                 }
             },
             {
                 pending: (state) => {
                     state.loading = true;
+                    state.documentLoading = true;
+                    state.aiLoading = false;
+                    state.results = null;
                 },
-                fulfilled: (state, action) => {
+                fulfilled: (state) => {
                     state.loading = false;
-                    state.results = action.payload;
-
-                    // Merge new facets with existing ones
-                    const currentFacets = action.payload.facets || {};
-
-                    state.allFacets = {
-                        ...state.allFacets,
-                        ...Object.fromEntries(
-                            Object.entries(currentFacets).map(([key, values]) => [
-                                key,
-                                Array.from(
-                                    new Map([
-                                        ...(state.allFacets[key] || []),
-                                        ...(values as Facet[])
-                                    ].map(item => [item.value, item])).values()
-                                )
-                            ])
-                        )
-                    };
-
-                    // Also update the results allFacets
-                    state.results.allFacets = state.allFacets;
+                    state.documentLoading = false;
                 },
                 rejected: (state) => {
                     state.loading = false;
+                    state.streaming = false;
+                    state.documentLoading = false;
+                    state.aiLoading = false;
                 },
             }
         ),
@@ -120,16 +244,32 @@ const permitSearchSlice = createAppSlice({
         selectSearchResults: (state: PermitSearchState): SearchResult | null => state.results,
         selectSearchLoading: (state: PermitSearchState): boolean => state.loading,
         selectAllFacets: (state: PermitSearchState): { [key: string]: Facet[] } => state.allFacets,
+        selectSearchStreaming: (state: PermitSearchState): boolean => state.streaming,
+        selectAiLoading: (state: PermitSearchState): boolean => state.aiLoading,
+        selectDocumentLoading: (state: PermitSearchState): boolean => state.documentLoading,
     },
 });
 
-export const { searchPermitConditions, setQuery, setFilters } = permitSearchSlice.actions;
+export const {
+    searchPermitConditions,
+    setQuery,
+    setFilters,
+    updateSearchResults,
+    updatePromptResults,
+    setStreaming,
+    setAiLoading,
+    setDocumentLoading
+} = permitSearchSlice.actions;
+
 export const {
     selectSearchQuery,
     selectSearchFilters,
     selectSearchResults,
     selectSearchLoading,
     selectAllFacets,
+    selectSearchStreaming,
+    selectAiLoading,
+    selectDocumentLoading,
 } = permitSearchSlice.selectors;
 
 export default permitSearchSlice.reducer;

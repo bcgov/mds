@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Typography, Row, Col, Card, Space } from 'antd';
+import { Layout, Typography, Row, Col, Card, Space, Skeleton } from 'antd';
 import SearchBox from './components/SearchBox';
 import SearchResults, { SelectedFilter } from './components/SearchResults';
 import MarkdownViewer from './components/MarkdownViewer';
 import { useAppDispatch, useAppSelector } from '@mds/common/redux/rootState';
-import { selectSearchResults, selectSearchLoading, selectSearchQuery, selectSearchFilters, searchPermitConditions, } from '@mds/common/redux/slices/permitSearchSlice';
+import { selectSearchResults, selectSearchLoading, selectSearchQuery, selectSearchFilters, selectAiLoading, selectDocumentLoading, searchPermitConditions, } from '@mds/common/redux/slices/permitSearchSlice';
 import PermitConditionSearchSplashScreen from './components/PermitConditionSearchSplashScreen';
 import FormWrapper from '@mds/common/components/forms/FormWrapper';
 import { FORM } from '@mds/common/constants/forms';
@@ -17,6 +17,8 @@ const PermitConditionSearch: React.FC = () => {
     const dispatch = useAppDispatch();
     const results = useAppSelector(selectSearchResults);
     const loading = useAppSelector(selectSearchLoading);
+    const aiLoading = useAppSelector(selectAiLoading);
+    const documentLoading = useAppSelector(selectDocumentLoading);
     const query = useAppSelector(selectSearchQuery);
     const selectedFilters = useAppSelector(selectSearchFilters);
     const [isAIResponseExpanded, setIsAIResponseExpanded] = useState(false);
@@ -58,7 +60,7 @@ const PermitConditionSearch: React.FC = () => {
                             />
                             <Card
                                 title="AI-Generated Response"
-                                loading={loading}
+                                loading={false} // Don't use Card's loading state
                                 className={`permit-search__ai-response ${isAIResponseExpanded ? 'permit-search__ai-response--expanded' : ''}`}
                             >
                                 <FontAwesomeIcon
@@ -67,12 +69,16 @@ const PermitConditionSearch: React.FC = () => {
                                     className="expand-button"
                                     title={isAIResponseExpanded ? "Compress" : "Expand"}
                                 />
-                                {results?.prompt?.answers?.map((result) => (
-                                    <MarkdownViewer
-                                        key={`prompt-${result.substring(0, 20)}`}
-                                        markdown={result}
-                                    />
-                                ))}
+                                {aiLoading ? (
+                                    <Skeleton active paragraph={{ rows: 3 }} />
+                                ) : (
+                                    results?.prompt?.answers?.map((result) => (
+                                        <MarkdownViewer
+                                            key={`prompt-${result.substring(0, 20)}`}
+                                            markdown={result}
+                                        />
+                                    ))
+                                )}
                             </Card>
                         </div>
                     </Space>

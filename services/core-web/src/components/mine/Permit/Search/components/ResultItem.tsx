@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Typography, Space, Tag, Row, Col, Button } from 'antd';
-import { HaystackDocumentSearchResult } from '@mds/common/src/interfaces/search/facet-search.interface';
+import { ContextItem, HaystackDocumentSearchResult } from '@mds/common/src/interfaces/search/facet-search.interface';
 import dayjs from 'dayjs';
 import { formatPermitConditionStep } from '@mds/common/utils/helpers';
 import MarkdownViewer from './MarkdownViewer';
@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { openModal } from '@mds/common/redux/actions/modalActions';
 import { VIEW_MINE_PERMIT_AMENDMENT } from '@/constants/routes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faArrowUpRightFromSquare } from '@fortawesome/pro-solid-svg-icons';
+import { faEye, faArrowUpRightFromSquare, faChevronDown, faChevronUp } from '@fortawesome/pro-solid-svg-icons';
 import PermitAmendmentPreviewModal from './PermitAmendmentPreviewModal';
 import DocumentLink from '@mds/common/components/documents/DocumentLink';
 
@@ -22,6 +22,7 @@ interface ResultItemProps {
 
 const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
     const [isHighlighted, setIsHighlighted] = useState(false);
+    const [expandedContext, setExpandedContext] = useState<'above' | 'below' | null>(null);
     const { content, meta, score } = result;
 
     const highlightedResult = meta?.highlights?.content?.join('\n');
@@ -77,8 +78,7 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
 
     // Build breadcrumb path from category and step_path
     const pathParts = [
-        meta.category,
-        ...(meta.step_path ? meta.step_path.split('/') : [])
+        ...(meta.step_path ? meta.step_path.split('.') : [])
     ].filter(Boolean);
 
     const contentToDisplay = formatPermitConditionStep(meta.step, highlightedResult || content);
@@ -89,6 +89,135 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
         meta.permit_amendment_guid,
         'conditions'
     );
+
+    const renderContextItem = (item: ContextItem, isChild = false) => (
+        <div
+            key={item.id}
+            style={{
+                color: 'rgba(0, 0, 0, 0.45)',
+                fontSize: '14px',
+                marginLeft: isChild ? '24px' : '0',
+                padding: '8px 0',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start'
+            }}
+        >
+            <div style={{ flex: 1 }}>
+                {item.step ? `${item.step}. ` : ''}
+                {item.content}
+            </div>
+        </div>
+    );
+
+    const renderExpandLink = (direction: 'above' | 'below', count: number) => (
+        <a
+            onClick={() => setExpandedContext(direction)}
+            style={{
+                color: 'rgba(0, 0, 0, 0.45)',
+                fontSize: '13px',
+                cursor: 'pointer',
+                marginLeft: '8px',
+                whiteSpace: 'nowrap'
+            }}
+        >
+            <FontAwesomeIcon
+                icon={direction === 'above' ? faChevronUp : faChevronDown}
+                style={{ marginRight: '4px' }}
+            />
+            {`Show ${count}`}
+        </a>
+    );
+
+    const renderContexts = () => {
+        const parentContexts = meta.context?.parent_contexts ? Object.values(meta.context.parent_contexts) : [];
+        const prevSiblings = meta.context?.sibling_contexts?.previous || [];
+        const nextSiblings = meta.context?.sibling_contexts?.next || [];
+        const childContexts = meta.context?.child_contexts || [];
+
+        const aboveContexts = [...parentContexts, ...prevSiblings];
+        const belowContexts = [...childContexts, ...nextSiblings];
+
+        const defaultAboveContext = aboveContexts[aboveContexts.length - 1];
+        const defaultBelowContext = belowContexts[0];
+
+        return (
+            <div style={{ marginTop: '8px' }}>  {/* reduced from 16px */}
+                {/* Above contexts */}
+                {aboveContexts.length > 0 && (
+                    <div style={{ marginBottom: '4px' }}>  {/* reduced from 8px */}
+                        {expandedContext === 'above' ? (
+                            <>
+                                {aboveContexts.map((item, index) => (
+                                    <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                        {renderContextItem(item)}
+                                        {index === 0 && (
+                                            <a
+                                                onClick={() => setExpandedContext(null)}
+                                                style={{
+                                                    color: 'rgba(0, 0, 0, 0.45)',
+                                                    fontSize: '13px',
+                                                    cursor: 'pointer',
+                                                    marginLeft: '8px',
+                                                    whiteSpace: 'nowrap'
+                                                }}
+                                            >
+                                                <FontAwesomeIcon icon={faChevronUp} style={{ marginRight: '4px' }} />
+                                                Show less
+                                            </a>
+                                        )}
+                                    </div>
+                                ))}
+                            </>
+                        ) : (
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                {defaultAboveContext && renderContextItem(defaultAboveContext)}
+                                {aboveContexts.length > 1 && renderExpandLink('above', aboveContexts.length - 1)}
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* Main content */}
+                {highlightedResult ? <MarkdownViewer markdown={contentToDisplay} /> : contentToDisplay}
+
+                {/* Below contexts */}
+                {belowContexts.length > 0 && (
+                    <div>
+                        {expandedContext === 'below' ? (
+                            <>
+                                {belowContexts.map((item, index) => (
+                                    <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                        {renderContextItem(item)}
+                                        {index === belowContexts.length - 1 && (
+                                            <a
+                                                onClick={() => setExpandedContext(null)}
+                                                style={{
+                                                    color: 'rgba(0, 0, 0, 0.45)',
+                                                    fontSize: '13px',
+                                                    cursor: 'pointer',
+                                                    marginLeft: '8px',
+                                                    whiteSpace: 'nowrap'
+                                                }}
+                                            >
+                                                <FontAwesomeIcon icon={faChevronDown} style={{ marginRight: '4px' }} />
+                                                Show less
+                                            </a>
+                                        )}
+                                    </div>
+                                ))}
+                            </>
+                        ) : (
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                {defaultBelowContext && renderContextItem(defaultBelowContext)}
+                                {belowContexts.length > 1 && renderExpandLink('below', belowContexts.length - 1)}
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
+        );
+    };
 
     return (
         <Row
@@ -138,9 +267,7 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
                     </Col>
                 </Row>
 
-                <Paragraph>
-                    {highlightedResult ? <MarkdownViewer markdown={contentToDisplay} /> : contentToDisplay}
-                </Paragraph>
+                {renderContexts()}
             </Col>
 
             <Col span={24}>
