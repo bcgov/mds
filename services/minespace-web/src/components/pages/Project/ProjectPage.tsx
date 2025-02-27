@@ -62,7 +62,7 @@ const ProjectPage: FC = () => {
   const hasInformationRequirementsTable = Boolean(information_requirements_table?.irt_guid);
   const hasFinalAplication = Boolean(major_mine_application?.major_mine_application_guid);
 
-  const mine = useSelector((state) => getMineById(state, mine_guid));
+  const mine = useSelector(getMineById(mine_guid));
   const { mine_name } = mine ?? {};
   const { status_code: irtStatus, irt_guid } = information_requirements_table ?? {};
   const { status_code: mmaStatus, major_mine_application_guid } = major_mine_application ?? {};

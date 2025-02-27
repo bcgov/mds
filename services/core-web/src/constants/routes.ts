@@ -300,15 +300,15 @@ export const MINE_NOW_APPLICATIONS = {
 };
 
 export const MINE_TAILINGS = {
-  route: "/mine-dashboard/:id/permits-and-approvals/tailings",
-  dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/tailings`,
+  route: "/mine-dashboard/:mineGuid/permits-and-approvals/tailings",
+  dynamicRoute: (mineGuid) => `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings`,
   component: MineTailingsInfo,
   helpKey: "Mine-Tailings",
 };
 
 export const MINE_TAILINGS_DETAILS = {
   route:
-    "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
+    "/mine-dashboard/:mineGuid/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
   dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information", isEditMode = false) =>
     `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}/${isEditMode ? "edit" : "view"
     }`,
@@ -317,7 +317,6 @@ export const MINE_TAILINGS_DETAILS = {
 };
 
 export const EDIT_TAILINGS_STORAGE_FACILITY = {
-  // identical to above route: MERGE
   route:
     "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
   dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information", isEditMode = false) =>

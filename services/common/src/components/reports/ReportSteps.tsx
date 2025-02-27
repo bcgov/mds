@@ -26,7 +26,7 @@ const ReportSteps = () => {
   const [disableNextButton, setDisableNextButton] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
+  const mine: IMine = useSelector(getMineById(mineGuid));
 
   useEffect(() => {
     if (!mine) {

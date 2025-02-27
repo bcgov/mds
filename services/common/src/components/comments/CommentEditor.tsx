@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { useSelector } from "react-redux";
 import { Button, Form, Input } from "antd";
-import { userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
+import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 
 interface CommentEditorProps {
   onSubmit: (data: any) => void;
@@ -34,7 +34,7 @@ export const CommentEditor: FC<CommentEditorProps> = ({
     setComment(e.target.value);
   };
 
-  const hasRole = useSelector((state) => userHasRole(state, addCommentPermission));
+  const hasRole = useSelector(userHasRole(addCommentPermission));
 
   const canAddComment = addCommentPermission ? hasRole : true;
 

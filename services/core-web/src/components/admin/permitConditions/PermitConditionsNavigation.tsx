@@ -18,8 +18,8 @@ interface AdminNavigationProps {
 
 const PermitConditionsNavigation: FC<AdminNavigationProps> = (props) => {
   const { isFeatureEnabled } = useFeatureFlag();
-  const complianceRolePresent = useSelector((state) =>
-    userHasRole(state, USER_ROLES.role_edit_compliance_codes)
+  const complianceRolePresent = useSelector(
+    userHasRole(USER_ROLES.role_edit_compliance_codes)
   );
   const complianceEnabled = isFeatureEnabled(Feature.HSRC_CODE_EDIT) && complianceRolePresent;
   const ifActiveButton = (route) => (includes(props.activeButton, route) ? "active-menu-btn" : "");

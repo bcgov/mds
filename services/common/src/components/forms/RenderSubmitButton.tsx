@@ -27,6 +27,7 @@ const RenderSubmitButton: FC<RenderSubmitButtonProps> = ({
   const submitting = useSelector(isSubmitting(formName));
   const isFormDirty = useSelector(isDirty(formName));
   const disabled = props.disabled || submitting || (!isFormDirty && disableOnClean);
+  const loading = props.loading || (submitting && !iconButton);
   const className = `${buttonProps?.className ?? ""} form-btn`;
 
   return (
@@ -35,7 +36,7 @@ const RenderSubmitButton: FC<RenderSubmitButtonProps> = ({
         <Button
           type="primary"
           disabled={disabled}
-          loading={submitting || props.loading}
+          loading={loading}
           htmlType="submit"
           icon={icon}
           aria-label="Submit"

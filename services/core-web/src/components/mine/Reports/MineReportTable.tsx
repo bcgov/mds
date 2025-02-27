@@ -64,8 +64,8 @@ export const MineReportTable: FC<MineReportTableProps> = ({
 
   const hideColumn = (condition) => (condition ? "column-hide" : "");
 
-  const userIsCoreEditReports = useSelector((state) =>
-    userHasRole(state, USER_ROLES.role_edit_reports)
+  const userIsCoreEditReports = useSelector(
+    userHasRole(USER_ROLES.role_edit_reports)
   );
   const history = useHistory();
 

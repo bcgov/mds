@@ -28,18 +28,19 @@ interface PermitConditionReviewAssignmentProps {
 const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> = ({
   category,
 }) => {
-  const { currentAmendment } = usePermitConditions();
+  const { currentAmendment, loading } = usePermitConditions();
   const { permit_amendment_id } = currentAmendment;
   const reviewAssignment = useSelector(getCategoryReviewAssignment(permit_amendment_id, category.condition_category_code));
   const isUserAssigned = useSelector(isUserAssignedToReviewCategory(permit_amendment_id, category.condition_category_code));
-  const isLoaded = useSelector(getPermitReviewAssignmentsIsLoaded(permit_amendment_id));
+  const assignmentsLoaded = useSelector(getPermitReviewAssignmentsIsLoaded(permit_amendment_id));
   const reviewer = reviewAssignment?.assigned_review_user;
+  const isLoaded = !loading && assignmentsLoaded;
 
   const dispatch = useDispatch();
   const initialValues = { value: reviewer?.sub ?? "", label: reviewer?.display_name ?? "" }
 
-  const userCanAssignReviewers = useSelector((state) =>
-    userHasRole(state, USER_ROLES.role_edit_template_conditions)
+  const userCanAssignReviewers = useSelector(
+    userHasRole(USER_ROLES.role_edit_template_conditions)
   );
 
   const formName = `${FORM.PERMIT_CONDITION_REVIEW_ASSIGNMENT}-${category.condition_category_code}`;
@@ -105,7 +106,6 @@ const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> 
               <Button
                 icon={<FontAwesomeIcon icon={faXmark} />}
                 disabled={!isLoaded}
-                className="tara-test"
               />
             </Popconfirm>
           )}

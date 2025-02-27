@@ -1,12 +1,20 @@
 import {
+  ConsequenceClassificationStatusCodeEnum,
+  DamTypeEnum,
+  FacilityTypeEnum,
+  ITRBExemptionStatusCodeEnum,
   MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES,
   MINE_INCIDENT_DOCUMENT_TYPE_CODE,
   MINE_REPORT_SUBMISSION_CODES,
   NodStatusSaveEnum,
   NoDTypeSaveEnum,
+  OperatingStatusEnum,
   PROJECT_STATUS_CODES,
   PROJECT_SUMMARY_STATUS_CODES,
+  StorageLocationEnum,
   SystemFlagEnum,
+  TailingsStorageFacilityTypeEnum,
+  TSFOperatingStatusCodeEnum,
   VC_CONNECTION_STATES,
   VC_CRED_ISSUE_STATES,
 } from "@mds/common/constants/enums";
@@ -25,6 +33,7 @@ import {
   IMineReportDefinition,
   IMineReportDueDateType,
   IMineReport,
+  ITailingsStorageFacility,
 } from "@mds/common/interfaces";
 
 export const createMockHeader = () => ({
@@ -55,6 +64,41 @@ export const USERS = [
   },
 ];
 
+export const TSF: ITailingsStorageFacility = {
+  mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+  mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
+  mine_tailings_storage_facility_name: "MockTSF",
+  latitude: null,
+  longitude: null,
+  consequence_classification_status_code: ConsequenceClassificationStatusCodeEnum.LOW,
+  tsf_operating_status_code: TSFOperatingStatusCodeEnum.OPT,
+  itrb_exemption_status_code: ITRBExemptionStatusCodeEnum.YES,
+  dams: [
+    {
+      consequence_classification: ConsequenceClassificationStatusCodeEnum.LOW,
+      current_dam_height: 2,
+      current_elevation: 3,
+      dam_name: "Dam Name",
+      dam_type: DamTypeEnum.dam,
+      latitude: 48,
+      longitude: -127.3,
+      max_pond_elevation: 15,
+      min_freeboard_required: 16,
+      mine_tailings_storage_facility_guid: "abcde-12345",
+      operating_status: OperatingStatusEnum.care_and_maintenance,
+      permitted_dam_crest_elevation: 35,
+      dam_guid: "123",
+      update_timestamp: "2019-04-05 21:05:40.123456+00:00",
+    }
+  ],
+  update_timestamp: "2019-04-05 21:05:40.123456+00:00",
+  update_user: "test@bceid",
+  facility_type: FacilityTypeEnum.tailings_storage_facility,
+  tailings_storage_facility_type: TailingsStorageFacilityTypeEnum.conventional,
+  storage_location: StorageLocationEnum.above_ground,
+  mines_act_permit_no: "P-123"
+};
+
 // used for testing selectors
 export const MINE_RESPONSE = {
   mines: [
@@ -73,16 +117,7 @@ export const MINE_RESPONSE = {
         expiry_date: null,
       },
       mine_tailings_storage_facilities: [
-        {
-          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-          mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
-          mine_tailings_storage_facility_name: "MockTSF",
-          latitude: null,
-          longitude: null,
-          consequence_classification_status_code: "LOW",
-          tsf_operating_status_code: "OPT",
-          itrb_exemption_status_code: "YES",
-        },
+        TSF
       ],
       mine_type: [
         { mine_tenure_type_code: "PLR", mine_type_detail: [] },
@@ -123,6 +158,8 @@ export const MINE_RESPONSE = {
           consequence_classification_status_code: "LOW",
           tsf_operating_status_code: "OPT",
           itrb_exemption_status_code: "YES",
+          update_timestamp: "2019-04-05 21:05:40.123456+00:00",
+          update_user: "test@bceid",
         },
       ],
       mine_type: [
@@ -442,6 +479,7 @@ export const PARTY = {
   parties: {
     "18133c75-49ad-4101-85f3-a43e35ae989a": {
       party_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+      first_name: "First",
       party_name: "mock name",
       party_type_code: "PER",
       address: [{}],

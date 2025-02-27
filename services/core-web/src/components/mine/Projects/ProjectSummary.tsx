@@ -11,7 +11,7 @@ import {
   getFormattedProjectSummary,
   getProject,
 } from "@mds/common/redux/selectors/projectSelectors";
-import { getMineById } from "@mds/common/redux/reducers/mineReducer";
+import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 import {
   createProjectSummary,
@@ -48,7 +48,7 @@ export const ProjectSummary: FC = () => {
     mode: string;
   }>();
   const userInfo = useSelector(getUserInfo);
-  const mine = useSelector((state) => getMineById(state, mineGuid));
+  const mine = useSelector(getMineById(mineGuid));
   const formattedProjectSummary = useSelector(getFormattedProjectSummary);
   const project = useSelector(getProject);
   const anyTouched = useSelector(

@@ -30,6 +30,10 @@ div.condition-layer {
     cursor: initial;
   }
 
+  &--loading {
+    opacity: 0.8;
+  }
+
   &--0 {
     border: 1px solid $transparent-dark-grey;
     border-radius: 4px;
@@ -137,6 +141,15 @@ div.condition-layer {
 
 .condition-category-reviewer-row {
   margin-top: 10px;
+}
+
+.category-add-btn {
+  border: none;
+  font-weight: 400;
+
+  &:focus {
+    color: inherit;
+  }
 }
 
 
