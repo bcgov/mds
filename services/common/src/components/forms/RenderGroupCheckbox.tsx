@@ -41,7 +41,7 @@ const RenderGroupCheckbox: FC<CheckboxProps> = ({
       <Form.Item
         id={input.name}
         name={input.name}
-        label={<div className="view-item-label">{getFormItemLabel(label, false, labelSubtitle, false)}</div>}
+        label={<div className="view-item-label">{labelSubtitle ? getFormItemLabel(label, false, labelSubtitle, false) : label}</div>}
         getValueProps={() => ({ value: input.value })}
         className="view-item"
       >
@@ -57,7 +57,7 @@ const RenderGroupCheckbox: FC<CheckboxProps> = ({
   return (
     <Form.Item
       name={input.name}
-      label={getFormItemLabel(label, required, labelSubtitle, false)}
+      label={labelSubtitle ? getFormItemLabel(label, required, labelSubtitle, false) : label}
       required={required}
       validateStatus={meta.touched ? meta.error && "error" : ""}
       help={
