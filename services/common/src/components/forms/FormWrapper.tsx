@@ -96,10 +96,7 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
   console.log("open form", props.name);
   const dispatch = useDispatch();
 
-  const formErrors = useSelector(
-    (state) => getFormSubmitErrors(props.name)(state),
-    (prev, next) => prev === next
-  );
+  const formErrors = useSelector(getFormSubmitErrors(props.name));
 
   useEffect(() => {
     if (scrollOnToggleEdit) {
