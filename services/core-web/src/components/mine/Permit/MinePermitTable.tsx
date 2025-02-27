@@ -187,20 +187,7 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
     mineGuid,
   });
 
-  // EDIT_PERMITS required for *every* item- enforced at menu-level
-  const actions: ITableAction[] = [
-    isFeatureEnabled(Feature.DIGITIZED_PERMITS) && {
-      key: "view",
-      label: "View",
-      clickFunction: (_, record) =>
-        history.push(
-          VIEW_MINE_PERMIT.dynamicRoute(
-            id,
-            record.permit.permit_guid ?? record.permit.permit_amendment_guid
-          )
-        ),
-      icon: <EyeOutlined />,
-    },
+  const editPermitActions = !userCanEditPermits ? [] : [
     {
       key: "amalgamate-amend",
       label: "Add Permit Amendment",
@@ -288,7 +275,23 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
           cancelText: "Cancel",
         });
       },
+    }
+  ];
+
+  const actions: ITableAction[] = [
+    isFeatureEnabled(Feature.DIGITIZED_PERMITS) && {
+      key: "view",
+      label: "View",
+      clickFunction: (_, record) =>
+        history.push(
+          VIEW_MINE_PERMIT.dynamicRoute(
+            id,
+            record.permit.permit_guid ?? record.permit.permit_amendment_guid
+          )
+        ),
+      icon: <EyeOutlined />,
     },
+    ...editPermitActions
   ].filter(Boolean);
 
   const recordActionsFilter = (record, actionItems) => {
@@ -310,7 +313,7 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
     renderTextColumn("permittee", "Permittee"),
     renderTextColumn("firstIssued", "First Issued"),
     renderTextColumn("lastAmended", "Last Amended"),
-    userCanEditPermits && actionsMenu,
+    actionsMenu,
   ].filter(Boolean);
 
   const handleNavigateToPermitConditions = (record) => {

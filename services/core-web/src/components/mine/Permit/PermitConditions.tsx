@@ -481,8 +481,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                         icon={<FileOutlined />}
                         loading={showLoading}
                         onClick={toggleViewPdf}
-                      >
-                        Open Permit in Document Viewer
+                      >{viewPdf ? "Close" : "Open Permit in"} Document Viewer
                       </CoreButton>
                     </Col>
                   </Row>
