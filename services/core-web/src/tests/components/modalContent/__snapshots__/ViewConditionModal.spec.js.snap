@@ -3,21 +3,31 @@
 exports[`ViewConditionModal renders properly 1`] = `
 <div>
   <p>
-    <NullScreen
-      message=""
-      type="generic"
-    />
+    <div
+      class="null-screen fade-in"
+    >
+      <div>
+        <img
+          alt="mine_img"
+          src="[object Object]"
+        />
+        <h3>
+          No data available
+        </h3>
+      </div>
+    </div>
   </p>
   <div
-    className="right center-mobile"
+    class="right center-mobile"
   >
-    <Button
-      className="full-mobile"
-      onClick={[Function]}
-      type="secondary"
+    <button
+      class="ant-btn ant-btn-default full-mobile"
+      type="button"
     >
-      Close
-    </Button>
+      <span>
+        Close
+      </span>
+    </button>
   </div>
 </div>
 `;

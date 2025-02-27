@@ -402,7 +402,7 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
     if (record.amendmentType === PERMIT_AMENDMENT_TYPES.original) {
       filtered = filtered.filter((a) => a.key !== "delete");
     }
-    if (record.is_generated_in_core) {
+    if (record.is_generated_in_core || !record.now_application_guid) {
       filtered = filtered.filter((a) => a.key !== "edit-permit-conditions");
     }
     return filtered;

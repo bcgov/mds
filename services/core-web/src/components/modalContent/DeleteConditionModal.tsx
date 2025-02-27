@@ -1,15 +1,16 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 import { Result, Button } from "antd";
 import ConditionLayerOne from "@/components/Forms/permits/conditions/ConditionLayerOne";
+import { useAppDispatch } from "@mds/common/redux/rootState";
+import { closeModal } from "@mds/common/redux/actions/modalActions";
+import { IPermitCondition } from "@mds/common/interfaces";
 
-const propTypes = {
-  handleDelete: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  submitting: PropTypes.bool.isRequired,
-  condition: PropTypes.objectOf(PropTypes.any).isRequired,
-  closeModal: PropTypes.func.isRequired,
-};
+interface DeleteConditionModalProps {
+  handleDelete: (condition: IPermitCondition) => void | Promise<void>;
+  title: string;
+  submitting: boolean;
+  condition: IPermitCondition;
+}
 
 const label = {
   SEC: "section? All associated conditions and list items will be removed.",
@@ -17,20 +18,20 @@ const label = {
   LIS: "list item?",
 };
 
-export const DeleteConditionModal = (props) => {
+export const DeleteConditionModal: FC<DeleteConditionModalProps> = (props) => {
+  const dispatch = useAppDispatch();
   return (
     <div>
       <Result
         status="warning"
         style={{ padding: "0px" }}
-        title={`Are you sure you want to delete the following ${
-          label[props.condition.condition_type_code]
-        }`}
+        title={`Are you sure you want to delete the following ${label[props.condition.condition_type_code]
+          }`}
       />
       <br />
       <ConditionLayerOne condition={props.condition} isViewOnly />
       <div className="right center-mobile">
-        <Button className="full-mobile" type="secondary" onClick={props.closeModal}>
+        <Button className="full-mobile" type="default" onClick={() => dispatch(closeModal())}>
           Cancel
         </Button>
         <Button
@@ -46,7 +47,5 @@ export const DeleteConditionModal = (props) => {
     </div>
   );
 };
-
-DeleteConditionModal.propTypes = propTypes;
 
 export default DeleteConditionModal;
