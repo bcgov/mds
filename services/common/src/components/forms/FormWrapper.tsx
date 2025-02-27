@@ -2,7 +2,13 @@ import React, { FC, useEffect } from "react";
 import { Form } from "antd";
 import { compose } from "@reduxjs/toolkit";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { reduxForm, submit, getFormSubmitErrors, InjectedFormProps, ConfigProps } from "@mds/common/components/forms/form";
+import {
+  reduxForm,
+  submit,
+  getFormSubmitErrors,
+  InjectedFormProps,
+  ConfigProps,
+} from "@mds/common/components/forms/form";
 
 export interface IFormContext {
   isEditMode: boolean;
@@ -85,11 +91,15 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
     isEditMode,
     isModal,
     formName: props.name,
-    onReset
+    onReset,
   };
-  console.log('open form', props.name)
+  console.log("open form", props.name);
   const dispatch = useDispatch();
-  const formErrors = useSelector(getFormSubmitErrors(props.name));
+
+  const formErrors = useSelector(
+    (state) => getFormSubmitErrors(props.name)(state),
+    (prev, next) => prev === next
+  );
 
   useEffect(() => {
     if (scrollOnToggleEdit) {
@@ -99,14 +109,15 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
 
   const handleSubmit = async (values) => {
     console.log('handleSubmit', props.name, values)
-    dispatch(submit(props.name));
-    if (!formErrors && props.onSubmit) {
-      await props.onSubmit(values);
-    }
+      dispatch(submit(props.name));
+      if (!formErrors && props.onSubmit) {
+        await props.onSubmit(values);
+      }
   };
 
-  const formClassName = `common-form common-form-${props.name} form-${isEditMode ? "edit" : "view"
-    }`;
+  const formClassName = `common-form common-form-${props.name} form-${
+    isEditMode ? "edit" : "view"
+  }`;
 
   return (
     <FormProvider value={providerValues}>
@@ -128,6 +139,9 @@ const mapStateToProps = (_state, ownProps) => ({
   initialValues: ownProps.initialValues,
   ...ownProps.reduxFormConfig,
 });
-export default compose(connect(mapStateToProps), reduxForm({}))(FormWrapper as any) as FC<
-  FormWrapperProps
->;
+
+const MemoizedFormWrapper: FC<FormWrapperProps> = React.memo(FormWrapper);
+export default compose(
+  connect(mapStateToProps),
+  reduxForm({})
+)(MemoizedFormWrapper as any) as FC<FormWrapperProps>;
