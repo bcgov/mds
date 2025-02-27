@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from "react";
 import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
-import { Field, getFormValues } from "@mds/common/components/forms/form";
+import { Field, change, getFormValues } from "@mds/common/components/forms/form";
 import { Button, Col, Row, Typography } from "antd";
 import { required, yearNotInFuture } from "@mds/common/redux/utils/Validate";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
@@ -41,7 +41,10 @@ export const RequestReportForm: FC<RequestReportFormProps> = ({
     if (!reportDefinitionsLoaded) {
       dispatch(fetchComplianceReports(reportParamsGetAll));
     }
-  }, []);
+    if(selectedPermitReportDefinition){
+      dispatch(change(FORM.REQUEST_REPORT, "due_date", selectedPermitReportDefinition.initial_due_date))
+    }
+  }, [reportDefinitionsLoaded,selectedPermitReportDefinition]);
 
   return (
     <div style={{ minHeight: "380px" }}>

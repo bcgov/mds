@@ -282,7 +282,10 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean, summar
       setLoaded(false);
       dispatch(fetchPermits(mineGuid)).then(() => setLoaded(true));
     }
-  }, [mineGuid]);
+    if(selectedPermitReportDefinition){
+      dispatch(change(formName, "due_date", selectedPermitReportDefinition.initial_due_date))
+    }
+  }, [mineGuid,selectedPermitReportDefinition]);
 
   return (
     <>
