@@ -43,6 +43,11 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
         setPendingFilters(selectedFilters);
     }, [selectedFilters]);
 
+    // Add an effect to sync with Redux filter changes
+    useEffect(() => {
+        setPendingFilters(selectedFilters);
+    }, [selectedFilters]);
+
     const handleFilterChange = (category: string, value: string, checked: boolean) => {
         let newFilters: SelectedFilter[];
         if (checked) {
@@ -60,14 +65,13 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
         );
         setPendingFilters(updatedFilters);
         onFilterChange(updatedFilters) // Apply immediately when removing
-        onFilterChange(updatedFilters) // Apply immediately when removing
         setHasFilterChanges(false);
     };
 
     const applyFilters = () => {
         onFilterChange(pendingFilters);
-        onFilterChange(pendingFilters);
         setHasFilterChanges(false);
+        console.log('Applied filters:', pendingFilters); // Add logging
     };
 
     const clearAllFilters = () => {
@@ -77,9 +81,23 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
     };
 
     const handleTagFilter = (category: string, value: string) => {
-        if (!pendingFilters.some(f => f.category === category && f.value === value)) {
-            setPendingFilters(prev => [...prev, { category, value }]);
-            setHasFilterChanges(true); // Add this line to enable the Apply button
+        console.log(`Adding tag filter: ${category}=${value}`);
+        const filterExists = pendingFilters.some(f =>
+            f.category === category && f.value === value);
+
+        if (!filterExists) {
+            // Create a new array with all existing filters plus the new one
+            const newFilters = [...pendingFilters, { category, value }];
+            console.log('New filters after adding tag:', newFilters);
+
+            // Update local state
+            setPendingFilters(newFilters);
+            setHasFilterChanges(false); // No need to show Apply button since we're applying immediately
+
+            // Apply the filter right away
+            onFilterChange(newFilters);
+        } else {
+            console.log(`Filter ${category}=${value} already exists, not adding duplicate`);
         }
     };
 

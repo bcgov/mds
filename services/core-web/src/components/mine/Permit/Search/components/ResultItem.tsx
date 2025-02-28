@@ -9,9 +9,16 @@ import { useDispatch } from 'react-redux';
 import { openModal } from '@mds/common/redux/actions/modalActions';
 import { VIEW_MINE_PERMIT_AMENDMENT } from '@/constants/routes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faArrowUpRightFromSquare, faChevronDown, faChevronUp } from '@fortawesome/pro-solid-svg-icons';
+import {
+    faEye,
+    faArrowUpRightFromSquare,
+    faChevronDown,
+    faChevronUp,
+    faEllipsisV
+} from '@fortawesome/pro-solid-svg-icons';
 import PermitAmendmentPreviewModal from './PermitAmendmentPreviewModal';
 import DocumentLink from '@mds/common/components/documents/DocumentLink';
+import { ActionMenuButton } from '@mds/common/components/common/ActionMenu';
 
 const { Text, Paragraph } = Typography;
 
@@ -78,7 +85,7 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
 
     // Build breadcrumb path from category and step_path
     const pathParts = [
-        ...(meta.step_path ? meta.step_path.split('.') : [])
+        ...(meta.step_path ? [meta.step_path.split('.')[0]] : [])
     ].filter(Boolean);
 
     const contentToDisplay = formatPermitConditionStep(meta.step, highlightedResult || content);
@@ -89,6 +96,22 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
         meta.permit_amendment_guid,
         'conditions'
     );
+
+    // Build action items for the action menu
+    const actionItems = [
+        {
+            key: 'preview',
+            label: 'Preview Permit',
+            icon: <FontAwesomeIcon icon={faEye} />,
+            clickFunction: handlePreviewPermit
+        },
+        {
+            key: 'navigate',
+            label: 'Go to Permit',
+            icon: <FontAwesomeIcon icon={faArrowUpRightFromSquare} />,
+            clickFunction: handleNavigateToPermit
+        }
+    ];
 
     const renderContextItem = (item: ContextItem, isChild = false) => (
         <div
@@ -234,36 +257,11 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
                 <Row justify="space-between" align="top">
                     <Col>{pathParts?.join(' > ')}</Col>
                     <Col>
-                        <Space>
-                            <span
-                                onClick={handlePreviewPermit}
-                                style={{
-                                    cursor: 'pointer',
-                                    color: 'rgba(0, 0, 0, 0.85)',
-                                    fontSize: '14px',
-                                }}
-                                title="Preview Permit"
-                            >
-                                <FontAwesomeIcon icon={faEye} style={{ marginRight: '4px' }} />
-                                Preview
-                            </span>
-                            <a
-                                href={permitUrl}
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    handleNavigateToPermit();
-                                }}
-                                style={{
-                                    color: 'rgba(0, 0, 0, 0.85)',
-                                    fontSize: '14px',
-                                    textDecoration: 'none'
-                                }}
-                                title="Go to Permit"
-                            >
-                                <FontAwesomeIcon icon={faArrowUpRightFromSquare} style={{ marginRight: '4px' }} />
-                                Go to Permit
-                            </a>
-                        </Space>
+                        <ActionMenuButton
+                            buttonText="Actions" // Keep for backward compatibility
+                            actions={actionItems}
+                            useEllipsis={true}
+                        />
                     </Col>
                 </Row>
 
@@ -308,7 +306,7 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
                         <Text type="secondary" style={{ fontSize: '12px' }}>
                             {dayjs(meta.issue_date).format('MMM D, YYYY')}
                         </Text>
-                        <Tag color="green">{score}% match</Tag>
+                        <Tag color="green">{normalizedScore}% match</Tag>
                     </Space >
                 </Row >
             </Col >

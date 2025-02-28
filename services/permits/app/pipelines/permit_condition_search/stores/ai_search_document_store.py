@@ -100,7 +100,7 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
         self,
         query: str,
         query_embedding: List[float],
-        top_k: int = 10,
+        top_k: int = 25,
         filters: Optional[Dict[str, Any]] = None,
         **kwargs,
     ) -> List[Document]:

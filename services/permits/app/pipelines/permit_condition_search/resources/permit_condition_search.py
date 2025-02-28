@@ -144,7 +144,12 @@ def create_stream_generator(params: SearchParams) -> Iterator[bytes]:
                         "llm_result_streamer": {"stream": stream_handler},
                     }
                 )
-                logger.info("Pipeline execution completed successfully")
+
+                # Ensure facets are included in the pipeline result
+                logger.info(
+                    f"Pipeline execution completed with facets: {bool(result.get('retriever', {}).get('facets'))}"
+                )
+
                 # Always ensure stream is ended after pipeline completes
                 logger.info("Pipeline completed, ending stream")
                 stream_handler.end_stream()

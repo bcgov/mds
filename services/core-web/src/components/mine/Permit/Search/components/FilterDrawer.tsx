@@ -1,14 +1,16 @@
 import React from 'react';
-import { Drawer, Space, Button, Row, Col, Badge } from 'antd';
+import { Drawer, Button, Space, Row, Col, Badge } from 'antd';
+import { SelectedFilter } from './SearchResults';
+import { useAppSelector } from '@mds/common/redux/rootState';
+import { selectAllFacets } from '@mds/common/redux/slices/permitSearchSlice';
 import FacetFilters from './FacetFilters';
 import { FilterOutlined } from '@ant-design/icons';
-import { SelectedFilter } from './SearchResults';
-import { HaystackSearchResponse } from '@mds/common/interfaces/search/facet-search.interface';
+import { HaystackSearchResponse, SearchResult } from '@mds/common/interfaces/search/facet-search.interface';
 
 interface FilterDrawerProps {
     visible: boolean;
     onClose: () => void;
-    results?: HaystackSearchResponse;
+    results?: SearchResult | null;
     pendingFilters: SelectedFilter[];
     selectedFilters: SelectedFilter[];
     onFilterChange: (category: string, value: string, checked: boolean) => void;
@@ -26,17 +28,23 @@ const FilterDrawer: React.FC<FilterDrawerProps> = ({
     onFilterChange,
     onApplyFilters,
     onClearFilters,
-    hasFilterChanges
+    hasFilterChanges,
 }) => {
-    const renderFacets = () => {
-        if (!results?.allFacets) return null;
+    // Get facets from Redux instead of just component props
+    const allFacets = useAppSelector(selectAllFacets);
 
-        return Object.entries(results.allFacets).map(([facetKey, facets]) => {
-            const currentFacets = results.facets?.[facetKey] || [];
-            const updatedFacets = facets.map(facet => ({
+    // Use facets from Redux state as the source of truth
+    const renderFacets = () => {
+        if (!allFacets) return null;
+
+        return Object.entries(allFacets).map(([facetKey, facets]) => {
+            const currentFacets = results?.facets?.[facetKey] || [];
+            const updatedFacets = facets?.map(facet => ({
                 ...facet,
                 count: currentFacets.find(cf => cf.value === facet.value)?.count || 0
             }));
+
+            console.log('Rendering facet:', facetKey, updatedFacets);
 
             return (
                 <Col span={24} key={facetKey}>

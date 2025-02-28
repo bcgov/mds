@@ -113,3 +113,16 @@ export interface FacetGroup {
 export interface SelectedFilters {
     [key: string]: string[];
 }
+
+/**
+ * Interface for search response used in FilterDrawer
+ * This extends the core SearchResult with additional properties needed for the UI
+ */
+export interface HaystackSearchResponse extends SearchResult {
+    // Add any additional properties that might be needed
+    // These are intentionally optional since we're extending an existing interface
+    total?: number;
+    query?: string;
+    page?: number;
+    size?: number;
+}

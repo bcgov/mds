@@ -31,12 +31,19 @@ class PermitSearchService:
 
     def search(self, search_term):
         """
-        Performs a search against the permit service by the `search_term`.
+        Performs a streaming search against the permit service by the `search_term`.
+        Returns a generator that yields SSE formatted responses.
         """
         print(f'Searching for permit conditions with term: {search_term}')
-        results = self.session.post(SEARCH_ENDPOINT, data=json.dumps({'query': search_term['query'], 'filters': search_term.get('filters')})).json()
-
-        return results
+        response = self.session.post(
+            SEARCH_ENDPOINT,
+            data=json.dumps({'query': search_term['query'], 'filters': search_term.get('filters')}),
+            stream=True,
+            headers={'Accept': 'text/event-stream'}
+        )
+        
+        # Just return the response directly for streaming
+        return response
 
     def initialize_permit_extraction(self, permit_amendment_document, with_internal_auth=False):
         """

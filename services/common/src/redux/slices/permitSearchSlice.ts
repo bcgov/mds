@@ -42,7 +42,18 @@ const permitSearchSlice = createAppSlice({
             state.filters = action.payload;
         }),
         updateSearchResults: create.reducer((state, action: { payload: SearchResult }) => {
+            // Preserve existing filters when updating results
+            const existingFilters = state.filters;
+
             state.results = action.payload;
+
+            // Store facets from the search results if they exist
+            if (action.payload.facets) {
+                state.allFacets = action.payload.facets;
+            }
+
+            // Ensure filters are preserved after results update
+            state.filters = existingFilters;
         }),
         updatePromptResults: create.reducer((state, action: { payload: any }) => {
             if (state.results) {
@@ -61,12 +72,14 @@ const permitSearchSlice = createAppSlice({
         searchPermitConditions: create.asyncThunk(
             async (payload: { query: string, filters: PermitSearchFilters }, thunkApi) => {
                 thunkApi.dispatch(showLoading());
+
+                // Store filters at the start - this is important
+                thunkApi.dispatch(setFilters(payload.filters));
+
                 thunkApi.dispatch(setStreaming(true));
                 thunkApi.dispatch(setDocumentLoading(true)); // Start document loading
                 thunkApi.dispatch(setAiLoading(false)); // Reset AI loading
-
                 thunkApi.dispatch(setQuery(payload.query));
-                thunkApi.dispatch(setFilters(payload.filters));
 
                 const headers = createRequestHeader();
 
@@ -159,10 +172,36 @@ const permitSearchSlice = createAppSlice({
 
                                     switch (event.type) {
                                         case 'documents':
-                                            const documentsData = JSON.parse(event.data);
+                                            const documentsData: SearchResult = JSON.parse(event.data);
                                             console.log("Documents received:", documentsData?.documents?.length || 0);
+
+                                            // Log facets received from API
+                                            if (documentsData.facets) {
+                                                console.log("Facets received:", Object.keys(documentsData.facets).length);
+                                            } else {
+                                                console.warn("No facets received in search results");
+                                            }
+
+                                            // Add a check to ensure filters are preserved
+                                            const state = thunkApi.getState() as RootState;
+                                            const currentFilters = state.permitSearch.filters;
+                                            console.log('Current filters before updating results:', currentFilters);
+
+                                            console.log(documentsData)
+
+                                            // Update search results which will also store facets
                                             thunkApi.dispatch(updateSearchResults(documentsData));
                                             thunkApi.dispatch(setDocumentLoading(false)); // End document loading when received
+
+                                            // Double-check filters after results update
+                                            const newState = thunkApi.getState() as RootState;
+                                            console.log('Filters after updating results:', newState.permitSearch.filters);
+
+                                            // If filters were lost, reapply them
+                                            if (newState.permitSearch.filters.length === 0 && currentFilters.length > 0) {
+                                                console.log('Filters were lost! Reapplying:', currentFilters);
+                                                thunkApi.dispatch(setFilters(currentFilters));
+                                            }
                                             break;
 
                                         case 'ai_start':
