@@ -1848,6 +1848,16 @@ export const PERMITS: IPermit[] = [
             step: "1.",
             display_order: 1,
             permit_condition_status_code: "NST",
+            mineReportPermitRequirement: {
+              report_name: "Test Report",
+              mine_report_permit_requirement_id: 1,
+              cim_or_cpo: "cpo",
+              ministry_recipient: ["MMO"],
+              permit_condition_id: 1639,
+              due_date_period_months: 12,
+              initial_due_date: "2024-01-01",
+              condition_category_code: "HSC",
+            }
           },
           {
             permit_condition_id: 1646,
