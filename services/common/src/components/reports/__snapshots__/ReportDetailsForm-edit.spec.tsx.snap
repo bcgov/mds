@@ -3494,9 +3494,9 @@ exports[`ReportDetailsForm renders verified PRR edit mode properly 1`] = `
                       </span>
                       <span
                         class="ant-select-selection-item"
-                        title="Test Report"
+                        title="Test Approved Report"
                       >
-                        Test Report
+                        Test Approved Report
                       </span>
                     </div>
                     <span
@@ -3590,7 +3590,7 @@ exports[`ReportDetailsForm renders verified PRR edit mode properly 1`] = `
             <h5
               class="ant-typography"
             >
-              Test Report
+              Test Approved Report
             </h5>
             <h5
               class="ant-typography"

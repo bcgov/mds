@@ -19,6 +19,8 @@ import RenderSelect from "../forms/RenderSelect";
 import { Field, getFormValues, change } from "@mds/common/components/forms/form";
 import { PermitReportInfoBox } from "./ReportInfoBox";
 import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils/featureFlag";
 
 export const ConditionCategories: FC<{ permitGuid: string; formName: FORM }> = ({
   permitGuid,
@@ -140,7 +142,8 @@ export const RenderPRRFields: FC<{
 
   const formValues = useAppSelector(getFormValues(formName)) as IMineReportSubmission;
   const latestAmendment = useAppSelector(getLatestAmendmentByPermitGuid(formValues?.permit_guid));
-  const hasValidatedReports =
+  const { isFeatureEnabled } = useFeatureFlag();
+  const hasValidatedReports = isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE) &&
     latestAmendment?.conditions_review_completed &&
     latestAmendment?.mine_report_permit_requirements?.length > 0;
 
