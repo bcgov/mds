@@ -31,7 +31,7 @@ const UpdateMineReportSubmissionStatusModal: FC<UpdateMineReportSubmissionStatus
   closeModal,
 }) => {
   const formValues =
-    useSelector((state) => getFormValues(FORM.UPDATE_MINE_REPORT_SUBMISSION_STATUS)(state)) ?? {};
+    useSelector((state) => getFormValues(FORM.UPDATE_MINE_REPORT_SUBMISSION_STATUS)(state)) as IMineReportSubmission;
 
   return (
     <FormWrapper name={FORM.UPDATE_MINE_REPORT_SUBMISSION_STATUS} onSubmit={handleSubmit}>

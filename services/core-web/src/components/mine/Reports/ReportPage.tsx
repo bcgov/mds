@@ -29,9 +29,10 @@ import { IMineReportSubmission } from "@mds/common/interfaces/reports";
 import { FORM } from "@mds/common/constants/forms";
 import { MINE_REPORT_STATUS_HASH } from "@mds/common/constants/strings";
 import { MineReportTypeUrlParam } from "@mds/common/constants/enums";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const ReportPage: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { mineGuid, reportGuid } = useParams<{ mineGuid: string; reportGuid: string }>();
   const mine = useSelector(getMineById(mineGuid));
   const mineReportStatusOptions = useSelector(getDropdownMineReportStatusOptions);
