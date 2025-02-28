@@ -7,8 +7,7 @@ import CoreButton from "@mds/common/components/common/CoreButton";
 import { IPermitCondition } from "@mds/common/interfaces/permits";
 import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
 import { getConditionsWithRequirements } from "@mds/common/utils/helpers";
-
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 import { updatePermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { openModal } from "@mds/common/redux/actions/modalActions";
 import ComparePermitConditionHistoryModal from "./ComparePermitConditionHistoryModal";
@@ -32,7 +31,7 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
   refreshData,
 }) => {
 
-  const { mineGuid, permitGuid, latestAmendment, previousAmendment, currentAmendment } = usePermitConditions();
+  const { mineGuid, permitGuid, latestAmendment, previousAmendment, currentAmendment, loading, setLoading } = usePermitConditions();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -65,18 +64,16 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
         },
         width: 2048,
         content: (props) => {
-          const value = { mineGuid, permitGuid, latestAmendment, previousAmendment, currentAmendment };
+          const value = { mineGuid, permitGuid, latestAmendment, previousAmendment, currentAmendment, loading, setLoading };
           return <PermitConditionsProvider value={value} > <ComparePermitConditionHistoryModal {...props} /></PermitConditionsProvider>;
         }
-
       })
     );
-
   }
 
   const requirements = getConditionsWithRequirements([condition]);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   return <Col span={24}>
     <Row justify="space-between">
@@ -97,6 +94,7 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
         {
           canEditPermitConditions && condition.permit_condition_status_code !== PERMIT_CONDITION_STATUS_CODE.COM &&
           <CoreButton
+            loading={loading}
             type="primary"
             disabled={isDisabled || isSubmitting}
             onClick={() => handleCompleteReview(condition)}

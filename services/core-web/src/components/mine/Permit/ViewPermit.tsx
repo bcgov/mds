@@ -50,7 +50,7 @@ const ViewPermit: FC = () => {
 
   const amendments = permit?.permit_amendments;
 
-  const mine: IMine = useAppSelector((state) => getMineById(state, id));
+  const mine: IMine = useAppSelector(getMineById(id));
   const { isFeatureEnabled } = useFeatureFlag();
   const enablePermitConditionsTab = isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE);
   const permitExtraction = useAppSelector(
@@ -61,8 +61,8 @@ const ViewPermit: FC = () => {
   const isExtracted = !is_generated_in_core;
   const previousAmendmentIndex = permit?.permit_amendments?.findIndex(a => a.permit_amendment_id === latestAmendment?.permit_amendment_id) + 1 || -1;
   const previousAmendment = previousAmendmentIndex > 0 ? permit.permit_amendments[previousAmendmentIndex] : null;
-  const userCanEditConditions = useAppSelector((state) =>
-    userHasRole(state, USER_ROLES.role_edit_template_conditions)
+  const userCanEditConditions = useAppSelector(
+    userHasRole(USER_ROLES.role_edit_template_conditions)
   );
   const documents = latestAmendment?.related_documents ?? [];
 

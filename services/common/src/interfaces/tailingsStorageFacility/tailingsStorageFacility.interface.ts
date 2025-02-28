@@ -4,6 +4,7 @@ import { IDam } from "./dam/dam.interface";
 import { IPartyAppt } from "../party/partyAppt.interface";
 
 export interface ICreateTailingsStorageFacility {
+  mine_tailings_storage_facility_guid?: string;
   mine_tailings_storage_facility_name: string;
   longitude: number;
   latitude: number;
@@ -22,7 +23,6 @@ export interface ICreateTailingsStorageFacility {
 }
 
 export interface ITailingsStorageFacility extends ICreateTailingsStorageFacility {
-  mine_tailings_storage_facility_guid: string;
   mine_guid: string;
   update_timestamp: string;
   update_user: string;
@@ -34,7 +34,7 @@ export interface IEngineerOfRecord extends IPartyAppt {
   status?: string;
 }
 
-export interface ITailingsStorageFacilityForm{
+export interface ITailingsStorageFacilityForm {
   engineer_of_record?: IEngineerOfRecord;
   engineers_of_record?: IEngineerOfRecord[];
   mine_tailings_storage_facility_guid: string;

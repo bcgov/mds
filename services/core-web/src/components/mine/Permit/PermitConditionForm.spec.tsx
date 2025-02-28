@@ -37,6 +37,8 @@ describe("PermitConditionForm", () => {
         latestAmendment: MOCK.PERMITS[0].permit_amendments[0],
         previousAmendment: MOCK.PERMITS[0].permit_amendments[1],
         currentAmendment: MOCK.PERMITS[0].permit_amendments[0],
+        loading: false,
+        setLoading: jest.fn()
     };
 
     it("renders properly in edit mode", async () => {

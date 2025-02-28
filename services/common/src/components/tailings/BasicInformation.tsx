@@ -9,21 +9,18 @@ import {
   required,
   requiredList,
 } from "@mds/common/redux/utils/Validate";
-
 import { Field } from "@mds/common/components/forms/form";
-import { connect } from "react-redux";
 import { formatDateTime } from "@mds/common/redux/utils/helpers";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getTsf } from "@mds/common/redux/selectors/tailingsSelectors";
 import TailingsDiffModal from "@mds/common/components/tailings/TailingsDiffModal";
 import { IPermit, ITailingsStorageFacility } from "@mds/common/interfaces";
 import { CONSEQUENCE_CLASSIFICATION_STATUS_CODE, FACILITY_TYPES, STORAGE_LOCATION, TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD, TSF_OPERATING_STATUS_CODE, TSF_TYPES } from "@mds/common/constants/strings";
+import RenderSelect from "../forms/RenderSelect";
+import RenderField from "../forms/RenderField";
+import { useAppSelector } from "@mds/common/redux/rootState";
 
 export interface BasicInformationProps {
-  permits: IPermit[];
-  showUpdateTimestamp: boolean;
-  renderConfig: any;
-  tsf: ITailingsStorageFacility;
   mineName: string;
   canEditTSF?: boolean;
   isEditMode: boolean;
@@ -73,7 +70,9 @@ const historyDiffValueMapper = {
 };
 
 export const BasicInformation: FC<BasicInformationProps> = (props) => {
-  const { permits, renderConfig, canEditTSF = false, tsf, isEditMode, mineName } = props;
+  const { canEditTSF = false, isEditMode, mineName } = props;
+  const permits: IPermit[] = useAppSelector(getPermits);
+  const tsf: ITailingsStorageFacility = useAppSelector(getTsf);
   const [permitOptions, setPermitOptions] = useState([]);
   const [diffModalOpen, setDiffModalOpen] = useState(false);
 
@@ -96,13 +95,13 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
   }, [permits]);
   return (
     <>
-      {props.tsf?.update_timestamp && (
+      {tsf?.update_timestamp && (
         <Row>
           <Col span={24}>
             <Typography.Paragraph>
               <Alert
-                description={`Last Updated by ${props.tsf.update_user}  on ${formatDateTime(
-                  props.tsf.update_timestamp
+                description={`Last Updated by ${tsf.update_user}  on ${formatDateTime(
+                  tsf.update_timestamp
                 )}`}
                 showIcon
                 message=""
@@ -126,7 +125,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         id="facility_type"
         name="facility_type"
         label="Facility Type"
-        component={renderConfig.SELECT}
+        component={RenderSelect}
         disabled={!canEditTSFAndEditMode}
         data={FACILITY_TYPES}
         required
@@ -136,7 +135,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         label="Mines Act Permit Number"
         id="mines_act_permit_no"
         name="mines_act_permit_no"
-        component={renderConfig.SELECT}
+        component={RenderSelect}
         disabled={!canEditTSFAndEditMode}
         required
         validate={[requiredList]}
@@ -146,7 +145,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         id="tailings_storage_facility_type"
         name="tailings_storage_facility_type"
         label="Tailings Storage Facility Type"
-        component={renderConfig.SELECT}
+        component={RenderSelect}
         disabled={!canEditTSFAndEditMode}
         required
         validate={[requiredList]}
@@ -156,7 +155,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         id="storage_location"
         name="storage_location"
         label="Underground or Above Ground?"
-        component={renderConfig.SELECT}
+        component={RenderSelect}
         disabled={!canEditTSFAndEditMode}
         data={STORAGE_LOCATION}
         required
@@ -166,7 +165,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         id="mine_tailings_storage_facility_name"
         name="mine_tailings_storage_facility_name"
         label="Facility Name"
-        component={renderConfig.FIELD}
+        component={RenderField}
         disabled={!canEditTSFAndEditMode}
         required
         validate={[maxLength(60), required]}
@@ -177,7 +176,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
             id="latitude"
             name="latitude"
             label="Latitude"
-            component={renderConfig.FIELD}
+            component={RenderField}
             disabled={!canEditTSFAndEditMode}
             required
             validate={[lat, required]}
@@ -188,7 +187,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
             id="longitude"
             name="longitude"
             label="Longitude"
-            component={renderConfig.FIELD}
+            component={RenderField}
             disabled={!canEditTSFAndEditMode}
             required
             validate={[lonNegative, lon, required]}
@@ -199,7 +198,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         id="consequence_classification_status_code"
         name="consequence_classification_status_code"
         label="Consequence Classification"
-        component={renderConfig.SELECT}
+        component={RenderSelect}
         disabled={!canEditTSFAndEditMode}
         data={CONSEQUENCE_CLASSIFICATION_STATUS_CODE}
         required
@@ -210,7 +209,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         name="tsf_operating_status_code"
         label="Operating Status"
         data={statusCodeOptions}
-        component={renderConfig.SELECT}
+        component={RenderSelect}
         disabled={!canEditTSFAndEditMode}
         required
         validate={[requiredList]}
@@ -219,7 +218,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         id="itrb_exemption_status_code"
         name="itrb_exemption_status_code"
         label="Independent Tailings Review Board Member"
-        component={renderConfig.SELECT}
+        component={RenderSelect}
         disabled={!canEditTSFAndEditMode}
         data={TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD}
         required
@@ -237,9 +236,4 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  permits: getPermits(state),
-  tsf: getTsf(state),
-});
-
-export default connect(mapStateToProps)(BasicInformation);
+export default BasicInformation;

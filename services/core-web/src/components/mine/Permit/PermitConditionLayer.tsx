@@ -12,6 +12,7 @@ import { getConditionsWithRequirements } from "@mds/common/utils/helpers";
 const { Title } = Typography;
 import { IPermitAmendment } from "@mds/common/interfaces";
 import PermitConditionReportRequirements from "./PermitConditionReportRequirements";
+import { usePermitConditions } from "./PermitConditionsContext";
 
 interface PermitConditionLayerProps {
   isExtracted: boolean;
@@ -54,12 +55,14 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   permitGuid,
   mineGuid,
 }) => {
+  const { loading } = usePermitConditions();
   const editingCondition = editingConditionGuid === condition.permit_condition_guid;
   const [isAddingListItem, setIsAddingListItem] = useState<boolean>(false);
   const [expandClass, setExpandClass] = useState(
     isExpanded ? "condition-expanded" : "condition-collapsed"
   );
-  const className = `condition-layer condition-layer--${level} condition-${condition.condition_type_code} fade-in`;
+  const loadClassName = level === 0 && loading ? " condition-layer--loading" : "";
+  const className = `condition-layer condition-layer--${level}${loadClassName} condition-${condition.condition_type_code} fade-in`;
   const { isFeatureEnabled } = useFeatureFlag();
 
   const handleSetParentExpand = () => {
