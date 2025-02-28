@@ -318,7 +318,7 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
 
   const handleNavigateToPermitConditions = (record) => {
     return history.push(
-      route.EDIT_PERMIT_CONDITIONS.dynamicRoute(record.mineGuid, record.permit_amendment_guid)
+      route.EDIT_PERMIT_CONDITIONS.dynamicRoute(record.mineGuid, record.permit.permit_guid, record.permit_amendment_guid)
     );
   };
 

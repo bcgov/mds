@@ -10,7 +10,7 @@ const condition = MOCK.PERMITS[0].permit_amendments[0].conditions[0];
 const initialState = {
     [PERMITS]: {
         permits: MOCK.PERMITS,
-        permitAmendments: {
+        latestPermitAmendments: {
             [MOCK.PERMITS[0].permit_guid]: MOCK.PERMITS[0].permit_amendments[0]
         }
     },

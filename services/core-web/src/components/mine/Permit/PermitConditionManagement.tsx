@@ -9,13 +9,14 @@ import {
 import {
   getPermitConditions,
   getEditingConditionFlag,
+  getAmendmentByGuid,
 } from "@mds/common/redux/selectors/permitSelectors";
 import {
   fetchPermitConditions,
   deletePermitCondition,
   updatePermitCondition,
   setEditingConditionFlag,
-  getPermitAmendment,
+  fetchPermitAmendment,
 } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { maxBy } from "lodash";
@@ -25,29 +26,31 @@ import { modalConfig } from "@/components/modalContent/config";
 import { COLOR } from "@/constants/styles";
 import { Link, useParams } from "react-router-dom";
 import * as route from "@/constants/routes";
-import { IPermitAmendment } from "@mds/common/interfaces";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 
 
 export const PermitConditionManagement: FC = () => {
   const dispatch = useAppDispatch();
-  const params = useParams<{ mine_guid: string, id: string }>();
+  const params = useParams<{ mine_guid: string, permit_guid: string, id: string }>();
+  const mineGuid = params.mine_guid;
+  const permitGuid = params.permit_guid;
+  const permitAmendmentGuid = params.id;
 
   const permitConditionCategoryOptions = useAppSelector(getPermitConditionCategoryOptions);
   const permitConditions = useAppSelector(getPermitConditions);
   const editingConditionFlag = useAppSelector(getEditingConditionFlag);
+  const mine = useAppSelector(getMineById(mineGuid));
+  const permitAmendment = useAppSelector(getAmendmentByGuid(permitAmendmentGuid));
+
+  const { permit_no, issue_date, authorization_end_date } = permitAmendment ?? {};
 
   const [submitting, setSubmitting] = useState(false);
-  const [permitNo, setPermitNo] = useState("");
-  const [issuesDate, setIssuesDate] = useState("");
-  const [authEndDate, setAuthEndDate] = useState("");
-  const [mineName, setMineName] = useState("");
-  const mineGuid = params.mine_guid;
-  const permitAmendmentGuid = params.id;
+
   const initializedRef = useRef(false);
 
   const fetchPermitConditionsCall = () => {
-    dispatch(fetchPermitConditions(permitAmendmentGuid));
+    dispatch(fetchPermitConditions(mineGuid, permitGuid, permitAmendmentGuid));
   };
 
   if (!initializedRef.current) {
@@ -67,14 +70,12 @@ export const PermitConditionManagement: FC = () => {
   const prevParamsId = usePrevParamsId(params.id);
 
   useEffect(() => {
-    dispatch(fetchMineRecordById(mineGuid)).then((response) => {
-      setMineName(response.data.mine_name);
-    });
-    dispatch(getPermitAmendment(mineGuid, permitAmendmentGuid)).then((response: IPermitAmendment) => {
-      setPermitNo(response.permit_no);
-      setIssuesDate(response.issue_date);
-      setAuthEndDate(response.authorization_end_date);
-    });
+    if (!mine || mine?.mine_guid !== mineGuid) {
+      dispatch(fetchMineRecordById(mineGuid));
+    }
+    if (!permitAmendment || permitAmendment.permit_amendment_guid !== permitAmendmentGuid) {
+      dispatch(fetchPermitAmendment(mineGuid, permitGuid, permitAmendmentGuid));
+    }
   }, []);
 
   useEffect(() => {
@@ -106,6 +107,7 @@ export const PermitConditionManagement: FC = () => {
   };
 
   const openViewConditionModal = (event, conditions, conditionCategory) => {
+    event.stopPropagation();
     event.preventDefault();
     return dispatch(openModal({
       props: {
@@ -122,7 +124,7 @@ export const PermitConditionManagement: FC = () => {
     return dispatch(
       updatePermitCondition(values.permit_condition_guid, permitAmendmentGuid, values))
       .then(() => {
-        dispatch(fetchPermitConditions(permitAmendmentGuid));
+        fetchPermitConditionsCall();
         dispatch(setEditingConditionFlag(false));
       });
   };
@@ -132,7 +134,7 @@ export const PermitConditionManagement: FC = () => {
     return dispatch(
       updatePermitCondition(condition.permit_condition_guid, permitAmendmentGuid, condition))
       .then(() => {
-        dispatch(fetchPermitConditions(permitAmendmentGuid));
+        fetchPermitConditionsCall();
       });
   };
 
@@ -145,13 +147,13 @@ export const PermitConditionManagement: FC = () => {
       <div className="landing-page__header">
         <Row>
           <Col sm={22} md={14} lg={12}>
-            <h1>Add/Edit Permit Conditions for {permitNo}</h1>
+            <h1>Add/Edit Permit Conditions for {permit_no}</h1>
           </Col>
         </Row>
         <Row>
           <Col sm={22} md={14} lg={12}>
             <h1>
-              ({formatDate(issuesDate)} - {authEndDate ? formatDate(authEndDate) : "Present"})
+              ({formatDate(issue_date)} - {authorization_end_date ? formatDate(authorization_end_date) : "Present"})
             </h1>
           </Col>
         </Row>
@@ -159,7 +161,7 @@ export const PermitConditionManagement: FC = () => {
           <Col sm={22} md={14} lg={12}>
             <Link to={route.MINE_PERMITS.dynamicRoute(mineGuid)}>
               <ArrowLeftOutlined className="padding-sm--right" />
-              Back to: {mineName} Permits
+              Back to: {mine?.mine_name} Permits
             </Link>
           </Col>
         </Row>
@@ -182,27 +184,25 @@ export const PermitConditionManagement: FC = () => {
                       (value) => value === "CON"
                     ).length
                       } conditions)`}
-                    <span role="button" onClick={(event) => event.stopPropagation()}>
-                      <Button
-                        ghost
-                        onClick={(event) =>
-                          openViewConditionModal(
-                            event,
-                            permitConditions.filter(
-                              (condition) =>
-                                condition.condition_category_code ===
-                                conditionCategory.condition_category_code
-                            ),
-                            conditionCategory.description
-                          )
-                        }
-                      >
-                        <ReadOutlined
-                          key={conditionCategory.condition_category_code}
-                          className="padding-sm--right icon-sm violet"
-                        />
-                      </Button>
-                    </span>
+                    <Button
+                      ghost
+                      onClick={(event) =>
+                        openViewConditionModal(
+                          event,
+                          permitConditions.filter(
+                            (condition) =>
+                              condition.condition_category_code ===
+                              conditionCategory.condition_category_code
+                          ),
+                          conditionCategory.description
+                        )
+                      }
+                    >
+                      <ReadOutlined
+                        key={conditionCategory.condition_category_code}
+                        className="padding-sm--right icon-sm violet"
+                      />
+                    </Button>
                   </span>
                 }
               >

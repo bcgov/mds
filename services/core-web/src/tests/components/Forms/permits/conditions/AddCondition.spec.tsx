@@ -32,6 +32,20 @@ beforeEach(() => {
   setupProps();
 });
 
+function mockFunction() {
+  const original = jest.requireActual("react-router-dom");
+  return {
+    ...original,
+    useParams: jest.fn().mockReturnValue({
+      mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+      permit_guid: "1628847c-060b-45f2-990f-815877174801",
+      id: "8729830e-5e9a-4be8-9eef-dac4af775f1d"
+    }),
+  };
+}
+
+jest.mock("react-router-dom", () => mockFunction());
+
 describe("AddCondition", () => {
   it("renders properly", () => {
     const component = shallow(<AddCondition {...dispatchProps} {...props} />);

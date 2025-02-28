@@ -12,7 +12,8 @@ export const {
   getStandardPermitConditions,
   getEditingConditionFlag,
   getEditingPreambleFlag,
-  getLatestPermitAmendments
+  getLatestPermitAmendments,
+  getPermitAmendments
 } = permitReducer;
 
 export const getDraftPermitForNOW = createSelector(
@@ -81,6 +82,11 @@ export const getLatestAmendmentByPermitGuid = (permitGuid) =>
 export const getAmendment = (permitGuid, amendmentGuid) =>
   createSelector([getPermitByGuid(permitGuid)], (permit) => {
     return permit?.permit_amendments?.find((amendment) => amendment.permit_amendment_guid === amendmentGuid);
+  });
+
+export const getAmendmentByGuid = (amendmentGuid: string) =>
+  createSelector([getPermitAmendments], (amendments) => {
+    return amendments[amendmentGuid];
   });
 
 export const getPermits = createSelector([getUnformattedPermits], (permits) => {

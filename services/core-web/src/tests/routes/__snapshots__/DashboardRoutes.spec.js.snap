@@ -686,8 +686,8 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
-    key="/:mine_guid/permit-amendment/:id/edit-permit-conditions"
-    path="/:mine_guid/permit-amendment/:id/edit-permit-conditions"
+    key="/:mine_guid/permits/:permit_guid/permit-amendment/:id/edit-permit-conditions"
+    path="/:mine_guid/permits/:permit_guid/permit-amendment/:id/edit-permit-conditions"
   />
   <Route
     component={[Function]}
