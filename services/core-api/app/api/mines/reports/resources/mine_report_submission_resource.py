@@ -212,7 +212,6 @@ class ReportSubmissionResource(Resource, UserMixin):
             mine_report_submission_status_code = "INI"
 
         is_code_required_report = permit_condition_category_code == None
-        is_verified_condition_prr = mine_report_permit_requirement_id == None
         mine_report_definition_id = None
         permit_id = None
 

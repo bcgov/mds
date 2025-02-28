@@ -1,5 +1,8 @@
 import React, { FC, useEffect } from "react";
-import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
+import {
+  useAppDispatch as useDispatch,
+  useAppSelector as useSelector,
+} from "@mds/common/redux/rootState";
 import { Field, change, getFormValues } from "@mds/common/components/forms/form";
 import { Button, Col, Row, Typography } from "antd";
 import { required, yearNotInFuture } from "@mds/common/redux/utils/Validate";
@@ -7,12 +10,25 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
-import { getFormattedMineReportDefinitionOptions, getMineReportDefinitionByGuid, getReportDefinitionsLoaded, fetchComplianceReports, reportParamsGetAll } from "@mds/common/redux/slices/complianceReportsSlice";
-import { PermitReportInfoBox, RenderPRRFields, CodeReportInfoBox } from "@mds/common/components/reports/ReportGetStarted";
+import {
+  getFormattedMineReportDefinitionOptions,
+  getMineReportDefinitionByGuid,
+  getReportDefinitionsLoaded,
+  fetchComplianceReports,
+  reportParamsGetAll,
+} from "@mds/common/redux/slices/complianceReportsSlice";
 import { IMineReport, IMineReportDefinition, IMineReportSubmission } from "@mds/common/interfaces";
 import { MINE_REPORT_SUBMISSION_CODES, REPORT_TYPE_CODES } from "@mds/common/constants/enums";
 import { FORM } from "@mds/common/constants/forms";
-import { getLatestAmendmentByPermitGuid, getMineReportPermitRequirementById, getPermitConditionCategories } from "@mds/common/redux/selectors/permitSelectors";
+import {
+  getLatestAmendmentByPermitGuid,
+  getMineReportPermitRequirementById,
+} from "@mds/common/redux/selectors/permitSelectors";
+import {
+  CodeReportInfoBox,
+  PermitReportInfoBox,
+} from "@mds/common/components/reports/ReportInfoBox";
+import { RenderPRRFields } from "@mds/common/components/reports/PermitRequiredReportFields";
 
 interface RequestReportFormProps {
   onSubmit: (values: Partial<IMineReport>) => void | Promise<void>;
@@ -33,18 +49,23 @@ export const RequestReportForm: FC<RequestReportFormProps> = ({
     getMineReportDefinitionByGuid(formValues?.mine_report_definition_guid)
   );
   const selectedPermitReportDefinition = useSelector(
-    getMineReportPermitRequirementById(formValues?.permit_guid, formValues?.mine_report_permit_requirement_id)
-  )
+    getMineReportPermitRequirementById(
+      formValues?.permit_guid,
+      formValues?.mine_report_permit_requirement_id
+    )
+  );
   const latestAmendment = useSelector(getLatestAmendmentByPermitGuid(formValues?.permit_guid));
 
   useEffect(() => {
     if (!reportDefinitionsLoaded) {
       dispatch(fetchComplianceReports(reportParamsGetAll));
     }
-    if(selectedPermitReportDefinition){
-      dispatch(change(FORM.REQUEST_REPORT, "due_date", selectedPermitReportDefinition.initial_due_date))
+    if (selectedPermitReportDefinition) {
+      dispatch(
+        change(FORM.REQUEST_REPORT, "due_date", selectedPermitReportDefinition.initial_due_date)
+      );
     }
-  }, [reportDefinitionsLoaded,selectedPermitReportDefinition]);
+  }, [reportDefinitionsLoaded, selectedPermitReportDefinition?.condition_category_code]);
 
   return (
     <div style={{ minHeight: "380px" }}>
@@ -104,7 +125,10 @@ export const RequestReportForm: FC<RequestReportFormProps> = ({
           </Col>
           {selectedCodeReportDefinition && (
             <Col span={24}>
-              <CodeReportInfoBox mineReportDefinition={selectedCodeReportDefinition} verb="requesting" />
+              <CodeReportInfoBox
+                mineReportDefinition={selectedCodeReportDefinition}
+                verb="requesting"
+              />
             </Col>
           )}
           {selectedPermitReportDefinition && (

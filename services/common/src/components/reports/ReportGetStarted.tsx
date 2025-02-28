@@ -2,30 +2,31 @@ import { Alert, Button, Col, Row, Typography } from "antd";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { Field, getFormValues, change } from "@mds/common/components/forms/form";
 import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
-import { IMine, IMineReportDefinition, IMineReportPermitRequirement, IMineReportSubmission, IPermitAmendment, IPermitCondition, IPermitConditionCategory } from "@mds/common/interfaces";
-import {
-  createDropDownList,
-  formatComplianceCodeReportName,
-  formatDate,
-} from "@mds/common/redux/utils/helpers";
-import ExportOutlined from "@ant-design/icons/ExportOutlined";
+import { IMine, IMineReportDefinition, IMineReportSubmission } from "@mds/common/interfaces";
 import FormWrapper from "../forms/FormWrapper";
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import { required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
 import RenderSelect from "../forms/RenderSelect";
-import {
-  getDropdownPermitConditionCategoryOptions,
-} from "@mds/common/redux/selectors/staticContentSelectors";
-import { getCategoriesWithReports, getLatestAmendmentByPermitGuid, getMineReportPermitRequirementById, getPermitConditionCategories, getPermits } from "@mds/common/redux/selectors/permitSelectors";
-import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { useParams } from "react-router-dom";
-import { MINE_REPORTS_ENUM, MineReportType, REPORT_TYPE_CODES, SystemFlagEnum } from "@mds/common/constants/enums";
+import {
+  MINE_REPORTS_ENUM,
+  MineReportType,
+  REPORT_TYPE_CODES,
+  SystemFlagEnum,
+} from "@mds/common/constants/enums";
 import { FORM } from "@mds/common/constants/forms";
 import { MMO_EMAIL } from "@mds/common/constants/strings";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
-import { transformPermitReportRequirement } from "@mds/common/utils/helpers";
-import { getReportDefinitionsLoaded, reportParamsGetAll, fetchComplianceReports, getMineReportDefinitionByGuid, getFormattedMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
+import {
+  getReportDefinitionsLoaded,
+  reportParamsGetAll,
+  fetchComplianceReports,
+  getMineReportDefinitionByGuid,
+  getFormattedMineReportDefinitionOptions,
+} from "@mds/common/redux/slices/complianceReportsSlice";
+import { CodeReportInfoBox } from "./ReportInfoBox";
+import { RenderPRRFields } from "./PermitRequiredReportFields";
 
 interface ReportGetStartedProps {
   mine: IMine;
@@ -33,350 +34,6 @@ interface ReportGetStartedProps {
   formButtons: ReactNode;
   setDisableNextButton?: (value: boolean) => void;
 }
-
-export const CodeReportInfoBox: FC<{ mineReportDefinition: IMineReportDefinition; verb: string }> = ({
-  mineReportDefinition,
-  verb,
-}) => {
-  return (
-    <div className="report-info-box">
-      {mineReportDefinition && (
-        <div>
-          {mineReportDefinition.is_prr_only && (
-            <Alert
-              showIcon
-              description="Please submit this report as a permit required report."
-              type="warning"
-              className="margin-large--bottom"
-            />
-          )}
-          <Typography.Title level={4} className="primary-colour">
-            You are {verb}
-          </Typography.Title>
-          <Typography.Title level={5}>
-            {formatComplianceCodeReportName(mineReportDefinition)}
-          </Typography.Title>
-
-          {mineReportDefinition.compliance_articles[0].long_description && (
-            <>
-              <Typography.Title level={5}>About this submission type:</Typography.Title>
-              <Typography.Paragraph>
-                {mineReportDefinition.compliance_articles[0].long_description}
-              </Typography.Paragraph>
-            </>
-          )}
-          {mineReportDefinition.compliance_articles[0].help_reference_link && (
-            <Button
-              target="_blank"
-              rel="noopener noreferrer"
-              href={mineReportDefinition.compliance_articles[0].help_reference_link}
-              type="default"
-            >
-              More information <ExportOutlined />
-            </Button>
-          )}
-        </div>
-      )}
-    </div>
-  );
-};
-
-export const PermitReportInfoBox: FC<{ summary?: boolean, twoColumn?: boolean, mineGuid: string, permitGuid: string, permitAmendmentGuid: string, permitReport: IMineReportPermitRequirement, verb: string }> = ({
-  summary = false,
-  twoColumn = false,
-  permitReport,
-  mineGuid,
-  permitGuid,
-  permitAmendmentGuid,
-  verb,
-}) => {
-
-  const systemFlag = useAppSelector(getSystemFlag);
-  const isCore = systemFlag === SystemFlagEnum.core;
-  const transformedReport = transformPermitReportRequirement(permitReport);
-  const { conditionMap } = useAppSelector(getPermitConditionCategories(permitGuid, permitAmendmentGuid));
-  const condition = conditionMap[permitReport?.permit_condition_id]
-
-  function getConditionHref() {
-    return GLOBAL_ROUTES?.VIEW_MINE_PERMIT_AMENDMENT.hashRoute(
-      mineGuid,
-      permitGuid,
-      permitAmendmentGuid,
-      "conditions",
-      "#" + permitReport?.condition_category_code
-    ).toString()
-  }
-
-  return (
-    <div className={`${summary ? "report-summary-box" : "report-info-box"}`}>
-      {transformedReport && (
-        <div>
-          <Typography.Title level={4} className="primary-colour">
-            You are {verb}:
-          </Typography.Title>
-          <Typography.Title level={5}>
-            {transformedReport.report_name}
-          </Typography.Title>
-
-          <Typography.Title level={5}>Condition:</Typography.Title>
-          <Typography.Paragraph>
-            {condition?.stepPath ?? "Not Specified"}
-          </Typography.Paragraph>
-
-          <Row>
-            <Col span={twoColumn ? 12 : 24}>
-              <Typography.Title level={5}>Frequency:</Typography.Title>
-              <Typography.Paragraph>
-                {transformedReport.frequency}
-              </Typography.Paragraph>
-
-              <Typography.Title level={5}>Due Date:</Typography.Title>
-              <Typography.Paragraph>
-                {transformedReport.initial_due_date ? formatDate(transformedReport.initial_due_date) : "Not Specified"}
-              </Typography.Paragraph>
-            </Col>
-            <Col span={twoColumn ? 12 : 24}>
-              <Typography.Title level={5}>Regulatory Authority:</Typography.Title>
-              <Typography.Paragraph>
-                {transformedReport.regulatory_authority}
-              </Typography.Paragraph>
-
-              <Typography.Title level={5}>Ministry Recipient:</Typography.Title>
-              <Typography.Paragraph>
-                {transformedReport.ministry_recipient}
-              </Typography.Paragraph>
-            </Col>
-          </Row>
-
-          {isCore && getConditionHref && (<Button
-            target="_blank"
-            rel="noopener noreferrer"
-            href={getConditionHref()}
-            type="default"
-          >
-            View Permit Condition <ExportOutlined />
-          </Button>
-          )}
-
-        </div>
-      )}
-    </div>
-  );
-};
-
-export const ConditionCategories: FC<{ permitGuid: string, formName: FORM }> = ({
-  permitGuid,
-  formName
-}) => {
-
-  const dispatch = useAppDispatch();
-  const conditionCategories = useAppSelector(getCategoriesWithReports(permitGuid));
-
-  function handleSelectedReportChange(value: any): void {
-    dispatch(change(formName, "mine_report_permit_requirement_id", value));
-  }
-
-  return (
-    <>
-      {conditionCategories?.map((category) => (
-        <div key={category.condition_category_code}>
-          <Typography.Paragraph
-            strong
-            className="margin-large--top"
-            style={{ marginBottom: 0 }}
-          >
-            {category.description}
-          </Typography.Paragraph>
-
-          {category.reports?.map((report) => (
-            <Row key={report.report_name}>
-              <Col span={24}>
-                <Button
-                  onClick={() => handleSelectedReportChange(report.mine_report_permit_requirement_id)}
-                  type="text"
-                  className="report-link btn-sm-padding"
-                >
-                  <Typography.Text>{report.report_name}</Typography.Text>
-                  <span className="margin-large--left">
-                    <ArrowRightOutlined />
-                  </span>
-                </Button>
-              </Col>
-            </Row>
-          ))}
-        </div>
-      ))}
-    </>
-  )
-}
-
-export const PermitReportCodeRequirement: FC<{ permitGuid: string, amendment: IPermitAmendment, formValues: IMineReportSubmission, formName: FORM, summary?: boolean }> = ({
-  permitGuid,
-  amendment,
-  formValues,
-  summary = false,
-  formName
-}) => {
-
-  const dispatch = useAppDispatch();
-  const conditionCategories = useAppSelector(getCategoriesWithReports(permitGuid));
-  const reports = amendment?.mine_report_permit_requirements;
-  const reportOptions = createDropDownList(reports, "report_name", "mine_report_permit_requirement_id");
-  const selectedReport = reports ? reports.find(report => report.mine_report_permit_requirement_id === formValues?.mine_report_permit_requirement_id) : null;
-  const selectedCategory = selectedReport ? conditionCategories.find(cat => cat.condition_category_code === selectedReport?.condition_category_code) : null;
-
-  useEffect(() => {
-    if (selectedReport) {
-      dispatch(change(formName, "permit_condition_category_code", selectedCategory.condition_category_code));
-    }
-  }, [formValues.mine_report_permit_requirement_id])
-
-  return (
-    <Field
-      name="mine_report_permit_requirement_id"
-      placeholder="Enter code section number or report name"
-      required
-      validate={[required]}
-      props={{
-        label: summary ? "Report Code Requirement" : (
-          <Typography.Title level={5} style={{ display: "inline" }}>
-            Report Code Requirement
-          </Typography.Title>
-        ),
-        labelSubtitle: summary ? "" :
-          "Search for a code section or the report name you would like to submit.",
-        data: reportOptions,
-      }}
-      component={RenderSelect}
-    />
-  )
-}
-
-export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean, summary?: boolean, formName?: FORM }> = ({
-  mineGuid,
-  fullWidth = false,
-  summary = false,
-  formName = FORM.VIEW_EDIT_REPORT
-}) => {
-  const system = useAppSelector(getSystemFlag);
-  const dispatch = useAppDispatch();
-  const dropdownPermitConditionCategoryOptions = useAppSelector(
-    getDropdownPermitConditionCategoryOptions
-  );
-  const permits = useAppSelector(getPermits);
-  const permitDropdown = createDropDownList(permits, "permit_no", "permit_guid");
-  const permitMineGuid = permits[0]?.mine_guid;
-  const [loaded, setLoaded] = useState(permits.length > 0 && permitMineGuid === mineGuid);
-  const isCore = system === SystemFlagEnum.core;
-
-  const formValues = useAppSelector(getFormValues(formName)) as IMineReportSubmission;
-  const latestAmendment = useAppSelector(getLatestAmendmentByPermitGuid(formValues?.permit_guid));
-  const hasValidatedReports = latestAmendment?.conditions_review_completed && latestAmendment?.mine_report_permit_requirements.length > 0;
-
-  const selectedPermitReportDefinition = useAppSelector(
-    getMineReportPermitRequirementById(formValues?.permit_guid, formValues?.mine_report_permit_requirement_id)
-  )
-
-  useEffect(() => {
-    if (!loaded || permitMineGuid !== mineGuid) {
-      setLoaded(false);
-      dispatch(fetchPermits(mineGuid)).then(() => setLoaded(true));
-    }
-    if(selectedPermitReportDefinition){
-      dispatch(change(formName, "due_date", selectedPermitReportDefinition.initial_due_date))
-    }
-  }, [mineGuid,selectedPermitReportDefinition]);
-
-  return (
-    <>
-      {!isCore && (
-        <>
-          <Typography.Title level={5}>Select permit condition category</Typography.Title>
-          <Typography.Paragraph>
-            Newer regional permits have sections A to E, which are the same categories shown for
-            permit-required report. If your permit does not contain the categories below, select the
-            most fitting category. If you are unsure about category selection, please contact the
-            permitting inspector or your regional office for assistance.
-          </Typography.Paragraph>
-        </>
-      )}
-      <Col md={!fullWidth && 12} sm={24}>
-        <Field
-          name="permit_guid"
-          label="Permit Number"
-          required
-          validate={[required]}
-          data={permitDropdown}
-          component={RenderSelect}
-        />
-      </Col>
-
-      {!isCore && !hasValidatedReports && (
-        <Col span={24} className="radio-two-column-container">
-          <Field
-            name="permit_condition_category_code"
-            required
-            validate={[required]}
-            label="Permit Condition Category"
-            className="responsive-2-column"
-            component={RenderRadioButtons}
-            customOptions={dropdownPermitConditionCategoryOptions}
-          />
-        </Col>
-      )}
-      {isCore && !hasValidatedReports && (
-        <Col md={!fullWidth && 12} sm={24}>
-          <Field
-            name="permit_condition_category_code"
-            required
-            validate={[required]}
-            label="Permit Condition Category"
-            component={RenderSelect}
-            data={dropdownPermitConditionCategoryOptions}
-          />
-        </Col>
-      )}
-      {hasValidatedReports && summary && (
-        <Col md={!fullWidth && 12} sm={24}>
-          <PermitReportCodeRequirement
-            amendment={latestAmendment}
-            permitGuid={formValues?.permit_guid}
-            formValues={formValues}
-            formName={formName}
-            summary={summary}
-          />
-        </Col>
-      )}
-      {hasValidatedReports && !summary && (
-        <Row gutter={24} className="margin-large--bottom">
-          <Col span={12}>
-            <div className="light-grey-border">
-              <PermitReportCodeRequirement
-                amendment={latestAmendment}
-                permitGuid={formValues?.permit_guid}
-                formValues={formValues}
-                formName={formName}
-              />
-              <ConditionCategories
-                formName={formName}
-                permitGuid={formValues?.permit_guid}
-              />
-            </div>
-          </Col>
-          <Col span={12}>
-            <PermitReportInfoBox
-              mineGuid={mineGuid}
-              permitGuid={formValues?.permit_guid}
-              permitAmendmentGuid={latestAmendment?.permit_amendment_guid}
-              permitReport={selectedPermitReportDefinition}
-              verb="submitting"
-            />
-          </Col>
-        </Row>
-      )}
-    </>
-  );
-};
 
 const ReportGetStarted: FC<ReportGetStartedProps> = ({
   mine,
@@ -554,7 +211,10 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
                 </div>
               </Col>
               <Col span={12}>
-                <CodeReportInfoBox mineReportDefinition={selectedCodeReportDefinition} verb="submitting" />
+                <CodeReportInfoBox
+                  mineReportDefinition={selectedCodeReportDefinition}
+                  verb="submitting"
+                />
               </Col>
             </Row>
           </>
