@@ -1,5 +1,9 @@
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.dialects.postgresql import UUID
+
+from app.api.activity.models.activity_notification import ActivityType, ActivityRecipients
+from app.api.activity.utils import trigger_notification
+from app.api.utils.helpers import format_datetime_to_string, format_email_datetime_to_string, parse_status_code_to_text
 from app.config import Config
 from app.api.services.email_service import EmailService
 from app.extensions import db
@@ -91,6 +95,50 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
         link = f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/information-requirements-table/{self.irt_guid}/intro-project-overview'
         body += f'<p>View IRT in Core: <a href="{link}" target="_blank">{link}</a></p>'
         EmailService.send_email(subject, recipients, body)
+
+    def send_irt_status_notifications(self, project_guid: str, status_code: str):
+        project: Project = self.project
+        minespace_recipients = [contact.email for contact in project.contacts]
+        core_recipients = []
+
+        if status_code not in ['CHR', 'UNR']:
+            core_recipients.append(MAJOR_MINES_OFFICE_EMAIL)
+        if project.project_lead and status_code != 'CHR':
+            core_recipients.append(project.project_lead.email)
+
+        minespace_link = f'{Config.MINESPACE_PROD_URL}/projects/{project_guid}/overview'
+        core_link = f'{Config.CORE_WEB_URL}/pre-applications/{project_guid}/information-requirements-table'
+        project_context = {
+            'message': f'An IRT status has changed to "{parse_status_code_to_text(status_code)}"',
+            'minespace_link': minespace_link,
+            'core_link': core_link,
+            'section_status': parse_status_code_to_text(status_code),
+            'project_section': 'IRT',
+            'project': {
+                'mine_name': project.mine_name,
+                'mine_no': project.mine_no,
+                'project_title': project.project_title,
+                'submitted': format_datetime_to_string(self.update_timestamp)
+            }
+        }
+
+        minespace_body = open("app/templates/email/projects/minespace_project_section_email.html", "r").read()
+        core_body = open("app/templates/email/projects/ministry_project_section_email.html", "r").read()
+
+        subject = f'IRT Status Updated for {project.mine_name}:{project.project_title}'
+
+        if core_recipients != []:
+            EmailService.send_template_email(subject, core_recipients, core_body, project_context)
+        if minespace_recipients != []:
+            EmailService.send_template_email(subject, minespace_recipients, minespace_body, project_context)
+
+        mine = Mine.find_by_mine_guid(project.mine_guid)
+
+        message = f'The status of the IRT for the project {project.project_title} for {project.mine_name} has been updated to {parse_status_code_to_text(status_code)}.'
+        extra_data = {'project': {'project_guid': str(project.project_guid)}}
+        trigger_notification(message, ActivityType.project_irt_status_updated, mine,
+                             'InformationRequirementsTable', self.irt_guid, extra_data)
+
 
     def send_irt_approval_email(self):
         recipients = [contact.email for contact in self.project.contacts]

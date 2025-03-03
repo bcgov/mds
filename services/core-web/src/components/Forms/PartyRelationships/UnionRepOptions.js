@@ -1,5 +1,5 @@
 import React from "react";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { Col, Row } from "antd";
 import { required } from "@mds/common/redux/utils/Validate";
 import { renderConfig } from "@/components/common/config";

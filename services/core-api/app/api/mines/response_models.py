@@ -1,4 +1,4 @@
-from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
+from app.api.compliance.response_models import COMPLIANCE_ARTICLE_BASE_MODEL
 from app.api.dams.dto import DAM_MODEL
 from app.api.mines.reports.models.mine_report_permit_requirement import (
     CimOrCpo,
@@ -10,7 +10,6 @@ from app.api.parties.party_appt.models.mine_party_appt import (
 )
 from app.api.parties.response_models import PARTY
 from app.api.users.response_models import USER_MODEL
-from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.extensions import api
 from flask_restx import fields, marshal
 
@@ -259,7 +258,8 @@ MINE_REPORT_PERMIT_REQUIREMENT = api.model(
         'initial_due_date': fields.Date,
         'cim_or_cpo': fields.String(enum=[e.value for e in CimOrCpo], attribute='cim_or_cpo.name'),
         'ministry_recipient': fields.List(fields.String(enum=[e.value for e in OfficeDestination])),
-        'permit_condition_id': fields.Integer
+        'permit_condition_id': fields.Integer,
+        'condition_category_code': fields.String
     }
 )
 
@@ -269,9 +269,17 @@ PERMIT_CONDITION_CATEGORY_MODEL = api.model(
         'step': fields.String,
         'description': fields.String,
         'display_order': fields.Integer,
-        'assigned_review_user': fields.Nested(USER_MODEL),
         'permit_condition_status_code': fields.String
     })
+
+PERMIT_CONDITION_REVIEW_ASSIGNMENT_MODEL = api.model(
+    'PermitConditionReviewAssignment', {
+        'condition_review_assignment_guid': fields.String,
+        'permit_amendment_id': fields.Integer,
+        'condition_category_code': fields.String,
+        'assigned_review_user': fields.Nested(USER_MODEL),
+    }
+)
 
 PERMIT_AMENDMENT_MODEL = api.model(
     'PermitAmendment', {
@@ -328,7 +336,8 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'preamble_text':
             fields.String,
         'mine_report_permit_requirements': fields.List(fields.Nested(MINE_REPORT_PERMIT_REQUIREMENT)),
-        'condition_categories': fields.List(fields.Nested(PERMIT_CONDITION_CATEGORY_MODEL))
+        'condition_categories': fields.List(fields.Nested(PERMIT_CONDITION_CATEGORY_MODEL)),
+        'conditions_review_completed': fields.Boolean,
     })
 
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
@@ -749,6 +758,7 @@ MINE_REPORT_SUBMISSION_MODEL = api.model(
         'mine_guid': fields.String,
         'mine_name': fields.String,
         'permit_condition_category_code': fields.String,
+        'mine_report_permit_requirement_id': fields.Integer,
         'description_comment': fields.String,
         'submitter_name': fields.String,
         'submitter_email': fields.String,
@@ -806,7 +816,12 @@ MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesMod
     'active_ind': fields.Boolean
 })
 
-MINE_REPORT_DEFINITION_BASE_MODEL = api.model(
+MINE_REPORT_DUE_DATE_TYPE_MODEL = api.model('MineReportDueDateTypeModel', {
+    'mine_report_due_date_type': fields.String,
+    'description': fields.String,
+})
+
+MINE_REPORT_DEFINITION_MODEL = api.model(
     'MineReportDefinitionBase', {
         'mine_report_definition_guid': fields.String,
         'report_name': fields.String,
@@ -818,11 +833,8 @@ MINE_REPORT_DEFINITION_BASE_MODEL = api.model(
         'categories': fields.List(fields.Nested(MINE_REPORT_DEFINITION_CATEGORIES)),
         'is_common': fields.Boolean,
         'is_prr_only': fields.Boolean,
+        'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_BASE_MODEL))
     })
-
-MINE_REPORT_DEFINITION_MODEL = api.inherit('MineReportDefinition', MINE_REPORT_DEFINITION_BASE_MODEL, {
-    'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL)),
-})
 
 PAGINATED_LIST = api.model(
     'List', {
@@ -831,6 +843,10 @@ PAGINATED_LIST = api.model(
         'items_per_page': fields.Integer,
         'total': fields.Integer,
     })
+
+PAGINATED_MINE_REPORT_DEFINITION_MODEL = api.inherit('MineReportDefinition', PAGINATED_LIST, {
+    'records': fields.List(fields.Nested(MINE_REPORT_DEFINITION_MODEL)),
+})
 
 PAGINATED_REPORT_LIST = api.inherit('ReportList', PAGINATED_LIST, {
     'records': fields.List(fields.Nested(MINE_REPORT_MODEL)),
@@ -884,6 +900,45 @@ MINE_COMPLIANCE_RESPONSE_MODEL = api.model(
         'orders': fields.List(fields.Nested(ORDER_MODEL)),
     })
 
+
+FILTER_CONDITION_MODEL = api.model('FilterCondition', {
+    'field': fields.String,
+    'operator': fields.String(enum=["==", "!=", ">", ">=", "<", "<=", "in", "not in"]),
+    'value': fields.List(fields.String)
+})
+
+QUERY_FILTER_MODEL = api.model('QueryFilter', {
+    'operator': fields.String(enum=['AND', 'OR', 'NOT']),
+    'conditions': fields.List(fields.Nested(FILTER_CONDITION_MODEL))
+})
+
+PERMIT_CONDITION_SEARCH_MODEL = api.model(
+    'PermitConditionSearch', {
+        'query': fields.String(required=True),
+        'filters': fields.Nested(QUERY_FILTER_MODEL, required=False),
+    })
+
+
+PERMIT_SERVICE_DOCUMENT_MODEL = api.model(
+    'PermitServiceDocumentModel', {
+        "id": fields.String,
+        "content": fields.String,
+        "meta": fields.Raw,
+        "score": fields.Float,
+    })
+
+PERMIT_SERVICE_LLM_RESPONSE_MODEL = api.model(
+    'PermitServiceLLMResponseModel', {
+        'answers': fields.List(fields.String),
+    })
+
+PERMIT_CONDITION_SEARCH_RESULT_MODEL = api.model(
+    'PermitConditionSearchResult', {
+        "documents": fields.List(fields.Nested(PERMIT_SERVICE_DOCUMENT_MODEL)),
+        "prompt": fields.Raw(),
+        "facets": fields.Raw(),
+
+    })
 
 PERMIT_CONDITION_MODEL = api.model(
     'PermitCondition', {

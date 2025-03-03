@@ -14,5 +14,5 @@ celery_app = celery.Celery(__name__, broker=CACHE_REDIS_URL, backend='app.celery
 
 celery_app.conf.task_default_queue = 'permits'
 celery_app.autodiscover_tasks([
-    'app.permit_conditions.tasks',
+    'app.tasks',
 ])

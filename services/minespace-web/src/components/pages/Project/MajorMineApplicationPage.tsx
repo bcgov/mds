@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getFormValues, isDirty, submit } from "redux-form";
+import { getFormValues, isDirty, submit } from "@mds/common/components/forms/form";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { Button, Row, Col, Popconfirm, Steps, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
@@ -194,7 +194,7 @@ export const MajorMineApplicationPage: FC = () => {
       content: <MajorMineApplicationForm refreshData={handleFetchData} project={project} />,
       buttons: [
         <React.Fragment key="step-2-buttons">
-          {isFormDirty && (
+          {isFormDirty && project?.major_mine_application?.status_code === "DFT" && (
             <Button type="link" style={{ marginRight: "15px" }} onClick={handleSaveDraft}>
               Save Draft
             </Button>

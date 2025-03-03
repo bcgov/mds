@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { PropTypes } from "prop-types";
 import { Menu } from "antd";
-import { change, getFormValues } from "redux-form";
+import { change, getFormValues } from "@mds/common/components/forms/form";
 import { getNOWReclamationSummary } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import { getDropdownNoticeOfWorkActivityTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { isEmpty } from "lodash";

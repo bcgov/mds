@@ -1,5 +1,6 @@
 import {
   formatPermit,
+  getAmendment,
   getEditingConditionFlag,
   getEditingPreambleFlag,
   getLatestAmendmentByPermitGuid,
@@ -69,4 +70,17 @@ describe("permitSelectors", () => {
 
     expect(latestAmendment).toEqual(MOCK.PERMITS[0].permit_amendments[0]);
   });
+});
+it("getAmendment returns the correct permit amendment", () => {
+  const localMockState = {
+    [PERMITS]: { permits: mockPermits },
+  };
+  const permit = MOCK.PERMITS[0];
+  const amendment = permit.permit_amendments[0];
+
+  const actual = getAmendment(permit.permit_guid, amendment.permit_amendment_guid)(
+    localMockState as RootState
+  );
+
+  expect(actual).toEqual(amendment);
 });

@@ -1,13 +1,10 @@
 from unittest.mock import MagicMock
 
 import pytest
-from app.permit_conditions.pipelines.PaginatedChatPromptBuilder import (
+from app.common.types.permit_condition_model import PermitCondition, PermitConditions
+from app.pipelines.permit_condition_extraction.components.PaginatedChatPromptBuilder import (
     PaginatedChatPromptBuilder,
     _format_condition_text_for_prompt,
-)
-from app.permit_conditions.validator.permit_condition_model import (
-    PermitCondition,
-    PermitConditions,
 )
 from haystack import Document
 from haystack.dataclasses import ChatMessage
@@ -150,9 +147,9 @@ def test_run_with_template_variables_populates_prompt(builder, sample_conditions
 
     assert "data" in result
     assert len(result["data"].messages) == 2
-    assert result["data"].messages[0][0].content == "System prompt with value"
-    assert result["data"].messages[0][1].content == "User prompt with value"
-    assert result["data"].messages[0][2].content == "Permit document prompt with value"
+    assert result["data"].messages[0][0].text == "System prompt with value"
+    assert result["data"].messages[0][1].text == "User prompt with value"
+    assert result["data"].messages[0][2].text == "Permit document prompt with value"
 
 
 def test_run_conditions_can_be_used_in_prompt(builder, sample_conditions):
@@ -175,15 +172,15 @@ def test_run_conditions_can_be_used_in_prompt(builder, sample_conditions):
     assert len(result["data"].messages) == 2
     assert len(result["data"].messages[0]) == 3
     assert len(result["data"].messages[1]) == 3
-    assert result["data"].messages[0][0].content == "System prompt"
-    assert result["data"].messages[0][1].content == "User prompt"
+    assert result["data"].messages[0][0].text == "System prompt"
+    assert result["data"].messages[0][1].text == "User prompt"
     assert (
-        result["data"].messages[0][2].content
+        result["data"].messages[0][2].text
         == "Conditions:\n         () General (id: 0)\n        (1) Condition 1 (id: 1)\n        (1) Condition 2 (id: 2)"
     )
-    assert result["data"].messages[1][0].content == "System prompt"
-    assert result["data"].messages[1][1].content == "User prompt"
+    assert result["data"].messages[1][0].text == "System prompt"
+    assert result["data"].messages[1][1].text == "User prompt"
     assert (
-        result["data"].messages[1][2].content
+        result["data"].messages[1][2].text
         == "Conditions:\n         (1) Condition 3 (id: 3)\n        (2) Condition 4 (id: 4)"
     )

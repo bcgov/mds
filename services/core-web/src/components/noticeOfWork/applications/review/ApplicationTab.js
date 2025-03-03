@@ -3,7 +3,7 @@ import { Prompt, withRouter } from "react-router-dom";
 import { Button, Dropdown, Menu, Popconfirm, Alert, Divider } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { getFormValues, reset, getFormSyncErrors, submit, hasSubmitFailed } from "redux-form";
+import { getFormValues, reset, getFormSyncErrors, submit, hasSubmitFailed } from "@mds/common/components/forms/form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { get, isNull, isUndefined } from "lodash";
@@ -318,9 +318,8 @@ export class ApplicationTab extends Component {
             </Button>
             {showErrors && (
               <Alert
-                message={`You have ${errorsLength} ${
-                  errorsLength === 1 ? "issue" : "issues"
-                } that must be fixed before proceeding.`}
+                message={`You have ${errorsLength} ${errorsLength === 1 ? "issue" : "issues"
+                  } that must be fixed before proceeding.`}
                 type="error"
                 showIcon
               />

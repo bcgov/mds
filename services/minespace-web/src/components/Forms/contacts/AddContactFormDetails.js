@@ -6,7 +6,7 @@ import {
 } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import { getParties } from "@mds/common/redux/selectors/partiesSelectors";
 import { compose, bindActionCreators } from "redux";
-import { Field, isDirty, getFormValues, change } from "redux-form";
+import { Field, isDirty, getFormValues, change } from "@mds/common/components/forms/form";
 import { connect } from "react-redux";
 import { Col, Row, Typography, Popconfirm, Button, Divider } from "antd";
 import { debounce } from "lodash";

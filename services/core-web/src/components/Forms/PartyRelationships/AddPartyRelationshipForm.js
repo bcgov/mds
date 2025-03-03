@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
-import { Field, formValueSelector } from "redux-form";
+import { Field, formValueSelector } from "@mds/common/components/forms/form";
 import { Col, Row } from "antd";
 import { required, validateDateRanges } from "@mds/common/redux/utils/Validate";
 import { renderConfig } from "@/components/common/config";

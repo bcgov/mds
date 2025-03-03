@@ -7,10 +7,27 @@ export interface IBoundingBox {
   bottom: number;
   left: number;
 }
+
+export enum IPermitConditionChangeType {
+  ADDED = "added",
+  MODIFIED = "modified",
+  UNCHANGED = "unchanged",
+  MOVED = "moved"
+}
+
+export interface IPermitConditionComparison {
+  condition_guid: string;
+  previous_condition_guid: string;
+  text_similarity: number;
+  structure_similarity: number;
+  combined_score: number;
+  change_type: IPermitConditionChangeType;
+}
 export interface IPermitConditionMeta {
   page: number;
   role?: string;
   bounding_box?: IBoundingBox;
+  condition_comparison?: IPermitConditionComparison
 }
 export interface IPermitCondition {
   permit_condition_id: number;
@@ -30,11 +47,18 @@ export interface IPermitCondition {
   top_level_parent_permit_condition_id?: number;
 }
 
+export interface IPermitConditionReviewAssignment {
+  assigned_review_user: IUser;
+  condition_category_code: string;
+  condition_review_assignment_guid: string;
+  permit_amendment_id: number;
+}
+
 export interface IPermitConditionCategory {
   condition_category_code: string;
   description: string;
   display_order: number;
   step: string;
-  assigned_review_user?: IUser
   conditions?: IPermitCondition[]
+  reports?: IMineReportPermitRequirement[]
 }

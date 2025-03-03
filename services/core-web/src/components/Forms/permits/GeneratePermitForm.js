@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { Field, getFormValues } from "redux-form";
+import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { Button, Col, Row, Descriptions, Popconfirm } from "antd";
 import { required, dateNotAfterOther, dateNotBeforeOther, maxLength } from "@mds/common/redux/utils/Validate";
 import { resetForm, formatDate } from "@common/utils/helpers";

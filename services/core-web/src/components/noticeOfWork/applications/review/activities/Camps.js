@@ -1,7 +1,7 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
-import { Field, getFormValues } from "redux-form";
+import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { Row, Col } from "antd";
 import { currencyMask } from "@common/utils/helpers";
 import { maxLength, number, requiredRadioButton, required } from "@mds/common/redux/utils/Validate";

@@ -16,7 +16,7 @@ jest.mock("react-router-dom", () => ({
 }));
 
 const initialState = {
-  [userReducerType]: { user: MOCK.USER },
+  [userReducerType]: { user: MOCK.USERS[0] },
   [STATIC_CONTENT]: MOCK.BULK_STATIC_CONTENT_RESPONSE,
 };
 

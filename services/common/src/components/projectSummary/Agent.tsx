@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Field, change, getFormValues } from "redux-form";
+import { useSelector } from "react-redux";
+import { Field, change, getFormValues } from "@mds/common/components/forms/form";
 import { Col, Row, Typography, Alert } from "antd";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
@@ -29,9 +29,10 @@ import { IProjectSummaryForm } from "@mds/common/interfaces";
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
 import { FORM } from "@mds/common/constants/forms";
 import { COLOR } from "@mds/common/constants/styles";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
   const { agent, is_agent = false } = formValues;
   const { party_type_code, address, credential_id } = agent ?? {};

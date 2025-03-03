@@ -36,7 +36,7 @@ const CorePageHeader: FC<CorePageHeaderProps> = ({
   tabProps,
   extraElement,
 }) => {
-  const mine = useSelector((state) => getMineById(state, mineGuid));
+  const mine = useSelector(getMineById(mineGuid));
   const dispatch = useDispatch();
 
   useEffect(() => {

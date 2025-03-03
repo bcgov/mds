@@ -111,6 +111,9 @@ class ActivityType(str, Enum):
     major_mine_app_submitted = 'major_mine_app_submitted'
     major_mine_desc_submitted = 'major_mine_desc_submitted'
     mine_project_documents_updated = 'mine_project_documents_updated'
+    project_irt_status_updated = 'project_irt_status_updated'
+    project_app_status_updated = 'project_app_status_updated'
+    project_app_documents_updated = 'project_app_documents_updated'
     report_requested = 'report_requested'
 
     def __str__(self):

@@ -1,5 +1,5 @@
 import { USER_ROLES } from "@mds/common/constants/environment";
-import { IMineDocument } from "@mds/common/interfaces";
+import { IMineDocument, IMineDocumentVersion } from "@mds/common/interfaces";
 import { isFeatureEnabled, Feature } from "@mds/common/utils";
 
 export enum FileOperations {
@@ -90,7 +90,7 @@ export class MineDocument implements IMineDocument {
 
   public number_prev_versions: number;
 
-  public versions: MineDocumentVersion[]; // all previous file versions, not including latest
+  public versions: IMineDocumentVersion[]; // all previous file versions, not including latest
 
   public allowed_actions: FileOperations[];
 

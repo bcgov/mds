@@ -12,7 +12,7 @@ import {
 } from "@mds/common/redux/actionCreators/reportActionCreator";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
-import { getMineReportDefinitionOptions } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
 import * as Strings from "@mds/common/constants/strings";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";

@@ -3,7 +3,6 @@
 
 // Colours
 .color {
-
   // Theme Colours
   &-primary {
     color: theme.$primary-color !important;
@@ -29,11 +28,15 @@
   &-gov-grey {
     color: variables.$gov-grey !important;
   }
+
+  &-light-grey {
+    color: variables.$darkest-grey;
+    opacity: 0.55;
+  }
 }
 
 // Background Colours
 .bg-color {
-
   // Theme Colours
   &-primary {
     background-color: theme.$primary-color !important;

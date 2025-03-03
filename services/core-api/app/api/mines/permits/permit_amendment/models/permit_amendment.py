@@ -70,6 +70,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         primaryjoin='and_(PermitAmendment.permit_amendment_id==PermitConditionCategory.permit_amendment_id, PermitConditionCategory.deleted_ind==False)',
     )
 
+    # This relationship is used to get all *top level* conditions for a permit amendment
     conditions = db.relationship(
         'PermitConditions',
         lazy='select',
@@ -77,6 +78,15 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         "and_(PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id, PermitConditions.deleted_ind == False, PermitConditions.parent_permit_condition_id.is_(None))",
         order_by='asc(PermitConditions.display_order)',
         back_populates='permit_amendment')
+    
+    # This relationship is used to get all conditions for a permit amendment, including sub-conditions
+    all_conditions = db.relationship(
+        'PermitConditions',
+        lazy='select',
+        primaryjoin=
+        "and_(PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id, PermitConditions.deleted_ind == False)",
+        order_by='asc(PermitConditions.display_order)'
+    )
     permit_conditions_last_updated_date = db.Column(db.DateTime)
     permit_conditions_last_updated_by = db.Column(db.String(60))
     is_generated_in_core = db.Column(db.Boolean)
@@ -158,6 +168,10 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             parent_permit_condition_id=None,
             deleted_ind=False).count()
         return permit_conditions > 0
+    
+    @hybrid_property
+    def conditions_review_completed(self):
+        return len(self.conditions) and all([x.permit_condition_status_code == "COM" for x in self.conditions])
 
     @hybrid_property
     def vc_credential_exch_state(self):
@@ -252,6 +266,13 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         if add_to_session:
             new_pa.save(commit=False)
         return new_pa
+
+    def update_permit_condition_status(self, permit_condition_status_code):
+        # Only updates the top-level condition that it's called on,
+        # as we are not tracking the status code of sub-conditions
+        for condition in self.conditions:
+            condition.permit_condition_status_code = permit_condition_status_code
+        self.save()
 
     @classmethod
     def find_by_permit_amendment_id(cls, _id):

@@ -11,6 +11,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.utils.access_decorators import MINESPACE_PROPONENT, VIEW_ALL, requires_role_edit_permit, requires_any_of
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit_conditions.models.permit_condition_category import PermitConditionCategory
 from app.api.mines.mine.models.mine import Mine
 from app.api.utils.include.user_info import User
 
@@ -31,6 +32,9 @@ class PermitConditionsListResource(Resource, UserMixin):
 
         try:
             permit_condition = PermitConditions._schema().load(request.json['permit_condition'])
+
+            if not PermitConditionCategory.find_by_permit_condition_category_code(permit_condition.condition_category_code):
+                raise BadRequest('condition_category_code is invalid')
 
             if permit_condition.top_level_parent_permit_condition_id is not None:
                 top_condition = PermitConditions.find_by_permit_condition_id(permit_condition.top_level_parent_permit_condition_id)
@@ -88,6 +92,8 @@ class PermitConditionsResource(Resource, UserMixin):
         old_display_order = old_condition.display_order
         old_category_code = old_condition.condition_category_code
         new_category_code = request_data.get("condition_category_code", None)
+        if not PermitConditionCategory.find_by_permit_condition_category_code(new_category_code):
+            raise BadRequest('condition_category_code is invalid')
         changed_category = old_category_code != new_category_code
         new_status_code = request_data.get("permit_condition_status_code",None)
         changed_status = old_condition.permit_condition_status_code != new_status_code

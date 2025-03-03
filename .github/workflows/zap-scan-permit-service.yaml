@@ -1,0 +1,26 @@
+name: Permit Service - ZAP Scan
+
+on:
+  schedule:
+    - cron: "0 8 * * *"  # Runs at 08:00 UTC (Midnight PST)
+  workflow_dispatch:
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ZAP API Full Scan
+        uses: zaproxy/action-api-scan@v0.9.0
+        with:
+          target: "https://mds-permits-test.apps.silver.devops.gov.bc.ca/openapi.json "
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload ZAP Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-report
+          path: report_html.html

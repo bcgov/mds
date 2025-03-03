@@ -6,19 +6,24 @@ from app.api.mines.permits.permit_conditions.models.permit_condition_category im
 )
 from tests.factories import UserFactory, create_mine_and_permit
 
-ASSIGN_USER_DATA = {
-    "assigned_review_user": str(uuid.uuid4()),
-    "condition_category_code": "test_category_code",
-}
+ASSIGN_USER_UUID = str(uuid.uuid4())
+NONEXISTENT_UUID = str(uuid.uuid4())
+CATEGORY_CODE = "test_category_code"
 
+def get_assignment_data(permit_amendment_id):
+    return {
+        "assigned_review_user": ASSIGN_USER_UUID,
+        "permit_amendment_id": permit_amendment_id,
+        "condition_category_code": CATEGORY_CODE
+    }
 
 def test_post_assign_user_to_permit_condition_category_success(test_client, db_session, auth_headers):
     """Should successfully assign a user to a permit condition category."""
-    mine, permit = create_mine_and_permit()
+    _, permit = create_mine_and_permit()
     permit_amendment = permit.permit_amendments[0]
-    user = UserFactory(sub=ASSIGN_USER_DATA['assigned_review_user'])
+    user = UserFactory(sub=ASSIGN_USER_UUID)
     PermitConditionCategory.create(
-        condition_category_code=ASSIGN_USER_DATA['condition_category_code'],
+        condition_category_code=CATEGORY_CODE,
         step='a',
         description='Test category',
         display_order=1,
@@ -28,27 +33,51 @@ def test_post_assign_user_to_permit_condition_category_success(test_client, db_s
     post_resp = test_client.post(
         '/mines/permits/condition-category/assign-review-user',
         headers=auth_headers['full_auth_header'],
-        json=ASSIGN_USER_DATA,
+        json=get_assignment_data(permit_amendment.permit_amendment_id),
     )
     assert post_resp.status_code == 200
     post_data = json.loads(post_resp.data.decode())
 
-    assert post_data["condition_category_code"] == ASSIGN_USER_DATA['condition_category_code']
+    assert post_data["condition_category_code"] == CATEGORY_CODE
+    assert post_data["permit_amendment_id"] == permit_amendment.permit_amendment_id
     assert post_data["assigned_review_user"]["sub"] == user.sub
 
 
 def test_post_assign_user_to_permit_condition_category_missing_user(test_client, db_session, auth_headers):
     """Should return 400 if assigned_review_user is missing."""
-    mine, permit = create_mine_and_permit()
+    _, permit = create_mine_and_permit()
     permit_amendment = permit.permit_amendments[0]
     PermitConditionCategory.create(
-        condition_category_code=ASSIGN_USER_DATA['condition_category_code'],
+        condition_category_code=CATEGORY_CODE,
         step='a',
         description='Test category',
         display_order=1,
         permit_amendment_id=permit_amendment.permit_amendment_id,
     )
-    data = {k: v for k, v in ASSIGN_USER_DATA.items() if k != 'assigned_review_user'}
+    data = {k: v for k, v in get_assignment_data(permit_amendment.permit_amendment_id).items() if k != 'assigned_review_user'}
+
+    post_resp = test_client.post(
+        '/mines/permits/condition-category/assign-review-user',
+        headers=auth_headers['full_auth_header'],
+        json=data,
+    )
+
+    assert post_resp.status_code == 400
+    post_data = json.loads(post_resp.data.decode())
+    assert post_data["message"] == "Input payload validation failed"
+
+def test_post_assign_user_to_permit_condition_category_missing_amendment(test_client, db_session, auth_headers):
+    """Should return 400 if amendment id is missing."""
+    _, permit = create_mine_and_permit()
+    permit_amendment = permit.permit_amendments[0]
+    PermitConditionCategory.create(
+        condition_category_code=CATEGORY_CODE,
+        step='a',
+        description='Test category',
+        display_order=1,
+        permit_amendment_id=permit_amendment.permit_amendment_id,
+    )
+    data = {k: v for k, v in get_assignment_data(permit_amendment.permit_amendment_id).items() if k != 'permit_amendment_id'}
 
     post_resp = test_client.post(
         '/mines/permits/condition-category/assign-review-user',
@@ -63,8 +92,10 @@ def test_post_assign_user_to_permit_condition_category_missing_user(test_client,
 
 def test_post_assign_user_to_permit_condition_category_missing_category(test_client, db_session, auth_headers):
     """Should return 400 if condition_category_code is missing."""
-    user = UserFactory(sub=ASSIGN_USER_DATA['assigned_review_user'])
-    data = {k: v for k, v in ASSIGN_USER_DATA.items() if k != 'condition_category_code'}
+    UserFactory(sub=ASSIGN_USER_UUID)
+    _, permit = create_mine_and_permit()
+    permit_amendment = permit.permit_amendments[0]
+    data = {k: v for k, v in get_assignment_data(permit_amendment.permit_amendment_id).items() if k != 'condition_category_code'}
 
     post_resp = test_client.post(
         '/mines/permits/condition-category/assign-review-user',
@@ -79,27 +110,35 @@ def test_post_assign_user_to_permit_condition_category_missing_category(test_cli
 
 def test_put_unassign_user_from_permit_condition_category_success(test_client, db_session, auth_headers):
     """Should successfully unassign a user from a permit condition category."""
-    mine, permit = create_mine_and_permit()
+    UserFactory(sub=ASSIGN_USER_UUID)
+    _, permit = create_mine_and_permit()
     permit_amendment = permit.permit_amendments[0]
     PermitConditionCategory.create(
-        condition_category_code=ASSIGN_USER_DATA['condition_category_code'],
+        condition_category_code=CATEGORY_CODE,
         step='a',
         description='Test category',
         display_order=1,
         permit_amendment_id=permit_amendment.permit_amendment_id,
     )
+    post_resp = test_client.post(
+        '/mines/permits/condition-category/assign-review-user',
+        headers=auth_headers['full_auth_header'],
+        json=get_assignment_data(permit_amendment.permit_amendment_id),
+    )
+    assert post_resp.status_code == 200
+    post_data = json.loads(post_resp.data.decode())
+
+    condition_review_assignment_guid = post_data["condition_review_assignment_guid"]
 
     put_resp = test_client.put(
         '/mines/permits/condition-category/assign-review-user',
         headers=auth_headers['full_auth_header'],
-        json={"condition_category_code": ASSIGN_USER_DATA['condition_category_code']},
+        json={"condition_review_assignment_guid": condition_review_assignment_guid},
     )
     assert put_resp.status_code == 200
     put_data = json.loads(put_resp.data.decode())
 
-    assert put_data["condition_category_code"] == ASSIGN_USER_DATA['condition_category_code']
     assert put_data["assigned_review_user"]["sub"] is None
-
 
 def test_put_unassign_user_from_permit_condition_category_missing_category(test_client, db_session, auth_headers):
     """Should return 400 if condition_category_code is missing."""
@@ -120,8 +159,8 @@ def test_put_unassign_user_from_permit_condition_category_not_found(test_client,
     put_resp = test_client.put(
         '/mines/permits/condition-category/assign-review-user',
         headers=auth_headers['full_auth_header'],
-        json={"condition_category_code": "nonexistent_category_code"},
+        json={"condition_review_assignment_guid": NONEXISTENT_UUID},
     )
     assert put_resp.status_code == 404
     post_data = json.loads(put_resp.data.decode())
-    assert "404 Not Found: PermitConditionCategory not found" in post_data["message"]
+    assert "404 Not Found: Review assignment not found" in post_data["message"]

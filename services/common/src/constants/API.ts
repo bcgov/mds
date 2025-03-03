@@ -94,7 +94,8 @@ export const STANDARD_PERMIT_CONDITIONS = (noticeOfWorkType) =>
 export const STANDARD_PERMIT_CONDITION = (permitConditionGuid) =>
   `/mines/permits/standard-conditions/${permitConditionGuid}`;
 
-export const PERMIT_AMENDMENT_CONDITION_ASSIGN_REVIEWER = "mines/permits/condition-category/assign-review-user";
+export const PERMIT_AMENDMENT_CONDITION_ASSIGN_REVIEWER = (params?: { permit_amendment_id: number }) =>
+  `mines/permits/condition-category/assign-review-user?${queryString.stringify(params ?? {})}`;
 
 export const PERMIT_SERVICE_EXTRACTION = `/mines/permits/condition-extraction`;
 export const POLL_PERMIT_SERVICE_EXTRACTION = (taskId: string) =>
@@ -259,7 +260,10 @@ export const MINE_WORK_INFORMATION = (mineGuid, mineWorkInformationGuid) =>
 export const REPORTS = (params = {}) => `/mines/reports?${queryString.stringify(params)}`;
 export const REPORT_SUBMISSIONS = (params?) =>
   `/mines/reports/submissions?${queryString.stringify(params)}`;
-export const MINE_REPORT_DEFINITIONS = () => `/mines/reports/definitions`;
+export const MINE_REPORT_DEFINITIONS = (params = {}) =>
+  `/mines/reports/definitions?${queryString.stringify(params)}`;
+export const MINE_REPORT_DEFINITION = "/mines/reports/definitions";
+export const MINE_REPORT_DUE_DATE_TYPES = "/mines/reports/due-date-types";
 export const MINE_REPORTS = (mineGuid, params?) =>
   `/mines/${mineGuid}/reports?${queryString.stringify(params)}`;
 export const MINE_REPORT = (mineGuid, mineReportGuid) =>

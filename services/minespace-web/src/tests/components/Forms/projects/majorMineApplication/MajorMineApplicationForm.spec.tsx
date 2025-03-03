@@ -3,20 +3,19 @@ import { render, fireEvent } from "@testing-library/react";
 import MajorMineApplicationForm from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationForm";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { FORM } from "@mds/common/constants/forms";
-import { reduxForm } from "redux-form";
+import { reduxForm } from "@mds/common/components/forms/form";
 import { ReduxWrapper as CommonReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { ReduxWrapper as MinespaceReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { BrowserRouter } from "react-router-dom";
 
-import { useSelector } from "react-redux";
-
 const mockDispatch = jest.fn();
+const mockUseSelector = jest.fn();
 
 jest.mock("react-redux", () => {
   const actualReactRedux = jest.requireActual("react-redux");
   return {
     ...actualReactRedux,
-    useSelector: jest.fn(),
+    useSelector: () => mockUseSelector,
     useDispatch: () => mockDispatch,
   };
 });
@@ -69,7 +68,7 @@ const initialState = {
 };
 
 const props: any = {};
-useSelector.mockReturnValue([MOCK.MINEDOCUMENTS.records[0]]);
+mockUseSelector.mockReturnValue([MOCK.MINEDOCUMENTS.records[0]]);
 
 beforeEach(() => {
   props.project = MOCK.PROJECTS.records[0];

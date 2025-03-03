@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Field, change, getFormValues } from "redux-form";
+import { Field, change, getFormValues } from "@mds/common/components/forms/form";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { required, maxLength, requiredNewFiles } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";

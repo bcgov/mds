@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { Button, Col, Row } from "antd";
 import { requiredList } from "@mds/common/redux/utils/Validate";
 import { nullableStringSorter, resetForm } from "@common/utils/helpers";

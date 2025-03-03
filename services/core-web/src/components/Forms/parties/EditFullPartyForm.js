@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Field, getFormValues } from "redux-form";
+import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { Col, Row, Descriptions, Typography, Divider } from "antd";
 import { isEmpty } from "lodash";
 import {
@@ -241,7 +241,7 @@ export const EditFullPartyForm = (props) => {
                   name="sub_division_code"
                   label="Province"
                   component={renderConfig.SELECT}
-                  data={[props.provinceOptions]}
+                  data={props.provinceOptions}
                 />
               </Col>
             </Row>

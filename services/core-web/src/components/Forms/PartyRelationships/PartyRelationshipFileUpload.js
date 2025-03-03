@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { MINE_PARTY_APPOINTMENT_DOCUMENTS } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";

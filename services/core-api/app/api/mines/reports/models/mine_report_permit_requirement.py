@@ -2,6 +2,8 @@ from datetime import date
 from enum import Enum
 from typing import Optional
 
+from sqlalchemy.ext.hybrid import hybrid_property
+
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.extensions import db
 from sqlalchemy.dialects.postgresql import ARRAY
@@ -11,7 +13,7 @@ from sqlalchemy.schema import FetchedValue
 class CimOrCpo(str, Enum):
     CIM = "CIM"
     CPO = "CPO"
-    BOTH = "BOTH"
+    Both = "Both"
 
     def __str__(self):
         return self.value
@@ -42,20 +44,35 @@ class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin):
     permit_condition_id: int = db.Column(db.Integer, db.ForeignKey('permit_conditions.permit_condition_id'))
     permit_amendment_id: int = db.Column(db.Integer, db.ForeignKey('permit_amendment.permit_amendment_id'))
 
+    permit_condition = db.relationship('PermitConditions', lazy="select")
+
     def __repr__(self):
-        return '<MineReportPermitRequirement %r>' % self.permit_report_requirement_id
+        return '<MineReportPermitRequirement %r>' % self.mine_report_permit_requirement_id
+
+    @hybrid_property
+    def condition_category_code(self):
+        if self.permit_condition:
+            return self.permit_condition.condition_category_code
+        return None
 
     @classmethod
-    def find_by_permit_report_requirement_id(cls, _id) -> "MineReportPermitRequirement":
+    def find_by_mine_report_permit_requirement_id(cls, id) -> "MineReportPermitRequirement":
         try:
-            return cls.query.filter_by(permit_report_requirement_id=_id).first()
+            return cls.query.filter_by(mine_report_permit_requirement_id=id, deleted_ind=False).first()
+        except ValueError:
+            return None
+        
+    @classmethod
+    def find_by_permit_condition_id(cls, id) -> "MineReportPermitRequirement":
+        try:
+            return cls.query.filter_by(permit_condition_id=id, deleted_ind=False).first()
         except ValueError:
             return None
 
     @classmethod
-    def find_by_report_name(cls, _report_name) -> "MineReportPermitRequirement":
+    def find_by_report_name(cls, report_name) -> "MineReportPermitRequirement":
         try:
-            return cls.query.filter_by(report_name=_report_name).all()
+            return cls.query.filter_by(report_name=report_name).all()
         except ValueError:
             return None
 

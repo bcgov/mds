@@ -1,11 +1,11 @@
 import React, { FC, useContext, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Field, change } from "redux-form";
+import { Field, change } from "@mds/common/components/forms/form";
 import { Button, Col, Row, Typography } from "antd";
 import ProjectLinksTable from "@mds/common/components/projectSummary/ProjectLinksTable";
 import { ILinkedProject, IProject } from "@mds/common/interfaces";
 import { getProjectStatusDescription } from "../projects/projectUtils";
-import { isProponent, userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
+import { isProponent, userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import {
   createProjectLinks,
   fetchProjectsByMine,
@@ -18,6 +18,7 @@ import { FormContext } from "../forms/FormWrapper";
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
 import { FORM } from "@mds/common/constants/forms";
 import { USER_ROLES } from "@mds/common/constants/environment";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 interface ProjectLinksProps extends ProjectSummaryFormComponentProps {
   viewProject: (record: ILinkedProject) => string;
@@ -25,7 +26,7 @@ interface ProjectLinksProps extends ProjectSummaryFormComponentProps {
 }
 // outside of component to sneak past "hooks can't be rendered conditionally"
 const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [currentSelection, setCurrentSelection] = useState([]);
   const formName = FORM.ADD_EDIT_PROJECT_SUMMARY;
   const fieldName = "linked-projects";
@@ -94,8 +95,8 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, fieldsDisabled, tabl
   const project = useSelector(getProject);
   const mineProjects = useSelector(getProjects);
   const isUserProponent = useSelector(isProponent);
-  const canEditProjects = useSelector((state) =>
-    userHasRole(state, USER_ROLES.role_edit_project_summaries)
+  const canEditProjects = useSelector(
+    userHasRole(USER_ROLES.role_edit_project_summaries)
   );
   const { isEditMode } = useContext(FormContext);
   const hasModifyPermission = isUserProponent || canEditProjects;

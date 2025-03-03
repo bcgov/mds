@@ -1,0 +1,194 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PermitConditionReportRequirements expands collapse panel on click 1`] = `
+<div>
+  <div
+    class="ant-collapse ant-collapse-icon-position-end"
+  >
+    <div
+      class="ant-collapse-item ant-collapse-item-active report-collapse"
+    >
+      <div
+        aria-disabled="false"
+        aria-expanded="true"
+        class="ant-collapse-header"
+        role="button"
+        tabindex="0"
+      >
+        <div
+          class="ant-collapse-expand-icon"
+        >
+          <span
+            aria-label="right"
+            class="anticon anticon-right ant-collapse-arrow"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              data-icon="right"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              style="transform: rotate(90deg);"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"
+              />
+            </svg>
+          </span>
+        </div>
+        <span
+          class="ant-collapse-header-text"
+        >
+          <span
+            class="ant-typography"
+          >
+            <strong>
+              Report #
+              1
+               - Test Report
+            </strong>
+          </span>
+        </span>
+      </div>
+      <div
+        class="ant-collapse-content ant-collapse-content-active"
+      >
+        <div
+          class="ant-collapse-content-box"
+        >
+          <div>
+            <form
+              class="ant-form ant-form-vertical common-form common-form-ADD_REPORT_TO_PERMIT_CONDITION-1639 form-view"
+              id="ADD_REPORT_TO_PERMIT_CONDITION-1639"
+            >
+              <div
+                class="ant-row"
+                style="margin: -8px -8px -8px -8px;"
+              >
+                <div
+                  class="ant-col ant-col-24"
+                  style="padding: 8px 8px 8px 8px;"
+                >
+                  <div
+                    class="view-item ant-form-item"
+                  >
+                    <div
+                      class="ant-typography view-item-label"
+                    >
+                      Condition
+                    </div>
+                    <div
+                      class="ant-typography view-item-value"
+                    >
+                      N/A
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="ant-col ant-col-24"
+                  style="padding: 8px 8px 8px 8px;"
+                >
+                  <div
+                    class="view-item ant-form-item"
+                  >
+                    <div
+                      class="ant-typography view-item-label"
+                    >
+                      Report Type
+                    </div>
+                    <div
+                      class="ant-typography view-item-value"
+                    >
+                      Test Report
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="ant-col ant-col-12"
+                  style="padding: 8px 8px 8px 8px;"
+                >
+                  <div
+                    class="view-item ant-form-item"
+                  >
+                    <div
+                      class="ant-typography view-item-label"
+                    >
+                      Report Frequency
+                    </div>
+                    <div
+                      class="ant-typography view-item-value"
+                    >
+                      Annually
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="ant-col ant-col-sm-24 ant-col-md-12"
+                  style="padding: 8px 8px 8px 8px;"
+                >
+                  <div
+                    class="view-item ant-form-item"
+                  >
+                    <div
+                      class="ant-typography view-item-label"
+                    >
+                      Initial Due Date
+                    </div>
+                    <div
+                      class="ant-typography view-item-value"
+                    >
+                      Jan 01 2024
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="ant-col ant-col-sm-24 ant-col-md-12"
+                  style="padding: 8px 8px 8px 8px;"
+                >
+                  <div>
+                    <div
+                      class="ant-typography margin-none"
+                    >
+                      <strong>
+                        Regulatory Authority
+                      </strong>
+                    </div>
+                    <div
+                      class="ant-typography"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="ant-col ant-col-sm-24 ant-col-md-12"
+                  style="padding: 8px 8px 8px 8px;"
+                >
+                  <div>
+                    <div
+                      class="ant-typography margin-none"
+                    >
+                      <strong>
+                        Ministry Recipient
+                      </strong>
+                    </div>
+                    <div
+                      class="ant-typography"
+                    >
+                      Major Mines Office 
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ant-row ant-row-end"
+              />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

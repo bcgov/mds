@@ -11,8 +11,8 @@ export interface IComplianceArticle {
   sub_paragraph: string;
   description: string;
   long_description: string;
-  effective_date: Date;
-  expiry_date: Date;
+  effective_date: string;
+  expiry_date: string;
   help_reference_link: string;
   cim_or_cpo: string;
   reports: IMineReportDefinition[];

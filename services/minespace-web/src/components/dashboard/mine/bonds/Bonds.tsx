@@ -1,14 +1,15 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Row, Col, Typography } from "antd";
 import { fetchMineBonds } from "@mds/common/redux/actionCreators/securitiesActionCreator";
 import { getBonds } from "@mds/common/redux/selectors/securitiesSelectors";
 import BondsTable from "@/components/dashboard/mine/bonds/BondsTable";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { IMine } from "@mds/common/interfaces";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 export const Bonds: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
   const bonds = useSelector(getBonds);

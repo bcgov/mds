@@ -5,14 +5,14 @@ div.condition-layer {
   padding-left: 24px;
   font-weight: normal;
 
+  .ant-form {
+    margin-bottom: 0;
+  }
+
   .condition-content {
     &.editable:hover {
       cursor: pointer;
       background-color: #F4F0F0;
-    }
-
-    .view-item {
-      margin-bottom: 0;
     }
 
     .condition-column {
@@ -30,11 +30,14 @@ div.condition-layer {
     cursor: initial;
   }
 
+  &--loading {
+    opacity: 0.8;
+  }
+
   &--0 {
     border: 1px solid $transparent-dark-grey;
     border-radius: 4px;
     padding: 16px;
-    font-weight: 700;
 
     p.condition-layer--0 {
       font-weight: 600;
@@ -55,21 +58,43 @@ div.condition-layer {
   }
 }
 
+.top-level-condition {
+  font-weight: 600;
+}
+
 .condition-edit-buttons {
   padding: 0 8px;
 }
 
 .report-collapse-container {
   width: 100%;
+  margin-bottom: 16px;
+  margin-top: 16px;
 }
 
 .report-collapse-container>div {
   border: 1px solid #d9d9d9;
 }
 
+.report-collapse-container>h4 {
+  font-size: 1rem;
+  margin-bottom: 16px;
+}
+
 .report-collapse {
   width: 100%;
   background-color: #f9f9f9;
+}
+
+.report-delete-button {
+  padding: 6px 0px;
+  border: none;
+  color: $primary-color;
+  text-underline-offset: 4px;
+
+  &:hover {
+    color: $primary-color;
+  }
 }
 
 .icon-button-container {
@@ -87,10 +112,55 @@ div.condition-layer {
 .condition-tag {
   border-radius: 25px;
   border: none;
-  font-weight: 400 !important;
-
+  font-weight: 600 !important;
   font-size: 11px;
   padding: 4px 8px !important;
   margin-right: -8px !important;
   margin-left: 5px;
+}
+
+.permit-status-banner {
+  position: fixed;
+  width: 100%;
+  z-index: 999;
+  font-weight: 600;
+
+  svg {
+    margin-right: 0.25em;
+  }
+
+  &--complete {
+    background-color: $success-light;
+    color: $success-dark;
+  }
+
+  &--incomplete {
+    @extend .bg-color-warning;
+  }
+}
+
+.condition-category-reviewer-row {
+  margin-top: 10px;
+}
+
+.category-add-btn {
+  border: none;
+  font-weight: 400;
+
+  &:focus {
+    color: inherit;
+  }
+}
+
+
+.markdown-viewer>blockquote {
+  border-left: 4px solid $primary-color;
+  margin: 16px 0;
+  padding: 8px 16px;
+  background-color: #f9f9f9;
+  font-style: italic;
+
+  p {
+    margin-bottom: 0;
+  }
 }

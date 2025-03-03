@@ -5,13 +5,21 @@
     "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
     "jsx": "react",
     "paths": {
-      "@common/*": ["common/*"],
-      "@mds/common": ["../common/src"],
-      "@mds/common/*": ["../common/src/*"],
-      "@/*": ["src/*"]
+      "@common/*": [
+        "common/*"
+      ],
+      "@mds/common": [
+        "../common/src"
+      ],
+      "@mds/common/*": [
+        "../common/src/*"
+      ],
+      "@/*": [
+        "src/*"
+      ]
     },
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "sourceMap": true,
     "allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
     "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
@@ -21,6 +29,14 @@
     "noImplicitAny": false /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "include": ["src/**/*", "common/**/*", "../common/src/@Types/**/*"],
-  "exclude": ["node_modules", "src/**/*.test.ts", "src/**/*.test.tsx"]
+  "include": [
+    "src/**/*",
+    "common/**/*",
+    "../common/src/@Types/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx"
+  ]
 }

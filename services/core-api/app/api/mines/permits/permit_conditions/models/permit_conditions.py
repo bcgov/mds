@@ -1,3 +1,5 @@
+from typing import Optional
+
 from app.api.utils.field_template import FieldTemplate
 from app.api.utils.list_lettering_helpers import num_to_letter, num_to_roman
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
@@ -10,15 +12,14 @@ from sqlalchemy.schema import FetchedValue
 
 from . import permit_condition_status_code
 
+
 class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "permit_conditions"
 
     class _ModelSchema(Base._ModelSchema):
         permit_condition_id = fields.Integer(dump_only=True)
         permit_condition_guid = fields.UUID(dump_only=True)
-        condition_category_code = FieldTemplate(
-            field=fields.String, one_of="PermitConditionCategory"
-        )
+        condition_category_code = fields.String(dump_only=False)
         condition_type_code = FieldTemplate(
             field=fields.String, one_of="PermitConditionType"
         )
@@ -43,6 +44,9 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
     permit_condition_status_code = db.Column(
         db.String(3), db.ForeignKey('permit_condition_status_code.permit_condition_status_code'), nullable=False, server_default=FetchedValue())
 
+    permit_condition_status = db.relationship(
+        "PermitConditionStatusCode", lazy="select")
+
     condition_category = db.relationship("PermitConditionCategory", lazy="select")
 
     condition_type_code = db.Column(
@@ -53,6 +57,13 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
     parent_permit_condition_id = db.Column(
         db.Integer, db.ForeignKey("permit_conditions.permit_condition_id")
     )
+
+    parent_permit_condition = db.relationship(
+        "PermitConditions",
+        remote_side=[permit_condition_id],
+        foreign_keys=[parent_permit_condition_id],
+    )
+
     top_level_parent_permit_condition_id = db.Column(
         db.Integer, db.ForeignKey("permit_conditions.permit_condition_id")
     )
@@ -99,6 +110,44 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
             return num_to_letter(self.display_order) + "."
         elif step_format == 2:
             return num_to_roman(self.display_order) + "."
+
+    @hybrid_property
+    def condition_comparison(self):
+        """
+        The comparison of this condition to the matching condition in the previous amendment, if any
+        This property is only available for permit condition extracted using the permit service
+        """
+        return self.meta.get("condition_comparison") if self.meta else None
+
+    @hybrid_property
+    def comparison_match(self) -> Optional["PermitConditions"]:
+        """
+        The matching condition in the previous amendment, if any
+        This property is only available for permit condition extracted using the permit service
+        """
+        comparison = self.condition_comparison
+
+        if comparison:
+            previous_condition_guid = comparison.get("previous_condition_guid")
+
+            if previous_condition_guid:
+                return PermitConditions.find_by_permit_condition_guid(
+                    previous_condition_guid
+                )
+
+        return None
+
+    @hybrid_property
+    def is_unchanged(self):
+        """
+        Was this condition unchanged from the matching condition in the previous amendment?
+        This property is only available for permit condition extracted using the permit service
+        """
+        if not self.condition_comparison or self.condition_comparison.get("change_type") != "unchanged":
+            return False
+        
+        # Recursively check all sub_conditions
+        return all(sub_condition.is_unchanged for sub_condition in self.sub_conditions)
 
     def __repr__(self):
         return "<PermitConditions %r, %r, %r>" % (
@@ -219,3 +268,23 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         for root_condition in root_conditions:
             all_conditions.extend(get_all_conditions(root_condition))
         return all_conditions
+
+    @hybrid_property
+    def step_path(self):
+        steps = []
+        current = self
+        while current:
+            step = current._step
+            if step == "" and current.parent_permit_condition:
+                # If step is empty, determine it based on position in parent's sub_conditions
+                parent = current.parent_permit_condition
+                if parent.sub_conditions:
+                    try:
+                        step = f'sub_{str(parent.sub_conditions.index(current) + 1)}'
+                    except ValueError:
+                        step = None
+            if step:
+                steps = steps + [step]
+            current = current.parent_permit_condition
+        cat = self.condition_category.description if self.condition_category else ""
+        return ".".join([str(cat)] + steps) if steps else ""

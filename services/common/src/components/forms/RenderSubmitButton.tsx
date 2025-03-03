@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useContext } from "react";
 import { useSelector } from "react-redux";
-import { isDirty, isSubmitting } from "redux-form";
+import { isDirty, isSubmitting } from "@mds/common/components/forms/form";
 import { FormContext } from "./FormWrapper";
 import { Button } from "antd";
 import { ButtonProps } from "antd/lib/button/button";
@@ -27,6 +27,7 @@ const RenderSubmitButton: FC<RenderSubmitButtonProps> = ({
   const submitting = useSelector(isSubmitting(formName));
   const isFormDirty = useSelector(isDirty(formName));
   const disabled = props.disabled || submitting || (!isFormDirty && disableOnClean);
+  const loading = props.loading || (submitting && !iconButton);
   const className = `${buttonProps?.className ?? ""} form-btn`;
 
   return (
@@ -35,7 +36,7 @@ const RenderSubmitButton: FC<RenderSubmitButtonProps> = ({
         <Button
           type="primary"
           disabled={disabled}
-          loading={submitting || props.loading}
+          loading={loading}
           htmlType="submit"
           icon={icon}
           aria-label="Submit"

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { isEmpty, some, negate } from "lodash";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { Button, Col, Row } from "antd";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import * as FORM from "@/constants/forms";

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Field, getFormValues } from "redux-form";
+import { Field, getFormValues } from "@mds/common/components/forms/form";
 
 
 import { Button, Col, Row, Alert } from "antd";
@@ -31,7 +31,7 @@ const UpdateMineReportSubmissionStatusModal: FC<UpdateMineReportSubmissionStatus
   closeModal,
 }) => {
   const formValues =
-    useSelector((state) => getFormValues(FORM.UPDATE_MINE_REPORT_SUBMISSION_STATUS)(state)) ?? {};
+    useSelector((state) => getFormValues(FORM.UPDATE_MINE_REPORT_SUBMISSION_STATUS)(state)) as IMineReportSubmission;
 
   return (
     <FormWrapper name={FORM.UPDATE_MINE_REPORT_SUBMISSION_STATUS} onSubmit={handleSubmit}>

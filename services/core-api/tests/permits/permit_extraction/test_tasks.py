@@ -25,9 +25,7 @@ def celery_app(request, app):
 
 
 def test_poll_update_permit_extraction_status_success(permit_search_service_mock, celery_app, test_client, create_permit_conditions_mock, db_session):
-    permit_search_service_mock.return_value.update_task_status.return_value = mock.Mock(
-        task_status='SUCCESS'
-    )
+    permit_search_service_mock.return_value.update_task_status.return_value = (mock.Mock(), 'SUCCESS')
 
     result = poll_update_permit_extraction_status.apply(args=(str(uuid.uuid4()),)).get()
     create_permit_conditions_mock.assert_called_once()
@@ -36,9 +34,7 @@ def test_poll_update_permit_extraction_status_success(permit_search_service_mock
 
 
 def test_poll_update_permit_extraction_status_failure(permit_search_service_mock, celery_app, test_client, create_permit_conditions_mock, db_session):
-    permit_search_service_mock.return_value.update_task_status.return_value = mock.Mock(
-        task_status='FAILURE'
-    )
+    permit_search_service_mock.return_value.update_task_status.return_value = mock.Mock(), 'FAILURE'
     result = poll_update_permit_extraction_status.apply(args=(str(uuid.uuid4()),)).get()
 
     create_permit_conditions_mock.assert_not_called()
@@ -46,9 +42,7 @@ def test_poll_update_permit_extraction_status_failure(permit_search_service_mock
 
 
 def test_poll_update_permit_extraction_status_retry(permit_search_service_mock, celery_app, test_client, create_permit_conditions_mock, db_session):
-    permit_search_service_mock.return_value.update_task_status.return_value = mock.Mock(
-        task_status='IN_PROGRESS'
-    )
+    permit_search_service_mock.return_value.update_task_status.return_value = mock.Mock(), 'IN_PROGRESS'
 
     with mock.patch('app.api.mines.permits.permit_extraction.tasks.poll_update_permit_extraction_status.retry') as retry_mock:
         poll_update_permit_extraction_status.apply(args=(str(uuid.uuid4()),)).get()

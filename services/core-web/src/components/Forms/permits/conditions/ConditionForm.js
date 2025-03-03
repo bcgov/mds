@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { Row, Col } from "antd";
 import { required } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
@@ -32,6 +32,7 @@ export const ConditionForm = (props) => {
       <Col span={formSpan}>
         <FormWrapper
           name={FORM.CONDITION_SECTION}
+          scrollOnToggleEdit={false}
           reduxFormConfig={{
             onSubmitSuccess: resetForm(FORM.CONDITION_SECTION),
           }}

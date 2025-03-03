@@ -4,7 +4,7 @@ import { FORM } from "@mds/common/constants/forms";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { maxLength, required } from "@mds/common/redux/utils/Validate";
 import RenderField from "@mds/common/components/forms/RenderField";
 import { IPermitConditionCategory } from "@mds/common/interfaces";
@@ -16,7 +16,7 @@ interface PermitConditionCategoryEditModalProps {
 
 const PermitConditionCategoryEditModal: FC<PermitConditionCategoryEditModalProps> = ({ handleSubmit }) => {
   return (
-    <FormWrapper name={FORM.ADD_PERMIT_CONDITION_CATEGORY} isModal onSubmit={handleSubmit}>
+    <FormWrapper name={FORM.ADD_PERMIT_CONDITION_CATEGORY} isModal onSubmit={handleSubmit} scrollOnToggleEdit={false}>
       <Row gutter={6}>
         <Col span={24}>
           <Form.Item>

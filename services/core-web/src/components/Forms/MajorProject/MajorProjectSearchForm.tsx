@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { Button, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import RenderField from "@mds/common/components/forms/RenderField";

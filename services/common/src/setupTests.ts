@@ -26,6 +26,17 @@ Enzyme.configure({ adapter: new Adapter() });
     dynamicRoute: () => "test",
     helpKey: "Mine-Dashboard",
   },
+  EDIT_TAILINGS_STORAGE_FACILITY: {
+    route: "test",
+    dynamicRoute: () => "test",
+    helpKey: "Edit-TSF"
+  },
+  VIEW_MINE_PERMIT_AMENDMENT: {
+    route: "test",
+    dynamicRoute: () => "test",
+    hashRoute: () => "test",
+    helpKey: "View Permit Amendment"
+  }
 };
 
 beforeAll(() => {
@@ -46,6 +57,10 @@ jest.mock("react", () => {
     ...original,
     useLayoutEffect: jest.fn(),
   };
+});
+
+jest.mock("keycloak-js", () => {
+  return jest.fn()
 });
 
 jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Field, getFormValues, change } from "redux-form";
+import { Field, getFormValues, change } from "@mds/common/components/forms/form";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Row, Typography, Form } from "antd";
 import { required } from "@mds/common/redux/utils/Validate";

@@ -1,21 +1,20 @@
 import React from "react";
-import { FieldArray, getFormValues } from "redux-form";
+import { FieldArray, getFormValues } from "@mds/common/components/forms/form";
 import { useSelector } from "react-redux";
 import { Row, Col, Typography, Button, Collapse, Popconfirm } from "antd";
 import { ReportDefinitionFieldSelect } from "@mds/common/components/reports/ReportDefinitionFieldSelect";
-import { ReportInfoBox } from "@mds/common/components/reports/ReportGetStarted";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
-import { getMineReportDefinitionOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-import { IComplianceArticle } from "@mds/common/interfaces";
+import { getMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
+import { CodeReportInfoBox } from "@mds/common/components/reports/ReportInfoBox";
+import { IMineReportDefinition } from "@mds/common/interfaces";
 
 export interface ReportEditProps {
-  complianceCodes: IComplianceArticle[];
   isEditMode: boolean;
 }
 
 export const ReportEditForm = (props: ReportEditProps) => {
-  const formValues = useSelector(getFormValues(FORM.ADD_COMPLIANCE_CODE));
+  const formValues: any = useSelector(getFormValues(FORM.ADD_COMPLIANCE_CODE));
   const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
 
   const renderPanelHeader = (fields, index, isEditMode) => {
@@ -53,7 +52,7 @@ export const ReportEditForm = (props: ReportEditProps) => {
         const reportDefinition =
           mineReportDefinitionOptions?.find(
             (d) => d?.mine_report_definition_guid === reportData.mine_report_definition_guid
-          ) || {};
+          ) || {} as IMineReportDefinition;
         const reportWCompliance = {
           ...reportDefinition,
           compliance_articles: [formValues],
@@ -74,18 +73,16 @@ export const ReportEditForm = (props: ReportEditProps) => {
             >
               <Row style={{ width: "100%" }}>
                 <Col span="24">
-                  <>
-                    <ReportDefinitionFieldSelect
-                      id={`${report}.mine_report_definition_guid`}
-                      label="Report Name"
-                      required={true}
-                      name={`${report}.mine_report_definition_guid`}
-                    />
-                  </>
+                  <ReportDefinitionFieldSelect
+                    id={`${report}.mine_report_definition_guid`}
+                    label="Report Name"
+                    required={true}
+                    name={`${report}.mine_report_definition_guid`}
+                  />
                 </Col>
                 <Col span="24">
                   {reportData?.mine_report_definition_guid ? (
-                    <ReportInfoBox mineReportDefinition={reportWCompliance} verb="requesting" />
+                    <CodeReportInfoBox mineReportDefinition={reportWCompliance} verb="requesting" />
                   ) : (
                     ""
                   )}

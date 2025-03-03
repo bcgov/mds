@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { withRouter, Link, Prompt, useParams, useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { reset, getFormValues, isDirty } from "redux-form";
+import { reset, getFormValues, isDirty } from "@mds/common/components/forms/form";
 import * as routes from "@/constants/routes";
 import { Button, Col, Row, Tag } from "antd";
 import EnvironmentOutlined from "@ant-design/icons/EnvironmentOutlined";
@@ -11,7 +11,7 @@ import {
   getFormattedProjectSummary,
   getProject,
 } from "@mds/common/redux/selectors/projectSelectors";
-import { getMineById } from "@mds/common/redux/reducers/mineReducer";
+import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 import {
   createProjectSummary,
@@ -48,7 +48,7 @@ export const ProjectSummary: FC = () => {
     mode: string;
   }>();
   const userInfo = useSelector(getUserInfo);
-  const mine = useSelector((state) => getMineById(state, mineGuid));
+  const mine = useSelector(getMineById(mineGuid));
   const formattedProjectSummary = useSelector(getFormattedProjectSummary);
   const project = useSelector(getProject);
   const anyTouched = useSelector(

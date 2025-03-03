@@ -11,7 +11,7 @@ from app.api.mines.permits.permit_extraction.models.permit_extraction_task impor
 from app.api.mines.reports.models.mine_report_permit_requirement import (
     MineReportPermitRequirement,
 )
-from tests.factories import create_mine_and_permit
+from tests.factories import PermitExtractionTaskFactory, create_mine_and_permit
 
 
 @pytest.fixture(scope="function")
@@ -27,7 +27,8 @@ def permit_amendment(test_client, db_session):
 
 @pytest.fixture(scope="function")
 def permit_conditions(permit_amendment, db_session):
-    task = PermitExtractionTask(
+    task = PermitExtractionTaskFactory(
+        permit_amendment=permit_amendment,
         task_result={
             "conditions": [
                 # General Section
@@ -122,16 +123,9 @@ def permit_conditions(permit_amendment, db_session):
                     "condition_text": "A test paragraph",
                 },
             ]
-        },
-        permit_amendment=permit_amendment,
-    )
-    # Call the function
+        })
     create_permit_conditions_from_task(task)
-
-    # Retrieve the created permit conditions from the database
-    permit_conditions = PermitConditions.find_by_permit_amendment_id_ordered(permit_amendment.permit_amendment_id)
-
-    return permit_conditions
+    return PermitConditions.find_by_permit_amendment_id_ordered(permit_amendment.permit_amendment_id)
 
 
 def test_create_permit_conditions_from_task(
@@ -251,7 +245,8 @@ def test_creates_custom_conditions(permit_conditions, permit_amendment, db_sessi
 
 
 def test_report_requirement_exists(permit_amendment, db_session):
-    task = PermitExtractionTask(
+    task = PermitExtractionTaskFactory(
+        permit_amendment=permit_amendment,
         task_result={
             "conditions": [
                 {
@@ -279,9 +274,7 @@ def test_report_requirement_exists(permit_amendment, db_session):
                     },
                 }
             ]
-        },
-        permit_amendment=permit_amendment,
-    )
+        })
     create_permit_conditions_from_task(task)
     report_requirements = MineReportPermitRequirement.query.all()
     assert len(report_requirements) == 1
@@ -290,7 +283,7 @@ def test_report_requirement_exists(permit_amendment, db_session):
 
 def test_nested_display_order(test_client, db_session, permit_amendment):
     # Create a task with nested conditions
-    task = PermitExtractionTask(
+    task = PermitExtractionTaskFactory(
         permit_amendment=permit_amendment,
         task_result={
             "conditions": [
@@ -330,9 +323,7 @@ def test_nested_display_order(test_client, db_session, permit_amendment):
                 },
                 {"section": "B", "condition_text": "Another section"},
             ]
-        },
-    )
-
+        })
     create_permit_conditions_from_task(task)
 
     # Query conditions and verify display orders
@@ -371,7 +362,7 @@ def test_nested_display_order(test_client, db_session, permit_amendment):
 
 
 def test_display_order_with_titles(test_client, db_session, permit_amendment):
-    task = PermitExtractionTask(
+    task = PermitExtractionTaskFactory(
         permit_amendment=permit_amendment,
         task_result={
             "conditions": [
@@ -390,9 +381,7 @@ def test_display_order_with_titles(test_client, db_session, permit_amendment):
                     "condition_text": "Sub 2",
                 },
             ]
-        },
-    )
-
+        })
     create_permit_conditions_from_task(task)
 
     conditions = db_session.query(PermitConditions).all()

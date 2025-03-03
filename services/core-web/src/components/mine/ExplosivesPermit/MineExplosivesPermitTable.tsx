@@ -22,7 +22,7 @@ import {
 import ActionMenu, {
   deleteConfirmWrapper,
 } from "@mds/common/components/common/ActionMenu";
-import { userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
+import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFiles } from "@fortawesome/pro-light-svg-icons";
 import { COLOR } from "@/constants/styles";
@@ -81,7 +81,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
   handleOpenViewExplosivesPermitModal,
   ...props
 }) => {
-  const isAdmin = useSelector((state) => userHasRole(state, Permission.ADMIN));
+  const isAdmin = useSelector(userHasRole(Permission.ADMIN));
   const editIcon = <EditOutlined />;
   const viewIcon = <EyeOutlined />;
 

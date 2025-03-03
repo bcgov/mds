@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Form, DatePicker, Select } from "antd";
 import { useSelector, connect } from "react-redux";
-import { Field, getFormValues, change } from "redux-form";
+import { Field, getFormValues, change } from "@mds/common/components/forms/form";
 import moment from "moment-timezone";
 import { compose, bindActionCreators } from "redux";
 import {

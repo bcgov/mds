@@ -1,13 +1,13 @@
 import React, { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Field, getFormValues } from "redux-form";
+import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { Button, Col, Row, Form } from "antd";
 import {
   getDropdownMineReportCategoryOptions,
   getDropdownMineReportStatusOptions,
   getDropdownPermitConditionCategoryOptions,
-  getMineReportDefinitionOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
 import { createDropDownList, sortListObjectsByPropertyLocaleCompare } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -49,7 +49,7 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
   const {
     report_type: selectedMineReportCategory,
     report_name: selectedMineReportDefinitionGuid,
-  } = useSelector((state) => getFormValues(FORM.FILTER_REPORTS)(state) ?? {});
+  } = useSelector(getFormValues(FORM.FILTER_REPORTS)) ?? {};
 
   const updateMineReportDefinitionOptions = (
     mineReportDefinitionOptions,

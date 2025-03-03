@@ -19,7 +19,6 @@ import { ContactResultsTable } from "@/components/search/ContactResultsTable";
 import { DocumentResultsTable } from "@/components/search/DocumentResultsTable";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
-import PermitSearchResults from "@mds/common/components/permits/PermitSearchResults";
 
 interface SearchResultsProps {
   location: { search: string };
@@ -28,8 +27,8 @@ interface SearchResultsProps {
   fetchSearchResults: (query, tab) => Promise<void>;
   searchOptions: any[];
   searchOptionsHash: { [key: string]: any };
-  searchResults: { [key: string]: any };
   searchTerms: string[];
+  searchResults: { [key: string]: any };
   partyRelationshipTypeHash: { [key: string]: string };
   hideLoadingIndicator?: boolean;
 }
@@ -41,55 +40,48 @@ const TableForGroup = (
   query: { q?: string },
   showAdvancedLookup: boolean
 ) =>
-  ({
-    mine: (
-      <MineResultsTable
-        header="Mines"
-        highlightRegex={highlightRegex}
-        searchResults={group.results}
-        query={query.q}
-        showAdvancedLookup={showAdvancedLookup}
-      />
-    ),
-    party: (
-      <ContactResultsTable
-        header="Contacts"
-        highlightRegex={highlightRegex}
-        searchResults={group.results}
-        partyRelationshipTypeHash={partyRelationshipTypeHash}
-        query={query.q}
-        showAdvancedLookup={showAdvancedLookup}
-      />
-    ),
-    permit: (
-      <PermitResultsTable
-        header="Permits"
-        highlightRegex={highlightRegex}
-        searchResults={group.results}
-      />
-    ),
-    mine_documents: (
-      <DocumentResultsTable
-        header="Mine Documents"
-        highlightRegex={highlightRegex}
-        searchResults={group.results}
-      />
-    ),
-    permit_documents: (
-      <DocumentResultsTable
-        header="Permit Documents"
-        highlightRegex={highlightRegex}
-        searchResults={group.results}
-      />
-    ),
-    mines_act_permits: (
-      <PermitSearchResults
-        header="Permit Documents"
-        highlightRegex={highlightRegex}
-        searchResults={group.results}
-      />
-    ),
-  }[group.type]);
+({
+  mine: (
+    <MineResultsTable
+      header="Mines"
+      highlightRegex={highlightRegex}
+      searchResults={group.results}
+      query={query.q}
+      showAdvancedLookup={showAdvancedLookup}
+    />
+  ),
+  party: (
+    <ContactResultsTable
+      header="Contacts"
+      highlightRegex={highlightRegex}
+      searchResults={group.results}
+      partyRelationshipTypeHash={partyRelationshipTypeHash}
+      query={query.q}
+      showAdvancedLookup={showAdvancedLookup}
+    />
+  ),
+  permit: (
+    <PermitResultsTable
+      header="Permits"
+      highlightRegex={highlightRegex}
+      searchResults={group.results}
+    />
+  ),
+  mine_documents: (
+    <DocumentResultsTable
+      header="Mine Documents"
+      highlightRegex={highlightRegex}
+      searchResults={group.results}
+    />
+  ),
+  permit_documents: (
+    <DocumentResultsTable
+      header="Permit Documents"
+      highlightRegex={highlightRegex}
+      searchResults={group.results}
+    />
+  ),
+}[group.type]);
 
 const NoResults = (searchTerms: string[]) => {
   const searchTooShort = !searchTerms.find((term) => term.length > 2);
@@ -179,9 +171,8 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
       <div>
         <div className="landing-page__header">
           <h1 className="padding-sm--bottom">
-            {`${
-              type_filter ? props.searchOptionsHash[type_filter] : "Search results"
-            } for ${results}`}
+            {`${type_filter ? props.searchOptionsHash[type_filter] : "Search results"
+              } for ${results}`}
           </h1>
           <div>
             {type_filter ? (

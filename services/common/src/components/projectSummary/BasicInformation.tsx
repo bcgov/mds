@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Typography } from "antd";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { maxLength, required } from "@mds/common/redux/utils/Validate";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";

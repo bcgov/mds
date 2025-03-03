@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tailings PartyAppointmentTable renders properly 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-ADD_TAILINGS_STORAGE_FACILITY form-edit"
+    id="ADD_TAILINGS_STORAGE_FACILITY"
+  >
+    <div
+      class="ant-row"
+    >
+      <div
+        class="ant-col ant-col-24"
+      >
+        <h4
+          class="ant-typography margin-large--top"
+        >
+          Historical Engineer of Record List
+        </h4>
+        <div
+          class="ant-table-wrapper  core-table"
+        >
+          <div
+            class="ant-spin-nested-loading"
+          >
+            <div
+              class="ant-spin-container"
+            >
+              <div
+                class="ant-table ant-table-empty"
+              >
+                <div
+                  class="ant-table-container"
+                >
+                  <div
+                    class="ant-table-content"
+                  >
+                    <table
+                      style="table-layout: auto;"
+                    >
+                      <colgroup />
+                      <thead
+                        class="ant-table-thead"
+                      >
+                        <tr>
+                          <th
+                            class="ant-table-cell"
+                          >
+                            Name
+                          </th>
+                          <th
+                            class="ant-table-cell"
+                          >
+                            Status
+                          </th>
+                          <th
+                            class="ant-table-cell"
+                          >
+                            Letters
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        class="ant-table-tbody"
+                      >
+                        <tr
+                          class="ant-table-placeholder"
+                        >
+                          <td
+                            class="ant-table-cell"
+                            colspan="3"
+                          >
+                            No Data Yet
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;

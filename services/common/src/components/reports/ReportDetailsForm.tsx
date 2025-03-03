@@ -1,16 +1,26 @@
 import { Alert, Button, Col, Row, Typography } from "antd";
 import React, { FC, ReactNode, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { arrayPush, change, Field, FieldArray, getFormValues } from "redux-form";
+import {
+  useAppDispatch as useDispatch,
+  useAppSelector as useSelector,
+} from "@mds/common/redux/rootState";
+import {
+  arrayPush,
+  change,
+  Field,
+  FieldArray,
+  getFormValues,
+} from "@mds/common/components/forms/form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/pro-light-svg-icons";
-
+import { getDropdownPermitConditionCategoryOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import {
-  getDropdownPermitConditionCategoryOptions,
+  fetchComplianceReports,
   getMineReportDefinitionOptions,
-} from "@mds/common/redux/selectors/staticContentSelectors";
+  getReportDefinitionsLoaded,
+  reportParamsGetAll,
+} from "@mds/common/redux/slices/complianceReportsSlice";
 import ReportFileUpload from "@mds/common/components/reports/ReportFileUpload";
-
 import { FORM } from "@mds/common/constants/forms";
 import {
   email,
@@ -45,9 +55,12 @@ import { getParties, getPartyRelationships } from "@mds/common/redux/selectors/p
 import { uniqBy } from "lodash";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import ExportOutlined from "@ant-design/icons/ExportOutlined";
-import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
+import {
+  getLatestAmendmentByPermitGuid,
+  getMineReportPermitRequirementById,
+  getPermitByGuid,
+} from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
-import { RenderPRRFields } from "./ReportGetStarted";
 import MinistryCommentPanel from "@mds/common/components/comments/MinistryCommentPanel";
 import { getMineReportComments } from "@mds/common/redux/selectors//reportSelectors";
 import {
@@ -60,7 +73,17 @@ import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchMinistryContactsByRegion } from "@mds/common/redux/actionCreators/minespaceActionCreator";
 import { getMinistryContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
 import { useParams } from "react-router-dom";
-import { MINE_REPORT_SUBMISSION_CODES, MINE_REPORTS_ENUM, MinePartyAppointmentTypeCodeEnum, REPORT_REGULATORY_AUTHORITY_CODES, REPORT_REGULATORY_AUTHORITY_ENUM, REPORT_TYPE_CODES, SystemFlagEnum } from "@mds/common/constants/enums";
+import {
+  MINE_REPORT_SUBMISSION_CODES,
+  MINE_REPORTS_ENUM,
+  MinePartyAppointmentTypeCodeEnum,
+  REPORT_REGULATORY_AUTHORITY_CODES,
+  REPORT_REGULATORY_AUTHORITY_ENUM,
+  REPORT_TYPE_CODES,
+  SystemFlagEnum,
+} from "@mds/common/constants/enums";
+import { PermitReportInfoBox } from "./ReportInfoBox";
+import { RenderPRRFields } from "./PermitRequiredReportFields";
 
 const RenderContacts: FC<any> = ({ fields, isEditMode, mineSpaceEdit, hasSubmissions }) => {
   const canEdit = isEditMode && (!mineSpaceEdit || !hasSubmissions);
@@ -136,8 +159,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const coreEditReportPermission = USER_ROLES.role_edit_reports;
   const coreViewAllPermission = USER_ROLES.role_view;
   const dispatch = useDispatch();
-  const formValues: IMineReportSubmission =
-    useSelector((state) => getFormValues(FORM.VIEW_EDIT_REPORT)(state)) ?? {};
+  const formValues = useSelector(
+    (state) => getFormValues(FORM.VIEW_EDIT_REPORT)(state) ?? {}
+  ) as IMineReportSubmission;
   const [mineManager, setMineManager] = useState<IParty>();
   const [mineManagerGuid, setMineManagerGuid] = useState<string>("");
 
@@ -152,7 +176,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   } = formValues;
 
   const [selectedReportCode, setSelectedReportCode] = useState("");
-  const [formattedMineReportDefinitionOptions, setFormatMineReportDefinitionOptions] = useState([]);
+  const [formattedMineReportDefinitionOptions, setFormattedMineReportDefinitionOptions] = useState(
+    []
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const partyRelationships: IPartyAppt[] = useSelector((state) => getPartyRelationships(state));
@@ -161,9 +187,11 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const [mineReportDefinition, setMineReportDefinition] = useState<IMineReportDefinition>(null);
 
   const system = useSelector(getSystemFlag);
-  const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
+  const mine: IMine = useSelector(getMineById(mineGuid));
   const MinistryContactsByRegion: IMinistryContact[] = useSelector(getMinistryContactsByRegion);
   const [contactEmail, setContactEmail] = useState<string>();
+
+  const reportDefinitionsLoaded = useSelector(getReportDefinitionsLoaded(reportParamsGetAll));
 
   // PRR
   const permit = useSelector(getPermitByGuid(permit_guid));
@@ -175,6 +203,13 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     dropdownPermitConditionCategoryOptions.find(
       (opt) => opt.value === permit_condition_category_code
     );
+  const selectedPermitReportDefinition = useSelector(
+    getMineReportPermitRequirementById(
+      formValues?.permit_guid,
+      formValues?.mine_report_permit_requirement_id
+    )
+  );
+  const latestAmendment = useSelector(getLatestAmendmentByPermitGuid(formValues?.permit_guid));
 
   const isCRR = report_type === REPORT_TYPE_CODES.CRR;
   const isPRR = report_type === REPORT_TYPE_CODES.PRR;
@@ -189,7 +224,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   useEffect(() => {
     if (isMS && mine && MinistryContactsByRegion.length) {
       const contactCode = mine.major_mine_ind ? "MMO" : "ROE";
-      const contact = MinistryContactsByRegion.find((c) => c.emli_contact_type_code === contactCode);
+      const contact = MinistryContactsByRegion.find(
+        (c) => c.emli_contact_type_code === contactCode
+      );
       setContactEmail(contact?.email);
     }
   }, [MinistryContactsByRegion, mine]);
@@ -245,12 +282,14 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         };
       })
       .sort((a, b) => a.label.localeCompare(b.label));
-    setFormatMineReportDefinitionOptions(uniqBy(newFormattedMineReportDefinitionOptions, "value"));
+    setFormattedMineReportDefinitionOptions(
+      uniqBy(newFormattedMineReportDefinitionOptions, "value")
+    );
   }, [mineReportDefinitionOptions]);
 
   useEffect(() => {
     // update compliance article options when "Report Name" changes
-    if (mine_report_definition_guid) {
+    if (mine_report_definition_guid && mineReportDefinitionOptions.length) {
       const newReportComplianceArticle = mineReportDefinitionOptions.find((opt) => {
         return opt.mine_report_definition_guid === mine_report_definition_guid;
       });
@@ -260,7 +299,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     } else {
       setSelectedReportCode("");
     }
-  }, [mine_report_definition_guid]);
+  }, [mine_report_definition_guid, mineReportDefinitionOptions]);
 
   useEffect(() => {
     if (system === SystemFlagEnum.core) {
@@ -286,6 +325,12 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
       fetchComments();
     }
   }, [formValues.mine_report_guid, formValues.mine_report_submission_guid]);
+
+  useEffect(() => {
+    if (!reportDefinitionsLoaded) {
+      dispatch(fetchComplianceReports(reportParamsGetAll));
+    }
+  }, []);
 
   const handleAddComment = async (values) => {
     const formVals = {
@@ -413,7 +458,24 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                   ]}
                 />
               </Col>
-              {isPRR && <RenderPRRFields mineGuid={initialValues?.mine_guid} />}
+              {isPRR && (
+                <>
+                  <RenderPRRFields mineGuid={initialValues?.mine_guid} summary={true} />
+                  {selectedPermitReportDefinition && isEditMode && (
+                    <Col span={24}>
+                      <PermitReportInfoBox
+                        twoColumn
+                        permitAmendmentGuid={latestAmendment.permit_amendment_guid}
+                        permitGuid={formValues?.permit_guid}
+                        mineGuid={mineGuid}
+                        permitReport={selectedPermitReportDefinition}
+                        summary
+                        verb="submitting"
+                      />
+                    </Col>
+                  )}
+                </>
+              )}
               {isCRR && (
                 <Col span={12}>
                   <Field
@@ -456,6 +518,19 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                   <BaseViewInput
                     label="Permit Condition Category"
                     value={selectedPermitCategory.label}
+                  />
+                </Col>
+              )}
+              {isPRR && selectedPermitReportDefinition && (
+                <Col span={24}>
+                  <PermitReportInfoBox
+                    permitAmendmentGuid={latestAmendment.permit_amendment_guid}
+                    permitGuid={formValues?.permit_guid}
+                    mineGuid={mineGuid}
+                    permitReport={selectedPermitReportDefinition}
+                    twoColumn
+                    summary
+                    verb="submitting"
                   />
                 </Col>
               )}

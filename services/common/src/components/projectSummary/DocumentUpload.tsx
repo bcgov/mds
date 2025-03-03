@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect } from "react";
-import { change, Field, getFormValues } from "redux-form";
+import { change, Field, getFormValues } from "@mds/common/components/forms/form";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Typography } from "antd";
 import { CSV, DOCUMENT, EXCEL, IMAGE, OTHER_SPATIAL, XML } from "@mds/common/constants/fileTypes";
@@ -24,6 +24,7 @@ import { Feature } from "@mds/common/utils";
 import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE } from "@mds/common/constants/strings";
 import { FORM } from "@mds/common/constants/forms";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const RenderOldDocuments = ({
   documents,
@@ -71,7 +72,7 @@ interface DocumentUploadProps {
 }
 
 export const DocumentUpload: FC<DocumentUploadProps> = ({ docFieldsDisabled, deleteEnabled }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     spatial_documents = [],
     support_documents = [],

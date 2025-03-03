@@ -53,10 +53,12 @@ import DamsDetailsPage from "@/components/mine/Tailings/DamsDetailsPage";
 import ReportPage from "@/components/mine/Reports/ReportPage";
 import ReportSteps from "@mds/common/components/reports/ReportSteps";
 import ViewDigitalPermitCredential from "@/components/mine/DigitalPermitCredential/ViewDigitalPermitCredential";
-import ComplianceCodeManagement from "@/components/admin/complianceCodes/ComplianceCodeManagement";
+import ComplianceManagement from "@/components/admin/complianceCodes/ComplianceManagement";
 import ProjectSubmissionStatusPage from "@mds/common/components/projectSummary/ProjectSubmissionStatusPage";
 import ViewPermit from "@/components/mine/Permit/ViewPermit";
+import PermitConditionSearch from "@/components/mine/Permit/Search/PermitConditionSearch";
 import { getEnvironment } from "@mds/common/utils/environmentUtils";
+import ViewPermitRedirect from "@/components/mine/Permit/ViewPermitRedirect";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -165,13 +167,25 @@ export const MINE_PERMITS = {
   helpKey: "Mine-Permits",
 };
 
+
+export const VIEW_MINE_PERMIT_AMENDMENT = {
+  route: "/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/permit-amendment/:permitAmendmentGuid/:tab",
+  dynamicRoute: (id, permitGuid, permitAmendmentGuid, tab = "overview") =>
+    `/mine-dashboard/${id}/permits-and-approvals/permits/${permitGuid}/permit-amendment/${permitAmendmentGuid}/${tab}`,
+  hashRoute: (id, permitGuid, permitAmendmentGuid, tab = "overview", link = "") =>
+    `/mine-dashboard/${id}/permits-and-approvals/permits/${permitGuid}/permit-amendment/${permitAmendmentGuid}/${tab}/${link}`,
+  component: ViewPermit,
+  helpKey: "View-Permit",
+  priority: 1,
+};
+
 export const VIEW_MINE_PERMIT = {
   route: "/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/:tab",
   dynamicRoute: (id, permitGuid, tab = "overview") =>
     `/mine-dashboard/${id}/permits-and-approvals/permits/${permitGuid}/${tab}`,
   hashRoute: (id, permitGuid, tab = "overview", link = "") =>
     `/mine-dashboard/${id}/permits-and-approvals/permits/${permitGuid}/${tab}/${link}`,
-  component: ViewPermit,
+  component: ViewPermitRedirect,
   helpKey: "View-Permit",
   priority: 1,
 };
@@ -286,15 +300,15 @@ export const MINE_NOW_APPLICATIONS = {
 };
 
 export const MINE_TAILINGS = {
-  route: "/mine-dashboard/:id/permits-and-approvals/tailings",
-  dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/tailings`,
+  route: "/mine-dashboard/:mineGuid/permits-and-approvals/tailings",
+  dynamicRoute: (mineGuid) => `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings`,
   component: MineTailingsInfo,
   helpKey: "Mine-Tailings",
 };
 
 export const MINE_TAILINGS_DETAILS = {
   route:
-    "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
+    "/mine-dashboard/:mineGuid/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
   dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information", isEditMode = false) =>
     `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}/${isEditMode ? "edit" : "view"
     }`,
@@ -303,7 +317,6 @@ export const MINE_TAILINGS_DETAILS = {
 };
 
 export const EDIT_TAILINGS_STORAGE_FACILITY = {
-  // identical to above route: MERGE
   route:
     "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
   dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information", isEditMode = false) =>
@@ -500,8 +513,9 @@ export const ADMIN_CONTACT_MANAGEMENT = {
 };
 
 export const ADMIN_HSRC_COMPLIANCE_CODE_MANAGEMENT = {
-  route: "/admin/hsrc-management",
-  component: ComplianceCodeManagement,
+  route: "/admin/hsrc-management/:tab",
+  component: ComplianceManagement,
+  dynamicRoute: (tab: string, params = {}) => `/admin/hsrc-management/${tab}?${queryString.stringify(params)}`,
   helpKey: "HSRC-Code-Management",
 };
 
@@ -511,6 +525,13 @@ export const SEARCH_RESULTS = {
   component: SearchResults,
   helpKey: "Search-Results",
 };
+
+export const PERMIT_CONDITION_SEARCH = {
+  route: "/permit-conditions/search",
+  component: PermitConditionSearch,
+  helpKey: "Permit-Condition-Search-Results",
+};
+
 
 export const NOTICE_OF_WORK_APPLICATIONS = {
   route: "/dashboard/reporting/notice-of-work",

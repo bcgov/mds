@@ -26,7 +26,7 @@ const initialState = {
 export const permitReducer = (state: PermitState = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_PERMITS:
-      const amendments = action.payload.records.reduce((acc, permit) => {
+      const amendments: IPermitAmendment[] = action.payload.records.reduce((acc, permit) => {
         const latestAmendment = permit.permit_amendments
           .filter(a => a.permit_amendment_status_code !== 'DFT')[0];
 
@@ -35,6 +35,7 @@ export const permitReducer = (state: PermitState = initialState, action) => {
         }
         return acc;
       }, {});
+
 
       return {
         ...state,
