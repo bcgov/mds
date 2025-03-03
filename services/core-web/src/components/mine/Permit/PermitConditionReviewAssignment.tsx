@@ -115,4 +115,4 @@ const PermitConditionReviewAssignment: FC<PermitConditionReviewAssignmentProps> 
   );
 };
 
-export default PermitConditionReviewAssignment;
+export default React.memo(PermitConditionReviewAssignment);
