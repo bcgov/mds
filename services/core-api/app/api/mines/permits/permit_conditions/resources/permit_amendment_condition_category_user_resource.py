@@ -4,7 +4,7 @@ from werkzeug.exceptions import BadRequest, NotFound, Unauthorized
 from app.api.mines.permits.permit_conditions.models import PermitConditionCategory
 from app.api.mines.permits.permit_conditions.models.permit_condition_review_assignment import PermitConditionReviewAssignment
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
-from app.api.mines.response_models import PERMIT_CONDITION_CATEGORY_MODEL, PERMIT_CONDITION_REVIEW_ASSIGNMENT_MODEL
+from app.api.mines.response_models import PERMIT_CONDITION_REVIEW_ASSIGNMENT_MODEL
 from app.api.users.models.user import User
 from app.api.utils.access_decorators import requires_role_edit_standard_permit_conditions, \
     requires_role_view_all, EDIT_STANDARD_PERMIT_CONDITIONS
@@ -16,7 +16,7 @@ class AssignUserToPermitConditionCategory(Resource):
     @api.doc(
             description="Get a list of review assignments",
             params={'permit_amendment_id': "The permit amendment for the reviewer assignment"})
-    @requires_role_edit_standard_permit_conditions
+    @requires_role_view_all
     @api.marshal_with(PERMIT_CONDITION_REVIEW_ASSIGNMENT_MODEL, envelope='records', code=200)
     def get(self):
         parser = reqparse.RequestParser()
