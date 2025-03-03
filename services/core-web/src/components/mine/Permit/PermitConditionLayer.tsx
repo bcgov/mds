@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useMemo, useState } from "react";
 import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
 import PermitConditionForm from "./PermitConditionForm";
 import SubConditionForm from "./SubConditionForm";
@@ -41,7 +41,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   isExpanded,
   conditionSelected,
   level = 0,
-  setParentExpand = () => { },
+  setParentExpand = () => {},
   canEditPermitConditions = false,
   setEditingConditionGuid,
   editingConditionGuid,
@@ -56,7 +56,11 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   mineGuid,
 }) => {
   const { loading } = usePermitConditions();
-  const editingCondition = editingConditionGuid === condition.permit_condition_guid;
+
+  const editingCondition = useMemo(
+    () => editingConditionGuid === condition.permit_condition_guid,
+    [condition.permit_condition_guid, editingConditionGuid]
+  );
   const [isAddingListItem, setIsAddingListItem] = useState<boolean>(false);
   const [expandClass, setExpandClass] = useState(
     isExpanded ? "condition-expanded" : "condition-collapsed"
@@ -107,8 +111,12 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   let matchingCondition = null;
   if (level === 0) {
     // Find the matching condition in the previous amendment
-    matchingCondition = previousAmendment?.conditions.find(c => {
-      return !c.parent_permit_condition_id && c.step === condition.step && c.condition === condition.condition;
+    matchingCondition = previousAmendment?.conditions.find((c) => {
+      return (
+        !c.parent_permit_condition_id &&
+        c.step === condition.step &&
+        c.condition === condition.condition
+      );
     });
   }
 
@@ -169,7 +177,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
       )}
       {level == 0 && isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && (
         <div>
-          {(!condition?.parent_permit_condition_id && requirements.length > 0) && (
+          {!condition?.parent_permit_condition_id && requirements.length > 0 && (
             <div className="report-collapse-container">
               <Title level={4} className="primary-colour">
                 Report Requirements
@@ -178,7 +186,8 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
               <PermitConditionReportRequirements
                 conditionsWithRequirements={requirements}
                 refreshData={refreshData}
-                canEditPermitConditions={canEditPermitConditions} />
+                canEditPermitConditions={canEditPermitConditions}
+              />
             </div>
           )}
           <PermitConditionStatus
@@ -196,4 +205,4 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   );
 };
 
-export default PermitConditionLayer;
+export default React.memo(PermitConditionLayer);
