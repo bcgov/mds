@@ -2,28 +2,31 @@ import { Alert, Button, Col, Row, Typography } from "antd";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { Field, getFormValues, change } from "@mds/common/components/forms/form";
 import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
-import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { IMine, IMineReportDefinition, IMineReportSubmission } from "@mds/common/interfaces";
-import {
-  createDropDownList,
-  formatComplianceCodeReportName,
-} from "@mds/common/redux/utils/helpers";
-import ExportOutlined from "@ant-design/icons/ExportOutlined";
 import FormWrapper from "../forms/FormWrapper";
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import { required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
 import RenderSelect from "../forms/RenderSelect";
-import {
-  getDropdownPermitConditionCategoryOptions,
-} from "@mds/common/redux/selectors/staticContentSelectors";
-import { fetchComplianceReports, getFormattedMineReportDefinitionOptions, getMineReportDefinitionByGuid, getReportDefinitionsLoaded, reportParamsGetAll } from "@mds/common/redux/slices/complianceReportsSlice";
-import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
-import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { useParams } from "react-router-dom";
-import { MINE_REPORTS_ENUM, MineReportType, REPORT_TYPE_CODES, SystemFlagEnum } from "@mds/common/constants/enums";
+import {
+  MINE_REPORTS_ENUM,
+  MineReportType,
+  REPORT_TYPE_CODES,
+  SystemFlagEnum,
+} from "@mds/common/constants/enums";
 import { FORM } from "@mds/common/constants/forms";
 import { MMO_EMAIL } from "@mds/common/constants/strings";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import {
+  getReportDefinitionsLoaded,
+  reportParamsGetAll,
+  fetchComplianceReports,
+  getMineReportDefinitionByGuid,
+  getFormattedMineReportDefinitionOptions,
+} from "@mds/common/redux/slices/complianceReportsSlice";
+import { CodeReportInfoBox } from "./ReportInfoBox";
+import { RenderPRRFields } from "./PermitRequiredReportFields";
 
 interface ReportGetStartedProps {
   mine: IMine;
@@ -32,145 +35,22 @@ interface ReportGetStartedProps {
   setDisableNextButton?: (value: boolean) => void;
 }
 
-export const ReportInfoBox: FC<{ mineReportDefinition: IMineReportDefinition; verb: string }> = ({
-  mineReportDefinition,
-  verb,
-}) => {
-  return (
-    <div className="report-info-box">
-      {mineReportDefinition && (
-        <div>
-          {mineReportDefinition.is_prr_only && (
-            <Alert
-              showIcon
-              description="Please submit this report as a permit required report."
-              type="warning"
-              className="margin-large--bottom"
-            />
-          )}
-          <Typography.Title level={4} className="primary-colour">
-            You are {verb}
-          </Typography.Title>
-          <Typography.Title level={5}>
-            {formatComplianceCodeReportName(mineReportDefinition)}
-          </Typography.Title>
-
-          {mineReportDefinition.compliance_articles[0].long_description && (
-            <>
-              <Typography.Title level={5}>About this submission type:</Typography.Title>
-              <Typography.Paragraph>
-                {mineReportDefinition.compliance_articles[0].long_description}
-              </Typography.Paragraph>
-            </>
-          )}
-          {mineReportDefinition.compliance_articles[0].help_reference_link && (
-            <Button
-              target="_blank"
-              rel="noopener noreferrer"
-              href={mineReportDefinition.compliance_articles[0].help_reference_link}
-              type="default"
-            >
-              More information <ExportOutlined />
-            </Button>
-          )}
-        </div>
-      )}
-    </div>
-  );
-};
-
-export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean }> = ({
-  mineGuid,
-  fullWidth = false,
-}) => {
-  const system = useSelector(getSystemFlag);
-  const dispatch = useDispatch();
-  const dropdownPermitConditionCategoryOptions = useSelector(
-    getDropdownPermitConditionCategoryOptions
-  );
-  const permits = useSelector(getPermits);
-  const permitDropdown = createDropDownList(permits, "permit_no", "permit_guid");
-  const permitMineGuid = permits[0]?.mine_guid;
-  const [loaded, setLoaded] = useState(permits.length > 0 && permitMineGuid === mineGuid);
-
-  const isCore = system === SystemFlagEnum.core;
-
-  useEffect(() => {
-    if (!loaded || permitMineGuid !== mineGuid) {
-      setLoaded(false);
-      dispatch(fetchPermits(mineGuid)).then(() => setLoaded(true));
-    }
-  }, [mineGuid]);
-
-  return (
-    <>
-      {!isCore && (
-        <>
-          <Typography.Title level={5}>Select permit condition category</Typography.Title>
-          <Typography.Paragraph>
-            Newer regional permits have sections A to E, which are the same categories shown for
-            permit-required report. If your permit does not contain the categories below, select the
-            most fitting category. If you are unsure about category selection, please contact the
-            permitting inspector or your regional office for assistance.
-          </Typography.Paragraph>
-        </>
-      )}
-      <Col md={!fullWidth && 12} sm={24}>
-        <Field
-          name="permit_guid"
-          label="Permit Number"
-          required
-          validate={[required]}
-          data={permitDropdown}
-          component={RenderSelect}
-        />
-      </Col>
-
-      {!isCore && (
-        <Col span={24} className="radio-two-column-container">
-          <Field
-            name="permit_condition_category_code"
-            required
-            validate={[required]}
-            label="Permit Condition Category"
-            className="responsive-2-column"
-            component={RenderRadioButtons}
-            customOptions={dropdownPermitConditionCategoryOptions}
-          />
-        </Col>
-      )}
-      {isCore && (
-        <Col md={!fullWidth && 12} sm={24}>
-          <Field
-            name="permit_condition_category_code"
-            required
-            validate={[required]}
-            label="Permit Condition Category"
-            component={RenderSelect}
-            data={dropdownPermitConditionCategoryOptions}
-          />
-        </Col>
-      )}
-    </>
-  );
-};
-
 const ReportGetStarted: FC<ReportGetStartedProps> = ({
   mine,
   handleSubmit,
   formButtons,
   setDisableNextButton,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { reportType } = useParams<{ reportType?: string }>();
-  const system = useSelector(getSystemFlag);
-  const formValues = useSelector(getFormValues(FORM.VIEW_EDIT_REPORT)) as IMineReportSubmission;
+  const system = useAppSelector(getSystemFlag);
+  const formValues = useAppSelector(getFormValues(FORM.VIEW_EDIT_REPORT)) as IMineReportSubmission;
   const [commonReportDefinitionOptions, setCommonReportDefinitionOptions] = useState([]);
-  const mineReportDefinitionOptions = useSelector(getFormattedMineReportDefinitionOptions);
-  const selectedReportDefinition: IMineReportDefinition = useSelector(
+  const mineReportDefinitionOptions = useAppSelector(getFormattedMineReportDefinitionOptions);
+  const selectedCodeReportDefinition: IMineReportDefinition = useAppSelector(
     getMineReportDefinitionByGuid(formValues?.mine_report_definition_guid)
   );
-  const reportDefinitionsLoaded = useSelector(getReportDefinitionsLoaded(reportParamsGetAll));
+  const reportDefinitionsLoaded = useAppSelector(getReportDefinitionsLoaded(reportParamsGetAll));
 
   useEffect(() => {
     if (!reportDefinitionsLoaded) {
@@ -179,12 +59,12 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
   }, []);
 
   useEffect(() => {
-    if (selectedReportDefinition?.is_prr_only) {
+    if (selectedCodeReportDefinition?.is_prr_only) {
       setDisableNextButton(true);
     } else {
       setDisableNextButton(false);
     }
-  }, [selectedReportDefinition, setDisableNextButton]);
+  }, [selectedCodeReportDefinition, setDisableNextButton]);
 
   useEffect(() => {
     // Filter out common reports and sort alphabetically
@@ -331,7 +211,10 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
                 </div>
               </Col>
               <Col span={12}>
-                <ReportInfoBox mineReportDefinition={selectedReportDefinition} verb="submitting" />
+                <CodeReportInfoBox
+                  mineReportDefinition={selectedCodeReportDefinition}
+                  verb="submitting"
+                />
               </Col>
             </Row>
           </>

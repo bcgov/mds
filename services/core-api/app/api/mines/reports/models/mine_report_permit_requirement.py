@@ -2,6 +2,8 @@ from datetime import date
 from enum import Enum
 from typing import Optional
 
+from sqlalchemy.ext.hybrid import hybrid_property
+
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.extensions import db
 from sqlalchemy.dialects.postgresql import ARRAY
@@ -42,8 +44,16 @@ class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin):
     permit_condition_id: int = db.Column(db.Integer, db.ForeignKey('permit_conditions.permit_condition_id'))
     permit_amendment_id: int = db.Column(db.Integer, db.ForeignKey('permit_amendment.permit_amendment_id'))
 
+    permit_condition = db.relationship('PermitConditions', lazy="select")
+
     def __repr__(self):
         return '<MineReportPermitRequirement %r>' % self.mine_report_permit_requirement_id
+
+    @hybrid_property
+    def condition_category_code(self):
+        if self.permit_condition:
+            return self.permit_condition.condition_category_code
+        return None
 
     @classmethod
     def find_by_mine_report_permit_requirement_id(cls, id) -> "MineReportPermitRequirement":

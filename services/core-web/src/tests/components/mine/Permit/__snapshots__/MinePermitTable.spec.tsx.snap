@@ -142,7 +142,7 @@ exports[`MinePermitTable renders properly 1`] = `
                         class="firstIssued-column"
                         title="First Issued"
                       >
-                        Apr 01 2019
+                        Apr 01 2020
                       </div>
                     </td>
                     <td

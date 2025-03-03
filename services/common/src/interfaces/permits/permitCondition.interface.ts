@@ -60,4 +60,5 @@ export interface IPermitConditionCategory {
   display_order: number;
   step: string;
   conditions?: IPermitCondition[]
+  reports?: IMineReportPermitRequirement[]
 }
