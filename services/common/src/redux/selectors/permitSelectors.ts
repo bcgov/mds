@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 import { getNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import * as permitReducer from "../reducers/permitReducer";
-import { IMineReportPermitRequirement, IPermitCondition, IPermitConditionCategory } from "@mds/common/interfaces";
+import { IMineReportPermitRequirement, IPermitAmendment, IPermitCondition, IPermitConditionCategory } from "@mds/common/interfaces";
 import { getPermitConditionCategoryOptions } from "./staticContentSelectors";
 import { uniqBy } from "lodash";
 import { formatPermitConditionStep } from "@mds/common/utils/helpers";
@@ -82,7 +82,7 @@ export const getLatestAmendmentByPermitGuid = (permitGuid) =>
   });
 
 export const getAmendment = (permitGuid, amendmentGuid) =>
-  createSelector([getPermitByGuid(permitGuid)], (permit) => {
+  createSelector([getPermitByGuid(permitGuid)], (permit): IPermitAmendment => {
     return permit?.permit_amendments?.find((amendment) => amendment.permit_amendment_guid === amendmentGuid);
   });
 
@@ -108,7 +108,7 @@ export const getMineReportPermitRequirements = (permitGuid) =>
     }
   );
 
-export const getMineReportPermitRequirementById = (permitGuid,reportId) =>
+export const getMineReportPermitRequirementById = (permitGuid, reportId) =>
   createSelector(
     [getLatestAmendmentByPermitGuid(permitGuid)],
     (latestAmendment): IMineReportPermitRequirement => {
@@ -118,7 +118,7 @@ export const getMineReportPermitRequirementById = (permitGuid,reportId) =>
 
 export const getCategoriesWithReports = (permitGuid) => createSelector([getLatestAmendmentByPermitGuid(permitGuid)], (latestAmendment) => {
   return latestAmendment?.condition_categories.map((category) => {
-    const reports = latestAmendment.mine_report_permit_requirements.filter( (report) => category.condition_category_code === report.condition_category_code );
+    const reports = latestAmendment.mine_report_permit_requirements.filter((report) => category.condition_category_code === report.condition_category_code);
     return {
       ...category,
       reports
