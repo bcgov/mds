@@ -9,7 +9,7 @@ BEGIN
             INTO start_with;
     EXECUTE 'CREATE SEQUENCE ' || sequence_name ||
             ' START WITH ' || start_with ||
-            'INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1';
+            ' INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1';
            
     EXECUTE 'ALTER TABLE ' || sequence_name || ' OWNER TO mds';
    
