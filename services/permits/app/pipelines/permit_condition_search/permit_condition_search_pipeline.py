@@ -202,6 +202,7 @@ def create_permit_condition_search_retrieval_pipeline():
     )
 
     retriever = AzureAISearchHybridRetriever(
+        top_k=35,
         document_store=azure_search_document_store,
         facets=[
             "category",

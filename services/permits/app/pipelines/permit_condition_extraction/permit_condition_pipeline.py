@@ -42,7 +42,9 @@ with open(f"{ROOT_DIR}/app/permit_condition_prompts.yaml", "r") as file:
 system_prompt = prompts["system_prompt"]
 user_prompt = prompts["user_prompt_meta_questions"]
 permit_document_prompt = prompts["permit_document_prompt_meta_questions"]
-permit_condition_post_combine_validation_prompt = prompts["permit_condition_post_combine_validation_prompt"]
+permit_condition_post_combine_validation_prompt = prompts[
+    "permit_condition_post_combine_validation_prompt"
+]
 permit_extraction_prompt2 = prompts["permit_extraction_prompt2"]
 assert system_prompt
 assert user_prompt
@@ -61,19 +63,28 @@ def permit_condition_pipeline():
     pdf_converter = AzureDocumentIntelligenceConverter(
         endpoint=config.document_intelligence.endpoint,
         api_key=config.document_intelligence.api_key,
-        api_version=config.document_intelligence.api_version
+        api_version=config.document_intelligence.api_version,
     )
 
+    # Set token limits for the model
+    # Reserve about 16k tokens for completion and leave the rest for the context
+    model_token_limit = 128000
+    completion_tokens = 16384
+    context_token_limit = (
+        model_token_limit - completion_tokens - 1000
+    )  # 1000 token safety margin
+
+    # Configure the prompt builder with pagination and token counting
     prompt_builder = PaginatedChatPromptBuilder(
         template=[
             ChatMessage.from_system(system_prompt),
             ChatMessage.from_user(user_prompt),
             ChatMessage.from_user(permit_document_prompt),
-        ]
+        ],
     )
 
     temperature = 0
-    max_tokens = 16384
+    max_tokens = completion_tokens
 
     llm = CachedAzureOpenAIChatGenerator(
         azure_endpoint=config.openai.endpoint,
@@ -92,22 +103,25 @@ def permit_condition_pipeline():
     logger.info(f"Deployment: {config.openai.deployment_name}")
     logger.info(f"Temperature: {temperature}")
     logger.info(f"Max Tokens: {max_tokens}")
+    logger.info(f"Context Token Limit: {context_token_limit}")
 
     parse_hierarchy = PermitConditionSectionCombiner()
     filter_paragraphs = FilterConditionsParagraphsConverter()
     json_fixer = JSONRepair()
 
     combine_metadata = ConditionsMetadataCombiner()
-    
+
     extractor = PermitConditionExtractor(
         chat_generator=llm,
         template=permit_extraction_prompt2,
     )
-    # Add validator component
+    # Add validator component with section validation enabled
     validator = PermitConditionValidator(
         chat_generator=llm,
         template=permit_condition_post_combine_validation_prompt,
         condition_extractor=extractor,
+        section_validation=True,  # Enable section-by-section validation
+        max_conditions_per_batch=1000,  # Set max conditions per validation batch
     )
 
     index_pipeline.add_component("pdf_converter", pdf_converter)
