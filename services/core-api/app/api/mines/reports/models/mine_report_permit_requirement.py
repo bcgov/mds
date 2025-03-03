@@ -5,6 +5,7 @@ from typing import Optional
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.extensions import db
 from sqlalchemy.dialects.postgresql import ARRAY
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import backref
 from sqlalchemy.schema import FetchedValue
 
@@ -47,6 +48,12 @@ class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin):
 
     def __repr__(self):
         return '<MineReportPermitRequirement %r>' % self.mine_report_permit_requirement_id
+
+    @hybrid_property
+    def condition_category_code(self):
+        if self.permit_condition:
+            return self.permit_condition.condition_category_code
+        return None
 
     @classmethod
     def find_by_mine_report_permit_requirement_id(cls, id) -> "MineReportPermitRequirement":

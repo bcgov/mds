@@ -178,6 +178,7 @@ class ReportSubmissionResource(Resource, UserMixin):
         self.parser.add_argument('mine_report_guid', type=str, location='json')
         self.parser.add_argument('mine_report_submission_guid', type=str, location='json')
         self.parser.add_argument('mine_report_submission_status_code', type=str, location='json')
+        self.parser.add_argument('mine_report_permit_requirement_id', type=int, location='json')
         self.parser.add_argument('permit_condition_category_code', type=str, location='json')
         self.parser.add_argument('permit_guid', type=str, location='json')
         self.parser.add_argument(
@@ -199,6 +200,7 @@ class ReportSubmissionResource(Resource, UserMixin):
         mine_report_submission_guid = data.get('mine_report_submission_guid', None)
         mine_report_id = data.get('mine_report_id', None)
         permit_condition_category_code = data.get('permit_condition_category_code', None)
+        mine_report_permit_requirement_id = data.get('mine_report_permit_requirement_id', None)
         documents = data.get('documents', [])
         mine_report_definition_guid = data.get('mine_report_definition_guid', None)
         permit_guid = data.get('permit_guid', None)
@@ -250,6 +252,7 @@ class ReportSubmissionResource(Resource, UserMixin):
             mine_report_id=mine_report_id,
             mine_report_submission_status_code=mine_report_submission_status_code,
             permit_condition_category_code=permit_condition_category_code,
+            mine_report_permit_requirement_id=mine_report_permit_requirement_id,
             permit_id=permit_id,
             received_date=data.get('received_date', None),
             submission_date=datetime.now(timezone.utc),

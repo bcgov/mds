@@ -21,15 +21,17 @@ import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { ReportPermitRequirementForm } from "../../Forms/reports/ReportPermitRequirementForm";
-import { deletePermitCondition, updatePermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
+import {
+    deletePermitCondition,
+    updatePermitCondition,
+} from "@mds/common/redux/actionCreators/permitActionCreator";
 import { createMineReportPermitRequirement } from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
 import RenderField from "@mds/common/components/forms/RenderField";
 import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import { formatPermitConditionStep, parsePermitConditionStep } from "@mds/common/utils/helpers";
 import { FORM } from "@mds/common/constants/forms";
 import RenderGroupedSelect from "@mds/common/components/forms/RenderGroupedSelect";
-import { usePermitConditions } from "./PermitConditionsContext";
-
+import { PermitConditionsProvider, usePermitConditions } from "./PermitConditionsContext";
 
 interface PermitConditionFormProps {
     isExtracted: boolean;
@@ -59,18 +61,19 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     refreshData,
     setIsAddingListItem,
     isAddingListItem,
-    categoryOptions
+    categoryOptions,
 }) => {
     const dispatch = useAppDispatch();
     const { id: mineGuid, permitGuid } = useParams<{ id: string; permitGuid: string }>();
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
-    const { currentAmendment, loading, setLoading } = usePermitConditions();
+    const permitConditionsValue = usePermitConditions();
+    const { currentAmendment, loading, setLoading } = permitConditionsValue;
     // the form fails to re-initialize when the category is changed, so concatenating it forces it to make a new one
     const formName = `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`;
 
     const startEdit = () => {
         onEdit();
-        setEditingConditionGuid(condition.permit_condition_guid)
+        setEditingConditionGuid(condition.permit_condition_guid);
         setIsEditMode(true);
     };
 
@@ -78,7 +81,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
         setIsEditMode(false);
         setEditingConditionGuid(null);
         setIsAddingListItem(false);
-    }
+    };
 
     // If the assigned user is changed while isEditMode
     // is true, set it to false
@@ -94,9 +97,12 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
             ? {
                 ...values,
                 // Backend has the property named as _step to update in the db
-                _step: values.step
-            } : values;
-        const resp = await dispatch(updatePermitCondition(values.permit_condition_guid, permitAmendmentGuid, payload));
+                _step: values.step,
+            }
+            : values;
+        const resp = await dispatch(
+            updatePermitCondition(values.permit_condition_guid, permitAmendmentGuid, payload)
+        );
         // @ts-ignore
         if (resp?.type !== ERROR) {
             cancelEdit();
@@ -114,7 +120,9 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
 
     const handleDelete = async () => {
         deleteConfirmWrapper("Permit Condition", async () => {
-            const resp = await dispatch(deletePermitCondition(permitAmendmentGuid, condition.permit_condition_guid));
+            const resp = await dispatch(
+                deletePermitCondition(permitAmendmentGuid, condition.permit_condition_guid)
+            );
             // @ts-ignore
             if (resp?.type !== ERROR) {
                 refreshData();
@@ -140,21 +148,22 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                     canEditPermitConditions: canEditPermitConditions,
                     permitGuid,
                     mineGuid,
-                    currentAmendment
+                    currentAmendment,
                 },
-                content: ReportPermitRequirementForm,
+                content: (props) => <PermitConditionsProvider value={permitConditionsValue}> <ReportPermitRequirementForm {...props} /> </PermitConditionsProvider>,
             })
         );
     };
 
     const editingEnabled = !editingConditionGuid && canEditPermitConditions && !loading;
 
-    const editableProps = editingEnabled ?
-        {
+    const editableProps = editingEnabled
+        ? {
             onClick: startEdit,
             title: "Edit Condition",
             "aria-label": "Edit Condition",
-        } : {};
+        }
+        : {};
 
     // deals with how the formatting prevents backspace
     const handleBackSpace = (event, value: string, prev: string, name: string) => {
@@ -162,40 +171,42 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
         if (nativeEvent?.inputType === "deleteContentBackward" && value === prev) {
             event.preventDefault();
             const newVal = value.substring(0, value.length - 1);
-            dispatch(change(formName, name, newVal))
+            dispatch(change(formName, name, newVal));
         }
     };
 
-    return (
-        !isEditMode ?
-
-            (<Row
-                wrap={false}
-                align="top"
-                className={`condition-content ${editingEnabled ? "editable" : ""}`}
-            >
-                <Col className="step-column" style={{ flexShrink: 0 }}>
-                    <Typography.Paragraph className="view-item-value">{formatPermitConditionStep(condition.step)}</Typography.Paragraph>
-                </Col>
-                <Col className="condition-column"
-                    {...editableProps}
-                >
-                    <Typography.Paragraph className="view-item-value">{condition.condition}</Typography.Paragraph>
-                </Col>
-            </Row>) :
-
-
-            <FormWrapper
-                isEditMode={isEditMode && isExtracted}
-                onSubmit={handleSubmit}
-                name={formName}
-                initialValues={condition}
-                scrollOnToggleEdit={false}
-                reduxFormConfig={{
-                    enableReinitialize: true
-                }}
-            >
-                {(isEditMode && isExtracted && categoryOptions) && <Row>
+    return !isEditMode ? (
+        <Row
+            wrap={false}
+            align="top"
+            className={`condition-content ${editingEnabled ? "editable" : ""}`}
+        >
+            <Col className="step-column" style={{ flexShrink: 0 }}>
+                <Typography.Paragraph className="view-item-value">
+                    {formatPermitConditionStep(condition.step)}
+                </Typography.Paragraph>
+            </Col>
+            <Col className="condition-column" {...editableProps}>
+                <Typography.Paragraph className="view-item-value">
+                    {condition.condition}
+                </Typography.Paragraph>
+            </Col>
+        </Row>
+    ) : (
+        <FormWrapper
+            isEditMode={isEditMode && isExtracted}
+            onSubmit={handleSubmit}
+            name={formName}
+            initialValues={condition}
+            scrollOnToggleEdit={false}
+            reduxFormConfig={{
+                enableReinitialize: true,
+                touchOnChange: false,
+                touchOnBlur: true,
+            }}
+        >
+            {isEditMode && isExtracted && categoryOptions && (
+                <Row>
                     <Col span={24}>
                         <Field
                             disabled={loading}
@@ -208,49 +219,50 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                             className="horizontal-form-item"
                         />
                     </Col>
-                </Row>}
-                <Row
-                    wrap={false}
-                    align="top"
-                    className={`condition-content ${!editingConditionGuid ? "editable" : ""}${!condition.parent_permit_condition_id ? " top-level-condition" : ""}`}
-                >
-                    <Col className="step-column" style={{ flexShrink: 0 }}>
-                        <Field
-                            format={(value: string) => formatPermitConditionStep(value)}
-                            parse={(value: string) => parsePermitConditionStep(value)}
-                            name="step"
-                            component={RenderField}
-                            showNA={false}
-                            disabled={isAddingListItem || loading}
-                            onChange={handleBackSpace}
-                        />
-                    </Col>
-                    <Col className="condition-column"
-                        {...editableProps}
-                    >
-                        <Field
-                            name="condition"
-                            component={RenderAutoSizeField}
-                            disabled={isAddingListItem || loading}
-                        />
-                    </Col>
                 </Row>
-                {isEditMode && !isAddingListItem && (
-                    <Row justify="space-between" align="middle">
-                        <Col>
-                            <Row gutter={8}
-                                className="condition-edit-buttons"
-                            >
-                                {isExtracted && <Col>
+            )}
+            <Row
+                wrap={false}
+                align="top"
+                className={`condition-content ${!editingConditionGuid ? "editable" : ""}${!condition.parent_permit_condition_id ? " top-level-condition" : ""}`}
+            >
+                <Col className="step-column" style={{ flexShrink: 0 }}>
+                    <Field
+                        format={(value: string) => formatPermitConditionStep(value)}
+                        parse={(value: string) => parsePermitConditionStep(value)}
+                        name="step"
+                        component={RenderField}
+                        showNA={false}
+                        disabled={isAddingListItem || loading}
+                        onChange={handleBackSpace}
+                    />
+                </Col>
+                <Col className="condition-column" {...editableProps}>
+                    <Field
+                        name="condition"
+                        component={RenderAutoSizeField}
+                        disabled={isAddingListItem || loading}
+                    />
+                </Col>
+            </Row>
+            {isEditMode && !isAddingListItem && (
+                <Row justify="space-between" align="middle">
+                    <Col>
+                        <Row gutter={8} className="condition-edit-buttons">
+                            {isExtracted && (
+                                <Col>
                                     <Button
                                         loading={loading}
                                         className="fa-icon-container btn-sm-padding"
                                         type="default"
                                         icon={<FontAwesomeIcon icon={faPlus} />}
                                         onClick={handleAddListItem}
-                                    >List Item</Button>
-                                </Col>}
-                                {/* <Col>
+                                    >
+                                        List Item
+                                    </Button>
+                                </Col>
+                            )}
+                            {/* <Col>
                                     <Button
                                         className="fa-icon-container btn-sm-padding"
                                         type="default"
@@ -260,42 +272,44 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                         Link Document
                                     </Button>
                                 </Col> */}
-                                <Col>
-                                    <Button
-                                        loading={loading}
-                                        className="fa-icon-container btn-sm-padding"
-                                        type="default"
-                                        icon={<FontAwesomeIcon icon={faClipboard} />}
-                                        onClick={(e) => handleOpenAddReportModal(e, condition)}
-                                        disabled={condition?.mineReportPermitRequirement !== undefined}
-                                    >
-                                        {condition?.mineReportPermitRequirement ? "Report Added" : "Add Report Requirement"}
-                                    </Button>
-                                </Col>
-                                <Col>
-                                    <RenderCancelButton
-                                        disabled={loading}
-                                        cancelFunction={handleCancel}
-                                        buttonProps={{
-                                            type: "primary",
-                                            icon: <FontAwesomeIcon icon={faXmark} />,
-                                        }}
-                                        iconButton
-
-                                    />
-                                </Col>
-                                <Col>
-                                    <RenderSubmitButton
-                                        disabled={loading}
-                                        buttonProps={{
-                                            icon: <FontAwesomeIcon icon={faCheck} />,
-                                        }}
-                                        iconButton
-                                    />
-                                </Col>
-                            </Row>
-                        </Col>
-                        {isExtracted && <Col>
+                            <Col>
+                                <Button
+                                    loading={loading}
+                                    className="fa-icon-container btn-sm-padding"
+                                    type="default"
+                                    icon={<FontAwesomeIcon icon={faClipboard} />}
+                                    onClick={(e) => handleOpenAddReportModal(e, condition)}
+                                    disabled={condition?.mineReportPermitRequirement !== undefined}
+                                >
+                                    {condition?.mineReportPermitRequirement
+                                        ? "Report Added"
+                                        : "Add Report Requirement"}
+                                </Button>
+                            </Col>
+                            <Col>
+                                <RenderCancelButton
+                                    disabled={loading}
+                                    cancelFunction={handleCancel}
+                                    buttonProps={{
+                                        type: "primary",
+                                        icon: <FontAwesomeIcon icon={faXmark} />,
+                                    }}
+                                    iconButton
+                                />
+                            </Col>
+                            <Col>
+                                <RenderSubmitButton
+                                    disabled={loading}
+                                    buttonProps={{
+                                        icon: <FontAwesomeIcon icon={faCheck} />,
+                                    }}
+                                    iconButton
+                                />
+                            </Col>
+                        </Row>
+                    </Col>
+                    {isExtracted && (
+                        <Col>
                             <Row gutter={8} align="middle" className="condition-edit-buttons">
                                 <Col>
                                     <Button
@@ -328,10 +342,11 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                     />
                                 </Col>
                             </Row>
-                        </Col>}
-                    </Row>
-                )}
-            </FormWrapper>
+                        </Col>
+                    )}
+                </Row>
+            )}
+        </FormWrapper>
     );
 };
 

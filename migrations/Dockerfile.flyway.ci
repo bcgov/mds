@@ -1,4 +1,4 @@
-FROM flyway/flyway:11.1-alpine
+FROM flyway/flyway:7.14-alpine
 ENV FLYWAY_HOME=/flyway
 
 USER 0
@@ -10,7 +10,7 @@ COPY sql-prod/* /flyway/sql-prod/
 COPY scripts/* /flyway/scripts/
 
 
-ENV FLYWAY_VERSION=11.1
+ENV FLYWAY_VERSION=5.2.4
 
 # Copy over the SQL files and scripts
 COPY sql/* $FLYWAY_HOME/sql/
