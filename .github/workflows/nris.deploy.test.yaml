@@ -11,7 +11,7 @@ env:
 jobs:
   promote-image:
     name: promote-image
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
@@ -29,7 +29,7 @@ jobs:
           ${{ secrets.NS_TOOLS }}/${{ env.IMAGE }}:${{ env.PROMOTE_TAG }}
 
   trigger-gitops:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     needs: promote-image
     steps:
@@ -51,7 +51,7 @@ jobs:
         run: ./gitops/watch-deployment.sh nris test ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} ${{ secrets.ARGOCD_SERVER }} ${{ secrets.ARGO_CD_CLI_JWT }}
 
   run-if-failed:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: [trigger-gitops]
     if: always() && (needs.trigger-gitops.result == 'failure')
     steps:

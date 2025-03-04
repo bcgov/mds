@@ -8,7 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 import PermitConditionsSelectDocumentModal from "@/components/mine/Permit/PermitConditionsSelectDocumentModal";
 
 const initialState = {
-  [PERMITS]: { permits: MOCK.PERMITS, permitAmendments: MOCK.PERMIT_AMENDMENT_STATE },
+  [PERMITS]: { permits: MOCK.PERMITS, latestPermitAmendments: MOCK.PERMIT_AMENDMENT_STATE },
   [MINES]: { mines: MOCK.MINES.mines },
   [AUTHENTICATION]: {
     userAccessData: [USER_ROLES.role_admin, USER_ROLES.role_edit_template_conditions],
@@ -36,7 +36,7 @@ describe("PermitConditionsSelectDocumentModal", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
         <BrowserRouter>
-          <PermitConditionsSelectDocumentModal documents={MOCK.PERMITS[0].permit_amendments[0].related_documents} onSubmit={jest.fn()}/>
+          <PermitConditionsSelectDocumentModal documents={MOCK.PERMITS[0].permit_amendments[0].related_documents} onSubmit={jest.fn()} />
         </BrowserRouter>
       </ReduxWrapper>
     );

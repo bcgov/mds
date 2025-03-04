@@ -583,8 +583,8 @@ export const VIEW_NOTICE_OF_WORK_APPLICATION = {
 
 export const EDIT_PERMIT_CONDITIONS = {
   // this is the old page
-  route: "/:mine_guid/permit-amendment/:id/edit-permit-conditions",
-  dynamicRoute: (mine_guid, id) => `/${mine_guid}/permit-amendment/${id}/edit-permit-conditions`,
+  route: "/:mine_guid/permits/:permit_guid/permit-amendment/:id/edit-permit-conditions",
+  dynamicRoute: (mine_guid, permit_guid, id) => `/${mine_guid}/permits/${permit_guid}/permit-amendment/${id}/edit-permit-conditions`,
   component: PermitConditionManagement,
   helpKey: "Edit-Permit-Conditions",
 };

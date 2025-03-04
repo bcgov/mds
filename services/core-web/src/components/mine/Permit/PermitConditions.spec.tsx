@@ -13,7 +13,7 @@ import { searchConditionCategoriesType } from "@mds/common/redux/slices/permitCo
 const initialState = {
   [MINES]: MOCK.MINES,
   [userReducerType]: { user: MOCK.USERS[0] },
-  [PERMITS]: { permits: MOCK.PERMITS, permitAmendments: { [MOCK.PERMITS[0].permit_guid]: MOCK.PERMITS[0].permit_amendments[0] } },
+  [PERMITS]: { permits: MOCK.PERMITS, latestPermitAmendments: { [MOCK.PERMITS[0].permit_guid]: MOCK.PERMITS[0].permit_amendments[0] } },
   [STATIC_CONTENT]: MOCK.BULK_STATIC_CONTENT_RESPONSE,
   [searchConditionCategoriesType]: {
     review_assignments: {
@@ -34,7 +34,7 @@ const GENERATED_PERMIT = {
 // permit was generated in Core
 const generatedState = {
   ...initialState,
-  [PERMITS]: { permits: [GENERATED_PERMIT], permitAmendments: { [GENERATED_PERMIT.permit_guid]: GENERATED_PERMIT.permit_amendments[0] } },
+  [PERMITS]: { permits: [GENERATED_PERMIT], latestPermitAmendments: { [GENERATED_PERMIT.permit_guid]: GENERATED_PERMIT.permit_amendments[0] } },
 };
 
 // permission to edit, not assigned to review
