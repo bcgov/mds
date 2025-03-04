@@ -1,4 +1,4 @@
-name: Postgres Image Build
+name: Postgres Image Build DEV
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ on:
 
 env:
   INITIAL_TAG: latest
-  TAG: 13
+  TAG: dev
   NAME: postgres
   CONTEXT: services/postgres/
 
