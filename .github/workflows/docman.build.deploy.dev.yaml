@@ -17,7 +17,7 @@ env:
 
 jobs:
   build-docman:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -34,7 +34,7 @@ jobs:
           docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}
 
   trigger-gitops:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     needs: [build-docman]
     steps:
@@ -56,7 +56,7 @@ jobs:
         run: ./gitops/watch-deployment.sh docman dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} ${{ secrets.ARGOCD_SERVER }} ${{ secrets.ARGO_CD_CLI_JWT }}
 
   run-if-failed:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: [trigger-gitops]
     if: always() && (needs.trigger-gitops.result == 'failure')
     steps:

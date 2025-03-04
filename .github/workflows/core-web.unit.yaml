@@ -16,7 +16,7 @@ on:
 jobs:
   tests-unit-frontend:
     name: tests-unit-frontend
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
