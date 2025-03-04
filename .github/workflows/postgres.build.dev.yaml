@@ -2,12 +2,6 @@ name: Postgres Image Build DEV
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - develop
-      - pgup
-    paths:
-      - services/postgres/**
 
 env:
   INITIAL_TAG: latest
