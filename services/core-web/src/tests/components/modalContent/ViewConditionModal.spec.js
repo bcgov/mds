@@ -1,27 +1,16 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { ViewConditionModal } from "@/components/modalContent/ViewConditionModal";
-import * as Mock from "@/tests/mocks/dataMocks";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.closeModal = jest.fn();
-};
-
-const setupProps = () => {
-  props.conditions = [];
-};
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("ViewConditionModal", () => {
   it("renders properly", () => {
-    const component = shallow(<ViewConditionModal {...dispatchProps} {...props} />);
-    expect(component).toMatchSnapshot();
+    const { container } = render(<ReduxWrapper>
+      <ViewConditionModal
+        conditions={[]}
+      />
+    </ReduxWrapper>);
+    expect(container.firstChild).toMatchSnapshot();
   });
 });

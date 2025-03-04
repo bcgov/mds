@@ -23,7 +23,7 @@ exports[`ReportPage renders view mode properly 1`] = `
             General Conditions
             <span
               class="ant-tag page-header-title-tag tag-primary"
-              title="Mine: undefined"
+              title="Mine: mine3"
             >
               <svg
                 aria-hidden="true"
@@ -42,9 +42,11 @@ exports[`ReportPage renders view mode properly 1`] = `
               </svg>
               <span>
                 <a
-                  href="/mine-dashboard/undefined/"
+                  href="/mine-dashboard/8e9ca839-a28e-427e-997e-9ef23d9d97cd/"
                   style="text-decoration: none;"
-                />
+                >
+                  mine3
+                </a>
               </span>
             </span>
           </div>

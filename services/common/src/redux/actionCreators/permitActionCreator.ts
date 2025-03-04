@@ -317,19 +317,21 @@ export const deletePermitAmendmentConditionCategory = (
       .finally(() => dispatch(hideLoading()));
   };
 
-export const getPermitAmendment = (
+export const fetchPermitAmendment = (
   mineGuid: string,
+  permitGuid: string,
   permitAmdendmentGuid: string
 ): AppThunk<Promise<IPermitAmendment>> => (dispatch): Promise<IPermitAmendment> => {
   dispatch(request(NetworkReducerTypes.GET_PERMIT_AMENDMENT));
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT(mineGuid, null, permitAmdendmentGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT(mineGuid, permitGuid, permitAmdendmentGuid)}`,
       createRequestHeader()
     )
     .then((response: AxiosResponse<IPermitAmendment>) => {
       dispatch(success(NetworkReducerTypes.GET_PERMIT_AMENDMENT));
+      dispatch(permitActions.storePermitAmendment(response.data, permitGuid));
       return response.data;
     })
     .catch(() => {
@@ -421,12 +423,16 @@ export const deletePermitAmendment = (
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchPermitConditions = (permitAmdendmentGuid: string): AppThunk => (dispatch) => {
+export const fetchPermitConditions = (
+  mineGuid: string,
+  permitGuid: string,
+  permitAmdendmentGuid: string
+): AppThunk => (dispatch) => {
   dispatch(request(NetworkReducerTypes.GET_PERMIT_CONDITIONS));
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITIONS(null, null, permitAmdendmentGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITIONS(mineGuid, permitGuid, permitAmdendmentGuid)}`,
       createRequestHeader()
     )
     .then((response) => {
