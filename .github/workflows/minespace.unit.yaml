@@ -5,6 +5,7 @@ on:
     paths:
       - services/common/**
       - services/minespace-web/**
+  workflow_dispatch:
   push:
     branches:
       - develop
