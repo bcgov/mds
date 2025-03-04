@@ -18,7 +18,7 @@ env:
 jobs:
   infra-test-plan:
     name: infra-test-plan
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
 
     steps:
@@ -56,7 +56,7 @@ jobs:
   ## waits for plan and runs apply
   infra-test-apply:
     name: infra-test-apply
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: infra-test-plan
     timeout-minutes: 20
 
