@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
 import { withRouter, Link, Prompt, useParams, useHistory, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 import { reset, getFormValues, isDirty } from "@mds/common/components/forms/form";
 import * as routes from "@/constants/routes";
 import { Button, Col, Row, Tag } from "antd";
@@ -35,9 +34,11 @@ import { FORM } from "@mds/common/constants/forms";
 import { Feature } from "@mds/common/utils/featureFlag";
 import { AMS_STATUS_CODE_FAIL, AMS_STATUS_CODES_SUCCESS, PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION } from "@mds/common/constants/strings";
 import { AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES } from "@mds/common/constants/enums";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import { IProjectSummary, IProjectSummaryForm } from "@mds/common/interfaces";
 
 export const ProjectSummary: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const { pathname } = useLocation();
   const { mineGuid, projectSummaryGuid, projectGuid, tab, mode } = useParams<{
@@ -47,14 +48,14 @@ export const ProjectSummary: FC = () => {
     tab: string;
     mode: string;
   }>();
-  const userInfo = useSelector(getUserInfo);
-  const mine = useSelector(getMineById(mineGuid));
-  const formattedProjectSummary = useSelector(getFormattedProjectSummary);
-  const project = useSelector(getProject);
-  const anyTouched = useSelector(
+  const userInfo = useAppSelector(getUserInfo);
+  const mine = useAppSelector(getMineById(mineGuid));
+  const formattedProjectSummary = useAppSelector(getFormattedProjectSummary);
+  const project = useAppSelector(getProject);
+  const anyTouched = useAppSelector(
     (state) => state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.anyTouched || false
   );
-  const isFormDirty = useSelector(isDirty(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const isFormDirty = useAppSelector(isDirty(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
   const { isFeatureEnabled } = useFeatureFlag();
   const amsFeatureEnabled = isFeatureEnabled(Feature.AMS_AGENT);
@@ -78,7 +79,7 @@ export const ProjectSummary: FC = () => {
   const [isEditMode, setIsEditMode] = useState(isDefaultEditMode);
   const activeTab = tab ?? projectFormTabs[0];
   const mineName = mine?.mine_name ?? formattedProjectSummary?.mine_name ?? "";
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const formValues = useAppSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
 
   const handleFetchData = async () => {
     setIsLoaded(false);
@@ -166,7 +167,7 @@ export const ProjectSummary: FC = () => {
       const areAuthorizationsSuccessful = authorizations
         .filter((authorization) =>
           Object.values(AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES).includes(
-            authorization.project_summary_authorization_type
+            authorization.project_summary_authorization_type as AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES
           )
         )
         .every((auth) => auth.ams_status_code === "200");

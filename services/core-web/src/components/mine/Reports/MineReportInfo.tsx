@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { Button, Divider, Row, Dropdown, MenuProps } from "antd";
 import moment from "moment";
@@ -24,6 +24,7 @@ import { RequestReportForm } from "@/components/Forms/reports/RequestReportForm"
 import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 import { MineReportParams } from "@mds/common/interfaces/reports";
 import { MINE_REPORTS_ENUM, MineReportType } from "@mds/common/constants/enums";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const defaultParams: MineReportParams = {
   report_name: undefined,
@@ -51,7 +52,7 @@ export const MineReportInfo: FC = () => {
   const [filteredReports, setFilteredReports] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const location = useLocation();
   const { reportType = "code-required-reports" } = useParams<{ reportType: string }>();

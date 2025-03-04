@@ -36,7 +36,7 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
   incident,
   inspectorOptions,
 }) => {
-  const formValues = useSelector((state) => getFormValues(ADD_EDIT_INCIDENT)(state));
+  const formValues = useSelector((state) => getFormValues(ADD_EDIT_INCIDENT)(state)) as IMineIncident;
   const showUnspecified = incident.mine_incident_guid && !incident.incident_location;
 
   const locationOptions = [

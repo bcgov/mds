@@ -1,3 +1,5 @@
+import { FileOperations } from "../models/documents/document";
+
 export interface IMineDocumentVersion {
   status: string;
   mine_document_guid: string;
@@ -9,4 +11,5 @@ export interface IMineDocumentVersion {
   upload_date: string;
   create_user: string;
   update_timestamp: string;
+  allowed_actions: FileOperations[];
 }
