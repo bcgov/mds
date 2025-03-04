@@ -3,7 +3,7 @@ import { List, Space, Tag, Empty, Row, Col, Button, Badge, Skeleton, Typography,
 import ResultItem from './ResultItem';
 import { FilterOutlined } from '@ant-design/icons';
 import { useAppSelector } from '@mds/common/redux/rootState';
-import { selectSearchResults, selectSearchLoading, selectSearchFilters, selectSearchQuery, selectSearchStreaming, selectAiLoading, selectDocumentLoading } from '@mds/common/redux/slices/permitSearchSlice';
+import { selectSearchResults, selectSearchLoading, selectSearchFilters, selectSearchQuery, selectDocumentLoading } from '@mds/common/redux/slices/permitSearchSlice';
 import { HaystackDocumentSearchResult } from '@mds/common/interfaces/search/facet-search.interface';
 import FilterDrawer from './FilterDrawer';
 import { startCase } from 'lodash';
@@ -41,7 +41,6 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
         setPendingFilters(selectedFilters);
     }, [selectedFilters]);
 
-    // Add an effect to sync with Redux filter changes
     useEffect(() => {
         setPendingFilters(selectedFilters);
     }, [selectedFilters]);
@@ -69,7 +68,6 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
     const applyFilters = () => {
         onFilterChange(pendingFilters);
         setHasFilterChanges(false);
-        console.log('Applied filters:', pendingFilters); // Add logging
     };
 
     const clearAllFilters = () => {
@@ -79,23 +77,16 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
     };
 
     const handleTagFilter = (category: string, value: string) => {
-        console.log(`Adding tag filter: ${category}=${value}`);
         const filterExists = pendingFilters.some(f =>
             f.category === category && f.value === value);
 
         if (!filterExists) {
-            // Create a new array with all existing filters plus the new one
             const newFilters = [...pendingFilters, { category, value }];
-            console.log('New filters after adding tag:', newFilters);
 
-            // Update local state
             setPendingFilters(newFilters);
-            setHasFilterChanges(false); // No need to show Apply button since we're applying immediately
+            setHasFilterChanges(false);
 
-            // Apply the filter right away
             onFilterChange(newFilters);
-        } else {
-            console.log(`Filter ${category}=${value} already exists, not adding duplicate`);
         }
     };
 
@@ -105,9 +96,6 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
         }
         return value;
     };
-
-    // Separate loading indicators for documents and AI
-    const isDocumentsLoading = documentLoading;
 
     if (!results && !loading) {
         return (
@@ -175,8 +163,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
                 <Divider style={{ margin: '12px 0 0' }} />
             </Col>
             <Col span={24}>
-                {/* Document results section */}
-                {isDocumentsLoading ? (
+                {documentLoading ? (
                     <Skeleton active paragraph={{ rows: 4 }} />
                 ) : (
                     <List<HaystackDocumentSearchResult>
