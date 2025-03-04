@@ -10,7 +10,7 @@ on:
 jobs:
   schemaspy-rollout:
     name: schemaspy-rollout    
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
