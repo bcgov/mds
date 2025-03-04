@@ -29,8 +29,6 @@ export interface SearchResultsProps {
 const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
     const results = useAppSelector(selectSearchResults);
     const loading = useAppSelector(selectSearchLoading);
-    const streaming = useAppSelector(selectSearchStreaming);
-    const aiLoading = useAppSelector(selectAiLoading);
     const documentLoading = useAppSelector(selectDocumentLoading);
     const selectedFilters = useAppSelector(selectSearchFilters);
     const query = useAppSelector(selectSearchQuery);
@@ -110,7 +108,6 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
 
     // Separate loading indicators for documents and AI
     const isDocumentsLoading = documentLoading;
-    const isAiLoading = aiLoading;
 
     if (!results && !loading) {
         return (

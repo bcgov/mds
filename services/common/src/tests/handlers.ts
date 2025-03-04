@@ -44,66 +44,73 @@ const permitHandlers = [
 ];
 
 const permitSearchHandlers = [
+  // Use localhost URL pattern for better compatibility with the fetch adapter
   http.post(
-    `/%3CAPI_URL%3E/search/permit-conditions`,
-    async ({ request, params }) => {
+    "http://localhost/search/permit-conditions",
+    async ({ request }) => {
       const requestBody = await request.json() as { query: string };
+      let responseData;
 
       // Mock different responses based on search query
       if (requestBody?.query?.includes('water')) {
-        return HttpResponse.json(SEARCH_PERMIT_CONDITIONS_RESPONSE);
+        responseData = SEARCH_PERMIT_CONDITIONS_RESPONSE;
+      } else {
+        responseData = { documents: [], prompt: { answers: [] }, facets: {} };
       }
 
-      return HttpResponse.json({ documents: [], prompt: { answers: [] }, facets: {} });
+      const encoder = new TextEncoder();
+
+      // Create a ReadableStream to simulate SSE events
+      const stream = new ReadableStream({
+        start(controller) {
+          // Format and send the documents event
+          const documentsAndFacets = {
+            documents: responseData.documents || [],
+            facets: responseData.facets || {}
+          };
+          controller.enqueue(
+            encoder.encode(`event: documentsdata: ${JSON.stringify(documentsAndFacets)}ENDMESSAGE`)
+          );
+
+          // Send AI start event
+          controller.enqueue(
+            encoder.encode(`event: ai_startdata: {}ENDMESSAGE`)
+          );
+
+          // Send prompt event if there's an answer
+          const promptText = responseData.prompt?.answers?.[0] || '';
+          if (promptText) {
+            controller.enqueue(
+              encoder.encode(`event: promptdata: ${JSON.stringify({ answers: [promptText] })}ENDMESSAGE`)
+            );
+          }
+
+          // Send AI complete event
+          controller.enqueue(
+            encoder.encode(`event: ai_completedata: {}ENDMESSAGE`)
+          );
+
+          // Send completion event
+          controller.enqueue(
+            encoder.encode(`event: completedata: {}ENDMESSAGE`)
+          );
+
+          // Close the stream
+          controller.close();
+        }
+      });
+
+      return new HttpResponse(stream, {
+        headers: {
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache',
+          'Connection': 'keep-alive',
+        }
+      });
     }
   )
 ];
 
-
-const permitSearchHandlers = [
-  http.post(
-    `/%3CAPI_URL%3E/search/permit-conditions`,
-    async ({ request, params }) => {
-      const requestBody = await request.json() as { query: string };
-
-      // Mock different responses based on search query
-      if (requestBody?.query?.includes('water')) {
-        return HttpResponse.json(
-          {
-            documents: [
-              {
-                id: '1',
-                content: 'Water quality monitoring must be conducted monthly',
-                meta: {
-                  permit: 'M-123',
-                  mine_name: 'Test Mine',
-                  issue_date: '2025-02-07',
-                  category: 'Environmental',
-                },
-                score: 0.95,
-              },
-            ],
-            prompt: {
-              answers: ['The permit requires monthly water quality monitoring.'],
-            },
-            facets: {
-              category: [
-                { value: 'Environmental', count: 1 },
-                { value: 'Safety', count: 0 },
-              ],
-              mine_name: [
-                { value: 'Test Mine', count: 1 },
-              ],
-            },
-          }
-        );
-      }
-
-      return HttpResponse.json({ documents: [], prompt: { answers: [] }, facets: {} });
-    }
-  )
-
-]
 
 const helpHandler = http.get("/%3CAPI_URL%3E/help/:helpKey", async ({ request, params }) => {
   const { helpKey } = params;

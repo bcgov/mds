@@ -18,7 +18,6 @@ const PermitConditionSearch: React.FC = () => {
     const results = useAppSelector(selectSearchResults);
     const loading = useAppSelector(selectSearchLoading);
     const aiLoading = useAppSelector(selectAiLoading);
-    const documentLoading = useAppSelector(selectDocumentLoading);
     const query = useAppSelector(selectSearchQuery);
     const selectedFilters = useAppSelector(selectSearchFilters);
     const [isAIResponseExpanded, setIsAIResponseExpanded] = useState(false);

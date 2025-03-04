@@ -3,8 +3,31 @@ import PermitConditionSearch from './PermitConditionSearch';
 import React from 'react';
 import { render, waitFor, screen } from '@testing-library/react';
 import { ReduxWrapper } from '@mds/common/tests/utils/ReduxWrapper';
-jest.mock('react-markdown');
 
+// Mock CustomAxios to handle the API URL properly in tests
+jest.mock('@mds/common/redux/customAxios', () => {
+    const originalModule = jest.requireActual('@mds/common/redux/customAxios');
+
+    // This returns a function that when called will return the axios instance
+    return {
+        __esModule: true,
+        default: jest.fn().mockImplementation((...args) => {
+            const axiosInstance = originalModule.default(...args);
+
+            // Override the post method for the permit conditions search endpoint
+            const originalPost = axiosInstance.post;
+            axiosInstance.post = jest.fn((url, data, config) => {
+                // Replace placeholder with proper localhost URL for tests
+                if (url.includes('<API_URL>/search/permit-conditions')) {
+                    return originalPost('http://localhost/search/permit-conditions', data, config);
+                }
+                return originalPost(url, data, config);
+            });
+
+            return axiosInstance;
+        })
+    };
+});
 
 describe('PermitConditionSearch Integration Tests', () => {
 
@@ -50,8 +73,9 @@ describe('PermitConditionSearch Integration Tests', () => {
         const applyButton = screen.getByText('Apply Filters');
         await userEvent.click(applyButton);
 
-        // Verify filter tag appears
-        expect(screen.getByText('category: Environmental')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('Category: Environmental')).toBeInTheDocument();
+        });
 
         expect(container).toMatchSnapshot();
     });

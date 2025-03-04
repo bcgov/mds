@@ -161,10 +161,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
     permitExtraction?.task_status === PermitExtractionStatus.in_progress;
   const isExtractionComplete = permitExtraction?.task_status === PermitExtractionStatus.complete;
 
-  const permitConditionCategoryOptions: IPermitConditionCategory[] = uniqBy(
-    currentAmendment?.condition_categories?.concat(condWithoutConditionsText) ?? [],
-    "condition_category_code"
-  );
 
   const PERMIT_CONDITION_STATUS = {
     complete: { icon: faCheckCircle, color: "color-success", text: "Complete" },

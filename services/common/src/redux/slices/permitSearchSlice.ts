@@ -6,6 +6,7 @@ import { RootState } from "../rootState";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import { ConditionOperator, Facet, FilterOperator, SearchQuery, SearchResult, SelectedFilters } from "@mds/common/interfaces/search/facet-search.interface";
 
+import * as API from "@mds/common/constants/API";
 export const permitSearchReducerType = "permitSearch";
 
 export type PermitSearchFilters = Array<{ category: string; value: string }>;
@@ -103,7 +104,7 @@ const permitSearchSlice = createAppSlice({
 
                 try {
                     const response = await CustomAxios().post(
-                        `${ENVIRONMENT.apiUrl}/search/permit-conditions`,
+                        `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION_SEARCH}`,
                         searchQuery,
                         {
                             ...headers,
