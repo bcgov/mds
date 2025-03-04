@@ -3020,6 +3020,7 @@ export const INCIDENT: IMineIncident = {
   reported_by_phone_no: "250-360-9494",
   reported_timestamp: "2019-07-04 14:05",
   reported_to_inspector_party_guid: "c002cc91-555a-4edd-9a9c-fcfee8357b00",
+  reported_to_inspector_contacted: false,
   responsible_inspector_party_guid: "eda69201-b283-44ed-92b9-bcbcb5b83e69",
   status_code: "CLD",
   mine_name: "Test Mine",

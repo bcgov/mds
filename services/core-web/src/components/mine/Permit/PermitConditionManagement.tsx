@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState, useRef } from "react";
 import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import { ConnectedProps, connect } from "react-redux";
 import { Divider, Collapse, Button, Row, Col } from "antd";
 import { flattenObject, formatDate } from "@common/utils/helpers";
 import { ReadOutlined, ArrowLeftOutlined } from "@ant-design/icons";
@@ -46,7 +46,7 @@ interface PermitConditionManagementProps {
   match: any;
 }
 
-export const PermitConditionManagement: FC<PermitConditionManagementProps> = (props) => {
+export const PermitConditionManagement: FC<PermitConditionManagementProps & PropsFromRedux> = (props) => {
   const [submitting, setSubmitting] = useState(false);
   const [permitNo, setPermitNo] = useState("");
   const [issuesDate, setIssuesDate] = useState("");
@@ -280,4 +280,7 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(PermitConditionManagement);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(PermitConditionManagement);

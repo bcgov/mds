@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import { ConnectedProps, connect } from "react-redux";
 import queryString from "query-string";
 import { Row, Col } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
@@ -111,7 +111,7 @@ const CantFindIt = () => (
   </Row>
 );
 
-export const SearchResults: React.FC<SearchResultsProps> = (props) => {
+export const SearchResults: React.FC<SearchResultsProps & PropsFromRedux> = (props) => {
   const [isSearching, setIsSearching] = useState(false);
   const [hasSearchTerm, setHasSearchTerm] = useState(false);
   const [params, setParams] = useState<{ [key: string]: string }>({});
@@ -251,4 +251,8 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(SearchResults);

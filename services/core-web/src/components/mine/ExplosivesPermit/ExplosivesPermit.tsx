@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { connect } from "react-redux";
+import { ConnectedProps, connect } from "react-redux";
 import {
   createExplosivesPermit,
   deleteExplosivesPermit,
@@ -57,7 +57,7 @@ interface ExplosivesPermitProps {
   explosivesPermitDocumentTypeOptionsHash: any;
 }
 
-export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
+export const ExplosivesPermit: FC<ExplosivesPermitProps & PropsFromRedux> = ({
   isPermitTab = false,
   mineGuid,
   mines,
@@ -414,4 +414,7 @@ const mapDispatchToProps = {
   deleteExplosivesPermit,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExplosivesPermit);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(ExplosivesPermit);

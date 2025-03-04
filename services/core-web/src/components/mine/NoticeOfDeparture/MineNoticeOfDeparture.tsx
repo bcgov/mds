@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import { ConnectedProps, connect } from "react-redux";
 import { Divider } from "antd";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import {
@@ -32,7 +32,7 @@ interface IMineNoticeOfDepartureProps {
   userRoles: string[];
 }
 
-export const MineNoticeOfDeparture: React.FC<IMineNoticeOfDepartureProps> = (props) => {
+export const MineNoticeOfDeparture: React.FC<IMineNoticeOfDepartureProps & PropsFromRedux> = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const { mines, mineGuid, nods } = props;
   const mine = mines[mineGuid];
@@ -138,4 +138,7 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(MineNoticeOfDeparture);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(MineNoticeOfDeparture);

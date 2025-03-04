@@ -1,6 +1,5 @@
 import React, { FC, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { change, formValueSelector, getFormValues } from "@mds/common/components/forms/form";
 import { Col, Row } from "antd";
 import { IMineIncident } from "@mds/common/interfaces";
@@ -27,7 +26,7 @@ import IncidentFormMinistryFollowup from "@/components/Forms/incidents/IncidentF
 import { removeDocumentFromMineIncident } from "@mds/common/redux/actionCreators/incidentActionCreator";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
-import { useAppDispatch } from "@mds/common/redux/rootState";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 
 export const INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD = "initial_incident_documents";
 export const FINAL_REPORT_DOCUMENTS_FORM_FIELD = "final_report_documents";
@@ -59,18 +58,18 @@ export const IncidentForm: FC<IncidentFormProps> = (props) => {
 
   const dispatch = useAppDispatch();
 
-  const incidentDeterminationOptions = useSelector(getDropdownIncidentDeterminationOptions);
-  const incidentStatusCodeHash = useSelector(getIncidentStatusCodeHash);
-  const dangerousOccurenceSubparagraphOptions = useSelector(
+  const incidentDeterminationOptions = useAppSelector(getDropdownIncidentDeterminationOptions);
+  const incidentStatusCodeHash = useAppSelector(getIncidentStatusCodeHash);
+  const dangerousOccurenceSubparagraphOptions = useAppSelector(
     getDangerousOccurrenceSubparagraphOptions
   );
-  const incidentFollowUpActionOptions = useSelector(getDropdownIncidentFollowupActionOptions);
-  const inspectorOptions = useSelector(getDropdownInspectors) || [];
+  const incidentFollowUpActionOptions = useAppSelector(getDropdownIncidentFollowupActionOptions);
+  const inspectorOptions = useAppSelector(getDropdownInspectors) || [];
   const selector = formValueSelector(FORM.ADD_EDIT_INCIDENT);
-  const documents = useSelector((state) => selector(state, "documents")) || [];
-  const formValues = useSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state)) || {};
-  const dropdownIncidentStatusCodeOptions = useSelector(getDropdownIncidentStatusCodeOptions);
-  const isPristine = useSelector((state) => state.form[FORM.ADD_EDIT_INCIDENT]?.pristine);
+  const documents = useAppSelector((state) => selector(state, "documents")) || [];
+  const formValues = useAppSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state)) || {};
+  const dropdownIncidentStatusCodeOptions = useAppSelector(getDropdownIncidentStatusCodeOptions);
+  const isPristine = useAppSelector((state) => state.form[FORM.ADD_EDIT_INCIDENT]?.pristine);
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
