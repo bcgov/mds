@@ -97,7 +97,7 @@ const DocumentCompression: FC<DocumentCompressionProps> = ({
           setCompressionInProgress?.(true);
           setProgressBarVisible(true);
           const poll = async () => {
-            const { data } = dispatch(pollDocumentsCompressionProgress(taskId));
+            const { data } = await dispatch(pollDocumentsCompressionProgress(taskId));
             if (data.progress) {
               setCompressionProgress(data.progress);
             }
