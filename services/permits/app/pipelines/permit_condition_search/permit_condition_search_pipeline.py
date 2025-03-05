@@ -1,7 +1,9 @@
 import logging
+import os
 from datetime import datetime
 from typing import List
 
+import yaml
 from app.common.streaming.formatters import DocumentResultStreamer, LLMResultStreamer
 from app.pipelines.permit_condition_search.components.azure_blob_upload import (
     AzureBlobUploader,
@@ -40,6 +42,11 @@ logger = logging.getLogger(__name__)
 # Initialize required infrastructure
 create_or_update_index()
 create_search_indexer()
+
+ROOT_DIR = os.path.abspath(os.curdir)
+
+with open(f"{ROOT_DIR}/app/permit_condition_prompts.yaml", "r") as file:
+    prompts = yaml.safe_load(file)
 
 # Metadata field definitions
 doc_metadata_fields = {
@@ -93,68 +100,6 @@ def create_elasticsearch_document_store():
     )
 
 
-template = """
-    You are an expert assistant that helps users retrieve and reason about permit conditions in the mining industry. When answering questions, use only the information provided in the sources and cite them using square brackets with the prefix "doc" (e.g., [doc:1]).
-
-    Follow these guidelines:
-    1. Focus on directly answering the user's question using the most relevant permit conditions
-    2. Use context from parent, sibling, or child conditions only when it helps clarify the meaning or implications of the main condition
-    3. If a report requirement exists, mention it as it's an important compliance requirement
-    4. Present information in a clear, concise manner
-    5. Use Markdown blockquotes (>) for direct quotes from permit conditions
-    6. Always maintain the exact wording from the source documents
-    7. If you're unsure or the information isn't in the sources, say so
-    8. Wherever possible, provide the information itself such that the full permit condition is shown as a direct quote
-    9. Output the results as markdown, with appropriate headings.
-    
-    Sources:
-    {% for document in documents %}
-        ID: {{ document.id }}
-        {% if document.meta.report_name %}
-        Report Required: {{ document.meta.report_name }}
-        {% endif %}
-        
-        Main Condition:
-        > {{ document.content }}
-        
-        {% if document.meta.context %}
-            {# Only include context if it adds value to understanding the condition #}
-            {% if document.meta.context.parent_contexts %}
-                {% for level_num in range(1, document.meta.context.parent_contexts|length + 1) %}
-                    {% set level = document.meta.context.parent_contexts["level_" ~ level_num] %}
-                    {% if level.content and level.content|length > 0 %}
-        Related Context:
-        > {{ level.content }}
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-
-            {# Include children/siblings only if they provide essential context #}
-            {% if document.meta.context.child_contexts or document.meta.context.sibling_contexts %}
-        Additional Context:
-                {% if document.meta.context.sibling_contexts.previous %}
-                    {% for sibling in document.meta.context.sibling_contexts.previous %}
-        > {{ sibling.content }}
-                    {% endfor %}
-                {% endif %}
-                {% if document.meta.context.sibling_contexts.next %}
-                    {% for sibling in document.meta.context.sibling_contexts.next %}
-        > {{ sibling.content }}
-                    {% endfor %}
-                {% endif %}
-                {% if document.meta.context.child_contexts %}
-                    {% for child in document.meta.context.child_contexts %}
-        > {{ child.content }}
-                    {% endfor %}
-                {% endif %}
-            {% endif %}
-        {% endif %}
-    {% endfor %}
-                        
-    Question: {{question}}
-"""
-
-
 def create_permit_condition_search_indexing_pipeline():
     """
     Creates a pipeline for indexing permit conditions by uploading to blob storage and running the indexer
@@ -183,13 +128,9 @@ def create_permit_condition_search_retrieval_pipeline():
     """
     Creates a RAG pipeline for retrieving permit conditions
     """
-    print("Creating permit condition search retrieval pipeline")
     retrieval_pipeline = Pipeline()
-
-    print("Initializing document store")
     try:
         azure_search_document_store = create_azure_search_document_store()
-        print("Document store initialized successfully")
     except Exception as e:
         print(f"Error initializing document store: {str(e)}")
         raise
@@ -216,7 +157,9 @@ def create_permit_condition_search_retrieval_pipeline():
 
     context_enricher = ContextEnricher(document_store=azure_search_document_store)
 
-    prompt_builder = PromptBuilder(template=template)
+    # Get search prompt from the loaded prompts
+    search_template = prompts.get("permit_condition_search_prompt")
+    prompt_builder = PromptBuilder(template=search_template)
 
     llm = AzureOpenAIGenerator(
         azure_endpoint=config.openai.endpoint,

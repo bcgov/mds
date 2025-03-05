@@ -409,25 +409,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   };
   console.log(currentAmendment)
 
-  const isViewingLatestAmendment =
-    latestAmendment?.permit_amendment_guid === currentAmendment?.permit_amendment_guid;
 
-  if (!forceViewConditions) {
-    if (isViewingLatestAmendment && isExtractionInProgress) {
-      return (
-        <>
-          <LatestAmendmentWarning />
-          <RenderExtractionProgress />
-        </>
-      );
-    }
-    if (isViewingLatestAmendment && !isExtractionComplete && permitExtraction?.task_status === "Error Extracting") {
-      return <><LatestAmendmentWarning /><RenderExtractionError /></>;
-    }
-    if (isViewingLatestAmendment && canStartExtraction) {
-      return <><LatestAmendmentWarning /><RenderExtractionStart /></>;
-    }
-  }
 
   const AddConditionModalContent = (
     <Typography.Paragraph
@@ -470,6 +452,25 @@ const PermitConditions: FC<PermitConditionProps> = ({
     }
   }, [selectedConditionId, showLoading, currentAmendment?.conditions]);
 
+  const isViewingLatestAmendment =
+    latestAmendment?.permit_amendment_guid === currentAmendment?.permit_amendment_guid;
+
+  if (!forceViewConditions) {
+    if (isViewingLatestAmendment && isExtractionInProgress) {
+      return (
+        <>
+          <LatestAmendmentWarning />
+          <RenderExtractionProgress />
+        </>
+      );
+    }
+    if (isViewingLatestAmendment && !isExtractionComplete && permitExtraction?.task_status === "Error Extracting") {
+      return <><LatestAmendmentWarning /><RenderExtractionError /></>;
+    }
+    if (isViewingLatestAmendment && canStartExtraction) {
+      return <><LatestAmendmentWarning /><RenderExtractionStart /></>;
+    }
+  }
   return (
     <>
       {hasConditions && (

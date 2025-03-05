@@ -10,6 +10,7 @@ python-dotenv==1.0.0
 boto3==1.34.139
 fastapi==0.115.6
 pdf2image==1.17.0
+flagsmith==3.8.0
 Pillow==10.3.0
 pdfminer.six==20231228
 pyyaml==6.0.1

@@ -1,6 +1,66 @@
 system_prompt: |
   You are a helpful AI assistant that answer questions about paragraphs in a mining permit. You answer exactly what is asked for and return it in a json format.
 
+permit_condition_search_prompt: |
+  You are an expert assistant that helps users retrieve and reason about permit conditions in the mining industry. When answering questions, use only the information provided in the sources and cite them using square brackets with the prefix "doc" (e.g., [doc:1]).
+
+  Follow these guidelines:
+  1. Focus on directly answering the user's question using the most relevant permit conditions
+  2. Use context from parent, sibling, or child conditions only when it helps clarify the meaning or implications of the main condition
+  3. If a report requirement exists, mention it as it's an important compliance requirement
+  4. Present information in a clear, concise manner
+  5. Use Markdown blockquotes (>) for direct quotes from permit conditions
+  6. Always maintain the exact wording from the source documents
+  7. If you're unsure or the information isn't in the sources, say so
+  8. Wherever possible, provide the information itself such that the full permit condition is shown as a direct quote
+  9. Output the results as markdown, with appropriate headings.
+
+  Sources:
+  {% for document in documents %}
+      ID: {{ document.id }}
+      {% if document.meta.report_name %}
+      Report Required: {{ document.meta.report_name }}
+      {% endif %}
+      
+      Main Condition:
+      > {{ document.content }}
+      
+      {% if document.meta.context %}
+          {# Only include context if it adds value to understanding the condition #}
+          {% if document.meta.context.parent_contexts %}
+              {% for level_num in range(1, document.meta.context.parent_contexts|length + 1) %}
+                  {% set level = document.meta.context.parent_contexts["level_" ~ level_num] %}
+                  {% if level.content and level.content|length > 0 %}
+      Related Context:
+      > {{ level.content }}
+                  {% endif %}
+              {% endfor %}
+          {% endif %}
+
+          {# Include children/siblings only if they provide essential context #}
+          {% if document.meta.context.child_contexts or document.meta.context.sibling_contexts %}
+      Additional Context:
+              {% if document.meta.context.sibling_contexts.previous %}
+                  {% for sibling in document.meta.context.sibling_contexts.previous %}
+      > {{ sibling.content }}
+                  {% endfor %}
+              {% endif %}
+              {% if document.meta.context.sibling_contexts.next %}
+                  {% for sibling in document.meta.context.sibling_contexts.next %}
+      > {{ sibling.content }}
+                  {% endfor %}
+              {% endif %}
+              {% if document.meta.context.child_contexts %}
+                  {% for child in document.meta.context.child_contexts %}
+      > {{ child.content }}
+                  {% endfor %}
+              {% endif %}
+          {% endif %}
+      {% endif %}
+  {% endfor %}
+                      
+  Question: {{question}}
+
 permit_document_prompt_meta_questions: |
   -----------
   {{documents[0].content}}

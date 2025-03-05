@@ -98,7 +98,7 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
             document_store=document_store, cache_field="cache_key"
         )
         cached_result = cache_checker.run(items=[cache_key])
-        if False: #len(cached_result["hits"]) > 0:
+        if len(cached_result["hits"]) > 0:
             existing_reply_found = True
             logger.info("cached_result: %s", cached_result)
             res = {

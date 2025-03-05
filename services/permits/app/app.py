@@ -16,7 +16,7 @@ DEBUG_MODE = os.environ.get("DEBUG_MODE", "False").lower() == "true"
 
 
 logging.basicConfig(
-    format="%(asctime)s - %(levelname)s - %(message)s", level=logging.INFO
+    format="%(asctime)s - %(levelname)s - %(message)s", level=logging.DEBUG
 )
 
 mds = FastAPI()

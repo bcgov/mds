@@ -2,6 +2,7 @@ import logging
 import os
 
 import yaml
+from app.common.utils.feature_flags import Feature, is_feature_enabled
 from app.pipelines.permit_condition_extraction.components.azure_document_intelligence_converter import (
     AzureDocumentIntelligenceConverter,
 )
@@ -30,7 +31,6 @@ from app.pipelines.permit_condition_extraction.components.permit_condition_valid
 from app.pipelines.permit_condition_search.config import config
 from haystack import Pipeline
 from haystack.dataclasses import ChatMessage
-from haystack.utils import Secret
 
 logger = logging.getLogger(__name__)
 
@@ -67,7 +67,6 @@ def permit_condition_pipeline():
     )
 
     # Set token limits for the model
-    # Reserve about 16k tokens for completion and leave the rest for the context
     model_token_limit = 128000
     completion_tokens = 16384
     context_token_limit = (
@@ -108,43 +107,55 @@ def permit_condition_pipeline():
     parse_hierarchy = PermitConditionSectionCombiner()
     filter_paragraphs = FilterConditionsParagraphsConverter()
     json_fixer = JSONRepair()
-
     combine_metadata = ConditionsMetadataCombiner()
 
     extractor = PermitConditionExtractor(
         chat_generator=llm,
         template=permit_extraction_prompt2,
     )
-    # Add validator component with section validation enabled
-    validator = PermitConditionValidator(
-        chat_generator=llm,
-        template=permit_condition_post_combine_validation_prompt,
-        condition_extractor=extractor,
-        section_validation=True,  # Enable section-by-section validation
-        max_conditions_per_batch=1000,  # Set max conditions per validation batch
-    )
-
+    
+    # Add standard components to pipeline
     index_pipeline.add_component("pdf_converter", pdf_converter)
     index_pipeline.add_component("filter_paragraphs", filter_paragraphs)
     index_pipeline.add_component("parse_hierarchy", parse_hierarchy)
-    index_pipeline.add_component("validator", validator)  # Add validator
     index_pipeline.add_component("prompt_builder", prompt_builder)
     index_pipeline.add_component("llm", llm)
     index_pipeline.add_component("json_fixer", json_fixer)
     index_pipeline.add_component("combine_metadata", combine_metadata)
 
+    # Standard connections
     index_pipeline.connect("pdf_converter.documents", "filter_paragraphs")
     index_pipeline.connect("filter_paragraphs", "parse_hierarchy")
-
-    # Insert validator between parse_hierarchy and prompt_builder
-    index_pipeline.connect("parse_hierarchy.conditions", "validator.conditions")
-    index_pipeline.connect("pdf_converter.documents", "validator.documents")
-    index_pipeline.connect("validator.conditions", "prompt_builder.conditions")
-
+    
+    # Check if validator feature is enabled
+    enable_validator = False or is_feature_enabled(Feature.PERMIT_CONDITION_VALIDATOR)
+    logger.info(f"Permit condition validator feature flag status: {enable_validator}")
+    
+    if enable_validator:
+        # Create and add validator component with simplified parameters
+        logger.info("Adding validator component to pipeline")
+        validator = PermitConditionValidator(
+            chat_generator=llm,
+            condition_extractor=extractor,
+            template=permit_condition_post_combine_validation_prompt,
+        )
+        
+        index_pipeline.add_component("validator", validator)
+        
+        # Connect with validator in the flow
+        index_pipeline.connect("parse_hierarchy.conditions", "validator.conditions")
+        index_pipeline.connect("pdf_converter.documents", "validator.documents")
+        index_pipeline.connect("validator.conditions", "prompt_builder.conditions")
+        index_pipeline.connect("validator.conditions", "combine_metadata.conditions")
+    else:
+        # Connect without validator
+        logger.info("Validator component not enabled - using standard flow")
+        index_pipeline.connect("parse_hierarchy.conditions", "prompt_builder.conditions")
+        index_pipeline.connect("parse_hierarchy.conditions", "combine_metadata.conditions")
+    
+    # Standard connections
     index_pipeline.connect("prompt_builder", "llm")
     index_pipeline.connect("llm", "json_fixer")
-
     index_pipeline.connect("json_fixer.data", "combine_metadata.data")
-    index_pipeline.connect("validator.conditions", "combine_metadata.conditions")
-
+    
     return index_pipeline
