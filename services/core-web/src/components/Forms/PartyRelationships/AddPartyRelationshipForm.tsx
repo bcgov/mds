@@ -21,7 +21,7 @@ import { getMatchingPartyRelationships } from "@mds/common/redux/selectors/parti
 import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants/enums";
 
 interface IPartyRelationshipPayload extends IMinePartyAppt, IParty { };
-// missing onPartySubmit??
+
 export interface AddPartyRelationshipFormProps {
   onSubmit: (values: IPartyRelationshipPayload) => void | Promise<void>;
   onFileLoad?: (documentName: string, document_manager_guid: string) => void;

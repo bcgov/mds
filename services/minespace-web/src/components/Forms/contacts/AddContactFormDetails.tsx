@@ -25,7 +25,7 @@ interface AddContactFormDetailsProps {
   contacts: IOption[];
   initialValues?: IParty;
   handleSelectChange: (party_guid: string) => void;
-  onSubmit: (values: any) => void;
+  onSubmit: (values: IParty) => void;
   isModal?: boolean;
 }
 

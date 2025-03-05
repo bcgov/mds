@@ -4,11 +4,11 @@ import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelect
 import AddContactFormDetails from "./AddContactFormDetails";
 import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants/enums";
 import { useAppSelector } from "@mds/common/redux/rootState";
-import { IMinePartyAppt } from "@mds/common/interfaces";
+import { IMinePartyAppt, IParty } from "@mds/common/interfaces";
 
 export interface AddContactFormProps {
   mine_party_appt_type_code: MinePartyAppointmentTypeCodeEnum;
-  onSubmit: (partyData) => void;
+  onSubmit: (partyData: IParty) => void;
   isModal?: boolean;
 }
 
