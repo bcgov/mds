@@ -2222,7 +2222,7 @@ export const PERMITS: IPermit[] = [
         ],
         preamble_text: "words",
         vc_credential_exch_state: VC_CRED_ISSUE_STATES.issued,
-        permit_amendment_guid: "8729830e-5e9a-4be8-9eef-dac4af775f1d",
+        permit_amendment_guid: "8729830e-5e9a-4be8-9eef-dac4af775f1e",
         permit_amendment_status_code: "ACT",
         permit_amendment_type_code: "AMD",
         received_date: null,
