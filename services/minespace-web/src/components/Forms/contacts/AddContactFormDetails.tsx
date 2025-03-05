@@ -12,14 +12,15 @@ import { getPartyRelationshipTypesList } from "@mds/common/redux/selectors/stati
 
 import { required, email, phoneNumber, maxLength } from "@mds/common/redux/utils/Validate";
 import { normalizePhone } from "@common/utils/helpers";
-import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
-import { IOption, IParty } from "@mds/common/interfaces";
-import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderField from "@mds/common/components/forms/RenderField";
+import RenderAutoComplete from "@mds/common/components/forms/RenderAutoComplete";
+import { IOption, IParty } from "@mds/common/interfaces";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 
 interface AddContactFormDetailsProps {
   contacts: IOption[];
@@ -153,7 +154,7 @@ export const AddContactFormDetails: FC<AddContactFormDetailsProps> = (props) => 
             id="first_name"
             name="first_name"
             placeholder="First Name"
-            component={renderConfig.FIELD}
+            component={RenderField}
             required
             validate={[required, maxLength(200)]}
           />
@@ -164,7 +165,7 @@ export const AddContactFormDetails: FC<AddContactFormDetailsProps> = (props) => 
             id="party_name"
             name="party_name"
             placeholder="Last Name"
-            component={renderConfig.FIELD}
+            component={RenderField}
             required
             validate={[required, maxLength(200)]}
           />
@@ -176,7 +177,7 @@ export const AddContactFormDetails: FC<AddContactFormDetailsProps> = (props) => 
             name="job_title_code"
             placeholder="Select a job title"
             onChange={handleSelectChange}
-            component={renderConfig.SELECT}
+            component={RenderSelect}
             data={partyRelationshipTypesList}
           />
         </Col>
@@ -186,7 +187,7 @@ export const AddContactFormDetails: FC<AddContactFormDetailsProps> = (props) => 
             id="organization_guid"
             name="organization_guid"
             onChange={handleSelectChange}
-            component={renderConfig.AUTOCOMPLETE}
+            component={RenderAutoComplete}
             placeholder="Search organizations"
             data={transformOrganizations(organizations)}
             handleChange={searchOrganizations}
@@ -198,7 +199,7 @@ export const AddContactFormDetails: FC<AddContactFormDetailsProps> = (props) => 
             label="Email"
             id="email"
             name="email"
-            component={renderConfig.FIELD}
+            component={RenderField}
             placeholder="example@example.com"
             required
             validate={[email, required]}
@@ -210,7 +211,7 @@ export const AddContactFormDetails: FC<AddContactFormDetailsProps> = (props) => 
             name="phone_no"
             id="phone_no"
             placeholder="XXX-XXX-XXXX"
-            component={renderConfig.FIELD}
+            component={RenderField}
             required
             validate={[required, phoneNumber, maxLength(12)]}
             normalize={normalizePhone}
@@ -221,7 +222,7 @@ export const AddContactFormDetails: FC<AddContactFormDetailsProps> = (props) => 
             label="Ext."
             name="phone_ext"
             id="phone_ext"
-            component={renderConfig.FIELD}
+            component={RenderField}
             validate={[maxLength(6)]}
           />
         </Col>
