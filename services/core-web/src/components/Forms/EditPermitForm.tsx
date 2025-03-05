@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
-import { compose } from "redux";
-import PropTypes from "prop-types";
+import React, { useEffect, FC } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { getFormValues, Field, change } from "@mds/common/components/forms/form";
 import { Col, Row } from "antd";
 import { currency, required, maxLength } from "@mds/common/redux/utils/Validate";
@@ -15,40 +13,43 @@ import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 
-import CustomPropTypes from "@/customPropTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
+import { IPermit } from "@mds/common/interfaces";
 
-const propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  title: PropTypes.string.isRequired,
-  initialValues: CustomPropTypes.permit.isRequired,
-  exemptionFeeStatusDropDownOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
-};
+interface EditPermitFormProps {
+  onSubmit: (values) => void | Promise<void>;
+  title: string;
+  initialValues: Partial<IPermit>;
+}
 
-export const EditPermitForm = (props) => {
+export const EditPermitForm: FC<EditPermitFormProps> = ({
+  onSubmit,
+  title,
+  initialValues
+}) => {
   const dispatch = useDispatch();
+  const permitStatusOptions = useSelector(getDropdownPermitStatusOptions);
+  const exemptionFeeStatusDropDownOptions = useSelector(getExemptionFeeStatusDropDownOptions);
   const formValues = useSelector(getFormValues(FORM.EDIT_PERMIT)) ?? {};
 
   useEffect(() => {
-    const isExploration = props.initialValues.permit_no.charAt(1) === "X";
+    const isExploration = initialValues.permit_no.charAt(1) === "X";
     const feeStatus = determineExemptionFeeStatus(
       formValues?.permit_status_code,
-      props.initialValues.permit_prefix,
-      props.initialValues.site_properties?.mine_tenure_type_code,
+      initialValues.permit_prefix,
+      initialValues.site_properties?.mine_tenure_type_code,
       isExploration,
-      props.initialValues.site_properties?.mine_disturbance_code
+      initialValues.site_properties?.mine_disturbance_code
     );
-    dispatch(change("exemption_fee_status_code", feeStatus));
+    dispatch(change(FORM.EDIT_PERMIT, "exemption_fee_status_code", feeStatus));
   }, [formValues?.permit_status_code]);
 
   return (
-    <FormWrapper onSubmit={props.onSubmit}
+    <FormWrapper onSubmit={onSubmit}
       isModal
-      initialValues={props.initialValues}
+      initialValues={initialValues}
       name={FORM.EDIT_PERMIT}
       reduxFormConfig={{
         touchOnBlur: false,
@@ -63,7 +64,7 @@ export const EditPermitForm = (props) => {
             label="Permit status"
             placeholder="Select a permit status"
             component={RenderSelect}
-            data={props.permitStatusOptions}
+            data={permitStatusOptions}
             required
             validate={[required]}
           />
@@ -91,7 +92,7 @@ export const EditPermitForm = (props) => {
             showOptional={false}
             component={RenderSelect}
             disabled
-            data={props.exemptionFeeStatusDropDownOptions}
+            data={exemptionFeeStatusDropDownOptions}
           />
         </Col>
       </Row>
@@ -108,19 +109,10 @@ export const EditPermitForm = (props) => {
       </Row>
       <div className="right center-mobile">
         <RenderCancelButton />
-        <RenderSubmitButton buttonText={props.title} />
+        <RenderSubmitButton buttonText={title} />
       </div>
     </FormWrapper>
   );
 };
 
-EditPermitForm.propTypes = propTypes;
-
-const mapStateToProps = (state) => ({
-  permitStatusOptions: getDropdownPermitStatusOptions(state),
-  exemptionFeeStatusDropDownOptions: getExemptionFeeStatusDropDownOptions(state),
-});
-
-export default compose(
-  connect(mapStateToProps)
-)(EditPermitForm);
+export default EditPermitForm;
