@@ -368,7 +368,13 @@ exports[`RequestReportForm renders form properly 1`] = `
                 <div
                   style="width: 100%;"
                 >
-                  Who is the report for?
+                  Regulatory Authority
+                  <br />
+                  <span
+                    class="label-subtitle"
+                  >
+                    Who is the report for?
+                  </span>
                 </div>
               </label>
             </div>
@@ -500,9 +506,18 @@ exports[`RequestReportForm renders form properly 1`] = `
               <label
                 class=""
                 for="ADD_REPORT_TO_PERMIT_CONDITION-1639_ministry_recipient"
-                title="What office is the report for?"
+                title=""
               >
-                What office is the report for?
+                <div>
+                  Ministry Recipient
+                   
+                  <br />
+                  <span
+                    class="label-subtitle"
+                  >
+                    What office is the report for?
+                  </span>
+                </div>
               </label>
             </div>
             <div

@@ -30,6 +30,12 @@ Enzyme.configure({ adapter: new Adapter() });
     route: "test",
     dynamicRoute: () => "test",
     helpKey: "Edit-TSF"
+  },
+  VIEW_MINE_PERMIT_AMENDMENT: {
+    route: "test",
+    dynamicRoute: () => "test",
+    hashRoute: () => "test",
+    helpKey: "View Permit Amendment"
   }
 };
 

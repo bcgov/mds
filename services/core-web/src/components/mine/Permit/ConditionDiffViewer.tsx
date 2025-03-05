@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Row, Col, Typography, Skeleton } from 'antd';
 import { IPermitAmendment, IPermitCondition, IPermitConditionChangeType, IPermitConditionComparison } from '@mds/common/interfaces';
-import { formatPermitConditionStep } from '@mds/common/utils/helpers';
+import { findCondition, formatPermitConditionStep } from '@mds/common/utils/helpers';
 import {
     fetchPermitConditionDiff,
     getPermitConditionDiff,
@@ -53,32 +53,6 @@ const ConditionDiffViewer: FC<Props> = ({
     const getComparisonForPreviousCondition = (conditionGuid: string) => {
         return diffs?.find(diff => diff.previous_condition_guid === conditionGuid);
     };
-
-    /**
-     * Find a condition recursively by guid in the given list of conditions.
-     */
-    const findCondition = (permit_condition_guid: string, conditions: IPermitCondition[]) => {
-
-        const findConditionRecursive = (guid: string, condition: IPermitCondition): IPermitCondition | null => {
-            if (condition?.permit_condition_guid === guid) {
-                return condition;
-            }
-
-            if (condition.sub_conditions) {
-                for (const sub of condition.sub_conditions) {
-                    const found = findConditionRecursive(guid, sub);
-                    if (found) return found;
-                }
-            }
-            return null;
-        };
-
-        for (const condition of conditions) {
-            const found = findConditionRecursive(permit_condition_guid, condition);
-            if (found) return found;
-        }
-        return null;
-    }
 
     /**
      * Render the condition and its sub-conditions recursively.

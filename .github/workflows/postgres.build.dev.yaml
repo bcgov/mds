@@ -1,23 +1,17 @@
-name: Postgres Image Build
+name: Postgres Image Build DEV
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - develop
-      - pgup
-    paths:
-      - services/postgres/**
 
 env:
   INITIAL_TAG: latest
-  TAG: 13
+  TAG: dev
   NAME: postgres
   CONTEXT: services/postgres/
 
 jobs:
   build-postgres:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3

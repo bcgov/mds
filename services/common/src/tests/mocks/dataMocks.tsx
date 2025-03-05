@@ -34,6 +34,7 @@ import {
   IMineReportDueDateType,
   IMineReport,
   ITailingsStorageFacility,
+  IMineReportSubmission,
 } from "@mds/common/interfaces";
 
 export const createMockHeader = () => ({
@@ -213,6 +214,7 @@ export const MINES = {
     "18133c75-49ad-4101-85f3-a43e35ae989a",
     "18145c75-49ad-0101-85f3-a43e45ae989a",
     "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+    "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
   ],
   mines: {
     "18133c75-49ad-4101-85f3-a43e35ae989a": {
@@ -343,6 +345,64 @@ export const MINES = {
         status_labels: ["Closed", "Care & Maintenance"],
         effective_date: "2018-10-16",
         expiry_date: null,
+      },
+      verified_status: {
+        mine_guid: null,
+        mine_name: null,
+        healthy_ind: null,
+        verifying_user: null,
+        verifying_timestamp: null,
+      },
+    },
+    "8e9ca839-a28e-427e-997e-9ef23d9d97cd": {
+      mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+      mine_name: "mine3",
+      mine_no: "BLAH9091",
+      mine_region: "NE",
+      mine_permit_numbers: [],
+      major_mine_ind: true,
+      mine_location: { longitude: null, latitude: null },
+      mine_tailings_storage_facilities: [
+        {
+          mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+          mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
+          mine_tailings_storage_facility_name: "MockTSF",
+          latitude: null,
+          longitude: null,
+          consequence_classification_status_code: "LOW",
+          tsf_operating_status_code: "OPT",
+          itrb_exemption_status_code: "YES",
+        },
+      ],
+      mine_type: [
+        { mine_tenure_type_code: "PLR", mine_type_detail: [] },
+        { mine_tenure_type_code: "MIN", mine_type_detail: [] },
+      ],
+      mine_status: [
+        {
+          mine_status_guid: "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
+          mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+          mine_status_xref_guid: "4924b221-f895-479d-ad0d-7fde81795813",
+          status_values: ["OP", "SEA"],
+          status_labels: ["Operating", "Seasonal"],
+          effective_date: "2024-03-07T15:49:45.989485+00:00",
+          expiry_date: null,
+          status_date: null,
+          status_description:
+            "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
+        },
+      ],
+      latest_mine_status: {
+        mine_status_guid: "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
+        mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+        mine_status_xref_guid: "4924b221-f895-479d-ad0d-7fde81795813",
+        status_values: ["OP", "SEA"],
+        status_labels: ["Operating", "Seasonal"],
+        effective_date: "2024-03-07T15:49:45.989485+00:00",
+        expiry_date: null,
+        status_date: null,
+        status_description:
+          "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
       },
       verified_status: {
         mine_guid: null,
@@ -1855,6 +1915,7 @@ export const PERMITS: IPermit[] = [
               permit_condition_id: 1639,
               due_date_period_months: 12,
               initial_due_date: "2024-01-01",
+              condition_category_code: "HSC",
             }
           },
           {
@@ -2105,6 +2166,85 @@ export const PERMITS: IPermit[] = [
         ],
         conditions_review_completed: false,
       },
+      {
+        permit_amendment_id: 3,
+        permit_no: "C-12345",
+        security_received_date: "2019-04-03",
+        security_not_required: false,
+        security_not_required_reason: "",
+        issuing_inspector_title: "Inspector Gadget",
+        is_generated_in_core: false,
+        regional_office: "region",
+        now_application_guid: "",
+        now_application_documents: [],
+        imported_now_application_documents: [],
+        permit_conditions_last_updated_by: "Condition Approver",
+        permit_conditions_last_updated_date: "2024-04-04",
+        has_permit_conditions: true,
+        condition_categories: [
+          {
+            condition_category_code: "HSC",
+            description: "Health and Safety",
+            display_order: 0,
+            step: "A.",
+          },
+          {
+            condition_category_code: "GEN",
+            description: "General",
+            display_order: 1,
+            step: "B.",
+          },
+        ],
+        conditions: [
+          {
+            permit_condition_id: 1639,
+            permit_amendment_id: 2,
+            permit_condition_guid: "6fd71a4d-a55e-4e0b-a249-0ed54c3d2387",
+            condition: "Verified Condition with report",
+            condition_type_code: "SEC",
+            condition_category_code: "HSC",
+            parent_permit_condition_id: null,
+            sub_conditions: [],
+            step: "1.",
+            display_order: 1,
+            permit_condition_status_code: "COM",
+            mineReportPermitRequirement: {
+              report_name: "Test Approved Report",
+              mine_report_permit_requirement_id: 1,
+              cim_or_cpo: "cpo",
+              ministry_recipient: ["MMO"],
+              permit_condition_id: 1639,
+              due_date_period_months: 12,
+              initial_due_date: "2024-01-01",
+              condition_category_code: "HSC",
+            },
+          },
+        ],
+        preamble_text: "words",
+        vc_credential_exch_state: VC_CRED_ISSUE_STATES.issued,
+        permit_amendment_guid: "8729830e-5e9a-4be8-9eef-dac4af775f1d",
+        permit_amendment_status_code: "ACT",
+        permit_amendment_type_code: "AMD",
+        received_date: null,
+        issue_date: "2020-04-01",
+        authorization_end_date: null,
+        liability_adjustment: 7000000,
+        description: "Amendment",
+        related_documents: [],
+        conditions_review_completed: true,
+        mine_report_permit_requirements: [
+          {
+            report_name: "Test Approved Report",
+            mine_report_permit_requirement_id: 1,
+            cim_or_cpo: "cpo",
+            ministry_recipient: ["MMO"],
+            permit_condition_id: 1639,
+            due_date_period_months: 12,
+            initial_due_date: "2024-01-01",
+            condition_category_code: "HSC",
+          }
+        ]
+      },
     ],
     site_properties: {
       mine_type_guid: "2cf4cd5c-c7f8-4607-afe4-245ee0fd20db",
@@ -2137,7 +2277,7 @@ export const PERMITS: IPermit[] = [
     exemption_fee_status_note: "",
     permit_prefix: "C",
     update_user: "update-user",
-    update_timestamp: "2019-04-05 21:05:40.123456+00:00",
+    update_timestamp: "2020-04-05 21:05:40.123456+00:00",
   },
   {
     permit_id: "2484",
@@ -6284,13 +6424,14 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   ],
 };
 
-export const MINE_REPORT_SUBMISSIONS = [
+export const MINE_REPORT_SUBMISSIONS: IMineReportSubmission[] = [
   {
     mine_report_guid: "9ac75a07-7232-4f42-8c91-d43008dac91a",
     mine_report_id: 53,
     mine_report_submission_guid: "ed597cd0-5ccd-458f-87e2-d7f665b6b1db",
     submission_date: "2024-02-07",
-    mine_report_submission_status_code: "REQ",
+    mine_report_submission_status_code: MINE_REPORT_SUBMISSION_CODES.REQ,
+    mine_report_permit_requirement_id: null,
     documents: [
       {
         mine_document_guid: "176ccc2e-f1fa-4ca2-a904-41d1a81d74fa",
@@ -6333,7 +6474,61 @@ export const MINE_REPORT_SUBMISSIONS = [
     mine_report_id: 54,
     mine_report_submission_guid: "063ad639-d74a-4a6a-a499-980e0e0478fc",
     submission_date: "2024-02-07",
-    mine_report_submission_status_code: "INI",
+    mine_report_submission_status_code: MINE_REPORT_SUBMISSION_CODES.INI,
+    mine_report_permit_requirement_id: null,
+    documents: [
+      {
+        mine_document_guid: "cdb43e9c-ad56-4839-97ac-658b1e50c132",
+        mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+        document_manager_guid: "08fbb3e3-c1b2-4e9f-94e6-84a9a077125f",
+        document_name: "document.pdf",
+        upload_date: "2024-02-06 21:05:40.315908+00:00",
+        update_timestamp: "2024-02-06 21:05:40.315906+00:00",
+        create_user: "test@bceid",
+        is_archived: false,
+        archived_date: null,
+        archived_by: null,
+        versions: [],
+      },
+    ],
+    comments: [
+      {
+        mine_report_comment_guid: "2afa052e-1d52-4a25-bb3d-6e3c4e75e683",
+        report_comment:
+          "Population ability especially especially list or receive. Management never rise save guess involve it.",
+        comment_visibility_ind: true,
+        comment_user: "system",
+        comment_datetime: "2023-04-17T20:50:20.812666+00:00",
+      },
+    ],
+    report_type: "PRR",
+    mine_report_definition_guid: null,
+    mine_report_category: null,
+    report_name: "General Conditions",
+    due_date: "2024-02-07",
+    received_date: "2024-02-06",
+    submission_year: 2024,
+    create_user: "test@bceid",
+    create_timestamp: "2024-02-07T19:15:38.505462+00:00",
+    update_user: "idir\\test",
+    update_timestamp: "2024-02-07T19:15:38.505482+00:00",
+    permit_guid: "1628847c-060b-45f2-990f-815877174801",
+    permit_number: "C-12345",
+    mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+    mine_name: "Mine Name",
+    permit_condition_category_code: "GEC",
+    description_comment: "This is the description comment field",
+    submitter_name: "Susan Strong",
+    submitter_email: "susan@strong.com",
+    mine_report_contacts: [],
+  },
+  {
+    mine_report_guid: "9c7e33b2-92f0-4d57-8b40-0cd3c6e5506a",
+    mine_report_id: 54,
+    mine_report_submission_guid: "063ad639-d74a-4a6a-a499-980e0e0478fc",
+    submission_date: "2024-02-07",
+    mine_report_submission_status_code: MINE_REPORT_SUBMISSION_CODES.INI,
+    mine_report_permit_requirement_id: 1,
     documents: [
       {
         mine_document_guid: "cdb43e9c-ad56-4839-97ac-658b1e50c132",
@@ -6419,20 +6614,21 @@ export const MINE_REPORTS: IMineReport[] = [
       mine_report_category: ["GSC", "GTC"],
       mine_report_contacts: [],
       mine_report_definition_guid: "f5dec476-cb13-430a-a85e-81e5bbe666e4",
-      mine_report_id: "123",
+      mine_report_id: 123,
       mine_report_guid: "9f98a719-720a-40a5-ac5b-e91e8a526fad",
       submission_year: 2025,
       submitter_name: "test",
       submitter_email: "test@bceid",
       update_timestamp: "2024-02-07T19:15:38.505482+00:00",
       update_user: "idir\\test",
+      mine_report_permit_requirement_id: null,
     },
     mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
     mine_name: "Abbott Inc",
     mine_report_contacts: [],
     submitter_name: "test",
     submitter_email: "test@bceid",
-    received_date: ""
+    received_date: "",
   },
   {
     mine_report_id: "124",
@@ -6457,7 +6653,7 @@ export const MINE_REPORTS: IMineReport[] = [
           document_manager_guid: "dde0b5bf-a14d-4272-8a65-467440b01294",
           document_name: "0101581201901_APPLICATION_FORM (1) (1).pdf",
           upload_date: "2020-01-29T20:51:53.466101+00:00",
-          create_user: "test@bceid"
+          create_user: "test@bceid",
         },
       ],
       comments: [],
@@ -6467,7 +6663,7 @@ export const MINE_REPORTS: IMineReport[] = [
       mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
       mine_name: "Abbott Inc",
       mine_report_contacts: [],
-      mine_report_id: "124",
+      mine_report_id: 124,
       mine_report_guid: "b59a166e-749e-4e6c-a232-d4c55f1f227c",
       mine_report_definition_guid: "5f4f4727-4ecd-4a04-8929-2e8a5e03996d",
       mine_report_category: ["GTC", "TSF"],
@@ -6477,6 +6673,7 @@ export const MINE_REPORTS: IMineReport[] = [
       create_timestamp: "2024-02-07T19:15:38.505462+00:00",
       update_user: "idir\\test",
       update_timestamp: "2024-02-07T19:15:38.505482+00:00",
+      mine_report_permit_requirement_id: null,
     },
     mine_report_contacts: [],
     submitter_name: "test",
@@ -6508,7 +6705,7 @@ export const MINE_REPORTS: IMineReport[] = [
       mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
       mine_name: "Abbott Inc",
       mine_report_contacts: [],
-      mine_report_id: "125",
+      mine_report_id: 125,
       mine_report_guid: "92327cd3-eec0-4e18-b898-25539ac408e9",
       mine_report_definition_guid: "6eda0c36-8748-4072-83c9-0fcdf270d36f",
       mine_report_category: ["GTC", "TSF"],
@@ -6519,6 +6716,7 @@ export const MINE_REPORTS: IMineReport[] = [
       submission_year: 2025,
       submitter_name: "test",
       submitter_email: "test@bceid",
+      mine_report_permit_requirement_id: 1,
     },
     mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
     mine_name: "Abbott Inc",
@@ -9431,27 +9629,25 @@ export const HELP_GUIDE_MS = {
 export const SEARCH_PERMIT_CONDITIONS_RESPONSE = {
   documents: [
     {
-      id: '1',
-      content: 'Water quality monitoring must be conducted monthly',
+      id: "1",
+      content: "Water quality monitoring must be conducted monthly",
       meta: {
-        permit: 'M-123',
-        mine_name: 'Test Mine',
-        issue_date: '2025-02-07',
-        category: 'Environmental',
+        permit: "M-123",
+        mine_name: "Test Mine",
+        issue_date: "2025-02-07",
+        category: "Environmental",
       },
       score: 0.95,
     },
   ],
   prompt: {
-    answers: ['The permit requires monthly water quality monitoring.'],
+    answers: ["The permit requires monthly water quality monitoring."],
   },
   facets: {
     category: [
-      { value: 'Environmental', count: 1 },
-      { value: 'Safety', count: 0 },
+      { value: "Environmental", count: 1 },
+      { value: "Safety", count: 0 },
     ],
-    mine_name: [
-      { value: 'Test Mine', count: 1 },
-    ],
+    mine_name: [{ value: "Test Mine", count: 1 }],
   },
-}
+};

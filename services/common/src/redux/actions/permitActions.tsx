@@ -20,6 +20,11 @@ export const storePermitConditions = (payload) => ({
   payload,
 });
 
+export const storePermitAmendment = (payload, permit_guid) => ({
+  type: actionTypes.STORE_PERMIT_AMENDMENT,
+  payload: { ...payload, permit_guid },
+})
+
 export const storeEditingConditionFlag = (payload) => ({
   type: actionTypes.STORE_EDITING_CONDITION_FLAG,
   payload,
