@@ -44,9 +44,8 @@ const permitHandlers = [
 ];
 
 const permitSearchHandlers = [
-  // Use localhost URL pattern for better compatibility with the fetch adapter
   http.post(
-    "http://localhost/search/permit-conditions",
+    "http://localhost/search/permit-conditions", // Axios rejects <API_URL> as an invalid url when used with the `fetch` adapter. so use localhost for this test.
     async ({ request }) => {
       const requestBody = await request.json() as { query: string };
       let responseData;
@@ -60,10 +59,9 @@ const permitSearchHandlers = [
 
       const encoder = new TextEncoder();
 
-      // Create a ReadableStream to simulate SSE events
+      // Pass along the response data as an event stream
       const stream = new ReadableStream({
         start(controller) {
-          // Format and send the documents event
           const documentsAndFacets = {
             documents: responseData.documents || [],
             facets: responseData.facets || {}
@@ -72,12 +70,10 @@ const permitSearchHandlers = [
             encoder.encode(`event: documentsdata: ${JSON.stringify(documentsAndFacets)}ENDMESSAGE`)
           );
 
-          // Send AI start event
           controller.enqueue(
             encoder.encode(`event: ai_startdata: {}ENDMESSAGE`)
           );
 
-          // Send prompt event if there's an answer
           const promptText = responseData.prompt?.answers?.[0] || '';
           if (promptText) {
             controller.enqueue(
@@ -85,17 +81,14 @@ const permitSearchHandlers = [
             );
           }
 
-          // Send AI complete event
           controller.enqueue(
             encoder.encode(`event: ai_completedata: {}ENDMESSAGE`)
           );
 
-          // Send completion event
           controller.enqueue(
             encoder.encode(`event: completedata: {}ENDMESSAGE`)
           );
 
-          // Close the stream
           controller.close();
         }
       });

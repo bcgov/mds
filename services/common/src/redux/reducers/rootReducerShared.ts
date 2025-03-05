@@ -51,7 +51,6 @@ import permitSearchReducer, { permitSearchReducerType } from "../slices/permitSe
 const networkReducers = Object.fromEntries(Object.entries(NetworkReducerTypes).map(([key, value]) =>
   [NetworkReducerTypes[key], createReducer(networkReducer, value)]
 ));
-import permitSearchReducer, { permitSearchReducerType } from "../slices/permitSearchSlice";
 
 export const sharedReducer = {
   ...activityReducer,

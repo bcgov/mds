@@ -5,7 +5,6 @@ import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { RootState } from "../rootState";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import { ConditionOperator, Facet, FilterOperator, SearchQuery, SearchResult } from "@mds/common/interfaces/search/facet-search.interface";
-// Updated import to use our new implementation
 import { createSseProcessor } from "@mds/common/utils/SseParser";
 
 import * as API from "@mds/common/constants/API";
@@ -15,8 +14,8 @@ export type PermitSearchFilters = Array<{ category: string; value: string }>;
 interface PermitSearchState {
     results: SearchResult | null;
     loading: boolean;
-    documentLoading: boolean; // New state for document loading
-    aiLoading: boolean;  // Already existing state for AI loading
+    documentLoading: boolean;
+    aiLoading: boolean;
     query: string;
     filters: PermitSearchFilters;
     allFacets: { [key: string]: Facet[] };
@@ -25,11 +24,11 @@ interface PermitSearchState {
 const initialState: PermitSearchState = {
     results: null,
     loading: false,
-    documentLoading: false, // Semantic search results are loading
+    documentLoading: false,
     query: '',
     filters: [],
     allFacets: {},
-    aiLoading: false, // AI Generated response is loading
+    aiLoading: false,
 };
 
 const permitSearchSlice = createAppSlice({

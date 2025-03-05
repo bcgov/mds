@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Typography, Space, Tag, Row, Col, Button } from 'antd';
+import { Typography, Space, Tag, Row, Col } from 'antd';
 import { ContextItem, HaystackDocumentSearchResult } from '@mds/common/src/interfaces/search/facet-search.interface';
 import dayjs from 'dayjs';
 import { formatPermitConditionStep } from '@mds/common/utils/helpers';
@@ -13,14 +13,12 @@ import {
     faEye,
     faArrowUpRightFromSquare,
     faChevronDown,
-    faChevronUp,
-    faEllipsisV
+    faChevronUp
 } from '@fortawesome/pro-solid-svg-icons';
 import PermitAmendmentPreviewModal from './PermitAmendmentPreviewModal';
 import DocumentLink from '@mds/common/components/documents/DocumentLink';
 import { ActionMenuButton } from '@mds/common/components/common/ActionMenu';
 
-const { Text, Paragraph } = Typography;
 
 interface ResultItemProps {
     result: HaystackDocumentSearchResult;
@@ -61,17 +59,17 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
     };
 
     useEffect(() => {
-        // Check if this item's ID is in the URL hash
+        // Highlight conditions when url changes.
+        // E.g. /conditions/#condition-123 will highlight condition with id 123 for 5 seconds
         const handleHashChange = () => {
             const hash = window.location.hash;
             if (hash === `#condition-${result.id}`) {
                 setIsHighlighted(true);
-                // Reset highlight after animation
-                setTimeout(() => setIsHighlighted(false), 2000);
+                setTimeout(() => setIsHighlighted(false), 5000);
             }
         };
 
-        handleHashChange(); // Check initial hash
+        handleHashChange();
         window.addEventListener('hashchange', handleHashChange);
         return () => window.removeEventListener('hashchange', handleHashChange);
     }, [result.id]);
@@ -83,21 +81,12 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
         return Math.round(((score - minScore) / (maxScore - minScore)) * 100);
     }, [score]);
 
-    // Build breadcrumb path from category and step_path
     const pathParts = [
         ...(meta.step_path ? [meta.step_path.split('.')[0]] : [])
     ].filter(Boolean);
 
     const contentToDisplay = formatPermitConditionStep(meta.step, highlightedResult || content);
 
-    const permitUrl = VIEW_MINE_PERMIT_AMENDMENT.dynamicRoute(
-        meta.mine_guid,
-        meta.permit_guid,
-        meta.permit_amendment_guid,
-        'conditions'
-    );
-
-    // Build action items for the action menu
     const actionItems = [
         {
             key: 'preview',
@@ -165,10 +154,10 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
         const defaultBelowContext = belowContexts[0];
 
         return (
-            <div style={{ marginTop: '8px' }}>  {/* reduced from 16px */}
+            <div style={{ marginTop: '8px' }}>
                 {/* Above contexts */}
                 {aboveContexts.length > 0 && (
-                    <div style={{ marginBottom: '4px' }}>  {/* reduced from 8px */}
+                    <div style={{ marginBottom: '4px' }}>
                         {expandedContext === 'above' ? (
                             <>
                                 {aboveContexts.map((item, index) => (
@@ -201,10 +190,8 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
                     </div>
                 )}
 
-                {/* Main content */}
                 {highlightedResult ? <MarkdownViewer markdown={contentToDisplay} /> : contentToDisplay}
 
-                {/* Below contexts */}
                 {belowContexts.length > 0 && (
                     <div>
                         {expandedContext === 'below' ? (
@@ -258,7 +245,7 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
                     <Col>{pathParts?.join(' > ')}</Col>
                     <Col>
                         <ActionMenuButton
-                            buttonText="Actions" // Keep for backward compatibility
+                            buttonText="Actions"
                             actions={actionItems}
                             useEllipsis={true}
                         />
@@ -295,17 +282,17 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
                     </Space>
 
                     <Space size="middle">
-                        <Text type="secondary" style={{ fontSize: '12px' }}>
+                        <Typography.Text type="secondary" style={{ fontSize: '12px' }}>
                             <DocumentLink
                                 unstyled={true}
                                 documentManagerGuid={meta.document_manager_guid}
                                 documentName={meta.document_name}
                                 truncateDocumentName={false}
                             />
-                        </Text>
-                        <Text type="secondary" style={{ fontSize: '12px' }}>
+                        </Typography.Text>
+                        <Typography.Text type="secondary" style={{ fontSize: '12px' }}>
                             {dayjs(meta.issue_date).format('MMM D, YYYY')}
-                        </Text>
+                        </Typography.Text>
                         <Tag color="green">{normalizedScore}% match</Tag>
                     </Space >
                 </Row >

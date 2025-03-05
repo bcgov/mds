@@ -158,3 +158,28 @@ label .ant-btn {
     }
   }
 }
+
+.actions-ellipsis-button.ant-btn {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  min-width: auto;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover,
+  &:focus,
+  &:active {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .anticon {
+    color: rgba(0, 0, 0, 0.65);
+  }
+}

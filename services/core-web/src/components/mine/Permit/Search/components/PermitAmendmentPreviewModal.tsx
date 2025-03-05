@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Modal, Spin } from 'antd';
+import { Spin } from 'antd';
 import PermitConditions from '../../PermitConditions';
 import { useAppDispatch, useAppSelector } from '@mds/common/redux/rootState';
 import { fetchPermits } from '@mds/common/redux/actionCreators/permitActionCreator';
@@ -10,7 +10,7 @@ interface Props {
     permitAmendmentGuid: string;
     mineGuid: string;
     permitGuid: string;
-    selectedConditionId: string; // Add this line
+    selectedConditionId: string;
 }
 
 const PermitAmendmentPreviewModal: React.FC<Props> = ({
@@ -18,7 +18,7 @@ const PermitAmendmentPreviewModal: React.FC<Props> = ({
     permitAmendmentGuid,
     mineGuid,
     permitGuid,
-    selectedConditionId, // Add this line
+    selectedConditionId,
 }) => {
     const dispatch = useAppDispatch();
     const currentAmendment = useAppSelector(state => getAmendment(permitGuid, permitAmendmentGuid)(state));

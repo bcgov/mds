@@ -55,7 +55,7 @@ const FacetFilters: React.FC<FacetFiltersProps> = ({
                 {Object.entries(facets).map(([category, items]) => {
                     const filteredItems = filterAndSortItems(category, items);
                     const isExpanded = expanded[category];
-                    const totalItems = items.length; // Changed from filteredItems.length
+                    const totalItems = items.length;
                     const hasMoreItems = totalItems > INITIAL_DISPLAY_COUNT;
                     const displayedItems = isExpanded ? filteredItems : filteredItems.slice(0, INITIAL_DISPLAY_COUNT);
 

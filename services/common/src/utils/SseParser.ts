@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios';
 
 export interface SseMessage {
     type: string;
@@ -21,8 +20,6 @@ export interface SseProcessorOptions {
 export class SseParser {
     private buffer: string = '';
 
-    // Fix the regex to properly match multiple messages in a single chunk
-    // The issue was likely with the greedy matching in the original regex
     private messagePattern: RegExp = /event:\s*([^\n]*)\s*data:(.*?)ENDMESSAGE/g;
 
     /**
@@ -78,7 +75,6 @@ export class SseParser {
                 const { done, value } = await reader.read();
 
                 if (done) {
-                    // Process any remaining data in buffer
                     if (this.buffer.trim()) {
                         const messages = this.parseChunk('ENDMESSAGE'); // Force processing any remaining data
                         messages.forEach(onMessage);
@@ -107,9 +103,6 @@ export class SseParser {
         }
     }
 
-    /**
-     * Reset the internal buffer
-     */
     public reset(): void {
         this.buffer = '';
     }

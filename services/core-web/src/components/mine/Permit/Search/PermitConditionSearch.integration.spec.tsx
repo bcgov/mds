@@ -4,20 +4,18 @@ import React from 'react';
 import { render, waitFor, screen } from '@testing-library/react';
 import { ReduxWrapper } from '@mds/common/tests/utils/ReduxWrapper';
 
-// Mock CustomAxios to handle the API URL properly in tests
 jest.mock('@mds/common/redux/customAxios', () => {
     const originalModule = jest.requireActual('@mds/common/redux/customAxios');
 
-    // This returns a function that when called will return the axios instance
     return {
         __esModule: true,
         default: jest.fn().mockImplementation((...args) => {
             const axiosInstance = originalModule.default(...args);
-
-            // Override the post method for the permit conditions search endpoint
             const originalPost = axiosInstance.post;
             axiosInstance.post = jest.fn((url, data, config) => {
-                // Replace placeholder with proper localhost URL for tests
+                // Encountered an issue where the msw handlers in handlers.ts rejects
+                // <API_URL> as an invalid url when used with the `fetch` adapter,
+                // So, we're using localhost for this test instead to provide a valid url.
                 if (url.includes('<API_URL>/search/permit-conditions')) {
                     return originalPost('http://localhost/search/permit-conditions', data, config);
                 }
@@ -53,23 +51,18 @@ describe('PermitConditionSearch Integration Tests', () => {
     it('shows and applies filters', async () => {
         const { container } = render(<ReduxWrapper><PermitConditionSearch /></ReduxWrapper>);
 
-        // Perform initial search
         const searchBox = screen.getByRole('textbox');
         await userEvent.type(searchBox, 'water quality{enter}');
 
-        // Wait for results
         await waitFor(() => {
             expect(screen.getByText('Filters')).toBeInTheDocument();
         });
 
-        // Open filters
         await userEvent.click(screen.getByText('Filters'));
 
-        // Select a filter
         const envFilter = screen.getByTestId('filter-checkbox-category-Environmental');
         await userEvent.click(envFilter);
 
-        // Apply filters
         const applyButton = screen.getByText('Apply Filters');
         await userEvent.click(applyButton);
 
@@ -83,22 +76,17 @@ describe('PermitConditionSearch Integration Tests', () => {
     it('clears filters properly', async () => {
         render(<ReduxWrapper><PermitConditionSearch /></ReduxWrapper>);
 
-        // Perform search and apply filter first
         await userEvent.type(screen.getByRole('textbox'), 'water quality{enter}');
         await waitFor(() => {
             expect(screen.getByText('Filters')).toBeInTheDocument();
         });
 
-
-        // Apply filters
         await userEvent.click(screen.getByText('Filters'));
         const envFilter = screen.getByTestId('filter-checkbox-category-Environmental');
         await userEvent.click(envFilter);
 
         await userEvent.click(screen.getByText('Apply Filters'));
 
-
-        // Clear filters
         const clearButton = screen.getByText('Clear All');
         await userEvent.click(clearButton);
 
@@ -107,7 +95,6 @@ describe('PermitConditionSearch Integration Tests', () => {
             await userEvent.click(screen.getByText('Apply Filters'));
         })
 
-        // Verify filter tag is removed
         expect(screen.queryByText('category: Environmental')).not.toBeInTheDocument();
     });
 

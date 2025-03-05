@@ -30,10 +30,8 @@ const FilterDrawer: React.FC<FilterDrawerProps> = ({
     onClearFilters,
     hasFilterChanges,
 }) => {
-    // Get facets from Redux instead of just component props
     const allFacets = useAppSelector(selectAllFacets);
 
-    // Use facets from Redux state as the source of truth
     const renderFacets = () => {
         if (!allFacets) return null;
 
@@ -43,8 +41,6 @@ const FilterDrawer: React.FC<FilterDrawerProps> = ({
                 ...facet,
                 count: currentFacets.find(cf => cf.value === facet.value)?.count || 0
             }));
-
-            console.log('Rendering facet:', facetKey, updatedFacets);
 
             return (
                 <Col span={24} key={facetKey}>

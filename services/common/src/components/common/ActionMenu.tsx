@@ -50,7 +50,7 @@ export const ActionMenuButton: FC<{
   actions: IHeaderAction[];
   disabled?: boolean;
   buttonProps?: ButtonProps;
-  useEllipsis?: boolean; // New prop to control ellipsis display
+  useEllipsis?: boolean; // View as ellipsis instead of a button
 }> = ({
   actions,
   buttonText = "Action",
@@ -60,31 +60,17 @@ export const ActionMenuButton: FC<{
 }) => {
     const items = generateActionMenuItems((actions as unknown) as ITableAction[], null);
 
-    // Enhanced default button props for ellipsis mode to completely remove button appearance
     const defaultButtonProps: ButtonProps = useEllipsis
       ? {
         type: "text",
         icon: <EllipsisOutlined />,
         className: "actions-ellipsis-button",
-        style: {
-          width: '32px',
-          height: '32px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          border: 'none',
-          boxShadow: 'none',
-          background: 'transparent',
-          padding: '0',
-          minWidth: 'auto'
-        }
       }
       : {
         type: "ghost",
         className: "actions-dropdown-button"
       };
 
-    // Merge default props with any custom props provided
     const mergedButtonProps = { ...defaultButtonProps, ...buttonProps };
 
     return (
