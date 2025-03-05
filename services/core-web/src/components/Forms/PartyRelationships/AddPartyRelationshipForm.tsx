@@ -14,16 +14,16 @@ import PartyRelationshipFileUpload from "./PartyRelationshipFileUpload";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
-import { IMine, IMinePartyAppt, IPermit } from "@mds/common/interfaces";
+import { IMine, IMinePartyAppt, IParty, IPermit } from "@mds/common/interfaces";
 import { useAppSelector } from "@mds/common/redux/rootState";
 import { getPartyRelationshipTypeHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getMatchingPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants/enums";
 
-
+interface IPartyRelationshipPayload extends IMinePartyAppt, IParty { };
 // missing onPartySubmit??
 export interface AddPartyRelationshipFormProps {
-  onSubmit: (values: any) => void | Promise<void>;
+  onSubmit: (values: IPartyRelationshipPayload) => void | Promise<void>;
   onFileLoad?: (documentName: string, document_manager_guid: string) => void;
   onRemoveFile?: (err: any, fileItem: any) => void;
   title: string;
@@ -82,7 +82,7 @@ const AddPartyRelationshipForm: FC<AddPartyRelationshipFormProps> = ({
 
   const formValues = useAppSelector(getFormValues(FORM.ADD_PARTY_RELATIONSHIP)) as IMinePartyAppt;
   const { related_guid = "", start_date } = formValues ?? {};
-  const [selectedParty, setSelectedParty] = useState(null);
+  const [selectedParty, setSelectedParty] = useState<IParty>(null);
   const partyRelationshipTypeHash = useAppSelector(getPartyRelationshipTypeHash);
   const partyRelationshipDescription = partyRelationshipTypeHash[mine_party_appt_type_code];
   const matchingAppointments = useAppSelector(getMatchingPartyRelationships(mine_party_appt_type_code, related_guid));
@@ -164,8 +164,8 @@ const AddPartyRelationshipForm: FC<AddPartyRelationshipFormProps> = ({
       break;
   }
 
-  const handleSubmit = (values) => {
-    onSubmit({ ...values, party: selectedParty });
+  const handleSubmit = (values: IMinePartyAppt) => {
+    onSubmit({ ...values, ...selectedParty });
   };
 
 

@@ -1,0 +1,757 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddContactForm renders properly 1`] = `
+<form
+  class="ant-form ant-form-vertical common-form common-form-ADD_CONTACT form-edit"
+  id="ADD_CONTACT"
+>
+  <div
+    class="ant-row"
+    style="margin-left: -8px; margin-right: -8px;"
+  >
+    <div
+      class="ant-col ant-col-24"
+      style="padding-left: 8px; padding-right: 8px;"
+    >
+      <div
+        class="ant-typography"
+      >
+        Create a new contact for your organization. New contacts will be accessible accross all of your organizations mines during submission.
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-12"
+      style="padding-left: 8px; padding-right: 8px;"
+    >
+      <div
+        class="ant-form-item ant-form-item-with-help"
+      >
+        <div
+          class="ant-row ant-form-item-row"
+        >
+          <div
+            class="ant-col ant-form-item-label"
+          >
+            <label
+              class=""
+              for="ADD_CONTACT_party_guid"
+              title=""
+            >
+              <div>
+                Select Contact
+                 
+                <span
+                  class="form-item-optional"
+                >
+                   (optional)
+                </span>
+              </div>
+            </label>
+          </div>
+          <div
+            class="ant-col ant-form-item-control"
+          >
+            <div
+              class="ant-form-item-control-input"
+            >
+              <div
+                class="ant-form-item-control-input-content"
+              >
+                <div
+                  class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                  data-cy="party_guid"
+                >
+                  <div
+                    class="ant-select-selector"
+                  >
+                    <span
+                      class="ant-select-selection-search"
+                    >
+                      <input
+                        aria-activedescendant="party_guid_list_0"
+                        aria-autocomplete="list"
+                        aria-controls="party_guid_list"
+                        aria-haspopup="listbox"
+                        aria-owns="party_guid_list"
+                        autocomplete="off"
+                        class="ant-select-selection-search-input"
+                        id="party_guid"
+                        role="combobox"
+                        type="search"
+                        value=""
+                      />
+                    </span>
+                    <span
+                      class="ant-select-selection-placeholder"
+                    >
+                      Select a contact
+                    </span>
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="ant-select-arrow"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      aria-label="down"
+                      class="anticon anticon-down ant-select-suffix"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="down"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              style="display: flex; flex-wrap: nowrap;"
+            >
+              <div
+                class="ant-form-item-explain ant-form-item-explain-connected"
+                id="ADD_CONTACT_party_guid_help"
+                role="alert"
+              >
+                <div
+                  class=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-24"
+      style="padding-left: 8px; padding-right: 8px;"
+    >
+      <div
+        class="ant-divider ant-divider-horizontal ant-divider-plain"
+        role="separator"
+        style="margin-top: 0px;"
+      />
+    </div>
+  </div>
+  <div
+    class="ant-row"
+    style="margin-left: -8px; margin-right: -8px;"
+  >
+    <div
+      class="ant-col ant-col-24"
+      style="padding-left: 8px; padding-right: 8px;"
+    >
+      <h5
+        class="ant-typography"
+      >
+        Contact Details
+      </h5>
+      <div
+        class="ant-typography"
+      >
+        Please enter all contact information for this contact.
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-12"
+      style="padding-left: 8px; padding-right: 8px;"
+    >
+      <div
+        class="ant-form-item ant-form-item-with-help"
+      >
+        <div
+          class="ant-row ant-form-item-row"
+        >
+          <div
+            class="ant-col ant-form-item-label"
+          >
+            <label
+              class="ant-form-item-required"
+              for="ADD_CONTACT_first_name"
+              title=""
+            >
+              <div
+                style="width: 100%;"
+              >
+                First Name
+              </div>
+            </label>
+          </div>
+          <div
+            class="ant-col ant-form-item-control"
+          >
+            <div
+              class="ant-form-item-control-input"
+            >
+              <div
+                class="ant-form-item-control-input-content"
+              >
+                <input
+                  aria-label="first_name"
+                  class="ant-input"
+                  id="first_name"
+                  name="first_name"
+                  placeholder="First Name"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              style="display: flex; flex-wrap: nowrap;"
+            >
+              <div
+                class="ant-form-item-explain ant-form-item-explain-connected"
+                id="ADD_CONTACT_first_name_help"
+                role="alert"
+              >
+                <div
+                  class=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-12"
+      style="padding-left: 8px; padding-right: 8px;"
+    >
+      <div
+        class="ant-form-item ant-form-item-with-help"
+      >
+        <div
+          class="ant-row ant-form-item-row"
+        >
+          <div
+            class="ant-col ant-form-item-label"
+          >
+            <label
+              class="ant-form-item-required"
+              for="ADD_CONTACT_party_name"
+              title=""
+            >
+              <div
+                style="width: 100%;"
+              >
+                Last Name
+              </div>
+            </label>
+          </div>
+          <div
+            class="ant-col ant-form-item-control"
+          >
+            <div
+              class="ant-form-item-control-input"
+            >
+              <div
+                class="ant-form-item-control-input-content"
+              >
+                <input
+                  aria-label="party_name"
+                  class="ant-input"
+                  id="party_name"
+                  name="party_name"
+                  placeholder="Last Name"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              style="display: flex; flex-wrap: nowrap;"
+            >
+              <div
+                class="ant-form-item-explain ant-form-item-explain-connected"
+                id="ADD_CONTACT_party_name_help"
+                role="alert"
+              >
+                <div
+                  class=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-12"
+      style="padding-left: 8px; padding-right: 8px;"
+    >
+      <div
+        class="ant-form-item ant-form-item-with-help"
+      >
+        <div
+          class="ant-row ant-form-item-row"
+        >
+          <div
+            class="ant-col ant-form-item-label"
+          >
+            <label
+              class=""
+              for="ADD_CONTACT_job_title_code"
+              title=""
+            >
+              <div>
+                Job Title
+                 
+                <span
+                  class="form-item-optional"
+                >
+                   (optional)
+                </span>
+              </div>
+            </label>
+          </div>
+          <div
+            class="ant-col ant-form-item-control"
+          >
+            <div
+              class="ant-form-item-control-input"
+            >
+              <div
+                class="ant-form-item-control-input-content"
+              >
+                <div
+                  class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                  data-cy="job_title_code"
+                >
+                  <div
+                    class="ant-select-selector"
+                  >
+                    <span
+                      class="ant-select-selection-search"
+                    >
+                      <input
+                        aria-activedescendant="job_title_code_list_0"
+                        aria-autocomplete="list"
+                        aria-controls="job_title_code_list"
+                        aria-haspopup="listbox"
+                        aria-owns="job_title_code_list"
+                        autocomplete="off"
+                        class="ant-select-selection-search-input"
+                        id="job_title_code"
+                        role="combobox"
+                        type="search"
+                        value=""
+                      />
+                    </span>
+                    <span
+                      class="ant-select-selection-placeholder"
+                    >
+                      Select a job title
+                    </span>
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="ant-select-arrow"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      aria-label="down"
+                      class="anticon anticon-down ant-select-suffix"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="down"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              style="display: flex; flex-wrap: nowrap;"
+            >
+              <div
+                class="ant-form-item-explain ant-form-item-explain-connected"
+                id="ADD_CONTACT_job_title_code_help"
+                role="alert"
+              >
+                <div
+                  class=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-12"
+      style="padding-left: 8px; padding-right: 8px;"
+    >
+      <div
+        class="ant-form-item ant-form-item-with-help"
+      >
+        <div
+          class="ant-row ant-form-item-row"
+        >
+          <div
+            class="ant-col ant-form-item-label"
+          >
+            <label
+              class=""
+              title=""
+            >
+              <div>
+                Company Affiliation
+                 
+                <span
+                  class="form-item-optional"
+                >
+                   (optional)
+                </span>
+              </div>
+            </label>
+          </div>
+          <div
+            class="ant-col ant-form-item-control"
+          >
+            <div
+              class="ant-form-item-control-input"
+            >
+              <div
+                class="ant-form-item-control-input-content"
+              >
+                <div
+                  aria-label="organization_guid"
+                  class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                  style="width: 100%;"
+                >
+                  <div
+                    class="ant-select-selector"
+                  >
+                    <span
+                      class="ant-select-selection-search"
+                    >
+                      <input
+                        aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+                        aria-autocomplete="list"
+                        aria-controls="rc_select_TEST_OR_SSR_list"
+                        aria-haspopup="listbox"
+                        aria-label="organization_guid"
+                        aria-owns="rc_select_TEST_OR_SSR_list"
+                        autocomplete="off"
+                        class="ant-select-selection-search-input"
+                        id="rc_select_TEST_OR_SSR"
+                        role="combobox"
+                        type="search"
+                        value=""
+                      />
+                    </span>
+                    <span
+                      class="ant-select-selection-item"
+                      title=""
+                    />
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="ant-select-arrow"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      aria-label="down"
+                      class="anticon anticon-down ant-select-suffix"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="down"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    class="ant-select-clear"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      aria-label="close-circle"
+                      class="anticon anticon-close-circle"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="close-circle"
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M512 64c247.4 0 448 200.6 448 448S759.4 960 512 960 64 759.4 64 512 264.6 64 512 64zm127.98 274.82h-.04l-.08.06L512 466.75 384.14 338.88c-.04-.05-.06-.06-.08-.06a.12.12 0 00-.07 0c-.03 0-.05.01-.09.05l-45.02 45.02a.2.2 0 00-.05.09.12.12 0 000 .07v.02a.27.27 0 00.06.06L466.75 512 338.88 639.86c-.05.04-.06.06-.06.08a.12.12 0 000 .07c0 .03.01.05.05.09l45.02 45.02a.2.2 0 00.09.05.12.12 0 00.07 0c.02 0 .04-.01.08-.05L512 557.25l127.86 127.87c.04.04.06.05.08.05a.12.12 0 00.07 0c.03 0 .05-.01.09-.05l45.02-45.02a.2.2 0 00.05-.09.12.12 0 000-.07v-.02a.27.27 0 00-.05-.06L557.25 512l127.87-127.86c.04-.04.05-.06.05-.08a.12.12 0 000-.07c0-.03-.01-.05-.05-.09l-45.02-45.02a.2.2 0 00-.09-.05.12.12 0 00-.07 0z"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              style="display: flex; flex-wrap: nowrap;"
+            >
+              <div
+                class="ant-form-item-explain ant-form-item-explain-connected"
+                role="alert"
+              >
+                <div
+                  class=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-12"
+      style="padding-left: 8px; padding-right: 8px;"
+    >
+      <div
+        class="ant-form-item ant-form-item-with-help"
+      >
+        <div
+          class="ant-row ant-form-item-row"
+        >
+          <div
+            class="ant-col ant-form-item-label"
+          >
+            <label
+              class="ant-form-item-required"
+              for="ADD_CONTACT_email"
+              title=""
+            >
+              <div
+                style="width: 100%;"
+              >
+                Email
+              </div>
+            </label>
+          </div>
+          <div
+            class="ant-col ant-form-item-control"
+          >
+            <div
+              class="ant-form-item-control-input"
+            >
+              <div
+                class="ant-form-item-control-input-content"
+              >
+                <input
+                  aria-label="email"
+                  class="ant-input"
+                  id="email"
+                  name="email"
+                  placeholder="example@example.com"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              style="display: flex; flex-wrap: nowrap;"
+            >
+              <div
+                class="ant-form-item-explain ant-form-item-explain-connected"
+                id="ADD_CONTACT_email_help"
+                role="alert"
+              >
+                <div
+                  class=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-8"
+      style="padding-left: 8px; padding-right: 8px;"
+    >
+      <div
+        class="ant-form-item ant-form-item-with-help"
+      >
+        <div
+          class="ant-row ant-form-item-row"
+        >
+          <div
+            class="ant-col ant-form-item-label"
+          >
+            <label
+              class="ant-form-item-required"
+              for="ADD_CONTACT_phone_no"
+              title=""
+            >
+              <div
+                style="width: 100%;"
+              >
+                Phone Number
+              </div>
+            </label>
+          </div>
+          <div
+            class="ant-col ant-form-item-control"
+          >
+            <div
+              class="ant-form-item-control-input"
+            >
+              <div
+                class="ant-form-item-control-input-content"
+              >
+                <input
+                  aria-label="phone_no"
+                  class="ant-input"
+                  id="phone_no"
+                  name="phone_no"
+                  placeholder="XXX-XXX-XXXX"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              style="display: flex; flex-wrap: nowrap;"
+            >
+              <div
+                class="ant-form-item-explain ant-form-item-explain-connected"
+                id="ADD_CONTACT_phone_no_help"
+                role="alert"
+              >
+                <div
+                  class=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-4"
+      style="padding-left: 8px; padding-right: 8px;"
+    >
+      <div
+        class="ant-form-item ant-form-item-with-help"
+      >
+        <div
+          class="ant-row ant-form-item-row"
+        >
+          <div
+            class="ant-col ant-form-item-label"
+          >
+            <label
+              class=""
+              for="ADD_CONTACT_phone_ext"
+              title=""
+            >
+              <div>
+                Ext.
+                 
+                <span
+                  class="form-item-optional"
+                >
+                   (optional)
+                </span>
+              </div>
+            </label>
+          </div>
+          <div
+            class="ant-col ant-form-item-control"
+          >
+            <div
+              class="ant-form-item-control-input"
+            >
+              <div
+                class="ant-form-item-control-input-content"
+              >
+                <input
+                  aria-label="phone_ext"
+                  class="ant-input"
+                  id="phone_ext"
+                  name="phone_ext"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              style="display: flex; flex-wrap: nowrap;"
+            >
+              <div
+                class="ant-form-item-explain ant-form-item-explain-connected"
+                id="ADD_CONTACT_phone_ext_help"
+                role="alert"
+              >
+                <div
+                  class=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="ant-row ant-row-space-between"
+  >
+    <button
+      aria-label="Cancel"
+      class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
+      type="button"
+    >
+      <span>
+        Cancel
+      </span>
+    </button>
+    <button
+      aria-label="Submit"
+      class="ant-btn ant-btn-primary  form-btn"
+      type="submit"
+    >
+      <span>
+        Create Contact
+      </span>
+    </button>
+  </div>
+</form>
+`;
