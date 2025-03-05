@@ -45,7 +45,7 @@ const checkCurrentAppointmentValidation = (
 
   const existingEndedAppointments = appointments.filter(({ end_date }) => end_date !== null);
 
-  const currentAppointment = appointments.filter(({ end_date }) => end_date === null);
+  const currentAppointments = appointments.filter(({ end_date }) => end_date === null);
 
   const newAppt = { start_date: currentStartDate, end_date: null };
 
@@ -55,9 +55,9 @@ const checkCurrentAppointmentValidation = (
     appt_description,
     false
   );
-  if (isEmpty(errors) && currentAppointment.length > 0) {
+  if (isEmpty(errors) && currentAppointments.length > 0) {
     const currentErrors = validateDateRanges(
-      currentAppointment,
+      currentAppointments,
       newAppt,
       appt_description,
       true
@@ -81,13 +81,13 @@ const AddPartyRelationshipForm: FC<AddPartyRelationshipFormProps> = ({
 }) => {
 
   const formValues = useAppSelector(getFormValues(FORM.ADD_PARTY_RELATIONSHIP)) as IMinePartyAppt;
-  console.log(formValues);
   const { related_guid = "", start_date } = formValues ?? {};
   const [selectedParty, setSelectedParty] = useState(null);
   const partyRelationshipTypeHash = useAppSelector(getPartyRelationshipTypeHash);
   const partyRelationshipDescription = partyRelationshipTypeHash[mine_party_appt_type_code];
-  const currentAppointments = useAppSelector(getMatchingPartyRelationships(mine_party_appt_type_code, related_guid));
-  const currentAppointment = currentAppointments.filter((mpa) => mpa.end_date === null);
+  const matchingAppointments = useAppSelector(getMatchingPartyRelationships(mine_party_appt_type_code, related_guid));
+  const currentAppointment = matchingAppointments.filter((mpa) => mpa.end_date === null)[0];
+
 
   const showEndCurrent = () => {
     const hasStartDateValidation = ["PMT", "EOR"].includes(mine_party_appt_type_code) &&
@@ -96,7 +96,7 @@ const AddPartyRelationshipForm: FC<AddPartyRelationshipFormProps> = ({
       return false;
     }
     const toggleEndCurrentAppointment = checkCurrentAppointmentValidation(
-      start_date, partyRelationshipDescription, currentAppointments
+      start_date, partyRelationshipDescription, matchingAppointments
     );
     return toggleEndCurrentAppointment;
   };
@@ -107,7 +107,7 @@ const AddPartyRelationshipForm: FC<AddPartyRelationshipFormProps> = ({
     const newAppt = { start_date: null, end_date: null, ...values };
 
     return validateDateRanges(
-      currentAppointments,
+      matchingAppointments,
       newAppt,
       partyRelationshipDescription,
       false
@@ -132,7 +132,7 @@ const AddPartyRelationshipForm: FC<AddPartyRelationshipFormProps> = ({
           !checkCurrentAppointmentValidation(
             values.start_date,
             partyRelationshipDescription,
-            currentAppointments,
+            matchingAppointments,
           )
         ) {
           errors.start_date = `${start_date}. You cannot have two appointments with overlapping dates.`;

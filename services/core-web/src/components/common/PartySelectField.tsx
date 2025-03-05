@@ -150,7 +150,7 @@ export const PartySelectField: FC<PartySelectFieldProps> = ({
   };
 
   useEffect(() => {
-    if (searchResults.party?.length > 0) {
+    if (searchResults?.party?.length > 0) {
       let filteredParties = searchResults.party.map((sr) => sr.result);
 
       if (organization && !person) {
