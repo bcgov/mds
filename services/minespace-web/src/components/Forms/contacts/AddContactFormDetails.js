@@ -8,7 +8,7 @@ import { getParties } from "@mds/common/redux/selectors/partiesSelectors";
 import { compose, bindActionCreators } from "redux";
 import { Field, isDirty, getFormValues, change } from "@mds/common/components/forms/form";
 import { connect } from "react-redux";
-import { Col, Row, Typography, Popconfirm, Button, Divider } from "antd";
+import { Col, Row, Typography, Button, Divider } from "antd";
 import { debounce } from "lodash";
 import { getPartyRelationshipTypesList } from "@mds/common/redux/selectors/staticContentSelectors";
 
@@ -19,6 +19,7 @@ import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { party as PartyPropType, partyRelationshipType } from "@/customPropTypes/parties";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const propTypes = {
   createParty: PropTypes.func.isRequired,
@@ -27,17 +28,18 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   handleSelectChange: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired,
   isDirty: PropTypes.bool.isRequired,
   formValues: PropTypes.objectOf(PartyPropType).isRequired,
   organizations: PropTypes.arrayOf(PartyPropType).isRequired,
   contacts: PropTypes.arrayOf(PartyPropType),
   partyRelationshipTypesList: PropTypes.arrayOf(partyRelationshipType).isRequired,
   initialValues: PropTypes.objectOf(PartyPropType).isRequired,
+  isModal: PropTypes.bool,
 };
 
 const defaultProps = {
   contacts: [],
+  isModal: false,
 };
 
 export const AddContactFormDetails = (props) => {
@@ -115,6 +117,7 @@ export const AddContactFormDetails = (props) => {
     <FormWrapper
       initialValues={props.initialValues}
       name={FORM.ADD_CONTACT}
+      isModal={props.isModal}
       onSubmit={onSubmit}
       reduxFormConfig={{
         destroyOnUnmount: true,
@@ -235,17 +238,7 @@ export const AddContactFormDetails = (props) => {
         </Col>
       </Row>
       <Row justify="space-between">
-        <Popconfirm
-          placement="top"
-          title="Are you sure you want to cancel?"
-          okText="Yes"
-          cancelText="No"
-          onConfirm={props.onCancel}
-        >
-          <Button disabled={submitting} className="full-mobile">
-            Cancel
-          </Button>
-        </Popconfirm>
+        <RenderCancelButton />
         <Button disabled={submitting} type="primary" className="full-mobile" htmlType="submit">
           {getSubmitText()}
         </Button>

@@ -11,7 +11,6 @@ const propTypes = {
   parties: PropTypes.arrayOf(PartyRelationShipType).isRequired,
   mine_party_appt_type_code: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -47,7 +46,6 @@ export const AddContactForm = (props) => {
       contacts={contacts}
       initialValues={selectedParty}
       handleSelectChange={handleSelectChange}
-      onCancel={props.onCancel}
       onSubmit={props.onSubmit}
     />
   );

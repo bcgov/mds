@@ -35,6 +35,7 @@ import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import LinkButton from "../common/LinkButton";
 import ContactDetails from "./ContactDetails";
+import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants/enums";
 
 
 interface EngineerOfRecordProps {
@@ -118,11 +119,9 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
         dispatch(openModal({
             props: {
                 onSubmit: handleCreateEOR,
-                onCancel: () => dispatch(closeModal()),
                 title: "Select Contact",
                 partyRelationships,
-                mine_party_appt_type_code: "EOR",
-                partyRelationshipType: "EOR",
+                mine_party_appt_type_code: MinePartyAppointmentTypeCodeEnum.EOR,
                 mine: mine,
                 createPartyOnly: true,
             },

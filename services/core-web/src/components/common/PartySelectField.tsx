@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
+import React, { FC, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { debounce } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,50 +6,56 @@ import { faHashtag } from "@fortawesome/pro-light-svg-icons";
 
 import { Divider } from "antd";
 import { MailOutlined, PhoneOutlined, PlusOutlined } from "@ant-design/icons";
-import { Field } from "@mds/common/components/forms/form";
+import { change, Field } from "@mds/common/components/forms/form";
 import { getSearchResults } from "@mds/common/redux/selectors/searchSelectors";
 import { getLastCreatedParty } from "@mds/common/redux/selectors/partiesSelectors";
 import { fetchSearchResults } from "@mds/common/redux/actionCreators/searchActionCreator";
 import { setAddPartyFormState } from "@mds/common/redux/actionCreators/partiesActionCreator";
-import { createItemIdsArray, createItemMap } from "@common/utils/helpers";
+import { createItemMap } from "@common/utils/helpers";
 import { Validate } from "@mds/common/redux/utils/Validate";
 import LinkButton from "@mds/common/components/common/LinkButton";
 import RenderLargeSelect from "@mds/common/components/forms/RenderLargeSelect";
+import { IParty, ItemMap } from "@mds/common/interfaces";
+import { FormContext } from "@mds/common/components/forms/FormWrapper";
+
+interface IPartySelectOption {
+  value: string | undefined,
+  originalValue?: IParty,
+  label: JSX.Element
+};
 
 const renderAddPartyFooter = (showAddParty, partyLabel) => (
-  <div className="wrapped-text">
+  // put the click handler on the div so that they can click anywhere on the item to create
+  <button className="wrapped-text left" onClick={showAddParty}>
     <Divider style={{ margin: "0" }} />
     <p className="footer-text">{`Can't find the ${partyLabel} you are looking for?`}</p>
     <LinkButton onClick={showAddParty}>
       <PlusOutlined className="padding-small--right" />
       {`Add a new ${partyLabel}`}
     </LinkButton>
-  </div>
+  </button>
 );
 
-const transformData = (data, options, header) => {
-  if (data.length === 0) {
-    return [];
-  }
-  const transformedData = data
-    .map((opt) => ({
-      value: options[opt].party_guid,
-      originalValue: options[opt],
+const transformData = (options: ItemMap<IParty>, header: JSX.Element) => {
+  const transformedData: IPartySelectOption[] = (Object.entries(options))
+    .map(([key, party]) => ({
+      value: key,
+      originalValue: party,
       label: (
         <div>
-          <span>{options[opt].name}</span>
+          <span>{party.name}</span>
           <div className="inline-flex">
             <div className="padding-right">
               <FontAwesomeIcon icon={faHashtag} />
             </div>
-            <span>{options[opt].party_orgbook_entity?.registration_id}</span>
+            <span>{party.party_orgbook_entity?.registration_id}</span>
           </div>
           <div className="inline-flex">
             <div className="padding-right">
               <MailOutlined className="icon-xs" />
             </div>
             <span>
-              {Validate.checkEmail(options[opt].email) ? options[opt].email : "Email Unknown"}
+              {Validate.checkEmail(party.email) ? party.email : "Email Unknown"}
             </span>
           </div>
           <div className="inline-flex">
@@ -57,7 +63,7 @@ const transformData = (data, options, header) => {
               <PhoneOutlined className="icon-xs" />
             </div>
             <span>
-              {options[opt].phone_no} {options[opt].phone_ext ? `x${options[opt].phone_ext}` : ""}
+              {party.phone_no} {party.phone_ext ? `x${party.phone_ext}` : ""}
             </span>
           </div>
         </div>
@@ -67,7 +73,7 @@ const transformData = (data, options, header) => {
 
   // Display header only if desired (Add new party behavior is enabled.)
   if (header) {
-    transformedData.unshift({ value: "header", label: header });
+    transformedData.unshift({ value: undefined, label: header });
   }
 
   return transformedData;
@@ -84,11 +90,10 @@ interface PartySelectFieldProps {
   organization?: boolean;
   allowAddingParties: boolean;
   validate: any[];
-  searchResults?: any;
   initialValues?: any;
   allowNull?: boolean;
   disabled?: boolean;
-  onSelect?: any;
+  onSelect?: (val: IParty) => void;
   required?: boolean;
 }
 
@@ -105,6 +110,7 @@ export const PartySelectField: FC<PartySelectFieldProps> = ({
   ...rest
 }) => {
   const dispatch = useDispatch();
+  const { formName } = useContext(FormContext);
 
   const searchResults = useSelector(getSearchResults);
   const lastCreatedParty = useSelector(getLastCreatedParty);
@@ -144,42 +150,44 @@ export const PartySelectField: FC<PartySelectFieldProps> = ({
   };
 
   useEffect(() => {
-    if (searchResults || lastCreatedParty) {
-      let filteredParties = searchResults?.party?.map((sr) => sr.result);
+    if (searchResults.party?.length > 0) {
+      let filteredParties = searchResults.party.map((sr) => sr.result);
 
-      if (filteredParties) {
-        if (organization && !person) {
-          filteredParties = filteredParties.filter(
-            ({ party_type_code }) => party_type_code === "ORG"
-          );
-        } else if (person && !organization) {
-          filteredParties = filteredParties.filter(
-            ({ party_type_code }) => party_type_code === "PER"
-          );
-        }
-
-        if (lastCreatedParty) {
-          filteredParties.unshift(lastCreatedParty);
-        }
-
-        const newPartyDataSource = transformData(
-          createItemIdsArray(filteredParties, "party_guid"),
-          createItemMap(filteredParties, "party_guid"),
-          allowAddingParties && renderAddPartyFooter(showAddPartyForm, partyLabel)
+      if (organization && !person) {
+        filteredParties = filteredParties.filter(
+          ({ party_type_code }) => party_type_code === "ORG"
         );
+      } else if (person && !organization) {
+        filteredParties = filteredParties.filter(
+          ({ party_type_code }) => party_type_code === "PER"
+        );
+      }
 
-        if (newPartyDataSource) {
-          setPartyDataSource(newPartyDataSource);
-        }
+      if (lastCreatedParty?.party_guid) {
+        filteredParties.unshift(lastCreatedParty);
+      }
+
+      const newPartyDataSource = transformData(
+        createItemMap(filteredParties, "party_guid"),
+        allowAddingParties && renderAddPartyFooter(showAddPartyForm, partyLabel)
+      );
+
+      if (newPartyDataSource) {
+        setPartyDataSource(newPartyDataSource);
       }
     }
 
     if (lastCreatedParty?.party_guid) {
-      setSelectedOption({
+      const value = lastCreatedParty.party_guid;
+      const option = {
         value: lastCreatedParty.party_guid,
         label: lastCreatedParty.name,
-      });
+        originalValue: lastCreatedParty,
+      };
+      dispatch(change(formName, rest.name, lastCreatedParty.party_guid));
+      handleSelect(value, option);
     }
+
   }, [lastCreatedParty, searchResults, organization, person, allowAddingParties, partyLabel]);
 
   const handleSearch = (value) => {
@@ -189,13 +197,10 @@ export const PartySelectField: FC<PartySelectFieldProps> = ({
     }
   };
 
-  const handleSelect = (value, option) => {
+  const handleSelect = (_value: string, option: IPartySelectOption) => {
     setSelectedOption(option);
     if (onSelect) {
-      onSelect({
-        ...option,
-        ...value.originalValue,
-      });
+      onSelect(option.originalValue)
     }
   };
 
