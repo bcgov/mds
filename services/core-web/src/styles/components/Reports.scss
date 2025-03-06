@@ -51,7 +51,7 @@
   text-align: left;
 }
 
-.report-link span{
+.report-link span {
   display: inline;
 }
 
@@ -64,11 +64,16 @@
   padding: 16px;
 }
 
+.report-options {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
 .report-info-box {
-  height: 100%;
   padding: 16px;
   border: 1px solid $light-violet;
-
+  position: sticky;
+  top: 80px;
   background: #fff;
 
   h5 {
