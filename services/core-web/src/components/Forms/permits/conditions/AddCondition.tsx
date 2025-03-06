@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
 import { Menu, Dropdown } from "antd";
-import { RouteComponentProps, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   getEditingConditionFlag,
   getDraftPermitAmendmentForNOW,
@@ -43,7 +43,7 @@ const typeFromURL = {
   placer: "PLA",
 };
 
-export const AddCondition: FC<RouteComponentProps & AddCondtionProps> = (props) => {
+export const AddCondition: FC<AddCondtionProps> = (props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [conditionType, setConditionType] = useState("SEC");
   const params = useParams<{ mine_guid?: string, permit_guid?: string, id?: string, type?: string }>();
