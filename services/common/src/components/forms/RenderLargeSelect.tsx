@@ -22,7 +22,7 @@ const RenderLargeSelect: FC<LargeSelectProps> = ({
   dataSource = [],
   ...props
 }) => {
-  const selectedInData = dataSource.includes((opt) => props.selectedOption?.value === opt.value);
+  const selectedInData = dataSource.find((opt) => props.selectedOption?.value === opt.value);
   const data = dataSource;
   if (props.selectedOption?.value && !selectedInData) {
     data.unshift(props.selectedOption)

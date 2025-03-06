@@ -18,6 +18,7 @@ import RenderDate from "../forms/RenderDate";
 import { FORM } from "@mds/common/constants/forms";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
+import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants/enums";
 
 interface QualifiedPersonProps {
     mineGuid: string;
@@ -67,10 +68,8 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
         dispatch(openModal({
             props: {
                 onSubmit: handleCreateQP,
-                onCancel: () => dispatch(closeModal()),
                 title: "Select Contact",
-                mine_party_appt_type_code: "TQP",
-                partyRelationshipType: "TQP",
+                mine_party_appt_type_code: MinePartyAppointmentTypeCodeEnum.TQP,
                 mine: mineGuid,
                 createPartyOnly: true,
             },
