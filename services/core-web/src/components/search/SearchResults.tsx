@@ -19,6 +19,7 @@ import { ContactResultsTable } from "@/components/search/ContactResultsTable";
 import { DocumentResultsTable } from "@/components/search/DocumentResultsTable";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
+import { ISearchResultList } from "@mds/common/interfaces";
 
 interface SearchResultsProps {
   location: { search: string };
@@ -28,7 +29,7 @@ interface SearchResultsProps {
   searchOptions: any[];
   searchOptionsHash: { [key: string]: any };
   searchTerms: string[];
-  searchResults: { [key: string]: any };
+  searchResults: ISearchResultList;
   partyRelationshipTypeHash: { [key: string]: string };
   hideLoadingIndicator?: boolean;
 }
@@ -141,7 +142,7 @@ export const SearchResults: React.FC<SearchResultsProps & PropsFromRedux> = (pro
 
   const groupedSearchResults: any[] = useMemo(() => {
     const results: any[] = [];
-    Object.entries(props.searchResults).forEach((entry) => {
+    Object.entries(props.searchResults as ISearchResultList).forEach((entry) => {
       const resultGroup = {
         type: entry[0],
         score: sumBy(entry[1], "score"),

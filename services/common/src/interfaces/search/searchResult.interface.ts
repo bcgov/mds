@@ -6,3 +6,11 @@ export interface ISearchResult {
   score: number;
   type: string;
 }
+
+export interface ISearchResultList {
+  mine: ISearchResult[],
+  mine_documents: ISearchResult[],
+  party: ISearchResult[],
+  permit: ISearchResult[],
+  permit_documents: ISearchResult[],
+}
