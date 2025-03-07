@@ -13,3 +13,9 @@ export interface IGroupedDropdownList {
   groupName: string | number;
   opt: IOption[];
 }
+export interface DropdownOption {
+  value: string;
+  label: string;
+  isActive?: boolean;
+  subType?: any;
+}

@@ -9,6 +9,7 @@ import { createNumberMask } from "redux-form-input-masks";
 import moment from "moment-timezone";
 import { reset } from "@mds/common/components/forms/form";
 import {
+  DropdownOption,
   IComplianceArticle,
   IMineReportDefinition,
   IMineReportSubmission,
@@ -58,7 +59,7 @@ export const createDropDownList = (
   subType = null,
   labelFormatter = null,
   orderByAlphabetically = true
-) => {
+): DropdownOption[] => {
   const options = array?.map((item) => ({
     value: item[valueField],
     label: labelFormatter ? labelFormatter(item[labelField]) : item[labelField],
