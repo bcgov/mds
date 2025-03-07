@@ -147,7 +147,7 @@ export const IncidentForm: FC<IncidentFormProps> = (props) => {
           />
           <br />
           <IncidentFormDocuments
-            documents={formValues?.documents}
+            documents={formValues?.documents ?? []}
             isEditMode={isEditMode}
             onFileLoad={onFileLoad}
             onDeleteDocument={handleDeleteDocument}
@@ -163,7 +163,7 @@ export const IncidentForm: FC<IncidentFormProps> = (props) => {
           />
           <br />
           <IncidentFormInternalDocumentComments
-            documents={formValues?.documents}
+            documents={formValues?.documents ?? []}
             incident={props.incident}
             isEditMode={isEditMode}
             onFileLoad={onFileLoad}
