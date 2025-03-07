@@ -1,59 +1,424 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PermitConditionManagement renders properly 1`] = `
-<Fragment>
-  <div>
+<div>
+  <div
+    class="landing-page__header"
+  >
     <div
-      className="landing-page__header"
+      class="ant-row"
     >
-      <Row>
-        <Col
-          lg={12}
-          md={14}
-          sm={22}
-        >
-          <h1>
-            Add/Edit Permit Conditions for 
-          </h1>
-        </Col>
-      </Row>
-      <Row>
-        <Col
-          lg={12}
-          md={14}
-          sm={22}
-        >
-          <h1>
-            (
-             - 
-            Present
-            )
-          </h1>
-        </Col>
-      </Row>
-      <Row>
-        <Col
-          lg={12}
-          md={14}
-          sm={22}
-        >
-          <Link
-            to="/mine-dashboard//permits-and-approvals/permits"
-          >
-            <ForwardRef(ArrowLeftOutlined)
-              className="padding-sm--right"
-            />
-            Back to: 
-             Permits
-          </Link>
-        </Col>
-      </Row>
+      <div
+        class="ant-col ant-col-sm-22 ant-col-md-14 ant-col-lg-12"
+      >
+        <h1>
+          Add/Edit Permit Conditions for 
+          C-12345
+        </h1>
+      </div>
     </div>
     <div
-      className="tab__content"
+      class="ant-row"
     >
-      <Collapse />
+      <div
+        class="ant-col ant-col-sm-22 ant-col-md-14 ant-col-lg-12"
+      >
+        <h1>
+          (
+          Apr 01 2020
+           - 
+          Present
+          )
+        </h1>
+      </div>
+    </div>
+    <div
+      class="ant-row"
+    >
+      <div
+        class="ant-col ant-col-sm-22 ant-col-md-14 ant-col-lg-12"
+      >
+        <a
+          href="/mine-dashboard/8e9ca839-a28e-427e-997e-9ef23d9d97cd/permits-and-approvals/permits"
+        >
+          <span
+            aria-label="arrow-left"
+            class="anticon anticon-arrow-left padding-sm--right"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              class=""
+              data-icon="arrow-left"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M872 474H286.9l350.2-304c5.6-4.9 2.2-14-5.2-14h-88.5c-3.9 0-7.6 1.4-10.5 3.9L155 487.8a31.96 31.96 0 000 48.3L535.1 866c1.5 1.3 3.3 2 5.2 2h91.5c7.4 0 10.8-9.2 5.2-14L286.9 550H872c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8z"
+              />
+            </svg>
+          </span>
+          Back to: 
+           Permits
+        </a>
+      </div>
     </div>
   </div>
-</Fragment>
+  <div
+    class="tab__content"
+  >
+    <div
+      class="ant-collapse ant-collapse-icon-position-start"
+    >
+      <div
+        class="ant-collapse-item"
+        id="GEC"
+        style="padding: 18px 16px; background-color: rgb(244, 240, 240);"
+      >
+        <div
+          aria-disabled="false"
+          aria-expanded="false"
+          class="ant-collapse-header"
+          role="button"
+          tabindex="0"
+        >
+          <div
+            class="ant-collapse-expand-icon"
+          >
+            <span
+              aria-label="right"
+              class="anticon anticon-right ant-collapse-arrow"
+              role="img"
+            >
+              <svg
+                aria-hidden="true"
+                data-icon="right"
+                fill="currentColor"
+                focusable="false"
+                height="1em"
+                viewBox="64 64 896 896"
+                width="1em"
+              >
+                <path
+                  d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"
+                />
+              </svg>
+            </span>
+          </div>
+          <span
+            class="ant-collapse-header-text"
+          >
+            <span>
+              undefined General Conditions (0 conditions)
+              <button
+                class="ant-btn ant-btn-default ant-btn-background-ghost"
+                type="button"
+              >
+                <span
+                  aria-label="read"
+                  class="anticon anticon-read padding-sm--right icon-sm violet"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class=""
+                    data-icon="read"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M928 161H699.2c-49.1 0-97.1 14.1-138.4 40.7L512 233l-48.8-31.3A255.2 255.2 0 00324.8 161H96c-17.7 0-32 14.3-32 32v568c0 17.7 14.3 32 32 32h228.8c49.1 0 97.1 14.1 138.4 40.7l44.4 28.6c1.3.8 2.8 1.3 4.3 1.3s3-.4 4.3-1.3l44.4-28.6C602 807.1 650.1 793 699.2 793H928c17.7 0 32-14.3 32-32V193c0-17.7-14.3-32-32-32zM324.8 721H136V233h188.8c35.4 0 69.8 10.1 99.5 29.2l48.8 31.3 6.9 4.5v462c-47.6-25.6-100.8-39-155.2-39zm563.2 0H699.2c-54.4 0-107.6 13.4-155.2 39V298l6.9-4.5 48.8-31.3c29.7-19.1 64.1-29.2 99.5-29.2H888v488zM396.9 361H211.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5zm223.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c0-4.1-3.2-7.5-7.1-7.5H627.1c-3.9 0-7.1 3.4-7.1 7.5zM396.9 501H211.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5zm416 0H627.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5z"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        class="ant-collapse-item"
+        id="HSC"
+        style="padding: 18px 16px; background-color: rgb(244, 240, 240);"
+      >
+        <div
+          aria-disabled="false"
+          aria-expanded="false"
+          class="ant-collapse-header"
+          role="button"
+          tabindex="0"
+        >
+          <div
+            class="ant-collapse-expand-icon"
+          >
+            <span
+              aria-label="right"
+              class="anticon anticon-right ant-collapse-arrow"
+              role="img"
+            >
+              <svg
+                aria-hidden="true"
+                data-icon="right"
+                fill="currentColor"
+                focusable="false"
+                height="1em"
+                viewBox="64 64 896 896"
+                width="1em"
+              >
+                <path
+                  d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"
+                />
+              </svg>
+            </span>
+          </div>
+          <span
+            class="ant-collapse-header-text"
+          >
+            <span>
+              undefined Health and Safety Conditions (0 conditions)
+              <button
+                class="ant-btn ant-btn-default ant-btn-background-ghost"
+                type="button"
+              >
+                <span
+                  aria-label="read"
+                  class="anticon anticon-read padding-sm--right icon-sm violet"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class=""
+                    data-icon="read"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M928 161H699.2c-49.1 0-97.1 14.1-138.4 40.7L512 233l-48.8-31.3A255.2 255.2 0 00324.8 161H96c-17.7 0-32 14.3-32 32v568c0 17.7 14.3 32 32 32h228.8c49.1 0 97.1 14.1 138.4 40.7l44.4 28.6c1.3.8 2.8 1.3 4.3 1.3s3-.4 4.3-1.3l44.4-28.6C602 807.1 650.1 793 699.2 793H928c17.7 0 32-14.3 32-32V193c0-17.7-14.3-32-32-32zM324.8 721H136V233h188.8c35.4 0 69.8 10.1 99.5 29.2l48.8 31.3 6.9 4.5v462c-47.6-25.6-100.8-39-155.2-39zm563.2 0H699.2c-54.4 0-107.6 13.4-155.2 39V298l6.9-4.5 48.8-31.3c29.7-19.1 64.1-29.2 99.5-29.2H888v488zM396.9 361H211.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5zm223.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c0-4.1-3.2-7.5-7.1-7.5H627.1c-3.9 0-7.1 3.4-7.1 7.5zM396.9 501H211.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5zm416 0H627.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5z"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        class="ant-collapse-item"
+        id="GOC"
+        style="padding: 18px 16px; background-color: rgb(244, 240, 240);"
+      >
+        <div
+          aria-disabled="false"
+          aria-expanded="false"
+          class="ant-collapse-header"
+          role="button"
+          tabindex="0"
+        >
+          <div
+            class="ant-collapse-expand-icon"
+          >
+            <span
+              aria-label="right"
+              class="anticon anticon-right ant-collapse-arrow"
+              role="img"
+            >
+              <svg
+                aria-hidden="true"
+                data-icon="right"
+                fill="currentColor"
+                focusable="false"
+                height="1em"
+                viewBox="64 64 896 896"
+                width="1em"
+              >
+                <path
+                  d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"
+                />
+              </svg>
+            </span>
+          </div>
+          <span
+            class="ant-collapse-header-text"
+          >
+            <span>
+              undefined Geotechnical Conditions (0 conditions)
+              <button
+                class="ant-btn ant-btn-default ant-btn-background-ghost"
+                type="button"
+              >
+                <span
+                  aria-label="read"
+                  class="anticon anticon-read padding-sm--right icon-sm violet"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class=""
+                    data-icon="read"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M928 161H699.2c-49.1 0-97.1 14.1-138.4 40.7L512 233l-48.8-31.3A255.2 255.2 0 00324.8 161H96c-17.7 0-32 14.3-32 32v568c0 17.7 14.3 32 32 32h228.8c49.1 0 97.1 14.1 138.4 40.7l44.4 28.6c1.3.8 2.8 1.3 4.3 1.3s3-.4 4.3-1.3l44.4-28.6C602 807.1 650.1 793 699.2 793H928c17.7 0 32-14.3 32-32V193c0-17.7-14.3-32-32-32zM324.8 721H136V233h188.8c35.4 0 69.8 10.1 99.5 29.2l48.8 31.3 6.9 4.5v462c-47.6-25.6-100.8-39-155.2-39zm563.2 0H699.2c-54.4 0-107.6 13.4-155.2 39V298l6.9-4.5 48.8-31.3c29.7-19.1 64.1-29.2 99.5-29.2H888v488zM396.9 361H211.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5zm223.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c0-4.1-3.2-7.5-7.1-7.5H627.1c-3.9 0-7.1 3.4-7.1 7.5zM396.9 501H211.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5zm416 0H627.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5z"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        class="ant-collapse-item"
+        id="ELC"
+        style="padding: 18px 16px; background-color: rgb(244, 240, 240);"
+      >
+        <div
+          aria-disabled="false"
+          aria-expanded="false"
+          class="ant-collapse-header"
+          role="button"
+          tabindex="0"
+        >
+          <div
+            class="ant-collapse-expand-icon"
+          >
+            <span
+              aria-label="right"
+              class="anticon anticon-right ant-collapse-arrow"
+              role="img"
+            >
+              <svg
+                aria-hidden="true"
+                data-icon="right"
+                fill="currentColor"
+                focusable="false"
+                height="1em"
+                viewBox="64 64 896 896"
+                width="1em"
+              >
+                <path
+                  d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"
+                />
+              </svg>
+            </span>
+          </div>
+          <span
+            class="ant-collapse-header-text"
+          >
+            <span>
+              undefined Environmental Land and Watercourses Conditions (3 conditions)
+              <button
+                class="ant-btn ant-btn-default ant-btn-background-ghost"
+                type="button"
+              >
+                <span
+                  aria-label="read"
+                  class="anticon anticon-read padding-sm--right icon-sm violet"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class=""
+                    data-icon="read"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M928 161H699.2c-49.1 0-97.1 14.1-138.4 40.7L512 233l-48.8-31.3A255.2 255.2 0 00324.8 161H96c-17.7 0-32 14.3-32 32v568c0 17.7 14.3 32 32 32h228.8c49.1 0 97.1 14.1 138.4 40.7l44.4 28.6c1.3.8 2.8 1.3 4.3 1.3s3-.4 4.3-1.3l44.4-28.6C602 807.1 650.1 793 699.2 793H928c17.7 0 32-14.3 32-32V193c0-17.7-14.3-32-32-32zM324.8 721H136V233h188.8c35.4 0 69.8 10.1 99.5 29.2l48.8 31.3 6.9 4.5v462c-47.6-25.6-100.8-39-155.2-39zm563.2 0H699.2c-54.4 0-107.6 13.4-155.2 39V298l6.9-4.5 48.8-31.3c29.7-19.1 64.1-29.2 99.5-29.2H888v488zM396.9 361H211.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5zm223.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c0-4.1-3.2-7.5-7.1-7.5H627.1c-3.9 0-7.1 3.4-7.1 7.5zM396.9 501H211.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5zm416 0H627.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5z"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        class="ant-collapse-item"
+        id="RCC"
+        style="padding: 18px 16px; background-color: rgb(244, 240, 240);"
+      >
+        <div
+          aria-disabled="false"
+          aria-expanded="false"
+          class="ant-collapse-header"
+          role="button"
+          tabindex="0"
+        >
+          <div
+            class="ant-collapse-expand-icon"
+          >
+            <span
+              aria-label="right"
+              class="anticon anticon-right ant-collapse-arrow"
+              role="img"
+            >
+              <svg
+                aria-hidden="true"
+                data-icon="right"
+                fill="currentColor"
+                focusable="false"
+                height="1em"
+                viewBox="64 64 896 896"
+                width="1em"
+              >
+                <path
+                  d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"
+                />
+              </svg>
+            </span>
+          </div>
+          <span
+            class="ant-collapse-header-text"
+          >
+            <span>
+              undefined Reclamation and Closure Program Conditions (0 conditions)
+              <button
+                class="ant-btn ant-btn-default ant-btn-background-ghost"
+                type="button"
+              >
+                <span
+                  aria-label="read"
+                  class="anticon anticon-read padding-sm--right icon-sm violet"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class=""
+                    data-icon="read"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M928 161H699.2c-49.1 0-97.1 14.1-138.4 40.7L512 233l-48.8-31.3A255.2 255.2 0 00324.8 161H96c-17.7 0-32 14.3-32 32v568c0 17.7 14.3 32 32 32h228.8c49.1 0 97.1 14.1 138.4 40.7l44.4 28.6c1.3.8 2.8 1.3 4.3 1.3s3-.4 4.3-1.3l44.4-28.6C602 807.1 650.1 793 699.2 793H928c17.7 0 32-14.3 32-32V193c0-17.7-14.3-32-32-32zM324.8 721H136V233h188.8c35.4 0 69.8 10.1 99.5 29.2l48.8 31.3 6.9 4.5v462c-47.6-25.6-100.8-39-155.2-39zm563.2 0H699.2c-54.4 0-107.6 13.4-155.2 39V298l6.9-4.5 48.8-31.3c29.7-19.1 64.1-29.2 99.5-29.2H888v488zM396.9 361H211.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5zm223.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c0-4.1-3.2-7.5-7.1-7.5H627.1c-3.9 0-7.1 3.4-7.1 7.5zM396.9 501H211.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5zm416 0H627.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5z"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;

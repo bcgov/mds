@@ -123,12 +123,6 @@ export class ViewPartyRelationships extends Component {
 
   openAddPartyRelationshipModal = ({
     value,
-    partyRelationships,
-    onSubmit,
-    handleChange,
-    onPartySubmit,
-    title,
-    mine,
   }) => {
     if (!this.props.partyRelationshipTypesList) return;
 
@@ -141,26 +135,23 @@ export class ViewPartyRelationships extends Component {
     }
 
     if (value.mine_party_appt_type_code === "EOR") {
-      if (mine.mine_tailings_storage_facilities.length === 0) {
+      if (this.props.mine.mine_tailings_storage_facilities.length === 0) {
         this.RoleConfirmation.current.click();
         return;
       }
     }
+
     this.props.openModal({
       props: {
-        onSubmit,
-        handleChange,
-        onPartySubmit,
-        title: `${title}: ${value.description}`,
-        partyRelationships,
-        partyRelationshipType: value,
-        mine,
+        onSubmit: this.onSubmitAddPartyRelationship,
+        title: `${ModalContent.ADD_CONTACT}: ${value.description}`,
+        mine_party_appt_type_code: value.mine_party_appt_type_code,
+        mine: this.props.mine,
         minePermits: this.props.permits,
         onFileLoad: this.onFileLoad,
         onRemoveFile: this.onRemoveFile,
       },
       content: modalConfig.ADD_PARTY_RELATIONSHIP,
-      clearOnSubmit: true,
     });
   };
 
@@ -307,12 +298,6 @@ export class ViewPartyRelationships extends Component {
                   });
                   this.openAddPartyRelationshipModal({
                     value,
-                    partyRelationships: this.props.partyRelationships,
-                    onSubmit: this.onSubmitAddPartyRelationship,
-                    handleChange: this.props.handleChange,
-                    onPartySubmit: this.onPartySubmit,
-                    title: ModalContent.ADD_CONTACT,
-                    mine: this.props.mine,
                   });
                 }}
               >

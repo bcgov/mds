@@ -132,7 +132,7 @@ exports[`ConditionLayerTwo renders properly 1`] = `
       offset={1}
       span={22}
     >
-      <withRouter(Connect(AddCondition))
+      <Connect(AddCondition)
         initialValues={
           Object {
             "condition_category_code": undefined,

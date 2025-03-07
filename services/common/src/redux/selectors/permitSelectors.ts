@@ -15,7 +15,8 @@ export const {
   getStandardPermitConditions,
   getEditingConditionFlag,
   getEditingPreambleFlag,
-  getLatestPermitAmendments
+  getLatestPermitAmendments,
+  getPermitAmendments
 } = permitReducer;
 
 export const getDraftPermitForNOW = createSelector(
@@ -86,6 +87,11 @@ export const getAmendment = (permitGuid, amendmentGuid) =>
     return permit?.permit_amendments?.find((amendment) => amendment.permit_amendment_guid === amendmentGuid);
   });
 
+export const getAmendmentByGuid = (amendmentGuid: string) =>
+  createSelector([getPermitAmendments], (amendments) => {
+    return amendments[amendmentGuid];
+  });
+
 export const getPermits = createSelector([getUnformattedPermits], (permits) => {
   const formattedPermits = permits.map((permit) => formatPermit(permit));
   return formattedPermits;
@@ -118,7 +124,7 @@ export const getMineReportPermitRequirementById = (permitGuid, reportId) =>
 
 export const getCategoriesWithReports = (permitGuid) => createSelector([getLatestAmendmentByPermitGuid(permitGuid)], (latestAmendment) => {
   return latestAmendment?.condition_categories.map((category) => {
-    const reports = latestAmendment.mine_report_permit_requirements.filter((report) => category.condition_category_code === report.condition_category_code);
+    const reports = uniqBy(latestAmendment.mine_report_permit_requirements,"report_name").filter((report) => category.condition_category_code === report.condition_category_code);
     return {
       ...category,
       reports

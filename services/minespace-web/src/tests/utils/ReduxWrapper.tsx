@@ -5,7 +5,7 @@ import { ReduxWrapper as CommonWrapper } from "@mds/common/tests/utils/ReduxWrap
 
 // will provide child components with access to redux store,
 // and the opportunity to pass in values for an initial state
-export const ReduxWrapper = ({ children, initialState = null }) => {
+export const ReduxWrapper = ({ children, initialState = {} }) => {
   const store = getStore(initialState);
   return (
     <CommonWrapper initialState={initialState}>

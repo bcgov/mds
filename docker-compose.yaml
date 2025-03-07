@@ -63,12 +63,30 @@ services:
     ports:
       - "5432:5432"
     volumes:
+      - ./services/postgres/postgresql.conf:/config/postgresql.conf
+      - ./services/postgres/pg_hba.conf:/config/pg_hba.conf
       - postgres_data:/var/lib/postgresql/data
+    command:
+      postgres -c 'config_file=/config/postgresql.conf' -c 'hba_file=/config/pg_hba.conf'
     healthcheck:
       test: [ "CMD", "pg_isready" ]
       interval: 5s
       timeout: 5s
       retries: 5
+  
+  postgres_update:
+    container_name: mds_postgres_update
+    user: postgres
+    build:
+      context: services/postgres
+      dockerfile: Dockerfile_update
+    environment:
+    - PGUSER=mds
+    - POSTGRES_PASSWORD=test
+    - POSTGRES_INITDB_ARGS=-U mds
+    volumes:
+    - postgres_data_bkp:/var/lib/postgresql/13/data
+    - postgres_data:/var/lib/postgresql/16/data
 
   ####################### Flyway Migration Definition #######################
   flyway:
@@ -332,6 +350,7 @@ networks:
 ####################### Volumes Definition #######################
 volumes:
   postgres_data: {}
+  postgres_data_bkp: {}
   core_api_logs: {}
   core_web_logs: {}
   document_manager_logs: {}

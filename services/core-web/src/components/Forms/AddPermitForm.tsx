@@ -132,7 +132,7 @@ export const AddPermitForm: FC<AddPermitFormProps> = (props) => {
       dispatch(change(formName, "exemption_fee_status_code", statusCode));
     }
 
-  }, [permit_status_code, permit_type, mine_tenure_type_code]);
+  }, [permit_status_code, permit_type, mine_tenure_type_code, mine_disturbance_code]);
 
   const isCoalOrMineral =
     mine_tenure_type_code === "COL" ||

@@ -83,7 +83,7 @@ import {
   getProjectSummaryAliasStatusCodesHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
-import * as Mock from "@/tests/mocks/dataMocks";
+import * as Mock from "@mds/common/tests/mocks/dataMocks";
 import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
 
 const mockState = {
@@ -100,7 +100,7 @@ describe("staticContentSelectors", () => {
   });
 
   it("`getMineRegionHash` converts `staticContentReducer.getMineRegionOptions`", () => {
-    const selected = getMineRegionHash.resultFunc(Mock.REGION_DROPDOWN_OPTIONS);
+    const selected = getMineRegionHash.resultFunc(Mock.REGION_DROPDOWN_OPTIONS.map((opt) => ({ ...opt, isActive: true, subType: "" })));
     expect(selected).toEqual(Mock.REGION_HASH);
   });
 

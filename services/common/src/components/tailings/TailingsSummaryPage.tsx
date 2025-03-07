@@ -69,7 +69,7 @@ export const TailingsSummaryPage: FC = () => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const canEditTSF = !isCore || coreCanEditTsf;
 
-    const isUserActionEdit = userAction === "edit";
+    const isUserActionEdit = canEditTSF && userAction === "edit";
 
     const handleFetchData = async (forceReload = false) => {
         setIsReloading(true);
@@ -229,10 +229,11 @@ export const TailingsSummaryPage: FC = () => {
                 <SteppedForm
                     initialValues={initialValues}
                     name={formName}
+                    isEditMode={isUserActionEdit}
                     handleSaveData={handleSaveData}
                     handleTabChange={handleTabChange}
                     activeTab={tab}
-                    sectionChangeText={canEditTSF && isUserActionEdit ? undefined : "Continue"}
+                    sectionChangeText={isUserActionEdit ? undefined : "Continue"}
                     reduxFormConfig={{
                         touchOnBlur: true,
                         touchOnChange: false,
@@ -267,12 +268,6 @@ export const TailingsSummaryPage: FC = () => {
                     </Step>
                     <Step key="associated-dams" disabled={!hasCreatedTSF}>
                         <AssociatedDams canEditTSF={canEditTSF} isEditMode={isUserActionEdit} />
-                    </Step>
-                    <Step key="reports" disabled={!hasCreatedTSF}>
-                        <div />
-                    </Step>
-                    <Step key="summary" disabled={!hasCreatedTSF}>
-                        <div />
                     </Step>
                 </SteppedForm>
             </div>

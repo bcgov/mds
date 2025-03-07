@@ -91,9 +91,29 @@ export enum OperatingStatusEnum {
 }
 
 export enum MinePartyAppointmentTypeCodeEnum {
+  AGT = "AGT",
+  APP = "APP",
+  BLA = "BLA",
+  CCS = "CCS",
+  DAM = "DAM",
+  EMM = "EMM",
   EOR = "EOR",
-  TQP = "TQP",
+  EVS = "EVS",
+  FOP = "FOP",
+  FRB = "FRB",
+  HSM = "HSM",
+  LDO = "LDO",
   MMG = "MMG",
+  MOR = "MOR",
+  MOW = "MOW",
+  MRC = "MRC",
+  PAY = "PAY",
+  PMT = "PMT",
+  SHB = "SHB",
+  SVR = "SVR",
+  THD = "THD",
+  TQP = "TQP",
+  URP = "URP",
 }
 
 export enum ActivityTypeEnum {
@@ -228,7 +248,7 @@ export enum REPORT_REGULATORY_AUTHORITY_ENUM {
   CPO = "Chief Permitting Officer",
   CIM = "Chief Inspector of Mines",
   Both = "Both",
-  
+
 }
 
 export enum MineReportType {

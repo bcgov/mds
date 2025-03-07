@@ -11,5 +11,5 @@ export interface IMineDocumentVersion {
   upload_date: string;
   create_user: string;
   update_timestamp: string;
-  allowed_actions: FileOperations[];
+  allowed_actions?: FileOperations[];
 }

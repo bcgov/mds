@@ -28,7 +28,7 @@ const initialState = {
   [MINES]: MOCK.MINES,
   [PERMITS]: {
     permits: MOCK.PERMITS,
-    permitAmendments: MOCK.PERMIT_AMENDMENT_STATE,
+    latestPermitAmendments: MOCK.PERMIT_AMENDMENT_STATE,
   },
   [AUTHENTICATION]: {
     systemFlag: SystemFlagEnum.core,

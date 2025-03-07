@@ -10,7 +10,7 @@ env:
 jobs:
   promote-image-to-test:
     name: promote-core-api-to-test
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
@@ -39,7 +39,7 @@ jobs:
     secrets: inherit
 
   trigger-gitops:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     needs: promote-image-to-test
     steps:
@@ -64,7 +64,7 @@ jobs:
         run: ./gitops/watch-deployment.sh core-api test ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} ${{ secrets.ARGOCD_SERVER }} ${{ secrets.ARGO_CD_CLI_JWT }}
 
   run-if-failed:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: [promote-image-to-test, trigger-gitops]
     if: ${{ always() && contains(needs.*.result, 'failure') }}
     steps:
