@@ -15,17 +15,16 @@ const PRRMineReportSubmission = MOCK.MINE_REPORT_SUBMISSIONS[1];
 const verifiedPRRMineReportSubmission = MOCK.MINE_REPORT_SUBMISSIONS[2];
 
 const initialState = (mineReportSubmission: IMineReportSubmission) => ({
-  /*
-  reportSubmission: {
-    reportSubmission: mineReportSubmission,
-    mineReportGuid: mineReportSubmission.mine_report_guid,
-  },*/
   [MINES]: MOCK.MINES,
-  [PERMITS]: { permits: MOCK.PERMITS, permitAmendments: { [MOCK.PERMITS[0].permit_guid]: MOCK.PERMITS[0].permit_amendments[2] } },
-  form:{
+  [PERMITS]: {
+    permits: MOCK.PERMITS,
+    permitAmendments: { [MOCK.PERMITS[2].permit_guid]: MOCK.PERMITS[2].permit_amendments[0] },
+    latestPermitAmendments: { [MOCK.PERMITS[2].permit_guid]: MOCK.PERMITS[2].permit_amendments[0] },
+  },
+  form: {
     [FORM.VIEW_EDIT_REPORT]: {
-      values: mineReportSubmission
-    }
+      values: mineReportSubmission,
+    },
   },
   [AUTHENTICATION]: {
     systemFlag: SystemFlagEnum.core,
@@ -47,7 +46,7 @@ jest.mock("react-router-dom", () => mockFunction());
 describe("ReportDetailsForm", () => {
   it("renders CRR edit mode properly", () => {
     const { container } = render(
-      <ReduxWrapper initialState={initialState(PRRMineReportSubmission)}>
+      <ReduxWrapper initialState={initialState(CRRMineReportSubmission)}>
         <ReportDetailsForm
           isEditMode={true}
           mineGuid={"123"}
@@ -65,7 +64,7 @@ describe("ReportDetailsForm", () => {
 
   it("renders PRR edit mode properly", () => {
     const { container } = render(
-      <ReduxWrapper initialState={initialState(CRRMineReportSubmission)}>
+      <ReduxWrapper initialState={initialState(PRRMineReportSubmission)}>
         <ReportDetailsForm
           isEditMode={true}
           mineGuid={"123"}
@@ -98,5 +97,4 @@ describe("ReportDetailsForm", () => {
     );
     expect(container.firstChild).toMatchSnapshot();
   });
-
 });
