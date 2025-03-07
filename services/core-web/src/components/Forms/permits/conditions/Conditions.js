@@ -44,6 +44,8 @@ const propTypes = {
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
   isSourcePermitGeneratedInCore: PropTypes.bool.isRequired,
   isNoWApplication: PropTypes.bool.isRequired,
+  mineGuid: PropTypes.string.isRequired,
+  permitGuid: PropTypes.string.isRequired,
 };
 
 export class Conditions extends Component {
@@ -62,7 +64,11 @@ export class Conditions extends Component {
 
   fetchPermitConditions = () => {
     if (this.props.draftPermitAmendment) {
-      this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
+      this.props.fetchPermitConditions(
+        this.props.mineGuid,
+        this.props.permitGuid,
+        this.props.draftPermitAmendment.permit_amendment_guid
+      );
     }
   };
 
@@ -120,7 +126,7 @@ export class Conditions extends Component {
         values
       )
       .then(() => {
-        this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
+        this.fetchPermitConditions();
         this.props.fetchDraftPermitByNOW(
           null,
           this.props.draftPermitAmendment.now_application_guid
@@ -138,7 +144,7 @@ export class Conditions extends Component {
         condition
       )
       .then(() => {
-        this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
+        this.fetchPermitConditions();
         this.props.fetchDraftPermitByNOW(
           null,
           this.props.draftPermitAmendment.now_application_guid
@@ -153,9 +159,9 @@ export class Conditions extends Component {
   render = () => {
     const conditionsMetadata = this.props.draftPermitAmendment
       ? {
-          last_updated_by: this.props.draftPermitAmendment.permit_conditions_last_updated_by,
-          last_updated_date: this.props.draftPermitAmendment.permit_conditions_last_updated_date,
-        }
+        last_updated_by: this.props.draftPermitAmendment.permit_conditions_last_updated_by,
+        last_updated_date: this.props.draftPermitAmendment.permit_conditions_last_updated_date,
+      }
       : null;
     return (
       <>
@@ -207,11 +213,10 @@ export class Conditions extends Component {
                   style={{ padding: "18px 16px", backgroundColor: COLOR.lightGrey }}
                   header={
                     <span>
-                      {`${conditionCategory.step} ${conditionCategory.description} (${
-                        Object.values(flattenObject({ conditions })).filter(
-                          (value) => value === "CON"
-                        ).length
-                      } conditions)`}
+                      {`${conditionCategory.step} ${conditionCategory.description} (${Object.values(flattenObject({ conditions })).filter(
+                        (value) => value === "CON"
+                      ).length
+                        } conditions)`}
                       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
                       <span onClick={(event) => event.stopPropagation()}>
                         <Button
