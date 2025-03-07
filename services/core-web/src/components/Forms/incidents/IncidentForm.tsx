@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { useParams } from "react-router-dom";
-import { change, formValueSelector, getFormValues } from "@mds/common/components/forms/form";
+import { change, getFormValues, isPristine } from "@mds/common/components/forms/form";
 import { Col, Row } from "antd";
 import { IMineIncident } from "@mds/common/interfaces";
 import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
@@ -65,11 +65,10 @@ export const IncidentForm: FC<IncidentFormProps> = (props) => {
   );
   const incidentFollowUpActionOptions = useAppSelector(getDropdownIncidentFollowupActionOptions);
   const inspectorOptions = useAppSelector(getDropdownInspectors) || [];
-  const selector = formValueSelector(FORM.ADD_EDIT_INCIDENT);
-  const documents = useAppSelector((state) => selector(state, "documents")) || [];
-  const formValues = useAppSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state)) || {};
+
+  const formValues = useAppSelector(getFormValues(FORM.ADD_EDIT_INCIDENT)) as Partial<IMineIncident>;
   const dropdownIncidentStatusCodeOptions = useAppSelector(getDropdownIncidentStatusCodeOptions);
-  const isPristine = useAppSelector((state) => state.form[FORM.ADD_EDIT_INCIDENT]?.pristine);
+  const pristine = useAppSelector(isPristine(FORM.ADD_EDIT_INCIDENT));
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
@@ -135,7 +134,7 @@ export const IncidentForm: FC<IncidentFormProps> = (props) => {
           incidentStatusCodeHash={incidentStatusCodeHash}
           isEditMode={isEditMode}
           formValues={formValues}
-          pristine={isPristine}
+          pristine={pristine}
         />
       </Col>
       <Row>
@@ -148,7 +147,7 @@ export const IncidentForm: FC<IncidentFormProps> = (props) => {
           />
           <br />
           <IncidentFormDocuments
-            documents={documents}
+            documents={formValues?.documents}
             isEditMode={isEditMode}
             onFileLoad={onFileLoad}
             onDeleteDocument={handleDeleteDocument}
@@ -164,7 +163,7 @@ export const IncidentForm: FC<IncidentFormProps> = (props) => {
           />
           <br />
           <IncidentFormInternalDocumentComments
-            documents={documents}
+            documents={formValues?.documents}
             incident={props.incident}
             isEditMode={isEditMode}
             onFileLoad={onFileLoad}
