@@ -62,7 +62,7 @@
     "react-sortable-hoc": "2.0.0",
     "redux": "5.0.0",
     "redux-form": "8.2.6",
-    "redux-form-input-masks": "2.0.1",
+    "redux-form-input-masks": "2.0.2",
     "redux-mock-store": "1.5.4",
     "redux-thunk": "3.1.0",
     "regenerator-runtime": "0.13.3",
