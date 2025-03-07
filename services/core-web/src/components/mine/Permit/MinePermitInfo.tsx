@@ -65,7 +65,7 @@ interface MinePermitInfoProps {
   explosivesPermits: IExplosivesPermit[];
 }
 
-export const MinePermitInfo: FC<MinePermitInfoProps & PropsFromRedux> = (props) => {
+export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
   const mine = props.mines[props.mineGuid];
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
   const [modifiedPermits, setModifiedPermits] = useState(false);
@@ -483,8 +483,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-export default connector(MinePermitInfo);
+  export default connect(mapStateToProps, mapDispatchToProps)(MinePermitInfo);
