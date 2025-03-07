@@ -142,7 +142,7 @@ export const SearchResults: React.FC<SearchResultsProps & PropsFromRedux> = (pro
 
   const groupedSearchResults: any[] = useMemo(() => {
     const results: any[] = [];
-    Object.entries(props.searchResults as ISearchResultList).forEach((entry) => {
+    Object.entries(props.searchResults).forEach((entry) => {
       const resultGroup = {
         type: entry[0],
         score: sumBy(entry[1], "score"),
