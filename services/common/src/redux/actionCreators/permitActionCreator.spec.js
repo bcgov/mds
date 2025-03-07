@@ -553,7 +553,7 @@ describe("`fetchPermitConditions` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return fetchPermitConditions(permitAmdendmentGuid)(dispatch).then(() => {
+    return fetchPermitConditions(mineGuid, permitGuid, permitAmdendmentGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
