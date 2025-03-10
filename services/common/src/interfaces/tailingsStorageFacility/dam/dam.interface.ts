@@ -18,4 +18,5 @@ export interface ICreateDam {
 export interface IDam extends ICreateDam {
   dam_guid: string;
   update_timestamp: string;
+  update_user: string;
 }

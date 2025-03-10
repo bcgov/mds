@@ -39,6 +39,7 @@ class OperatingStatus(Enum):
 
 class Dam(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "dam"
+    __versioned__ = {}
 
     dam_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     mine_tailings_storage_facility_guid = db.Column(UUID(as_uuid=True), db.ForeignKey(
