@@ -117,50 +117,39 @@ describe('permitSearchSlice', () => {
 
     describe('async actions', () => {
         it('should handle SSE search with documents and prompt events', async () => {
-            // Setup mock ReadableStream response
             const mockReadableStream = { getReader: jest.fn() };
             mockCustomAxiosInstance.post.mockResolvedValue({
                 data: mockReadableStream
             });
 
             const store = getStore();
-            // Make sure store is in a clean state
             expect(selectSearchResults(store.getState())).toBeNull();
 
-            // Dispatch the search action
             await store.dispatch(searchPermitConditions({ query: 'water quality', filters: [] }));
 
-            // Get the stored handlers from our mock
             const handlers = (global as any).sseHandlers;
-            const options = (global as any).sseOptions;
 
-            // Simulate receiving document data
             handlers.documents({
                 documents: [{ content: 'Water quality monitoring must be conducted monthly' }],
                 facets: { category: [{ value: 'Environmental', count: 1 }] }
             });
 
-            // Check document data was processed
             expect(selectSearchResults(store.getState())?.documents[0].content).toBe(
                 'Water quality monitoring must be conducted monthly'
             );
             expect(selectDocumentLoading(store.getState())).toBe(false);
 
-            // Simulate AI processing
             handlers.ai_start({});
             expect(selectAiLoading(store.getState())).toBe(true);
 
-            // Simulate prompt results
             handlers.prompt({
                 answers: ['The permit requires monthly water quality monitoring.']
             });
 
-            // Check prompt results
             expect(selectSearchResults(store.getState())?.prompt?.answers[0]).toBe(
                 'The permit requires monthly water quality monitoring.'
             );
 
-            // Simulate AI completion
             handlers.ai_complete({});
             expect(selectAiLoading(store.getState())).toBe(false);
         });

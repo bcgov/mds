@@ -12,7 +12,6 @@ from tests.factories import (
     MinespaceSubscriptionFactory,
     MinespaceUserFactory,
     NOWApplicationIdentityFactory,
-    NOWSubmissionFactory,
 )
 
 from .cli_commands.generate_history_table_migration import (
@@ -241,15 +240,16 @@ def register_commands(app):
 
     @app.cli.command('prepare_permit_data')
     @click.argument('csv_path', type=click.Path(exists=True))
-    def do_prepare_permit_data(csv_path):
+    @click.option('--token', help='Authentication token (optional)', default=None)
+    def do_prepare_permit_data(csv_path, token):
         """
         Import permit data from CSV file and create/update mines, permits and amendments.
         
         Example usage:
             flask prepare_permit_data path/to/permits.csv
+            flask prepare_permit_data path/to/permits.csv --token=your_auth_token
         """
         from app import auth
-        from app.cli_commands.auth_helper import get_auth_token
         from app.cli_commands.prepare_data import prepare_permit_data
         from flask import current_app
         
@@ -257,11 +257,9 @@ def register_commands(app):
         
         with current_app.app_context():
             try:
-                # Get authentication token
-                token = get_auth_token(current_app.config)
                 prepare_permit_data(csv_path, token)
             except Exception as e:
-                click.echo(f"Error during authentication: {e}", err=True)
+                click.echo(f"Error: {e}", err=True)
                 return
 
     @app.cli.command('bulk_permit_extraction')

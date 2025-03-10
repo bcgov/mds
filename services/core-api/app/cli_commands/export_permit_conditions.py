@@ -1,6 +1,5 @@
 import csv
 import datetime
-import os
 
 from app.api.mines.permits.permit_amendment.models.permit_amendment import (
     PermitAmendment,
@@ -8,45 +7,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import (
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
     PermitConditions,
 )
-from app.api.mines.reports.models.mine_report_permit_requirement import (
-    MineReportPermitRequirement,
-)
-from app.extensions import db
 
-
-def should_merge_with_parent(condition):
-    """Check if condition should be merged with its parent"""
-    return (condition._step == '' and 
-            condition.parent_permit_condition and 
-            condition.parent_permit_condition._step)
-
-def merge_condition_with_parent(condition, parent):
-    """Merge child condition text with parent condition"""
-    return {
-        'id': str(condition.permit_condition_guid),  # Keep child's ID
-        'step': parent.step,
-        'category': parent.condition_category.description,
-        'status': condition.permit_condition_status.description,
-        'display_order': parent.display_order,
-        'condition': f"{parent.condition}\n{condition.condition}",  # Combine texts
-        'step_path': parent.full_step_path,
-        # Merge relationships - remove the parent from parent_ids since we're merging
-        'parent_ids': [str(p.permit_condition_guid) for p in get_parent_chain(parent)[1:]],
-        'sibling_ids': [
-            str(c.permit_condition_guid) for c in parent.parent_permit_condition.sub_conditions
-            if c.permit_condition_guid != parent.permit_condition_guid
-        ] if parent.parent_permit_condition else [],
-        'child_ids': [str(c.permit_condition_guid) for c in condition.sub_conditions],
-    }
-
-def get_parent_chain(condition):
-    """Get list of parents from immediate to root"""
-    chain = []
-    current = condition
-    while current.parent_permit_condition:
-        current = current.parent_permit_condition
-        chain.append(current)
-    return chain
 
 def export_permit_conditions(permit_amendment_guid, csv_writer=None):
     """
@@ -234,3 +195,38 @@ def bulk_export_permit_conditions(csv_path):
 
     print(f"\nExport complete: {success_count} amendments processed with {total_conditions} conditions exported to {output_filename}")
     print(f"Errors: {error_count}")
+
+
+def should_merge_with_parent(condition):
+    """Check if condition should be merged with its parent"""
+    return (condition._step == '' and 
+            condition.parent_permit_condition and 
+            condition.parent_permit_condition._step)
+
+def merge_condition_with_parent(condition, parent):
+    """Merge child condition text with parent condition"""
+    return {
+        'id': str(condition.permit_condition_guid),  # Keep child's ID
+        'step': parent.step,
+        'category': parent.condition_category.description,
+        'status': condition.permit_condition_status.description,
+        'display_order': parent.display_order,
+        'condition': f"{parent.condition}\n{condition.condition}",  # Combine texts
+        'step_path': parent.full_step_path,
+        # Merge relationships - remove the parent from parent_ids since we're merging
+        'parent_ids': [str(p.permit_condition_guid) for p in get_parent_chain(parent)[1:]],
+        'sibling_ids': [
+            str(c.permit_condition_guid) for c in parent.parent_permit_condition.sub_conditions
+            if c.permit_condition_guid != parent.permit_condition_guid
+        ] if parent.parent_permit_condition else [],
+        'child_ids': [str(c.permit_condition_guid) for c in condition.sub_conditions],
+    }
+
+def get_parent_chain(condition):
+    """Get list of parents from immediate to root"""
+    chain = []
+    current = condition
+    while current.parent_permit_condition:
+        current = current.parent_permit_condition
+        chain.append(current)
+    return chain

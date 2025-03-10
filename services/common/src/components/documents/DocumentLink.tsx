@@ -22,7 +22,7 @@ const propTypes = {
   onClickAlternative: PropTypes.func,
   linkTitleOverride: PropTypes.string,
   truncateDocumentName: PropTypes.bool,
-  unstyled: PropTypes.bool,
+  unstyled: PropTypes.bool, // inherit styles from parent instead of formatting as a link.
   // difference on MS: this is also accepted as a boolean
   deletePermission: PropTypes.string,
   handleDelete: PropTypes.func,

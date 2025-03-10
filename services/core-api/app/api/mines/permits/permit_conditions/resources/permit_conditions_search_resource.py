@@ -8,7 +8,7 @@ from flask_restx import Resource
 
 
 class PermitConditionsSearchResource(Resource, UserMixin):
-    @api.doc(description="Search Permit Conditions using the permit service")
+    @api.doc(description="Search Permit Conditions using the permit service. Uses Server Sent Events (SSE) to stream results back to the caller.")
     @requires_role_view_all
     @api.expect(PERMIT_CONDITION_SEARCH_MODEL, validate=True)
     def post(self):

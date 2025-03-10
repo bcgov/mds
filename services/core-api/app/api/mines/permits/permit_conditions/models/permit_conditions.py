@@ -271,6 +271,11 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
     
     @hybrid_property
     def full_step_path(self):
+        """
+        Returns the full step path of the condition, including the top level category
+        Example: General.1.a.i
+        """
+
         steps = []
         current = self
         while current:
