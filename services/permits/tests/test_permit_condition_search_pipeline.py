@@ -1,6 +1,9 @@
 from unittest.mock import MagicMock
 
 import pytest
+from app.pipelines.permit_condition_extraction.components.azure_document_intelligence_converter import (
+    AzureDocumentIntelligenceConverter,
+)
 from app.pipelines.permit_condition_search.permit_condition_search_pipeline import (
     create_permit_condition_search_indexing_pipeline,
     create_permit_condition_search_retrieval_pipeline,
@@ -21,6 +24,7 @@ def mock_components():
     AzureOpenAIChatGenerator.__init__ = MagicMock(return_value=None)
     AzureAISearchHybridRetriever.__init__ = MagicMock(return_value=None)
     ChatPromptBuilder.__init__ = MagicMock(return_value=None)
+    AzureDocumentIntelligenceConverter.__init__ = MagicMock(return_value=None)
 
 def test_create_permit_condition_search_retrieval_pipeline_returns_pipeline(mock_components):
     pipeline = create_permit_condition_search_retrieval_pipeline()
@@ -29,7 +33,7 @@ def test_create_permit_condition_search_retrieval_pipeline_returns_pipeline(mock
 def test_indexing_pipeline_validates(mock_components):
     pipeline = create_permit_condition_search_retrieval_pipeline()
     try:
-        pipeline._validate_input({"text_embedder": {"query": "test query"}, "retriever": {"query": "test query"}, "text_embedder": {"text": "test query"}})
+        pipeline._validate_input({"text_embedder": {"query": "test query"}, "retriever": {"query": "test query"}, "text_embedder": {"text": "test query"}, "document_result_streamer": {"stream": "test stream"}, "llm_result_streamer": {"stream": "test stream"}})
 
     except Exception as e:
         pytest.fail(f"Pipeline validation failed with error: {str(e)}")
@@ -37,7 +41,7 @@ def test_indexing_pipeline_validates(mock_components):
 def test_search_pipeline_validates(mock_components):
     pipeline = create_permit_condition_search_indexing_pipeline()
     try:
-        pipeline._validate_input({"csv_converter": {"file_path": "test.csv"}})
+        pipeline._validate_input({"blob_uploader": {"file_path": "test.csv"}})
 
     except Exception as e:
         pytest.fail(f"Pipeline validation failed with error: {str(e)}")
