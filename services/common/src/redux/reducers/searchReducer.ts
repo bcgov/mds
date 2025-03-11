@@ -1,5 +1,6 @@
 import * as actionTypes from "@mds/common/constants/actionTypes";
 import { SEARCH } from "@mds/common/constants/reducerTypes";
+import { ISearchResult, ISearchResultList, ISimpleSearchResult } from "@mds/common/interfaces";
 
 /**
  * @file mineReducer.js
@@ -54,8 +55,8 @@ const searchReducerObject = {
 };
 
 export const getSearchOptions = (state) => state[SEARCH].searchOptions;
-export const getSearchResults = (state) => state[SEARCH].searchResults;
-export const getSearchBarResults = (state) => state[SEARCH].searchBarResults;
+export const getSearchResults = (state): ISearchResultList => state[SEARCH].searchResults;
+export const getSearchBarResults = (state): ISearchResult<ISimpleSearchResult>[] => state[SEARCH].searchBarResults;
 export const getSearchTerms = (state) => state[SEARCH].searchTerms;
 export const getSearchSubsetResults = (state) => state[SEARCH].searchSubsetResults;
 

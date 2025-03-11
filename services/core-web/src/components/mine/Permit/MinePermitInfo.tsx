@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState, useRef } from "react";
 import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import { ConnectedProps, connect } from "react-redux";
 import { Divider, Tabs } from "antd";
 import {
   fetchPermits,
@@ -483,4 +483,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(MinePermitInfo);
+  export default connect(mapStateToProps, mapDispatchToProps)(MinePermitInfo);

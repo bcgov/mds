@@ -4,13 +4,13 @@ import { SearchOutlined, FileSearchOutlined } from "@ant-design/icons";
 
 import * as route from "@/constants/routes";
 import { MINE, PROFILE_NOCIRCLE, DOC } from "@/constants/assets";
-import { ISearchResult } from "@mds/common/interfaces";
+import { ISearchResult, ISimpleSearchResult } from "@mds/common/interfaces";
 
 interface SearchBarDropdownProps {
   history: any;
   searchTerm: string;
   searchTermHistory: string[];
-  searchBarResults: ISearchResult[];
+  searchBarResults: ISearchResult<ISimpleSearchResult>[];
   children: React.ReactNode;
 }
 
@@ -21,14 +21,14 @@ export const SearchBarDropdown: FC<SearchBarDropdownProps> = ({
   searchBarResults,
   children,
 }) => {
-  const URLFor = (item: ISearchResult) =>
+  const URLFor = (item: ISearchResult<ISimpleSearchResult>) =>
   ({
     mine: route.MINE_GENERAL.dynamicRoute(item.result.id),
     party: route.PARTY_PROFILE.dynamicRoute(item.result.id),
     permit: route.SEARCH_RESULTS.dynamicRoute({ q: item.result.value }),
   }[item.type]);
 
-  const IconFor = (item: ISearchResult) =>
+  const IconFor = (item: ISearchResult<ISimpleSearchResult>) =>
   ({
     mine: <img className="icon-svg-filter" src={MINE} alt={item.result?.value} height={25} />,
     party: (

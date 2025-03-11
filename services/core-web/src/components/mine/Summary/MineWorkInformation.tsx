@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from "react";
 import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import { ConnectedProps, connect } from "react-redux";
 import { Row, Col, Divider, Button, Descriptions, List, Popconfirm, Typography, Badge } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
@@ -33,7 +33,7 @@ interface MineWorkInformationProps {
   closeModal: typeof closeModal;
 }
 
-export const MineWorkInformation: FC<MineWorkInformationProps> = (props) => {
+export const MineWorkInformation: FC<MineWorkInformationProps & PropsFromRedux> = (props) => {
   const [isLoaded, setisLoaded] = useState(false);
   const [showAll, setshowAll] = useState(false);
 
@@ -264,4 +264,8 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(MineWorkInformation);
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(MineWorkInformation);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { flattenObject } from "@common/utils/helpers";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { getFormSyncErrors, getFormValues } from "@mds/common/components/forms/form";
 import { Tag } from "antd";
@@ -17,6 +17,7 @@ import IncidentForm from "@/components/Forms/incidents/IncidentForm";
 import ScrollSideMenu from "@mds/common/components/common/ScrollSideMenu";
 import * as routes from "@/constants/routes";
 import { useAppDispatch } from "@mds/common/redux/rootState";
+import { IMineIncidentForm } from "@mds/common/interfaces";
 
 interface IParams {
   mineGuid?: string;
@@ -36,7 +37,7 @@ export const MineIncident = (props) => {
   const [fixedTop, setIsFixedTop] = useState<boolean>(false);
 
   const incident = useSelector(getMineIncident);
-  const formValues = useSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state)) || {};
+  const formValues = useSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state)) as IMineIncidentForm;
   const formErrors = useSelector((state) => getFormSyncErrors(FORM.ADD_EDIT_INCIDENT)(state)) || {};
 
   const isEditPage = !!params.mineIncidentGuid;

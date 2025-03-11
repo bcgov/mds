@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
-import { connect } from "react-redux";
+import { ConnectedProps, connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link, useHistory } from "react-router-dom";
 import { Row, Col, Typography, Divider, Skeleton } from "antd";
@@ -74,7 +74,7 @@ const GlobalMineAlert = ({ alert }) => {
   );
 };
 
-const HomeMineActivity: FC<HomeMineActivityProps> = ({
+const HomeMineActivity: FC<HomeMineActivityProps & PropsFromRedux> = ({
   subscribedMines,
   subscribedMinesLoaded,
   mines,
@@ -188,4 +188,7 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeMineActivity);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(HomeMineActivity);
