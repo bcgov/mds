@@ -21,6 +21,9 @@ import { ITailingsStorageFacility, IDam } from "@mds/common/interfaces";
 import RenderSelect from "../../forms/RenderSelect";
 import RenderField from "../../forms/RenderField";
 import { formatDateTime } from "@mds/common/redux/utils/helpers";
+import { useAppDispatch } from "@mds/common/redux/rootState";
+import { openModal } from "@mds/common/redux/actions/modalActions";
+import DamDiffModal from "./DamDiffModal";
 
 interface DamFormProps {
     tsf: ITailingsStorageFacility;
@@ -37,6 +40,7 @@ interface Params {
 
 const DamForm: FC<DamFormProps> = (props) => {
     const { tsf, dam, canEditTSF, isEditMode, canEditDam } = props;
+    const dispatch = useAppDispatch();
     const history = useHistory();
     const { tailingsStorageFacilityGuid, mineGuid } = useParams<Params>();
     const canEditTSFAndEditMode = canEditTSF && canEditDam;
@@ -52,8 +56,13 @@ const DamForm: FC<DamFormProps> = (props) => {
     };
 
     const openDiffModal = () => {
-        console.log('dam', dam)
-        console.log('tsf', tsf)
+        dispatch(openModal({
+            props: {
+                title: "View Dam History",
+                damGuid: dam.dam_guid,
+            },
+            content: DamDiffModal
+        }))
     };
 
     return (

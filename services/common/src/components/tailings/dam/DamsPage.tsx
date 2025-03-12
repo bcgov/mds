@@ -1,28 +1,25 @@
 import { Col, Divider, Popconfirm, Row, Typography } from "antd";
 import { Link, useHistory, useParams } from "react-router-dom";
 import React, { FC, useEffect } from "react";
-import { createDam, updateDam } from "@mds/common/redux/actionCreators/damActionCreator";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import SteppedForm from "@mds/common/components/forms/SteppedForm";
 import Step from "@mds/common/components/forms/Step";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
-import { getDam } from "@mds/common/redux/selectors/damSelectors";
 import { getTsf } from "@mds/common/redux/selectors/tailingsSelectors";
-import { storeDam } from "@mds/common/redux/actions/damActions";
 import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import DamForm from "./DamForm";
-import { IDam, ITailingsStorageFacility } from "@mds/common/interfaces";
+import { ITailingsStorageFacility } from "@mds/common/interfaces";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { FORM } from "@mds/common/constants/forms";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
+import { createDam, getDamByGuid, storeDam, updateDam } from "@mds/common/redux/slices/damSlice";
 
 const DamsPage: FC = () => {
     const dispatch = useAppDispatch();
     const history = useHistory();
     const tsf: ITailingsStorageFacility = useAppSelector(getTsf);
-    const initialValues: IDam = useAppSelector(getDam);
 
     const { tailingsStorageFacilityGuid, damGuid, mineGuid, parentTSFFormMode, userAction } =
         useParams<{
@@ -33,6 +30,7 @@ const DamsPage: FC = () => {
             userAction: string;
         }>();
 
+    const initialValues = useAppSelector(getDamByGuid(damGuid));
     const isCore = useAppSelector(getIsCore);
     const coreCanEditTsf = useAppSelector(userHasRole(USER_ROLES.role_edit_tsf));
     const canEditTSF = !isCore || coreCanEditTsf;
@@ -73,14 +71,14 @@ const DamsPage: FC = () => {
 
     const handleSave = async (values, newActiveTab) => {
         if (damGuid) {
-            const updatedDam = await dispatch(updateDam(damGuid, values));
-            handleCompleteSubmit(updatedDam.data);
+            const updatedDam = await dispatch(updateDam(values));
+            handleCompleteSubmit(updatedDam);
         } else {
             const newDam = await dispatch(createDam({
                 ...values,
                 mine_tailings_storage_facility_guid: tailingsStorageFacilityGuid,
             }));
-            handleCompleteSubmit(newDam.data);
+            handleCompleteSubmit(newDam);
         }
     };
 
@@ -118,6 +116,7 @@ const DamsPage: FC = () => {
             <Divider />
             <SteppedForm
                 initialValues={initialValues}
+                isEditMode={isTSFEditMode}
                 name={FORM.ADD_EDIT_DAM}
                 handleSaveData={handleSave}
                 handleTabChange={() => { }}

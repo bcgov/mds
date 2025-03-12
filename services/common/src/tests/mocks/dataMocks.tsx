@@ -90,6 +90,7 @@ export const TSF: ITailingsStorageFacility = {
       permitted_dam_crest_elevation: 35,
       dam_guid: "123",
       update_timestamp: "2019-04-05 21:05:40.123456+00:00",
+      update_user: "update-user"
     },
   ],
   update_timestamp: "2019-04-05 21:05:40.123456+00:00",

@@ -7,7 +7,7 @@ import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import React, { FC } from "react";
 import { getTsf } from "@mds/common/redux/reducers/tailingsReducer";
 import moment from "moment";
-import { storeDam } from "@mds/common/redux/actions/damActions";
+import { storeDam } from "@mds/common/redux/slices/damSlice";
 import { useHistory } from "react-router-dom";
 import { IDam, ITailingsStorageFacility } from "@mds/common/interfaces";
 import { ColumnsType } from "antd/lib/table";
@@ -43,7 +43,6 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
     };
 
     const handleNavigateToCreate = () => {
-        dispatch(storeDam({}));
         const url = GLOBAL_ROUTES?.ADD_DAM.dynamicRoute(tsf.mine_guid, tsf.mine_tailings_storage_facility_guid);
         history.push(url);
     };

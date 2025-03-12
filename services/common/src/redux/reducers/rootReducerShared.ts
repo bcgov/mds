@@ -7,7 +7,6 @@ import {
   activityReducer,
   authenticationReducer,
   complianceReducer,
-  damReducer,
   documentViewerReducer,
   explosivesPermitReducer,
   externalAuthorizationReducer,
@@ -46,6 +45,7 @@ import userReducer, { userReducerType } from "@mds/common/redux/slices/userSlice
 import mineReportPermitRequirementReducer, { mineReportPermitRequirementReducerType } from "../slices/mineReportPermitRequirementSlice";
 import permitConditionDiffReducer, { permitConditionDiffReducerType } from "../slices/permitConditionDiffSlice";
 import permitSearchReducer, { permitSearchReducerType } from "../slices/permitSearchSlice";
+import damReducer, { damReducerType } from "../slices/damSlice";
 
 
 const networkReducers = Object.fromEntries(Object.entries(NetworkReducerTypes).map(([key, value]) =>
@@ -56,7 +56,6 @@ export const sharedReducer = {
   ...activityReducer,
   ...authenticationReducer,
   ...complianceReducer,
-  ...damReducer,
   ...documentViewerReducer,
   ...explosivesPermitReducer,
   ...externalAuthorizationReducer,
@@ -85,6 +84,7 @@ export const sharedReducer = {
   regions: regionsReducer,
   [spatialDataReducerType]: spatialDataReducer,
   [complianceCodeReducerType]: complianceCodeReducer,
+  [damReducerType]: damReducer,
   [complianceReportReducerType]: complianceReportReducer,
   [permitServiceReducerType]: permitServiceReducer,
   [helpReducerType]: helpReducer,

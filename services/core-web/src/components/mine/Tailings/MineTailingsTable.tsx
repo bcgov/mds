@@ -14,7 +14,7 @@ import {
   getTSFOperatingStatusCodeOptionsHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { bindActionCreators } from "redux";
-import { storeDam } from "@mds/common/redux/actions/damActions";
+import { storeDam } from "@mds/common/redux/slices/damSlice";
 import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
@@ -28,6 +28,7 @@ import {
   renderTextColumn,
   renderActionsColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 interface MineTailingsTableProps {
   tailings: ITailingsStorageFacility[];
@@ -41,7 +42,6 @@ interface MineTailingsTableProps {
   TSFOperatingStatusCodeHash?: any;
   itrmExemptionStatusCodeHash?: any;
   history?: any;
-  storeDam?: typeof storeDam;
   storeTsf?: typeof storeTsf;
   tsfV2Enabled: boolean;
   canEditTSF: boolean;
@@ -49,6 +49,7 @@ interface MineTailingsTableProps {
 
 const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (props) => {
   const { id: mineGuid } = useParams<{ id: string }>();
+  const dispatch = useAppDispatch();
   const {
     TSFOperatingStatusCodeHash,
     itrmExemptionStatusCodeHash,
@@ -70,7 +71,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
 
   const handleEditDam = (event, dam: IDam, isEditMode, canEditDam) => {
     event.preventDefault();
-    props.storeDam(dam);
+    dispatch(storeDam(dam));
     const tsf = tailings.find(
       (t) => t.mine_tailings_storage_facility_guid === dam.mine_tailings_storage_facility_guid
     );
@@ -152,7 +153,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
       key: "view",
       label: "View Dam",
       icon: <EyeOutlined />,
-      clickFunction: (_event, record) => {
+      clickFunction: (event, record) => {
         handleEditDam(event, record, false, false);
       },
     },
@@ -162,7 +163,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
           key: "edit",
           label: "Edit Dam",
           icon: <EditOutlined />,
-          clickFunction: (_event, record) => {
+          clickFunction: (event, record) => {
             handleEditDam(event, record, true, true);
           },
         },
@@ -262,7 +263,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
   );
 };
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ storeDam, storeTsf }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ storeTsf }, dispatch);
 
 const mapStateToProps = (state) => ({
   TSFOperatingStatusCodeHash: getTSFOperatingStatusCodeOptionsHash(state),

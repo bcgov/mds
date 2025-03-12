@@ -3,7 +3,7 @@ from sqlalchemy import desc
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
+from app.api.utils.models_mixins import HistoryMixin, SoftDeleteMixin, AuditMixin, Base
 
 
 class ConsequenceClassification(Enum):
@@ -15,14 +15,14 @@ class ConsequenceClassification(Enum):
     NRT = 'NRT'
 
     def __str__(self):
-        return self.value
+        return self.value[0]
 
 
 class DamType(Enum):
     dam = 'dam',
 
     def __str__(self):
-        return self.value
+        return self.value[0]
 
 
 class OperatingStatus(Enum):
@@ -34,10 +34,10 @@ class OperatingStatus(Enum):
     closure_passive_care = 'closure_passive_care'
 
     def __str__(self):
-        return self.value
+        return self.value[0]
 
 
-class Dam(SoftDeleteMixin, AuditMixin, Base):
+class Dam(HistoryMixin, SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "dam"
     __versioned__ = {}
 

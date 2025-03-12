@@ -1,34 +1,50 @@
 import React from "react";
 import { Typography } from "antd";
 import { formatSnakeCaseToSentenceCase } from "@mds/common/redux/utils/helpers";
-import { DiffColumnProps } from "./DiffColumn.interface";
+import { DiffColumnProps, IDiffColumn } from "./DiffColumn.interface";
 
 const DiffColumn: React.FC<DiffColumnProps> = ({ differences, valueMapper }) => {
   const valueOrNoData = (value: any) => {
     if (typeof value === "boolean") {
       return value ? "True" : "False";
     }
-    return value ? value : "No Data";
+    return value ?? "No Data";
   };
+
 
   /**
    * Maps the diff titles and values to a more user-friendly format based on the given valueMapper.
    * If a valueMapper is not provided or a the given field does not have a corresponding mapping,
    * the field_name will be formatted to sentence case for easier readability.
    */
-  const mappedDifferences = differences
-    .filter((change) => !change.field_name?.endsWith("_guid")) // Ignore any fields we can reasonably assume the user doesn't care about
-    .map((change) => {
+  const applyValueMapper = (diffs: IDiffColumn[]) => {
+    const filtered = diffs.filter((change) => !change.field_name?.endsWith("_guid"));
+    return filtered.map((change) => {
       const mapper = valueMapper ? valueMapper[change.field_name] : null;
-      const fromMapped = mapper?.data?.find((data) => data.value === change.from);
-      const toMapped = mapper?.data?.find((data) => data.value === change.to);
+      let { from, to } = change;
+
+      if (mapper) {
+        if (mapper.hash) {
+          from = mapper.hash[from];
+          to = mapper.hash[to];
+        } else if (mapper.data) {
+          from = mapper.data.find((data) => data.value === change.from);
+          to = mapper.data.find((data) => data.value === change.to);
+        } else if (mapper.transform) {
+          from = mapper.transform(from);
+          to = mapper.transform(to);
+        }
+      }
 
       return {
         field_name: mapper?.title ?? formatSnakeCaseToSentenceCase(change.field_name, "_"),
-        from: fromMapped?.label || change.from,
-        to: toMapped?.label || change.to,
+        from,
+        to,
       };
-    });
+    })
+  };
+
+  const mappedDifferences = applyValueMapper(differences);
 
   return (
     <div className="padding-md--top">

@@ -15,7 +15,7 @@ import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { getHighestConsequence } from "@common/utils/helpers";
-import { storeDam } from "@mds/common/redux/actions/damActions";
+import { storeDam } from "@mds/common/redux/slices/damSlice";
 import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import { EDIT_PENCIL } from "@/constants/assets";
 import { EDIT_DAM } from "@/constants/routes";
@@ -25,6 +25,7 @@ import { Feature } from "@mds/common/utils/featureFlag";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const propTypes = {
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -33,7 +34,6 @@ const propTypes = {
   TSFOperatingStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   itrmExemptionStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   editTailings: PropTypes.func.isRequired,
-  storeDam: PropTypes.func.isRequired,
   storeTsf: PropTypes.func.isRequired,
   canEditTSF: PropTypes.bool.isRequired,
 };
@@ -42,8 +42,8 @@ export const TailingsTable = (props) => {
   const history = useHistory();
   const { id: mineGuid } = useParams();
   const { isFeatureEnabled } = useFeatureFlag();
+  const dispatch = useAppDispatch();
 
-  // const [expandedRows, setExpandedRows] = React.useState([]);
   const {
     editTailings,
     tailings,
@@ -58,7 +58,7 @@ export const TailingsTable = (props) => {
 
   const handleEditDam = (event, dam, isEditMode, canEditDam) => {
     event.preventDefault();
-    props.storeDam(dam);
+    dispatch(storeDam(dam));
     const tsf = tailings.find(
       (t) => t.mine_tailings_storage_facility_guid === dam.mine_tailings_storage_facility_guid
     );
@@ -107,15 +107,15 @@ export const TailingsTable = (props) => {
     },
     ...(canEditTSF
       ? [
-        {
-          key: "edit",
-          label: "Edit TSF",
-          icon: <EditOutlined />,
-          clickFunction: (_event, record) => {
-            editTailings(event, record, true);
+          {
+            key: "edit",
+            label: "Edit TSF",
+            icon: <EditOutlined />,
+            clickFunction: (_event, record) => {
+              editTailings(event, record, true);
+            },
           },
-        },
-      ]
+        ]
       : []),
   ];
 
@@ -130,25 +130,17 @@ export const TailingsTable = (props) => {
     },
     ...(canEditTSF
       ? [
-        {
-          key: "edit",
-          label: "Edit Dam",
-          icon: <EditOutlined />,
-          clickFunction: (_event, record) => {
-            handleEditDam(event, record, true, true);
+          {
+            key: "edit",
+            label: "Edit Dam",
+            icon: <EditOutlined />,
+            clickFunction: (_event, record) => {
+              handleEditDam(event, record, true, true);
+            },
           },
-        },
-      ]
+        ]
       : []),
   ];
-
-  // const handleRowExpand = (record) => {
-  //   const key = record.mine_tailings_storage_facility_guid;
-  //   const expandedRowKeys = expandedRows.includes(key)
-  //     ? expandedRows.filter((k) => k !== key)
-  //     : expandedRows.concat(key);
-  //   setExpandedRows(expandedRowKeys);
-  // };
 
   const columns = [
     {
@@ -257,10 +249,10 @@ export const TailingsTable = (props) => {
       expandProps={
         tsfV2Enabled
           ? {
-            recordDescription: "associated dams",
-            getDataSource: (record) => record.dams,
-            subTableColumns: expandedColumns,
-          }
+              recordDescription: "associated dams",
+              getDataSource: (record) => record.dams,
+              subTableColumns: expandedColumns,
+            }
           : null
       }
     />
@@ -269,7 +261,7 @@ export const TailingsTable = (props) => {
 
 TailingsTable.propTypes = propTypes;
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ storeDam, storeTsf }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ storeTsf }, dispatch);
 
 const mapStateToProps = (state) => ({
   TSFOperatingStatusCodeHash: getTSFOperatingStatusCodeOptionsHash(state),

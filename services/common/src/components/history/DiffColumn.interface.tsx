@@ -12,6 +12,7 @@ export interface IDiffEntry {
 
 /**
  * Used to map the diff titles and values to a more user-friendly format
+ * Supply *one of* hash, tranform, data
  *
  * Example structure:
  * {
@@ -21,13 +22,20 @@ export interface IDiffEntry {
  *        { value: "above_ground", label: "Above Ground" },
  *        { value: "below_ground", label: "Underground" }
  *     ]
+ *     hash: { 
+ *        above_ground: "Above Ground"
+ *        below_ground: "Underground"
+ *     }
+ *     transform: (value) => formatDate(value)
  *   },
  * }
  */
 export interface DiffColumnValueMapper {
   [key: string]: {
-    title: string;
+    title?: string;
     data?: { value: string; label: string }[];
+    hash?: { [key: string]: string };
+    transform?: (original: string) => string;
   };
 }
 
