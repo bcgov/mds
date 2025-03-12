@@ -2,7 +2,6 @@ import { Col, Divider, notification, Row, Typography } from "antd";
 import { Link, useHistory, useParams } from "react-router-dom";
 import React, { FC, useEffect, useState } from "react";
 import {
-  addDocumentToRelationship,
   addPartyRelationship,
   fetchPartyRelationships,
 } from "@mds/common/redux/actionCreators/partiesActionCreator";
@@ -72,7 +71,6 @@ export const TailingsSummaryPage: FC = () => {
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
-  const [uploadedFiles, setUploadedFiles] = useState([]);
   const canEditTSF = !isCore || coreCanEditTsf;
 
   const isUserActionEdit = canEditTSF && userAction === "edit";
@@ -105,23 +103,6 @@ export const TailingsSummaryPage: FC = () => {
   useEffect(() => {
     handleFetchData(true);
   }, [mineGuid, tsfGuid]);
-
-  const handleAddDocuments = async (minePartyApptGuid) => {
-    await Promise.all(
-      uploadedFiles.map((document) =>
-        dispatch(
-          addDocumentToRelationship(
-            { mineGuid, minePartyApptGuid },
-            {
-              document_name: document.document_name,
-              document_manager_guid: document.document_manager_guid,
-            }
-          )
-        )
-      )
-    );
-    setUploadedFiles([]);
-  };
 
   const submissionComplete = async (values) => {
     const submitValues = {
@@ -185,7 +166,7 @@ export const TailingsSummaryPage: FC = () => {
 
         if (!values[attr].mine_party_appt_guid && values[attr].party_guid) {
           // Only add party relationship if changed
-          const relationship = await dispatch(
+          await dispatch(
             addPartyRelationship(
               {
                 mine_guid: mineGuid,
@@ -199,10 +180,6 @@ export const TailingsSummaryPage: FC = () => {
               successMessage
             )
           );
-
-          if (uploadedFiles.length > 0) {
-            await handleAddDocuments(relationship.data.mine_party_appt_guid);
-          }
 
           await handleFetchData(true);
         }
@@ -295,8 +272,6 @@ export const TailingsSummaryPage: FC = () => {
             <EngineerOfRecord
               loading={isReloading}
               mineGuid={mineGuid}
-              uploadedFiles={uploadedFiles}
-              setUploadedFiles={setUploadedFiles}
               canEditTSF={canEditTSF}
               isEditMode={isUserActionEdit}
             />
