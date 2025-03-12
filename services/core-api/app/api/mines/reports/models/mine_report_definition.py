@@ -1,11 +1,12 @@
 import uuid
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from pytz import timezone
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy import or_, cast, Integer, nullsfirst, nullslast
+from sqlalchemy import or_, cast, Integer, nullsfirst, nullslast, and_
 from sqlalchemy_filters import apply_pagination
 from werkzeug.exceptions import BadRequest
 
@@ -107,6 +108,33 @@ class MineReportDefinition(Base, AuditMixin):
             return cls.query.filter_by(mine_report_definition_guid=_id).first()
         except ValueError:
             return None
+
+    @classmethod
+    def find_one_by_section(cls, section, sub_section=None, paragraph=None, sub_paragraph=None):
+        try:
+            now = datetime.now(timezone('US/Pacific'))
+
+            query = cls.query.filter_by(active_ind=True).filter(
+                MineReportDefinition.compliance_articles.any(
+                    and_(
+                        ComplianceArticle.section == section,
+                        ComplianceArticle.sub_section == sub_section,
+                        ComplianceArticle.paragraph == paragraph,
+                        ComplianceArticle.sub_paragraph == sub_paragraph,
+                        ComplianceArticle.effective_date <= now,
+                        or_(
+                            ComplianceArticle.expiry_date.is_(None),
+                            ComplianceArticle.expiry_date >= now
+                        )
+                    )
+                )
+            )
+
+            # Fetch and return the first result if available
+            return query.first()
+        except Exception as e:
+            # Handle exceptions and log them as needed
+            raise ValueError(f"Error occurred while querying: {str(e)}")
 
     @classmethod
     def _apply_sort(cls, query, sort_field, sort_dir):

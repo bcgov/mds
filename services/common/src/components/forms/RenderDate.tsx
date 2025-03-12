@@ -14,6 +14,7 @@ interface DateInputProps extends BaseInputProps {
   yearMode?: boolean;
   disabledDate?: (currentDate) => boolean;
   formatViewDate?: boolean;
+  fieldEditMode?: boolean;
 }
 
 const RenderDate: FC<DateInputProps> = ({
@@ -29,11 +30,12 @@ const RenderDate: FC<DateInputProps> = ({
   yearMode = false,
   disabledDate,
   formatViewDate = false,
+  fieldEditMode,
 }) => {
   return (
     <FormConsumer>
       {(value) => {
-        if (!value.isEditMode) {
+        if (!value.isEditMode || (typeof fieldEditMode !== "undefined" && !fieldEditMode)) {
           return (
             <BaseViewInput
               label={label}

@@ -345,7 +345,8 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
                permit_id=None,
                permit_condition_category_code=None,
                submitter_email=None,
-               add_to_session=True):
+               add_to_session=True,
+               system_created=False):
         mine_report = cls(
             mine_report_definition_id=mine_report_definition_id,
             mine_guid=mine_guid,
@@ -356,7 +357,10 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             permit_id=permit_id,
             permit_condition_category_code=permit_condition_category_code,
             submitter_name=submitter_name,
-            submitter_email=submitter_email)
+            submitter_email=submitter_email,
+            created_by_idir='system' if system_created else None,
+            update_user='system' if system_created else None,
+            create_user='system' if system_created else None)
         if add_to_session:
             mine_report.save(commit=False)
         return mine_report
