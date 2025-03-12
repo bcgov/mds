@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Popconfirm, Row, Form } from "antd";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { bindActionCreators, compose } from "redux";
 import {
   EMPTY_FIELD,
@@ -18,12 +18,13 @@ import {
   updateNoticeOfDeparture,
 } from "@mds/common/redux/actionCreators/noticeOfDepartureActionCreator";
 import { getNoticeOfDeparture } from "@mds/common/redux/selectors/noticeOfDepartureSelectors";
-import { Field, FieldArray, change } from "@mds/common/components/forms/form";
+import { Field, FieldArray, change, getFormValues } from "@mds/common/components/forms/form";
 import {
   email,
   maxLength,
   phoneNumber,
   required,
+  requiredList,
 } from "@mds/common/redux/utils/Validate";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import CoreTable from "@mds/common/components/common/CoreTable";
@@ -51,7 +52,6 @@ interface RenderContactsProps {
 
 export const renderContacts: React.FC<RenderContactsProps> = (props, disabled = false) => {
   const { fields } = props;
-
   return (
     <div className="margin-large--bottom">
       {fields.length > 0 && (
@@ -131,7 +131,9 @@ const NoticeOfDepartureModal: React.FC<NoticeOfDepartureModalProps> = (props) =>
   const [documentArray, setDocumentArray] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState("");
   const formName = FORM.NOTICE_OF_DEPARTURE_FORM;
+  const formValues = useSelector(getFormValues(formName));
 
   const { noticeOfDeparture, mine, change } = props;
   const { nod_guid } = noticeOfDeparture;
@@ -148,6 +150,15 @@ const NoticeOfDepartureModal: React.FC<NoticeOfDepartureModalProps> = (props) =>
   const decision = noticeOfDeparture.documents.filter(
     (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.DECISION
   );
+
+  const isDecisionDocRequired = (status) => {
+    const requiredDocStatuses = [
+      NOTICE_OF_DEPARTURE_STATUS_VALUES.determined_non_substantial,
+      NOTICE_OF_DEPARTURE_STATUS_VALUES.determined_substantial,
+    ];
+
+    return requiredDocStatuses.includes(status) && decision.length === 0 && documentArray.length == 0;
+  }
 
   const handleAddDocuments = (noticeOfDepartureGuid) => {
     documentArray.forEach((document) =>
@@ -209,7 +220,15 @@ const NoticeOfDepartureModal: React.FC<NoticeOfDepartureModalProps> = (props) =>
         };
       })
     );
+
+    setCurrentStatus(props?.initialValues?.nod_status);
   }, []);
+
+  useEffect(() => {
+    if (formValues?.nod_status !== currentStatus) {
+      setCurrentStatus(formValues?.nod_status);
+    }
+  }, [formValues?.nod_status]);
 
   const handleDeleteANoticeOfDepartureDocument = async (document) => {
     await removeFileFromDocumentManager(document);
@@ -335,6 +354,8 @@ const NoticeOfDepartureModal: React.FC<NoticeOfDepartureModalProps> = (props) =>
                 addFileStart={() => setUploading(true)}
                 onAbort={() => setUploading(false)}
                 onProcessFiles={() => setUploading(false)}
+                validate={isDecisionDocRequired(currentStatus) ? [requiredList] : []}
+                required={isDecisionDocRequired(currentStatus)}
                 uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(mine.mine_guid)}
                 acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
                 onFileLoad={(documentName, document_manager_guid) => {
@@ -383,7 +404,7 @@ const NoticeOfDepartureModal: React.FC<NoticeOfDepartureModalProps> = (props) =>
           ) : (
             <>
               <RenderCancelButton />
-              <RenderSubmitButton disabled={documentArray.length == 0 || uploading} buttonText="Update" disableOnClean={false} />
+              <RenderSubmitButton disabled={isDecisionDocRequired(currentStatus) || uploading} buttonText="Update" disableOnClean={false} />
             </>
           )}
         </div>
