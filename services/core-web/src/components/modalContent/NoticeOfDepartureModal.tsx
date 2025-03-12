@@ -131,9 +131,9 @@ const NoticeOfDepartureModal: React.FC<NoticeOfDepartureModalProps> = (props) =>
   const [documentArray, setDocumentArray] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
-  const [currentStatus, setCurrentStatus] = useState("");
   const formName = FORM.NOTICE_OF_DEPARTURE_FORM;
   const formValues = useSelector(getFormValues(formName));
+  const currentStatus = formValues?.nod_status
 
   const { noticeOfDeparture, mine, change } = props;
   const { nod_guid } = noticeOfDeparture;
@@ -220,15 +220,7 @@ const NoticeOfDepartureModal: React.FC<NoticeOfDepartureModalProps> = (props) =>
         };
       })
     );
-
-    setCurrentStatus(props?.initialValues?.nod_status);
   }, []);
-
-  useEffect(() => {
-    if (formValues?.nod_status !== currentStatus) {
-      setCurrentStatus(formValues?.nod_status);
-    }
-  }, [formValues?.nod_status]);
 
   const handleDeleteANoticeOfDepartureDocument = async (document) => {
     await removeFileFromDocumentManager(document);
