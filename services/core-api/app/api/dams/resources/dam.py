@@ -3,7 +3,8 @@ from flask_restx import Resource, reqparse
 from werkzeug.exceptions import NotFound
 
 from app.api.utils.resources_mixins import UserMixin
-from app.api.dams.dto import DAM_HISTORY_MODEL, UPDATE_DAM_MODEL
+from app.api.dams.dto import UPDATE_DAM_MODEL
+from app.api.mines.response_models import DAM_HISTORY_MODEL
 from app.api.utils.access_decorators import EDIT_TSF, MINESPACE_PROPONENT, requires_any_of
 from app.api.dams.models.dam import Dam
 from app.extensions import api
