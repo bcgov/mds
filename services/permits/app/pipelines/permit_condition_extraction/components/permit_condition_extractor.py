@@ -124,7 +124,6 @@ class PermitConditionExtractor:
                 )
                 conditions.append(condition)
                 
-            # Write parsed conditions to debug folder if enabled
             if DEBUG_MODE:
                 with open("debug/extraction_conditions.json", "w") as f:
                     json.dump([c.dict() for c in conditions], f, indent=2)
@@ -144,16 +143,6 @@ class PermitConditionExtractor:
             raise
 
     def _find_text_by_id(self, condition_id: str, documents) -> tuple[dict, str]:
-        """
-        Find the original text for a condition by its ID in the documents.
-
-        Args:
-            condition_id: The ID of the condition to find
-            documents: List of documents to search
-
-        Returns:
-            Tuple of (metadata dict, text string)
-        """
         for doc in documents:
             if condition_id == doc.get("id"):
                 return self.docs_with_meta.get(condition_id, {}), doc['text']

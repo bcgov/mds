@@ -6,7 +6,36 @@ from haystack import Document, component
 
 @component
 class ContextEnricher:
-    """Enriches documents with parent, sibling, and child context"""
+    """
+    Enriches documents with parent, sibling, and child context. Why? to provide extra context to the LLM to be able to generate better responses.
+    
+    Example:
+
+    Given this document hierarchy
+        A. General <--- Parent: The enricher will fetch from Azure Search
+            1. Condition 1 <---- A search matched on this condition
+                a. Subcondition 1 <-- Child: The enricher will fetch from Azure Search
+                b. Subcondition 2 <-- Child: The enricher will fetch from Azure Search
+            2. Condition 2 <-- Sibling: The enricher will fetch from Azure Search
+        B. Another section <-- Ignored
+
+    The example above would yield this.
+        {
+            "full_hierarchy": ["A", "1"],
+            "parent_contexts": {
+                "level_1": {"id": "A", "content": "General", "step": "A", "hierarchy": "A"},
+            },
+            "sibling_contexts": {
+                "previous": [],
+                "next": [{"id": "2", "content": "Condition 2", "step": "2", "hierarchy": "A.2"}],
+            },
+            "child_contexts": [
+                {"id": "a", "content": "Subcondition 1", "step": "a", "hierarchy": "A.1.a"},
+                {"id": "b", "content": "Subcondition 2", "step": "b", "hierarchy": "A.1.b"},
+            ],
+        }
+    
+    """
 
     def __init__(self, document_store, batch_size: int = 100):
         self.document_store = document_store
@@ -79,7 +108,6 @@ class ContextEnricher:
         child_ids = set()
 
         for doc in documents:
-            # Collect parent IDs
             doc_parent_ids = doc.meta.get("parent_ids", [])
             if doc_parent_ids and max_levels:
                 doc_parent_ids = doc_parent_ids[:max_levels]
@@ -112,7 +140,7 @@ class ContextEnricher:
         }
 
     def _fetch_documents_in_batches(self, doc_ids: Set[str]) -> Dict[str, Document]:
-        """Fetch documents in batches"""
+        """Fetch documents in batches from Azure AI Search"""
         doc_map = {}
 
         # Convert set to list and create batches

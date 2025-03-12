@@ -10,21 +10,14 @@ logger = logging.getLogger(__name__)
 @component
 class IndexerRunner:
     def __init__(self, search_endpoint: str, search_api_key: str):
-        """
-        Initialize the indexer runner
-        Args:
-            search_endpoint: Azure Search service endpoint
-            search_api_key: Azure Search service API key
-        """
         self.search_endpoint = search_endpoint
         self.search_api_key = search_api_key
+        self.timeout = 300 # 5 minutes
 
     @component.output_types(status=str, stats=Dict)
     def run(self, blob_url: str):
         """
-        Runs the Azure Search indexer and waits for completion
-        Returns:
-            Dict containing status and statistics about the indexing operation
+        Runs the given azure indexer and waits for it to complete.
         """
         credential = AzureKeyCredential(self.search_api_key)
         indexer_client = SearchIndexerClient(
@@ -32,17 +25,19 @@ class IndexerRunner:
             credential=credential
         )
         
-        # Run the indexer
         indexer_client.run_indexer("permit-conditions-indexer")
         
-        # Wait for indexer to complete and collect stats
+        start_time = time.time()
+
         while True:
             status = indexer_client.get_indexer_status("permit-conditions-indexer")
+            
+            if time.time() - start_time > self.timeout:
+                raise TimeoutError("Indexer run timed out after 5 minutes")
             if status.last_result and status.last_result.status in ["success", "error"]:
                 if status.last_result.status == "error":
                     raise Exception(f"Indexer failed: {status.last_result.error_message}")
                 
-                # Collect statistics from the indexer status using the correct attribute names
                 stats = {
                     "document_count": status.last_result.item_count,
                     "success_count": status.last_result.item_count - status.last_result.failed_item_count,

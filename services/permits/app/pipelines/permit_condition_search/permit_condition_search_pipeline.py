@@ -4,7 +4,6 @@ from datetime import datetime
 from typing import List
 
 import yaml
-from app.common.streaming.formatters import DocumentResultStreamer, LLMResultStreamer
 from app.pipelines.permit_condition_search.components.azure_blob_upload import (
     AzureBlobUploader,
 )
@@ -26,7 +25,7 @@ from app.pipelines.permit_condition_search.stores.ai_search_document_store impor
     AzureSearchDocumentStore,
 )
 from azure.search.documents.indexes.models import VectorSearch
-from haystack import Pipeline
+from haystack import AsyncPipeline, Pipeline
 from haystack.components.builders import PromptBuilder
 from haystack.components.embedders import AzureOpenAITextEmbedder
 from haystack.components.generators import AzureOpenAIGenerator
@@ -39,7 +38,6 @@ from haystack_integrations.document_stores.elasticsearch import (
 
 logger = logging.getLogger(__name__)
 
-# Initialize required infrastructure
 create_or_update_index()
 create_search_indexer()
 
@@ -48,7 +46,7 @@ ROOT_DIR = os.path.abspath(os.curdir)
 with open(f"{ROOT_DIR}/app/permit_condition_prompts.yaml", "r") as file:
     prompts = yaml.safe_load(file)
 
-# Metadata field definitions
+# Metadata field definitions for search index
 doc_metadata_fields = {
     "category": str,
     "issue_date": datetime,
@@ -126,9 +124,10 @@ def create_permit_condition_search_indexing_pipeline():
 
 def create_permit_condition_search_retrieval_pipeline():
     """
-    Creates a RAG pipeline for retrieving permit conditions
+    Creates a RAG pipeline for retrieving permit conditions using AsyncPipeline for concurrent execution.
+    Simplified version without streamer components, using AsyncPipeline's generator feature.
     """
-    retrieval_pipeline = Pipeline()
+    retrieval_pipeline = AsyncPipeline()
     try:
         azure_search_document_store = create_azure_search_document_store()
     except Exception as e:
@@ -157,7 +156,6 @@ def create_permit_condition_search_retrieval_pipeline():
 
     context_enricher = ContextEnricher(document_store=azure_search_document_store)
 
-    # Get search prompt from the loaded prompts
     search_template = prompts.get("permit_condition_search_prompt")
     prompt_builder = PromptBuilder(template=search_template)
 
@@ -169,36 +167,19 @@ def create_permit_condition_search_retrieval_pipeline():
         generation_kwargs={"temperature": 0, "max_tokens": 16384, "n": 1},
     )
 
-    # Use our newer streamer components
-    document_result_streamer = DocumentResultStreamer()
-
-    # Use the enhanced streamer
-    llm_result_streamer = LLMResultStreamer()
-
-    logger.info("Adding components to pipeline")
-    # Add components to pipeline
     retrieval_pipeline.add_component("text_embedder", text_embedder)
     retrieval_pipeline.add_component("retriever", retriever)
     retrieval_pipeline.add_component("context_enricher", context_enricher)
-    retrieval_pipeline.add_component(
-        "document_result_streamer", document_result_streamer
-    )
     retrieval_pipeline.add_component("prompt_builder", prompt_builder)
     retrieval_pipeline.add_component("llm", llm)
-    retrieval_pipeline.add_component("llm_result_streamer", llm_result_streamer)
 
     logger.info("Connecting pipeline components")
-    # Connect components
+
     retrieval_pipeline.connect("text_embedder.embedding", "retriever.query_embedding")
     retrieval_pipeline.connect("retriever", "context_enricher")
     retrieval_pipeline.connect("context_enricher", "prompt_builder.documents")
-    retrieval_pipeline.connect(
-        "context_enricher.documents", "document_result_streamer.documents"
-    )
     retrieval_pipeline.connect("prompt_builder", "llm")
-    retrieval_pipeline.connect("llm.replies", "llm_result_streamer.replies")
 
-    # Validate the pipeline
     try:
         retrieval_pipeline._validate_input(
             {
@@ -206,8 +187,6 @@ def create_permit_condition_search_retrieval_pipeline():
                 "retriever": {"query": "test", "filters": []},
                 "prompt_builder": {"question": "test"},
                 "llm": {"streaming_callback": lambda x: x},
-                "document_result_streamer": {"stream": lambda x: x},
-                "llm_result_streamer": {"stream": lambda x: x},
             }
         )
         print("Pipeline validation successful!")
@@ -219,7 +198,6 @@ def create_permit_condition_search_retrieval_pipeline():
     return retrieval_pipeline
 
 
-# Log when the pipeline is initialized
 logger.info("Initializing permit condition search pipelines")
 permit_condition_search_retrieval_pipeline = (
     create_permit_condition_search_retrieval_pipeline()

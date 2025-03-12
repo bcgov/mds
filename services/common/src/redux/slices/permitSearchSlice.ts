@@ -1,11 +1,10 @@
 import { createAppSlice } from "@mds/common/redux/createAppSlice";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
-import CustomAxios from "@mds/common/redux/customAxios";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { RootState } from "../rootState";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import { ConditionOperator, Facet, FilterOperator, SearchQuery, SearchResult } from "@mds/common/interfaces/search/facet-search.interface";
-import { createSseProcessor } from "@mds/common/utils/SseParser";
+import { createEventSource } from 'eventsource-client'
 
 import * as API from "@mds/common/constants/API";
 export const permitSearchReducerType = "permitSearch";
@@ -101,57 +100,54 @@ const permitSearchSlice = createAppSlice({
                     } : undefined
                 };
 
+                const state = thunkApi.getState() as RootState;
+                const currentFilters = state.permitSearch.filters;
+
+                let eventSource = null;
+
                 try {
-                    const response = await CustomAxios().post(
-                        `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION_SEARCH}`,
-                        searchQuery,
-                        {
-                            ...headers,
-                            headers: {
-                                ...headers.headers,
-                                'Accept': 'text/event-stream',
-                            },
-                            responseType: 'stream',
-                            adapter: 'fetch',
-                        }
-                    );
+                    eventSource = createEventSource({
+                        url: `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION_SEARCH}`,
+                        body: JSON.stringify(searchQuery),
+                        fetch: fetch,
+                        method: 'POST',
+                        headers: {
+                            ...headers.headers,
+                            'Accept': 'text/event-stream',
+                            'Content-Type': 'application/json'
+                        },
 
-                    const state = thunkApi.getState() as RootState;
-                    const currentFilters = state.permitSearch.filters;
+                        onMessage: ({ event, data }) => {
 
-                    createSseProcessor(
-                        response.data, // Response.data is in this case a ReadableStream
-                        {
-                            documents: (documentsData: SearchResult) => {
-                                thunkApi.dispatch(updateSearchResults(documentsData));
-                                thunkApi.dispatch(setDocumentLoading(false));
-                                const updatedState = thunkApi.getState() as RootState;
-                                if (updatedState.permitSearch.filters.length === 0 && currentFilters.length > 0) {
-                                    thunkApi.dispatch(setFilters(currentFilters));
-                                }
-                            },
-                            ai_start: () => {
-                                thunkApi.dispatch(setAiLoading(true));
-                            },
-                            prompt: (promptData: any) => {
-                                thunkApi.dispatch(updatePromptResults(promptData));
-                            },
-                            ai_complete: () => {
-                                thunkApi.dispatch(setAiLoading(false));
+                            const payload = JSON.parse(data);
+                            let updatedState: RootState = thunkApi.getState();
+                            switch (event) {
+                                case 'ai_start':
+                                    thunkApi.dispatch(setAiLoading(true));
+                                    break;
+                                case 'documents':
+                                    thunkApi.dispatch(updateSearchResults(payload));
+                                    thunkApi.dispatch(setDocumentLoading(false));
+
+                                    if (updatedState.permitSearch.filters.length === 0 && currentFilters.length > 0) {
+                                        thunkApi.dispatch(setFilters(currentFilters));
+                                    }
+                                    break;
+                                case 'prompt':
+                                    thunkApi.dispatch(updatePromptResults(payload));
+                                    break;
+                                case 'ai_complete':
+                                    thunkApi.dispatch(setAiLoading(false));
+                                    break;
                             }
                         },
-                        {
-                            onComplete: () => {
-                                thunkApi.dispatch(hideLoading());
-                            },
-                            onError: (error) => {
-                                console.error('Search error:', error);
-                                thunkApi.dispatch(hideLoading());
-                                thunkApi.dispatch(setDocumentLoading(false));
-                                thunkApi.dispatch(setAiLoading(false));
-                            }
+
+                        onDisconnect: () => {
+                            eventSource.close();
+                            thunkApi.dispatch(hideLoading());
+
                         }
-                    );
+                    });
 
                     return null;
                 } catch (error) {
@@ -159,6 +155,10 @@ const permitSearchSlice = createAppSlice({
                     thunkApi.dispatch(hideLoading());
                     thunkApi.dispatch(setDocumentLoading(false));
                     thunkApi.dispatch(setAiLoading(false));
+
+                    if (eventSource) {
+                        eventSource.close();
+                    }
                     throw error;
                 }
             },

@@ -11,6 +11,7 @@ from haystack import Document, component
 from haystack.components.builders import ChatPromptBuilder
 from haystack.dataclasses import ChatMessage
 from json_repair import repair_json
+from pydantic import InstanceOf
 
 logger = logging.getLogger(__name__)
 
@@ -66,19 +67,19 @@ class PermitConditionValidator:
             Dict containing validated/corrected conditions
         """
         logger.info(f"Starting validation of {len(conditions.conditions)} conditions")
+
+        if len(conditions.conditions) > self.max_batch_size:
+            # Conditions list is too large, making the llm prompt too large. TODO: How can we handle this in batches? Retry this when upgrading to larger models.
+            logger.info(f"Cannot validate conditions. Conditions exceed max batch size ({len(conditions.conditions)} > {self.max_batch_size})")
+            return {"conditions": conditions}
         
-        # Extract document text for validation
+        if not self.template:
+            logger.warning("Validation template is missing - skipping validation")
+            return {"conditions": conditions}
+        
         document_text = self._extract_document_text(documents)
-        
-        # Process all conditions at once if below threshold
-        if len(conditions.conditions) <= self.max_batch_size:
-            logger.info(f"Processing all {len(conditions.conditions)} conditions in one batch")
-            return self._validate_conditions(conditions, document_text)
-        
-        # Otherwise, group by sections for more efficient processing
-        logger.info(f"Conditions exceed max batch size ({len(conditions.conditions)} > {self.max_batch_size})")
-        logger.info("Processing by sections to optimize token usage")
-        return self._process_by_sections(conditions, document_text)
+
+        return self._validate_conditions(conditions, document_text)
     
     def _extract_document_text(self, documents: List[Document]) -> str:
         """Extract plain text from document objects."""
@@ -97,56 +98,13 @@ class PermitConditionValidator:
                     texts.append(doc.content)
         
         return "\n".join(texts)
-    
-    def _process_by_sections(self, conditions: PermitConditions, document_text: str):
-        """Process conditions grouped by section."""
-        # Group conditions by section
-        section_groups = self._group_by_section(conditions.conditions)
-        logger.info(f"Grouped conditions into {len(section_groups)} sections")
         
-        all_validated_conditions = []
-        
-        # Process each section separately
-        for section, section_conditions in section_groups.items():
-            section_name = section if section != "unknown" else "Unknown section"
-            logger.info(f"Processing {section_name} with {len(section_conditions)} conditions")
-            
-            # If a section is still too large, split it into smaller batches
-            if len(section_conditions) > self.max_batch_size:
-                logger.info(f"Section {section_name} exceeds max batch size, splitting further")
-                batches = [
-                    section_conditions[i:i+self.max_batch_size] 
-                    for i in range(0, len(section_conditions), self.max_batch_size)
-                ]
-                
-                for i, batch in enumerate(batches):
-                    logger.info(f"Processing batch {i+1}/{len(batches)} of section {section_name}")
-                    validated_conditions = self._validate_batch(batch, document_text)
-                    all_validated_conditions.extend(validated_conditions)
-            else:
-                # Process the section as a single batch
-                validated_conditions = self._validate_batch(section_conditions, document_text)
-                all_validated_conditions.extend(validated_conditions)
-        
-        return {"conditions": PermitConditions(conditions=all_validated_conditions)}
-    
-    def _group_by_section(self, conditions: List[PermitCondition]) -> Dict[str, List[PermitCondition]]:
-        """Group conditions by their section."""
-        sections = defaultdict(list)
-        
-        for condition in conditions:
-            # Use the section as the key, or "unknown" if section is empty
-            section_key = condition.section if condition.section else "unknown"
-            sections[section_key].append(condition)
-            
-        return sections
-    
-    def _validate_conditions(self, conditions: PermitConditions, document_text: str):
+    def _validate_conditions(self, conditions: PermitConditions, document_text: str) -> dict[str, PermitConditions]:
         """Validate all conditions in one go."""
         validated_batch = self._validate_batch(conditions.conditions, document_text)
         return {"conditions": PermitConditions(conditions=validated_batch)}
     
-    def _validate_batch(self, conditions: List[PermitCondition], document_text: str) -> List[PermitCondition]:
+    def _validate_batch(self, conditions: List[PermitCondition], document_text: str) :
         """Validate a batch of conditions."""
         # Prepare validation input
         conditions_json = json.dumps([
@@ -162,6 +120,9 @@ class PermitConditionValidator:
             }
             for c in conditions
         ], indent=2)
+
+        if not self.template:
+            return conditions
         
         # Create prompt with validation template
         prompt = self.prompt_builder.run(
@@ -189,7 +150,11 @@ class PermitConditionValidator:
             # Try to repair and parse JSON response
             repaired_json = repair_json(reply.text)
             validation_result = json.loads(repaired_json) if isinstance(repaired_json, str) else repaired_json
-            
+
+            if not isinstance(validation_result, dict):
+                logger.error(f"Invalid validation response: {validation_result}")
+                return conditions
+
             # Check if validation found no issues
             if validation_result.get("no_corrections_needed"):
                 if len(conditions) > 1:
@@ -215,8 +180,6 @@ class PermitConditionValidator:
     
     def _apply_corrections(self, conditions: List[PermitCondition], validation_result: Dict) -> List[PermitCondition]:
         """Apply corrections from validation to conditions."""
-        # Create maps for quick lookups
-        conditions_map = {c.id: c for c in conditions}
         
         # Get corrections to apply
         validated_items = validation_result.get("conditions", [])
@@ -283,7 +246,7 @@ class PermitConditionValidator:
             subclause=correction.get("level5", condition.subclause),
             condition_text=correction.get("text", condition.condition_text),
             condition_title=correction.get("condition_title", condition.condition_title),
-            meta=condition.meta  # Preserve metadata
+            meta=condition.meta
         )
     
     def _create_condition_from_correction(self, correction: Dict) -> PermitCondition:
@@ -297,5 +260,5 @@ class PermitConditionValidator:
             subclause=correction.get("level5", ""),
             condition_text=correction.get("text", ""),
             condition_title=correction.get("condition_title"),
-            meta={}  # New condition has no metadata yet
+            meta={}
         )

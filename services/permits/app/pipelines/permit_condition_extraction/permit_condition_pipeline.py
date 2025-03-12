@@ -104,8 +104,8 @@ def permit_condition_pipeline():
     logger.info(f"Max Tokens: {max_tokens}")
     logger.info(f"Context Token Limit: {context_token_limit}")
 
-    parse_hierarchy = PermitConditionSectionCombiner()
     filter_paragraphs = FilterConditionsParagraphsConverter()
+    parse_hierarchy = PermitConditionSectionCombiner()
     json_fixer = JSONRepair()
     combine_metadata = ConditionsMetadataCombiner()
 
@@ -114,7 +114,6 @@ def permit_condition_pipeline():
         template=permit_extraction_prompt2,
     )
     
-    # Add standard components to pipeline
     index_pipeline.add_component("pdf_converter", pdf_converter)
     index_pipeline.add_component("filter_paragraphs", filter_paragraphs)
     index_pipeline.add_component("parse_hierarchy", parse_hierarchy)
@@ -123,16 +122,14 @@ def permit_condition_pipeline():
     index_pipeline.add_component("json_fixer", json_fixer)
     index_pipeline.add_component("combine_metadata", combine_metadata)
 
-    # Standard connections
+    
     index_pipeline.connect("pdf_converter.documents", "filter_paragraphs")
     index_pipeline.connect("filter_paragraphs", "parse_hierarchy")
     
-    # Check if validator feature is enabled
     enable_validator = False or is_feature_enabled(Feature.PERMIT_CONDITION_VALIDATOR)
     logger.info(f"Permit condition validator feature flag status: {enable_validator}")
     
     if enable_validator:
-        # Create and add validator component with simplified parameters
         logger.info("Adding validator component to pipeline")
         validator = PermitConditionValidator(
             chat_generator=llm,
@@ -142,18 +139,15 @@ def permit_condition_pipeline():
         
         index_pipeline.add_component("validator", validator)
         
-        # Connect with validator in the flow
         index_pipeline.connect("parse_hierarchy.conditions", "validator.conditions")
         index_pipeline.connect("pdf_converter.documents", "validator.documents")
         index_pipeline.connect("validator.conditions", "prompt_builder.conditions")
         index_pipeline.connect("validator.conditions", "combine_metadata.conditions")
     else:
-        # Connect without validator
         logger.info("Validator component not enabled - using standard flow")
         index_pipeline.connect("parse_hierarchy.conditions", "prompt_builder.conditions")
         index_pipeline.connect("parse_hierarchy.conditions", "combine_metadata.conditions")
     
-    # Standard connections
     index_pipeline.connect("prompt_builder", "llm")
     index_pipeline.connect("llm", "json_fixer")
     index_pipeline.connect("json_fixer.data", "combine_metadata.data")

@@ -8,10 +8,10 @@ from app.pipelines.permit_condition_search.permit_condition_search_pipeline impo
     create_permit_condition_search_indexing_pipeline,
     create_permit_condition_search_retrieval_pipeline,
 )
-from haystack import Pipeline
 from haystack.components.builders import ChatPromptBuilder
 from haystack.components.embedders import AzureOpenAITextEmbedder
 from haystack.components.generators.chat import AzureOpenAIChatGenerator
+from haystack.core.pipeline.async_pipeline import AsyncPipeline
 from haystack_integrations.components.retrievers.azure_ai_search import (
     AzureAISearchHybridRetriever,
 )
@@ -28,12 +28,12 @@ def mock_components():
 
 def test_create_permit_condition_search_retrieval_pipeline_returns_pipeline(mock_components):
     pipeline = create_permit_condition_search_retrieval_pipeline()
-    assert isinstance(pipeline, Pipeline)
+    assert isinstance(pipeline, AsyncPipeline)
 
 def test_indexing_pipeline_validates(mock_components):
     pipeline = create_permit_condition_search_retrieval_pipeline()
     try:
-        pipeline._validate_input({"text_embedder": {"query": "test query"}, "retriever": {"query": "test query"}, "text_embedder": {"text": "test query"}, "document_result_streamer": {"stream": "test stream"}, "llm_result_streamer": {"stream": "test stream"}})
+        pipeline._validate_input({"text_embedder": {"text": "test query"}, "retriever": {"query": "test query"}})
 
     except Exception as e:
         pytest.fail(f"Pipeline validation failed with error: {str(e)}")

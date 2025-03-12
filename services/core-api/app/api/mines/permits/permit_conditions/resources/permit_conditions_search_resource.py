@@ -16,7 +16,7 @@ class PermitConditionsSearchResource(Resource, UserMixin):
         response = PermitSearchService().search(request_data)
 
         return Response(
-            stream_with_context(response.iter_lines()),
+            stream_with_context(response.iter_content(chunk_size=1024)),
             mimetype="text/event-stream",
             headers={
                 "Cache-Control": "no-cache",

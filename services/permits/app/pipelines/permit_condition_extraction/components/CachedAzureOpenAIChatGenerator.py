@@ -148,6 +148,10 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
                 raise
 
     @component.output_types(data=ChatData)
+    async def run_async(self, data: ChatData, generation_kwargs=None, iteration=0):
+        return self.run(data=data, generation_kwargs=generation_kwargs, iteration=iteration)
+
+    @component.output_types(data=ChatData)
     def run(self, data: ChatData, generation_kwargs=None, iteration=0):
         self.it += 1
         """

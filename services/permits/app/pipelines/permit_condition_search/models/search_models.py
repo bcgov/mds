@@ -31,9 +31,9 @@ class SearchResponse(BaseModel):
 
 
 class IndexStats(BaseModel):
-    documentCount: Optional[int] = None
-    successCount: Optional[int] = None
-    failedCount: Optional[int] = None
+    document_count: Optional[int] = None
+    success_count: Optional[int] = None
+    error_count: Optional[int] = None
 
 
 class IndexingResponse(BaseModel):

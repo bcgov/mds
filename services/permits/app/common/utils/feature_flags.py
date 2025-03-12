@@ -1,5 +1,7 @@
 import logging
-from enum import Enum
+import os
+from enum import Enum, auto
+from typing import Dict
 
 from flagsmith import Flagsmith
 from haystack.utils import Secret
@@ -7,11 +9,11 @@ from haystack.utils import Secret
 logger = logging.getLogger(__name__)
 
 
-class Feature(Enum):
-    PERMIT_CONDITION_VALIDATOR = 'permit_condition_validator'  # Add validator feature flag
-    
-    def __str__(self):
-        return self.value
+class Feature(str, Enum):
+    """Enumeration of feature flags."""
+    PERMIT_CONDITION_VALIDATOR = "PERMIT_CONDITION_VALIDATOR"
+    DOCUMENT_SECTION_HIERARCHY = "DOCUMENT_SECTION_HIERARCHY"
+
 
 FLAGSMITH_KEY = Secret.from_env_var("FLAGSMITH_KEY", strict=True)
 FLAGSMITH_URL = Secret.from_env_var("FLAGSMITH_URL", strict=True)
@@ -22,12 +24,16 @@ flagsmith = Flagsmith(
 )
 
 
-def is_feature_enabled(feature):
-    try:
-        feature = str(feature).strip()
-        flags = flagsmith.get_environment_flags()
-
-        return feature in flags.flags and flags.is_feature_enabled(feature)
-    except Exception as e:
-        logger.error(f'Failed to look up feature flag for: {feature}. ' + str(e))
-        return False
+def is_feature_enabled(feature: Feature) -> bool:
+    """
+    Check if a feature is enabled based on environment variables.
+    
+    Args:
+        feature: The feature to check
+        
+    Returns:
+        Boolean indicating if the feature is enabled
+    """
+    feature_env_var = f"ENABLE_{feature.value}"
+    env_value = os.environ.get(feature_env_var, "false").lower()
+    return env_value in ("true", "1", "yes")

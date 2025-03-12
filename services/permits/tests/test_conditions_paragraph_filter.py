@@ -1,10 +1,7 @@
-import csv
-import io
 import json
 import os
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
-import pandas as pd
 import pytest
 from app.pipelines.permit_condition_extraction.components.filter_conditions_paragraphs import (
     FilterConditionsParagraphsConverter,
@@ -52,46 +49,49 @@ def test_run():
 def test_excludes_text_in_header():
     paragraphs = [
         Document(
-            content={"id": "ab2", "text": "Page Header start", "role": "pageHeader"},
+            content=json.dumps({"id": "ab2", "text": "Page Header start", "role": "pageHeader"}),
             meta={"bounding_box": {"top": 0, "bottom": 5}},
         ),
         Document(
-            content={
+            content=json.dumps({
                 "id": "ab2",
                 "text": "Page Header end",
                 "role": None,
-            },
+            }),
             meta={"bounding_box": {"bottom": 10, "top": 5}},
         ),
         Document(
-            content={
+            content=json.dumps({
                 "id": "ab3",
                 "text": "conditions header",
                 "role": "sectionHeading",
-            },
+            }),
             meta={"bounding_box": {"top": 20}},
         ),
         Document(
-            content={"id": "ab4", "text": "A. General", "role": "sectionHeading"},
+            content=json.dumps({"id": "ab4", "text": "A. General", "role": "sectionHeading"}),
             meta={"bounding_box": {"top": 20}},
         ),
         Document(
-            content={
+            content=json.dumps({
                 "id": "ab5",
                 "text": "Page 1 of two",
                 "role": None,
-            },
+            }),
             meta={"bounding_box": {"top": 5}},
         ),
         Document(
-            content={
+            content=json.dumps({
                 "id": "ab6",
                 "text": "2",
                 "role": "sectionHeading",
-            },
+            }),
             meta={"bounding_box": {"top": 30}},
         ),
     ]
+
+    for p in paragraphs:
+        p.content = json.loads(p.content)
 
     with task_context(MockContext()):
         result = filter_paragraphs(paragraphs)
@@ -104,15 +104,19 @@ def test_excludes_text_in_header():
 def test_filter_paragraphs_excludes_page_nr_footnote_page_footer():
     paragraphs = [
         Document(
-            content={"id": "ab3", "text": "conditions header", "role": "sectionHeading"}
+            content=json.dumps({"id": "ab3", "text": "conditions header", "role": "sectionHeading"})
         ),
-        Document(content={"id": "ab4", "text": "A. General", "role": "sectionHeading"}),
-        Document(content={"id": "ab5", "text": "1", "role": None}),
-        Document(content={"id": "ab6", "text": "2", "role": "pageNumber"}),
-        Document(content={"id": "ab6", "text": "3", "role": "footnote"}),
-        Document(content={"id": "ab6", "text": "4", "role": "pageFooter"}),
-        Document(content={"id": "ab5", "text": "5", "role": None}),
+        Document(content=json.dumps({"id": "ab4", "text": "A. General", "role": "sectionHeading"})),
+        Document(content=json.dumps({"id": "ab5", "text": "1", "role": None})),
+        Document(content=json.dumps({"id": "ab6", "text": "2", "role": "pageNumber"})),
+        Document(content=json.dumps({"id": "ab6", "text": "3", "role": "footnote"})),
+        Document(content=json.dumps({"id": "ab6", "text": "4", "role": "pageFooter"})),
+        Document(content=json.dumps({"id": "ab5", "text": "5", "role": None})),
     ]
+
+    for p in paragraphs:
+        p.content = json.loads(p.content)
+
     with task_context(MockContext()):
         result = filter_paragraphs(paragraphs)
 
@@ -124,17 +128,20 @@ def test_filter_paragraphs_excludes_page_nr_footnote_page_footer():
 
 def test_filter_paragraphs_only_includes_paragraphs_in_conditions_section():
     paragraphs = [
-        Document(content={"id": "ab1", "text": "paragraph 1", "role": None}),
-        Document(content={"id": "ab2", "text": "paragraph 2", "role": None}),
+        Document(content=json.dumps({"id": "ab1", "text": "paragraph 1", "role": None})),
+        Document(content=json.dumps({"id": "ab2", "text": "paragraph 2", "role": None})),
         Document(
-            content={"id": "ab3", "text": "conditions header", "role": "sectionHeading"}
+            content=json.dumps({"id": "ab3", "text": "conditions header", "role": "sectionHeading"})
         ),
-        Document(content={"id": "ab2", "text": "paragraph 2", "role": None}),
+        Document(content=json.dumps({"id": "ab2", "text": "paragraph 2", "role": None})),
         Document(
-            content={"id": "ab4", "text": "condition 1", "role": "sectionHeading"}
+            content=json.dumps({"id": "ab4", "text": "condition 1", "role": "sectionHeading"})
         ),
-        Document(content={"id": "ab5", "text": "condition 2", "role": None}),
+        Document(content=json.dumps({"id": "ab5", "text": "condition 2", "role": None})),
     ]
+
+    for p in paragraphs:
+        p.content = json.loads(p.content)
 
     with task_context(MockContext()):
         result = filter_paragraphs(paragraphs)
@@ -147,30 +154,33 @@ def test_filter_paragraphs_only_includes_paragraphs_in_conditions_section():
 def test_identify_bottom_of_first_page_header():
     paragraphs = [
         Document(
-            content={"id": "ab1", "text": "paragraph 1", "role": None},
+            content=json.dumps({"id": "ab1", "text": "paragraph 1", "role": None}),
             meta={"bounding_box": {"bottom": 40, "top": 30}},
         ),
         Document(
-            content={"id": "ab2", "text": "paragraph 2", "role": None},
+            content=json.dumps({"id": "ab2", "text": "paragraph 2", "role": None}),
             meta={"bounding_box": {"bottom": 40, "top": 30}},
         ),
         Document(
-            content={"id": "ab3", "text": "page header 1", "role": "pageHeader"},
+            content=json.dumps({"id": "ab3", "text": "page header 1", "role": "pageHeader"}),
             meta={"bounding_box": {"bottom": 10}},
         ),
         Document(
-            content={"id": "ab4", "text": "page header 2", "role": None},
+            content=json.dumps({"id": "ab4", "text": "page header 2", "role": None}),
             meta={"bounding_box": {"bottom": 20}},
         ),
         Document(
-            content={"id": "ab5", "text": "page header 2", "role": "sectionHeader"},
+            content=json.dumps({"id": "ab5", "text": "page header 2", "role": "sectionHeader"}),
             meta={"bounding_box": {"bottom": 20}},
         ),
         Document(
-            content={"id": "ab6", "text": "permit no", "role": "role3"},
+            content=json.dumps({"id": "ab6", "text": "permit no", "role": "role3"}),
             meta={"bounding_box": {"bottom": 30, "top": 40}},
         ),
     ]
+
+    for p in paragraphs:
+        p.content = json.loads(p.content)
 
     with task_context(MockContext()):
         result = _identify_bottom_of_first_page_header(paragraphs)

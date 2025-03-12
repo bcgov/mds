@@ -39,7 +39,6 @@ class PermitSearchService:
             SEARCH_ENDPOINT,
             data=json.dumps({'query': search_term['query'], 'filters': search_term.get('filters')}),
             stream=True,
-            headers={'Accept': 'text/event-stream'}
         )
         
         # Just return the response directly for streaming
