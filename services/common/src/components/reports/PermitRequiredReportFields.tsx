@@ -21,6 +21,7 @@ import { PermitReportInfoBox } from "./ReportInfoBox";
 import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
+import { uniqBy } from "lodash";
 
 export const ConditionCategories: FC<{ permitGuid: string; formName: FORM }> = ({
   permitGuid,
@@ -34,7 +35,7 @@ export const ConditionCategories: FC<{ permitGuid: string; formName: FORM }> = (
   }
 
   return (
-    <>
+    <div className="report-options">
       {conditionCategories?.map((category) => (
         <div key={category.condition_category_code}>
           <Typography.Paragraph strong className="margin-large--top" style={{ marginBottom: 0 }}>
@@ -61,7 +62,7 @@ export const ConditionCategories: FC<{ permitGuid: string; formName: FORM }> = (
           ))}
         </div>
       ))}
-    </>
+    </div>
   );
 };
 
@@ -76,7 +77,7 @@ export const PermitReportCodeRequirement: FC<{
   const conditionCategories = useAppSelector(getCategoriesWithReports(permitGuid));
   const reports = amendment?.mine_report_permit_requirements;
   const reportOptions = createDropDownList(
-    reports,
+    uniqBy(reports, "report_name"),
     "report_name",
     "mine_report_permit_requirement_id"
   );
@@ -143,7 +144,8 @@ export const RenderPRRFields: FC<{
   const formValues = useAppSelector(getFormValues(formName)) as IMineReportSubmission;
   const latestAmendment = useAppSelector(getLatestAmendmentByPermitGuid(formValues?.permit_guid));
   const { isFeatureEnabled } = useFeatureFlag();
-  const hasValidatedReports = isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE) &&
+  const hasValidatedReports =
+    isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE) &&
     latestAmendment?.conditions_review_completed &&
     latestAmendment?.mine_report_permit_requirements?.length > 0;
 
@@ -165,7 +167,7 @@ export const RenderPRRFields: FC<{
     if (selectedPermitReportDefinition) {
       dispatch(change(formName, "due_date", selectedPermitReportDefinition.initial_due_date));
     }
-  }, [selectedPermitReportDefinition?.condition_category_code])
+  }, [selectedPermitReportDefinition?.condition_category_code]);
 
   return (
     <>

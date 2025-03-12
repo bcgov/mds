@@ -49,7 +49,7 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
   const {
     report_type: selectedMineReportCategory,
     report_name: selectedMineReportDefinitionGuid,
-  } = useSelector(getFormValues(FORM.FILTER_REPORTS)) ?? {};
+  } = useSelector(getFormValues(FORM.FILTER_REPORTS)) as MineReportParams ?? {};
 
   const updateMineReportDefinitionOptions = (
     mineReportDefinitionOptions,

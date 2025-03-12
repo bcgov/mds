@@ -14,6 +14,7 @@ import { resetForm, normalizePhone, upperCase } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import { IPartyAddress } from "@mds/common/interfaces";
 
 interface AddQuickPartyFormProps {
   onSubmit: (values) => void | Promise<void>;
@@ -26,7 +27,7 @@ const AddQuickPartyForm: FC<AddQuickPartyFormProps> = (props) => {
   const dispatch = useDispatch();
   const submitting = useSelector(isSubmitting(FORM.ADD_QUICK_PARTY));
   const formValues = useSelector(getFormValues(FORM.ADD_QUICK_PARTY));
-  const { sub_division_code = "", address_type_code = "" } = formValues ?? {};
+  const { sub_division_code = "", address_type_code = "" } = formValues as IPartyAddress ?? {};
 
   useEffect(() => {
     const provinceOption = props.provinceOptions.find((prov) => prov.value === sub_division_code);

@@ -7,7 +7,7 @@ import { IMine, IPermit } from "@mds/common/interfaces";
 import React, { FC, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { renderDateColumn } from "@mds/common/components/common/CoreTableCommonColumns";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
@@ -20,11 +20,12 @@ import {
 import DigitalCredentialDetails from "@/components/mine/DigitalPermitCredential/DigitalCredentialDetails";
 import { VC_CRED_ISSUE_STATES } from "@mds/common/constants/enums";
 import { VC_ACTIVE_CREDENTIAL_STATES } from "@mds/common/constants/strings";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const { Paragraph, Title } = Typography;
 
 export const ViewDigitalPermitCredential: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const permits = useSelector(getPermits);
 
   const { permitGuid, id: mineGuid } = useParams<{

@@ -27,8 +27,13 @@
   height: unset;
 }
 
-.report-link span{
+.report-link span {
   display: inline;
+}
+
+.report-options {
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .report-summary-box {
@@ -43,8 +48,9 @@
 }
 
 .report-info-box {
-  height: 100%;
   padding: 16px;
   border: 1px solid #96ABC0;
   background: #fff;
+  position: sticky;
+  top: 100px;
 }

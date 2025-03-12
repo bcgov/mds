@@ -124,7 +124,7 @@ export const getMineReportPermitRequirementById = (permitGuid, reportId) =>
 
 export const getCategoriesWithReports = (permitGuid) => createSelector([getLatestAmendmentByPermitGuid(permitGuid)], (latestAmendment) => {
   return latestAmendment?.condition_categories.map((category) => {
-    const reports = latestAmendment.mine_report_permit_requirements.filter((report) => category.condition_category_code === report.condition_category_code);
+    const reports = uniqBy(latestAmendment.mine_report_permit_requirements,"report_name").filter((report) => category.condition_category_code === report.condition_category_code);
     return {
       ...category,
       reports

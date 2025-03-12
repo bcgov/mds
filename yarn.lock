@@ -1733,7 +1733,7 @@ __metadata:
     antd: 4.24.10
     array-move: 3.0.1
     autoprefixer: 10.4.20
-    axios: 1.7.2
+    axios: 1.8.2
     axios-mock-adapter: 1.17.0
     clean-webpack-plugin: 4.0.0
     copy-webpack-plugin: 12.0.2
@@ -1817,7 +1817,7 @@ __metadata:
     react-sortable-hoc: 2.0.0
     redux: 5.0.0
     redux-form: 8.2.6
-    redux-form-input-masks: 2.0.1
+    redux-form-input-masks: 2.0.2
     redux-mock-store: 1.5.4
     redux-thunk: 3.1.0
     regenerator-runtime: 0.13.3
@@ -1880,7 +1880,7 @@ __metadata:
     acorn: 6.4.1
     antd: 4.24.10
     autoprefixer: 10.4.20
-    axios: 1.7.2
+    axios: 1.8.2
     axios-mock-adapter: 1.17.0
     clean-webpack-plugin: 4.0.0
     copy-webpack-plugin: 12.0.2
@@ -1952,7 +1952,7 @@ __metadata:
     react-scroll: 1.7.12
     redux: 5.0.0
     redux-form: 8.2.6
-    redux-form-input-masks: 2.0.1
+    redux-form-input-masks: 2.0.2
     redux-mock-store: 1.5.4
     redux-thunk: 3.1.0
     regenerator-runtime: 0.13.3
@@ -4684,6 +4684,17 @@ __metadata:
     form-data: ^4.0.0
     proxy-from-env: ^1.1.0
   checksum: e457e2b0ab748504621f6fa6609074ac08c824bf0881592209dfa15098ece7e88495300e02cd22ba50b3468fd712fe687e629dcb03d6a3f6a51989727405aedf
+  languageName: node
+  linkType: hard
+
+"axios@npm:1.8.2":
+  version: 1.8.2
+  resolution: "axios@npm:1.8.2"
+  dependencies:
+    follow-redirects: ^1.15.6
+    form-data: ^4.0.0
+    proxy-from-env: ^1.1.0
+  checksum: c47a43b79a058aa9e53a65bec9ade35c9f6e76a3999c795a79a2d205fb5f803fd4245497a0209a9727cbbe4f558791dd852ad2c168c5fc030259c11598ed8fd7
   languageName: node
   linkType: hard
 
@@ -17498,10 +17509,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"redux-form-input-masks@npm:2.0.1":
-  version: 2.0.1
-  resolution: "redux-form-input-masks@npm:2.0.1"
-  checksum: c7dc332ffec11184bcce638896169bd22693c2fb734e08eb847c69075f401b1f7b6118c709a3d91942c9d47dc42166720eb362838c88354422c23a0cb88ef085
+"redux-form-input-masks@npm:2.0.2":
+  version: 2.0.2
+  resolution: "redux-form-input-masks@npm:2.0.2"
+  checksum: 7acd931710e5b4a6fc54c7d47e877609c1e6eb4d23fd97b81d4a787084a7f71cd7610cd190948d9cd54498d8268e590cae2c4aa8e9b2ce97d863eaa82ea16e34
   languageName: node
   linkType: hard
 

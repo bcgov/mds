@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import { ConnectedProps, connect } from "react-redux";
 import queryString from "query-string";
 import { Row, Col } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
@@ -19,6 +19,7 @@ import { ContactResultsTable } from "@/components/search/ContactResultsTable";
 import { DocumentResultsTable } from "@/components/search/DocumentResultsTable";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
+import { ISearchResultList } from "@mds/common/interfaces";
 
 interface SearchResultsProps {
   location: { search: string };
@@ -28,7 +29,7 @@ interface SearchResultsProps {
   searchOptions: any[];
   searchOptionsHash: { [key: string]: any };
   searchTerms: string[];
-  searchResults: { [key: string]: any };
+  searchResults: ISearchResultList;
   partyRelationshipTypeHash: { [key: string]: string };
   hideLoadingIndicator?: boolean;
 }
@@ -111,7 +112,7 @@ const CantFindIt = () => (
   </Row>
 );
 
-export const SearchResults: React.FC<SearchResultsProps> = (props) => {
+export const SearchResults: React.FC<SearchResultsProps & PropsFromRedux> = (props) => {
   const [isSearching, setIsSearching] = useState(false);
   const [hasSearchTerm, setHasSearchTerm] = useState(false);
   const [params, setParams] = useState<{ [key: string]: string }>({});
@@ -251,4 +252,8 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(SearchResults);

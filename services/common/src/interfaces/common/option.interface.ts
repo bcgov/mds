@@ -2,6 +2,8 @@ export interface IOption {
   label: string;
   value: string | number;
   tooltip?: string;
+  isActive?: boolean;
+  subType?: any;
 }
 
 export interface IRadioOption {
