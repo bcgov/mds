@@ -1,4 +1,4 @@
-import { Col, Divider, Row, Typography } from "antd";
+import { Col, Divider, notification, Row, Typography } from "antd";
 import { Link, useHistory, useParams } from "react-router-dom";
 import React, { FC, useEffect, useState } from "react";
 import {
@@ -114,6 +114,13 @@ export const TailingsSummaryPage: FC = () => {
         setUploadedFiles([]);
     };
 
+    const submissionComplete = () => {
+        notification.success({
+            message: "Successfully submitted Tailings Storage Facility",
+            duration: 10
+        });
+    }
+
     const handleSaveData = async (values, newActiveTab) => {
         let newTsf = null;
 
@@ -176,17 +183,23 @@ export const TailingsSummaryPage: FC = () => {
                 break;
         }
 
-        history.push(
-            GLOBAL_ROUTES?.EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
-                newTsf?.data.mine_tailings_storage_facility_guid || tsfGuid,
-                mineGuid,
-                newActiveTab || "engineer-of-record",
-                isUserActionEdit
-            )
-        );
-    };
+        if (newActiveTab) {
+            history.push(
+                GLOBAL_ROUTES?.EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
+                    newTsf?.data.mine_tailings_storage_facility_guid || tsfGuid,
+                    mineGuid,
+                    newActiveTab,
+                    isUserActionEdit
+                )
+            );
+        } else {
+            submissionComplete();
+        }
+    }
+
 
     const handleTabChange = async (newActiveTab) => {
+        if (!newActiveTab) { return; }
         let url;
 
         if (tsfGuid) {

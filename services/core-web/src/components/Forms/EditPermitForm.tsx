@@ -32,7 +32,7 @@ export const EditPermitForm: FC<EditPermitFormProps> = ({
   const dispatch = useDispatch();
   const permitStatusOptions = useSelector(getDropdownPermitStatusOptions);
   const exemptionFeeStatusDropDownOptions = useSelector(getExemptionFeeStatusDropDownOptions);
-  const formValues = useSelector(getFormValues(FORM.EDIT_PERMIT)) ?? {};
+  const formValues = useSelector(getFormValues(FORM.EDIT_PERMIT)) as IPermit;
 
   useEffect(() => {
     const isExploration = initialValues.permit_no.charAt(1) === "X";
@@ -68,8 +68,8 @@ export const EditPermitForm: FC<EditPermitFormProps> = ({
             required
             validate={[required]}
           />
-          {(formValues.permit_status_code === "C" ||
-            formValues.remaining_static_liability !== null) && (
+          {(formValues?.permit_status_code === "C" ||
+            formValues?.remaining_static_liability !== null) && (
               <Field
                 id="remaining_static_liability"
                 name="remaining_static_liability"

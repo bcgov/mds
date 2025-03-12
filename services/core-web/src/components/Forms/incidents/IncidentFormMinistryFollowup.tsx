@@ -17,6 +17,7 @@ import {
   requiredList,
 } from "@mds/common/redux/utils/Validate";
 import { PlusOutlined } from "@ant-design/icons";
+import { IMineIncident } from "@mds/common/interfaces";
 
 interface IncidentFormMinistryFollowupProps {
   isEditMode: boolean;
@@ -33,7 +34,7 @@ const IncidentFormMinistryFollowup: FC<IncidentFormMinistryFollowupProps> = ({
   dangerousOccurenceSubparagraphOptions,
   inspectorOptions,
 }) => {
-  const formValues = useSelector((state) => getFormValues(ADD_EDIT_INCIDENT)(state));
+  const formValues = useSelector((state) => getFormValues(ADD_EDIT_INCIDENT)(state)) as IMineIncident;
 
   const filteredFollowUpActions = incidentFollowUpActionOptions.filter(
     (act) => act.mine_incident_followup_investigation_type !== INCIDENT_FOLLOWUP_ACTIONS.unknown

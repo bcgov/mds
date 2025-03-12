@@ -29,6 +29,7 @@ import { TablePaginationConfig } from "antd/es/table";
 import DocumentCompression from "@mds/common/components/documents/DocumentCompression";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { getMineReportDefinitionHash } from "@mds/common/redux/slices/complianceReportsSlice";
+import { PresetStatusColorType } from "antd/lib/_util/colors";
 
 interface MineReportTableProps {
   mineReports: IMineReport[];
@@ -164,7 +165,7 @@ export const MineReportTable: FC<MineReportTableProps> = ({
       render: (text) => (
         <div title="Status">
           <Badge
-            status={getReportSubmissionBadgeStatusType(text)}
+            status={getReportSubmissionBadgeStatusType(text) as PresetStatusColorType}
             text={text || Strings.EMPTY_FIELD}
           />
         </div>
