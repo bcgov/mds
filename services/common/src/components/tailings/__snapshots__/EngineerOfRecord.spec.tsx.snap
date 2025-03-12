@@ -89,6 +89,17 @@ exports[`Tailings EngineerOfRecord renders properly 1`] = `
             class="ant-alert-content"
           >
             <div
+              class="ant-alert-message"
+            >
+              <div
+                class="ant-typography"
+              >
+                <strong>
+                  Engineer of Record Assignment
+                </strong>
+              </div>
+            </div>
+            <div
               class="ant-alert-description"
             >
               <div
@@ -396,7 +407,10 @@ exports[`Tailings EngineerOfRecord renders properly 1`] = `
             <h4
               class="ant-typography margin-large--top"
             >
-              Historical Engineer of Record List
+              Historical
+               
+              Engineer of Record
+               List
             </h4>
             <div
               class="ant-table-wrapper  core-table"

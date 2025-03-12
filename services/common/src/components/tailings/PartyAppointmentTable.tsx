@@ -6,9 +6,7 @@ import {
   fetchPartyRelationships,
 } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import {
-  PARTY_APPOINTMENT_STATUS,
-} from "@mds/common/constants/strings";
+import { PARTY_APPOINTMENT_STATUS } from "@mds/common/constants/strings";
 import RenderSelect from "../forms/RenderSelect";
 import { FORM } from "@mds/common/constants/forms";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
@@ -18,10 +16,11 @@ import { formatDate } from "@mds/common/redux/utils/helpers";
 
 interface PartyAppointmentTableProps {
   canEditTSF: boolean;
+  eor_or_qp?: "engineers_of_record" | "qualified_persons";
 }
 
 const PartyAppointmentTable: FC<PartyAppointmentTableProps> = (props) => {
-  const { canEditTSF } = props;
+  const { canEditTSF, eor_or_qp = "engineers_of_record" } = props;
   const dispatch = useAppDispatch();
   const tsfFormName = FORM.ADD_TAILINGS_STORAGE_FACILITY;
   const isCore = useAppSelector(getIsCore);
@@ -149,11 +148,12 @@ const PartyAppointmentTable: FC<PartyAppointmentTableProps> = (props) => {
     <Row>
       <Col span={24}>
         <Typography.Title level={4} className="margin-large--top">
-          Historical Engineer of Record List
+          Historical{" "}
+          {eor_or_qp === "engineers_of_record" ? "Engineer of Record" : "Qualified Persons"} List
         </Typography.Title>
 
         <FieldArray
-          name="engineers_of_record"
+          name={eor_or_qp}
           props={{}}
           component={({ fields }) => (
             <CoreTable

@@ -169,6 +169,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
             </Col>
           </Row>
           <Alert
+            message={<Paragraph strong>Engineer of Record Assignment</Paragraph>}
             description={
               <Paragraph>
                 As{" "}
@@ -185,7 +186,6 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
             }
             showIcon
             type="info"
-            message={""}
           />
 
           <Typography.Title level={4} className="margin-large--top">
