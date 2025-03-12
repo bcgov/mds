@@ -1,7 +1,6 @@
 import React, { FC, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { change, formValueSelector, getFormValues } from "@mds/common/components/forms/form";
+import { change, getFormValues, isPristine } from "@mds/common/components/forms/form";
 import { Col, Row } from "antd";
 import { IMineIncident } from "@mds/common/interfaces";
 import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
@@ -27,6 +26,7 @@ import IncidentFormMinistryFollowup from "@/components/Forms/incidents/IncidentF
 import { removeDocumentFromMineIncident } from "@mds/common/redux/actionCreators/incidentActionCreator";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 
 export const INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD = "initial_incident_documents";
 export const FINAL_REPORT_DOCUMENTS_FORM_FIELD = "final_report_documents";
@@ -56,20 +56,19 @@ export const IncidentForm: FC<IncidentFormProps> = (props) => {
   const { isEditMode, handlers: parentHandlers } = props;
   const isNewIncident = Boolean(!mineIncidentGuid);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const incidentDeterminationOptions = useSelector(getDropdownIncidentDeterminationOptions);
-  const incidentStatusCodeHash = useSelector(getIncidentStatusCodeHash);
-  const dangerousOccurenceSubparagraphOptions = useSelector(
+  const incidentDeterminationOptions = useAppSelector(getDropdownIncidentDeterminationOptions);
+  const incidentStatusCodeHash = useAppSelector(getIncidentStatusCodeHash);
+  const dangerousOccurenceSubparagraphOptions = useAppSelector(
     getDangerousOccurrenceSubparagraphOptions
   );
-  const incidentFollowUpActionOptions = useSelector(getDropdownIncidentFollowupActionOptions);
-  const inspectorOptions = useSelector(getDropdownInspectors) || [];
-  const selector = formValueSelector(FORM.ADD_EDIT_INCIDENT);
-  const documents = useSelector((state) => selector(state, "documents")) || [];
-  const formValues = useSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state)) || {};
-  const dropdownIncidentStatusCodeOptions = useSelector(getDropdownIncidentStatusCodeOptions);
-  const isPristine = useSelector((state) => state.form[FORM.ADD_EDIT_INCIDENT]?.pristine);
+  const incidentFollowUpActionOptions = useAppSelector(getDropdownIncidentFollowupActionOptions);
+  const inspectorOptions = useAppSelector(getDropdownInspectors) || [];
+
+  const formValues = useAppSelector(getFormValues(FORM.ADD_EDIT_INCIDENT)) as Partial<IMineIncident>;
+  const dropdownIncidentStatusCodeOptions = useAppSelector(getDropdownIncidentStatusCodeOptions);
+  const pristine = useAppSelector(isPristine(FORM.ADD_EDIT_INCIDENT));
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
@@ -135,7 +134,7 @@ export const IncidentForm: FC<IncidentFormProps> = (props) => {
           incidentStatusCodeHash={incidentStatusCodeHash}
           isEditMode={isEditMode}
           formValues={formValues}
-          pristine={isPristine}
+          pristine={pristine}
         />
       </Col>
       <Row>
@@ -148,7 +147,7 @@ export const IncidentForm: FC<IncidentFormProps> = (props) => {
           />
           <br />
           <IncidentFormDocuments
-            documents={documents}
+            documents={formValues?.documents ?? []}
             isEditMode={isEditMode}
             onFileLoad={onFileLoad}
             onDeleteDocument={handleDeleteDocument}
@@ -164,7 +163,7 @@ export const IncidentForm: FC<IncidentFormProps> = (props) => {
           />
           <br />
           <IncidentFormInternalDocumentComments
-            documents={documents}
+            documents={formValues?.documents ?? []}
             incident={props.incident}
             isEditMode={isEditMode}
             onFileLoad={onFileLoad}

@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
 import { Menu, Dropdown } from "antd";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   getEditingConditionFlag,
   getDraftPermitAmendmentForNOW,
@@ -33,8 +33,6 @@ interface AddCondtionProps {
   fetchStandardPermitConditions?: ActionCreator<typeof fetchStandardPermitConditions>;
   createStandardPermitCondition?: ActionCreator<typeof createStandardPermitCondition>;
   draftPermitAmendment?: IDraftPermitAmendment;
-  match?: any;
-  location?: any;
   layer: number;
 }
 
@@ -45,30 +43,32 @@ const typeFromURL = {
   placer: "PLA",
 };
 
-export const AddCondition: FC<RouteComponentProps & AddCondtionProps> = (props) => {
+export const AddCondition: FC<AddCondtionProps> = (props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [conditionType, setConditionType] = useState("SEC");
+  const params = useParams<{ mine_guid?: string, permit_guid?: string, id?: string, type?: string }>();
+  const location = useLocation();
 
   const handleSubmit = (values) => {
     const isDraftPermit = !isEmpty(props.draftPermitAmendment);
     const permitAmendmentGuid = isDraftPermit
       ? props.draftPermitAmendment.permit_amendment_guid
-      : props.match.params.id;
-    const isAdminDashboard = props.location.pathname.includes("admin/permit-condition-management");
+      : params.id;
+    const isAdminDashboard = location.pathname.includes("admin/permit-condition-management");
 
     const payload = { ...values, condition_type_code: conditionType };
     if (isAdminDashboard) {
       return props
-        .createStandardPermitCondition(typeFromURL[props.match.params.type], payload)
+        .createStandardPermitCondition(typeFromURL[params.type], payload)
         .then(() => {
           setIsEditing(false);
-          props.fetchStandardPermitConditions(typeFromURL[props.match.params.type]);
+          props.fetchStandardPermitConditions(typeFromURL[params.type]);
           props.setEditingConditionFlag(false);
         });
     }
     return props.createPermitCondition(permitAmendmentGuid, payload).then(() => {
       setIsEditing(false);
-      props.fetchPermitConditions(permitAmendmentGuid);
+      props.fetchPermitConditions(params.mine_guid, params.permit_guid, permitAmendmentGuid);
       if (isDraftPermit) {
         props.fetchDraftPermitByNOW(null, props.draftPermitAmendment.now_application_guid);
       }
@@ -217,8 +217,7 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default withRouter(
+export default
   connect(mapStateToProps, mapDispatchToProps)(AddCondition as any) as FC<
-    AddCondtionProps & RouteComponentProps
-  >
-);
+    AddCondtionProps
+  >;

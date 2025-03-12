@@ -5,14 +5,31 @@ import {
   HELP_GUIDE_MS,
   MINE_REPORT_CATEGORY_OPTIONS,
   MINE_REPORT_DEFINITION_OPTIONS,
+  MINES,
   PERMIT_CONDITION_EXTRACTION,
   PERMIT_CONDITION_REVIEW_ASSIGNMENTS,
+  PERMITS,
   PROJECT,
   PROJECT_SUMMARY_MINISTRY_COMMENTS,
   SEARCH_PERMIT_CONDITIONS_RESPONSE,
 } from "@mds/common/tests/mocks/dataMocks";
 import queryString from "query-string";
 import { SystemFlagEnum } from "../constants/enums";
+
+const mineHandlers = [
+  http.get("/%3CAPI_URL%3E/mines/:mineGuid", async ({ params }) => {
+    const { mineGuid } = params;
+    const mine = MINES.mines[mineGuid as string];
+    if (mine) {
+      return HttpResponse.json(mine)
+    }
+    return HttpResponse.json({
+      message: "404 Not Found: Mine not found.",
+      status: 404,
+      trace_id: "mineHandler_404"
+    });
+  }),
+];
 
 const geoSpatialHandlers = [
   http.get("/%3CAPI_URL%3E/mines/document-bundle/shape", async () => {
@@ -40,6 +57,35 @@ const permitHandlers = [
   }),
   http.get("/%3CAPI_URL%3E/mines/permits/condition-category-codes", async () => {
     return HttpResponse.json(MINE_REPORT_CATEGORY_OPTIONS)
+  }),
+  http.get("/%3CAPI_URL%3E/mines/:mineGuid/permits/:permitGuid/amendments/:permitAmendmentGuid/conditions", async ({ params }) => {
+    const { _mineGuid, permitGuid, permitAmendmentGuid } = params;
+    const permit = PERMITS.find((permit) => permit.permit_guid === permitGuid);
+    const permitAmendment = permit?.permit_amendments?.find((amendment) => amendment.permit_amendment_guid === permitAmendmentGuid);
+
+    if (permitAmendment) {
+      const resp = { records: permitAmendment?.conditions };
+      return HttpResponse.json(resp);
+    }
+    return HttpResponse.json({
+      message: "404 Not Found: Permit Amendment not found.",
+      status: 404,
+      trace_id: "permitHandler_conditions_404"
+    })
+  }),
+  http.get("/%3CAPI_URL%3E/mines/:mineGuid/permits/:permitGuid/amendments/:permitAmendmentGuid", async ({ params }) => {
+    const { _mineGuid, permitGuid, permitAmendmentGuid } = params;
+    const permit = PERMITS.find((permit) => permit.permit_guid === permitGuid);
+    const permitAmendment = permit?.permit_amendments?.find((amendment) => amendment.permit_amendment_guid === permitAmendmentGuid);
+
+    if (permitAmendment) {
+      return HttpResponse.json(permitAmendment);
+    }
+    return HttpResponse.json({
+      message: "404 Not Found: Permit Amendment not found.",
+      status: 404,
+      trace_id: "permitHandler_conditions_404"
+    })
   }),
 ];
 
@@ -145,6 +191,6 @@ const reviewAssignmentHandler = http.get("/%3CAPI_URL%3E/mines/permits/condition
   return HttpResponse.json(response);
 });
 
-const commonHandlers = [...geoSpatialHandlers, ...projectHandlers, helpHandler, ...permitHandlers, ...permitSearchHandlers, complianceReportHandler, reviewAssignmentHandler];
+const commonHandlers = [...mineHandlers, ...geoSpatialHandlers, ...projectHandlers, helpHandler, ...permitHandlers, ...permitSearchHandlers, complianceReportHandler, reviewAssignmentHandler];
 
 export default commonHandlers;

@@ -401,6 +401,8 @@ export const GeneratePermitForm = (props) => {
       {props.draftPermitAmendment.has_permit_conditions && (
         <ScrollContentWrapper id="conditions" title="Conditions" isLoaded={props.isLoaded}>
           <Conditions
+            mineGuid={props.noticeOfWork.mine_guid}
+            permitGuid={props.draftPermit.permit_guid}
             isViewMode={props.isViewMode}
             isSourcePermitGeneratedInCore={props.noticeOfWork.is_source_permit_generated_in_core}
             isNoWApplication={props.noticeOfWork.application_type_code === "NOW"}

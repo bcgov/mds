@@ -1,0 +1,29 @@
+name: Postgres - Promote Test
+
+on:
+  workflow_dispatch:
+
+env:
+  ORIG_TAG: dev
+  PROMOTE_TAG: test
+  IMAGE: postgres
+
+jobs:
+  promote-image:
+    name: promote-image
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Install oc
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: "4.7"
+
+      - name: oc login
+        run: |
+          oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+
+      - name: Promote from dev to test
+        run: |
+          oc -n ${{secrets.NS_TOOLS}} tag \
+          ${{ secrets.NS_TOOLS }}/${{ env.IMAGE }}:${{ env.ORIG_TAG }} \
+          ${{ secrets.NS_TOOLS }}/${{ env.IMAGE }}:${{ env.PROMOTE_TAG }}

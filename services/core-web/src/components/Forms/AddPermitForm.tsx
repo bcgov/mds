@@ -27,6 +27,7 @@ import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons"
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
+import { ICreatePermitPayload } from "@mds/common/interfaces";
 
 interface AddPermitFormProps {
   onSubmit: (values) => void | Promise<void>;
@@ -84,7 +85,7 @@ export const AddPermitForm: FC<AddPermitFormProps> = (props) => {
   const exemptionFeeStatusDropDownOptions = useSelector(getExemptionFeeStatusDropDownOptions);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const formName = FORM.ADD_PERMIT;
-  const formValues = useSelector(getFormValues(formName));
+  const formValues = useSelector(getFormValues(formName)) as ICreatePermitPayload;
   const { site_properties, permit_type = "", permit_status_code = "", is_exploration = false, security_not_required } = formValues ?? {};
   const { mine_tenure_type_code, mine_disturbance_code } = site_properties ?? {};
 
@@ -131,7 +132,7 @@ export const AddPermitForm: FC<AddPermitFormProps> = (props) => {
       dispatch(change(formName, "exemption_fee_status_code", statusCode));
     }
 
-  }, [permit_status_code, permit_type, mine_tenure_type_code]);
+  }, [permit_status_code, permit_type, mine_tenure_type_code, mine_disturbance_code]);
 
   const isCoalOrMineral =
     mine_tenure_type_code === "COL" ||

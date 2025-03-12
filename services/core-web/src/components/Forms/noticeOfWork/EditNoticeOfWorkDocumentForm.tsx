@@ -16,7 +16,7 @@ import RenderCheckbox from "@mds/common/components/forms/RenderCheckbox";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
-import { IMineDocument } from "@mds/common/interfaces";
+import { IMineDocument, INoWDocument } from "@mds/common/interfaces";
 
 export interface EditNoticeOfWorkDocumentFormProps {
   onSubmit: (values) => void | Promise<void>;
@@ -38,7 +38,7 @@ const EditNoticeOfWorkDocumentForm: FC<EditNoticeOfWorkDocumentFormProps> = ({
   initialValues,
 }) => {
   const dispatch = useDispatch();
-  const formValues = useSelector(getFormValues(FORM.EDIT_NOTICE_OF_WORK_DOCUMENT_FORM)) ?? {};
+  const formValues = useSelector(getFormValues(FORM.EDIT_NOTICE_OF_WORK_DOCUMENT_FORM)) as INoWDocument ?? { is_final_package: false};
   const { is_final_package } = formValues;
   const dropdownNoticeOfWorkApplicationDocumentTypeOptions = useSelector(
     getDropdownNoticeOfWorkApplicationDocumentTypeOptions

@@ -1,4 +1,4 @@
-import { Col, Divider, Row, Typography } from "antd";
+import { Col, Divider, notification, Row, Typography } from "antd";
 import { Link, useHistory, useParams } from "react-router-dom";
 import React, { FC, useEffect, useState } from "react";
 import {
@@ -69,7 +69,7 @@ export const TailingsSummaryPage: FC = () => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const canEditTSF = !isCore || coreCanEditTsf;
 
-    const isUserActionEdit = userAction === "edit";
+    const isUserActionEdit = canEditTSF && userAction === "edit";
 
     const handleFetchData = async (forceReload = false) => {
         setIsReloading(true);
@@ -113,6 +113,13 @@ export const TailingsSummaryPage: FC = () => {
         );
         setUploadedFiles([]);
     };
+
+    const submissionComplete = () => {
+        notification.success({
+            message: "Successfully submitted Tailings Storage Facility",
+            duration: 10
+        });
+    }
 
     const handleSaveData = async (values, newActiveTab) => {
         let newTsf = null;
@@ -176,17 +183,23 @@ export const TailingsSummaryPage: FC = () => {
                 break;
         }
 
-        history.push(
-            GLOBAL_ROUTES?.EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
-                newTsf?.data.mine_tailings_storage_facility_guid || tsfGuid,
-                mineGuid,
-                newActiveTab || "engineer-of-record",
-                isUserActionEdit
-            )
-        );
-    };
+        if (newActiveTab) {
+            history.push(
+                GLOBAL_ROUTES?.EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
+                    newTsf?.data.mine_tailings_storage_facility_guid || tsfGuid,
+                    mineGuid,
+                    newActiveTab,
+                    isUserActionEdit
+                )
+            );
+        } else {
+            submissionComplete();
+        }
+    }
+
 
     const handleTabChange = async (newActiveTab) => {
+        if (!newActiveTab) { return; }
         let url;
 
         if (tsfGuid) {
@@ -229,10 +242,11 @@ export const TailingsSummaryPage: FC = () => {
                 <SteppedForm
                     initialValues={initialValues}
                     name={formName}
+                    isEditMode={isUserActionEdit}
                     handleSaveData={handleSaveData}
                     handleTabChange={handleTabChange}
                     activeTab={tab}
-                    sectionChangeText={canEditTSF && isUserActionEdit ? undefined : "Continue"}
+                    sectionChangeText={isUserActionEdit ? undefined : "Continue"}
                     reduxFormConfig={{
                         touchOnBlur: true,
                         touchOnChange: false,
@@ -267,12 +281,6 @@ export const TailingsSummaryPage: FC = () => {
                     </Step>
                     <Step key="associated-dams" disabled={!hasCreatedTSF}>
                         <AssociatedDams canEditTSF={canEditTSF} isEditMode={isUserActionEdit} />
-                    </Step>
-                    <Step key="reports" disabled={!hasCreatedTSF}>
-                        <div />
-                    </Step>
-                    <Step key="summary" disabled={!hasCreatedTSF}>
-                        <div />
                     </Step>
                 </SteppedForm>
             </div>

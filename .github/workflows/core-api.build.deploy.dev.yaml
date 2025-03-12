@@ -20,7 +20,7 @@ env:
 
 jobs:
   build-backend:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -37,7 +37,7 @@ jobs:
           docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}
 
   build-flyway:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -60,7 +60,7 @@ jobs:
         
 
   trigger-gitops:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     needs: [build-backend, build-flyway]
     steps:
@@ -82,7 +82,7 @@ jobs:
         run: ./gitops/watch-deployment.sh core-api dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} ${{ secrets.ARGOCD_SERVER }} ${{ secrets.ARGO_CD_CLI_JWT }}
 
   run-if-failed:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: [build-backend, build-flyway, trigger-gitops]
     if: ${{ always() && contains(needs.*.result, 'failure') }}
     steps:

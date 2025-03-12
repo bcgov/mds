@@ -110,8 +110,9 @@ const SteppedForm: FC<SteppedFormProps> = ({
       if (handleSaveData && (await saveCheck())) {
         await handleSaveData(getValues(formValues), tab, `${tabs[tabIndex]}`);
       }
-      if (errors.length > 0) return;
-      setTabIndex(indexOf(tabs, tab));
+      if (errors.length === 0 && tab) {
+        setTabIndex(indexOf(tabs, tab));
+      }
     } finally {
       setIsSubmitting(false);
     }

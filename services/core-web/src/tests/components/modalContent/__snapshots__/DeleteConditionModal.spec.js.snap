@@ -2,45 +2,97 @@
 
 exports[`DeleteConditionModal renders properly 1`] = `
 <div>
-  <Result
-    status="warning"
-    style={
-      Object {
-        "padding": "0px",
-      }
-    }
-    title="Are you sure you want to delete the following undefined"
-  />
-  <br />
-  <ConditionLayerOne
-    condition={Object {}}
-    handleCancel={[Function]}
-    handleDelete={[Function]}
-    handleSubmit={[Function]}
-    initialValues={Object {}}
-    isViewOnly={true}
-    new={false}
-    reorderConditions={[Function]}
-    setConditionEditingFlag={[Function]}
-  />
   <div
-    className="right center-mobile"
+    class="ant-result ant-result-warning"
+    style="padding: 0px;"
   >
-    <Button
-      className="full-mobile"
-      onClick={[MockFunction]}
-      type="secondary"
+    <div
+      class="ant-result-icon"
     >
-      Cancel
-    </Button>
-    <Button
-      className="full-mobile"
-      htmlType="submit"
-      onClick={[Function]}
-      type="primary"
+      <span
+        aria-label="warning"
+        class="anticon anticon-warning"
+        role="img"
+      >
+        <svg
+          aria-hidden="true"
+          data-icon="warning"
+          fill="currentColor"
+          focusable="false"
+          height="1em"
+          viewBox="64 64 896 896"
+          width="1em"
+        >
+          <path
+            d="M955.7 856l-416-720c-6.2-10.7-16.9-16-27.7-16s-21.6 5.3-27.7 16l-416 720C56 877.4 71.4 904 96 904h832c24.6 0 40-26.6 27.7-48zM480 416c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v184c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V416zm32 352a48.01 48.01 0 010-96 48.01 48.01 0 010 96z"
+          />
+        </svg>
+      </span>
+    </div>
+    <div
+      class="ant-result-title"
     >
-      mockTitle
-    </Button>
+      Are you sure you want to delete the following section? All associated conditions and list items will be removed.
+    </div>
+  </div>
+  <br />
+  <div
+    class="ant-row"
+    style="margin: -12px -8px -12px -8px;"
+  >
+    <div
+      class="ant-col ant-col-2"
+      style="padding: 12px 8px 12px 8px;"
+    >
+      1.
+    </div>
+    <div
+      class="ant-col ant-col-17 field-title"
+      style="padding: 12px 8px 12px 8px;"
+    >
+      <span
+        class="injectable-string"
+      >
+        <span>
+          Section decade check including.
+        </span>
+      </span>
+    </div>
+    <div
+      class="ant-col ant-col-4 float-right show-on-hover"
+      style="padding: 12px 8px 12px 8px;"
+    />
+  </div>
+  <div
+    class="ant-row"
+    style="margin-left: -16px; margin-right: -16px;"
+  >
+    <div
+      class="ant-col ant-col-24"
+      style="padding-left: 16px; padding-right: 16px;"
+    >
+       
+    </div>
+  </div>
+  <div
+    class="right center-mobile"
+  >
+    <button
+      class="ant-btn ant-btn-default full-mobile"
+      type="button"
+    >
+      <span>
+        Cancel
+      </span>
+    </button>
+    <button
+      class="ant-btn ant-btn-primary full-mobile"
+      type="submit"
+    >
+      <span>
+        mockTitle
+      </span>
+    </button>
   </div>
 </div>
 `;

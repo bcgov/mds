@@ -6,7 +6,7 @@ import {
   updatePermit,
   createPermitAmendment,
   updatePermitAmendment,
-  getPermitAmendment,
+  fetchPermitAmendment,
   removePermitAmendmentDocument,
   deletePermitAmendment,
   deletePermit,
@@ -241,27 +241,30 @@ describe("`updatePermitAmendment` action creator", () => {
   });
 });
 
-describe("`getPermitAmendment` action creator", () => {
+describe("`fetchPermitAmendment` action creator", () => {
   const mineGuid = "12345-6789";
+  const permitGuid = "12345-6789";
   const permitAmdendmentGuid = "12345-6789";
 
-  const url = `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT(mineGuid, null, permitAmdendmentGuid)}`;
+  const url = `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT(mineGuid, permitGuid, permitAmdendmentGuid)}`;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return getPermitAmendment(
+    return fetchPermitAmendment(
       mineGuid,
+      permitGuid,
       permitAmdendmentGuid
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
+      expect(dispatch).toHaveBeenCalledTimes(5);
     });
   });
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url).reply(418, MOCK.ERROR);
-    return getPermitAmendment(
+    return fetchPermitAmendment(
       mineGuid,
+      permitGuid,
       permitAmdendmentGuid
     )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
@@ -534,12 +537,14 @@ describe("`createStandardPermitCondition` action creator", () => {
 
 // permit conditions
 describe("`fetchPermitConditions` action creator", () => {
+  const mineGuid = "123";
+  const permitGuid = "456";
   const permitAmdendmentGuid = "768787";
-  const url = ENVIRONMENT.apiUrl + API.PERMIT_CONDITIONS(null, null, permitAmdendmentGuid);
+  const url = ENVIRONMENT.apiUrl + API.PERMIT_CONDITIONS(mineGuid, permitGuid, permitAmdendmentGuid);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchPermitConditions(permitAmdendmentGuid)(dispatch).then(() => {
+    return fetchPermitConditions(mineGuid, permitGuid, permitAmdendmentGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -548,7 +553,7 @@ describe("`fetchPermitConditions` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return fetchPermitConditions(permitAmdendmentGuid)(dispatch).then(() => {
+    return fetchPermitConditions(mineGuid, permitGuid, permitAmdendmentGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
