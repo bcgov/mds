@@ -36,6 +36,7 @@ import {
   ITailingsStorageFacility,
   IMineReportSubmission,
 } from "@mds/common/interfaces";
+import { HaystackDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
 
 export const createMockHeader = () => ({
   headers: {
@@ -3204,6 +3205,42 @@ export const SEARCH_OPTIONS = [
     description: "Permit Documents",
   },
 ];
+
+export const MOCK_PERMIT_SEARCH_RESULT: HaystackDocumentSearchResult = {
+  id: 'test-123',
+  content: 'Test content',
+  score: 3.5,
+  meta: {
+    mine_guid: 'mine-123',
+    permit_guid: 'permit-123',
+    permit_amendment_guid: 'amendment-123',
+    mine_name: 'Test Mine',
+    permit: 'M-123',
+    mine_number: 'BC-123',
+    document_manager_guid: 'doc-123',
+    category: 'Permit',
+    document_name: 'test.pdf',
+    issue_date: '2023-01-15',
+    step: '1',
+    step_path: 'Section.1',
+    highlights: {
+      content: ['Highlighted <em>test</em> content']
+    },
+    context: {
+      parent_contexts: {
+        '1': { id: 'p1', content: 'Parent 1', step: '1', hierarchy: 'A.1' },
+        '2': { id: 'p2', content: 'Parent 2', step: '2', hierarchy: 'A.2' }
+      },
+      sibling_contexts: {
+        previous: [{ id: 'prev1', content: 'Previous', step: '1', hierarchy: 'A.1' }],
+        next: [{ id: 'next1', content: 'Next', step: 'a', hierarchy: 'A.1.a' }]
+      },
+      child_contexts: [
+        { id: 'child1', content: 'Child 1', step: 'B', hierarchy: 'B' }
+      ]
+    }
+  }
+};
 
 export const SEARCH_RESULTS = {
   search_terms: ["Abb"],

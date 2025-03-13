@@ -29,7 +29,7 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ markdown }) => {
     }, [markdown]);
 
     // Smoothly scroll to the condition when a reference is clicked.
-    const handleClick = (event: React.MouseEvent) => {
+    const handleClick = (event: React.MouseEvent | React.KeyboardEvent) => {
         const target = event.target as HTMLAnchorElement;
         if (target.tagName === 'A' && target.href.includes('#condition-')) {
             event.preventDefault();
@@ -43,10 +43,12 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ markdown }) => {
     };
 
     return (
-        <div className="permit-search__markdown" onClick={handleClick}>
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {processedMarkdown}
-            </ReactMarkdown>
+        <div className="permit-search__markdown" onClick={handleClick} onKeyDown={handleClick} role="none">
+            <div data-testid="markdown-content">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {processedMarkdown}
+                </ReactMarkdown>
+            </div>
         </div>
     );
 };

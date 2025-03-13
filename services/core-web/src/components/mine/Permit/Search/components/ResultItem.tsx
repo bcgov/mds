@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Typography, Tag, Row, Col } from 'antd';
+import { Typography, Tag, Row, Col, Button } from 'antd';
 import { ContextItem, HaystackDocumentSearchResult } from '@mds/common/src/interfaces/search/facet-search.interface';
 import dayjs from 'dayjs';
 import { formatPermitConditionStep } from '@mds/common/utils/helpers';
@@ -107,6 +107,7 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
             key={item.id}
             className={`permit-search__context-item ${isChild ? 'permit-search__context-item--child' : ''}`}
             gutter={0}
+            data-testid={`context-item-${item.id}`}
         >
             <Col flex="auto" className="permit-search__context-content">
                 {item.step ? `${item.step}. ` : ''}
@@ -116,17 +117,18 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
     );
 
     const renderExpandLink = (direction: 'above' | 'below', count: number) => (
-        <a
+        <Button
             onClick={() => setExpandedContext(direction)}
-            onKeyDown={() => setExpandedContext(direction)}
             className="permit-search__expand-link"
+            type="link"
+            data-testid={`expand-${direction}-contexts`}
         >
             <FontAwesomeIcon
                 icon={direction === 'above' ? faChevronUp : faChevronDown}
                 style={{ marginRight: '4px' }}
             />
             {`Show ${count}`}
-        </a>
+        </Button>
     );
 
     const renderContexts = () => {
@@ -135,10 +137,12 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
         const nextSiblings = meta.context?.sibling_contexts?.next || [];
         const childContexts = meta.context?.child_contexts || [];
 
-        const aboveContexts = [...parentContexts, ...prevSiblings];
+        const aboveContexts = [...parentContexts, ...prevSiblings].sort((a, b) =>
+            (a.step || '').localeCompare(b.step || '')
+        );
         const belowContexts = [...childContexts, ...nextSiblings];
 
-        const defaultAboveContext = aboveContexts[aboveContexts.length - 1];
+        const defaultAboveContext = parentContexts[parentContexts.length - 1];
         const defaultBelowContext = belowContexts[0];
 
         return (
@@ -155,13 +159,14 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
                                             </Col>
                                             {index === 0 && (
                                                 <Col>
-                                                    <a
+                                                    <Button
                                                         onClick={() => setExpandedContext(null)}
                                                         className="permit-search__expand-link"
+                                                        type="link"
                                                     >
                                                         <FontAwesomeIcon icon={faChevronUp} style={{ marginRight: '4px' }} />
                                                         Show less
-                                                    </a>
+                                                    </Button>
                                                 </Col>
                                             )}
                                         </Row>
@@ -197,13 +202,14 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
                                             </Col>
                                             {index === belowContexts.length - 1 && (
                                                 <Col>
-                                                    <a
+                                                    <Button
                                                         onClick={() => setExpandedContext(null)}
                                                         className="permit-search__expand-link"
+                                                        type="link"
                                                     >
                                                         <FontAwesomeIcon icon={faChevronDown} style={{ marginRight: '4px' }} />
                                                         Show less
-                                                    </a>
+                                                    </Button>
                                                 </Col>
                                             )}
                                         </Row>
@@ -234,10 +240,15 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
         >
             <Col span={24}>
                 <Row justify="space-between" align="top">
-                    <Col>{pathParts?.join(' > ')}</Col>
+                    <Col>
+                        <div data-testid="path-section">
+                            {pathParts?.join(' > ')}
+                        </div>
+                    </Col>
                     <Col>
                         <ActionMenuButton
                             buttonText="Actions"
+                            dataTestId="condtions-action-button"
                             actions={actionItems}
                             useEllipsis={true}
                         />

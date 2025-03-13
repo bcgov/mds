@@ -51,12 +51,14 @@ export const ActionMenuButton: FC<{
   disabled?: boolean;
   buttonProps?: ButtonProps;
   useEllipsis?: boolean; // View as ellipsis instead of a button
+  dataTestId?: string;
 }> = ({
   actions,
   buttonText = "Action",
   buttonProps,
   disabled = false,
-  useEllipsis = false
+  useEllipsis = false,
+  dataTestId = "",
 }) => {
     const items = generateActionMenuItems((actions as unknown) as ITableAction[], null);
 
@@ -75,7 +77,7 @@ export const ActionMenuButton: FC<{
 
     return (
       <Dropdown menu={{ items }} placement="bottomLeft" disabled={disabled}>
-        <Button {...mergedButtonProps}>
+        <Button {...mergedButtonProps} data-testid={dataTestId}>
           {!useEllipsis && buttonText}
           {!useEllipsis && <DownOutlined />}
         </Button>
@@ -91,7 +93,7 @@ interface ActionMenuProps {
 const ActionMenu: FC<ActionMenuProps> = ({ record, actionItems, category }) => {
   const items = generateActionMenuItems(actionItems, record);
   return (
-    <Dropdown menu={{ items }} placement="bottomLeft">
+    <Dropdown menu={{ items }} placement="bottomLeft" data-testid={`action-menu-${category}`}>
       <Button type="text" className="actions-dropdown-button">
         Actions
         <CaretDownOutlined alt={`${category} Actions`} />

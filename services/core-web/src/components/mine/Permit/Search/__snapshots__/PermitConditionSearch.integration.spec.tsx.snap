@@ -316,12 +316,17 @@ exports[`PermitConditionSearch Integration Tests shows and applies filters 1`] =
                                 >
                                   <div
                                     class="ant-col"
-                                  />
+                                  >
+                                    <div
+                                      data-testid="path-section"
+                                    />
+                                  </div>
                                   <div
                                     class="ant-col"
                                   >
                                     <button
                                       class="ant-btn ant-btn-text ant-dropdown-trigger actions-ellipsis-button"
+                                      data-testid="condtions-action-button"
                                       type="button"
                                     >
                                       <span
@@ -507,11 +512,16 @@ exports[`PermitConditionSearch Integration Tests shows and applies filters 1`] =
                     </svg>
                     <div
                       class="permit-search__markdown"
+                      role="none"
                     >
                       <div
                         data-testid="markdown-content"
                       >
-                        The permit requires monthly water quality monitoring.
+                        <div
+                          data-testid="markdown-content"
+                        >
+                          The permit requires monthly water quality monitoring.
+                        </div>
                       </div>
                     </div>
                   </div>
