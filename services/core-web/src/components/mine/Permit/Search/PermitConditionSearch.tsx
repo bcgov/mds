@@ -74,6 +74,7 @@ const PermitConditionSearch: React.FC = () => {
                                             icon={isAIResponseExpanded ? faCompress : faExpand}
                                             onClick={() => setIsAIResponseExpanded(!isAIResponseExpanded)}
                                             className="expand-button"
+                                            titleId="expand-button"
                                             title={isAIResponseExpanded ? "Compress" : "Expand"}
                                         />
                                         {aiLoading ? (

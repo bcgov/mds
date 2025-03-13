@@ -38,8 +38,10 @@ from haystack_integrations.document_stores.elasticsearch import (
 
 logger = logging.getLogger(__name__)
 
-create_or_update_index()
-create_search_indexer()
+
+if config.search.endpoint and config.search.endpoint.startswith("https://"):
+    create_or_update_index()
+    create_search_indexer()
 
 ROOT_DIR = os.path.abspath(os.curdir)
 
