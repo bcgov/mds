@@ -74,6 +74,10 @@
   text-align: right;
 }
 
+.center {
+  text-align: center;
+}
+
 .center-mobile {
   @include mobile {
     display: block;
@@ -208,6 +212,9 @@
 
 .margin-none {
   margin: 0 !important;
+  &--bottom {
+    margin-bottom: 0 !important;
+  }
 }
 
 .margin-small {

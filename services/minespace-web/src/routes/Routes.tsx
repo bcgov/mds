@@ -126,6 +126,14 @@ const Routes = () => (
         )}
       />
       <Route
+        path={routes.TAILINGS_SUBMIT_SUCCESS.route}
+        component={ColumnWrapper()(
+          FeatureFlagGuard(Feature.TSF_V2)(
+            AuthenticationGuard()(routes.TAILINGS_SUBMIT_SUCCESS.component)
+          )
+        )}
+      />
+      <Route
         path={routes.EDIT_TAILINGS_STORAGE_FACILITY.route}
         component={ColumnWrapper()(
           AuthenticationGuard()(routes.EDIT_TAILINGS_STORAGE_FACILITY.component)

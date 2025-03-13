@@ -25,6 +25,10 @@ const ReturnPage = React.lazy(() => import("@/components/pages/ReturnPage"));
 const TailingsSummaryPageWrapper = React.lazy(
   () => import("@/components/pages/Tailings/TailingsSummaryPageWrapper")
 );
+const TailingsSubmitSuccess = React.lazy(
+  () => import("@/components/pages/Tailings/TailingsSubmitSuccess")
+);
+
 const IncidentPage = React.lazy(() => import("@/components/pages/Incidents/IncidentPage"));
 const IncidentSuccessPage = React.lazy(
   () => import("@/components/pages/Incidents/IncidentSuccessPage")
@@ -224,6 +228,14 @@ export const ADD_TAILINGS_STORAGE_FACILITY = {
     `/mines/${mineGuid}/tailings-storage-facility/new/${tab}`,
   component: TailingsSummaryPageWrapper,
   helpKey: "Add-Tailings-Storage-Facility",
+};
+
+export const TAILINGS_SUBMIT_SUCCESS = {
+  route: "/mines/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/submit-success",
+  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid) =>
+    `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/submit-success`,
+  component: TailingsSubmitSuccess,
+  helpKey: "Tailings-Submit-Success",
 };
 
 export const EDIT_TAILINGS_STORAGE_FACILITY = {

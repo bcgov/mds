@@ -121,6 +121,10 @@ exports[`PrivateRoutes  renders properly 1`] = `
     />
     <Route
       component={[Function]}
+      path="/mines/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/submit-success"
+    />
+    <Route
+      component={[Function]}
       path="/mines/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/:tab/:userAction"
     />
     <Route

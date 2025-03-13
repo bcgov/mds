@@ -144,7 +144,7 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
                 tsf_required_reports = MineReportDefinition.find_required_reports_by_category('TSF')
 
                 for tsf_req_doc in tsf_required_reports:
-                    calculated_due_date = tsf_req_doc.default_due_date or datetime.utcnow()
+                    calculated_due_date = tsf_req_doc.default_due_date or datetime.now(tz=timezone.utc)
                     MineReport.create(
                         mine_report_definition_id=tsf_req_doc.mine_report_definition_id,
                         mine_guid=mine.mine_guid,

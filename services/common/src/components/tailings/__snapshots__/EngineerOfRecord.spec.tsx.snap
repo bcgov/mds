@@ -58,41 +58,62 @@ exports[`Tailings EngineerOfRecord renders properly 1`] = `
             </div>
           </div>
         </div>
-        <div>
-          <div
-            class="ant-alert ant-alert-info ant-alert-with-description"
-            data-show="true"
-            role="alert"
+        <div
+          class="ant-alert ant-alert-info ant-alert-with-description"
+          data-show="true"
+          role="alert"
+        >
+          <span
+            aria-label="info-circle"
+            class="anticon anticon-info-circle ant-alert-icon"
+            role="img"
           >
-            <span
-              aria-label="info-circle"
-              class="anticon anticon-info-circle ant-alert-icon"
-              role="img"
+            <svg
+              aria-hidden="true"
+              data-icon="info-circle"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
             >
-              <svg
-                aria-hidden="true"
-                data-icon="info-circle"
-                fill="currentColor"
-                focusable="false"
-                height="1em"
-                viewBox="64 64 896 896"
-                width="1em"
-              >
-                <path
-                  d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
-                />
-                <path
-                  d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
-                />
-              </svg>
-            </span>
+              <path
+                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+              />
+              <path
+                d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+              />
+            </svg>
+          </span>
+          <div
+            class="ant-alert-content"
+          >
             <div
-              class="ant-alert-content"
+              class="ant-alert-message"
             >
               <div
-                class="ant-alert-description"
+                class="ant-typography"
               >
-                Assigning a new Engineer of Record (EoR) will replace the current listed contact and set their status to Inactive. When a new EoR is assigned, a notification will be sent to the Ministry of changes in the record, and must include an acknowledgement by the EoR to be active.
+                <strong>
+                  Engineer of Record Assignment
+                </strong>
+              </div>
+            </div>
+            <div
+              class="ant-alert-description"
+            >
+              <div
+                class="ant-typography"
+              >
+                As
+                 
+                <a
+                  href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/health-safety/health-safety-and-reclamation-code-for-mines-in-british-columbia"
+                  target="_blank"
+                >
+                  Per Health, Safety and Reclamation Code
+                </a>
+                , written acknowledgement to the Chief Inspector is required within 72 hours when an Engineer of Record (EoR) is retained or accepts the role. A report request will be generated upon changes to the EoR.
               </div>
             </div>
           </div>
@@ -155,77 +176,6 @@ exports[`Tailings EngineerOfRecord renders properly 1`] = `
             class="ant-typography"
           >
             No Data
-          </div>
-        </div>
-        <div
-          class="margin-large--top margin-large--bottom"
-        >
-          <h4
-            class="ant-typography"
-          >
-            Upload Acceptance Letter
-          </h4>
-          <span
-            class="ant-typography"
-          >
-            Letter must be officially signed. A notification will be sent to the Mine Manager upon upload.
-          </span>
-        </div>
-        <div
-          class="whirlpool-container"
-        >
-          <div
-            class="ant-form-item ant-form-item-with-help"
-          >
-            <div
-              class="ant-row ant-form-item-row"
-            >
-              <div
-                class="ant-col ant-form-item-label"
-              >
-                <label
-                  class=""
-                  for="ADD_TAILINGS_STORAGE_FACILITY_engineer_of_record.eor_document_guid"
-                  title=""
-                />
-              </div>
-              <div
-                class="ant-col ant-form-item-control"
-              >
-                <div
-                  class="ant-form-item-control-input"
-                >
-                  <div
-                    class="ant-form-item-control-input-content"
-                  >
-                    <div
-                      class="filepond--wrapper"
-                    >
-                      <input
-                        accept="application/pdf"
-                        id="engineer_of_record.eor_document_guid"
-                        multiple=""
-                        name="file"
-                        type="file"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div
-                  style="display: flex; flex-wrap: nowrap;"
-                >
-                  <div
-                    class="ant-form-item-explain ant-form-item-explain-connected"
-                    id="ADD_TAILINGS_STORAGE_FACILITY_engineer_of_record.eor_document_guid_help"
-                    role="alert"
-                  >
-                    <div
-                      class=""
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <h4
@@ -380,14 +330,13 @@ exports[`Tailings EngineerOfRecord renders properly 1`] = `
                       class="ant-form-item-control-input-content"
                     >
                       <div
-                        class="ant-picker ant-picker-disabled"
+                        class="ant-picker"
                       >
                         <div
                           class="ant-picker-input"
                         >
                           <input
                             autocomplete="off"
-                            disabled=""
                             id="engineer_of_record.end_date"
                             name="engineer_of_record.end_date"
                             placeholder=""
@@ -458,7 +407,10 @@ exports[`Tailings EngineerOfRecord renders properly 1`] = `
             <h4
               class="ant-typography margin-large--top"
             >
-              Historical Engineer of Record List
+              Historical
+               
+              Engineer of Record
+               List
             </h4>
             <div
               class="ant-table-wrapper  core-table"
@@ -499,7 +451,7 @@ exports[`Tailings EngineerOfRecord renders properly 1`] = `
                               <th
                                 class="ant-table-cell"
                               >
-                                Letters
+                                Term
                               </th>
                             </tr>
                           </thead>
