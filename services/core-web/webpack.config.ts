@@ -107,11 +107,6 @@ const commonConfig = merge([
       extensions: [".tsx", ".ts", ".js"],
       alias: {
         ...PATH_ALIASES,
-        ...(process.env.NODE_ENV === "development"
-          ? {
-            "react-dom": "@hot-loader/react-dom",
-          }
-          : {}),
         // Use lodash-es that supports proper tree-shaking
         lodash: "lodash-es",
       },

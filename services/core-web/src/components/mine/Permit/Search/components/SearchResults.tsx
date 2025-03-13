@@ -97,7 +97,8 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
         return value;
     };
 
-    if (!results && !loading) {
+
+    if (!query && !results && !documentLoading) {
         return (
             <Row className="permit-search__empty-state" justify="center" align="middle">
                 <Empty

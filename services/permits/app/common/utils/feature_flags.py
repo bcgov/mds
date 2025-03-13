@@ -1,7 +1,6 @@
 import logging
 import os
-from enum import Enum, auto
-from typing import Dict
+from enum import Enum
 
 from flagsmith import Flagsmith
 from haystack.utils import Secret
@@ -10,9 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class Feature(str, Enum):
-    """Enumeration of feature flags."""
     PERMIT_CONDITION_VALIDATOR = "PERMIT_CONDITION_VALIDATOR"
-    DOCUMENT_SECTION_HIERARCHY = "DOCUMENT_SECTION_HIERARCHY"
 
 
 FLAGSMITH_KEY = Secret.from_env_var("FLAGSMITH_KEY", strict=True)
@@ -34,6 +31,5 @@ def is_feature_enabled(feature: Feature) -> bool:
     Returns:
         Boolean indicating if the feature is enabled
     """
-    feature_env_var = f"ENABLE_{feature.value}"
-    env_value = os.environ.get(feature_env_var, "false").lower()
+    env_value = os.environ.get(feature, "false").lower()
     return env_value in ("true", "1", "yes")

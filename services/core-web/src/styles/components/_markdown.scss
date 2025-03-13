@@ -1,5 +1,9 @@
 @use "../settings/variables.scss" as *;
 
+/**
+* Basic styles for the markdown viewer. Currently in use for search results.
+**/
+
 .permit-search__markdown {
 
     // Headers
@@ -37,7 +41,6 @@
     p {
         font-size: $default-p;
         color: $p-color;
-        margin-bottom: $default-margin-md;
         line-height: 1.6;
     }
 

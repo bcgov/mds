@@ -18,11 +18,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/permit-conditions/search"
   />
   <Route
-    component={[Function]}
-    exact={true}
-    path="/permit-conditions/dashboard"
-  />
-  <Route
     exact={true}
     path="/mine-dashboard/:id/"
     render={[Function]}
@@ -251,12 +246,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
     exact={true}
     key="/mine-dashboard/:id/permits-and-approvals/permits"
     path="/mine-dashboard/:id/permits-and-approvals/permits"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
-    key="/permit-conditions/dashboard"
-    path="/permit-conditions/dashboard"
   />
   <Route
     component={[Function]}

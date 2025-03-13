@@ -1,5 +1,3 @@
-import os
-from re import search
 
 from app.pipelines.permit_condition_search.config import config
 from azure.core.credentials import AzureKeyCredential
@@ -17,16 +15,14 @@ from azure.search.documents.indexes.models import (
     SearchIndexerDataSourceConnection,
     SearchIndexerSkillset,
 )
-from haystack.utils import Secret
 
 search_api_key = config.search.api_key.resolve_value()
 assert search_api_key is not None, "Search API key is required"
-# Initialize clients
+
 credential = AzureKeyCredential(search_api_key)
 indexer_client = SearchIndexerClient(endpoint=config.search.endpoint, credential=credential)
 
 def create_data_source():
-    # Create a data source for the CSV file in blob storage
     data_source = SearchIndexerDataSourceConnection(
         name="permit-conditions-data",
         type="azureblob",
@@ -66,17 +62,19 @@ def create_skillset():
         ]
     )
 
-    print(skillset.skills[0])
-
     return indexer_client.create_or_update_skillset(skillset)
 
+
 def create_indexer():
-    # Create an indexer that uses the skillset
+    """
+    Creates an Azure AI Search Indexer that parses CSV files put in the permit-conditions-data blob container,
+    generates embeddings for the condition content, and indexes the data in the permit-conditions index.
+    """
     indexer = SearchIndexer(
         name="permit-conditions-indexer",
         data_source_name="permit-conditions-data",
         target_index_name="permit-conditions",
-        skillset_name="permit-conditions-skillset",
+        skillset_name="permit-conditions-skillset", # The skillset will generate embeddings for the condition content
         parameters=IndexingParameters(
             batch_size=100,
             configuration=IndexingParametersConfiguration(

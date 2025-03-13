@@ -19,10 +19,15 @@ from app.extensions import db
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-class DataPreparation:
+class ImportMinesAndPermits:
+    # Utility script to import mines, permits, amendments, and associated documents from a CSV file.
+    # It will take the documents specified and upload them to S3 using the document manager.
+    # The purpose for this script is to test out permit condition search in a real-ish environment with actual data.
+    #
+    # WARNING: DO NOT RUN THIS IN PRODUCTION
+    
     def __init__(self, csv_path, token):
         self.csv_path = Path(csv_path)
-        # Cache for tracking what's been created
         self.mine_cache = {}
         self.permit_cache = {}
         self.amendment_cache = {}
@@ -38,12 +43,10 @@ class DataPreparation:
             
             with open(self.csv_path, 'r') as f:
                 reader = csv.DictReader(f)
-                # Validate columns
                 missing_cols = [col for col in required_columns if col not in reader.fieldnames]
                 if missing_cols:
                     raise ValueError(f"Missing required columns: {missing_cols}")
                 
-                # Group records by unique combinations
                 grouped_data = {}
                 for row in reader:
                     key = (row['mine_no'], row['mine_name'], row['permit_no'], 
@@ -69,7 +72,7 @@ class DataPreparation:
             mine = Mine(
                 mine_no=mine_no,
                 mine_name=mine_name,
-                mine_region='SW'  # Default region, adjust as needed
+                mine_region='SW' 
             )
             db.session.add(mine)
             db.session.commit()
@@ -81,7 +84,6 @@ class DataPreparation:
         """Find existing permit or create new one"""
         if permit_no in self.permit_cache:
             permit = self.permit_cache[permit_no]
-            # Check if we need to add mine association
             if mine.mine_guid not in [str(m.mine_guid) for m in permit._all_mines]:
                 logger.info(f"Adding existing permit {permit_no} to mine {mine.mine_no}")
                 permit._mine_associations.append(
@@ -96,11 +98,9 @@ class DataPreparation:
 
             return permit
 
-        # First check if permit exists in database
         existing_permit = Permit.find_by_permit_no(permit_no)
         if existing_permit:
             self.permit_cache[permit_no] = existing_permit
-            # Check if we need to add mine association
             if mine.mine_guid not in [str(m.mine_guid) for m in existing_permit._all_mines]:
                 logger.info(f"Adding existing permit {permit_no} to mine {mine.mine_no}")
                 existing_permit._mine_associations.append(
@@ -119,8 +119,8 @@ class DataPreparation:
         permit = Permit.create(
             mine=mine,
             permit_no=permit_no,
-            permit_status_code='O',  # Default status for historical permits
-            is_exploration=False,  # Default value
+            permit_status_code='O',
+            is_exploration=False,
             exemption_fee_status_code=None,
             exemption_fee_status_note=None
         )
@@ -149,7 +149,7 @@ class DataPreparation:
                 mine=mine,
                 received_date=issue_date,
                 issue_date=issue_date,
-                authorization_end_date=None,  # Set as needed
+                authorization_end_date=None,
                 permit_amendment_type_code='AMD',
                 description='Historical amendment imported from records',
                 permit_amendment_status_code='ACT'
@@ -193,12 +193,11 @@ class DataPreparation:
                     filename=row['document_name'],
                     mine=mine,
                     document_category='permits',
-                    authorization_header=self.token,  # Replace with actual auth
+                    authorization_header=self.token,
                     headers={'Content-Type': 'application/json', 'Authorization': self.token}
                 )
 
             if document_guid:
-                # Create permit amendment document record
                 doc = PermitAmendmentDocument(
                     permit_amendment_id=amendment.permit_amendment_id,
                     document_name=row['document_name'],
@@ -245,7 +244,6 @@ class DataPreparation:
         
         for (mine_no, mine_name, permit_no, issue_date, permit_amendment_guid), group in grouped_data.items():
             try:
-                # Convert issue_date string to datetime
                 issue_date = datetime.strptime(issue_date, '%Y-%m-%d')
 
                 mine = mines.get(mine_no)
@@ -282,5 +280,6 @@ class DataPreparation:
 
 def prepare_permit_data(csv_path, token):
     """Entry point for the CLI command"""
-    processor = DataPreparation(csv_path, "Bearer "+ token)
+    processor = ImportMinesAndPermits(csv_path, "Bearer "+ token)
+    processor.process_data()
     processor.process_data()

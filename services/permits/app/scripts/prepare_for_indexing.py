@@ -8,7 +8,7 @@ import pandas as pd
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-class DocumentPreparation:
+class DownloadPDFsFromS3:
     def __init__(self, csv_path, s3_bucket, output_dir):
         self.csv_path = csv_path
         self.s3_bucket = s3_bucket
@@ -51,7 +51,6 @@ class DocumentPreparation:
         if csv_output.exists():
             existing_df = pd.read_csv(csv_output)
             
-            # Ensure 'download_status' column exists in both dataframes
             if 'download_status' not in existing_df.columns:
                 existing_df['download_status'] = None
             if 'download_status' not in df.columns:
@@ -78,25 +77,23 @@ class DocumentPreparation:
         combined_df = self.update_csv_metadata(df)
         
         for index, row in combined_df.iterrows():
-            # Get the directory path without the filename
             object_path = Path(row['object_store_path'])
+
+            # Recreate document structure as per the object_store_path in the output directory
             target_dir = self.output_dir / '/'.join(object_path.parts[1:-1])
             
-            # Use document_name for the output file
             target_path = target_dir / row['document_name']
             
-            # Only download if status is None or failed
             if pd.isna(row['download_status']) or row['download_status'] == 'failed':
                 status = self.download_file(row['object_store_path'], target_path)
                 combined_df.at[index, 'download_status'] = status
         
-        # Save the final status
         combined_df.to_csv(self.output_dir / 'documents_metadata.csv', index=False)
         logger.info("Updated metadata file with download status")
 
 def main():
     import argparse
-    parser = argparse.ArgumentParser(description='Prepare documents for indexing')
+    parser = argparse.ArgumentParser(description='Download PDFs in bulk from S3 bucket given a csv of object_store_path/document_name')
     parser.add_argument(
         '--csv', 
         required=True,
@@ -118,7 +115,7 @@ def main():
     
     args = parser.parse_args()
     
-    processor = DocumentPreparation(args.csv_path, args.s3_bucket, args.output_dir)
+    processor = DownloadPDFsFromS3(args.csv_path, args.s3_bucket, args.output_dir)
     processor.process_documents()
 
 if __name__ == "__main__":

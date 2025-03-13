@@ -71,7 +71,7 @@ def permit_condition_pipeline():
     completion_tokens = 16384
     context_token_limit = (
         model_token_limit - completion_tokens - 1000
-    )  # 1000 token safety margin
+    )
 
     # Configure the prompt builder with pagination and token counting
     prompt_builder = PaginatedChatPromptBuilder(
@@ -126,7 +126,7 @@ def permit_condition_pipeline():
     index_pipeline.connect("pdf_converter.documents", "filter_paragraphs")
     index_pipeline.connect("filter_paragraphs", "parse_hierarchy")
     
-    enable_validator = False or is_feature_enabled(Feature.PERMIT_CONDITION_VALIDATOR)
+    enable_validator = is_feature_enabled(Feature.PERMIT_CONDITION_VALIDATOR)
     logger.info(f"Permit condition validator feature flag status: {enable_validator}")
     
     if enable_validator:

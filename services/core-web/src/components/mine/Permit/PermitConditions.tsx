@@ -407,9 +407,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
       <></>
     );
   };
-  console.log(currentAmendment)
-
-
 
   const AddConditionModalContent = (
     <Typography.Paragraph

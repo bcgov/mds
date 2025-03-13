@@ -1,4 +1,3 @@
-import os
 from datetime import timedelta
 
 from app.pipelines.permit_condition_search.config import config
@@ -12,7 +11,6 @@ from azure.search.documents.indexes.models import (
     HnswAlgorithmConfiguration,
     ScalarQuantizationCompression,
     ScalarQuantizationParameters,
-    ScoringFunction,
     ScoringFunctionAggregation,
     ScoringFunctionInterpolation,
     ScoringProfile,
@@ -26,7 +24,6 @@ from azure.search.documents.indexes.models import (
     VectorSearch,
     VectorSearchProfile,
 )
-from haystack.utils import Secret
 
 search_api_key = config.search.api_key.resolve_value()
 assert search_api_key is not None, "Search API key is required"
@@ -219,6 +216,7 @@ vector_search = VectorSearch(
         )
     ],
     vectorizers=[
+        # Use the internal Azure OpenAI vectorizer to convert text to embeddings so we don't have to pre-calculate these.
         AzureOpenAIVectorizer(
             vectorizer_name="text-embedding-vectorizer",
             kind="azureOpenAI",
@@ -231,6 +229,7 @@ vector_search = VectorSearch(
         ),
     ],
     compressions=[
+        # Compress embeddings so they take up less space in the index.
         ScalarQuantizationCompression(
             compression_name="vector-compression",
             rerank_with_original_vectors=True,
@@ -240,7 +239,7 @@ vector_search = VectorSearch(
     ],
 )
 
-# Semantic search configuration
+# Perform hybrid vector/keyword search on the content field, keyword search on metadata, and give a little boost to the category.
 semantic_config = SemanticConfiguration(
     name="permit-semantic-config",
     prioritized_fields=SemanticPrioritizedFields(
@@ -259,7 +258,7 @@ semantic_config = SemanticConfiguration(
 
 semantic_search = SemanticSearch(configurations=[semantic_config])
 
-# Scoring profile
+# Scoring profile to boost documents based on their issue date. The intention is for newer amendments to be ranked higher if a search matches accross multiple amendments.
 scoring_profile = ScoringProfile(
     name="recency-boost-profile",
     functions=[
@@ -268,8 +267,8 @@ scoring_profile = ScoringProfile(
             boost=3.0,
             parameters=FreshnessScoringParameters(
                 boosting_duration=timedelta(
-                    days=365 * 70
-                )  # Boost documents within the last 70 years
+                    days=365 * 70 # Go back 70 years
+                )
             ),
             interpolation=ScoringFunctionInterpolation.LINEAR,
         )
@@ -284,7 +283,7 @@ index = SearchIndex(
     vector_search=vector_search,
     semantic_search=semantic_search,
     scoring_profiles=[scoring_profile],
-    default_scoring_profile="recency-boost-profile",  # Make this the default scoring profile
+    default_scoring_profile="recency-boost-profile",
 )
 
 

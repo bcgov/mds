@@ -50,7 +50,7 @@ def export_permit_conditions(permit_amendment_guid, csv_writer=None):
         document_guid = doc.document_manager_guid
 
     condition_rows = []
-    processed_ids = set()  # Track which conditions we've processed
+    processed_ids = set()
 
     for condition in conditions:
         # Skip if we've already processed this condition (as part of a merge)

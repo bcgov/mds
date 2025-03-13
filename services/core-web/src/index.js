@@ -88,26 +88,28 @@ export const Index = (props) => {
   };
 
   return environment ? (
-    <FeatureFlagProvider>
-      <ReactKeycloakProvider
-        authClient={keycloak}
-        initOptions={keycloakInitConfig}
-        onTokens={() => {
-          handleUpdateToken();
-        }}
-        onTokenExpired={() => {
-          if (!isIdle()) {
-            keycloak.updateToken();
-          }
-        }}
-        LoadingComponent={<Loading />}
-        isLoadingCheck={(kc) => !kc || !environment}
-      >
+    <ReactKeycloakProvider
+      authClient={keycloak}
+      initOptions={keycloakInitConfig}
+      onTokens={() => {
+        handleUpdateToken();
+      }}
+      onTokenExpired={() => {
+        if (!isIdle()) {
+          keycloak.updateToken();
+        }
+      }}
+      LoadingComponent={<Loading />}
+      isLoadingCheck={(kc) => !kc || !environment}
+    >
+      <FeatureFlagProvider>
+
         <Provider store={store}>
           <App />
         </Provider>
-      </ReactKeycloakProvider>
-    </FeatureFlagProvider>
+      </FeatureFlagProvider>
+    </ReactKeycloakProvider>
+
   ) : (
     <Loading />
   );

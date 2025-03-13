@@ -96,5 +96,4 @@ class Config:
             document_intelligence=document_intelligence,
         )
 
-# Create global config instance
 config = Config.from_env()

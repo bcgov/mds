@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Typography, Space, Tag, Row, Col } from 'antd';
+import { Typography, Tag, Row, Col } from 'antd';
 import { ContextItem, HaystackDocumentSearchResult } from '@mds/common/src/interfaces/search/facet-search.interface';
 import dayjs from 'dayjs';
 import { formatPermitConditionStep } from '@mds/common/utils/helpers';
@@ -103,35 +103,22 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
     ];
 
     const renderContextItem = (item: ContextItem, isChild = false) => (
-        <div
+        <Row
             key={item.id}
-            style={{
-                color: 'rgba(0, 0, 0, 0.45)',
-                fontSize: '14px',
-                marginLeft: isChild ? '24px' : '0',
-                padding: '8px 0',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start'
-            }}
+            className={`permit-search__context-item ${isChild ? 'permit-search__context-item--child' : ''}`}
+            gutter={0}
         >
-            <div style={{ flex: 1 }}>
+            <Col flex="auto" className="permit-search__context-content">
                 {item.step ? `${item.step}. ` : ''}
                 {item.content}
-            </div>
-        </div>
+            </Col>
+        </Row>
     );
 
     const renderExpandLink = (direction: 'above' | 'below', count: number) => (
         <a
             onClick={() => setExpandedContext(direction)}
-            style={{
-                color: 'rgba(0, 0, 0, 0.45)',
-                fontSize: '13px',
-                cursor: 'pointer',
-                marginLeft: '8px',
-                whiteSpace: 'nowrap'
-            }}
+            className="permit-search__expand-link"
         >
             <FontAwesomeIcon
                 icon={direction === 'above' ? faChevronUp : faChevronDown}
@@ -154,91 +141,95 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
         const defaultBelowContext = belowContexts[0];
 
         return (
-            <div style={{ marginTop: '8px' }}>
-                {/* Above contexts */}
+            <Row className="permit-search__context-container" gutter={[0, 6]}>
                 {aboveContexts.length > 0 && (
-                    <div style={{ marginBottom: '4px' }}>
+                    <Col span={24} className="permit-search__context-section">
                         {expandedContext === 'above' ? (
-                            <>
+                            <Row gutter={[0, 8]}>
                                 {aboveContexts.map((item, index) => (
-                                    <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                        {renderContextItem(item)}
-                                        {index === 0 && (
-                                            <a
-                                                onClick={() => setExpandedContext(null)}
-                                                style={{
-                                                    color: 'rgba(0, 0, 0, 0.45)',
-                                                    fontSize: '13px',
-                                                    cursor: 'pointer',
-                                                    marginLeft: '8px',
-                                                    whiteSpace: 'nowrap'
-                                                }}
-                                            >
-                                                <FontAwesomeIcon icon={faChevronUp} style={{ marginRight: '4px' }} />
-                                                Show less
-                                            </a>
-                                        )}
-                                    </div>
+                                    <Col span={24} key={item.id}>
+                                        <Row justify="space-between" align="top">
+                                            <Col flex="auto">
+                                                {renderContextItem(item)}
+                                            </Col>
+                                            {index === 0 && (
+                                                <Col>
+                                                    <a
+                                                        onClick={() => setExpandedContext(null)}
+                                                        className="permit-search__expand-link"
+                                                    >
+                                                        <FontAwesomeIcon icon={faChevronUp} style={{ marginRight: '4px' }} />
+                                                        Show less
+                                                    </a>
+                                                </Col>
+                                            )}
+                                        </Row>
+                                    </Col>
                                 ))}
-                            </>
+                            </Row>
                         ) : (
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                {defaultAboveContext && renderContextItem(defaultAboveContext)}
-                                {aboveContexts.length > 1 && renderExpandLink('above', aboveContexts.length - 1)}
-                            </div>
+                            <Row justify="space-between" align="top">
+                                <Col flex="auto">
+                                    {defaultAboveContext && renderContextItem(defaultAboveContext)}
+                                </Col>
+                                <Col>
+                                    {aboveContexts.length > 1 && renderExpandLink('above', aboveContexts.length - 1)}
+                                </Col>
+                            </Row>
                         )}
-                    </div>
+                    </Col>
                 )}
 
-                {highlightedResult ? <MarkdownViewer markdown={contentToDisplay} /> : contentToDisplay}
+                <Col span={24}>
+                    {highlightedResult ? <MarkdownViewer markdown={contentToDisplay} /> : contentToDisplay}
+                </Col>
 
                 {belowContexts.length > 0 && (
-                    <div>
+                    <Col span={24}>
                         {expandedContext === 'below' ? (
-                            <>
+                            <Row gutter={[0, 8]}>
                                 {belowContexts.map((item, index) => (
-                                    <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                        {renderContextItem(item)}
-                                        {index === belowContexts.length - 1 && (
-                                            <a
-                                                onClick={() => setExpandedContext(null)}
-                                                style={{
-                                                    color: 'rgba(0, 0, 0, 0.45)',
-                                                    fontSize: '13px',
-                                                    cursor: 'pointer',
-                                                    marginLeft: '8px',
-                                                    whiteSpace: 'nowrap'
-                                                }}
-                                            >
-                                                <FontAwesomeIcon icon={faChevronDown} style={{ marginRight: '4px' }} />
-                                                Show less
-                                            </a>
-                                        )}
-                                    </div>
+                                    <Col span={24} key={item.id}>
+                                        <Row justify="space-between" align="top">
+                                            <Col flex="auto">
+                                                {renderContextItem(item)}
+                                            </Col>
+                                            {index === belowContexts.length - 1 && (
+                                                <Col>
+                                                    <a
+                                                        onClick={() => setExpandedContext(null)}
+                                                        className="permit-search__expand-link"
+                                                    >
+                                                        <FontAwesomeIcon icon={faChevronDown} style={{ marginRight: '4px' }} />
+                                                        Show less
+                                                    </a>
+                                                </Col>
+                                            )}
+                                        </Row>
+                                    </Col>
                                 ))}
-                            </>
+                            </Row>
                         ) : (
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                {defaultBelowContext && renderContextItem(defaultBelowContext)}
-                                {belowContexts.length > 1 && renderExpandLink('below', belowContexts.length - 1)}
-                            </div>
+                            <Row justify="space-between" align="top">
+                                <Col flex="auto">
+                                    {defaultBelowContext && renderContextItem(defaultBelowContext)}
+                                </Col>
+                                <Col>
+                                    {belowContexts.length > 1 && renderExpandLink('below', belowContexts.length - 1)}
+                                </Col>
+                            </Row>
                         )}
-                    </div>
+                    </Col>
                 )}
-            </div>
+            </Row>
         );
     };
 
     return (
         <Row
             id={`condition-${result.id}`}
-            className={isHighlighted ? 'highlight-condition' : ''}
-            style={{
-                marginBottom: '16px',
-                paddingBottom: '16px',
-                borderBottom: '1px solid #f0f0f0',
-                position: 'relative'
-            }}
+            className={`permit-search__result-item ${isHighlighted ? 'permit-search__result-item--highlighted' : ''}`}
+            gutter={[0, 0]}
         >
             <Col span={24}>
                 <Row justify="space-between" align="top">
@@ -251,53 +242,71 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
                         />
                     </Col>
                 </Row>
+            </Col>
 
+            <Col span={24} style={{ marginBottom: '8px' }}>
                 {renderContexts()}
             </Col>
 
             <Col span={24}>
                 <Row justify="space-between" align="middle">
-                    <Space size={[0, 8]} wrap>
-                        <Tag
-                            color="blue"
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => onFilterClick?.('mine_name', meta.mine_name)}
-                        >
-                            {meta.mine_name}
-                        </Tag>
-                        <Tag
-                            color="geekblue"
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => onFilterClick?.('permit', meta.permit)}
-                        >
-                            {meta.permit}
-                        </Tag>
-                        <Tag
-                            color="purple"
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => onFilterClick?.('mine_number', meta.mine_number)}
-                        >
-                            {meta.mine_number}
-                        </Tag>
-                    </Space>
+                    <Col>
+                        <Row gutter={[8, 8]} wrap>
+                            <Col>
+                                <Tag
+                                    color="blue"
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => onFilterClick?.('mine_name', meta.mine_name)}
+                                >
+                                    {meta.mine_name}
+                                </Tag>
+                            </Col>
+                            <Col>
+                                <Tag
+                                    color="geekblue"
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => onFilterClick?.('permit', meta.permit)}
+                                >
+                                    {meta.permit}
+                                </Tag>
+                            </Col>
+                            <Col>
+                                <Tag
+                                    color="purple"
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => onFilterClick?.('mine_number', meta.mine_number)}
+                                >
+                                    {meta.mine_number}
+                                </Tag>
+                            </Col>
+                        </Row>
+                    </Col>
 
-                    <Space size="middle">
-                        <Typography.Text type="secondary" style={{ fontSize: '12px' }}>
-                            <DocumentLink
-                                unstyled={true}
-                                documentManagerGuid={meta.document_manager_guid}
-                                documentName={meta.document_name}
-                                truncateDocumentName={false}
-                            />
-                        </Typography.Text>
-                        <Typography.Text type="secondary" style={{ fontSize: '12px' }}>
-                            {dayjs(meta.issue_date).format('MMM D, YYYY')}
-                        </Typography.Text>
-                        <Tag color="green">{normalizedScore}% match</Tag>
-                    </Space >
-                </Row >
-            </Col >
-        </Row >
+                    <Col>
+                        <Row gutter={16} align="middle">
+                            <Col>
+                                <Typography.Text type="secondary" className="permit-search__document-info">
+                                    <DocumentLink
+                                        unstyled={true}
+                                        documentManagerGuid={meta.document_manager_guid}
+                                        documentName={meta.document_name}
+                                        truncateDocumentName={false}
+                                    />
+                                </Typography.Text>
+                            </Col>
+                            <Col>
+                                <Typography.Text type="secondary" className="permit-search__document-info">
+                                    {dayjs(meta.issue_date).format('MMM D, YYYY')}
+                                </Typography.Text>
+                            </Col>
+                            <Col>
+                                <Tag color="green">{normalizedScore}% match</Tag>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </Col>
+        </Row>
     );
 };
 

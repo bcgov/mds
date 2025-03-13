@@ -91,7 +91,7 @@ const permitHandlers = [
 
 const permitSearchHandlers = [
   http.post(
-    "http://localhost/search/permit-conditions", // Axios rejects <API_URL> as an invalid url when used with the `fetch` adapter. so use localhost for this test.
+    "/%3CAPI_URL%3E/search/permit-conditions", // Axios rejects <API_URL> as an invalid url when used with the `fetch` adapter. so use localhost for this test.
     async ({ request }) => {
       const requestBody = await request.json() as { query: string };
       let responseData;
@@ -113,26 +113,26 @@ const permitSearchHandlers = [
             facets: responseData.facets || {}
           };
           controller.enqueue(
-            encoder.encode(`event: documentsdata: ${JSON.stringify(documentsAndFacets)}ENDMESSAGE`)
+            encoder.encode(`event: documents\ndata: ${JSON.stringify(documentsAndFacets)}\n\n`)
           );
 
           controller.enqueue(
-            encoder.encode(`event: ai_startdata: {}ENDMESSAGE`)
+            encoder.encode(`event: ai_start\ndata: {}\n\n`)
           );
 
           const promptText = responseData.prompt?.answers?.[0] || '';
           if (promptText) {
             controller.enqueue(
-              encoder.encode(`event: promptdata: ${JSON.stringify({ answers: [promptText] })}ENDMESSAGE`)
+              encoder.encode(`event: prompt\ndata: ${JSON.stringify({ answers: [promptText] })}\n\n`)
             );
           }
 
           controller.enqueue(
-            encoder.encode(`event: ai_completedata: {}ENDMESSAGE`)
+            encoder.encode(`event: ai_complete\ndata: {}\n\n`)
           );
 
           controller.enqueue(
-            encoder.encode(`event: completedata: {}ENDMESSAGE`)
+            encoder.encode(`event: complete\ndata: {}\n\n`)
           );
 
           controller.close();

@@ -76,8 +76,9 @@ const permitSearchSlice = createAppSlice({
                 thunkApi.dispatch(showLoading());
 
                 thunkApi.dispatch(setFilters(payload.filters));
+                // Make sure we set document loading to true so skeleton appears
                 thunkApi.dispatch(setDocumentLoading(true));
-                thunkApi.dispatch(setAiLoading(false));
+                thunkApi.dispatch(setAiLoading(true));
                 thunkApi.dispatch(setQuery(payload.query));
 
                 const headers = createRequestHeader();
@@ -121,12 +122,15 @@ const permitSearchSlice = createAppSlice({
 
                             const payload = JSON.parse(data);
                             let updatedState: RootState = thunkApi.getState();
+
+                            console.error('got event', event);
                             switch (event) {
                                 case 'ai_start':
                                     thunkApi.dispatch(setAiLoading(true));
                                     break;
                                 case 'documents':
                                     thunkApi.dispatch(updateSearchResults(payload));
+                                    // Ensure we set loading to false when documents are received
                                     thunkApi.dispatch(setDocumentLoading(false));
 
                                     if (updatedState.permitSearch.filters.length === 0 && currentFilters.length > 0) {
@@ -171,7 +175,6 @@ const permitSearchSlice = createAppSlice({
                 },
                 fulfilled: (state) => {
                     state.loading = false;
-                    state.documentLoading = false;
                 },
                 rejected: (state) => {
                     state.loading = false;
