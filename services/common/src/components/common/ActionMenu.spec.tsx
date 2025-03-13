@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import ActionMenu, { ActionMenuButton, deleteConfirmWrapper, generateActionMenuItems } from './ActionMenu';
 import { Modal } from 'antd';
 
@@ -111,12 +112,13 @@ describe('ActionMenu', () => {
             expect(result[1].key).toBe('delete');
         });
 
-        it('creates clickable menu items that call provided function', () => {
+        it('creates clickable menu items that call provided function', async () => {
+            const user = userEvent.setup();
             const result = generateActionMenuItems(mockActionItems, mockRecord);
 
             // Simulate clicking on the button in the first menu item
             const buttonElement = render(result[0].label as React.ReactElement).getByTestId('action-button-edit');
-            fireEvent.click(buttonElement);
+            await user.click(buttonElement);
 
             expect(mockActionItems[0].clickFunction).toHaveBeenCalledWith(expect.anything(), mockRecord);
         });

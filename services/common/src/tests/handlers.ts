@@ -91,7 +91,7 @@ const permitHandlers = [
 
 const permitSearchHandlers = [
   http.post(
-    "/%3CAPI_URL%3E/search/permit-conditions", // Axios rejects <API_URL> as an invalid url when used with the `fetch` adapter. so use localhost for this test.
+    "/%3CAPI_URL%3E/search/permit-conditions",
     async ({ request }) => {
       const requestBody = await request.json() as { query: string };
       let responseData;
