@@ -13,30 +13,29 @@ import {
     selectAiLoading
 } from '@mds/common/redux/slices/permitSearchSlice';
 import { getStore } from "@mds/common/redux/rootState";
-import CustomAxios from "@mds/common/redux/customAxios";
+import { createEventSource } from 'eventsource-client';
 
-jest.mock("@mds/common/redux/customAxios");
-const mockCustomAxiosInstance = {
-    post: jest.fn()
-};
-(CustomAxios as jest.Mock).mockImplementation(() => mockCustomAxiosInstance);
-
-jest.mock("@mds/common/utils/SseParser", () => {
-    const originalModule = jest.requireActual("@mds/common/utils/SseParser");
-    return {
-        ...originalModule,
-        createSseProcessor: jest.fn((stream, handlers, options) => {
-            (global as any).sseHandlers = handlers;
-            (global as any).sseOptions = options;
-        })
-    };
-});
+jest.mock('eventsource-client', () => ({
+    createEventSource: jest.fn()
+}));
 
 describe('permitSearchSlice', () => {
+    let mockEventSource: any;
+    let onMessageCallback: any;
+    let onDisconnectCallback: any;
+
     beforeEach(() => {
         jest.clearAllMocks();
-        (global as any).sseHandlers = null;
-        (global as any).sseOptions = null;
+
+        mockEventSource = {
+            close: jest.fn()
+        };
+
+        (createEventSource as jest.Mock).mockImplementation(({ onMessage, onDisconnect }) => {
+            onMessageCallback = onMessage;
+            onDisconnectCallback = onDisconnect;
+            return mockEventSource;
+        });
     });
 
     describe('reducers', () => {
@@ -49,7 +48,6 @@ describe('permitSearchSlice', () => {
             expect(state.loading).toBeFalsy();
             expect(state.documentLoading).toBeFalsy();
             expect(state.aiLoading).toBeFalsy();
-            expect(state.streaming).toBeFalsy();
         });
 
         it('should handle setQuery', async () => {
@@ -117,21 +115,17 @@ describe('permitSearchSlice', () => {
 
     describe('async actions', () => {
         it('should handle SSE search with documents and prompt events', async () => {
-            const mockReadableStream = { getReader: jest.fn() };
-            mockCustomAxiosInstance.post.mockResolvedValue({
-                data: mockReadableStream
-            });
-
             const store = getStore();
             expect(selectSearchResults(store.getState())).toBeNull();
 
-            await store.dispatch(searchPermitConditions({ query: 'water quality', filters: [] }));
+            const searchPromise = store.dispatch(searchPermitConditions({ query: 'water quality', filters: [] }));
 
-            const handlers = (global as any).sseHandlers;
-
-            handlers.documents({
-                documents: [{ content: 'Water quality monitoring must be conducted monthly' }],
-                facets: { category: [{ value: 'Environmental', count: 1 }] }
+            onMessageCallback({
+                event: 'documents',
+                data: JSON.stringify({
+                    documents: [{ content: 'Water quality monitoring must be conducted monthly' }],
+                    facets: { category: [{ value: 'Environmental', count: 1 }] }
+                })
             });
 
             expect(selectSearchResults(store.getState())?.documents[0].content).toBe(
@@ -139,33 +133,49 @@ describe('permitSearchSlice', () => {
             );
             expect(selectDocumentLoading(store.getState())).toBe(false);
 
-            handlers.ai_start({});
+            onMessageCallback({
+                event: 'ai_start',
+                data: '{}'
+            });
             expect(selectAiLoading(store.getState())).toBe(true);
 
-            handlers.prompt({
-                answers: ['The permit requires monthly water quality monitoring.']
+            onMessageCallback({
+                event: 'prompt',
+                data: JSON.stringify({
+                    answers: ['The permit requires monthly water quality monitoring.']
+                })
             });
 
             expect(selectSearchResults(store.getState())?.prompt?.answers[0]).toBe(
                 'The permit requires monthly water quality monitoring.'
             );
 
-            handlers.ai_complete({});
+            onMessageCallback({
+                event: 'ai_complete',
+                data: '{}'
+            });
             expect(selectAiLoading(store.getState())).toBe(false);
+
+            onDisconnectCallback();
+            await searchPromise;
+
+            expect(mockEventSource.close).toHaveBeenCalled();
         });
 
         it('should handle errors in the SSE stream', async () => {
-            const mockReadableStream = { getReader: jest.fn() };
-            mockCustomAxiosInstance.post.mockResolvedValue({
-                data: mockReadableStream
+            const store = getStore();
+
+            (createEventSource as jest.Mock).mockImplementation(() => {
+                throw new Error('Stream error');
             });
 
-            const store = getStore();
-            await store.dispatch(searchPermitConditions({ query: 'water quality', filters: [] }));
+            const result = await store.dispatch(searchPermitConditions({
+                query: 'water quality',
+                filters: []
+            }));
 
-            const options = (global as any).sseOptions;
-
-            options.onError(new Error('Stream error'));
+            expect(result.type).toContain('rejected');
+            expect((result as any).error.message).toBe('Stream error');
 
             expect(selectDocumentLoading(store.getState())).toBe(false);
             expect(selectAiLoading(store.getState())).toBe(false);
@@ -177,20 +187,19 @@ describe('permitSearchSlice', () => {
 
             store.dispatch(setFilters(testFilters));
 
-            const mockReadableStream = { getReader: jest.fn() };
-            mockCustomAxiosInstance.post.mockResolvedValue({
-                data: mockReadableStream
-            });
+            const searchPromise = store.dispatch(searchPermitConditions({ query: 'test', filters: testFilters }));
 
-            await store.dispatch(searchPermitConditions({ query: 'test', filters: testFilters }));
-
-            const handlers = (global as any).sseHandlers;
-
-            handlers.documents({
-                documents: [{ content: 'Result content' }]
+            onMessageCallback({
+                event: 'documents',
+                data: JSON.stringify({
+                    documents: [{ content: 'Result content' }]
+                })
             });
 
             expect(selectSearchFilters(store.getState())).toEqual(testFilters);
+
+            onDisconnectCallback();
+            await searchPromise;
         });
     });
 });

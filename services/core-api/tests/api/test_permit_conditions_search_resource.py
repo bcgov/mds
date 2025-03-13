@@ -80,4 +80,4 @@ def test_permit_conditions_search_sse_format(test_client, auth_headers, mock_oau
     )
     
     assert response.status_code == 200
-    assert mock_sse_response.iter_lines.called
+    assert mock_sse_response.iter_content.called

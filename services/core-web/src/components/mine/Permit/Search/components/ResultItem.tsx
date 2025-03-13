@@ -118,6 +118,7 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
     const renderExpandLink = (direction: 'above' | 'below', count: number) => (
         <a
             onClick={() => setExpandedContext(direction)}
+            onKeyDown={() => setExpandedContext(direction)}
             className="permit-search__expand-link"
         >
             <FontAwesomeIcon

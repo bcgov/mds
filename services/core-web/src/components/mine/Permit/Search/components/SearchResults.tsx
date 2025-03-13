@@ -3,7 +3,7 @@ import { List, Space, Tag, Empty, Row, Col, Button, Badge, Skeleton, Typography,
 import ResultItem from './ResultItem';
 import { FilterOutlined } from '@ant-design/icons';
 import { useAppSelector } from '@mds/common/redux/rootState';
-import { selectSearchResults, selectSearchLoading, selectSearchFilters, selectSearchQuery, selectDocumentLoading } from '@mds/common/redux/slices/permitSearchSlice';
+import { selectSearchResults, selectSearchFilters, selectSearchQuery, selectDocumentLoading } from '@mds/common/redux/slices/permitSearchSlice';
 import { HaystackDocumentSearchResult } from '@mds/common/interfaces/search/facet-search.interface';
 import FilterDrawer from './FilterDrawer';
 import { startCase } from 'lodash';
@@ -28,7 +28,6 @@ export interface SearchResultsProps {
  */
 const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
     const results = useAppSelector(selectSearchResults);
-    const loading = useAppSelector(selectSearchLoading);
     const documentLoading = useAppSelector(selectDocumentLoading);
     const selectedFilters = useAppSelector(selectSearchFilters);
     const query = useAppSelector(selectSearchQuery);

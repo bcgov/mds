@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Space, Form } from 'antd';
+import { Input, Form } from 'antd';
 
 interface Props {
     onSearch: (query: string) => void;

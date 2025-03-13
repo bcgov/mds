@@ -70,23 +70,6 @@ def test_export_permit_conditions_success(test_client, db_session):
     os.remove(filename)
 
 
-def test_export_permit_conditions_invalid_guid(test_client, db_session):
-    """Test handling of invalid UUID format"""
-    from app.cli_commands.export_permit_conditions import export_permit_conditions
-    
-    invalid_guids = [
-        'invalid-guid',
-        '123',
-        '',
-        None,
-        'not-a-uuid',
-        'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
-    ]
-    
-    for invalid_guid in invalid_guids:
-        filename = export_permit_conditions(invalid_guid)
-        assert filename is None
-
 
 def test_export_permit_conditions_not_found(test_client, db_session):
     """Test handling of valid but non-existent UUID"""

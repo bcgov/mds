@@ -8,6 +8,14 @@ from app.api.mines.permits.permit_conditions.models.permit_conditions import (
     PermitConditions,
 )
 
+headers = [
+    'step', 'category', 'status', 'display_order', 'issue_date',
+    'permit', 'mine_number', 'mine_name', 'document_name',
+    'document_manager_guid', 'id', 'condition', 'permit_guid',
+    'mine_guid', 'permit_amendment_guid', 'permit_condition_guid',
+    'step_path', 'parent_ids', 'sibling_ids', 'child_ids', 'report_name'
+]
+
 
 def export_permit_conditions(permit_amendment_guid, csv_writer=None):
     """
@@ -145,14 +153,6 @@ def bulk_export_permit_conditions(csv_path):
     success_count = 0
     error_count = 0
     total_conditions = 0
-    
-    headers = [
-        'step', 'category', 'status', 'display_order', 'issue_date',
-        'permit', 'mine_number', 'mine_name', 'document_name',
-        'document_manager_guid', 'id', 'condition', 'permit_guid',
-        'mine_guid', 'permit_amendment_guid', 'permit_condition_guid',
-        'step_path', 'parent_ids', 'sibling_ids', 'child_ids', 'report_name'
-    ]
 
     with open(output_filename, 'w', newline='') as outfile:
         writer = csv.DictWriter(outfile, fieldnames=headers)

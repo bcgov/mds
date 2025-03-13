@@ -23,7 +23,7 @@ def test_permit_search_success(mock_oauth_session):
     search_term = {'query': 'test', 'filters': {'type': 'permit'}}
     expected_response = {'total': 1, 'results': [{'id': '1'}]}
     
-    mock_oauth_session.post.return_value.json.return_value = expected_response
+    mock_oauth_session.post.return_value = expected_response
     
     service = PermitSearchService()
     result = service.search(search_term)
