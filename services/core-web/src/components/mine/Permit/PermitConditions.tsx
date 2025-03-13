@@ -1,6 +1,6 @@
 import React, { FC, useMemo, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { Alert, Button, Col, Row, Space, Typography } from "antd";
+import { Col, Row, Space, Typography } from "antd";
 import FileOutlined from "@ant-design/icons/FileOutlined";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -59,6 +59,7 @@ import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
 import { PermitReviewBanner } from "./PermitReviewBanner";
 import { PermitConditionsProvider } from "./PermitConditionsContext";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import { LatestAmendmentWarning } from "./LatestAmendmentWarning";
 
 const { Title } = Typography;
 
@@ -73,10 +74,53 @@ interface PermitConditionProps {
   permitGuid?: string;
   mineGuid?: string;
   forceViewConditions?: boolean;
-  extractionTaskGuid?: string;
   permitAmendmentDocumentGuid?: string;
   selectedConditionId?: string; // Add this line
 }
+
+const scrollToCondition = (selectedConditionId: string) => {
+  // Add a small delay to ensure the DOM is fully rendered
+  setTimeout(() => {
+    const element = document.getElementById(`condition-${selectedConditionId}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      element.classList.add('highlight-condition');
+      setTimeout(() => {
+        element.classList.remove('highlight-condition');
+      }, 20000);
+    }
+  }, 100);
+}
+
+const renderExtractionState = (
+  isViewingLatestAmendment: boolean,
+  isExtractionInProgress: boolean,
+  isExtractionComplete: boolean,
+  canStartExtraction: boolean,
+  permitExtraction: any
+) => {
+  if (!isViewingLatestAmendment) return null;
+
+  if (isExtractionInProgress) {
+    return (
+      <RenderExtractionProgress />
+    );
+  }
+
+  if (!isExtractionComplete && permitExtraction?.task_status === "Error Extracting") {
+    return (
+      <RenderExtractionError />
+    );
+  }
+
+  if (canStartExtraction) {
+    return (
+      <RenderExtractionStart />
+    );
+  }
+
+  return null;
+};
 
 const PermitConditions: FC<PermitConditionProps> = ({
   isReviewComplete,
@@ -382,32 +426,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
     );
   };
 
-  const LatestAmendmentWarning: FC = () => {
-    return latestAmendment?.permit_amendment_guid !== currentAmendment?.permit_amendment_guid ? (
-      <Col span={24}>
-        {!latestAmendment?.conditions?.length ? (
-          <Alert
-            message="Extract and review the latest permit amendment"
-            description="The current permit conditions reflect the last permit reviewed and verified. Minespace users are seeing the last reviewed version. Conditions not amended will remain unchanged."
-            type="warning"
-            action={<Button onClick={viewPermitAmendment}>Extract Permit Conditions</Button>}
-            showIcon
-          />
-        ) : (
-          <Alert
-            message="Review and update the latest permit amendment conditions"
-            description="MineSpace users will continue to see the last reviewed and verified permit conditions until the new amendment completes review."
-            type="warning"
-            action={<Button onClick={viewPermitAmendment}>Review Permit Conditions</Button>}
-            showIcon
-          />
-        )}
-      </Col>
-    ) : (
-      <></>
-    );
-  };
-
   const AddConditionModalContent = (
     <Typography.Paragraph
       className="no_link_styling grey"
@@ -430,22 +448,8 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const hasConditions = currentAmendment?.conditions?.length > 0;
 
   useEffect(() => {
-    // Only attempt to scroll when:
-    // 1. We have a selectedConditionId
-    // 2. The conditions are loaded (not loading)
-    // 3. The currentAmendment exists and has conditions
     if (selectedConditionId && !showLoading && currentAmendment?.conditions?.length > 0) {
-      // Add a small delay to ensure the DOM is fully rendered
-      setTimeout(() => {
-        const element = document.getElementById(`condition-${selectedConditionId}`);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          element.classList.add('highlight-condition');
-          setTimeout(() => {
-            element.classList.remove('highlight-condition');
-          }, 20000);
-        }
-      }, 100);
+      scrollToCondition(selectedConditionId);
     }
   }, [selectedConditionId, showLoading, currentAmendment?.conditions]);
 
@@ -453,21 +457,154 @@ const PermitConditions: FC<PermitConditionProps> = ({
     latestAmendment?.permit_amendment_guid === currentAmendment?.permit_amendment_guid;
 
   if (!forceViewConditions) {
-    if (isViewingLatestAmendment && isExtractionInProgress) {
-      return (
-        <>
-          <LatestAmendmentWarning />
-          <RenderExtractionProgress />
-        </>
-      );
-    }
-    if (isViewingLatestAmendment && !isExtractionComplete && permitExtraction?.task_status === "Error Extracting") {
-      return <><LatestAmendmentWarning /><RenderExtractionError /></>;
-    }
-    if (isViewingLatestAmendment && canStartExtraction) {
-      return <><LatestAmendmentWarning /><RenderExtractionStart /></>;
+    const extractionState = renderExtractionState(
+      isViewingLatestAmendment,
+      isExtractionInProgress,
+      isExtractionComplete,
+      canStartExtraction,
+      permitExtraction
+    );
+    if (extractionState) {
+      return extractionState;
     }
   }
+
+  const renderContent = () => (
+    <Row align="middle" justify="space-between" gutter={[10, 16]}>
+      <LatestAmendmentWarning
+        latestAmendment={latestAmendment}
+        currentAmendment={currentAmendment}
+        onViewAmendment={viewPermitAmendment}
+      />
+      <Col span={24}>
+        <Title className="margin-none" level={2}>
+          Permit Conditions
+        </Title>
+      </Col>
+
+      <Col>
+        <Row gutter={10}>
+          <Col>
+            <CoreButton
+              loading={showLoading}
+              type="tertiary"
+              className="fa-icon-container"
+              icon={
+                <FontAwesomeIcon
+                  icon={isExpanded ? faArrowsToLine : faArrowsFromLine}
+                />
+              }
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
+              {isExpanded ? "Collapse" : "Expand"} All Conditions
+            </CoreButton>
+          </Col>
+          <Col>
+            <CoreButton
+              type="tertiary"
+              icon={<FileOutlined />}
+              loading={showLoading}
+              onClick={toggleViewPdf}
+            >
+              {viewPdf ? "Close" : "Open Permit in"} Document Viewer
+            </CoreButton>
+          </Col>
+        </Row>
+      </Col>
+      <Col span={24}>
+        <div className="core-page-content">
+          <Row gutter={[16, 16]}>
+            {formattedPermitConditionCategories.map((category, idx) => {
+              return (
+                <React.Fragment key={category.href}>
+                  <Col span={24}>
+                    <Row justify="space-between">
+                      <Title level={3} className="margin-none" id={category.href}>
+                        <EditPermitConditionCategoryInline
+                          canEdit={
+                            isExtracted &&
+                            canEditPermitConditions(category.condition_category)
+                          }
+                          onDelete={handleDeleteConditionCategory}
+                          onChange={handleUpdateConditionCategory}
+                          moveUp={(cat) => handleMove(cat, idx - 1)}
+                          moveDown={(cat) => handleMove(cat, idx + 1)}
+                          currentPosition={idx}
+                          categoryCount={formattedPermitConditionCategories.length}
+                          category={category.condition_category}
+                          conditionCount={category?.conditions.length || 0}
+                        />
+                      </Title>
+                      {canEditPermitConditions(category.condition_category) &&
+                        isExtracted && (
+                          <CoreButton
+                            type="primary"
+                            loading={showLoading}
+                            disabled={
+                              Boolean(addingToCategoryCode) ||
+                              Boolean(editingConditionGuid)
+                            }
+                            onClick={() =>
+                              setAddingToCategoryCode(category.condition_category_code)
+                            }
+                          >
+                            Add Condition
+                          </CoreButton>
+                        )}
+                    </Row>
+                    {isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) &&
+                      userCanEdit && (
+                        <PermitConditionReviewAssignment
+                          category={category?.condition_category}
+                        />
+                      )}
+                  </Col>
+                  {category.conditions.map((sc, idx) => (
+                    <Col span={24} key={sc.permit_condition_id} className="fade-in">
+                      <PermitConditionLayer
+                        previousAmendment={previousAmendment}
+                        isExtracted={isExtracted}
+                        permitAmendmentGuid={currentAmendment?.permit_amendment_guid}
+                        condition={sc}
+                        isExpanded={isExpanded}
+                        handleMoveCondition={handleMoveCondition}
+                        currentPosition={idx}
+                        conditionCount={category.conditions.length}
+                        canEditPermitConditions={canEditPermitConditions(
+                          category.condition_category
+                        )}
+                        setEditingConditionGuid={setEditingConditionGuid}
+                        editingConditionGuid={
+                          editingConditionGuid ?? addingToCategoryCode
+                        }
+                        refreshData={refreshData}
+                        conditionSelected={setSelectedCondition}
+                        categoryOptions={dropdownCategories}
+                        mineGuid={mineGuid}
+                        permitGuid={permitGuid}
+                      />
+                    </Col>
+                  ))}
+                  {addingToCategoryCode === category.condition_category_code && (
+                    <Col span={24}>
+                      <SubConditionForm
+                        conditionCategory={category}
+                        permitAmendmentGuid={currentAmendment.permit_amendment_guid}
+                        handleCancel={() => setAddingToCategoryCode(null)}
+                        onSubmit={handleAddCondition}
+                        categoryOptions={dropdownCategories}
+                      />
+                    </Col>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </Row>
+        </div>
+      </Col>
+    </Row>
+  );
+
   return (
     <>
       {hasConditions && (
@@ -496,140 +633,10 @@ const PermitConditions: FC<PermitConditionProps> = ({
               menuProps={scrollSideMenuProps}
               extraItems={userCanEdit && isExtracted ? AddConditionModalContent : null}
               view={isReviewComplete ? "anchor" : "steps"}
-              content={
-                <Row align="middle" justify="space-between" gutter={[10, 16]}>
-                  <LatestAmendmentWarning />
-                  <Col span={24}>
-                    <Title className="margin-none" level={2}>
-                      Permit Conditions
-                    </Title>
-                  </Col>
-
-                  <Col>
-                    <Row gutter={10}>
-                      <Col>
-                        <CoreButton
-                          loading={showLoading}
-                          type="tertiary"
-                          className="fa-icon-container"
-                          icon={
-                            <FontAwesomeIcon
-                              icon={isExpanded ? faArrowsToLine : faArrowsFromLine}
-                            />
-                          }
-                          onClick={() => setIsExpanded(!isExpanded)}
-                        >
-                          {isExpanded ? "Collapse" : "Expand"} All Conditions
-                        </CoreButton>
-                      </Col>
-                      <Col>
-                        <CoreButton
-                          type="tertiary"
-                          icon={<FileOutlined />}
-                          loading={showLoading}
-                          onClick={toggleViewPdf}
-                        >
-                          {viewPdf ? "Close" : "Open Permit in"} Document Viewer
-                        </CoreButton>
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col span={24}>
-                    <div className="core-page-content">
-                      <Row gutter={[16, 16]}>
-                        {formattedPermitConditionCategories.map((category, idx) => {
-                          return (
-                            <React.Fragment key={category.href}>
-                              <Col span={24}>
-                                <Row justify="space-between">
-                                  <Title level={3} className="margin-none" id={category.href}>
-                                    <EditPermitConditionCategoryInline
-                                      canEdit={
-                                        isExtracted &&
-                                        canEditPermitConditions(category.condition_category)
-                                      }
-                                      onDelete={handleDeleteConditionCategory}
-                                      onChange={handleUpdateConditionCategory}
-                                      moveUp={(cat) => handleMove(cat, idx - 1)}
-                                      moveDown={(cat) => handleMove(cat, idx + 1)}
-                                      currentPosition={idx}
-                                      categoryCount={formattedPermitConditionCategories.length}
-                                      category={category.condition_category}
-                                      conditionCount={category?.conditions.length || 0}
-                                    />
-                                  </Title>
-                                  {canEditPermitConditions(category.condition_category) &&
-                                    isExtracted && (
-                                      <CoreButton
-                                        type="primary"
-                                        loading={showLoading}
-                                        disabled={
-                                          Boolean(addingToCategoryCode) ||
-                                          Boolean(editingConditionGuid)
-                                        }
-                                        onClick={() =>
-                                          setAddingToCategoryCode(category.condition_category_code)
-                                        }
-                                      >
-                                        Add Condition
-                                      </CoreButton>
-                                    )}
-                                </Row>
-                                {isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) &&
-                                  userCanEdit && (
-                                    <PermitConditionReviewAssignment
-                                      category={category?.condition_category}
-                                    />
-                                  )}
-                              </Col>
-                              {category.conditions.map((sc, idx) => (
-                                <Col span={24} key={sc.permit_condition_id} className="fade-in">
-                                  <PermitConditionLayer
-                                    previousAmendment={previousAmendment}
-                                    isExtracted={isExtracted}
-                                    permitAmendmentGuid={currentAmendment?.permit_amendment_guid}
-                                    condition={sc}
-                                    isExpanded={isExpanded}
-                                    handleMoveCondition={handleMoveCondition}
-                                    currentPosition={idx}
-                                    conditionCount={category.conditions.length}
-                                    canEditPermitConditions={canEditPermitConditions(
-                                      category.condition_category
-                                    )}
-                                    setEditingConditionGuid={setEditingConditionGuid}
-                                    editingConditionGuid={
-                                      editingConditionGuid ?? addingToCategoryCode
-                                    }
-                                    refreshData={refreshData}
-                                    conditionSelected={setSelectedCondition}
-                                    categoryOptions={dropdownCategories}
-                                    mineGuid={mineGuid}
-                                    permitGuid={permitGuid}
-                                  />
-                                </Col>
-                              ))}
-                              {addingToCategoryCode === category.condition_category_code && (
-                                <Col span={24}>
-                                  <SubConditionForm
-                                    conditionCategory={category}
-                                    permitAmendmentGuid={currentAmendment.permit_amendment_guid}
-                                    handleCancel={() => setAddingToCategoryCode(null)}
-                                    onSubmit={handleAddCondition}
-                                    categoryOptions={dropdownCategories}
-                                  />
-                                </Col>
-                              )}
-                            </React.Fragment>
-                          );
-                        })}
-                      </Row>
-                    </div>
-                  </Col>
-                </Row>
-              }
-            ></ScrollSidePageWrapper>
+              content={renderContent()}
+            />
           </Col>
-          {canViewPdfSplitScreen ? (
+          {canViewPdfSplitScreen && (
             <Col style={{ padding: "16px", height: "inherit" }} span={8}>
               <div style={{ position: "sticky", top: "225px" }}>
                 <PreviewPermitAmendmentDocument
@@ -639,8 +646,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
                 />
               </div>
             </Col>
-          ) : (
-            ""
           )}
         </Row>
       </PermitConditionsProvider>

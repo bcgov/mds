@@ -5,7 +5,7 @@ import { useAppSelector } from '@mds/common/redux/rootState';
 import { selectAllFacets } from '@mds/common/redux/slices/permitSearchSlice';
 import FacetFilters from './FacetFilters';
 import { FilterOutlined } from '@ant-design/icons';
-import { HaystackSearchResponse, SearchResult } from '@mds/common/interfaces/search/facet-search.interface';
+import { SearchResult } from '@mds/common/interfaces/search/facet-search.interface';
 
 interface FilterDrawerProps {
     visible: boolean;
@@ -32,6 +32,11 @@ const FilterDrawer: React.FC<FilterDrawerProps> = ({
 }) => {
     const allFacets = useAppSelector(selectAllFacets);
 
+    const findFacetCount = (facetValue: string, currentFacets: any[]) => {
+        const found = currentFacets.find(cf => cf.value === facetValue);
+        return found?.count || 0;
+    };
+
     const renderFacets = () => {
         if (!allFacets) return null;
 
@@ -39,7 +44,7 @@ const FilterDrawer: React.FC<FilterDrawerProps> = ({
             const currentFacets = results?.facets?.[facetKey] || [];
             const updatedFacets = facets?.map(facet => ({
                 ...facet,
-                count: currentFacets.find(cf => cf.value === facet.value)?.count || 0
+                count: findFacetCount(facet.value, currentFacets)
             }));
 
             return (
