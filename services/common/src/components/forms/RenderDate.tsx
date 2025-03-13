@@ -14,7 +14,6 @@ interface DateInputProps extends BaseInputProps {
   yearMode?: boolean;
   disabledDate?: (currentDate) => boolean;
   formatViewDate?: boolean;
-  fieldEditMode?: boolean;
 }
 
 const RenderDate: FC<DateInputProps> = ({
