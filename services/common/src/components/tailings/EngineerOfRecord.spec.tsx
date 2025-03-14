@@ -32,8 +32,6 @@ describe("Tailings EngineerOfRecord", () => {
             <ReduxWrapper initialState={initialState}>
                 <FormWrapper name={FORM.ADD_TAILINGS_STORAGE_FACILITY}>
                     <EngineerOfRecord
-                        uploadedFiles={[]}
-                        setUploadedFiles={jest.fn()}
                         mineGuid={"18133c75-49ad-4101-85f3-a43e35ae989a"}
                         canEditTSF={true}
                         isEditMode={true}

@@ -17,7 +17,7 @@ class MineReportComment(SoftDeleteMixin, AuditMixin, Base):
     minespace_user_id = db.Column(db.Integer, db.ForeignKey('minespace_user.user_id'))
     core_user_id = db.Column(db.Integer, db.ForeignKey('core_user.core_user_id'))
     report_comment = db.Column(db.String, nullable=False)
-    comment_visibility_ind = db.Column(db.Boolean, nullable=False)
+    comment_visibility_ind = db.Column(db.Boolean, nullable=False, default=True)
 
     comment_user = db.Column(db.String(60), nullable=False, default=User().get_user_username)
     comment_datetime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)

@@ -26,7 +26,7 @@ export const CommentEditor: FC<CommentEditorProps> = ({
     event.preventDefault();
     setSubmitting(true);
 
-    await onSubmit({ comment });
+    await onSubmit({ comment, visible: false });
     handleReset();
   };
 

@@ -420,6 +420,7 @@ MINE_PARTY_APPT_PARTY = api.model(
         'end_date': fields.Date,
         'party': fields.Nested(PARTY),
         'status': fields.String(enum=MinePartyAppointmentStatus, attribute='status.name'),
+        'update_user': fields.String,
         'mine_party_acknowledgement_status': fields.String(
             enum=MinePartyAcknowledgedStatus, attribute='mine_party_acknowledgement_status.name'),
     })

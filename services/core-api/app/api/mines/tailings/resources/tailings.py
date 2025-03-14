@@ -1,6 +1,9 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from decimal import Decimal
 
+from app.api.utils.feature_flag import Feature, is_feature_enabled
+from app.api.mines.reports.models.mine_report import MineReport
+from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAcknowledgedStatus
 
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus
@@ -57,6 +60,12 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
         location='json',
         store_missing=False)
     parser.add_argument(
+        'tqp_party_guid',
+        type=str,
+        help='GUID of the party that is the Qualified Person for this TSF.',
+        location='json',
+        store_missing=False)
+    parser.add_argument(
         'notes',
         type=str,
         help='Any additional notes to be added to the tailing.',
@@ -86,6 +95,12 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
         help='Mines Act Permit Number',
         location='json',
         store_missing=False)
+    parser.add_argument(
+        'is_submitting',
+        type=bool,
+        location='json',
+        store_missing=False
+    )
 
     @api.doc(description='Get a tailing storage facility for the given mine')
     @requires_any_of([MINESPACE_PROPONENT, EDIT_TSF, VIEW_ALL])
@@ -113,15 +128,17 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
         if not mine:
             raise NotFound('Mine not found.')
 
-        mine_tsf = MineTailingsStorageFacility.find_by_tsf_guid(mine_tailings_storage_facility_guid)
+        mine_tsf: MineTailingsStorageFacility = MineTailingsStorageFacility.find_by_tsf_guid(mine_tailings_storage_facility_guid)
 
         if not mine_tsf:
             raise NotFound("Tailing Storage Facility not found")
 
         data = self.parser.parse_args()
+
+        is_submitting = data.get('is_submitting')
         eor_party_guid = data.get('eor_party_guid')
-        if eor_party_guid != None and (mine_tsf.engineer_of_record is None
-                                       or eor_party_guid != mine_tsf.engineer_of_record.party_guid):
+        has_new_eor = eor_party_guid != None and (mine_tsf.engineer_of_record is None or eor_party_guid != mine_tsf.engineer_of_record.party_guid)
+        if has_new_eor:
             if mine_tsf.engineer_of_record:
                 mine_tsf.engineer_of_record.end_date = datetime.now(tz=timezone.utc)
 
@@ -129,10 +146,34 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
                 # EORs created through minespace should have a status of "pending"
                 new_status = MinePartyAppointmentStatus.pending
                 mine_party_acknowledgement_status = MinePartyAcknowledgedStatus.not_acknowledged
+
+                if is_feature_enabled(Feature.TSF_V2):
+                    if is_submitting:
+                        calculated_due_date = datetime.now() + timedelta(hours=72)
+                        mine_report_definition = MineReportDefinition.find_one_by_section('10', '4', '1', '2')
+                        if not mine_report_definition:
+                            raise NotFound('EOR report definition not found by section')
+
+                        # Create a report request for a new EOR letter
+                        MineReport.create(
+                            mine_report_definition_id=mine_report_definition.mine_report_definition_id,
+                            mine_guid=mine.mine_guid,
+                            due_date=calculated_due_date,
+                            received_date=None,
+                            submission_year=calculated_due_date.year,
+                            description_comment=None,
+                            submitter_name=None,
+                            permit_id=None,
+                            add_to_session=True,
+                            system_created=True)
             else:
+                # TSF_V2 - this can probably be removed with the feature flag
                 mine_party_acknowledgement_status = MinePartyAcknowledgedStatus.acknowledged
                 new_status = MinePartyAppointmentStatus.active
 
+        # If feature is not enabled, save the appointment in here rather than it have been created
+        # within the TSF draft process
+        if not is_feature_enabled(Feature.TSF_V2):
             new_eor = MinePartyAppointment.create(
                 mine=mine,
                 tsf=mine_tsf,
@@ -143,9 +184,34 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
                 status = new_status,
                 mine_party_acknowledgement_status=mine_party_acknowledgement_status
             )
+
             related_guid = mine_tsf.mine_tailings_storage_facility_guid
             new_eor.assign_related_guid('EOR', related_guid)
             new_eor.save(commit=False)
+
+        if is_feature_enabled(Feature.TSF_V2):
+            tqp_party_guid = data.get('tqp_party_guid')
+            has_new_qp = tqp_party_guid != None and (mine_tsf.qualified_person is None or tqp_party_guid != mine_tsf.qualified_person.party_guid)
+            if has_new_qp:
+
+                if is_minespace_user() and is_submitting:
+                    calculated_due_date = datetime.now() + timedelta(hours=72)
+                    mine_report_definition = MineReportDefinition.find_one_by_section('10', '4', '2', '1(c)')
+                    if not mine_report_definition:
+                        raise NotFound('QP report definition not found by section')
+
+                    # Create a report request for a new EOR letter
+                    MineReport.create(
+                        mine_report_definition_id=mine_report_definition.mine_report_definition_id,
+                        mine_guid=mine.mine_guid,
+                        due_date=calculated_due_date,
+                        received_date=None,
+                        submission_year=calculated_due_date.year,
+                        description_comment=None,
+                        submitter_name=None,
+                        permit_id=None,
+                        add_to_session=True,
+                        system_created=True)
 
         for key, value in data.items():
             if key in ('eor_party_guid'):
