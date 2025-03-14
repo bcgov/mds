@@ -481,7 +481,6 @@ class AuditMixin(object):
 
 class HistoryMixin(object):
     __versioned__ = {}
-    versions = []
 
     @hybrid_property
     def history(self):
