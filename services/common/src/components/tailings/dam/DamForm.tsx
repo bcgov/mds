@@ -58,7 +58,7 @@ const DamForm: FC<DamFormProps> = (props) => {
     const openDiffModal = () => {
         dispatch(openModal({
             props: {
-                title: "View Dam History",
+                title: "Dam History",
                 damGuid: dam.dam_guid,
             },
             content: DamDiffModal

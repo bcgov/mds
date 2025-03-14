@@ -4,6 +4,7 @@ import { fetchDamHistory, getDamByGuid } from "@mds/common/redux/slices/damSlice
 import DiffTable from "../../history/DiffTable";
 import { CONSEQUENCE_CLASSIFICATION_CODE_HASH, DAM_OPERATING_STATUS_HASH, DAM_TYPES_HASH } from "@mds/common/constants/strings";
 import { formatDateTimeUserTz } from "@mds/common/redux/utils/helpers";
+import { Typography } from "antd";
 
 interface DamDiffModalProps {
     damGuid: string;
@@ -37,7 +38,13 @@ const DamDiffModal: FC<DamDiffModalProps> = ({ damGuid }) => {
         update_timestamp: dateTransform,
     };
 
-    return <DiffTable history={dam?.history} loading={loading} valueMapper={valueMapper} />
+    return <>
+        <Typography.Title level={3}>View History</Typography.Title>
+        <Typography.Paragraph>
+            You are viewing the past history of <b>{dam.dam_name}</b>
+        </Typography.Paragraph>
+        <DiffTable history={dam?.history} loading={loading} valueMapper={valueMapper} />
+    </>
 };
 
 export default DamDiffModal;

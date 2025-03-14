@@ -2,6 +2,19 @@
 
 exports[`Dam History Modal renders properly 1`] = `
 <div>
+  <h3
+    class="ant-typography"
+  >
+    View History
+  </h3>
+  <div
+    class="ant-typography"
+  >
+    You are viewing the past history of 
+    <b>
+      NEW Dam Name
+    </b>
+  </div>
   <div
     class="ant-table-wrapper diff-table"
   >
