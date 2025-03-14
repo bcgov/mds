@@ -1,6 +1,5 @@
 import React, { FC } from "react";
-import { connect } from "react-redux";
-import { RouteComponentProps, useParams, withRouter } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { Button, Typography } from "antd";
 import {
@@ -13,7 +12,6 @@ import {
   getITRBExemptionStatusCodeOptionsHash,
   getTSFOperatingStatusCodeOptionsHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { bindActionCreators } from "redux";
 import { storeDam } from "@mds/common/redux/slices/damSlice";
 import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import CoreTable from "@mds/common/components/common/CoreTable";
@@ -28,7 +26,7 @@ import {
   renderTextColumn,
   renderActionsColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
-import { useAppDispatch } from "@mds/common/redux/rootState";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 
 interface MineTailingsTableProps {
   tailings: ITailingsStorageFacility[];
@@ -39,20 +37,17 @@ interface MineTailingsTableProps {
     record
   ) => void;
   handleEditTailings: (event, tailings: ITailingsStorageFacility) => void;
-  TSFOperatingStatusCodeHash?: any;
-  itrmExemptionStatusCodeHash?: any;
-  history?: any;
-  storeTsf?: typeof storeTsf;
   tsfV2Enabled: boolean;
   canEditTSF: boolean;
 }
 
-const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (props) => {
+const MineTailingsTable: FC<MineTailingsTableProps> = (props) => {
   const { id: mineGuid } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
+  const history = useHistory();
+  const TSFOperatingStatusCodeHash = useAppSelector(getTSFOperatingStatusCodeOptionsHash);
+  const itrmExemptionStatusCodeHash = useAppSelector(getITRBExemptionStatusCodeOptionsHash);
   const {
-    TSFOperatingStatusCodeHash,
-    itrmExemptionStatusCodeHash,
     openEditTailingsModal,
     handleEditTailings,
     tailings,
@@ -76,7 +71,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
       (t) => t.mine_tailings_storage_facility_guid === dam.mine_tailings_storage_facility_guid
     );
     if (tsf) {
-      props.storeTsf(tsf);
+      dispatch(storeTsf(tsf));
     }
     const url = EDIT_DAM.dynamicRoute(
       mineGuid,
@@ -85,7 +80,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
       isEditMode,
       canEditDam
     );
-    props.history.push(url);
+    history.push(url);
   };
 
   const renderOldTSFActions = () => {
@@ -117,7 +112,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
       label: "View TSF",
       icon: <EyeOutlined />,
       clickFunction: (_event, record) => {
-        props.history.push({
+        history.push({
           pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
             record.mine_tailings_storage_facility_guid,
             record.mine_guid,
@@ -134,7 +129,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
           label: "Edit TSF",
           icon: <EditOutlined />,
           clickFunction: (_event, record) => {
-            props.history.push({
+            history.push({
               pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
                 record.mine_tailings_storage_facility_guid,
                 record.mine_guid,
@@ -263,18 +258,4 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
   );
 };
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ storeTsf }, dispatch);
-
-const mapStateToProps = (state) => ({
-  TSFOperatingStatusCodeHash: getTSFOperatingStatusCodeOptionsHash(state),
-  itrmExemptionStatusCodeHash: getITRBExemptionStatusCodeOptionsHash(state),
-});
-
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(MineTailingsTable as FC<MineTailingsTableProps>) as FC<
-    MineTailingsTableProps & RouteComponentProps
-  >
-);
+export default MineTailingsTable;
