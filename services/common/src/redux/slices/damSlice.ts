@@ -35,17 +35,20 @@ const damSlice = createAppSlice({
                 const headers = createRequestHeader();
                 thunkApi.dispatch(showLoading());
 
-                const resp = await CustomAxios({
-                    successToastMessage: "Successfully created new Dam",
-                }).post(`${ENVIRONMENT.apiUrl}${API.DAMS()}`, payload, headers);
-
-                thunkApi.dispatch(hideLoading());
+                let resp;
+                try {
+                    resp = await CustomAxios({
+                        successToastMessage: "Successfully created new Dam",
+                    }).post(`${ENVIRONMENT.apiUrl}${API.DAMS()}`, payload, headers);
+                } finally {
+                    thunkApi.dispatch(hideLoading());
+                }
                 return resp;
             },
             {
                 fulfilled: (state: DamState, action) => {
                     const newDam = action.payload;
-                    state[newDam.dam_guid] = newDam;
+                    state.dams[newDam.dam_guid] = newDam;
                 },
                 rejected: (state: DamState, action) => {
                     rejectHandler(action);
@@ -57,17 +60,20 @@ const damSlice = createAppSlice({
                 const headers = createRequestHeader();
                 thunkApi.dispatch(showLoading());
 
-                const resp = CustomAxios().patch(
-                    `${ENVIRONMENT.apiUrl}${API.DAM(payload.dam_guid)}`, payload, headers
-                );
-
-                thunkApi.dispatch(hideLoading());
+                let resp;
+                try {
+                    resp = await CustomAxios().patch(
+                        `${ENVIRONMENT.apiUrl}${API.DAM(payload.dam_guid)}`, payload, headers
+                    );
+                } finally {
+                    thunkApi.dispatch(hideLoading());
+                }
                 return resp.data;
             },
             {
                 fulfilled: (state: DamState, action) => {
                     const updatedDam = action.payload;
-                    state[updatedDam.dam_guid] = updatedDam;
+                    state.dams[updatedDam.dam_guid] = updatedDam;
                 },
                 rejected: (state: DamState, action) => {
                     rejectHandler(action);
@@ -79,11 +85,14 @@ const damSlice = createAppSlice({
                 const headers = createRequestHeader();
                 thunkApi.dispatch(showLoading());
 
-                const resp = await CustomAxios({
-                    errorToastMessage: "Failed to load dam history",
-                }).get(`${ENVIRONMENT.apiUrl}${API.DAM(damGuid)}`, headers);
-
-                thunkApi.dispatch(hideLoading());
+                let resp;
+                try {
+                    resp = await CustomAxios({
+                        errorToastMessage: "Failed to load dam history",
+                    }).get(`${ENVIRONMENT.apiUrl}${API.DAM(damGuid)}`, headers);
+                } finally {
+                    thunkApi.dispatch(hideLoading());
+                }
                 return resp.data;
             }, {
             fulfilled: (state: DamState, action) => {
@@ -100,7 +109,7 @@ const damSlice = createAppSlice({
     },
 });
 
-const {
+export const {
     getDams
 } = damSlice.selectors;
 

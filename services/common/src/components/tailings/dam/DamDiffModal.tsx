@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { fetchDamHistory, getDamByGuid } from "@mds/common/redux/slices/damSlice";
 import DiffTable from "../../history/DiffTable";
 import { CONSEQUENCE_CLASSIFICATION_CODE_HASH, DAM_OPERATING_STATUS_HASH, DAM_TYPES_HASH } from "@mds/common/constants/strings";
-import { formatDateTimeTz } from "@mds/common/redux/utils/helpers";
+import { formatDateTimeUserTz } from "@mds/common/redux/utils/helpers";
 
 interface DamDiffModalProps {
     damGuid: string;
@@ -27,7 +27,7 @@ const DamDiffModal: FC<DamDiffModalProps> = ({ damGuid }) => {
         }
     }, [dam?.history]);
 
-    const dateTransform = { transform: formatDateTimeTz };
+    const dateTransform = { transform: (dateString: string) => formatDateTimeUserTz(dateString) || null };
 
     const valueMapper = {
         dam_type: { hash: DAM_TYPES_HASH },

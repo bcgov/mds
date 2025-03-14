@@ -6,7 +6,7 @@ export interface IDiffColumn {
 
 export interface IDiffEntry {
   updated_by: string;
-  updated_at: Date;
+  updated_at: string;
   changeset: IDiffColumn[];
 }
 

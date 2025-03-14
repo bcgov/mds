@@ -35,6 +35,7 @@ import {
   IMineReport,
   ITailingsStorageFacility,
   IMineReportSubmission,
+  IDam,
 } from "@mds/common/interfaces";
 
 export const createMockHeader = () => ({
@@ -99,6 +100,142 @@ export const TSF: ITailingsStorageFacility = {
   tailings_storage_facility_type: TailingsStorageFacilityTypeEnum.conventional,
   storage_location: StorageLocationEnum.above_ground,
   mines_act_permit_no: "P-123",
+};
+
+export const DAM_WITH_HISTORY: IDam = {
+  dam_guid: TSF.dams[0].dam_guid,
+  update_timestamp: "2025-03-14T15:09:26.535897",
+  update_user: "test@bceid",
+  consequence_classification: ConsequenceClassificationStatusCodeEnum.LOW,
+  current_dam_height: 56.84,
+  current_elevation: 1.23,
+  dam_name: "NEW Dam Name",
+  dam_type: DamTypeEnum.dam,
+  latitude: 48.0000123,
+  longitude: -112.0000456,
+  max_pond_elevation: 34.67,
+  min_freeboard_required: 14.13,
+  mine_tailings_storage_facility_guid: TSF.mine_tailings_storage_facility_guid,
+  operating_status: OperatingStatusEnum.construction,
+  permitted_dam_crest_elevation: 1.24,
+  history: [
+    {
+      updated_by: "test@bceid",
+      updated_at: "2025-03-13T20:44:01.495495",
+      changeset: [
+        {
+          "field_name": "create_user",
+          "from": null,
+          "to": "test@bceid"
+        },
+        {
+          "field_name": "create_timestamp",
+          "from": null,
+          "to": "2025-03-13T20:44:01.495480"
+        },
+        {
+          "field_name": "update_user",
+          "from": null,
+          "to": "test@bceid"
+        },
+        {
+          "field_name": "update_timestamp",
+          "from": null,
+          "to": "2025-03-13T20:44:01.495495"
+        },
+        {
+          "field_name": "deleted_ind",
+          "from": null,
+          "to": false
+        },
+        {
+          "field_name": "dam_guid",
+          "from": null,
+          "to": TSF.dams[0].dam_guid
+        },
+        {
+          "field_name": "mine_tailings_storage_facility_guid",
+          "from": null,
+          "to": TSF.mine_tailings_storage_facility_guid
+        },
+        {
+          "field_name": "dam_type",
+          "from": null,
+          "to": "dam"
+        },
+        {
+          "field_name": "dam_name",
+          "from": null,
+          "to": "Dam name"
+        },
+        {
+          "field_name": "latitude",
+          "from": null,
+          "to": "48.0000123"
+        },
+        {
+          "field_name": "longitude",
+          "from": null,
+          "to": "-112.0000456"
+        },
+        {
+          "field_name": "operating_status",
+          "from": null,
+          "to": "construction"
+        },
+        {
+          "field_name": "consequence_classification",
+          "from": null,
+          "to": "LOW"
+        },
+        {
+          "field_name": "permitted_dam_crest_elevation",
+          "from": null,
+          "to": "1.24"
+        },
+        {
+          "field_name": "current_dam_height",
+          "from": null,
+          "to": "56.84"
+        },
+        {
+          "field_name": "current_elevation",
+          "from": null,
+          "to": "1.23"
+        },
+        {
+          "field_name": "max_pond_elevation",
+          "from": null,
+          "to": "34.67"
+        },
+        {
+          "field_name": "min_freeboard_required",
+          "from": null,
+          "to": "14.13"
+        }
+      ]
+    }, {
+      updated_by: "other@bceid",
+      updated_at: "2025-03-14T15:09:26.535897",
+      changeset: [
+        {
+          "field_name": "update_timestamp",
+          "from": "2025-03-13T20:44:01.495495",
+          "to": "2025-03-14T15:09:26.535897"
+        },
+        {
+          "field_name": "update_user",
+          "from": "test@bceid",
+          "to": "other@bceid"
+        },
+        {
+          "field_name": "dam_name",
+          "from": "Dam name",
+          "to": "NEW Dam name"
+        },
+      ]
+    }
+  ]
 };
 
 // used for testing selectors

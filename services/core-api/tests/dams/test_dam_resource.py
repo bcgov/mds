@@ -39,3 +39,25 @@ def test_patch_dam(test_client, db_session, auth_headers):
     assert patch_data['dam_guid'] == str(dam_guid)
     assert patch_data['dam_name'] == "Updated Dam Name"
     assert patch_data['dam_name'] != 'Dam Name'
+
+def test_dam_history(test_client, db_session, auth_headers):
+    dam = DamFactory()
+
+    get_resp = test_client.get(
+        f"/dams/{dam.dam_guid}",
+        headers=auth_headers['full_auth_header'])
+    get_data = json.loads(get_resp.data.decode())
+
+    changeset = get_data['history'][0]['changeset']
+
+    for change in changeset:
+         field_name = change['field_name']
+         assert change['from'] == None
+         new_value = get_data.get(field_name, None)
+
+         # don't check fields not returned by the get request
+         if new_value is not None:
+            if field_name in ['create_timestamp', 'update_timestamp']:
+                new_value = new_value.replace(" ", "T")
+            # remove trailing 0s for equality checks on numbers
+            assert change['to'].rstrip("0") == str(new_value).rstrip("0")

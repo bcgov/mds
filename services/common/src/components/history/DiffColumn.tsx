@@ -28,8 +28,10 @@ const DiffColumn: React.FC<DiffColumnProps> = ({ differences, valueMapper }) => 
           from = mapper.hash[from];
           to = mapper.hash[to];
         } else if (mapper.data) {
-          from = mapper.data.find((data) => data.value === change.from);
-          to = mapper.data.find((data) => data.value === change.to);
+          const fromMap = mapper.data.find((data) => data.value === change.from);
+          const toMap = mapper.data.find((data) => data.value === change.to);
+          from = fromMap?.label || from;
+          to = toMap?.label || to;
         } else if (mapper.transform) {
           from = mapper.transform(from);
           to = mapper.transform(to);

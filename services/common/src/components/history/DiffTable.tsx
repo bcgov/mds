@@ -3,21 +3,23 @@ import { DiffColumnValueMapper, IDiffColumn, IDiffEntry } from "./DiffColumn.int
 import CoreTable from "../common/CoreTable";
 import DiffColumn from "./DiffColumn";
 import { renderDateColumn } from "../common/CoreTableCommonColumns";
+import { ColumnsType } from "antd/lib/table";
 
 interface DiffTableProps {
     history: IDiffEntry[];
     loading?: boolean;
     valueMapper?: DiffColumnValueMapper;
+    columns?: ColumnsType;
 }
 
-const DiffTable: FC<DiffTableProps> = ({ history, valueMapper, loading = false }) => {
+const DiffTable: FC<DiffTableProps> = ({ history, valueMapper, columns = [], loading = false }) => {
 
     const commonColumns = [
         {
             title: "Updated by",
             dataIndex: "updated_by"
         },
-        renderDateColumn("updated_at", "Date"),
+        { ...renderDateColumn("updated_at", "Date", true), defaultSortOrder: "descend" },
         {
             title: "Changes",
             dataIndex: "changeset",
@@ -28,7 +30,8 @@ const DiffTable: FC<DiffTableProps> = ({ history, valueMapper, loading = false }
     return <CoreTable
         className="diff-table"
         rowClassName="diff-table-row"
-        columns={commonColumns}
+        rowKey="updated_at"
+        columns={[...columns, ...commonColumns]}
         dataSource={history ?? []}
         loading={loading}
     />
