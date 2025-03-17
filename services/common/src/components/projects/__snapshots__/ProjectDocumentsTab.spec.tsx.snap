@@ -1416,6 +1416,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                   >
                     <button
                       class="ant-btn ant-btn-primary ant-dropdown-trigger actions-dropdown-button"
+                      data-testid=""
                       disabled=""
                       type="button"
                     >
@@ -2925,6 +2926,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                   >
                     <button
                       class="ant-btn ant-btn-primary ant-dropdown-trigger actions-dropdown-button"
+                      data-testid=""
                       disabled=""
                       type="button"
                     >
@@ -3909,6 +3911,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                   >
                     <button
                       class="ant-btn ant-btn-primary ant-dropdown-trigger actions-dropdown-button"
+                      data-testid=""
                       disabled=""
                       type="button"
                     >
