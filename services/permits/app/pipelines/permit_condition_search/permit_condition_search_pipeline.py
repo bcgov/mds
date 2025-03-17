@@ -14,12 +14,6 @@ from app.pipelines.permit_condition_search.components.indexer_runner import (
     IndexerRunner,
 )
 from app.pipelines.permit_condition_search.config import config
-from app.pipelines.permit_condition_search.create_search_index import (
-    create_or_update_index,
-)
-from app.pipelines.permit_condition_search.create_search_indexer import (
-    create_search_indexer,
-)
 from app.pipelines.permit_condition_search.stores.ai_search_document_store import (
     AdditionalAISearchConfig,
     AzureSearchDocumentStore,
@@ -38,10 +32,6 @@ from haystack_integrations.document_stores.elasticsearch import (
 
 logger = logging.getLogger(__name__)
 
-
-if config.search.endpoint and config.search.endpoint.startswith("https://"):
-    create_or_update_index()
-    create_search_indexer()
 
 ROOT_DIR = os.path.abspath(os.curdir)
 
