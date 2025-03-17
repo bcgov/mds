@@ -157,7 +157,7 @@ class MineReportDefinition(Base, AuditMixin):
         return query
 
     @classmethod
-    def _apply_filters(cls, query, regulatory_authority, is_prr_only, active_ind, section):
+    def _apply_filters(cls, query, regulatory_authority, is_prr_only, active_ind, section, show_expired):
         filters = []
         if regulatory_authority:
             reg_auth_filter = []
@@ -196,6 +196,19 @@ class MineReportDefinition(Base, AuditMixin):
                 field_name = section_order[index]
                 filters.append(field_name.ilike(part))
 
+        if not show_expired:
+            now = datetime.now(timezone('US/Pacific'))
+            # Filter by effective_date and expiry_date
+            filters.append(
+                and_(
+                    ComplianceArticle.effective_date <= now,
+                    or_(
+                        ComplianceArticle.expiry_date.is_(None),
+                        ComplianceArticle.expiry_date >= now
+                    )
+                )
+            )
+
         return query.filter(*filters)
 
     @classmethod
@@ -219,7 +232,7 @@ class MineReportDefinition(Base, AuditMixin):
 
     @classmethod
     def apply_filters_and_pagination(cls, query, page, per_page, sort_field, sort_dir, regulatory_authority,
-                                     is_prr_only, active_ind, section):
+                                     is_prr_only, active_ind, section, show_expired):
 
         regulatory_authority = None if len(regulatory_authority) == 0 or len(regulatory_authority) == len(
             CimOrCpo) + 1 else regulatory_authority
@@ -227,7 +240,7 @@ class MineReportDefinition(Base, AuditMixin):
         compliance_sort = True if sort_field in ['section', 'regulatory_authority'] else False
         compliance_filter = True if regulatory_authority or section else False
 
-        if compliance_sort or compliance_filter:
+        if compliance_sort or compliance_filter or not show_expired:
             query = query.join(MineReportDefinitionComplianceArticleXref,
                                MineReportDefinitionComplianceArticleXref.mine_report_definition_id == MineReportDefinition.mine_report_definition_id,
                                isouter=True)
@@ -236,7 +249,7 @@ class MineReportDefinition(Base, AuditMixin):
                                isouter=True)
 
         query = cls._apply_sort(query, sort_field, sort_dir)
-        query = cls._apply_filters(query, regulatory_authority, is_prr_only, active_ind, section)
+        query = cls._apply_filters(query, regulatory_authority, is_prr_only, active_ind, section, show_expired)
         return cls._apply_pagination(query, page, per_page)
 
     @classmethod

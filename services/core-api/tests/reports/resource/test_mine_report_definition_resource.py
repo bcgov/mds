@@ -1,13 +1,18 @@
 import json
 import math
 from urllib import parse
+
+from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
+from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import \
+    MineReportDefinitionComplianceArticleXref
+
 
 # test non-paginated results
 def test_post_mine_report_definition_no_pagination(test_client, db_session, auth_headers):
     active_records = db_session.query(MineReportDefinition).filter_by(active_ind=True).all()
     record_count = len(active_records)
-    request_data = {}
+    request_data = { "show_expired": True }
     
     get_resp = test_client.get(
         f'/mines/reports/definitions?{parse.urlencode(request_data)}',
@@ -20,8 +25,53 @@ def test_post_mine_report_definition_no_pagination(test_client, db_session, auth
     assert(get_data['current_page']) == 1
     assert(get_data['total_pages']) == 1
     assert(get_data['items_per_page']) == record_count
-    assert(get_data['total']) == record_count   
-    
+    assert(get_data['total']) == record_count
+
+from datetime import datetime
+from pytz import timezone
+from sqlalchemy import and_, or_
+
+
+def test_get_mine_report_definition_without_expired(test_client, db_session, auth_headers):
+    # Current datetime in the 'US/Pacific' timezone
+    now = datetime.now(timezone('US/Pacific'))
+
+    # Query only active MineReportDefinition records with valid ComplianceArticle dates
+    active_records = (
+        db_session.query(MineReportDefinition)
+        .join(
+            MineReportDefinitionComplianceArticleXref,
+            MineReportDefinitionComplianceArticleXref.mine_report_definition_id == MineReportDefinition.mine_report_definition_id
+        )
+        .join(
+            ComplianceArticle,
+            ComplianceArticle.compliance_article_id == MineReportDefinitionComplianceArticleXref.compliance_article_id
+        )
+        .filter(MineReportDefinition.active_ind == True)
+        .filter(
+            and_(
+                ComplianceArticle.effective_date <= now,
+                or_(
+                    ComplianceArticle.expiry_date.is_(None),
+                    ComplianceArticle.expiry_date >= now
+                )
+            )
+        )
+        .all()
+    )
+
+    record_count = len(active_records)
+
+    request_data = {}
+
+    get_resp = test_client.get(
+        f'/mines/reports/definitions?{parse.urlencode(request_data)}',
+        headers=auth_headers['full_auth_header'],
+    )
+    get_data = json.loads(get_resp.data.decode())
+
+    assert get_resp.status_code == 200
+    assert len(get_data['records']) == record_count
 
 # test pagination
 def test_post_mine_report_definition_pagination(test_client, db_session, auth_headers):
@@ -29,7 +79,7 @@ def test_post_mine_report_definition_pagination(test_client, db_session, auth_he
     PER_PAGE = 10
     active_records = db_session.query(MineReportDefinition).filter_by(active_ind=True).all()
     record_count = len(active_records)
-    request_data = {"page": PAGE, "per_page": PER_PAGE}
+    request_data = {"page": PAGE, "per_page": PER_PAGE, "show_expired": True}
 
     get_resp = test_client.get(
         f'/mines/reports/definitions?{parse.urlencode(request_data)}',
@@ -48,8 +98,9 @@ def test_post_mine_report_definition_pagination(test_client, db_session, auth_he
 def test_mine_report_definition_active_filter(test_client, db_session, auth_headers):
     all_records = db_session.query(MineReportDefinition).all()
     all_record_count = len(all_records)
-    request_all_data = "active_ind=true&active_ind=false"
-    request_inactive_data = "active_ind=false"
+    request_all_data = "active_ind=true&active_ind=false&show_expired=true"
+    request_inactive_data = "active_ind=false&show_expired=true"
+    print(request_all_data)
 
     get_all_resp = test_client.get(
         f'/mines/reports/definitions?{request_all_data}',
@@ -74,7 +125,7 @@ def test_mine_report_definition_active_filter(test_client, db_session, auth_head
 
 def test_mine_report_definition_section_filter(test_client, db_session, auth_headers):    
     section_search = "2.3.1"
-    request_data = {"section": section_search}
+    request_data = {"section": section_search, "show_expired": True}
 
     get_resp = test_client.get(
         f'/mines/reports/definitions?{parse.urlencode(request_data)}',
@@ -101,7 +152,7 @@ def test_mine_report_definition_section_alpha_filter(test_client, db_session, au
     # uppercase the sub_paragraph for searching
     section_data = [article_search.section, article_search.sub_section, article_search.paragraph, article_search.sub_paragraph.upper()]
     section_search_string = ".".join(section_data)
-    request_data = {"section": section_search_string}
+    request_data = {"section": section_search_string, "show_expired": True}
 
     get_resp = test_client.get(
         f'/mines/reports/definitions?{parse.urlencode(request_data)}',
@@ -123,8 +174,8 @@ def test_mine_report_definition_section_alpha_filter(test_client, db_session, au
     
 
 def test_mine_report_definition_report_type_filter(test_client, db_session, auth_headers):
-    crr_request_data = {"is_prr_only": "false"}
-    prr_request_data = {"is_prr_only": "true"}
+    crr_request_data = {"is_prr_only": "false", "show_expired": True}
+    prr_request_data = {"is_prr_only": "true", "show_expired": True}
 
     crr_get_resp = test_client.get(
         f'/mines/reports/definitions?{parse.urlencode(crr_request_data)}',
@@ -149,8 +200,8 @@ def test_mine_report_definition_report_type_filter(test_client, db_session, auth
 
 def test_mine_report_definition_reg_auth_filter(test_client, db_session, auth_headers):
     active_records = db_session.query(MineReportDefinition).filter_by(active_ind=True).all()
-    cpo_none_request_data = "regulatory_authority=CPO&regulatory_authority=NONE"
-    cpo_cim_request_data = "regulatory_authority=CPO&regulatory_authority=CIM"
+    cpo_none_request_data = "regulatory_authority=CPO&regulatory_authority=NONE&show_expired=true"
+    cpo_cim_request_data = "regulatory_authority=CPO&regulatory_authority=CIM&show_expired=true"
 
     # include a "None" value
     cn_get_resp = test_client.get(
@@ -227,7 +278,7 @@ def test_mine_report_definition_sort_by_section(test_client, db_session, auth_he
 
 def test_mine_report_definition_sort_by_regulatory_authority(test_client, db_session, auth_headers):
 
-    request_data = {'sort_field': 'regulatory_authority', 'sort_dir': 'asc'}
+    request_data = {'sort_field': 'regulatory_authority', 'sort_dir': 'asc', 'show_expired': True}
     
     get_resp = test_client.get(
         f'/mines/reports/definitions?{parse.urlencode(request_data)}',
@@ -250,7 +301,7 @@ def test_post_mine_report_definition_success(test_client, db_session, auth_heade
         "mine_report_due_date_type_code": 'ANV',
         "mine_report_due_date_period_months": 12,
         "report_type": "CRR",
-        "is_common": True
+        "is_common": True,
     }
 
     post_resp = test_client.post(

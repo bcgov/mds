@@ -36,6 +36,7 @@ import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 const defaultParams = {
   page: 1,
   per_page: 50,
+  show_expired: true,
 };
 
 const ComplianceReportManagement: FC = () => {
