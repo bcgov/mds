@@ -1,17 +1,15 @@
 from flask_restx import fields
-
-from app.api.dams.models.dam import DamType, OperatingStatus, ConsequenceClassification
 from app.extensions import api
 
 DAM_MODEL = api.model('Dam', {
     'dam_guid': fields.String(required=True, description='The unique identifier of the dam'),
     'mine_tailings_storage_facility_guid': fields.String,
-    'dam_type': fields.String(enum=DamType, attribute='dam_type.name'),
+    'dam_type': fields.String,
     'dam_name': fields.String,
     'latitude': fields.Float,
     'longitude': fields.Float,
-    'operating_status': fields.String(enum=OperatingStatus, attribute='operating_status.name'),
-    'consequence_classification': fields.String(enum=ConsequenceClassification, attribute='consequence_classification.name'),
+    'operating_status': fields.String,
+    'consequence_classification': fields.String,
     'permitted_dam_crest_elevation': fields.Fixed(decimals=2),
     'current_dam_height': fields.Fixed(decimals=2),
     'current_elevation': fields.Fixed(decimals=2),
