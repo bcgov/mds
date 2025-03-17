@@ -36,6 +36,9 @@ class MineReportDefinitionListResource(Resource, UserMixin):
     parser.add_argument(
         'section', type=str, help='article # of compliance report', location='args', store_missing=False
     )
+    parser.add_argument(
+        'show_expired', type=bool, help='true to show expired reports', location='args', store_missing=False
+    )
     @api.doc(
         params={
             'page': 'The page number of paginated records to return',
@@ -45,7 +48,8 @@ class MineReportDefinitionListResource(Resource, UserMixin):
             'regulatory_authority': 'CIM, CPO, Both, NONE',
             'is_prr_only': '[true] for only prr, [false] to exclude, [true, false] for both',
             'active_ind': '[true] for only active (default), [false] for only inactive, [true, false] for both',
-            'section': 'article # of compliance report'
+            'section': 'article # of compliance report',
+            'show_expired': 'true to show expired reports'
         },
         description='returns the report definitions for possible reports.')
     @api.marshal_with(PAGINATED_MINE_REPORT_DEFINITION_MODEL, code=200)
@@ -59,6 +63,7 @@ class MineReportDefinitionListResource(Resource, UserMixin):
         is_prr_only = request.args.getlist('is_prr_only', type=str)
         active_ind = request.args.getlist('active_ind', type=str)
         section = request.args.get('section', None, type=str)
+        show_expired = request.args.get('show_expired', False, type=bool)
 
         if (page and page < 1) or per_page and per_page < 0:
             raise BadRequest(f'Invalid pagination values: page {page}, per_page {per_page}')
@@ -77,7 +82,8 @@ class MineReportDefinitionListResource(Resource, UserMixin):
             regulatory_authority,
             is_prr_only,
             active_ind,
-            section
+            section,
+            show_expired
         )
 
 
