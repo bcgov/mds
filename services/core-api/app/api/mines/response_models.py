@@ -464,6 +464,9 @@ MINE_TSF_DETAIL_MODEL = api.clone('MineTailingsStorageFacilityDetail', MINE_TSF_
 })
 
 DAM_HISTORY_MODEL = api.clone('DamHistory', DAM_MODEL, {
+    'dam_type': fields.String,
+    'consequence_classification': fields.String,
+    'operating_status': fields.String,
     'history': fields.List(fields.Nested(CHANGE_MODEL))
 } )
 
