@@ -200,8 +200,8 @@ def test_mine_report_definition_report_type_filter(test_client, db_session, auth
 
 def test_mine_report_definition_reg_auth_filter(test_client, db_session, auth_headers):
     active_records = db_session.query(MineReportDefinition).filter_by(active_ind=True).all()
-    cpo_none_request_data = "regulatory_authority=CPO&regulatory_authority=NONE"
-    cpo_cim_request_data = "regulatory_authority=CPO&regulatory_authority=CIM"
+    cpo_none_request_data = "regulatory_authority=CPO&regulatory_authority=NONE&show_expired=true"
+    cpo_cim_request_data = "regulatory_authority=CPO&regulatory_authority=CIM&show_expired=true"
 
     # include a "None" value
     cn_get_resp = test_client.get(
