@@ -68,7 +68,6 @@ export const MineNoticeOfDeparture: React.FC<IMineNoticeOfDepartureProps & Props
       props: {
         title,
         clearOnSubmit: true,
-        mine,
       },
       width: "50vw",
       content: modalConfig.NOTICE_OF_DEPARTURE_MODAL,
