@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Popconfirm, Row, Form } from "antd";
-import { connect, useSelector } from "react-redux";
-import { bindActionCreators, compose } from "redux";
 import {
   EMPTY_FIELD,
   NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
@@ -9,7 +7,7 @@ import {
   NOTICE_OF_DEPARTURE_STATUS_VALUES,
   NOTICE_OF_DEPARTURE_TYPE,
 } from "@mds/common/constants/strings";
-import { formatDate, normalizePhone } from "@common/utils/helpers";
+import { formatDate, normalizePhone } from "@mds/common/redux/utils/helpers";
 import {
   addDocumentToNoticeOfDeparture,
   fetchDetailedNoticeOfDeparture,
@@ -17,7 +15,6 @@ import {
   removeFileFromDocumentManager,
   updateNoticeOfDeparture,
 } from "@mds/common/redux/actionCreators/noticeOfDepartureActionCreator";
-import { getNoticeOfDeparture } from "@mds/common/redux/selectors/noticeOfDepartureSelectors";
 import { Field, FieldArray, change, getFormValues } from "@mds/common/components/forms/form";
 import {
   email,
@@ -26,7 +23,7 @@ import {
   required,
   requiredList,
 } from "@mds/common/redux/utils/Validate";
-import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
+import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import {
   renderDateColumn,
@@ -38,27 +35,27 @@ import { NOTICE_OF_DEPARTURE_DOCUMENTS } from "@/constants/API";
 import { renderConfig } from "@/components/common/config";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
-import * as Permission from "@/constants/permissions";
 import { renderDocumentLinkColumn } from "../common/DocumentColumns";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
-import { ICreateNoD, IMine, INoDContactInterface, INoticeOfDeparture } from "@mds/common/interfaces";
+import { INoticeOfDeparture } from "@mds/common/interfaces";
 import { USER_ROLES } from "@mds/common/constants/environment";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import { closeModal } from "@mds/common/redux/actions/modalActions";
+import { getNoticeOfDeparture } from "@mds/common/redux/selectors/noticeOfDepartureSelectors";
+import { getMatchingPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants/enums";
 
-interface RenderContactsProps {
-  fields: INoDContactInterface[];
-}
 
-export const renderContacts: React.FC<RenderContactsProps> = (props, disabled = false) => {
-  const { fields } = props;
+const NodContacts = ({ fields, disabled }) => {
   return (
     <div className="margin-large--bottom">
       {fields.length > 0 && (
         <p className="nod-modal-section-sub-header margin-large--top">Primary Contact</p>
       )}
-      {fields.map((contact, index) => (
-        <Row gutter={16} key={index}>
+      {fields.map((contact: string) => (
+        <Row gutter={16} key={contact}>
           <Col span={12}>
             <Field
               label="First Name"
@@ -113,32 +110,20 @@ export const renderContacts: React.FC<RenderContactsProps> = (props, disabled = 
   );
 };
 
-interface NoticeOfDepartureModalProps {
-  initialValues: Partial<ICreateNoD>;
-  closeModal: () => void;
-  noticeOfDeparture: INoticeOfDeparture;
-  fetchDetailedNoticeOfDeparture: any;
-  fetchNoticesOfDeparture: any;
-  updateNoticeOfDeparture: any;
-  addDocumentToNoticeOfDeparture: any;
-  mine: IMine;
-  userRoles: string[];
-  change: (formName: string, field: string, value: any) => void;
-}
-
-const NoticeOfDepartureModal: React.FC<NoticeOfDepartureModalProps> = (props) => {
-  const [statusOptions, setStatusOptions] = React.useState([]);
+const NoticeOfDepartureModal: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const [statusOptions, setStatusOptions] = useState([]);
   const [documentArray, setDocumentArray] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const formName = FORM.NOTICE_OF_DEPARTURE_FORM;
-  const formValues = useSelector(getFormValues(formName));
-  const currentStatus = formValues?.nod_status
-
-  const { noticeOfDeparture, mine, change } = props;
-  const { nod_guid } = noticeOfDeparture;
-
-  const hasEditPermission = props.userRoles.includes(USER_ROLES[Permission.EDIT_PERMITS]);
+  const formValues = useAppSelector(getFormValues(formName)) as INoticeOfDeparture;
+  const noticeOfDeparture = useAppSelector(getNoticeOfDeparture)
+  const currentStatus = formValues?.nod_status;
+  const mineManagers = useAppSelector(getMatchingPartyRelationships(MinePartyAppointmentTypeCodeEnum.MMG));
+  const currentMineManager = mineManagers?.filter((m) => m.status === 'active')?.[0];
+  const { nod_guid, mine } = noticeOfDeparture;
+  const hasEditPermission = useAppSelector(userHasRole(USER_ROLES.role_edit_permits));
   const disabled = !hasEditPermission;
 
   const checklist = noticeOfDeparture.documents.filter(
@@ -162,14 +147,14 @@ const NoticeOfDepartureModal: React.FC<NoticeOfDepartureModalProps> = (props) =>
 
   const handleAddDocuments = (noticeOfDepartureGuid) => {
     documentArray.forEach((document) =>
-      props.addDocumentToNoticeOfDeparture(
-        { mineGuid: mine.mine_guid, noticeOfDepartureGuid },
+      dispatch(addDocumentToNoticeOfDeparture(
+        { noticeOfDepartureGuid },
         {
           document_type: document.document_type,
           document_name: document.document_name,
           document_manager_guid: document.document_manager_guid,
         }
-      )
+      ))
     );
   };
 
@@ -193,7 +178,7 @@ const NoticeOfDepartureModal: React.FC<NoticeOfDepartureModalProps> = (props) =>
   };
 
   useEffect(() => {
-    change(formName, "uploadedFiles", documentArray);
+    dispatch(change(formName, "uploadedFiles", documentArray));
   }, [documentArray]);
 
   const onRemoveFile = (_, fileItem) => {
@@ -225,16 +210,16 @@ const NoticeOfDepartureModal: React.FC<NoticeOfDepartureModalProps> = (props) =>
   const handleDeleteANoticeOfDepartureDocument = async (document) => {
     await removeFileFromDocumentManager(document);
 
-    await props.fetchDetailedNoticeOfDeparture(nod_guid);
+    await dispatch(fetchDetailedNoticeOfDeparture(nod_guid));
   };
 
   const updateNoticeOfDepartureSubmit = async (values) => {
-    await props.updateNoticeOfDeparture({ mineGuid: mine.mine_guid, nodGuid: nod_guid }, values);
+    await dispatch(updateNoticeOfDeparture({ nodGuid: nod_guid }, values));
     if (documentArray.length > 0) {
       await handleAddDocuments(nod_guid);
     }
-    await props.fetchNoticesOfDeparture(mine.mine_guid);
-    props.closeModal();
+    await dispatch(fetchNoticesOfDeparture(mine.mine_guid));
+    dispatch(closeModal());
   };
 
   const fileColumns = (isSortable: boolean) => {
@@ -276,8 +261,9 @@ const NoticeOfDepartureModal: React.FC<NoticeOfDepartureModalProps> = (props) =>
   return (
     <div>
       <FormWrapper
+        isModal
         name={FORM.NOTICE_OF_DEPARTURE_FORM}
-        initialValues={props.initialValues}
+        initialValues={noticeOfDeparture}
         reduxFormConfig={{
           touchOnBlur: false,
           forceUnregisterOnUnmount: true,
@@ -310,7 +296,7 @@ const NoticeOfDepartureModal: React.FC<NoticeOfDepartureModalProps> = (props) =>
           </div>
           <div className="inline-flex padding-sm">
             <p className="field-title margin-large--right">Mine Manager</p>
-            <p>{formatDate(noticeOfDeparture.mine_manager_name) || EMPTY_FIELD}</p>
+            <p>{currentMineManager?.party?.name || EMPTY_FIELD}</p>
           </div>
           <div className="inline-flex padding-sm">
             <p className="field-title margin-large--right">Submitted</p>
@@ -319,7 +305,8 @@ const NoticeOfDepartureModal: React.FC<NoticeOfDepartureModalProps> = (props) =>
         </div>
         <FieldArray
           name="nod_contacts"
-          component={(componentProps) => renderContacts(componentProps, disabled)}
+          component={NodContacts}
+          disabled={disabled}
         />
         <h4 className="nod-modal-section-header padding-md--top">Self-Assessment Form</h4>
         <CoreTable condition columns={fileColumns(false)} dataSource={checklist} />
@@ -389,7 +376,7 @@ const NoticeOfDepartureModal: React.FC<NoticeOfDepartureModalProps> = (props) =>
             <Button
               className="full-mobile nod-cancel-button"
               type="primary"
-              onClick={props.closeModal}
+              onClick={() => dispatch(closeModal())}
             >
               Close
             </Button>
@@ -405,24 +392,5 @@ const NoticeOfDepartureModal: React.FC<NoticeOfDepartureModalProps> = (props) =>
   );
 };
 
-const mapStateToProps = (state) => ({
-  noticeOfDeparture: getNoticeOfDeparture(state),
-  initialValues: getNoticeOfDeparture(state),
-  userRoles: getUserAccessData(state),
-});
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      fetchDetailedNoticeOfDeparture,
-      updateNoticeOfDeparture,
-      fetchNoticesOfDeparture,
-      addDocumentToNoticeOfDeparture,
-      change,
-    },
-    dispatch
-  );
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps)
-)(NoticeOfDepartureModal as any) as React.FC<NoticeOfDepartureModalProps>;
+export default NoticeOfDepartureModal;

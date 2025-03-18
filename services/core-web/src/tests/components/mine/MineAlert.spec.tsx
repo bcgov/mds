@@ -1,33 +1,23 @@
 import React from "react";
-import { shallow } from "enzyme";
-import { MineAlert } from "@/components/mine/MineAlert";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import { render } from "@testing-library/react";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import MineAlert from "@/components/mine/MineAlert";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { MINE_ALERTS } from "@/constants/reducerTypes";
 
-const props: any = {};
-const dispatchProps: any = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.createMineAlert = jest.fn();
-  dispatchProps.updateMineAlert = jest.fn();
-  dispatchProps.fetchMineAlertsByMine = jest.fn(() => Promise.resolve());
-  dispatchProps.deleteMineAlert = jest.fn();
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.openModal = jest.fn();
-};
-
-const setupProps = () => {
-  props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  props.mineAlerts = MOCK.MINE_ALERTS.records;
-};
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
+const initialState = {
+  [MINE_ALERTS]: {
+    mineAlerts: MOCK.MINE_ALERTS.records
+  }
+}
 
 describe("MineAlert", () => {
   it("renders dispatchProperly", () => {
-    const component = shallow(<MineAlert {...dispatchProps} {...props} />);
-    expect(component).toMatchSnapshot();
+    const { container } = render(
+      <ReduxWrapper initialState={initialState}>
+        <MineAlert mine={MOCK.MINES.mines[MOCK.MINES.mineIds[0]]} />
+      </ReduxWrapper>
+    )
+    expect(container).toMatchSnapshot();
   });
 });

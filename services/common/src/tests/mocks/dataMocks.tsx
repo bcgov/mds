@@ -7308,7 +7308,7 @@ export const MINE_ALERTS = {
     {
       mine_alert_guid: "3a31287c-82a3-46f0-a973-7a8a399718ad",
       start_date: "2022-10-27",
-      end_date: "2022-10-31",
+      end_date: "2052-10-31",
       contact_name: "mock name",
       contact_phone: "337-588-3109",
       message: "Mine under construction",
@@ -9407,12 +9407,11 @@ export const NOTICES_OF_DEPARTURE: { records: INoticeOfDeparture[] } = {
       },
       nod_status: NodStatusSaveEnum.pending_review,
       nod_type: NoDTypeSaveEnum.potentially_substantial,
-      mine_manager_name: "Maaanager",
     },
   ],
 };
 
-export const NOTICE_OF_DEPARTURE_DETAILS = {
+export const NOTICE_OF_DEPARTURE_DETAILS: INoticeOfDeparture = {
   nod_guid: "56c75a01-248f-4e2c-961a-131790205682",
   nod_title: "Test with checklist 1",
   nod_description: "Checklist description",
@@ -9427,8 +9426,8 @@ export const NOTICE_OF_DEPARTURE_DETAILS = {
     current_permittee: "Richardson-Weiss",
     permit_prefix: "C",
   },
-  nod_status: "pending_review",
-  nod_type: "potentially_substantial",
+  nod_status: NodStatusSaveEnum.pending_review,
+  nod_type: NoDTypeSaveEnum.potentially_substantial,
   documents: [
     {
       document_type: "checklist",
@@ -9438,8 +9437,15 @@ export const NOTICE_OF_DEPARTURE_DETAILS = {
       document_manager_guid: "8e1e0182-fef4-4f93-b76a-d2b65b6f3908",
       document_name: "Excel_Comments_Template.xlsx",
       upload_date: null,
+      create_user: "create-user"
     },
   ],
+  nod_no: "NOD-123",
+  mine: {
+    mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+    mine_no: "BLAH9091",
+    mine_name: "mine3"
+  }
 };
 
 export const PROJECT_DECISION_PACKAGE = {
