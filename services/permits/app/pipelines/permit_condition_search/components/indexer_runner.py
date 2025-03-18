@@ -3,6 +3,7 @@ from typing import Dict
 
 from azure.core.credentials import AzureKeyCredential
 from azure.search.documents.indexes import SearchIndexerClient
+from fastapi import HTTPException
 from haystack import component, logging
 
 logger = logging.getLogger(__name__)
@@ -36,7 +37,7 @@ class IndexerRunner:
                 raise TimeoutError("Indexer run timed out after 5 minutes")
             if status.last_result and status.last_result.status in ["success", "error"]:
                 if status.last_result.status == "error":
-                    raise Exception(f"Indexer failed: {status.last_result.error_message}")
+                    raise HTTPException(500, f"Indexer failed: {status.last_result.error_message}")
                 
                 stats = {
                     "document_count": status.last_result.item_count,
