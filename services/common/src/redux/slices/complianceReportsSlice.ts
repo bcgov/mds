@@ -35,6 +35,7 @@ export interface ComplianceReportParams extends ISearchParams {
   regulatory_authority?: "CPO" | "CIM" | "Both" | "NONE"[];
   active_ind?: boolean[];
   section?: string;
+  show_expired?: boolean;
 }
 
 export const reportParamsGetAll: ComplianceReportParams = {

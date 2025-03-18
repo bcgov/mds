@@ -198,14 +198,16 @@ class MineReportDefinition(Base, AuditMixin):
 
         if not show_expired:
             now = datetime.now(timezone('US/Pacific'))
-            # Filter by effective_date and expiry_date
             filters.append(
-                and_(
-                    ComplianceArticle.effective_date <= now,
-                    or_(
-                        ComplianceArticle.expiry_date.is_(None),
-                        ComplianceArticle.expiry_date >= now
-                    )
+                or_(
+                    and_(
+                        ComplianceArticle.effective_date <= now,
+                        or_(
+                            ComplianceArticle.expiry_date.is_(None),
+                            ComplianceArticle.expiry_date >= now
+                        )
+                    ),
+                    ComplianceArticle.compliance_article_id.is_(None)
                 )
             )
 
