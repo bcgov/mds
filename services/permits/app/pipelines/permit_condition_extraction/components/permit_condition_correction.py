@@ -1,17 +1,14 @@
 import json
 import logging
 import os
-from collections import defaultdict
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Dict, List
 
 from app.common.types.chat_data import ChatData
 from app.common.types.permit_condition_model import PermitCondition, PermitConditions
-from app.common.utils.feature_flags import Feature, is_feature_enabled
 from haystack import Document, component
 from haystack.components.builders import ChatPromptBuilder
 from haystack.dataclasses import ChatMessage
 from json_repair import repair_json
-from pydantic import InstanceOf
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +16,7 @@ DEBUG_MODE = os.environ.get("DEBUG_MODE", "False").lower() == "true"
 
 
 @component
-class PermitConditionValidator:
+class PermitConditionCorrection:
     """
     Component that validates and corrects permit conditions after extraction.
     Can trigger complete reprocessing of the permit document if needed.
@@ -126,7 +123,7 @@ class PermitConditionValidator:
         
         # Create prompt with validation template
         prompt = self.prompt_builder.run(
-            template=[ChatMessage.from_system(self.template)],
+            template=[ChatMessage.from_system(text=self.template)],
             template_variables={
                 "original_text": document_text,
                 "conditions_json": conditions_json

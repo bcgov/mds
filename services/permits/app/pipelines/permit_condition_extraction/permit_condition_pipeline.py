@@ -19,14 +19,14 @@ from app.pipelines.permit_condition_extraction.components.metadata_converter imp
 from app.pipelines.permit_condition_extraction.components.PaginatedChatPromptBuilder import (
     PaginatedChatPromptBuilder,
 )
+from app.pipelines.permit_condition_extraction.components.permit_condition_correction import (
+    PermitConditionCorrection,
+)
 from app.pipelines.permit_condition_extraction.components.permit_condition_extractor import (
     PermitConditionExtractor,
 )
 from app.pipelines.permit_condition_extraction.components.permit_condition_section_combiner import (
     PermitConditionSectionCombiner,
-)
-from app.pipelines.permit_condition_extraction.components.permit_condition_validator import (
-    PermitConditionValidator,
 )
 from app.pipelines.permit_condition_search.config import config
 from haystack import Pipeline
@@ -131,7 +131,7 @@ def permit_condition_pipeline():
     
     if enable_validator:
         logger.info("Adding validator component to pipeline")
-        validator = PermitConditionValidator(
+        validator = PermitConditionCorrection(
             chat_generator=llm,
             condition_extractor=extractor,
             template=permit_condition_post_combine_validation_prompt,

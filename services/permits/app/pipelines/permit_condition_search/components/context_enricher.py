@@ -1,4 +1,3 @@
-from itertools import islice
 from typing import Dict, List, Optional, Set, Tuple
 
 from haystack import Document, component
@@ -58,7 +57,7 @@ class ContextEnricher:
         }
 
         # Format parent contexts - use step_path instead of hierarchy_path
-        for level, parent in enumerate(reversed(parents), 1):
+        for level, parent in enumerate(parents, 1):
             path = parent.meta.get("step_path", "")
             if path:
                 context["full_hierarchy"].append(path)
