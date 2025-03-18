@@ -1,8 +1,16 @@
 import { formatComplianceCodeReportName } from "@mds/common/redux/utils/helpers";
 import React, { useEffect, useState } from "react";
-import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@mds/common/redux/rootState";
+import {
+  useAppDispatch as useDispatch,
+  useAppSelector as useSelector,
+} from "@mds/common/redux/rootState";
 import { Field } from "@mds/common/components/forms/form";
-import { fetchComplianceReports, getMineReportDefinitionOptions, getReportDefinitionsLoaded, reportParamsGetAll } from "@mds/common/redux/slices/complianceReportsSlice";
+import {
+  fetchComplianceReports,
+  getMineReportDefinitionOptions,
+  getReportDefinitionsLoaded,
+  reportParamsGetAll,
+} from "@mds/common/redux/slices/complianceReportsSlice";
 import RenderSelect from "../forms/RenderSelect";
 import { uniqBy } from "lodash";
 import moment from "moment";
@@ -21,7 +29,8 @@ export const ReportDefinitionFieldSelect = (props: ReportDefinitionFieldSelectPr
   const dispatch = useDispatch();
   const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
   const [formattedMineReportDefinitionOptions, setFormattedMineReportDefinitionOptions] = useState([]);
-  const reportDefinitionsLoaded = useSelector(getReportDefinitionsLoaded(reportParamsGetAll));
+  const reportParams = { ...reportParamsGetAll, show_expired: true };
+  const reportDefinitionsLoaded = useSelector(getReportDefinitionsLoaded(reportParams));
 
   useEffect(() => {
     // Format the mine report definition options for the search bar
@@ -38,12 +47,14 @@ export const ReportDefinitionFieldSelect = (props: ReportDefinitionFieldSelectPr
         };
       })
       .sort((a, b) => a.label.localeCompare(b.label));
-    setFormattedMineReportDefinitionOptions(uniqBy(newFormattedMineReportDefinitionOptions, "value"));
+    setFormattedMineReportDefinitionOptions(
+      uniqBy(newFormattedMineReportDefinitionOptions, "value")
+    );
   }, [mineReportDefinitionOptions]);
 
   useEffect(() => {
     if (!reportDefinitionsLoaded) {
-      dispatch(fetchComplianceReports(reportParamsGetAll));
+      dispatch(fetchComplianceReports(reportParams));
     }
   }, []);
 

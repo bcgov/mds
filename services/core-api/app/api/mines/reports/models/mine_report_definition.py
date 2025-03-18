@@ -198,7 +198,6 @@ class MineReportDefinition(Base, AuditMixin):
 
         if not show_expired:
             now = datetime.now(timezone('US/Pacific'))
-            # Filter by effective_date and expiry_date
             filters.append(
                 and_(
                     ComplianceArticle.effective_date <= now,
@@ -241,12 +240,10 @@ class MineReportDefinition(Base, AuditMixin):
         compliance_filter = True if regulatory_authority or section else False
 
         if compliance_sort or compliance_filter or not show_expired:
-            query = query.join(MineReportDefinitionComplianceArticleXref,
-                               MineReportDefinitionComplianceArticleXref.mine_report_definition_id == MineReportDefinition.mine_report_definition_id,
-                               isouter=True)
-            query = query.join(ComplianceArticle,
-                               ComplianceArticle.compliance_article_id == MineReportDefinitionComplianceArticleXref.compliance_article_id,
-                               isouter=True)
+            query = query.outerjoin(MineReportDefinitionComplianceArticleXref,
+                               MineReportDefinitionComplianceArticleXref.mine_report_definition_id == MineReportDefinition.mine_report_definition_id)
+            query = query.outerjoin(ComplianceArticle,
+                               ComplianceArticle.compliance_article_id == MineReportDefinitionComplianceArticleXref.compliance_article_id)
 
         query = cls._apply_sort(query, sort_field, sort_dir)
         query = cls._apply_filters(query, regulatory_authority, is_prr_only, active_ind, section, show_expired)
