@@ -3,7 +3,7 @@ import {
     DAM_OPERATING_STATUS,
     DAM_TYPES,
 } from "@mds/common/constants/strings";
-import { Col, Popconfirm, Row, Typography } from "antd";
+import { Alert, Button, Col, Popconfirm, Row, Typography } from "antd";
 import {
     decimalPlaces,
     lat,
@@ -20,6 +20,10 @@ import React, { FC } from "react";
 import { ITailingsStorageFacility, IDam } from "@mds/common/interfaces";
 import RenderSelect from "../../forms/RenderSelect";
 import RenderField from "../../forms/RenderField";
+import { formatDateTime } from "@mds/common/redux/utils/helpers";
+import { useAppDispatch } from "@mds/common/redux/rootState";
+import { openModal } from "@mds/common/redux/actions/modalActions";
+import DamDiffModal from "./DamDiffModal";
 
 interface DamFormProps {
     tsf: ITailingsStorageFacility;
@@ -36,6 +40,7 @@ interface Params {
 
 const DamForm: FC<DamFormProps> = (props) => {
     const { tsf, dam, canEditTSF, isEditMode, canEditDam } = props;
+    const dispatch = useAppDispatch();
     const history = useHistory();
     const { tailingsStorageFacilityGuid, mineGuid } = useParams<Params>();
     const canEditTSFAndEditMode = canEditTSF && canEditDam;
@@ -48,6 +53,16 @@ const DamForm: FC<DamFormProps> = (props) => {
 
     const handleBack = () => {
         history.push(returnUrl);
+    };
+
+    const openDiffModal = () => {
+        dispatch(openModal({
+            props: {
+                title: "Dam History",
+                damGuid: dam.dam_guid,
+            },
+            content: DamDiffModal
+        }))
     };
 
     return (
@@ -68,6 +83,29 @@ const DamForm: FC<DamFormProps> = (props) => {
                     </Typography.Link>
                 </Popconfirm>
             </div>
+            {dam?.update_timestamp && (
+                <Row>
+                    <Col span={24}>
+                        <Typography.Paragraph>
+                            <Alert
+                                description={`Last Updated by ${dam.update_user}  on ${formatDateTime(
+                                    dam.update_timestamp
+                                )}`}
+                                showIcon
+                                message=""
+                                className="ant-alert-grey bullet"
+                                type="info"
+                                style={{ alignItems: "center" }}
+                                action={
+                                    <Button className="margin-large--left" onClick={openDiffModal}>
+                                        View History
+                                    </Button>
+                                }
+                            />
+                        </Typography.Paragraph>
+                    </Col>
+                </Row>
+            )}
 
             <Field
                 id="dam_type"

@@ -23,6 +23,7 @@ from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from sqlalchemy.orm import validates
+import json
 
 
 class UserBoundQuery(db.Query):
@@ -477,6 +478,30 @@ class AuditMixin(object):
         onupdate=User().get_user_username)
     update_timestamp = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class HistoryMixin(object):
+    __versioned__ = {}
+
+    @hybrid_property
+    def history(self):
+        def dt_to_str(dt):
+            if isinstance(dt, datetime):
+                return dt.isoformat() if dt else None
+            return dt
+        if self.versions:
+            hs = list(map(lambda version: {
+                'updated_by': version.update_user,
+                'updated_at': version.update_timestamp,
+                'changeset': list(map(lambda key: json.loads(json.dumps({
+                    'field_name': key,
+                    'from': dt_to_str(version.changeset[key][0]),
+                    'to': dt_to_str(version.changeset[key][1])
+                }, default=str)), version.changeset))
+            }, self.versions))
+
+            return hs
+        else:
+            return []
 
 class DocumentXrefMixin(object):
     @declared_attr

@@ -2,7 +2,6 @@ import activityReducerObject from "./reducers/activityReducer";
 import authenticationReducerObject from "./reducers/authenticationReducer";
 // Reducers
 import complianceReducerObject from "./reducers/complianceReducer";
-import damReducerObject from "./reducers/damReducer";
 import documentViewerReducerObject from "./reducers/documentViewerReducer";
 import explosivesPermitReducerObject from "./reducers/explosivesPermitReducer";
 import externalAuthorizationReducerObject from "./reducers/externalAuthorizationReducer";
@@ -48,5 +47,4 @@ export const projectReducer = projectReducerObject;
 export const noticeOfDepartureReducer = noticeOfDepartureReducerObject;
 export const activityReducer = activityReducerObject;
 export const tailingsReducer = tailingsReducerObject;
-export const damReducer = damReducerObject;
 export const verifiableCredentialReducer = verifiableCredentialReducerObject;
