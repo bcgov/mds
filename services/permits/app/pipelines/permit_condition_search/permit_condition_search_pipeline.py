@@ -101,9 +101,13 @@ def create_permit_condition_search_indexing_pipeline():
         container_name=config.storage.container_name,
     )
 
+    api_key = config.search.api_key.resolve_value()
+
+    assert api_key is not None, "API key must be provided to create the indexer"
+
     indexer_runner = IndexerRunner(
         search_endpoint=config.search.endpoint,
-        search_api_key=config.search.api_key.resolve_value(),
+        search_api_key=api_key,
     )
 
     index_pipeline.add_component("blob_uploader", blob_uploader)
@@ -191,10 +195,11 @@ def create_permit_condition_search_retrieval_pipeline():
 
 
 logger.info("Initializing permit condition search pipelines")
-permit_condition_search_retrieval_pipeline = (
-    create_permit_condition_search_retrieval_pipeline()
-)
-permit_condition_search_indexing_pipeline = (
-    create_permit_condition_search_indexing_pipeline()
-)
-logger.info("Pipelines initialized successfully")
+if not os.getenv("TESTING"):
+    permit_condition_search_retrieval_pipeline = create_permit_condition_search_retrieval_pipeline()
+    permit_condition_search_indexing_pipeline = create_permit_condition_search_indexing_pipeline()
+    logger.info("Pipelines initialized successfully")
+else:
+    permit_condition_search_retrieval_pipeline = None
+    permit_condition_search_indexing_pipeline = None
+    logger.info("Pipelines initialization skipped for testing")

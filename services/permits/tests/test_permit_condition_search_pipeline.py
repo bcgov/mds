@@ -4,6 +4,9 @@ import pytest
 from app.pipelines.permit_condition_extraction.components.azure_document_intelligence_converter import (
     AzureDocumentIntelligenceConverter,
 )
+from app.pipelines.permit_condition_search.components.azure_blob_upload import (
+    AzureBlobUploader,
+)
 from app.pipelines.permit_condition_search.permit_condition_search_pipeline import (
     create_permit_condition_search_indexing_pipeline,
     create_permit_condition_search_retrieval_pipeline,
@@ -25,6 +28,7 @@ def mock_components():
     AzureAISearchHybridRetriever.__init__ = MagicMock(return_value=None)
     ChatPromptBuilder.__init__ = MagicMock(return_value=None)
     AzureDocumentIntelligenceConverter.__init__ = MagicMock(return_value=None)
+    AzureBlobUploader.__init__ = MagicMock(return_value=None)
 
 def test_create_permit_condition_search_retrieval_pipeline_returns_pipeline(mock_components):
     pipeline = create_permit_condition_search_retrieval_pipeline()

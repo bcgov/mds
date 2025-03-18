@@ -16,6 +16,18 @@ from fastapi import HTTPException, UploadFile
 from sse_starlette import ServerSentEvent
 
 
+@pytest.fixture(autouse=True)
+def mock_config():
+    with patch("app.pipelines.permit_condition_search.permit_condition_search_pipeline.config") as mock_conf:
+        # Set up mock config values
+        mock_conf.storage.connection_string = "mock_connection_string"
+        mock_conf.storage.container_name = "mock_container"
+        mock_conf.search.endpoint = "mock_endpoint"
+        mock_conf.search.api_key.resolve_value.return_value = "mock_api_key"
+        mock_conf.openai.endpoint = "mock_openai_endpoint"
+        mock_conf.openai.api_key = "mock_openai_key"
+        yield mock_conf
+
 class TestPermitConditionSearchResource:
 
     
