@@ -25,7 +25,7 @@ const IncidentFormUpdateIncidentStatus: FC<IncidentFormUpdateIncidentStatusProps
 }) => {
   const isNewIncident = !incident?.mine_incident_guid;
   const isClosed = incident?.status_code === "CLD";
-  const selectedStatusCode = formValues.status_code;
+  const selectedStatusCode = formValues?.status_code;
   const responsibleInspector = incident?.responsible_inspector_party;
 
   const alertText = (updateUser, updateDate, responsibleInspector, selectedStatusCode) => {
