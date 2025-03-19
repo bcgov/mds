@@ -227,10 +227,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         ms_recipients = []
         # Adding submitter's email
         if self.submitter_email:
-            if is_proponent:
-                ms_recipients.append(self.submitter_email)
-            else:
-                core_recipients.append(self.submitter_email)
+            ms_recipients.append(self.submitter_email)
 
         # Adding submitter's email
         contacts_email = [
