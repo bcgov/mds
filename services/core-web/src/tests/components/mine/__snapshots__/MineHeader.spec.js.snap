@@ -7,7 +7,7 @@ exports[`MineHeader renders dispatchProperly 1`] = `
   <div
     className="dashboard__header--card__content"
   >
-    <Connect(MineAlert)
+    <MineAlert
       mine={
         Object {
           "major_mine_ind": true,

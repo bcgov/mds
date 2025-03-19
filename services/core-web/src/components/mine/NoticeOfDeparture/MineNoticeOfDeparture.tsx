@@ -57,18 +57,17 @@ export const MineNoticeOfDeparture: React.FC<IMineNoticeOfDepartureProps & Props
     if (event) {
       event.preventDefault();
     }
-    const detailedNoticeOfDeparture = await props.fetchDetailedNoticeOfDeparture(
+    await props.fetchDetailedNoticeOfDeparture(
       selectedNoticeOfDeparture.nod_guid
     );
+
     const title = props.userRoles.includes(USER_ROLES[Permission.EDIT_PERMITS])
       ? "Edit Notice of Departure"
       : "View Notice of Departure";
     props.openModal({
       props: {
-        noticeOfDeparture: detailedNoticeOfDeparture.data,
         title,
         clearOnSubmit: true,
-        mine,
       },
       width: "50vw",
       content: modalConfig.NOTICE_OF_DEPARTURE_MODAL,

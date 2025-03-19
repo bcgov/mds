@@ -1,40 +1,24 @@
 import React from "react";
-import { shallow } from "enzyme";
-import { Provider } from "react-redux";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { render } from "@testing-library/react";
+import { NOTICES_OF_DEPARTURE } from "@mds/common/constants/reducerTypes";
+import { NOTICE_OF_DEPARTURE_DETAILS } from "@mds/common/tests/mocks/dataMocks";
 import NoticeOfDepartureModal from "@/components/modalContent/NoticeOfDepartureModal";
-import { MINE_RESPONSE, NOTICE_OF_DEPARTURE_DETAILS } from "@/tests/mocks/dataMocks";
-import { store } from "@/App";
 
-const dispatchProps: any = {};
-const props: any = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.closeModal = jest.fn();
+const initialState = {
+  [NOTICES_OF_DEPARTURE]: {
+    noticeOfDeparture: NOTICE_OF_DEPARTURE_DETAILS
+  }
 };
 
-const setupProps = () => {
-  // eslint-disable-next-line prefer-destructuring
-  props.noticeOfDeparture = NOTICE_OF_DEPARTURE_DETAILS;
-  props.initialValues = NOTICE_OF_DEPARTURE_DETAILS;
-  // eslint-disable-next-line prefer-destructuring
-  props.mine = MINE_RESPONSE[0];
-  props.fetchDetailedNoticeOfDeparture = jest.fn();
-  props.pristine = false;
-  props.handleSubmit = jest.fn();
-};
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("NoticeOfDepartureModal", () => {
   it("renders properly", () => {
-    const component = shallow(
-      <Provider store={store}>
-        <NoticeOfDepartureModal {...dispatchProps} {...props} />
-      </Provider>
+    const { container } = render(
+      <ReduxWrapper initialState={initialState}>
+        <NoticeOfDepartureModal />
+      </ReduxWrapper>
     );
-    expect(component).toMatchSnapshot();
+    expect(container).toMatchSnapshot();
   });
 });

@@ -1,6 +1,4 @@
 import React, { FC, useEffect, useState, useRef } from "react";
-import { bindActionCreators } from "redux";
-import { ConnectedProps, connect } from "react-redux";
 import { Divider, Tabs } from "antd";
 import {
   fetchPermits,
@@ -20,7 +18,7 @@ import {
 } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
-import { getMines, getMineGuid } from "@mds/common/redux/selectors/mineSelectors";
+import { getMineGuid, getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import ExplosivesPermit from "@/components/mine/ExplosivesPermit/ExplosivesPermit";
 import * as Permission from "@/constants/permissions";
@@ -30,11 +28,12 @@ import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { IPermit, IMine, IExplosivesPermit } from "@mds/common/interfaces";
-import { ActionCreator } from "@mds/common/interfaces/actionCreator";
+import { IPermit } from "@mds/common/interfaces";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { DigitalPermitCredential } from "@/components/mine/DigitalPermitCredential/DigitalPermitCredential";
 import { Feature } from "@mds/common/utils/featureFlag";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import { useParams } from "react-router-dom";
 /**
  * @class  MinePermitInfo - contains all permit information
  */
@@ -42,31 +41,16 @@ import { Feature } from "@mds/common/utils/featureFlag";
 const amalgamatedPermit = "ALG";
 const originalPermit = "OGP";
 
-interface MinePermitInfoProps {
-  match: any;
-  mines: IMine[];
-  mineGuid: string;
-  permits?: IPermit[];
-  fetchPartyRelationships: (arg1: any) => any;
-  openModal: (arg1: any) => void;
-  closeModal: () => void;
-  createPermit: ActionCreator<typeof createPermit>;
-  fetchPermits: ActionCreator<typeof fetchPermits>;
-  updatePermit: ActionCreator<typeof updatePermit>;
-  updatePermitAmendment: ActionCreator<typeof updatePermitAmendment>;
-  createPermitAmendment: ActionCreator<typeof createPermitAmendment>;
-  createPermitAmendmentVC: ActionCreator<typeof createPermitAmendmentVC>;
-  removePermitAmendmentDocument: ActionCreator<typeof removePermitAmendmentDocument>;
-  fetchMineRecordById: (arg1: string) => Promise<any>;
-  deletePermit: ActionCreator<typeof deletePermit>;
-  deletePermitAmendment: ActionCreator<typeof deletePermitAmendment>;
-  userRoles: string[];
-  createMineTypes: (arg1: string, arg2: any) => Promise<any>;
-  explosivesPermits: IExplosivesPermit[];
-}
 
-export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
-  const mine = props.mines[props.mineGuid];
+export const MinePermitInfo: FC = () => {
+  const mineGuid = useAppSelector(getMineGuid);
+  const mine = useAppSelector(getMineById(mineGuid));
+  const permits = useAppSelector(getPermits);
+  const explosivesPermits = useAppSelector(getExplosivesPermits);
+  const userRoles = useAppSelector(getUserAccessData);
+  const { id } = useParams<{ id: string }>();
+  const dispatch = useAppDispatch();
+
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
   const [modifiedPermits, setModifiedPermits] = useState(false);
   const [modifiedPermitGuid, setModifiedPermitGuid] = useState(null);
@@ -75,20 +59,19 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
   const { isFeatureEnabled } = useFeatureFlag();
 
   const handleFetchData = () => {
-    const { id } = props.match.params;
-    return props.fetchMineRecordById(id).then(() => {
-      props.fetchPermits(id);
-      props.fetchPartyRelationships({
+    return dispatch(fetchMineRecordById(id)).then(() => {
+      dispatch(fetchPermits(id));
+      dispatch(fetchPartyRelationships({
         mine_guid: id,
         relationships: "party",
         include_permit_contacts: "true",
-      });
+      }));
       setIsLoaded(true);
     });
   };
 
   const closePermitModal = () => {
-    props.closeModal();
+    dispatch(closeModal());
     handleFetchData();
   };
 
@@ -100,10 +83,10 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
     const payload = { ...values, permit_no };
     setModifiedPermits(true);
 
-    return props.createPermit(props.mineGuid, payload).then((data) => {
+    return dispatch(createPermit(mineGuid, payload)).then((data) => {
       if (data) {
         const siteProperties = { ...values.site_properties, permit_guid: data.data.permit_guid };
-        props.createMineTypes(props.mineGuid, [siteProperties]).then(closePermitModal);
+        dispatch(createMineTypes(mineGuid, [siteProperties])).then(closePermitModal);
       }
     });
   };
@@ -111,69 +94,65 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
   const handleEditPermit = (values) => {
     // we do not need to provide site_properties on status update as it will fail if the site_properties are empty
     delete values.site_properties;
-    return props.updatePermit(props.mineGuid, values.permit_guid, values).then(closePermitModal);
+    return dispatch(updatePermit(mineGuid, values.permit_guid, values)).then(closePermitModal);
   };
 
   const handleEditSiteProperties = (values) => {
-    return props.updatePermit(props.mineGuid, values.permit_guid, values).then(closePermitModal);
+    return dispatch(updatePermit(mineGuid, values.permit_guid, values)).then(closePermitModal);
   };
 
   const handleDeletePermit = (permitGuid) =>
-    props.deletePermit(props.mineGuid, permitGuid).then(() => closePermitModal());
+    dispatch(deletePermit(mineGuid, permitGuid)).then(() => closePermitModal());
 
   // Amendment Handlers
   const handleEditPermitAmendment = (values) =>
-    props
-      .updatePermitAmendment(
-        props.mineGuid,
-        values.permit_guid,
-        values.permit_amendment_guid,
-        values
-      )
+    dispatch(updatePermitAmendment(
+      mineGuid,
+      values.permit_guid,
+      values.permit_amendment_guid,
+      values
+    ))
       .then(closePermitModal);
 
   const handleAddPermitAmendment = (values) => {
     setModifiedPermits(true);
     setModifiedPermitGuid(values.permit_guid);
-    return props
-      .createPermitAmendment(props.mineGuid, values.permit_guid, values)
+    return dispatch(createPermitAmendment(mineGuid, values.permit_guid, values))
       .then(closePermitModal);
   };
 
   const handleAddAmalgamatedPermit = (values) => {
     setModifiedPermits(true);
     setModifiedPermitGuid(values.permit_guid);
-    return props
-      .createPermitAmendment(props.mineGuid, values.permit_guid, {
-        ...values,
-        permit_amendment_type_code: amalgamatedPermit,
-      })
+    return dispatch(createPermitAmendment(mineGuid, values.permit_guid, {
+      ...values,
+      permit_amendment_type_code: amalgamatedPermit,
+    }))
       .then(closePermitModal);
   };
 
   const handlePermitAmendmentIssueVC = (event, permit_amendment, permit) => {
     event.preventDefault();
-    return props.createPermitAmendmentVC(
-      props.mineGuid,
+    return dispatch(createPermitAmendmentVC(
+      mineGuid,
       permit.permitGuid,
       permit_amendment.permit_amendment_guid
-    );
+    ));
   };
 
   const handleRemovePermitAmendmentDocument = (permitGuid, permitAmendmentGuid, documentGuid) =>
-    props
-      .removePermitAmendmentDocument(props.mineGuid, permitGuid, permitAmendmentGuid, documentGuid)
+    dispatch(
+      removePermitAmendmentDocument(mineGuid, permitGuid, permitAmendmentGuid, documentGuid))
       .then(() => {
-        props.fetchPermits(props.mineGuid);
+        dispatch(fetchPermits(mineGuid));
       });
 
   const handleDeletePermitAmendment = (record) =>
-    props
-      .deletePermitAmendment(
-        props.mineGuid,
-        record.permit.permit_guid,
-        record.permit_amendment_guid
-      )
+    dispatch(deletePermitAmendment(
+      mineGuid,
+      record.permit.permit_guid,
+      record.permit_amendment_guid
+    ))
       .then(() => closePermitModal());
 
   const onExpand = (expanded, record) =>
@@ -189,53 +168,53 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
     return ref.current;
   };
 
-  const prevPermits = usePrevPermits(props.permits);
+  const prevPermits = usePrevPermits(permits);
 
   const openAddPermitModal = (event, onSubmit, title) => {
     event.preventDefault();
-    props.openModal({
+    dispatch(openModal({
       props: {
         initialValues: {
-          mine_guid: props.mineGuid,
+          mine_guid: mineGuid,
         },
         onSubmit,
         title,
-        mine_guid: props.mineGuid,
+        mine_guid: mineGuid,
       },
       width: "50vw",
       content: modalConfig.ADD_PERMIT,
-    });
+    }));
   };
 
   const openViewConditionModal = (event, conditions, amendmentNumber, permitNo) => {
     event.preventDefault();
-    return props.openModal({
+    return dispatch(openModal({
       props: {
         title: `${permitNo} - Permit Conditions for Amendment #${amendmentNumber}`,
-        closeModal: props.closeModal,
+        closeModal: () => dispatch(closeModal()),
         conditions,
       },
       width: "50vw",
       isViewOnly: true,
       content: modalConfig.VIEW_ALL_CONDITION_MODAL,
-    });
+    }));
   };
 
   const openEditPermitModal = (event, permit) => {
     event.preventDefault();
-    props.openModal({
+    dispatch(openModal({
       props: {
         initialValues: permit,
         onSubmit: handleEditPermit,
         title: `Edit Permit Status for ${permit.permit_no}`,
       },
       content: modalConfig.EDIT_PERMIT,
-    });
+    }));
   };
 
   const openEditSitePropertiesModal = (event, permit) => {
     event.preventDefault();
-    props.openModal({
+    dispatch(openModal({
       props: {
         initialValues: permit,
         permit,
@@ -243,7 +222,7 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
         title: `Edit Site Properties for ${permit.permit_no}`,
       },
       content: modalConfig.EDIT_SITE_PROPERTIES_MODAL,
-    });
+    }));
   };
 
   // Amendment Modals
@@ -254,10 +233,10 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
       permit.permit_amendments.some(
         (amendment) => amendment.vc_credential_exch_state === "credential_acked"
       );
-    props.openModal({
+    dispatch(openModal({
       props: {
         initialValues: {
-          mine_guid: props.mineGuid,
+          mine_guid: mineGuid,
           permit_guid: permit.permit_guid,
           permit_amendment_type_code: type,
           amendments: permit.permit_amendments,
@@ -265,37 +244,37 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
         },
         onSubmit,
         title,
-        mine_guid: props.mineGuid,
+        mine_guid: mineGuid,
         amendments: permit.permit_amendments,
         show_vc_warning: show_vc_warning,
       },
       width: "50vw",
       content: modalConfig.PERMIT_AMENDMENT,
-    });
+    }));
   };
 
   const openAddHistoricalAmendmentModal = (event, onSubmit, title, permit, type) => {
     event.preventDefault();
-    props.openModal({
+    dispatch(openModal({
       props: {
         initialValues: {
-          mine_guid: props.mineGuid,
+          mine_guid: mineGuid,
           permit_guid: permit.permit_guid,
           permit_amendment_type_code: type,
           amendments: permit.permit_amendments,
           is_historical_amendment: true,
-          userRoles: props.userRoles,
+          userRoles: userRoles,
           permit_prefix: permit.permit_prefix,
         },
         onSubmit,
         title,
         is_historical_amendment: true,
-        mine_guid: props.mineGuid,
+        mine_guid: mineGuid,
         amendments: permit.permit_amendments,
       },
       width: "50vw",
       content: modalConfig.PERMIT_AMENDMENT,
-    });
+    }));
   };
 
   const openEditAmendmentModal = (event, permit_amendment, permit) => {
@@ -303,12 +282,12 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
     const originalPermitAmendment = permit.permit_amendments.filter(
       (x) => x.permit_amendment_type_code === originalPermit
     )[0];
-    props.openModal({
+    dispatch(openModal({
       props: {
         initialValues: {
           ...permit_amendment,
           amendments: permit.permit_amendments,
-          userRoles: props.userRoles,
+          userRoles: userRoles,
           is_historical_amendment:
             originalPermitAmendment &&
             originalPermitAmendment.issue_date > permit_amendment.issue_date,
@@ -319,14 +298,14 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
           permit_amendment.permit_amendment_type_code === originalPermit
             ? `Edit Initial Permit for ${permit.permit_no}`
             : `Edit Permit Amendment for ${permit.permit_no}`,
-        mine_guid: props.mineGuid,
-        isMajorMine: props.mines[props.mineGuid].major_mine_ind,
+        mine_guid: mineGuid,
+        isMajorMine: mine.major_mine_ind,
         permit_guid: permit.permit_guid,
         handleRemovePermitAmendmentDocument: handleRemovePermitAmendmentDocument,
       },
       width: "50vw",
       content: modalConfig.PERMIT_AMENDMENT,
-    });
+    }));
   };
 
   const openAddAmalgamatedPermitModal = (event, permit) =>
@@ -357,7 +336,7 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
     );
 
   useEffect(() => {
-    if (props.permits.length === 0 || !props.mineGuid) {
+    if (permits.length === 0 || !mineGuid) {
       handleFetchData();
     } else {
       setIsLoaded(true);
@@ -365,12 +344,12 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
   }, []);
 
   useEffect(() => {
-    if (modifiedPermits && props.permits !== prevPermits) {
+    if (modifiedPermits && permits !== prevPermits) {
       const currentPermits = prevPermits
-        ?.filter((p) => p.mine_guid === props.mineGuid)
+        ?.filter((p) => p.mine_guid === mineGuid)
         .map((x) => x.permit_guid);
-      const nextPermits = props.permits
-        ?.filter((p) => p.mine_guid === props.mineGuid)
+      const nextPermits = permits
+        ?.filter((p) => p.mine_guid === mineGuid)
         .map((x) => x.permit_guid);
 
       setExpandedRowKeys(
@@ -380,7 +359,67 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
       );
       setModifiedPermitGuid(null);
     }
-  }, [props.permits]);
+  }, [permits]);
+
+  const tabItems = [
+    {
+      key: "permits",
+      label: `Mines Act Permits (${permits?.length | 0})`,
+      children: <>
+        <br />
+        <div>
+          <div className="inline-flex between">
+            <h4 className="uppercase">Mines Act Permits</h4>
+            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              <AddButton
+                onClick={(event) =>
+                  openAddPermitModal(
+                    event,
+                    handleAddPermit,
+                    `${ModalContent.ADD_PERMIT} to ${mine.mine_name}`
+                  )
+                }
+              >
+                Add a New Permit
+              </AddButton>
+            </AuthorizationWrapper>
+          </div>
+        </div>
+        <MinePermitTable
+          isLoaded={isLoaded}
+          permits={permits}
+          openEditPermitModal={openEditPermitModal}
+          openEditAmendmentModal={openEditAmendmentModal}
+          openEditSitePropertiesModal={openEditSitePropertiesModal}
+          openAddPermitAmendmentModal={openAddPermitAmendmentModal}
+          openAddPermitHistoricalAmendmentModal={openAddPermitHistoricalAmendmentModal}
+          openAddAmalgamatedPermitModal={openAddAmalgamatedPermitModal}
+          handlePermitAmendmentIssueVC={handlePermitAmendmentIssueVC}
+          expandedRowKeys={expandedRowKeys}
+          onExpand={onExpand}
+          handleDeletePermit={handleDeletePermit}
+          handleDeletePermitAmendment={handleDeletePermitAmendment}
+          openViewConditionModal={openViewConditionModal}
+        />
+      </>
+    },
+    {
+      key: "esups",
+      label: `Explosives Storage & Use Permits (${explosivesPermits.filter(({ application_status }) => application_status === "APP")
+        .length
+        })`,
+      children: <ExplosivesPermit isPermitTab />
+    },
+    isFeatureEnabled(Feature.VC_ANONCREDS_CORE) && {
+      key: "digital-permit-credentials",
+      label: `Digital Permit Credentials (${permits.filter(
+        ({ current_permittee_digital_wallet_connection_state }) =>
+          !!current_permittee_digital_wallet_connection_state
+      ).length
+        })`,
+      children: <DigitalPermitCredential />
+    }
+  ].filter(Boolean);
 
   return (
     <div className="tab__content">
@@ -388,99 +427,9 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
         <h2>Permits</h2>
         <Divider />
       </div>
-      {/* @ts-ignore */}
-      <Tabs type="card" style={{ textAlign: "left !important" }}>
-        <Tabs.TabPane tab={`Mines Act Permits (${props.permits?.length | 0})`} key="1">
-          <>
-            <br />
-            <div>
-              <div className="inline-flex between">
-                <h4 className="uppercase">Mines Act Permits</h4>
-                <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                  <AddButton
-                    onClick={(event) =>
-                      openAddPermitModal(
-                        event,
-                        handleAddPermit,
-                        `${ModalContent.ADD_PERMIT} to ${mine.mine_name}`
-                      )
-                    }
-                  >
-                    Add a New Permit
-                  </AddButton>
-                </AuthorizationWrapper>
-              </div>
-            </div>
-            <MinePermitTable
-              isLoaded={isLoaded}
-              permits={props.permits}
-              openEditPermitModal={openEditPermitModal}
-              openEditAmendmentModal={openEditAmendmentModal}
-              openEditSitePropertiesModal={openEditSitePropertiesModal}
-              openAddPermitAmendmentModal={openAddPermitAmendmentModal}
-              openAddPermitHistoricalAmendmentModal={openAddPermitHistoricalAmendmentModal}
-              openAddAmalgamatedPermitModal={openAddAmalgamatedPermitModal}
-              handlePermitAmendmentIssueVC={handlePermitAmendmentIssueVC}
-              expandedRowKeys={expandedRowKeys}
-              onExpand={onExpand}
-              handleDeletePermit={handleDeletePermit}
-              handleDeletePermitAmendment={handleDeletePermitAmendment}
-              openViewConditionModal={openViewConditionModal}
-            />
-          </>
-        </Tabs.TabPane>
-        <Tabs.TabPane
-          tab={`Explosives Storage & Use Permits (${props.explosivesPermits.filter(({ application_status }) => application_status === "APP")
-            .length
-            })`}
-          key="2"
-        >
-          <ExplosivesPermit isPermitTab />
-        </Tabs.TabPane>
-        {isFeatureEnabled(Feature.VC_ANONCREDS_CORE) && (
-          <Tabs.TabPane
-            tab={`Digital Permit Credentials (${props.permits.filter(
-              ({ current_permittee_digital_wallet_connection_state }) =>
-                !!current_permittee_digital_wallet_connection_state
-            ).length
-              })`}
-            key="3"
-          >
-            <DigitalPermitCredential />
-          </Tabs.TabPane>
-        )}
-      </Tabs>
+      <Tabs type="card" items={tabItems} />
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({
-  permits: getPermits(state),
-  mines: getMines(state),
-  mineGuid: getMineGuid(state),
-  userRoles: getUserAccessData(state),
-  explosivesPermits: getExplosivesPermits(state),
-});
-
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      fetchPermits,
-      createPermit,
-      updatePermit,
-      updatePermitAmendment,
-      createPermitAmendment,
-      createPermitAmendmentVC,
-      removePermitAmendmentDocument,
-      fetchPartyRelationships,
-      fetchMineRecordById,
-      openModal,
-      closeModal,
-      deletePermit,
-      deletePermitAmendment,
-      createMineTypes,
-    },
-    dispatch
-  );
-
-  export default connect(mapStateToProps, mapDispatchToProps)(MinePermitInfo);
+export default MinePermitInfo;
