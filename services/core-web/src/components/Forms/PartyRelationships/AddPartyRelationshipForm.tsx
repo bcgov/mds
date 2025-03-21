@@ -87,7 +87,7 @@ const AddPartyRelationshipForm: FC<AddPartyRelationshipFormProps> = ({
   const partyRelationshipDescription = partyRelationshipTypeHash[mine_party_appt_type_code];
   const matchingAppointments = useAppSelector(getMatchingPartyRelationships(mine_party_appt_type_code, related_guid));
   const currentAppointment = matchingAppointments.filter((mpa) => mpa.end_date === null)[0];
-
+  const personOnly = ["EOR","TQP"].includes(mine_party_appt_type_code);
 
   const showEndCurrent = () => {
     const hasStartDateValidation = ["PMT", "EOR"].includes(mine_party_appt_type_code) &&
@@ -185,6 +185,7 @@ const AddPartyRelationshipForm: FC<AddPartyRelationshipFormProps> = ({
           <PartySelectField
             id="party_guid"
             name="party_guid"
+            person={personOnly}
             required
             validate={[required]}
             onSelect={(val) => {
