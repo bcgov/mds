@@ -1,26 +1,21 @@
 import os
+from logging.config import dictConfig
 
+from app.commands import register_commands
+from app.docman.models import *
+from app.docman.resources import *
+from app.extensions import api, cache, db, jwt, jwt_cypress, jwt_main, migrate
+from app.routes import register_routes
+from app.utils.celery_health_check import HealthCheckProbe
+from celery import Celery
 from flask import Flask, current_app, request
 from flask_cors import CORS
 from flask_restx.apidoc import apidoc
-
-from app.docman.models import *
-from app.docman.resources import *
-
-from app.commands import register_commands
-from app.routes import register_routes
-from app.extensions import api, cache, db, jwt, migrate, jwt_main, jwt_cypress
-from app.utils.celery_health_check import HealthCheckProbe
+from opentelemetry import trace
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.sdk.trace import TracerProvider
 
 from .config import Config, TestConfig
-
-from celery import Celery
-
-from opentelemetry import trace
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.instrumentation.flask import FlaskInstrumentor
-from logging.config import dictConfig
-
 from .date_time_helper import get_formatted_current_time
 
 
@@ -60,6 +55,10 @@ def create_app(test_config=None):
 
     register_routes(app)
     register_commands(app)
+
+    # Register CLI commands
+    from app.cli import document_cli
+    app.cli.add_command(document_cli)
 
     @api.errorhandler(Exception)
     def default_error_handler(error):
