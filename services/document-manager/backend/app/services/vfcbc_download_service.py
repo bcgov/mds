@@ -43,6 +43,7 @@ def vfcbc_login(download_session):
         postlogin_url = f'https://{login_netloc}/clp-cgi/int01/private/postLogon.cgi'
         postlogin_req = download_session.get(postlogin_url)
 
+        # A successful IDIR login sets the "SMSESSION" cookie (from Siteminder).
         cooks = loginfcc_req.cookies.get_dict()
 
         if not cooks or 'SMSESSION' not in cooks:
