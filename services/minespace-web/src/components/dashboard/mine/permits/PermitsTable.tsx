@@ -24,7 +24,6 @@ import { VIEW_ESUP } from "@/constants/routes";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { Feature, isFeatureEnabled } from "@mds/common/utils/featureFlag";
-import EyeOutlined from "@ant-design/icons/EyeOutlined";
 
 const draftAmendment = "DFT";
 
@@ -47,19 +46,6 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
 
-  const actions = [
-    {
-      key: "view",
-      label: "View",
-      clickFunction: (_event, record) => {
-        _event.preventDefault();
-        _event.stopPropagation();
-        console.log(record.id);
-      },
-      icon: <EyeOutlined />,
-    },
-  ];
-
   const columns = [
     renderTextColumn("permit_no", "Permit No.", true),
     renderTextColumn("current_permittee", "Permittee"),
@@ -71,7 +57,6 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
       ...renderDateColumn("lastAmended", "Last Amended", true),
       defaultSortOrder: "descend" as SortOrder,
     },
-    renderActionsColumn({ actions }),
   ];
 
   const handleOpenViewEsup = (event, record: any) => {
