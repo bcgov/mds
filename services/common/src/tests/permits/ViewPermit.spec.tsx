@@ -32,6 +32,24 @@ function mockFunction() {
 jest.mock("react-router-dom", () => mockFunction());
 
 describe("ViewPermit", () => {
+  beforeEach(() => {
+    (global as any).GLOBAL_ROUTES = {
+      VIEW_MINE_PERMIT_AMENDMENT: {
+        route: "/mines/:id/permits/:permitGuid/amendments/:amendmentGuid",
+        dynamicRoute: (id, permitGuid, amendmentGuid, tab = "details") =>
+          `/mock-route/${id}/${permitGuid}/${amendmentGuid}/${tab}`,
+      },
+      MINE_PERMITS: {
+        route: "/mines/:id/permits",
+        dynamicRoute: (id) => `/mock-route/${id}`,
+      },
+      MINE_DASHBOARD: {
+        route: "/mines/:id",
+        dynamicRoute: (id) => `/mock-route/${id}`,
+      },
+    };
+  });
+
   it("renders properly", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>

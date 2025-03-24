@@ -3,7 +3,7 @@ import { fireEvent, render, waitFor } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { PERMITS } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import PermitConditionForm from "./PermitConditionForm";
+import PermitConditionForm from "../../components/permits/PermitConditionForm";
 import { PermitConditionsProvider } from "@mds/common/components/permits/PermitConditionsContext";
 
 const condition = MOCK.PERMITS[0].permit_amendments[0].conditions[0];
