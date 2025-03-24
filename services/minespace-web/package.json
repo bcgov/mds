@@ -13,7 +13,7 @@
     "@react-keycloak/web": "^3.4.0",
     "@reduxjs/toolkit": "2.0.1",
     "antd": "4.24.10",
-    "axios": "1.8.2",
+    "axios": "1.8.3",
     "axios-mock-adapter": "1.17.0",
     "core-js": "3.38.1",
     "dotenv": "16.4.5",
