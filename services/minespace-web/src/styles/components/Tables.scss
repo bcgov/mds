@@ -33,7 +33,8 @@
   font-size: 16px;
 }
 
-.ant-dropdown-menu-item:hover, .ant-dropdown-menu-item button:hover{
+.ant-dropdown-menu-item:hover,
+.ant-dropdown-menu-item button:hover {
   cursor: pointer;
 }
 
@@ -102,8 +103,8 @@ td.ant-table-cell {
   }
 }
 
-.diff-table th {
-  background-color: #F4F0F0 !important;
+.ant-table-thead th.ant-table-column-sort {
+  background: #eff0f3;
 }
 
 .diff-table td {

@@ -15,7 +15,6 @@ exports[`MinePermitInfo renders properly 1`] = `
   </div>
   <div
     class="ant-tabs ant-tabs-top ant-tabs-card"
-    style="text-align: left !important;"
   >
     <div
       class="ant-tabs-nav"
@@ -30,13 +29,13 @@ exports[`MinePermitInfo renders properly 1`] = `
         >
           <div
             class="ant-tabs-tab ant-tabs-tab-active"
-            data-node-key="1"
+            data-node-key="permits"
           >
             <div
-              aria-controls="rc-tabs-test-panel-1"
+              aria-controls="rc-tabs-test-panel-permits"
               aria-selected="true"
               class="ant-tabs-tab-btn"
-              id="rc-tabs-test-tab-1"
+              id="rc-tabs-test-tab-permits"
               role="tab"
               tabindex="0"
             >
@@ -45,13 +44,13 @@ exports[`MinePermitInfo renders properly 1`] = `
           </div>
           <div
             class="ant-tabs-tab"
-            data-node-key="2"
+            data-node-key="esups"
           >
             <div
-              aria-controls="rc-tabs-test-panel-2"
+              aria-controls="rc-tabs-test-panel-esups"
               aria-selected="false"
               class="ant-tabs-tab-btn"
-              id="rc-tabs-test-tab-2"
+              id="rc-tabs-test-tab-esups"
               role="tab"
               tabindex="0"
             >
@@ -60,13 +59,13 @@ exports[`MinePermitInfo renders properly 1`] = `
           </div>
           <div
             class="ant-tabs-tab"
-            data-node-key="3"
+            data-node-key="digital-permit-credentials"
           >
             <div
-              aria-controls="rc-tabs-test-panel-3"
+              aria-controls="rc-tabs-test-panel-digital-permit-credentials"
               aria-selected="false"
               class="ant-tabs-tab-btn"
-              id="rc-tabs-test-tab-3"
+              id="rc-tabs-test-tab-digital-permit-credentials"
               role="tab"
               tabindex="0"
             >
@@ -122,9 +121,9 @@ exports[`MinePermitInfo renders properly 1`] = `
       >
         <div
           aria-hidden="false"
-          aria-labelledby="rc-tabs-test-tab-1"
+          aria-labelledby="rc-tabs-test-tab-permits"
           class="ant-tabs-tabpane ant-tabs-tabpane-active"
-          id="rc-tabs-test-panel-1"
+          id="rc-tabs-test-panel-permits"
           role="tabpanel"
           tabindex="0"
         >

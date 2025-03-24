@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TailingsSubmitSuccess renders properly 1`] = `
+<div>
+  <div>
+    <div
+      class="ant-row margin-large--top"
+    >
+      <div
+        class="ant-col"
+      >
+        <h1
+          class="ant-typography"
+        >
+          MockTSF
+        </h1>
+      </div>
+      <div
+        class="ant-col ant-col-24"
+      >
+        <a
+          href="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/tailings"
+        >
+          <span
+            aria-label="arrow-left"
+            class="anticon anticon-arrow-left padding-sm--right"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              class=""
+              data-icon="arrow-left"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M872 474H286.9l350.2-304c5.6-4.9 2.2-14-5.2-14h-88.5c-3.9 0-7.6 1.4-10.5 3.9L155 487.8a31.96 31.96 0 000 48.3L535.1 866c1.5 1.3 3.3 2 5.2 2h91.5c7.4 0 10.8-9.2 5.2-14L286.9 550H872c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8z"
+              />
+            </svg>
+          </span>
+          Back to: mine3 Tailings
+        </a>
+      </div>
+    </div>
+    <div
+      class="ant-row ant-row-center ant-row-middle margin-large--top"
+      style="margin: 0px auto; max-width: 648px;"
+    >
+      <div
+        class="ant-col ant-col-24 center"
+        style="padding: 8px 8px 8px 8px;"
+      >
+        <svg
+          aria-hidden="true"
+          class="svg-inline--fa fa-circle-check fa-5x "
+          color="#2E8540"
+          data-icon="circle-check"
+          data-prefix="far"
+          focusable="false"
+          role="img"
+          viewBox="0 0 512 512"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+      <div
+        class="ant-col ant-col-24"
+        style="padding: 8px 8px 8px 8px;"
+      >
+        <div
+          class="ant-typography"
+        >
+          <strong>
+            Thank you, your Tailings Storage Facility has been updated successfully!
+          </strong>
+        </div>
+        <div
+          class="ant-typography"
+        >
+          As Per
+           
+          <a
+            href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/health-safety/health-safety-and-reclamation-code-for-mines-in-british-columbia"
+            target="_blank"
+          >
+            Health, Safety and Reclamation Code
+          </a>
+          , if an Engineer of Record or Qualified Person has been assigned, written acknowledgment is required within 72 hours of designation. Please submit the acknowledgment as requested in the Reports page.
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-24 center"
+        style="padding: 8px 8px 8px 8px;"
+      >
+        <a
+          class="ant-btn ant-btn-primary"
+          href="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/tailings"
+        >
+          <span>
+            Back to Tailings and Dams
+          </span>
+        </a>
+      </div>
+      <div
+        class="ant-col ant-col-24 center"
+        style="padding: 8px 8px 8px 8px;"
+      >
+        <a
+          class="ant-btn ant-btn-default"
+          href="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/reports"
+        >
+          <span>
+            Submit Written Acknowledgement in Reports
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+`;

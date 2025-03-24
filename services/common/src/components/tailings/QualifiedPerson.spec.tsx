@@ -14,6 +14,19 @@ const initialState = {
     },
 };
 
+function mockFunction() {
+    const original = jest.requireActual("react-router-dom");
+    return {
+        ...original,
+        useParams: jest.fn().mockReturnValue({
+            tsfGuid: "e2629897-053e-4218-9299-479375e47f78",
+            mineGuid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+        }),
+    };
+}
+
+jest.mock("react-router-dom", () => mockFunction());
+
 describe("Tailings QualifiedPerson", () => {
     it("renders properly", () => {
         const { container } = render(

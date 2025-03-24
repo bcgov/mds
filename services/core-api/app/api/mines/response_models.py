@@ -420,6 +420,7 @@ MINE_PARTY_APPT_PARTY = api.model(
         'end_date': fields.Date,
         'party': fields.Nested(PARTY),
         'status': fields.String(enum=MinePartyAppointmentStatus, attribute='status.name'),
+        'update_user': fields.String,
         'mine_party_acknowledgement_status': fields.String(
             enum=MinePartyAcknowledgedStatus, attribute='mine_party_acknowledgement_status.name'),
     })
@@ -461,6 +462,10 @@ CHANGE_MODEL = api.model('Change', {
 MINE_TSF_DETAIL_MODEL = api.clone('MineTailingsStorageFacilityDetail', MINE_TSF_MODEL, {
     'history': fields.List(fields.Nested(CHANGE_MODEL))
 })
+
+DAM_HISTORY_MODEL = api.clone('DamHistory', DAM_MODEL, {
+    'history': fields.List(fields.Nested(CHANGE_MODEL))
+} )
 
 
 MINE_WORK_INFORMATION_MODEL = api.model(

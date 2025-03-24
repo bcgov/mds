@@ -30,9 +30,10 @@ export const AddContactForm: FC<AddContactFormProps> = (props) => {
 
   const contacts = uniqBy(parties || [], (partyAppt) => partyAppt.party.party_guid)
     .filter(
-      ({ mine_party_appt_type_code }) =>
-        !props.mine_party_appt_type_code ||
-        mine_party_appt_type_code === props.mine_party_appt_type_code
+      ({ mine_party_appt_type_code, party }) =>
+        (!props.mine_party_appt_type_code ||
+          mine_party_appt_type_code === props.mine_party_appt_type_code) &&
+        party.party_type_code === "PER"
     )
     .map(({ party: { name, party_guid } }) => ({
       label: name,

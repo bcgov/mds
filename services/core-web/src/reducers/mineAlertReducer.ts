@@ -33,7 +33,7 @@ const mineAlertReducerObject = {
   [MINE_ALERTS]: mineAlertReducer,
 };
 
-export const getMineAlerts = (state: RootState): IMineAlertList => state[MINE_ALERTS].mineAlerts;
+export const getMineAlerts = (state: RootState): IMineAlert[] => state[MINE_ALERTS].mineAlerts;
 export const getGlobalMineAlerts = (state: RootState): IMineAlertList =>
   state[MINE_ALERTS].globalMineAlerts;
 

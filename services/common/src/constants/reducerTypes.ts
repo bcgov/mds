@@ -67,9 +67,5 @@ export const ACTIVITIES = "ACTIVITIES";
 // Tailings Storage Facilities
 export const TAILINGS = "TAILINGS";
 
-// Dams
-export const DAMS = "DAMS";
-
-
 //Verifiable Credentials
 export const VERIFIABLE_CREDENTIALS = "VERIFIABLE_CREDENTIALS";

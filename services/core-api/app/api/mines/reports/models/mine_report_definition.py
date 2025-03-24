@@ -1,11 +1,12 @@
 import uuid
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from pytz import timezone
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy import or_, cast, Integer, nullsfirst, nullslast
+from sqlalchemy import or_, cast, Integer, nullsfirst, nullslast, and_
 from sqlalchemy_filters import apply_pagination
 from werkzeug.exceptions import BadRequest
 
@@ -109,6 +110,33 @@ class MineReportDefinition(Base, AuditMixin):
             return None
 
     @classmethod
+    def find_one_by_section(cls, section, sub_section=None, paragraph=None, sub_paragraph=None):
+        try:
+            now = datetime.now(timezone('US/Pacific'))
+
+            query = cls.query.filter_by(active_ind=True).filter(
+                MineReportDefinition.compliance_articles.any(
+                    and_(
+                        ComplianceArticle.section == section,
+                        ComplianceArticle.sub_section == sub_section,
+                        ComplianceArticle.paragraph == paragraph,
+                        ComplianceArticle.sub_paragraph == sub_paragraph,
+                        ComplianceArticle.effective_date <= now,
+                        or_(
+                            ComplianceArticle.expiry_date.is_(None),
+                            ComplianceArticle.expiry_date >= now
+                        )
+                    )
+                )
+            )
+
+            # Fetch and return the first result if available
+            return query.first()
+        except Exception as e:
+            # Handle exceptions and log them as needed
+            raise ValueError(f"Error occurred while querying: {str(e)}")
+
+    @classmethod
     def _apply_sort(cls, query, sort_field, sort_dir):
         if sort_field and sort_dir:
             field = {
@@ -129,7 +157,7 @@ class MineReportDefinition(Base, AuditMixin):
         return query
 
     @classmethod
-    def _apply_filters(cls, query, regulatory_authority, is_prr_only, active_ind, section):
+    def _apply_filters(cls, query, regulatory_authority, is_prr_only, active_ind, section, show_expired):
         filters = []
         if regulatory_authority:
             reg_auth_filter = []
@@ -168,6 +196,18 @@ class MineReportDefinition(Base, AuditMixin):
                 field_name = section_order[index]
                 filters.append(field_name.ilike(part))
 
+        if not show_expired:
+            now = datetime.now(timezone('US/Pacific'))
+            filters.append(
+                and_(
+                    ComplianceArticle.effective_date <= now,
+                    or_(
+                        ComplianceArticle.expiry_date.is_(None),
+                        ComplianceArticle.expiry_date >= now
+                    )
+                )
+            )
+
         return query.filter(*filters)
 
     @classmethod
@@ -191,7 +231,7 @@ class MineReportDefinition(Base, AuditMixin):
 
     @classmethod
     def apply_filters_and_pagination(cls, query, page, per_page, sort_field, sort_dir, regulatory_authority,
-                                     is_prr_only, active_ind, section):
+                                     is_prr_only, active_ind, section, show_expired):
 
         regulatory_authority = None if len(regulatory_authority) == 0 or len(regulatory_authority) == len(
             CimOrCpo) + 1 else regulatory_authority
@@ -199,16 +239,14 @@ class MineReportDefinition(Base, AuditMixin):
         compliance_sort = True if sort_field in ['section', 'regulatory_authority'] else False
         compliance_filter = True if regulatory_authority or section else False
 
-        if compliance_sort or compliance_filter:
-            query = query.join(MineReportDefinitionComplianceArticleXref,
-                               MineReportDefinitionComplianceArticleXref.mine_report_definition_id == MineReportDefinition.mine_report_definition_id,
-                               isouter=True)
-            query = query.join(ComplianceArticle,
-                               ComplianceArticle.compliance_article_id == MineReportDefinitionComplianceArticleXref.compliance_article_id,
-                               isouter=True)
+        if compliance_sort or compliance_filter or not show_expired:
+            query = query.outerjoin(MineReportDefinitionComplianceArticleXref,
+                               MineReportDefinitionComplianceArticleXref.mine_report_definition_id == MineReportDefinition.mine_report_definition_id)
+            query = query.outerjoin(ComplianceArticle,
+                               ComplianceArticle.compliance_article_id == MineReportDefinitionComplianceArticleXref.compliance_article_id)
 
         query = cls._apply_sort(query, sort_field, sort_dir)
-        query = cls._apply_filters(query, regulatory_authority, is_prr_only, active_ind, section)
+        query = cls._apply_filters(query, regulatory_authority, is_prr_only, active_ind, section, show_expired)
         return cls._apply_pagination(query, page, per_page)
 
     @classmethod
