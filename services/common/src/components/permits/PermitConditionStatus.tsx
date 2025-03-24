@@ -10,8 +10,8 @@ import { getConditionsWithRequirements } from "@mds/common/utils/helpers";
 import { useAppDispatch } from "@mds/common/redux/rootState";
 import { updatePermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { openModal } from "@mds/common/redux/actions/modalActions";
-import ComparePermitConditionHistoryModal from "./ComparePermitConditionHistoryModal";
-import { PermitConditionsProvider, usePermitConditions } from "./PermitConditionsContext";
+import ComparePermitConditionHistoryModal from "@mds/common/components/permits/ComparePermitConditionHistoryModal";
+import { PermitConditionsProvider, usePermitConditions } from "@mds/common/components/permits/PermitConditionsContext";
 
 interface PermitConditionStatusProps {
   condition: IPermitCondition;

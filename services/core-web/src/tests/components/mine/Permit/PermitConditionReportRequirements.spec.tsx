@@ -2,8 +2,8 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { PermitConditionsProvider } from "@/components/mine/Permit/PermitConditionsContext";
-import PermitConditionReportRequirements from "@/components/mine/Permit/PermitConditionReportRequirements";
+import { PermitConditionsProvider } from "@mds/common/components/permits/PermitConditionsContext";
+import PermitConditionReportRequirements from "@mds/common/components/permits/PermitConditionReportRequirements";
 
 const conditionsWithRequirements = [
     MOCK.PERMITS[0].permit_amendments[0].conditions[0],

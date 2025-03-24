@@ -8,7 +8,7 @@ import React, { FC, useState } from "react";
 import { Field, reset } from "@mds/common/components/forms/form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown, faArrowUp, faCheck, faTrash, faXmark } from "@fortawesome/pro-light-svg-icons";
-import PermitConditionCategorySelector from "./PermitConditionCategorySelector";
+import PermitConditionCategorySelector from "@mds/common/components/permits/PermitConditionCategorySelector";
 import { required } from "@mds/common/redux/utils/Validate";
 import { useDispatch } from "react-redux";
 import { formatPermitConditionStep } from "@mds/common/utils/helpers";

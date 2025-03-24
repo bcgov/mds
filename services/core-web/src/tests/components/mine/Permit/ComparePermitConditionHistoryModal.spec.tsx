@@ -1,16 +1,16 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import ComparePermitConditionHistoryModal, { ComparePermitConditionHistoryModalProps } from '@/components/mine/Permit/ComparePermitConditionHistoryModal';
+import ComparePermitConditionHistoryModal, { ComparePermitConditionHistoryModalProps } from '@mds/common/components/permits/ComparePermitConditionHistoryModal';
 import { ReduxWrapper } from '@mds/common/tests/utils/ReduxWrapper';
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 // Mock child components
-jest.mock('@/components/mine/Permit/ConditionDiffViewer', () => ({
+jest.mock('@mds/common/components/permits/ConditionDiffViewer', () => ({
     __esModule: true,
     default: () => <div data-testid="condition-diff-viewer">Condition Diff Viewer</div>
 }));
 
-jest.mock('@/components/mine/Permit/PermitConditionReportRequirements', () => ({
+jest.mock('@mds/common/components/permits/PermitConditionReportRequirements', () => ({
     __esModule: true,
     default: () => <div data-testid="report-requirements">Report Requirements</div>
 }));

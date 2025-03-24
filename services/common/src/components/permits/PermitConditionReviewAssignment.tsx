@@ -4,7 +4,7 @@ import { useAppDispatch as useDispatch, useAppSelector as useSelector } from "@m
 import { Button, Col, Popconfirm, Row, Typography } from "antd";
 import { faCheck } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import UserSearchField from "@/components/common/UserSearchField";
+import UserSearchField from "@mds/common/components/common/UserSearchField";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import {
   assignReviewer,

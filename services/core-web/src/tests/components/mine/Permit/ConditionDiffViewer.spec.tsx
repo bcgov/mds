@@ -3,7 +3,7 @@ import { render, waitFor } from '@testing-library/react';
 import { ReduxWrapper } from '@mds/common/tests/utils/ReduxWrapper';
 import * as MOCK from '@mds/common/tests/mocks/dataMocks';
 import { IPermitConditionChangeType } from '@mds/common/interfaces';
-import ConditionDiffViewer from '@/components/mine/Permit/ConditionDiffViewer';
+import ConditionDiffViewer from '@mds/common/components/permits/ConditionDiffViewer';
 
 const mockDispatch = jest.fn();
 jest.mock('@mds/common/redux/rootState', () => ({

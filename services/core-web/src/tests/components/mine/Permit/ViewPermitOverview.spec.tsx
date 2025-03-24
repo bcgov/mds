@@ -5,7 +5,7 @@ import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { AUTHENTICATION, MINES, PERMITS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { BrowserRouter } from "react-router-dom";
-import ViewPermitOverview from "@/components/mine/Permit/ViewPermitOverview";
+import ViewPermitOverview from "@mds/common/components/permits/ViewPermitOverview";
 
 const initialState = {
   [PERMITS]: { permits: MOCK.PERMITS },

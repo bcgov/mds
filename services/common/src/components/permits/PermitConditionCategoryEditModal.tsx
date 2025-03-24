@@ -8,7 +8,7 @@ import { Field } from "@mds/common/components/forms/form";
 import { maxLength, required } from "@mds/common/redux/utils/Validate";
 import RenderField from "@mds/common/components/forms/RenderField";
 import { IPermitConditionCategory } from "@mds/common/interfaces";
-import PermitConditionCategorySelector from "./PermitConditionCategorySelector";
+import PermitConditionCategorySelector from "@mds/common/components/permits/PermitConditionCategorySelector";
 
 interface PermitConditionCategoryEditModalProps {
   handleSubmit(category: IPermitConditionCategory): Promise<void>;

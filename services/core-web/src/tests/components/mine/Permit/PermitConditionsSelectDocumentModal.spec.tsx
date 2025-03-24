@@ -5,7 +5,7 @@ import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { AUTHENTICATION, MINES, PERMITS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { BrowserRouter } from "react-router-dom";
-import PermitConditionsSelectDocumentModal from "@/components/mine/Permit/PermitConditionsSelectDocumentModal";
+import PermitConditionsSelectDocumentModal from "@mds/common/components/permits/PermitConditionsSelectDocumentModal";
 
 const initialState = {
   [PERMITS]: { permits: MOCK.PERMITS, latestPermitAmendments: MOCK.PERMIT_AMENDMENT_STATE },

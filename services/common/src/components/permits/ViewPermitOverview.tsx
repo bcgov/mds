@@ -16,7 +16,11 @@ import { useParams } from "react-router-dom";
 import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
 import { useSelector } from "react-redux";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
-import { findOptionDescription, getDescriptionsFromCodes } from "@mds/common/redux/utils/helpers";
+import {
+  findOptionDescription,
+  formatDate,
+  getDescriptionsFromCodes,
+} from "@mds/common/redux/utils/helpers";
 import {
   getExemptionFeeStatusOptions,
   getMineCommodityOptions,
@@ -31,7 +35,6 @@ import {
 } from "@mds/common/components/documents/DocumentColumns";
 import { renderDateColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { ColumnsType } from "antd/es/table";
-import { formatDate } from "@common/utils/helpers";
 
 const { Title, Paragraph } = Typography;
 

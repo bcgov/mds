@@ -2,9 +2,9 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import SubConditionForm from "./SubConditionForm";
+import SubConditionForm from "@mds/common/components/permits/SubConditionForm";
 import { createDropDownList } from "@mds/common/redux/utils/helpers";
-import { PermitConditionsProvider } from "./PermitConditionsContext";
+import { PermitConditionsProvider } from "@mds/common/components/permits/PermitConditionsContext";
 
 const condition = MOCK.PERMITS[0].permit_amendments[0].conditions[0];
 const conditionCategories = MOCK.PERMITS[0].permit_amendments[0].condition_categories;

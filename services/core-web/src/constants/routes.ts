@@ -55,7 +55,7 @@ import ReportSteps from "@mds/common/components/reports/ReportSteps";
 import ViewDigitalPermitCredential from "@/components/mine/DigitalPermitCredential/ViewDigitalPermitCredential";
 import ComplianceManagement from "@/components/admin/complianceCodes/ComplianceManagement";
 import ProjectSubmissionStatusPage from "@mds/common/components/projectSummary/ProjectSubmissionStatusPage";
-import ViewPermit from "@/components/mine/Permit/ViewPermit";
+import ViewPermit from "@mds/common/components/permits/ViewPermit";
 import PermitConditionSearch from "@/components/mine/Permit/Search/PermitConditionSearch";
 import { getEnvironment } from "@mds/common/utils/environmentUtils";
 import ViewPermitRedirect from "@/components/mine/Permit/ViewPermitRedirect";

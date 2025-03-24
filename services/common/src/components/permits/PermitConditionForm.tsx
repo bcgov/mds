@@ -20,7 +20,7 @@ import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton"
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
-import { ReportPermitRequirementForm } from "../../Forms/reports/ReportPermitRequirementForm";
+import { ReportPermitRequirementForm } from "@mds/common/components/permits/ReportPermitRequirementForm";
 import {
     deletePermitCondition,
     updatePermitCondition,
@@ -31,7 +31,7 @@ import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import { formatPermitConditionStep, parsePermitConditionStep } from "@mds/common/utils/helpers";
 import { FORM } from "@mds/common/constants/forms";
 import RenderGroupedSelect from "@mds/common/components/forms/RenderGroupedSelect";
-import { PermitConditionsProvider, usePermitConditions } from "./PermitConditionsContext";
+import { PermitConditionsProvider, usePermitConditions } from "@mds/common/components/permits/PermitConditionsContext";
 
 interface PermitConditionFormProps {
     isExtracted: boolean;
