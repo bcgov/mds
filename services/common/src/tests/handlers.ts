@@ -15,6 +15,7 @@ import {
 } from "@mds/common/tests/mocks/dataMocks";
 import queryString from "query-string";
 import { SystemFlagEnum } from "../constants/enums";
+import { SearchEventType } from "../redux/slices/permitSearchSlice";
 
 const mineHandlers = [
   http.get("/%3CAPI_URL%3E/mines/:mineGuid", async ({ params }) => {
@@ -113,26 +114,26 @@ const permitSearchHandlers = [
             facets: responseData.facets || {}
           };
           controller.enqueue(
-            encoder.encode(`event: documents\ndata: ${JSON.stringify(documentsAndFacets)}\n\n`)
+            encoder.encode(`event: ${SearchEventType.DOCUMENTS}\ndata: ${JSON.stringify(documentsAndFacets)}\n\n`)
           );
 
           controller.enqueue(
-            encoder.encode(`event: ai_start\ndata: {}\n\n`)
+            encoder.encode(`event: ${SearchEventType.AI_START}\ndata: {}\n\n`)
           );
 
           const promptText = responseData.prompt?.answers?.[0] || '';
           if (promptText) {
             controller.enqueue(
-              encoder.encode(`event: prompt\ndata: ${JSON.stringify({ answers: [promptText] })}\n\n`)
+              encoder.encode(`event: ${SearchEventType.PROMPT}\ndata: ${JSON.stringify({ answers: [promptText] })}\n\n`)
             );
           }
 
           controller.enqueue(
-            encoder.encode(`event: ai_complete\ndata: {}\n\n`)
+            encoder.encode(`event: ${SearchEventType.AI_COMPLETE}\ndata: {}\n\n`)
           );
 
           controller.enqueue(
-            encoder.encode(`event: complete\ndata: {}\n\n`)
+            encoder.encode(`event: ${SearchEventType.COMPLETE}\ndata: {}\n\n`)
           );
 
           controller.close();

@@ -10,7 +10,8 @@ import {
     selectSearchFilters,
     selectSearchResults,
     selectDocumentLoading,
-    selectAiLoading
+    selectAiLoading,
+    SearchEventType
 } from '@mds/common/redux/slices/permitSearchSlice';
 import { getStore } from "@mds/common/redux/rootState";
 import { createEventSource } from 'eventsource-client';
@@ -121,7 +122,7 @@ describe('permitSearchSlice', () => {
             const searchPromise = store.dispatch(searchPermitConditions({ query: 'water quality', filters: [] }));
 
             onMessageCallback({
-                event: 'documents',
+                event: SearchEventType.DOCUMENTS,
                 data: JSON.stringify({
                     documents: [{ content: 'Water quality monitoring must be conducted monthly' }],
                     facets: { category: [{ value: 'Environmental', count: 1 }] }
@@ -134,13 +135,13 @@ describe('permitSearchSlice', () => {
             expect(selectDocumentLoading(store.getState())).toBe(false);
 
             onMessageCallback({
-                event: 'ai_start',
+                event: SearchEventType.AI_START,
                 data: '{}'
             });
             expect(selectAiLoading(store.getState())).toBe(true);
 
             onMessageCallback({
-                event: 'prompt',
+                event: SearchEventType.PROMPT,
                 data: JSON.stringify({
                     answers: ['The permit requires monthly water quality monitoring.']
                 })
@@ -151,7 +152,7 @@ describe('permitSearchSlice', () => {
             );
 
             onMessageCallback({
-                event: 'ai_complete',
+                event: SearchEventType.AI_COMPLETE,
                 data: '{}'
             });
             expect(selectAiLoading(store.getState())).toBe(false);
@@ -190,7 +191,7 @@ describe('permitSearchSlice', () => {
             const searchPromise = store.dispatch(searchPermitConditions({ query: 'test', filters: testFilters }));
 
             onMessageCallback({
-                event: 'documents',
+                event: SearchEventType.DOCUMENTS,
                 data: JSON.stringify({
                     documents: [{ content: 'Result content' }]
                 })

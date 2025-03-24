@@ -37,7 +37,7 @@ class PermitExtractionTaskBase(Task):
 
 
 @celery.task(base=PermitExtractionTaskBase)
-def initialize_single_permit_extraction(document_name, permit_amendment_guid):
+def initialize_single_permit_extraction(document_manager_guid, permit_amendment_guid):
     """
     Initialize permit extraction for a single document.
     """
@@ -48,9 +48,9 @@ def initialize_single_permit_extraction(document_name, permit_amendment_guid):
         PermitAmendmentDocument,
     )
     
-    document = PermitAmendmentDocument.find_by_permit_amendment_document_name(document_name)
+    document = PermitAmendmentDocument.find_by_document_manager_guid(document_manager_guid)
     if not document:
-        raise ValueError(f"Invalid document {document_name}")
+        raise ValueError(f"Invalid document {document_manager_guid}")
         
     amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
     if not amendment:

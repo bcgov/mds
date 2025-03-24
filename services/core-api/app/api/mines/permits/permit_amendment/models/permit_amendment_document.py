@@ -38,10 +38,10 @@ class PermitAmendmentDocument(SoftDeleteMixin, AuditMixin, Base):
     @classmethod
     def find_by_permit_amendment_document_guid(cls, _guid):
         return cls.query.filter_by(permit_amendment_document_guid=_guid, deleted_ind=False).first()
-    
+        
     @classmethod
-    def find_by_permit_amendment_document_name(cls, document_name):
-        return cls.query.filter_by(document_name=document_name, deleted_ind=False).first()
+    def find_by_document_manager_guid(cls, document_manager_guid):
+        return cls.query.filter_by(document_manager_guid=document_manager_guid, deleted_ind=False).first()
 
     @classmethod
     def find_by_permit_amendment_id(cls, id):

@@ -3,6 +3,7 @@ from multiprocessing.dummy import Pool as ThreadPool
 import click
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.utils.include.user_info import User
+from app.config import Config
 from app.extensions import db
 from flask import current_app
 from sqlalchemy.exc import DBAPIError
@@ -253,9 +254,14 @@ def register_commands(app):
         from app.cli_commands.prepare_data import prepare_permit_data
         from flask import current_app
         
+
         auth.apply_security = False
         
         with current_app.app_context():
+            if Config.ENVIRONMENT_NAME not in ['local', 'dev', 'test']:
+                click.echo("This command is only available in local, dev and test environments.", err=True)
+                return
+
             try:
                 prepare_permit_data(csv_path, token)
             except Exception as e:
@@ -290,10 +296,10 @@ def register_commands(app):
                 for row in reader:
                     try:
                         permit_amendment_guid = row['permit_amendment_guid']
-                        document_name = row['document_name']
+                        document_manager_guid = row['document_manager_guid']
                         
                         # Queue initialization task
-                        initialize_single_permit_extraction.delay(document_name, permit_amendment_guid)
+                        initialize_single_permit_extraction.delay(document_manager_guid, permit_amendment_guid)
                         task_count += 1
                         print(f"Queued initialization task for amendment {permit_amendment_guid}")
                             

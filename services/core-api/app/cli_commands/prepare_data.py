@@ -14,6 +14,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment_document imp
     PermitAmendmentDocument,
 )
 from app.api.services.document_manager_service import DocumentManagerService
+from app.config import Config
 from app.extensions import db
 
 logging.basicConfig(level=logging.INFO)
@@ -27,6 +28,10 @@ class ImportMinesAndPermits:
     # WARNING: DO NOT RUN THIS IN PRODUCTION
     
     def __init__(self, csv_path, token):
+
+        if Config.ENVIRONMENT_NAME not in ['local', 'dev', 'test']:
+            raise ValueError("This script is only intended for local, dev, and test environments")
+
         self.csv_path = Path(csv_path)
         self.mine_cache = {}
         self.permit_cache = {}
@@ -281,5 +286,4 @@ class ImportMinesAndPermits:
 def prepare_permit_data(csv_path, token):
     """Entry point for the CLI command"""
     processor = ImportMinesAndPermits(csv_path, "Bearer "+ token)
-    processor.process_data()
     processor.process_data()

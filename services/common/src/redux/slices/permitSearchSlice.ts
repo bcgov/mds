@@ -9,6 +9,14 @@ import { createEventSource } from 'eventsource-client'
 import * as API from "@mds/common/constants/API";
 export const permitSearchReducerType = "permitSearch";
 
+export enum SearchEventType {
+    DOCUMENTS = 'documents',
+    AI_START = 'ai_start',
+    PROMPT = 'prompt',
+    AI_COMPLETE = 'ai_complete',
+    COMPLETE = 'complete'
+}
+
 export type PermitSearchFilters = Array<{ category: string; value: string }>;
 interface PermitSearchState {
     results: SearchResult | null;
@@ -123,12 +131,11 @@ const permitSearchSlice = createAppSlice({
                             const payload = JSON.parse(data);
                             let updatedState: RootState = thunkApi.getState();
 
-                            console.error('got event', event);
                             switch (event) {
-                                case 'ai_start':
+                                case SearchEventType.AI_START:
                                     thunkApi.dispatch(setAiLoading(true));
                                     break;
-                                case 'documents':
+                                case SearchEventType.DOCUMENTS:
                                     thunkApi.dispatch(updateSearchResults(payload));
                                     // Ensure we set loading to false when documents are received
                                     thunkApi.dispatch(setDocumentLoading(false));
@@ -137,10 +144,10 @@ const permitSearchSlice = createAppSlice({
                                         thunkApi.dispatch(setFilters(currentFilters));
                                     }
                                     break;
-                                case 'prompt':
+                                case SearchEventType.PROMPT:
                                     thunkApi.dispatch(updatePromptResults(payload));
                                     break;
-                                case 'ai_complete':
+                                case SearchEventType.AI_COMPLETE:
                                     thunkApi.dispatch(setAiLoading(false));
                                     break;
                             }
