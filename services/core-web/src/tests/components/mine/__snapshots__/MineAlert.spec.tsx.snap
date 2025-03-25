@@ -57,6 +57,7 @@ exports[`MineAlert renders dispatchProperly 1`] = `
               >
                 <button
                   class="ant-btn ant-btn-ghost ant-dropdown-trigger actions-dropdown-button"
+                  data-testid=""
                   style="background-color: transparent;"
                   type="button"
                 >
