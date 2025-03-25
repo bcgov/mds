@@ -6,7 +6,11 @@ export default function fetchEnv() {
     .get(`${process.env.BASE_PATH}/env`)
     .then((res) => {
       try {
-        JSON.stringify(res.data);
+        JSON.parse(JSON.stringify(res.data));
+
+        if (process.env.NODE_ENV === "development") {
+          return DEFAULT_ENVIRONMENT;
+        }
         return res.data;
       } catch (err) {
         return DEFAULT_ENVIRONMENT;
