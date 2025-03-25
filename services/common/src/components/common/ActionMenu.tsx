@@ -2,6 +2,7 @@ import React, { FC, ReactNode } from "react";
 import { Button, ButtonProps, Dropdown, Modal } from "antd";
 import CaretDownOutlined from "@ant-design/icons/CaretDownOutlined";
 import DownOutlined from "@ant-design/icons/DownOutlined";
+import EllipsisOutlined from "@ant-design/icons/EllipsisOutlined";
 import { ITableAction } from "@mds/common/components/common/CoreTableCommonColumns";
 
 export const deleteConfirmWrapper = (recordDescription: string, onOk: () => void, plural = false) => {
@@ -44,23 +45,45 @@ export interface IHeaderAction {
   clickFunction: () => void | Promise<void>;
 }
 // Looks like a button, intended for page-scope, not record-scope in the actions
-export const ActionMenuButton: FC<{ buttonText?: string; actions: IHeaderAction[], disabled?: boolean, buttonProps?: ButtonProps }> = ({
+export const ActionMenuButton: FC<{
+  buttonText?: string;
+  actions: IHeaderAction[];
+  disabled?: boolean;
+  buttonProps?: ButtonProps;
+  useEllipsis?: boolean; // View as ellipsis instead of a button
+  dataTestId?: string;
+}> = ({
   actions,
   buttonText = "Action",
   buttonProps,
-  disabled = false
+  disabled = false,
+  useEllipsis = false,
+  dataTestId = "",
 }) => {
-  const items = generateActionMenuItems((actions as unknown) as ITableAction[], null);
+    const items = generateActionMenuItems((actions as unknown) as ITableAction[], null);
 
-  return (
-    <Dropdown menu={{ items }} placement="bottomLeft" disabled={disabled}>
-      <Button type="ghost" className="actions-dropdown-button" {...buttonProps}>
-        {buttonText}
-        <DownOutlined />
-      </Button>
-    </Dropdown>
-  );
-};
+    const defaultButtonProps: ButtonProps = useEllipsis
+      ? {
+        type: "text",
+        icon: <EllipsisOutlined />,
+        className: "actions-ellipsis-button",
+      }
+      : {
+        type: "ghost",
+        className: "actions-dropdown-button"
+      };
+
+    const mergedButtonProps = { ...defaultButtonProps, ...buttonProps };
+
+    return (
+      <Dropdown menu={{ items }} placement="bottomLeft" disabled={disabled}>
+        <Button {...mergedButtonProps} data-testid={dataTestId}>
+          {!useEllipsis && buttonText}
+          {!useEllipsis && <DownOutlined />}
+        </Button>
+      </Dropdown>
+    );
+  };
 
 interface ActionMenuProps {
   record: any;
@@ -70,7 +93,7 @@ interface ActionMenuProps {
 const ActionMenu: FC<ActionMenuProps> = ({ record, actionItems, category }) => {
   const items = generateActionMenuItems(actionItems, record);
   return (
-    <Dropdown menu={{ items }} placement="bottomLeft">
+    <Dropdown menu={{ items }} placement="bottomLeft" data-testid={`action-menu-${category}`}>
       <Button type="text" className="actions-dropdown-button">
         Actions
         <CaretDownOutlined alt={`${category} Actions`} />

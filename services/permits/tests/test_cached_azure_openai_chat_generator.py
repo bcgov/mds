@@ -41,7 +41,7 @@ def test_run_with_valid_data():
     ):
         generator = CachedAzureOpenAIChatGenerator()
 
-        result = generator.run(data, generation_kwargs)
+        result = generator.run(data=data, generation_kwargs=generation_kwargs)
         assert result["data"].messages[0][0].text == expected_reply.text
 
 
@@ -78,16 +78,11 @@ def test_run_with_valid_data_multiple_iterations():
         assert len(result["data"].messages) == 1
         chat_response = result["data"].messages[0]
 
-        # Response for each continuation request should be concatinated
         assert chat_response[0].text == "Mocked replyreply continued"
 
-        # and the usage tokens should be summed up
         assert chat_response[0].meta["usage"]["total_tokens"] == 18
         assert chat_response[0].meta["usage"]["completion_tokens"] == 11
         assert chat_response[0].meta["usage"]["prompt_tokens"] == 7
-
-        # Make sure the second iteration contained the reply from the first iteration
-        # and a command to continue the generation
         mock_fetch_result.assert_called_with(
             data.messages[0]
             + [

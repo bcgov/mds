@@ -57,4 +57,10 @@ class ConditionsMetadataCombiner:
                     "questions": p["meta"],
                     **(docs_by_id[p["id"]].meta or {}),
                 }
+
+        # Write final conditions to debug folder if enabled
+        if DEBUG_MODE:
+            with open("debug/final_conditions.json", "w") as f:
+                json.dump([c.model_dump() for c in conditions.conditions], f, indent=2)
+        
         return {"conditions": conditions}

@@ -133,6 +133,8 @@ export const SEARCH = (params) => (params ? `/search?${queryString.stringify(par
 export const SEARCH_OPTIONS = "/search/options";
 export const SIMPLE_SEARCH = "/search/simple";
 
+export const PERMIT_CONDITION_SEARCH = "/search/permit-conditions";
+
 // Reporting
 export const DASHBOARD = (dashboardId, type = "dashboard") => `/reporting/${type}/${dashboardId}`;
 

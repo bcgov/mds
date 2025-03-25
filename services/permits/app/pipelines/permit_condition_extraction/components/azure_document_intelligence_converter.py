@@ -8,7 +8,8 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from app.common.types.context import context
-from azure.ai.formrecognizer import AnalyzeResult, DocumentAnalysisClient
+from azure.ai.documentintelligence import DocumentIntelligenceClient
+from azure.ai.documentintelligence.models import AnalyzeResult
 from azure.core.credentials import AzureKeyCredential
 from haystack import Document, component, logging
 
@@ -16,13 +17,14 @@ logger = logging.getLogger(__name__)
 
 DEBUG_MODE = os.environ.get("DEBUG_MODE", "false").lower() == "true"
 
-DOCUMENTINTELLIGENCE_ENDPOINT = os.environ.get("DOCUMENTINTELLIGENCE_ENDPOINT")
-DOCUMENTINTELLIGENCE_API_KEY = os.environ.get("DOCUMENTINTELLIGENCE_API_KEY")
-DOCUMENTINTELLIGENCE_API_VERSION = os.environ.get("DOCUMENTINTELLIGENCE_API_VERSION")
-
 
 @component
 class AzureDocumentIntelligenceConverter:
+    def __init__(self, endpoint: str, api_key: str, api_version: str):
+        self.endpoint = endpoint
+        self.api_key = api_key
+        self.api_version = api_version
+
     """
     Converts a PDF file to text format using Azure Document Intelligence.
 
@@ -35,9 +37,7 @@ class AzureDocumentIntelligenceConverter:
         List[Document]: The converted documents in text format.
     """
 
-    @component.output_types(
-        documents=List[Document]
-    )
+    @component.output_types(documents=List[Document])
     def run(
         self,
         file_path: Path,
@@ -85,9 +85,9 @@ class AzureDocumentIntelligenceConverter:
 
         # Transform bounding box coordinates from a polygon to a rectangle,
         # and add it to the documents metadata
-        brs = p.bounding_regions[0].polygon
-        x = [br.x for br in brs]
-        y = [br.y for br in brs]
+        [x1, y1, x2, y2, x3, y3, x4, y4] = p.bounding_regions[0].polygon
+        x = [x1, x2, x3, x4]
+        y = [y1, y2, y3, y4]
 
         top, right, bottom, left = min(y), max(x), max(y), min(x)
 
@@ -109,23 +109,24 @@ class AzureDocumentIntelligenceConverter:
             "page": p.bounding_regions[0].page_number,
         }
 
-        return Document(content=json.dumps(content, indent=None), meta=meta)
+        return Document(
+            content=json.dumps(content, indent=None), meta=meta, id=paragraph_id
+        )
 
     def run_document_intelligence(self, file_path):
 
-        assert DOCUMENTINTELLIGENCE_ENDPOINT, "DOCUMENTINTELLIGENCE_ENDPOINT is not set"
-        assert DOCUMENTINTELLIGENCE_API_KEY, "DOCUMENTINTELLIGENCE_API_KEY is not set"
+        assert self.endpoint, "endpoint is not set"
+        assert self.api_key, "api_key is not set"
 
-        document_intelligence_client = DocumentAnalysisClient(
-            endpoint=DOCUMENTINTELLIGENCE_ENDPOINT,
-            credential=AzureKeyCredential(DOCUMENTINTELLIGENCE_API_KEY),
-            api_version=DOCUMENTINTELLIGENCE_API_VERSION,
+        document_intelligence_client = DocumentIntelligenceClient(
+            endpoint=self.endpoint,
+            credential=AzureKeyCredential(self.api_key),
+            api_version=self.api_version,
         )
 
         with open(file_path, "rb") as f:
             poller = document_intelligence_client.begin_analyze_document(
-                "prebuilt-layout",
-                document=f,
+                "prebuilt-layout", body=f
             )
 
         result: AnalyzeResult = poller.result()
@@ -136,7 +137,7 @@ class AzureDocumentIntelligenceConverter:
             pickle.dump(result, f, protocol=pickle.HIGHEST_PROTOCOL)
 
         with open("debug/azure_document_intelligence_result.json", "w") as f:
-            dp = [d.to_dict() for d in result.paragraphs]
+            dp = [d.as_dict() for d in result.paragraphs]
             json.dump(dp, f, indent=4)
 
     def retrieve_cached_result(self, cache_key):

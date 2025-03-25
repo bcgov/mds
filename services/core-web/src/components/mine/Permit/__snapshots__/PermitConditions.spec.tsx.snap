@@ -246,6 +246,7 @@ exports[`PermitConditions renders properly 1`] = `
           >
             <button
               class="ant-btn ant-btn-ghost ant-dropdown-trigger actions-dropdown-button"
+              data-testid=""
               type="button"
             >
               <span>
@@ -2000,7 +2001,6 @@ exports[`PermitConditions renders properly 1`] = `
                     </div>
                   </div>
                 </div>
-                
               </div>
             </div>
           </div>

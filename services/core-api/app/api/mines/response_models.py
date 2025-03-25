@@ -942,7 +942,6 @@ PERMIT_CONDITION_SEARCH_RESULT_MODEL = api.model(
         "documents": fields.List(fields.Nested(PERMIT_SERVICE_DOCUMENT_MODEL)),
         "prompt": fields.Raw(),
         "facets": fields.Raw(),
-
     })
 
 PERMIT_CONDITION_MODEL = api.model(

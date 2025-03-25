@@ -1,26 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import { List, Space, Tag, Empty, Row, Col, Button, Badge, Skeleton } from 'antd';
+import { List, Space, Tag, Empty, Row, Col, Button, Badge, Skeleton, Typography, Divider } from 'antd';
 import ResultItem from './ResultItem';
-import FacetFilters from './FacetFilters';
-import { DownOutlined, FilterOutlined, UpOutlined } from '@ant-design/icons';
-import { useAppSelector, useAppDispatch } from '@mds/common/redux/rootState';
-import { selectSearchResults, selectSearchLoading, selectSearchFilters, setFilters } from '@mds/common/redux/slices/permitSearchSlice';
+import { FilterOutlined } from '@ant-design/icons';
+import { useAppSelector } from '@mds/common/redux/rootState';
+import { selectSearchResults, selectSearchFilters, selectSearchQuery, selectDocumentLoading } from '@mds/common/redux/slices/permitSearchSlice';
 import { HaystackDocumentSearchResult } from '@mds/common/interfaces/search/facet-search.interface';
+import FilterDrawer from './FilterDrawer';
+import { startCase } from 'lodash';
+import dayjs from 'dayjs';
 
-interface SelectedFilter {
+export interface SelectedFilter {
     category: string;
     value: string;
 }
 
-const SearchResults: React.FC = () => {
-    const dispatch = useAppDispatch();
+export interface SearchResultsProps {
+    onFilterChange: (selectedFilters: SelectedFilter[]) => void;
+}
+
+/**
+ * Component to display search results and filter options.
+ * 
+ * Maintains a local state for pending filters, which are filters that have been checked but not yet applied.
+ * - When a filter is checked, it is added to the pending filters.
+ * - When a filter is unchecked, it is removed from the pending filters.
+ * - When the user clicks "Apply Filters", the pending filters are applied to the search results.
+ */
+const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
     const results = useAppSelector(selectSearchResults);
-    const loading = useAppSelector(selectSearchLoading);
+    const documentLoading = useAppSelector(selectDocumentLoading);
     const selectedFilters = useAppSelector(selectSearchFilters);
+    const query = useAppSelector(selectSearchQuery);
 
     const [pendingFilters, setPendingFilters] = useState<SelectedFilter[]>(selectedFilters);
-    const [filtersVisible, setFiltersVisible] = useState(false);
     const [hasFilterChanges, setHasFilterChanges] = useState(false);
+    const [drawerVisible, setDrawerVisible] = useState(false);
+
+    useEffect(() => {
+        setPendingFilters(selectedFilters);
+    }, [selectedFilters]);
 
     useEffect(() => {
         setPendingFilters(selectedFilters);
@@ -42,12 +60,12 @@ const SearchResults: React.FC = () => {
             f => !(f.category === category && f.value === value)
         );
         setPendingFilters(updatedFilters);
-        dispatch(setFilters(updatedFilters)); // Apply immediately when removing
+        onFilterChange(updatedFilters) // Apply immediately when removing
         setHasFilterChanges(false);
     };
 
     const applyFilters = () => {
-        dispatch(setFilters(pendingFilters));
+        onFilterChange(pendingFilters);
         setHasFilterChanges(false);
     };
 
@@ -57,7 +75,29 @@ const SearchResults: React.FC = () => {
         // Don't dispatch to Redux yet - wait for user to click Apply
     };
 
-    if (!results && !loading) {
+    const handleTagFilter = (category: string, value: string) => {
+        const filterExists = pendingFilters.some(f =>
+            f.category === category && f.value === value);
+
+        if (!filterExists) {
+            const newFilters = [...pendingFilters, { category, value }];
+
+            setPendingFilters(newFilters);
+            setHasFilterChanges(false);
+
+            onFilterChange(newFilters);
+        }
+    };
+
+    const formatFilterValue = (category: string, value: string) => {
+        if (category.toLowerCase().includes('date') && dayjs(value).isValid()) {
+            return dayjs(value).format('YYYY-MM-DD');
+        }
+        return value;
+    };
+
+
+    if (!query && !results && !documentLoading) {
         return (
             <Row className="permit-search__empty-state" justify="center" align="middle">
                 <Empty
@@ -68,119 +108,98 @@ const SearchResults: React.FC = () => {
         );
     }
 
-    const handleTagFilter = (category: string, value: string) => {
-        if (!pendingFilters.some(f => f.category === category && f.value === value)) {
-            setPendingFilters(prev => [...prev, { category, value }]);
-            setHasFilterChanges(true); // Add this line to enable the Apply button
-        }
-    };
-
-    const renderFacets = () => {
-        if (!results?.allFacets) return null;
-
-        return Object.entries(results.allFacets).map(([facetKey, facets]) => {
-            // Get current facet counts
-            const currentFacets = results.facets?.[facetKey] || [];
-
-            // Update counts while preserving all options
-            const updatedFacets = facets.map(facet => ({
-                ...facet,
-                count: currentFacets.find(cf => cf.value === facet.value)?.count || 0
-            }));
-
-            return (
-                <Col span={8} key={facetKey}>
-                    <FacetFilters
-                        title={facetKey.replace(/_/g, ' ')}
-                        facets={{ [facetKey]: updatedFacets }}
-                        onFilterChange={handleFilterChange}
-                        pendingFilters={pendingFilters}  // Add this prop
-                        data-testid={`facet-group-${facetKey}`}
-                    />
-                </Col>
-            );
-        });
-    };
-
     return (
-        <Space direction="vertical" size="large" style={{ width: '100%' }}>
-
-            <div className="permit-search__filter-section">
-                <Row justify="space-between" align="middle" className="permit-search__filter-header" onClick={() => setFiltersVisible(!filtersVisible)}>
-                    <Space>
-                        <FilterOutlined />
-                        <span>Filters</span>
-                        {selectedFilters?.length > 0 && (
-                            <Badge count={selectedFilters?.length} style={{ backgroundColor: '#1890ff' }} />
+        <Row gutter={[0, 24]}>
+            <Col span={24}>
+                <Row justify="space-between" align="middle" className="permit-search__filter-section">
+                    <Col>
+                        {results?.documents && (
+                            <Typography.Text type="secondary">
+                                <Typography.Text type="secondary" strong>{results.documents.length}</Typography.Text>
+                                {' results'}{query ? ` for "` : ''}<Typography.Text italic type="secondary">{query}</Typography.Text>{query ? `"` : ''}
+                            </Typography.Text>
                         )}
-                    </Space>
-                    {filtersVisible ? <UpOutlined /> : <DownOutlined />}
+                    </Col>
+                    <Col>
+                        <Button
+                            icon={<FilterOutlined />}
+                            onClick={() => setDrawerVisible(true)}
+                        >
+                            Filters
+                            {selectedFilters?.length > 0 && (
+                                <Badge
+                                    count={selectedFilters?.length}
+                                    style={{
+                                        backgroundColor: '#1890ff',
+                                        marginLeft: '8px',
+                                        marginRight: '-8px'
+                                    }}
+                                />
+                            )}
+                        </Button>
+                    </Col>
                 </Row>
 
-                <div className={`permit-search__filter-content ${filtersVisible ? 'permit-search__filter-content--visible' : 'permit-search__filter-content--hidden'}`}>
-                    <div className={`permit-search__filter-inner ${!filtersVisible && 'permit-search__filter-inner--hidden'}`}>
-                        <Row gutter={[24, 16]}>
-                            {renderFacets()}
-                        </Row>
-                        {(pendingFilters.length > 0 || hasFilterChanges) && (
-                            <Row justify="end" style={{ marginTop: 16 }}>
-                                <Space>
-                                    <Button onClick={clearAllFilters}>
-                                        Clear All
-                                    </Button>
-                                    <Button
-                                        type="primary"
-                                        onClick={applyFilters}
-                                        disabled={!hasFilterChanges}
-                                    >
-                                        Apply Filters
-                                    </Button>
+                <Row>
+                    <Col span={24}>
+                        {selectedFilters.length > 0 && (
+                            <Col span={24} className="permit-search__selected-filters">
+                                <Space wrap>
+                                    {selectedFilters.map(({ category, value }) => (
+                                        <Tag
+                                            key={`${category}-${value}`}
+                                            closable
+                                            onClose={() => removeFilter(category, value)}
+                                            data-testid={`selected-filter-${category}-${value}`}
+                                        >
+                                            {`${startCase(category)}: ${formatFilterValue(category, value)}`}
+                                        </Tag>
+                                    ))}
                                 </Space>
-                            </Row>
+                            </Col>)
+                        }
+                    </Col>
+                </Row>
+                <Divider style={{ margin: '12px 0 0' }} />
+            </Col>
+            <Col span={24}>
+                {documentLoading ? (
+                    <Skeleton active paragraph={{ rows: 4 }} />
+                ) : (
+                    <List<HaystackDocumentSearchResult>
+                        itemLayout="vertical"
+                        dataSource={results?.documents || []}
+                        locale={{ emptyText: 'No results found' }}
+                        style={{
+                            background: '#fff',
+                            borderRadius: '8px',
+                        }}
+                        renderItem={(result) => (
+                            <ResultItem
+                                result={result}
+                                onFilterClick={handleTagFilter}
+                            />
                         )}
-                    </div>
-                </div>
-            </div>
+                        className="permit-search__results-list"
+                    />
+                )}
+            </Col>
 
-            {selectedFilters.length > 0 && (
-                <div className="permit-search__selected-filters">
-                    <Space wrap>
-                        {selectedFilters.map(({ category, value }) => (
-                            <Tag
-                                key={`${category}-${value}`}
-                                closable
-                                onClose={() => removeFilter(category, value)}
-                                data-testid={`selected-filter-${category}-${value}`}
-                            >
-                                {`${category}: ${value}`}
-                            </Tag>
-                        ))}
-                    </Space>
-                </div>
-            )}
-
-            {loading ? (
-                <Skeleton active paragraph={{ rows: 4 }} />
-            ) : (
-                <List<HaystackDocumentSearchResult>
-                    itemLayout="vertical"
-                    dataSource={results?.documents || []}
-                    locale={{ emptyText: 'No results found' }}
-                    style={{
-                        background: '#fff',
-                        borderRadius: '8px',
-                        padding: '0 24px'
-                    }}
-                    renderItem={(result) => (
-                        <ResultItem
-                            result={result}
-                            onFilterClick={handleTagFilter}
-                        />
-                    )}
-                    className="permit-search__results-list"
-                />
-            )}
-        </Space >
+            <FilterDrawer
+                visible={drawerVisible}
+                onClose={() => setDrawerVisible(false)}
+                results={results}
+                pendingFilters={pendingFilters}
+                selectedFilters={selectedFilters}
+                onFilterChange={handleFilterChange}
+                onApplyFilters={() => {
+                    applyFilters();
+                    setDrawerVisible(false);
+                }}
+                onClearFilters={clearAllFilters}
+                hasFilterChanges={hasFilterChanges}
+            />
+        </Row >
     );
 };
 

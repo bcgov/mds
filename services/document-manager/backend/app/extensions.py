@@ -1,20 +1,21 @@
 import os
 
+from app.flask_jwt_oidc_local.exceptions import AuthError
 from flask_caching import Cache
-
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
+from jose import jwt as jwt_jose
 
 from .config import Config, TestConfig
 from .flask_jwt_oidc_local import JwtManager
 from .helper import Api
-from app.flask_jwt_oidc_local.exceptions import AuthError
-from jose import jwt as jwt_jose
+
 
 def get_jwt_by_audience(aud):
     audience_jwt_map = {
-        'JWT_OIDC_AUDIENCE': jwt_main,
-        'JWT_OIDC_AUDIENCE_CYPRESS': jwt_cypress,
+        'JWT_OIDC_AUDIENCE': jwt_main, # Default JWT auth (browser user auth)
+        'JWT_OIDC_AUDIENCE_CORE_INTERNAL': jwt_core_internal, # JWT auth for direct Client Credentials access without user involvment (e.g. Celery)
+        'JWT_OIDC_AUDIENCE_CYPRESS': jwt_cypress, # Only in use for cypress tests
     }
 
     for audience_env, jwt_value in audience_jwt_map.items():
@@ -29,6 +30,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 jwt_main = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE'), None, None, False, False, None, Config.JWT_ROLE_CALLBACK, None)
+jwt_core_internal = JwtManager(None, os.environ.get('JWT_OIDC_WELL_KNOWN_CONFIG'), None, 'RS256', None, None, os.environ.get('JWT_OIDC_AUDIENCE_CORE_INTERNAL'), None, None, False, False, None, Config.JWT_ROLE_CALLBACK, None)
 
 # Cypress JWT Config
 

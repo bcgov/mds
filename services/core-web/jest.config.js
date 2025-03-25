@@ -43,6 +43,8 @@ module.exports = {
     "^vendor/(.*)$": "<rootDir>/vendor/$1",
     "^uuid$": "uuid",
     "^esm-browser$": "esm-browser",
+    "react-markdown": "<rootDir>/src/__mocks__/react-markdown.tsx",
+    "remark-gfm": "<rootDir>/src/__mocks__/empty-mock.ts",
   },
 
   transformIgnorePatterns: [

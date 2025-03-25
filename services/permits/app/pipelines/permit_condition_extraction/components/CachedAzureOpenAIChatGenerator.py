@@ -56,9 +56,10 @@ def hash_messages(messages):
 @component
 class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
 
-    def __init__(self, **kwargs):
+    def __init__(self, single_message=False, **kwargs):
         super(CachedAzureOpenAIChatGenerator, self).__init__(**kwargs)
         self.it = 0
+        self.single_message = single_message
 
     """
     A class that represents a cached version of the AzureOpenAIChatGenerator.
@@ -109,11 +110,14 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
                 ]
             }
             return res["replies"][0]
+        existing_reply_found = False
         if not existing_reply_found:
             try:
                 res = super(CachedAzureOpenAIChatGenerator, self).run(
                     messages=messages, generation_kwargs=generation_kwargs
                 )
+
+                usage = res["replies"][0].meta["usage"]
 
                 documents = [
                     Document(
@@ -125,18 +129,27 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
                             "model": res["replies"][0].meta["model"],
                             "index": res["replies"][0].meta["index"],
                             "finish_reason": res["replies"][0].meta["finish_reason"],
-                            "usage": res["replies"][0].meta["usage"],
+                            "usage": {
+                                "completion_tokens": usage["completion_tokens"],
+                                "prompt_tokens": usage["prompt_tokens"],
+                                "total_tokens": usage["total_tokens"]
+                            },
                         },
                     )
                 ]
+
                 document_store.write_documents(
                     documents, policy=DuplicatePolicy.OVERWRITE
                 )
                 return res["replies"][0]
 
             except Exception as e:
-                logger.error(f"Error while querying OpenAI: {e}")
+                logger.exception(f"Error while querying OpenAI: {e}")
                 raise
+
+    @component.output_types(data=ChatData)
+    async def run_async(self, data: ChatData, generation_kwargs=None, iteration=0):
+        return self.run(data=data, generation_kwargs=generation_kwargs, iteration=iteration)
 
     @component.output_types(data=ChatData)
     def run(self, data: ChatData, generation_kwargs=None, iteration=0):

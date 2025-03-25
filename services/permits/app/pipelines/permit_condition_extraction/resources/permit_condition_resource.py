@@ -23,8 +23,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-
-
 @router.post("/permit_conditions")
 async def extract_permit_conditions(file: UploadFile = File(...)) -> JobStatus:
     """

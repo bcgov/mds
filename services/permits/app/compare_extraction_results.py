@@ -243,7 +243,6 @@ def validate_condition(csv_pairs):
                     "manual_section_title": "",
                     "manual_condition_title": "",
                     "manual_extracted_condition": "",
-                    "manual_extracted_condition": "",
                     "match_percentage": 0,
                     "is_match": False,
                 }

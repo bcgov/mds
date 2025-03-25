@@ -1,0 +1,147 @@
+@use "../settings/variables.scss" as *;
+
+/**
+* Basic styles for the markdown viewer. Currently in use for search results.
+**/
+
+.permit-search__markdown {
+
+    // Headers
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: $default-font;
+        margin-bottom: $default-margin-md;
+    }
+
+    h1 {
+        font-size: $default-h1;
+        color: $h1-color;
+    }
+
+    h2 {
+        font-size: $default-h2;
+        color: $h2-color;
+    }
+
+    h3 {
+        font-size: $default-h3;
+        color: $h3-color;
+    }
+
+    h4 {
+        font-size: $default-h4;
+        color: $h4-color;
+    }
+
+    // Paragraphs and text
+    p {
+        font-size: $default-p;
+        color: $p-color;
+        line-height: 1.6;
+    }
+
+    // Links
+    a {
+        color: $a-color;
+        text-decoration: none;
+
+        &:hover {
+            color: $a-color-hover;
+            text-decoration: underline;
+        }
+    }
+
+    // Lists
+    ul,
+    ol {
+        margin: $default-margin-md 0;
+        padding-left: $default-padding-xl;
+
+        li {
+            margin-bottom: $default-margin-sm;
+            color: $p-color;
+        }
+    }
+
+    // Blockquotes
+    blockquote {
+        border-left: 4px solid $violet;
+        margin: $default-margin-md 0;
+        padding: $default-padding-md $default-padding-lg;
+        background-color: $lightest-grey;
+        color: $medium-grey;
+    }
+
+    // Code blocks
+    pre,
+    code {
+        background-color: $lightest-grey;
+        border-radius: 4px;
+        font-family: monospace;
+        padding: 2px 4px;
+    }
+
+    pre {
+        padding: $default-padding-md;
+        margin: $default-margin-md 0;
+        overflow-x: auto;
+
+        code {
+            padding: 0;
+            background-color: transparent;
+        }
+    }
+
+    // Tables
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: $default-margin-md 0;
+
+        th,
+        td {
+            border: 1px solid $light-grey;
+            padding: $default-padding-md;
+            text-align: left;
+        }
+
+        th {
+            background-color: $lightest-grey;
+            font-weight: $semi-bold;
+            color: $darkest-grey;
+        }
+
+        tr:nth-child(even) {
+            background-color: $lightest-grey;
+        }
+
+        tr:hover {
+            background-color: $transparent-violet;
+        }
+    }
+
+    // Horizontal rule
+    hr {
+        border: 0;
+        border-top: 1px solid $light-grey;
+        margin: $default-margin-lg 0;
+    }
+
+    // Reference style links (for our doc references)
+    a[href^="#condition-"] {
+        padding: 2px 4px;
+        background-color: $lightest-violet;
+        border-radius: 4px;
+        font-size: 0.9em;
+
+        &:hover {
+            background-color: $light-violet;
+            color: $pure-white;
+            text-decoration: none;
+        }
+    }
+}

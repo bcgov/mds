@@ -1,0 +1,262 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ResultItem Rendering renders basic result information 1`] = `
+<div>
+  <div
+    class="ant-row permit-search__result-item "
+    id="condition-test-123"
+  >
+    <div
+      class="ant-col ant-col-24"
+    >
+      <div
+        class="ant-row ant-row-space-between ant-row-top"
+      >
+        <div
+          class="ant-col"
+        >
+          <div
+            data-testid="path-section"
+          >
+            Section
+          </div>
+        </div>
+        <div
+          class="ant-col"
+        >
+          <div>
+            <button
+              class="ant-btn ant-btn-text ant-dropdown-trigger actions-ellipsis-button"
+              data-testid="condtions-action-button"
+            />
+            <div
+              class="ant-dropdown-menu"
+              role="menu"
+            >
+              <div
+                data-testid="action-preview"
+                role="menuitem"
+              >
+                Preview Permit
+              </div>
+              <div
+                data-testid="action-navigate"
+                role="menuitem"
+              >
+                Go to Permit
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-24"
+      style="margin-bottom: 8px;"
+    >
+      <div
+        class="ant-row permit-search__context-container"
+        style="margin-top: -3px; margin-bottom: -3px;"
+      >
+        <div
+          class="ant-col ant-col-24 permit-search__context-section"
+          style="padding-top: 3px; padding-bottom: 3px;"
+        >
+          <div
+            class="ant-row ant-row-space-between ant-row-top"
+          >
+            <div
+              class="ant-col"
+              style="flex-basis: auto;"
+            >
+              <div
+                class="ant-row permit-search__context-item "
+                data-testid="context-item-p2"
+              >
+                <div
+                  class="ant-col permit-search__context-content"
+                  style="flex-basis: auto;"
+                >
+                  2. 
+                  Parent 2
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-col"
+            >
+              <button
+                class="ant-btn ant-btn-link permit-search__expand-link"
+                data-testid="expand-above-contexts"
+                type="button"
+              >
+                <span
+                  data-testid="mock-icon"
+                />
+                <span>
+                  Show 2
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          style="padding-top: 3px; padding-bottom: 3px;"
+        >
+          <div
+            class="permit-search__markdown"
+            role="none"
+          >
+            <div
+              data-testid="markdown-content"
+            >
+              <div
+                data-testid="markdown-content"
+              >
+                1. Highlighted &lt;em&gt;test&lt;/em&gt; content
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          style="padding-top: 3px; padding-bottom: 3px;"
+        >
+          <div
+            class="ant-row ant-row-space-between ant-row-top"
+          >
+            <div
+              class="ant-col"
+              style="flex-basis: auto;"
+            >
+              <div
+                class="ant-row permit-search__context-item "
+                data-testid="context-item-child1"
+              >
+                <div
+                  class="ant-col permit-search__context-content"
+                  style="flex-basis: auto;"
+                >
+                  B. 
+                  Child 1
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-col"
+            >
+              <button
+                class="ant-btn ant-btn-link permit-search__expand-link"
+                data-testid="expand-below-contexts"
+                type="button"
+              >
+                <span
+                  data-testid="mock-icon"
+                />
+                <span>
+                  Show 1
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-24"
+    >
+      <div
+        class="ant-row ant-row-space-between ant-row-middle"
+      >
+        <div
+          class="ant-col"
+        >
+          <div
+            class="ant-row"
+            style="margin: -4px -4px -4px -4px;"
+          >
+            <div
+              class="ant-col"
+              style="padding: 4px 4px 4px 4px;"
+            >
+              <span
+                class="ant-tag ant-tag-blue"
+                style="cursor: pointer;"
+              >
+                Test Mine
+              </span>
+            </div>
+            <div
+              class="ant-col"
+              style="padding: 4px 4px 4px 4px;"
+            >
+              <span
+                class="ant-tag ant-tag-geekblue"
+                style="cursor: pointer;"
+              >
+                M-123
+              </span>
+            </div>
+            <div
+              class="ant-col"
+              style="padding: 4px 4px 4px 4px;"
+            >
+              <span
+                class="ant-tag ant-tag-purple"
+                style="cursor: pointer;"
+              >
+                BC-123
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col"
+        >
+          <div
+            class="ant-row ant-row-middle"
+            style="margin-left: -8px; margin-right: -8px;"
+          >
+            <div
+              class="ant-col"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <span
+                class="ant-typography ant-typography-secondary permit-search__document-info"
+              >
+                <span
+                  data-testid="document-link"
+                >
+                  test.pdf
+                </span>
+              </span>
+            </div>
+            <div
+              class="ant-col"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <span
+                class="ant-typography ant-typography-secondary permit-search__document-info"
+              >
+                Jan 15, 2023
+              </span>
+            </div>
+            <div
+              class="ant-col"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <span
+                class="ant-tag ant-tag-green"
+              >
+                83
+                % match
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

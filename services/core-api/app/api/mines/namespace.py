@@ -134,17 +134,19 @@ from app.api.mines.reports.resources.mine_report_comment import (
     MineReportCommentListResource,
     MineReportCommentResource,
 )
-from app.api.mines.reports.resources.mine_report_definition_resource import (
-    MineReportDefinitionListResource,
-)
 from app.api.mines.reports.resources.mine_report_definition_compliance_article_xref_resource import (
     MineReportDefinitionComplianceArticleCreateResource,
     MineReportDefinitionComplianceArticleUpdateResource,
 )
+from app.api.mines.reports.resources.mine_report_definition_resource import (
+    MineReportDefinitionListResource,
+)
 from app.api.mines.reports.resources.mine_report_document import (
     MineReportDocumentListResource,
 )
-from app.api.mines.reports.resources.mine_report_due_date_type_resource import MineReportDueDateTypeResource
+from app.api.mines.reports.resources.mine_report_due_date_type_resource import (
+    MineReportDueDateTypeResource,
+)
 from app.api.mines.reports.resources.mine_report_permit_requirement import (
     MineReportPermitRequirementResource,
 )

@@ -148,7 +148,7 @@ class DocumentManagerService():
 
     @classmethod
     def pushFileToDocumentManager(cls, file_content, filename, mine, document_category,
-                                  authorization_header):
+                                  authorization_header, headers=None):
         folder, pretty_folder = cls._parse_upload_folders(mine, document_category)
         data = {
             'folder': folder,
@@ -165,7 +165,7 @@ class DocumentManagerService():
 
         document_manager_guid = uploader.url.rsplit('/', 1)[-1]
 
-        cls.wait_for_document_upload(document_manager_guid, timeout=60)
+        cls.wait_for_document_upload(document_manager_guid, timeout=60, headers=headers)
 
         return document_manager_guid
 
@@ -250,16 +250,16 @@ class DocumentManagerService():
         return resp.json()
 
     @classmethod
-    def poll_upload_progress(cls, request, document_manager_guid):
+    def poll_upload_progress(cls, request, document_manager_guid, headers=None):
         resp = requests.get(
             url=f'{Config.DOCUMENT_MANAGER_URL}/documents/{document_manager_guid}/upload-status',
-            headers={key: value
+            headers=headers if headers else {key: value
                     for (key, value) in request.headers if key != 'Host'})
         return resp.json()
     
 
     @classmethod
-    def wait_for_document_upload(cls, document_manager_guid, timeout=60):
+    def wait_for_document_upload(cls, document_manager_guid, timeout=60, headers=None):
         """
         Waits for a document upload to finish - Happens when it no longer has the "In Progress" status.
         This is necessary in order to check the status of an upload performed using the Tusd client, seeing
@@ -272,7 +272,7 @@ class DocumentManagerService():
         current_time = time.time()
 
         while status == "In Progress":
-            resp = cls.poll_upload_progress(flask_request, document_manager_guid)
+            resp = cls.poll_upload_progress(flask_request, document_manager_guid, headers=headers)
 
             status = resp["status"]
 
@@ -293,12 +293,12 @@ class DocumentManagerService():
         return token_guid
 
     @classmethod
-    def download_document_to_file(cls, document_guid, file_obj):
+    def download_document_to_file(cls, document_guid, file_obj, headers=None):
         token = cls.create_download_token(document_guid)
 
         resp = requests.get(
             url=f'{Config.DOCUMENT_MANAGER_URL}/documents?token={token}',
-            headers=flask_request.headers,
+            headers=headers if headers else flask_request.headers,
             stream=True
         )
         

@@ -31,6 +31,20 @@ class PermitExtractionTask(AuditMixin, Base):
 
     permit_amendment_document = db.relationship('PermitAmendmentDocument', lazy='select')
 
+    def to_dict(self):
+        return {
+            'permit_extraction_task_id': str(self.permit_extraction_task_id),
+            'task_id': self.task_id,
+            'task_status': self.task_status,
+            'task_meta': self.task_meta,
+            'task_result': self.task_result,
+            'core_status_task_id': self.core_status_task_id,
+            'permit_amendment_guid': str(self.permit_amendment_guid),
+            'permit_amendment_document_guid': str(self.permit_amendment_document_guid),
+            'create_timestamp': self.create_timestamp.isoformat(),
+            'update_timestamp': self.update_timestamp.isoformat()
+        }
+
     @staticmethod
     def get_by_task_id(task_id):
         return PermitExtractionTask.query.filter_by(task_id=task_id).order_by(PermitExtractionTask.create_timestamp.desc())

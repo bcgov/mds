@@ -1,14 +1,42 @@
 export interface HaystackDocumentMeta {
     permit: string;
+    permit_guid: string;
     mine_name: string;
-    document_manager_guid: string;
+    mine_guid: string;
     mine_number: string;
+    document_manager_guid: string;
+    permit_amendment_guid: string;
     issue_date: string;
     document_name: string;
     category: string;
     step_path: string;
     step: string;
+    highlights: {
+        [field: string]: string[];
+    }
+    context: {
+        parent_contexts?: ParentContext;
+        sibling_contexts?: SiblingContexts;
+        child_contexts?: ContextItem[];
+    }
 }
+
+export interface ContextItem {
+    id: string;
+    content: string;
+    step: string;
+    hierarchy: string;
+}
+
+export interface ParentContext {
+    [level: string]: ContextItem;
+}
+
+export interface SiblingContexts {
+    previous: ContextItem[];
+    next: ContextItem[];
+}
+
 export interface HaystackDocumentSearchResult {
     id: string;
     content: string;
@@ -80,4 +108,14 @@ export interface FacetGroup {
     title: string;
     field: string;
     options: Facet[];
+}
+
+export interface SelectedFilters {
+    [key: string]: string[];
+}
+export interface HaystackSearchResponse extends SearchResult {
+    total?: number;
+    query?: string;
+    page?: number;
+    size?: number;
 }

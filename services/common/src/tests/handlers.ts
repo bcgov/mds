@@ -15,6 +15,7 @@ import {
 } from "@mds/common/tests/mocks/dataMocks";
 import queryString from "query-string";
 import { SystemFlagEnum } from "../constants/enums";
+import { SearchEventType } from "../redux/slices/permitSearchSlice";
 
 const mineHandlers = [
   http.get("/%3CAPI_URL%3E/mines/:mineGuid", async ({ params }) => {
@@ -91,19 +92,65 @@ const permitHandlers = [
 
 const permitSearchHandlers = [
   http.post(
-    `/%3CAPI_URL%3E/search/permit-conditions`,
-    async ({ request, params }) => {
+    "/%3CAPI_URL%3E/search/permit-conditions",
+    async ({ request }) => {
       const requestBody = await request.json() as { query: string };
+      let responseData;
 
       // Mock different responses based on search query
       if (requestBody?.query?.includes('water')) {
-        return HttpResponse.json(SEARCH_PERMIT_CONDITIONS_RESPONSE);
+        responseData = SEARCH_PERMIT_CONDITIONS_RESPONSE;
+      } else {
+        responseData = { documents: [], prompt: { answers: [] }, facets: {} };
       }
 
-      return HttpResponse.json({ documents: [], prompt: { answers: [] }, facets: {} });
+      const encoder = new TextEncoder();
+
+      // Pass along the response data as an event stream
+      const stream = new ReadableStream({
+        start(controller) {
+          const documentsAndFacets = {
+            documents: responseData.documents || [],
+            facets: responseData.facets || {}
+          };
+          controller.enqueue(
+            encoder.encode(`event: ${SearchEventType.DOCUMENTS}\ndata: ${JSON.stringify(documentsAndFacets)}\n\n`)
+          );
+
+          controller.enqueue(
+            encoder.encode(`event: ${SearchEventType.AI_START}\ndata: {}\n\n`)
+          );
+
+          const promptText = responseData.prompt?.answers?.[0] || '';
+          if (promptText) {
+            controller.enqueue(
+              encoder.encode(`event: ${SearchEventType.PROMPT}\ndata: ${JSON.stringify({ answers: [promptText] })}\n\n`)
+            );
+          }
+
+          controller.enqueue(
+            encoder.encode(`event: ${SearchEventType.AI_COMPLETE}\ndata: {}\n\n`)
+          );
+
+          controller.enqueue(
+            encoder.encode(`event: ${SearchEventType.COMPLETE}\ndata: {}\n\n`)
+          );
+
+          controller.close();
+        }
+      });
+
+      return new HttpResponse(stream, {
+        headers: {
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache',
+          'Connection': 'keep-alive',
+        }
+      });
     }
   )
 ];
+
 
 const helpHandler = http.get("/%3CAPI_URL%3E/help/:helpKey", async ({ request, params }) => {
   const { helpKey } = params;

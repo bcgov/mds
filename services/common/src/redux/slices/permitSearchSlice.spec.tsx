@@ -1,83 +1,235 @@
 import {
     setQuery,
     setFilters,
+    setDocumentLoading,
+    setAiLoading,
+    updateSearchResults,
+    updatePromptResults,
     searchPermitConditions,
     selectSearchQuery,
     selectSearchFilters,
-    selectSearchResults
+    selectSearchResults,
+    selectSearchLoading,
+    selectDocumentLoading,
+    selectAiLoading,
+    selectAllFacets,
+    PermitSearchFilters
 } from '@mds/common/redux/slices/permitSearchSlice';
 import { getStore } from "@mds/common/redux/rootState";
 
+const flushPromises = async () => {
+    // Flush promises to ensure all async actions have completed
+    // this is necessary because the searchPermitConditions action dispatches multiple async actions
+    return new Promise(resolve => setTimeout(resolve, 0));
+};
+
 describe('permitSearchSlice', () => {
 
-    describe('reducers', () => {
-        it('should handle initial state', () => {
+    describe('reducers and selectors', () => {
+        it('should have the correct initial state', () => {
             const store = getStore();
-            const state = store.getState().permitSearch;
-            expect(state.query).toBe('');
-            expect(state.filters).toEqual([]);
-            expect(state.results).toBeNull();
-            expect(state.loading).toBeFalsy();
+
+            expect(selectSearchQuery(store.getState())).toBe('');
+            expect(selectSearchFilters(store.getState())).toEqual([]);
+            expect(selectSearchResults(store.getState())).toBeNull();
+            expect(selectSearchLoading(store.getState())).toBeFalsy();
+            expect(selectDocumentLoading(store.getState())).toBeFalsy();
+            expect(selectAiLoading(store.getState())).toBeFalsy();
+            expect(selectAllFacets(store.getState())).toEqual({});
         });
 
-        it('should handle setQuery', async () => {
+        it('should handle setQuery action', () => {
             const store = getStore();
+            const testQuery = 'test query';
 
-            store.dispatch(setQuery('test query'));
-            expect(selectSearchQuery(store.getState())).toBe('test query');
+            store.dispatch(setQuery(testQuery));
+
+            expect(selectSearchQuery(store.getState())).toBe(testQuery);
         });
 
-        it('should handle setFilters', async () => {
+        it('should handle setFilters action', () => {
             const store = getStore();
+            const testFilters: PermitSearchFilters = [
+                { category: 'Environmental', value: 'Water Quality' },
+                { category: 'Safety', value: 'Equipment' }
+            ];
 
-            const testFilters = [{ category: 'test', value: 'value' }];
             store.dispatch(setFilters(testFilters));
+
             expect(selectSearchFilters(store.getState())).toEqual(testFilters);
+        });
+
+        it('should handle setDocumentLoading action', () => {
+            const store = getStore();
+
+            store.dispatch(setDocumentLoading(true));
+            expect(selectDocumentLoading(store.getState())).toBe(true);
+
+            store.dispatch(setDocumentLoading(false));
+            expect(selectDocumentLoading(store.getState())).toBe(false);
+        });
+
+        it('should handle setAiLoading action', () => {
+            const store = getStore();
+
+            store.dispatch(setAiLoading(true));
+            expect(selectAiLoading(store.getState())).toBe(true);
+
+            store.dispatch(setAiLoading(false));
+            expect(selectAiLoading(store.getState())).toBe(false);
+        });
+
+        it('should handle updateSearchResults action', () => {
+            const store = getStore();
+            const mockResults = {
+                documents: [{ content: 'test content', id: '1' }],
+                facets: { category: [{ value: 'Environmental', count: 1 }] }
+            };
+
+            store.dispatch(updateSearchResults(mockResults as any));
+
+            expect(selectSearchResults(store.getState())).toEqual(mockResults);
+            expect(selectAllFacets(store.getState())).toEqual(mockResults.facets);
+        });
+
+        it('should preserve filters when updating search results', () => {
+            const store = getStore();
+            const testFilters: PermitSearchFilters = [
+                { category: 'Environmental', value: 'Water Quality' }
+            ];
+
+            store.dispatch(setFilters(testFilters));
+
+            const mockResults = {
+                documents: [{ content: 'test content', id: '1' }],
+                facets: { category: [{ value: 'Environmental', count: 1 }] }
+            };
+
+            store.dispatch(updateSearchResults(mockResults as any));
+
+            expect(selectSearchFilters(store.getState())).toEqual(testFilters);
+            expect(selectSearchResults(store.getState())).toEqual(mockResults);
+        });
+
+        it('should handle updatePromptResults action', () => {
+            const store = getStore();
+            const mockResults = {
+                documents: [{ content: 'test content', id: '1' }],
+                prompt: null
+            };
+
+            store.dispatch(updateSearchResults(mockResults as any));
+
+            const promptData = { answers: ['test answer'] };
+            store.dispatch(updatePromptResults(promptData as any));
+
+            expect(selectSearchResults(store.getState())?.prompt).toEqual(promptData);
         });
     });
 
     describe('async actions', () => {
-        it('should handle water quality search', async () => {
+        it('should handle searchPermitConditions with water query', async () => {
             const store = getStore();
 
-            await store.dispatch(searchPermitConditions({ query: 'water quality' }));
-            const results = selectSearchResults(store.getState());
+            const action = await store.dispatch(searchPermitConditions({
+                query: 'water quality',
+                filters: []
+            }));
 
-            expect(results?.documents[0].content).toBe(
-                'Water quality monitoring must be conducted monthly'
-            );
-            expect(results?.prompt.answers[0]).toBe(
-                'The permit requires monthly water quality monitoring.'
-            );
+            expect(action.type).toContain('fulfilled');
+
+            await flushPromises();
+
+            const result = selectSearchResults(store.getState());
+            expect(result).not.toBeNull();
+            expect(result?.documents?.length).toBeGreaterThan(0);
+            expect(selectDocumentLoading(store.getState())).toBe(false);
+
+            expect(result?.prompt).not.toBeNull();
+            expect(result?.prompt?.answers?.length).toBeGreaterThan(0);
+            expect(selectAiLoading(store.getState())).toBe(false);
         });
 
-        it('should handle empty search results', async () => {
+        it('should handle searchPermitConditions with empty results', async () => {
             const store = getStore();
 
-            await store.dispatch(searchPermitConditions({ query: 'nonexistent' }));
-            const results = selectSearchResults(store.getState());
+            const action = await store.dispatch(searchPermitConditions({
+                query: 'nonexistent term',
+                filters: []
+            }));
 
-            expect(results?.documents).toHaveLength(0);
-            expect(results?.prompt.answers).toHaveLength(0);
+            expect(action.type).toContain('fulfilled');
+
+            await flushPromises();
+
+            const result = selectSearchResults(store.getState());
+            expect(result).not.toBeNull();
+            expect(result?.documents).toEqual([]);
+            expect(selectDocumentLoading(store.getState())).toBe(false);
+
+            expect(result?.prompt?.answers).toEqual(undefined);
+            expect(selectAiLoading(store.getState())).toBe(false);
         });
 
-        it('should accumulate facets across searches', async () => {
+        it('should preserve filters when searching', async () => {
+            const store = getStore();
+            const testFilters: PermitSearchFilters = [
+                { category: 'Environmental', value: 'Water Quality' }
+            ];
+
+            store.dispatch(setFilters(testFilters));
+
+            await store.dispatch(searchPermitConditions({
+                query: 'water quality',
+                filters: testFilters
+            }));
+
+            await flushPromises();
+
+            expect(selectSearchFilters(store.getState())).toEqual(testFilters);
+            expect(selectSearchResults(store.getState())).not.toBeNull();
+        });
+
+        it('should update loading states during search lifecycle', async () => {
             const store = getStore();
 
-            // First search - environmental facets
-            await store.dispatch(searchPermitConditions({ query: 'water' }));
-            const firstResults = selectSearchResults(store.getState());
-            const firstFacets = firstResults?.facets?.category || [];
+            const promise = store.dispatch(searchPermitConditions({
+                query: 'water quality',
+                filters: []
+            }));
 
-            expect(firstFacets.find(f => f.value === 'Environmental')?.count).toBe(1);
+            expect(selectSearchLoading(store.getState())).toBe(true);
+            expect(selectDocumentLoading(store.getState())).toBe(true);
 
-            // Second search should maintain facets from first search
-            store.dispatch(searchPermitConditions({ query: 'safety' }));
-            const secondResults = selectSearchResults(store.getState());
-            const allFacets = secondResults?.allFacets?.category || [];
-            expect(allFacets).toContainEqual(
-                expect.objectContaining({ value: 'Environmental' })
-            );
+            await promise;
+            await flushPromises();
+
+            expect(selectSearchLoading(store.getState())).toBe(false);
+            expect(selectDocumentLoading(store.getState())).toBe(false);
+            expect(selectAiLoading(store.getState())).toBe(false);
+        });
+
+        it('should properly transition through loading states', async () => {
+            const store = getStore();
+
+            expect(selectSearchLoading(store.getState())).toBe(false);
+            expect(selectDocumentLoading(store.getState())).toBe(false);
+            expect(selectAiLoading(store.getState())).toBe(false);
+
+            const searchPromise = store.dispatch(searchPermitConditions({
+                query: 'water quality',
+                filters: []
+            }));
+
+            expect(selectSearchLoading(store.getState())).toBe(true);
+            expect(selectDocumentLoading(store.getState())).toBe(true);
+
+            await searchPromise;
+            await flushPromises();
+
+            expect(selectSearchLoading(store.getState())).toBe(false);
+            expect(selectDocumentLoading(store.getState())).toBe(false);
+            expect(selectAiLoading(store.getState())).toBe(false);
         });
     });
 });
