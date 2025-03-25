@@ -380,6 +380,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
+    key="/mine-dashboard/:mineGuid/permits-and-approvals/tailings/new/:tab"
+    path="/mine-dashboard/:mineGuid/permits-and-approvals/tailings/new/:tab"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
     key="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction"
     path="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction"
   />
