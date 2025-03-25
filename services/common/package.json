@@ -46,6 +46,13 @@
     "react-router-dom": "5.3.3"
   },
   "devDependencies": {
+    "@rsbuild/core": "^1.2.19",
+    "@rsbuild/plugin-less": "^1.1.1",
+    "@rsbuild/plugin-react": "^1.1.1",
+    "@rsbuild/plugin-sass": "^1.2.2",
+    "@rsbuild/plugin-type-check": "^1.2.1",
+    "@rspack/core": "^1.2.8",
+    "@svgr/webpack": "^8.1.0",
     "@testing-library/jest-dom": "6.4.8",
     "clean-webpack-plugin": "4.0.0",
     "copy-webpack-plugin": "12.0.2",
@@ -60,6 +67,7 @@
     "postcss-loader": "8.1.1",
     "prettier": "3.3.3",
     "react-hot-loader": "4.12.21",
+    "sass-embedded": "^1.86.0",
     "sharp": "^0.33.3",
     "style-loader": "4.0.0",
     "ts-jest": "29.2.5",
