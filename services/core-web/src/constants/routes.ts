@@ -316,6 +316,14 @@ export const MINE_TAILINGS_DETAILS = {
   helpKey: "Mine-Tailings-Details",
 };
 
+export const ADD_TAILINGS_STORAGE_FACILITY = {
+  route: "/mine-dashboard/:mineGuid/permits-and-approvals/tailings/new/:tab",
+  dynamicRoute: (mineGuid, tab = "basic-information") =>
+    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/new/${tab}`,
+  component: MineTailingsDetailsPage,
+  helpKey: "Add-Tailings-Storage-Facility",
+};
+
 export const EDIT_TAILINGS_STORAGE_FACILITY = {
   route:
     "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
