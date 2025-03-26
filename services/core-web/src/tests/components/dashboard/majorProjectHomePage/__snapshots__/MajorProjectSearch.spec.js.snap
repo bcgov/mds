@@ -42,6 +42,7 @@ exports[`Major Project Search Component renders properly 1`] = `
                           <input
                             aria-label="search"
                             class="ant-input"
+                            data-testid="search"
                             id="search"
                             name="search"
                             placeholder="Search by mine name or number"

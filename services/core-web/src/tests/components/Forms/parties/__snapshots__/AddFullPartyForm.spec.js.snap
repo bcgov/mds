@@ -116,6 +116,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                         <input
                           aria-label="party_name"
                           class="ant-input"
+                          data-testid="party_name"
                           id="party_name"
                           name="party_name"
                           type="text"
@@ -186,6 +187,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                         <input
                           aria-label="email"
                           class="ant-input"
+                          data-testid="email"
                           id="email"
                           name="email"
                           type="text"
@@ -256,6 +258,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                         <input
                           aria-label="email_sec"
                           class="ant-input"
+                          data-testid="email_sec"
                           id="email_sec"
                           name="email_sec"
                           type="text"
@@ -322,6 +325,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                         <input
                           aria-label="phone_no"
                           class="ant-input"
+                          data-testid="phone_no"
                           id="phone_no"
                           name="phone_no"
                           placeholder="e.g. xxx-xxx-xxxx"
@@ -388,6 +392,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                         <input
                           aria-label="phone_ext"
                           class="ant-input"
+                          data-testid="phone_ext"
                           id="phone_ext"
                           name="phone_ext"
                           type="text"
@@ -458,6 +463,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                         <input
                           aria-label="phone_no_sec"
                           class="ant-input"
+                          data-testid="phone_no_sec"
                           id="phone_no_sec"
                           name="phone_no_sec"
                           placeholder="e.g. xxx-xxx-xxxx"
@@ -524,6 +530,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                         <input
                           aria-label="phone_sec_ext"
                           class="ant-input"
+                          data-testid="phone_sec_ext"
                           id="phone_sec_ext"
                           name="phone_sec_ext"
                           type="text"
@@ -594,6 +601,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                         <input
                           aria-label="phone_no_ter"
                           class="ant-input"
+                          data-testid="phone_no_ter"
                           id="phone_no_ter"
                           name="phone_no_ter"
                           placeholder="e.g. xxx-xxx-xxxx"
@@ -660,6 +668,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                         <input
                           aria-label="phone_ter_ext"
                           class="ant-input"
+                          data-testid="phone_ter_ext"
                           id="phone_ter_ext"
                           name="phone_ter_ext"
                           type="text"
@@ -748,6 +757,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                         <input
                           aria-label="suite_no"
                           class="ant-input"
+                          data-testid="suite_no"
                           id="suite_no"
                           name="suite_no"
                           type="text"
@@ -813,6 +823,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                         <input
                           aria-label="address_line_1"
                           class="ant-input"
+                          data-testid="address_line_1"
                           id="address_line_1"
                           name="address_line_1"
                           type="text"
@@ -883,6 +894,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                         <input
                           aria-label="address_line_2"
                           class="ant-input"
+                          data-testid="address_line_2"
                           id="address_line_2"
                           name="address_line_2"
                           type="text"
@@ -1067,6 +1079,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                         <input
                           aria-label="city"
                           class="ant-input"
+                          data-testid="city"
                           id="city"
                           name="city"
                           type="text"
@@ -1132,6 +1145,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                         <input
                           aria-label="post_code"
                           class="ant-input"
+                          data-testid="post_code"
                           id="post_code"
                           name="post_code"
                           placeholder="e.g xxxxxx"

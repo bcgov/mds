@@ -47,6 +47,7 @@ exports[`BondForm renders properly 1`] = `
                   <input
                     aria-label="amount"
                     class="ant-input"
+                    data-testid="amount"
                     id="amount"
                     name="amount"
                     type="text"
@@ -431,6 +432,7 @@ exports[`BondForm renders properly 1`] = `
                   <input
                     aria-label="reference_number"
                     class="ant-input"
+                    data-testid="reference_number"
                     id="reference_number"
                     name="reference_number"
                     type="text"
@@ -496,6 +498,7 @@ exports[`BondForm renders properly 1`] = `
                   <input
                     aria-label="project_id"
                     class="ant-input"
+                    data-testid="project_id"
                     id="project_id"
                     name="project_id"
                     type="text"
@@ -645,6 +648,7 @@ exports[`BondForm renders properly 1`] = `
                   <input
                     aria-label="institution_name"
                     class="ant-input"
+                    data-testid="institution_name"
                     id="institution_name"
                     name="institution_name"
                     type="text"
@@ -715,6 +719,7 @@ exports[`BondForm renders properly 1`] = `
                   <input
                     aria-label="institution_street"
                     class="ant-input"
+                    data-testid="institution_street"
                     id="institution_street"
                     name="institution_street"
                     type="text"
@@ -780,6 +785,7 @@ exports[`BondForm renders properly 1`] = `
                   <input
                     aria-label="institution_city"
                     class="ant-input"
+                    data-testid="institution_city"
                     id="institution_city"
                     name="institution_city"
                     type="text"
@@ -964,6 +970,7 @@ exports[`BondForm renders properly 1`] = `
                   <input
                     aria-label="institution_postal_code"
                     class="ant-input"
+                    data-testid="institution_postal_code"
                     id="institution_postal_code"
                     name="institution_postal_code"
                     placeholder="e.g xxxxxx"

@@ -99,6 +99,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
                         <input
                           aria-label="party_name"
                           class="ant-input"
+                          data-testid="party_name"
                           id="party_name"
                           name="party_name"
                           type="text"
@@ -165,6 +166,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
                         <input
                           aria-label="email"
                           class="ant-input"
+                          data-testid="email"
                           id="email"
                           name="email"
                           type="text"
@@ -231,6 +233,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
                         <input
                           aria-label="phone_no"
                           class="ant-input"
+                          data-testid="phone_no"
                           id="phone_no"
                           name="phone_no"
                           placeholder="e.g. xxx-xxx-xxxx"
@@ -297,6 +300,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
                         <input
                           aria-label="phone_ext"
                           class="ant-input"
+                          data-testid="phone_ext"
                           id="phone_ext"
                           name="phone_ext"
                           type="text"
@@ -367,6 +371,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
                         <input
                           aria-label="address.suite_no"
                           class="ant-input"
+                          data-testid="address.suite_no"
                           id="suite_no"
                           name="address.suite_no"
                           type="text"
@@ -432,6 +437,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
                         <input
                           aria-label="address.address_line_1"
                           class="ant-input"
+                          data-testid="address.address_line_1"
                           id="address_line_1"
                           name="address.address_line_1"
                           type="text"
@@ -502,6 +508,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
                         <input
                           aria-label="address.address_line_2"
                           class="ant-input"
+                          data-testid="address.address_line_2"
                           id="address_line_2"
                           name="address.address_line_2"
                           type="text"
@@ -686,6 +693,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
                         <input
                           aria-label="address.city"
                           class="ant-input"
+                          data-testid="address.city"
                           id="city"
                           name="address.city"
                           type="text"
@@ -751,6 +759,7 @@ exports[`MergePartyConfirmationForm renders properly 1`] = `
                         <input
                           aria-label="address.post_code"
                           class="ant-input"
+                          data-testid="address.post_code"
                           id="post_code"
                           name="address.post_code"
                           placeholder="e.g xxxxxx"

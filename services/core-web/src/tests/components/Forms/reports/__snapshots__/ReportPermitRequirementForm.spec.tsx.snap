@@ -49,6 +49,7 @@ exports[`RequestReportForm renders form properly 1`] = `
                   <input
                     aria-label="stepPath"
                     class="ant-input ant-input-disabled"
+                    data-testid="stepPath"
                     disabled=""
                     name="stepPath"
                     type="text"
@@ -114,6 +115,7 @@ exports[`RequestReportForm renders form properly 1`] = `
                   <input
                     aria-label="report_name"
                     class="ant-input"
+                    data-testid="report_name"
                     name="report_name"
                     type="text"
                     value=""
