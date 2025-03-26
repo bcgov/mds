@@ -1,8 +1,8 @@
 import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
-import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { EditPermitConditionCategoryInline } from "@mds/common/components/permits/PermitConditionCategory";
 import { PermitConditionsProvider } from "@mds/common/components/permits/PermitConditionsContext";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const mockCategory = {
   condition_category_code: "TEST-CAT",

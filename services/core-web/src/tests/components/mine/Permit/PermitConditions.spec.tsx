@@ -3,11 +3,12 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { MINES, STATIC_CONTENT, PERMITS, AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import ViewPermit from "../../components/permits/ViewPermit";
+import ViewPermit from "@mds/common/components/permits/ViewPermit";
 import { BrowserRouter } from "react-router-dom";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { userReducerType } from "@mds/common/redux/slices/userSlice";
 import { searchConditionCategoriesType } from "@mds/common/redux/slices/permitConditionCategorySlice";
+import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
 
 const initialState = {
   [MINES]: MOCK.MINES,
@@ -227,68 +228,68 @@ describe("PermitConditions", () => {
     );
   });
 
-  // it("enables adding a condition category in a modal", async () => {
-  //   const { container } = render(
-  //     <ReduxWrapper initialState={initialState} >
-  //       <BrowserRouter>
-  //         <ModalWrapper />
-  //         <ViewPermit />
-  //       </BrowserRouter>
-  //     </ReduxWrapper>
-  //   );
-  //
-  //   const banner = container.querySelector(".permit-status-banner");
-  //   expect(banner).toBeInTheDocument();
-  //   const bannerText = screen.getByText("Conditions and their report requirements have been extracted using AI and require review and verification.");
-  //   expect(banner).toContainElement(bannerText);
-  //
-  //   const addConditionLink = screen.getByText("+ Add Condition Category");
-  //   expect(addConditionLink).toBeInTheDocument();
-  //   addConditionLink.click();
-  //
-  //   let descriptionInput;
-  //   await waitFor(() => {
-  //     descriptionInput = screen.getByRole("combobox", { "name": "description" });
-  //     expect(descriptionInput).toBeInTheDocument();
-  //   })
-  //
-  //
-  //   const stepInput = screen.getByRole("textbox", { "name": "step" });
-  //   expect(stepInput).toBeInTheDocument();
-  //
-  //   const AddCategoryButton = screen.getByText("Add Category");
-  //   expect(AddCategoryButton).toBeInTheDocument();
-  //
-  //   AddCategoryButton.click();
-  //
-  //   await waitFor(() => { expect(screen.getAllByText("This is a required field")).toHaveLength(2); })
-  //
-  //   fireEvent.mouseDown(descriptionInput);
-  //
-  //   fireEvent.change(descriptionInput, { target: { value: "New Condition Description" } });
-  //
-  //   screen.getAllByText('New Condition Description')[1].click();
-  //   expect(descriptionInput).toHaveValue("New Condition Description");
-  //
-  //   fireEvent.change(stepInput, { target: { value: "1" } });
-  //
-  //   AddCategoryButton.click();
-  //
-  //   await waitFor(() => {
-  //     expect(screen.queryByText("Add Category")).not.toBeInTheDocument();
-  //   });
-  //
-  //   // allows editing of a condition
-  //   const editCondition = screen.queryByTitle("Edit Condition");
-  //   editCondition.click();
-  //   await waitFor(() => {
-  //     const addReport = screen.queryByText("Add Report Requirement");
-  //     expect(addReport).toBeInTheDocument();
-  //     const addListItem = screen.queryByText("List Item");
-  //     expect(addListItem).toBeInTheDocument();
-  //     const conditionInput = container.querySelector('[name="condition"]');
-  //     expect(conditionInput).toBeInTheDocument();
-  //   });
-  //
-  // });
+  it("enables adding a condition category in a modal", async () => {
+    const { container } = render(
+      <ReduxWrapper initialState={initialState} >
+        <BrowserRouter>
+          <ModalWrapper />
+          <ViewPermit />
+        </BrowserRouter>
+      </ReduxWrapper>
+    );
+
+    const banner = container.querySelector(".permit-status-banner");
+    expect(banner).toBeInTheDocument();
+    const bannerText = screen.getByText("Conditions and their report requirements have been extracted using AI and require review and verification.");
+    expect(banner).toContainElement(bannerText);
+
+    const addConditionLink = screen.getByText("+ Add Condition Category");
+    expect(addConditionLink).toBeInTheDocument();
+    addConditionLink.click();
+
+    let descriptionInput;
+    await waitFor(() => {
+      descriptionInput = screen.getByRole("combobox", { "name": "description" });
+      expect(descriptionInput).toBeInTheDocument();
+    })
+
+
+    const stepInput = screen.getByRole("textbox", { "name": "step" });
+    expect(stepInput).toBeInTheDocument();
+
+    const AddCategoryButton = screen.getByText("Add Category");
+    expect(AddCategoryButton).toBeInTheDocument();
+
+    AddCategoryButton.click();
+
+    await waitFor(() => { expect(screen.getAllByText("This is a required field")).toHaveLength(2); })
+
+    fireEvent.mouseDown(descriptionInput);
+
+    fireEvent.change(descriptionInput, { target: { value: "New Condition Description" } });
+
+    screen.getAllByText('New Condition Description')[1].click();
+    expect(descriptionInput).toHaveValue("New Condition Description");
+
+    fireEvent.change(stepInput, { target: { value: "1" } });
+
+    AddCategoryButton.click();
+
+    await waitFor(() => {
+      expect(screen.queryByText("Add Category")).not.toBeInTheDocument();
+    });
+
+    // allows editing of a condition
+    const editCondition = screen.queryByTitle("Edit Condition");
+    editCondition.click();
+    await waitFor(() => {
+      const addReport = screen.queryByText("Add Report Requirement");
+      expect(addReport).toBeInTheDocument();
+      const addListItem = screen.queryByText("List Item");
+      expect(addListItem).toBeInTheDocument();
+      const conditionInput = container.querySelector('[name="condition"]');
+      expect(conditionInput).toBeInTheDocument();
+    });
+
+  });
 });
