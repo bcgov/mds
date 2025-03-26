@@ -3,8 +3,8 @@ import { Collapse, Typography } from "antd";
 import {
     IPermitCondition,
 } from "@mds/common/interfaces/permits";
-import ReportPermitRequirementForm from "@/components/Forms/reports/ReportPermitRequirementForm";
-import { usePermitConditions } from "./PermitConditionsContext";
+import ReportPermitRequirementForm from "@mds/common/components/permits/ReportPermitRequirementForm";
+import { usePermitConditions } from "@mds/common/components/permits/PermitConditionsContext";
 
 interface PermitConditionReportRequirementsProps {
     conditionsWithRequirements: IPermitCondition[];

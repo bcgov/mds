@@ -1,18 +1,18 @@
 import React, { FC, useEffect, useMemo, useState } from "react";
 import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
-import PermitConditionForm from "./PermitConditionForm";
-import SubConditionForm from "./SubConditionForm";
+import SubConditionForm from "@mds/common/components/permits/SubConditionForm";
 import { IGroupedDropdownList } from "@mds/common/interfaces/common/option.interface";
-import { PermitConditionStatus } from "./PermitConditionStatus";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
 import { Typography } from "antd";
 import { getConditionsWithRequirements } from "@mds/common/utils/helpers";
+import { IPermitAmendment } from "@mds/common/interfaces";
+import { usePermitConditions } from "@mds/common/components/permits/PermitConditionsContext";
+import PermitConditionForm from "@mds/common/components/permits/PermitConditionForm";
+import PermitConditionReportRequirements from "@mds/common/components/permits/PermitConditionReportRequirements";
+import { PermitConditionStatus } from "./PermitConditionStatus";
 
 const { Title } = Typography;
-import { IPermitAmendment } from "@mds/common/interfaces";
-import PermitConditionReportRequirements from "./PermitConditionReportRequirements";
-import { usePermitConditions } from "./PermitConditionsContext";
 
 interface PermitConditionLayerProps {
   isExtracted: boolean;

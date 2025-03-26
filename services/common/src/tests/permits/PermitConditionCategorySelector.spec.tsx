@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { searchConditionCategories } from "@mds/common/redux/slices/permitConditionCategorySlice";
-import PermitConditionCategorySelector from "./PermitConditionCategorySelector";
+import PermitConditionCategorySelector from "../../components/permits/PermitConditionCategorySelector";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 jest.mock("@mds/common/redux/slices/permitConditionCategorySlice", () => ({

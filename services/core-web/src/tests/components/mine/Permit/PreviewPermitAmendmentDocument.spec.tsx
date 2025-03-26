@@ -2,7 +2,7 @@ import React from "react";
 import { render, waitFor } from "@testing-library/react";
 import { getDocument } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
-import { PreviewPermitAmendmentDocument } from "@/components/mine/Permit/PreviewPermitAmendmentDocument";
+import { PreviewPermitAmendmentDocument } from "@mds/common/components/permits/PreviewPermitAmendmentDocument";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { IPermitCondition } from "@mds/common/interfaces";
 

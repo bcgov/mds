@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import DiffText from '@/components/mine/Permit/DiffText';
+import DiffText from '@mds/common/components/permits/DiffText';
 
 describe('DiffText', () => {
     it('renders text with no differences', () => {

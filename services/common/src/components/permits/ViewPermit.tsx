@@ -6,13 +6,12 @@ import {
   getPermitByGuid,
 } from "@mds/common/redux/selectors/permitSelectors";
 import { IMine, IPermit, IPermitAmendment, IPermitAmendmentDocument } from "@mds/common/interfaces";
-import ViewPermitOverview from "@/components/mine/Permit/ViewPermitOverview";
-import PermitConditions from "@/components/mine/Permit/PermitConditions";
+import ViewPermitOverview from "@mds/common/components/permits/ViewPermitOverview";
+import PermitConditions from "@mds/common/components/permits/PermitConditions";
 
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import CorePageHeader from "@mds/common/components/common/CorePageHeader";
-import * as routes from "@/constants/routes";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
@@ -32,21 +31,30 @@ import { USER_ROLES } from "@mds/common/constants/environment";
 import Loading from "@mds/common/components/common/Loading";
 import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
-import PermitConditionsSelectDocumentModal from "@/components/mine/Permit/PermitConditionsSelectDocumentModal";
+import PermitConditionsSelectDocumentModal from "@mds/common/components/permits/PermitConditionsSelectDocumentModal";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 
 const tabs = ["overview", "conditions"];
 
 const ViewPermit: FC = () => {
   const dispatch = useAppDispatch();
-  const { id, permitGuid, tab, permitAmendmentGuid } = useParams<{ id: string; permitGuid: string; permitAmendmentGuid: string; tab: string }>();
+  const { id, permitGuid, tab, permitAmendmentGuid } = useParams<{
+    id: string;
+    permitGuid: string;
+    permitAmendmentGuid: string;
+    tab: string;
+  }>();
   const permit: IPermit = useAppSelector(getPermitByGuid(permitGuid));
 
   // The current amendment you're viewing. This always matches the URL amendment guid.
-  const currentAmendment: IPermitAmendment = useAppSelector(getAmendment(permitGuid, permitAmendmentGuid));
+  const currentAmendment: IPermitAmendment = useAppSelector(
+    getAmendment(permitGuid, permitAmendmentGuid)
+  );
 
   // The latest amendment for the permit. This may differ from currentAmendment if you're viewing an older amendment.
-  const latestAmendment: IPermitAmendment = useAppSelector(getLatestAmendmentByPermitGuid(permitGuid));
+  const latestAmendment: IPermitAmendment = useAppSelector(
+    getLatestAmendmentByPermitGuid(permitGuid)
+  );
 
   const amendments = permit?.permit_amendments;
 
@@ -59,8 +67,12 @@ const ViewPermit: FC = () => {
 
   const { is_generated_in_core } = latestAmendment ?? {};
   const isExtracted = !is_generated_in_core;
-  const previousAmendmentIndex = permit?.permit_amendments?.findIndex(a => a.permit_amendment_id === latestAmendment?.permit_amendment_id) + 1 || -1;
-  const previousAmendment = previousAmendmentIndex > 0 ? permit.permit_amendments[previousAmendmentIndex] : null;
+  const previousAmendmentIndex =
+    permit?.permit_amendments?.findIndex(
+      (a) => a.permit_amendment_id === latestAmendment?.permit_amendment_id
+    ) + 1 || -1;
+  const previousAmendment =
+    previousAmendmentIndex > 0 ? permit.permit_amendments[previousAmendmentIndex] : null;
   const userCanEditConditions = useAppSelector(
     userHasRole(USER_ROLES.role_edit_template_conditions)
   );
@@ -77,9 +89,11 @@ const ViewPermit: FC = () => {
 
   const canStartExtraction =
     ((documents.length > 0 && !permitExtraction?.task_status) ||
-      [PermitExtractionStatus.error, PermitExtractionStatus.not_started, PermitExtractionStatus.deleted].includes(
-        permitExtraction?.task_status
-      )) &&
+      [
+        PermitExtractionStatus.error,
+        PermitExtractionStatus.not_started,
+        PermitExtractionStatus.deleted,
+      ].includes(permitExtraction?.task_status)) &&
     !hasConditions;
 
   useEffect(() => {
@@ -155,12 +169,18 @@ const ViewPermit: FC = () => {
     {
       key: tabs[0],
       label: "Permit Overview",
-      children: !latestAmendment ? <Loading /> : <ViewPermitOverview latestAmendment={latestAmendment} />,
+      children: !latestAmendment ? (
+        <Loading />
+      ) : (
+        <ViewPermitOverview latestAmendment={latestAmendment} />
+      ),
     },
     enablePermitConditionsTab && {
       key: tabs[1],
       label: <>{getConditionBadge()} Permit Conditions</>,
-      children: !currentAmendment ? <Loading /> : (
+      children: !currentAmendment ? (
+        <Loading />
+      ) : (
         <PermitConditions
           isReviewComplete={isReviewComplete}
           isExtracted={isExtracted}
@@ -180,16 +200,30 @@ const ViewPermit: FC = () => {
     // If navigating to the conditions tab, and the latest amendment is not reviewed, show the conditions from the last reviewed amendment.
     // fall back to the current amendment if no reviewed amendments exist.
     let amendmentToViewConditions = currentAmendment;
-    if (latestAmendment && !latestAmendment?.conditions_review_completed && currentAmendment?.permit_amendment_guid) {
-      const latestCompletedAmendment = amendments?.find(a => a.conditions_review_completed);
+    if (
+      latestAmendment &&
+      !latestAmendment?.conditions_review_completed &&
+      currentAmendment?.permit_amendment_guid
+    ) {
+      const latestCompletedAmendment = amendments?.find((a) => a.conditions_review_completed);
       if (latestCompletedAmendment) {
         amendmentToViewConditions = latestCompletedAmendment;
       }
     }
 
-    const amendmentGuid = newActiveTab === tabs[1] ? amendmentToViewConditions?.permit_amendment_guid : latestAmendment?.permit_amendment_guid;
+    const amendmentGuid =
+      newActiveTab === tabs[1]
+        ? amendmentToViewConditions?.permit_amendment_guid
+        : latestAmendment?.permit_amendment_guid;
 
-    return history.push(routes.VIEW_MINE_PERMIT_AMENDMENT.dynamicRoute(id, permitGuid, amendmentGuid, newActiveTab));
+    return history.push(
+      GLOBAL_ROUTES.VIEW_MINE_PERMIT_AMENDMENT.dynamicRoute(
+        id,
+        permitGuid,
+        amendmentGuid,
+        newActiveTab
+      )
+    );
   };
 
   const onConditionsTab = tab === tabs[1];
@@ -232,29 +266,33 @@ const ViewPermit: FC = () => {
   };
 
   const handleDeleteConditions = async () => {
-    deleteConfirmWrapper("permit conditions", async () => {
-      await dispatch(
-        deletePermitConditions({ permit_amendment_id: latestAmendment?.permit_amendment_id })
-      );
-      dispatch(fetchPermits(id));
-    }, true);
+    deleteConfirmWrapper(
+      "permit conditions",
+      async () => {
+        await dispatch(
+          deletePermitConditions({ permit_amendment_id: latestAmendment?.permit_amendment_id })
+        );
+        dispatch(fetchPermits(id));
+      },
+      true
+    );
   };
 
   const headerActions = [
     onConditionsTab &&
-    userCanEditConditions && {
-      key: "extract",
-      label: "Extract Permit Conditions",
-      disabled: !canStartExtraction,
-      clickFunction: handleInitiateExtraction,
-    },
+      userCanEditConditions && {
+        key: "extract",
+        label: "Extract Permit Conditions",
+        disabled: !canStartExtraction,
+        clickFunction: handleInitiateExtraction,
+      },
     onConditionsTab &&
-    userCanEditConditions && {
-      key: "delete_conditions",
-      label: "Delete Permit Conditions",
-      disabled: !hasConditions,
-      clickFunction: handleDeleteConditions,
-    },
+      userCanEditConditions && {
+        key: "delete_conditions",
+        label: "Delete Permit Conditions",
+        disabled: !hasConditions,
+        clickFunction: handleDeleteConditions,
+      },
   ].filter(Boolean);
 
   const showHeaderActions =
@@ -271,7 +309,7 @@ const ViewPermit: FC = () => {
         entityType="Permit"
         mineGuid={id}
         current_permittee={permit?.current_permittee ?? ""}
-        breadCrumbs={[{ route: routes.MINE_PERMITS.dynamicRoute(id), text: "All Permits" }]}
+        breadCrumbs={[{ route: GLOBAL_ROUTES.MINE_PERMITS.dynamicRoute(id), text: "All Permits" }]}
         extraElement={headerActionComponent}
         tabProps={{
           items: tabItems,

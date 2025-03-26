@@ -122,6 +122,7 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
                     <input
                       aria-label="section"
                       class="ant-input"
+                      data-testid="section"
                       name="section"
                       type="text"
                       value=""
@@ -186,6 +187,7 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
                     <input
                       aria-label="sub_section"
                       class="ant-input"
+                      data-testid="sub_section"
                       name="sub_section"
                       type="text"
                       value=""
@@ -250,6 +252,7 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
                     <input
                       aria-label="paragraph"
                       class="ant-input"
+                      data-testid="paragraph"
                       name="paragraph"
                       type="text"
                       value=""
@@ -314,6 +317,7 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
                     <input
                       aria-label="sub_paragraph"
                       class="ant-input"
+                      data-testid="sub_paragraph"
                       name="sub_paragraph"
                       type="text"
                       value=""
@@ -383,6 +387,7 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
                     <input
                       aria-label="articleNumber"
                       class="ant-input ant-input-disabled"
+                      data-testid="articleNumber"
                       disabled=""
                       id="articleNumber"
                       name="articleNumber"
@@ -648,6 +653,7 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
                     <input
                       aria-label="description"
                       class="ant-input"
+                      data-testid="description"
                       name="description"
                       type="text"
                       value=""
@@ -931,6 +937,7 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
                     <input
                       aria-label="help_reference_link"
                       class="ant-input"
+                      data-testid="help_reference_link"
                       name="help_reference_link"
                       type="text"
                       value=""

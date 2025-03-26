@@ -27,7 +27,7 @@ import {
   updateMineReportPermitRequirement,
 } from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
 import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
-import { usePermitConditions } from "@/components/mine/Permit/PermitConditionsContext";
+import { usePermitConditions } from "@mds/common/components/permits/PermitConditionsContext";
 
 
 interface ReportPermitRequirementProps {

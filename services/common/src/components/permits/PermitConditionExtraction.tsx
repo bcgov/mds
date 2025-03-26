@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 import { Col, Row, Typography } from "antd";
-import { PERMIT } from "@/constants/assets";
 import LoadingOutlined from "@ant-design/icons/LoadingOutlined";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleX } from "@fortawesome/pro-light-svg-icons";
+import { PERMIT } from "@mds/common/constants/assets";
 
 const { Title } = Typography;
 

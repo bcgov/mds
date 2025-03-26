@@ -186,6 +186,7 @@ exports[`EditPermitForm renders properly 1`] = `
                   <input
                     aria-label="remaining_static_liability"
                     class="ant-input"
+                    data-testid="remaining_static_liability"
                     id="remaining_static_liability"
                     name="remaining_static_liability"
                     placeholder="$0.00"

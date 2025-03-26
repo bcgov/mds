@@ -19,7 +19,7 @@ exports[`PermitConditions renders properly 1`] = `
           >
             <a
               class="faded-text"
-              href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permits-and-approvals/permits"
+              href="/mock-route/18133c75-49ad-4101-85f3-a43e35ae989a"
             >
               All Permits
             </a>
@@ -85,7 +85,7 @@ exports[`PermitConditions renders properly 1`] = `
                     class="ant-typography margin-medium--left"
                   >
                     <a
-                      href="/test"
+                      href="/mock-route/18133c75-49ad-4101-85f3-a43e35ae989a"
                       style="text-decoration: none;"
                     >
                       mine3

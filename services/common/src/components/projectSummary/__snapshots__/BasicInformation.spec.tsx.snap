@@ -44,6 +44,7 @@ exports[`BasicInformation renders properly 1`] = `
               <input
                 aria-label="project_summary_title"
                 class="ant-input"
+                data-testid="project_summary_title"
                 id="project_summary_title"
                 name="project_summary_title"
                 type="text"
@@ -110,6 +111,7 @@ exports[`BasicInformation renders properly 1`] = `
               <input
                 aria-label="proponent_project_id"
                 class="ant-input"
+                data-testid="proponent_project_id"
                 id="proponent_project_id"
                 name="proponent_project_id"
                 type="text"

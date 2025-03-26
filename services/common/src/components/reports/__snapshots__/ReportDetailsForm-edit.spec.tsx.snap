@@ -738,6 +738,7 @@ exports[`ReportDetailsForm renders CRR edit mode properly 1`] = `
                   <input
                     aria-label="submitter_name"
                     class="ant-input"
+                    data-testid="submitter_name"
                     id="submitter_name"
                     name="submitter_name"
                     placeholder="Enter name"
@@ -809,6 +810,7 @@ exports[`ReportDetailsForm renders CRR edit mode properly 1`] = `
                   <input
                     aria-label="submitter_email"
                     class="ant-input"
+                    data-testid="submitter_email"
                     id="submitter_email"
                     name="submitter_email"
                     placeholder="Enter email"
@@ -2328,6 +2330,7 @@ exports[`ReportDetailsForm renders PRR edit mode properly 1`] = `
                   <input
                     aria-label="submitter_name"
                     class="ant-input"
+                    data-testid="submitter_name"
                     id="submitter_name"
                     name="submitter_name"
                     placeholder="Enter name"
@@ -2399,6 +2402,7 @@ exports[`ReportDetailsForm renders PRR edit mode properly 1`] = `
                   <input
                     aria-label="submitter_email"
                     class="ant-input"
+                    data-testid="submitter_email"
                     id="submitter_email"
                     name="submitter_email"
                     placeholder="Enter email"
@@ -4033,6 +4037,7 @@ exports[`ReportDetailsForm renders verified PRR edit mode properly 1`] = `
                   <input
                     aria-label="submitter_name"
                     class="ant-input"
+                    data-testid="submitter_name"
                     id="submitter_name"
                     name="submitter_name"
                     placeholder="Enter name"
@@ -4104,6 +4109,7 @@ exports[`ReportDetailsForm renders verified PRR edit mode properly 1`] = `
                   <input
                     aria-label="submitter_email"
                     class="ant-input"
+                    data-testid="submitter_email"
                     id="submitter_email"
                     name="submitter_email"
                     placeholder="Enter email"

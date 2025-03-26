@@ -43,6 +43,7 @@ exports[`AddReportDefinitionForm renders properly 1`] = `
             <input
               aria-label="report_name"
               class="ant-input"
+              data-testid="report_name"
               name="report_name"
               type="text"
               value=""

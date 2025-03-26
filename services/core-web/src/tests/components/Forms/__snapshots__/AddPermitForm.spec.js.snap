@@ -253,6 +253,7 @@ exports[`AddPermitForm renders properly 1`] = `
                   <input
                     aria-label="permit_no"
                     class="ant-input"
+                    data-testid="permit_no"
                     id="permit_no"
                     name="permit_no"
                     type="text"
@@ -657,6 +658,7 @@ exports[`AddPermitForm renders properly 1`] = `
                   <input
                     aria-label="liability_adjustment"
                     class="ant-input"
+                    data-testid="liability_adjustment"
                     id="liability_adjustment"
                     name="liability_adjustment"
                     type="text"

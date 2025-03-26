@@ -811,6 +811,7 @@ exports[`MineReportInfo renders properly 1`] = `
                         <input
                           aria-label="requested_by"
                           class="ant-input"
+                          data-testid="requested_by"
                           id="requested_by"
                           name="requested_by"
                           placeholder="Enter keyword"

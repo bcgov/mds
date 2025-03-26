@@ -7,7 +7,7 @@ import {
     getPermitConditionDiff,
 } from '@mds/common/redux/slices/permitConditionDiffSlice';
 import { useAppDispatch, useAppSelector } from '@mds/common/redux/rootState';
-import DiffText from './DiffText';
+import DiffText from '@mds/common/components/permits/DiffText';
 
 interface Props {
     currentCondition: IPermitCondition;

@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { PermitReviewBanner } from "./Permit/PermitReviewBanner";
+import { PermitReviewBanner } from "@mds/common/components/permits/PermitReviewBanner";
 
 it("renders correctly", () => {
     const height = 30;

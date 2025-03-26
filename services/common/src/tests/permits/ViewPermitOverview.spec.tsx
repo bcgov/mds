@@ -5,13 +5,13 @@ import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { AUTHENTICATION, MINES, PERMITS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { BrowserRouter } from "react-router-dom";
-import ViewPermit from "@/components/mine/Permit/ViewPermit";
+import ViewPermitOverview from "@mds/common/components/permits/ViewPermitOverview";
 
 const initialState = {
-  [PERMITS]: { permits: MOCK.PERMITS, latestPermitAmendments: MOCK.PERMIT_AMENDMENT_STATE },
+  [PERMITS]: { permits: MOCK.PERMITS },
   [MINES]: { mines: MOCK.MINES.mines },
   [AUTHENTICATION]: {
-    userAccessData: [USER_ROLES.role_admin, USER_ROLES.role_edit_template_conditions],
+    userAccessData: [USER_ROLES.role_admin],
   },
   [STATIC_CONTENT]: {
     ...MOCK.BULK_STATIC_CONTENT_RESPONSE,
@@ -31,12 +31,12 @@ function mockFunction() {
 
 jest.mock("react-router-dom", () => mockFunction());
 
-describe("ViewPermit", () => {
+describe("MinePermitInfo", () => {
   it("renders properly", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
         <BrowserRouter>
-          <ViewPermit />
+          <ViewPermitOverview latestAmendment={MOCK.PERMITS[0].permit_amendments[0]} />
         </BrowserRouter>
       </ReduxWrapper>
     );

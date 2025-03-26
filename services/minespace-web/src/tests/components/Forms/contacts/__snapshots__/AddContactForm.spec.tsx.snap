@@ -200,6 +200,7 @@ exports[`AddContactForm renders properly 1`] = `
                 <input
                   aria-label="first_name"
                   class="ant-input"
+                  data-testid="first_name"
                   id="first_name"
                   name="first_name"
                   placeholder="First Name"
@@ -262,6 +263,7 @@ exports[`AddContactForm renders properly 1`] = `
                 <input
                   aria-label="party_name"
                   class="ant-input"
+                  data-testid="party_name"
                   id="party_name"
                   name="party_name"
                   placeholder="Last Name"
@@ -578,6 +580,7 @@ exports[`AddContactForm renders properly 1`] = `
                 <input
                   aria-label="email"
                   class="ant-input"
+                  data-testid="email"
                   id="email"
                   name="email"
                   placeholder="example@example.com"
@@ -640,6 +643,7 @@ exports[`AddContactForm renders properly 1`] = `
                 <input
                   aria-label="phone_no"
                   class="ant-input"
+                  data-testid="phone_no"
                   id="phone_no"
                   name="phone_no"
                   placeholder="XXX-XXX-XXXX"
@@ -706,6 +710,7 @@ exports[`AddContactForm renders properly 1`] = `
                 <input
                   aria-label="phone_ext"
                   class="ant-input"
+                  data-testid="phone_ext"
                   id="phone_ext"
                   name="phone_ext"
                   type="text"
