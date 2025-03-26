@@ -159,7 +159,7 @@ exports[`Dam History Modal renders properly 1`] = `
                               >
                                 Mar 13 2025, 20:44 (GMT)
                               </span>
-                               =&gt;
+                               =&gt; 
                               <span
                                 class="ant-typography green"
                               >
@@ -186,7 +186,7 @@ exports[`Dam History Modal renders properly 1`] = `
                               >
                                 test@bceid
                               </span>
-                               =&gt;
+                               =&gt; 
                               <span
                                 class="ant-typography green"
                               >
@@ -213,7 +213,7 @@ exports[`Dam History Modal renders properly 1`] = `
                               >
                                 Dam name
                               </span>
-                               =&gt;
+                               =&gt; 
                               <span
                                 class="ant-typography green"
                               >
@@ -267,7 +267,7 @@ exports[`Dam History Modal renders properly 1`] = `
                               >
                                 No Data
                               </span>
-                               =&gt;
+                               =&gt; 
                               <span
                                 class="ant-typography green"
                               >
@@ -294,7 +294,7 @@ exports[`Dam History Modal renders properly 1`] = `
                               >
                                 No Data
                               </span>
-                               =&gt;
+                               =&gt; 
                               <span
                                 class="ant-typography green"
                               >
@@ -321,7 +321,7 @@ exports[`Dam History Modal renders properly 1`] = `
                               >
                                 No Data
                               </span>
-                               =&gt;
+                               =&gt; 
                               <span
                                 class="ant-typography green"
                               >
@@ -348,7 +348,7 @@ exports[`Dam History Modal renders properly 1`] = `
                               >
                                 No Data
                               </span>
-                               =&gt;
+                               =&gt; 
                               <span
                                 class="ant-typography green"
                               >
