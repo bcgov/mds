@@ -267,6 +267,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       <input
                         aria-label="company_alias"
                         class="ant-input"
+                        data-testid="company_alias"
                         id="company_alias"
                         name="company_alias"
                         type="text"
@@ -328,6 +329,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       <input
                         aria-label="incorporation_number"
                         class="ant-input"
+                        data-testid="incorporation_number"
                         id="incorporation_number"
                         name="incorporation_number"
                         type="text"
@@ -395,6 +397,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     <input
                       aria-label="applicant.phone_no"
                       class="ant-input"
+                      data-testid="applicant.phone_no"
                       name="applicant.phone_no"
                       type="text"
                       value=""
@@ -459,6 +462,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     <input
                       aria-label="applicant.phone_ext"
                       class="ant-input"
+                      data-testid="applicant.phone_ext"
                       name="applicant.phone_ext"
                       type="text"
                       value=""
@@ -519,6 +523,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     <input
                       aria-label="applicant.email"
                       class="ant-input"
+                      data-testid="applicant.email"
                       name="applicant.email"
                       type="text"
                       value=""
@@ -589,6 +594,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     <input
                       aria-label="applicant.address[0].address_line_1"
                       class="ant-input"
+                      data-testid="applicant.address[0].address_line_1"
                       name="applicant.address[0].address_line_1"
                       type="text"
                       value=""
@@ -653,6 +659,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     <input
                       aria-label="applicant.address[0].suite_no"
                       class="ant-input"
+                      data-testid="applicant.address[0].suite_no"
                       name="applicant.address[0].suite_no"
                       type="text"
                       value=""
@@ -947,6 +954,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     <input
                       aria-label="applicant.address[0].city"
                       class="ant-input"
+                      data-testid="applicant.address[0].city"
                       name="applicant.address[0].city"
                       type="text"
                       value=""
@@ -1007,6 +1015,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     <input
                       aria-label="applicant.address[0].post_code"
                       class="ant-input"
+                      data-testid="applicant.address[0].post_code"
                       name="applicant.address[0].post_code"
                       type="text"
                       value=""
@@ -1131,6 +1140,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     <input
                       aria-label="applicant.address[1].address_line_1"
                       class="ant-input"
+                      data-testid="applicant.address[1].address_line_1"
                       name="applicant.address[1].address_line_1"
                       type="text"
                       value=""
@@ -1195,6 +1205,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     <input
                       aria-label="applicant.address[1].suite_no"
                       class="ant-input"
+                      data-testid="applicant.address[1].suite_no"
                       name="applicant.address[1].suite_no"
                       type="text"
                       value=""
@@ -1489,6 +1500,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     <input
                       aria-label="applicant.address[1].city"
                       class="ant-input"
+                      data-testid="applicant.address[1].city"
                       name="applicant.address[1].city"
                       type="text"
                       value=""
@@ -1549,6 +1561,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     <input
                       aria-label="applicant.address[1].post_code"
                       class="ant-input"
+                      data-testid="applicant.address[1].post_code"
                       name="applicant.address[1].post_code"
                       type="text"
                       value=""
@@ -1742,6 +1755,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     <input
                       aria-label="applicant.address[2].address_line_1"
                       class="ant-input"
+                      data-testid="applicant.address[2].address_line_1"
                       name="applicant.address[2].address_line_1"
                       type="text"
                       value=""
@@ -1806,6 +1820,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     <input
                       aria-label="applicant.address[2].suite_no"
                       class="ant-input"
+                      data-testid="applicant.address[2].suite_no"
                       name="applicant.address[2].suite_no"
                       type="text"
                       value=""
@@ -2100,6 +2115,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     <input
                       aria-label="applicant.address[2].city"
                       class="ant-input"
+                      data-testid="applicant.address[2].city"
                       name="applicant.address[2].city"
                       type="text"
                       value=""
@@ -2160,6 +2176,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     <input
                       aria-label="applicant.address[2].post_code"
                       class="ant-input"
+                      data-testid="applicant.address[2].post_code"
                       name="applicant.address[2].post_code"
                       type="text"
                       value=""
@@ -2238,6 +2255,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       <input
                         aria-label="payment_contact.first_name"
                         class="ant-input"
+                        data-testid="payment_contact.first_name"
                         name="payment_contact.first_name"
                         type="text"
                         value=""
@@ -2298,6 +2316,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       <input
                         aria-label="payment_contact.party_name"
                         class="ant-input"
+                        data-testid="payment_contact.party_name"
                         name="payment_contact.party_name"
                         type="text"
                         value=""
@@ -2363,6 +2382,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       <input
                         aria-label="payment_contact.phone_no"
                         class="ant-input"
+                        data-testid="payment_contact.phone_no"
                         name="payment_contact.phone_no"
                         type="text"
                         value=""
@@ -2427,6 +2447,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       <input
                         aria-label="payment_contact.phone_ext"
                         class="ant-input"
+                        data-testid="payment_contact.phone_ext"
                         name="payment_contact.phone_ext"
                         type="text"
                         value=""
@@ -2487,6 +2508,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       <input
                         aria-label="payment_contact.email"
                         class="ant-input"
+                        data-testid="payment_contact.email"
                         name="payment_contact.email"
                         type="text"
                         value=""
@@ -2557,6 +2579,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       <input
                         aria-label="payment_contact.address[0].address_line_1"
                         class="ant-input"
+                        data-testid="payment_contact.address[0].address_line_1"
                         name="payment_contact.address[0].address_line_1"
                         type="text"
                         value=""
@@ -2621,6 +2644,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       <input
                         aria-label="payment_contact.address[0].suite_no"
                         class="ant-input"
+                        data-testid="payment_contact.address[0].suite_no"
                         name="payment_contact.address[0].suite_no"
                         type="text"
                         value=""
@@ -2915,6 +2939,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       <input
                         aria-label="payment_contact.address[0].city"
                         class="ant-input"
+                        data-testid="payment_contact.address[0].city"
                         name="payment_contact.address[0].city"
                         type="text"
                         value=""
@@ -2975,6 +3000,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       <input
                         aria-label="payment_contact.address[0].post_code"
                         class="ant-input"
+                        data-testid="payment_contact.address[0].post_code"
                         name="payment_contact.address[0].post_code"
                         type="text"
                         value=""

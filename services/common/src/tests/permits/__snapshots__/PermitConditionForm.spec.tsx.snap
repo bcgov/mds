@@ -31,6 +31,7 @@ exports[`PermitConditionForm renders properly in edit mode 1`] = `
                   <input
                     aria-label="step"
                     class="ant-input"
+                    data-testid="step"
                     name="step"
                     type="text"
                     value="1."

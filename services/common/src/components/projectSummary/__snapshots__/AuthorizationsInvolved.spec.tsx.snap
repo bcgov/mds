@@ -1055,6 +1055,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                           <input
                                             aria-label="authorizations.WATER_LICENCE[0].existing_permits_authorizations"
                                             class="ant-input"
+                                            data-testid="authorizations.WATER_LICENCE[0].existing_permits_authorizations"
                                             name="authorizations.WATER_LICENCE[0].existing_permits_authorizations"
                                             type="text"
                                             value=""
@@ -1325,6 +1326,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                           <input
                                             aria-label="authorizations.OCCUPANT_CUT_LICENCE[0].existing_permits_authorizations"
                                             class="ant-input"
+                                            data-testid="authorizations.OCCUPANT_CUT_LICENCE[0].existing_permits_authorizations"
                                             name="authorizations.OCCUPANT_CUT_LICENCE[0].existing_permits_authorizations"
                                             type="text"
                                             value=""

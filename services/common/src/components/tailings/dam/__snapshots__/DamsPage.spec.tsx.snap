@@ -250,6 +250,7 @@ exports[`Tailings DamsPage renders properly 1`] = `
                         <input
                           aria-label="dam_name"
                           class="ant-input"
+                          data-testid="dam_name"
                           id="dam_name"
                           name="dam_name"
                           type="text"
@@ -314,6 +315,7 @@ exports[`Tailings DamsPage renders properly 1`] = `
                             <input
                               aria-label="latitude"
                               class="ant-input"
+                              data-testid="latitude"
                               id="latitude"
                               name="latitude"
                               type="text"
@@ -375,6 +377,7 @@ exports[`Tailings DamsPage renders properly 1`] = `
                             <input
                               aria-label="longitude"
                               class="ant-input"
+                              data-testid="longitude"
                               id="longitude"
                               name="longitude"
                               type="text"
@@ -647,6 +650,7 @@ exports[`Tailings DamsPage renders properly 1`] = `
                         <input
                           aria-label="permitted_dam_crest_elevation"
                           class="ant-input"
+                          data-testid="permitted_dam_crest_elevation"
                           id="permitted_dam_crest_elevation"
                           name="permitted_dam_crest_elevation"
                           type="text"
@@ -703,6 +707,7 @@ exports[`Tailings DamsPage renders properly 1`] = `
                         <input
                           aria-label="current_dam_height"
                           class="ant-input"
+                          data-testid="current_dam_height"
                           id="current_dam_height"
                           name="current_dam_height"
                           type="text"
@@ -759,6 +764,7 @@ exports[`Tailings DamsPage renders properly 1`] = `
                         <input
                           aria-label="current_elevation"
                           class="ant-input"
+                          data-testid="current_elevation"
                           id="current_elevation"
                           name="current_elevation"
                           type="text"
@@ -815,6 +821,7 @@ exports[`Tailings DamsPage renders properly 1`] = `
                         <input
                           aria-label="max_pond_elevation"
                           class="ant-input"
+                          data-testid="max_pond_elevation"
                           id="max_pond_elevation"
                           name="max_pond_elevation"
                           type="text"
@@ -871,6 +878,7 @@ exports[`Tailings DamsPage renders properly 1`] = `
                         <input
                           aria-label="min_freeboard_required"
                           class="ant-input"
+                          data-testid="min_freeboard_required"
                           id="min_freeboard_required"
                           name="min_freeboard_required"
                           type="text"

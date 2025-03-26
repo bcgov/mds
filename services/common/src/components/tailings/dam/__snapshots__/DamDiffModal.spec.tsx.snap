@@ -157,13 +157,13 @@ exports[`Dam History Modal renders properly 1`] = `
                               <span
                                 class="ant-typography red"
                               >
-                                Mar 13 2025, 20:44 (GMT)
+                                Mar 13 2025, 20:44 (MDT)
                               </span>
                                =&gt; 
                               <span
                                 class="ant-typography green"
                               >
-                                Mar 14 2025, 15:09 (GMT)
+                                Mar 14 2025, 15:09 (MDT)
                               </span>
                             </div>
                           </div>
@@ -298,7 +298,7 @@ exports[`Dam History Modal renders properly 1`] = `
                               <span
                                 class="ant-typography green"
                               >
-                                Mar 13 2025, 20:44 (GMT)
+                                Mar 13 2025, 20:44 (MDT)
                               </span>
                             </div>
                           </div>
@@ -352,7 +352,7 @@ exports[`Dam History Modal renders properly 1`] = `
                               <span
                                 class="ant-typography green"
                               >
-                                Mar 13 2025, 20:44 (GMT)
+                                Mar 13 2025, 20:44 (MDT)
                               </span>
                             </div>
                           </div>
