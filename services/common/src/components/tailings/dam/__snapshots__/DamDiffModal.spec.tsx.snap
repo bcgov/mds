@@ -157,13 +157,13 @@ exports[`Dam History Modal renders properly 1`] = `
                               <span
                                 class="ant-typography red"
                               >
-                                Mar 13 2025, 20:44 (MDT)
+                                Mar 13 2025, 20:44 (GMT)
                               </span>
-                               =&gt; 
+                               =&gt;
                               <span
                                 class="ant-typography green"
                               >
-                                Mar 14 2025, 15:09 (MDT)
+                                Mar 14 2025, 15:09 (GMT)
                               </span>
                             </div>
                           </div>
@@ -186,7 +186,7 @@ exports[`Dam History Modal renders properly 1`] = `
                               >
                                 test@bceid
                               </span>
-                               =&gt; 
+                               =&gt;
                               <span
                                 class="ant-typography green"
                               >
@@ -213,7 +213,7 @@ exports[`Dam History Modal renders properly 1`] = `
                               >
                                 Dam name
                               </span>
-                               =&gt; 
+                               =&gt;
                               <span
                                 class="ant-typography green"
                               >
@@ -267,7 +267,7 @@ exports[`Dam History Modal renders properly 1`] = `
                               >
                                 No Data
                               </span>
-                               =&gt; 
+                               =&gt;
                               <span
                                 class="ant-typography green"
                               >
@@ -294,11 +294,11 @@ exports[`Dam History Modal renders properly 1`] = `
                               >
                                 No Data
                               </span>
-                               =&gt; 
+                               =&gt;
                               <span
                                 class="ant-typography green"
                               >
-                                Mar 13 2025, 20:44 (MDT)
+                                Mar 13 2025, 20:44 (GMT)
                               </span>
                             </div>
                           </div>
@@ -321,7 +321,7 @@ exports[`Dam History Modal renders properly 1`] = `
                               >
                                 No Data
                               </span>
-                               =&gt; 
+                               =&gt;
                               <span
                                 class="ant-typography green"
                               >
@@ -348,11 +348,11 @@ exports[`Dam History Modal renders properly 1`] = `
                               >
                                 No Data
                               </span>
-                               =&gt; 
+                               =&gt;
                               <span
                                 class="ant-typography green"
                               >
-                                Mar 13 2025, 20:44 (MDT)
+                                Mar 13 2025, 20:44 (GMT)
                               </span>
                             </div>
                           </div>

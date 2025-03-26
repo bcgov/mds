@@ -49,7 +49,7 @@ exports[`Tailings BasicInformation renders properly 1`] = `
               <div
                 class="ant-alert-description"
               >
-                Last Updated by test@bceid  on Apr 5, 2019 3:05 PM
+                Last Updated by test@bceid  on Apr 5, 2019 9:05 PM
               </div>
             </div>
             <div
@@ -546,7 +546,6 @@ exports[`Tailings BasicInformation renders properly 1`] = `
               <input
                 aria-label="mine_tailings_storage_facility_name"
                 class="ant-input ant-input-disabled"
-                data-testid="mine_tailings_storage_facility_name"
                 disabled=""
                 id="mine_tailings_storage_facility_name"
                 name="mine_tailings_storage_facility_name"
@@ -612,7 +611,6 @@ exports[`Tailings BasicInformation renders properly 1`] = `
                   <input
                     aria-label="latitude"
                     class="ant-input ant-input-disabled"
-                    data-testid="latitude"
                     disabled=""
                     id="latitude"
                     name="latitude"
@@ -675,7 +673,6 @@ exports[`Tailings BasicInformation renders properly 1`] = `
                   <input
                     aria-label="longitude"
                     class="ant-input ant-input-disabled"
-                    data-testid="longitude"
                     disabled=""
                     id="longitude"
                     name="longitude"
