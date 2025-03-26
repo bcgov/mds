@@ -56,9 +56,9 @@ import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
 import { PermitReviewBanner } from "@mds/common/components/permits/PermitReviewBanner";
 import { PermitConditionsProvider } from "@mds/common/components/permits/PermitConditionsContext";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
-import { LatestAmendmentWarning } from "./LatestAmendmentWarning";
 import { createDropDownList } from "@mds/common/redux/utils/helpers";
 import PermitConditionLayer from "@mds/common/components/permits/PermitConditionLayer";
+import { LatestAmendmentWarning } from "./LatestAmendmentWarning";
 
 const { Title } = Typography;
 
@@ -82,14 +82,14 @@ const scrollToCondition = (selectedConditionId: string) => {
   setTimeout(() => {
     const element = document.getElementById(`condition-${selectedConditionId}`);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      element.classList.add('highlight-condition');
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
+      element.classList.add("highlight-condition");
       setTimeout(() => {
-        element.classList.remove('highlight-condition');
+        element.classList.remove("highlight-condition");
       }, 20000);
     }
   }, 100);
-}
+};
 
 const renderExtractionState = (
   isViewingLatestAmendment: boolean,
@@ -101,21 +101,15 @@ const renderExtractionState = (
   if (!isViewingLatestAmendment) return null;
 
   if (isExtractionInProgress) {
-    return (
-      <RenderExtractionProgress />
-    );
+    return <RenderExtractionProgress />;
   }
 
   if (!isExtractionComplete && permitExtraction?.task_status === "Error Extracting") {
-    return (
-      <RenderExtractionError />
-    );
+    return <RenderExtractionError />;
   }
 
   if (canStartExtraction) {
-    return (
-      <RenderExtractionStart />
-    );
+    return <RenderExtractionStart />;
   }
 
   return null;
@@ -443,7 +437,9 @@ const PermitConditions: FC<PermitConditionProps> = ({
   );
 
   const canViewPdfSplitScreen =
-    viewPdf && pdfSplitViewEnabled && (permitExtraction?.permit_amendment_document_guid || permitAmendmentDocumentGuid);
+    viewPdf &&
+    pdfSplitViewEnabled &&
+    (permitExtraction?.permit_amendment_document_guid || permitAmendmentDocumentGuid);
 
   const hasConditions = currentAmendment?.conditions?.length > 0;
 
@@ -489,11 +485,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
               loading={showLoading}
               type="tertiary"
               className="fa-icon-container"
-              icon={
-                <FontAwesomeIcon
-                  icon={isExpanded ? faArrowsToLine : faArrowsFromLine}
-                />
-              }
+              icon={<FontAwesomeIcon icon={isExpanded ? faArrowsToLine : faArrowsFromLine} />}
               onClick={() => setIsExpanded(!isExpanded)}
             >
               {isExpanded ? "Collapse" : "Expand"} All Conditions
@@ -522,8 +514,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                       <Title level={3} className="margin-none" id={category.href}>
                         <EditPermitConditionCategoryInline
                           canEdit={
-                            isExtracted &&
-                            canEditPermitConditions(category.condition_category)
+                            isExtracted && canEditPermitConditions(category.condition_category)
                           }
                           onDelete={handleDeleteConditionCategory}
                           onChange={handleUpdateConditionCategory}
@@ -535,29 +526,20 @@ const PermitConditions: FC<PermitConditionProps> = ({
                           conditionCount={category?.conditions.length || 0}
                         />
                       </Title>
-                      {canEditPermitConditions(category.condition_category) &&
-                        isExtracted && (
-                          <CoreButton
-                            type="primary"
-                            loading={showLoading}
-                            disabled={
-                              Boolean(addingToCategoryCode) ||
-                              Boolean(editingConditionGuid)
-                            }
-                            onClick={() =>
-                              setAddingToCategoryCode(category.condition_category_code)
-                            }
-                          >
-                            Add Condition
-                          </CoreButton>
-                        )}
-                    </Row>
-                    {isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) &&
-                      userCanEdit && (
-                        <PermitConditionReviewAssignment
-                          category={category?.condition_category}
-                        />
+                      {canEditPermitConditions(category.condition_category) && isExtracted && (
+                        <CoreButton
+                          type="primary"
+                          loading={showLoading}
+                          disabled={Boolean(addingToCategoryCode) || Boolean(editingConditionGuid)}
+                          onClick={() => setAddingToCategoryCode(category.condition_category_code)}
+                        >
+                          Add Condition
+                        </CoreButton>
                       )}
+                    </Row>
+                    {isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && userCanEdit && (
+                      <PermitConditionReviewAssignment category={category?.condition_category} />
+                    )}
                   </Col>
                   {category.conditions.map((sc, idx) => (
                     <Col span={24} key={sc.permit_condition_id} className="fade-in">
@@ -574,9 +556,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                           category.condition_category
                         )}
                         setEditingConditionGuid={setEditingConditionGuid}
-                        editingConditionGuid={
-                          editingConditionGuid ?? addingToCategoryCode
-                        }
+                        editingConditionGuid={editingConditionGuid ?? addingToCategoryCode}
                         refreshData={refreshData}
                         conditionSelected={setSelectedCondition}
                         categoryOptions={dropdownCategories}
@@ -641,7 +621,9 @@ const PermitConditions: FC<PermitConditionProps> = ({
               <div style={{ position: "sticky", top: "225px" }}>
                 <PreviewPermitAmendmentDocument
                   amendment={currentAmendment}
-                  documentGuid={permitExtraction?.permit_amendment_document_guid || permitAmendmentDocumentGuid}
+                  documentGuid={
+                    permitExtraction?.permit_amendment_document_guid || permitAmendmentDocumentGuid
+                  }
                   selectedCondition={selectedCondition}
                 />
               </div>
