@@ -35,7 +35,11 @@ import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors
 import { USER_ROLES } from "@mds/common/constants/environment";
 import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import { ADD_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
+import { resetForm } from "@mds/common/redux/utils/helpers";
+import { FORM } from "@mds/common/constants/forms";
+import { clearTsf } from "@mds/common/redux/actions/tailingsActions";
 
 
 /**
@@ -52,6 +56,7 @@ const defaultParams = {
 
 export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
   const dispatch = useAppDispatch();
+  const history = useHistory();
 
   const { mineGuid } = useParams<{ mineGuid: string }>();
   const mine: IMine = useAppSelector(getMineById(mineGuid));
@@ -144,6 +149,22 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
     }));
   };
 
+  const handleCreateTailings = async (event) => {
+    if(tsfV2Enabled){
+      navigateToCreateTailings(event);
+    } else {
+      openTailingsModal(event, handleAddTailings, "Add TSF")
+    }
+  }
+
+  const navigateToCreateTailings = async (event) => {
+    event.preventDefault();
+    resetForm(FORM.ADD_TAILINGS_STORAGE_FACILITY);
+    await dispatch(clearTsf());
+    const url = ADD_TAILINGS_STORAGE_FACILITY.dynamicRoute(mine.mine_guid);
+    history.push(url);
+  };
+
   const openTailingsModal = (event, onSubmit, title) => {
     event.preventDefault();
     dispatch(openModal({
@@ -185,7 +206,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
           <h4 className="uppercase">Tailings Storage Facilities</h4>
           {canEditTSF && (
             <AddButton
-              onClick={(event) => openTailingsModal(event, handleAddTailings, "Add TSF")}
+              onClick={(event) => handleCreateTailings(event)}
             >
               Add TSF
             </AddButton>
