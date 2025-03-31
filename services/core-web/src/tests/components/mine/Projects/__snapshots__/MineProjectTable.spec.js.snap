@@ -62,7 +62,29 @@ exports[`MineProjectTable renders properly 1`] = `
             "documents": Array [],
           },
           "major_mine_application": Object {
-            "documents": Array [],
+            "documents": Array [
+              Object {
+                "document_manager_guid": "5c910ea7-31ec-4064-8f73-5ce151d25af8",
+                "document_name": "test.pdf",
+                "major_mine_application_document_type_code": "PRM",
+                "major_mine_application_id": 7,
+                "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+              },
+              Object {
+                "document_manager_guid": "6d910ea7-31ec-4064-8f73-5ce151d25af0",
+                "document_name": "test.kmz",
+                "major_mine_application_document_type_code": "SPT",
+                "major_mine_application_id": 8,
+                "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+              },
+              Object {
+                "document_manager_guid": "8f910ea7-31ec-4064-8f73-5ce151d25af1",
+                "document_name": "test.pdf",
+                "major_mine_application_document_type_code": "SPR",
+                "major_mine_application_id": 9,
+                "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+              },
+            ],
           },
           "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
           "mine_name": "Sample Mine",

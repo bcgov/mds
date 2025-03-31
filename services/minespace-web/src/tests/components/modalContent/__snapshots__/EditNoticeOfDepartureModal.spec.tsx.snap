@@ -42,6 +42,7 @@ exports[`EditNoticeOfDepartureModal renders properly 1`] = `
         "documents": Array [
           Object {
             "create_timestamp": "2022-05-05T15:44:49.419460+00:00",
+            "create_user": "create-user",
             "document_manager_guid": "8e1e0182-fef4-4f93-b76a-d2b65b6f3908",
             "document_name": "Excel_Comments_Template.xlsx",
             "document_type": "checklist",
@@ -50,9 +51,14 @@ exports[`EditNoticeOfDepartureModal renders properly 1`] = `
             "upload_date": null,
           },
         ],
+        "mine": Object {
+          "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+          "mine_name": "mine3",
+          "mine_no": "BLAH9091",
+        },
         "nod_description": "Checklist description",
         "nod_guid": "56c75a01-248f-4e2c-961a-131790205682",
-        "nod_no": "NOD-X-45564456-01",
+        "nod_no": "NOD-123",
         "nod_status": "pending_review",
         "nod_title": "Test with checklist 1",
         "nod_type": "potentially_substantial",

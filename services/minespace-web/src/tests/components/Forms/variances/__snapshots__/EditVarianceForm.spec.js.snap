@@ -37,6 +37,7 @@ exports[`EditVarianceForm renders properly 1`] = `
         "note": "notesss",
         "received_date": "2019-03-01",
         "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+        "variance_no": 1,
       }
     }
     varianceStatusOptionsHash={
@@ -45,6 +46,8 @@ exports[`EditVarianceForm renders properly 1`] = `
         "DEN": "Denied",
         "NAP": "Not Applicable",
         "REV": "In Review",
+        "RFD": "Ready for Decision",
+        "WIT": "Withdrawn",
       }
     }
   />

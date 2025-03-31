@@ -6,7 +6,9 @@ exports[`InformationRequirementsTableSuccessPage renders properly 1`] = `
     <Col
       span={24}
     >
-      <ForwardRef />
+      <ForwardRef>
+        Test Project Title
+      </ForwardRef>
     </Col>
   </Row>
   <Row>
@@ -14,7 +16,7 @@ exports[`InformationRequirementsTableSuccessPage renders properly 1`] = `
       span={24}
     >
       <Link
-        to="/projects/8132462392222/overview"
+        to="/projects/35633148-57f8-4967-be35-7f89abfbd02e/overview"
       >
         <ForwardRef(ArrowLeftOutlined)
           className="padding-sm--right"
@@ -68,7 +70,7 @@ exports[`InformationRequirementsTableSuccessPage renders properly 1`] = `
         <div>
           <p>
             <Link
-              to="/projects/8132462392222/overview"
+              to="/projects/35633148-57f8-4967-be35-7f89abfbd02e/overview"
             >
               <Button
                 type="primary"
@@ -81,7 +83,7 @@ exports[`InformationRequirementsTableSuccessPage renders properly 1`] = `
             <Link
               to={
                 Object {
-                  "pathname": "/projects/8132462392222/information-requirements-table/c16afb82-144c-4138-9a36-ba5c24c43d8a/review/introduction-and-project-overview",
+                  "pathname": "/projects/35633148-57f8-4967-be35-7f89abfbd02e/information-requirements-table/9a5a10ce-ead2-4346-8a85-b3320c5b454b/review/introduction-and-project-overview",
                   "state": Object {
                     "current": 2,
                   },

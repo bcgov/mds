@@ -10,6 +10,23 @@ exports[`MineHeader renders dispatchProperly 1`] = `
     <MineAlert
       mine={
         Object {
+          "latest_mine_status": Object {
+            "effective_date": "2024-03-07T15:49:45.989485+00:00",
+            "expiry_date": null,
+            "mine_guid": "3b118b13-7397-4512-8021-c11ed90ce14c",
+            "mine_status_guid": "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
+            "mine_status_xref_guid": "4924b221-f895-479d-ad0d-7fde81795813",
+            "status_date": null,
+            "status_description": "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
+            "status_labels": Array [
+              "Operating",
+              "Seasonal",
+            ],
+            "status_values": Array [
+              "OP",
+              "SEA",
+            ],
+          },
           "major_mine_ind": true,
           "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
           "mine_location": Object {
@@ -20,18 +37,25 @@ exports[`MineHeader renders dispatchProperly 1`] = `
           "mine_no": "BLAH9091",
           "mine_permit_numbers": Array [],
           "mine_region": "NE",
-          "mine_status": Object {
-            "effective_date": "2018-10-16",
-            "expiry_date": null,
-            "status_labels": Array [
-              "Closed",
-              "Care & Maintenance",
-            ],
-            "statusvalue": Array [
-              "CLD",
-              "CM",
-            ],
-          },
+          "mine_status": Array [
+            Object {
+              "effective_date": "2024-03-07T15:49:45.989485+00:00",
+              "expiry_date": null,
+              "mine_guid": "3b118b13-7397-4512-8021-c11ed90ce14c",
+              "mine_status_guid": "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
+              "mine_status_xref_guid": "4924b221-f895-479d-ad0d-7fde81795813",
+              "status_date": null,
+              "status_description": "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
+              "status_labels": Array [
+                "Operating",
+                "Seasonal",
+              ],
+              "status_values": Array [
+                "OP",
+                "SEA",
+              ],
+            },
+          ],
           "mine_tailings_storage_facilities": Array [
             Object {
               "consequence_classification_status_code": "LOW",
@@ -131,17 +155,34 @@ exports[`MineHeader renders dispatchProperly 1`] = `
         }
       }
     />
-    <div
-      className="inline-flex padding-sm"
-    >
-      <p
-        className="field-title"
+    <div>
+      <div
+        className="inline-flex padding-sm"
       >
-        Operating Status
-      </p>
-      <p>
-        N/A
-      </p>
+        <p
+          className="field-title"
+        >
+          Operating Status 
+        </p>
+        <p>
+          Operating, Seasonal
+        </p>
+        <CoreTooltip
+          title="This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting."
+        />
+      </div>
+      <div
+        className="inline-flex padding-sm"
+      >
+        <p
+          className="field-title"
+        >
+          Status Since 
+        </p>
+        <p>
+          N/A
+        </p>
+      </div>
     </div>
     <div
       className="inline-flex padding-sm"
@@ -273,6 +314,23 @@ exports[`MineHeader renders dispatchProperly 1`] = `
       additionalPin={Array []}
       mine={
         Object {
+          "latest_mine_status": Object {
+            "effective_date": "2024-03-07T15:49:45.989485+00:00",
+            "expiry_date": null,
+            "mine_guid": "3b118b13-7397-4512-8021-c11ed90ce14c",
+            "mine_status_guid": "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
+            "mine_status_xref_guid": "4924b221-f895-479d-ad0d-7fde81795813",
+            "status_date": null,
+            "status_description": "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
+            "status_labels": Array [
+              "Operating",
+              "Seasonal",
+            ],
+            "status_values": Array [
+              "OP",
+              "SEA",
+            ],
+          },
           "major_mine_ind": true,
           "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
           "mine_location": Object {
@@ -283,18 +341,25 @@ exports[`MineHeader renders dispatchProperly 1`] = `
           "mine_no": "BLAH9091",
           "mine_permit_numbers": Array [],
           "mine_region": "NE",
-          "mine_status": Object {
-            "effective_date": "2018-10-16",
-            "expiry_date": null,
-            "status_labels": Array [
-              "Closed",
-              "Care & Maintenance",
-            ],
-            "statusvalue": Array [
-              "CLD",
-              "CM",
-            ],
-          },
+          "mine_status": Array [
+            Object {
+              "effective_date": "2024-03-07T15:49:45.989485+00:00",
+              "expiry_date": null,
+              "mine_guid": "3b118b13-7397-4512-8021-c11ed90ce14c",
+              "mine_status_guid": "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
+              "mine_status_xref_guid": "4924b221-f895-479d-ad0d-7fde81795813",
+              "status_date": null,
+              "status_description": "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
+              "status_labels": Array [
+                "Operating",
+                "Seasonal",
+              ],
+              "status_values": Array [
+                "OP",
+                "SEA",
+              ],
+            },
+          ],
           "mine_tailings_storage_facilities": Array [
             Object {
               "consequence_classification_status_code": "LOW",

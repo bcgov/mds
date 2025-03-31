@@ -24,6 +24,14 @@ exports[`TransferBondForm renders properly 1`] = `
               "label": "C-12345",
               "value": "1628847c-060b-45f2-990f-815877174801",
             },
+            Object {
+              "label": "M-12345",
+              "value": "67074e37-b7c6-475d-ade6-eb24fdbd1e13",
+            },
+            Object {
+              "label": "M-222",
+              "value": "c81915d2-bca0-4857-964c-0b9a3fd013ba",
+            },
           ]
         }
         id="permit_guid"
