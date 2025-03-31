@@ -60,9 +60,12 @@ def permit_condition_pipeline():
     """
     index_pipeline = Pipeline()
 
+    doc_intelligence_key = config.document_intelligence.api_key.resolve_value()
+    assert doc_intelligence_key, "Document Intelligence API key is not set"
+
     pdf_converter = AzureDocumentIntelligenceConverter(
         endpoint=config.document_intelligence.endpoint,
-        api_key=config.document_intelligence.api_key,
+        api_key=doc_intelligence_key,
         api_version=config.document_intelligence.api_version,
     )
 

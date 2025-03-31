@@ -63,7 +63,6 @@ class AzureDocumentIntelligenceConverter:
             result = self.run_document_intelligence(file_path)
 
         if DEBUG_MODE:
-
             self.write_to_cache(cache_key, result)
 
         docs = []

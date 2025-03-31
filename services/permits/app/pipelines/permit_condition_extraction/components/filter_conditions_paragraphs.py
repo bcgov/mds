@@ -161,11 +161,10 @@ def _identify_bottom_of_first_page_header(paragraphs):
     # Find the first paragraph that is identified as a page header
     is_like_page_header = False
 
-    page_header_start_idx = next(
-        (i for i, p in enumerate(paragraphs) if p.content["role"] == "pageHeader"), None
-    )
 
-    if page_header_start_idx is not None:
+    for page_header_start_idx, p in enumerate(paragraphs):
+        if p.content["role"] != "pageHeader":
+            continue
 
         page_header_end_idx = next(
             (
