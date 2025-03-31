@@ -1,6 +1,6 @@
 import React from "react";
 import MineNoticeOfDeparture from "@/components/mine/NoticeOfDeparture/MineNoticeOfDeparture";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import matchMedia from "@/tests/mocks/matchMedia";
 import { renderWithProvider } from "@/tests/mocks/utils";
 

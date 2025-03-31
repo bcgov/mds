@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { NoticeOfDeparture } from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDeparture";
 // import * as original from "react-router-dom";
 

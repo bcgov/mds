@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { MinespaceUserManagement } from "@/components/admin/MinespaceUserManagement";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const props = {};
 const dispatchProps = {};

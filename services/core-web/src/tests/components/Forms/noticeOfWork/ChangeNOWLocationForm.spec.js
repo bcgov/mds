@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { ChangeNOWLocationForm } from "@/components/Forms/noticeOfWork/ChangeNOWLocationForm";
-import { NOW, MINES } from "@/tests/mocks/dataMocks";
+import { NOW, MINES } from "@mds/common/tests/mocks/dataMocks";
 
 const dispatchProps = {};
 const props = {};

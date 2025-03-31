@@ -1,6 +1,6 @@
 import React from "react";
 import { MineTailingsInfoTabs } from "@/components/mine/Tailings/MineTailingsInfoTabs";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { AUTHENTICATION, REPORTS, STATIC_CONTENT, MINES } from "@mds/common/constants/reducerTypes";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { render } from "@testing-library/react";

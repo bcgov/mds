@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import ComplianceCodeViewEditForm from "./ComplianceCodeViewEditForm";
-import { COMPLIANCE_CODES } from "@/tests/mocks/dataMocks";
+import { COMPLIANCE_CODES } from "@mds/common/tests/mocks/dataMocks";
 import { complianceCodeReducerType } from "@mds/common/redux/slices/complianceCodesSlice";
 
 const initialState = {

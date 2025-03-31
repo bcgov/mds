@@ -2,7 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import { Provider } from "react-redux";
 import { IncidentForm } from "@/components/Forms/incidents/IncidentForm";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { store } from "@/App";
 import { MemoryRouter } from "react-router-dom";
 

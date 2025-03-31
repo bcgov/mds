@@ -2,7 +2,7 @@ import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPerm
 import { explosivesPermitReducer } from "@mds/common/redux/reducers/explosivesPermitReducer";
 import { storeExplosivesPermits } from "@mds/common/redux/actions/explosivesPermitActions";
 import { EXPLOSIVES_PERMITS } from "@mds/common/constants/reducerTypes";
-import * as Mock from "@/tests/mocks/dataMocks";
+import * as Mock from "@mds/common/tests/mocks/dataMocks";
 
 const mockResponse = Mock.EXPLOSIVES_PERMITS.data;
 const mockState = {

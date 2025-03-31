@@ -4,7 +4,7 @@ import {
   MineNoticeOfDepartureTable,
   MineNoticeOfDepartureTableProps,
 } from "@/components/mine/NoticeOfDeparture/MineNoticeOfDepartureTable";
-import { NOTICES_OF_DEPARTURE } from "@/tests/mocks/dataMocks";
+import { NOTICES_OF_DEPARTURE } from "@mds/common/tests/mocks/dataMocks";
 import matchMedia from "@/tests/mocks/matchMedia";
 import { mine } from "@/customPropTypes/mines";
 
@@ -15,7 +15,7 @@ const props: MineNoticeOfDepartureTableProps = {
   sortField: "received_date",
   isPaginated: false,
   isDashboardView: false,
-  openViewNodModal: () => {},
+  openViewNodModal: () => { },
 };
 const dispatchProps: Partial<MineNoticeOfDepartureTableProps> = {};
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { Tailings } from "@/components/dashboard/mine/tailings/Tailings";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import FeatureFlagContext from "@mds/common/providers/featureFlags/featureFlag.context";
 
 jest.mock("react-router-dom", () => ({

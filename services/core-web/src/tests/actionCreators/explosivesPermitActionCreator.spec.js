@@ -9,7 +9,7 @@ import {
 import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
 import * as API from "@mds/common/constants/API";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, "request");
