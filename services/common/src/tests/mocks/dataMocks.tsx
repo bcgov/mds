@@ -804,6 +804,9 @@ export const PARTY = {
       address: [{}],
       mine_party_appt: [],
       business_role_appts: [{}],
+      first_name: "mock name",
+      name: "other mock name",
+      now_party_appt: [],
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -811,6 +814,9 @@ export const PARTY = {
       party_type_code: "PER",
       address: [{}],
       mine_party_appt: [],
+      first_name: "mock name",
+      name: "other mock name",
+      now_party_appt: [],
       business_role_appts: [
         {
           end_date: "2020-08-29T00:00:00",

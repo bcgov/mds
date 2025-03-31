@@ -47,8 +47,8 @@ exports[`ContactList renders properly 1`] = `
         "emptyField": "N/A",
         "key": "18133c75-49ad-4101-85f3-a43e35ae989a",
         "name": Array [
-          "",
-          "N/A",
+          "mock name",
+          "mock name",
         ],
         "party_orgbook_entity": undefined,
         "phone": "N/A",
@@ -59,8 +59,8 @@ exports[`ContactList renders properly 1`] = `
         "emptyField": "N/A",
         "key": "18145c75-49ad-0101-85f3-a43e45ae989a",
         "name": Array [
-          "",
-          "N/A",
+          "mock name",
+          "mock Two",
         ],
         "party_orgbook_entity": undefined,
         "phone": "N/A",
