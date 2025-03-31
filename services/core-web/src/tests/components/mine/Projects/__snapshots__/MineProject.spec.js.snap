@@ -56,7 +56,7 @@ exports[`MineProject renders properly 1`] = `
               "Closed",
               "Care & Maintenance",
             ],
-            "statusvalue": Array [
+            "status_values": Array [
               "CLD",
               "CM",
             ],

@@ -104,7 +104,7 @@ exports[`MineList renders properly 1`] = `
         "tsf": 1,
         "verified_status": Object {
           "healthy_ind": null,
-          "mine_guid": null,
+          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
           "mine_name": null,
           "verifying_timestamp": null,
           "verifying_user": null,
@@ -139,7 +139,7 @@ exports[`MineList renders properly 1`] = `
       },
       Object {
         "commodity": Array [],
-        "key": "18133c75-49ad-4101-85f3-a43e35ae989a",
+        "key": "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
         "mine_name": "Abbot Inc",
         "mine_no": "BLAH9092",
         "mine_operation_status_code": "N/A",
@@ -153,7 +153,7 @@ exports[`MineList renders properly 1`] = `
         "tsf": 1,
         "verified_status": Object {
           "healthy_ind": null,
-          "mine_guid": null,
+          "mine_guid": "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
           "mine_name": null,
           "verifying_timestamp": null,
           "verifying_user": null,
@@ -176,7 +176,7 @@ exports[`MineList renders properly 1`] = `
         "tsf": 1,
         "verified_status": Object {
           "healthy_ind": null,
-          "mine_guid": null,
+          "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
           "mine_name": null,
           "verifying_timestamp": null,
           "verifying_user": null,

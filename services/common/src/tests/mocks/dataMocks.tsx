@@ -250,11 +250,28 @@ export const MINE_RESPONSE = {
       mine_permit_numbers: [],
       major_mine_ind: true,
       mine_location: { longitude: null, latitude: null },
-      mine_status: {
-        statusvalue: ["CLD", "CM"],
-        status_labels: ["Closed", "Care & Maintenance"],
-        effective_date: "2018-10-16",
+      mine_status: [{
+        effective_date: "2024-03-07T15:49:45.989485+00:00",
+        mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+        mine_status_guid: "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
+        mine_status_xref_guid: "4924b221-f895-479d-ad0d-7fde81795813",
+        status_date: null,
+        status_description: "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
+        status_values: ["OP", "SEA"],
+        status_labels: ["Operating", "Seasonal"],
         expiry_date: null,
+      }],
+      latest_mine_status: {
+        mine_status_guid: "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
+        mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+        mine_status_xref_guid: "4924b221-f895-479d-ad0d-7fde81795813",
+        status_values: ["OP", "SEA"],
+        status_labels: ["Operating", "Seasonal"],
+        effective_date: "2024-03-07T15:49:45.989485+00:00",
+        expiry_date: null,
+        status_date: null,
+        status_description:
+          "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
       },
       mine_tailings_storage_facilities: [TSF],
       mine_type: [
@@ -262,7 +279,7 @@ export const MINE_RESPONSE = {
         { mine_tenure_type_code: "MIN", mine_type_detail: [] },
       ],
       verified_status: {
-        mine_guid: null,
+        mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
         mine_name: null,
         healthy_ind: null,
         verifying_user: null,
@@ -277,7 +294,7 @@ export const MINE_RESPONSE = {
       major_mine_ind: true,
       mine_permit_numbers: ["KNaaWwVdiJ40", "xfM0c0ZKEw7B"],
       mine_status: {
-        statusvalue: ["CLD", "CM"],
+        status_values: ["CLD", "CM"],
         status_labels: ["Closed", "Care & Maintenance"],
         effective_date: "2018-10-16",
         expiry_date: null,
@@ -296,8 +313,6 @@ export const MINE_RESPONSE = {
           consequence_classification_status_code: "LOW",
           tsf_operating_status_code: "OPT",
           itrb_exemption_status_code: "YES",
-          update_timestamp: "2019-04-05 21:05:40.123456+00:00",
-          update_user: "test@bceid",
         },
       ],
       mine_type: [
@@ -308,6 +323,108 @@ export const MINE_RESPONSE = {
         mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
         mine_name: "mine2",
         healthy_ind: true,
+        verifying_user: null,
+        verifying_timestamp: null,
+      },
+    },
+    {
+      mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+      mine_name: "Abbot Inc",
+      mine_no: "BLAH9092",
+      mine_region: "NE",
+      major_mine_ind: true,
+      mine_permit_numbers: [],
+      mine_status: {
+        status_values: ["CLD", "CM"],
+        status_labels: ["Closed", "Care & Maintenance"],
+        effective_date: "2018-10-16",
+        expiry_date: null,
+      },
+      mine_location: {
+        longitude: null,
+        latitude: null,
+      },
+      mine_tailings_storage_facilities: [
+        {
+          mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+          mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
+          mine_tailings_storage_facility_name: "MockTSF",
+          latitude: null,
+          longitude: null,
+          consequence_classification_status_code: "LOW",
+          tsf_operating_status_code: "OPT",
+          itrb_exemption_status_code: "YES",
+        },
+      ],
+      mine_type: [
+        { mine_tenure_type_code: "PLR", mine_type_detail: [] },
+        { mine_tenure_type_code: "MIN", mine_type_detail: [] },
+      ],
+      verified_status: {
+        mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+        mine_name: null,
+        healthy_ind: null,
+        verifying_user: null,
+        verifying_timestamp: null,
+      },
+    },
+    {
+      mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+      mine_name: "mine3",
+      mine_no: "BLAH9091",
+      mine_region: "NE",
+      major_mine_ind: true,
+      mine_permit_numbers: [],
+      mine_status: [
+        {
+          mine_status_guid: "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
+          mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+          mine_status_xref_guid: "4924b221-f895-479d-ad0d-7fde81795813",
+          status_values: ["OP", "SEA"],
+          status_labels: ["Operating", "Seasonal"],
+          effective_date: "2024-03-07T15:49:45.989485+00:00",
+          expiry_date: null,
+          status_date: null,
+          status_description:
+            "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
+        },
+      ],
+      latest_mine_status: {
+        mine_status_guid: "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
+        mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+        mine_status_xref_guid: "4924b221-f895-479d-ad0d-7fde81795813",
+        status_values: ["OP", "SEA"],
+        status_labels: ["Operating", "Seasonal"],
+        effective_date: "2024-03-07T15:49:45.989485+00:00",
+        expiry_date: null,
+        status_date: null,
+        status_description:
+          "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
+      },
+      mine_location: {
+        longitude: null,
+        latitude: null,
+      },
+      mine_tailings_storage_facilities: [
+        {
+          mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+          mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
+          mine_tailings_storage_facility_name: "MockTSF",
+          latitude: null,
+          longitude: null,
+          consequence_classification_status_code: "LOW",
+          tsf_operating_status_code: "OPT",
+          itrb_exemption_status_code: "YES",
+        },
+      ],
+      mine_type: [
+        { mine_tenure_type_code: "PLR", mine_type_detail: [] },
+        { mine_tenure_type_code: "MIN", mine_type_detail: [] },
+      ],
+      verified_status: {
+        mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+        mine_name: null,
+        healthy_ind: null,
         verifying_user: null,
         verifying_timestamp: null,
       },
@@ -338,7 +455,7 @@ export const SUBSCRIBED_MINES = {
       ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
       mine_status: {
-        statusvalue: ["CLD", "CM"],
+        status_values: ["CLD", "CM"],
         status_labels: ["Closed", "Care & Maintenance"],
         effective_date: "2018-10-16",
         expiry_date: null,
@@ -362,18 +479,7 @@ export const MINES = {
       mine_permit_numbers: [],
       major_mine_ind: true,
       mine_location: { longitude: null, latitude: null },
-      mine_tailings_storage_facilities: [
-        {
-          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-          mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
-          mine_tailings_storage_facility_name: "MockTSF",
-          latitude: null,
-          longitude: null,
-          consequence_classification_status_code: "LOW",
-          tsf_operating_status_code: "OPT",
-          itrb_exemption_status_code: "YES",
-        },
-      ],
+      mine_tailings_storage_facilities: [TSF],
       mine_type: [
         { mine_tenure_type_code: "PLR", mine_type_detail: [] },
         { mine_tenure_type_code: "MIN", mine_type_detail: [] },
@@ -381,7 +487,7 @@ export const MINES = {
       mine_status: [
         {
           mine_status_guid: "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
-          mine_guid: "3b118b13-7397-4512-8021-c11ed90ce14c",
+          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
           mine_status_xref_guid: "4924b221-f895-479d-ad0d-7fde81795813",
           status_values: ["OP", "SEA"],
           status_labels: ["Operating", "Seasonal"],
@@ -394,7 +500,7 @@ export const MINES = {
       ],
       latest_mine_status: {
         mine_status_guid: "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
-        mine_guid: "3b118b13-7397-4512-8021-c11ed90ce14c",
+        mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
         mine_status_xref_guid: "4924b221-f895-479d-ad0d-7fde81795813",
         status_values: ["OP", "SEA"],
         status_labels: ["Operating", "Seasonal"],
@@ -405,7 +511,7 @@ export const MINES = {
           "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
       },
       verified_status: {
-        mine_guid: null,
+        mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
         mine_name: null,
         healthy_ind: null,
         verifying_user: null,
@@ -420,7 +526,7 @@ export const MINES = {
       mine_region: "NE",
       mine_permit_numbers: ["KNaaWwVdiJ40", "xfM0c0ZKEw7B"],
       mine_status: {
-        statusvalue: ["CLD", "CM"],
+        status_values: ["CLD", "CM"],
         status_labels: ["Closed", "Care & Maintenance"],
         effective_date: "2018-10-16",
         expiry_date: null,
@@ -454,7 +560,7 @@ export const MINES = {
       },
     },
     "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d": {
-      mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+      mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
       mine_name: "Abbot Inc",
       mine_no: "BLAH9092",
       mine_region: "NE",
@@ -463,7 +569,7 @@ export const MINES = {
       mine_location: { longitude: null, latitude: null },
       mine_tailings_storage_facilities: [
         {
-          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+          mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
           mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
           mine_tailings_storage_facility_name: "MockTSF",
           latitude: null,
@@ -478,13 +584,13 @@ export const MINES = {
         { mine_tenure_type_code: "MIN", mine_type_detail: [] },
       ],
       mine_status: {
-        statusvalue: ["CLD", "CM"],
+        status_values: ["CLD", "CM"],
         status_labels: ["Closed", "Care & Maintenance"],
         effective_date: "2018-10-16",
         expiry_date: null,
       },
       verified_status: {
-        mine_guid: null,
+        mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
         mine_name: null,
         healthy_ind: null,
         verifying_user: null,
@@ -542,7 +648,7 @@ export const MINES = {
           "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
       },
       verified_status: {
-        mine_guid: null,
+        mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
         mine_name: null,
         healthy_ind: null,
         verifying_user: null,

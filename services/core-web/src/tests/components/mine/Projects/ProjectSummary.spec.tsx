@@ -3,7 +3,7 @@ import { render } from "@testing-library/react";
 import { ProjectSummary } from "@/components/mine/Projects/ProjectSummary";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
-import { PROJECTS } from "@mds/common/constants/reducerTypes";
+import { PROJECTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 
 const initialState = {
   [PROJECTS]: {
@@ -12,6 +12,7 @@ const initialState = {
     projectSummaries: [MOCK.PROJECT_SUMMARY],
     projectSummary: MOCK.PROJECT_SUMMARY,
   },
+  [STATIC_CONTENT]: MOCK.BULK_STATIC_CONTENT_RESPONSE
 };
 
 jest.mock("react-router", () => ({

@@ -502,7 +502,7 @@ exports[`Dashboard renders properly 1`] = `
                   "latest_mine_status": Object {
                     "effective_date": "2024-03-07T15:49:45.989485+00:00",
                     "expiry_date": null,
-                    "mine_guid": "3b118b13-7397-4512-8021-c11ed90ce14c",
+                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                     "mine_status_guid": "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
                     "mine_status_xref_guid": "4924b221-f895-479d-ad0d-7fde81795813",
                     "status_date": null,
@@ -530,7 +530,7 @@ exports[`Dashboard renders properly 1`] = `
                     Object {
                       "effective_date": "2024-03-07T15:49:45.989485+00:00",
                       "expiry_date": null,
-                      "mine_guid": "3b118b13-7397-4512-8021-c11ed90ce14c",
+                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                       "mine_status_guid": "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
                       "mine_status_xref_guid": "4924b221-f895-479d-ad0d-7fde81795813",
                       "status_date": null,
@@ -548,13 +548,38 @@ exports[`Dashboard renders properly 1`] = `
                   "mine_tailings_storage_facilities": Array [
                     Object {
                       "consequence_classification_status_code": "LOW",
+                      "dams": Array [
+                        Object {
+                          "consequence_classification": "LOW",
+                          "current_dam_height": 2,
+                          "current_elevation": 3,
+                          "dam_guid": "123",
+                          "dam_name": "Dam Name",
+                          "dam_type": "dam",
+                          "latitude": 48,
+                          "longitude": -127.3,
+                          "max_pond_elevation": 15,
+                          "min_freeboard_required": 16,
+                          "mine_tailings_storage_facility_guid": "abcde-12345",
+                          "operating_status": "care_and_maintenance",
+                          "permitted_dam_crest_elevation": 35,
+                          "update_timestamp": "2019-04-05 21:05:40.123456+00:00",
+                          "update_user": "update-user",
+                        },
+                      ],
+                      "facility_type": "tailings_storage_facility",
                       "itrb_exemption_status_code": "YES",
                       "latitude": null,
                       "longitude": null,
                       "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                       "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
                       "mine_tailings_storage_facility_name": "MockTSF",
+                      "mines_act_permit_no": "P-123",
+                      "storage_location": "above_ground",
+                      "tailings_storage_facility_type": "conventional",
                       "tsf_operating_status_code": "OPT",
+                      "update_timestamp": "2019-04-05 21:05:40.123456+00:00",
+                      "update_user": "test@bceid",
                     },
                   ],
                   "mine_type": Array [
@@ -569,7 +594,7 @@ exports[`Dashboard renders properly 1`] = `
                   ],
                   "verified_status": Object {
                     "healthy_ind": null,
-                    "mine_guid": null,
+                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                     "mine_name": null,
                     "verifying_timestamp": null,
                     "verifying_user": null,
@@ -596,7 +621,7 @@ exports[`Dashboard renders properly 1`] = `
                       "Closed",
                       "Care & Maintenance",
                     ],
-                    "statusvalue": Array [
+                    "status_values": Array [
                       "CLD",
                       "CM",
                     ],
@@ -702,7 +727,7 @@ exports[`Dashboard renders properly 1`] = `
                   ],
                   "verified_status": Object {
                     "healthy_ind": null,
-                    "mine_guid": null,
+                    "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
                     "mine_name": null,
                     "verifying_timestamp": null,
                     "verifying_user": null,
@@ -710,7 +735,7 @@ exports[`Dashboard renders properly 1`] = `
                 },
                 "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d": Object {
                   "major_mine_ind": true,
-                  "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  "mine_guid": "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
                   "mine_location": Object {
                     "latitude": null,
                     "longitude": null,
@@ -726,7 +751,7 @@ exports[`Dashboard renders properly 1`] = `
                       "Closed",
                       "Care & Maintenance",
                     ],
-                    "statusvalue": Array [
+                    "status_values": Array [
                       "CLD",
                       "CM",
                     ],
@@ -737,7 +762,7 @@ exports[`Dashboard renders properly 1`] = `
                       "itrb_exemption_status_code": "YES",
                       "latitude": null,
                       "longitude": null,
-                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "mine_guid": "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
                       "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
                       "mine_tailings_storage_facility_name": "MockTSF",
                       "tsf_operating_status_code": "OPT",
@@ -755,7 +780,7 @@ exports[`Dashboard renders properly 1`] = `
                   ],
                   "verified_status": Object {
                     "healthy_ind": null,
-                    "mine_guid": null,
+                    "mine_guid": "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
                     "mine_name": null,
                     "verifying_timestamp": null,
                     "verifying_user": null,
@@ -827,7 +852,7 @@ exports[`Dashboard renders properly 1`] = `
                       "latest_mine_status": Object {
                         "effective_date": "2024-03-07T15:49:45.989485+00:00",
                         "expiry_date": null,
-                        "mine_guid": "3b118b13-7397-4512-8021-c11ed90ce14c",
+                        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                         "mine_status_guid": "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
                         "mine_status_xref_guid": "4924b221-f895-479d-ad0d-7fde81795813",
                         "status_date": null,
@@ -855,7 +880,7 @@ exports[`Dashboard renders properly 1`] = `
                         Object {
                           "effective_date": "2024-03-07T15:49:45.989485+00:00",
                           "expiry_date": null,
-                          "mine_guid": "3b118b13-7397-4512-8021-c11ed90ce14c",
+                          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                           "mine_status_guid": "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
                           "mine_status_xref_guid": "4924b221-f895-479d-ad0d-7fde81795813",
                           "status_date": null,
@@ -873,13 +898,38 @@ exports[`Dashboard renders properly 1`] = `
                       "mine_tailings_storage_facilities": Array [
                         Object {
                           "consequence_classification_status_code": "LOW",
+                          "dams": Array [
+                            Object {
+                              "consequence_classification": "LOW",
+                              "current_dam_height": 2,
+                              "current_elevation": 3,
+                              "dam_guid": "123",
+                              "dam_name": "Dam Name",
+                              "dam_type": "dam",
+                              "latitude": 48,
+                              "longitude": -127.3,
+                              "max_pond_elevation": 15,
+                              "min_freeboard_required": 16,
+                              "mine_tailings_storage_facility_guid": "abcde-12345",
+                              "operating_status": "care_and_maintenance",
+                              "permitted_dam_crest_elevation": 35,
+                              "update_timestamp": "2019-04-05 21:05:40.123456+00:00",
+                              "update_user": "update-user",
+                            },
+                          ],
+                          "facility_type": "tailings_storage_facility",
                           "itrb_exemption_status_code": "YES",
                           "latitude": null,
                           "longitude": null,
                           "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                           "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
                           "mine_tailings_storage_facility_name": "MockTSF",
+                          "mines_act_permit_no": "P-123",
+                          "storage_location": "above_ground",
+                          "tailings_storage_facility_type": "conventional",
                           "tsf_operating_status_code": "OPT",
+                          "update_timestamp": "2019-04-05 21:05:40.123456+00:00",
+                          "update_user": "test@bceid",
                         },
                       ],
                       "mine_type": Array [
@@ -894,7 +944,7 @@ exports[`Dashboard renders properly 1`] = `
                       ],
                       "verified_status": Object {
                         "healthy_ind": null,
-                        "mine_guid": null,
+                        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                         "mine_name": null,
                         "verifying_timestamp": null,
                         "verifying_user": null,
@@ -921,7 +971,7 @@ exports[`Dashboard renders properly 1`] = `
                           "Closed",
                           "Care & Maintenance",
                         ],
-                        "statusvalue": Array [
+                        "status_values": Array [
                           "CLD",
                           "CM",
                         ],
@@ -1027,7 +1077,7 @@ exports[`Dashboard renders properly 1`] = `
                       ],
                       "verified_status": Object {
                         "healthy_ind": null,
-                        "mine_guid": null,
+                        "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
                         "mine_name": null,
                         "verifying_timestamp": null,
                         "verifying_user": null,
@@ -1035,7 +1085,7 @@ exports[`Dashboard renders properly 1`] = `
                     },
                     "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d": Object {
                       "major_mine_ind": true,
-                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                      "mine_guid": "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
                       "mine_location": Object {
                         "latitude": null,
                         "longitude": null,
@@ -1051,7 +1101,7 @@ exports[`Dashboard renders properly 1`] = `
                           "Closed",
                           "Care & Maintenance",
                         ],
-                        "statusvalue": Array [
+                        "status_values": Array [
                           "CLD",
                           "CM",
                         ],
@@ -1062,7 +1112,7 @@ exports[`Dashboard renders properly 1`] = `
                           "itrb_exemption_status_code": "YES",
                           "latitude": null,
                           "longitude": null,
-                          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                          "mine_guid": "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
                           "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
                           "mine_tailings_storage_facility_name": "MockTSF",
                           "tsf_operating_status_code": "OPT",
@@ -1080,7 +1130,7 @@ exports[`Dashboard renders properly 1`] = `
                       ],
                       "verified_status": Object {
                         "healthy_ind": null,
-                        "mine_guid": null,
+                        "mine_guid": "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
                         "mine_name": null,
                         "verifying_timestamp": null,
                         "verifying_user": null,
@@ -1249,7 +1299,7 @@ exports[`Dashboard renders properly 1`] = `
                         "latest_mine_status": Object {
                           "effective_date": "2024-03-07T15:49:45.989485+00:00",
                           "expiry_date": null,
-                          "mine_guid": "3b118b13-7397-4512-8021-c11ed90ce14c",
+                          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                           "mine_status_guid": "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
                           "mine_status_xref_guid": "4924b221-f895-479d-ad0d-7fde81795813",
                           "status_date": null,
@@ -1277,7 +1327,7 @@ exports[`Dashboard renders properly 1`] = `
                           Object {
                             "effective_date": "2024-03-07T15:49:45.989485+00:00",
                             "expiry_date": null,
-                            "mine_guid": "3b118b13-7397-4512-8021-c11ed90ce14c",
+                            "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                             "mine_status_guid": "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
                             "mine_status_xref_guid": "4924b221-f895-479d-ad0d-7fde81795813",
                             "status_date": null,
@@ -1295,13 +1345,38 @@ exports[`Dashboard renders properly 1`] = `
                         "mine_tailings_storage_facilities": Array [
                           Object {
                             "consequence_classification_status_code": "LOW",
+                            "dams": Array [
+                              Object {
+                                "consequence_classification": "LOW",
+                                "current_dam_height": 2,
+                                "current_elevation": 3,
+                                "dam_guid": "123",
+                                "dam_name": "Dam Name",
+                                "dam_type": "dam",
+                                "latitude": 48,
+                                "longitude": -127.3,
+                                "max_pond_elevation": 15,
+                                "min_freeboard_required": 16,
+                                "mine_tailings_storage_facility_guid": "abcde-12345",
+                                "operating_status": "care_and_maintenance",
+                                "permitted_dam_crest_elevation": 35,
+                                "update_timestamp": "2019-04-05 21:05:40.123456+00:00",
+                                "update_user": "update-user",
+                              },
+                            ],
+                            "facility_type": "tailings_storage_facility",
                             "itrb_exemption_status_code": "YES",
                             "latitude": null,
                             "longitude": null,
                             "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                             "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
                             "mine_tailings_storage_facility_name": "MockTSF",
+                            "mines_act_permit_no": "P-123",
+                            "storage_location": "above_ground",
+                            "tailings_storage_facility_type": "conventional",
                             "tsf_operating_status_code": "OPT",
+                            "update_timestamp": "2019-04-05 21:05:40.123456+00:00",
+                            "update_user": "test@bceid",
                           },
                         ],
                         "mine_type": Array [
@@ -1316,7 +1391,7 @@ exports[`Dashboard renders properly 1`] = `
                         ],
                         "verified_status": Object {
                           "healthy_ind": null,
-                          "mine_guid": null,
+                          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                           "mine_name": null,
                           "verifying_timestamp": null,
                           "verifying_user": null,
@@ -1343,7 +1418,7 @@ exports[`Dashboard renders properly 1`] = `
                             "Closed",
                             "Care & Maintenance",
                           ],
-                          "statusvalue": Array [
+                          "status_values": Array [
                             "CLD",
                             "CM",
                           ],
@@ -1449,7 +1524,7 @@ exports[`Dashboard renders properly 1`] = `
                         ],
                         "verified_status": Object {
                           "healthy_ind": null,
-                          "mine_guid": null,
+                          "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
                           "mine_name": null,
                           "verifying_timestamp": null,
                           "verifying_user": null,
@@ -1457,7 +1532,7 @@ exports[`Dashboard renders properly 1`] = `
                       },
                       "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d": Object {
                         "major_mine_ind": true,
-                        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                        "mine_guid": "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
                         "mine_location": Object {
                           "latitude": null,
                           "longitude": null,
@@ -1473,7 +1548,7 @@ exports[`Dashboard renders properly 1`] = `
                             "Closed",
                             "Care & Maintenance",
                           ],
-                          "statusvalue": Array [
+                          "status_values": Array [
                             "CLD",
                             "CM",
                           ],
@@ -1484,7 +1559,7 @@ exports[`Dashboard renders properly 1`] = `
                             "itrb_exemption_status_code": "YES",
                             "latitude": null,
                             "longitude": null,
-                            "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                            "mine_guid": "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
                             "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
                             "mine_tailings_storage_facility_name": "MockTSF",
                             "tsf_operating_status_code": "OPT",
@@ -1502,7 +1577,7 @@ exports[`Dashboard renders properly 1`] = `
                         ],
                         "verified_status": Object {
                           "healthy_ind": null,
-                          "mine_guid": null,
+                          "mine_guid": "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
                           "mine_name": null,
                           "verifying_timestamp": null,
                           "verifying_user": null,
