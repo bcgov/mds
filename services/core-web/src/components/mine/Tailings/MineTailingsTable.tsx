@@ -42,7 +42,7 @@ interface MineTailingsTableProps {
 }
 
 const MineTailingsTable: FC<MineTailingsTableProps> = (props) => {
-  const { id: mineGuid } = useParams<{ id: string }>();
+  const { mineGuid } = useParams<{ mineGuid: string }>();
   const dispatch = useAppDispatch();
   const history = useHistory();
   const TSFOperatingStatusCodeHash = useAppSelector(getTSFOperatingStatusCodeOptionsHash);

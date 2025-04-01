@@ -15,6 +15,7 @@ import { FORM } from "@mds/common/constants/forms";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
 import { createDam, getDamByGuid, storeDam, updateDam } from "@mds/common/redux/slices/damSlice";
+import { isDirty } from "../../forms/form";
 
 const DamsPage: FC = () => {
     const dispatch = useAppDispatch();
@@ -36,6 +37,7 @@ const DamsPage: FC = () => {
     const canEditTSF = !isCore || coreCanEditTsf;
     const isUserActionEdit = userAction === "editDam" || userAction === "newDam";
     const isTSFEditMode = parentTSFFormMode === "edit";
+    const isFormDirty = useAppSelector(isDirty(FORM.ADD_EDIT_DAM))
 
     useEffect(() => {
         if (!tsf.mine_tailings_storage_facility_guid) {
@@ -70,15 +72,19 @@ const DamsPage: FC = () => {
     };
 
     const handleSave = async (values, newActiveTab) => {
-        if (damGuid) {
-            const updatedDam = await dispatch(updateDam(values));
-            handleCompleteSubmit(updatedDam);
+        if(isUserActionEdit && isFormDirty){
+            if (damGuid) {
+                const updatedDam = await dispatch(updateDam(values));
+                handleCompleteSubmit(updatedDam);
+            } else {
+                const newDam = await dispatch(createDam({
+                    ...values,
+                    mine_tailings_storage_facility_guid: tailingsStorageFacilityGuid,
+                }));
+                handleCompleteSubmit(newDam);
+            }
         } else {
-            const newDam = await dispatch(createDam({
-                ...values,
-                mine_tailings_storage_facility_guid: tailingsStorageFacilityGuid,
-            }));
-            handleCompleteSubmit(newDam);
+            handleBack();
         }
     };
 
