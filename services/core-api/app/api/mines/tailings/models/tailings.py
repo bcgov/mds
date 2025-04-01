@@ -9,7 +9,7 @@ from sqlalchemy.schema import FetchedValue
 
 from app.api.constants import MINESPACE_TSF_UPDATE_EMAIL
 from app.api.services.email_service import EmailService
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, HistoryMixin, Base
 from app.config import Config
 from app.extensions import db
 from app.api.dams.models.dam import Dam
@@ -40,7 +40,7 @@ class TailingsStorageFacilityType(Enum):
     def __str__(self):
         return self.value
 
-class MineTailingsStorageFacility(AuditMixin, Base):
+class MineTailingsStorageFacility(AuditMixin, HistoryMixin, Base):
     __tablename__ = "mine_tailings_storage_facility"
     __versioned__ = {}
 
@@ -142,26 +142,6 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         if add_to_session:
             new_tsf.save()
         return new_tsf
-    @hybrid_property
-    def history(self):
-        def dt_to_str(dt):
-            if isinstance(dt, datetime.datetime):
-                return dt.isoformat() if dt else None
-            return dt
-        if self.versions:
-            hs = list(map(lambda version: {
-                'updated_by': version.update_user,
-                'updated_at': version.update_timestamp,
-                'changeset': list(map(lambda key: json.loads(json.dumps({
-                    'field_name': key,
-                    'from': dt_to_str(version.changeset[key][0]),
-                    'to': dt_to_str(version.changeset[key][1])
-                }, default=str)), version.changeset))
-            }, self.versions))
-
-            return hs
-        else:
-            return []
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):

@@ -1,6 +1,6 @@
 import decimal
 from numbers import Number
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 from dateutil import parser
 from flask import current_app
 from sqlalchemy.exc import SQLAlchemyError
@@ -486,7 +486,9 @@ class HistoryMixin(object):
     def history(self):
         def dt_to_str(dt):
             if isinstance(dt, datetime):
-                return dt.isoformat() if dt else None
+                if dt.tzinfo:
+                    return dt.isoformat()
+                return dt.replace(tzinfo=timezone.utc).isoformat()
             return dt
         if self.versions:
             hs = list(map(lambda version: {
