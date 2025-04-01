@@ -37,7 +37,7 @@ exports[`NoticesOfDeparture renders properly 1`] = `
             "permit": Object {
               "current_permittee": "Haynes, Park and Brown",
               "permit_guid": "10d3ec917-179f-4dbc-80a3-4c993fdfe596",
-              "permit_id": 1,
+              "permit_id": "1",
               "permit_no": "M-7594809",
               "permit_prefix": "M",
               "permit_status_code": "C",

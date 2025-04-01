@@ -30,7 +30,7 @@ import {
   INoDContactInterface,
   INodDocumentPayload,
   INoticeOfDeparture,
-  INoDPermit,
+  IPermit,
 } from "@mds/common/interfaces";
 import { AxiosResponse } from "axios";
 import { useDispatch } from "react-redux";
@@ -42,19 +42,14 @@ interface RenderContactsProps {
   fields: FieldArrayFieldsProps<INoDContactInterface>;
 }
 
-export interface AddNoticeOfDepartureFormProps {
-  initialValues: { nod_contacts: [{ is_primary: boolean }] };
-}
-
 interface AddNoticeOfDepartureProps {
-  permits: INoDPermit[];
+  permits: IPermit[];
   onSubmit: (
     permitNumber: string,
     values: ICreateNoD,
     documentArray: INodDocumentPayload[]
   ) => Promise<AxiosResponse<INoticeOfDeparture>>;
   mineGuid: string;
-  initialValues: AddNoticeOfDepartureFormProps;
 }
 
 export const renderContacts: React.FC<RenderContactsProps> = (props) => {
@@ -205,7 +200,6 @@ const AddNoticeOfDepartureForm: React.FC<AddNoticeOfDepartureProps> = (props) =>
           forceUnregisterOnUnmount: true,
           enableReinitialize: true,
         }}
-        initialValues={props.initialValues}
         onSubmit={handleNoticeOfDepartureSubmit}
       >
         <Typography.Text>

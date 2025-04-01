@@ -65,7 +65,7 @@ exports[`EditNoticeOfDepartureModal renders properly 1`] = `
         "permit": Object {
           "current_permittee": "Richardson-Weiss",
           "permit_guid": "b6cc4e58-993f-4045-8e3b-27b0935d5ef7",
-          "permit_id": 10,
+          "permit_id": "10",
           "permit_no": "CX-6515762",
           "permit_prefix": "C",
           "permit_status_code": "O",

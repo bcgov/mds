@@ -10083,7 +10083,7 @@ export const NOTICES_OF_DEPARTURE: { records: INoticeOfDeparture[] } = {
       update_timestamp: "2020-04-20 11:58",
       submission_timestamp: "2020-04-20 11:58",
       permit: {
-        permit_id: 1,
+        permit_id: "1",
         permit_guid: "10d3ec917-179f-4dbc-80a3-4c993fdfe596",
         permit_no: "M-7594809",
         permit_status_code: "C",
@@ -10104,7 +10104,7 @@ export const NOTICE_OF_DEPARTURE_DETAILS: INoticeOfDeparture = {
   update_timestamp: "2022-05-05T15:44:48.205068+00:00",
   submission_timestamp: "2022-05-05T15:44:48.205086",
   permit: {
-    permit_id: 10,
+    permit_id: "10",
     permit_guid: "b6cc4e58-993f-4045-8e3b-27b0935d5ef7",
     permit_no: "CX-6515762",
     permit_status_code: "O",
