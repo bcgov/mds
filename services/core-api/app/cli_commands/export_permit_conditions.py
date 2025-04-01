@@ -138,7 +138,7 @@ def export_permit_conditions(permit_amendment_guid, csv_writer=None):
         return filename
 
 
-def bulk_export_permit_conditions(csv_path):
+def bulk_export_permit_conditions(csv_path, output_path):
     """
     Export permit conditions for multiple permits from a CSV file into a single output file.
     CSV should have a column named 'permit_no' containing permit numbers.
@@ -146,15 +146,12 @@ def bulk_export_permit_conditions(csv_path):
     import csv
 
     from app.api.mines.permits.permit.models.permit import Permit
-
-    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_filename = f'permit_conditions_bulk_export_{timestamp}.csv'
     
     success_count = 0
     error_count = 0
     total_conditions = 0
 
-    with open(output_filename, 'w', newline='') as outfile:
+    with open(output_path, 'w', newline='') as outfile:
         writer = csv.DictWriter(outfile, fieldnames=headers)
         writer.writeheader()
 

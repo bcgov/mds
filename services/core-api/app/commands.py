@@ -311,7 +311,8 @@ def register_commands(app):
 
     @app.cli.command('bulk_export_permit_conditions')
     @click.argument('csv_path', type=click.Path(exists=True))
-    def bulk_export_permit_conditions(csv_path):
+    @click.argument('output_path', type=click.Path(exists=False))
+    def bulk_export_permit_conditions(csv_path, output_path):
         """
         Export permit conditions for multiple permits from a CSV file.
         CSV should have a column named 'permit_no' containing permit numbers.
@@ -325,4 +326,4 @@ def register_commands(app):
         
         auth.apply_security = False
         with current_app.app_context():
-            bulk_export_permit_conditions(csv_path)
+            bulk_export_permit_conditions(csv_path, output_path)
