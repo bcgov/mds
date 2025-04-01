@@ -150,7 +150,7 @@ class MinePartyApptResource(Resource, UserMixin):
                 raise NotFound('TSF not found')
 
             if party.party_type_code != "PER":
-                raise Forbidden(f"A contact for {mine_party_appt_type_code} must be a person not an organization")
+                raise BadRequest(f"A contact for {mine_party_appt_type_code} must be a person not an organization")
 
             if not can_edit_mines():
                 # if this party was not created by the current user, check if they have the correct role
