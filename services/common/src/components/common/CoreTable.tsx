@@ -126,6 +126,7 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
           : "fade-in"
       }
       columns={columns}
+      scroll={expandProps ? { x: 'max-content' } : undefined}
       {...tableProps}
     ></Table>
   ) : (

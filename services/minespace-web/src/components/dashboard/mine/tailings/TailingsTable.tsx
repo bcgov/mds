@@ -8,8 +8,8 @@ import {
   getITRBExemptionStatusCodeOptionsHash,
   getTSFOperatingStatusCodeOptionsHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { useHistory, useParams } from "react-router-dom";
-import React, { FC } from "react";
+import { useHistory } from "react-router-dom";
+import React, { FC, useContext } from "react";
 import { getHighestConsequence } from "@common/utils/helpers";
 import { storeDam } from "@mds/common/redux/slices/damSlice";
 import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
@@ -24,7 +24,8 @@ import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { ColumnsType } from "antd/lib/table";
 import { ColumnType } from "antd/es/table";
-import { ITailingsStorageFacility } from "@mds/common/interfaces";
+import { IMine, ITailingsStorageFacility } from "@mds/common/interfaces";
+import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 
 interface TailingsTableProps {
   tailings: ITailingsStorageFacility[];
@@ -36,7 +37,8 @@ interface TailingsTableProps {
 
 export const TailingsTable: FC<TailingsTableProps> = (props) => {
   const history = useHistory();
-  const { id: mineGuid } = useParams<{ id: string }>();
+  const { mine } = useContext<{ mine: IMine }>(SidebarContext);
+  const { mine_guid } = mine;
   const { isFeatureEnabled } = useFeatureFlag();
   const dispatch = useAppDispatch();
 
@@ -57,7 +59,7 @@ export const TailingsTable: FC<TailingsTableProps> = (props) => {
       dispatch(storeTsf(tsf));
     }
     const url = EDIT_DAM.dynamicRoute(
-      mineGuid,
+      mine_guid,
       dam.mine_tailings_storage_facility_guid,
       dam.dam_guid,
       isEditMode,
