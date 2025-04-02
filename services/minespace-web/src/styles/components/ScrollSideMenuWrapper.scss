@@ -93,31 +93,41 @@
 }
 
 .fixed-tabs-container {
-    width: 100%;
+
+    // this is for the other tabs in project (ex: decision package)
+    // that don't use the wrapper to set the top offset in the component
+    // and may be removed if those pages are re-worked
+    .side-menu--fixed {
+        top: 181 + $header-height;
+    }
 
     .view--header {
         position: fixed;
         width: 100%;
-        z-index: 1000;
-        background-color: $white;
-        padding: 0 $fixed-page-margin;
+        z-index: 999;
+        background-color: $pure-white;
+        top: $header-height;
     }
 
     .fixed-tabs-tabs {
+        padding-top: 0;
+        width: 100vw;
+        left: 0;
+        background-color: $pure-white;
+
+
         &>.ant-tabs-nav {
+            width: 100%;
             position: fixed;
-            top: $layout-header-height + 103px; //ProjectDocumentsTab->headerHeight
-            width: calc(100vw - ($fixed-page-margin * 2));
-            background-color: $white;
-            z-index: 1000;
-            margin-left: $fixed-page-margin;
-            height: 49px;
+            top: 183px;
+            background-color: $pure-white;
+            z-index: 999;
         }
 
         &>.ant-tabs-content-holder {
-            margin-top: 123px + 49px; // height + top property from .ant-tabs-nav above
-            position: relative;
-            padding: 0 $fixed-page-margin;
+            margin-top: 183px;
         }
+
     }
+
 }

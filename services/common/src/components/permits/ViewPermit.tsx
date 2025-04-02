@@ -11,7 +11,7 @@ import PermitConditions from "@mds/common/components/permits/PermitConditions";
 
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
-import CorePageHeader from "@mds/common/components/common/CorePageHeader";
+import CommonPageHeader from "@mds/common/components/common/CommonPageHeader";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
@@ -19,17 +19,16 @@ import { PresetStatusColorType } from "antd/es/_util/colors";
 import { Badge } from "antd";
 import { ActionMenuButton, deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import {
+  deletePermitConditions,
+  fetchPermitExtractionStatus,
+  fetchPermitExtractionTasks,
   getPermitExtractionByGuid,
   initiatePermitExtraction,
   PermitExtractionStatus,
-  fetchPermitExtractionTasks,
-  deletePermitConditions,
-  fetchPermitExtractionStatus,
 } from "@mds/common/redux/slices/permitServiceSlice";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import Loading from "@mds/common/components/common/Loading";
-import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import PermitConditionsSelectDocumentModal from "@mds/common/components/permits/PermitConditionsSelectDocumentModal";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
@@ -304,7 +303,7 @@ const ViewPermit: FC = () => {
 
   return (
     <div className="fixed-tabs-container">
-      <CorePageHeader
+      <CommonPageHeader
         entityLabel={permit?.permit_no ?? ""}
         entityType="Permit"
         mineGuid={id}

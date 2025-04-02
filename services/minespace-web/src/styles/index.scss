@@ -30,6 +30,8 @@
 @use "./components/RichTextEditor.scss";
 @use "./components/HelpGuide.scss";
 @use "./components/MinesPage.scss";
+@use "./components/CorePageHeader.scss";
+@use "./components/ViewPermit.scss";
 
 // UTILITIES - utilities and helper classes. This layer has the highest specificity.
 @use "./generic/helpers.scss";

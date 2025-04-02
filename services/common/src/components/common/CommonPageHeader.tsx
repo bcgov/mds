@@ -15,7 +15,7 @@ interface BreadCrumb {
   text: string;
 }
 
-interface CorePageHeaderProps {
+interface CommonPageHeaderProps {
   entityLabel: string;
   entityType: string;
   mineGuid: string;
@@ -27,7 +27,7 @@ interface CorePageHeaderProps {
 
 const { Title, Text } = Typography;
 
-const CorePageHeader: FC<CorePageHeaderProps> = ({
+const CommonPageHeader: FC<CommonPageHeaderProps> = ({
   mineGuid,
   current_permittee,
   entityLabel,
@@ -102,4 +102,4 @@ const CorePageHeader: FC<CorePageHeaderProps> = ({
   );
 };
 
-export default CorePageHeader;
+export default CommonPageHeader;

@@ -13,6 +13,7 @@ $light-violet: #7c66ad;
 $hover-blue: #3d6de7;
 $btn-red: #bc2929;
 $input-text: #000000D9;
+$transparent-dark-grey: #31313226;
 
 // Accent Colours
 $lime-green: #adfc4a;
@@ -101,6 +102,9 @@ $default-p: 1rem; //16px
 
 $table-header: 1.125rem;
 $field-label: $default-p;
+
+$nav-height: 80px;
+$header-height: $nav-height;
 
 // Font
 $default-font: "Open Sans", sans-serif;
