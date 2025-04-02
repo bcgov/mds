@@ -245,6 +245,7 @@ export const TailingsTable: FC<TailingsTableProps> = (props) => {
               recordDescription: "associated dams",
               getDataSource: (record) => record.dams,
               subTableColumns: expandedColumns,
+              fixedColumns: true,
             }
           : null
       }
