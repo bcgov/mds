@@ -1,11 +1,7 @@
 @use "../settings/variables.scss";
 @use "../settings/theme.scss";
 
-.ant-btn,
-.core-btn,
-.ant-btn-sm,
-.ant-btn-secondary,
-.ant-btn-default {
+.core-btn {
   position: inherit;
   margin-bottom: 10px;
   padding: 0 16px;
