@@ -103,7 +103,8 @@ exports[`Tailings DamsPage renders properly 1`] = `
                   Associated Dams - 
                 </h4>
                 <a
-                  class="ant-typography associated-dams-link"
+                  class="associated-dams-link"
+                  href="/test"
                 >
                   Return to all Associated Dams of 
                   MockTSF
