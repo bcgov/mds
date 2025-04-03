@@ -9,6 +9,7 @@ import { USER_ROLES } from "@mds/common/constants/environment";
 import { userReducerType } from "@mds/common/redux/slices/userSlice";
 import { searchConditionCategoriesType } from "@mds/common/redux/slices/permitConditionCategorySlice";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 const initialState = {
   [MINES]: MOCK.MINES,
@@ -26,6 +27,7 @@ const initialState = {
     review_assignments_loading: false,
   },
   [AUTHENTICATION]: {
+    systemFlag: SystemFlagEnum.core,
     userAccessData: [USER_ROLES.role_admin, USER_ROLES.role_edit_template_conditions],
   },
 };
@@ -230,7 +232,7 @@ describe("PermitConditions", () => {
 
   it("enables adding a condition category in a modal", async () => {
     const { container } = render(
-      <ReduxWrapper initialState={initialState} >
+      <ReduxWrapper initialState={initialState}>
         <BrowserRouter>
           <ModalWrapper />
           <ViewPermit />
@@ -240,7 +242,9 @@ describe("PermitConditions", () => {
 
     const banner = container.querySelector(".permit-status-banner");
     expect(banner).toBeInTheDocument();
-    const bannerText = screen.getByText("Conditions and their report requirements have been extracted using AI and require review and verification.");
+    const bannerText = screen.getByText(
+      "Conditions and their report requirements have been extracted using AI and require review and verification."
+    );
     expect(banner).toContainElement(bannerText);
 
     const addConditionLink = screen.getByText("+ Add Condition Category");
@@ -249,12 +253,11 @@ describe("PermitConditions", () => {
 
     let descriptionInput;
     await waitFor(() => {
-      descriptionInput = screen.getByRole("combobox", { "name": "description" });
+      descriptionInput = screen.getByRole("combobox", { name: "description" });
       expect(descriptionInput).toBeInTheDocument();
-    })
+    });
 
-
-    const stepInput = screen.getByRole("textbox", { "name": "step" });
+    const stepInput = screen.getByRole("textbox", { name: "step" });
     expect(stepInput).toBeInTheDocument();
 
     const AddCategoryButton = screen.getByText("Add Category");
@@ -262,13 +265,15 @@ describe("PermitConditions", () => {
 
     AddCategoryButton.click();
 
-    await waitFor(() => { expect(screen.getAllByText("This is a required field")).toHaveLength(2); })
+    await waitFor(() => {
+      expect(screen.getAllByText("This is a required field")).toHaveLength(2);
+    });
 
     fireEvent.mouseDown(descriptionInput);
 
     fireEvent.change(descriptionInput, { target: { value: "New Condition Description" } });
 
-    screen.getAllByText('New Condition Description')[1].click();
+    screen.getAllByText("New Condition Description")[1].click();
     expect(descriptionInput).toHaveValue("New Condition Description");
 
     fireEvent.change(stepInput, { target: { value: "1" } });
@@ -290,6 +295,5 @@ describe("PermitConditions", () => {
       const conditionInput = container.querySelector('[name="condition"]');
       expect(conditionInput).toBeInTheDocument();
     });
-
   });
 });

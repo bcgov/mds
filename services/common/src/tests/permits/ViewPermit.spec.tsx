@@ -6,11 +6,13 @@ import { AUTHENTICATION, MINES, PERMITS, STATIC_CONTENT } from "@mds/common/cons
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { BrowserRouter } from "react-router-dom";
 import ViewPermit from "@mds/common/components/permits/ViewPermit";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 const initialState = {
   [PERMITS]: { permits: MOCK.PERMITS, latestPermitAmendments: MOCK.PERMIT_AMENDMENT_STATE },
   [MINES]: { mines: MOCK.MINES.mines },
   [AUTHENTICATION]: {
+    systemFlag: SystemFlagEnum.core,
     userAccessData: [USER_ROLES.role_admin, USER_ROLES.role_edit_template_conditions],
   },
   [STATIC_CONTENT]: {
