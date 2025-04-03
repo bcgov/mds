@@ -10,7 +10,7 @@ import {
   requiredList,
 } from "@mds/common/redux/utils/Validate";
 import { Field } from "@mds/common/components/forms/form";
-import { formatDateTime } from "@mds/common/redux/utils/helpers";
+import { formatDateTime, formatDateTimeUserTz } from "@mds/common/redux/utils/helpers";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getTsf } from "@mds/common/redux/selectors/tailingsSelectors";
 import TailingsDiffModal from "@mds/common/components/tailings/TailingsDiffModal";
@@ -25,6 +25,8 @@ export interface BasicInformationProps {
   canEditTSF?: boolean;
   isEditMode: boolean;
 }
+
+const dateTransform = { transform: (dateString: string) => formatDateTimeUserTz(dateString) || null };
 
 // Provide a mapping of the field names to the title and data for the field
 // This is used to display the field names and values in a more user-friendly way in the history modal
@@ -67,6 +69,8 @@ const historyDiffValueMapper = {
     title: "Independent Tailings Review Board Member",
     data: TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD,
   },
+  create_timestamp: dateTransform,
+  update_timestamp: dateTransform,
 };
 
 export const BasicInformation: FC<BasicInformationProps> = (props) => {

@@ -385,8 +385,8 @@ export const MINE_INSPECTIONS = {
 };
 
 export const MINE_TAILINGS_REPORTS = {
-  route: "/mine-dashboard/:id/reports/tailings-reports",
-  dynamicRoute: (id) => `/mine-dashboard/${id}/reports/tailings-reports`,
+  route: "/mine-dashboard/:mineGuid/reports/tailings-reports",
+  dynamicRoute: (mineGuid) => `/mine-dashboard/${mineGuid}/reports/tailings-reports`,
   component: MineReportTailingsInfo,
   helpKey: "Mine-Tailings-Reports",
 };

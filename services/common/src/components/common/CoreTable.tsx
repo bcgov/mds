@@ -10,6 +10,7 @@ interface CoreTableExpandConfig<T> extends ExpandableConfig<T> {
   rowKey?: string | ((record: any) => string);
   recordDescription?: string;
   subTableColumns?: ColumnsType<any>;
+  fixedColumns?: boolean;
   matchChildColumnsToParent?: boolean;
   // and any other props from expandable https://4x.ant.design/components/table/#expandable
 }
@@ -126,6 +127,7 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
           : "fade-in"
       }
       columns={columns}
+      scroll={expandProps?.fixedColumns ? { x: 'max-content' } : undefined}
       {...tableProps}
     ></Table>
   ) : (
