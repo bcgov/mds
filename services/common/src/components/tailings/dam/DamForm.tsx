@@ -14,7 +14,7 @@ import {
     required,
     requiredList,
 } from "@mds/common/redux/utils/Validate";
-import { useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { Field } from "@mds/common/components/forms/form";
 import React, { FC } from "react";
 import { ITailingsStorageFacility, IDam } from "@mds/common/interfaces";
@@ -65,23 +65,31 @@ const DamForm: FC<DamFormProps> = (props) => {
         }))
     };
 
+    const returnLink = (
+        <Link to={returnUrl} className="associated-dams-link">
+          Return to all Associated Dams of {tsf.mine_tailings_storage_facility_name}.
+        </Link>
+      );
+
     return (
         <div>
             <div className="margin-large--bottom">
                 <Typography.Title level={4}>Associated Dams - {dam?.dam_name}</Typography.Title>
-                <Popconfirm
-                    title={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-                        } dam?
-          All unsaved data on this page will be lost.`}
-                    cancelText="No"
-                    okText="Yes"
-                    placement="right"
-                    onConfirm={handleBack}
-                >
-                    <Typography.Link className="associated-dams-link">
-                        Return to all Associated Dams of {tsf.mine_tailings_storage_facility_name}.
-                    </Typography.Link>
-                </Popconfirm>
+                {canEditTSFAndEditMode ? (
+                    <Popconfirm
+                        title={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+                            } dam?
+            All unsaved data on this page will be lost.`}
+                        cancelText="No"
+                        okText="Yes"
+                        placement="right"
+                        onConfirm={handleBack}
+                    >
+                        {returnLink}
+                    </Popconfirm>
+                ): (
+                    returnLink
+                )}
             </div>
             {dam?.update_timestamp && (
                 <Row>

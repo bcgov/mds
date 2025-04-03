@@ -96,6 +96,13 @@ const DamsPage: FC = () => {
         return damGuid ? "Edit Dam" : "Create Dam";
     };
 
+    const returnLink = (
+        <Link to={backUrl}>
+            <ArrowLeftOutlined className="padding-sm--right" />
+            Back to: {tsf.mine_tailings_storage_facility_name} Dams page
+        </Link>
+    )
+
     return (
         <div>
             <Row>
@@ -103,20 +110,21 @@ const DamsPage: FC = () => {
                     <Typography.Title>{renderTitle()}</Typography.Title>
                 </Col>
                 <Col span={24}>
-                    <Popconfirm
-                        title={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-                            } dam?
-            All unsaved data on this page will be lost.`}
-                        onConfirm={handleBack}
-                        cancelText="No"
-                        okText="Yes"
-                        placement="right"
-                    >
-                        <Link to={backUrl}>
-                            <ArrowLeftOutlined className="padding-sm--right" />
-                            Back to: {tsf.mine_tailings_storage_facility_name} Dams page
-                        </Link>
-                    </Popconfirm>
+                    {isUserActionEdit ? (
+                        <Popconfirm
+                            title={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+                                } dam?
+                All unsaved data on this page will be lost.`}
+                            onConfirm={handleBack}
+                            cancelText="No"
+                            okText="Yes"
+                            placement="right"
+                        >
+                            {returnLink}
+                        </Popconfirm>
+                    ) : (
+                        returnLink
+                    )}
                 </Col>
             </Row>
             <Divider />
