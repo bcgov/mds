@@ -17,7 +17,7 @@ import {
 import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
-import { getMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
+import { fetchComplianceReports, getMineReportDefinitionOptions, getReportDefinitionsLoaded, reportParamsGetAll } from "@mds/common/redux/slices/complianceReportsSlice";
 import * as Strings from "@mds/common/constants/strings";
 import DamsPage from "@mds/common/components/tailings/dam/DamsPage";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
@@ -70,6 +70,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
   const pageData = useAppSelector(getReportsPageData);
 
   const [isLoaded, setIsLoaded] = useState(false);
+  const reportDefinitionsLoaded = useAppSelector(getReportDefinitionsLoaded(reportParamsGetAll));
   const [params, setParams] = useState({ sort_field: "received_date", sort_dir: "desc" });
 
   const canEditTSF = useAppSelector(userHasRole(USER_ROLES.role_edit_tsf));
@@ -82,6 +83,12 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
     dispatch(fetchMineReports(mineGuid, defaultParams.mineReportType)).then(() => {
       setIsLoaded(true);
     });
+  }, []);
+
+  useEffect(() => {
+    if (!reportDefinitionsLoaded) {
+      dispatch(fetchComplianceReports(reportParamsGetAll));
+    }
   }, []);
 
   const handleEditTailings = (values) => {
