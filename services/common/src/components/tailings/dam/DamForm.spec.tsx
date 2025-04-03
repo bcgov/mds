@@ -6,6 +6,7 @@ import { TAILINGS } from "@mds/common/constants/reducerTypes";
 import DamForm from "./DamForm";
 import FormWrapper from "../../forms/FormWrapper";
 import { FORM } from "@mds/common/constants/forms";
+import { BrowserRouter } from "react-router-dom";
 
 
 const initialState = {
@@ -29,11 +30,13 @@ jest.mock("react-router-dom", () => mockFunction());
 describe("Tailings DamForm", () => {
     it("renders properly", () => {
         const { container } = render(
-            <ReduxWrapper initialState={initialState}>
-                <FormWrapper name={FORM.ADD_EDIT_DAM}>
-                    <DamForm tsf={TSF} canEditTSF={true} isEditMode={true} canEditDam={true} />
-                </FormWrapper>
-            </ReduxWrapper>
+            <BrowserRouter>
+                <ReduxWrapper initialState={initialState}>
+                    <FormWrapper name={FORM.ADD_EDIT_DAM}>
+                        <DamForm tsf={TSF} canEditTSF={true} isEditMode={true} canEditDam={true} />
+                    </FormWrapper>
+                </ReduxWrapper>
+            </BrowserRouter>
         );
         expect(container).toMatchSnapshot();
     });
