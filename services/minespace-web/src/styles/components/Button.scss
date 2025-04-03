@@ -1,0 +1,88 @@
+@use "../settings/variables.scss";
+@use "../settings/theme.scss";
+
+.ant-btn,
+.core-btn,
+.ant-btn-sm,
+.ant-btn-secondary,
+.ant-btn-default {
+  position: inherit;
+  margin-bottom: 10px;
+  padding: 0 16px;
+  font-weight: variables.$semi-bold;
+
+  // these and the hover rules are really only for default,
+  // but due to precendence rules, kept at top level
+  color: variables.$secondary-btn-color; // #medium-grey
+  border: 1px solid variables.$secondary-btn-color;
+
+  &:hover {
+    color: variables.$secondary-btn-color-hover;
+    border-color: variables.$secondary-btn-border-color-hover;
+  }
+
+  span {
+    font-size: theme.$font-size-sm;
+  }
+
+  &-primary {
+    color: variables.$pure-white;
+    background-color: variables.$primary-btn-color;
+    border-color: variables.$primary-btn-color;
+
+    &:hover,
+    &:focus {
+      color: variables.$pure-white;
+      background-color: variables.$primary-btn-color-hover;
+      border-color: variables.$primary-btn-border-color-hover;
+    }
+  }
+
+  &.ant-btn-ghost {
+    color: variables.$primary-btn-color;
+    border: 2px solid variables.$primary-btn-color;
+    background-color: variables.$pure-white;
+
+    &:hover,
+    &:active {
+      background-color: variables.$gov-blue;
+      color: variables.$hover-blue;
+      border-color: variables.$hover-blue;
+    }
+  }
+
+  &.core-btn-tertiary {
+    border: 2px solid variables.$tertiary-btn-color;
+    color: variables.$tertiary-btn-color;
+    background-color: transparent;
+  }
+
+  &.core-btn-filled-tertiary {
+    font-weight: variables.$light;
+    color: variables.$pure-white;
+    border: 1px solid variables.$tertiary-btn-color;
+    background-color: variables.$tertiary-btn-color;
+
+    &:hover,
+    &:focus {
+      color: variables.$pure-white;
+      background-color: variables.$tertiary-btn-color-hover;
+    }
+  }
+
+  &.ant-btn-danger,
+  &.ant-btn-dangerous {
+    color: variables.$pure-white;
+    border: 1px solid variables.$danger-btn-color;
+
+    &:hover,
+    &:focus {
+      color: variables.$pure-white;
+    }
+
+    &:disabled {
+      color: variables.$danger-btn-color-disabled;
+      border: 1px solid variables.$danger-btn-color-disabled;
+    }
+  }
+}

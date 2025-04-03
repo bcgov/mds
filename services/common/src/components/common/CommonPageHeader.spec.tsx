@@ -10,7 +10,7 @@ const initialState = {
   [MINES]: MOCK.MINES,
 };
 
-describe("CorePageHeader", () => {
+describe("CommonPageHeader", () => {
   it("renders properly", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>

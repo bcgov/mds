@@ -18,6 +18,7 @@ $transparent-dark-grey: #31313226;
 // Accent Colours
 $lime-green: #adfc4a;
 $light-blue: #72c0ee;
+$lightest-blue: #D9EAF7;
 $non-textual-grey: #a09595;
 $gov-blue: #003366;
 
@@ -44,6 +45,10 @@ $error-dark: #841913;
 $map-fuschia: #f736fb;
 $beacon-fuschia: #f736fb;
 $map-lavender: #b7a6fc;
+
+$danger-btn-color: $btn-red;
+$danger-btn-color-hover: color.adjust($danger-btn-color, $lightness: -20%);
+$danger-btn-color-disabled: rgba($danger-btn-color, 0.5);
 
 /*
  * Component Colour Aliases

@@ -6,10 +6,10 @@ exports[`PermitConditions renders properly 1`] = `
     class="fixed-tabs-container"
   >
     <div
-      class="core-page"
+      class="common-page"
     >
       <div
-        class="view--header padding-lg--top padding-lg--sides core-page-header"
+        class="view--header padding-lg--top padding-lg--sides common-page-header"
       >
         <div
           class="ant-row"
@@ -772,7 +772,7 @@ exports[`PermitConditions renders properly 1`] = `
                           style="padding: 8px 5px 8px 5px;"
                         >
                           <div
-                            class="core-page-content"
+                            class="common-page-content"
                           >
                             <div
                               class="ant-row"

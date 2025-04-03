@@ -32,10 +32,12 @@ import Loading from "@mds/common/components/common/Loading";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import PermitConditionsSelectDocumentModal from "@mds/common/components/permits/PermitConditionsSelectDocumentModal";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
 
 const tabs = ["overview", "conditions"];
 
 const ViewPermit: FC = () => {
+  const isCore = useAppSelector(getIsCore);
   const dispatch = useAppDispatch();
   const { id, permitGuid, tab, permitAmendmentGuid } = useParams<{
     id: string;
@@ -55,11 +57,16 @@ const ViewPermit: FC = () => {
     getLatestAmendmentByPermitGuid(permitGuid)
   );
 
+  const hasConditions = latestAmendment?.conditions?.length > 0;
+  const isReviewComplete = latestAmendment?.conditions_review_completed;
+
   const amendments = permit?.permit_amendments;
 
   const mine: IMine = useAppSelector(getMineById(id));
   const { isFeatureEnabled } = useFeatureFlag();
-  const enablePermitConditionsTab = isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE);
+  const enablePermitConditionsTab = isCore
+    ? isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE)
+    : isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE) && isReviewComplete;
   const permitExtraction = useAppSelector(
     getPermitExtractionByGuid(latestAmendment?.permit_amendment_id)
   );
@@ -82,9 +89,6 @@ const ViewPermit: FC = () => {
 
   const statusTimerRef = useRef(null);
   const [pollForStatus, setPollForStatus] = useState(false);
-
-  const hasConditions = latestAmendment?.conditions?.length > 0;
-  const isReviewComplete = latestAmendment?.conditions_review_completed;
 
   const canStartExtraction =
     ((documents.length > 0 && !permitExtraction?.task_status) ||

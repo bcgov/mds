@@ -46,8 +46,8 @@ const CommonPageHeader: FC<CommonPageHeaderProps> = ({
   }, [mineGuid]);
 
   return (
-    <div className="core-page">
-      <div className="view--header padding-lg--top padding-lg--sides core-page-header">
+    <div className="common-page">
+      <div className="view--header padding-lg--top padding-lg--sides common-page-header">
         <Row>
           <Col>
             {breadCrumbs.map((crumb) => {
