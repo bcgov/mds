@@ -1,4 +1,5 @@
 #!/bin/bash
+
 make env
 nvm install
 sudo apt-get update
