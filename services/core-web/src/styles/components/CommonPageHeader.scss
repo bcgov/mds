@@ -1,6 +1,6 @@
 @use "../base.scss" as *;
 
-.core-page {
+.common-page {
     background-color: #F9F9F9;
 
     .view--header {
@@ -40,7 +40,7 @@
         color: $dark-grey;
     }
 
-    .core-page-content {
+    .common-page-content {
         padding: $fixed-page-margin;
         border-radius: 4px;
         // offset-x, offset-y, blur, spread, colour

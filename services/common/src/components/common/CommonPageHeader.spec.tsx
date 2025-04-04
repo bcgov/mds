@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import CorePageHeader from "./CorePageHeader";
+import CommonPageHeader from "./CommonPageHeader";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { MINES } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
@@ -10,12 +10,12 @@ const initialState = {
   [MINES]: MOCK.MINES,
 };
 
-describe("CorePageHeader", () => {
+describe("CommonPageHeader", () => {
   it("renders properly", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
         <BrowserRouter>
-          <CorePageHeader
+          <CommonPageHeader
             entityType="Llama"
             entityLabel="George"
             mineGuid={MOCK.MINES.mineIds[0]}

@@ -15,7 +15,7 @@ interface BreadCrumb {
   text: string;
 }
 
-interface CorePageHeaderProps {
+interface CommonPageHeaderProps {
   entityLabel: string;
   entityType: string;
   mineGuid: string;
@@ -27,7 +27,7 @@ interface CorePageHeaderProps {
 
 const { Title, Text } = Typography;
 
-const CorePageHeader: FC<CorePageHeaderProps> = ({
+const CommonPageHeader: FC<CommonPageHeaderProps> = ({
   mineGuid,
   current_permittee,
   entityLabel,
@@ -46,8 +46,8 @@ const CorePageHeader: FC<CorePageHeaderProps> = ({
   }, [mineGuid]);
 
   return (
-    <div className="core-page">
-      <div className="view--header padding-lg--top padding-lg--sides core-page-header">
+    <div className="common-page">
+      <div className="view--header padding-lg--top padding-lg--sides common-page-header">
         <Row>
           <Col>
             {breadCrumbs.map((crumb) => {
@@ -102,4 +102,4 @@ const CorePageHeader: FC<CorePageHeaderProps> = ({
   );
 };
 
-export default CorePageHeader;
+export default CommonPageHeader;

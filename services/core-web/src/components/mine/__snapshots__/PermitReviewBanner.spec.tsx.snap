@@ -7,10 +7,11 @@ exports[`renders correctly 1`] = `
   </p>
   <div
     class="ant-row ant-row-center ant-row-middle permit-status-banner permit-status-banner--complete"
-    style="height: 30px;"
+    style="margin-left: -8px; margin-right: -8px; height: 30px;"
   >
     <div
       class="ant-col"
+      style="padding-left: 8px; padding-right: 8px;"
     >
       <svg
         aria-hidden="true"
@@ -29,7 +30,8 @@ exports[`renders correctly 1`] = `
       </svg>
     </div>
     <div
-      class="ant-col"
+      class="ant-col ant-col-23"
+      style="padding-left: 8px; padding-right: 8px;"
     >
       Conditions were extracted using AI and have been reviewed and verified.
     </div>
@@ -42,10 +44,11 @@ exports[`renders correctly 1`] = `
   </p>
   <div
     class="ant-row ant-row-center ant-row-middle permit-status-banner permit-status-banner--incomplete"
-    style="height: 30px;"
+    style="margin-left: -8px; margin-right: -8px; height: 30px;"
   >
     <div
       class="ant-col"
+      style="padding-left: 8px; padding-right: 8px;"
     >
       <svg
         aria-hidden="true"
@@ -64,7 +67,8 @@ exports[`renders correctly 1`] = `
       </svg>
     </div>
     <div
-      class="ant-col"
+      class="ant-col ant-col-23"
+      style="padding-left: 8px; padding-right: 8px;"
     >
       Conditions and their report requirements have been extracted using AI and require review and verification.
     </div>
@@ -77,10 +81,11 @@ exports[`renders correctly 1`] = `
   </p>
   <div
     class="ant-row ant-row-center ant-row-middle permit-status-banner permit-status-banner--complete"
-    style="height: 30px;"
+    style="margin-left: -8px; margin-right: -8px; height: 30px;"
   >
     <div
       class="ant-col"
+      style="padding-left: 8px; padding-right: 8px;"
     >
       <svg
         aria-hidden="true"
@@ -99,7 +104,8 @@ exports[`renders correctly 1`] = `
       </svg>
     </div>
     <div
-      class="ant-col"
+      class="ant-col ant-col-23"
+      style="padding-left: 8px; padding-right: 8px;"
     >
       This permit was drafted and issued in Core; conditions cannot be modified.
     </div>

@@ -59,6 +59,7 @@ import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { createDropDownList } from "@mds/common/redux/utils/helpers";
 import PermitConditionLayer from "@mds/common/components/permits/PermitConditionLayer";
 import { LatestAmendmentWarning } from "./LatestAmendmentWarning";
+import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
 
 const { Title } = Typography;
 
@@ -129,6 +130,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   permitAmendmentDocumentGuid,
   selectedConditionId, // Add this line
 }) => {
+  const isCore = useAppSelector(getIsCore);
   const { isFeatureEnabled } = useFeatureFlag();
   const dispatch = useAppDispatch();
   const history = useHistory();
@@ -313,7 +315,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
     [currentAmendment?.condition_categories, condWithoutConditionsText]
   );
 
-  const bannerHeight = 30;
+  const bannerHeight = isCore ? 30 : 60;
   const topOffset = 99 + 45 + bannerHeight; // header + tab nav
 
   const handleAddCondition = async () => {
@@ -504,7 +506,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
         </Row>
       </Col>
       <Col span={24}>
-        <div className="core-page-content">
+        <div className="common-page-content">
           <Row gutter={[16, 16]}>
             {formattedPermitConditionCategories.map((category, idx) => {
               return (

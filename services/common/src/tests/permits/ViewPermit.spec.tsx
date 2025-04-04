@@ -6,15 +6,25 @@ import { AUTHENTICATION, MINES, PERMITS, STATIC_CONTENT } from "@mds/common/cons
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { BrowserRouter } from "react-router-dom";
 import ViewPermit from "@mds/common/components/permits/ViewPermit";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 const initialState = {
   [PERMITS]: { permits: MOCK.PERMITS, latestPermitAmendments: MOCK.PERMIT_AMENDMENT_STATE },
   [MINES]: { mines: MOCK.MINES.mines },
   [AUTHENTICATION]: {
+    systemFlag: SystemFlagEnum.core,
     userAccessData: [USER_ROLES.role_admin, USER_ROLES.role_edit_template_conditions],
   },
   [STATIC_CONTENT]: {
     ...MOCK.BULK_STATIC_CONTENT_RESPONSE,
+  },
+};
+
+const mineSpaceInitialState = {
+  ...initialState,
+  [AUTHENTICATION]: {
+    userAccessData: [USER_ROLES.role_minespace_proponent],
+    systemFlag: SystemFlagEnum.ms,
   },
 };
 
@@ -59,5 +69,30 @@ describe("ViewPermit", () => {
       </ReduxWrapper>
     );
     expect(container.firstChild).toMatchSnapshot();
+  });
+
+  it("renders the conditions tab in Core", () => {
+    const { getAllByRole } = render(
+      <ReduxWrapper initialState={initialState}>
+        <BrowserRouter>
+          <ViewPermit />
+        </BrowserRouter>
+      </ReduxWrapper>
+    );
+    const tabs = getAllByRole("tab");
+    expect(tabs.length).toEqual(2);
+  });
+
+  it("does not display unreviewed conditions on MineSpace", () => {
+    const { getAllByRole } = render(
+      <ReduxWrapper initialState={mineSpaceInitialState}>
+        <BrowserRouter>
+          <ViewPermit />
+        </BrowserRouter>
+      </ReduxWrapper>
+    );
+
+    const tabs = getAllByRole("tab");
+    expect(tabs.length).toEqual(1);
   });
 });

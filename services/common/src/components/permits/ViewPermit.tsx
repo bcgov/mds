@@ -11,7 +11,7 @@ import PermitConditions from "@mds/common/components/permits/PermitConditions";
 
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
-import CorePageHeader from "@mds/common/components/common/CorePageHeader";
+import CommonPageHeader from "@mds/common/components/common/CommonPageHeader";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
@@ -19,24 +19,25 @@ import { PresetStatusColorType } from "antd/es/_util/colors";
 import { Badge } from "antd";
 import { ActionMenuButton, deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import {
+  deletePermitConditions,
+  fetchPermitExtractionStatus,
+  fetchPermitExtractionTasks,
   getPermitExtractionByGuid,
   initiatePermitExtraction,
   PermitExtractionStatus,
-  fetchPermitExtractionTasks,
-  deletePermitConditions,
-  fetchPermitExtractionStatus,
 } from "@mds/common/redux/slices/permitServiceSlice";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import Loading from "@mds/common/components/common/Loading";
-import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import PermitConditionsSelectDocumentModal from "@mds/common/components/permits/PermitConditionsSelectDocumentModal";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
 
 const tabs = ["overview", "conditions"];
 
 const ViewPermit: FC = () => {
+  const isCore = useAppSelector(getIsCore);
   const dispatch = useAppDispatch();
   const { id, permitGuid, tab, permitAmendmentGuid } = useParams<{
     id: string;
@@ -56,11 +57,16 @@ const ViewPermit: FC = () => {
     getLatestAmendmentByPermitGuid(permitGuid)
   );
 
+  const hasConditions = latestAmendment?.conditions?.length > 0;
+  const isReviewComplete = latestAmendment?.conditions_review_completed;
+
   const amendments = permit?.permit_amendments;
 
   const mine: IMine = useAppSelector(getMineById(id));
   const { isFeatureEnabled } = useFeatureFlag();
-  const enablePermitConditionsTab = isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE);
+  const enablePermitConditionsTab = isCore
+    ? isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE)
+    : isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE) && isReviewComplete;
   const permitExtraction = useAppSelector(
     getPermitExtractionByGuid(latestAmendment?.permit_amendment_id)
   );
@@ -83,9 +89,6 @@ const ViewPermit: FC = () => {
 
   const statusTimerRef = useRef(null);
   const [pollForStatus, setPollForStatus] = useState(false);
-
-  const hasConditions = latestAmendment?.conditions?.length > 0;
-  const isReviewComplete = latestAmendment?.conditions_review_completed;
 
   const canStartExtraction =
     ((documents.length > 0 && !permitExtraction?.task_status) ||
@@ -304,7 +307,7 @@ const ViewPermit: FC = () => {
 
   return (
     <div className="fixed-tabs-container">
-      <CorePageHeader
+      <CommonPageHeader
         entityLabel={permit?.permit_no ?? ""}
         entityType="Permit"
         mineGuid={id}

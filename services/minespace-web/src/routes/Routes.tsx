@@ -171,6 +171,14 @@ const Routes = () => (
         path={routes.REPORT_VIEW_EDIT.route}
         component={ColumnWrapper()(AuthenticationGuard()(routes.REPORT_VIEW_EDIT.component))}
       />
+      <Route
+        path={routes.PERMIT_VIEW.route}
+        component={ColumnWrapper()(AuthenticationGuard()(routes.PERMIT_VIEW.component))}
+      />
+      <Route
+        path={routes.VIEW_MINE_PERMIT_AMENDMENT.route}
+        component={AuthenticationGuard()(routes.VIEW_MINE_PERMIT_AMENDMENT.component)}
+      />
       {/* 404 - PAGE NOT FOUND */}
       <Route
         render={() => (

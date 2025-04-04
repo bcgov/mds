@@ -37,6 +37,10 @@ const UsersPage = React.lazy(() => import("@/components/pages/UsersPage"));
 
 const ReportPage = React.lazy(() => import("@/components/dashboard/mine/reports/ReportPage"));
 const ReportSteps = React.lazy(() => import("@mds/common/components/reports/ReportSteps"));
+const ViewPermit = React.lazy(() => import("@mds/common/components/permits/ViewPermit"));
+const ViewPermitRedirect = React.lazy(
+  () => import("@/components/dashboard/mine/permits/ViewPermitRedirect")
+);
 
 const ProjectSubmissionStatusPage = React.lazy(
   () => import("@mds/common/components/projectSummary/ProjectSubmissionStatusPage")
@@ -300,4 +304,27 @@ export const REPORT_VIEW_EDIT = {
     `/mines/${mineGuid}/reports/${reportGuid}`,
   component: ReportPage,
   helpKey: "Report",
+};
+
+export const VIEW_MINE_PERMIT_AMENDMENT = {
+  route: "/mines/:id/permits/:permitGuid/permit-amendment/:permitAmendmentGuid/:tab",
+  dynamicRoute: (id, permitGuid, permitAmendmentGuid, tab = "overview") =>
+    `/mines/${id}/permits/${permitGuid}/permit-amendment/${permitAmendmentGuid}/${tab}`,
+  hashRoute: (id, permitGuid, permitAmendmentGuid, tab = "overview", link = "") =>
+    `/mines/${id}/permits/${permitGuid}/permit-amendment/${permitAmendmentGuid}/${tab}/${link}`,
+  component: ViewPermit,
+  helpKey: "View-Permit",
+  priority: 1,
+};
+
+export const MINE_PERMITS = {
+  route: "/mines/:id/:activeTab",
+  dynamicRoute: (id) => `/mines/${id}/permits`,
+};
+
+export const PERMIT_VIEW = {
+  route: "/mines/:id/redirect/permits/:permitGuid",
+  dynamicRoute: (id: string, permitGuid: string) => `/mines/${id}/redirect/permits/${permitGuid}`,
+  component: ViewPermitRedirect,
+  helpKey: "Permit",
 };

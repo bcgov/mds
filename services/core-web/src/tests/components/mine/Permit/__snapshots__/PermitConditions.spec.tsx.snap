@@ -6,10 +6,10 @@ exports[`PermitConditions renders properly 1`] = `
     class="fixed-tabs-container"
   >
     <div
-      class="core-page"
+      class="common-page"
     >
       <div
-        class="view--header padding-lg--top padding-lg--sides core-page-header"
+        class="view--header padding-lg--top padding-lg--sides common-page-header"
       >
         <div
           class="ant-row"
@@ -386,10 +386,11 @@ exports[`PermitConditions renders properly 1`] = `
             >
               <div
                 class="ant-row ant-row-center ant-row-middle permit-status-banner permit-status-banner--incomplete"
-                style="height: 30px;"
+                style="margin-left: -8px; margin-right: -8px; height: 30px;"
               >
                 <div
                   class="ant-col"
+                  style="padding-left: 8px; padding-right: 8px;"
                 >
                   <svg
                     aria-hidden="true"
@@ -408,7 +409,8 @@ exports[`PermitConditions renders properly 1`] = `
                   </svg>
                 </div>
                 <div
-                  class="ant-col"
+                  class="ant-col ant-col-23"
+                  style="padding-left: 8px; padding-right: 8px;"
                 >
                   Conditions and their report requirements have been extracted using AI and require review and verification.
                 </div>
@@ -432,7 +434,7 @@ exports[`PermitConditions renders properly 1`] = `
                       <div>
                         <div
                           class="ant-anchor-wrapper"
-                          style="max-height: calc(100vh - 306px);"
+                          style="max-height: calc(100vh - 284px);"
                         >
                           <div
                             class="ant-anchor ant-anchor-fixed"
@@ -772,7 +774,7 @@ exports[`PermitConditions renders properly 1`] = `
                           style="padding: 8px 5px 8px 5px;"
                         >
                           <div
-                            class="core-page-content"
+                            class="common-page-content"
                           >
                             <div
                               class="ant-row"

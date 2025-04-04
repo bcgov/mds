@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CorePageHeader renders properly 1`] = `
+exports[`CommonPageHeader renders properly 1`] = `
 <div>
   <div
-    class="core-page"
+    class="common-page"
   >
     <div
-      class="view--header padding-lg--top padding-lg--sides core-page-header"
+      class="view--header padding-lg--top padding-lg--sides common-page-header"
     >
       <div
         class="ant-row"
