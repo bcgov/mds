@@ -16,6 +16,24 @@ minespace-web
 tusd
 permits
 "
+# FE services use a different key for the syncfusion license key
+FRONTEND_SERVICES="
+core-web
+minespace-web
+"
+SECRET_KEYS="
+OBJECT_STORE_ACCESS_KEY
+COMMON_SERVICES_CLIENT_ID
+COMMON_SERVICES_CLIENT_SECRET
+CSS_CLIENT_ID
+CSS_CLIENT_SECRET
+PERMITS_CLIENT_SECRET
+AZURE_API_KEY
+AZURE_SEARCH_API_KEY
+ELASTICSEARCH_CA_CERT
+SYNCFUSION_LICENSE_KEY
+SYNCFUSION_FRONTEND_LICENSE_KEY
+"
 
 bold=$(tput bold)
 normal=$(tput sgr0)
@@ -78,13 +96,38 @@ function loadExternalSecrets() {
     yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://artifacts.developer.gov.bc.ca/artifactory/api/npm/m4c2-mds/" -H
     yarn config unset 'npmScopes["fortawesome"].npmAuthToken' -H # Remove previous token used for authentication
 
-    echo "Configuring S3 Access"
-    OBJECT_STORE_ACCESS_KEY=$(kubectl get secret local-dev-secrets --namespace 4c2ba9-dev -o go-template='{{.data.OBJECT_STORE_ACCESS_KEY | base64decode}}')
-
+    echo "Configuring local development secrets"
+    # Read secrets where those env keys are consistently named to match the local-dev-secrets key
     for S in $SERVICES
     do
-        sed -i "s/OBJECT_STORE_ACCESS_KEY=.*/OBJECT_STORE_ACCESS_KEY=$OBJECT_STORE_ACCESS_KEY/g" $SERVICES_PATH/$S/.env
-        sed -i "s/AWS_SECRET_ACCESS_KEY=.*/AWS_SECRET_ACCESS_KEY=$OBJECT_STORE_ACCESS_KEY/g" $SERVICES_PATH/$S/.env
+        echo "Configuring secrets for $S service"
+        for KEY in $SECRET_KEYS        
+        do
+            SECRET=$(kubectl get secret local-dev-secrets --namespace 4c2ba9-dev -o go-template="{{index .data.${KEY} | base64decode}}")
+            if [ "$SECRET" = "" ]; then
+                echo -e "Secret $KEY not found in local-dev-secrets"
+                continue
+            fi
+            # handle all special charactes in the secret, including new lines
+            ESCAPED_SECRET=$(printf '%s\n' "$SECRET" | sed ':a;N;$!ba;s/[&/\]/\\&/g;s/\n/\\n/g')
+            sed -i "s|$KEY=.*|$KEY=$ESCAPED_SECRET|g" $SERVICES_PATH/$S/.env || echo -e "Failed to set $KEY for $S service"
+        done
+    done
+
+    # Read secrets where those env keys are not consistently named to match the local-dev-secrets key
+    OBJECT_STORE_ACCESS_KEY=$(kubectl get secret local-dev-secrets --namespace 4c2ba9-dev -o go-template='{{.data.OBJECT_STORE_ACCESS_KEY | base64decode}}')
+    SYNCFUSION_FRONTEND_LICENSE_KEY=$(kubectl get secret local-dev-secrets --namespace 4c2ba9-dev -o go-template='{{.data.SYNCFUSION_FRONTEND_LICENSE_KEY | base64decode}}')
+    
+    for S in $SERVICES
+    do
+        sed -i "s/AWS_SECRET_ACCESS_KEY=.*/AWS_SECRET_ACCESS_KEY=$OBJECT_STORE_ACCESS_KEY/g" $SERVICES_PATH/$S/.env || echo -e "Failed to set AWS_SECRET_ACCESS_KEY for $S service"
+    done
+
+    for S in $FRONTEND_SERVICES    
+    do
+        echo "Configuring Syncfusion license key for $S service"
+        ESCAPED_SECRET=$(printf '%s\n' "$SYNCFUSION_FRONTEND_LICENSE_KEY" | sed ':a;N;$!ba;s/[&/\]/\\&/g;s/\n/\\n/g')
+        sed -i "s|SYNCFUSION_LICENSE_KEY=.*|SYNCFUSION_LICENSE_KEY=$ESCAPED_SECRET|g" $SERVICES_PATH/$S/.env || echo -e "Failed to set SYNCFUSION_LICENSE_KEY for $S service"
     done
 
     echo "Successfully configured secrets!"
