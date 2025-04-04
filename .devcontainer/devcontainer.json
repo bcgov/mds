@@ -31,10 +31,10 @@
       "label": "VNC"
     },
     "3000": {
-      "label": "mds_frontend"
+      "label": "core-api"
     },
     "3020": {
-      "label": "mds_minespace"
+      "label": "minespace-web"
     },
     "5000": {
       "label": "mds_backend"
