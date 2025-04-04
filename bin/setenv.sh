@@ -110,6 +110,9 @@ function loadExternalSecrets() {
             fi
             # handle all special charactes in the secret, including new lines
             ESCAPED_SECRET=$(printf '%s\n' "$SECRET" | sed ':a;N;$!ba;s/[&/\]/\\&/g;s/\n/\\n/g')
+            if [ "$KEY" = "ELASTICSEARCH_CA_CERT" ]; then
+                ESCAPED_SECRET="\"$ESCAPED_SECRET\""
+            fi
             sed -i "s|$KEY=.*|$KEY=$ESCAPED_SECRET|g" $SERVICES_PATH/$S/.env || echo -e "Failed to set $KEY for $S service"
         done
     done
