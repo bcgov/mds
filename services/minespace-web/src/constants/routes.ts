@@ -307,15 +307,11 @@ export const REPORT_VIEW_EDIT = {
 };
 
 export const VIEW_MINE_PERMIT_AMENDMENT = {
-  route: "/mines/:mineGuid/permits/:permitGuid/permit-amendment/:permitAmendmentGuid/:tab",
-  dynamicRoute: (
-    mineGuid: string,
-    permitGuid: string,
-    permitAmendmentGuid: string,
-    tab: string = "overview"
-  ) => `/mines/${mineGuid}/permits/${permitGuid}/permit-amendment/${permitAmendmentGuid}/${tab}`,
-  hashRoute: (mineGuid, permitGuid, permitAmendmentGuid, tab = "overview", link = "") =>
-    `/mines/${mineGuid}/permits/${permitGuid}/permit-amendment/${permitAmendmentGuid}/${tab}/${link}`,
+  route: "/mines/:id/permits/:permitGuid/permit-amendment/:permitAmendmentGuid/:tab",
+  dynamicRoute: (id, permitGuid, permitAmendmentGuid, tab = "overview") =>
+    `/mines/${id}/permits/${permitGuid}/permit-amendment/${permitAmendmentGuid}/${tab}`,
+  hashRoute: (id, permitGuid, permitAmendmentGuid, tab = "overview", link = "") =>
+    `/mines/${id}/permits/${permitGuid}/permit-amendment/${permitAmendmentGuid}/${tab}/${link}`,
   component: ViewPermit,
   helpKey: "View-Permit",
   priority: 1,
