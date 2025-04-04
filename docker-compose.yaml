@@ -164,7 +164,7 @@ services:
 
   ####################### Redis Definition #######################
   redis:
-    image: redis:3.2-alpine
+    image: redis:7.4-alpine
     container_name: mds_cache
     restart: always
     command: redis-server --requirepass redis-password
