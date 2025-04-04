@@ -13,11 +13,11 @@ import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreat
  * but able to redirected to the latest amendment when linked to from elsewhere in the app.
  */
 const ViewPermitRedirect: FC = () => {
-  const {
-    id: mineGuid,
-    permitGuid,
-    tab,
-  } = useParams<{ id: string; permitGuid: string; tab: string }>();
+  const { mineGuid, permitGuid, tab } = useParams<{
+    mineGuid: string;
+    permitGuid: string;
+    tab: string;
+  }>();
   const permit: IPermit = useAppSelector(getPermitByGuid(permitGuid));
   const dispatch = useAppDispatch();
   useEffect(() => {
