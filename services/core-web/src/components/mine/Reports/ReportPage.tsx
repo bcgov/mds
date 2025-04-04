@@ -1,19 +1,13 @@
 import React, { FC, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { isDirty, reset } from "redux-form";
+import { useSelector } from "react-redux";
+import { isDirty, reset } from "@mds/common/components/forms/form";
 import { Alert, Button, Modal, Row, Tag, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/pro-light-svg-icons";
 
 import * as routes from "@/constants/routes";
-import {
-  FORM,
-  IMineReportSubmission,
-  MINE_REPORT_STATUS_HASH,
-  MineReportTypeUrlParam,
-} from "@mds/common";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getDropdownMineReportStatusOptions } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -31,11 +25,16 @@ import modalConfig from "@/components/modalContent/config";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 
 import { getMineReportStatusDescription } from "@mds/common/redux/utils/helpers";
+import { IMineReportSubmission } from "@mds/common/interfaces/reports";
+import { FORM } from "@mds/common/constants/forms";
+import { MINE_REPORT_STATUS_HASH } from "@mds/common/constants/strings";
+import { MineReportTypeUrlParam } from "@mds/common/constants/enums";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const ReportPage: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { mineGuid, reportGuid } = useParams<{ mineGuid: string; reportGuid: string }>();
-  const mine = useSelector((state) => getMineById(state, mineGuid));
+  const mine = useSelector(getMineById(mineGuid));
   const mineReportStatusOptions = useSelector(getDropdownMineReportStatusOptions);
   const latestSubmission: IMineReportSubmission = useSelector((state) =>
     getLatestReportSubmission(state, reportGuid)
@@ -69,12 +68,12 @@ const ReportPage: FC = () => {
     !isFormDirty
       ? cancelFunction()
       : Modal.confirm({
-          title: "Discard changes?",
-          content: "All changes made will not be saved.",
-          onOk: cancelFunction,
-          cancelText: "Continue Editing",
-          okText: "Discard",
-        });
+        title: "Discard changes?",
+        content: "All changes made will not be saved.",
+        onOk: cancelFunction,
+        cancelText: "Continue Editing",
+        okText: "Discard",
+      });
 
   const revertChanges = () => {
     dispatch(reset(FORM.VIEW_EDIT_REPORT));

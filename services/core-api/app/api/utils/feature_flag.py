@@ -1,6 +1,7 @@
 from enum import Enum
-from flagsmith import Flagsmith
+
 from app.config import Config
+from flagsmith import Flagsmith
 from flask import current_app
 
 
@@ -14,8 +15,6 @@ class Feature(Enum):
     VC_ANONCREDS_CORE = "vc_anoncreds_core"
     VC_ANONCREDS_MINESPACE = "vc_anoncreds_minespace"
     VC_W3C = "vc_w3c"
-    CODE_REQUIRED_REPORTS = 'code_required-reports'
-    PERMIT_DOCUMENT_KEYWORD_SEARCH = 'permit_document_keyword_search'
     AMS_AGENT = 'ams_agent'
 
     def __str__(self):
@@ -23,14 +22,17 @@ class Feature(Enum):
 
 
 flagsmith = Flagsmith(
-    environment_id=Config.FLAGSMITH_KEY,
-    api=Config.FLAGSMITH_URL,
+    environment_key=Config.FLAGSMITH_KEY,
+    api_url=Config.FLAGSMITH_URL,
 )
 
 
 def is_feature_enabled(feature):
     try:
-        return flagsmith.has_feature(feature) and flagsmith.feature_enabled(feature)
+        feature = str(feature).strip()
+        flags = flagsmith.get_environment_flags()
+
+        return feature in flags.flags and flags.is_feature_enabled(feature)
     except Exception as e:
         current_app.logger.error(f'Failed to look up feature flag for: {feature}. ' + str(e))
         return False

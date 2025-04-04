@@ -1,0 +1,47 @@
+version: 1
+data_management_roles:
+  data_custodian: Colin Squirrell
+  product_owner: Rebecca Stevenson
+product_external_dependencies:
+  identity_authorization:
+    - IDIR
+    - BceId
+  notification_standard: []
+product_information:
+  api_specifications:
+    - https://minesdigitalservices.gov.bc.ca/api/
+  business_capabilities_standard:
+    - Compliance and Enforcement
+  ministry:
+    - Ministry of Mining and Critical Minerals
+  product_acronym: MDS
+  product_description: Digital services for mining governance in British Columbia.
+  product_name: Mines Digital Services
+  product_status: maturing
+  product_urls:
+    - https://minespace.gov.bc.ca/
+    - https://minesdigitalservices.gov.bc.ca/
+  program_area: Mines Digital Services
+product_technology_information:
+  backend_frameworks:
+    - name: Flask
+      version: 3.1.0
+  backend_languages_version:
+    - name: Python
+      version: 3.11.11
+  ci_cd_tools:
+    - GitHub-Actions
+    - ArgoCD
+  data_storage_platforms:
+    - Postgresql
+  frontend_frameworks:
+    - name: React
+      version: 16.13.1
+  frontend_languages:
+    - name: TypeScript
+      version: 5.7.3
+  hosting_platforms:
+    - Private-Cloud-Openshift
+  other_tools: Zapscan, Sysdig
+  spatial_mapping_technologies:
+    - Leaflet

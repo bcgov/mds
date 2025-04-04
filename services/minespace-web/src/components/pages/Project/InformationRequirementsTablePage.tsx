@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory, useLocation, useParams, withRouter } from "react-router-dom";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { Col, Row, Steps, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import CheckCircleOutlined from "@ant-design/icons/CheckCircleOutlined";
 import CloseCircleOutlined from "@ant-design/icons/CloseCircleOutlined";
-import { cleanFilePondFile } from "@common/utils/helpers";
 import { getProject, getRequirements } from "@mds/common/redux/selectors/projectSelectors";
 import { clearInformationRequirementsTable } from "@mds/common/redux/actions/projectActions";
 import {
   fetchProjectById,
   fetchRequirements,
   updateInformationRequirementsTable,
-  updateInformationRequirementsTableStatus,
 } from "@mds/common/redux/actionCreators/projectActionCreator";
 import { openModal } from "@mds/common/redux/actions/modalActions";
 import { getInformationRequirementsTableDocumentTypesHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import * as routes from "@/constants/routes";
-import InformationRequirementsTableCallout from "@/components/Forms/projects/informationRequirementsTable/InformationRequirementsTableCallout";
 import StepForms from "@/components/pages/Project/InformationRequirementsTableStepForm";
-import { IProject, IRequirement } from "@mds/common";
+import ProjectCallout from "@mds/common/components/projects/ProjectCallout";
+import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
+import { IProject, IRequirement } from "@mds/common/interfaces/projects";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 export const InformationRequirementsTablePage = () => {
   const requirements: IRequirement[] = useSelector(getRequirements);
@@ -35,10 +35,10 @@ export const InformationRequirementsTablePage = () => {
 
   const dispatch = useDispatch();
 
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(location?.state?.current ?? 0);
   const [submitting, setSubmitting] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isEditMode, setEditMode] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [activeTab, setActiveTab] = useState();
   const [uploadedSuccessfully, setUploadedSuccessfully] = useState(false);
   const [importFailed, setImportFailed] = useState(false);
@@ -46,6 +46,10 @@ export const InformationRequirementsTablePage = () => {
   const [hasBadRequestError, setHasBadRequestError] = useState(false);
   const [tabs, setTabs] = useState<string[]>([]);
   const [projectRequirementsVersion, setProjectRequirementsVersion] = useState<number>();
+  const docsDisabled = areDocumentFieldsDisabled(
+    SystemFlagEnum.ms,
+    project?.information_requirements_table?.status_code
+  );
 
   const handleFetchData = async () => {
     await dispatch(fetchProjectById(projectGuid));
@@ -110,17 +114,10 @@ export const InformationRequirementsTablePage = () => {
   };
 
   useEffect(() => {
-    if (!location.state?.current) {
-      history.replace(location.pathname, { current: 0 });
-    }
-    handleFetchData();
-  }, []);
-
-  useEffect(() => {
     if (project) {
       setCurrent(location.state?.current ?? 0);
       if (project?.information_requirements_table?.status_code !== "DFT") {
-        setEditMode(true);
+        setIsEditMode(true);
       }
     }
   }, [project]);
@@ -138,6 +135,7 @@ export const InformationRequirementsTablePage = () => {
   }, [uploadedSuccessfully]);
 
   useEffect(() => {
+    handleFetchData();
     return () => {
       dispatch(clearInformationRequirementsTable({}));
     };
@@ -193,14 +191,14 @@ export const InformationRequirementsTablePage = () => {
     if (location?.state?.current) {
       history.replace(location.pathname, null);
     }
-    setCurrent((location.state.current += 1));
+    setCurrent(current + 1);
   };
 
   const prev = () => {
     if (location?.state?.current) {
       history.replace(location.pathname, null);
     }
-    setCurrent((location.state.current -= 1));
+    setCurrent(current - 1);
   };
 
   const importIsSuccessful = async (success, err) => {
@@ -217,8 +215,7 @@ export const InformationRequirementsTablePage = () => {
 
     await handleFetchData();
     setUploadedSuccessfully(true);
-    setEditMode(!isEditMode);
-    return cleanFilePondFile();
+    setIsEditMode(!isEditMode);
   };
 
   const handleIRTUpdate = async (values: any, message: string) => {
@@ -227,14 +224,11 @@ export const InformationRequirementsTablePage = () => {
     setSubmitting(true);
 
     await dispatch(
-      updateInformationRequirementsTable(
-        {
-          projectGuid,
-          informationRequirementsTableGuid,
-        },
-        values,
-        message
-      )
+      updateInformationRequirementsTable({
+        projectGuid,
+        informationRequirementsTableGuid,
+        ...values,
+      })
     );
     setSubmitting(false);
     handleFetchData();
@@ -254,14 +248,11 @@ export const InformationRequirementsTablePage = () => {
     setSubmitting(true);
 
     await dispatch(
-      updateInformationRequirementsTableStatus(
-        {
-          projectGuid,
-          informationRequirementsTableGuid,
-        },
-        values,
-        message
-      )
+      updateInformationRequirementsTable({
+        projectGuid,
+        informationRequirementsTableGuid,
+        ...values,
+      })
     );
     setSubmitting(false);
     handleFetchData();
@@ -347,23 +338,17 @@ export const InformationRequirementsTablePage = () => {
           </Col>
           <Col span={12}>
             <div style={{ display: "inline", float: "right" }}>
-              <p>{Forms[current].buttons}</p>
+              <div>{Forms[current].buttons}</div>
             </div>
           </Col>
         </Row>
         <Row>
-          {project?.information_requirements_table?.status_code !== "APV" && (
-            <Steps current={current} items={Forms} />
-          )}
+          {!docsDisabled && <Steps current={current} items={Forms} />}
           <br />
           <br />
           <Col span={24}>
             {current !== 0 && (
-              <InformationRequirementsTableCallout
-                informationRequirementsTableStatus={
-                  project?.information_requirements_table?.status_code || "DFT"
-                }
-              />
+              <ProjectCallout status_code={project?.information_requirements_table?.status_code} />
             )}
             <div>{Forms[current].content}</div>
           </Col>
@@ -373,4 +358,4 @@ export const InformationRequirementsTablePage = () => {
   );
 };
 
-export default withRouter(InformationRequirementsTablePage);
+export default InformationRequirementsTablePage;

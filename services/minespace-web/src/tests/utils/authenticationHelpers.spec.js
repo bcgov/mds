@@ -1,21 +1,6 @@
-import { KEYCLOAK } from "@mds/common";
-import keycloak from "@mds/common/keycloak";
-import { signOutFromSSO, signOutFromSiteMinder } from "@/utils/authenticationHelpers";
-import {
-  KEYCLOAK_LOGOUT_REDIRECT_URI,
-  SITEMINDER_LOGOUT_REDIRECT_URI,
-} from "@/constants/environment";
-
-// TODO: FIX SSO MIGRATION TEST
-describe("`signOutFromSSO` function", () => {
-  jest.spyOn(keycloak, "logout");
-  it.skip("opens a new window with given url", () => {
-    signOutFromSSO();
-    expect(keycloak.logout).toHaveBeenCalledWith({
-      redirectUri: KEYCLOAK_LOGOUT_REDIRECT_URI,
-    });
-  });
-});
+import { KEYCLOAK } from "@mds/common/constants/environment";
+import { signOutFromSiteMinder } from "@/utils/authenticationHelpers";
+import { SITEMINDER_LOGOUT_REDIRECT_URI } from "@/constants/environment";
 
 describe("`signOutFromSiteMinder` function", () => {
   jest.spyOn(window, "open");

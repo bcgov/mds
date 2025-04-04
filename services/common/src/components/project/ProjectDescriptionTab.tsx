@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Typography, Button, Alert, Badge, Empty } from "antd";
+import { Row, Col, Typography, Button, Alert, Badge, Empty, List } from "antd";
 import Callout from "@mds/common/components/common/Callout";
 import {
   CALLOUT_SEVERITY,
@@ -8,6 +8,8 @@ import {
   AMS_STATUS_CODES_SUCCESS,
   AMS_STATUS_CODE_ERROR,
   WASTE_DISCHARGE_AUTHORIZATION_PROCESS,
+  AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT,
+  AMS_AUTHORIZATION_TYPES_TEXT
 } from "@mds/common/constants/strings";
 import {
   AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
@@ -42,6 +44,7 @@ import {
 } from "@mds/common/redux/actionCreators/projectActionCreator";
 import Loading from "@mds/common/components/common/Loading";
 import { formatProjectPayload } from "@mds/common/utils/helpers";
+import ProjectCallout from "../projects/ProjectCallout";
 
 const ProjectDescriptionTab = () => {
   const [shouldDisplayRetryButton, setShouldDisplayRetryButton] = useState(false);
@@ -136,7 +139,7 @@ const ProjectDescriptionTab = () => {
         ));
         const permitNo =
           authorization?.project_summary_permit_type[0] === AMS_AUTHORIZATION_TYPES.AMENDMENT &&
-          authorization?.existing_permits_authorizations
+            authorization?.existing_permits_authorizations
             ? getPermitNumber(authorization?.existing_permits_authorizations[0])
             : NOT_APPLICABLE;
         const projectSummaryAuthorizationGuid = authorization?.project_summary_authorization_guid;
@@ -167,11 +170,11 @@ const ProjectDescriptionTab = () => {
       const permitTypeLabel = parseProjectTypeLabel(authorization.project_summary_permit_type[0]);
       const projectType = `${parseTransformedProjectSummaryAuthorizationTypes(
         permitAuthorizationType,
-        projectSummaryAuthorizationType
+        projectSummaryAuthorizationType,
       )} - ${permitTypeLabel}`;
       const permitNo =
         authorization?.project_summary_permit_type[0] === AMS_AUTHORIZATION_TYPES.AMENDMENT &&
-        authorization?.existing_permits_authorizations
+          authorization?.existing_permits_authorizations
           ? authorization?.existing_permits_authorizations[0]
           : NOT_APPLICABLE;
       const projectSummaryAuthorizationGuid = authorization?.project_summary_authorization_guid;
@@ -181,11 +184,15 @@ const ProjectDescriptionTab = () => {
           : NOT_APPLICABLE;
 
       let status = createStatusBadge("Rejected", AMS_STATUS_CODE_ERROR);
+      let ams_error_message = `${AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT[projectSummaryAuthorizationType]} 
+        ${AMS_AUTHORIZATION_TYPES_TEXT[authorization.project_summary_permit_type[0]]}(${permitNo}): "${authorization?.ams_outcome}"`;
+
       if (authorization?.ams_status_code === "500") {
         status = createStatusBadge("Failed", AMS_STATUS_CODE_ERROR);
         setShouldDisplayRetryButton(true);
       } else if (authorization?.ams_status_code === "200") {
         status = createStatusBadge("Submitted", AMS_STATUS_CODES_SUCCESS);
+        ams_error_message = null;
       }
 
       return {
@@ -195,6 +202,7 @@ const ProjectDescriptionTab = () => {
         date_submitted: dateSubmitted,
         project_summary_authorization_guid: projectSummaryAuthorizationGuid,
         status: status,
+        ams_error_message: ams_error_message,
       };
     }
     return null;
@@ -394,7 +402,7 @@ const ProjectDescriptionTab = () => {
                 <Typography.Title level={2}>Project Description Overview</Typography.Title>
               </Col>
               <Col>
-                <Button onClick={handleViewProjectDescriptionClicked} type="primary">
+                <Button onClick={handleViewProjectDescriptionClicked} type="primary" data-cy="view-project-description-details-button">
                   View Project Description Details
                 </Button>
               </Col>
@@ -406,18 +414,14 @@ const ProjectDescriptionTab = () => {
               Both the Major Mines Office and Ministry of Environments reviews must be completed for
               this stage to be considered complete.
             </Typography.Paragraph>
-
+            <ProjectCallout
+              status_code={project?.project_summary?.status_code}
+            />
             {hasFailedAMSSubmission && (
               <Callout
-                message={
-                  <div className="nod-callout">
-                    <h4>Submission Unsuccessful</h4>
-                    <p>
-                      One or more of your environment authorization applications has not been
-                      submitted successfully. Please retry the submission.
-                    </p>
-                  </div>
-                }
+                title="Environmental Management Act Submission Unsuccessful"
+                message="One or more of your environment authorization applications has not been
+                      submitted successfully."
                 severity={CALLOUT_SEVERITY.danger}
               />
             )}
@@ -489,7 +493,32 @@ const ProjectDescriptionTab = () => {
                     message="Submission Unsuccessful"
                     showIcon
                     type="error"
-                    description={`Your environment authorization application was not submitted successfully. Please retry the submission or start a new application for the rejected authorization(s). You can link the submission to the new application on the Related Projects page. One or more of your environment authorization application has not been submitted successfully. Please retry the submission.`}
+                    description={
+                      <div>
+                        <Typography.Text>
+                          One or more of the environment authorization application was not submitted successfully. Please <b>retry the failed submission</b> or <b>start a new application</b> for the rejected authorization(s). You can link this submission to the new application on the Related Projects page.
+                        </Typography.Text>
+                        <List
+                          className="project-description-tab-errors"
+                          itemLayout="horizontal"
+                          dataSource={environmentalManagementActData}
+                          renderItem={(item) => {
+                            return item.ams_error_message ? (
+                              <li key={item.project_summary_authorization_guid}>
+                                <div className="inline-flex">
+                                  <div className="flex-4">
+                                    <Row>
+                                      <Col span={21}>
+                                        {item.ams_error_message}
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                </div>
+                              </li>
+                            ) : null;
+                          }}
+                        />
+                      </div>}
                     action={
                       shouldDisplayRetryButton ? (
                         <Button onClick={handleRetryAMSSubmissionClicked}>

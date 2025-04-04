@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useContext } from "react";
 import { useSelector } from "react-redux";
-import { isDirty, isSubmitting } from "redux-form";
+import { isDirty, isSubmitting } from "@mds/common/components/forms/form";
 import { FormContext } from "./FormWrapper";
 import { Button } from "antd";
 import { ButtonProps } from "antd/lib/button/button";
@@ -9,17 +9,26 @@ interface RenderSubmitButtonProps {
   buttonText?: string | ReactNode;
   buttonProps?: ButtonProps & React.RefAttributes<HTMLElement>;
   disableOnClean?: boolean;
+  iconButton?: boolean;
+  icon?: ReactNode;
+  disabled?: boolean;
+  loading?: boolean;
 }
 
 const RenderSubmitButton: FC<RenderSubmitButtonProps> = ({
   buttonText = "Save Changes",
   buttonProps,
   disableOnClean = true,
+  iconButton = false,
+  icon,
+  ...props
 }) => {
   const { formName, isEditMode } = useContext(FormContext);
   const submitting = useSelector(isSubmitting(formName));
   const isFormDirty = useSelector(isDirty(formName));
-  const disabled = submitting || (!isFormDirty && disableOnClean);
+  const disabled = props.disabled || submitting || (!isFormDirty && disableOnClean);
+  const loading = props.loading || (submitting && !iconButton);
+  const className = `${buttonProps?.className ?? ""} form-btn`;
 
   return (
     <>
@@ -27,11 +36,14 @@ const RenderSubmitButton: FC<RenderSubmitButtonProps> = ({
         <Button
           type="primary"
           disabled={disabled}
-          loading={submitting}
+          loading={loading}
           htmlType="submit"
+          icon={icon}
+          aria-label="Submit"
           {...buttonProps}
+          className={className}
         >
-          {buttonText}
+          {!iconButton && buttonText}
         </Button>
       )}
     </>

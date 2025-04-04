@@ -10,10 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "4.19.2",
-    "dotenv": "16.4.5",
+    "express": "4.21.2",
+    "dotenv": "16.4.7",
     "express-cache-controller": "1.1.0",
-    "express-static-gzip": "2.1.7",
-    "helmet": "7.1.0"
+    "express-static-gzip": "2.2.0",
+    "helmet": "7.2.0"
   }
 }

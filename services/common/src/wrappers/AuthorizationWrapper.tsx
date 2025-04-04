@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import { startCase, camelCase } from "lodash";
 import { Tooltip } from "antd";
 import { useSelector } from "react-redux";
-import { userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
+import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import { detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common/utils";
-import { USER_ROLES } from "@mds/common/constants";
+import { USER_ROLES } from "@mds/common/constants/environment";
 
 /**
  * @constant AuthorizationWrapper conditionally renders react children depending
@@ -45,7 +45,6 @@ const propTypes = {
   inDevelopment: PropTypes.bool,
   inTesting: PropTypes.bool,
   children: PropTypes.any,
-  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   showToolTip: PropTypes.bool,
 };
 
@@ -55,7 +54,6 @@ const defaultProps = {
   inTesting: undefined,
   permission: undefined,
   showToolTip: true,
-  userRoles: [],
 };
 
 export const AuthorizationWrapper = (props) => {
@@ -63,9 +61,9 @@ export const AuthorizationWrapper = (props) => {
     props.inDevelopment === undefined || (props.inDevelopment && detectDevelopmentEnvironment());
   const inTestCheck =
     props.inTesting === undefined || (props.inTesting && !detectProdEnvironment());
-  const permissionCheck = useSelector((state) => userHasRole(state, props.permission));
+  const permissionCheck = useSelector(userHasRole(props.permission));
   const isMajorMine = props.isMajorMine === undefined || props.isMajorMine;
-  const isAdmin = useSelector((state) => userHasRole(state, USER_ROLES.role_admin));
+  const isAdmin = useSelector(userHasRole(USER_ROLES.role_admin));
 
   const title = () => {
     const permission = props.permission ? `${USER_ROLES[props.permission]}` : "";

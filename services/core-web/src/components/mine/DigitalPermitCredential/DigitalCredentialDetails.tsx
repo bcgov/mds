@@ -7,7 +7,7 @@ import {
   IMine,
   IMineCommodityOption,
   IMineDisturbanceOption,
-} from "@mds/common";
+} from "@mds/common/interfaces";
 import {
   getMineCommodityOptions,
   getMineDisturbanceOptions,

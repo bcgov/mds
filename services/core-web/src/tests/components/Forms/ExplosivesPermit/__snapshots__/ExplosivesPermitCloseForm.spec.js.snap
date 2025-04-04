@@ -1,11 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ExplosivesPermitCloseForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  isModal={true}
+  name="EXPLOSIVES_PERMIT_CLOSE"
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "enableReinitialize": true,
+      "touchOnBlur": false,
+    }
+  }
 >
   <Row
     gutter={16}
@@ -29,40 +34,36 @@ exports[`ExplosivesPermitCloseForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
+      <Field
+        component={
+          Object {
+            "$$typeof": Symbol(react.memo),
+            "WrappedComponent": [Function],
+            "compare": null,
+            "displayName": "Connect(RenderDateTimeTz)",
+            "type": [Function],
+          }
+        }
+        id="closed_timestamp"
         label="Date Permit was Closed"
+        name="closed_timestamp"
+        normalize={[Function]}
+        props={
+          Object {
+            "timezoneFieldProps": Object {
+              "name": "esup_permit_close_timezone",
+            },
+          }
+        }
         required={true}
-      >
-        <Field
-          component={
-            Object {
-              "$$typeof": Symbol(react.memo),
-              "WrappedComponent": [Function],
-              "compare": null,
-              "displayName": "Connect(RenderDateTimeTz)",
-              "type": [Function],
-            }
-          }
-          id="closed_timestamp"
-          name="closed_timestamp"
-          normalize={[Function]}
-          props={
-            Object {
-              "timezoneFieldProps": Object {
-                "name": "esup_permit_close_timezone",
-              },
-            }
-          }
-          validate={
-            Array [
-              [Function],
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+        validate={
+          Array [
+            [Function],
+            [Function],
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -71,45 +72,21 @@ exports[`ExplosivesPermitCloseForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="closed_reason"
-          label="Reason for closure"
-          name="closed_reason"
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="closed_reason"
+        label="Reason for closure"
+        name="closed_reason"
+      />
     </Col>
   </Row>
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      disabled={false}
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile"
-        disabled={false}
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile"
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      Close Permit
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonText="Close Permit"
+    />
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

@@ -1,5 +1,4 @@
 import React, { FC, useState, useRef, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { notification } from "antd";
 import CompressionNotificationProgressBar from "@mds/common/components/documents/CompressionNotificationProgressBar";
 import { MineDocument } from "@mds/common/models/documents/document";
@@ -9,6 +8,7 @@ import {
 } from "@mds/common/redux/actionCreators/documentActionCreator";
 import DocumentCompressionWarningModal from "./DocumentCompressionWarningModal";
 import DocumentCompressedDownloadModal from "./DocumentCompressedDownloadModal";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 interface DocumentCompressionProps {
   documentType?: string;
@@ -27,7 +27,7 @@ const DocumentCompression: FC<DocumentCompressionProps> = ({
   setCompressionInProgress,
   showDownloadWarning,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isDownloadModalVisible, setDownloadModalVisible] = useState(false);
   const [compressionProgress, setCompressionProgress] = useState(0);
   const [isProgressBarVisible, setProgressBarVisible] = useState(false);

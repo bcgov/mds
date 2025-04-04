@@ -8,3 +8,14 @@ MINESPACE_USER_MODEL = api.model(
         'email_or_username': fields.String,
         'mines': fields.List(fields.String),
     })
+
+USER_MODEL = api.model(
+    'User', {
+        'sub': fields.String,
+        'email': fields.String,
+        'given_name': fields.String,
+        'family_name': fields.String,
+        'display_name': fields.String,
+        'last_logged_in': fields.DateTime,
+    }
+)

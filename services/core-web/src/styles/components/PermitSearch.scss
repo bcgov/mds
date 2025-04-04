@@ -1,0 +1,144 @@
+@use "../base.scss" as *;
+
+.permit-search {
+    &__layout {
+        padding: 32px;
+        min-height: 100vh;
+        background: $pure-white;
+    }
+
+    &__content {
+        width: 100%;
+        margin: 0 auto;
+        background: $pure-white;
+    }
+
+    &__results-container {
+        width: 100%;
+    }
+
+    &__ai-response {
+        position: relative;
+
+        .expand-button {
+            position: absolute;
+            right: 16px;
+            top: 16px;
+            cursor: pointer;
+            z-index: 1;
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+
+    &__empty-state {
+        width: 100%;
+        min-height: 400px;
+    }
+
+    &__filter-header {
+        padding: 12px 16px;
+        cursor: pointer;
+    }
+
+    &__filter-content {
+        padding: 0px 16px;
+        transition: all 0.3s ease-in-out;
+
+        &--visible {
+            height: auto;
+            overflow: visible;
+        }
+
+        &--hidden {
+            height: 0;
+            overflow: hidden;
+        }
+    }
+
+    &__filter-inner {
+        padding: 16px;
+
+        &--hidden {
+            padding: 0 16px;
+        }
+    }
+
+    &__results-list {
+        background: $pure-white;
+        border-radius: 8px;
+    }
+
+    &__markdown {
+        padding: 0;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    &__example-link {
+        display: block;
+        border-radius: 4px;
+        cursor: pointer;
+        padding: 8px;
+        margin: -8px;
+        transition: background-color 0.2s ease;
+    }
+
+    &__result-item {
+        margin-bottom: 16px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #f0f0f0;
+        position: relative;
+
+        &--highlighted {
+            background-color: rgba(255, 255, 0, 0.2);
+        }
+    }
+
+    &__context-item {
+        color: rgba(0, 0, 0, 0.45);
+        font-size: 14px;
+
+        &--child {
+            margin-left: 24px;
+        }
+    }
+
+    &__context-content {
+        flex: 1;
+    }
+
+    &__expand-link {
+        color: rgba(0, 0, 0, 0.45);
+        font-size: 13px;
+        cursor: pointer;
+        margin-left: 8px;
+        white-space: nowrap;
+        padding: 0;
+        border: none;
+    }
+
+    &__document-info {
+        font-size: 12px;
+    }
+
+    &__filter-title {
+        margin-bottom: 16px;
+    }
+
+    &__filter-item {
+        margin-bottom: 8px;
+    }
+
+    &__filter-buttons {
+        margin-top: 16px;
+    }
+
+    &__result-meta {
+        margin-bottom: 8px;
+    }
+}

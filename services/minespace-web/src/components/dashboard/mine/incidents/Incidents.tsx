@@ -5,11 +5,12 @@ import { Button, Col, Row, Typography } from "antd";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { fetchIncidents } from "@mds/common/redux/actionCreators/incidentActionCreator";
 import { getIncidentPageData, getIncidents } from "@mds/common/redux/selectors/incidentSelectors";
-import { DEFAULT_PAGE, DEFAULT_PER_PAGE, IMine } from "@mds/common";
 import * as routes from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import IncidentsTable from "@/components/dashboard/mine/incidents/IncidentsTable";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
+import { DEFAULT_PAGE, DEFAULT_PER_PAGE } from "@mds/common/constants/strings";
+import { IMine } from "@mds/common/interfaces/mine.interface";
 
 export const Incidents = () => {
   const dispatch = useDispatch();

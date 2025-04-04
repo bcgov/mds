@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { withRouter, Link, Prompt, useParams, useHistory, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { reset, getFormValues, isDirty } from "redux-form";
+import { reset, getFormValues, isDirty } from "@mds/common/components/forms/form";
 import * as routes from "@/constants/routes";
 import { Button, Col, Row, Tag } from "antd";
 import EnvironmentOutlined from "@ant-design/icons/EnvironmentOutlined";
@@ -11,16 +10,7 @@ import {
   getFormattedProjectSummary,
   getProject,
 } from "@mds/common/redux/selectors/projectSelectors";
-import {
-  FORM,
-  Feature,
-  PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION,
-  AMS_STATUS_CODES_SUCCESS,
-  AMS_STATUS_CODE_FAIL,
-  AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
-  SystemFlagEnum,
-} from "@mds/common";
-import { getMineById } from "@mds/common/redux/reducers/mineReducer";
+import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 import {
   createProjectSummary,
@@ -37,11 +27,18 @@ import ProjectSummaryForm, {
 } from "@mds/common/components/projectSummary/ProjectSummaryForm";
 import { fetchRegions } from "@mds/common/redux/slices/regionsSlice";
 import { clearProjectSummary } from "@mds/common/redux/actions/projectActions";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { cancelConfirmWrapper } from "@mds/common/components/forms/RenderCancelButton";
+import { fetchActivities } from "@mds/common/redux/actionCreators/activityActionCreator";
+import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
+import { FORM } from "@mds/common/constants/forms";
+import { Feature } from "@mds/common/utils/featureFlag";
+import { AMS_STATUS_CODE_FAIL, AMS_STATUS_CODES_SUCCESS, PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION } from "@mds/common/constants/strings";
+import { AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES } from "@mds/common/constants/enums";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import { IProjectSummary, IProjectSummaryForm } from "@mds/common/interfaces";
 
 export const ProjectSummary: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const { pathname } = useLocation();
   const { mineGuid, projectSummaryGuid, projectGuid, tab, mode } = useParams<{
@@ -51,17 +48,14 @@ export const ProjectSummary: FC = () => {
     tab: string;
     mode: string;
   }>();
-
-  const systemFlag = useSelector(getSystemFlag);
-  const isCore = systemFlag === SystemFlagEnum.core;
-
-  const mine = useSelector((state) => getMineById(state, mineGuid));
-  const formattedProjectSummary = useSelector(getFormattedProjectSummary);
-  const project = useSelector(getProject);
-  const anyTouched = useSelector(
+  const userInfo = useAppSelector(getUserInfo);
+  const mine = useAppSelector(getMineById(mineGuid));
+  const formattedProjectSummary = useAppSelector(getFormattedProjectSummary);
+  const project = useAppSelector(getProject);
+  const anyTouched = useAppSelector(
     (state) => state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.anyTouched || false
   );
-  const isFormDirty = useSelector(isDirty(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const isFormDirty = useAppSelector(isDirty(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
   const { isFeatureEnabled } = useFeatureFlag();
   const amsFeatureEnabled = isFeatureEnabled(Feature.AMS_AGENT);
@@ -85,7 +79,7 @@ export const ProjectSummary: FC = () => {
   const [isEditMode, setIsEditMode] = useState(isDefaultEditMode);
   const activeTab = tab ?? projectFormTabs[0];
   const mineName = mine?.mine_name ?? formattedProjectSummary?.mine_name ?? "";
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const formValues = useAppSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
 
   const handleFetchData = async () => {
     setIsLoaded(false);
@@ -173,7 +167,7 @@ export const ProjectSummary: FC = () => {
       const areAuthorizationsSuccessful = authorizations
         .filter((authorization) =>
           Object.values(AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES).includes(
-            authorization.project_summary_authorization_type
+            authorization.project_summary_authorization_type as AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES
           )
         )
         .every((auth) => auth.ams_status_code === "200");
@@ -212,19 +206,15 @@ export const ProjectSummary: FC = () => {
 
     if (!status_code || isNewProject) {
       status_code = "DFT";
-    } else if (!newActiveTab) {
-      if (isCore) {
-        status_code = formValues.status_code;
-      } else {
-        status_code = "SUB";
-      }
+    } else if (!newActiveTab && status_code === "DFT") {
+      status_code = "SUB";
       is_historic = false;
       if (amsFeatureEnabled) {
         message = null;
       }
     }
 
-    if (isCore && !isNewProject) {
+    if (!isNewProject && newActiveTab) {
       status_code = formValues.status_code;
     }
 
@@ -239,6 +229,8 @@ export const ProjectSummary: FC = () => {
         handleTabChange(newActiveTab);
         setIsLoaded(true);
       }
+
+      dispatch(fetchActivities(userInfo?.preferred_username));
     } catch (err) {
       console.log(err);
       setIsLoaded(true);

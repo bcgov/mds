@@ -2,10 +2,10 @@ import React from "react";
 import { InformationRequirementsTablePage } from "@/components/pages/Project/InformationRequirementsTablePage";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
-import * as reducerTypes from "@mds/common/constants/reducerTypes";
+import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import { AUTHENTICATION, PROJECTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import { render } from "@testing-library/react";
-import { USER_ROLES } from "@mds/common";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import { Provider } from "react-redux";
 import { store } from "@/App";
 import * as projectActionCreator from "@mds/common/redux/actionCreators/projectActionCreator";
@@ -48,14 +48,14 @@ function mockFunction() {
 jest.mock("react-router-dom", () => mockFunction());
 jest.spyOn(projectActionCreator, "fetchProjectById").mockImplementation(
   (): AppThunk<Promise<any>> => (dispatch) => {
-    dispatch(success(reducerTypes.GET_PROJECT));
+    dispatch(success(NetworkReducerTypes.GET_PROJECT));
     dispatch(projectActions.storeProject(MOCK.PROJECT));
     return Promise.resolve(MOCK.PROJECT);
   }
 );
 jest.spyOn(projectActionCreator, "fetchRequirements").mockImplementation(
   (): AppThunk<Promise<any>> => (dispatch) => {
-    dispatch(success(reducerTypes.GET_REQUIREMENTS));
+    dispatch(success(NetworkReducerTypes.GET_REQUIREMENTS));
     dispatch(projectActions.storeRequirements({ records: MOCK.IRT_REQUIREMENTS }));
     return Promise.resolve(MOCK.IRT_REQUIREMENTS);
   }

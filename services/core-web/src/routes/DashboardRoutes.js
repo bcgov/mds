@@ -12,9 +12,21 @@ const DashboardRoutes = () => {
     <Switch>
       <Route
         exact
+        path={routes.VIEW_MINE_PERMIT_AMENDMENT.route}
+        component={routes.VIEW_MINE_PERMIT_AMENDMENT.component}
+      />
+      <Route
+        exact
         path={routes.VIEW_MINE_PERMIT.route}
         component={routes.VIEW_MINE_PERMIT.component}
       />
+
+      <Route
+        exact
+        path={routes.PERMIT_CONDITION_SEARCH.route}
+        component={routes.PERMIT_CONDITION_SEARCH.component}
+      />
+
       <Route
         exact
         path={routes.MINE_DASHBOARD.route}

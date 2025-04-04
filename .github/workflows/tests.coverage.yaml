@@ -8,7 +8,7 @@ env:
 
 jobs:
   tests-coverage-backend:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -56,14 +56,14 @@ jobs:
           ./../../cc-test-reporter format-coverage -t coverage.py --add-prefix services/core-api/ -o ../../coverage/backend-codeclimate.json coverage.xml
 
       - name: Create backend coverage file artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: backend-codeclimate.json
           path: ./coverage/backend-codeclimate.json
           retention-days: 1
 
   tests-coverage-frontend:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -112,14 +112,14 @@ jobs:
           ./../../cc-test-reporter format-coverage -t clover --add-prefix services/core-web/ -o ../../coverage/frontend-codeclimate.json clover.xml
 
       - name: Create frontend coverage file artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: frontend-codeclimate.json
           path: ./coverage/frontend-codeclimate.json
           retention-days: 1
 
   tests-coverage-minespace:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -171,7 +171,7 @@ jobs:
           ./../../cc-test-reporter format-coverage -t clover --add-prefix services/minespace-web/ -o ../../coverage/minespace-codeclimate.json clover.xml
 
       - name: Create minespace coverage file artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: minespace-codeclimate.json
           path: ./coverage/minespace-codeclimate.json
@@ -182,7 +182,7 @@ jobs:
       - tests-coverage-backend
       - tests-coverage-frontend
       - tests-coverage-minespace
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Check if push event
         if: github.event_name == 'push'
@@ -211,17 +211,17 @@ jobs:
 
       # Fetch artifacts from other jobs
       - name: Download backend artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: backend-codeclimate.json
           path: ./coverage
       - name: Download frontend artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: frontend-codeclimate.json
           path: ./coverage
       - name: Download minespace artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: minespace-codeclimate.json
           path: ./coverage

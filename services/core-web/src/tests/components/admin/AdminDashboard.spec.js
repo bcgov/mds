@@ -5,7 +5,7 @@ import { AdminDashboard } from "@/components/admin/AdminDashboard";
 const dispatchProps = {};
 const props = {};
 
-const setupDispatchProps = () => {};
+const setupDispatchProps = () => { };
 
 const setupProps = () => {
   props.location = { pathname: "" };

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { destroy } from "redux-form";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
@@ -23,7 +22,6 @@ import {
   getIncidentFollowupActionOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
-import { DEFAULT_PER_PAGE, DEFAULT_PAGE } from "@mds/common";
 import * as ROUTES from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
@@ -31,6 +29,7 @@ import AddButton from "@/components/common/buttons/AddButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 import MineIncidentTable from "./MineIncidentTable";
+import { DEFAULT_PAGE, DEFAULT_PER_PAGE } from "@mds/common/constants/strings";
 
 /**
  * @component MineIncidents - all incident information related to the mine.
@@ -50,7 +49,6 @@ const propTypes = {
   inspectors: CustomPropTypes.groupOptions.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  destroy: PropTypes.func.isRequired,
   fetchMineIncidents: PropTypes.func.isRequired,
   createMineIncident: PropTypes.func.isRequired,
   updateMineIncident: PropTypes.func.isRequired,
@@ -169,7 +167,6 @@ const mapDispatchToProps = (dispatch) =>
       createMineIncident,
       updateMineIncident,
       deleteMineIncident,
-      destroy,
       openModal,
       closeModal,
     },

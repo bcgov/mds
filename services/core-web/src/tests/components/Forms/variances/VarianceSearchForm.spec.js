@@ -5,7 +5,7 @@ import { VarianceSearchForm, validate } from "@/components/Forms/variances/Varia
 const dispatchProps = {};
 const props = {};
 const setupDispatchProps = () => {
-  dispatchProps.handleSubmit = jest.fn();
+  dispatchProps.onSubmit = jest.fn();
   dispatchProps.handleVarianceSearch = jest.fn();
   dispatchProps.reset = jest.fn();
   dispatchProps.complianceCodes = [{ value: "11", label: "Person must comply" }];

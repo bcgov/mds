@@ -2,7 +2,7 @@
 
 exports[`AddExplosivesPermitModal renders properly 1`] = `
 <div>
-  <Connect(ReduxForm)
+  <Connect(ExplosivesPermitFormNew)
     closeModal={[MockFunction]}
     documentTypeDropdownOptions={Array []}
     initialValues={Object {}}

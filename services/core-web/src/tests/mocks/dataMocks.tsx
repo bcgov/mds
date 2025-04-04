@@ -2,11 +2,14 @@ import {
   IExplosivesPermit,
   INoticeOfDeparture,
   INoticeOfWork,
+  IMineIncident,
+} from "@mds/common/interfaces";
+
+import {
   NoDTypeSaveEnum,
   NodStatusSaveEnum,
-  IMineIncident,
   MINE_INCIDENT_DOCUMENT_TYPE_CODE,
-} from "@mds/common";
+} from "@mds/common/constants/enums";
 
 export const createMockHeader = () => ({
   headers: {
@@ -1784,6 +1787,7 @@ export const INCIDENT: IMineIncident = {
   reported_by_phone_no: "250-360-9494",
   reported_timestamp: "2019-07-04 14:05",
   reported_to_inspector_party_guid: "c002cc91-555a-4edd-9a9c-fcfee8357b00",
+  reported_to_inspector_contacted: false,
   responsible_inspector_party_guid: "eda69201-b283-44ed-92b9-bcbcb5b83e69",
   status_code: "CLD",
   mine_name: "Test Mine",
@@ -2892,7 +2896,7 @@ export const MINE_REPORT_STATUS_OPTIONS_HASH = {
 };
 
 export const BULK_STATIC_CONTENT_RESPONSE = {
-  EMLIContactTypes: [
+  MinistryContactTypes: [
     {
       emli_contact_type_code: "SHI",
       description: "Senior Health, Safety and Environment Inspector",
@@ -4117,7 +4121,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
             type: "LABEL",
             required: false,
             "context-value":
-              "and you may wish to take the opportunity to post your security at this time to avoid any delays.  Safekeeping Agreements backed by GIC’s may be used for bonds under $25,000 with the enclosed template. Complete the form with your banker, using the 'Instructions on Completing a Safekeeping Agreement' and return it to this office for our signature.  A copy of the completed form will be returned to you and your financial institution.  Irrevocable Letters of Credit, certified cheque, bank draft or money order made payable to the Minister of Finance, at the undernoted address, are also acceptable. Payments made by EFT can also be arranged. Please do not send cash. For reclamation surety bonds, the bond shall be with a surety licensed to transact the business of a surety in Canada. For the surety bond template and more please visit our Reclamation Security website. Personal information collected by the Ministry of Energy, Mines, and Low Carbon Innovation is under the authority of section 26(c) of the Freedom of Information and Protection of Privacy Act for the purpose of collecting Bond and Securities Data. If you have any questions about the collection, use and disclosure of your personal information, please contact: Mines Digital Services by email at mds@gov.bc.ca, by phone at: 778-698-7233, or by mail at: PO Box 9380, STN PROV GOVT, Victoria, BC, V8W 9M6.",
+              "and you may wish to take the opportunity to post your security at this time to avoid any delays.  Safekeeping Agreements backed by GIC’s may be used for bonds under $25,000 with the enclosed template. Complete the form with your banker, using the 'Instructions on Completing a Safekeeping Agreement' and return it to this office for our signature.  A copy of the completed form will be returned to you and your financial institution.  Irrevocable Letters of Credit, certified cheque, bank draft or money order made payable to the Minister of Finance, at the undernoted address, are also acceptable. Payments made by EFT can also be arranged. Please do not send cash. For reclamation surety bonds, the bond shall be with a surety licensed to transact the business of a surety in Canada. For the surety bond template and more please visit our Reclamation Security website. Personal information collected by the Ministry of Mining and Critical Minerals is under the authority of section 26(c) of the Freedom of Information and Protection of Privacy Act for the purpose of collecting Bond and Securities Data. If you have any questions about the collection, use and disclosure of your personal information, please contact: Mines Digital Services by email at mds@gov.bc.ca, by phone at: 778-698-7233, or by mail at: PO Box 9380, STN PROV GOVT, Victoria, BC, V8W 9M6.",
             "read-only": false,
           },
           {
@@ -6694,14 +6698,9 @@ export const PROJECTS = {
 export const MAJOR_PROJECTS_DASHBOARD = {
   records: [
     {
-      stage: "Project Summary",
-      id: 1,
-      guid: "3a8087ac-1046-43cb-b152-613db59fff32",
       project_title: "Test Project Title",
       project_id: "1",
       project_guid: "cb33beb3-4c35-4695-b89b-7bab53a5f94a",
-      mrc_review_required: false,
-      status_code: "SUB",
       contacts: [
         {
           name: "Devin Lucas",
@@ -6724,6 +6723,26 @@ export const MAJOR_PROJECTS_DASHBOARD = {
             ],
           },
         ],
+      },
+      information_requirements: {
+        status_code: "SUB",
+        update_timestamp: "2022-08-01T00:00:00+00:00",
+        update_user: "Joe Average",
+      },
+      major_mine_application: {
+        status_code: "SUB",
+        update_timestamp: "2022-08-01T00:00:00+00:00",
+        update_user: "Joe Average",
+      },
+      project_decision_package: {
+        status_code: "SUB",
+        update_timestamp: "2022-08-01T00:00:00+00:00",
+        update_user: "Joe Average",
+      },
+      project_summary: {
+        status_code: "SUB",
+        update_timestamp: "2022-08-01T00:00:00+00:00",
+        update_user: "Joe Average",
       },
     },
   ],
@@ -7327,7 +7346,7 @@ export const MAJOR_MINES_APPLICATION_STATUS_CODES_HASH = {
   CHR: "Change Requested",
 };
 
-export const EMLI_TYPE_CODES_DROPDOWN = [
+export const MINISTRY_TYPE_CODES_DROPDOWN = [
   {
     value: "HSI",
     label: "Health and Safety Inspector",
@@ -7360,7 +7379,7 @@ export const EMLI_TYPE_CODES_DROPDOWN = [
   },
 ];
 
-export const EMLI_TYPE_CODES_HASH = {
+export const MINISTRY_TYPE_CODES_HASH = {
   HSI: "Health and Safety Inspector",
   RDR: "Regional Director",
   ROE: "Regional Office",

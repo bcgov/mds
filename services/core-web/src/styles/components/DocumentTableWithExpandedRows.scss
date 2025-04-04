@@ -87,3 +87,16 @@
         background-color: $gov-grey;
     }
 }
+
+.expanded-row-button {
+    color: $primary-btn-color;
+    background-color: $pure-white;
+    border-color: $primary-btn-color;
+
+    &:hover,
+    &:focus {
+        color: $primary-btn-color-hover;
+        background-color: $pure-white;
+        border-color: $primary-btn-border-color-hover;
+    }
+}

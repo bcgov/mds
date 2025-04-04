@@ -6,7 +6,7 @@ import {
   fetchProjectLeads,
 } from "@mds/common/redux/actionCreators/staticContentActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import * as API from "@mds/common/constants/API";
 import * as String from "@mds/common/constants/strings";
 import * as MOCK from "@/tests/mocks/dataMocks";

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState, ReactNode } from "react";
-import { Field, WrappedFieldProps } from "redux-form";
+import { Field, WrappedFieldProps } from "@mds/common/components/forms/form";
 import { useSelector } from "react-redux";
 import { NEW_VERSION_DOCUMENTS, PROJECT_SUMMARY_DOCUMENTS } from "@mds/common/constants/API";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
@@ -7,7 +7,7 @@ import { Alert, Divider, Modal, Popconfirm, Table, Typography } from "antd";
 import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FilePondFile } from "filepond";
 import { IDocument } from "@mds/common/interfaces/document";
-import { MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common/constants";
+import { MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common/constants/enums";
 
 const notificationDisabledStatusCodes = [409]; // Define the notification disabled status codes
 
@@ -20,6 +20,7 @@ interface ProjectSummaryFileUploadProps {
   documents: IDocument[];
   label?: string | ReactNode;
   labelIdle?: string;
+  input?: any;
 }
 
 export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFileUploadProps> = (
@@ -68,7 +69,7 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
   }
 
   useEffect(() => {
-    if (existingFiles.length === 0) {
+    if (existingFiles.length === 0 || props.documents.length < existingFiles.length) {
       setExistingFiles(props.documents);
     }
   }, [props.documents]);
@@ -204,8 +205,8 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
         {...(props.listedFileTypes ? { listedFileTypes: props.listedFileTypes } : {})}
         abbrevLabel={true}
         maxFileNameLength={MAX_DOCUMENT_NAME_LENGTHS.MAJOR_PROJECTS}
-        id="fileUpload"
-        name="fileUpload"
+        id={props.input?.name}
+        name={props.input?.name}
         component={RenderFileUpload}
         shouldReplaceFile={shouldReplaceFile}
         uploadUrl={uploadUrl}

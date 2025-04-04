@@ -1,0 +1,2014 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PermitConditions renders properly 1`] = `
+<div>
+  <div
+    class="fixed-tabs-container"
+  >
+    <div
+      class="common-page"
+    >
+      <div
+        class="view--header padding-lg--top padding-lg--sides common-page-header"
+      >
+        <div
+          class="ant-row"
+        >
+          <div
+            class="ant-col"
+          >
+            <a
+              class="faded-text"
+              href="/mock-route/18133c75-49ad-4101-85f3-a43e35ae989a"
+            >
+              All Permits
+            </a>
+             
+            /
+             
+            <span
+              class="ant-typography"
+            >
+              Permit
+               
+              C-12345
+            </span>
+          </div>
+        </div>
+        <div
+          class="ant-row ant-row-space-between ant-row-middle"
+          style="margin-left: -8px; margin-right: -8px;"
+        >
+          <div
+            class="ant-col"
+            style="padding-left: 8px; padding-right: 8px;"
+          >
+            <div
+              class="ant-row ant-row-middle"
+              style="margin-left: -8px; margin-right: -8px;"
+            >
+              <div
+                class="ant-col"
+                style="padding-left: 8px; padding-right: 8px;"
+              >
+                <h1
+                  class="ant-typography margin-none"
+                >
+                  Permit
+                   
+                  C-12345
+                </h1>
+              </div>
+              <div
+                class="ant-col"
+                style="padding-left: 8px; padding-right: 8px;"
+              >
+                <div
+                  class="ant-row ant-row-space-between ant-row-middle tag"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-location-dot "
+                    data-icon="location-dot"
+                    data-prefix="fal"
+                    focusable="false"
+                    role="img"
+                    viewBox="0 0 384 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M352 192c0-88.4-71.6-160-160-160S32 103.6 32 192c0 15.6 5.4 37 16.6 63.4c10.9 25.9 26.2 54 43.6 82.1c34.1 55.3 74.4 108.2 99.9 140c25.4-31.8 65.8-84.7 99.9-140c17.3-28.1 32.7-56.3 43.6-82.1C346.6 229 352 207.6 352 192zm32 0c0 87.4-117 243-168.3 307.2c-12.3 15.3-35.1 15.3-47.4 0C117 435 0 279.4 0 192C0 86 86 0 192 0S384 86 384 192zm-240 0a48 48 0 1 0 96 0 48 48 0 1 0 -96 0zm48 80a80 80 0 1 1 0-160 80 80 0 1 1 0 160z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  <span
+                    class="ant-typography margin-medium--left"
+                  >
+                    <a
+                      href="/mock-route/18133c75-49ad-4101-85f3-a43e35ae989a"
+                      style="text-decoration: none;"
+                    >
+                      mine3
+                    </a>
+                  </span>
+                </div>
+              </div>
+              <div
+                class="ant-col"
+                style="padding-left: 8px; padding-right: 8px;"
+              >
+                <div
+                  class="ant-row ant-row-space-between ant-row-middle tag"
+                >
+                  <span
+                    class="anticon"
+                    role="img"
+                  >
+                    <svg
+                      fill="none"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7 3H17C18.1046 3 19 3.89543 19 5V21H5V5C5 3.89543 5.89543 3 7 3Z"
+                        fill="transparent"
+                        stroke="#3C3636"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1"
+                      />
+                      <mask
+                        fill="white"
+                        id="path-2-inside-1"
+                      >
+                        <rect
+                          height="3"
+                          rx="0.5"
+                          width="4"
+                          x="7"
+                          y="5"
+                        />
+                      </mask>
+                      <rect
+                        height="3"
+                        mask="url(#path-2-inside-1)"
+                        rx="0.5"
+                        stroke="#3C3636"
+                        stroke-width="2"
+                        width="4"
+                        x="7"
+                        y="5"
+                      />
+                      <mask
+                        fill="white"
+                        id="path-3-inside-2"
+                      >
+                        <rect
+                          height="3"
+                          rx="0.5"
+                          width="4"
+                          x="13"
+                          y="5"
+                        />
+                      </mask>
+                      <rect
+                        height="3"
+                        mask="url(#path-3-inside-2)"
+                        rx="0.5"
+                        stroke="#3C3636"
+                        stroke-width="2"
+                        width="4"
+                        x="13"
+                        y="5"
+                      />
+                      <mask
+                        fill="white"
+                        id="path-4-inside-3"
+                      >
+                        <rect
+                          height="3"
+                          rx="0.5"
+                          width="4"
+                          x="7"
+                          y="10"
+                        />
+                      </mask>
+                      <rect
+                        height="3"
+                        mask="url(#path-4-inside-3)"
+                        rx="0.5"
+                        stroke="#3C3636"
+                        stroke-width="2"
+                        width="4"
+                        x="7"
+                        y="10"
+                      />
+                      <mask
+                        fill="white"
+                        id="path-5-inside-4"
+                      >
+                        <rect
+                          height="3"
+                          rx="0.5"
+                          width="4"
+                          x="13"
+                          y="10"
+                        />
+                      </mask>
+                      <rect
+                        height="3"
+                        mask="url(#path-5-inside-4)"
+                        rx="0.5"
+                        stroke="#3C3636"
+                        stroke-width="2"
+                        width="4"
+                        x="13"
+                        y="10"
+                      />
+                      <mask
+                        fill="white"
+                        id="path-6-inside-5"
+                      >
+                        <rect
+                          height="6"
+                          rx="0.5"
+                          width="4"
+                          x="13"
+                          y="15"
+                        />
+                      </mask>
+                      <rect
+                        height="6"
+                        mask="url(#path-6-inside-5)"
+                        rx="0.5"
+                        stroke="#3C3636"
+                        stroke-width="2"
+                        width="4"
+                        x="13"
+                        y="15"
+                      />
+                    </svg>
+                  </span>
+                  <span
+                    class="ant-typography margin-medium--left"
+                  >
+                    Current Permittee
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-col core-header-extra"
+            style="padding-left: 8px; padding-right: 8px;"
+          >
+            <button
+              class="ant-btn ant-btn-ghost ant-dropdown-trigger actions-dropdown-button"
+              data-testid=""
+              type="button"
+            >
+              <span>
+                Action
+              </span>
+              <span
+                aria-label="down"
+                class="anticon anticon-down"
+                role="img"
+              >
+                <svg
+                  aria-hidden="true"
+                  class=""
+                  data-icon="down"
+                  fill="currentColor"
+                  focusable="false"
+                  height="1em"
+                  viewBox="64 64 896 896"
+                  width="1em"
+                >
+                  <path
+                    d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                  />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-tabs ant-tabs-top core-tabs fixed-tabs-tabs padding-md--top"
+      >
+        <div
+          class="ant-tabs-nav"
+          role="tablist"
+          style="padding-left: 20px; padding-right: 20px;"
+        >
+          <div
+            class="ant-tabs-nav-wrap"
+          >
+            <div
+              class="ant-tabs-nav-list"
+              style="transform: translate(0px, 0px);"
+            >
+              <div
+                class="ant-tabs-tab"
+                data-node-key="overview"
+              >
+                <div
+                  aria-controls="rc-tabs-test-panel-overview"
+                  aria-selected="false"
+                  class="ant-tabs-tab-btn"
+                  id="rc-tabs-test-tab-overview"
+                  role="tab"
+                  tabindex="0"
+                >
+                  Permit Overview
+                </div>
+              </div>
+              <div
+                class="ant-tabs-tab ant-tabs-tab-active"
+                data-node-key="conditions"
+              >
+                <div
+                  aria-controls="rc-tabs-test-panel-conditions"
+                  aria-selected="true"
+                  class="ant-tabs-tab-btn"
+                  id="rc-tabs-test-tab-conditions"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <span
+                    class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                  >
+                    <span
+                      class="ant-badge-status-dot ant-badge-status-warning"
+                    />
+                  </span>
+                   Permit Conditions
+                </div>
+              </div>
+              <div
+                class="ant-tabs-ink-bar ant-tabs-ink-bar-animated"
+              />
+            </div>
+          </div>
+          <div
+            class="ant-tabs-nav-operations ant-tabs-nav-operations-hidden"
+            style="padding-left: 20px; padding-right: 20px;"
+          >
+            <button
+              aria-controls="rc-tabs-test-more-popup"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              aria-hidden="true"
+              class="ant-tabs-nav-more"
+              id="rc-tabs-test-more"
+              style="visibility: hidden; order: 1;"
+              tabindex="-1"
+              type="button"
+            >
+              <span
+                aria-label="ellipsis"
+                class="anticon anticon-ellipsis"
+                role="img"
+              >
+                <svg
+                  aria-hidden="true"
+                  data-icon="ellipsis"
+                  fill="currentColor"
+                  focusable="false"
+                  height="1em"
+                  viewBox="64 64 896 896"
+                  width="1em"
+                >
+                  <path
+                    d="M176 511a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0z"
+                  />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          class="ant-tabs-content-holder"
+        >
+          <div
+            class="ant-tabs-content ant-tabs-content-top"
+          >
+            <div
+              aria-hidden="false"
+              aria-labelledby="rc-tabs-test-tab-conditions"
+              class="ant-tabs-tabpane ant-tabs-tabpane-active"
+              id="rc-tabs-test-panel-conditions"
+              role="tabpanel"
+              tabindex="0"
+            >
+              <div
+                class="ant-row ant-row-center ant-row-middle permit-status-banner permit-status-banner--incomplete"
+                style="margin-left: -8px; margin-right: -8px; height: 30px;"
+              >
+                <div
+                  class="ant-col"
+                  style="padding-left: 8px; padding-right: 8px;"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-triangle-exclamation "
+                    data-icon="triangle-exclamation"
+                    data-prefix="far"
+                    focusable="false"
+                    role="img"
+                    viewBox="0 0 512 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M248.4 84.3c1.6-2.7 4.5-4.3 7.6-4.3s6 1.6 7.6 4.3L461.9 410c1.4 2.3 2.1 4.9 2.1 7.5c0 8-6.5 14.5-14.5 14.5H62.5c-8 0-14.5-6.5-14.5-14.5c0-2.7 .7-5.3 2.1-7.5L248.4 84.3zm-41-25L9.1 385c-6 9.8-9.1 21-9.1 32.5C0 452 28 480 62.5 480h387c34.5 0 62.5-28 62.5-62.5c0-11.5-3.2-22.7-9.1-32.5L304.6 59.3C294.3 42.4 275.9 32 256 32s-38.3 10.4-48.6 27.3zM288 368a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm-8-184c0-13.3-10.7-24-24-24s-24 10.7-24 24v96c0 13.3 10.7 24 24 24s24-10.7 24-24V184z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </div>
+                <div
+                  class="ant-col ant-col-23"
+                  style="padding-left: 8px; padding-right: 8px;"
+                >
+                  Conditions and their report requirements have been extracted using AI and require review and verification.
+                </div>
+              </div>
+              <div
+                style="height: 30px;"
+              />
+              <div
+                class="ant-row"
+              >
+                <div
+                  class="ant-col ant-col-24"
+                >
+                  <div
+                    class="scroll-side-menu-wrapper scroll-side-menu-view--steps"
+                  >
+                    <div
+                      class="side-menu"
+                      style="top: 0px;"
+                    >
+                      <div>
+                        <div
+                          class="ant-anchor-wrapper"
+                          style="max-height: calc(100vh - 284px);"
+                        >
+                          <div
+                            class="ant-anchor ant-anchor-fixed"
+                          >
+                            <div
+                              class="ant-anchor-ink"
+                            >
+                              <span
+                                class="ant-anchor-ink-ball-visible ant-anchor-ink-ball"
+                                style="top: -4.5px;"
+                              />
+                            </div>
+                            <div
+                              class="ant-anchor-link now-menu-link fade-in ant-anchor-link-active"
+                            >
+                              <a
+                                class="ant-anchor-link-title ant-anchor-link-title-active"
+                                href="#hsc"
+                                title=""
+                              >
+                                <div
+                                  class="side-nav-title"
+                                >
+                                  <span
+                                    class="margin-medium--right side-nav-title-icon"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="svg-inline--fa fa-ban color-gov-grey"
+                                      data-icon="ban"
+                                      data-prefix="fal"
+                                      focusable="false"
+                                      role="img"
+                                      style="font-size: 20px;"
+                                      viewBox="0 0 512 512"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M402.7 425.3l-316-316C52.6 148.6 32 199.9 32 256c0 123.7 100.3 224 224 224c56.1 0 107.4-20.6 146.7-54.7zm22.6-22.6C459.4 363.4 480 312.1 480 256C480 132.3 379.7 32 256 32c-56.1 0-107.4 20.6-146.7 54.7l316 316zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"
+                                        fill="currentColor"
+                                      />
+                                    </svg>
+                                  </span>
+                                  <div
+                                    class="side-nav-title-content"
+                                  >
+                                    <span
+                                      class="ant-typography"
+                                      style="font-size: 16px; font-weight: 600;"
+                                    >
+                                      A. Health and Safety
+                                    </span>
+                                    <span
+                                      class="side-nav-description"
+                                    >
+                                      <br />
+                                      <div
+                                        class="ant-space ant-space-vertical"
+                                      >
+                                        <div
+                                          class="ant-space-item"
+                                          style="margin-bottom: 8px;"
+                                        >
+                                          <span
+                                            class="ant-typography"
+                                          >
+                                            Not Started
+                                          </span>
+                                        </div>
+                                        <div
+                                          class="ant-space-item"
+                                        >
+                                          <span
+                                            class="ant-typography faded-text"
+                                          >
+                                            Assigned to Testerson, Test MCM:EX
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </span>
+                                  </div>
+                                </div>
+                              </a>
+                            </div>
+                            <div
+                              class="ant-anchor-link now-menu-link fade-in"
+                            >
+                              <a
+                                class="ant-anchor-link-title"
+                                href="#rcc"
+                                title=""
+                              >
+                                <div
+                                  class="side-nav-title"
+                                >
+                                  <span
+                                    class="margin-medium--right side-nav-title-icon"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="svg-inline--fa fa-ban color-gov-grey"
+                                      data-icon="ban"
+                                      data-prefix="fal"
+                                      focusable="false"
+                                      role="img"
+                                      style="font-size: 20px;"
+                                      viewBox="0 0 512 512"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M402.7 425.3l-316-316C52.6 148.6 32 199.9 32 256c0 123.7 100.3 224 224 224c56.1 0 107.4-20.6 146.7-54.7zm22.6-22.6C459.4 363.4 480 312.1 480 256C480 132.3 379.7 32 256 32c-56.1 0-107.4 20.6-146.7 54.7l316 316zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"
+                                        fill="currentColor"
+                                      />
+                                    </svg>
+                                  </span>
+                                  <div
+                                    class="side-nav-title-content"
+                                  >
+                                    <span
+                                      class="ant-typography"
+                                      style="font-size: 16px; font-weight: 600;"
+                                    >
+                                      B. Reclamation
+                                    </span>
+                                    <span
+                                      class="side-nav-description"
+                                    >
+                                      <br />
+                                      <div
+                                        class="ant-space ant-space-vertical"
+                                      >
+                                        <div
+                                          class="ant-space-item"
+                                          style="margin-bottom: 8px;"
+                                        >
+                                          <span
+                                            class="ant-typography"
+                                          >
+                                            Not Started
+                                          </span>
+                                        </div>
+                                        <div
+                                          class="ant-space-item"
+                                        >
+                                          <span
+                                            class="ant-typography faded-text"
+                                          >
+                                            Not Assigned
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </span>
+                                  </div>
+                                </div>
+                              </a>
+                            </div>
+                            <div
+                              class="ant-anchor-link now-menu-link fade-in"
+                            >
+                              <a
+                                class="ant-anchor-link-title"
+                                href="#elc"
+                                title=""
+                              >
+                                <div
+                                  class="side-nav-title"
+                                >
+                                  <span
+                                    class="margin-medium--right side-nav-title-icon"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="svg-inline--fa fa-circle-check color-success"
+                                      data-icon="circle-check"
+                                      data-prefix="fal"
+                                      focusable="false"
+                                      role="img"
+                                      style="font-size: 20px;"
+                                      viewBox="0 0 512 512"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M256 32a224 224 0 1 1 0 448 224 224 0 1 1 0-448zm0 480A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM363.3 203.3c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0L224 297.4l-52.7-52.7c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6l64 64c6.2 6.2 16.4 6.2 22.6 0l128-128z"
+                                        fill="currentColor"
+                                      />
+                                    </svg>
+                                  </span>
+                                  <div
+                                    class="side-nav-title-content"
+                                  >
+                                    <span
+                                      class="ant-typography"
+                                      style="font-size: 16px; font-weight: 600;"
+                                    >
+                                      C. Environmental Land and Watercourses
+                                    </span>
+                                    <span
+                                      class="side-nav-description"
+                                    >
+                                      <br />
+                                      <div
+                                        class="ant-space ant-space-vertical"
+                                      >
+                                        <div
+                                          class="ant-space-item"
+                                          style="margin-bottom: 8px;"
+                                        >
+                                          <span
+                                            class="ant-typography"
+                                          >
+                                            Complete
+                                          </span>
+                                        </div>
+                                        <div
+                                          class="ant-space-item"
+                                        >
+                                          <span
+                                            class="ant-typography faded-text"
+                                          >
+                                            Not Assigned
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </span>
+                                  </div>
+                                </div>
+                              </a>
+                            </div>
+                            <div
+                              class="ant-typography no_link_styling grey"
+                              style="font-size: 14px; text-align: center; margin: 20px;"
+                            >
+                              <button
+                                class="ant-btn ant-btn-link core-btn core-btn-link fade-in category-add-btn"
+                                type="button"
+                              >
+                                <span>
+                                  + Add Condition Category
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="side-menu--content"
+                      style="top: 0px;"
+                    >
+                      <div
+                        class="ant-row ant-row-space-between ant-row-middle"
+                        style="margin: -8px -5px -8px -5px;"
+                      >
+                        <div
+                          class="ant-col ant-col-24"
+                          style="padding: 8px 5px 8px 5px;"
+                        >
+                          <h2
+                            class="ant-typography margin-none"
+                          >
+                            Permit Conditions
+                          </h2>
+                        </div>
+                        <div
+                          class="ant-col"
+                          style="padding: 8px 5px 8px 5px;"
+                        >
+                          <div
+                            class="ant-row"
+                            style="margin-left: -5px; margin-right: -5px;"
+                          >
+                            <div
+                              class="ant-col"
+                              style="padding-left: 5px; padding-right: 5px;"
+                            >
+                              <button
+                                class="ant-btn ant-btn-dashed core-btn core-btn-tertiary fa-icon-container"
+                                type="button"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="svg-inline--fa fa-arrows-from-line "
+                                  data-icon="arrows-from-line"
+                                  data-prefix="fal"
+                                  focusable="false"
+                                  role="img"
+                                  viewBox="0 0 448 512"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M235.3 4.7c-3-3-7.1-4.7-11.3-4.7s-8.3 1.7-11.3 4.7l-80 80c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0L208 54.6V176c0 8.8 7.2 16 16 16s16-7.2 16-16V54.6l52.7 52.7c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-80-80zM0 256c0 8.8 7.2 16 16 16H432c8.8 0 16-7.2 16-16s-7.2-16-16-16H16c-8.8 0-16 7.2-16 16zM224 512c4.2 0 8.3-1.7 11.3-4.7l80-80c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0L240 457.4 240 336c0-8.8-7.2-16-16-16s-16 7.2-16 16l0 121.4-52.7-52.7c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6l80 80c3 3 7.1 4.7 11.3 4.7z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                                <span>
+                                  Expand All Conditions
+                                </span>
+                              </button>
+                            </div>
+                            <div
+                              class="ant-col"
+                              style="padding-left: 5px; padding-right: 5px;"
+                            >
+                              <button
+                                class="ant-btn ant-btn-dashed core-btn core-btn-tertiary"
+                                type="button"
+                              >
+                                <span
+                                  aria-label="file"
+                                  class="anticon anticon-file"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class=""
+                                    data-icon="file"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M854.6 288.6L639.4 73.4c-6-6-14.1-9.4-22.6-9.4H192c-17.7 0-32 14.3-32 32v832c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V311.3c0-8.5-3.4-16.7-9.4-22.7zM790.2 326H602V137.8L790.2 326zm1.8 562H232V136h302v216a42 42 0 0042 42h216v494z"
+                                    />
+                                  </svg>
+                                </span>
+                                <span>
+                                  Open Permit in Document Viewer
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="ant-col ant-col-24"
+                          style="padding: 8px 5px 8px 5px;"
+                        >
+                          <div
+                            class="common-page-content"
+                          >
+                            <div
+                              class="ant-row"
+                              style="margin: -8px -8px -8px -8px;"
+                            >
+                              <div
+                                class="ant-col ant-col-24"
+                                style="padding: 8px 8px 8px 8px;"
+                              >
+                                <div
+                                  class="ant-row ant-row-space-between"
+                                >
+                                  <h3
+                                    class="ant-typography margin-none"
+                                    id="hsc"
+                                  >
+                                    <div>
+                                      <h3
+                                        class="ant-typography"
+                                        style="margin-bottom: 0px;"
+                                      >
+                                        A.
+                                         
+                                        Health and Safety
+                                         (
+                                        1
+                                        )
+                                      </h3>
+                                    </div>
+                                  </h3>
+                                  <button
+                                    class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                    type="button"
+                                  >
+                                    <span>
+                                      Add Condition
+                                    </span>
+                                  </button>
+                                </div>
+                                <form
+                                  class="ant-form ant-form-horizontal common-form common-form-PERMIT_CONDITION_REVIEW_ASSIGNMENT-HSC form-edit"
+                                  id="PERMIT_CONDITION_REVIEW_ASSIGNMENT-HSC"
+                                >
+                                  <div
+                                    class="ant-row ant-row-start ant-row-top"
+                                    style="margin-left: -8px; margin-right: -8px;"
+                                  >
+                                    <div
+                                      class="ant-col"
+                                      style="padding-left: 8px; padding-right: 8px;"
+                                    >
+                                      <div
+                                        class="ant-typography"
+                                      >
+                                        Assigned Reviewer:
+                                      </div>
+                                    </div>
+                                    <div
+                                      class="ant-col ant-col-12"
+                                      style="padding-left: 8px; padding-right: 8px;"
+                                    >
+                                      <div
+                                        class="ant-form-item ant-form-item-with-help"
+                                      >
+                                        <div
+                                          class="ant-row ant-form-item-row"
+                                        >
+                                          <div
+                                            class="ant-col ant-form-item-control"
+                                          >
+                                            <div
+                                              class="ant-form-item-control-input"
+                                            >
+                                              <div
+                                                class="ant-form-item-control-input-content"
+                                              >
+                                                <div
+                                                  class="ant-select ant-select-in-form-item ant-select-single ant-select-show-arrow ant-select-disabled ant-select-loading ant-select-show-search"
+                                                  data-cy="assigned_review_user"
+                                                >
+                                                  <div
+                                                    class="ant-select-selector"
+                                                  >
+                                                    <span
+                                                      class="ant-select-selection-search"
+                                                    >
+                                                      <input
+                                                        aria-activedescendant="assigned_review_user-HSC_list_0"
+                                                        aria-autocomplete="list"
+                                                        aria-controls="assigned_review_user-HSC_list"
+                                                        aria-expanded="false"
+                                                        aria-haspopup="listbox"
+                                                        aria-owns="assigned_review_user-HSC_list"
+                                                        autocomplete="off"
+                                                        class="ant-select-selection-search-input"
+                                                        disabled=""
+                                                        id="assigned_review_user-HSC"
+                                                        role="combobox"
+                                                        type="search"
+                                                        value=""
+                                                      />
+                                                    </span>
+                                                    <span
+                                                      class="ant-select-selection-item"
+                                                      title="Testerson, Test MCM:EX"
+                                                    >
+                                                      Testerson, Test MCM:EX
+                                                    </span>
+                                                  </div>
+                                                  <span
+                                                    aria-hidden="true"
+                                                    class="ant-select-arrow ant-select-arrow-loading"
+                                                    style="user-select: none;"
+                                                    unselectable="on"
+                                                  >
+                                                    <span
+                                                      aria-label="loading"
+                                                      class="anticon anticon-loading anticon-spin"
+                                                      role="img"
+                                                    >
+                                                      <svg
+                                                        aria-hidden="true"
+                                                        data-icon="loading"
+                                                        fill="currentColor"
+                                                        focusable="false"
+                                                        height="1em"
+                                                        viewBox="0 0 1024 1024"
+                                                        width="1em"
+                                                      >
+                                                        <path
+                                                          d="M988 548c-19.9 0-36-16.1-36-36 0-59.4-11.6-117-34.6-171.3a440.45 440.45 0 00-94.3-139.9 437.71 437.71 0 00-139.9-94.3C629 83.6 571.4 72 512 72c-19.9 0-36-16.1-36-36s16.1-36 36-36c69.1 0 136.2 13.5 199.3 40.3C772.3 66 827 103 874 150c47 47 83.9 101.8 109.7 162.7 26.7 63.1 40.2 130.2 40.2 199.3.1 19.9-16 36-35.9 36z"
+                                                        />
+                                                      </svg>
+                                                    </span>
+                                                  </span>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div
+                                              style="display: flex; flex-wrap: nowrap;"
+                                            >
+                                              <div
+                                                class="ant-form-item-explain ant-form-item-explain-connected"
+                                                id="PERMIT_CONDITION_REVIEW_ASSIGNMENT-HSC_assigned_review_user_help"
+                                                role="alert"
+                                              >
+                                                <div
+                                                  class=""
+                                                />
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      class="ant-col"
+                                      style="padding-left: 8px; padding-right: 8px;"
+                                    >
+                                      <button
+                                        aria-label="Submit"
+                                        class="ant-btn ant-btn-primary ant-btn-icon-only  form-btn"
+                                        disabled=""
+                                        type="submit"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          class="svg-inline--fa fa-check "
+                                          data-icon="check"
+                                          data-prefix="far"
+                                          focusable="false"
+                                          role="img"
+                                          viewBox="0 0 448 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M441 103c9.4 9.4 9.4 24.6 0 33.9L177 401c-9.4 9.4-24.6 9.4-33.9 0L7 265c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l119 119L407 103c9.4-9.4 24.6-9.4 33.9 0z"
+                                            fill="currentColor"
+                                          />
+                                        </svg>
+                                      </button>
+                                      <span
+                                        class="ant-popover-disabled-compatible-wrapper form-btn"
+                                        style="display: inline-block; cursor: not-allowed;"
+                                      >
+                                        <button
+                                          class="ant-btn ant-btn-default ant-btn-icon-only"
+                                          disabled=""
+                                          style="pointer-events: none;"
+                                          type="button"
+                                        >
+                                          <svg
+                                            aria-hidden="true"
+                                            class="svg-inline--fa fa-xmark "
+                                            data-icon="xmark"
+                                            data-prefix="fal"
+                                            focusable="false"
+                                            role="img"
+                                            viewBox="0 0 384 512"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                          >
+                                            <path
+                                              d="M324.5 411.1c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L214.6 256 347.1 123.5c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0L192 233.4 59.5 100.9c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6L169.4 256 36.9 388.5c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0L192 278.6 324.5 411.1z"
+                                              fill="currentColor"
+                                            />
+                                          </svg>
+                                        </button>
+                                      </span>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                              <div
+                                class="ant-col ant-col-24 fade-in"
+                                style="padding: 8px 8px 8px 8px;"
+                              >
+                                <div
+                                  class="condition-layer condition-layer--0 condition-SEC fade-in "
+                                >
+                                  <div
+                                    class="condition-collapsed"
+                                  >
+                                    <div
+                                      class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                    >
+                                      <div
+                                        class="ant-col step-column"
+                                        style="flex-shrink: 0;"
+                                      >
+                                        <div
+                                          class="ant-typography view-item-value"
+                                        >
+                                          1.
+                                        </div>
+                                      </div>
+                                      <div
+                                        aria-label="Edit Condition"
+                                        class="ant-col condition-column"
+                                        title="Edit Condition"
+                                      >
+                                        <div
+                                          class="ant-typography view-item-value"
+                                        >
+                                          Section decade check including.
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div
+                                      class="ant-col ant-col-24"
+                                      style="padding: 8px 8px 8px 8px;"
+                                    >
+                                      <div
+                                        class="ant-row ant-row-space-between"
+                                      >
+                                        <div
+                                          class="ant-space ant-space-horizontal ant-space-align-center"
+                                        >
+                                          <div
+                                            class="ant-space-item"
+                                          >
+                                            <span
+                                              class="ant-tag ant-tag-error condition-tag"
+                                            >
+                                              <svg
+                                                aria-hidden="true"
+                                                class="svg-inline--fa fa-clock-rotate-left margin-small--right"
+                                                data-icon="clock-rotate-left"
+                                                data-prefix="far"
+                                                focusable="false"
+                                                role="img"
+                                                viewBox="0 0 512 512"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                              >
+                                                <path
+                                                  d="M48 106.7V56c0-13.3-10.7-24-24-24S0 42.7 0 56V168c0 13.3 10.7 24 24 24H136c13.3 0 24-10.7 24-24s-10.7-24-24-24H80.7c37-57.8 101.7-96 175.3-96c114.9 0 208 93.1 208 208s-93.1 208-208 208c-42.5 0-81.9-12.7-114.7-34.5c-11-7.3-25.9-4.3-33.3 6.7s-4.3 25.9 6.7 33.3C155.2 496.4 203.8 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C170.3 0 94.4 42.1 48 106.7zM256 128c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"
+                                                  fill="currentColor"
+                                                />
+                                              </svg>
+                                              <span>
+                                                Requires Review
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </div>
+                                        <div
+                                          class="ant-col"
+                                        >
+                                          
+                                          <button
+                                            class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                            type="button"
+                                          >
+                                            <span
+                                              aria-label="check"
+                                              class="anticon anticon-check"
+                                              role="img"
+                                            >
+                                              <svg
+                                                aria-hidden="true"
+                                                class=""
+                                                data-icon="check"
+                                                fill="currentColor"
+                                                focusable="false"
+                                                height="1em"
+                                                viewBox="64 64 896 896"
+                                                width="1em"
+                                              >
+                                                <path
+                                                  d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 00-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z"
+                                                />
+                                              </svg>
+                                            </span>
+                                            <span>
+                                               Complete Review
+                                            </span>
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="ant-col ant-col-24"
+                                style="padding: 8px 8px 8px 8px;"
+                              >
+                                <div
+                                  class="ant-row ant-row-space-between"
+                                >
+                                  <h3
+                                    class="ant-typography margin-none"
+                                    id="rcc"
+                                  >
+                                    <h3
+                                      class="ant-typography"
+                                      style="margin-bottom: 0px;"
+                                    >
+                                      B.
+                                       
+                                      Reclamation
+                                       (
+                                      1
+                                      )
+                                    </h3>
+                                  </h3>
+                                </div>
+                                <form
+                                  class="ant-form ant-form-horizontal common-form common-form-PERMIT_CONDITION_REVIEW_ASSIGNMENT-RCC form-edit"
+                                  id="PERMIT_CONDITION_REVIEW_ASSIGNMENT-RCC"
+                                >
+                                  <div
+                                    class="ant-row ant-row-start ant-row-top condition-category-reviewer-row"
+                                    style="margin-left: -8px; margin-right: -8px;"
+                                  >
+                                    <div
+                                      class="ant-col"
+                                      style="padding-left: 8px; padding-right: 8px;"
+                                    >
+                                      <div
+                                        class="ant-typography"
+                                      >
+                                        Assigned Reviewer:
+                                      </div>
+                                    </div>
+                                    <div
+                                      class="ant-col ant-col-12"
+                                      style="padding-left: 8px; padding-right: 8px;"
+                                    >
+                                      <div
+                                        class="ant-form-item ant-form-item-with-help"
+                                      >
+                                        <div
+                                          class="ant-row ant-form-item-row"
+                                        >
+                                          <div
+                                            class="ant-col ant-form-item-control"
+                                          >
+                                            <div
+                                              class="ant-form-item-control-input"
+                                            >
+                                              <div
+                                                class="ant-form-item-control-input-content"
+                                              >
+                                                <div
+                                                  class="ant-select ant-select-in-form-item ant-select-single ant-select-show-arrow ant-select-disabled ant-select-loading ant-select-show-search"
+                                                  data-cy="assigned_review_user"
+                                                >
+                                                  <div
+                                                    class="ant-select-selector"
+                                                  >
+                                                    <span
+                                                      class="ant-select-selection-search"
+                                                    >
+                                                      <input
+                                                        aria-activedescendant="assigned_review_user-RCC_list_0"
+                                                        aria-autocomplete="list"
+                                                        aria-controls="assigned_review_user-RCC_list"
+                                                        aria-expanded="false"
+                                                        aria-haspopup="listbox"
+                                                        aria-owns="assigned_review_user-RCC_list"
+                                                        autocomplete="off"
+                                                        class="ant-select-selection-search-input"
+                                                        disabled=""
+                                                        id="assigned_review_user-RCC"
+                                                        role="combobox"
+                                                        type="search"
+                                                        value=""
+                                                      />
+                                                    </span>
+                                                    <span
+                                                      class="ant-select-selection-placeholder"
+                                                    >
+                                                      Search for a user
+                                                    </span>
+                                                  </div>
+                                                  <span
+                                                    aria-hidden="true"
+                                                    class="ant-select-arrow ant-select-arrow-loading"
+                                                    style="user-select: none;"
+                                                    unselectable="on"
+                                                  >
+                                                    <span
+                                                      aria-label="loading"
+                                                      class="anticon anticon-loading anticon-spin"
+                                                      role="img"
+                                                    >
+                                                      <svg
+                                                        aria-hidden="true"
+                                                        data-icon="loading"
+                                                        fill="currentColor"
+                                                        focusable="false"
+                                                        height="1em"
+                                                        viewBox="0 0 1024 1024"
+                                                        width="1em"
+                                                      >
+                                                        <path
+                                                          d="M988 548c-19.9 0-36-16.1-36-36 0-59.4-11.6-117-34.6-171.3a440.45 440.45 0 00-94.3-139.9 437.71 437.71 0 00-139.9-94.3C629 83.6 571.4 72 512 72c-19.9 0-36-16.1-36-36s16.1-36 36-36c69.1 0 136.2 13.5 199.3 40.3C772.3 66 827 103 874 150c47 47 83.9 101.8 109.7 162.7 26.7 63.1 40.2 130.2 40.2 199.3.1 19.9-16 36-35.9 36z"
+                                                        />
+                                                      </svg>
+                                                    </span>
+                                                  </span>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div
+                                              style="display: flex; flex-wrap: nowrap;"
+                                            >
+                                              <div
+                                                class="ant-form-item-explain ant-form-item-explain-connected"
+                                                id="PERMIT_CONDITION_REVIEW_ASSIGNMENT-RCC_assigned_review_user_help"
+                                                role="alert"
+                                              >
+                                                <div
+                                                  class=""
+                                                />
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      class="ant-col"
+                                      style="padding-left: 8px; padding-right: 8px;"
+                                    >
+                                      <button
+                                        aria-label="Submit"
+                                        class="ant-btn ant-btn-primary ant-btn-icon-only  form-btn"
+                                        disabled=""
+                                        type="submit"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          class="svg-inline--fa fa-check "
+                                          data-icon="check"
+                                          data-prefix="far"
+                                          focusable="false"
+                                          role="img"
+                                          viewBox="0 0 448 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M441 103c9.4 9.4 9.4 24.6 0 33.9L177 401c-9.4 9.4-24.6 9.4-33.9 0L7 265c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l119 119L407 103c9.4-9.4 24.6-9.4 33.9 0z"
+                                            fill="currentColor"
+                                          />
+                                        </svg>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                              <div
+                                class="ant-col ant-col-24 fade-in"
+                                style="padding: 8px 8px 8px 8px;"
+                              >
+                                <div
+                                  class="condition-layer condition-layer--0 condition-SEC fade-in "
+                                >
+                                  <div
+                                    class="condition-collapsed"
+                                  >
+                                    <div
+                                      class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                    >
+                                      <div
+                                        class="ant-col step-column"
+                                        style="flex-shrink: 0;"
+                                      >
+                                        <div
+                                          class="ant-typography view-item-value"
+                                        >
+                                          1.
+                                        </div>
+                                      </div>
+                                      <div
+                                        class="ant-col condition-column"
+                                      >
+                                        <div
+                                          class="ant-typography view-item-value"
+                                        >
+                                          Reflect miss police tough such single force.
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div
+                                      class="ant-col ant-col-24"
+                                      style="padding: 8px 8px 8px 8px;"
+                                    >
+                                      <div
+                                        class="ant-row ant-row-space-between"
+                                      >
+                                        <div
+                                          class="ant-space ant-space-horizontal ant-space-align-center"
+                                        >
+                                          <div
+                                            class="ant-space-item"
+                                          >
+                                            <span
+                                              class="ant-tag ant-tag-error condition-tag"
+                                            >
+                                              <svg
+                                                aria-hidden="true"
+                                                class="svg-inline--fa fa-clock-rotate-left margin-small--right"
+                                                data-icon="clock-rotate-left"
+                                                data-prefix="far"
+                                                focusable="false"
+                                                role="img"
+                                                viewBox="0 0 512 512"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                              >
+                                                <path
+                                                  d="M48 106.7V56c0-13.3-10.7-24-24-24S0 42.7 0 56V168c0 13.3 10.7 24 24 24H136c13.3 0 24-10.7 24-24s-10.7-24-24-24H80.7c37-57.8 101.7-96 175.3-96c114.9 0 208 93.1 208 208s-93.1 208-208 208c-42.5 0-81.9-12.7-114.7-34.5c-11-7.3-25.9-4.3-33.3 6.7s-4.3 25.9 6.7 33.3C155.2 496.4 203.8 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C170.3 0 94.4 42.1 48 106.7zM256 128c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"
+                                                  fill="currentColor"
+                                                />
+                                              </svg>
+                                              <span>
+                                                Requires Review
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </div>
+                                        <div
+                                          class="ant-col"
+                                        >
+                                          
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="ant-col ant-col-24"
+                                style="padding: 8px 8px 8px 8px;"
+                              >
+                                <div
+                                  class="ant-row ant-row-space-between"
+                                >
+                                  <h3
+                                    class="ant-typography margin-none"
+                                    id="elc"
+                                  >
+                                    <h3
+                                      class="ant-typography"
+                                      style="margin-bottom: 0px;"
+                                    >
+                                      C.
+                                       
+                                      Environmental Land and Watercourses
+                                       (
+                                      2
+                                      )
+                                    </h3>
+                                  </h3>
+                                </div>
+                                <form
+                                  class="ant-form ant-form-horizontal common-form common-form-PERMIT_CONDITION_REVIEW_ASSIGNMENT-ELC form-edit"
+                                  id="PERMIT_CONDITION_REVIEW_ASSIGNMENT-ELC"
+                                >
+                                  <div
+                                    class="ant-row ant-row-start ant-row-top condition-category-reviewer-row"
+                                    style="margin-left: -8px; margin-right: -8px;"
+                                  >
+                                    <div
+                                      class="ant-col"
+                                      style="padding-left: 8px; padding-right: 8px;"
+                                    >
+                                      <div
+                                        class="ant-typography"
+                                      >
+                                        Assigned Reviewer:
+                                      </div>
+                                    </div>
+                                    <div
+                                      class="ant-col ant-col-12"
+                                      style="padding-left: 8px; padding-right: 8px;"
+                                    >
+                                      <div
+                                        class="ant-form-item ant-form-item-with-help"
+                                      >
+                                        <div
+                                          class="ant-row ant-form-item-row"
+                                        >
+                                          <div
+                                            class="ant-col ant-form-item-control"
+                                          >
+                                            <div
+                                              class="ant-form-item-control-input"
+                                            >
+                                              <div
+                                                class="ant-form-item-control-input-content"
+                                              >
+                                                <div
+                                                  class="ant-select ant-select-in-form-item ant-select-single ant-select-show-arrow ant-select-disabled ant-select-loading ant-select-show-search"
+                                                  data-cy="assigned_review_user"
+                                                >
+                                                  <div
+                                                    class="ant-select-selector"
+                                                  >
+                                                    <span
+                                                      class="ant-select-selection-search"
+                                                    >
+                                                      <input
+                                                        aria-activedescendant="assigned_review_user-ELC_list_0"
+                                                        aria-autocomplete="list"
+                                                        aria-controls="assigned_review_user-ELC_list"
+                                                        aria-expanded="false"
+                                                        aria-haspopup="listbox"
+                                                        aria-owns="assigned_review_user-ELC_list"
+                                                        autocomplete="off"
+                                                        class="ant-select-selection-search-input"
+                                                        disabled=""
+                                                        id="assigned_review_user-ELC"
+                                                        role="combobox"
+                                                        type="search"
+                                                        value=""
+                                                      />
+                                                    </span>
+                                                    <span
+                                                      class="ant-select-selection-placeholder"
+                                                    >
+                                                      Search for a user
+                                                    </span>
+                                                  </div>
+                                                  <span
+                                                    aria-hidden="true"
+                                                    class="ant-select-arrow ant-select-arrow-loading"
+                                                    style="user-select: none;"
+                                                    unselectable="on"
+                                                  >
+                                                    <span
+                                                      aria-label="loading"
+                                                      class="anticon anticon-loading anticon-spin"
+                                                      role="img"
+                                                    >
+                                                      <svg
+                                                        aria-hidden="true"
+                                                        data-icon="loading"
+                                                        fill="currentColor"
+                                                        focusable="false"
+                                                        height="1em"
+                                                        viewBox="0 0 1024 1024"
+                                                        width="1em"
+                                                      >
+                                                        <path
+                                                          d="M988 548c-19.9 0-36-16.1-36-36 0-59.4-11.6-117-34.6-171.3a440.45 440.45 0 00-94.3-139.9 437.71 437.71 0 00-139.9-94.3C629 83.6 571.4 72 512 72c-19.9 0-36-16.1-36-36s16.1-36 36-36c69.1 0 136.2 13.5 199.3 40.3C772.3 66 827 103 874 150c47 47 83.9 101.8 109.7 162.7 26.7 63.1 40.2 130.2 40.2 199.3.1 19.9-16 36-35.9 36z"
+                                                        />
+                                                      </svg>
+                                                    </span>
+                                                  </span>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div
+                                              style="display: flex; flex-wrap: nowrap;"
+                                            >
+                                              <div
+                                                class="ant-form-item-explain ant-form-item-explain-connected"
+                                                id="PERMIT_CONDITION_REVIEW_ASSIGNMENT-ELC_assigned_review_user_help"
+                                                role="alert"
+                                              >
+                                                <div
+                                                  class=""
+                                                />
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      class="ant-col"
+                                      style="padding-left: 8px; padding-right: 8px;"
+                                    >
+                                      <button
+                                        aria-label="Submit"
+                                        class="ant-btn ant-btn-primary ant-btn-icon-only  form-btn"
+                                        disabled=""
+                                        type="submit"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          class="svg-inline--fa fa-check "
+                                          data-icon="check"
+                                          data-prefix="far"
+                                          focusable="false"
+                                          role="img"
+                                          viewBox="0 0 448 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M441 103c9.4 9.4 9.4 24.6 0 33.9L177 401c-9.4 9.4-24.6 9.4-33.9 0L7 265c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l119 119L407 103c9.4-9.4 24.6-9.4 33.9 0z"
+                                            fill="currentColor"
+                                          />
+                                        </svg>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                              <div
+                                class="ant-col ant-col-24 fade-in"
+                                style="padding: 8px 8px 8px 8px;"
+                              >
+                                <div
+                                  class="condition-layer condition-layer--0 condition-SEC fade-in "
+                                >
+                                  <div
+                                    class="condition-collapsed"
+                                  >
+                                    <div
+                                      class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                    >
+                                      <div
+                                        class="ant-col step-column"
+                                        style="flex-shrink: 0;"
+                                      >
+                                        <div
+                                          class="ant-typography view-item-value"
+                                        >
+                                          1.
+                                        </div>
+                                      </div>
+                                      <div
+                                        class="ant-col condition-column"
+                                      >
+                                        <div
+                                          class="ant-typography view-item-value"
+                                        >
+                                          International clear those TV individual look.
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <div
+                                        class="condition-layer condition-layer--1 condition-CON fade-in "
+                                      >
+                                        <div
+                                          class="condition-collapsed"
+                                        >
+                                          <div
+                                            class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                          >
+                                            <div
+                                              class="ant-col step-column"
+                                              style="flex-shrink: 0;"
+                                            >
+                                              <div
+                                                class="ant-typography view-item-value"
+                                              >
+                                                a.
+                                              </div>
+                                            </div>
+                                            <div
+                                              class="ant-col condition-column"
+                                            >
+                                              <div
+                                                class="ant-typography view-item-value"
+                                              >
+                                                See store understand company interview value factor.
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div>
+                                            <div
+                                              class="condition-layer condition-layer--2 condition-LIS fade-in "
+                                            >
+                                              <div
+                                                class="condition-collapsed"
+                                              >
+                                                <div
+                                                  class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                                >
+                                                  <div
+                                                    class="ant-col step-column"
+                                                    style="flex-shrink: 0;"
+                                                  >
+                                                    <div
+                                                      class="ant-typography view-item-value"
+                                                    >
+                                                      i.
+                                                    </div>
+                                                  </div>
+                                                  <div
+                                                    class="ant-col condition-column"
+                                                  >
+                                                    <div
+                                                      class="ant-typography view-item-value"
+                                                    >
+                                                      Mr item fall study although.
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <div
+                                        class="condition-layer condition-layer--1 condition-SEC fade-in "
+                                      >
+                                        <div
+                                          class="condition-collapsed"
+                                        >
+                                          <div
+                                            class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                          >
+                                            <div
+                                              class="ant-col step-column"
+                                              style="flex-shrink: 0;"
+                                            >
+                                              <div
+                                                class="ant-typography view-item-value"
+                                              >
+                                                b.
+                                              </div>
+                                            </div>
+                                            <div
+                                              class="ant-col condition-column"
+                                            >
+                                              <div
+                                                class="ant-typography view-item-value"
+                                              >
+                                                words words words sub-section
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div>
+                                            <div
+                                              class="condition-layer condition-layer--2 condition-CON fade-in "
+                                            >
+                                              <div
+                                                class="condition-collapsed"
+                                              >
+                                                <div
+                                                  class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                                >
+                                                  <div
+                                                    class="ant-col step-column"
+                                                    style="flex-shrink: 0;"
+                                                  >
+                                                    <div
+                                                      class="ant-typography view-item-value"
+                                                    >
+                                                      i.
+                                                    </div>
+                                                  </div>
+                                                  <div
+                                                    class="ant-col condition-column"
+                                                  >
+                                                    <div
+                                                      class="ant-typography view-item-value"
+                                                    >
+                                                      a condition added underneath the section, with a lot of detail added to it, which is probably important for documents like permits
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <div>
+                                                  <div
+                                                    class="condition-layer condition-layer--3 condition-LIS fade-in "
+                                                  >
+                                                    <div
+                                                      class="condition-collapsed"
+                                                    >
+                                                      <div
+                                                        class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                                      >
+                                                        <div
+                                                          class="ant-col step-column"
+                                                          style="flex-shrink: 0;"
+                                                        >
+                                                          <div
+                                                            class="ant-typography view-item-value"
+                                                          >
+                                                            1.
+                                                          </div>
+                                                        </div>
+                                                        <div
+                                                          class="ant-col condition-column"
+                                                        >
+                                                          <div
+                                                            class="ant-typography view-item-value"
+                                                          >
+                                                            a detailed list item desribing exactly what must be done to accomplish the parent condition
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <div>
+                                                  <div
+                                                    class="condition-layer condition-layer--3 condition-LIS fade-in "
+                                                  >
+                                                    <div
+                                                      class="condition-collapsed"
+                                                    >
+                                                      <div
+                                                        class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                                      >
+                                                        <div
+                                                          class="ant-col step-column"
+                                                          style="flex-shrink: 0;"
+                                                        >
+                                                          <div
+                                                            class="ant-typography view-item-value"
+                                                          >
+                                                            2.
+                                                          </div>
+                                                        </div>
+                                                        <div
+                                                          class="ant-col condition-column"
+                                                        >
+                                                          <div
+                                                            class="ant-typography view-item-value"
+                                                          >
+                                                            but, that wasn't quite enough information, another list item will expand on other responsibilities associated with this permit
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <div>
+                                                  <div
+                                                    class="condition-layer condition-layer--3 condition-LIS fade-in "
+                                                  >
+                                                    <div
+                                                      class="condition-collapsed"
+                                                    >
+                                                      <div
+                                                        class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                                      >
+                                                        <div
+                                                          class="ant-col step-column"
+                                                          style="flex-shrink: 0;"
+                                                        >
+                                                          <div
+                                                            class="ant-typography view-item-value"
+                                                          >
+                                                            3.
+                                                          </div>
+                                                        </div>
+                                                        <div
+                                                          class="ant-col condition-column"
+                                                        >
+                                                          <div
+                                                            class="ant-typography view-item-value"
+                                                          >
+                                                            good things come in 3s, so another list item is added to the condition
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                      <div>
+                                                        <div
+                                                          class="condition-layer condition-layer--4 condition-LIS fade-in "
+                                                        >
+                                                          <div
+                                                            class="condition-collapsed"
+                                                          >
+                                                            <div
+                                                              class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                                            >
+                                                              <div
+                                                                class="ant-col step-column"
+                                                                style="flex-shrink: 0;"
+                                                              >
+                                                                <div
+                                                                  class="ant-typography view-item-value"
+                                                                >
+                                                                  a.
+                                                                </div>
+                                                              </div>
+                                                              <div
+                                                                class="ant-col condition-column"
+                                                              >
+                                                                <div
+                                                                  class="ant-typography view-item-value"
+                                                                >
+                                                                  we want to show nesting to 5 levels, so one list item gets a child
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div
+                                      class="ant-col ant-col-24"
+                                      style="padding: 8px 8px 8px 8px;"
+                                    >
+                                      <div
+                                        class="ant-row ant-row-space-between"
+                                      >
+                                        <div
+                                          class="ant-space ant-space-horizontal ant-space-align-center"
+                                        >
+                                          <div
+                                            class="ant-space-item"
+                                          >
+                                            <span
+                                              class="ant-tag ant-tag-success condition-tag"
+                                            >
+                                              <span
+                                                aria-label="check-circle"
+                                                class="anticon anticon-check-circle"
+                                                role="img"
+                                              >
+                                                <svg
+                                                  aria-hidden="true"
+                                                  class=""
+                                                  data-icon="check-circle"
+                                                  fill="currentColor"
+                                                  focusable="false"
+                                                  height="1em"
+                                                  viewBox="64 64 896 896"
+                                                  width="1em"
+                                                >
+                                                  <path
+                                                    d="M699 353h-46.9c-10.2 0-19.9 4.9-25.9 13.3L469 584.3l-71.2-98.8c-6-8.3-15.6-13.3-25.9-13.3H325c-6.5 0-10.3 7.4-6.5 12.7l124.6 172.8a31.8 31.8 0 0051.7 0l210.6-292c3.9-5.3.1-12.7-6.4-12.7z"
+                                                  />
+                                                  <path
+                                                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                                                  />
+                                                </svg>
+                                              </span>
+                                              <span>
+                                                Review Completed
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </div>
+                                        <div
+                                          class="ant-col"
+                                        >
+                                          
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="ant-col ant-col-24 fade-in"
+                                style="padding: 8px 8px 8px 8px;"
+                              >
+                                <div
+                                  class="condition-layer condition-layer--0 condition-SEC fade-in "
+                                >
+                                  <div
+                                    class="condition-collapsed"
+                                  >
+                                    <div
+                                      class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                    >
+                                      <div
+                                        class="ant-col step-column"
+                                        style="flex-shrink: 0;"
+                                      >
+                                        <div
+                                          class="ant-typography view-item-value"
+                                        >
+                                          2.
+                                        </div>
+                                      </div>
+                                      <div
+                                        class="ant-col condition-column"
+                                      >
+                                        <div
+                                          class="ant-typography view-item-value"
+                                        >
+                                          Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <div
+                                        class="condition-layer condition-layer--1 condition-CON fade-in "
+                                      >
+                                        <div
+                                          class="condition-collapsed"
+                                        >
+                                          <div
+                                            class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                          >
+                                            <div
+                                              class="ant-col step-column"
+                                              style="flex-shrink: 0;"
+                                            >
+                                              <div
+                                                class="ant-typography view-item-value"
+                                              >
+                                                a.
+                                              </div>
+                                            </div>
+                                            <div
+                                              class="ant-col condition-column"
+                                            >
+                                              <div
+                                                class="ant-typography view-item-value"
+                                              >
+                                                It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div
+                                      class="ant-col ant-col-24"
+                                      style="padding: 8px 8px 8px 8px;"
+                                    >
+                                      <div
+                                        class="ant-row ant-row-space-between"
+                                      >
+                                        <div
+                                          class="ant-space ant-space-horizontal ant-space-align-center"
+                                        >
+                                          <div
+                                            class="ant-space-item"
+                                          >
+                                            <span
+                                              class="ant-tag ant-tag-success condition-tag"
+                                            >
+                                              <span
+                                                aria-label="check-circle"
+                                                class="anticon anticon-check-circle"
+                                                role="img"
+                                              >
+                                                <svg
+                                                  aria-hidden="true"
+                                                  class=""
+                                                  data-icon="check-circle"
+                                                  fill="currentColor"
+                                                  focusable="false"
+                                                  height="1em"
+                                                  viewBox="64 64 896 896"
+                                                  width="1em"
+                                                >
+                                                  <path
+                                                    d="M699 353h-46.9c-10.2 0-19.9 4.9-25.9 13.3L469 584.3l-71.2-98.8c-6-8.3-15.6-13.3-25.9-13.3H325c-6.5 0-10.3 7.4-6.5 12.7l124.6 172.8a31.8 31.8 0 0051.7 0l210.6-292c3.9-5.3.1-12.7-6.4-12.7z"
+                                                  />
+                                                  <path
+                                                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                                                  />
+                                                </svg>
+                                              </span>
+                                              <span>
+                                                Review Completed
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </div>
+                                        <div
+                                          class="ant-col"
+                                        >
+                                          
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

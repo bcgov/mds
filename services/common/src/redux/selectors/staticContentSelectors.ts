@@ -5,10 +5,8 @@ import {
   createLabelHash,
   createDropDownList,
   compareCodes,
-  formatComplianceCodeReportName,
 } from "../utils/helpers";
 import { RootState } from "@mds/common/redux/rootState";
-import { IMineReportDefinition } from "../..";
 import { getMunicipalityOptions } from "../reducers/staticContentReducer";
 
 export const {
@@ -18,7 +16,6 @@ export const {
   getMineTenureTypeOptions,
   getMineCommodityOptions,
   getMineDisturbanceOptions,
-  getMineReportDefinitionOptions,
   getMineReportStatusOptions,
   getMineReportCategoryOptions,
   getProvinceOptions,
@@ -60,7 +57,7 @@ export const {
   getExplosivesPermitMagazineType,
   getProjectSummaryStatusCodes,
   getProjectSummaryDocumentTypes,
-  getEMLIContactTypes,
+  getMinistryContactTypes,
   getProjectSummaryAuthorizationTypes,
   getProjectSummaryPermitTypes,
   getInformationRequirementsTableStatusCodes,
@@ -80,7 +77,7 @@ const getOptions = (transformOptionsFunc, showActiveOnly) => {
     : options;
 };
 
-const createSelectorWrapper = (
+export const createSelectorWrapper = (
   getOptionsMethod,
   transformOptionsMethod,
   transformOptionsFuncArgs = []
@@ -333,10 +330,8 @@ export const getHSRCMComplianceCodesHash = createSelector([getCurrentComplianceC
     .filter(({ article_act_code }) => article_act_code === "HSRCM")
     .reduce((map, code) => {
       const composedValue = formatComplianceCodeValueOrLabel(code, true);
-      return {
-        [code.compliance_article_id]: composedValue,
-        ...map,
-      };
+      map[code.compliance_article_id] = composedValue;
+      return map;
     }, {})
 );
 
@@ -460,46 +455,6 @@ export const getDropdownVarianceDocumentCategoryOptions = createSelectorWrapper(
 export const getVarianceDocumentCategoryOptionsHash = createSelector(
   [getDropdownVarianceDocumentCategoryOptions],
   createLabelHash
-);
-
-export const getDropdownMineReportDefinitionOptions = createSelectorWrapper(
-  getMineReportDefinitionOptions,
-  createDropDownList,
-  ["report_name", "mine_report_definition_guid", "active_ind"]
-);
-
-export const getFormattedMineReportDefinitionOptions = createSelectorWrapper(
-  getMineReportDefinitionOptions,
-  (options: IMineReportDefinition[]) => {
-    return options
-      .map((item) => {
-        return {
-          label: formatComplianceCodeReportName(item),
-          value: item.mine_report_definition_guid,
-          isActive: item.active_ind,
-          is_common: item.is_common,
-          report_name: item.report_name,
-        };
-      })
-      .sort((a, b) => a.label.localeCompare(b.label));
-  }
-);
-
-export const getMineReportDefinitionByGuid = (mineReportDefinitionGuid: string) =>
-  createSelector([getMineReportDefinitionOptions], (reportDefs) => {
-    return reportDefs.find((r) => r.mine_report_definition_guid === mineReportDefinitionGuid);
-  });
-
-export const getMineReportDefinitionHash = createSelector(
-  getMineReportDefinitionOptions,
-  (options) =>
-    options.reduce(
-      (map, mine_report_definition) => ({
-        [mine_report_definition.mine_report_definition_guid]: mine_report_definition,
-        ...map,
-      }),
-      {}
-    )
 );
 
 export const getDropdownMineReportCategoryOptions = createSelectorWrapper(
@@ -914,14 +869,14 @@ export const getMajorMinesApplicationDocumentTypesHash = createSelector(
   createLabelHash
 );
 
-export const getDropdownEMLIContactTypes = createSelectorWrapper(
-  getEMLIContactTypes,
+export const getDropdownMinistryContactTypes = createSelectorWrapper(
+  getMinistryContactTypes,
   createDropDownList,
   ["description", "emli_contact_type_code", "active_ind"]
 );
 
-export const getEMLIContactTypesHash = createSelector(
-  [getDropdownEMLIContactTypes],
+export const getMinistryContactTypesHash = createSelector(
+  [getDropdownMinistryContactTypes],
   createLabelHash
 );
 

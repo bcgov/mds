@@ -3,9 +3,9 @@ from unittest import mock
 import httpx
 import pytest
 from app.app import mds
+from app.common.types.permit_condition_model import PermitConditions
 from app.helpers.celery_task_status import CeleryTaskStatus
-from app.permit_conditions.tasks.tasks import run_permit_condition_pipeline
-from app.permit_conditions.validator.permit_condition_model import PermitConditions
+from app.tasks.tasks import run_permit_condition_pipeline
 from fastapi.testclient import TestClient
 
 client = TestClient(mds)
@@ -25,7 +25,7 @@ def mock_run_permit_condition_pipeline(mocker):
 def mock_store_temporary(mocker):
     mocked_file = mock.MagicMock(name="abc.123.pdf", close=mock.MagicMock())
     return mocker.patch(
-        "app.permit_conditions.resources.permit_condition_resource.store_temporary",
+        "app.pipelines.permit_condition_extraction.resources.permit_condition_resource.store_temporary",
         return_value=mocked_file,
     )
 
@@ -33,7 +33,7 @@ def mock_store_temporary(mocker):
 @pytest.fixture
 def mock_async_result(mocker):
     mock_result = mocker.patch(
-        "app.permit_conditions.tasks.tasks.run_permit_condition_pipeline.app.AsyncResult"
+        "app.tasks.tasks.run_permit_condition_pipeline.app.AsyncResult"
     )
     return mock_result
 

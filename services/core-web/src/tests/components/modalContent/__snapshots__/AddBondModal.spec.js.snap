@@ -2,7 +2,7 @@
 
 exports[`AddBondModal renders properly 1`] = `
 <div>
-  <ReduxForm
+  <BondForm
     bond={
       Object {
         "amount": 300,
@@ -25,12 +25,7 @@ exports[`AddBondModal renders properly 1`] = `
       }
     }
     closeModal={[MockFunction]}
-    destroyOnUnmount={true}
     editBond={false}
-    enableReinitialize={false}
-    forceUnregisterOnUnmount={false}
-    form="ADD_BOND"
-    getFormState={[Function]}
     initialPartyValue=""
     initialValues={
       Object {
@@ -53,10 +48,7 @@ exports[`AddBondModal renders properly 1`] = `
         "reference_number": "",
       }
     }
-    keepDirtyOnReinitialize={false}
     onSubmit={[Function]}
-    onSubmitSuccess={[Function]}
-    persistentSubmitErrors={false}
     provinceOptions={
       Array [
         Object {
@@ -73,16 +65,7 @@ exports[`AddBondModal renders properly 1`] = `
         },
       ]
     }
-    pure={true}
-    shouldAsyncValidate={[Function]}
-    shouldError={[Function]}
-    shouldValidate={[Function]}
-    shouldWarn={[Function]}
-    submitAsSideEffect={false}
     title="Add Bond"
-    touchOnBlur={true}
-    touchOnChange={false}
-    updateUnregisteredFields={false}
   />
 </div>
 `;

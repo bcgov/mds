@@ -1,11 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ExplosivesPermitDecisionForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  name="EXPLOSIVES_PERMIT_DECISION"
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "onSubmitSuccess": [Function],
+      "touchOnBlur": true,
+    }
+  }
 >
   <Row
     gutter={48}
@@ -13,53 +17,44 @@ exports[`ExplosivesPermitDecisionForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          data={Array []}
-          id="issuing_inspector_party_guid"
-          label="Issuing Inspector*"
-          name="issuing_inspector_party_guid"
-          placeholder="Start typing the Issuing Inspector's name"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="issue_date"
-          label="Issue Date*"
-          name="issue_date"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="expiry_date"
-          label="Expiry Date*"
-          name="expiry_date"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        data={Array []}
+        id="issuing_inspector_party_guid"
+        label="Issuing Inspector"
+        name="issuing_inspector_party_guid"
+        placeholder="Start typing the Issuing Inspector's name"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+      <Field
+        component={[Function]}
+        id="issue_date"
+        label="Issue Date"
+        name="issue_date"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+      <Field
+        component={[Function]}
+        id="expiry_date"
+        label="Expiry Date"
+        name="expiry_date"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <div
@@ -110,5 +105,5 @@ exports[`ExplosivesPermitDecisionForm renders properly 1`] = `
       Issue Permit
     </Button>
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

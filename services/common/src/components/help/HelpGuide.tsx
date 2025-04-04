@@ -2,13 +2,12 @@ import { Alert, Button, Col, Drawer, Row, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
 import { Route, Switch, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { isDirty, submit } from "redux-form";
+import { isDirty, submit } from "@mds/common/components/forms/form";
 import {
   getSystemFlag,
   isAuthenticated,
   userHasRole,
 } from "@mds/common/redux/selectors/authenticationSelectors";
-import { FORM, SystemFlagEnum, USER_ROLES } from "@mds/common/constants";
 import {
   createHelp,
   updateHelp,
@@ -30,26 +29,31 @@ import Loading from "../common/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/pro-regular-svg-icons";
 import { cancelConfirmWrapper } from "../forms/RenderCancelButton";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { USER_ROLES } from "@mds/common/constants/environment";
+import { FORM } from "@mds/common/constants/forms";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 
 interface HelpGuideProps {
   helpKey: string;
 }
 
 export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const system: SystemFlagEnum = useSelector(getSystemFlag);
   const params = useParams<any>();
   const { tab, activeTab } = params;
   const pageTab = tab ?? activeTab;
 
+  const systemLabel = system === SystemFlagEnum.core ? "Core" : "MineSpace";
+
   const [open, setOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const canEditHelp = useSelector((state) => userHasRole(state, USER_ROLES.role_edit_helpdesk));
-  const helpGuide = useSelector(getHelpByKey(helpKey, pageTab)) ?? {};
+  const canEditHelp = useSelector(userHasRole(USER_ROLES.role_edit_helpdesk));
+  const helpGuide = useAppSelector(getHelpByKey(helpKey, pageTab)) ?? { help_guid: null, help_key: helpKey, content: "" };
   const { help_guid, help_key } = helpGuide;
   const hasHelpGuide = Boolean(help_guid);
   const defaultGuide = help_key === EMPTY_HELP_KEY;
-  const { content = "" } = helpGuide ?? {};
   const [isLoaded, setIsLoaded] = useState(hasHelpGuide);
   const unformattedTitle = pageTab ?? helpKey;
   const title = formatSnakeCaseToSentenceCase(unformattedTitle);
@@ -138,7 +142,7 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
     return <Row justify={justify}>{buttons}</Row>;
   };
   const initialValues =
-    hasHelpGuide && !defaultGuide ? helpGuide : { help_key: helpKey, page_tab: pageTab };
+    hasHelpGuide && !defaultGuide ? helpGuide : { help_key: helpKey, page_tab: pageTab, content: "" };
   const mainContent = isEditMode ? (
     <HelpGuideForm
       initialValues={initialValues}
@@ -146,7 +150,7 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
       pageTab={pageTab}
     />
   ) : (
-    parse(DOMPurify.sanitize(content))
+    parse(DOMPurify.sanitize(helpGuide.content))
   );
 
   return (
@@ -175,7 +179,7 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
               message="Publish Help Guide"
               showIcon
               type="warning"
-              description="Content published here will be visible to MineSpace users. Ensure the language is appropriate and avoid sharing confidential information."
+              description={`Content published here will be visible to ${systemLabel} users. Ensure the language is appropriate and avoid sharing confidential information.`}
             />
           )}
           <Typography.Title level={2} data-testid="help-title">

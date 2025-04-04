@@ -2,12 +2,19 @@ import React, { FC, useEffect } from "react";
 import { Form } from "antd";
 import { compose } from "@reduxjs/toolkit";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { reduxForm, submit, getFormSubmitErrors, InjectedFormProps, ConfigProps } from "redux-form";
+import {
+  reduxForm,
+  submit,
+  getFormSubmitErrors,
+  InjectedFormProps,
+  ConfigProps,
+} from "@mds/common/components/forms/form";
 
 export interface IFormContext {
   isEditMode: boolean;
   isModal: boolean;
   formName: string;
+  onReset: () => void | Promise<void>;
 }
 /**
  * The values in FormProvider (from FormWrapper props) will be passed down to child components
@@ -19,6 +26,7 @@ export const FormContext = React.createContext<IFormContext>({
   isEditMode: true,
   isModal: false,
   formName: null,
+  onReset: undefined,
 });
 export const { Provider: FormProvider, Consumer: FormConsumer } = FormContext;
 
@@ -60,12 +68,14 @@ export interface FormWrapperProps {
   name: string;
   initialValues?: any;
   reduxFormConfig?: Partial<ConfigProps>;
-  onSubmit: (values) => void | Promise<void>;
+  onSubmit?: (values) => void | Promise<void>;
+  onReset?: () => void | Promise<void>;
   children: any;
   isModal?: boolean;
   loading?: boolean;
   isEditMode?: boolean;
   scrollOnToggleEdit?: boolean;
+  layout?: "inline" | "horizontal" | "vertical";
 }
 
 const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
@@ -73,14 +83,19 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
   isModal = false,
   scrollOnToggleEdit = true,
   children,
+  layout,
+  onReset,
   ...props
 }) => {
   const providerValues = {
     isEditMode,
     isModal,
     formName: props.name,
+    onReset,
   };
+  console.log("open form", props.name);
   const dispatch = useDispatch();
+
   const formErrors = useSelector(getFormSubmitErrors(props.name));
 
   useEffect(() => {
@@ -90,10 +105,11 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
   }, [isEditMode]);
 
   const handleSubmit = async (values) => {
-    dispatch(submit(props.name));
-    if (!formErrors) {
-      await props.onSubmit(values);
-    }
+    console.log('handleSubmit', props.name, values)
+      dispatch(submit(props.name));
+      if (!formErrors && props.onSubmit) {
+        await props.onSubmit(values);
+      }
   };
 
   const formClassName = `common-form common-form-${props.name} form-${
@@ -103,7 +119,7 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
   return (
     <FormProvider value={providerValues}>
       <Form
-        layout="vertical"
+        layout={layout ?? "vertical"}
         onFinish={handleSubmit}
         name={props.name}
         className={formClassName}
@@ -120,6 +136,9 @@ const mapStateToProps = (_state, ownProps) => ({
   initialValues: ownProps.initialValues,
   ...ownProps.reduxFormConfig,
 });
-export default compose(connect(mapStateToProps), reduxForm({}))(FormWrapper as any) as FC<
-  FormWrapperProps
->;
+
+const MemoizedFormWrapper: FC<FormWrapperProps> = React.memo(FormWrapper);
+export default compose(
+  connect(mapStateToProps),
+  reduxForm({})
+)(MemoizedFormWrapper as any) as FC<FormWrapperProps>;

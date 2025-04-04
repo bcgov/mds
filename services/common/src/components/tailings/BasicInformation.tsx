@@ -1,13 +1,4 @@
-import {
-  CONSEQUENCE_CLASSIFICATION_STATUS_CODE,
-  FACILITY_TYPES,
-  IPermit,
-  ITailingsStorageFacility,
-  STORAGE_LOCATION,
-  TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD,
-  TSF_OPERATING_STATUS_CODE,
-  TSF_TYPES,
-} from "@mds/common";
+
 import { Alert, Button, Col, Row, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
 import {
@@ -17,25 +8,25 @@ import {
   maxLength,
   required,
   requiredList,
-  validateSelectOptions,
 } from "@mds/common/redux/utils/Validate";
-
-import { Field } from "redux-form";
-import { connect } from "react-redux";
-import { formatDateTime } from "@mds/common/redux/utils/helpers";
+import { Field } from "@mds/common/components/forms/form";
+import { formatDateTime, formatDateTimeUserTz } from "@mds/common/redux/utils/helpers";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getTsf } from "@mds/common/redux/selectors/tailingsSelectors";
 import TailingsDiffModal from "@mds/common/components/tailings/TailingsDiffModal";
+import { IPermit, ITailingsStorageFacility } from "@mds/common/interfaces";
+import { CONSEQUENCE_CLASSIFICATION_STATUS_CODE, FACILITY_TYPES, STORAGE_LOCATION, TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD, TSF_OPERATING_STATUS_CODE, TSF_TYPES } from "@mds/common/constants/strings";
+import RenderSelect from "../forms/RenderSelect";
+import RenderField from "../forms/RenderField";
+import { useAppSelector } from "@mds/common/redux/rootState";
 
 export interface BasicInformationProps {
-  permits: IPermit[];
-  showUpdateTimestamp: boolean;
-  renderConfig: any;
-  tsf: ITailingsStorageFacility;
   mineName: string;
   canEditTSF?: boolean;
   isEditMode: boolean;
 }
+
+const dateTransform = { transform: (dateString: string) => formatDateTimeUserTz(dateString) || null };
 
 // Provide a mapping of the field names to the title and data for the field
 // This is used to display the field names and values in a more user-friendly way in the history modal
@@ -78,10 +69,14 @@ const historyDiffValueMapper = {
     title: "Independent Tailings Review Board Member",
     data: TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD,
   },
+  create_timestamp: dateTransform,
+  update_timestamp: dateTransform,
 };
 
 export const BasicInformation: FC<BasicInformationProps> = (props) => {
-  const { permits, renderConfig, canEditTSF = false, tsf, isEditMode, mineName } = props;
+  const { canEditTSF = false, isEditMode, mineName } = props;
+  const permits: IPermit[] = useAppSelector(getPermits);
+  const tsf: ITailingsStorageFacility = useAppSelector(getTsf);
   const [permitOptions, setPermitOptions] = useState([]);
   const [diffModalOpen, setDiffModalOpen] = useState(false);
 
@@ -104,13 +99,13 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
   }, [permits]);
   return (
     <>
-      {props.tsf?.update_timestamp && (
+      {tsf?.update_timestamp && (
         <Row>
           <Col span={24}>
             <Typography.Paragraph>
               <Alert
-                description={`Last Updated by ${props.tsf.update_user}  on ${formatDateTime(
-                  props.tsf.update_timestamp
+                description={`Last Updated by ${tsf.update_user}  on ${formatDateTime(
+                  tsf.update_timestamp
                 )}`}
                 showIcon
                 message=""
@@ -133,45 +128,50 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
       <Field
         id="facility_type"
         name="facility_type"
-        label="Facility Type *"
-        component={renderConfig.SELECT}
+        label="Facility Type"
+        component={RenderSelect}
         disabled={!canEditTSFAndEditMode}
         data={FACILITY_TYPES}
-        validate={[requiredList, validateSelectOptions(FACILITY_TYPES)]}
+        required
+        validate={[requiredList]}
       />
       <Field
-        label="Mines Act Permit Number *"
+        label="Mines Act Permit Number"
         id="mines_act_permit_no"
         name="mines_act_permit_no"
-        component={renderConfig.SELECT}
+        component={RenderSelect}
         disabled={!canEditTSFAndEditMode}
-        validate={[requiredList, validateSelectOptions(permitOptions)]}
+        required
+        validate={[requiredList]}
         data={permitOptions}
       />
       <Field
         id="tailings_storage_facility_type"
         name="tailings_storage_facility_type"
-        label="Tailings Storage Facility Type *"
-        component={renderConfig.SELECT}
+        label="Tailings Storage Facility Type"
+        component={RenderSelect}
         disabled={!canEditTSFAndEditMode}
-        validate={[requiredList, validateSelectOptions(TSF_TYPES)]}
+        required
+        validate={[requiredList]}
         data={TSF_TYPES}
       />
       <Field
         id="storage_location"
         name="storage_location"
-        label="Underground or Above Ground? *"
-        component={renderConfig.SELECT}
+        label="Underground or Above Ground?"
+        component={RenderSelect}
         disabled={!canEditTSFAndEditMode}
         data={STORAGE_LOCATION}
-        validate={[requiredList, validateSelectOptions(STORAGE_LOCATION)]}
+        required
+        validate={[requiredList]}
       />
       <Field
         id="mine_tailings_storage_facility_name"
         name="mine_tailings_storage_facility_name"
-        label="Facility Name *"
-        component={renderConfig.FIELD}
+        label="Facility Name"
+        component={RenderField}
         disabled={!canEditTSFAndEditMode}
+        required
         validate={[maxLength(60), required]}
       />
       <Row gutter={16}>
@@ -179,9 +179,10 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
           <Field
             id="latitude"
             name="latitude"
-            label="Latitude *"
-            component={renderConfig.FIELD}
+            label="Latitude"
+            component={RenderField}
             disabled={!canEditTSFAndEditMode}
+            required
             validate={[lat, required]}
           />
         </Col>
@@ -189,9 +190,10 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
           <Field
             id="longitude"
             name="longitude"
-            label="Longitude *"
-            component={renderConfig.FIELD}
+            label="Longitude"
+            component={RenderField}
             disabled={!canEditTSFAndEditMode}
+            required
             validate={[lonNegative, lon, required]}
           />
         </Col>
@@ -199,28 +201,31 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
       <Field
         id="consequence_classification_status_code"
         name="consequence_classification_status_code"
-        label="Consequence Classification *"
-        component={renderConfig.SELECT}
+        label="Consequence Classification"
+        component={RenderSelect}
         disabled={!canEditTSFAndEditMode}
         data={CONSEQUENCE_CLASSIFICATION_STATUS_CODE}
-        validate={[requiredList, validateSelectOptions(CONSEQUENCE_CLASSIFICATION_STATUS_CODE)]}
+        required
+        validate={[requiredList]}
       />
       <Field
         id="tsf_operating_status_code"
         name="tsf_operating_status_code"
-        label="Operating Status *"
+        label="Operating Status"
         data={statusCodeOptions}
-        component={renderConfig.SELECT}
+        component={RenderSelect}
         disabled={!canEditTSFAndEditMode}
-        validate={[requiredList, validateSelectOptions(statusCodeOptions)]}
+        required
+        validate={[requiredList]}
       />
       <Field
         id="itrb_exemption_status_code"
         name="itrb_exemption_status_code"
-        label="Independent Tailings Review Board Member *"
-        component={renderConfig.SELECT}
+        label="Independent Tailings Review Board Member"
+        component={RenderSelect}
         disabled={!canEditTSFAndEditMode}
         data={TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD}
+        required
         validate={[maxLength(300), required]}
       />
       <TailingsDiffModal
@@ -235,9 +240,4 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  permits: getPermits(state),
-  tsf: getTsf(state),
-});
-
-export default connect(mapStateToProps)(BasicInformation);
+export default BasicInformation;

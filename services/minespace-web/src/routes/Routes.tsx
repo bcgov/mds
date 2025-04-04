@@ -7,6 +7,8 @@ import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import * as routes from "@/constants/routes";
 import Loading from "@/components/common/Loading";
 import ColumnWrapper from "@/HOC/ColumnWrapper";
+import FeatureFlagGuard from "@/components/common/featureFlag.guard";
+import { Feature } from "@mds/common/utils";
 
 const Routes = () => (
   <Suspense fallback={<Loading></Loading>}>
@@ -118,7 +120,17 @@ const Routes = () => (
       <Route
         path={routes.ADD_TAILINGS_STORAGE_FACILITY.route}
         component={ColumnWrapper()(
-          AuthenticationGuard()(routes.ADD_TAILINGS_STORAGE_FACILITY.component)
+          FeatureFlagGuard(Feature.TSF_V2)(
+            AuthenticationGuard()(routes.ADD_TAILINGS_STORAGE_FACILITY.component)
+          )
+        )}
+      />
+      <Route
+        path={routes.TAILINGS_SUBMIT_SUCCESS.route}
+        component={ColumnWrapper()(
+          FeatureFlagGuard(Feature.TSF_V2)(
+            AuthenticationGuard()(routes.TAILINGS_SUBMIT_SUCCESS.component)
+          )
         )}
       />
       <Route
@@ -129,11 +141,15 @@ const Routes = () => (
       />
       <Route
         path={routes.ADD_DAM.route}
-        component={ColumnWrapper()(AuthenticationGuard()(routes.ADD_DAM.component))}
+        component={ColumnWrapper()(
+          FeatureFlagGuard(Feature.TSF_V2)(AuthenticationGuard()(routes.ADD_DAM.component))
+        )}
       />
       <Route
         path={routes.EDIT_DAM.route}
-        component={ColumnWrapper()(AuthenticationGuard()(routes.EDIT_DAM.component))}
+        component={ColumnWrapper()(
+          FeatureFlagGuard(Feature.TSF_V2)(AuthenticationGuard()(routes.EDIT_DAM.component))
+        )}
       />
       <Route
         path={routes.ADD_MINE_INCIDENT.route}
@@ -154,6 +170,14 @@ const Routes = () => (
       <Route
         path={routes.REPORT_VIEW_EDIT.route}
         component={ColumnWrapper()(AuthenticationGuard()(routes.REPORT_VIEW_EDIT.component))}
+      />
+      <Route
+        path={routes.PERMIT_VIEW.route}
+        component={ColumnWrapper()(AuthenticationGuard()(routes.PERMIT_VIEW.component))}
+      />
+      <Route
+        path={routes.VIEW_MINE_PERMIT_AMENDMENT.route}
+        component={AuthenticationGuard()(routes.VIEW_MINE_PERMIT_AMENDMENT.component)}
       />
       {/* 404 - PAGE NOT FOUND */}
       <Route

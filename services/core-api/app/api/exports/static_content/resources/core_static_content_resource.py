@@ -29,7 +29,6 @@ from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppo
 from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.variances.models.variance_application_status_code import VarianceApplicationStatusCode
 from app.api.variances.models.variance_document_category_code import VarianceDocumentCategoryCode
-from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 from app.api.mines.reports.models.mine_report_category import MineReportCategory
 from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
 from app.api.now_applications.models.activity_summary.activity_type import ActivityType
@@ -61,7 +60,7 @@ from app.api.mines.explosives_permit.models.explosives_permit_magazine_type impo
 from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
 from app.api.projects.project_summary.models.project_summary_status_code import ProjectSummaryStatusCode
 from app.api.projects.project_summary.models.project_summary_document_type import ProjectSummaryDocumentType
-from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
+from app.api.ministry_contacts.models.ministry_contact_type import MinistryContactType
 from app.api.projects.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
 from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 from app.api.projects.information_requirements_table.models.information_requirements_table_status_code import InformationRequirementsTableStatusCode
@@ -77,7 +76,7 @@ MODELS_GET_ACTIVE = [
     PermitStatusCode, MineIncidentDocumentTypeCode, MineIncidentFollowupInvestigationType,
     MineIncidentDeterminationType, MineIncidentStatusCode, MineIncidentCategory, SubDivisionCode,
     ComplianceArticle, VarianceApplicationStatusCode, VarianceDocumentCategoryCode,
-    MineReportDefinition, MineReportCategory, MineReportSubmissionStatusCode, ActivityType,
+    MineReportCategory, MineReportSubmissionStatusCode, ActivityType,
     UnitType, NOWApplicationType, NOWApplicationStatus, NOWApplicationDocumentType,
     UndergroundExplorationType, NOWApplicationProgressStatus, NOWApplicationPermitType,
     MinePartyAppointmentType, NOWApplicationReviewType, BondType, BondStatus, BondDocumentType,
@@ -86,7 +85,7 @@ MODELS_GET_ACTIVE = [
     ApplicationSourceTypeCode, ApplicationTypeCode, GovernmentAgencyType, TSFOperatingStatusCode,
     ConsequenceClassificationStatusCode, ITRBExemptionStatusCode, ExplosivesPermitStatus,
     ExplosivesPermitMagazineType, ExplosivesPermitDocumentType, ProjectSummaryDocumentType,
-    ProjectSummaryStatusCode, EMLIContactType, ProjectSummaryAuthorizationType,
+    ProjectSummaryStatusCode, MinistryContactType, ProjectSummaryAuthorizationType,
     ProjectSummaryPermitType, InformationRequirementsTableStatusCode, InformationRequirementsTableDocumentType,
     MajorMineApplicationStatusCode, MajorMineApplicationDocumentType, ProjectDecisionPackageStatusCode, ProjectDecisionPackageDocumentType, Municipality
 ]

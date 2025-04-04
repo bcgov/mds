@@ -46,8 +46,8 @@ const mockDocumentData = {
   ],
 };
 
-jest.mock("@mds/common", () => ({
-  ...jest.requireActual("@mds/common"),
+jest.mock("@mds/common/utils", () => ({
+  ...jest.requireActual("@mds/common/utils"),
   isFeatureEnabled: () => true,
 }));
 

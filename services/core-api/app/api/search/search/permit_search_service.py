@@ -1,18 +1,9 @@
-import logging
+import json
 import os
 import tempfile
 import uuid
-from io import BytesIO
 
 import requests
-from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
-from app.api.mines.permits.permit.models.permit import Permit
-from app.api.mines.permits.permit_amendment.models.permit_amendment import (
-    PermitAmendment,
-)
-from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
-    PermitAmendmentDocument,
-)
 from app.api.mines.permits.permit_extraction.models.permit_extraction_task import (
     PermitExtractionTask,
 )
@@ -25,7 +16,7 @@ from werkzeug.exceptions import InternalServerError
 JWT_OIDC_WELL_KNOWN_CONFIG = os.getenv('JWT_OIDC_WELL_KNOWN_CONFIG')
 
 oidc_configuration = requests.get(JWT_OIDC_WELL_KNOWN_CONFIG).json()
-SEARCH_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit/query'
+SEARCH_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit_conditions/search'
 EXTRACTION_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit_conditions'
 EXTRACTION_STATUS_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit_conditions/status'
 EXTRACTION_RESULTS_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit_conditions/results'
@@ -40,12 +31,20 @@ class PermitSearchService:
 
     def search(self, search_term):
         """
-        Performs a search against the permit service by the `search_term`.
+        Performs a streaming search against the permit service by the `search_term`.
+        Returns a generator that yields SSE formatted responses.
         """
-        results = self.session.post(SEARCH_ENDPOINT, json={'query': search_term,'debug': False, 'params': {}}).json()
-        return results['documents']
+        print(f'Searching for permit conditions with term: {search_term}')
+        response = self.session.post(
+            SEARCH_ENDPOINT,
+            data=json.dumps({'query': search_term['query'], 'filters': search_term.get('filters')}),
+            stream=True,
+        )
+        
+        # Just return the response directly for streaming
+        return response
 
-    def initialize_permit_extraction(self, permit_amendment_document):
+    def initialize_permit_extraction(self, permit_amendment_document, with_internal_auth=False):
         """
         Begins the process of extracting permit conditions from a the PDF document.
 
@@ -57,8 +56,13 @@ class PermitSearchService:
 
         current_app.logger.info(f'Initiating permit extraction for document {document_manager_guid}')
 
+        headers = None
+        if with_internal_auth:
+            token = self.session.fetch_token()
+            headers = {'Authorization': f'Bearer {token["access_token"]}'}
+
         with tempfile.NamedTemporaryFile() as file:
-            file_name, fle = DocumentManagerService().download_document_to_file(document_manager_guid, file)
+            file_name, fle = DocumentManagerService().download_document_to_file(document_manager_guid, file, headers=headers)
             fle.seek(0)
 
             try:
@@ -92,7 +96,7 @@ class PermitSearchService:
 
         if not task:
             raise InternalServerError('Task not found')
-        
+
         result = self.session.get(f'{EXTRACTION_STATUS_ENDPOINT}?task_id={task.task_id}')
 
         if result.status_code != 200:
@@ -104,7 +108,7 @@ class PermitSearchService:
         if task.task_status != data['status']:
             current_app.logger.info(f'Updating permit condition extract task status for task {task.task_id} from {task.task_status} to {data["status"]}')
 
-        task.task_status = data['status']
+        task_status = data['status']
         task.meta = data['meta']
 
         if data['status'] == 'SUCCESS':
@@ -118,4 +122,4 @@ class PermitSearchService:
 
             task.task_result = data
 
-        return task
+        return task, task_status

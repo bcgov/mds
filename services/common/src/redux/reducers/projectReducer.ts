@@ -9,7 +9,7 @@ import {
   IProjectPageData,
   IProjectSummary,
   IProjectSummaryMinistryComment,
-} from "../..";
+} from "@mds/common/interfaces";
 
 interface IProjectReducerState {
   projects: IProject[];

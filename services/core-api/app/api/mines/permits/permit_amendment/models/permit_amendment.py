@@ -1,5 +1,6 @@
 import uuid
 from datetime import date, datetime
+from typing import Union
 
 from app.api.constants import *
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
@@ -8,6 +9,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment_document imp
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
     PermitConditions,
 )
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.api.verifiable_credentials.aries_constants import IssueCredentialIssuerState
 from app.extensions import db
@@ -29,9 +31,9 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     permit_amendment_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'), nullable=False)
-    received_date = db.Column(db.DateTime, nullable=False)
-    issue_date: date = db.Column(db.DateTime, nullable=False)
-    authorization_end_date = db.Column(db.DateTime, nullable=False)
+    received_date: date = db.Column(db.Date, nullable=False)          # db column is date
+    issue_date: date = db.Column(db.Date, nullable=False)             # db column is date
+    authorization_end_date: date = db.Column(db.Date, nullable=False) # db column is date
     permit_amendment_status_code = db.Column(
         db.String(3), db.ForeignKey('permit_amendment_status_code.permit_amendment_status_code'))
     permit_amendment_type_code = db.Column(
@@ -45,11 +47,11 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     permit_amendment_status_description = association_proxy('permit_amendment_status',
                                                             'description')
     permit_guid = association_proxy('permit', 'permit_guid')
-    permit_no = association_proxy('permit', 'permit_no')
+    permit_no: str = association_proxy('permit', 'permit_no')                                                                                                                              #type: ignore[reportAssignmentType]
     permit_amendment_type = db.relationship('PermitAmendmentTypeCode')
     permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
-    #liability_adjustment is the change of work assessed for the new amendment,
-    # This value is added to previous amendments to create the new total assessment for the permit
+                                                                                                                                                                                           #liability_adjustment is the change of work assessed for the new amendment,
+                                                                                                                                                                                           # This value is added to previous amendments to create the new total assessment for the permit
     liability_adjustment = db.Column(db.Numeric(16, 2))
     security_received_date = db.Column(db.DateTime)
     security_not_required = db.Column(db.Boolean)
@@ -58,7 +60,17 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     now_identity = db.relationship(
         'NOWApplicationIdentity', lazy='select', foreign_keys=[now_application_guid])
-    mine = db.relationship('Mine', lazy='select', back_populates='_mine_permit_amendments')
+    mine: 'Mine' = db.relationship(
+        'Mine', lazy='select',
+        back_populates='_mine_permit_amendments')                                                                                                                                          #type: ignore[reportAssignmentType]
+
+    condition_categories = db.relationship(
+        'PermitConditionCategory',
+        lazy='selectin',
+        primaryjoin='and_(PermitAmendment.permit_amendment_id==PermitConditionCategory.permit_amendment_id, PermitConditionCategory.deleted_ind==False)',
+    )
+
+    # This relationship is used to get all *top level* conditions for a permit amendment
     conditions = db.relationship(
         'PermitConditions',
         lazy='select',
@@ -66,6 +78,15 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         "and_(PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id, PermitConditions.deleted_ind == False, PermitConditions.parent_permit_condition_id.is_(None))",
         order_by='asc(PermitConditions.display_order)',
         back_populates='permit_amendment')
+    
+    # This relationship is used to get all conditions for a permit amendment, including sub-conditions
+    all_conditions = db.relationship(
+        'PermitConditions',
+        lazy='select',
+        primaryjoin=
+        "and_(PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id, PermitConditions.deleted_ind == False)",
+        order_by='asc(PermitConditions.display_order)'
+    )
     permit_conditions_last_updated_date = db.Column(db.DateTime)
     permit_conditions_last_updated_by = db.Column(db.String(60))
     is_generated_in_core = db.Column(db.Boolean)
@@ -98,12 +119,12 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
 
     # Note: This relationship is lazy loaded on purpose to avoid being loaded unless absolutely necessary
     # a selectin or joined query here causes performance issues due to the nested structure of NoW and Major Projects.
-    permittee_appointments = db.relationship(
+    permittee_appointments: list[MinePartyAppointment] = db.relationship(
         "MinePartyAppointment",
         lazy="select",
         secondary='permit',
         secondaryjoin='and_(foreign(Permit.permit_id) == remote(MinePartyAppointment.permit_id))',
-        order_by='desc(MinePartyAppointment.start_date)')
+        order_by='desc(MinePartyAppointment.start_date)')                                          #type: ignore[reportAssignmentType]
 
     @hybrid_property
     def issuing_inspector_name(self):
@@ -147,6 +168,10 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             parent_permit_condition_id=None,
             deleted_ind=False).count()
         return permit_conditions > 0
+    
+    @hybrid_property
+    def conditions_review_completed(self):
+        return len(self.conditions) and all([x.permit_condition_status_code == "COM" for x in self.conditions])
 
     @hybrid_property
     def vc_credential_exch_state(self):
@@ -242,6 +267,13 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             new_pa.save(commit=False)
         return new_pa
 
+    def update_permit_condition_status(self, permit_condition_status_code):
+        # Only updates the top-level condition that it's called on,
+        # as we are not tracking the status code of sub-conditions
+        for condition in self.conditions:
+            condition.permit_condition_status_code = permit_condition_status_code
+        self.save()
+
     @classmethod
     def find_by_permit_amendment_id(cls, _id):
         return cls.query.filter_by(permit_amendment_id=_id).filter_by(deleted_ind=False).first()
@@ -294,18 +326,21 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         return received_date
 
     @validates('issue_date')
-    def validate_issue_date(self, key, issue_date):
+    def validate_issue_date(self, key, issue_date: Union[date, datetime]) -> date:
         # TODO DO NOT REMOVE NEXT LINE. If this validation removed then exception will be thrown on permit creation/editing:
         # "permit_amendment" violates foreign key constraint "permit_amendment_mine_permit_xref_mine_guid_permit_no_fk"
         # DETAIL:  Key (mine_guid, permit_id)=(28966bf7-8e65-4cc4-b077-b248b6a136ef, 212) is not present in table "mine_permit_xref".
         original_permit_amendment = self.query.filter_by(permit_id=self.permit_id).filter_by(
             permit_amendment_type_code='OGP').first()
 
+        if isinstance(issue_date, datetime):
+            issue_date = issue_date.date()
+
         if issue_date:
             if issue_date.isoformat() == '9999-12-31':
                 raise AssertionError(
                     'Permit amendment issue date should be set to null if not known.')
-            if self.permit_amendment_status_code != 'DFT' and issue_date > datetime.today():
+            if self.permit_amendment_status_code != 'DFT' and issue_date > date.today():
                 raise AssertionError('Permit amendment issue date cannot be set to the future.')
         return issue_date
 

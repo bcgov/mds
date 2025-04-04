@@ -31,7 +31,8 @@ exports[`ReportsHomePage renders properly 1`] = `
                 class="advanced-search__container"
               >
                 <form
-                  class="ant-form ant-form-vertical"
+                  class="ant-form ant-form-vertical common-form common-form-REPORT_ADVANCED_SEARCH form-edit"
+                  id="REPORT_ADVANCED_SEARCH"
                 >
                   <div
                     class="ant-row"
@@ -42,27 +43,27 @@ exports[`ReportsHomePage renders properly 1`] = `
                       style="padding-left: 3px; padding-right: 3px;"
                     >
                       <div
-                        class="ant-row ant-legacy-form-item"
+                        class="ant-form-item ant-form-item-with-help"
                       >
                         <div
-                          class="ant-col ant-legacy-form-item-control-wrapper"
+                          class="ant-row ant-form-item-row"
                         >
                           <div
-                            class="ant-legacy-form-item-control"
+                            class="ant-col ant-form-item-control"
                           >
-                            <span
-                              class="ant-legacy-form-item-children"
+                            <div
+                              class="ant-form-item-control-input"
                             >
                               <div
-                                class="inline-flex"
-                                style="flex-direction: column;"
+                                class="ant-form-item-control-input-content"
                               >
-                                
                                 <span
                                   class="ant-input-affix-wrapper"
                                 >
                                   <input
+                                    aria-label="search"
                                     class="ant-input"
+                                    data-testid="search"
                                     id="search"
                                     name="search"
                                     placeholder="Search by mine name or number"
@@ -100,9 +101,21 @@ exports[`ReportsHomePage renders properly 1`] = `
                                     </span>
                                   </span>
                                 </span>
-                                
                               </div>
-                            </span>
+                            </div>
+                            <div
+                              style="display: flex; flex-wrap: nowrap;"
+                            >
+                              <div
+                                class="ant-form-item-explain ant-form-item-explain-connected"
+                                id="REPORT_ADVANCED_SEARCH_search_help"
+                                role="alert"
+                              >
+                                <div
+                                  class=""
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -144,7 +157,7 @@ exports[`ReportsHomePage renders properly 1`] = `
                     class="right center-mobile"
                   >
                     <button
-                      class="ant-btn ant-btn-secondary full-mobile"
+                      class="ant-btn ant-btn-default full-mobile"
                       type="reset"
                     >
                       <span>
@@ -169,81 +182,84 @@ exports[`ReportsHomePage renders properly 1`] = `
           <div
             class="tab__content"
           >
-            <div
-              class="ant-table-wrapper"
-            >
+            <div>
+              <div />
               <div
-                class="ant-spin-nested-loading"
+                class="ant-table-wrapper"
               >
                 <div
-                  class="ant-spin-container"
+                  class="ant-spin-nested-loading"
                 >
                   <div
-                    class="ant-table"
+                    class="ant-spin-container"
                   >
                     <div
-                      class="ant-table-container"
+                      class="ant-table"
                     >
                       <div
-                        class="ant-table-content"
+                        class="ant-table-container"
                       >
-                        <table
-                          style="table-layout: auto;"
+                        <div
+                          class="ant-table-content"
                         >
-                          <colgroup />
-                          <thead
-                            class="ant-table-thead"
+                          <table
+                            style="table-layout: auto;"
                           >
-                            <tr>
-                              <th
-                                class="ant-table-cell"
-                              >
-                                Mine
-                              </th>
-                              <th
-                                class="ant-table-cell"
-                              >
-                                Report Name
-                              </th>
-                              <th
-                                class="ant-table-cell"
-                              >
-                                Compliance Year
-                              </th>
-                              <th
-                                class="ant-table-cell"
-                              >
-                                Status
-                              </th>
-                              <th
-                                class="ant-table-cell"
-                              >
-                                Due
-                              </th>
-                              <th
-                                class="ant-table-cell"
-                              >
-                                Received
-                              </th>
-                              <th
-                                class="ant-table-cell column-hide"
-                              >
-                                Requested By
-                              </th>
-                              <th
-                                class="ant-table-cell"
-                              >
-                                Documents
-                              </th>
-                              <th
-                                class="ant-table-cell actions-column"
-                              />
-                            </tr>
-                          </thead>
-                          <tbody
-                            class="ant-table-tbody"
-                          />
-                        </table>
+                            <colgroup />
+                            <thead
+                              class="ant-table-thead"
+                            >
+                              <tr>
+                                <th
+                                  class="ant-table-cell"
+                                >
+                                  Mine
+                                </th>
+                                <th
+                                  class="ant-table-cell"
+                                >
+                                  Report Name
+                                </th>
+                                <th
+                                  class="ant-table-cell"
+                                >
+                                  Compliance Year
+                                </th>
+                                <th
+                                  class="ant-table-cell"
+                                >
+                                  Status
+                                </th>
+                                <th
+                                  class="ant-table-cell"
+                                >
+                                  Due
+                                </th>
+                                <th
+                                  class="ant-table-cell"
+                                >
+                                  Received
+                                </th>
+                                <th
+                                  class="ant-table-cell column-hide"
+                                >
+                                  Requested By
+                                </th>
+                                <th
+                                  class="ant-table-cell"
+                                >
+                                  Documents
+                                </th>
+                                <th
+                                  class="ant-table-cell actions-column"
+                                />
+                              </tr>
+                            </thead>
+                            <tbody
+                              class="ant-table-tbody"
+                            />
+                          </table>
+                        </div>
                       </div>
                     </div>
                   </div>

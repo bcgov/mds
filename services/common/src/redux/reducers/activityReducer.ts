@@ -1,7 +1,7 @@
 import { RootState } from "@mds/common/redux/rootState";
 import * as actionTypes from "@mds/common/constants/actionTypes";
 import { ACTIVITIES } from "@mds/common/constants/reducerTypes";
-import { IActivity } from "@mds/common";
+import { IActivity } from "@mds/common/interfaces/activity";
 
 interface IActivityReducer {
   activities: IActivity[];

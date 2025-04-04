@@ -1,11 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EditVarianceForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  isModal={true}
+  name="EDIT_VARIANCE"
   onSubmit={[Function]}
+  reduxFormConfig={
+    Object {
+      "touchOnBlur": false,
+    }
+  }
 >
   <VarianceDetails
     complianceCodesHash={
@@ -44,8 +48,7 @@ exports[`EditVarianceForm renders properly 1`] = `
       }
     }
   />
-  <FormItem
-    hasFeedback={false}
+  <InternalFormItem
     label="Attached Files"
   >
     <ForwardRef>
@@ -59,28 +62,14 @@ exports[`EditVarianceForm renders properly 1`] = `
       onFileLoad={[Function]}
       onRemoveFile={[Function]}
     />
-  </FormItem>
+  </InternalFormItem>
   <div
     className="ant-modal-footer"
   >
-    <ForwardRef
-      cancelText="No"
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button>
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      Submit
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonText="Submit"
+    />
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

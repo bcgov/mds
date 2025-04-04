@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
-import { getFormValues } from "redux-form";
+import { getFormValues } from "@mds/common/components/forms/form";
 import { withRouter } from "react-router-dom";
 import { Row, Col, Typography, Button } from "antd";
 import { LockOutlined, FolderViewOutlined } from "@ant-design/icons";
@@ -26,7 +26,7 @@ import * as FORM from "@/constants/forms";
 import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
-import { Feature } from "@mds/common";
+import { Feature } from "@mds/common/utils/featureFlag";
 import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import * as Strings from "@mds/common/constants/strings";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
@@ -96,8 +96,7 @@ export class DecisionPackageTab extends Component {
     }
   }
 
-  handleUpdateProjectDecisionPackage = (event, values) => {
-    event.preventDefault();
+  handleUpdateProjectDecisionPackage = (values) => {
     const { projectGuid } = this.props.match?.params;
     const projectDecisionPackage = this.props.project.project_decision_package;
     const projectDecisionPackageGuid = projectDecisionPackage?.project_decision_package_guid;
@@ -224,9 +223,9 @@ export class DecisionPackageTab extends Component {
         instructions,
         projectGuid: this.props.project?.project_guid,
         modalType,
-        closeModal: this.props.closeModal,
-        handleSubmit: submitHandler,
-        afterClose: () => {},
+        isModal,
+        onSubmit: submitHandler,
+        afterClose: () => { },
         optionalProps,
       },
       content,
@@ -298,7 +297,7 @@ export class DecisionPackageTab extends Component {
                 updateDate: projectDecisionPackage?.update_timestamp,
                 documents: projectDecisionPackage?.documents,
               }}
-              handleSubmit={this.handleUpdateProjectDecisionPackage}
+              onSubmit={this.handleUpdateProjectDecisionPackage}
             />
             <Col span={24}>
               <Typography.Title level={3}>

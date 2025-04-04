@@ -1,13 +1,14 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { AUTHENTICATION, PROJECTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
-import { FORM, SystemFlagEnum } from "@mds/common/index";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { ProjectManagement } from "@mds/common/components/projectSummary/ProjectManagement";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { USER_ACCESS_DATA } from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { subDays } from "date-fns";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { FORM } from "@mds/common/constants/forms";
 
 const initialState = {
   form: {

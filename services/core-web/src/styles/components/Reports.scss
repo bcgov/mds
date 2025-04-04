@@ -46,6 +46,13 @@
   line-height: 32px;
   border: none !important;
   margin: 0 !important;
+  text-wrap: wrap;
+  height: unset;
+  text-align: left;
+}
+
+.report-link span {
+  display: inline;
 }
 
 .report-instructions {
@@ -57,17 +64,28 @@
   padding: 16px;
 }
 
+.report-options {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
 .report-info-box {
-  height: 100%;
   padding: 16px;
   border: 1px solid $light-violet;
-
+  position: sticky;
+  top: 80px;
   background: #fff;
 
   h5 {
     text-transform: none;
     font-weight: bold;
   }
+}
+
+.report-summary-box {
+  background: $lightest-grey;
+  padding: 24px;
+  margin: 12px 0;
 }
 
 .light-grey-background {

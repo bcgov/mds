@@ -1,6 +1,6 @@
 import React from "react";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 
 export const trackEvent = (category, action) => {
   const { trackEvent } = useMatomo();

@@ -7,14 +7,14 @@ import {
   getIncidentDeterminationHash,
   getIncidentStatusCodeHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import {
-  serverSidePaginationOptions,
-  parseServerSideSearchOptions,
-  IMineIncident,
-  IPageData,
-} from "@mds/common";
 import * as routes from "@/constants/routes";
 import CoreTable from "@mds/common/components/common/CoreTable";
+import { IMineIncident } from "@mds/common/interfaces/incidents/mineIncident.interface";
+import { IPageData } from "@mds/common/interfaces/common/pageData.interface";
+import {
+  parseServerSideSearchOptions,
+  serverSidePaginationOptions,
+} from "@mds/common/constants/utils";
 
 interface IncidentTableProps {
   isLoaded: boolean;

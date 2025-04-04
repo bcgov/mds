@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Row, Col, Typography, Button } from "antd";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import moment from "moment";
@@ -23,10 +23,11 @@ import VariancesTable from "@/components/dashboard/mine/variances/VariancesTable
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { IMine, ItemMap } from "@mds/common/interfaces";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 export const Variances: FC = () => {
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
 
   const variances = useSelector(getVariances);
@@ -58,7 +59,8 @@ export const Variances: FC = () => {
       )
     );
 
-  const handleCreateVariances = (files) => (values) => {
+  const handleCreateVariances = (values) => {
+    const { files } = values;
     const received_date = moment().format("YYYY-MM-DD");
     const payload = { received_date, variance_application_status_code: "REV", ...values };
     return dispatch(

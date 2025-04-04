@@ -1,14 +1,12 @@
 import React, { FC } from "react";
 import { connect } from "react-redux";
 import {
-  Feature,
   IExplosivesPermit,
   IExplosivesPermitAmendment,
   IPermit,
   IPermitAmendment,
-  isFeatureEnabled,
-} from "@mds/common";
-import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
+} from "@mds/common/interfaces";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { truncateFilename } from "@common/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
@@ -22,9 +20,10 @@ import {
   renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import { SortOrder } from "antd/lib/table/interface";
-import { VIEW_ESUP } from "@/constants/routes";
+import { PERMIT_VIEW, VIEW_ESUP } from "@/constants/routes";
 import { useHistory } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { Feature, isFeatureEnabled } from "@mds/common/utils/featureFlag";
+import EyeOutlined from "@ant-design/icons/EyeOutlined";
 
 const draftAmendment = "DFT";
 
@@ -45,7 +44,19 @@ interface PermitsTableProps {
 
 export const PermitsTable: FC<PermitsTableProps> = (props) => {
   const history = useHistory();
-  const { id } = useParams<{ id: string }>();
+
+  const actions = [
+    {
+      key: "view",
+      label: "View",
+      clickFunction: (_event, record) => {
+        _event.preventDefault();
+        _event.stopPropagation();
+        history.push(PERMIT_VIEW.dynamicRoute(props.mineGuid, record.permit_guid));
+      },
+      icon: <EyeOutlined />,
+    },
+  ];
 
   const columns = [
     renderTextColumn("permit_no", "Permit No.", true),
@@ -58,6 +69,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
       ...renderDateColumn("lastAmended", "Last Amended", true),
       defaultSortOrder: "descend" as SortOrder,
     },
+    renderActionsColumn({ actions }),
   ];
 
   const handleOpenViewEsup = (event, record: any) => {

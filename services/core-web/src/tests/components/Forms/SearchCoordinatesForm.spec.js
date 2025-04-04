@@ -5,7 +5,7 @@ import { SearchCoordinatesForm } from "@/components/Forms/SearchCoordinatesForm"
 const dispatchProps = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.handleSubmit = jest.fn();
+  dispatchProps.onSubmit = jest.fn();
 };
 
 beforeEach(() => {

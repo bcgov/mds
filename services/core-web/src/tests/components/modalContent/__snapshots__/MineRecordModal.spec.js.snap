@@ -2,7 +2,7 @@
 
 exports[`MineRecordModal renders properly 1`] = `
 <div>
-  <Connect(ReduxForm)
+  <Connect(MineRecordForm)
     initialValues={Object {}}
     isNewRecord={false}
     mineRegionOptions={

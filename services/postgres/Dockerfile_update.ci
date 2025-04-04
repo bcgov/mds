@@ -1,0 +1,56 @@
+FROM postgis/postgis:16-3.4
+
+ARG ORACLE_FDW_VERSION=ORACLE_FDW_2_6_0
+ARG oracle_fdw_version=2_6_0
+ARG instantclient_version=21_6
+
+RUN apt-get update && apt-get install -y --no-install-recommends \ 
+    build-essential \
+    make \
+    unzip \
+    wget \ 
+    ca-certificates \ 
+    postgresql-server-dev-16 \ 
+    libaio1 \
+    libaio-dev
+
+RUN mkdir -p /pgexts/oraclelibs && cd /pgexts/oraclelibs && \
+    wget -nv https://download.oracle.com/otn_software/linux/instantclient/216000/instantclient-basic-linux.x64-21.6.0.0.0dbru.zip && \
+    wget -nv https://download.oracle.com/otn_software/linux/instantclient/216000/instantclient-sdk-linux.x64-21.6.0.0.0dbru.zip && \
+    unzip "/pgexts/oraclelibs/*.zip" -d /pgexts/oraclelibs
+
+ENV ORACLE_HOME /pgexts/oraclelibs/instantclient_${instantclient_version}
+ENV LD_LIBRARY_PATH /pgexts/oraclelibs/instantclient_${instantclient_version}
+
+RUN cd /pgexts && \
+    wget -nv https://github.com/laurenz/oracle_fdw/archive/refs/tags/${ORACLE_FDW_VERSION}.tar.gz && \
+    tar -xzf ${ORACLE_FDW_VERSION}.tar.gz && \
+    cd oracle_fdw-${ORACLE_FDW_VERSION} && \
+    make && \
+    make install
+
+RUN sed -i 's/$/ 13/' /etc/apt/sources.list.d/pgdg.list
+
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+    postgresql-13 \
+    postgresql-13-postgis-3 \
+    ; \
+    rm -rf /var/lib/apt/lists/*
+
+ENV PGBINOLD /usr/lib/postgresql/13/bin
+ENV PGBINNEW /usr/lib/postgresql/16/bin
+
+ENV PGDATAOLD /var/lib/postgresql/13/data/pgdata
+ENV PGDATANEW /var/lib/postgresql/16/data/pgdata
+
+RUN set -eux; \
+    mkdir -p "$PGDATAOLD" "$PGDATANEW";
+
+WORKDIR /var/lib/postgresql
+
+COPY docker-upgrade.ci.sh /usr/local/bin/docker-upgrade.sh
+RUN chmod +x /usr/local/bin/docker-upgrade.sh
+
+CMD ["tail", "-f", "/dev/null"]

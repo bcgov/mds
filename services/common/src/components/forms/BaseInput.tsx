@@ -1,7 +1,7 @@
-import { EMPTY_FIELD } from "@mds/common/constants";
-import { Typography } from "antd";
+import { EMPTY_FIELD } from "@mds/common/constants/strings";
+import { Form, Typography } from "antd";
 import React, { FC, ReactNode } from "react";
-import { WrappedFieldProps, WrappedFieldMetaProps, WrappedFieldInputProps } from "redux-form";
+import { WrappedFieldProps, WrappedFieldMetaProps, WrappedFieldInputProps } from "@mds/common/components/forms/form";
 
 /**
  BaseInput:
@@ -74,20 +74,26 @@ export interface BaseInputProps extends WrappedFieldProps {
   allowClear?: boolean;
   help?: string;
   showOptional?: boolean;
+  showNA?: boolean;
+  autoFocus?: boolean;
+  className?: string;
+  fieldEditMode?: boolean;
 }
 
 interface BaseViewInputProps {
   label?: string | ReactNode;
   value: string | number;
+  showNA?: boolean;
 }
-export const BaseViewInput: FC<BaseViewInputProps> = ({ label = "", value = "" }) => {
-  const displayValue = value ? value.toString() : EMPTY_FIELD;
+export const BaseViewInput: FC<BaseViewInputProps> = ({ label = "", value = "", showNA = true }) => {
+  const hasValue = value !== "";
+  const displayValue = hasValue ? value.toString() : EMPTY_FIELD;
   return (
     <div className="view-item ant-form-item">
       {label && label !== "" && (
         <Typography.Paragraph className="view-item-label">{label}</Typography.Paragraph>
       )}
-      <Typography.Paragraph className="view-item-value">{displayValue}</Typography.Paragraph>
+      {(hasValue || showNA) && (<Typography.Paragraph className="view-item-value">{displayValue}</Typography.Paragraph>)}
     </div>
   );
 };
@@ -127,3 +133,40 @@ export const getFormItemLabel = (
     </div>
   );
 };
+
+interface WrappedInputProps extends BaseInputProps {
+  children: ReactNode;
+  getValueProps?: () => any;
+}
+
+export const WrappedInput: FC<WrappedInputProps> = ({
+  id,
+  label = "",
+  labelSubtitle,
+  meta,
+  input,
+  required,
+  showOptional,
+  children,
+  getValueProps,
+  className
+}) => {
+  return (
+    <Form.Item
+      className={className}
+      name={input.name}
+      label={getFormItemLabel(label, required, labelSubtitle, showOptional)}
+      required={required}
+      validateStatus={
+        meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""
+      }
+      help={
+        (meta.touched) &&
+        ((meta.error && <span>{meta.error}</span>) ||
+          (meta.warning && <span>{meta.warning}</span>))
+      }
+      id={id}
+      getValueProps={getValueProps}
+    >{children}</Form.Item>
+  );
+}

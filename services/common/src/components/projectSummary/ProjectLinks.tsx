@@ -1,40 +1,35 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { getProject, getProjects } from "@mds/common/redux/selectors/projectSelectors";
 import { useSelector, useDispatch } from "react-redux";
-import { Field, change, getFormValues } from "redux-form";
+import { Field, change } from "@mds/common/components/forms/form";
+import { Button, Col, Row, Typography } from "antd";
 import ProjectLinksTable from "@mds/common/components/projectSummary/ProjectLinksTable";
 import { ILinkedProject, IProject } from "@mds/common/interfaces";
-
-import { Button, Col, Row, Typography } from "antd";
-import {
-  FORM,
-  USER_ROLES,
-  getProjectStatusDescription,
-  isFieldDisabled,
-} from "@mds/common/constants";
-import { isProponent, userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
+import { getProjectStatusDescription } from "../projects/projectUtils";
+import { isProponent, userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import {
   createProjectLinks,
   fetchProjectsByMine,
 } from "@mds/common/redux/actionCreators/projectActionCreator";
+import { getProject, getProjects } from "@mds/common/redux/selectors/projectSelectors";
 import { dateSorter } from "@mds/common/redux/utils/helpers";
 import RenderMultiSelect from "../forms/RenderMultiSelect";
 import * as Strings from "@mds/common/constants/strings";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FormContext } from "../forms/FormWrapper";
+import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
+import { FORM } from "@mds/common/constants/forms";
+import { USER_ROLES } from "@mds/common/constants/environment";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
-interface ProjectLinksProps {
+interface ProjectLinksProps extends ProjectSummaryFormComponentProps {
   viewProject: (record: ILinkedProject) => string;
   tableOnly?: boolean; // only show the table, no inputs
 }
 // outside of component to sneak past "hooks can't be rendered conditionally"
 const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [currentSelection, setCurrentSelection] = useState([]);
   const formName = FORM.ADD_EDIT_PROJECT_SUMMARY;
   const fieldName = "linked-projects";
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const systemFlag = useSelector(getSystemFlag);
 
   if (!projectGuid) {
     return (
@@ -68,7 +63,6 @@ const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => 
     <Row align="bottom" justify="start">
       <Col>
         <Field
-          disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
           id="linked-projects"
           name="linked-projects"
           props={{
@@ -80,7 +74,7 @@ const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => 
         />
         <Button
           disabled={
-            currentSelection.length === 0 || isFieldDisabled(systemFlag, formValues?.status_code)
+            currentSelection.length === 0
           }
           type="primary"
           onClick={addRelatedProjects}
@@ -93,7 +87,7 @@ const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => 
   );
 };
 
-const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, tableOnly = false }) => {
+const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, fieldsDisabled, tableOnly = false }) => {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const [unrelatedProjects, setUnrelatedProjects] = useState([]);
@@ -101,11 +95,12 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, tableOnly = false })
   const project = useSelector(getProject);
   const mineProjects = useSelector(getProjects);
   const isUserProponent = useSelector(isProponent);
-  const canEditProjects = useSelector((state) =>
-    userHasRole(state, USER_ROLES.role_edit_project_summaries)
+  const canEditProjects = useSelector(
+    userHasRole(USER_ROLES.role_edit_project_summaries)
   );
   const { isEditMode } = useContext(FormContext);
   const hasModifyPermission = isUserProponent || canEditProjects;
+  const allowModifications = isEditMode && hasModifyPermission && !fieldsDisabled && !tableOnly;
 
   const separateProjectLists = (projects: IProject[]): [ILinkedProject[], IProject[]] => {
     // guids to filter out from the input as options
@@ -142,6 +137,7 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, tableOnly = false })
     let isMounted = true;
 
     if (project?.mine_guid) {
+      // @ts-ignore
       dispatch(fetchProjectsByMine({ mineGuid: project.mine_guid })).then(() => {
         if (isMounted) {
           setIsLoaded(true);
@@ -163,7 +159,7 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, tableOnly = false })
       <Typography.Paragraph>
         Description of related major project applications for this mine are listed below.
       </Typography.Paragraph>
-      {!tableOnly && isEditMode && (
+      {allowModifications && (
         <ProjectLinkInput
           unrelatedProjects={unrelatedProjects}
           mineGuid={project.mine_guid}
@@ -174,7 +170,7 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, tableOnly = false })
         <ProjectLinksTable
           projectGuid={project.project_guid}
           projectLinks={projectLinks}
-          hasModifyPermission={hasModifyPermission && !tableOnly && isEditMode}
+          hasModifyPermission={allowModifications}
           viewProject={viewProject}
           isLoaded={isLoaded}
         />

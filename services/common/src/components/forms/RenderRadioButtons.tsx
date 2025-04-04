@@ -1,7 +1,7 @@
 import React, { FC, useContext } from "react";
 import { Form, Radio } from "antd";
 import { BaseInputProps, BaseViewInput, getFormItemLabel } from "@mds/common/components/forms/BaseInput";
-import { IOption } from "@mds/common/interfaces";
+import { IRadioOption } from "@mds/common/interfaces";
 import { FormContext } from "./FormWrapper";
 
 /**
@@ -10,7 +10,7 @@ import { FormContext } from "./FormWrapper";
 
 interface RenderRadioButtonsProps extends BaseInputProps {
   label: string;
-  customOptions?: IOption[];
+  customOptions?: IRadioOption[];
   optionType?: "default" | "button";
   isVertical?: boolean;
 }

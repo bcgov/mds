@@ -4,13 +4,10 @@ import CustomAxios from "../customAxios";
 import { storeActivities } from "../actions/activityActions";
 import { AxiosResponse } from "axios";
 import { IActivity } from "@mds/common/interfaces";
-import {
-  ACTIVITIES,
-  ACTIVITIES_MARK_AS_READ,
-  ENVIRONMENT,
-  GET_ACTIVITIES,
-} from "@mds/common/constants";
+import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import { AppThunk } from "@mds/common/interfaces/appThunk.type";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
+import { ACTIVITIES, ACTIVITIES_MARK_AS_READ } from "@mds/common/constants/API";
 
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;
 
@@ -19,8 +16,7 @@ export const fetchActivities = (
   page = 1,
   per_page = 20
 ): AppThunk<Promise<AxiosResponse<IActivity>>> => (dispatch) => {
-  dispatch(storeActivities({}));
-  dispatch(request(GET_ACTIVITIES));
+  dispatch(request(NetworkReducerTypes.GET_ACTIVITIES));
   dispatch(showLoading());
   const headers = {
     ...createRequestHeader(),
@@ -33,12 +29,12 @@ export const fetchActivities = (
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl}${ACTIVITIES()}`, headers)
     .then((response) => {
-      dispatch(success(GET_ACTIVITIES));
+      dispatch(success(NetworkReducerTypes.GET_ACTIVITIES));
       dispatch(storeActivities(response.data));
       return response;
     })
     .catch(() => {
-      dispatch(error(GET_ACTIVITIES));
+      dispatch(error(NetworkReducerTypes.GET_ACTIVITIES));
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -51,10 +47,10 @@ export const markActivitiesAsRead = (activity_guids: string[]): AppThunk => (dis
   return CustomAxios()
     .patch(`${ENVIRONMENT.apiUrl}${ACTIVITIES_MARK_AS_READ()}`, { activity_guids }, headers)
     .then(() => {
-      dispatch(success(GET_ACTIVITIES));
+      dispatch(success(NetworkReducerTypes.GET_ACTIVITIES));
     })
     .catch(() => {
-      dispatch(error(GET_ACTIVITIES));
+      dispatch(error(NetworkReducerTypes.GET_ACTIVITIES));
     })
     .finally(() => dispatch(hideLoading()));
 };

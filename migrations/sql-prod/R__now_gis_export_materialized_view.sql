@@ -16,7 +16,7 @@ END $$;
 
 CREATE MATERIALIZED VIEW public.now_application_gis_export_view
     TABLESPACE pg_default
-AS select na.mine_purpose,appv.latest_response_date,appv.regional_contact, nai.now_application_guid::character varying AS now_application_guid,
+AS select na.mine_purpose,appv.latest_response_date,nai.application_type_code,appv.regional_contact, nai.now_application_guid::character varying AS now_application_guid,
           lpad(nai.now_number::text, 15, '0'::text) AS now_number,
           nai.messageid,
           nai.mms_cid,
@@ -308,44 +308,44 @@ AS select na.mine_purpose,appv.latest_response_date,appv.regional_contact, nai.n
                                disturbed_area.now_activity_surface_bulk_sample_total_disturbed_area,
                                disturbed_area.now_activity_placer_operation_total_disturbed_area
                         FROM crosstab(' SELECT
- 				   a.now_application_id,
- 				   a.activity_type_code,
- 				   SUM(a.disturbed_area) as disturbed_area
- 			 FROM
- 				   (SELECT a.activity_type_code,
- 						 ad.disturbed_area,
- 						 a.now_application_id
- 						 FROM activity_summary a
- 						 LEFT JOIN activity_summary_detail_xref ax ON a.activity_summary_id = ax.activity_summary_id
- 						 LEFT JOIN activity_detail ad ON ax.activity_detail_id = ad.activity_detail_id
- 				   UNION ALL
- 						 SELECT a.activity_type_code,
- 								ad.disturbed_area,
- 								a.now_application_id
- 						 FROM activity_summary a
- 						 LEFT JOIN activity_summary_building_detail_xref bx ON bx.activity_summary_id = a.activity_summary_id
- 						 LEFT JOIN activity_detail ad ON bx.activity_detail_id = ad.activity_detail_id
- 				   UNION ALL
- 						 SELECT a.activity_type_code,
- 								ad.disturbed_area,
- 								a.now_application_id
- 						 FROM activity_summary a
- 						 LEFT JOIN activity_summary_staging_area_detail_xref stx ON stx.activity_summary_id = a.activity_summary_id
- 						 LEFT JOIN activity_detail ad ON stx.activity_detail_id = ad.activity_detail_id) a
- 			 GROUP BY
- 				   a.now_application_id,
- 				   a.activity_type_code
- 			 ORDER BY now_application_id '::text, ' VALUES
- 			 (''cut_lines_polarization_survey''::TEXT),
- 			 (''settling_pond''),
- 			 (''exploration_surface_drilling''),
- 			 (''sand_gravel_quarry_operation''),
- 			 (''exploration_access''),
- 			 (''underground_exploration''),
- 			 (''camp''),
- 			 (''mechanical_trenching''),
- 			 (''surface_bulk_sample''),
- 			 (''placer_operation'') '::text) disturbed_area(now_application_id integer, now_activity_cut_lines_polarization_survey_total_disturbed_area numeric, now_activity_settling_pond_total_disturbed_area numeric, now_activity_exploration_surface_drilling_total_disturbed_area numeric, now_activity_sand_gravel_quarry_operation_total_disturbed_area numeric, now_activity_exploration_access_total_disturbed_area numeric, now_activity_underground_exploration_total_disturbed_area numeric, now_activity_camp_total_disturbed_area numeric, now_activity_mechanical_trenching_total_disturbed_area numeric, now_activity_surface_bulk_sample_total_disturbed_area numeric, now_activity_placer_operation_total_disturbed_area numeric)) activity_disturbed_areas ON activity_disturbed_areas.now_application_id = nai.now_application_id
+                   a.now_application_id,
+                   a.activity_type_code,
+                   SUM(a.disturbed_area) as disturbed_area
+             FROM
+                   (SELECT a.activity_type_code,
+                         ad.disturbed_area,
+                         a.now_application_id
+                         FROM activity_summary a
+                         LEFT JOIN activity_summary_detail_xref ax ON a.activity_summary_id = ax.activity_summary_id
+                         LEFT JOIN activity_detail ad ON ax.activity_detail_id = ad.activity_detail_id
+                   UNION ALL
+                         SELECT a.activity_type_code,
+                                ad.disturbed_area,
+                                a.now_application_id
+                         FROM activity_summary a
+                         LEFT JOIN activity_summary_building_detail_xref bx ON bx.activity_summary_id = a.activity_summary_id
+                         LEFT JOIN activity_detail ad ON bx.activity_detail_id = ad.activity_detail_id
+                   UNION ALL
+                         SELECT a.activity_type_code,
+                                ad.disturbed_area,
+                                a.now_application_id
+                         FROM activity_summary a
+                         LEFT JOIN activity_summary_staging_area_detail_xref stx ON stx.activity_summary_id = a.activity_summary_id
+                         LEFT JOIN activity_detail ad ON stx.activity_detail_id = ad.activity_detail_id) a
+             GROUP BY
+                   a.now_application_id,
+                   a.activity_type_code
+             ORDER BY now_application_id '::text, ' VALUES
+             (''cut_lines_polarization_survey''::TEXT),
+             (''settling_pond''),
+             (''exploration_surface_drilling''),
+             (''sand_gravel_quarry_operation''),
+             (''exploration_access''),
+             (''underground_exploration''),
+             (''camp''),
+             (''mechanical_trenching''),
+             (''surface_bulk_sample''),
+             (''placer_operation'') '::text) disturbed_area(now_application_id integer, now_activity_cut_lines_polarization_survey_total_disturbed_area numeric, now_activity_settling_pond_total_disturbed_area numeric, now_activity_exploration_surface_drilling_total_disturbed_area numeric, now_activity_sand_gravel_quarry_operation_total_disturbed_area numeric, now_activity_exploration_access_total_disturbed_area numeric, now_activity_underground_exploration_total_disturbed_area numeric, now_activity_camp_total_disturbed_area numeric, now_activity_mechanical_trenching_total_disturbed_area numeric, now_activity_surface_bulk_sample_total_disturbed_area numeric, now_activity_placer_operation_total_disturbed_area numeric)) activity_disturbed_areas ON activity_disturbed_areas.now_application_id = nai.now_application_id
             LEFT JOIN ( SELECT a.now_application_id,
                                sum(a.disturbed_area) AS now_total_disturbed_area
                         FROM ( SELECT ad.disturbed_area,
@@ -442,7 +442,7 @@ AS select na.mine_purpose,appv.latest_response_date,appv.regional_contact, nai.n
                         FROM nris.inspection
                         ORDER BY inspection.mine_no, inspection.inspection_date DESC) nris_i ON nris_i.mine_no = m.mine_no::text
             LEFT JOIN nris.inspection_type nris_it ON nris_i.inspection_type_id = nris_it.inspection_type_id
-   WHERE m.deleted_ind = false AND nai.application_type_code::text <> 'ADA'::text AND (nai.messageid IS NOT NULL AND sub.processed::text = 'Y'::text OR nai.messageid IS NULL) AND (sub.originating_system IS NULL OR sub.originating_system IS NOT NULL AND nai.now_number IS NOT NULL)
+   WHERE m.deleted_ind = false AND (nai.messageid IS NOT NULL AND sub.processed::text = 'Y'::text OR nai.messageid IS NULL) AND (sub.originating_system IS NULL OR sub.originating_system IS NOT NULL AND nai.now_number IS NOT NULL)
    GROUP by na.mine_purpose, appv.latest_response_date,appv.regional_contact, nai.now_application_guid, nai.now_number, na.status_reason, na.now_application_status_code, nas.description, na.type_of_application, na.notice_of_work_type_code, nat.description, na.submitted_date, sub.submitteddate, msub.proposedstartdate, sub.proposedstartdate, msub.proposedenddate, sub.proposedenddate, msub.typeofapplication, sub.typeofapplication, msub.noticeofworktype, sub.noticeofworktype, na.property_name, msub.nameofproperty, sub.nameofproperty, na.latitude, msub.latitude, sub.latitude, na.longitude, msub.longitude, sub.longitude, na.is_applicant_individual_or_company, sub.applicantindividualorcompany, na.relationship_to_applicant, sub.applicantrelationship, na.term_of_application, sub.termofapplication, na.proposed_start_date, na.imported_date, na.proposed_end_date, na.proposed_annual_maximum_tonnage, na.adjusted_annual_maximum_tonnage, sub.maxannualtonnage, na.directions_to_site, msub.sitedirections, sub.sitedirections, na.is_access_gated, na.tenure_number, msub.tenurenumbers, sub.tenurenumbers, sub.isaccessgated, sub.accessauthorizationskeyprovided, na.has_key_for_inspector, activity_disturbed_area_total.now_total_disturbed_area, activity_submission_disturbed_areas.now_submission_total_disturbed_area, activity_disturbed_areas.now_activity_cut_lines_polarization_survey_total_disturbed_area, activity_submission_disturbed_areas.now_submission_activity_cut_lines_polarization_survey_total_dis, activity_disturbed_areas.now_activity_settling_pond_total_disturbed_area, activity_submission_disturbed_areas.now_submission_activity_settling_pond_total_disturbed_area, activity_disturbed_areas.now_activity_exploration_surface_drilling_total_disturbed_area, activity_submission_disturbed_areas.now_submission_activity_exploration_surface_drilling_total_dist, activity_disturbed_areas.now_activity_sand_gravel_quarry_operation_total_disturbed_area, activity_submission_disturbed_areas.now_submission_activity_sand_gravel_quarry_operation_total_dist, activity_disturbed_areas.now_activity_exploration_access_total_disturbed_area, activity_submission_disturbed_areas.now_submission_activity_exploration_access_total_disturbed_area, activity_disturbed_areas.now_activity_underground_exploration_total_disturbed_area, activity_submission_disturbed_areas.now_submission_activity_underground_exploration_total_disturbed, activity_disturbed_areas.now_activity_camp_total_disturbed_area, activity_submission_disturbed_areas.now_submission_activity_camp_total_disturbed_area, activity_disturbed_areas.now_activity_mechanical_trenching_total_disturbed_area, activity_submission_disturbed_areas.now_submission_activity_mechanical_trenching_total_disturbed_ar, activity_disturbed_areas.now_activity_surface_bulk_sample_total_disturbed_area, activity_submission_disturbed_areas.now_submission_activity_surface_bulk_sample_total_disturbed_are, activity_disturbed_areas.now_activity_placer_operation_total_disturbed_area, activity_submission_disturbed_areas.now_submission_activity_placer_operation_total_disturbed_area, nap_con.start_date, nap_con.end_date, nap_pub.start_date, nap_pub.end_date, nap_dft.start_date, nap_dft.end_date, nap_rev.start_date, nap_rev.end_date, nap_ref.start_date, nap_ref.end_date, nad.now_application_client_delay_days, p.permit_guid, p.permit_no, p.permit_status_code, psc.description, pa.issue_date, pa.authorization_end_date, pt.first_name, pt.party_name, pt.party_guid, m.mine_guid, m.mine_name, m.mine_no, m.mine_region, mrc.description, na.now_application_id, (m.latitude::character varying), (m.longitude::character varying), (m.create_timestamp::character varying), (ms.effective_date::character varying), m.major_mine_ind, (
        CASE
            WHEN m.major_mine_ind IS TRUE THEN 'Major Mine'::text

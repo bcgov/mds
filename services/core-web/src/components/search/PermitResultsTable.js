@@ -10,7 +10,7 @@ import {
   renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
-import { Feature } from "@mds/common";
+import { Feature } from "@mds/common/utils/featureFlag";
 
 /**
  * @class  PermitResultsTable - displays a table of mine search results

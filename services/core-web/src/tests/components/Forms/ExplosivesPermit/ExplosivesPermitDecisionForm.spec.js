@@ -7,7 +7,7 @@ const props = {};
 const setupProps = () => {
   props.submitting = false;
   props.title = "Close Permit";
-  props.handleSubmit = jest.fn();
+  props.onSubmit = jest.fn();
   props.closeModal = jest.fn();
   props.previewDocument = jest.fn();
   props.inspectors = [];

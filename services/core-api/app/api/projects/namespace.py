@@ -13,7 +13,6 @@ from app.api.projects.project_summary.resources.project_summary_uploaded_documen
 from app.api.projects.project_summary.resources.project_summary_authorization_types import ProjectSummaryAuthorizationTypeResource
 from app.api.projects.project_summary.resources.project_summary_permit_types import ProjectSummaryPermitTypeResource
 from app.api.projects.information_requirements_table.resources.information_requirements_table import InformationRequirementsTableResource
-from app.api.projects.information_requirements_table.resources.information_requirements_table_status import InformationRequirementsTableStatusResource
 from app.api.projects.information_requirements_table.resources.information_requirements_table_list import InformationRequirementsTableListResource
 from app.api.projects.information_requirements_table.resources.information_requirements_table_status_code import InformationRequirementsTableStatusCodeResource
 from app.api.projects.information_requirements_table.resources.information_requirements_table_download import InformationRequirementsTableDownloadResource
@@ -68,8 +67,6 @@ api.add_resource(InformationRequirementsTableDocumentUploadResource,
 api.add_resource(InformationRequirementsTableUploadedDocumentResource, '/<string:project_guid>/information-requirements-table/<string:irt_guid>/documents/<string:mine_document_guid>')
 api.add_resource(InformationRequirementsTableResource,
                  '/<string:project_guid>/information-requirements-table/<string:irt_guid>')
-api.add_resource(InformationRequirementsTableStatusResource,
-                 '/<string:project_guid>/information-requirements-table/<string:irt_guid>/status')
 api.add_resource(InformationRequirementsTableListResource,
                  '/<string:project_guid>/information-requirements-table')
 api.add_resource(InformationRequirementsTableStatusCodeResource, '/irt-status-codes')

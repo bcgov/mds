@@ -16,7 +16,7 @@ import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
 import FeatureFlagProvider from "@mds/common/providers/featureFlags/featureFlag.provider";
 import { registerLicense } from "@syncfusion/ej2-base";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 
 const idleTimeout = 5 * 60_000;
 const refreshTokenBufferSeconds = 60;
@@ -88,26 +88,28 @@ export const Index = (props) => {
   };
 
   return environment ? (
-    <FeatureFlagProvider>
-      <ReactKeycloakProvider
-        authClient={keycloak}
-        initOptions={keycloakInitConfig}
-        onTokens={() => {
-          handleUpdateToken();
-        }}
-        onTokenExpired={() => {
-          if (!isIdle()) {
-            keycloak.updateToken();
-          }
-        }}
-        LoadingComponent={<Loading />}
-        isLoadingCheck={(kc) => !kc || !environment}
-      >
+    <ReactKeycloakProvider
+      authClient={keycloak}
+      initOptions={keycloakInitConfig}
+      onTokens={() => {
+        handleUpdateToken();
+      }}
+      onTokenExpired={() => {
+        if (!isIdle()) {
+          keycloak.updateToken();
+        }
+      }}
+      LoadingComponent={<Loading />}
+      isLoadingCheck={(kc) => !kc || !environment}
+    >
+      <FeatureFlagProvider>
+
         <Provider store={store}>
           <App />
         </Provider>
-      </ReactKeycloakProvider>
-    </FeatureFlagProvider>
+      </FeatureFlagProvider>
+    </ReactKeycloakProvider>
+
   ) : (
     <Loading />
   );

@@ -1,5 +1,4 @@
 import { Alert, Button, Col, Row, Table, Typography } from "antd";
-import { VC_ACTIVE_CREDENTIAL_STATES, VC_CRED_ISSUE_STATES } from "@mds/common/constants";
 import {
   fetchPermits,
   patchPermitVCLocked,
@@ -8,7 +7,7 @@ import { IMine, IPermit } from "@mds/common/interfaces";
 import React, { FC, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { renderDateColumn } from "@mds/common/components/common/CoreTableCommonColumns";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
@@ -19,11 +18,14 @@ import {
   revokeCredential,
 } from "@mds/common/redux/slices/verifiableCredentialsSlice";
 import DigitalCredentialDetails from "@/components/mine/DigitalPermitCredential/DigitalCredentialDetails";
+import { VC_CRED_ISSUE_STATES } from "@mds/common/constants/enums";
+import { VC_ACTIVE_CREDENTIAL_STATES } from "@mds/common/constants/strings";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const { Paragraph, Title } = Typography;
 
 export const ViewDigitalPermitCredential: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const permits = useSelector(getPermits);
 
   const { permitGuid, id: mineGuid } = useParams<{
@@ -36,7 +38,7 @@ export const ViewDigitalPermitCredential: FC = () => {
   const activePermitCredential = minesActPermitIssuance.find((mapi) =>
     VC_ACTIVE_CREDENTIAL_STATES.includes(mapi.cred_exch_state)
   );
-  const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
+  const mine: IMine = useSelector(getMineById(mineGuid));
 
   useEffect(() => {
     if (permitRecord) {
@@ -169,7 +171,7 @@ export const ViewDigitalPermitCredential: FC = () => {
                 <Paragraph className="margin-none">
                   {VC_CRED_ISSUE_STATES[activePermitCredential?.cred_exch_state] ??
                     VC_CRED_ISSUE_STATES[
-                      minesActPermitIssuance[minesActPermitIssuance.length - 1]?.cred_exch_state
+                    minesActPermitIssuance[minesActPermitIssuance.length - 1]?.cred_exch_state
                     ] ??
                     "No Credential Issued"}
                 </Paragraph>

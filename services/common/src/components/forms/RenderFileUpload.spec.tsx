@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "enzyme";
 import RenderFileUpload from "./RenderFileUpload";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
-import { PDF } from "../..";
+import { PDF } from "@mds/common/constants/fileTypes";
 
 jest.mock("filepond", () => {
   const filepond = jest.requireActual("filepond");

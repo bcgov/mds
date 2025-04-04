@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MinistryContactForm renders properly 1`] = `
+<div>
+  <Connect(ReduxForm)
+    initialValues={Object {}}
+    isModal={true}
+    name="MINISTRY_CONTACT_FORM"
+    reduxFormConfig={
+      Object {
+        "enableReinitialize": true,
+        "touchOnBlur": false,
+      }
+    }
+  >
+    <Row
+      gutter={16}
+    >
+      <Col
+        span={12}
+      >
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="is_major_mine"
+          label="Is this a Major Mine Contact?"
+          name="is_major_mine"
+          required={true}
+          type="checkbox"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </Col>
+    </Row>
+    <Row
+      gutter={16}
+    >
+      <Col
+        md={12}
+        xs={24}
+      >
+        <Field
+          component={[Function]}
+          data={Array []}
+          disabled={true}
+          id="mine_region_code"
+          label="Mine Region"
+          name="mine_region_code"
+          placeholder="Select a mine Region"
+          required={true}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </Col>
+      <Col
+        md={12}
+        xs={24}
+      >
+        <Field
+          component={[Function]}
+          data={Array []}
+          disabled={true}
+          id="emli_contact_type_code"
+          label="Contact Type"
+          name="emli_contact_type_code"
+          placeholder="Select a contact type"
+          required={true}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </Col>
+    </Row>
+    <Row
+      gutter={16}
+    >
+      <Col
+        md={12}
+        xs={24}
+      >
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="first_name"
+          label="First Name"
+          name="first_name"
+          required={true}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </Col>
+      <Col
+        md={12}
+        xs={24}
+      >
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="last_name"
+          label="Surname"
+          name="last_name"
+          required={true}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </Col>
+    </Row>
+    <Row
+      gutter={16}
+    >
+      <Col
+        span={24}
+      >
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="email"
+          label="Email"
+          name="email"
+          required={true}
+          validate={
+            Array [
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </Col>
+    </Row>
+    <Row
+      gutter={16}
+    >
+      <Col
+        span={24}
+      >
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="phone_number"
+          label="Phone Number"
+          name="phone_number"
+          normalize={[Function]}
+          placeholder="e.g. xxx-xxx-xxxx"
+          required={true}
+          validate={
+            Array [
+              [Function],
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </Col>
+    </Row>
+    <div
+      className="right center-mobile"
+    >
+      <RenderCancelButton />
+      <RenderSubmitButton
+        buttonText="Update MCM Contact"
+      />
+    </div>
+  </Connect(ReduxForm)>
+</div>
+`;

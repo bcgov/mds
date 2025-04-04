@@ -8,11 +8,11 @@ import DownloadOutlined from "@ant-design/icons/DownloadOutlined";
 import FileOutlined from "@ant-design/icons/FileOutlined";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { USER_ROLES } from "@mds/common/constants";
 import { truncateFilename } from "@mds/common/redux/utils/helpers";
 import { openDocument, isDocumentOpenable } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import LinkButton from "../common/LinkButton";
+import { USER_ROLES } from "@mds/common/constants/environment";
 
 const propTypes = {
   documentManagerGuid: PropTypes.string.isRequired,
@@ -22,6 +22,7 @@ const propTypes = {
   onClickAlternative: PropTypes.func,
   linkTitleOverride: PropTypes.string,
   truncateDocumentName: PropTypes.bool,
+  unstyled: PropTypes.bool, // inherit styles from parent instead of formatting as a link.
   // difference on MS: this is also accepted as a boolean
   deletePermission: PropTypes.string,
   handleDelete: PropTypes.func,
@@ -35,7 +36,7 @@ const defaultProps = {
   truncateDocumentName: true,
   deletePermission: null,
   deleteFilePayload: {},
-  handleDelete: () => {},
+  handleDelete: () => { },
 };
 
 export const DocumentLink = (props) => {
@@ -103,7 +104,7 @@ export const DocumentLink = (props) => {
       }
     >
       <a
-        className="ant-dropdown-link"
+        className={`ant-dropdown-link${props.unstyled ? ' ant-dropdown-link--unstyled' : ''}`}
         role="button"
         onClick={linkOnClick}
         onKeyDown={linkOnClick}

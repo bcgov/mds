@@ -1,7 +1,6 @@
 import queryString from "query-string";
 import * as Strings from "@mds/common/constants/strings";
 import { isEmpty } from "lodash";
-import { getEnvironment } from "@mds/common";
 import Home from "@/components/Home";
 import Logout from "@/components/common/Logout";
 import Dashboard from "@/components/dashboard/minesHomePage/Dashboard";
@@ -42,7 +41,7 @@ import NoticeOfWorkApplication from "@/components/noticeOfWork/applications/Noti
 import AdminAmendmentApplication from "@/components/noticeOfWork/applications/AdminAmendmentApplication";
 import ViewNoticeOfWorkApplication from "@/components/noticeOfWork/applications/ViewNoticeOfWorkApplication";
 import MergeContactsDashboard from "@/components/admin/contacts/MergeContactsDashboard";
-import MineSpaceEMLIContactManagement from "@/components/admin/contacts/EMLIContacts/MineSpaceEMLIContactManagement";
+import MineSpaceMinistryContactManagement from "@/components/admin/contacts/MinistryContacts/MineSpaceMinistryContactManagement";
 import PermitConditionManagement from "@/components/mine/Permit/PermitConditionManagement";
 import Project from "@/components/mine/Projects/Project";
 import MajorMineApplicationTab from "@/components/mine/Projects/MajorMineApplicationTab";
@@ -54,9 +53,12 @@ import DamsDetailsPage from "@/components/mine/Tailings/DamsDetailsPage";
 import ReportPage from "@/components/mine/Reports/ReportPage";
 import ReportSteps from "@mds/common/components/reports/ReportSteps";
 import ViewDigitalPermitCredential from "@/components/mine/DigitalPermitCredential/ViewDigitalPermitCredential";
-import ComplianceCodeManagement from "@/components/admin/complianceCodes/ComplianceCodeManagement";
+import ComplianceManagement from "@/components/admin/complianceCodes/ComplianceManagement";
 import ProjectSubmissionStatusPage from "@mds/common/components/projectSummary/ProjectSubmissionStatusPage";
-import ViewPermit from "@/components/mine/Permit/ViewPermit";
+import ViewPermit from "@mds/common/components/permits/ViewPermit";
+import PermitConditionSearch from "@/components/mine/Permit/Search/PermitConditionSearch";
+import { getEnvironment } from "@mds/common/utils/environmentUtils";
+import ViewPermitRedirect from "@/components/mine/Permit/ViewPermitRedirect";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -165,13 +167,25 @@ export const MINE_PERMITS = {
   helpKey: "Mine-Permits",
 };
 
+
+export const VIEW_MINE_PERMIT_AMENDMENT = {
+  route: "/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/permit-amendment/:permitAmendmentGuid/:tab",
+  dynamicRoute: (id, permitGuid, permitAmendmentGuid, tab = "overview") =>
+    `/mine-dashboard/${id}/permits-and-approvals/permits/${permitGuid}/permit-amendment/${permitAmendmentGuid}/${tab}`,
+  hashRoute: (id, permitGuid, permitAmendmentGuid, tab = "overview", link = "") =>
+    `/mine-dashboard/${id}/permits-and-approvals/permits/${permitGuid}/permit-amendment/${permitAmendmentGuid}/${tab}/${link}`,
+  component: ViewPermit,
+  helpKey: "View-Permit",
+  priority: 1,
+};
+
 export const VIEW_MINE_PERMIT = {
   route: "/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/:tab",
   dynamicRoute: (id, permitGuid, tab = "overview") =>
     `/mine-dashboard/${id}/permits-and-approvals/permits/${permitGuid}/${tab}`,
   hashRoute: (id, permitGuid, tab = "overview", link = "") =>
     `/mine-dashboard/${id}/permits-and-approvals/permits/${permitGuid}/${tab}/${link}`,
-  component: ViewPermit,
+  component: ViewPermitRedirect,
   helpKey: "View-Permit",
   priority: 1,
 };
@@ -260,18 +274,10 @@ export const EDIT_PROJECT = {
   helpKey: "Edit-Project",
 };
 
-export const MAJOR_MINE_APPLICATION = {
-  route: "/pre-applications/:projectGuid/major-mine-application/:mmaGuid/:tab",
-  dynamicRoute: (projectGuid, mmaGuid, tab = "final-app") =>
-    `/pre-applications/${projectGuid}/major-mine-application/${mmaGuid}/${tab}`,
-  component: MajorMineApplicationTab,
-  helpKey: "Major-Mine-Application",
-};
-
-export const PROJECT_FINAL_APPLICATION = {
-  route: "/pre-applications/:projectGuid/final-app",
-  dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/final-app`,
-  hashRoute: (projectGuid, link) => `/pre-applications/${projectGuid}/final-app/${link}`,
+export const PROJECT_APPLICATION = {
+  route: "/pre-applications/:projectGuid/app",
+  dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/app`,
+  hashRoute: (projectGuid, link) => `/pre-applications/${projectGuid}/app/${link}`,
   component: MajorMineApplicationTab,
   helpKey: "Major-Mine-Application",
 };
@@ -294,15 +300,15 @@ export const MINE_NOW_APPLICATIONS = {
 };
 
 export const MINE_TAILINGS = {
-  route: "/mine-dashboard/:id/permits-and-approvals/tailings",
-  dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/tailings`,
+  route: "/mine-dashboard/:mineGuid/permits-and-approvals/tailings",
+  dynamicRoute: (mineGuid) => `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings`,
   component: MineTailingsInfo,
   helpKey: "Mine-Tailings",
 };
 
 export const MINE_TAILINGS_DETAILS = {
   route:
-    "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
+    "/mine-dashboard/:mineGuid/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
   dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information", isEditMode = false) =>
     `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}/${isEditMode ? "edit" : "view"
     }`,
@@ -310,8 +316,15 @@ export const MINE_TAILINGS_DETAILS = {
   helpKey: "Mine-Tailings-Details",
 };
 
+export const ADD_TAILINGS_STORAGE_FACILITY = {
+  route: "/mine-dashboard/:mineGuid/permits-and-approvals/tailings/new/:tab",
+  dynamicRoute: (mineGuid, tab = "basic-information") =>
+    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/new/${tab}`,
+  component: MineTailingsDetailsPage,
+  helpKey: "Add-Tailings-Storage-Facility",
+};
+
 export const EDIT_TAILINGS_STORAGE_FACILITY = {
-  // identical to above route: MERGE
   route:
     "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
   dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information", isEditMode = false) =>
@@ -372,8 +385,8 @@ export const MINE_INSPECTIONS = {
 };
 
 export const MINE_TAILINGS_REPORTS = {
-  route: "/mine-dashboard/:id/reports/tailings-reports",
-  dynamicRoute: (id) => `/mine-dashboard/${id}/reports/tailings-reports`,
+  route: "/mine-dashboard/:mineGuid/reports/tailings-reports",
+  dynamicRoute: (mineGuid) => `/mine-dashboard/${mineGuid}/reports/tailings-reports`,
   component: MineReportTailingsInfo,
   helpKey: "Mine-Tailings-Reports",
 };
@@ -481,9 +494,9 @@ export const ADMIN_PERMIT_CONDITION_MANAGEMENT = {
   helpKey: "Permit-Condition-Management",
 };
 
-export const ADMIN_EMLI_CONTACT_MANAGEMENT = {
-  route: "/admin/minespace-emli-contact-management",
-  component: MineSpaceEMLIContactManagement,
+export const ADMIN_MINISTRY_CONTACT_MANAGEMENT = {
+  route: "/admin/minespace-ministry-contact-management",
+  component: MineSpaceMinistryContactManagement,
   helpKey: "MineSpace-EMLI-Contact-Management",
 };
 
@@ -508,8 +521,9 @@ export const ADMIN_CONTACT_MANAGEMENT = {
 };
 
 export const ADMIN_HSRC_COMPLIANCE_CODE_MANAGEMENT = {
-  route: "/admin/hsrc-management",
-  component: ComplianceCodeManagement,
+  route: "/admin/hsrc-management/:tab",
+  component: ComplianceManagement,
+  dynamicRoute: (tab: string, params = {}) => `/admin/hsrc-management/${tab}?${queryString.stringify(params)}`,
   helpKey: "HSRC-Code-Management",
 };
 
@@ -519,6 +533,13 @@ export const SEARCH_RESULTS = {
   component: SearchResults,
   helpKey: "Search-Results",
 };
+
+export const PERMIT_CONDITION_SEARCH = {
+  route: "/permit-conditions/search",
+  component: PermitConditionSearch,
+  helpKey: "Permit-Condition-Search-Results",
+};
+
 
 export const NOTICE_OF_WORK_APPLICATIONS = {
   route: "/dashboard/reporting/notice-of-work",
@@ -570,8 +591,8 @@ export const VIEW_NOTICE_OF_WORK_APPLICATION = {
 
 export const EDIT_PERMIT_CONDITIONS = {
   // this is the old page
-  route: "/:mine_guid/permit-amendment/:id/edit-permit-conditions",
-  dynamicRoute: (mine_guid, id) => `/${mine_guid}/permit-amendment/${id}/edit-permit-conditions`,
+  route: "/:mine_guid/permits/:permit_guid/permit-amendment/:id/edit-permit-conditions",
+  dynamicRoute: (mine_guid, permit_guid, id) => `/${mine_guid}/permits/${permit_guid}/permit-amendment/${id}/edit-permit-conditions`,
   component: PermitConditionManagement,
   helpKey: "Edit-Permit-Conditions",
 };

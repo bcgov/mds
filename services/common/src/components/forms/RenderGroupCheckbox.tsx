@@ -1,6 +1,6 @@
 import React, { FC, useContext } from "react";
 import { Checkbox, Form } from "antd";
-import { BaseInputProps } from "./BaseInput";
+import { BaseInputProps, getFormItemLabel } from "./BaseInput";
 import { FormContext } from "./FormWrapper";
 
 /**
@@ -30,6 +30,7 @@ const RenderGroupCheckbox: FC<CheckboxProps> = ({
   meta,
   input,
   label,
+  labelSubtitle,
   options,
   required,
   ...props
@@ -38,8 +39,9 @@ const RenderGroupCheckbox: FC<CheckboxProps> = ({
   if (!isEditMode) {
     return (
       <Form.Item
+        id={input.name}
         name={input.name}
-        label={<div className="view-item-label">{label}</div>}
+        label={<div className="view-item-label">{labelSubtitle ? getFormItemLabel(label, false, labelSubtitle, false) : label}</div>}
         getValueProps={() => ({ value: input.value })}
         className="view-item"
       >
@@ -55,7 +57,7 @@ const RenderGroupCheckbox: FC<CheckboxProps> = ({
   return (
     <Form.Item
       name={input.name}
-      label={label}
+      label={labelSubtitle ? getFormItemLabel(label, required, labelSubtitle, false) : label}
       required={required}
       validateStatus={meta.touched ? meta.error && "error" : ""}
       help={

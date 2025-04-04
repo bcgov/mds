@@ -6,7 +6,6 @@ export enum Feature {
   DOCUMENTS_REPLACE_FILE = "major_project_replace_file",
   MAJOR_PROJECT_ALL_DOCUMENTS = "major_project_all_documents",
   MAJOR_PROJECT_DECISION_PACKAGE = "major_project_decision_package",
-  ESUP_PERMIT_AMENDMENT = "esup_permit_amendment",
   FLAGSMITH = "flagsmith",
   TSF_V2 = "tsf_v2",
   VC_ANONCREDS_CORE = "vc_anoncreds_core",
@@ -15,16 +14,17 @@ export enum Feature {
   MINESPACE_ESUPS = "minespace_esups",
   REPORT_ERROR = "report_error",
   MAJOR_PROJECT_LINK_PROJECTS = "major_project_link_projects",
-  CODE_REQUIRED_REPORTS = "code_required_reports",
   AMS_AGENT = "ams_agent",
   HSRC_CODE_EDIT = "hsrc_code_edit",
   MULTIPART_UPLOAD = "s3_multipart_upload",
   DIGITIZED_PERMITS = "digitized_permits",
   SPATIAL_BUNDLE = "spatial_bundle",
   PERMIT_CONDITIONS_PAGE = "permit_conditions_page",
+  PERMIT_CONDITIONS_PDF_SPLIT_VIEW = "permit_conditions_pdf_split_view",
   MODIFY_PERMIT_CONDITIONS = "modify_permit_conditions",
   MAJOR_PROJECT_REFACTOR = "major_project_refactor",
   HELP_GUIDE = "help_guide",
+  PERMIT_CONDITION_SEARCH = "PERMIT_CONDITION_SEARCH"
 }
 
 export const initializeFlagsmith = async (flagsmithUrl, flagsmithKey) => {

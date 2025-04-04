@@ -53,18 +53,6 @@
     }
   }
 
-  &.ant-btn-danger {
-    background-color: $danger-btn-color;
-    color: white;
-    border: 1px solid $danger-btn-color;
-
-    &:hover,
-    &:focus {
-      background-color: $danger-btn-color-hover;
-      color: white;
-      border: 1px solid $danger-btn-color-hover;
-    }
-  }
 
   &.core-btn-tertiary {
     border: 2px solid $tertiary-btn-color;
@@ -84,6 +72,23 @@
       background-color: $tertiary-btn-color-hover;
     }
   }
+
+  &.ant-btn-danger,
+  &.ant-btn-dangerous {
+    color: $pure-white;
+    border: 1px solid $danger-btn-color;
+
+    &:hover,
+    &:focus {
+      color: $pure-white;
+    }
+
+    &:disabled {
+      color: $danger-btn-color-disabled;
+      border: 1px solid $danger-btn-color-disabled;
+    }
+  }
+
 }
 
 .ant-btn+.ant-btn {
@@ -151,5 +156,32 @@ label .ant-btn {
     img {
       min-height: 18px;
     }
+  }
+}
+
+.actions-ellipsis-button.ant-btn {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  min-width: auto;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 0;
+
+  &:hover,
+  &:focus,
+  &:active {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .anticon {
+    color: rgba(0, 0, 0, 0.65);
   }
 }

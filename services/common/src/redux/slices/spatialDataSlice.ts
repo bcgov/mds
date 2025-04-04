@@ -1,15 +1,12 @@
 import { createAppSlice, rejectHandler } from "@mds/common/redux/createAppSlice";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import CustomAxios from "@mds/common/redux/customAxios";
-import {
-  COMPLETE_SPATIAL_BUNDLE,
-  CORE_API_DOCUMENT_BUNDLE,
-  ENVIRONMENT,
-  IMineDocument,
-} from "../..";
 import { formatDate } from "../utils/helpers";
 import { IGeoJsonFeature } from "@mds/common/interfaces/document/geojsonFeature.interface";
 import { ISpatialBundle } from "@mds/common/interfaces/document/spatialBundle.interface";
+import { IMineDocument } from "@mds/common/interfaces/mineDocument.interface";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
+import { COMPLETE_SPATIAL_BUNDLE, CORE_API_DOCUMENT_BUNDLE } from "@mds/common/constants/API";
 
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;
 

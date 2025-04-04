@@ -3,6 +3,7 @@ from multiprocessing.dummy import Pool as ThreadPool
 import click
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.utils.include.user_info import User
+from app.config import Config
 from app.extensions import db
 from flask import current_app
 from sqlalchemy.exc import DBAPIError
@@ -12,7 +13,6 @@ from tests.factories import (
     MinespaceSubscriptionFactory,
     MinespaceUserFactory,
     NOWApplicationIdentityFactory,
-    NOWSubmissionFactory,
 )
 
 from .cli_commands.generate_history_table_migration import (
@@ -165,16 +165,46 @@ def register_commands(app):
         auth.apply_security = False
         with current_app.app_context() as app:
             result = process_all_untp_map_for_orgbook.apply_async()
+            print("celery job started: forward_all_pending_untp_vc_to_orgbook")
 
-    @app.cli.command('publish_all_pending_vc_to_orgbook')
-    def publish_all_pending_vc_to_orgbook():
+    @app.cli.command('forward_all_pending_untp_vc_to_orgbook')
+    def forward_all_pending_untp_vc_to_orgbook():
         from app import auth
         from app.api.verifiable_credentials.manager import (
-            publish_all_pending_vc_to_orgbook,
+            forward_all_pending_untp_vc_to_orgbook,
         )
         auth.apply_security = False
         with current_app.app_context():
-            result = publish_all_pending_vc_to_orgbook()
+            result = forward_all_pending_untp_vc_to_orgbook.apply_async()
+            print("celery job started: forward_all_pending_untp_vc_to_orgbook")
+
+    @app.cli.command('push_untp_map_data_to_publisher')
+    def push_untp_map_data_to_publisher():
+        from app import auth
+        from app.api.verifiable_credentials.manager import (
+            push_untp_map_data_to_publisher,
+        )
+        auth.apply_security = False
+        with current_app.app_context():
+            result = push_untp_map_data_to_publisher.apply_async()
+            print("celery job started: push_untp_map_data_to_publisher")
+
+    @app.cli.command('cleanup_untp_map_data_failures')
+    @click.argument('live', required=False, default=False)
+    def cleanup_untp_map_data_failures(live: bool = False):
+        from app import auth
+        from app.api.verifiable_credentials.manager import VerifiableCredentialManager
+        auth.apply_security = False
+        with current_app.app_context():
+            if not live:
+                print(f"dry run, add `true` as first argument to actually delete")
+            result = VerifiableCredentialManager.delete_any_unsuccessful_untp_push(live)
+
+            if not live:
+                print(f"dry run, add `true` as first argument to actually delete")
+                print(f"delete_any_unsuccessful_untp_push finished: would delete {result} records")
+            else:
+                print(f"delete_any_unsuccessful_untp_push complete: delete_count={result}")
 
     @app.cli.command('generate_history_table_migration')
     @click.argument('table')
@@ -199,3 +229,100 @@ def register_commands(app):
             flask generate_table_migration mine_tailings_storage_facility
         """
         generate_table_migration(table)
+
+    @app.cli.command('export_permit_conditions')
+    @click.argument('permit_amendment_guid')
+    def export_permit_conditions(permit_amendment_guid):
+        from app import auth
+        auth.apply_security = False
+        with current_app.app_context():
+            from .cli_commands.export_permit_conditions import export_permit_conditions
+            export_permit_conditions(permit_amendment_guid)
+
+    @app.cli.command('prepare_permit_data')
+    @click.argument('csv_path', type=click.Path(exists=True))
+    @click.option('--token', help='Authentication token (optional)', default=None)
+    def do_prepare_permit_data(csv_path, token):
+        """
+        Import permit data from CSV file and create/update mines, permits and amendments.
+        
+        Example usage:
+            flask prepare_permit_data path/to/permits.csv
+            flask prepare_permit_data path/to/permits.csv --token=your_auth_token
+        """
+        from app import auth
+        from app.cli_commands.prepare_data import prepare_permit_data
+        from flask import current_app
+        
+
+        auth.apply_security = False
+        
+        with current_app.app_context():
+            if Config.ENVIRONMENT_NAME not in ['local', 'dev', 'test']:
+                click.echo("This command is only available in local, dev and test environments.", err=True)
+                return
+
+            try:
+                prepare_permit_data(csv_path, token)
+            except Exception as e:
+                click.echo(f"Error: {e}", err=True)
+                return
+
+    @app.cli.command('bulk_permit_extraction')
+    @click.argument('csv_path', type=click.Path(exists=True))
+    def bulk_permit_extraction(csv_path):
+        """
+        Trigger permit condition extraction for multiple documents from a CSV file.
+        CSV should have columns: permit_amendment_guid,document_manager_guid
+        
+        Example usage:
+            flask bulk_permit_extraction path/to/extractions.csv
+        """
+        import csv
+
+        from app import auth
+        from app.api.mines.permits.permit_extraction.tasks import (
+            initialize_single_permit_extraction,
+        )
+
+        auth.apply_security = False
+        
+        with current_app.app_context():
+            with open(csv_path, 'r') as file:
+                reader = csv.DictReader(file)
+                task_count = 0
+                error_count = 0
+                
+                for row in reader:
+                    try:
+                        permit_amendment_guid = row['permit_amendment_guid']
+                        document_manager_guid = row['document_manager_guid']
+                        
+                        # Queue initialization task
+                        initialize_single_permit_extraction.delay(document_manager_guid, permit_amendment_guid)
+                        task_count += 1
+                        print(f"Queued initialization task for amendment {permit_amendment_guid}")
+                            
+                    except Exception as e:
+                        print(f"Error queuing task for row: {e}")
+                        error_count += 1
+                        
+                print(f"Completed: {task_count} tasks queued, {error_count} errors")
+
+    @app.cli.command('bulk_export_permit_conditions')
+    @click.argument('csv_path', type=click.Path(exists=True))
+    def bulk_export_permit_conditions(csv_path):
+        """
+        Export permit conditions for multiple permits from a CSV file.
+        CSV should have a column named 'permit_no' containing permit numbers.
+        
+        Example usage:
+            flask bulk_export_permit_conditions path/to/permits.csv
+        """
+        from app import auth
+
+        from .cli_commands.export_permit_conditions import bulk_export_permit_conditions
+        
+        auth.apply_security = False
+        with current_app.app_context():
+            bulk_export_permit_conditions(csv_path)

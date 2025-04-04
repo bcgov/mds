@@ -1,75 +1,131 @@
 import uuid
-from datetime import datetime, timedelta
-from pytz import timezone, utc
+from datetime import date, datetime, time, timedelta
 from random import randrange
+
 import factory
 import factory.fuzzy
-
+from app.api.activity.models.activity_notification import ActivityNotification
+from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES
 from app.api.dams import Dam
-from app.api.dams.models.dam import DamType, OperatingStatus, ConsequenceClassification
-from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
-from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import ExplosivesPermitAmendment
-from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import \
-    MineReportDefinitionComplianceArticleXref
-from app.api.projects.project_link.models.project_link import ProjectLink
-from app.api.projects.project_summary.models.project_summary_ministry_comment import ProjectSummaryMinistryComment
-from app.extensions import db
-from tests.status_code_gen import *
+from app.api.dams.models.dam import ConsequenceClassification, DamType, OperatingStatus
+from app.api.incidents.models.mine_incident import MineIncident
+from app.api.incidents.models.mine_incident_note import MineIncidentNote
+from app.api.mines.alerts.models.mine_alert import MineAlert
+from app.api.mines.comments.models.mine_comment import MineComment
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
+from app.api.mines.explosives_permit.models.explosives_permit import (
+    ExplosivesPermit,
+    ExplosivesPermitMagazine,
+)
+from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import (
+    ExplosivesPermitAmendment,
+)
+from app.api.mines.incidents.models.mine_incident_document_xref import (
+    MineIncidentDocumentXref,
+)
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
-from app.api.incidents.models.mine_incident import MineIncident
-from app.api.incidents.models.mine_incident_note import MineIncidentNote
-from app.api.mines.incidents.models.mine_incident_document_xref import MineIncidentDocumentXref
+from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
+from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit_amendment.models.permit_amendment import (
+    PermitAmendment,
+)
+from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
+    PermitAmendmentDocument,
+)
+from app.api.mines.permits.permit_conditions.models.permit_conditions import (
+    PermitConditions,
+)
+from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import (
+    StandardPermitConditions,
+)
+from app.api.mines.permits.permit_extraction.models.permit_extraction_task import (
+    PermitExtractionTask,
+)
+from app.api.mines.reports.models.mine_report import MineReport
+from app.api.mines.reports.models.mine_report_comment import MineReportComment
+from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import (
+    MineReportDefinitionComplianceArticleXref,
+)
+from app.api.mines.reports.models.mine_report_permit_requirement import (
+    CimOrCpo,
+    MineReportPermitRequirement,
+    OfficeDestination,
+)
+from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.subscription.models.subscription import Subscription
-from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility, StorageLocation, FacilityType, \
-    TailingsStorageFacilityType
+from app.api.mines.tailings.models.tailings import (
+    FacilityType,
+    MineTailingsStorageFacility,
+    StorageLocation,
+    TailingsStorageFacilityType,
+)
+from app.api.ministry_contacts.models.ministry_contact import MinistryContact
+from app.api.ministry_contacts.models.ministry_contact_type import MinistryContactType
+from app.api.notice_of_departure.models.notice_of_departure import (
+    NodStatus,
+    NodType,
+    NoticeOfDeparture,
+)
+from app.api.parties.party.models.address import Address
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.party_orgbook_entity import PartyOrgBookEntity
-from app.api.parties.party.models.address import Address
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
-from app.api.mines.permits.permit.models.permit import Permit
-from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
-from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
-from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
-from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import StandardPermitConditions
-from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
-from app.api.notice_of_departure.models.notice_of_departure import NoticeOfDeparture, NodType, NodStatus
+from app.api.parties.party_appt.models.party_business_role_appt import (
+    PartyBusinessRoleAppointment,
+)
+from app.api.projects.information_requirements_table.models.information_requirements_table import (
+    InformationRequirementsTable,
+)
+from app.api.projects.information_requirements_table.models.information_requirements_table_document_xref import (
+    InformationRequirementsTableDocumentXref,
+)
+from app.api.projects.major_mine_application.models.major_mine_application import (
+    MajorMineApplication,
+)
+from app.api.projects.project.models.project import Project
+from app.api.projects.project_contact.models.project_contact import ProjectContact
+from app.api.projects.project_decision_package.models.project_decision_package import (
+    ProjectDecisionPackage,
+)
+from app.api.projects.project_decision_package.models.project_decision_package_document_xref import (
+    ProjectDecisionPackageDocumentXref,
+)
+from app.api.projects.project_link.models.project_link import ProjectLink
+from app.api.projects.project_summary.models.project_summary import ProjectSummary
+from app.api.projects.project_summary.models.project_summary_authorization import (
+    ProjectSummaryAuthorization,
+)
+from app.api.projects.project_summary.models.project_summary_authorization_document_xref import (
+    ProjectSummaryAuthorizationDocumentXref,
+)
+from app.api.projects.project_summary.models.project_summary_contact import (
+    ProjectSummaryContact,
+)
+from app.api.projects.project_summary.models.project_summary_document_xref import (
+    ProjectSummaryDocumentXref,
+)
+from app.api.projects.project_summary.models.project_summary_ministry_comment import (
+    ProjectSummaryMinistryComment,
+)
 from app.api.securities.models.bond import Bond
 from app.api.securities.models.reclamation_invoice import ReclamationInvoice
 from app.api.users.core.models.core_user import CoreUser, IdirUserDetail
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
+from app.api.users.models.user import User
 from app.api.variances.models.variance import Variance
 from app.api.variances.models.variance_document_xref import VarianceDocumentXref
-from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
-from app.api.mines.reports.models.mine_report import MineReport
-from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
-from app.api.mines.reports.models.mine_report_comment import MineReportComment
-from app.api.mines.comments.models.mine_comment import MineComment
-from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES
-from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit, ExplosivesPermitMagazine
-from app.api.projects.project.models.project import Project
-from app.api.projects.project_contact.models.project_contact import ProjectContact
-from app.api.projects.project_summary.models.project_summary import ProjectSummary
-from app.api.projects.project_summary.models.project_summary_contact import ProjectSummaryContact
-from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
-from app.api.projects.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
-from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
-from app.api.projects.information_requirements_table.models.information_requirements_table_document_xref import InformationRequirementsTableDocumentXref
-from app.api.projects.project_decision_package.models.project_decision_package_document_xref import ProjectDecisionPackageDocumentXref
-from app.api.projects.major_mine_application.models.major_mine_application import MajorMineApplication
-from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
-from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
-from app.api.activity.models.activity_notification import ActivityNotification
-from app.api.projects.project_decision_package.models.project_decision_package import ProjectDecisionPackage
-from app.api.mines.alerts.models.mine_alert import MineAlert
+from app.extensions import db
+from pytz import timezone, utc
+from tests.status_code_gen import *
 
 GUID = factory.LazyFunction(uuid.uuid4)
-TODAY = factory.LazyFunction(datetime.utcnow)
+TODAY = factory.LazyFunction(datetime.now)
 
 FACTORY_LIST = []
 
@@ -77,11 +133,11 @@ FACTORY_LIST = []
 def create_mine_and_permit(mine_kwargs={},
                            permit_kwargs={},
                            num_permits=1,
-                           num_permit_amendments=1):
+                           num_permit_amendments=1) -> tuple[Mine, Permit]:
     mine = MineFactory(mine_permit_amendments=0, **mine_kwargs)
     for x in range(num_permits):
         permit = PermitFactory(_context_mine=mine, **permit_kwargs)
-        permit._all_mines.append(mine)  # create mine_permit_xref
+        permit._all_mines.append(mine)           # create mine_permit_xref
         PermitAmendmentFactory.create_batch(size=num_permit_amendments, mine=mine, permit=permit)
         permit._context_mine = mine              # possibly redundant
     return mine, permit
@@ -96,21 +152,26 @@ def create_mine_and_tailing_storage_facility(mine_kwargs={}, tsf_kwargs={}, num_
 
 
 class FactoryRegistry:
+
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
         FACTORY_LIST.append(cls)
 
 
 class BaseFactory(factory.alchemy.SQLAlchemyModelFactory, FactoryRegistry):
+
     class Meta:
         abstract = True
         sqlalchemy_session = db.session
         sqlalchemy_session_persistence = 'flush'
 
+
 from tests.now_application_factories import *
 from tests.now_submission_factories import *
 
+
 class MineDocumentFactory(BaseFactory):
+
     class Meta:
         model = MineDocument
 
@@ -124,6 +185,7 @@ class MineDocumentFactory(BaseFactory):
 
 
 class MineStatusFactory(BaseFactory):
+
     class Meta:
         model = MineStatus
 
@@ -137,6 +199,7 @@ class MineStatusFactory(BaseFactory):
 
 
 class MineTypeDetailFactory(BaseFactory):
+
     class Meta:
         model = MineTypeDetail
 
@@ -155,6 +218,7 @@ class MineTypeDetailFactory(BaseFactory):
 
 
 class MineTypeFactory(BaseFactory):
+
     class Meta:
         model = MineType
 
@@ -191,6 +255,7 @@ class MineTypeFactory(BaseFactory):
 
 
 class MineTailingsStorageFacilityFactory(BaseFactory):
+
     class Meta:
         model = MineTailingsStorageFacility
 
@@ -209,6 +274,7 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
 
 
 class DamFactory(BaseFactory):
+
     class Meta:
         model = Dam
 
@@ -216,7 +282,8 @@ class DamFactory(BaseFactory):
         tsf = factory.SubFactory('tests.factories.MineTailingsStorageFacilityFactory')
 
     dam_guid = GUID
-    mine_tailings_storage_facility_guid = factory.SelfAttribute('tsf.mine_tailings_storage_facility_guid')
+    mine_tailings_storage_facility_guid = factory.SelfAttribute(
+        'tsf.mine_tailings_storage_facility_guid')
     dam_type = DamType['dam']
     dam_name = 'Dam Name'
     latitude = factory.Faker('latitude')
@@ -231,6 +298,7 @@ class DamFactory(BaseFactory):
 
 
 class MineCommentFactory(BaseFactory):
+
     class Meta:
         model = MineComment
 
@@ -242,6 +310,7 @@ class MineCommentFactory(BaseFactory):
 
 
 class MineAlertFactory(BaseFactory):
+
     class Meta:
         model = MineAlert
 
@@ -261,6 +330,7 @@ class MineAlertFactory(BaseFactory):
 
 
 class VarianceFactory(BaseFactory):
+
     class Meta:
         model = Variance
 
@@ -299,6 +369,7 @@ class VarianceFactory(BaseFactory):
 
 
 class VarianceDocumentFactory(BaseFactory):
+
     class Meta:
         model = VarianceDocumentXref
 
@@ -313,7 +384,9 @@ class VarianceDocumentFactory(BaseFactory):
     variance_id = factory.SelfAttribute('variance.variance_id')
     variance_document_category_code = factory.LazyFunction(RandomVarianceDocumentCategoryCode)
 
+
 class MineDocumentBundleFactory(BaseFactory):
+
     class Meta:
         model = MineDocumentBundle
 
@@ -324,18 +397,20 @@ class MineDocumentBundleFactory(BaseFactory):
 
     bundle_documents = []
 
+
 class MineDocumentSpatialFactory(MineDocumentFactory):
     mine_document_bundle = factory.SubFactory(MineDocumentBundleFactory)
 
+
 class ProjectSummarySpatialDocumentFactory(BaseFactory):
+
     class Meta:
         model = ProjectSummaryDocumentXref
 
     class Params:
         mine_document = factory.SubFactory(
             'tests.factories.MineDocumentSpatialFactory',
-            mine_guid=factory.SelfAttribute('..project_summary.mine_guid')
-        )
+            mine_guid=factory.SelfAttribute('..project_summary.mine_guid'))
         project_summary = factory.SubFactory('tests.factories.ProjectSummaryFactory')
 
     project_summary_document_xref_guid = GUID
@@ -343,7 +418,9 @@ class ProjectSummarySpatialDocumentFactory(BaseFactory):
     project_summary_id = factory.SelfAttribute('project_summary.project_summary_id')
     project_summary_document_type_code = factory.LazyFunction(RandomProjectSummaryDocumentTypeCode)
 
+
 class ProjectSummaryDocumentFactory(BaseFactory):
+
     class Meta:
         model = ProjectSummaryDocumentXref
 
@@ -358,8 +435,23 @@ class ProjectSummaryDocumentFactory(BaseFactory):
     project_summary_id = factory.SelfAttribute('project_summary.project_summary_id')
     project_summary_document_type_code = factory.LazyFunction(RandomProjectSummaryDocumentTypeCode)
 
+class ProjectSummaryAuthorizationDocumentFactory(BaseFactory):
+
+    class Meta:
+        model = ProjectSummaryAuthorizationDocumentXref
+
+    class Params:
+        project_summary = factory.SubFactory('tests.factories.ProjectSummaryFactory')
+        project_summary_authorization = factory.SubFactory('tests.factories.ProjectSummaryAuthorizationFactory')
+        mine_document = factory.SubFactory(MineDocumentFactory,mine_guid=factory.SelfAttribute('..project_summary.mine_guid'))
+
+    project_summary_authorization_document_xref_guid = GUID
+    project_summary_authorization_guid = factory.SelfAttribute('project_summary_authorization.project_summary_authorization_guid')
+    mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
+    project_summary_document_type_code = factory.LazyFunction(RandomProjectSummaryDocumentTypeCode)
 
 class InformationRequirementsTableDocumentFactory(BaseFactory):
+
     class Meta:
         model = InformationRequirementsTableDocumentXref
 
@@ -367,15 +459,18 @@ class InformationRequirementsTableDocumentFactory(BaseFactory):
         mine_document = factory.SubFactory(
             'tests.factories.MineDocumentFactory',
             mine_guid=factory.SelfAttribute('..information_requirements_table.project.mine_guid'))
-        information_requirements_table = factory.SubFactory('tests.factories.InformationRequirementsTable')
+        information_requirements_table = factory.SubFactory(
+            'tests.factories.InformationRequirementsTable')
 
     information_requirements_table_document_xref_guid = GUID
     mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
     irt_id = factory.SelfAttribute('information_requirements_table.irt_id')
-    information_requirements_table_document_type_code = factory.LazyFunction(RandomInformationRequirementsTableDocumentTypeCode)
+    information_requirements_table_document_type_code = factory.LazyFunction(
+        RandomInformationRequirementsTableDocumentTypeCode)
 
 
 class ProjectDecisionPackageDocumentFactory(BaseFactory):
+
     class Meta:
         model = ProjectDecisionPackageDocumentXref
 
@@ -383,12 +478,15 @@ class ProjectDecisionPackageDocumentFactory(BaseFactory):
         mine_document = factory.SubFactory(
             'tests.factories.MineDocumentFactory',
             mine_guid=factory.SelfAttribute('..project_decision_package.project.mine_guid'))
-        project_decision_package = factory.SubFactory('tests.factories.InformationRequirementsTable')
+        project_decision_package = factory.SubFactory(
+            'tests.factories.InformationRequirementsTable')
 
     project_decision_package_document_xref_guid = GUID
     mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
-    project_decision_package_id = factory.SelfAttribute('project_decision_package.project_decision_package_id')
-    project_decision_package_document_type_code = factory.LazyFunction(RandomInformationRequirementsTableDocumentTypeCode)
+    project_decision_package_id = factory.SelfAttribute(
+        'project_decision_package.project_decision_package_id')
+    project_decision_package_document_type_code = factory.LazyFunction(
+        RandomInformationRequirementsTableDocumentTypeCode)
 
 
 def RandomPermitNumber():
@@ -428,6 +526,7 @@ def RandomTenureTypeCode(permit_no):
 
 
 class MineVerifiedStatusFactory(BaseFactory):
+
     class Meta:
         model = MineVerifiedStatus
 
@@ -439,6 +538,7 @@ class MineVerifiedStatusFactory(BaseFactory):
 
 
 class MineIncidentFactory(BaseFactory):
+
     class Meta:
         model = MineIncident
 
@@ -497,6 +597,7 @@ class MineIncidentFactory(BaseFactory):
 
 
 class MineIncidentNoteFactory(BaseFactory):
+
     class Meta:
         model = MineIncidentNote
 
@@ -514,6 +615,7 @@ class MineIncidentNoteFactory(BaseFactory):
 
 
 class MineIncidentDocumentFactory(BaseFactory):
+
     class Meta:
         model = MineIncidentDocumentXref
 
@@ -530,6 +632,7 @@ class MineIncidentDocumentFactory(BaseFactory):
 
 
 class MineReportFactory(BaseFactory):
+
     class Meta:
         model = MineReport
 
@@ -544,14 +647,14 @@ class MineReportFactory(BaseFactory):
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     mine_report_definition_id = factory.LazyFunction(
         RandomMineReportDefinition
-    )  # None if not factory.SelfAttribute('set_permit_condition_category_code') else factory.LazyFunction(RandomMineReportDefinition)
+    )                                                 # None if not factory.SelfAttribute('set_permit_condition_category_code') else factory.LazyFunction(RandomMineReportDefinition)
     received_date = factory.Faker('date_between', start_date='-15d', end_date='+15d')
-    due_date = factory.Faker('future_datetime', end_date='+30d')
-    submission_year = factory.fuzzy.FuzzyInteger(datetime.utcnow().year - 2,
-                                                 datetime.utcnow().year + 11)
+    due_date = factory.Faker('future_date', end_date='+30d')
+    submission_year = factory.fuzzy.FuzzyInteger(datetime.now().year - 2, datetime.now().year + 11)
     mine_report_submissions = []
     permit_condition_category_code = None
     submitter_name = factory.Faker('name')
+    mine_report_permit_requirement_id = None
 
     @factory.post_generation
     def mine_report_submissions(obj, create, extracted, **kwargs):
@@ -565,6 +668,7 @@ class MineReportFactory(BaseFactory):
 
 
 class MineReportCommentFactory(BaseFactory):
+
     class Meta:
         model = MineReportComment
 
@@ -578,6 +682,7 @@ class MineReportCommentFactory(BaseFactory):
 
 
 class MineReportSubmissionFactory(BaseFactory):
+
     class Meta:
         model = MineReportSubmission
 
@@ -591,14 +696,13 @@ class MineReportSubmissionFactory(BaseFactory):
     mine_guid = factory.SelfAttribute('report.mine_guid')
     mine_report_definition_id = factory.LazyFunction(
         RandomMineReportDefinition
-    )  # None if not factory.SelfAttribute('set_permit_condition_category_code') else factory.LazyFunction(RandomMineReportDefinition)
-    received_date = factory.Faker('date_between', start_date='-15d', end_date='+15d')
+    )                                                 # None if not factory.SelfAttribute('set_permit_condition_category_code') else factory.LazyFunction(RandomMineReportDefinition)
+    received_date = factory.Faker('date_time_between', start_date='-15d', end_date='+15d')
     due_date = factory.Faker('future_date', end_date='+30d')
-    submission_year = factory.fuzzy.FuzzyInteger(datetime.utcnow().year - 2,
-                                                 datetime.utcnow().year + 11)
-    
+    submission_year = factory.fuzzy.FuzzyInteger(datetime.now().year - 2, datetime.now().year + 11)
+
     permit_condition_category_code = None
-    submitter_name = factory.Faker('name')    
+    submitter_name = factory.Faker('name')
     mine_report_id = factory.SelfAttribute('report.mine_report_id')
     mine_report_submission_guid = GUID
     mine_report_submission_status_code = factory.LazyFunction(RandomMineReportSubmissionStatusCode)
@@ -617,6 +721,7 @@ class MineReportSubmissionFactory(BaseFactory):
 
 
 class AddressFactory(BaseFactory):
+
     class Meta:
         model = Address
 
@@ -633,6 +738,7 @@ class AddressFactory(BaseFactory):
 
 
 class PartyFactory(BaseFactory):
+
     class Meta:
         model = Party
 
@@ -642,14 +748,12 @@ class PartyFactory(BaseFactory):
             party_name=factory.Faker('last_name'),
             email=factory.LazyAttribute(lambda o: f'{o.first_name}.{o.party_name}@example.com'),
             party_type_code='PER',
-            create_user='test-proponent'
-        )
+            create_user='test-proponent')
 
         company = factory.Trait(
             party_name=factory.Faker('company'),
             email=factory.Faker('company_email'),
             party_type_code='ORG',
-
         )
 
     first_name = None
@@ -678,6 +782,7 @@ class PartyFactory(BaseFactory):
 
 
 class PartyBusinessRoleFactory(BaseFactory):
+
     class Meta:
         model = PartyBusinessRoleAppointment
 
@@ -686,11 +791,12 @@ class PartyBusinessRoleFactory(BaseFactory):
 
     party_business_role_code = factory.LazyFunction(RandomPartyBusinessRole)
     party = factory.SubFactory(PartyFactory, person=True)
-    start_date = datetime.utcnow().date()
+    start_date = datetime.now()
     end_date = None
 
 
 class MinePartyAppointmentFactory(BaseFactory):
+
     class Meta:
         model = MinePartyAppointment
 
@@ -706,7 +812,7 @@ class MinePartyAppointmentFactory(BaseFactory):
                                       not in PERMIT_LINKED_CONTACT_TYPES else None)
 
     party = factory.SubFactory(PartyFactory, person=True, address=1)
-    start_date = factory.LazyFunction(datetime.utcnow().date)
+    start_date = factory.LazyFunction(date.today)
     end_date = None
     status = None
     processed_by = factory.Faker('first_name')
@@ -720,21 +826,23 @@ class MinePartyAppointmentFactory(BaseFactory):
 
 
 class PartyOrgBookEntityFactory(BaseFactory):
+
     class Meta:
         model = PartyOrgBookEntity
 
     party = factory.SubFactory(PartyFactory, company=True)
     registration_id = factory.Faker('pyint')
     registration_status = factory.Faker('boolean', chance_of_getting_true=50)
-    registration_date = factory.Faker('date_between', start_date='-100d', end_date='-25d')
+    registration_date = factory.Faker('date_time_between', start_date='-100d', end_date='-25d')
     name_id = factory.Faker('pyint')
     name_text = factory.Faker('company')
     credential_id = factory.Faker('pyint')
     association_user = factory.Faker('first_name')
-    association_timestamp = datetime.utcnow().date()
+    association_timestamp = date.today()
 
 
 class CoreUserFactory(BaseFactory):
+
     class Meta:
         model = CoreUser
 
@@ -744,8 +852,23 @@ class CoreUserFactory(BaseFactory):
     last_logon = TODAY
     idir_user_detail = factory.RelatedFactory('tests.factories.IdirUserDetailFactory', 'core_user')
 
+class UserFactory(BaseFactory):
+    class Meta:
+        model = User
+
+    sub = factory.Faker('uuid4')
+    email = factory.Faker('email')
+    given_name = factory.Faker('first_name')
+    family_name = factory.Faker('last_name')
+    display_name = factory.LazyAttribute(lambda obj: f"{obj.given_name} {obj.family_name} MCM:EX")
+    idir_username = factory.Faker('user_name')
+    identity_provider = factory.Faker('random_element', elements=['idir', 'bceid'])
+    idir_user_guid = factory.Faker('uuid4')
+    last_logged_in = factory.LazyFunction(lambda: datetime.now(tz=utc))
+
 
 class IdirUserDetailFactory(BaseFactory):
+
     class Meta:
         model = IdirUserDetail
 
@@ -758,16 +881,19 @@ class IdirUserDetailFactory(BaseFactory):
 
 
 class MinespaceUserFactory(BaseFactory):
+
     class Meta:
         model = MinespaceUser
 
     keycloak_guid = GUID
     email_or_username = factory.Faker('email')
 
+
 # Core subscriptions
 
 
 class SubscriptionFactory(BaseFactory):
+
     class Meta:
         model = Subscription
 
@@ -777,10 +903,12 @@ class SubscriptionFactory(BaseFactory):
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     user_name = factory.Faker('last_name')
 
+
 # Minespace subscriptions/access
 
 
 class MinespaceSubscriptionFactory(BaseFactory):
+
     class Meta:
         model = MinespaceUserMine
 
@@ -793,6 +921,7 @@ class MinespaceSubscriptionFactory(BaseFactory):
 
 
 class MineFactory(BaseFactory):
+
     class Meta:
         model = Mine
 
@@ -928,6 +1057,7 @@ class MineFactory(BaseFactory):
 
 
 class PermitFactory(BaseFactory):
+
     class Meta:
         model = Permit
 
@@ -988,6 +1118,7 @@ class PermitFactory(BaseFactory):
 
 
 class MinePermitXrefFactory(BaseFactory):
+
     class Meta:
         model = MinePermitXref
 
@@ -1000,6 +1131,7 @@ class MinePermitXrefFactory(BaseFactory):
 
 
 class PermitAmendmentFactory(BaseFactory):
+
     class Meta:
         model = PermitAmendment
 
@@ -1015,7 +1147,8 @@ class PermitAmendmentFactory(BaseFactory):
     permit_id = factory.SelfAttribute('permit.permit_id')
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     received_date = TODAY
-    issue_date = TODAY
+    issue_date = factory.LazyFunction(date.today)
+
     authorization_end_date = factory.Faker('date_between', start_date='+31d', end_date='+89d')
     permit_amendment_status_code = 'ACT'
     permit_amendment_type_code = 'AMD'
@@ -1038,18 +1171,22 @@ class PermitAmendmentFactory(BaseFactory):
 
 
 class PermitAmendmentDocumentFactory(BaseFactory):
+
     class Meta:
         model = PermitAmendmentDocument
+    
+    permit_amendment = factory.SubFactory(PermitAmendmentFactory)
+
 
     permit_amendment_document_guid = GUID
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
     document_name = factory.Faker('file_name')
     mine_guid = factory.SelfAttribute('permit_amendment.mine_guid')
     document_manager_guid = GUID
-    permit_amendment = factory.SubFactory(PermitAmendmentFactory)
 
 
 class PermitConditionsFactory(BaseFactory):
+
     class Meta:
         model = PermitConditions
 
@@ -1062,9 +1199,11 @@ class PermitConditionsFactory(BaseFactory):
     condition_type_code = factory.LazyFunction(RandomConditionTypeCode)
     condition = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     display_order = factory.Sequence(lambda n: n + 1)
+    permit_condition_status_code = factory.LazyFunction(RandomConditionStatusCode)
 
 
 class StandardPermitConditionsFactory(BaseFactory):
+
     class Meta:
         model = StandardPermitConditions
 
@@ -1077,6 +1216,7 @@ class StandardPermitConditionsFactory(BaseFactory):
 
 
 class BondFactory(BaseFactory):
+
     class Meta:
         model = Bond
 
@@ -1102,6 +1242,7 @@ class BondFactory(BaseFactory):
 
 
 class ReclamationInvoiceFactory(BaseFactory):
+
     class Meta:
         model = ReclamationInvoice
 
@@ -1112,6 +1253,7 @@ class ReclamationInvoiceFactory(BaseFactory):
 
 
 class ExplosivesPermitFactory(BaseFactory):
+
     class Meta:
         model = ExplosivesPermit
 
@@ -1177,6 +1319,7 @@ class ExplosivesPermitFactory(BaseFactory):
 
 
 class ExplosivesPermitMagazineFactory(BaseFactory):
+
     class Meta:
         model = ExplosivesPermitMagazine
 
@@ -1201,6 +1344,7 @@ class ExplosivesPermitMagazineFactory(BaseFactory):
 
 
 class ProjectFactory(BaseFactory):
+
     class Meta:
         model = Project
 
@@ -1239,16 +1383,19 @@ class ProjectFactory(BaseFactory):
 
 
 class ProjectSummaryFactory(BaseFactory):
+
     class Meta:
         model = ProjectSummary
 
     class Params:
         project = factory.SubFactory(ProjectFactory)
+        set_status_code = "SUB"
 
     project_guid = factory.SelfAttribute('project.project_guid')
     project_summary_guid = GUID
-    status_code = 'SUB'
-    project_summary_description = factory.Faker('paragraph', nb_sentences=5, variable_nb_sentences=True, ext_word_list=None)
+    status_code = factory.SelfAttribute('set_status_code')
+    project_summary_description = factory.Faker(
+        'paragraph', nb_sentences=5, variable_nb_sentences=True, ext_word_list=None)
     documents = []
     authorizations = []
     deleted_ind = False
@@ -1286,6 +1433,7 @@ class ProjectSummaryFactory(BaseFactory):
 
 
 class ProjectSummaryContactFactory(BaseFactory):
+
     class Meta:
         model = ProjectSummaryContact
 
@@ -1303,7 +1451,9 @@ class ProjectSummaryContactFactory(BaseFactory):
     job_title = None
     company_name = None
 
+
 class ProjectSummaryMinistryCommentFactory(BaseFactory):
+
     class Meta:
         model = ProjectSummaryMinistryComment
 
@@ -1313,7 +1463,9 @@ class ProjectSummaryMinistryCommentFactory(BaseFactory):
     project_summary_guid = factory.SelfAttribute('project_summary.project_summary_guid')
     content = factory.Faker('paragraph', nb_sentences=3, variable_nb_sentences=True)
 
+
 class ProjectContactFactory(BaseFactory):
+
     class Meta:
         model = ProjectContact
 
@@ -1334,6 +1486,7 @@ class ProjectContactFactory(BaseFactory):
 
 
 class ProjectSummaryAuthorizationFactory(BaseFactory):
+
     class Meta:
         model = ProjectSummaryAuthorization
 
@@ -1346,25 +1499,26 @@ class ProjectSummaryAuthorizationFactory(BaseFactory):
     existing_permits_authorizations = []
     deleted_ind = False
 
+class MinistryContactTypeFactory(BaseFactory):
 
-class EMLIContactTypeFactory(BaseFactory):
     class Meta:
-        model = EMLIContactType
+        model = MinistryContactType
 
-    emli_contact_type_code = factory.LazyFunction(RandomEMLIContactTypeCode)
+    emli_contact_type_code = factory.LazyFunction(RandomMinistryContactTypeCode)
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     display_order = factory.Sequence(lambda n: n + 1)
     active_ind = True
 
 
-class EMLIContactFactory(BaseFactory):
+class MinistryContactFactory(BaseFactory):
+
     class Meta:
-        model = EMLIContact
+        model = MinistryContact
 
     class Params:
         major_mine = factory.Trait(
             contact_guid=GUID,
-            emli_contact_type_code=factory.LazyFunction(RandomEMLIContactTypeCode),
+            emli_contact_type_code=factory.LazyFunction(RandomMinistryContactTypeCode),
             mine_region_code=factory.LazyFunction(RandomMineRegionCode),
             first_name=factory.Faker('first_name'),
             last_name=factory.Faker('last_name'),
@@ -1375,7 +1529,7 @@ class EMLIContactFactory(BaseFactory):
             deleted_ind=False)
 
     contact_guid = GUID
-    emli_contact_type_code = factory.LazyFunction(RandomEMLIContactTypeCode)
+    emli_contact_type_code = factory.LazyFunction(RandomMinistryContactTypeCode)
     mine_region_code = factory.LazyFunction(RandomMineRegionCode)
     first_name = factory.Faker('first_name')
     last_name = factory.Faker('last_name')
@@ -1387,6 +1541,7 @@ class EMLIContactFactory(BaseFactory):
 
 
 class NoticeOfDepartureFactory(BaseFactory):
+
     class Meta:
         model = NoticeOfDeparture
 
@@ -1406,6 +1561,7 @@ class NoticeOfDepartureFactory(BaseFactory):
 
 
 class InformationRequirementsTableFactory(BaseFactory):
+
     class Meta:
         model = InformationRequirementsTable
 
@@ -1430,6 +1586,7 @@ class InformationRequirementsTableFactory(BaseFactory):
 
 
 class MajorMineApplicationFactory(BaseFactory):
+
     class Meta:
         model = MajorMineApplication
 
@@ -1444,6 +1601,7 @@ class MajorMineApplicationFactory(BaseFactory):
 
 
 class ProjectDecisionPackageFactory(BaseFactory):
+
     class Meta:
         model = ProjectDecisionPackage
 
@@ -1482,22 +1640,25 @@ class ActivityFactory(BaseFactory):
 
     notification_guid = GUID
     activity_type = factory.SelfAttribute('entity')
-    notification_document = factory.LazyAttribute(lambda o: {
-        "message": "Mine has been upddated ",
-        "metadata": {
-            "mine": {
-                "mine_no": o.mine.mine_no,
-                "mine_guid": str(o.mine.mine_guid),
-                "mine_name": o.mine.mine_name
-            },
-            "entity": o.entity,
-            "entity_guid": str(o.entity_guid)
-        }
-    })
+    notification_document = factory.LazyAttribute(
+        lambda o: {
+            "message": "Mine has been upddated ",
+            "metadata": {
+                "mine": {
+                    "mine_no": o.mine.mine_no,
+                    "mine_guid": str(o.mine.mine_guid),
+                    "mine_name": o.mine.mine_name
+                },
+                "entity": o.entity,
+                "entity_guid": str(o.entity_guid)
+            }
+        })
     notification_read = False
     notification_recipient = factory.SelfAttribute('user')
 
+
 class ExplosivesPermitAmendmentFactory(BaseFactory):
+
     class Meta:
         model = ExplosivesPermitAmendment
 
@@ -1507,7 +1668,8 @@ class ExplosivesPermitAmendmentFactory(BaseFactory):
         issuing_inspector = factory.SubFactory(PartyBusinessRoleFactory)
         mine_manager = factory.SubFactory(MinePartyAppointmentFactory)
         permittee = factory.SubFactory(MinePartyAppointmentFactory)
-        explosives_permit = factory.SubFactory(ExplosivesPermitFactory, mines_act_permit=mines_act_permit)
+        explosives_permit = factory.SubFactory(
+            ExplosivesPermitFactory, mines_act_permit=mines_act_permit)
 
     explosives_permit_amendment_guid = GUID
 
@@ -1537,26 +1699,79 @@ class ExplosivesPermitAmendmentFactory(BaseFactory):
 
     deleted_ind = False
 
+
 class ProjectLinkFactory(BaseFactory):
+
     class Meta:
         model = ProjectLink
 
     class Params:
         project = factory.SubFactory(ProjectFactory)
+
     project_link_guid = GUID
     project_guid = factory.SelfAttribute('project.project_guid')
     related_project_guid = factory.SelfAttribute('project.project_guid')
 
 
 class MineReportDefinitionComplianceArticleXrefFactory(BaseFactory):
+
     class Meta:
         model = MineReportDefinitionComplianceArticleXref
 
     mine_report_definition_compliance_article_xref_guid = GUID
 
-    mine_report_definition_id = factory.LazyFunction(
-        RandomMineReportDefinition
+    mine_report_definition_id = factory.LazyFunction(RandomMineReportDefinition)
+    compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
+
+
+class MineReportPermitRequirementFactory(BaseFactory):
+    class Meta:
+        model = MineReportPermitRequirement
+
+    class Params:
+        permit_amendment = factory.SubFactory(PermitAmendmentFactory)
+        permit_condition = factory.SubFactory(PermitConditionsFactory)
+
+    due_date_period_months = factory.LazyFunction(lambda: random.randint(1, 12))
+    initial_due_date = TODAY
+    active_ind = factory.LazyFunction(lambda: random.choice([True, False]))
+    deleted_ind = False
+    cim_or_cpo = factory.LazyFunction(lambda: random.choice(list(CimOrCpo)))
+    ministry_recipient = factory.LazyFunction(
+        lambda: [random.choice(list(OfficeDestination))]
     )
-    compliance_article_id = factory.LazyFunction(
-        RandomComplianceArticleId
-    )
+    mine_report_permit_requirement_id = factory.LazyFunction(lambda: random.randint(1, 12))
+    permit_condition_id = factory.SelfAttribute('permit_condition.permit_condition_id')
+    permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
+
+class PermitExtractionTaskFactory(BaseFactory):
+    class Meta:
+        model = PermitExtractionTask
+
+    class Params:
+        permit_amendment = factory.SubFactory(PermitAmendmentFactory)
+        permit_amendment_document = factory.SubFactory(
+            PermitAmendmentDocumentFactory,
+            permit_amendment=factory.SelfAttribute('..permit_amendment'))
+
+    permit_extraction_task_id = GUID
+    task_id = factory.Faker('uuid4')
+    task_status = 'COMPLETE'
+    task_meta = factory.LazyFunction(lambda: {})
+    task_result = {
+        "conditions": [
+            {
+                "section": "A",
+                "paragraph": None,
+                "subparagraph": None,
+                "clause": None,
+                "subclause": None,
+                "subsubclause": None,
+                "condition_title": None,
+                "condition_text": "General",
+            }
+        ]
+    }
+    core_status_task_id = factory.Faker('uuid4')
+    permit_amendment_guid = factory.SelfAttribute('permit_amendment.permit_amendment_guid')
+    permit_amendment_document_guid = factory.SelfAttribute('permit_amendment_document.permit_amendment_document_guid')

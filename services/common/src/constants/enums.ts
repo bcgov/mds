@@ -91,9 +91,29 @@ export enum OperatingStatusEnum {
 }
 
 export enum MinePartyAppointmentTypeCodeEnum {
+  AGT = "AGT",
+  APP = "APP",
+  BLA = "BLA",
+  CCS = "CCS",
+  DAM = "DAM",
+  EMM = "EMM",
   EOR = "EOR",
-  TQP = "TQP",
+  EVS = "EVS",
+  FOP = "FOP",
+  FRB = "FRB",
+  HSM = "HSM",
+  LDO = "LDO",
   MMG = "MMG",
+  MOR = "MOR",
+  MOW = "MOW",
+  MRC = "MRC",
+  PAY = "PAY",
+  PMT = "PMT",
+  SHB = "SHB",
+  SVR = "SVR",
+  THD = "THD",
+  TQP = "TQP",
+  URP = "URP",
 }
 
 export enum ActivityTypeEnum {
@@ -144,6 +164,26 @@ export enum VC_CRED_ISSUE_STATES {
   issued = "credential-issued",
 }
 
+export enum PROJECT_STATUS_CODES {
+  DFT = "DFT",
+  WDN = "WDN",
+  ASG = "ASG",
+  COM = "COM",
+  OHD = "OHD",
+  SUB = "SUB",
+  UNR = "UNR",
+  CHR = "CHR",
+}
+
+export enum MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES {
+  DFT = "DFT",
+  WDN = "WDN",
+  COM = "COM",
+  OHD = "OHD",
+  SUB = "SUB",
+  UNR = "UNR",
+  CHR = "CHR",
+}
 export enum PROJECT_SUMMARY_STATUS_CODES {
   DFT = "Draft",
   WDN = "Withdrawn",
@@ -157,10 +197,17 @@ export enum PROJECT_SUMMARY_STATUS_CODES {
 
 export enum MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES {
   DFT = "Draft",
-  APV = "Approved",
-  CHR = "Change Requested",
+  WDN = "Withdrawn",
+  COM = "Complete",
+  OHD = "On Hold",
   SUB = "Submitted",
   UNR = "Under review",
+  CHR = "Change Requested",
+}
+export enum PROJECT_DECISION_PACKAGE_STATUS_CODES {
+  CMP = "Completed",
+  INP = "In Progress",
+  NTS = "Not Started",
 }
 
 export enum MINE_REPORT_SUBMISSION_CODES {
@@ -200,6 +247,8 @@ export enum REPORT_REGULATORY_AUTHORITY_CODES {
 export enum REPORT_REGULATORY_AUTHORITY_ENUM {
   CPO = "Chief Permitting Officer",
   CIM = "Chief Inspector of Mines",
+  Both = "Both",
+
 }
 
 export enum MineReportType {
@@ -242,4 +291,10 @@ export enum AMS_FORESTRY_ACT_TYPE {
 
 export enum MAX_DOCUMENT_NAME_LENGTHS {
   "MAJOR_PROJECTS" = "50",
+}
+
+export enum PERMIT_CONDITION_STATUS_CODE {
+  COM = "COM",
+  INP = "INP",
+  NST = "NST"
 }

@@ -1,41 +1,49 @@
 import React from "react";
 import queryString from "query-string";
 import ExplosivesPermit from "@/components/dashboard/mine/permits/ExplosivesPermit";
-const DamsPage = React.lazy(() => import("@common/components/tailings/dam/DamsPage"));
-const InformationRequirementsTablePage = React.lazy(() =>
-  import("@/components/pages/Project/InformationRequirementsTablePage")
+const DamsPage = React.lazy(() => import("@mds/common/components/tailings/dam/DamsPage"));
+const InformationRequirementsTablePage = React.lazy(
+  () => import("@/components/pages/Project/InformationRequirementsTablePage")
 );
-const InformationRequirementsTableSuccessPage = React.lazy(() =>
-  import("@/components/pages/Project/InformationRequirementsTableSuccessPage")
+const InformationRequirementsTableSuccessPage = React.lazy(
+  () => import("@/components/pages/Project/InformationRequirementsTableSuccessPage")
 );
 const LandingPage = React.lazy(() => import("@/components/pages/LandingPage"));
-const MajorMineApplicationPage = React.lazy(() =>
-  import("@/components/pages/Project/MajorMineApplicationPage")
+const MajorMineApplicationPage = React.lazy(
+  () => import("@/components/pages/Project/MajorMineApplicationPage")
 );
-const MajorMineApplicationSuccessPage = React.lazy(() =>
-  import("@/components/pages/Project/MajorMineApplicationSuccessPage")
+const MajorMineApplicationSuccessPage = React.lazy(
+  () => import("@/components/pages/Project/MajorMineApplicationSuccessPage")
 );
 const MineDashboard = React.lazy(() => import("@/components/dashboard/mine/MineDashboard"));
 const MinesPage = React.lazy(() => import("@/components/pages/MinesPage"));
 const ProjectPage = React.lazy(() => import("@/components/pages/Project/ProjectPage"));
-const ProjectSummaryPage = React.lazy(() =>
-  import("@/components/pages/Project/ProjectSummaryPage")
+const ProjectSummaryPage = React.lazy(
+  () => import("@/components/pages/Project/ProjectSummaryPage")
 );
 const ReturnPage = React.lazy(() => import("@/components/pages/ReturnPage"));
-const TailingsSummaryPageWrapper = React.lazy(() =>
-  import("@/components/pages/Tailings/TailingsSummaryPageWrapper")
+const TailingsSummaryPageWrapper = React.lazy(
+  () => import("@/components/pages/Tailings/TailingsSummaryPageWrapper")
 );
+const TailingsSubmitSuccess = React.lazy(
+  () => import("@/components/pages/Tailings/TailingsSubmitSuccess")
+);
+
 const IncidentPage = React.lazy(() => import("@/components/pages/Incidents/IncidentPage"));
-const IncidentSuccessPage = React.lazy(() =>
-  import("@/components/pages/Incidents/IncidentSuccessPage")
+const IncidentSuccessPage = React.lazy(
+  () => import("@/components/pages/Incidents/IncidentSuccessPage")
 );
 const UsersPage = React.lazy(() => import("@/components/pages/UsersPage"));
 
 const ReportPage = React.lazy(() => import("@/components/dashboard/mine/reports/ReportPage"));
 const ReportSteps = React.lazy(() => import("@mds/common/components/reports/ReportSteps"));
+const ViewPermit = React.lazy(() => import("@mds/common/components/permits/ViewPermit"));
+const ViewPermitRedirect = React.lazy(
+  () => import("@/components/dashboard/mine/permits/ViewPermitRedirect")
+);
 
-const ProjectSubmissionStatusPage = React.lazy(() =>
-  import("@mds/common/components/projectSummary/ProjectSubmissionStatusPage")
+const ProjectSubmissionStatusPage = React.lazy(
+  () => import("@mds/common/components/projectSummary/ProjectSubmissionStatusPage")
 );
 
 export const HOME = {
@@ -113,6 +121,8 @@ export const RESUBMIT_INFORMATION_REQUIREMENTS_TABLE = {
 export const REVIEW_INFORMATION_REQUIREMENTS_TABLE = {
   route: "/projects/:projectGuid/information-requirements-table/:irtGuid/review/:tab",
   dynamicRoute: (projectGuid, irtGuid, tab = "introduction-and-project-overview") =>
+    `/projects/${projectGuid}/information-requirements-table/${irtGuid}/review/${tab}`,
+  hashRoute: (projectGuid, irtGuid, tab = "introduction-and-project-overview") =>
     `/projects/${projectGuid}/information-requirements-table/${irtGuid}/review/${tab}`,
   component: InformationRequirementsTablePage,
   helpKey: "Review-IRT",
@@ -209,12 +219,27 @@ export const MINE_DASHBOARD = {
   helpKey: "Mine-Dashboard",
 };
 
+export const MINE_TAILINGS = {
+  route: "/mines/:id/:tailings",
+  dynamicRoute: (id, filterParams?: any) => `/mines/${id}/tailings${getQueryString(filterParams)}`,
+  component: MineDashboard,
+  helpKey: "Mine-Dashboard",
+};
+
 export const ADD_TAILINGS_STORAGE_FACILITY = {
   route: "/mines/:mineGuid/tailings-storage-facility/new/:tab",
   dynamicRoute: (mineGuid, tab = "basic-information") =>
     `/mines/${mineGuid}/tailings-storage-facility/new/${tab}`,
   component: TailingsSummaryPageWrapper,
   helpKey: "Add-Tailings-Storage-Facility",
+};
+
+export const TAILINGS_SUBMIT_SUCCESS = {
+  route: "/mines/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/submit-success",
+  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid) =>
+    `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/submit-success`,
+  component: TailingsSubmitSuccess,
+  helpKey: "Tailings-Submit-Success",
 };
 
 export const EDIT_TAILINGS_STORAGE_FACILITY = {
@@ -225,7 +250,8 @@ export const EDIT_TAILINGS_STORAGE_FACILITY = {
     activeTab = "basic-information",
     isEditMode = false
   ) =>
-    `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${activeTab}/${isEditMode ? "edit" : "view"
+    `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${activeTab}/${
+      isEditMode ? "edit" : "view"
     }`,
   component: TailingsSummaryPageWrapper,
   helpKey: "Edit-Tailings-Storage-Facility",
@@ -250,7 +276,8 @@ export const EDIT_DAM = {
     isEditMode = false,
     canEditDam = false
   ) =>
-    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${isEditMode ? "edit" : "view"
+    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${
+      isEditMode ? "edit" : "view"
     }/${canEditDam ? "editDam" : "viewDam"}/dam/${damGuid}`,
   component: DamsPage,
   helpKey: "Edit-Dam",
@@ -277,4 +304,27 @@ export const REPORT_VIEW_EDIT = {
     `/mines/${mineGuid}/reports/${reportGuid}`,
   component: ReportPage,
   helpKey: "Report",
+};
+
+export const VIEW_MINE_PERMIT_AMENDMENT = {
+  route: "/mines/:id/permits/:permitGuid/permit-amendment/:permitAmendmentGuid/:tab",
+  dynamicRoute: (id, permitGuid, permitAmendmentGuid, tab = "overview") =>
+    `/mines/${id}/permits/${permitGuid}/permit-amendment/${permitAmendmentGuid}/${tab}`,
+  hashRoute: (id, permitGuid, permitAmendmentGuid, tab = "overview", link = "") =>
+    `/mines/${id}/permits/${permitGuid}/permit-amendment/${permitAmendmentGuid}/${tab}/${link}`,
+  component: ViewPermit,
+  helpKey: "View-Permit",
+  priority: 1,
+};
+
+export const MINE_PERMITS = {
+  route: "/mines/:id/:activeTab",
+  dynamicRoute: (id) => `/mines/${id}/permits`,
+};
+
+export const PERMIT_VIEW = {
+  route: "/mines/:id/redirect/permits/:permitGuid",
+  dynamicRoute: (id: string, permitGuid: string) => `/mines/${id}/redirect/permits/${permitGuid}`,
+  component: ViewPermitRedirect,
+  helpKey: "Permit",
 };

@@ -14,8 +14,7 @@ MINE_REPORT_DEFINITION_BASE_MODEL = api.model(
         'is_prr_only': fields.Boolean,
     })
 
-
-COMPLIANCE_ARTICLE_MODEL = api.model(
+COMPLIANCE_ARTICLE_BASE_MODEL = api.model(
     'ComplianceArticle', {
         'compliance_article_id': fields.Integer,
         'article_act_code': fields.String,
@@ -29,6 +28,10 @@ COMPLIANCE_ARTICLE_MODEL = api.model(
         'expiry_date': fields.Date,
         'help_reference_link': fields.String,
         'cim_or_cpo': fields.String,
+    })
+
+COMPLIANCE_ARTICLE_MODEL = api.inherit(
+    'ComplianceArticle', COMPLIANCE_ARTICLE_BASE_MODEL, {
         'reports': fields.List(fields.Nested(MINE_REPORT_DEFINITION_BASE_MODEL))
     })
 

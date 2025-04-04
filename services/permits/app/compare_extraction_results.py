@@ -11,7 +11,7 @@ from difflib import SequenceMatcher
 
 import numpy as np
 import pandas as pd
-from app.permit_conditions.validator.permit_condition_model import PermitCondition
+from app.common.types.permit_condition_model import PermitCondition
 from diff_match_patch import diff_match_patch
 from fuzzywuzzy import fuzz
 from jinja2 import Environment, FileSystemLoader
@@ -242,7 +242,6 @@ def validate_condition(csv_pairs):
                     ].original_condition_text,
                     "manual_section_title": "",
                     "manual_condition_title": "",
-                    "manual_extracted_condition": "",
                     "manual_extracted_condition": "",
                     "match_percentage": 0,
                     "is_match": False,

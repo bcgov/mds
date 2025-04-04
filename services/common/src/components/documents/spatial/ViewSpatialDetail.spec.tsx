@@ -8,7 +8,7 @@ import {
   groupSpatialBundles,
   spatialDataReducerType,
 } from "@mds/common/redux/slices/spatialDataSlice";
-import { MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE } from "@mds/common/constants";
+import { MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE } from "@mds/common/constants/strings";
 
 const spatialDocuments = MOCK.PROJECT_SUMMARY.documents.filter(
   (d) => d.project_summary_document_type_code === MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.SPATIAL

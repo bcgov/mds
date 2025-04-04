@@ -12,13 +12,8 @@ exports[`AddReclamationInvoiceModal renders properly 1`] = `
     />
     <br />
   </div>
-  <ReduxForm
+  <ReclamationInvoiceForm
     closeModal={[MockFunction]}
-    destroyOnUnmount={true}
-    enableReinitialize={false}
-    forceUnregisterOnUnmount={false}
-    form="ADD_RECLAMATION_INVOICE"
-    getFormState={[Function]}
     initialValues={
       Object {
         "amount": 1251,
@@ -35,20 +30,9 @@ exports[`AddReclamationInvoiceModal renders properly 1`] = `
         "vendor": "John Doe",
       }
     }
-    keepDirtyOnReinitialize={false}
     mineGuid="1436613"
     onSubmit={[Function]}
-    persistentSubmitErrors={false}
-    pure={true}
-    shouldAsyncValidate={[Function]}
-    shouldError={[Function]}
-    shouldValidate={[Function]}
-    shouldWarn={[Function]}
-    submitAsSideEffect={false}
     title="Add Bond"
-    touchOnBlur={false}
-    touchOnChange={false}
-    updateUnregisteredFields={false}
   />
 </div>
 `;

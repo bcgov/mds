@@ -1,6 +1,9 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { getFormValues } from "redux-form";
+import { getFormValues } from "@mds/common/components/forms/form";
 import { useSelector } from "react-redux";
+import { ColumnsType } from "antd/es/table";
+import { Button, Alert, Typography, Col, Row } from "antd";
+import { useHistory } from "react-router-dom";
 import {
   getDropdownProjectSummaryPermitTypes,
   getTransformedProjectSummaryAuthorizationTypes,
@@ -8,18 +11,15 @@ import {
 
 import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import { ColumnsType } from "antd/es/table";
-import { Button, Alert, Typography, Col, Row } from "antd";
-import { useHistory } from "react-router-dom";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
-import { FORM, isFieldDisabled } from "@mds/common/constants";
-import { IAuthorizationSummary } from "@mds/common/interfaces";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import { FORM } from "@mds/common/constants/forms";
+import { IAuthorizationSummary, IProjectSummaryForm } from "@mds/common/interfaces";
 import { FormContext } from "../forms/FormWrapper";
+import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
 
-export const ApplicationSummary: FC = () => {
+export const ApplicationSummary: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => {
   const permits = useSelector(getPermits);
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
   const dropdownProjectSummaryPermitTypes = useSelector(getDropdownProjectSummaryPermitTypes);
   const transformedProjectSummaryAuthorizationTypes = useSelector(
     getTransformedProjectSummaryAuthorizationTypes
@@ -35,7 +35,6 @@ export const ApplicationSummary: FC = () => {
 
   const processedEnvironmentActPermitResult: any[] = [];
   let processedOtherActPermitResult: any[] = [];
-  const systemFlag = useSelector(getSystemFlag);
   const { isEditMode } = useContext(FormContext);
 
   const minesActColumns: ColumnsType<IAuthorizationSummary> = [
@@ -100,8 +99,7 @@ export const ApplicationSummary: FC = () => {
     permitType: string
   ) => {
     if (payload?.[permitType]?.AMENDMENT) {
-      for (let i = 0; i < payload[permitType].AMENDMENT.length; i++) {
-        const permit = payload[permitType].AMENDMENT[i];
+      for (const permit of payload[permitType].AMENDMENT) {
         const permitTypeLabel = parseProjectTypeLabel("AMENDMENT");
         const projectType = `${parseTransformedProjectSummaryAuthorizationTypes(
           permitAuthorizationType,
@@ -118,7 +116,7 @@ export const ApplicationSummary: FC = () => {
 
     for (const type of permitTypes) {
       if (payload?.[permitType]?.[type]) {
-        for (let i = 0; i < payload[permitType][type].length; i++) {
+        for (const _ of payload[permitType][type]) {
           const permitTypeLabel = parseProjectTypeLabel(type);
           const projectType = `${parseTransformedProjectSummaryAuthorizationTypes(
             permitAuthorizationType,
@@ -231,11 +229,10 @@ export const ApplicationSummary: FC = () => {
 
   const editButton = <Col md={12} sm={24} style={{ textAlign: "right" }}>
     <Button
-      disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
       type="default"
       onClick={handleEditClicked}
     >
-      {isEditMode ? "Edit" : "View"}
+      {isEditMode && !fieldsDisabled ? "Edit" : "View"}
     </Button>
   </Col>;
 

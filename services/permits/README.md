@@ -52,6 +52,15 @@ _Query_
 `POST http://localhost:8004/permit/query`
 This endpoint receives the question as a string and allows the requester to set additional parameters that will be passed on to the Haystack query pipeline defined in `app/app.py`. The endpoint performs a Keyword search on indexed documents.
 
+### CLI Commands
+
+The service provides command-line interface (CLI) tools for various administrative tasks:
+
+```bash
+# Initialize or update Azure Search infrastructure (index and indexer)
+python -m app.cli permit-condition-search update-search-index
+```
+
 ### Kibana
 
 Kibana can be accessed at http://localhost:5601/.
@@ -126,3 +135,4 @@ Usage:
 ```python
 python -m app.extract_and_validate_pdf --pdf_csv_pairs <pdf_path> <expected_csv_path> --pdf_csv_pairs <pdf_path> <expected_csv_path> ...
 ```
+````

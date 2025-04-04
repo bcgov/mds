@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
@@ -8,14 +8,15 @@ import { MINE_DASHBOARD } from "@/constants/routes";
 import { getMineDashboardRoutes } from "./MineDashboardRoutes";
 import SidebarWrapper, { SidebarNavigation } from "@mds/common/components/common/SidebarWrapper";
 import Loading from "@/components/common/Loading";
-import { fetchEMLIContactsByRegion } from "@mds/common/redux/actionCreators/minespaceActionCreator";
+import { fetchMinistryContactsByRegion } from "@mds/common/redux/actionCreators/minespaceActionCreator";
 import { fetchPartyRelationships } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const MineDashboard: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { id, activeTab } = useParams<{ id: string; activeTab: string }>();
-  const mine: IMine = useSelector((state) => getMineById(state, id));
+  const mine: IMine = useSelector(getMineById(id));
   const defaultIsLoadedValue: boolean = mine?.mine_guid === id;
   const [isLoaded, setIsLoaded] = useState(defaultIsLoadedValue);
   const [mineNotFound, setMineNotFound] = useState(false);
@@ -24,7 +25,7 @@ const MineDashboard: FC = () => {
     return Promise.all([
       dispatch(fetchMineRecordById(mine_guid))
         .then(({ data }) => {
-          dispatch(fetchEMLIContactsByRegion(data.mine_region, data.major_mine_ind));
+          dispatch(fetchMinistryContactsByRegion(data.mine_region, data.major_mine_ind));
         })
         .catch(() => setMineNotFound(true)),
       dispatch(

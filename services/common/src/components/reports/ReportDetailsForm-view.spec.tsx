@@ -5,8 +5,10 @@ import ReportDetailsForm from "./ReportDetailsForm";
 import { Button } from "antd";
 import { AUTHENTICATION, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { IMineReportSubmission } from "../..";
-import { SystemFlagEnum, USER_ROLES } from "@mds/common/constants";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { USER_ROLES } from "@mds/common/constants/environment";
+import { IMineReportSubmission } from "@mds/common/interfaces/reports/mineReportSubmission.interface";
+import { complianceReportReducerType, reportParamsGetAll } from "@mds/common/redux/slices/complianceReportsSlice";
 
 const mineReportSubmission = MOCK.MINE_REPORT_SUBMISSIONS[0];
 const initialState = {
@@ -15,9 +17,18 @@ const initialState = {
     mineReportGuid: mineReportSubmission.mine_report_guid,
   },
   [STATIC_CONTENT]: {
-    mineReportDefinitionOptions: MOCK.BULK_STATIC_CONTENT_RESPONSE.mineReportDefinitionOptions,
     permitConditionCategoryOptions:
       MOCK.BULK_STATIC_CONTENT_RESPONSE.permitConditionCategoryOptions,
+  },
+  [complianceReportReducerType]: {
+    reportPageData: {
+      records: MOCK.MINE_REPORT_DEFINITION_OPTIONS,
+      current_page: 1,
+      items_per_page: MOCK.MINE_REPORT_DEFINITION_OPTIONS.length,
+      total: MOCK.MINE_REPORT_DEFINITION_OPTIONS.length,
+      total_pages: 1
+    },
+    params: reportParamsGetAll,
   },
   [AUTHENTICATION]: {
     systemFlag: SystemFlagEnum.core,
@@ -49,7 +60,7 @@ describe("ReportDetailsForm", () => {
               <Button htmlType="submit">Submit</Button>
             </div>
           }
-          handleSubmit={() => {}}
+          handleSubmit={() => { }}
         />
       </ReduxWrapper>
     );

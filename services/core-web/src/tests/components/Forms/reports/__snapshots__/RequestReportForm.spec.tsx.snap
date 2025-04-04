@@ -331,7 +331,8 @@ exports[`RequestReportForm renders form properly 1`] = `
       class="ant-row ant-row-end"
     >
       <button
-        class="ant-btn ant-btn-default core-btn core-btn-default"
+        aria-label="Cancel"
+        class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
         type="button"
       >
         <span>

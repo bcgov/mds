@@ -136,6 +136,9 @@ class NOWApplicationStatusResource(Resource, UserMixin):
             if permit_amendment.permit_amendment_status_code != 'ACT':
                 raise AssertionError('The permit status was not set to Active.')
 
+            # update permit conditions to not require review
+            permit_amendment.update_permit_condition_status("COM")
+
             # set exemption fee status code
             now_site_property = now_application_identity.now_application.site_property
             is_exploration = permit.permit_no[1] == "X" or permit.is_exploration

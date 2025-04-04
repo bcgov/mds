@@ -1,4 +1,4 @@
-import { IContact } from "@mds/common/index";
+import { IContact } from "./contact.interface";
 
 export interface IProjectContact extends IContact {
   project_guid?: string;

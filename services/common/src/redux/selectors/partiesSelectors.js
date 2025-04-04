@@ -100,3 +100,11 @@ export const getProjectLeadsList = (state) =>
 
 export const getInspectorsHash = createSelector([getInspectorsList], createLabelHash);
 export const getProjectLeadsHash = createSelector([getProjectLeadsList], createLabelHash);
+
+export const getMatchingPartyRelationships = (mine_party_appt_type_code, related_guid = "") =>
+  createSelector([getPartyRelationships], (relationships) => {
+    return relationships.filter((mpa) => {
+      return mpa.mine_party_appt_type_code === mine_party_appt_type_code &&
+        (related_guid === "" || mpa.related_guid === related_guid)
+    });
+  })

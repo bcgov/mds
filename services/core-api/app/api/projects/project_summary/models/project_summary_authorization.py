@@ -1,17 +1,22 @@
+import json
 from datetime import datetime
 
-from sqlalchemy.dialects.postgresql import UUID
-from cerberus import Validator
-import json
-
-from sqlalchemy.schema import FetchedValue
-from app.extensions import db
-
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
-from app.api.projects.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
-from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 from app.api.mines.documents.models.mine_document import MineDocument
-from app.api.projects.project_summary.models.project_summary_authorization_document_xref import ProjectSummaryAuthorizationDocumentXref
+from app.api.projects.project_summary.models.project_summary_authorization_document_xref import (
+    ProjectSummaryAuthorizationDocumentXref,
+)
+from app.api.projects.project_summary.models.project_summary_authorization_type import (
+    ProjectSummaryAuthorizationType,
+)
+from app.api.projects.project_summary.models.project_summary_permit_type import (
+    ProjectSummaryPermitType,
+)
+from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
+from app.extensions import db
+from cerberus import Validator
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.schema import FetchedValue
+
 
 class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'project_summary_authorization'
@@ -50,43 +55,50 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
     location_documents = db.relationship(
         'ProjectSummaryAuthorizationDocumentXref',
         lazy='select',
-        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "MAP", MineDocument.is_archived == False)'
+        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "MAP", MineDocument.is_archived == False)',
+        overlaps="amendment_documents"
     )
 
     discharge_documents = db.relationship(
         'ProjectSummaryAuthorizationDocumentXref',
         lazy='select',
-        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "DFA", MineDocument.is_archived == False)'
+        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "DFA", MineDocument.is_archived == False)',
+        overlaps="amendment_documents,location_documents"
     )
 
     consent_documents = db.relationship(
         'ProjectSummaryAuthorizationDocumentXref',
         lazy='select',
-        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "CSL", MineDocument.is_archived == False)'
+        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "CSL", MineDocument.is_archived == False)',
+        overlaps="amendment_documents,discharge_documents,location_documents"
     )
 
     clause_amendment_documents = db.relationship(
         'ProjectSummaryAuthorizationDocumentXref',
         lazy='select',
-        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "CAF", MineDocument.is_archived == False)'
+        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "CAF", MineDocument.is_archived == False)',
+        overlaps="amendment_documents,consent_documents,discharge_documents,location_documents"
     )
 
     change_ownership_name_documents = db.relationship(
         'ProjectSummaryAuthorizationDocumentXref',
         lazy='select',
-        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "CON", MineDocument.is_archived == False)'
+        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "CON", MineDocument.is_archived == False)',
+        overlaps="amendment_documents,change_ownership_name_documents,clause_amendment_documents,consent_documents,discharge_documents,location_documents"
     )
 
     exemption_documents = db.relationship(
         'ProjectSummaryAuthorizationDocumentXref',
         lazy='select',
-        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "EXL", MineDocument.is_archived == False)'
+        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "EXL", MineDocument.is_archived == False)',
+        overlaps="amendment_documents,change_ownership_name_documents,clause_amendment_documents,consent_documents,discharge_documents,location_documents"
     )
 
     support_documents = db.relationship(
         'ProjectSummaryAuthorizationDocumentXref',
         lazy='select',
-        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "SPR", MineDocument.is_archived == False)'
+        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "SPR", MineDocument.is_archived == False)',
+        overlaps="amendment_documents,change_ownership_name_documents,clause_amendment_documents,consent_documents,discharge_documents,exemption_documents,location_documents"
     )
 
     @classmethod

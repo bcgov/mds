@@ -75,10 +75,7 @@ export const MinespaceUserManagement = (props) => {
   };
 
   const refreshUserData = () => {
-    props.fetchMinespaceUsers().then(() => {
-      const mine_guids = flatMap(minespaceUsers, (user) => user.mines);
-      props.fetchMinespaceUserMines(uniq(mine_guids));
-    });
+    props.fetchMinespaceUsers();
   };
 
   const handleUpdate = (record) => {
@@ -102,7 +99,7 @@ export const MinespaceUserManagement = (props) => {
         initialValues: record,
         handleSubmit: handleUpdate,
         refreshData: refreshUserData,
-        afterClose: () => {},
+        afterClose: () => { },
       },
       content: modalConfig.UPDATE_MINESPACE_USERS,
       width: "75vw",

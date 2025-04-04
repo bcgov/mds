@@ -15,7 +15,7 @@ import { getSearchBarResults } from "@mds/common/redux/reducers/searchReducer";
 
 import { SearchOutlined } from "@ant-design/icons";
 import { useKey } from "@/App";
-import { ISearchResult } from "@mds/common/interfaces/search/searchResult.interface";
+import { ISearchResult, ISimpleSearchResult } from "@mds/common/interfaces/search/searchResult.interface";
 import { SearchBarDropdown } from "@/components/search/SearchBarDropdown";
 import { throttle } from "lodash";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
@@ -25,7 +25,7 @@ interface SearchBarProps extends InputProps {
   iconPlacement: "prefix" | "suffix" | false;
   placeholderText: string;
   showFocusButton: boolean;
-  searchBarResults: ISearchResult[];
+  searchBarResults: ISearchResult<ISimpleSearchResult>[];
   fetchSearchBarResults: ActionCreator<typeof fetchSearchBarResults>;
 }
 
@@ -99,6 +99,7 @@ const SearchBar: FC<RouteComponentProps & SearchBarProps> = ({
   };
 
   const iconProps = iconPlacement ? { [iconPlacement]: <SearchOutlined /> } : {};
+
   return (
     <div>
       <SearchBarDropdown

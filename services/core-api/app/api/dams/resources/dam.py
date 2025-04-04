@@ -3,7 +3,8 @@ from flask_restx import Resource, reqparse
 from werkzeug.exceptions import NotFound
 
 from app.api.utils.resources_mixins import UserMixin
-from app.api.dams.dto import DAM_MODEL, UPDATE_DAM_MODEL
+from app.api.dams.dto import UPDATE_DAM_MODEL
+from app.api.mines.response_models import DAM_HISTORY_MODEL
 from app.api.utils.access_decorators import EDIT_TSF, MINESPACE_PROPONENT, requires_any_of
 from app.api.dams.models.dam import Dam
 from app.extensions import api
@@ -12,7 +13,7 @@ from app.extensions import api
 class DamResource(Resource, UserMixin):
     @api.doc(params={'dam_guid': 'Dam guid.'})
     @requires_any_of([EDIT_TSF, MINESPACE_PROPONENT])
-    @api.marshal_with(DAM_MODEL, code=200)
+    @api.marshal_with(DAM_HISTORY_MODEL, code=200)
     def get(self, dam_guid):
         dam = Dam.find_one(dam_guid)
         return dam
@@ -20,7 +21,7 @@ class DamResource(Resource, UserMixin):
     @api.doc(params={'dam_guid': 'Dam guid.'})
     @requires_any_of([EDIT_TSF, MINESPACE_PROPONENT])
     @api.expect(UPDATE_DAM_MODEL)
-    @api.marshal_with(DAM_MODEL, code=200)
+    @api.marshal_with(DAM_HISTORY_MODEL, code=200)
     def patch(self, dam_guid):
         parser = reqparse.RequestParser()
 

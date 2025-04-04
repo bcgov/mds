@@ -1,5 +1,7 @@
 import pytest
-from app.permit_conditions.validator.parse_hierarchy import parse_hierarchy
+from app.pipelines.permit_condition_extraction.components.parse_hierarchy import (
+    parse_hierarchy,
+)
 
 
 def test_parse_hierarchy_subconditions():

@@ -19,6 +19,20 @@ def test_get_information_requirements_table_by_irt_guid(test_client, db_session,
     assert get_data['irt_guid'] == str(irt.irt_guid)
     assert get_data['status_code'] == str(irt.status_code)
 
+def test_put_information_requirements_table(test_client, db_session, auth_headers):
+    project = ProjectFactory()
+    irt = InformationRequirementsTableFactory(project=project)
+
+    data = { "status_code": "WDN"}
+
+    put_resp = test_client.put(
+        f'/projects/{irt.project.project_guid}/information-requirements-table/{irt.irt_guid}',
+        data=data,
+        headers=auth_headers['full_auth_header'])
+    
+    assert put_resp.status_code == 200
+    put_data = json.loads(put_resp.data.decode())
+    assert put_data['status_code'] == data['status_code']
 
 # TODO: Update and enable this once the workflow has matured
 # def test_put_information_requirements_table(test_client, db_session, auth_headers):

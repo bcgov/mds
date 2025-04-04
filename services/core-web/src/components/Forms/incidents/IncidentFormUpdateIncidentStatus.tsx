@@ -1,10 +1,10 @@
 import React, { FC } from "react";
-import { IMineIncident } from "@mds/common";
 import { Alert, Button, Col, Form, Row, Typography } from "antd";
 import { formatDate } from "@common/utils/helpers";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { renderConfig } from "@/components/common/config";
-import { required } from "@common/utils/Validate";
+import { IMineIncident } from "@mds/common/interfaces";
+import { required } from "@mds/common/redux/utils/Validate";
 
 interface IncidentFormUpdateIncidentStatusProps {
   incident: IMineIncident;
@@ -25,7 +25,7 @@ const IncidentFormUpdateIncidentStatus: FC<IncidentFormUpdateIncidentStatusProps
 }) => {
   const isNewIncident = !incident?.mine_incident_guid;
   const isClosed = incident?.status_code === "CLD";
-  const selectedStatusCode = formValues.status_code;
+  const selectedStatusCode = formValues?.status_code;
   const responsibleInspector = incident?.responsible_inspector_party;
 
   const alertText = (updateUser, updateDate, responsibleInspector, selectedStatusCode) => {
@@ -53,7 +53,7 @@ const IncidentFormUpdateIncidentStatus: FC<IncidentFormUpdateIncidentStatusProps
           text = `The incident requires a final report to be submitted before 60 days from creation time of the incident.`;
           break;
         case "INV":
-          text = `This incident currently is under EMLI investigation.`;
+          text = `This incident currently is under MCM investigation.`;
           break;
         case "MIU":
           text = `This incident currently is under MIU investigation.`;

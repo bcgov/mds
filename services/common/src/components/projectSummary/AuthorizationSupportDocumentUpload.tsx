@@ -1,16 +1,12 @@
 import React, { FC } from "react";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@mds/common/constants/fileTypes";
 import { PROJECT_SUMMARY_DOCUMENTS } from "@mds/common/constants/API";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
-import {
-  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE,
-  DISCHARGE_FACTOR_FORM_AMENDMENT,
-  DISCHARGE_FACTOR_FORM_NEW,
-  IProjectSummaryDocument,
-  MAX_DOCUMENT_NAME_LENGTHS,
-} from "../..";
 import { requiredList } from "@mds/common/redux/utils/Validate";
+import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE, DISCHARGE_FACTOR_FORM_AMENDMENT, DISCHARGE_FACTOR_FORM_NEW } from "@mds/common/constants/strings";
+import { IProjectSummaryDocument } from "@mds/common/interfaces";
+import { MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common/constants/enums";
 
 interface AuthorizationSupportDocumentUploadProps {
   mineGuid: string;
@@ -23,7 +19,6 @@ interface AuthorizationSupportDocumentUploadProps {
   ) => void;
   projectGuid: string;
   projectSummaryGuid: string;
-  code: string;
   showExemptionSection: boolean;
   isAmendment: boolean;
   amendmentChanges: string[];
@@ -92,7 +87,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
   const acceptedFileTypesMap = { ...DOCUMENT, ...EXCEL, ...IMAGE, ...SPATIAL };
 
   return (
-    <div>
+    <div className={isDisabled ? "authorization-documents-disabled" : "authorization-documents-enabled"}>
       {!isDisabled && (
         <Field
           id="LocationMapDocumentUpload"

@@ -1,13 +1,13 @@
 import React, { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { change, Field, formValueSelector } from "redux-form";
-import { Alert, Col, Form, Row, Typography } from "antd";
+import { Field, formValueSelector } from "@mds/common/components/forms/form";
+import { Alert, Col, Row, Typography } from "antd";
 import { remove } from "lodash";
-import { ENVIRONMENT, IFileInfo, IProject } from "@mds/common";
+import { IFileInfo, IProject } from "@mds/common/interfaces";
 import * as API from "@mds/common/constants/API";
 import {
   createInformationRequirementsTable,
-  updateInformationRequirementsTableByFile,
+  updateInformationRequirementsTable,
 } from "@mds/common/redux/actionCreators/projectActionCreator";
 import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import { MODERN_EXCEL } from "@mds/common/constants/fileTypes";
@@ -24,6 +24,7 @@ import { formatDateTime } from "@common/utils/helpers";
 import { documentNameColumn } from "@/components/common/DocumentColumns";
 import { MineDocument } from "@mds/common/models/documents/document";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 
 interface IRTFileImportProps {
   projectGuid: string;
@@ -53,12 +54,10 @@ export const IRTFileImport: FC<IRTFileImportProps> = ({
 
   const onFileLoad = (fileName, document_manager_guid) => {
     setUploadedFiles([...uploadedFiles, { document_name: fileName, document_manager_guid }]);
-    return dispatch(change(FORM.INFORMATION_REQUIREMENTS_TABLE, "final_irt", uploadedFiles));
   };
 
   const onRemoveFile = (err, fileItem) => {
     remove(documents, { document_manager_guid: fileItem.serverId });
-    return dispatch(change(FORM.INFORMATION_REQUIREMENTS_TABLE, "final_irt", documents));
   };
 
   const acceptFileTypeArray = Object.keys(acceptedFileTypesMap);
@@ -85,19 +84,21 @@ export const IRTFileImport: FC<IRTFileImportProps> = ({
     return dispatch(createInformationRequirementsTable(projectGuid, file, documentGuid));
   };
 
-  const handleUpdateInformationRequirementsTableByFile = async (
+  const handleUpdateInformationRequirementsTable = async (
     projectGuid: string,
     informationRequirementsTableGuid: string,
     file: IFileInfo,
     documentGuid: string
   ) => {
     return dispatch(
-      updateInformationRequirementsTableByFile(
+      updateInformationRequirementsTable({
         projectGuid,
         informationRequirementsTableGuid,
-        file,
-        documentGuid
-      )
+        fileData: {
+          file,
+          documentGuid,
+        },
+      })
     );
   };
 
@@ -128,39 +129,35 @@ export const IRTFileImport: FC<IRTFileImportProps> = ({
             </LinkButton>{" "}
             here.
           </Typography.Paragraph>
-          <Form.Item wrapperCol={{ lg: 24 }} style={{ width: "100%", marginRight: 0 }}>
-            <DocumentTable
-              documents={tableDocuments}
-              documentParent="Information Requirements Table"
-              documentColumns={documentColumns}
-              isViewOnly
+          <DocumentTable
+            documents={tableDocuments}
+            documentParent="Information Requirements Table"
+            documentColumns={documentColumns}
+            isViewOnly
+          />
+          <br />
+          {project?.information_requirements_table?.documents?.length > 0 && (
+            <Alert
+              message="Re-uploading a new file will replace all the data imported from the current final IRT."
+              description=""
+              type="info"
+              showIcon
             />
-            <br />
-            {project?.information_requirements_table?.status_code === "SUB" && (
-              <Alert
-                message="Re-uploading a new file will replace all the data imported from the current final IRT."
-                description=""
-                type="info"
-                showIcon
-              />
-            )}
-            <br />
-            <Field
-              id="final_irt"
-              name="final_irt"
-              onFileLoad={onFileLoad}
-              onRemoveFile={onRemoveFile}
-              createInformationRequirementsTable={handleCreateInformationRequirementsTable}
-              updateInformationRequirementsTableByFile={
-                handleUpdateInformationRequirementsTableByFile
-              }
-              irtGuid={project?.information_requirements_table?.irt_guid}
-              projectGuid={projectGuid}
-              acceptedFileTypesMap={acceptedFileTypesMap}
-              importIsSuccessful={importIsSuccessful}
-              component={IRTFileUpload}
-            />
-          </Form.Item>
+          )}
+          <br />
+          <Field
+            id="final_irt"
+            name="final_irt"
+            onFileLoad={onFileLoad}
+            onRemoveFile={onRemoveFile}
+            createInformationRequirementsTable={handleCreateInformationRequirementsTable}
+            updateInformationRequirementsTable={handleUpdateInformationRequirementsTable}
+            irtGuid={project?.information_requirements_table?.irt_guid}
+            projectGuid={projectGuid}
+            acceptedFileTypesMap={acceptedFileTypesMap}
+            importIsSuccessful={importIsSuccessful}
+            component={IRTFileUpload}
+          />
         </Col>
       </Row>
     </FormWrapper>

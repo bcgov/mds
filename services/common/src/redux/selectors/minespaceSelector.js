@@ -4,8 +4,8 @@ import * as minespaceReducer from "../reducers/minespaceReducer";
 export const {
   getMinespaceUsers,
   getMinespaceUserMines,
-  getEMLIContacts,
-  getEMLIContactsByRegion,
+  getMinistryContacts,
+  getMinistryContactsByRegion,
 } = minespaceReducer;
 
 export const getMinespaceUserEmailHash = createSelector([getMinespaceUsers], (user) =>

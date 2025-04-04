@@ -1,11 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ReclamationInvoiceForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  isModal={true}
+  name="ADD_RECLAMATION_INVOICE"
   onSubmit={[Function]}
+  reduxFormConfig={
+    Object {
+      "touchOnBlur": false,
+    }
+  }
 >
   <Row
     gutter={16}
@@ -14,42 +18,36 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          disabled={true}
-          id="project_id"
-          label="Project ID*"
-          name="project_id"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="project_id"
+        label="Project ID"
+        name="project_id"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
     <Col
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="vendor"
-          label="Vendor*"
-          name="vendor"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="vendor"
+        label="Vendor"
+        name="vendor"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -59,48 +57,42 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          autoComplete="off"
-          component={[Function]}
-          format={[Function]}
-          id="amount"
-          label="Invoice Amount*"
-          name="amount"
-          normalize={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          validate={
-            Array [
-              [Function],
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        autoComplete="off"
+        component={[Function]}
+        format={[Function]}
+        id="amount"
+        label="Invoice Amount"
+        name="amount"
+        normalize={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        required={true}
+        validate={
+          Array [
+            [Function],
+            [Function],
+            [Function],
+          ]
+        }
+      />
     </Col>
     <Col
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="paid_date"
-          label="Paid Date*"
-          name="paid_date"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="paid_date"
+        label="Paid Date"
+        name="paid_date"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -163,16 +155,12 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
     <Col
       md={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="note"
-          label="Notes"
-          name="note"
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="note"
+        label="Notes"
+        name="note"
+      />
     </Col>
   </Row>
   <br />
@@ -188,59 +176,37 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
       </h5>
     </Col>
   </Row>
-  <FormItem
-    hasFeedback={false}
-  >
-    <Field
-      acceptedFileTypesMap={
-        Object {
-          ".doc": "application/msword",
-          ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-          ".odm": "application/vnd.oasis.opendocument.text-master",
-          ".odt": "application/vnd.oasis.opendocument.text",
-          ".oth": "application/vnd.oasis.opendocument.text-web",
-          ".ott": "application/vnd.oasis.opendocument.text-template",
-          ".pdf": "application/pdf",
-          ".rtf": "application/rtf",
-          ".xls": "application/vnd.ms-excel",
-          ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        }
+  <Field
+    acceptedFileTypesMap={
+      Object {
+        ".doc": "application/msword",
+        ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        ".odm": "application/vnd.oasis.opendocument.text-master",
+        ".odt": "application/vnd.oasis.opendocument.text",
+        ".oth": "application/vnd.oasis.opendocument.text-web",
+        ".ott": "application/vnd.oasis.opendocument.text-template",
+        ".pdf": "application/pdf",
+        ".rtf": "application/rtf",
+        ".xls": "application/vnd.ms-excel",
+        ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       }
-      allowMultiple={true}
-      allowRevert={true}
-      component={[Function]}
-      id="documents"
-      name="documents"
-      onFileLoad={[Function]}
-      onRemoveFile={[Function]}
-      uploadUrl="/securities/462562457/reclamation-invoices/documents"
-    />
-  </FormItem>
+    }
+    allowMultiple={true}
+    allowRevert={true}
+    component={[Function]}
+    id="documents"
+    name="documents"
+    onFileLoad={[Function]}
+    onRemoveFile={[Function]}
+    uploadUrl="/securities/462562457/reclamation-invoices/documents"
+  />
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile"
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile"
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      Save Reclamation Invoice
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonText="Save Reclamation Invoice"
+    />
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

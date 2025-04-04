@@ -1,11 +1,8 @@
 import React, { FC, useState } from "react";
-import { useParams, withRouter } from "react-router-dom";
-import { compose } from "redux";
-import { useDispatch, useSelector } from "react-redux";
-import { change, formValueSelector, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Form, Row } from "antd";
-import { IMineIncident } from "@mds/common";
+import { useParams } from "react-router-dom";
+import { change, getFormValues, isPristine } from "@mds/common/components/forms/form";
+import { Col, Row } from "antd";
+import { IMineIncident } from "@mds/common/interfaces";
 import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
 import {
   getDangerousOccurrenceSubparagraphOptions,
@@ -27,6 +24,9 @@ import IncidentFormInitialReport from "@/components/Forms/incidents/IncidentForm
 import IncidentFormUpdateIncidentStatus from "@/components/Forms/incidents/IncidentFormUpdateIncidentStatus";
 import IncidentFormMinistryFollowup from "@/components/Forms/incidents/IncidentFormMinistryFollowup";
 import { removeDocumentFromMineIncident } from "@mds/common/redux/actionCreators/incidentActionCreator";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 
 export const INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD = "initial_incident_documents";
 export const FINAL_REPORT_DOCUMENTS_FORM_FIELD = "final_report_documents";
@@ -40,7 +40,6 @@ export const formatDocumentRecords = (documents) =>
 interface IncidentFormProps {
   initialValues: IMineIncident;
   isEditMode: boolean;
-  isNewIncident: boolean;
   incident: IMineIncident;
   handlers: {
     handleSaveData: () => void;
@@ -48,7 +47,7 @@ interface IncidentFormProps {
   };
 }
 
-export const IncidentForm: FC<IncidentFormProps & InjectedFormProps> = (props) => {
+export const IncidentForm: FC<IncidentFormProps> = (props) => {
   const { mineIncidentGuid, mineGuid } = useParams<{
     mineGuid: string;
     mineIncidentGuid: string;
@@ -57,20 +56,19 @@ export const IncidentForm: FC<IncidentFormProps & InjectedFormProps> = (props) =
   const { isEditMode, handlers: parentHandlers } = props;
   const isNewIncident = Boolean(!mineIncidentGuid);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const incidentDeterminationOptions = useSelector(getDropdownIncidentDeterminationOptions);
-  const incidentStatusCodeHash = useSelector(getIncidentStatusCodeHash);
-  const dangerousOccurenceSubparagraphOptions = useSelector(
+  const incidentDeterminationOptions = useAppSelector(getDropdownIncidentDeterminationOptions);
+  const incidentStatusCodeHash = useAppSelector(getIncidentStatusCodeHash);
+  const dangerousOccurenceSubparagraphOptions = useAppSelector(
     getDangerousOccurrenceSubparagraphOptions
   );
-  const incidentFollowUpActionOptions = useSelector(getDropdownIncidentFollowupActionOptions);
-  const inspectorOptions = useSelector(getDropdownInspectors) || [];
-  const selector = formValueSelector(FORM.ADD_EDIT_INCIDENT);
-  const documents = useSelector((state) => selector(state, "documents")) || [];
-  const formValues = useSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state)) || {};
-  const dropdownIncidentStatusCodeOptions = useSelector(getDropdownIncidentStatusCodeOptions);
-  const isPristine = useSelector((state) => state.form[FORM.ADD_EDIT_INCIDENT]?.pristine);
+  const incidentFollowUpActionOptions = useAppSelector(getDropdownIncidentFollowupActionOptions);
+  const inspectorOptions = useAppSelector(getDropdownInspectors) || [];
+
+  const formValues = useAppSelector(getFormValues(FORM.ADD_EDIT_INCIDENT)) as Partial<IMineIncident>;
+  const dropdownIncidentStatusCodeOptions = useAppSelector(getDropdownIncidentStatusCodeOptions);
+  const pristine = useAppSelector(isPristine(FORM.ADD_EDIT_INCIDENT));
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
@@ -112,23 +110,23 @@ export const IncidentForm: FC<IncidentFormProps & InjectedFormProps> = (props) =
     return (
       <div className="right center-mobile violet">
         {isEditMode && (
-          <Button
-            id="mine-incident-submit"
-            className="full-mobile right"
-            type="primary"
-            htmlType="submit"
-            loading={props.submitting}
-            disabled={props.submitting}
-          >
-            {isNewIncident ? "Create Incident" : "Save Changes"}
-          </Button>
+          <RenderSubmitButton buttonProps={{ id: "mine-incident-submit" }} buttonText={isNewIncident ? "Create Incident" : "Save Changes"} />
         )}
       </div>
     );
   };
 
   return (
-    <Form layout="vertical" onFinish={props.handleSubmit(parentHandlers.handleSaveData)}>
+    <FormWrapper
+      name={FORM.ADD_EDIT_INCIDENT}
+      initialValues={props.initialValues}
+      reduxFormConfig={{
+        enableReinitialize: true,
+        touchOnBlur: true,
+        touchOnChange: true,
+        destroyOnUnmount: true,
+      }}
+      onSubmit={parentHandlers.handleSaveData}>
       <Col span={24}>
         <IncidentFormUpdateIncidentStatus
           incident={props.incident}
@@ -136,7 +134,7 @@ export const IncidentForm: FC<IncidentFormProps & InjectedFormProps> = (props) =
           incidentStatusCodeHash={incidentStatusCodeHash}
           isEditMode={isEditMode}
           formValues={formValues}
-          pristine={isPristine}
+          pristine={pristine}
         />
       </Col>
       <Row>
@@ -149,7 +147,7 @@ export const IncidentForm: FC<IncidentFormProps & InjectedFormProps> = (props) =
           />
           <br />
           <IncidentFormDocuments
-            documents={documents}
+            documents={formValues?.documents ?? []}
             isEditMode={isEditMode}
             onFileLoad={onFileLoad}
             onDeleteDocument={handleDeleteDocument}
@@ -165,7 +163,7 @@ export const IncidentForm: FC<IncidentFormProps & InjectedFormProps> = (props) =
           />
           <br />
           <IncidentFormInternalDocumentComments
-            documents={documents}
+            documents={formValues?.documents ?? []}
             incident={props.incident}
             isEditMode={isEditMode}
             onFileLoad={onFileLoad}
@@ -179,17 +177,8 @@ export const IncidentForm: FC<IncidentFormProps & InjectedFormProps> = (props) =
           {renderEditSaveControls()}
         </Col>
       </Row>
-    </Form>
+    </FormWrapper>
   );
 };
 
-export default compose(
-  withRouter,
-  reduxForm({
-    form: FORM.ADD_EDIT_INCIDENT,
-    enableReinitialize: true,
-    touchOnBlur: true,
-    touchOnChange: true,
-    destroyOnUnmount: true,
-  })
-)(IncidentForm);
+export default IncidentForm;

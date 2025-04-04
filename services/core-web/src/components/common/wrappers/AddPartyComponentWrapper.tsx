@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Radio, Divider } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Carousel } from "react-responsive-carousel";
@@ -13,6 +13,7 @@ import AddQuickPartyForm from "@/components/Forms/parties/AddQuickPartyForm";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import LinkButton from "../buttons/LinkButton";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const defaultAddPartyFormState = {
   showingAddPartyForm: false,
@@ -27,11 +28,11 @@ interface AddPartyComponentWrapperProps {
   initialValues?: any;
 }
 
-const AddPartyComponentWrapper: FC<AddPartyComponentWrapperProps> = ({ childProps, content }) => {
+const AddPartyComponentWrapper: FC<AddPartyComponentWrapperProps> = ({ childProps, content, initialValues }) => {
   const [isPerson, setIsPerson] = useState(true);
   const [addingParty, setAddingParty] = useState(false);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const addPartyFormState = useSelector(getAddPartyFormState);
   const provinceOptions = useSelector(getDropdownProvinceOptions);
 
@@ -110,6 +111,7 @@ const AddPartyComponentWrapper: FC<AddPartyComponentWrapperProps> = ({ childProp
           onSubmit={handlePartySubmit}
           isPerson={isPerson}
           provinceOptions={provinceOptions}
+          initialValues={initialValues}
         />
       </div>
     </div>
@@ -130,7 +132,7 @@ const AddPartyComponentWrapper: FC<AddPartyComponentWrapperProps> = ({ childProp
         <div style={addingParty ? { display: "none" } : {}}>
           {ChildComponent && (
             <div className="fade-in">
-              <ChildComponent closeModal={() => dispatch(closeModal())} {...childProps} />
+              <ChildComponent closeModal={() => dispatch(closeModal())} {...childProps} isModal />
             </div>
           )}
         </div>

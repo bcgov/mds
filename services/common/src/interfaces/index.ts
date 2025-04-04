@@ -12,6 +12,7 @@ export * from "./mineVerifiedStatus.interface";
 export * from "./mineWorkInformation.interface";
 export * from "./incidents/mineIncident.interface";
 export * from "./incidents/mineIncidentDocument.interface";
+export * from "./incidents/mineIncidentForm.interface";
 export * from "./mineTenureType.interface";
 export * from "./party";
 export * from "./tailingsStorageFacility";
@@ -40,7 +41,8 @@ export * from "./verifiableCredentials";
 export * from "./mineComplianceInfo.interface";
 export * from "./complianceOrder.interface";
 export * from "./variance";
-export * from "./emli_contact.interface";
+export * from "./ministryContact.interface";
 export * from "./mineStatus.interface";
 export * from "./mineCommodityOption.interface";
 export * from "./mineDisturbanceOption.interface";
+export * from "./mineSearch.interface"

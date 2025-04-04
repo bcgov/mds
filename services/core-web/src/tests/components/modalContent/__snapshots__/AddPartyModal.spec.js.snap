@@ -16,25 +16,9 @@ exports[`AddPartyModal renders properly 1`] = `
       />
     </Steps>
     <div>
-      <ReduxForm
-        destroyOnUnmount={false}
-        enableReinitialize={false}
-        forceUnregisterOnUnmount={false}
-        form="ADD_FULL_PARTY"
-        getFormState={[Function]}
+      <AddFullPartyForm
         isPerson={true}
-        keepDirtyOnReinitialize={false}
-        persistentSubmitErrors={false}
-        pure={true}
-        shouldAsyncValidate={[Function]}
-        shouldError={[Function]}
-        shouldValidate={[Function]}
-        shouldWarn={[Function]}
-        submitAsSideEffect={false}
         togglePartyChange={[Function]}
-        touchOnBlur={true}
-        touchOnChange={false}
-        updateUnregisteredFields={false}
       />
     </div>
     <div

@@ -13,11 +13,6 @@ import {
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { dateSorter, formatDateTimeTz, optionsFilterLabelAndValue } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
-import {
-  IMineIncident,
-  parseServerSideSearchOptions,
-  serverSidePaginationOptions,
-} from "@mds/common";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
@@ -27,6 +22,8 @@ import MineIncidentNotes from "@/components/mine/Incidents/MineIncidentNotes";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import * as router from "@/constants/routes";
 import { clearMineIncident, storeMineIncident } from "@mds/common/redux/actions/incidentActions";
+import { IMineIncident } from "@mds/common/interfaces";
+import { parseServerSideSearchOptions, serverSidePaginationOptions } from "@mds/common/constants/utils";
 
 const hideColumn = (condition) => (condition ? "column-hide" : "");
 
@@ -128,8 +125,8 @@ const MineIncidentTable: FC<MineIncidentTableProps> = (props) => {
         incident_types:
           incident.categories && incident.categories.length > 0
             ? incident.categories.map(
-                (type) => incidentCategoryCodeHash[type.mine_incident_category_code]
-              )
+              (type) => incidentCategoryCodeHash[type.mine_incident_category_code]
+            )
             : [],
         handleEditMineIncident,
         handleDeleteMineIncident,
@@ -256,12 +253,12 @@ const MineIncidentTable: FC<MineIncidentTableProps> = (props) => {
       ),
     },
     {
-      title: "EMLI Action",
+      title: "MCM Action",
       key: "followup_action",
       dataIndex: "followup_action",
       className: hideColumn(true),
       render: (action, record) => (
-        <div title="EMLI Action" className={hideColumn(true)}>
+        <div title="MCM Action" className={hideColumn(true)}>
           {action ? action.description : record.incident.followup_type_code}
         </div>
       ),

@@ -1,14 +1,7 @@
 import React, { FC } from "react";
 import { connect } from "react-redux";
-import {
-  Feature,
-  IPermit,
-  IPermitAmendment,
-  VC_CONNECTION_STATES,
-  VC_CRED_ISSUE_STATES,
-  isFeatureEnabled,
-} from "@mds/common";
-import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
+
+import { openModal } from "@mds/common/redux/actions/modalActions";
 import { truncateFilename } from "@common/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
@@ -23,6 +16,10 @@ import {
   renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import IssuePermitDigitalCredential from "@/components/modalContent/verifiableCredentials/IssuePermitDigitalCredential";
+import { IPermit } from "@mds/common/interfaces/permits/permit.interface";
+import { VC_CONNECTION_STATES, VC_CRED_ISSUE_STATES } from "@mds/common/constants/enums";
+import { Feature, isFeatureEnabled } from "@mds/common/utils/featureFlag";
+import { IPermitAmendment } from "@mds/common/interfaces";
 
 const draftAmendment = "DFT";
 

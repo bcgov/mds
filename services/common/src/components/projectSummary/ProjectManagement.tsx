@@ -1,27 +1,30 @@
 import React, { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Field, getFormValues } from "redux-form";
+import { Field, getFormValues } from "@mds/common/components/forms/form";
+import { Alert, Col, Row, Typography } from "antd";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock } from "@fortawesome/pro-regular-svg-icons";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import RenderSelect from "../forms/RenderSelect";
 import { FORM } from "@mds/common/constants/forms";
 import { getDropdownProjectSummaryStatusCodes } from "@mds/common/redux/selectors/staticContentSelectors";
-import { Alert, Col, Row, Typography } from "antd";
+
 import { getDropdownProjectLeads } from "@mds/common/redux/selectors/partiesSelectors";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   clearProjectSummaryMinistryComments,
   createProjectSummaryMinistryComment,
   fetchProjectSummaryMinistryComments,
 } from "@mds/common/redux/actionCreators/projectActionCreator";
 import { getProjectSummaryMinistryComments } from "@mds/common/redux/selectors/projectSelectors";
-import { faLock } from "@fortawesome/pro-regular-svg-icons";
+
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import MinistryCommentPanel from "@mds/common/components/comments/MinistryCommentPanel";
 import { requiredList } from "@mds/common/redux/utils/Validate";
-import { IGroupedDropdownList, IProjectSummaryMinistryComment } from "@mds/common/interfaces";
+import { IGroupedDropdownList, IProjectSummaryForm, IProjectSummaryMinistryComment } from "@mds/common/interfaces";
 import { Feature } from "@mds/common/utils";
-import { USER_ROLES } from "@mds/common/constants";
+import { USER_ROLES } from "@mds/common/constants/environment";
+import ProjectCallout from "../projects/ProjectCallout";
 
 const { Paragraph, Title } = Typography;
 
@@ -37,10 +40,11 @@ export const ProjectManagement: FC = () => {
 
   const projectSummaryStatusCodes = useSelector(getDropdownProjectSummaryStatusCodes);
   const ministryComments = useSelector(getProjectSummaryMinistryComments);
+  // @ts-ignore
   const projectLeads: IGroupedDropdownList = useSelector(getDropdownProjectLeads);
   const { status_code, project_summary_guid, project_lead_party_guid } = useSelector((state) =>
     getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state)
-  );
+  ) as IProjectSummaryForm;
 
   const isNewProject = !project_summary_guid;
   const isProjectLeadAssigned = Boolean(project_lead_party_guid);
@@ -67,12 +71,8 @@ export const ProjectManagement: FC = () => {
       {isFeatureEnabled(Feature.MAJOR_PROJECT_REFACTOR) ? (
         <div>
           <Typography.Title level={3}>Project Management</Typography.Title>
-          <Paragraph>
-            Need help with this feature? Here&apos;s the <a>guide</a> to help you learn more or get
-            step-by-step instructions.
-          </Paragraph>
           <Title level={3} className="color-primary">
-            EMLI Status
+            MCM Status
           </Title>
           <Title level={4}>Project Status</Title>
           <Paragraph>
@@ -89,12 +89,7 @@ export const ProjectManagement: FC = () => {
               data={projectSummaryStatusCodes}
             />
           )}
-          <Alert
-            message={projectSummaryStatusCodes.find((code) => code.value === status_code)?.label}
-            type="warning"
-            showIcon
-            className="margin-large--bottom"
-          />
+          <ProjectCallout status_code={status_code} />
           <Row gutter={8} justify="start" align="middle">
             <Col>
               <Title level={4}>Assigned Project Lead</Title>
@@ -112,10 +107,18 @@ export const ProjectManagement: FC = () => {
             component={RenderSelect}
             data={projectLeadData}
           />
+          {isProjectLeadAssigned && (
+            <Paragraph>
+              <b>Warning:</b> Unassigning the project lead will set the Project Description status to
+              'Submitted' in MineSpace. Ensure the status is correct before proceeding.
+            </Paragraph>
+          )}
           {!isNewProject && !isProjectLeadAssigned && (
             <Alert
-              message="This project does not have a Project Lead"
-              description={<p>Please assign a Project Lead to this project.</p>}
+              message="Assign a Project Lead"
+              description={<p>Assigning a Project Lead will set the Project Description status
+                to 'Assigned' in Core and 'Submitted' in MineSpace. Please ensure the project
+                is set at the correct status before continuing.</p>}
               type="warning"
               showIcon
             />
@@ -147,7 +150,6 @@ export const ProjectManagement: FC = () => {
                   renderEditor={true}
                   onSubmit={submitComment}
                   loading={false}
-                  maxLength={500}
                   comments={ministryComments?.map((comment: IProjectSummaryMinistryComment) => ({
                     key: comment.project_summary_ministry_comment_guid,
                     author: comment.update_user,

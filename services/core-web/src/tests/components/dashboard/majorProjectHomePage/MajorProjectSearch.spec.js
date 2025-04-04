@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
 import MajorProjectSearch from "@/components/dashboard/majorProjectHomePage/MajorProjectSearch";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { render } from "@testing-library/react";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -22,7 +23,11 @@ beforeEach(() => {
 
 describe("Major Project Search Component", () => {
   it("renders properly", () => {
-    const component = shallow(<MajorProjectSearch {...props} />);
-    expect(component).toMatchSnapshot();
+    const { container } = render(
+      <ReduxWrapper initialState={{}}>
+        <MajorProjectSearch {...props} />
+      </ReduxWrapper>
+    );
+    expect(container).toMatchSnapshot();
   });
 });

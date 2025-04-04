@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import moment from "moment";
 import { Row, Col, Typography } from "antd";
 import { formatDate } from "@common/utils/helpers";
@@ -10,9 +10,16 @@ import TableSummaryCard from "@/components/common/TableSummaryCard";
 import * as Strings from "@/constants/strings";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { IMine } from "@mds/common/interfaces/mine.interface";
+import {
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  ExclamationCircleOutlined,
+  FileTextOutlined,
+} from "@ant-design/icons";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 export const Inspections: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
   const mineComplianceInfo = useSelector(getMineComplianceInfo);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -49,7 +56,7 @@ export const Inspections: FC = () => {
               <TableSummaryCard
                 title="Inspections YTD"
                 content={mineComplianceInfo.year_to_date.num_inspections}
-                icon="check-circle"
+                Icon={CheckCircleOutlined}
                 type="success"
               />
             </Col>
@@ -57,7 +64,7 @@ export const Inspections: FC = () => {
               <TableSummaryCard
                 title="Responses Due"
                 content={mineComplianceInfo.num_open_orders}
-                icon="exclamation-circle"
+                Icon={ExclamationCircleOutlined}
                 type="warning"
               />
             </Col>
@@ -65,7 +72,7 @@ export const Inspections: FC = () => {
               <TableSummaryCard
                 title="Overdue Orders"
                 content={mineComplianceInfo.num_overdue_orders}
-                icon="clock-circle"
+                Icon={ClockCircleOutlined}
                 type="error"
               />
             </Col>
@@ -85,7 +92,7 @@ export const Inspections: FC = () => {
                     Strings.EMPTY_FIELD
                   )
                 }
-                icon="file-text"
+                Icon={FileTextOutlined}
                 type="info"
               />
             </Col>

@@ -7,9 +7,10 @@ import { openModal } from "@mds/common/redux/actions/modalActions";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
 import DigitalPermitsTable from "@/components/dashboard/mine/permits/DigitalPermitsTable";
-import { IExplosivesPermit, IMine, IPermit, VC_CONNECTION_STATES } from "@mds/common";
+import { IExplosivesPermit, IMine, IPermit } from "@mds/common/interfaces";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import modalConfig from "@/components/modalContent/config";
+import { VC_CONNECTION_STATES } from "@mds/common/constants/enums";
 
 interface DigitalPermitsProps {
   mine: IMine;
@@ -19,7 +20,7 @@ interface DigitalPermitsProps {
   fetchExplosivesPermits: ActionCreator<typeof fetchExplosivesPermits>;
   openModal: (payload) => any;
 }
-export const Permits: FC<DigitalPermitsProps> = ({
+export const DigitalPermits: FC<DigitalPermitsProps> = ({
   mine,
   permits,
   explosivesPermits,
@@ -166,4 +167,4 @@ const mapDispatchToProps = {
   openModal,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Permits);
+export default connect(mapStateToProps, mapDispatchToProps)(DigitalPermits);

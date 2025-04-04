@@ -1,5 +1,5 @@
 import React, { FC, useContext } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Row, Col, Typography, Button } from "antd";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
@@ -12,18 +12,21 @@ import { resetForm } from "@common/utils/helpers";
 import { storeTsf, clearTsf } from "@mds/common/redux/actions/tailingsActions";
 import { modalConfig } from "@/components/modalContent/config";
 import { EDIT_TAILINGS_STORAGE_FACILITY, ADD_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
-import * as FORM from "@/constants/forms";
+import { FORM } from "@mds/common/constants/forms";
 import TailingsTable from "./TailingsTable";
-import { Feature, IMine, USER_ROLES } from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
+import { IMine } from "@mds/common/interfaces/mine.interface";
+import { Feature } from "@mds/common/utils/featureFlag";
+import { USER_ROLES } from "@mds/common/constants/environment";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const { Paragraph, Title, Text } = Typography;
 
 export const Tailings: FC = () => {
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const { isFeatureEnabled } = useFeatureFlag();
   const tsfV2Enabled = isFeatureEnabled(Feature.TSF_V2);

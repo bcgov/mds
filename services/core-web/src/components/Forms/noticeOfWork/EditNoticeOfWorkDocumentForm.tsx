@@ -1,14 +1,13 @@
 import React, { useState, useEffect, FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Field, change, getFormValues } from "redux-form";
+import { Field, change, getFormValues } from "@mds/common/components/forms/form";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { required, maxLength } from "@common/utils/Validate";
+import { required, maxLength, requiredNewFiles } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { getDropdownNoticeOfWorkApplicationDocumentTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { NOTICE_OF_WORK_DOCUMENT } from "@mds/common/constants/API";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@/constants/fileTypes";
 import * as FORM from "@/constants/forms";
-import { IMineDocument } from "@mds/common";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
@@ -17,7 +16,7 @@ import RenderCheckbox from "@mds/common/components/forms/RenderCheckbox";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
-import { requiredNewFiles } from "@mds/common/redux/utils/Validate";
+import { IMineDocument, INoWDocument } from "@mds/common/interfaces";
 
 export interface EditNoticeOfWorkDocumentFormProps {
   onSubmit: (values) => void | Promise<void>;
@@ -39,7 +38,7 @@ const EditNoticeOfWorkDocumentForm: FC<EditNoticeOfWorkDocumentFormProps> = ({
   initialValues,
 }) => {
   const dispatch = useDispatch();
-  const formValues = useSelector(getFormValues(FORM.EDIT_NOTICE_OF_WORK_DOCUMENT_FORM)) ?? {};
+  const formValues = useSelector(getFormValues(FORM.EDIT_NOTICE_OF_WORK_DOCUMENT_FORM)) as INoWDocument ?? { is_final_package: false};
   const { is_final_package } = formValues;
   const dropdownNoticeOfWorkApplicationDocumentTypeOptions = useSelector(
     getDropdownNoticeOfWorkApplicationDocumentTypeOptions

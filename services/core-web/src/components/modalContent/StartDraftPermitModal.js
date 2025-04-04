@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Alert, Popconfirm, Button, Steps, Radio, Row, Col } from "antd";
 import { SafetyCertificateOutlined, RocketOutlined } from "@ant-design/icons";
-import { getFormValues, submit } from "redux-form";
+import { getFormValues, submit } from "@mds/common/components/forms/form";
 import { isEmpty } from "lodash";
 import { bindActionCreators } from "redux";
 import Highlight from "react-highlighter";
@@ -18,7 +18,7 @@ import * as FORM from "@/constants/forms";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import PreDraftPermitForm from "@/components/Forms/permits/PreDraftPermitForm";
-import { validateIfApplicationTypeCorrespondsToPermitNumber } from "@common/utils/Validate";
+import { validateIfApplicationTypeCorrespondsToPermitNumber } from "@mds/common/redux/utils/Validate";
 
 const propTypes = {
   title: PropTypes.string,
@@ -97,7 +97,7 @@ export const StartDraftPermitModal = (props) => {
     if (
       props.preDraftFormValues.type_of_application !== props.noticeOfWork.type_of_application ||
       props.preDraftFormValues.notice_of_work_type_code !==
-        props.noticeOfWork.notice_of_work_type_code
+      props.noticeOfWork.notice_of_work_type_code
     ) {
       const payload = {
         ...props.noticeOfWork,
@@ -161,7 +161,7 @@ export const StartDraftPermitModal = (props) => {
       </p>
       <br />
       {!props.noticeOfWork.is_source_permit_generated_in_core &&
-      props.noticeOfWork.application_type_code === "ADA" ? (
+        props.noticeOfWork.application_type_code === "ADA" ? (
         <p className="center" />
       ) : (
         <p>

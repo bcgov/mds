@@ -1,8 +1,5 @@
-import {
-  ConsequenceClassificationStatusCodeEnum,
-  DamTypeEnum,
-  OperatingStatusEnum,
-} from "@mds/common/constants";
+import { IDiffEntry } from "@mds/common/components/history/DiffColumn.interface";
+import { ConsequenceClassificationStatusCodeEnum, DamTypeEnum, OperatingStatusEnum } from "@mds/common/constants/enums";
 
 export interface ICreateDam {
   consequence_classification: ConsequenceClassificationStatusCodeEnum;
@@ -22,4 +19,6 @@ export interface ICreateDam {
 export interface IDam extends ICreateDam {
   dam_guid: string;
   update_timestamp: string;
+  update_user: string;
+  history?: IDiffEntry[];
 }

@@ -11,7 +11,7 @@ const setupProps = () => {
   props.modalType = "decision-package";
   props.formValues = { uploadedFiles: [] };
   props.submitting = false;
-  props.handleSubmit = jest.fn();
+  props.onSubmit = jest.fn();
   props.change = jest.fn();
 };
 

@@ -14,7 +14,7 @@ describe("Mines Page", () => {
     cy.contains("Evergreen Cypress Mine").click();
     cy.get("div.sidebar-header div.primary-colour").should("have.text", "Evergreen Cypress Mine");
     cy.contains(
-      "This tab contains general information about your mine and important contacts at EMLI."
+      "This tab contains general information about your mine and important contacts at MCM."
     ).should("exist");
   });
 });

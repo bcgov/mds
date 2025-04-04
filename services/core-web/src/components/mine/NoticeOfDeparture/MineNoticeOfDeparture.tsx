@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import { ConnectedProps, connect } from "react-redux";
 import { Divider } from "antd";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import {
@@ -12,13 +12,14 @@ import { getMineGuid, getMines } from "@mds/common/redux/selectors/mineSelectors
 import { getNoticesOfDeparture } from "@mds/common/redux/selectors/noticeOfDepartureSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { useLocation } from "react-router-dom";
-import { IMine, INoticeOfDeparture, USER_ROLES } from "@mds/common";
+import { IMine, INoticeOfDeparture } from "@mds/common/interfaces";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import { MINE_NOTICES_OF_DEPARTURE } from "@/constants/routes";
 import MineNoticeOfDepartureTable from "./MineNoticeOfDepartureTable";
 import * as Permission from "@/constants/permissions";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
+import { USER_ROLES } from "@mds/common/constants/environment";
 
 interface IMineNoticeOfDepartureProps {
   mines: IMine[];
@@ -31,7 +32,7 @@ interface IMineNoticeOfDepartureProps {
   userRoles: string[];
 }
 
-export const MineNoticeOfDeparture: React.FC<IMineNoticeOfDepartureProps> = (props) => {
+export const MineNoticeOfDeparture: React.FC<IMineNoticeOfDepartureProps & PropsFromRedux> = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const { mines, mineGuid, nods } = props;
   const mine = mines[mineGuid];
@@ -56,18 +57,17 @@ export const MineNoticeOfDeparture: React.FC<IMineNoticeOfDepartureProps> = (pro
     if (event) {
       event.preventDefault();
     }
-    const detailedNoticeOfDeparture = await props.fetchDetailedNoticeOfDeparture(
+    await props.fetchDetailedNoticeOfDeparture(
       selectedNoticeOfDeparture.nod_guid
     );
+
     const title = props.userRoles.includes(USER_ROLES[Permission.EDIT_PERMITS])
       ? "Edit Notice of Departure"
       : "View Notice of Departure";
     props.openModal({
       props: {
-        noticeOfDeparture: detailedNoticeOfDeparture.data,
         title,
         clearOnSubmit: true,
-        mine,
       },
       width: "50vw",
       content: modalConfig.NOTICE_OF_DEPARTURE_MODAL,
@@ -137,4 +137,7 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(MineNoticeOfDeparture);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(MineNoticeOfDeparture);

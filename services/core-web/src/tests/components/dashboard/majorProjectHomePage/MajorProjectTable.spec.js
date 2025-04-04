@@ -1,7 +1,9 @@
 import React from "react";
-import { shallow } from "enzyme";
 import MajorProjectTable from "@/components/dashboard/majorProjectHomePage/MajorProjectTable";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { render } from "@testing-library/react";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { BrowserRouter } from "react-router-dom";
 
 const props = {};
 
@@ -19,7 +21,13 @@ beforeEach(() => {
 
 describe("MajorProjectTable", () => {
   it("renders properly", () => {
-    const component = shallow(<MajorProjectTable {...props} />);
-    expect(component).toMatchSnapshot();
+    const { container } = render(
+      <ReduxWrapper initialState={{}}>
+        <BrowserRouter>
+          <MajorProjectTable {...props} />
+        </BrowserRouter>
+      </ReduxWrapper>
+    );
+    expect(container).toMatchSnapshot();
   });
 });

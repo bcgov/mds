@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "antd";
 import NoticeOfDepartureDetails from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureDetails";
-import { INoticeOfDeparture } from "@mds/common";
+import { INoticeOfDeparture } from "@mds/common/interfaces";
 
 interface ViewNoticeOfDepartureModalProps {
   closeModal: () => void;

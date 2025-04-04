@@ -1,5 +1,5 @@
 import * as ActionTypes from "@mds/common/constants/actionTypes";
-import { SystemFlagEnum } from "../..";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 export const authenticateUser = (userInfo = {}) => ({
   type: ActionTypes.AUTHENTICATE_USER,

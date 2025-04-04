@@ -9,8 +9,9 @@ import Permits from "@/components/dashboard/mine/permits/Permits";
 import DigitalPermits from "@/components/dashboard/mine/permits/DigitalPermits";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
-import { Feature, IMine, IPermit, isFeatureEnabled } from "@mds/common";
+import { IMine, IPermit } from "@mds/common/interfaces";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
+import { Feature, isFeatureEnabled } from "@mds/common/utils/featureFlag";
 
 interface PermitTabContainerProps {
   permits: IPermit[];

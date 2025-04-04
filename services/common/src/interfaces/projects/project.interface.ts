@@ -5,7 +5,7 @@ import {
   IProjectDecisionPackage,
   IProjectLink,
   IProjectSummary,
-} from "@mds/common/index";
+} from "@mds/common/interfaces";
 
 export interface IProject {
   project_guid: string;

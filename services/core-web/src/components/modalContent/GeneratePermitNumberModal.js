@@ -4,11 +4,8 @@ import { Alert } from "antd";
 import GeneratePermitNumberForm from "@/components/Forms/permits/GeneratePermitNumberForm";
 
 const propTypes = {
-  closeModal: PropTypes.func.isRequired,
-  documentType: PropTypes.objectOf(PropTypes.any).isRequired,
   onSubmit: PropTypes.func.isRequired,
   signature: PropTypes.string.isRequired,
-  submitFailed: PropTypes.bool.isRequired,
   title: PropTypes.string,
 };
 
@@ -31,8 +28,6 @@ export const GeneratePermitNumberModal = (props) => {
         </>
       )}
       <GeneratePermitNumberForm
-        {...props}
-        showActions={false}
         onSubmit={props.onSubmit}
         disabled={!props.signature}
       />

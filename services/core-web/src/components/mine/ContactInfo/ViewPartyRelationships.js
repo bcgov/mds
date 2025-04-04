@@ -21,7 +21,7 @@ import {
 } from "@mds/common/redux/selectors/staticContentSelectors";
 
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { USER_ROLES } from "@mds/common";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
@@ -123,12 +123,6 @@ export class ViewPartyRelationships extends Component {
 
   openAddPartyRelationshipModal = ({
     value,
-    partyRelationships,
-    onSubmit,
-    handleChange,
-    onPartySubmit,
-    title,
-    mine,
   }) => {
     if (!this.props.partyRelationshipTypesList) return;
 
@@ -141,26 +135,23 @@ export class ViewPartyRelationships extends Component {
     }
 
     if (value.mine_party_appt_type_code === "EOR") {
-      if (mine.mine_tailings_storage_facilities.length === 0) {
+      if (this.props.mine.mine_tailings_storage_facilities.length === 0) {
         this.RoleConfirmation.current.click();
         return;
       }
     }
+
     this.props.openModal({
       props: {
-        onSubmit,
-        handleChange,
-        onPartySubmit,
-        title: `${title}: ${value.description}`,
-        partyRelationships,
-        partyRelationshipType: value,
-        mine,
+        onSubmit: this.onSubmitAddPartyRelationship,
+        title: `${ModalContent.ADD_CONTACT}: ${value.description}`,
+        mine_party_appt_type_code: value.mine_party_appt_type_code,
+        mine: this.props.mine,
         minePermits: this.props.permits,
         onFileLoad: this.onFileLoad,
         onRemoveFile: this.onRemoveFile,
       },
       content: modalConfig.ADD_PARTY_RELATIONSHIP,
-      clearOnSubmit: true,
     });
   };
 
@@ -179,11 +170,10 @@ export class ViewPartyRelationships extends Component {
       props: {
         onSubmit,
         handleChange,
-        title: `Update ${
-          this.props.partyRelationshipTypesList.find(
-            ({ value }) => value === partyRelationship.mine_party_appt_type_code
-          ).label
-        }: ${partyRelationship.party.name}`,
+        title: `Update ${this.props.partyRelationshipTypesList.find(
+          ({ value }) => value === partyRelationship.mine_party_appt_type_code
+        ).label
+          }: ${partyRelationship.party.name}`,
         partyRelationships: this.props.partyRelationships,
         partyRelationship: JSON.parse(JSON.stringify(partyRelationship)),
         partyRelationshipType: this.props.partyRelationshipTypes.find(
@@ -308,12 +298,6 @@ export class ViewPartyRelationships extends Component {
                   });
                   this.openAddPartyRelationshipModal({
                     value,
-                    partyRelationships: this.props.partyRelationships,
-                    onSubmit: this.onSubmitAddPartyRelationship,
-                    handleChange: this.props.handleChange,
-                    onPartySubmit: this.onPartySubmit,
-                    title: ModalContent.ADD_CONTACT,
-                    mine: this.props.mine,
                   });
                 }}
               >
@@ -422,24 +406,24 @@ export class ViewPartyRelationships extends Component {
   };
 
   confirmationProps = (selectedPartyRelationshipType) =>
-    ({
-      EOR: {
-        title:
-          "There are currently no tailings storage facilities for this mine. Would you like to create one?",
-        okText: "Yes",
-        cancelText: "No",
-        onConfirm: (event) =>
-          this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS),
-      },
-      PMT: {
-        title:
-          'Please add the permit or permit amendment under the "Permit" tab to change the permittee. Would you like to go there now?',
-        okText: "Ok",
-        cancelText: "Cancel",
-        onConfirm: () =>
-          this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(this.props.mine.mine_guid)),
-      },
-    }[selectedPartyRelationshipType]);
+  ({
+    EOR: {
+      title:
+        "There are currently no tailings storage facilities for this mine. Would you like to create one?",
+      okText: "Yes",
+      cancelText: "No",
+      onConfirm: (event) =>
+        this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS),
+    },
+    PMT: {
+      title:
+        'Please add the permit or permit amendment under the "Permit" tab to change the permittee. Would you like to go there now?',
+      okText: "Ok",
+      cancelText: "Cancel",
+      onConfirm: () =>
+        this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(this.props.mine.mine_guid)),
+    },
+  }[selectedPartyRelationshipType]);
 
   openTailingsModal(event, onSubmit, title) {
     event.preventDefault();

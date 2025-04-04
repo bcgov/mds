@@ -1,6 +1,5 @@
-import { NoDStatusDisplayEnum, NoDTypeSaveEnum, NodStatusSaveEnum } from "@mds/common/constants";
-import { IMine } from "@mds/common/interfaces/mine.interface";
-import { INoDPermit, INoDDocument } from "@mds/common/index";
+import { INoDPermit, INoDDocument, INoDContactInterface } from "@mds/common/interfaces";
+import { NoDStatusDisplayEnum, NodStatusSaveEnum, NoDTypeSaveEnum } from "@mds/common/constants/enums";
 
 export interface INoticeOfDeparture {
   nod_guid: string;
@@ -10,13 +9,14 @@ export interface INoticeOfDeparture {
   nod_type: NoDTypeSaveEnum;
   nod_status: NoDStatusDisplayEnum | NodStatusSaveEnum;
   create_timestamp: string;
-  mine: IMine;
+  mine: {
+    mine_guid: string;
+    mine_no: string;
+    mine_name: string;
+  };
   documents: INoDDocument[];
   permit: Partial<INoDPermit>;
   submission_timestamp: string;
   update_timestamp: string;
-  mine_manager_name: string;
-
-  // TODO: This needs a type.
-  nod_contacts?: any[];
+  nod_contacts?: INoDContactInterface[];
 }

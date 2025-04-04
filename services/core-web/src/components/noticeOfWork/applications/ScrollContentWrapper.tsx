@@ -4,11 +4,11 @@ import { includes, isEmpty } from "lodash";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Button, Popconfirm } from "antd";
-import { change, getFormValues } from "redux-form";
+import { change, getFormValues } from "@mds/common/components/forms/form";
 import { TRASHCAN } from "@/constants/assets";
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import { IimportedNOWApplication } from "@mds/common";
+import { IimportedNOWApplication } from "@mds/common/interfaces";
 
 import NullScreen from "@/components/common/NullScreen";
 

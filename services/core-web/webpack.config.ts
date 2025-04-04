@@ -21,6 +21,7 @@ const BUILD_DIR = process.env.BUILD_DIR || "build";
 const smp = new SpeedMeasurePlugin({
   disable: !process.env.MEASURE_SPEED,
 });
+const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const PATHS = {
   src: path.join(__dirname, "src"),
@@ -106,11 +107,6 @@ const commonConfig = merge([
       extensions: [".tsx", ".ts", ".js"],
       alias: {
         ...PATH_ALIASES,
-        ...(process.env.NODE_ENV === "development"
-          ? {
-            "react-dom": "@hot-loader/react-dom",
-          }
-          : {}),
         // Use lodash-es that supports proper tree-shaking
         lodash: "lodash-es",
       },
@@ -136,7 +132,7 @@ const commonConfig = merge([
 
 const devConfig = merge([
   {
-    plugins: [new ForkTsCheckerWebpackPlugin()],
+    plugins: [new ForkTsCheckerWebpackPlugin(), new ReactRefreshPlugin({ overlay: false })],
   },
   {
     output: {

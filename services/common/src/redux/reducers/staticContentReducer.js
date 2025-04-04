@@ -27,7 +27,6 @@ const initialState = {
   informationRequirementsTableDocumentTypes: [],
   majorMineApplicationStatusCodes: [],
   majorMineApplicationDocumentTypes: [],
-  mineReportDefinitionOptions: [],
   mineReportStatusOptions: [],
   mineReportCategoryOptions: [],
   partyRelationshipTypes: [],
@@ -56,7 +55,7 @@ const initialState = {
   explosivesPermitStatus: [],
   explosivesPermitDocumentType: [],
   explosivesPermitMagazineType: [],
-  EMLIContactTypes: [],
+  MinistryContactTypes: [],
   projectSummaryAuthorizationTypes: [],
   projectSummaryPermitTypes: [],
   projectDecisionPackageStatusCodes: [],
@@ -113,8 +112,6 @@ export const getMajorMinesApplicationStatusCodes = (state) =>
   state[STATIC_CONTENT].majorMineApplicationStatusCodes;
 export const getMajorMinesApplicationDocumentTypes = (state) =>
   state[STATIC_CONTENT].majorMineApplicationDocumentTypes;
-export const getMineReportDefinitionOptions = (state) =>
-  state[STATIC_CONTENT].mineReportDefinitionOptions;
 export const getMineReportStatusOptions = (state) => state[STATIC_CONTENT].mineReportStatusOptions;
 export const getMineReportCategoryOptions = (state) =>
   state[STATIC_CONTENT].mineReportCategoryOptions;
@@ -165,7 +162,7 @@ export const getExplosivesPermitDocumentType = (state) =>
 export const getExplosivesPermitStatus = (state) => state[STATIC_CONTENT].explosivesPermitStatus;
 export const getExplosivesPermitMagazineType = (state) =>
   state[STATIC_CONTENT].explosivesPermitMagazineType;
-export const getEMLIContactTypes = (state) => state[STATIC_CONTENT].EMLIContactTypes;
+export const getMinistryContactTypes = (state) => state[STATIC_CONTENT].MinistryContactTypes;
 export const getProjectSummaryAuthorizationTypes = (state) =>
   state[STATIC_CONTENT].projectSummaryAuthorizationTypes;
 export const getProjectSummaryPermitTypes = (state) =>

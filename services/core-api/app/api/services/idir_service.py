@@ -2,7 +2,7 @@ from ldap3 import Server, Connection, ObjectDef, Reader, ALL, NTLM
 from flask import current_app
 
 IDIR_URL = 'plywood.idir.bcgov'
-# TODO: Change this if and when they update it to match EMLI.
+# TODO: Change this if and when they update it to match MCM.
 DISTINGUISHED_NAMES = "OU=Users,OU=Energy Mines and Petroleum Resources,OU=BCGOV,DC=idir,DC=BCGOV"
 
 idir_field_map = {

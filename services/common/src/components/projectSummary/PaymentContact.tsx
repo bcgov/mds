@@ -1,6 +1,7 @@
+import React, { useEffect } from "react";
 import { Col, Row, Typography } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { Field, getFormValues, change } from "redux-form";
+import { Field, getFormValues, change } from "@mds/common/components/forms/form";
 
 import RenderField from "@mds/common/components/forms/RenderField";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -13,16 +14,17 @@ import {
   required,
   postalCodeWithCountry,
 } from "@mds/common/redux/utils/Validate";
-import React, { FC, useEffect } from "react";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
-import { FORM, CONTACTS_COUNTRY_OPTIONS } from "../..";
+import { IProjectSummaryForm } from "@mds/common/interfaces";
+import { FORM } from "@mds/common/constants/forms";
+import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants/strings";
 
 const { Title, Paragraph } = Typography;
 
 export const PaymentContact = ({ isDisabled }) => {
   const dispatch = useDispatch();
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const { payment_contact = {} } = formValues;
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
+  const { payment_contact } = formValues;
   const provinceOptions = useSelector(getDropdownProvinceOptions);
 
   useEffect(() => {
@@ -31,18 +33,21 @@ export const PaymentContact = ({ isDisabled }) => {
     }
     if (!payment_contact?.address) {
       dispatch(
-        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].address_line_1", null)
+        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].address_line_1", undefined)
       );
       dispatch(
-        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].address_type_code", null)
+        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].address_type_code", undefined)
       );
       dispatch(
-        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].sub_division_code", null)
+        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].sub_division_code", undefined)
       );
-      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].city", null));
-      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].post_code", null));
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].city", undefined));
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].post_code", undefined));
     }
-  }, [payment_contact.party_type_code, payment_contact.address]);
+  }, [payment_contact?.party_type_code, payment_contact?.address]);
+
+  const paymentContactAddress = payment_contact?.address || [];
+  const isMailingInternational = paymentContactAddress[0]?.address_type_code === "INT";
 
   return (
     <div style={{ paddingTop: 12 }}>
@@ -85,7 +90,7 @@ export const PaymentContact = ({ isDisabled }) => {
           />
         </Col>
         <Col md={4} sm={5}>
-          <Field name="payment_contact.phone_ext" label="Ext." component={RenderField} />
+          <Field name="payment_contact.phone_ext" label="Ext." component={RenderField} disabled={isDisabled} />
         </Col>
         <Col md={12} sm={24}>
           <Field
@@ -105,11 +110,14 @@ export const PaymentContact = ({ isDisabled }) => {
             disabled={isDisabled}
             name="payment_contact.address[0].address_line_1"
             label="Street"
+            required
+            validate={[required, maxLength(100)]}
             component={RenderField}
           />
         </Col>
         <Col md={5} sm={24}>
           <Field
+            validate={[maxLength(5)]}
             disabled={isDisabled}
             name="payment_contact.address[0].suite_no"
             label="Unit #"
@@ -123,6 +131,8 @@ export const PaymentContact = ({ isDisabled }) => {
             disabled={isDisabled}
             name="payment_contact.address[0].address_type_code"
             label="Country"
+            required
+            validate={[required]}
             data={CONTACTS_COUNTRY_OPTIONS}
             component={RenderSelect}
           />
@@ -132,6 +142,8 @@ export const PaymentContact = ({ isDisabled }) => {
             disabled={isDisabled}
             name="payment_contact.address[0].sub_division_code"
             label="Province"
+            required={!isMailingInternational}
+            validate={!isMailingInternational ? [required] : []}
             data={provinceOptions.filter(
               (p) => p.subType === payment_contact?.address?.[0]?.address_type_code
             )}
@@ -146,6 +158,8 @@ export const PaymentContact = ({ isDisabled }) => {
             disabled={isDisabled}
             name="payment_contact.address[0].city"
             label="City"
+            required
+            validate={[required]}
             component={RenderField}
           />
         </Col>
@@ -155,6 +169,7 @@ export const PaymentContact = ({ isDisabled }) => {
             name="payment_contact.address[0].post_code"
             label="Postal Code"
             component={RenderField}
+            required
             validate={[
               postalCodeWithCountry(payment_contact?.address?.[0]?.address_type_code),
               maxLength(10),

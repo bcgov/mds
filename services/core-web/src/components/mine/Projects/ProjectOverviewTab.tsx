@@ -13,7 +13,7 @@ import * as Strings from "@mds/common/constants/strings";
 import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import * as routes from "@/constants/routes";
 import ProjectStagesTable from "./ProjectStagesTable";
-import { Feature } from "@mds/common";
+import { Feature } from "@mds/common/utils/featureFlag";
 import ProjectLinks from "@mds/common/components/projectSummary/ProjectLinks";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
@@ -97,14 +97,14 @@ export const ProjectOverviewTab: FC = () => {
       ),
     },
     {
-      title: "Final Application",
+      title: "Application",
       key: `ps-${project.major_mine_application.major_mine_application_id}`,
       status: project.major_mine_application.status_code,
       statusHash: majorMineApplicationStatusCodeHash,
       link: (
         <Link
           data-cy="final-application-view-link"
-          to={routes.PROJECT_FINAL_APPLICATION.dynamicRoute(project_guid)}
+          to={routes.PROJECT_APPLICATION.dynamicRoute(project_guid)}
         >
           <Button className="full-mobile margin-small" disabled={!hasFinalAplication}>
             View
@@ -152,7 +152,7 @@ export const ProjectOverviewTab: FC = () => {
           let title;
 
           if (isProjectLeadContact) {
-            title = "EMLI Project Lead";
+            title = "MCM Project Lead";
           } else if (isPrimary) {
             title = "Primary Contact";
           } else if (hasJobTitle) {
@@ -239,6 +239,7 @@ export const ProjectOverviewTab: FC = () => {
         {shouldDisplayLinkedProjects && (
           <ProjectLinks
             tableOnly
+            fieldsDisabled={true}
             viewProject={(p) =>
               routes.EDIT_PROJECT_SUMMARY.dynamicRoute(p.project_guid, p.project_summary_guid)
             }

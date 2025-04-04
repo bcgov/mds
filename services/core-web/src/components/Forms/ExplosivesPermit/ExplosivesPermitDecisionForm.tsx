@@ -1,19 +1,17 @@
 import React, { FC, useState } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Field, getFormValues, isSubmitting, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Popconfirm, Row } from "antd";
-import { required } from "@common/utils/Validate";
+import { Field, getFormValues, isSubmitting } from "@mds/common/components/forms/form";
+import { Button, Col, Popconfirm, Row, Form } from "antd";
+import { required } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { getGenerateDocumentFormField } from "@/components/common/GenerateDocumentFormField";
-import { IExplosivesPermitDocumentType, IParty } from "@mds/common";
+import { IExplosivesPermitDocumentType, IParty } from "@mds/common/interfaces";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 interface ExplosivesPermitDecisionFormProps {
-  handleSubmit?: any;
   closeModal: any;
   previewDocument: any;
   inspectors: IParty[];
@@ -26,7 +24,8 @@ interface ExplosivesPermitDecisionFormProps {
 
 export const ExplosivesPermitDecisionForm: FC<ExplosivesPermitDecisionFormProps> = ({
   inspectors,
-  handleSubmit,
+  onSubmit,
+  initialValues,
   documentType,
   submitting,
   previewDocument,
@@ -37,38 +36,41 @@ export const ExplosivesPermitDecisionForm: FC<ExplosivesPermitDecisionFormProps>
   const [isPreviewingPermit, setIsPreviewingPermit] = useState(false);
 
   return (
-    <Form layout="vertical" onSubmit={handleSubmit}>
+    <FormWrapper
+      name={FORM.EXPLOSIVES_PERMIT_DECISION}
+      reduxFormConfig={{
+        touchOnBlur: true,
+        onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT_DECISION),
+      }}
+      initialValues={initialValues} onSubmit={onSubmit}>
       <Row gutter={48}>
         <Col span={24}>
-          <Form.Item>
-            <Field
-              id="issuing_inspector_party_guid"
-              name="issuing_inspector_party_guid"
-              label="Issuing Inspector*"
-              component={renderConfig.GROUPED_SELECT}
-              placeholder="Start typing the Issuing Inspector's name"
-              validate={[required]}
-              data={inspectors}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Field
-              id="issue_date"
-              name="issue_date"
-              label="Issue Date*"
-              component={renderConfig.DATE}
-              validate={[required]}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Field
-              id="expiry_date"
-              name="expiry_date"
-              label="Expiry Date*"
-              component={renderConfig.DATE}
-              validate={[required]}
-            />
-          </Form.Item>
+          <Field
+            id="issuing_inspector_party_guid"
+            name="issuing_inspector_party_guid"
+            label="Issuing Inspector"
+            component={renderConfig.GROUPED_SELECT}
+            placeholder="Start typing the Issuing Inspector's name"
+            required
+            validate={[required]}
+            data={inspectors}
+          />
+          <Field
+            id="issue_date"
+            name="issue_date"
+            label="Issue Date"
+            component={renderConfig.DATE}
+            required
+            validate={[required]}
+          />
+          <Field
+            id="expiry_date"
+            name="expiry_date"
+            label="Expiry Date"
+            component={renderConfig.DATE}
+            required
+            validate={[required]}
+          />
           {documentType.document_template.form_spec
             .filter((field) => !field["read-only"])
             .map((field) => (
@@ -116,7 +118,7 @@ export const ExplosivesPermitDecisionForm: FC<ExplosivesPermitDecisionFormProps>
           Issue Permit
         </Button>
       </div>
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -126,10 +128,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default compose(
-  connect(mapStateToProps),
-  reduxForm({
-    form: FORM.EXPLOSIVES_PERMIT_DECISION,
-    touchOnBlur: true,
-    onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT_DECISION),
-  })
+  connect(mapStateToProps)
 )(ExplosivesPermitDecisionForm as any) as FC<ExplosivesPermitDecisionFormProps>;

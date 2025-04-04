@@ -5,20 +5,9 @@ exports[`NewMinespaceUser renders properly 1`] = `
   <h3>
     Create Proponent
   </h3>
-  <ReduxForm
-    destroyOnUnmount={true}
-    enableReinitialize={false}
-    forceUnregisterOnUnmount={false}
-    form="ADD_MINESPACE_USER"
-    getFormState={[Function]}
+  <AddMinespaceUser
     handleChange={[Function]}
     handleSearch={[Function]}
-    initialValues={
-      Object {
-        "proponent_mine_access": Array [],
-      }
-    }
-    keepDirtyOnReinitialize={false}
     mines={
       Array [
         Object {
@@ -36,17 +25,6 @@ exports[`NewMinespaceUser renders properly 1`] = `
       ]
     }
     minespaceUserEmailHash={Object {}}
-    onSubmitSuccess={[Function]}
-    persistentSubmitErrors={false}
-    pure={true}
-    shouldAsyncValidate={[Function]}
-    shouldError={[Function]}
-    shouldValidate={[Function]}
-    shouldWarn={[Function]}
-    submitAsSideEffect={false}
-    touchOnBlur={false}
-    touchOnChange={false}
-    updateUnregisteredFields={false}
   />
 </div>
 `;

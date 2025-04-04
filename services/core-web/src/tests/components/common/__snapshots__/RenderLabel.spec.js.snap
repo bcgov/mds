@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RenderLabel renders properly 1`] = `
-<FormItem
-  hasFeedback={false}
->
+<InternalFormItem>
   <Row
     className="template-letter-content"
   >
@@ -37,5 +35,5 @@ exports[`RenderLabel renders properly 1`] = `
       />
     </Col>
   </Row>
-</FormItem>
+</InternalFormItem>
 `;

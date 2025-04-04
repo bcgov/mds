@@ -2,11 +2,14 @@
 
 exports[`AddFullPartyForm renders properly 1`] = `
 <div>
-  <Form
-    colon={true}
-    hideRequiredMark={false}
-    layout="horizontal"
+  <Connect(ReduxForm)
+    name="ADD_ROLES"
     onSubmit={[Function]}
+    reduxFormConfig={
+      Object {
+        "destroyOnUnmount": false,
+      }
+    }
   >
     <Collapse
       accordion={true}
@@ -29,6 +32,6 @@ exports[`AddFullPartyForm renders properly 1`] = `
       />
       Add Role
     </Button>
-  </Form>
+  </Connect(ReduxForm)>
 </div>
 `;

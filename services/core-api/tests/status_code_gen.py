@@ -5,10 +5,11 @@ from app.api.incidents.models.mine_incident_determination_type import MineIncide
 from app.api.incidents.models.mine_incident_status_code import MineIncidentStatusCode
 from app.api.incidents.models.mine_incident_document_type_code import MineIncidentDocumentTypeCode
 from app.api.mines.region.models.region import MineRegionCode
-from app.api.EMLI_contacts.models.EMLI_contact_type import EMLIContactType
+from app.api.ministry_contacts.models.ministry_contact_type import MinistryContactType
 from app.api.mines.permits.permit.models.permit_status_code import PermitStatusCode
 from app.api.mines.permits.permit_conditions.models.permit_condition_category import PermitConditionCategory
 from app.api.mines.permits.permit_conditions.models.permit_condition_type import PermitConditionType
+from app.api.mines.permits.permit_conditions.models.permit_condition_status_code import PermitConditionStatusCode
 from app.api.mines.mine.models.excemption_fee_status import ExemptionFeeStatus
 from app.api.securities.models.bond_status import BondStatus
 from app.api.securities.models.bond_type import BondType
@@ -42,10 +43,10 @@ def RandomMineRegionCode():
     return random.choice([x.mine_region_code for x in db.session.query(MineRegionCode).all()])
 
 
-def RandomEMLIContactTypeCode():
+def RandomMinistryContactTypeCode():
     return random.choice([
         x.emli_contact_type_code
-        for x in db.session.query(EMLIContactType).filter(EMLIContactType.active_ind == True).all()
+        for x in db.session.query(MinistryContactType).filter(MinistryContactType.active_ind == True).all()
     ])
 
 
@@ -75,6 +76,8 @@ def RandomConditionCategoryCode():
 def RandomConditionTypeCode():
     return random.choice([x.condition_type_code for x in PermitConditionType.get_all()])
 
+def RandomConditionStatusCode():
+    return random.choice([x.permit_condition_status_code for x in PermitConditionStatusCode.get_all()])
 
 def RandomTenureTypeCode():
     return random.choice(

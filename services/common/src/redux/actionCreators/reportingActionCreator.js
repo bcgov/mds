@@ -1,4 +1,4 @@
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { error } from "../actions/genericActions";
 import * as Strings from "@mds/common/constants/strings";
 import * as API from "@mds/common/constants/API";

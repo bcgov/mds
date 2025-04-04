@@ -307,7 +307,7 @@ exports[`DocumentUpload renders properly 1`] = `
           >
             <label
               class=""
-              for="ADD_EDIT_PROJECT_SUMMARY_fileUpload"
+              for="ADD_EDIT_PROJECT_SUMMARY_support_documents"
               title=""
             >
               <span>
@@ -354,6 +354,7 @@ exports[`DocumentUpload renders properly 1`] = `
                 >
                   <input
                     accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv,image/jpg,image/jpeg,image/png,image/jp2,image/tiff,image/heic,image/heif"
+                    id="support_documents"
                     multiple=""
                     name="file"
                     type="file"
@@ -366,7 +367,7 @@ exports[`DocumentUpload renders properly 1`] = `
             >
               <div
                 class="ant-form-item-explain ant-form-item-explain-connected"
-                id="ADD_EDIT_PROJECT_SUMMARY_fileUpload_help"
+                id="ADD_EDIT_PROJECT_SUMMARY_support_documents_help"
                 role="alert"
               >
                 <div

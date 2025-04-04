@@ -5,7 +5,17 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
+    path="/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/permit-amendment/:permitAmendmentGuid/:tab"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
     path="/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/:tab"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/permit-conditions/search"
   />
   <Route
     exact={true}
@@ -40,6 +50,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     path="/admin/dashboard"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    key="/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/permit-amendment/:permitAmendmentGuid/:tab"
+    path="/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/permit-amendment/:permitAmendmentGuid/:tab"
   />
   <Route
     component={[Function]}
@@ -91,7 +107,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(Connect(authenticationGuard))",
+        "displayName": "Connect(authenticationGuard)",
         "type": [Function],
       }
     }
@@ -218,15 +234,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/mine-dashboard/:id/mine-information/mms-archive"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(MinePermitInfo)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
     key="/mine-dashboard/:id/permits-and-approvals/permits"
     path="/mine-dashboard/:id/permits-and-approvals/permits"
@@ -334,14 +342,8 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
-    key="/pre-applications/:projectGuid/major-mine-application/:mmaGuid/:tab"
-    path="/pre-applications/:projectGuid/major-mine-application/:mmaGuid/:tab"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
-    key="/pre-applications/:projectGuid/final-app"
-    path="/pre-applications/:projectGuid/final-app"
+    key="/pre-applications/:projectGuid/app"
+    path="/pre-applications/:projectGuid/app"
   />
   <Route
     component={[Function]}
@@ -366,14 +368,20 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
-    key="/mine-dashboard/:id/permits-and-approvals/tailings"
-    path="/mine-dashboard/:id/permits-and-approvals/tailings"
+    key="/mine-dashboard/:mineGuid/permits-and-approvals/tailings"
+    path="/mine-dashboard/:mineGuid/permits-and-approvals/tailings"
   />
   <Route
     component={[Function]}
     exact={true}
-    key="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction"
-    path="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction"
+    key="/mine-dashboard/:mineGuid/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction"
+    path="/mine-dashboard/:mineGuid/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    key="/mine-dashboard/:mineGuid/permits-and-approvals/tailings/new/:tab"
+    path="/mine-dashboard/:mineGuid/permits-and-approvals/tailings/new/:tab"
   />
   <Route
     component={[Function]}
@@ -436,8 +444,8 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
-    key="/mine-dashboard/:id/reports/tailings-reports"
-    path="/mine-dashboard/:id/reports/tailings-reports"
+    key="/mine-dashboard/:mineGuid/reports/tailings-reports"
+    path="/mine-dashboard/:mineGuid/reports/tailings-reports"
   />
   <Route
     component={[Function]}
@@ -540,8 +548,8 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
-    key="/admin/minespace-emli-contact-management"
-    path="/admin/minespace-emli-contact-management"
+    key="/admin/minespace-ministry-contact-management"
+    path="/admin/minespace-ministry-contact-management"
   />
   <Route
     component={
@@ -586,18 +594,10 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/admin/contact-management/:tab"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(authorizationGuard)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
-    key="/admin/hsrc-management"
-    path="/admin/hsrc-management"
+    key="/admin/hsrc-management/:tab"
+    path="/admin/hsrc-management/:tab"
   />
   <Route
     component={
@@ -612,6 +612,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
     exact={true}
     key="/search"
     path="/search"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    key="/permit-conditions/search"
+    path="/permit-conditions/search"
   />
   <Route
     component={
@@ -642,15 +648,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/dashboard/notice-of-work/app/:id/:tab"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(MajorProjectHomePage)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
     key="/dashboard/reporting/major-project"
     path="/dashboard/reporting/major-project"
@@ -684,18 +682,10 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/dashboard/view-notice-of-work/app/:id/:tab"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(PermitConditionManagement)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
-    key="/:mine_guid/permit-amendment/:id/edit-permit-conditions"
-    path="/:mine_guid/permit-amendment/:id/edit-permit-conditions"
+    key="/:mine_guid/permits/:permit_guid/permit-amendment/:id/edit-permit-conditions"
+    path="/:mine_guid/permits/:permit_guid/permit-amendment/:id/edit-permit-conditions"
   />
   <Route
     component={[Function]}

@@ -11,6 +11,7 @@ STD_PERMIT_CONDITIONS_DATA = {
     'notice_of_work_type': NOTICE_OF_WORK_TYPE,
     'condition_category_code': 'HSC',
     "parent_permit_condition_id": None,
+    "top_level_parent_permit_condition_id": None,
     'condition_type_code': 'LIS',
     'condition': 'test',
     'display_order': 1}

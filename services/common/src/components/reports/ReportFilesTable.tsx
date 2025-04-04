@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import { IMineDocument } from "../..";
 import DocumentTable from "../documents/DocumentTable";
 import { MineDocument } from "@mds/common/models/documents/document";
+import { IMineDocument } from "@mds/common/interfaces/mineDocument.interface";
 
 interface ReportFilesTableProps {
   documents: IMineDocument[];

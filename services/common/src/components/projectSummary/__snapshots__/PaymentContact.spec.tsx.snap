@@ -58,7 +58,9 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="payment_contact.first_name"
                       class="ant-input"
+                      data-testid="payment_contact.first_name"
                       name="payment_contact.first_name"
                       type="text"
                       value=""
@@ -117,7 +119,9 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="payment_contact.party_name"
                       class="ant-input"
+                      data-testid="payment_contact.party_name"
                       name="payment_contact.party_name"
                       type="text"
                       value=""
@@ -181,7 +185,9 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="payment_contact.phone_no"
                       class="ant-input"
+                      data-testid="payment_contact.phone_no"
                       name="payment_contact.phone_no"
                       type="text"
                       value=""
@@ -244,7 +250,9 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="payment_contact.phone_ext"
                       class="ant-input"
+                      data-testid="payment_contact.phone_ext"
                       name="payment_contact.phone_ext"
                       type="text"
                       value=""
@@ -303,7 +311,9 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="payment_contact.email"
                       class="ant-input"
+                      data-testid="payment_contact.email"
                       name="payment_contact.email"
                       type="text"
                       value=""
@@ -351,18 +361,14 @@ exports[`PaymentContact Component should render the component with expected fiel
                 class="ant-col ant-form-item-label"
               >
                 <label
-                  class=""
+                  class="ant-form-item-required"
                   for="ADD_EDIT_PROJECT_SUMMARY_payment_contact.address[0].address_line_1"
                   title=""
                 >
-                  <div>
+                  <div
+                    style="width: 100%;"
+                  >
                     Street
-                     
-                    <span
-                      class="form-item-optional"
-                    >
-                       (optional)
-                    </span>
                   </div>
                 </label>
               </div>
@@ -376,7 +382,9 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="payment_contact.address[0].address_line_1"
                       class="ant-input"
+                      data-testid="payment_contact.address[0].address_line_1"
                       name="payment_contact.address[0].address_line_1"
                       type="text"
                       value=""
@@ -439,7 +447,9 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="payment_contact.address[0].suite_no"
                       class="ant-input"
+                      data-testid="payment_contact.address[0].suite_no"
                       name="payment_contact.address[0].suite_no"
                       type="text"
                       value=""
@@ -482,18 +492,14 @@ exports[`PaymentContact Component should render the component with expected fiel
                 class="ant-col ant-form-item-label"
               >
                 <label
-                  class=""
+                  class="ant-form-item-required"
                   for="ADD_EDIT_PROJECT_SUMMARY_payment_contact.address[0].address_type_code"
                   title=""
                 >
-                  <div>
+                  <div
+                    style="width: 100%;"
+                  >
                     Country
-                     
-                    <span
-                      class="form-item-optional"
-                    >
-                       (optional)
-                    </span>
                   </div>
                 </label>
               </div>
@@ -507,6 +513,7 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <div
+                      aria-required="true"
                       class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
                       data-cy="payment_contact.address[0].address_type_code"
                     >
@@ -522,6 +529,7 @@ exports[`PaymentContact Component should render the component with expected fiel
                             aria-controls="ADD_EDIT_PROJECT_SUMMARY_payment_contact.address[0].address_type_code_list"
                             aria-haspopup="listbox"
                             aria-owns="ADD_EDIT_PROJECT_SUMMARY_payment_contact.address[0].address_type_code_list"
+                            aria-required="true"
                             autocomplete="off"
                             class="ant-select-selection-search-input"
                             id="ADD_EDIT_PROJECT_SUMMARY_payment_contact.address[0].address_type_code"
@@ -596,18 +604,14 @@ exports[`PaymentContact Component should render the component with expected fiel
                 class="ant-col ant-form-item-label"
               >
                 <label
-                  class=""
+                  class="ant-form-item-required"
                   for="ADD_EDIT_PROJECT_SUMMARY_payment_contact.address[0].sub_division_code"
                   title=""
                 >
-                  <div>
+                  <div
+                    style="width: 100%;"
+                  >
                     Province
-                     
-                    <span
-                      class="form-item-optional"
-                    >
-                       (optional)
-                    </span>
                   </div>
                 </label>
               </div>
@@ -621,6 +625,7 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <div
+                      aria-required="true"
                       class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
                       data-cy="payment_contact.address[0].sub_division_code"
                     >
@@ -636,6 +641,7 @@ exports[`PaymentContact Component should render the component with expected fiel
                             aria-controls="ADD_EDIT_PROJECT_SUMMARY_payment_contact.address[0].sub_division_code_list"
                             aria-haspopup="listbox"
                             aria-owns="ADD_EDIT_PROJECT_SUMMARY_payment_contact.address[0].sub_division_code_list"
+                            aria-required="true"
                             autocomplete="off"
                             class="ant-select-selection-search-input"
                             id="ADD_EDIT_PROJECT_SUMMARY_payment_contact.address[0].sub_division_code"
@@ -715,18 +721,14 @@ exports[`PaymentContact Component should render the component with expected fiel
                 class="ant-col ant-form-item-label"
               >
                 <label
-                  class=""
+                  class="ant-form-item-required"
                   for="ADD_EDIT_PROJECT_SUMMARY_payment_contact.address[0].city"
                   title=""
                 >
-                  <div>
+                  <div
+                    style="width: 100%;"
+                  >
                     City
-                     
-                    <span
-                      class="form-item-optional"
-                    >
-                       (optional)
-                    </span>
                   </div>
                 </label>
               </div>
@@ -740,7 +742,9 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="payment_contact.address[0].city"
                       class="ant-input"
+                      data-testid="payment_contact.address[0].city"
                       name="payment_contact.address[0].city"
                       type="text"
                       value=""
@@ -778,18 +782,14 @@ exports[`PaymentContact Component should render the component with expected fiel
                 class="ant-col ant-form-item-label"
               >
                 <label
-                  class=""
+                  class="ant-form-item-required"
                   for="ADD_EDIT_PROJECT_SUMMARY_payment_contact.address[0].post_code"
                   title=""
                 >
-                  <div>
+                  <div
+                    style="width: 100%;"
+                  >
                     Postal Code
-                     
-                    <span
-                      class="form-item-optional"
-                    >
-                       (optional)
-                    </span>
                   </div>
                 </label>
               </div>
@@ -803,7 +803,9 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="payment_contact.address[0].post_code"
                       class="ant-input"
+                      data-testid="payment_contact.address[0].post_code"
                       name="payment_contact.address[0].post_code"
                       type="text"
                       value=""

@@ -204,7 +204,11 @@ class TractionService():
 
         post_resp = requests.post(
             traction_vc_di_add_proof, json=payload, headers=self.get_headers())
-        return post_resp.json()
+        if post_resp.ok:
+            return post_resp.json()
+        else:
+            raise VerificableCredentialWorkflowError(
+                f"Error while adding data integrity signature, {post_resp.text}")
 
     def fetch_a_random_did_key(self):
         get_resp = requests.get(

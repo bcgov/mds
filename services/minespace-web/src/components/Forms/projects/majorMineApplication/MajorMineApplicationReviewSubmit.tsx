@@ -4,8 +4,6 @@ import { Row, Col, Typography, Descriptions, Card, Input, Checkbox, Form } from 
 import * as Strings from "@mds/common/constants/strings";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
-import MajorMineApplicationCallout from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationCallout";
-import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "@/components/pages/Project/MajorMineApplicationPage";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
@@ -13,23 +11,23 @@ import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCom
 import { IProject } from "@mds/common/interfaces/projects/project.interface";
 import { useLocation } from "react-router-dom";
 import { getFormattedProjectApplication } from "@mds/common/redux/selectors/projectSelectors";
+import ProjectCallout from "@mds/common/components/projects/ProjectCallout";
+import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
+import SpatialDocumentTable from "@mds/common/components/documents/spatial/SpatialDocumentTable";
 
 const inputStyle = { width: "100%" };
 
 interface MajorMineApplicationReviewSubmitProps {
   project: IProject;
-  refreshData: () => Promise<void>;
-
   applicationSubmitted?: boolean;
   tabbedView?: boolean;
-
   confirmedSubmission?: boolean;
   toggleConfirmedSubmission?: () => void;
 }
 
 export const MajorMineApplicationReviewSubmit: FC<MajorMineApplicationReviewSubmitProps> = ({
   project,
-  refreshData,
   applicationSubmitted = false,
   tabbedView = false,
   confirmedSubmission = false,
@@ -40,18 +38,15 @@ export const MajorMineApplicationReviewSubmit: FC<MajorMineApplicationReviewSubm
   const routeApplicationSubmitted = routeState?.applicationSubmitted;
   const major_mine_application = useSelector(getFormattedProjectApplication);
 
-  const {
-    primary_contact,
-    primary_documents,
-    spatial_documents,
-    supporting_documents,
-  } = major_mine_application;
+  const { primary_contact, primary_documents, spatial_documents, supporting_documents } =
+    major_mine_application;
 
-  const isApplicationSubmitted =
-    applicationSubmitted ||
-    routeApplicationSubmitted ||
-    MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES.includes(major_mine_application?.status_code);
+  const docsDisabled = areDocumentFieldsDisabled(
+    SystemFlagEnum.ms,
+    major_mine_application?.status_code
+  );
 
+  const isApplicationSubmitted = applicationSubmitted || routeApplicationSubmitted || docsDisabled;
   const documentColumns = [documentNameColumn(), uploadDateColumn()];
 
   const columnStyleConfig = tabbedView ? { style: { maxWidth: "67%", margin: "0 auto" } } : {};
@@ -64,9 +59,7 @@ export const MajorMineApplicationReviewSubmit: FC<MajorMineApplicationReviewSubm
             <Typography.Title level={2}>Major Mines Application</Typography.Title>
           </Col>
           <Col span={24} {...columnStyleConfig}>
-            <MajorMineApplicationCallout
-              majorMineApplicationStatus={major_mine_application?.status_code}
-            />
+            <ProjectCallout status_code={major_mine_application?.status_code} />
           </Col>
         </Row>
       )}
@@ -109,30 +102,23 @@ export const MajorMineApplicationReviewSubmit: FC<MajorMineApplicationReviewSubm
         <Col span={24} {...columnStyleConfig}>
           <br />
           <Typography.Title level={3}>Application Files</Typography.Title>
-          <Typography.Title level={4}>Primary Document</Typography.Title>
           <DocumentTable
+            header={<Typography.Title level={4}>Primary Document</Typography.Title>}
             documents={primary_documents}
             documentParent="Major Mine Application"
-            canArchiveDocuments={true}
-            onArchivedDocuments={() => refreshData()}
+            canArchiveDocuments={false}
+            canReplaceDocuments={false}
             showVersionHistory={true}
             enableBulkActions={true}
           />
           <Typography.Title level={4}>Spatial Components</Typography.Title>
+          <SpatialDocumentTable documents={spatial_documents} />
           <DocumentTable
-            documents={spatial_documents}
-            documentParent="Major Mine Application"
-            canArchiveDocuments={false}
-            onArchivedDocuments={() => refreshData()}
-            showVersionHistory={true}
-            enableBulkActions={true}
-          />
-          <Typography.Title level={4}>Supporting Documents</Typography.Title>
-          <DocumentTable
+            header={<Typography.Title level={4}>Supporting Documents</Typography.Title>}
             documents={supporting_documents}
             documentParent="Major Mine Application"
-            canArchiveDocuments={true}
-            onArchivedDocuments={() => refreshData()}
+            canArchiveDocuments={false}
+            canReplaceDocuments={false}
             showVersionHistory={true}
             enableBulkActions={true}
           />

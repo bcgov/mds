@@ -1,8 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Field, change, getFormValues } from "redux-form";
+import { useSelector } from "react-redux";
+import { Field, change, getFormValues } from "@mds/common/components/forms/form";
 import { Col, Row, Typography, Alert } from "antd";
-import { FORM, isFieldDisabled } from "@mds/common/constants";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
@@ -26,13 +25,17 @@ import { getOrgBookCredential } from "@mds/common/redux/selectors/orgbookSelecto
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCircleX, faSpinner } from "@fortawesome/pro-light-svg-icons";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import { IProjectSummaryForm } from "@mds/common/interfaces";
+import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
+import { FORM } from "@mds/common/constants/forms";
+import { COLOR } from "@mds/common/constants/styles";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
-export const Agent: FC = () => {
-  const dispatch = useDispatch();
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const { agent = {}, is_agent = false } = formValues;
-  const { party_type_code, address = {}, credential_id } = agent ?? {};
+export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => {
+  const dispatch = useAppDispatch();
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
+  const { agent, is_agent = false } = formValues;
+  const { party_type_code, address, credential_id } = agent ?? {};
   const { address_type_code, sub_division_code } = address ?? {};
   const isInternational = address_type_code === "INT";
   // currently no endpoints, etc, for address_type_code
@@ -43,7 +46,6 @@ export const Agent: FC = () => {
   const [verified, setVerified] = useState(false);
   const [checkingStatus, setCheckingStatus] = useState(false);
   const [verifiedCredential, setVerifiedCredential] = useState(null);
-  const systemFlag = useSelector(getSystemFlag);
 
   useEffect(() => {
     setCheckingStatus(true);
@@ -125,7 +127,7 @@ export const Agent: FC = () => {
     if (!checkingStatus) {
       if (verified) {
         icon = faCircleCheck;
-        color = "#45A766";
+        color = COLOR.successGreen;
         text = "Verified on Orgbook BC";
       } else {
         icon = faCircleX;
@@ -168,7 +170,7 @@ export const Agent: FC = () => {
       </Typography.Paragraph>
       <Typography.Paragraph>
         <Alert
-          description="This section will not identify the Agent as defined under the Mines Act, unless the Ministry of Energy, Mines and Low Carbon Innovation is otherwise notified by the owner."
+          description="This section will not identify the Agent as defined under the Mines Act, unless the Ministry of Mining and Critical Minerals is otherwise notified by the owner."
           type="warning"
           showIcon
         />
@@ -180,7 +182,7 @@ export const Agent: FC = () => {
         validate={[requiredRadioButton]}
         label="Are you an agent applying on behalf of the applicant?"
         component={RenderRadioButtons}
-        disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+        disabled={fieldsDisabled}
       />
 
       {is_agent && (
@@ -196,7 +198,7 @@ export const Agent: FC = () => {
             ]}
             optionType="button"
             onChange={handleResetParty}
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            disabled={fieldsDisabled}
           />
           {party_type_code === "ORG" && (
             <div>
@@ -210,6 +212,7 @@ export const Agent: FC = () => {
                 data={orgBookOptions}
                 help={"as registered with the BC Registrar of Companies"}
                 component={RenderOrgBookSearch}
+                disabled={fieldsDisabled}
               />
               {verifiedCredential && (
                 <div className="table-summary-card">
@@ -236,7 +239,7 @@ export const Agent: FC = () => {
                     required
                     validate={[required, maxLength(25)]}
                     component={RenderField}
-                    disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                    disabled={fieldsDisabled}
                   />
                 </Col>
               </Row>
@@ -251,7 +254,7 @@ export const Agent: FC = () => {
                   component={RenderField}
                   required
                   validate={[required, maxLength(60)]}
-                  disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                  disabled={fieldsDisabled}
                 />
               </Col>
               <Col md={12} sm={24}>
@@ -261,7 +264,7 @@ export const Agent: FC = () => {
                   component={RenderField}
                   required
                   validate={[required, maxLength(60)]}
-                  disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                  disabled={fieldsDisabled}
                 />
               </Col>
             </Row>
@@ -274,7 +277,7 @@ export const Agent: FC = () => {
                 label="Agent's Title"
                 component={RenderField}
                 validate={[maxLength(100)]}
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
               />
             </Col>
           </Row>
@@ -292,7 +295,7 @@ export const Agent: FC = () => {
                 }
                 component={RenderField}
                 normalize={normalizePhone}
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
               />
             </Col>
             <Col md={4} sm={5}>
@@ -301,6 +304,7 @@ export const Agent: FC = () => {
                 validate={[maxLength(4)]}
                 label="Ext."
                 component={RenderField}
+                disabled={fieldsDisabled}
               />
             </Col>
             <Col md={12} sm={24}>
@@ -310,7 +314,7 @@ export const Agent: FC = () => {
                 required
                 validate={[required, email, maxLength(60)]}
                 component={RenderField}
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
               />
             </Col>
           </Row>
@@ -324,7 +328,7 @@ export const Agent: FC = () => {
                 required
                 validate={[required, maxLength(100)]}
                 component={RenderField}
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
               />
             </Col>
             <Col md={5} sm={24}>
@@ -333,7 +337,7 @@ export const Agent: FC = () => {
                 label="Unit #"
                 component={RenderField}
                 validate={[maxLength(5)]}
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
               />
             </Col>
           </Row>
@@ -347,7 +351,7 @@ export const Agent: FC = () => {
                 validate={[required]}
                 data={CONTACTS_COUNTRY_OPTIONS}
                 component={RenderSelect}
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
               />
             </Col>
 
@@ -359,7 +363,7 @@ export const Agent: FC = () => {
                 data={provinceOptions.filter((p) => p.subType === address_type_code)}
                 validate={!isInternational ? [required] : []}
                 component={RenderSelect}
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
               />
             </Col>
           </Row>
@@ -372,7 +376,7 @@ export const Agent: FC = () => {
                 required
                 validate={[required]}
                 component={RenderField}
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
               />
             </Col>
             <Col md={12} sm={24}>
@@ -381,7 +385,7 @@ export const Agent: FC = () => {
                 label="Postal Code"
                 component={RenderField}
                 validate={[postalCodeWithCountry(address_type_code), maxLength(10)]}
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
               />
             </Col>
           </Row>

@@ -121,6 +121,10 @@ exports[`PrivateRoutes  renders properly 1`] = `
     />
     <Route
       component={[Function]}
+      path="/mines/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/submit-success"
+    />
+    <Route
+      component={[Function]}
       path="/mines/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/:tab/:userAction"
     />
     <Route
@@ -150,6 +154,25 @@ exports[`PrivateRoutes  renders properly 1`] = `
     <Route
       component={[Function]}
       path="/mines/:mineGuid/reports/:reportGuid"
+    />
+    <Route
+      component={[Function]}
+      path="/mines/:id/redirect/permits/:permitGuid"
+    />
+    <Route
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": [Function],
+          "_ctor": [Function],
+          "_result": null,
+          "_status": -1,
+          "compare": null,
+          "displayName": "Connect(authenticationGuard)",
+          "type": [Function],
+        }
+      }
+      path="/mines/:id/permits/:permitGuid/permit-amendment/:permitAmendmentGuid/:tab"
     />
     <Route
       render={[Function]}

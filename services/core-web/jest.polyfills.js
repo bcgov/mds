@@ -9,12 +9,14 @@
  */
 
 const { TextDecoder, TextEncoder } = require("node:util");
-const { ReadableStream } = require("node:stream/web");
+const { ReadableStream, TransformStream, TextDecoderStream } = require("node:stream/web");
 
 Object.defineProperties(globalThis, {
   TextDecoder: { value: TextDecoder },
   TextEncoder: { value: TextEncoder },
   ReadableStream: { value: ReadableStream },
+  TransformStream: { value: TransformStream },
+  TextDecoderStream: { value: TextDecoderStream },
 });
 
 const { Blob, File } = require("node:buffer");

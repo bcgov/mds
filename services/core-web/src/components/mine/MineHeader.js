@@ -58,11 +58,11 @@ const propTypes = {
   governmentAgencyHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-const generateEmliInspectionMapperUrl = (lat, lng) => {
+const generateMinistryInspectionMapperUrl = (lat, lng) => {
   const formattedLat = parseFloat(lat);
   const formattedLng = parseFloat(lng);
   const coordinateString = encodeURIComponent(`${formattedLng},${formattedLat}`);
-  return `${String.EMLI_INSPECTION_MAPPER_BASE_URL}&center=${coordinateString}&level=10`;
+  return `${String.MINISTRY_INSPECTION_MAPPER_BASE_URL}&center=${coordinateString}&level=10`;
 };
 
 export class MineHeader extends Component {
@@ -169,11 +169,11 @@ export class MineHeader extends Component {
 
     const mapRoute = this.props.mine.mine_location
       ? route.MINE_HOME_PAGE.mapRoute({
-          lat: this.props.mine.mine_location.latitude,
-          long: this.props.mine.mine_location.longitude,
-          zoom: String.HIGH_ZOOM,
-          mineName: this.props.mine.mine_name,
-        })
+        lat: this.props.mine.mine_location.latitude,
+        long: this.props.mine.mine_location.longitude,
+        zoom: String.HIGH_ZOOM,
+        mineName: this.props.mine.mine_name,
+      })
       : route.MINE_HOME_PAGE.mapRoute();
 
     return (
@@ -239,8 +239,8 @@ export class MineHeader extends Component {
               <p>
                 {this.props.transformedMineTypes?.mine_tenure_type_code.length > 0
                   ? uniqBy(this.props.transformedMineTypes.mine_tenure_type_code)
-                      .map((tenure) => this.props.mineTenureHash[tenure])
-                      .join(", ")
+                    .map((tenure) => this.props.mineTenureHash[tenure])
+                    .join(", ")
                   : String.EMPTY_FIELD}
               </p>
             </div>
@@ -307,8 +307,8 @@ export class MineHeader extends Component {
                 <div>
                   {this.props.mine.exemption_fee_status_code
                     ? this.props.exemptionFeeStatusOptionsHash[
-                        this.props.mine.exemption_fee_status_code
-                      ]
+                    this.props.mine.exemption_fee_status_code
+                    ]
                     : String.EMPTY_FIELD}
                   {this.props.mine.exemption_fee_status_note && (
                     <CoreTooltip title={this.props.mine.exemption_fee_status_note} />
@@ -336,10 +336,10 @@ export class MineHeader extends Component {
           </div>
           {this.props.mine.mine_location?.latitude && this.props.mine.mine_location?.longitude && (
             <div className="inline-flex padding-sm wrap">
-              <div className="field-title">View on the EMLI Inspection Mapper</div>
+              <div className="field-title">View on the MCM Inspection Mapper</div>
               <div>
                 <a
-                  href={generateEmliInspectionMapperUrl(
+                  href={generateMinistryInspectionMapperUrl(
                     this.props.mine.mine_location?.latitude,
                     this.props.mine.mine_location?.longitude
                   )}

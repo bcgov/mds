@@ -5,7 +5,8 @@ import ClockCircleOutlined from "@ant-design/icons/ClockCircleOutlined";
 import CheckCircleOutlined from "@ant-design/icons/CheckCircleOutlined";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { issueVCDigitalCredForPermit } from "@mds/common/redux/actionCreators/verifiableCredentialActionCreator";
-import { IPermit, VC_CONNECTION_STATES, VC_CRED_ISSUE_STATES } from "@mds/common";
+import { IPermit } from "@mds/common/interfaces/permits/permit.interface";
+import { VC_CONNECTION_STATES, VC_CRED_ISSUE_STATES } from "@mds/common/constants/enums";
 
 interface IssuePermitDigitalCredentialProps {
   closeModal: () => void;

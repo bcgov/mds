@@ -3,7 +3,14 @@ import * as actionTypes from "@mds/common/constants/actionTypes";
 import { PARTIES } from "@mds/common/constants/reducerTypes";
 import { createItemMap, createItemIdsArray } from "../utils/helpers";
 import { RootState } from "@mds/common/redux/rootState";
-import { IParty, ItemMap, IPartyAppt, IPageData, IAddPartyFormState, IOption } from "@mds/common";
+import {
+  IParty,
+  ItemMap,
+  IPartyAppt,
+  IPageData,
+  IAddPartyFormState,
+  IOption,
+} from "@mds/common/interfaces";
 
 /**
  * @file partiesReducer.js
@@ -59,7 +66,7 @@ export const partiesReducer = (state = initialState, action) => {
         parties: createItemMap([action.payload], "party_guid"),
         partyIds: createItemIdsArray([action.payload], "party_guid"),
       };
-    case actionTypes.STORE_PARTY_RELATIONSHIPS:
+    case actionTypes.STORE_PARTY_RELATIONSHIPS: {
       const tsfGuid = action.mine_tailings_storage_facility_guid;
       const eors = action.payload
         .filter((p) => p.mine_party_appt_type_code === "EOR")
@@ -73,9 +80,9 @@ export const partiesReducer = (state = initialState, action) => {
             (p) => p.mine_party_appt_type_code === "EOR" && p.related_guid === tsfGuid
           )
         : [];
-      const qfpRecords = tsfGuid
+      const tqpRecords = tsfGuid
         ? action.payload.filter(
-            (p) => p.mine_party_appt_type_code === "QFP" && p.related_guid === tsfGuid
+            (p) => p.mine_party_appt_type_code === "TQP" && p.related_guid === tsfGuid
           )
         : [];
 
@@ -83,9 +90,10 @@ export const partiesReducer = (state = initialState, action) => {
         ...state,
         partyRelationships: action.payload,
         engineersOfRecord: tsfGuid ? eorRecords : state.engineersOfRecord,
-        qualifiedPersons: tsfGuid ? qfpRecords : state.qualifiedPersons,
+        qualifiedPersons: tsfGuid ? tqpRecords : state.qualifiedPersons,
         engineersOfRecordOptions: uniqBy(eors, "value"),
       };
+    }
     case actionTypes.STORE_ALL_PARTY_RELATIONSHIPS:
       return {
         ...state,

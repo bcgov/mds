@@ -1,0 +1,537 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PermitConditionSearch Integration Tests shows and applies filters 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-PERMIT_CONDITION_SEARCH form-edit"
+    id="PERMIT_CONDITION_SEARCH"
+  >
+    <section
+      class="ant-layout permit-search__layout"
+    >
+      <main
+        class="ant-layout-content permit-search__content"
+      >
+        <div
+          class="ant-row"
+          style="margin: -12px -8px -12px -8px; width: 100%;"
+        >
+          <div
+            class="ant-col ant-col-24"
+            style="padding: 12px 8px 12px 8px;"
+          >
+            <h1
+              class="ant-typography"
+              style="margin-bottom: 0px;"
+            >
+              Permit Condition Search
+            </h1>
+          </div>
+          <div
+            class="ant-col ant-col-24"
+            style="padding: 12px 8px 12px 8px;"
+          >
+            <div
+              class="ant-form-item"
+            >
+              <div
+                class="ant-row ant-form-item-row"
+              >
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
+                  >
+                    <div
+                      class="ant-form-item-control-input-content"
+                    >
+                      <span
+                        class="ant-input-group-wrapper ant-input-search ant-input-search-middle ant-input-search-with-button"
+                      >
+                        <span
+                          class="ant-input-wrapper ant-input-group"
+                        >
+                          <span
+                            class="ant-input-affix-wrapper"
+                          >
+                            <input
+                              class="ant-input"
+                              id="PERMIT_CONDITION_SEARCH_search"
+                              placeholder="Search permit conditions..."
+                              type="text"
+                              value="water quality"
+                            />
+                            <span
+                              class="ant-input-suffix"
+                            >
+                              <span
+                                class="ant-input-clear-icon"
+                                role="button"
+                                tabindex="-1"
+                              >
+                                <span
+                                  aria-label="close-circle"
+                                  class="anticon anticon-close-circle"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="close-circle"
+                                    fill="currentColor"
+                                    fill-rule="evenodd"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M512 64c247.4 0 448 200.6 448 448S759.4 960 512 960 64 759.4 64 512 264.6 64 512 64zm127.98 274.82h-.04l-.08.06L512 466.75 384.14 338.88c-.04-.05-.06-.06-.08-.06a.12.12 0 00-.07 0c-.03 0-.05.01-.09.05l-45.02 45.02a.2.2 0 00-.05.09.12.12 0 000 .07v.02a.27.27 0 00.06.06L466.75 512 338.88 639.86c-.05.04-.06.06-.06.08a.12.12 0 000 .07c0 .03.01.05.05.09l45.02 45.02a.2.2 0 00.09.05.12.12 0 00.07 0c.02 0 .04-.01.08-.05L512 557.25l127.86 127.87c.04.04.06.05.08.05a.12.12 0 00.07 0c.03 0 .05-.01.09-.05l45.02-45.02a.2.2 0 00.05-.09.12.12 0 000-.07v-.02a.27.27 0 00-.05-.06L557.25 512l127.87-127.86c.04-.04.05-.06.05-.08a.12.12 0 000-.07c0-.03-.01-.05-.05-.09l-45.02-45.02a.2.2 0 00-.09-.05.12.12 0 00-.07 0z"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </span>
+                          </span>
+                          <span
+                            class="ant-input-group-addon"
+                          >
+                            <button
+                              class="ant-btn ant-btn-primary ant-input-search-button"
+                              type="button"
+                            >
+                              <span
+                                aria-label="search"
+                                class="anticon anticon-search"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="search"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0011.6 0l43.6-43.5a8.2 8.2 0 000-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z"
+                                  />
+                                </svg>
+                              </span>
+                            </button>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-col ant-col-24"
+            style="padding: 12px 8px 12px 8px;"
+          >
+            <div
+              class="ant-row permit-search__results-container"
+              style="margin-left: -8px; margin-right: -8px;"
+            >
+              <div
+                class="ant-col ant-col-16"
+                style="padding-left: 8px; padding-right: 8px;"
+              >
+                <div
+                  class="ant-row"
+                  style="margin-top: -12px; margin-bottom: -12px;"
+                >
+                  <div
+                    class="ant-col ant-col-24"
+                    style="padding-top: 12px; padding-bottom: 12px;"
+                  >
+                    <div
+                      class="ant-row ant-row-space-between ant-row-middle permit-search__filter-section"
+                    >
+                      <div
+                        class="ant-col"
+                      >
+                        <span
+                          class="ant-typography ant-typography-secondary"
+                        >
+                          <span
+                            class="ant-typography ant-typography-secondary"
+                          >
+                            <strong>
+                              1
+                            </strong>
+                          </span>
+                           results
+                           for "
+                          <span
+                            class="ant-typography ant-typography-secondary"
+                          >
+                            <i>
+                              water quality
+                            </i>
+                          </span>
+                          "
+                        </span>
+                      </div>
+                      <div
+                        class="ant-col"
+                      >
+                        <button
+                          ant-click-animating-without-extra-node="true"
+                          class="ant-btn ant-btn-default"
+                          type="button"
+                        >
+                          <span
+                            aria-label="filter"
+                            class="anticon anticon-filter"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class=""
+                              data-icon="filter"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M880.1 154H143.9c-24.5 0-39.8 26.7-27.5 48L349 597.4V838c0 17.7 14.2 32 31.8 32h262.4c17.6 0 31.8-14.3 31.8-32V597.4L907.7 202c12.2-21.3-3.1-48-27.6-48zM603.4 798H420.6V642h182.9v156zm9.6-236.6l-9.5 16.6h-183l-9.5-16.6L212.7 226h598.6L613 561.4z"
+                              />
+                            </svg>
+                          </span>
+                          <span>
+                            Filters
+                          </span>
+                          <span
+                            class="ant-badge ant-badge-not-a-wrapper"
+                          >
+                            <sup
+                              class="ant-scroll-number ant-badge-count"
+                              data-show="true"
+                              style="background-color: rgb(24, 144, 255); margin-left: 8px; margin-right: -8px;"
+                              title="1"
+                            >
+                              <span
+                                class="ant-scroll-number-only"
+                                style="transition: none;"
+                              >
+                                <span
+                                  class="ant-scroll-number-only-unit current"
+                                >
+                                  1
+                                </span>
+                              </span>
+                            </sup>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="ant-row"
+                    >
+                      <div
+                        class="ant-col ant-col-24"
+                      >
+                        <div
+                          class="ant-col ant-col-24 permit-search__selected-filters"
+                        >
+                          <div
+                            class="ant-space ant-space-horizontal ant-space-align-center"
+                            style="flex-wrap: wrap; margin-bottom: -8px;"
+                          >
+                            <div
+                              class="ant-space-item"
+                              style="padding-bottom: 8px;"
+                            >
+                              <span
+                                class="ant-tag"
+                                data-testid="selected-filter-category-Environmental"
+                              >
+                                Category: Environmental
+                                <span
+                                  aria-label="close"
+                                  class="anticon anticon-close ant-tag-close-icon"
+                                  role="img"
+                                  tabindex="-1"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="close"
+                                    fill="currentColor"
+                                    fill-rule="evenodd"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M799.86 166.31c.02 0 .04.02.08.06l57.69 57.7c.04.03.05.05.06.08a.12.12 0 010 .06c0 .03-.02.05-.06.09L569.93 512l287.7 287.7c.04.04.05.06.06.09a.12.12 0 010 .07c0 .02-.02.04-.06.08l-57.7 57.69c-.03.04-.05.05-.07.06a.12.12 0 01-.07 0c-.03 0-.05-.02-.09-.06L512 569.93l-287.7 287.7c-.04.04-.06.05-.09.06a.12.12 0 01-.07 0c-.02 0-.04-.02-.08-.06l-57.69-57.7c-.04-.03-.05-.05-.06-.07a.12.12 0 010-.07c0-.03.02-.05.06-.09L454.07 512l-287.7-287.7c-.04-.04-.05-.06-.06-.09a.12.12 0 010-.07c0-.02.02-.04.06-.08l57.7-57.69c.03-.04.05-.05.07-.06a.12.12 0 01.07 0c.03 0 .05.02.09.06L512 454.07l287.7-287.7c.04-.04.06-.05.09-.06a.12.12 0 01.07 0z"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="ant-divider ant-divider-horizontal"
+                      role="separator"
+                      style="margin: 12px 0px 0px;"
+                    />
+                  </div>
+                  <div
+                    class="ant-col ant-col-24"
+                    style="padding-top: 12px; padding-bottom: 12px;"
+                  >
+                    <div
+                      class="ant-list ant-list-vertical ant-list-split permit-search__results-list"
+                      style="background: rgb(255, 255, 255); border-radius: 8px;"
+                    >
+                      <div
+                        class="ant-spin-nested-loading"
+                      >
+                        <div
+                          class="ant-spin-container"
+                        >
+                          <ul
+                            class="ant-list-items"
+                          >
+                            <div
+                              class="ant-row permit-search__result-item "
+                              id="condition-1"
+                            >
+                              <div
+                                class="ant-col ant-col-24"
+                              >
+                                <div
+                                  class="ant-row ant-row-space-between ant-row-top"
+                                >
+                                  <div
+                                    class="ant-col"
+                                  >
+                                    <div
+                                      data-testid="path-section"
+                                    />
+                                  </div>
+                                  <div
+                                    class="ant-col"
+                                  >
+                                    <button
+                                      class="ant-btn ant-btn-text ant-dropdown-trigger actions-ellipsis-button"
+                                      data-testid="condtions-action-button"
+                                      type="button"
+                                    >
+                                      <span
+                                        aria-label="ellipsis"
+                                        class="anticon anticon-ellipsis"
+                                        role="img"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          class=""
+                                          data-icon="ellipsis"
+                                          fill="currentColor"
+                                          focusable="false"
+                                          height="1em"
+                                          viewBox="64 64 896 896"
+                                          width="1em"
+                                        >
+                                          <path
+                                            d="M176 511a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0z"
+                                          />
+                                        </svg>
+                                      </span>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="ant-col ant-col-24"
+                                style="margin-bottom: 8px;"
+                              >
+                                <div
+                                  class="ant-row permit-search__context-container"
+                                  style="margin-top: -3px; margin-bottom: -3px;"
+                                >
+                                  <div
+                                    class="ant-col ant-col-24"
+                                    style="padding-top: 3px; padding-bottom: 3px;"
+                                  >
+                                    Water quality monitoring must be conducted monthly
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="ant-col ant-col-24"
+                              >
+                                <div
+                                  class="ant-row ant-row-space-between ant-row-middle"
+                                >
+                                  <div
+                                    class="ant-col"
+                                  >
+                                    <div
+                                      class="ant-row"
+                                      style="margin: -4px -4px -4px -4px;"
+                                    >
+                                      <div
+                                        class="ant-col"
+                                        style="padding: 4px 4px 4px 4px;"
+                                      >
+                                        <span
+                                          class="ant-tag ant-tag-blue"
+                                          style="cursor: pointer;"
+                                        >
+                                          Test Mine
+                                        </span>
+                                      </div>
+                                      <div
+                                        class="ant-col"
+                                        style="padding: 4px 4px 4px 4px;"
+                                      >
+                                        <span
+                                          class="ant-tag ant-tag-geekblue"
+                                          style="cursor: pointer;"
+                                        >
+                                          M-123
+                                        </span>
+                                      </div>
+                                      <div
+                                        class="ant-col"
+                                        style="padding: 4px 4px 4px 4px;"
+                                      >
+                                        <span
+                                          class="ant-tag ant-tag-purple"
+                                          style="cursor: pointer;"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div
+                                    class="ant-col"
+                                  >
+                                    <div
+                                      class="ant-row ant-row-middle"
+                                      style="margin-left: -8px; margin-right: -8px;"
+                                    >
+                                      <div
+                                        class="ant-col"
+                                        style="padding-left: 8px; padding-right: 8px;"
+                                      >
+                                        <span
+                                          class="ant-typography ant-typography-secondary permit-search__document-info"
+                                        >
+                                          <a
+                                            role="link"
+                                            tabindex="0"
+                                          />
+                                        </span>
+                                      </div>
+                                      <div
+                                        class="ant-col"
+                                        style="padding-left: 8px; padding-right: 8px;"
+                                      >
+                                        <span
+                                          class="ant-typography ant-typography-secondary permit-search__document-info"
+                                        >
+                                          Feb 7, 2025
+                                        </span>
+                                      </div>
+                                      <div
+                                        class="ant-col"
+                                        style="padding-left: 8px; padding-right: 8px;"
+                                      >
+                                        <span
+                                          class="ant-tag ant-tag-green"
+                                        >
+                                          -2
+                                          % match
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ant-col ant-col-8"
+                style="padding-left: 8px; padding-right: 8px;"
+              >
+                <div
+                  class="ant-card ant-card-bordered permit-search__ai-response "
+                >
+                  <div
+                    class="ant-card-head"
+                  >
+                    <div
+                      class="ant-card-head-wrapper"
+                    >
+                      <div
+                        class="ant-card-head-title"
+                      >
+                        AI-Generated Response
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="ant-card-body"
+                  >
+                    <svg
+                      aria-labelledby="svg-inline--fa-title-expand-button"
+                      class="svg-inline--fa fa-expand expand-button"
+                      data-icon="expand"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 448 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <title
+                        id="svg-inline--fa-title-expand-button"
+                      >
+                        Expand
+                      </title>
+                      <path
+                        d="M32 32C14.3 32 0 46.3 0 64v96c0 17.7 14.3 32 32 32s32-14.3 32-32V96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H32zM64 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7 14.3 32 32 32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H64V352zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32h64v64c0 17.7 14.3 32 32 32s32-14.3 32-32V64c0-17.7-14.3-32-32-32H320zM448 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64H320c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c17.7 0 32-14.3 32-32V352z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    <div
+                      class="permit-search__markdown"
+                      role="none"
+                    >
+                      <div
+                        data-testid="markdown-content"
+                      >
+                        <div
+                          data-testid="markdown-content"
+                        >
+                          The permit requires monthly water quality monitoring.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </section>
+  </form>
+</div>
+`;

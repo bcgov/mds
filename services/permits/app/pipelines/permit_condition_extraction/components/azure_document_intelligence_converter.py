@@ -1,0 +1,150 @@
+import hashlib
+import json
+import logging
+import os
+import pickle
+import shutil
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+from app.common.types.context import context
+from azure.ai.documentintelligence import DocumentIntelligenceClient
+from azure.ai.documentintelligence.models import AnalyzeResult
+from azure.core.credentials import AzureKeyCredential
+from haystack import Document, component, logging
+
+logger = logging.getLogger(__name__)
+
+DEBUG_MODE = os.environ.get("DEBUG_MODE", "false").lower() == "true"
+
+
+@component
+class AzureDocumentIntelligenceConverter:
+    def __init__(self, endpoint: str, api_key: str, api_version: str):
+        self.endpoint = endpoint
+        self.api_key = api_key
+        self.api_version = api_version
+
+    """
+    Converts a PDF file to text format using Azure Document Intelligence.
+
+    Args:
+        file_path (Path): The path to the PDF file.
+        meta (Optional[Dict[str, Any]]): Additional metadata for the converted documents.
+        id_hash_keys (Optional[List[str]]): List of hash keys for identifying the converted documents.
+
+    Returns:
+        List[Document]: The converted documents in text format.
+    """
+
+    @component.output_types(documents=List[Document])
+    def run(
+        self,
+        file_path: Path,
+        meta: Optional[Dict[str, Any]] = None,
+        id_hash_keys: Optional[List[str]] = None,
+    ):
+        context.get().update_state(
+            state="PROGRESS", meta={"stage": "pdf_to_text_converter"}
+        )
+
+        if DEBUG_MODE:
+            shutil.rmtree("debug", ignore_errors=True)
+            os.makedirs("debug")
+
+        cache_key = hashlib.md5(open(file_path, "rb").read()).hexdigest()
+
+        result = None
+
+        if DEBUG_MODE:
+            result = self.retrieve_cached_result(cache_key)
+
+        if not result:
+            result = self.run_document_intelligence(file_path)
+
+        if DEBUG_MODE:
+            self.write_to_cache(cache_key, result)
+
+        docs = []
+
+        for idx, p in enumerate(result.paragraphs or []):
+            doc = self.add_metadata_to_document(idx, p)
+
+            docs.append(doc)
+
+        return {
+            "documents": docs,
+        }
+
+    def add_metadata_to_document(self, idx, p):
+        # Generate a unique ID for the paragraph that can be used to identify it later
+        fle = hashlib.md5(p.content.encode())
+        fle.update(str(idx).encode())
+        paragraph_id = fle.hexdigest()[:7]
+
+        # Transform bounding box coordinates from a polygon to a rectangle,
+        # and add it to the documents metadata
+        [x1, y1, x2, y2, x3, y3, x4, y4] = p.bounding_regions[0].polygon
+        x = [x1, x2, x3, x4]
+        y = [y1, y2, y3, y4]
+
+        top, right, bottom, left = min(y), max(x), max(y), min(x)
+
+        content = {
+            "id": paragraph_id,
+            "text": p.content,
+            "role": p.role,
+            "sort_key": idx + 1,
+        }
+        # Add a bounding_box metadata field to the paragraph
+        meta = {
+            "bounding_box": {
+                "top": top,
+                "right": right,
+                "bottom": bottom,
+                "left": left,
+            },
+            "role": p.role,
+            "page": p.bounding_regions[0].page_number,
+        }
+
+        return Document(
+            content=json.dumps(content, indent=None), meta=meta, id=paragraph_id
+        )
+
+    def run_document_intelligence(self, file_path):
+
+        assert self.endpoint, "endpoint is not set"
+        assert self.api_key, "api_key is not set"
+
+        document_intelligence_client = DocumentIntelligenceClient(
+            endpoint=self.endpoint,
+            credential=AzureKeyCredential(self.api_key),
+            api_version=self.api_version,
+        )
+
+        with open(file_path, "rb") as f:
+            poller = document_intelligence_client.begin_analyze_document(
+                "prebuilt-layout", body=f
+            )
+
+        result: AnalyzeResult = poller.result()
+        return result
+
+    def write_to_cache(self, cache_key, result):
+        with open(f"app/cache/{cache_key}.pickle", "wb") as f:
+            pickle.dump(result, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+        with open("debug/azure_document_intelligence_result.json", "w") as f:
+            dp = [d.as_dict() for d in result.paragraphs]
+            json.dump(dp, f, indent=4)
+
+    def retrieve_cached_result(self, cache_key):
+        try:
+            with open(f"app/cache/{cache_key}.pickle", "rb") as f:
+                result = pickle.load(f)
+                logger.info("cache entry found")
+        except Exception:
+            logger.info("No cache entry found. Quering Azure Document Intelligence")
+            result = None
+        return result

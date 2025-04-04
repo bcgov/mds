@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getFormValues, isDirty, submit } from "redux-form";
+import { getFormValues, isDirty, submit } from "@mds/common/components/forms/form";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { Button, Row, Col, Popconfirm, Steps, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
@@ -15,15 +15,16 @@ import { FORM } from "@mds/common/constants/forms";
 import MajorMineApplicationForm from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationForm";
 import { MajorMineApplicationGetStarted } from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationGetStarted";
 import MajorMineApplicationReviewSubmit from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationReviewSubmit";
-import MajorMineApplicationCallout from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationCallout";
 import * as routes from "@/constants/routes";
 import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
 import Loading from "@mds/common/components/common/Loading";
 
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { getFormattedProjectApplication } from "@mds/common/redux/selectors/projectSelectors";
-
-export const MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES = ["SUB", "UNR", "APV"];
+import ProjectCallout from "@mds/common/components/projects/ProjectCallout";
+import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
+import { IMajorMinesApplication } from "@mds/common/interfaces/projects/majorMinesApplication.interface";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 export const MajorMineApplicationPage: FC = () => {
   const history = useHistory();
@@ -31,12 +32,21 @@ export const MajorMineApplicationPage: FC = () => {
   const { projectGuid } = useParams<{ projectGuid: string }>();
   const project = useSelector(getProject);
   const majorMineApplication = useSelector(getFormattedProjectApplication);
-  const formValues = useSelector(getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION));
+  const formValues = useSelector(
+    getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION)
+  ) as IMajorMinesApplication;
   const isFormDirty = useSelector(isDirty(FORM.ADD_MINE_MAJOR_APPLICATION));
 
   const { state: routeState } = useLocation<{ current: number }>();
   const defaultCurrent = routeState?.current ?? 0;
   const [current, setCurrent] = useState(defaultCurrent);
+
+  useEffect(() => {
+    if (defaultCurrent !== current) {
+      // Make sure the current step is updated if the rootState changes
+      setCurrent(defaultCurrent);
+    }
+  }, [defaultCurrent]);
 
   const [loaded, setLoaded] = useState(false);
   const [confirmedSubmission, setConfirmedSubmission] = useState(false);
@@ -47,15 +57,14 @@ export const MajorMineApplicationPage: FC = () => {
   const title = `Major Mine Application - ${mineName}`;
 
   const applicationStatus = majorMineApplication?.status_code;
-  const applicationSubmitted = MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES.includes(
-    applicationStatus
-  );
+  const docsDisabled = areDocumentFieldsDisabled(SystemFlagEnum.ms, applicationStatus);
 
   const toggleConfirmedSubmission = () => setConfirmedSubmission(!confirmedSubmission);
 
   const handleFetchData = async () => {
     setLoaded(false);
-    const proj = await dispatch(fetchProjectById(projectGuid));
+    // @ts-ignore
+    const proj: IProject = await dispatch(fetchProjectById(projectGuid));
     const mmaGuid = proj?.major_mine_application?.major_mine_application_guid;
 
     if (mmaGuid) {
@@ -79,6 +88,7 @@ export const MajorMineApplicationPage: FC = () => {
 
   const handleCreateMajorMineApplication = (values, isDraft) => {
     const message = isDraft ? "Successfully create a draft major mine application." : null;
+    // @ts-ignore
     return dispatch(createMajorMineApplication({ projectGuid }, values, message)).then(
       (response) => {
         return response?.data;
@@ -86,7 +96,7 @@ export const MajorMineApplicationPage: FC = () => {
     );
   };
 
-  const handleUpdateMajorMineApplication = (values, isDraft) => {
+  const handleUpdateMajorMineApplication = async (values, isDraft) => {
     const { project_guid, major_mine_application_guid } = values;
 
     let message = null;
@@ -95,13 +105,14 @@ export const MajorMineApplicationPage: FC = () => {
     } else if (current === 2) {
       message = "Successfully submitted a new major mine application";
     }
-    return dispatch(
+    await dispatch(
       updateMajorMineApplication(
         { projectGuid: project_guid, majorMineApplicationGuid: major_mine_application_guid },
         values,
         message
       )
-    ).then(() => handleFetchData());
+    );
+    handleFetchData();
   };
 
   const handleSaveData = async (values, isDraft) => {
@@ -127,7 +138,7 @@ export const MajorMineApplicationPage: FC = () => {
 
   const handleSubmit = async (values) => {
     const isReviewPage = current === 2;
-    const status_code = isReviewPage ? "SUB" : values?.status_code ?? "DFT";
+    const status_code = isReviewPage ? "SUB" : (values?.status_code ?? "DFT");
     const payload = transformPayload(values, status_code);
     const response = await handleSaveData(payload, false);
     const mmaGuid =
@@ -183,7 +194,7 @@ export const MajorMineApplicationPage: FC = () => {
       content: <MajorMineApplicationForm refreshData={handleFetchData} project={project} />,
       buttons: [
         <React.Fragment key="step-2-buttons">
-          {isFormDirty && (
+          {isFormDirty && project?.major_mine_application?.status_code === "DFT" && (
             <Button type="link" style={{ marginRight: "15px" }} onClick={handleSaveDraft}>
               Save Draft
             </Button>
@@ -201,7 +212,7 @@ export const MajorMineApplicationPage: FC = () => {
             id="step2-next"
             type="primary"
             htmlType="submit"
-            disabled={formValues?.primary_documents?.length === 0 || !isFormDirty}
+            disabled={formValues?.primary_documents?.length === 0}
           >
             Review & Submit
           </Button>
@@ -215,7 +226,6 @@ export const MajorMineApplicationPage: FC = () => {
           toggleConfirmedSubmission={toggleConfirmedSubmission}
           confirmedSubmission={confirmedSubmission}
           project={project}
-          refreshData={handleFetchData}
         />
       ),
       buttons: [
@@ -291,7 +301,7 @@ export const MajorMineApplicationPage: FC = () => {
           <Typography.Title level={2}>Create New Major Mine Application</Typography.Title>
         </Col>
         <Col span={9}>
-          {!applicationSubmitted && (
+          {!docsDisabled && (
             <div style={{ display: "inline", float: "right" }}>
               <p>{stepItems[current].buttons}</p>
             </div>
@@ -309,14 +319,12 @@ export const MajorMineApplicationPage: FC = () => {
       <Row>
         <Col span={24}>
           {current !== 0 && (
-            <MajorMineApplicationCallout
-              majorMineApplicationStatus={project?.major_mine_application?.status_code}
-            />
+            <ProjectCallout status_code={project?.major_mine_application?.status_code} />
           )}
           <div>{stepItems[current].content}</div>
         </Col>
       </Row>
-      {!applicationSubmitted && (
+      {!docsDisabled && (
         <Row>
           <Col span={24}>
             <div style={{ display: "inline", float: "right" }}>

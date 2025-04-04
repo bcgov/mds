@@ -1,10 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ChangeNOWLocationForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  isModal={true}
+  name="CHANGE_NOW_LOCATION"
   onSubmit={[Function]}
 >
   <EditNOWMineAndLocation
@@ -19,32 +18,16 @@ exports[`ChangeNOWLocationForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile"
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
+    <RenderCancelButton />
     <Connect(AuthorizationWrapper)
       permission="role_edit_permits"
     >
-      <Button
-        className="full-mobile"
+      <RenderSubmitButton
+        buttonText="mockTitle"
+        disableOnClean={false}
         disabled={false}
-        htmlType="submit"
-        type="primary"
-      >
-        mockTitle
-      </Button>
+      />
     </Connect(AuthorizationWrapper)>
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

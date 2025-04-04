@@ -4,7 +4,7 @@ import ProjectLinks from "./ProjectLinks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { PROJECTS } from "@mds/common/constants/reducerTypes";
 import FormWrapper from "../forms/FormWrapper";
-import { FORM } from "../..";
+import { FORM } from "@mds/common/constants/forms";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const initialState = {
@@ -21,10 +21,10 @@ describe("ProjectLinks Component", () => {
       <ReduxWrapper initialState={initialState}>
         <FormWrapper
           name={FORM.ADD_EDIT_PROJECT_SUMMARY}
-          initialValues={MOCK.PERMITS}
-          onSubmit={() => {}}
+          initialValues={MOCK.PROJECT_SUMMARY}
+          onSubmit={() => { }}
         >
-          <ProjectLinks viewProject={(record) => ""} />
+          <ProjectLinks fieldsDisabled={false} viewProject={(record) => ""} />
         </FormWrapper>
       </ReduxWrapper>
     );

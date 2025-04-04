@@ -1,51 +1,87 @@
-import uuid
-from datetime import datetime
+from typing import Optional
 
 from app.api.utils.field_template import FieldTemplate
 from app.api.utils.list_lettering_helpers import num_to_letter, num_to_roman
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.extensions import db
-from marshmallow import fields, validate
-from sqlalchemy.dialects.postgresql import UUID
+from marshmallow import fields
+from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import backref, validates
+from sqlalchemy.orm import backref
 from sqlalchemy.schema import FetchedValue
+
+from . import permit_condition_status_code
 
 
 class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
-    __tablename__ = 'permit_conditions'
+    __tablename__ = "permit_conditions"
 
     class _ModelSchema(Base._ModelSchema):
         permit_condition_id = fields.Integer(dump_only=True)
         permit_condition_guid = fields.UUID(dump_only=True)
-        condition_category_code = FieldTemplate(
-            field=fields.String, one_of='PermitConditionCategory')
-        condition_type_code = FieldTemplate(field=fields.String, one_of='PermitConditionType')
+        condition_category_code = fields.String(dump_only=False)
+        condition_type_code = FieldTemplate(
+            field=fields.String, one_of="PermitConditionType"
+        )
 
     permit_condition_id = db.Column(db.Integer, primary_key=True)
     permit_amendment_id = db.Column(
-        db.Integer, db.ForeignKey('permit_amendment.permit_amendment_id'), nullable=False)
-    permit_amendment = db.relationship('PermitAmendment', lazy='select', back_populates='conditions')
+        db.Integer,
+        db.ForeignKey("permit_amendment.permit_amendment_id"),
+        nullable=False,
+    )
+    permit_amendment = db.relationship(
+        "PermitAmendment", lazy="select", back_populates="conditions"
+    )
     permit_condition_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     condition = db.Column(db.String, nullable=False)
     condition_category_code = db.Column(
         db.String,
-        db.ForeignKey('permit_condition_category.condition_category_code'),
-        nullable=False)
+        db.ForeignKey("permit_condition_category.condition_category_code"),
+        nullable=False,
+    )
+
+    permit_condition_status_code = db.Column(
+        db.String(3), db.ForeignKey('permit_condition_status_code.permit_condition_status_code'), nullable=False, server_default=FetchedValue())
+
+    permit_condition_status = db.relationship(
+        "PermitConditionStatusCode", lazy="select")
+
+    condition_category = db.relationship("PermitConditionCategory", lazy="select")
+
     condition_type_code = db.Column(
-        db.String, db.ForeignKey('permit_condition_type.condition_type_code'), nullable=False)
-    parent_permit_condition_id = db.Column(db.Integer,
-                                           db.ForeignKey('permit_conditions.permit_condition_id'))
+        db.String,
+        db.ForeignKey("permit_condition_type.condition_type_code"),
+        nullable=False,
+    )
+    parent_permit_condition_id = db.Column(
+        db.Integer, db.ForeignKey("permit_conditions.permit_condition_id")
+    )
+
+    parent_permit_condition = db.relationship(
+        "PermitConditions",
+        remote_side=[permit_condition_id],
+        foreign_keys=[parent_permit_condition_id],
+    )
+
+    top_level_parent_permit_condition_id = db.Column(
+        db.Integer, db.ForeignKey("permit_conditions.permit_condition_id")
+    )
     display_order = db.Column(db.Integer, nullable=False)
-    _step = db.Column('step', db.String, nullable=True)
+
+    meta = db.Column(JSONB(astext_type=db.Text()), nullable=True)
+
+    _step = db.Column("step", db.String, nullable=True)
 
     __versioned__ = {}
 
     all_sub_conditions = db.relationship(
-        'PermitConditions',
-        lazy='joined',
-        order_by='asc(PermitConditions.display_order)',
-        backref=backref('parent', remote_side=[permit_condition_id]))
+        "PermitConditions",
+        lazy="joined",
+        order_by="asc(PermitConditions.display_order)",
+        backref=backref("parent", remote_side=[permit_condition_id]),
+        foreign_keys=[parent_permit_condition_id]
+    )
 
     @hybrid_property
     def sub_conditions(self):
@@ -63,86 +99,211 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         # and is used to determine the display format of the step.
         # If not set (for manually added condtitions), we auto-generate the step
         if self._step:
-            # Format the first level with a trailing dot - A. B. C. and the rest with () - (a), (i), (ii)
-            if depth == 0:
-                return f'{self._step}.'
-            return f'({self._step})'
+            return self._step
         if self._step == '':
             return ''
-
+    
         step_format = depth % 3
         if step_format == 0:
-            return str(self.display_order) + '.'
+            return str(self.display_order) + "."
         elif step_format == 1:
-            return num_to_letter(self.display_order) + '.'
+            return num_to_letter(self.display_order) + "."
         elif step_format == 2:
-            return num_to_roman(self.display_order) + '.'
+            return num_to_roman(self.display_order) + "."
+
+    @hybrid_property
+    def condition_comparison(self):
+        """
+        The comparison of this condition to the matching condition in the previous amendment, if any
+        This property is only available for permit condition extracted using the permit service
+        """
+        return self.meta.get("condition_comparison") if self.meta else None
+
+    @hybrid_property
+    def comparison_match(self) -> Optional["PermitConditions"]:
+        """
+        The matching condition in the previous amendment, if any
+        This property is only available for permit condition extracted using the permit service
+        """
+        comparison = self.condition_comparison
+
+        if comparison:
+            previous_condition_guid = comparison.get("previous_condition_guid")
+
+            if previous_condition_guid:
+                return PermitConditions.find_by_permit_condition_guid(
+                    previous_condition_guid
+                )
+
+        return None
+
+    @hybrid_property
+    def is_unchanged(self):
+        """
+        Was this condition unchanged from the matching condition in the previous amendment?
+        This property is only available for permit condition extracted using the permit service
+        """
+        if not self.condition_comparison or self.condition_comparison.get("change_type") != "unchanged":
+            return False
+        
+        # Recursively check all sub_conditions
+        return all(sub_condition.is_unchanged for sub_condition in self.sub_conditions)
 
     def __repr__(self):
-        return '<PermitConditions %r, %r, %r>' % (self.permit_condition_id,
-                                                  self.permit_condition_guid, self.display_order)
+        return "<PermitConditions %r, %r, %r>" % (
+            self.permit_condition_id,
+            self.permit_condition_guid,
+            self.display_order,
+        )
 
     @classmethod
-    def create(cls,
-               condition_category_code,
-               condition_type_code,
-               permit_amendment_id,
-               condition,
-               display_order,
-               sub_conditions,
-               parent=None):
+    def create(
+        cls,
+        condition_category_code,
+        condition_type_code,
+        permit_amendment_id,
+        condition,
+        display_order,
+        sub_conditions,
+        parent=None,
+    ):
         permit_condition = cls(
             condition_category_code=condition_category_code,
             condition_type_code=condition_type_code,
             permit_amendment_id=permit_amendment_id,
             condition=condition,
             display_order=display_order,
-            parent=parent)
+            parent=parent,
+        )
 
         permit_condition.save(commit=False)
         for condition in sub_conditions:
-            PermitConditions.create(condition.condition_category_code,
-                                    condition.condition_type_code, permit_amendment_id,
-                                    condition.condition, condition.display_order,
-                                    condition.sub_conditions, permit_condition)
+            PermitConditions.create(
+                condition.condition_category_code,
+                condition.condition_type_code,
+                permit_amendment_id,
+                condition.condition,
+                condition.display_order,
+                condition.sub_conditions,
+                permit_condition,
+            )
         return permit_condition
 
-    
     @classmethod
     def delete_all_by_permit_amendment_id(cls, permit_amendment_id, commit=False):
-        parent_conditions = cls.query.filter_by(
-            permit_amendment_id=permit_amendment_id,
-            parent_permit_condition_id=None,
-            deleted_ind=False).order_by(cls.display_order).all()
+        parent_conditions = (
+            cls.query.filter_by(
+                permit_amendment_id=permit_amendment_id,
+                parent_permit_condition_id=None,
+                deleted_ind=False,
+            )
+            .order_by(cls.display_order)
+            .all()
+        )
         for condition in parent_conditions:
-            condition.delete_condition()
+            condition.delete_condition(commit=commit)
             if commit:
                 condition.save()
 
-
-    def delete_condition(self):
+    def delete_condition(self, commit=False):
         if self.all_sub_conditions is not None:
-            subconditions = [c for c in self.all_sub_conditions if c.deleted_ind == False]
+            subconditions = [
+                c for c in self.all_sub_conditions if c.deleted_ind == False
+            ]
             if len(subconditions) > 0:
                 for item in subconditions:
                     item.deleted_ind = True
-                    item.delete_condition()
+                    item.delete_condition(commit=commit)
+                    if commit:
+                        item.save()
         self.deleted_ind = True
-
 
     @classmethod
     def find_all_by_permit_amendment_id(cls, permit_amendment_id):
-        return cls.query.filter_by(
-            permit_amendment_id=permit_amendment_id,
-            parent_permit_condition_id=None,
-            deleted_ind=False).order_by(cls.display_order).all()
+        return (
+            cls.query.filter_by(
+                permit_amendment_id=permit_amendment_id,
+                parent_permit_condition_id=None,
+                deleted_ind=False,
+            )
+            .order_by(cls.display_order)
+            .all()
+        )
 
     @classmethod
     def find_by_permit_condition_guid(cls, permit_condition_guid):
         return cls.query.filter_by(
-            permit_condition_guid=permit_condition_guid, deleted_ind=False).first()
+            permit_condition_guid=permit_condition_guid, deleted_ind=False
+        ).first()
 
     @classmethod
     def find_by_permit_condition_id(cls, permit_condition_id):
         return cls.query.filter_by(
-            permit_condition_id=permit_condition_id, deleted_ind=False).first()
+            permit_condition_id=permit_condition_id, deleted_ind=False
+        ).first()
+
+    @classmethod
+    def find_by_condition_category_code(cls, condition_category_code):
+        return cls.query.filter_by(
+            condition_category_code=condition_category_code, deleted_ind=False
+        ).all()
+
+    @classmethod
+    def find_by_permit_amendment_id_ordered(cls, permit_amendment_id):
+        # Returns a list of root conditions ordered by display_order
+        # within each parent condition, subconditions are ordered by display_order
+
+        def get_all_conditions(condition):
+            conditions = [condition]
+            for sub_condition in condition.all_sub_conditions:
+                if not sub_condition.deleted_ind:
+                    conditions.extend(get_all_conditions(sub_condition))
+            return conditions
+
+        all_conditions = []
+        root_conditions = cls.query\
+            .filter_by(parent_permit_condition_id=None, deleted_ind=False, permit_amendment_id=permit_amendment_id)\
+            .order_by(cls.display_order)\
+            .all()
+        for root_condition in root_conditions:
+            all_conditions.extend(get_all_conditions(root_condition))
+        return all_conditions
+    
+    @hybrid_property
+    def full_step_path(self):
+        """
+        Returns the full step path of the condition, including the top level category
+        Example: General.1.a.i
+        """
+
+        steps = []
+        current = self
+        while current:
+            step = current.step
+            if step:
+                steps = [step] + steps
+            current = current.parent_permit_condition
+
+        cat = self.condition_category.description if self.condition_category else ""
+
+        return ".".join([str(cat)] + steps) if steps else ""
+
+    @hybrid_property
+    def step_path(self):
+        steps = []
+        current = self
+        while current:
+            step = current._step
+            if step == "" and current.parent_permit_condition:
+                # If step is empty, determine it based on position in parent's sub_conditions
+                parent = current.parent_permit_condition
+                if parent.sub_conditions:
+                    try:
+                        step = f'sub_{str(parent.sub_conditions.index(current) + 1)}'
+                    except ValueError:
+                        step = None
+            if step:
+                steps = steps + [step]
+            current = current.parent_permit_condition
+        cat = self.condition_category.description if self.condition_category else ""
+        return ".".join([str(cat)] + steps) if steps else ""

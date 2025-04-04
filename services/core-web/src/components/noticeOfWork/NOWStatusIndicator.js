@@ -19,11 +19,11 @@ import { COLOR } from "@/constants/styles";
  * Tab header Badge
  * Fixed Header Banner
  * Colors:
- * Complete =  linear-gradient(90deg, #45A766 0%, #45A766 28.89%, rgba(127,254,0,0.13) 100%);
- * Rejected/WithDrawn =  linear-gradient(77.2deg, #D40D0D 0%, #E70000 28.89%, #FFFFFF 100%);
+ * Complete =  linear-gradient(90deg, #2E8540 0%, #2E8540 28.89%, rgba(127,254,0,0.13) 100%);
+ * Rejected/WithDrawn =  linear-gradient(77.2deg, #D8292F 0%, #E70000 28.89%, #FFFFFF 100%);
  * client delay =  linear-gradient(90deg, #FDBC00 0%, #FDBC00 28.89%, #FFF1A7 100%);
  * editMode =  linear-gradient(90deg, #5D46A1 0%, rgba(255,255,255,0.5) 100%);
- * permit issued = linear-gradient(90deg, #45A766 0%, #45A766 28.89%, rgba(127,254,0,0.13) 100%);
+ * permit issued = linear-gradient(90deg, #2E8540 0%, #2E8540 28.89%, rgba(127,254,0,0.13) 100%);
  *
  */
 

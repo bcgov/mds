@@ -2,15 +2,16 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { PROJECTS, STATIC_CONTENT, AUTHENTICATION } from "@mds/common/constants/reducerTypes";
-import { FORM } from "../..";
+import { FORM } from "@mds/common/constants/forms";
 import FormWrapper from "../forms/FormWrapper";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import AuthorizationSupportDocumentUpload from "./AuthorizationSupportDocumentUpload";
 
+const formValues = {}
 const initialState = {
   form: {
     [FORM.ADD_EDIT_PROJECT_SUMMARY]: {
-      values: {},
+      values: formValues,
     },
   },
   [PROJECTS]: {
@@ -30,15 +31,14 @@ describe("AuthorizationSupportDocumentUpload Component", () => {
       <ReduxWrapper initialState={initialState}>
         <FormWrapper
           name={FORM.ADD_EDIT_PROJECT_SUMMARY}
-          initialValues={initialState}
-          onSubmit={() => {}}
+          initialValues={formValues}
+          onSubmit={() => { }}
         >
           <AuthorizationSupportDocumentUpload
-            code={"code"}
             mineGuid={"mine_guid"}
             documents={[]}
-            updateAmendmentDocument={() => {}}
-            removeAmendmentDocument={() => {}}
+            updateAmendmentDocument={() => { }}
+            removeAmendmentDocument={() => { }}
             projectGuid={"project_guid"}
             projectSummaryGuid={"project_summary_guid"}
             showExemptionSection={false}

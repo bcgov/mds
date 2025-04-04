@@ -1,20 +1,20 @@
-### Docker Image for Fider. 
+# Fider
 
-To create the fider image that can run with the current DB / Fider version do the following: 
+Fider is an open-source platform to collect and prioritize feedback from your users. It allows you to gather insights and suggestions to improve your product or service.
 
-Base Repo URL: https://github.com/bcgov/nrm-feedback
+## Deployment Configuration
 
-Running with latest fider version - v0.21.1 - https://github.com/bcgov/nrm-feedback-v0.21.1
+The deployment configuration for Fider can be found in the following repository:
+[Deployment Config](https://github.com/bcgov-c/tenant-gitops-4c2ba9/tree/main/fider)
 
-Updated go version and build params to make things work, this should be merged into nrm-feedback upstream.
+## Features
 
+- Collect feedback from users
+- Vote on feedback to prioritize
+- Manage and respond to feedback
+- Log in with IDIR
 
-- Clone `git clone --recurse-submodules git@github.com:bcgov/nrm-feedback-v0.21.1` - It is important to make sure the submodule is at the right commit for the image to be built
-- Build `docker build -t fider:21.1 -f Dockerfile.openshift .` to build the image 
-- Tag `docker tag fider:21.1 image-registry.apps.silver.devops.gov.bc.ca/4c2ba9-tools/fider:21.1` 
-- Push `docker push --all-tags image-registry.apps.silver.devops.gov.bc.ca/4c2ba9-tools/fider`
+## Environments
 
-
-### Improvements: 
-
-Can automate this if we need to - There are no potential changes / developments in the foreseeing future. 
+- [Test](https://fider-4c2ba9-test.apps.silver.devops.gov.bc.ca)
+- [Production](https://fider.apps.silver.devops.gov.bc.ca)

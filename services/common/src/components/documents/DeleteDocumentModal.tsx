@@ -5,7 +5,7 @@ import DocumentTable from "./DocumentTable";
 import FormWrapper from "../forms/FormWrapper";
 import RenderCancelButton from "../forms/RenderCancelButton";
 import RenderSubmitButton from "../forms/RenderSubmitButton";
-import { FORM } from "@mds/common/constants";
+import { FORM } from "@mds/common/constants/forms";
 
 interface DeleteDocumentModalProps {
   documents: MineDocument[];

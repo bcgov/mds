@@ -2,7 +2,7 @@ import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import { fetchActivities } from "@mds/common/redux/actionCreators/activityActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import * as API from "@mds/common/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
@@ -30,7 +30,7 @@ describe("`fetchActivities` action creator", () => {
     return fetchActivities(user)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(6);
+      expect(dispatch).toHaveBeenCalledTimes(5);
     });
   });
 

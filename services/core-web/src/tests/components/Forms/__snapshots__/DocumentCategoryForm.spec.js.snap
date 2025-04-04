@@ -4,8 +4,7 @@ exports[`DocumentCategoryForm renders properly 1`] = `
 <div
   className="document-container"
 >
-  <FormItem
-    hasFeedback={false}
+  <InternalFormItem
     label="Select Files/Upload files*"
   >
     <div
@@ -28,6 +27,6 @@ exports[`DocumentCategoryForm renders properly 1`] = `
       onFileLoad={[Function]}
       onRemoveFile={[Function]}
     />
-  </FormItem>
+  </InternalFormItem>
 </div>
 `;

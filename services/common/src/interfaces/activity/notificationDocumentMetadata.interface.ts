@@ -3,7 +3,7 @@ import {
   INotificationDocumentPermit,
   INotificationDocumentProject,
   INotificationDocumentMineTailingsStorageFacility,
-} from "@mds/common/index";
+} from "@mds/common/interfaces";
 
 export interface INotificationDocumentMetadata {
   mine: INotificationDocumentMine;

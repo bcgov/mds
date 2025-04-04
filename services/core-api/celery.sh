@@ -13,4 +13,4 @@
 
 cd /app || exit
 
-celery -A app.tasks.celery_entrypoint worker -n core_tasks@%h -Q core_tasks --loglevel=debug --concurrency=1 -B --scheduler redbeat.RedBeatScheduler -E --pidfile /tmp/celerybeat.pid -s /tmp/celerybeat-schedule
+celery -A app.tasks.celery_entrypoint worker -n core_tasks@%h -Q core_tasks --loglevel=${CELERY_LOG_LEVEL:-info} --concurrency=1 -B --scheduler redbeat.RedBeatScheduler -E --pidfile /tmp/celerybeat.pid -s /tmp/celerybeat-schedule

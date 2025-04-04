@@ -1,4 +1,4 @@
-import { IPermitAmendment, IPermitUploadedFile } from "@mds/common/index";
+import { IPermitAmendment, IPermitUploadedFile } from "@mds/common/interfaces";
 
 export interface ICreatePermitAmendmentPayload {
   mine_guid: string;

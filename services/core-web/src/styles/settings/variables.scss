@@ -35,8 +35,12 @@ $background: #f2f2f2;
 $disabled-grey: #f8f7f7;
 
 // Special Colours
-$alert-red: #d40d0d;
-$ok-green: #45a766;
+$alert-red: #D8292F;
+$ok-green: #2E8540;
+$success-light: #eaf3ec;
+$success-dark: #1C5127;
+$error-light: #FBEAEA;
+$error-dark: #841913;
 
 // Map Markers
 $map-fuschia: #f736fb;
@@ -61,6 +65,7 @@ $tertiary-btn-color-hover: color.adjust($tertiary-btn-color, $lightness: -20%);
 
 $danger-btn-color: $btn-red;
 $danger-btn-color-hover: color.adjust($danger-btn-color, $lightness: -20%);
+$danger-btn-color-disabled: rgba($danger-btn-color, 0.5);
 
 // Nav
 $nav-color: $darkest-grey;

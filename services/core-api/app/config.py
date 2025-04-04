@@ -56,6 +56,8 @@ class CustomFormatter(logging.Formatter):
 
         # Call the parent formatter to format the log message
         formatted_message = super().format(record)
+        if Config.ENVIRONMENT_NAME == 'local':
+            return f'{formatted_message}: {record.message}'
 
         # Add the traceid, keycloak client id and message to the formatted log message
         formatted_message = f'{formatted_message} [trace_id={traceid} client={KEY_CLOAK_CLIENT_ID}]: {record.message}'
@@ -263,7 +265,7 @@ class Config(object):
     #Templates
     TEMPLATE_FOLDER_BASE = os.environ.get('TEMPLATE_FOLDER_BASE', 'templates')
     TEMPLATE_FOLDER_IRT = os.environ.get('TEMPLATE_FOLDER_IRT', f'{TEMPLATE_FOLDER_BASE}/project/')
-    TEMPLATE_IRT = os.environ.get('TEMPLATE_IRT', 'IRT_Template 2024_April.xlsx')
+    TEMPLATE_IRT = os.environ.get('TEMPLATE_IRT', 'IRT_Template 2025_January.xlsx')
 
     # Celery settings
     CELERY_RESULT_BACKEND = f'db+postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
@@ -280,8 +282,12 @@ class Config(object):
             'task': 'app.api.parties.party_appt.tasks.notify_and_update_expired_party_appointments',
             'schedule': crontab(minute="*/15"),
         },
+        'push_untp_map_data_to_publisher': {
+            'task': 'app.api.verifiable_credentials.manager.push_untp_map_data_to_publisher',
+            'schedule': crontab(day_of_week="1", hour="16", minute="0"),                             #Run 8am Mondays
+        },
     }
-    #Traction Verifiable Credentials DEFAULTS ARE FOR DEV
+                                                                                                     #Traction Verifiable Credentials DEFAULTS ARE FOR DEV
     TRACTION_HOST = os.environ.get(
         "TRACTION_HOST", "https://traction-tenant-proxy-dev.apps.silver.devops.gov.bc.ca")
     TRACTION_TENANT_ID = os.environ.get("TRACTION_TENANT_ID", "GET_TENANT_ID_FROM_TRACTION")
@@ -305,8 +311,10 @@ class Config(object):
     UNTP_BC_MINES_ACT_PERMIT_CONTEXT = os.environ.get("UNTP_BC_MINES_ACT_PERMIT_CONTEXT",
                                                       "UNTP_BC_MINES_ACT_PERMIT_CONTEXT")
 
-    ORGBOOK_CREDENTIAL_BASE_URL = os.environ.get(
-        "ORGBOOK_CREDENTIAL_BASE_URL", "https://dev.orgbook.traceability.site/credentials/")
+    ORGBOOK_PUBLISHER_BASE_URL = os.environ.get("ORGBOOK_PUBLISHER_BASE_URL",
+                                                "https://dev.orgbook.traceability.site")
+    ORGBOOK_PUBLISHER_CLIENT_SECRET = os.environ.get("ORGBOOK_PUBLISHER_CLIENT_SECRET",
+                                                     "ORGBOOK_PUBLISHER_CLIENT_SECRET")
 
 
 class TestConfig(Config):

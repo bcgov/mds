@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import "filepond-polyfill";
 import { FilePond, registerPlugin } from "react-filepond";
 import { Form, notification, Popover, Switch } from "antd";
@@ -10,7 +10,6 @@ import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import * as tus from "tus-js-client";
 import { HttpRequest, HttpResponse } from "tus-js-client";
-import { APPLICATION_OCTET_STREAM, ENVIRONMENT, Feature, SystemFlagEnum } from "@mds/common/index";
 import { pollDocumentUploadStatus } from "@mds/common/redux/actionCreators/documentActionCreator";
 import { FileUploadHelper } from "@mds/common/utils/fileUploadHelper";
 import { createRequestHeader } from "@mds/common/redux/utils/RequestHeaders";
@@ -25,6 +24,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleQuestion } from "@fortawesome/pro-light-svg-icons";
 import { FormContext } from "./FormWrapper";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
+import { APPLICATION_OCTET_STREAM } from "@mds/common/constants/fileTypes";
+import { Feature } from "@mds/common/utils/featureFlag";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -78,21 +82,21 @@ export const FileUpload: FC<FileUploadProps> = ({
   maxFileSize = "750MB",
   maxFileNameLength = null,
   acceptedFileTypesMap = {},
-  onFileLoad = () => {},
-  onRemoveFile = () => {},
-  addFileStart = () => {},
+  onFileLoad = () => { },
+  onRemoveFile = () => { },
+  addFileStart = () => { },
   chunkSize = 1048576, // 1MB
   allowRevert = false,
   allowMultiple = true,
   allowReorder = false,
-  onProcessFiles = () => {},
-  onAbort = () => {},
-  onInit = () => {},
+  onProcessFiles = () => { },
+  onAbort = () => { },
+  onInit = () => { },
   itemInsertLocation = "before" as ItemInsertLocationType,
   labelInstruction = '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong>',
   abbrevLabel = false,
-  beforeAddFile = () => {},
-  beforeDropFile = () => {},
+  beforeAddFile = () => { },
+  beforeDropFile = () => { },
   labelHref,
   label,
   required,
@@ -111,7 +115,7 @@ export const FileUpload: FC<FileUploadProps> = ({
   shouldAbortUpload,
 }) => {
   const system = useSelector(getSystemFlag);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { isFeatureEnabled } = useFeatureFlag();
   const { isEditMode } = useContext(FormContext);
 
@@ -160,9 +164,8 @@ export const FileUpload: FC<FileUploadProps> = ({
     const secondLine = abbrevLabel
       ? `<div>We accept most common ${fileTypeDisplayString} files${fileSize}.</div>`
       : `<div>Accepted filetypes: ${fileTypeDisplayString}</div>`;
-    return `${labelInstruction}<br>${
-      maxFileNameLength ? secondLineWithNamingConvention : secondLine
-    }`;
+    return `${labelInstruction}<br>${maxFileNameLength ? secondLineWithNamingConvention : secondLine
+      }`;
   };
 
   // Stores metadata and process function for each file, so we can manually
@@ -197,9 +200,7 @@ export const FileUpload: FC<FileUploadProps> = ({
         )
       ) {
         notification.error({
-          message: `Failed to upload ${file && file.name ? file.name : ""}: ${
-            errorMessage ? errorMessage : err
-          }`,
+          message: `Failed to upload ${file?.name ?? ""}: ${errorMessage ?? err}`,
           duration: 10,
         });
       }
@@ -254,9 +255,8 @@ export const FileUpload: FC<FileUploadProps> = ({
           }
 
           notification.error({
-            message: `Failed to upload ${file && file.name ? file.name : ""}: ${
-              response.data.status
-            }`,
+            message: `Failed to upload ${file?.name ?? ""}: ${response.data.status
+              }`,
             duration: 10,
           });
 
@@ -539,6 +539,7 @@ export const FileUpload: FC<FileUploadProps> = ({
         />
       )}
       <Form.Item
+        id={input?.name}
         name={input?.name}
         required={required}
         label={getLabel()}
@@ -551,50 +552,49 @@ export const FileUpload: FC<FileUploadProps> = ({
             (meta?.warning && <span>{meta?.warning}</span>))
         }
       >
-        <>
-          <FilePond
-            ref={(ref) => (filepond = ref)}
-            server={server}
-            name="file"
-            beforeDropFile={beforeDropFile}
-            beforeAddFile={beforeAddFile}
-            allowRevert={allowRevert}
-            onremovefile={onRemoveFile}
-            allowMultiple={allowMultiple}
-            onaddfilestart={addFileStart}
-            allowReorder={allowReorder}
-            maxParallelUploads={1}
-            maxFileSize={maxFileSize}
-            minFileSize="1"
-            allowFileTypeValidation={acceptedFileMimeTypes.length > 0}
-            acceptedFileTypes={acceptedFileMimeTypes}
-            onaddfile={handleFileAdd}
-            onprocessfiles={onProcessFiles}
-            onprocessfileabort={onAbort}
-            oninit={onInit}
-            labelIdle={getFilePondLabel()}
-            itemInsertLocation={itemInsertLocation}
-            credits={null}
-            fileValidateTypeLabelExpectedTypes={getfileValidateTypeLabelExpectedTypes()}
-            fileValidateTypeDetectType={(source, type) =>
-              new Promise((resolve, reject) => {
-                // If the browser can't automatically detect the file's MIME type, use the one stored in the "accepted file types" map.
-                if (!type) {
-                  const exts = source.name.split(".");
-                  const ext = exts?.length > 0 && `.${exts.pop().toLowerCase()}`;
+        <FilePond
+          id={input?.name}
+          ref={(ref) => (filepond = ref)}
+          server={server}
+          name="file"
+          beforeDropFile={beforeDropFile}
+          beforeAddFile={beforeAddFile}
+          allowRevert={allowRevert}
+          onremovefile={onRemoveFile}
+          allowMultiple={allowMultiple}
+          onaddfilestart={addFileStart}
+          allowReorder={allowReorder}
+          maxParallelUploads={1}
+          maxFileSize={maxFileSize}
+          minFileSize="1"
+          allowFileTypeValidation={acceptedFileMimeTypes.length > 0}
+          acceptedFileTypes={acceptedFileMimeTypes}
+          onaddfile={handleFileAdd}
+          onprocessfiles={onProcessFiles}
+          onprocessfileabort={onAbort}
+          oninit={onInit}
+          labelIdle={getFilePondLabel()}
+          itemInsertLocation={itemInsertLocation}
+          credits={null}
+          fileValidateTypeLabelExpectedTypes={getfileValidateTypeLabelExpectedTypes()}
+          fileValidateTypeDetectType={(source, type) =>
+            new Promise((resolve, reject) => {
+              // If the browser can't automatically detect the file's MIME type, use the one stored in the "accepted file types" map.
+              if (!type) {
+                const exts = source.name.split(".");
+                const ext = exts?.length > 0 && `.${exts.pop().toLowerCase()}`;
 
-                  if (ext && acceptedFileTypeExtensions.includes(ext)) {
-                    const match = acceptedFileTypesMap[ext];
-                    type = Array.isArray(match) ? match[0] : match;
-                  } else {
-                    reject(type);
-                  }
+                if (ext && acceptedFileTypeExtensions.includes(ext)) {
+                  const match = acceptedFileTypesMap[ext];
+                  type = Array.isArray(match) ? match[0] : match;
+                } else {
+                  reject(type);
                 }
-                resolve(type);
-              })
-            }
-          />
-        </>
+              }
+              resolve(type);
+            })
+          }
+        />
       </Form.Item>
     </div>
   );

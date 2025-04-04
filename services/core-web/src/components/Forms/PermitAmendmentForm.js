@@ -3,35 +3,33 @@ import PropTypes from "prop-types";
 import { remove } from "lodash";
 import { connect } from "react-redux";
 import { compose, bindActionCreators } from "redux";
-import { Field, reduxForm, change, formValueSelector } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Alert, Button, Col, Row, Popconfirm, Divider } from "antd";
+import { Field, change, formValueSelector } from "@mds/common/components/forms/form";
+import { Alert, Col, Row, Divider, Form } from "antd";
 import {
   required,
   maxLength,
   dateNotInFuture,
   number,
-  validateSelectOptions,
   assessedLiabilityNegativeWarning,
-} from "@common/utils/Validate";
-import { resetForm, currencyMask } from "@common/utils/helpers";
+} from "@mds/common/redux/utils/Validate";
+import { currencyMask } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
 import PermitAmendmentUploadedFilesList from "@/components/mine/Permit/PermitAmendmentUploadedFilesList";
 import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentFileUpload";
 import { securityNotRequiredReasonOptions } from "@/constants/NOWConditions";
-import { USER_ROLES } from "@mds/common";
+import { USER_ROLES } from "@mds/common/constants/environment";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 const originalPermit = "OGP";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   handleRemovePermitAmendmentDocument: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  submitting: PropTypes.bool.isRequired,
   mine_guid: PropTypes.string.isRequired,
   permit_guid: PropTypes.string.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
@@ -83,6 +81,7 @@ export class PermitAmendmentForm extends Component {
     relatedDocuments: this.props.initialValues.related_documents || [],
     uploadedFiles: [],
   };
+  formName = FORM.PERMIT_AMENDMENT;
 
   // Attached files handlers
   handleRemovePermitAmendmentDocument = (relatedDocuments, documentGuid) => {
@@ -100,20 +99,20 @@ export class PermitAmendmentForm extends Component {
   // File upload handlers
   onFileLoad = (fileName, document_manager_guid) => {
     this.state.uploadedFiles.push({ fileName, document_manager_guid });
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
+    this.props.change(this.formName, "uploadedFiles", this.state.uploadedFiles);
   };
 
   onRemoveFile = (err, fileItem) => {
     remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
+    this.props.change(this.formName, "uploadedFiles", this.state.uploadedFiles);
   };
 
-  handleChange = (e) => {
-    if (e.target.value) {
-      this.props.change("security_not_required_reason", null);
+  handleChange = (value) => {
+    if (value) {
+      this.props.change(this.formName, "security_not_required_reason", null);
     } else {
-      this.props.change("liability_adjustment", null);
-      this.props.change("security_received_date", null);
+      this.props.change(this.formName, "liability_adjustment", null);
+      this.props.change(this.formName, "security_received_date", null);
     }
   };
 
@@ -123,51 +122,53 @@ export class PermitAmendmentForm extends Component {
       this.props.initialValues.permit_prefix === "C" ||
       this.props.initialValues.permit_prefix === "M";
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <FormWrapper
+        onSubmit={this.props.onSubmit}
+        isModal
+        initialValues={this.props.initialValues}
+        name={FORM.PERMIT_AMENDMENT}
+        reduxFormConfig={{
+          validate: validateBusinessRules,
+          touchOnBlur: true,
+        }}
+      >
         <Row gutter={48}>
           <Col md={12} sm={24}>
             {!this.props.is_historical_amendment &&
               !this.props.initialValues.permit_amendment_guid && (
-                <Form.Item>
-                  <PartySelectField
-                    id="permittee_party_guid"
-                    name="permittee_party_guid"
-                    label="Permittee*"
-                    partyLabel="permittee"
-                    validate={[required]}
-                    allowAddingParties
-                  />
-                </Form.Item>
+                <PartySelectField
+                  id="permittee_party_guid"
+                  name="permittee_party_guid"
+                  label="Permittee"
+                  required
+                  partyLabel="permittee"
+                  validate={[required]}
+                  allowAddingParties
+                />
               )}
-            <Form.Item>
-              <Field
-                id="issue_date"
-                name="issue_date"
-                label="Issue Date*"
-                component={renderConfig.DATE}
-                validate={[required, dateNotInFuture]}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="authorization_end_date"
-                name="authorization_end_date"
-                label={isPermitCoalOrMineral ? "Authorization End Date" : "Authorization End Date*"}
-                component={renderConfig.DATE}
-                validate={isPermitCoalOrMineral ? [] : [required]}
-              />
-            </Form.Item>
-
-            <Form.Item>
-              <Field
-                id="description"
-                name="description"
-                label="Description"
-                component={renderConfig.AUTO_SIZE_FIELD}
-                validate={[maxLength(280)]}
-              />
-            </Form.Item>
-
+            <Field
+              id="issue_date"
+              name="issue_date"
+              label="Issue Date"
+              required
+              component={renderConfig.DATE}
+              validate={[required, dateNotInFuture]}
+            />
+            <Field
+              id="authorization_end_date"
+              name="authorization_end_date"
+              label={"Authorization End Date"}
+              component={renderConfig.DATE}
+              required={!isPermitCoalOrMineral}
+              validate={isPermitCoalOrMineral ? [] : [required]}
+            />
+            <Field
+              id="description"
+              name="description"
+              label="Description"
+              component={renderConfig.AUTO_SIZE_FIELD}
+              validate={[maxLength(280)]}
+            />
             <Divider />
             <Form.Item label="Securities">
               <Field
@@ -181,39 +182,35 @@ export class PermitAmendmentForm extends Component {
             {this.props.securityNotRequired && (
               <Field
                 id="security_not_required_reason"
-                label="Reason*"
+                label="Reason"
                 name="security_not_required_reason"
                 component={renderConfig.SELECT}
                 placeholder="Please select a reason"
                 data={securityNotRequiredReasonOptions}
                 disabled={!this.props.securityNotRequired}
-                validate={[required, validateSelectOptions(securityNotRequiredReasonOptions)]}
+                required
+                validate={[required]}
               />
             )}
-            <Form.Item label="Assessed Liability Adjustment">
-              <p className="p-light">
-                This amount will be added to the Total Assessed Liability amount for this permit.
-                Changes to this value in Core will not be updated in MMS.
-              </p>
-              <Field
-                id="liability_adjustment"
-                name="liability_adjustment"
-                component={renderConfig.FIELD}
-                {...currencyMask}
-                validate={[number]}
-                disabled={this.props.securityNotRequired}
-                warn={[assessedLiabilityNegativeWarning]}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                label="Security Received"
-                id="security_received_date"
-                name="security_received_date"
-                component={renderConfig.DATE}
-                disabled={this.props.securityNotRequired}
-              />
-            </Form.Item>
+            <Field
+              label="Assessed Liability Adjustment"
+              help="This amount will be added to the Total Assessed Liability amount for this permit.
+                Changes to this value in Core will not be updated in MMS."
+              id="liability_adjustment"
+              name="liability_adjustment"
+              component={renderConfig.FIELD}
+              {...currencyMask}
+              validate={[number]}
+              disabled={this.props.securityNotRequired}
+              warn={[assessedLiabilityNegativeWarning]}
+            />
+            <Field
+              label="Security Received"
+              id="security_received_date"
+              name="security_received_date"
+              component={renderConfig.DATE}
+              disabled={this.props.securityNotRequired}
+            />
           </Col>
           <Col md={12} sm={24} className="border--left--layout">
             {this.state.relatedDocuments.length > 0 && (
@@ -254,27 +251,10 @@ export class PermitAmendmentForm extends Component {
           </Col>
         </Row>
         <div className="right center-mobile" style={{ paddingTop: "14px" }}>
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            onConfirm={this.props.closeModal}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button className="full-mobile" type="secondary">
-              Cancel
-            </Button>
-          </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            loading={this.props.submitting}
-          >
-            {this.props.title}
-          </Button>
+          <RenderCancelButton />
+          <RenderSubmitButton buttonText={this.props.title} />
         </div>
-      </Form>
+      </FormWrapper>
     );
   }
 }
@@ -296,11 +276,5 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: FORM.PERMIT_AMENDMENT,
-    validate: validateBusinessRules,
-    touchOnBlur: true,
-    onSubmitSuccess: resetForm(FORM.PERMIT_AMENDMENT),
-  })
+  connect(mapStateToProps, mapDispatchToProps)
 )(PermitAmendmentForm);

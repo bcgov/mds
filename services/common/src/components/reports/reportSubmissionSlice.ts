@@ -1,10 +1,11 @@
 import { hideLoading, showLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT, IMineReportSubmission } from "../..";
 import { createAppSlice } from "@mds/common/redux/createAppSlice";
 import CustomAxios from "@mds/common/redux/customAxios";
 import * as API from "@mds/common/constants/API";
 import { RootState } from "@mds/common/redux/rootState";
 import moment from "moment";
+import { IMineReportSubmission } from "@mds/common/interfaces/reports/mineReportSubmission.interface";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 
 interface ReportSubmissionState {
   reportSubmission: IMineReportSubmission;

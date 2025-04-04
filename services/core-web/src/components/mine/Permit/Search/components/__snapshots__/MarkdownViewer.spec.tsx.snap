@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MarkdownViewer processes single reference correctly 1`] = `
+<div>
+  <div
+    class="permit-search__markdown"
+    role="none"
+  >
+    <div
+      data-testid="markdown-content"
+    >
+      <div
+        data-testid="mocked-markdown"
+      >
+        Check this [[1]](#condition-abc123) reference
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -24,6 +24,7 @@ export interface IMineIncident {
   reported_timestamp: string;
   verbal_notification_provided: boolean;
   reported_to_inspector_party_guid: string;
+  reported_to_inspector_contacted: boolean;
   responsible_inspector_party_guid: string;
   mms_inspector_initials: string;
   determination_inspector_party_guid: string;

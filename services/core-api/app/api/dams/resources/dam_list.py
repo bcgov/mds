@@ -2,7 +2,8 @@ from decimal import Decimal
 from flask_restx import Resource, reqparse
 from werkzeug.exceptions import NotFound
 
-from app.api.dams.dto import DAM_MODEL, CREATE_DAM_MODEL, DAM_MODEL_LIST
+from app.api.dams.dto import CREATE_DAM_MODEL, DAM_MODEL_LIST
+from app.api.mines.response_models import DAM_HISTORY_MODEL
 from app.api.dams.models.dam import Dam
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, EDIT_DO)
@@ -32,7 +33,7 @@ class DamListResource(Resource, UserMixin):
 
     @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
     @api.expect(CREATE_DAM_MODEL)
-    @api.marshal_with(DAM_MODEL, code=201)
+    @api.marshal_with(DAM_HISTORY_MODEL, code=201)
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument(

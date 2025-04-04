@@ -1,4 +1,4 @@
-import { IParty } from "@mds/common/index";
+import { IParty } from "@mds/common/interfaces";
 
 export interface IPartyOrgBookEntity {
   party_orgbook_entity_id: string;

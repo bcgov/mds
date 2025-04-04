@@ -5,7 +5,8 @@ import CaretDownOutlined from "@ant-design/icons/CaretDownOutlined";
 import { Menu, Dropdown, Button, Divider } from "antd";
 import MediaQuery from "react-responsive";
 import PropTypes from "prop-types";
-import * as COMMON_ENV from "@mds/common";
+import { KEYCLOAK } from "@mds/common/constants/environment";
+
 import * as route from "@/constants/routes";
 import * as MINESPACE_ENV from "@/constants/environment";
 import { signOutFromSSO } from "@/utils/authenticationHelpers";
@@ -81,7 +82,7 @@ export class HeaderDropdown extends Component {
             */}
             <Button className="login-btn">
               <a
-                href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.vcauthn_idpHint}`}
+                href={`${KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${KEYCLOAK.vcauthn_idpHint}`}
               >
                 Log in with Verifiable Credentials
               </a>

@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 import { Row, Col, Card, Button, Typography } from "antd";
 import * as Strings from "@mds/common/constants/strings";
 import PropTypes from "prop-types";
-import * as COMMON_ENV from "@mds/common";
 // Uncomment when image is re-introduced
 // import { MAP_LOGO } from "@/constants/assets";
 import * as MINESPACE_ENV from "@/constants/environment";
 import { isAuthenticated } from "@mds/common/redux/selectors/authenticationSelectors";
 import { AuthorizationWrapper } from "@/components/common/wrappers/AuthorizationWrapper";
 import LoginButton from "../common/LoginButton";
+import { KEYCLOAK } from "@mds/common/constants/environment";
 
 const propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
@@ -56,7 +56,7 @@ export const LandingPage = (props: { isAuthenticated: boolean }) => (
             <AuthorizationWrapper inTesting>
               <Button type="primary" size="large" className="login">
                 <a
-                  href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.vcauthn_idpHint}`}
+                  href={`${KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${KEYCLOAK.vcauthn_idpHint}`}
                 >
                   Log in with Verifiable Credentials
                 </a>
@@ -70,11 +70,8 @@ export const LandingPage = (props: { isAuthenticated: boolean }) => (
       <Col sm={{ span: 24 }} xl={{ span: 12 }} xxl={{ span: 10 }}>
         <Typography.Title level={4}>What is MineSpace?</Typography.Title>
         <Typography.Paragraph>
-          The{" "}
-          <Typography.Text strong>
-            Ministry of Energy, Mines and Low Carbon Innovation
-          </Typography.Text>{" "}
-          is developing a system to make it easier for the public, industry and government to see
+          The <Typography.Text strong>Ministry of Mining and Critical Minerals</Typography.Text> is
+          developing a system to make it easier for the public, industry and government to see
           what&apos;s happening in the mining industry across British Columbia. The system is
           called&nbsp;
           <Typography.Text strong>Mines Digital Services (MDS)</Typography.Text>.

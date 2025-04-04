@@ -9,8 +9,9 @@ exports[`EditNOWMineAndLocation renders properly 1`] = `
       md={12}
       s={12}
     >
-      <FormItem
-        hasFeedback={false}
+      <Field
+        component={[Function]}
+        id="latitude"
         label={
           Array [
             <Badge
@@ -19,39 +20,30 @@ exports[`EditNOWMineAndLocation renders properly 1`] = `
             "NoW Latitude",
           ]
         }
-      >
-        <Field
-          component={[Function]}
-          id="latitude"
-          name="latitude"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+        name="latitude"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
     <Col
       md={12}
       s={12}
     >
-      <FormItem
-        hasFeedback={false}
+      <Field
+        component={[Function]}
+        id="longitude"
         label="NoW Longitude"
-      >
-        <Field
-          component={[Function]}
-          id="longitude"
-          name="longitude"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+        name="longitude"
+        validate={
+          Array [
+            [Function],
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
 </div>

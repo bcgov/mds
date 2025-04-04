@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SteppedForm renders properly 1`] = `
+<div>
+  <div
+    class="ant-row"
+  >
+    <div
+      class="ant-col ant-col-6 stepped-form-menu-container"
+    >
+      <ul
+        class="ant-menu ant-menu-root ant-menu-inline ant-menu-light stepped-form"
+        data-menu-list="true"
+        role="menu"
+        tabindex="0"
+      >
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-selected ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-1"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            1
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-2"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            2
+          </span>
+        </li>
+      </ul>
+      <div
+        aria-hidden="true"
+        style="display: none;"
+      />
+    </div>
+    <div
+      class="ant-col ant-col-18"
+    >
+      <div
+        class="stepped-form-form-container"
+      >
+        <form
+          class="ant-form ant-form-vertical common-form common-form-STEPPED_FORM_NAME form-edit"
+          id="STEPPED_FORM_NAME"
+        >
+          <div>
+            Step 1 content
+          </div>
+        </form>
+        <div
+          class="ant-row ant-row-end stepped-form-button-row"
+        >
+          <div>
+            <button
+              class="ant-btn ant-btn-text full-mobile draft-button"
+              style="margin-right: 16px;"
+              type="button"
+            >
+              <span>
+                Save Draft
+              </span>
+            </button>
+            <button
+              class="ant-btn ant-btn-primary"
+              type="button"
+            >
+              <span>
+                Save & Continue
+              </span>
+              <span
+                aria-label="right"
+                class="anticon anticon-right"
+                role="img"
+              >
+                <svg
+                  aria-hidden="true"
+                  class=""
+                  data-icon="right"
+                  fill="currentColor"
+                  focusable="false"
+                  height="1em"
+                  viewBox="64 64 896 896"
+                  width="1em"
+                >
+                  <path
+                    d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"
+                  />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

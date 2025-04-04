@@ -1,0 +1,1569 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PreviewPermitAmendmentDocument fetches and displays document when documentGuid is provided 1`] = `
+<div>
+  <div
+    class="e-control e-pdfviewer e-lib"
+    id="preview-permit-amendment-pdf"
+    style="display: block; height: 80vh; min-height: 500px;"
+  >
+    <div
+      class="e-pv-main-container"
+      id="preview-permit-amendment-pdf_mainContainer"
+    >
+      <div
+        class="e-pv-viewer-main-container"
+        id="preview-permit-amendment-pdf_viewerMainContainer"
+      >
+        <div
+          aria-disabled="false"
+          aria-label="Toolbar"
+          aria-orientation="horizontal"
+          class="e-pv-toolbar e-control e-toolbar e-lib e-pv-toolbar-scroll e-toolpop e-keyboard"
+          id="preview-permit-amendment-pdf_toolbarContainer"
+          role="toolbar"
+          style="display: block;"
+        >
+          <div
+            class="e-toolbar-items e-tbar-pos"
+            id="preview-permit-amendment-pdf_toolbarItemsContainer"
+          >
+            <div
+              class="e-toolbar-left"
+            >
+              <div
+                class="e-toolbar-item e-pv-open-document-container e-popup-text"
+                id="preview-permit-amendment-pdf_openContainer"
+              >
+                <button
+                  aria-disabled="false"
+                  aria-label="Open file (Ctrl+O)"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib e-pv-open-document e-pv-tbar-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_open"
+                  style=""
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-open-document-icon e-pv-icon e-icon-left"
+                    id="preview-permit-amendment-pdf_openIcon"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                    id="preview-permit-amendment-pdf_openText"
+                  >
+                    Open
+                  </span>
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-open-separator-container e-separator"
+              />
+              <div
+                class="e-toolbar-item e-pv-first-page-navigation-container e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_firstPageContainer"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-label="Show first page (Ctrl+← or Ctrl+↑)"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib e-pv-first-page-navigation e-pv-tbar-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_firstPage"
+                  style=""
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-first-page-navigation-icon e-pv-icon e-icon-left"
+                    id="preview-permit-amendment-pdf_firstPageIcon"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                    id="preview-permit-amendment-pdf_firstPageText"
+                  >
+                    First Page
+                  </span>
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-previous-page-navigation-container e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_previousPageContainer"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-label="Show previous page (←)"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib e-pv-previous-page-navigation e-pv-tbar-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_previousPage"
+                  style=""
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-previous-page-navigation-icon e-pv-icon e-icon-left"
+                    id="preview-permit-amendment-pdf_previousPageIcon"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                    id="preview-permit-amendment-pdf_previousPageText"
+                  >
+                    Previous Page
+                  </span>
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-next-page-navigation-container e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_nextPageContainer"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-label="Show next page (→)"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib e-pv-next-page-navigation e-pv-tbar-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_nextPage"
+                  style=""
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-next-page-navigation-icon e-pv-icon e-icon-left"
+                    id="preview-permit-amendment-pdf_nextPageIcon"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                    id="preview-permit-amendment-pdf_nextPageText"
+                  >
+                    Next Page
+                  </span>
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-last-page-navigation-container e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_lastPageContainer"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-label="Show last page (Ctrl+→ or Ctrl+↓)"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib e-pv-last-page-navigation e-pv-tbar-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_lastPage"
+                  style=""
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-last-page-navigation-icon e-pv-icon e-icon-left"
+                    id="preview-permit-amendment-pdf_lastPageIcon"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                    id="preview-permit-amendment-pdf_lastPageText"
+                  >
+                    Last Page
+                  </span>
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-current-page-container e-template e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_currentPageInputContainer"
+                style="min-width: 20px;"
+              >
+                <span
+                  aria-disabled="true"
+                  class="e-control-wrapper e-numeric e-input-group e-pv-current-page-box e-valid-input"
+                >
+                  <input
+                    aria-label="Current page number"
+                    aria-valuenow="0"
+                    autocomplete="off"
+                    class="e-control e-numerictextbox e-lib e-input e-tooltip"
+                    data-tabindex="-1"
+                    id="preview-permit-amendment-pdf_currentPageInput"
+                    role="spinbutton"
+                    tabindex="0"
+                    type="text"
+                  />
+                  <input
+                    aria-label="hidden"
+                    class="e-numeric-hidden"
+                    data-tabindex="-1"
+                    name="preview-permit-amendment-pdf_currentPageInput"
+                    type="text"
+                    validatehidden="true"
+                  />
+                </span>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-total-page-container e-template e-popup-text"
+                id="preview-permit-amendment-pdf_totalPageContainer"
+              >
+                <span
+                  class="e-pv-total-page"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_totalPage"
+                  tabindex="-1"
+                >
+                  of 0
+                </span>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-navigation-separator-container e-separator"
+              />
+              <div
+                class="e-toolbar-item e-pv-zoom-out-container e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_zoomOutContainer"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-label="Zoom out (Ctrl+Minus)"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib e-pv-zoom-out e-pv-tbar-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_zoomOut"
+                  style=""
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-zoom-out-icon e-pv-icon e-icon-left"
+                    id="preview-permit-amendment-pdf_zoomOutIcon"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                    id="preview-permit-amendment-pdf_zoomOutText"
+                  >
+                    Zoom Out
+                  </span>
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-zoom-in-container e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_zoomInContainer"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-label="Zoom in (Ctrl+Plus)"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib e-pv-zoom-in e-pv-tbar-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_zoomIn"
+                  style=""
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-zoom-in-icon e-pv-icon e-icon-left"
+                    id="preview-permit-amendment-pdf_zoomInIcon"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                    id="preview-permit-amendment-pdf_zoomInText"
+                  >
+                    Zoom In
+                  </span>
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-zoom-drop-down-container e-template e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_zoomDropDownContainer"
+              >
+                <span
+                  aria-disabled="true"
+                  aria-labelledby="preview-permit-amendment-pdf_zoomDropDown_hidden"
+                  class="e-input-group e-control-wrapper e-pv-zoom-drop-down e-readonly e-ddl e-valid-input"
+                  style="width: 100%;"
+                >
+                  <select
+                    aria-hidden="true"
+                    aria-label="combobox"
+                    class="e-ddl-hidden"
+                    data-tabindex="-1"
+                    id="preview-permit-amendment-pdf_zoomDropDown_hidden"
+                    name="preview-permit-amendment-pdf_zoomDropDown"
+                    tabindex="-1"
+                  >
+                    <option
+                      selected=""
+                      value="4"
+                    >
+                      100%
+                    </option>
+                  </select>
+                  <input
+                    aria-autocomplete="both"
+                    aria-describedby="preview-permit-amendment-pdf_zoomDropDown"
+                    aria-disabled="false"
+                    aria-expanded="false"
+                    aria-label="Zoom"
+                    aria-readonly="true"
+                    autocapitalize="off"
+                    autocomplete="off"
+                    class="e-control e-combobox e-lib e-input e-keyboard e-tooltip"
+                    data-tabindex="-1"
+                    id="preview-permit-amendment-pdf_zoomDropDown"
+                    readonly=""
+                    role="combobox"
+                    spellcheck="false"
+                    style=""
+                    tabindex="-1"
+                    type="text"
+                    value="100%"
+                  />
+                  <span
+                    class="e-input-group-icon e-ddl-icon e-search-icon"
+                  />
+                </span>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-magnification-separator-container e-separator"
+              />
+              <div
+                class="e-toolbar-item e-pv-text-select-tool-container e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_selectToolContainer"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-label="Text selection tool (Shift+V)"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib e-pv-text-select-tool e-pv-tbar-btn e-tooltip e-pv-select"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_selectTool"
+                  style=""
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-text-select-tool-icon e-pv-icon e-icon-left"
+                    id="preview-permit-amendment-pdf_selectToolIcon"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                    id="preview-permit-amendment-pdf_selectToolText"
+                  >
+                    Selection
+                  </span>
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-pan-tool-container e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_handToolContainer"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-label="Pan mode (Shift+H)"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib e-pv-pan-tool e-pv-tbar-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_handTool"
+                  style=""
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-pan-tool-icon e-pv-icon e-icon-left"
+                    id="preview-permit-amendment-pdf_handToolIcon"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                    id="preview-permit-amendment-pdf_handToolText"
+                  >
+                    Pan
+                  </span>
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-pan-separator-container e-separator"
+              />
+              <div
+                class="e-toolbar-item e-pv-undo-container e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_undoContainer"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-label="Undo (Ctrl+Z)"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib e-pv-undo e-pv-tbar-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_undo"
+                  style=""
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-undo-icon e-pv-icon e-icon-left"
+                    id="preview-permit-amendment-pdf_undoIcon"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                    id="preview-permit-amendment-pdf_undoText"
+                  >
+                    Undo
+                  </span>
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-redo-container e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_redoContainer"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-label="Redo (Ctrl+Y)"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib e-pv-redo e-pv-tbar-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_redo"
+                  style=""
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-redo-icon e-pv-icon e-icon-left"
+                    id="preview-permit-amendment-pdf_redoIcon"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                    id="preview-permit-amendment-pdf_redoText"
+                  >
+                    Redo
+                  </span>
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-undo-separator-container e-separator"
+              />
+              <div
+                class="e-toolbar-item e-pv-comment-container e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_commentContainer"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-label="Add Comments"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib e-pv-comment e-pv-tbar-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_comment"
+                  style=""
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-comment-icon e-pv-icon e-icon-left"
+                    id="preview-permit-amendment-pdf_commentIcon"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                    id="preview-permit-amendment-pdf_commentText"
+                  >
+                    Add Comments
+                  </span>
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-comment-separator-container e-separator"
+              />
+              <div
+                class="e-toolbar-item e-pv-submit e-template e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_submitFormContainer"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-label="Submit Form"
+                  class="e-tbar-btn e-control e-tooltip e-lib"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_submitForm"
+                  style="font-size:15px"
+                  tabindex="-1"
+                >
+                  <span
+                    class="e-tbar-btn-text e-pv-submitform-text"
+                    id="preview-permit-amendment-pdf_submitFormSpan"
+                  >
+                    Submit Form
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
+              class="e-toolbar-center"
+            />
+            <div
+              class="e-toolbar-right"
+            >
+              <div
+                class="e-toolbar-item e-pv-text-search-container e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_searchContainer"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-label="Search"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib e-pv-text-search e-pv-tbar-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_search"
+                  style=""
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-text-search-icon e-pv-icon e-icon-left"
+                    id="preview-permit-amendment-pdf_searchIcon"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                    id="preview-permit-amendment-pdf_searchText"
+                  >
+                    Search
+                  </span>
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-annotation-container e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_annotationContainer"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-label="Edit Annotation"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib e-pv-annotation e-pv-tbar-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_annotation"
+                  style=""
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-annotation-icon e-pv-icon e-icon-left"
+                    id="preview-permit-amendment-pdf_annotationIcon"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                    id="preview-permit-amendment-pdf_annotationText"
+                  >
+                    Edit Annotation
+                  </span>
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-formdesigner-container e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_formdesignerContainer"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-label="Add and Edit Form Fields"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib e-pv-formdesigner e-pv-tbar-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_formdesigner"
+                  style=""
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-formdesigner-icon e-pv-icon e-icon-left"
+                    id="preview-permit-amendment-pdf_formdesignerIcon"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                    id="preview-permit-amendment-pdf_formdesignerText"
+                  >
+                    Add and Edit Form Fields
+                  </span>
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-print-document-container e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_printContainer"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-label="Print file (Ctrl+P)"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib e-pv-print-document e-pv-tbar-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_print"
+                  style=""
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-print-document-icon e-pv-icon e-icon-left"
+                    id="preview-permit-amendment-pdf_printIcon"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                    id="preview-permit-amendment-pdf_printText"
+                  >
+                    Print
+                  </span>
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-download-document-container e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_downloadContainer"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-label="Download file (Ctrl+S)"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib e-pv-download-document e-pv-tbar-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_download"
+                  style=""
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-download-document-icon e-pv-icon e-icon-left"
+                    id="preview-permit-amendment-pdf_downloadIcon"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                    id="preview-permit-amendment-pdf_downloadText"
+                  >
+                    Download
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <input
+            accept=".pdf"
+            aria-label="file upload element"
+            id="preview-permit-amendment-pdf_fileUploadElement"
+            style="position:fixed; left:-100em"
+            tabindex="-1"
+            type="file"
+          />
+        </div>
+        <div
+          aria-disabled="false"
+          aria-label="Annotation Toolbar"
+          aria-orientation="horizontal"
+          class="e-pv-annotation-toolbar e-control e-toolbar e-lib e-pv-toolbar-scroll e-toolpop e-keyboard"
+          id="preview-permit-amendment-pdf_annotation_toolbar"
+          role="toolbar"
+          style="display: none;"
+        >
+          <div
+            class="e-toolbar-items e-tbar-pos"
+          >
+            <div
+              class="e-toolbar-left"
+            >
+              <div
+                class="e-toolbar-item e-tbtn-align e-pv-highlight-container e-popup-text"
+                id="preview-permit-amendment-pdf_highlightContainer"
+              >
+                <button
+                  aria-disabled="false"
+                  aria-label="Highlight Text"
+                  class="e-tbar-btn e-control e-btn e-lib e-icon-btn e-pv-highlight e-pv-tbar-btn e-tooltip"
+                  data-tabindex="0"
+                  id="preview-permit-amendment-pdf_highlight"
+                  style=""
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-highlight-icon e-pv-icon"
+                    id="preview-permit-amendment-pdf_highlightIcon"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-tbtn-align e-pv-underline-container e-popup-text"
+                id="preview-permit-amendment-pdf_underlineContainer"
+              >
+                <button
+                  aria-disabled="false"
+                  aria-label="Underline Text"
+                  class="e-tbar-btn e-control e-btn e-lib e-icon-btn e-pv-underline e-pv-tbar-btn e-tooltip"
+                  data-tabindex="0"
+                  id="preview-permit-amendment-pdf_underline"
+                  style=""
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-underline-icon e-pv-icon"
+                    id="preview-permit-amendment-pdf_underlineIcon"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-tbtn-align e-pv-strikethrough-container e-popup-text"
+                id="preview-permit-amendment-pdf_strikethroughContainer"
+              >
+                <button
+                  aria-disabled="false"
+                  aria-label="Strikethrough Text"
+                  class="e-tbar-btn e-control e-btn e-lib e-icon-btn e-pv-strikethrough e-pv-tbar-btn e-tooltip"
+                  data-tabindex="0"
+                  id="preview-permit-amendment-pdf_strikethrough"
+                  style=""
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-strikethrough-icon e-pv-icon"
+                    id="preview-permit-amendment-pdf_strikethroughIcon"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-hightlight-separator-container e-separator"
+              />
+              <div
+                class="e-toolbar-item e-pv-shape-template-container e-template"
+              >
+                <button
+                  aria-disabled="false"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  aria-label="Add Shapes"
+                  class="e-pv-annotation-shapes-container e-control e-dropdown-btn e-lib e-btn e-icon-btn e-tooltip"
+                  data-tabindex="0"
+                  id="preview-permit-amendment-pdf_annotation_shapes"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="e-btn-icon e-pv-annotation-shape-icon e-pv-icon"
+                  />
+                  <span
+                    class="e-btn-icon e-icons e-icon-right e-caret"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-shape-separator-container e-separator"
+              />
+              <div
+                class="e-toolbar-item e-pv-calibrate-template-container e-template"
+              >
+                <button
+                  aria-disabled="false"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  aria-label="Calibrate"
+                  class="e-pv-annotation-calibrate-container e-control e-dropdown-btn e-lib e-btn e-icon-btn e-tooltip"
+                  data-tabindex="0"
+                  id="preview-permit-amendment-pdf_annotation_calibrate"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="e-btn-icon e-pv-annotation-calibrate-icon e-pv-icon"
+                  />
+                  <span
+                    class="e-btn-icon e-icons e-icon-right e-caret"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-calibrate-separator-container e-separator"
+              />
+              <div
+                class="e-toolbar-item e-tbtn-align e-pv-annotation-freeTextEdit-container e-popup-text"
+                id="preview-permit-amendment-pdf_annotation_freeTextEditContainer"
+              >
+                <button
+                  aria-disabled="false"
+                  aria-label="Free Text"
+                  class="e-tbar-btn e-control e-btn e-lib e-icon-btn e-pv-annotation-freeTextEdit e-pv-tbar-btn e-tooltip"
+                  data-tabindex="0"
+                  id="preview-permit-amendment-pdf_annotation_freeTextEdit"
+                  style=""
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-freetext-icon e-pv-icon"
+                    id="preview-permit-amendment-pdf_annotation_freeTextEditIcon"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-freetext-separator-container e-separator"
+              />
+              <div
+                class="e-toolbar-item e-pv-stamp-template-container e-template"
+              >
+                <span
+                  aria-disabled="false"
+                  aria-expanded="false"
+                  aria-label="Add Stamp"
+                  class="e-pv-annotation-stamp-container e-control e-tooltip e-lib"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_annotation_stamp"
+                  role="combobox"
+                  tabindex="-1"
+                >
+                  <div
+                    class="e-menu-wrapper e-custom-scroll e-lib e-keyboard e-pv-stamp"
+                  >
+                    <ul
+                      class="e-lib e-menu e-control e-menu-parent"
+                      id="preview-permit-amendment-pdfcontextMenuElement"
+                      role="menubar"
+                      tabindex="0"
+                    >
+                      <li
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        aria-label="menuitem_14"
+                        class="e-menu-item e-menu-caret-icon"
+                        data-value="null"
+                        id="menuitem_14"
+                        role="menuitem"
+                        tabindex="-1"
+                      >
+                        <span
+                          class="e-menu-icon e-pv-stamp-icon e-pv-icon"
+                        />
+                        
+                        <span
+                          class="e-icons e-caret"
+                        />
+                      </li>
+                    </ul>
+                  </div>
+                </span>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-stamp-separator-container e-separator"
+              />
+              <div
+                class="e-toolbar-item e-pv-sign-template-container e-template"
+              >
+                <button
+                  aria-disabled="false"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  aria-label="dropdownbutton"
+                  class="e-pv-annotation-handwritten-container e-control e-tooltip e-lib e-dropdown-btn e-btn e-pv-handwritten-popup e-icon-btn"
+                  data-tabindex="0"
+                  id="preview-permit-amendment-pdf_annotation_signature"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="e-btn-icon e-pv-handwritten-icon e-pv-icon"
+                  />
+                  <span
+                    class="e-btn-icon e-icons e-icon-right e-caret"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-sign-separator-container e-separator"
+              />
+              <div
+                class="e-toolbar-item e-tbtn-align e-pv-annotation-ink-container e-popup-text"
+                id="preview-permit-amendment-pdf_annotation_inkContainer"
+              >
+                <button
+                  aria-disabled="false"
+                  aria-label="Draw Ink"
+                  class="e-tbar-btn e-control e-btn e-lib e-icon-btn e-pv-annotation-ink e-pv-tbar-btn e-tooltip"
+                  data-tabindex="0"
+                  id="preview-permit-amendment-pdf_annotation_ink"
+                  style=""
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-inkannotation-icon e-pv-icon"
+                    id="preview-permit-amendment-pdf_annotation_inkIcon"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-ink-separator-container e-separator"
+              />
+              <div
+                class="e-toolbar-item e-pv-fontfamily-container e-template"
+              >
+                <span
+                  class="e-input-group e-control-wrapper e-pv-prop-dropdown e-ddl e-valid-input e-control e-tooltip e-lib e-overlay"
+                  style="width: 110px;"
+                >
+                  <select
+                    aria-disabled="true"
+                    aria-hidden="true"
+                    aria-label="combobox"
+                    class="e-ddl-hidden"
+                    data-tabindex="-1"
+                    id="preview-permit-amendment-pdf_annotation_fontname_hidden"
+                    name="preview-permit-amendment-pdf_annotation_fontname"
+                    tabindex="-1"
+                  >
+                    <option
+                      selected=""
+                      value="Helvetica"
+                    >
+                      Helvetica
+                    </option>
+                  </select>
+                  <button
+                    aria-disabled="false"
+                    aria-label="Font Family"
+                    class="e-pv-annotation-fontname-container e-control e-combobox e-lib"
+                    data-tabindex="-1"
+                    id="preview-permit-amendment-pdf_annotation_fontname"
+                    style="display: none;"
+                  />
+                  <input
+                    aria-autocomplete="both"
+                    aria-describedby="preview-permit-amendment-pdf_annotation_fontname"
+                    aria-expanded="false"
+                    aria-label="combobox"
+                    aria-readonly="false"
+                    autocapitalize="off"
+                    autocomplete="off"
+                    class="e-input e-lib e-keyboard"
+                    role="combobox"
+                    spellcheck="false"
+                    tabindex="-1"
+                    type="text"
+                    value="Helvetica"
+                  />
+                  <span
+                    class="e-input-group-icon e-ddl-icon e-search-icon"
+                  />
+                </span>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-fontsize-container e-template"
+              >
+                <span
+                  class="e-input-group e-control-wrapper e-pv-prop-dropdown e-ddl e-valid-input e-control e-tooltip e-lib e-overlay"
+                  style="width: 80px;"
+                >
+                  <select
+                    aria-disabled="true"
+                    aria-hidden="true"
+                    aria-label="combobox"
+                    class="e-ddl-hidden"
+                    data-tabindex="-1"
+                    id="preview-permit-amendment-pdf_annotation_fontsize_hidden"
+                    name="preview-permit-amendment-pdf_annotation_fontsize"
+                    tabindex="-1"
+                  >
+                    <option
+                      selected=""
+                      value="16px"
+                    >
+                      16px
+                    </option>
+                  </select>
+                  <button
+                    aria-disabled="false"
+                    aria-label="Font Size"
+                    class="e-pv-annotation-fontsize-container e-control e-combobox e-lib"
+                    data-tabindex="-1"
+                    id="preview-permit-amendment-pdf_annotation_fontsize"
+                    style="display: none;"
+                  />
+                  <input
+                    aria-autocomplete="both"
+                    aria-describedby="preview-permit-amendment-pdf_annotation_fontsize"
+                    aria-expanded="false"
+                    aria-label="combobox"
+                    aria-readonly="false"
+                    autocapitalize="off"
+                    autocomplete="off"
+                    class="e-input e-lib e-keyboard"
+                    role="combobox"
+                    spellcheck="false"
+                    tabindex="-1"
+                    type="text"
+                    value="16px"
+                  />
+                  <span
+                    class="e-input-group-icon e-ddl-icon e-search-icon"
+                  />
+                </span>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-text-color-container e-template e-overlay"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  aria-label="Font Color"
+                  class="e-pv-annotation-textcolor-container e-control e-dropdown-btn e-lib e-btn e-icon-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_annotation_textcolor"
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-btn-icon e-pv-annotation-textcolor-icon e-pv-icon"
+                    style="border-bottom-color: #000000;"
+                  />
+                  <span
+                    class="e-btn-icon e-icons e-icon-right e-caret"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-alignment-container e-template e-overlay"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  aria-label="Text Align"
+                  class="e-pv-annotation-textalign-container e-control e-dropdown-btn e-lib e-btn e-icon-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_annotation_textalign"
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-btn-icon e-pv-annotation-textalign-icon e-pv-icon"
+                  />
+                  <span
+                    class="e-btn-icon e-icons e-icon-right e-caret"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-text-properties-container e-template e-overlay"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  aria-label="Font Style"
+                  class="e-pv-annotation-textprop-container e-control e-dropdown-btn e-lib e-btn e-caret-hide e-icon-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_annotation_textproperties"
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-btn-icon e-pv-annotation-textprop-icon e-pv-icon"
+                  />
+                  <span
+                    class="e-btn-icon e-icons e-icon-right e-caret"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-text-separator-container e-separator"
+              />
+              <div
+                class="e-toolbar-item e-pv-color-template-container e-template e-overlay"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  aria-label="Change Color"
+                  class="e-pv-annotation-color-container e-control e-dropdown-btn e-lib e-btn e-icon-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_annotation_color"
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-btn-icon e-pv-annotation-color-icon e-pv-icon"
+                    style="border-bottom-color: #000000;"
+                  />
+                  <span
+                    class="e-btn-icon e-icons e-icon-right e-caret"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-stroke-template-container e-template e-overlay"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  aria-label="Change Stroke Color"
+                  class="e-pv-annotation-stroke-container e-control e-dropdown-btn e-lib e-btn e-icon-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_annotation_stroke"
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-btn-icon e-pv-annotation-stroke-icon e-pv-icon"
+                    style="border-bottom-color: #000000;"
+                  />
+                  <span
+                    class="e-btn-icon e-icons e-icon-right e-caret"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-thickness-template-container e-template e-overlay"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  aria-label="Change Border Thickness"
+                  class="e-pv-annotation-thickness-container e-control e-dropdown-btn e-lib e-btn e-icon-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_annotation_thickness"
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-btn-icon e-pv-annotation-thickness-icon e-pv-icon"
+                  />
+                  <span
+                    class="e-btn-icon e-icons e-icon-right e-caret"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-opacity-template-container e-template e-overlay"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  aria-label="Change Opacity"
+                  class="e-pv-annotation-opacity-container e-control e-dropdown-btn e-lib e-btn e-icon-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_annotation_opacity"
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-btn-icon e-pv-annotation-opacity-icon e-pv-icon"
+                  />
+                  <span
+                    class="e-btn-icon e-icons e-icon-right e-caret"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-pv-opacity-separator-container e-separator"
+              />
+              <div
+                class="e-toolbar-item e-tbtn-align e-pv-annotation-delete-container e-popup-text e-overlay"
+                id="preview-permit-amendment-pdf_annotation_deleteContainer"
+              >
+                <button
+                  aria-disabled="true"
+                  aria-label="Delete annotation (delete)"
+                  class="e-tbar-btn e-control e-btn e-lib e-icon-btn e-pv-annotation-delete e-pv-tbar-btn e-tooltip"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_annotation_delete"
+                  style=""
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-annotation-delete-icon e-pv-icon"
+                    id="preview-permit-amendment-pdf_annotation_deleteIcon"
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              class="e-toolbar-center"
+            />
+            <div
+              class="e-toolbar-right"
+            >
+              <div
+                class="e-toolbar-item e-tbtn-align e-pv-annotation-comment-panel-container e-popup-text"
+                id="preview-permit-amendment-pdf_annotation_commentPanelContainer"
+              >
+                <button
+                  aria-disabled="false"
+                  aria-label="Comment Panel (Ctrl+Alt+0)"
+                  class="e-tbar-btn e-control e-btn e-lib e-icon-btn e-pv-annotation-comment-panel e-pv-tbar-btn e-tooltip"
+                  data-tabindex="0"
+                  id="preview-permit-amendment-pdf_annotation_commentPanel"
+                  style=""
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-comment-panel-icon e-pv-icon"
+                    id="preview-permit-amendment-pdf_annotation_commentPanelIcon"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-tbtn-align e-pv-annotation-tools-close-container e-popup-text"
+                id="preview-permit-amendment-pdf_annotation_closeContainer"
+              >
+                <button
+                  aria-disabled="false"
+                  aria-label="Close Annotation Toolbar"
+                  class="e-tbar-btn e-control e-btn e-lib e-icon-btn e-pv-annotation-tools-close e-pv-tbar-btn"
+                  data-tabindex="-1"
+                  id="preview-permit-amendment-pdf_annotation_close"
+                  style=""
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-annotation-tools-close-icon e-pv-icon"
+                    id="preview-permit-amendment-pdf_annotation_closeIcon"
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="e-pv-viewer-container e-enable-text-selection"
+          id="preview-permit-amendment-pdf_viewerContainer"
+          style="left: 0px; right: 0px; width: 0px; height: 0px; cursor: auto;"
+          tabindex="-1"
+        >
+          <div
+            class="e-pv-page-container"
+            id="preview-permit-amendment-pdf_pageViewContainer"
+            role="document"
+            style="width: 0px;"
+          />
+          <div
+            id="preview-permit-amendment-pdf_loadingIndicator"
+            style="display: block;"
+          >
+            <div
+              class="e-spinner-pane e-spin-center e-spin-hide"
+            >
+              <div
+                class="e-spinner-inner"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        aria-label="Sidebar Toolbar"
+        aria-orientation="vertical"
+        class="e-pv-sidebar-toolbar"
+        id="preview-permit-amendment-pdf_sideBarToolbar"
+        role="toolbar"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <button
+          aria-label="Page Thumbnails"
+          class="e-pv-tbar-btn e-pv-thumbnail-view-button e-btn e-control e-tooltip e-lib"
+          disabled="disabled"
+          id="preview-permit-amendment-pdf_thumbnail-view"
+          tabindex="-1"
+          type="button"
+        >
+          <span
+            class="e-pv-thumbnail-view-disable-icon e-pv-icon"
+            id="preview-permit-amendment-pdf_thumbnail-view_icon"
+          />
+        </button>
+        <button
+          aria-label="Bookmarks"
+          class="e-pv-tbar-btn e-pv-bookmark-button e-btn e-control e-tooltip e-lib"
+          disabled="disabled"
+          id="preview-permit-amendment-pdf_bookmark"
+          tabindex="-1"
+          type="button"
+        >
+          <span
+            class="e-pv-bookmark-disable-icon e-pv-icon e-pv-bookmark-icon"
+            id="preview-permit-amendment-pdf_bookmark_icon"
+          />
+        </button>
+      </div>
+      <div
+        class="e-pv-sidebar-toolbar-splitter e-left"
+        id="preview-permit-amendment-pdf_sideBarToolbarSplitter"
+        style="display: block;"
+      />
+      <div
+        class="e-pv-sidebar-content-container e-left"
+        id="preview-permit-amendment-pdf_sideBarContentContainer"
+        style="display: none;"
+      >
+        <div
+          class="e-pv-sidebar-content-splitter"
+          id="preview-permit-amendment-pdf_sideBarContentSplitter"
+        />
+        <div
+          class="e-pv-sidebar-content"
+          id="preview-permit-amendment-pdf_sideBarContent"
+        >
+          <div
+            class="e-pv-thumbnail-view e-pv-thumbnail-row"
+            id="preview-permit-amendment-pdf_thumbnail_view"
+          />
+        </div>
+        <div
+          class="e-pv-sidebar-title-container"
+          id="preview-permit-amendment-pdf_sideBarTitleContainer"
+        >
+          <div
+            class="e-pv-sidebar-title e-left"
+            id="preview-permit-amendment-pdf_sideBarTitle"
+            tabindex="-1"
+          />
+          <button
+            aria-label="close button"
+            class="e-btn e-pv-tbar-btn e-pv-title-close-div e-btn"
+            id="preview-permit-amendment-pdf_close_btn"
+            style="left: 170px;"
+            type="button"
+          >
+            <span
+              class="e-pv-title-close-icon e-pv-icon"
+              id="preview-permit-amendment-pdf_close_icon"
+            />
+          </button>
+        </div>
+        <div
+          class="e-pv-sidebar-resizer e-left"
+          id="preview-permit-amendment-pdf_sideBarResizer"
+        >
+          <div
+            class="e-pv-resize-icon e-pv-icon"
+            id="preview-permit-amendment-pdf_resize"
+            style="position: absolute;"
+          />
+        </div>
+      </div>
+      <div
+        class="e-pv-comment-panel"
+        id="preview-permit-amendment-pdf_commantPanel"
+        style="right: 0px; bottom: 0px; display: none;"
+      >
+        <div
+          class="e-pv-comment-panel-title-container"
+          id="preview-permit-amendment-pdf_commentPanelTitleContainer"
+        >
+          <div
+            class="e-pv-comment-panel-title"
+            id="preview-permit-amendment-pdf_commentPanelTitle"
+            tabindex="-1"
+          />
+          <button
+            aria-label="annotation button"
+            class="e-btn e-pv-tbar-btn e-pv-comment-panel-title-close-div e-btn"
+            id="preview-permit-amendment-pdf_annotations_btn"
+            type="button"
+          >
+            <span
+              class="e-pv-more-icon e-pv-icon"
+              id="preview-permit-amendment-pdf_annotation_more_icon"
+            />
+          </button>
+        </div>
+        <div
+          class="e-pv-comments-content-container"
+          id="preview-permit-amendment-pdf_commentscontentcontainer"
+        />
+        <input
+          accept=".json"
+          aria-label="upload elements"
+          id="preview-permit-amendment-pdf_annotationUploadElement"
+          style="position:fixed; left:-100em"
+          type="file"
+        />
+        <input
+          accept=".xfdf"
+          aria-label="upload elements"
+          id="preview-permit-amendment-pdf_annotationXFdfUploadElement"
+          style="position:fixed; left:-100em"
+          type="file"
+        />
+      </div>
+      <div
+        class="e-pv-comment-panel-resizer e-right"
+        id="preview-permit-amendment-pdf_commentPanelResizer"
+        style="display: none;"
+      >
+        <div
+          class="e-pv-resize-icon e-pv-icon"
+          id="preview-permit-amendment-pdf_commentPanel_resize"
+          style="position: absolute;"
+        />
+      </div>
+      <div
+        class="e-pv-text-search-bar"
+        id="preview-permit-amendment-pdf_search_box"
+        style="top: 0px; display: none; right: 88.3px;"
+      >
+        <div
+          class="e-pv-text-search-bar-elements"
+          id="preview-permit-amendment-pdf_search_box_elements"
+        >
+          <div
+            class="e-input-group e-pv-text-search-input"
+            id="preview-permit-amendment-pdf_search_input_container"
+          >
+            <span
+              aria-labelledby="preview-permit-amendment-pdf_search_input_hidden"
+              class="e-input-group e-control-wrapper e-ddl"
+              style="width: 100%;"
+            >
+              <select
+                aria-hidden="true"
+                aria-label="autocomplete"
+                class="e-ddl-hidden"
+                id="preview-permit-amendment-pdf_search_input_hidden"
+                name="preview-permit-amendment-pdf_search_input"
+                tabindex="-1"
+              />
+              <input
+                aria-autocomplete="both"
+                aria-disabled="false"
+                aria-expanded="false"
+                aria-label="autocomplete"
+                aria-readonly="false"
+                autocapitalize="off"
+                autocomplete="off"
+                class="e-input e-pv-search-input-ele e-control e-autocomplete e-lib e-keyboard"
+                id="preview-permit-amendment-pdf_search_input"
+                placeholder="Find in document"
+                role="combobox"
+                spellcheck="false"
+                style=""
+                tabindex="0"
+                type="text"
+              />
+              <span
+                aria-label="close"
+                class="e-clear-icon e-clear-icon-hide"
+                role="button"
+              />
+            </span>
+            <div
+              id="preview-permit-amendment-pdf_textSearchLoadingIndicator"
+              style="position: absolute; top: 15px; left: -46px;"
+            >
+              <div
+                class="e-spinner-pane e-spin-center e-spin-hide"
+              >
+                <div
+                  class="e-spinner-inner"
+                />
+              </div>
+            </div>
+          </div>
+          <span
+            class="e-pv-search-count"
+            id="preview-permit-amendment-pdf_search_count"
+            style="display: none;"
+          />
+          <button
+            aria-label="Previous Search text"
+            class="e-btn e-icon-btn e-pv-text-search-btn e-pv-prev-search"
+            disabled=""
+            id="preview-permit-amendment-pdf_prev_occurrence"
+            type="button"
+          >
+            <span
+              class="e-pv-icon-search e-pv-prev-search-icon"
+              id="preview-permit-amendment-pdf_prev_occurrenceIcon"
+            />
+          </button>
+          <button
+            aria-label="Next Search text"
+            class="e-btn e-icon-btn e-pv-text-search-btn e-pv-next-search"
+            disabled=""
+            id="preview-permit-amendment-pdf_next_occurrence"
+            type="button"
+          >
+            <span
+              class="e-pv-icon-search e-pv-next-search-icon"
+              id="preview-permit-amendment-pdf_next_occurrenceIcon"
+            />
+          </button>
+        </div>
+        <div
+          class="e-pv-textsearch-match-case-container"
+          id="preview-permit-amendment-pdf_match_case_container"
+        >
+          <div
+            class="e-checkbox-wrapper e-wrapper e-pv-match-case"
+          >
+            <label
+              for="preview-permit-amendment-pdf_match_case"
+            >
+              <input
+                class="e-control e-checkbox e-lib"
+                id="preview-permit-amendment-pdf_match_case"
+                tabindex="0"
+                type="checkbox"
+              />
+              <span
+                class="e-icons e-frame"
+              />
+              <span
+                class="e-label"
+              >
+                Match case
+              </span>
+            </label>
+          </div>
+          <div
+            class="e-checkbox-wrapper e-wrapper e-pv-match-any-word"
+          >
+            <label
+              for="preview-permit-amendment-pdf_match_any_word"
+            >
+              <input
+                class="e-control e-checkbox e-lib"
+                id="preview-permit-amendment-pdf_match_any_word"
+                tabindex="0"
+                type="checkbox"
+              />
+              <span
+                class="e-icons e-frame"
+              />
+              <span
+                class="e-label"
+              >
+                Match any word
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div
+        class="e-pv-annotation-note"
+        id="preview-permit-amendment-pdf_annotation_note"
+        style="display:none"
+      >
+        <div
+          class="e-pv-annotation-note-author"
+          id="preview-permit-amendment-pdf_annotation_note_author"
+        />
+        <div
+          class="e-pv-annotation-note-content"
+          id="preview-permit-amendment-pdf_annotation_note_content"
+        />
+      </div>
+    </div>
+    <ul
+      id="contextmenu_0"
+      style="display: none;"
+    />
+    <div
+      class="e-pv-print-popup-container"
+      id="preview-permit-amendment-pdf_printcontainer"
+      style="display: none;"
+    >
+      <div
+        class="e-pv-print-loading-container"
+        id="preview-permit-amendment-pdf_printLoadingIndicator"
+      >
+        <div
+          class="e-spinner-pane e-spin-center e-spin-hide"
+        >
+          <div
+            class="e-spinner-inner"
+          />
+        </div>
+      </div>
+    </div>
+    <ul
+      id="contextmenu_15"
+      style="display: none;"
+    />
+  </div>
+</div>
+`;

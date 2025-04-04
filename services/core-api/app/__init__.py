@@ -16,6 +16,7 @@ from app.flask_jwt_oidc_local.exceptions import AuthError
 from werkzeug.exceptions import Forbidden
 import traceback
 from .sqlalchemy_extensions import register_sqlalchemy_continuum
+
 register_sqlalchemy_continuum()
 
 from app.api.compliance.namespace import api as compliance_api
@@ -34,7 +35,7 @@ from app.api.document_generation.namespace import api as doc_gen_api
 from app.api.securities.namespace import api as securities_api
 from app.api.verify.namespace import api as verify_api
 from app.api.orgbook.namespace import api as orgbook_api
-from app.api.EMLI_contacts.namespace import api as EMLI_contacts_api
+from app.api.ministry_contacts.namespace import api as ministry_contacts_api
 from app.api.projects.namespace import api as projects_api
 from app.api.notice_of_departure.namespace import api as notice_of_departure_api
 from app.api.activity.namespace import api as activity_api
@@ -58,6 +59,7 @@ from app.api.exception.mds_core_api_exceptions import MDSCoreAPIException
 from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
 
+
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
     if test_config is None:
@@ -75,9 +77,11 @@ def create_app(test_config=None):
         path = request.path
         ip_address = request.remote_addr
         http_version = request.environ.get('SERVER_PROTOCOL', 'HTTP/1.1')
-        if path != '/health':
+        if '/health' not in path:
             # Log combined request and response information
-            current_app.logger.info(f'{ip_address} - - [{get_formatted_current_time()}] "{method} {path} {http_version}" {response.status_code} -')
+            current_app.logger.info(
+                f'{ip_address} - - [{get_formatted_current_time()}] "{method} {path} {http_version}" {response.status_code} -'
+            )
 
         return response
 
@@ -118,14 +122,13 @@ def make_celery(app):
     celery.conf.update(
         result_backend=Config.CELERY_RESULT_BACKEND,
         broker_url=Config.CELERY_BROKER_URL,
-        # Set default queue to put tasks in
+                                                             # Set default queue to put tasks in
         task_default_queue=Config.CELERY_DEFAULT_QUEUE,
-        # Register beat schedule (for triggering scheduled tasks)
+                                                             # Register beat schedule (for triggering scheduled tasks)
         beat_schedule=Config.CELERY_BEAT_SCHEDULE,
         beat_scheduler='redbeat.RedBeatScheduler',
         redbeat_redis_url=Config.CELERY_READBEAT_BROKER_URL,
-        redbeat_lock_key='core-api'
-    )
+        redbeat_lock_key='core-api')
 
     celery.steps['worker'].add(HealthCheckProbe)
 
@@ -165,7 +168,6 @@ def register_extensions(app, test_config=None):
     db.init_app(app)
     CORS(app)
 
-
     # Set up Marshmallow
     with app.app_context():
         setup_marshmallow()
@@ -191,7 +193,7 @@ def register_routes(app):
     root_api_namespace.add_namespace(securities_api)
     root_api_namespace.add_namespace(verify_api)
     root_api_namespace.add_namespace(orgbook_api)
-    root_api_namespace.add_namespace(EMLI_contacts_api)
+    root_api_namespace.add_namespace(ministry_contacts_api)
     root_api_namespace.add_namespace(projects_api)
     root_api_namespace.add_namespace(notice_of_departure_api)
     root_api_namespace.add_namespace(activity_api)

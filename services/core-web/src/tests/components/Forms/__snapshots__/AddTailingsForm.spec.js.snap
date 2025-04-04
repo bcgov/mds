@@ -1,11 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddTailingsForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  name="ADD_TAILINGS"
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "enableReinitialize": true,
+      "onSubmitSuccess": [Function],
+      "touchOnBlur": false,
+    }
+  }
 >
   <Row
     gutter={16}
@@ -13,21 +18,18 @@ exports[`AddTailingsForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="mine_tailings_storage_facility_name"
-          label="Tailings Storage Facility Name*"
-          name="mine_tailings_storage_facility_name"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="mine_tailings_storage_facility_name"
+        label="Tailings Storage Facility Name"
+        name="mine_tailings_storage_facility_name"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -36,21 +38,17 @@ exports[`AddTailingsForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="notes"
-          label="Notes"
-          name="notes"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="notes"
+        label="Notes"
+        name="notes"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -60,45 +58,37 @@ exports[`AddTailingsForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="latitude"
-          label="Latitude"
-          name="latitude"
-          validate={
-            Array [
-              [Function],
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="latitude"
+        label="Latitude"
+        name="latitude"
+        validate={
+          Array [
+            [Function],
+            [Function],
+            [Function],
+          ]
+        }
+      />
     </Col>
     <Col
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="longitude"
-          label="Longitude"
-          name="longitude"
-          validate={
-            Array [
-              [Function],
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="longitude"
+        label="Longitude"
+        name="longitude"
+        validate={
+          Array [
+            [Function],
+            [Function],
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <Row
@@ -108,33 +98,25 @@ exports[`AddTailingsForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          data={Array []}
-          id="consequence_classification_status_code"
-          label="Consequence Classification"
-          name="consequence_classification_status_code"
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        data={Array []}
+        id="consequence_classification_status_code"
+        label="Consequence Classification"
+        name="consequence_classification_status_code"
+      />
     </Col>
     <Col
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          data={Array []}
-          id="tsf_operating_status_code"
-          label="Operating Status"
-          name="tsf_operating_status_code"
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        data={Array []}
+        id="tsf_operating_status_code"
+        label="Operating Status"
+        name="tsf_operating_status_code"
+      />
     </Col>
   </Row>
   <Row
@@ -144,63 +126,35 @@ exports[`AddTailingsForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Connect(PartySelectField)
-          allowAddingParties={true}
-          allowNull={true}
-          id="eor_party_guid"
-          label="Engineer of Record"
-          name="eor_party_guid"
-          partyLabel="EoR"
-        />
-      </FormItem>
+      <PartySelectField
+        allowAddingParties={true}
+        allowNull={true}
+        id="eor_party_guid"
+        label="Engineer of Record"
+        name="eor_party_guid"
+        partyLabel="EoR"
+      />
     </Col>
     <Col
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          data={Array []}
-          id="itrb_exemption_status_code"
-          label="Has Independent Tailings Review Board?"
-          name="itrb_exemption_status_code"
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        data={Array []}
+        id="itrb_exemption_status_code"
+        label="Has Independent Tailings Review Board?"
+        name="itrb_exemption_status_code"
+      />
     </Col>
   </Row>
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      disabled={false}
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile"
-        disabled={false}
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile"
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      mockTitle
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonText="mockTitle"
+    />
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

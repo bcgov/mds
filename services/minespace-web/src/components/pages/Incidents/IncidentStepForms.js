@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { getFormValues } from "redux-form";
+import { getFormValues } from "@mds/common/components/forms/form";
 import { Button, Col, Popconfirm, Row } from "antd";
 import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";

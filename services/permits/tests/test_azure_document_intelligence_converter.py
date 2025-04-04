@@ -3,17 +3,20 @@ import os
 from unittest import mock
 
 import pytest
-from app.permit_conditions.converters.azure_document_intelligence_converter import (
+from app.pipelines.permit_condition_extraction.components.azure_document_intelligence_converter import (
     AzureDocumentIntelligenceConverter,
-    _create_csv_representation,
 )
-from app.permit_conditions.tasks.tasks import task_context
+from app.tasks.tasks import task_context
 from tests.mocks import MockContext
 
 
 @pytest.fixture
 def converter():
-    return AzureDocumentIntelligenceConverter()
+    return AzureDocumentIntelligenceConverter(
+        api_key='abc123',
+        api_version='v1.0',
+        endpoint='https://test.com',
+    )
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -22,11 +25,11 @@ def set_env():
 
 
 @mock.patch(
-    "app.permit_conditions.converters.azure_document_intelligence_converter.DEBUG_MODE",
+    "app.pipelines.permit_condition_extraction.components.azure_document_intelligence_converter.DEBUG_MODE",
     False,
 )
 @mock.patch(
-    "app.permit_conditions.converters.azure_document_intelligence_converter.DocumentAnalysisClient"
+    "app.pipelines.permit_condition_extraction.components.azure_document_intelligence_converter.DocumentIntelligenceClient"
 )
 def test_run(mock_client, converter, tmp_path):
     os.environ["DEBUG_MODE"] = "faalse"
@@ -42,10 +45,9 @@ def test_run(mock_client, converter, tmp_path):
             bounding_regions=[
                 mock.Mock(
                     polygon=[
-                        mock.Mock(x=1, y=2),
-                        mock.Mock(x=3, y=4),
-                        mock.Mock(x=5, y=6),
-                    ]
+                        1,2,3,4,5,6,7,8
+                    ],
+                    page_number=1
                 )
             ],
         ),
@@ -55,10 +57,9 @@ def test_run(mock_client, converter, tmp_path):
             bounding_regions=[
                 mock.Mock(
                     polygon=[
-                        mock.Mock(x=2, y=2),
-                        mock.Mock(x=3, y=9),
-                        mock.Mock(x=5, y=6),
-                    ]
+                        2,2,3,9,5,6,6,4
+                    ],
+                    page_number=2
                 )
             ],
         ),
@@ -71,19 +72,14 @@ def test_run(mock_client, converter, tmp_path):
 
     assert isinstance(result, dict)
     assert "documents" in result
-    assert "permit_condition_csv" in result
 
     documents = result["documents"]
-    permit_condition_csv = result["permit_condition_csv"]
 
     assert isinstance(documents, list)
-    assert isinstance(permit_condition_csv, list)
 
     assert len(documents) == 2
-    assert len(permit_condition_csv) == 1
 
     document = documents[0]
-    csv_document = permit_condition_csv[0]
 
     res = json.loads(document.content)
 
@@ -95,16 +91,14 @@ def test_run(mock_client, converter, tmp_path):
     assert document.meta == {
         "bounding_box": {
             "top": 2,
-            "right": 5,
-            "bottom": 6,
+            "right": 7,
+            "bottom": 8,
             "left": 1,
         },
+        "page": 1,
         "role": "Test role",
     }
 
-    res2 = json.loads(documents[1].content)
-
-    assert csv_document.content == f'"id","text"\n"{res['id']}","Test paragraph"\n"{res2['id']}","Test paragraph2"\n'
 
 
 def test_add_metadata_to_document(converter):
@@ -115,10 +109,10 @@ def test_add_metadata_to_document(converter):
         bounding_regions=[
             mock.Mock(
                 polygon=[
-                    mock.Mock(x=1, y=2),
-                    mock.Mock(x=3, y=4),
-                    mock.Mock(x=5, y=6),
-                ]
+                    1,2,3,4,5,6,7,8
+
+                ],
+                page_number=2
             )
         ],
     )
@@ -131,9 +125,10 @@ def test_add_metadata_to_document(converter):
     assert document.meta == {
         "bounding_box": {
             "top": 2,
-            "right": 5,
-            "bottom": 6,
+            "right": 7,
+            "bottom": 8,
             "left": 1,
         },
+        "page": 2,
         "role": "Test role",
     }

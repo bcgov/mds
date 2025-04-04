@@ -4,7 +4,7 @@ import {
   IMineVerifiedStatus,
   IMineWorkInformation,
   ITailingsStorageFacility,
-} from "@mds/common/index";
+} from "@mds/common/interfaces";
 
 export interface IMine {
   mine_guid: string;

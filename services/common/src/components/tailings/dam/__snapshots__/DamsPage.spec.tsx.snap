@@ -1,0 +1,933 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tailings DamsPage renders properly 1`] = `
+<div>
+  <div>
+    <div
+      class="ant-row"
+    >
+      <div
+        class="ant-col ant-col-24"
+      >
+        <h1
+          class="ant-typography"
+        >
+          Create Dam
+        </h1>
+      </div>
+      <div
+        class="ant-col ant-col-24"
+      >
+        <a
+          href="/test"
+        >
+          <span
+            aria-label="arrow-left"
+            class="anticon anticon-arrow-left padding-sm--right"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              class=""
+              data-icon="arrow-left"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M872 474H286.9l350.2-304c5.6-4.9 2.2-14-5.2-14h-88.5c-3.9 0-7.6 1.4-10.5 3.9L155 487.8a31.96 31.96 0 000 48.3L535.1 866c1.5 1.3 3.3 2 5.2 2h91.5c7.4 0 10.8-9.2 5.2-14L286.9 550H872c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8z"
+              />
+            </svg>
+          </span>
+          Back to: 
+          MockTSF
+           Dams page
+        </a>
+      </div>
+    </div>
+    <div
+      class="ant-divider ant-divider-horizontal"
+      role="separator"
+    />
+    <div
+      class="ant-row"
+    >
+      <div
+        class="ant-col ant-col-6 stepped-form-menu-container"
+      >
+        <ul
+          class="ant-menu ant-menu-root ant-menu-inline ant-menu-light stepped-form"
+          data-menu-list="true"
+          role="menu"
+          tabindex="0"
+        >
+          <li
+            aria-disabled="false"
+            class="ant-menu-item ant-menu-item-selected ant-menu-item-only-child stepped-menu-item"
+            data-menu-id="rc-menu-uuid-test-basic-dam-information"
+            role="menuitem"
+            style="padding-left: 24px;"
+            tabindex="-1"
+          >
+            <span
+              class="ant-menu-title-content"
+            >
+              Basic Dam Information
+            </span>
+          </li>
+        </ul>
+        <div
+          aria-hidden="true"
+          style="display: none;"
+        />
+      </div>
+      <div
+        class="ant-col ant-col-18"
+      >
+        <div
+          class="stepped-form-form-container"
+        >
+          <form
+            class="ant-form ant-form-vertical common-form common-form-ADD_EDIT_DAM form-edit"
+            id="ADD_EDIT_DAM"
+          >
+            <div>
+              <div
+                class="margin-large--bottom"
+              >
+                <h4
+                  class="ant-typography"
+                >
+                  Associated Dams - 
+                </h4>
+                <a
+                  class="associated-dams-link"
+                  href="/test"
+                >
+                  Return to all Associated Dams of 
+                  MockTSF
+                  .
+                </a>
+              </div>
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class="ant-form-item-required"
+                      for="ADD_EDIT_DAM_dam_type"
+                      title=""
+                    >
+                      <div
+                        style="width: 100%;"
+                      >
+                        Dam Type
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <div
+                          aria-required="true"
+                          class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                          data-cy="dam_type"
+                        >
+                          <div
+                            class="ant-select-selector"
+                          >
+                            <span
+                              class="ant-select-selection-search"
+                            >
+                              <input
+                                aria-activedescendant="dam_type_list_0"
+                                aria-autocomplete="list"
+                                aria-controls="dam_type_list"
+                                aria-haspopup="listbox"
+                                aria-owns="dam_type_list"
+                                aria-required="true"
+                                autocomplete="off"
+                                class="ant-select-selection-search-input"
+                                id="dam_type"
+                                role="combobox"
+                                type="search"
+                                value=""
+                              />
+                            </span>
+                            <span
+                              class="ant-select-selection-placeholder"
+                            >
+                              Please select
+                            </span>
+                          </div>
+                          <span
+                            aria-hidden="true"
+                            class="ant-select-arrow"
+                            style="user-select: none;"
+                            unselectable="on"
+                          >
+                            <span
+                              aria-label="down"
+                              class="anticon anticon-down ant-select-suffix"
+                              role="img"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="64 64 896 896"
+                                width="1em"
+                              >
+                                <path
+                                  d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="ADD_EDIT_DAM_dam_type_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class="ant-form-item-required"
+                      for="ADD_EDIT_DAM_dam_name"
+                      title=""
+                    >
+                      <div
+                        style="width: 100%;"
+                      >
+                        Dam Name
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="dam_name"
+                          class="ant-input"
+                          data-testid="dam_name"
+                          id="dam_name"
+                          name="dam_name"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="ADD_EDIT_DAM_dam_name_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ant-row"
+                style="margin-left: -8px; margin-right: -8px;"
+              >
+                <div
+                  class="ant-col ant-col-12"
+                  style="padding-left: 8px; padding-right: 8px;"
+                >
+                  <div
+                    class="ant-form-item ant-form-item-with-help"
+                  >
+                    <div
+                      class="ant-row ant-form-item-row"
+                    >
+                      <div
+                        class="ant-col ant-form-item-label"
+                      >
+                        <label
+                          class="ant-form-item-required"
+                          for="ADD_EDIT_DAM_latitude"
+                          title=""
+                        >
+                          <div
+                            style="width: 100%;"
+                          >
+                            Latitude
+                          </div>
+                        </label>
+                      </div>
+                      <div
+                        class="ant-col ant-form-item-control"
+                      >
+                        <div
+                          class="ant-form-item-control-input"
+                        >
+                          <div
+                            class="ant-form-item-control-input-content"
+                          >
+                            <input
+                              aria-label="latitude"
+                              class="ant-input"
+                              data-testid="latitude"
+                              id="latitude"
+                              name="latitude"
+                              type="text"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                        <div
+                          style="display: flex; flex-wrap: nowrap;"
+                        >
+                          <div
+                            class="ant-form-item-explain ant-form-item-explain-connected"
+                            id="ADD_EDIT_DAM_latitude_help"
+                            role="alert"
+                          >
+                            <div
+                              class=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="ant-col ant-col-12"
+                  style="padding-left: 8px; padding-right: 8px;"
+                >
+                  <div
+                    class="ant-form-item ant-form-item-with-help"
+                  >
+                    <div
+                      class="ant-row ant-form-item-row"
+                    >
+                      <div
+                        class="ant-col ant-form-item-label"
+                      >
+                        <label
+                          class="ant-form-item-required"
+                          for="ADD_EDIT_DAM_longitude"
+                          title=""
+                        >
+                          <div
+                            style="width: 100%;"
+                          >
+                            Longitude
+                          </div>
+                        </label>
+                      </div>
+                      <div
+                        class="ant-col ant-form-item-control"
+                      >
+                        <div
+                          class="ant-form-item-control-input"
+                        >
+                          <div
+                            class="ant-form-item-control-input-content"
+                          >
+                            <input
+                              aria-label="longitude"
+                              class="ant-input"
+                              data-testid="longitude"
+                              id="longitude"
+                              name="longitude"
+                              type="text"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                        <div
+                          style="display: flex; flex-wrap: nowrap;"
+                        >
+                          <div
+                            class="ant-form-item-explain ant-form-item-explain-connected"
+                            id="ADD_EDIT_DAM_longitude_help"
+                            role="alert"
+                          >
+                            <div
+                              class=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class="ant-form-item-required"
+                      for="ADD_EDIT_DAM_operating_status"
+                      title=""
+                    >
+                      <div
+                        style="width: 100%;"
+                      >
+                        Operating Status
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <div
+                          aria-required="true"
+                          class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                          data-cy="operating_status"
+                        >
+                          <div
+                            class="ant-select-selector"
+                          >
+                            <span
+                              class="ant-select-selection-search"
+                            >
+                              <input
+                                aria-activedescendant="operating_status_list_0"
+                                aria-autocomplete="list"
+                                aria-controls="operating_status_list"
+                                aria-haspopup="listbox"
+                                aria-owns="operating_status_list"
+                                aria-required="true"
+                                autocomplete="off"
+                                class="ant-select-selection-search-input"
+                                id="operating_status"
+                                role="combobox"
+                                type="search"
+                                value=""
+                              />
+                            </span>
+                            <span
+                              class="ant-select-selection-placeholder"
+                            >
+                              Please select
+                            </span>
+                          </div>
+                          <span
+                            aria-hidden="true"
+                            class="ant-select-arrow"
+                            style="user-select: none;"
+                            unselectable="on"
+                          >
+                            <span
+                              aria-label="down"
+                              class="anticon anticon-down ant-select-suffix"
+                              role="img"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="64 64 896 896"
+                                width="1em"
+                              >
+                                <path
+                                  d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="ADD_EDIT_DAM_operating_status_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class="ant-form-item-required"
+                      for="ADD_EDIT_DAM_consequence_classification"
+                      title=""
+                    >
+                      <div
+                        style="width: 100%;"
+                      >
+                        Dam Consequence Classification
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <div
+                          aria-required="true"
+                          class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                          data-cy="consequence_classification"
+                        >
+                          <div
+                            class="ant-select-selector"
+                          >
+                            <span
+                              class="ant-select-selection-search"
+                            >
+                              <input
+                                aria-activedescendant="consequence_classification_list_0"
+                                aria-autocomplete="list"
+                                aria-controls="consequence_classification_list"
+                                aria-haspopup="listbox"
+                                aria-owns="consequence_classification_list"
+                                aria-required="true"
+                                autocomplete="off"
+                                class="ant-select-selection-search-input"
+                                id="consequence_classification"
+                                role="combobox"
+                                type="search"
+                                value=""
+                              />
+                            </span>
+                            <span
+                              class="ant-select-selection-placeholder"
+                            >
+                              Please select
+                            </span>
+                          </div>
+                          <span
+                            aria-hidden="true"
+                            class="ant-select-arrow"
+                            style="user-select: none;"
+                            unselectable="on"
+                          >
+                            <span
+                              aria-label="down"
+                              class="anticon anticon-down ant-select-suffix"
+                              role="img"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="64 64 896 896"
+                                width="1em"
+                              >
+                                <path
+                                  d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="ADD_EDIT_DAM_consequence_classification_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class="ant-form-item-required"
+                      for="ADD_EDIT_DAM_permitted_dam_crest_elevation"
+                      title=""
+                    >
+                      <div
+                        style="width: 100%;"
+                      >
+                        Permitted Dam Crest Elevation (meters above sea level)
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="permitted_dam_crest_elevation"
+                          class="ant-input"
+                          data-testid="permitted_dam_crest_elevation"
+                          id="permitted_dam_crest_elevation"
+                          name="permitted_dam_crest_elevation"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="ADD_EDIT_DAM_permitted_dam_crest_elevation_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class="ant-form-item-required"
+                      for="ADD_EDIT_DAM_current_dam_height"
+                      title=""
+                    >
+                      <div
+                        style="width: 100%;"
+                      >
+                        Current Dam Height (downstream toe to crest in meters)
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="current_dam_height"
+                          class="ant-input"
+                          data-testid="current_dam_height"
+                          id="current_dam_height"
+                          name="current_dam_height"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="ADD_EDIT_DAM_current_dam_height_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class="ant-form-item-required"
+                      for="ADD_EDIT_DAM_current_elevation"
+                      title=""
+                    >
+                      <div
+                        style="width: 100%;"
+                      >
+                        Current Elevation (elevation at the top of the dam in meters)
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="current_elevation"
+                          class="ant-input"
+                          data-testid="current_elevation"
+                          id="current_elevation"
+                          name="current_elevation"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="ADD_EDIT_DAM_current_elevation_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class="ant-form-item-required"
+                      for="ADD_EDIT_DAM_max_pond_elevation"
+                      title=""
+                    >
+                      <div
+                        style="width: 100%;"
+                      >
+                        Maximum Pond Elevation (meters above sea level recorded in the previous 12 months)
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="max_pond_elevation"
+                          class="ant-input"
+                          data-testid="max_pond_elevation"
+                          id="max_pond_elevation"
+                          name="max_pond_elevation"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="ADD_EDIT_DAM_max_pond_elevation_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ant-form-item ant-form-item-with-help"
+              >
+                <div
+                  class="ant-row ant-form-item-row"
+                >
+                  <div
+                    class="ant-col ant-form-item-label"
+                  >
+                    <label
+                      class="ant-form-item-required"
+                      for="ADD_EDIT_DAM_min_freeboard_required"
+                      title=""
+                    >
+                      <div
+                        style="width: 100%;"
+                      >
+                        Minimum Freeboard Required (water surface to the crest of the dam, in meters)
+                      </div>
+                    </label>
+                  </div>
+                  <div
+                    class="ant-col ant-form-item-control"
+                  >
+                    <div
+                      class="ant-form-item-control-input"
+                    >
+                      <div
+                        class="ant-form-item-control-input-content"
+                      >
+                        <input
+                          aria-label="min_freeboard_required"
+                          class="ant-input"
+                          data-testid="min_freeboard_required"
+                          id="min_freeboard_required"
+                          name="min_freeboard_required"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-wrap: nowrap;"
+                    >
+                      <div
+                        class="ant-form-item-explain ant-form-item-explain-connected"
+                        id="ADD_EDIT_DAM_min_freeboard_required_help"
+                        role="alert"
+                      >
+                        <div
+                          class=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div
+            class="ant-row ant-row-space-between stepped-form-button-row"
+          >
+            <button
+              class="ant-btn ant-btn-default"
+              type="button"
+            >
+              <span>
+                Cancel
+              </span>
+            </button>
+            <button
+              class="ant-btn ant-btn-primary"
+              type="button"
+            >
+              <span>
+                Save and Return to Associated Dams
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

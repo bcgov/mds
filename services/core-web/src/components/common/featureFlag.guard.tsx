@@ -1,6 +1,6 @@
 import React from "react";
 import hoistNonReactStatics from "hoist-non-react-statics";
-import { Feature } from "@mds/common";
+import { Feature } from "@mds/common/utils/featureFlag";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import NullScreen from "./NullScreen";
 

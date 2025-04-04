@@ -1,0 +1,1058 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReportGetStarted renders create PRR properly 1`] = `
+<form
+  class="ant-form ant-form-vertical common-form common-form-VIEW_EDIT_REPORT form-edit"
+  id="VIEW_EDIT_REPORT"
+>
+  <div
+    class="ant-col ant-col-sm-24 ant-col-md-12"
+  >
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class="ant-form-item-required"
+            for="VIEW_EDIT_REPORT_permit_guid"
+            title=""
+          >
+            <div
+              style="width: 100%;"
+            >
+              Permit Number
+            </div>
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <div
+                aria-required="true"
+                class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                data-cy="permit_guid"
+              >
+                <div
+                  class="ant-select-selector"
+                >
+                  <span
+                    class="ant-select-selection-search"
+                  >
+                    <input
+                      aria-activedescendant="VIEW_EDIT_REPORT_permit_guid_list_0"
+                      aria-autocomplete="list"
+                      aria-controls="VIEW_EDIT_REPORT_permit_guid_list"
+                      aria-haspopup="listbox"
+                      aria-owns="VIEW_EDIT_REPORT_permit_guid_list"
+                      aria-required="true"
+                      autocomplete="off"
+                      class="ant-select-selection-search-input"
+                      id="VIEW_EDIT_REPORT_permit_guid"
+                      role="combobox"
+                      type="search"
+                      value=""
+                    />
+                  </span>
+                  <span
+                    class="ant-select-selection-item"
+                    title="C-12345"
+                  >
+                    C-12345
+                  </span>
+                </div>
+                <span
+                  aria-hidden="true"
+                  class="ant-select-arrow"
+                  style="user-select: none;"
+                  unselectable="on"
+                >
+                  <span
+                    aria-label="down"
+                    class="anticon anticon-down ant-select-suffix"
+                    role="img"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      data-icon="down"
+                      fill="currentColor"
+                      focusable="false"
+                      height="1em"
+                      viewBox="64 64 896 896"
+                      width="1em"
+                    >
+                      <path
+                        d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                      />
+                    </svg>
+                  </span>
+                </span>
+                <span
+                  aria-hidden="true"
+                  class="ant-select-clear"
+                  style="user-select: none;"
+                  unselectable="on"
+                >
+                  <span
+                    aria-label="close-circle"
+                    class="anticon anticon-close-circle"
+                    role="img"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      data-icon="close-circle"
+                      fill="currentColor"
+                      fill-rule="evenodd"
+                      focusable="false"
+                      height="1em"
+                      viewBox="64 64 896 896"
+                      width="1em"
+                    >
+                      <path
+                        d="M512 64c247.4 0 448 200.6 448 448S759.4 960 512 960 64 759.4 64 512 264.6 64 512 64zm127.98 274.82h-.04l-.08.06L512 466.75 384.14 338.88c-.04-.05-.06-.06-.08-.06a.12.12 0 00-.07 0c-.03 0-.05.01-.09.05l-45.02 45.02a.2.2 0 00-.05.09.12.12 0 000 .07v.02a.27.27 0 00.06.06L466.75 512 338.88 639.86c-.05.04-.06.06-.06.08a.12.12 0 000 .07c0 .03.01.05.05.09l45.02 45.02a.2.2 0 00.09.05.12.12 0 00.07 0c.02 0 .04-.01.08-.05L512 557.25l127.86 127.87c.04.04.06.05.08.05a.12.12 0 00.07 0c.03 0 .05-.01.09-.05l45.02-45.02a.2.2 0 00.05-.09.12.12 0 000-.07v-.02a.27.27 0 00-.05-.06L557.25 512l127.87-127.86c.04-.04.05-.06.05-.08a.12.12 0 000-.07c0-.03-.01-.05-.05-.09l-45.02-45.02a.2.2 0 00-.09-.05.12.12 0 00-.07 0z"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="VIEW_EDIT_REPORT_permit_guid_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="ant-col ant-col-sm-24 ant-col-md-12"
+  >
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class="ant-form-item-required"
+            for="VIEW_EDIT_REPORT_permit_condition_category_code"
+            title=""
+          >
+            <div
+              style="width: 100%;"
+            >
+              Permit Condition Category
+            </div>
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <div
+                aria-required="true"
+                class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                data-cy="permit_condition_category_code"
+              >
+                <div
+                  class="ant-select-selector"
+                >
+                  <span
+                    class="ant-select-selection-search"
+                  >
+                    <input
+                      aria-activedescendant="VIEW_EDIT_REPORT_permit_condition_category_code_list_0"
+                      aria-autocomplete="list"
+                      aria-controls="VIEW_EDIT_REPORT_permit_condition_category_code_list"
+                      aria-haspopup="listbox"
+                      aria-owns="VIEW_EDIT_REPORT_permit_condition_category_code_list"
+                      aria-required="true"
+                      autocomplete="off"
+                      class="ant-select-selection-search-input"
+                      id="VIEW_EDIT_REPORT_permit_condition_category_code"
+                      role="combobox"
+                      type="search"
+                      value=""
+                    />
+                  </span>
+                  <span
+                    class="ant-select-selection-item"
+                    title="GEC"
+                  >
+                    GEC
+                  </span>
+                </div>
+                <span
+                  aria-hidden="true"
+                  class="ant-select-arrow"
+                  style="user-select: none;"
+                  unselectable="on"
+                >
+                  <span
+                    aria-label="down"
+                    class="anticon anticon-down ant-select-suffix"
+                    role="img"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      data-icon="down"
+                      fill="currentColor"
+                      focusable="false"
+                      height="1em"
+                      viewBox="64 64 896 896"
+                      width="1em"
+                    >
+                      <path
+                        d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                      />
+                    </svg>
+                  </span>
+                </span>
+                <span
+                  aria-hidden="true"
+                  class="ant-select-clear"
+                  style="user-select: none;"
+                  unselectable="on"
+                >
+                  <span
+                    aria-label="close-circle"
+                    class="anticon anticon-close-circle"
+                    role="img"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      data-icon="close-circle"
+                      fill="currentColor"
+                      fill-rule="evenodd"
+                      focusable="false"
+                      height="1em"
+                      viewBox="64 64 896 896"
+                      width="1em"
+                    >
+                      <path
+                        d="M512 64c247.4 0 448 200.6 448 448S759.4 960 512 960 64 759.4 64 512 264.6 64 512 64zm127.98 274.82h-.04l-.08.06L512 466.75 384.14 338.88c-.04-.05-.06-.06-.08-.06a.12.12 0 00-.07 0c-.03 0-.05.01-.09.05l-45.02 45.02a.2.2 0 00-.05.09.12.12 0 000 .07v.02a.27.27 0 00.06.06L466.75 512 338.88 639.86c-.05.04-.06.06-.06.08a.12.12 0 000 .07c0 .03.01.05.05.09l45.02 45.02a.2.2 0 00.09.05.12.12 0 00.07 0c.02 0 .04-.01.08-.05L512 557.25l127.86 127.87c.04.04.06.05.08.05a.12.12 0 00.07 0c.03 0 .05-.01.09-.05l45.02-45.02a.2.2 0 00.05-.09.12.12 0 000-.07v-.02a.27.27 0 00-.05-.06L557.25 512l127.87-127.86c.04-.04.05-.06.05-.08a.12.12 0 000-.07c0-.03-.01-.05-.05-.09l-45.02-45.02a.2.2 0 00-.09-.05.12.12 0 00-.07 0z"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="VIEW_EDIT_REPORT_permit_condition_category_code_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+`;
+
+exports[`ReportGetStarted renders create verified PRR properly 1`] = `
+<form
+  class="ant-form ant-form-vertical common-form common-form-VIEW_EDIT_REPORT form-edit"
+  id="VIEW_EDIT_REPORT"
+>
+  <div
+    class="ant-col ant-col-sm-24 ant-col-md-12"
+  >
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class="ant-form-item-required"
+            for="VIEW_EDIT_REPORT_permit_guid"
+            title=""
+          >
+            <div
+              style="width: 100%;"
+            >
+              Permit Number
+            </div>
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <div
+                aria-required="true"
+                class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                data-cy="permit_guid"
+              >
+                <div
+                  class="ant-select-selector"
+                >
+                  <span
+                    class="ant-select-selection-search"
+                  >
+                    <input
+                      aria-activedescendant="VIEW_EDIT_REPORT_permit_guid_list_0"
+                      aria-autocomplete="list"
+                      aria-controls="VIEW_EDIT_REPORT_permit_guid_list"
+                      aria-haspopup="listbox"
+                      aria-owns="VIEW_EDIT_REPORT_permit_guid_list"
+                      aria-required="true"
+                      autocomplete="off"
+                      class="ant-select-selection-search-input"
+                      id="VIEW_EDIT_REPORT_permit_guid"
+                      role="combobox"
+                      type="search"
+                      value=""
+                    />
+                  </span>
+                  <span
+                    class="ant-select-selection-item"
+                    title="M-222"
+                  >
+                    M-222
+                  </span>
+                </div>
+                <span
+                  aria-hidden="true"
+                  class="ant-select-arrow"
+                  style="user-select: none;"
+                  unselectable="on"
+                >
+                  <span
+                    aria-label="down"
+                    class="anticon anticon-down ant-select-suffix"
+                    role="img"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      data-icon="down"
+                      fill="currentColor"
+                      focusable="false"
+                      height="1em"
+                      viewBox="64 64 896 896"
+                      width="1em"
+                    >
+                      <path
+                        d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                      />
+                    </svg>
+                  </span>
+                </span>
+                <span
+                  aria-hidden="true"
+                  class="ant-select-clear"
+                  style="user-select: none;"
+                  unselectable="on"
+                >
+                  <span
+                    aria-label="close-circle"
+                    class="anticon anticon-close-circle"
+                    role="img"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      data-icon="close-circle"
+                      fill="currentColor"
+                      fill-rule="evenodd"
+                      focusable="false"
+                      height="1em"
+                      viewBox="64 64 896 896"
+                      width="1em"
+                    >
+                      <path
+                        d="M512 64c247.4 0 448 200.6 448 448S759.4 960 512 960 64 759.4 64 512 264.6 64 512 64zm127.98 274.82h-.04l-.08.06L512 466.75 384.14 338.88c-.04-.05-.06-.06-.08-.06a.12.12 0 00-.07 0c-.03 0-.05.01-.09.05l-45.02 45.02a.2.2 0 00-.05.09.12.12 0 000 .07v.02a.27.27 0 00.06.06L466.75 512 338.88 639.86c-.05.04-.06.06-.06.08a.12.12 0 000 .07c0 .03.01.05.05.09l45.02 45.02a.2.2 0 00.09.05.12.12 0 00.07 0c.02 0 .04-.01.08-.05L512 557.25l127.86 127.87c.04.04.06.05.08.05a.12.12 0 00.07 0c.03 0 .05-.01.09-.05l45.02-45.02a.2.2 0 00.05-.09.12.12 0 000-.07v-.02a.27.27 0 00-.05-.06L557.25 512l127.87-127.86c.04-.04.05-.06.05-.08a.12.12 0 000-.07c0-.03-.01-.05-.05-.09l-45.02-45.02a.2.2 0 00-.09-.05.12.12 0 00-.07 0z"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="VIEW_EDIT_REPORT_permit_guid_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="ant-row margin-large--bottom"
+    style="margin-left: -12px; margin-right: -12px;"
+  >
+    <div
+      class="ant-col ant-col-12"
+      style="padding-left: 12px; padding-right: 12px;"
+    >
+      <div
+        class="light-grey-border"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="VIEW_EDIT_REPORT_mine_report_permit_requirement_id"
+                title=""
+              >
+                <div
+                  style="width: 100%;"
+                >
+                  <h5
+                    class="ant-typography"
+                    style="display: inline;"
+                  >
+                    Report Code Requirement
+                  </h5>
+                  <br />
+                  <span
+                    class="label-subtitle"
+                  >
+                    Search for a code section or the report name you would like to submit.
+                  </span>
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    aria-required="true"
+                    class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                    data-cy="mine_report_permit_requirement_id"
+                  >
+                    <div
+                      class="ant-select-selector"
+                    >
+                      <span
+                        class="ant-select-selection-search"
+                      >
+                        <input
+                          aria-activedescendant="VIEW_EDIT_REPORT_mine_report_permit_requirement_id_list_0"
+                          aria-autocomplete="list"
+                          aria-controls="VIEW_EDIT_REPORT_mine_report_permit_requirement_id_list"
+                          aria-haspopup="listbox"
+                          aria-owns="VIEW_EDIT_REPORT_mine_report_permit_requirement_id_list"
+                          aria-required="true"
+                          autocomplete="off"
+                          class="ant-select-selection-search-input"
+                          id="VIEW_EDIT_REPORT_mine_report_permit_requirement_id"
+                          role="combobox"
+                          type="search"
+                          value=""
+                        />
+                      </span>
+                      <span
+                        class="ant-select-selection-item"
+                        title="Test Approved Report"
+                      >
+                        Test Approved Report
+                      </span>
+                    </div>
+                    <span
+                      aria-hidden="true"
+                      class="ant-select-arrow"
+                      style="user-select: none;"
+                      unselectable="on"
+                    >
+                      <span
+                        aria-label="down"
+                        class="anticon anticon-down ant-select-suffix"
+                        role="img"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          data-icon="down"
+                          fill="currentColor"
+                          focusable="false"
+                          height="1em"
+                          viewBox="64 64 896 896"
+                          width="1em"
+                        >
+                          <path
+                            d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      class="ant-select-clear"
+                      style="user-select: none;"
+                      unselectable="on"
+                    >
+                      <span
+                        aria-label="close-circle"
+                        class="anticon anticon-close-circle"
+                        role="img"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          data-icon="close-circle"
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          focusable="false"
+                          height="1em"
+                          viewBox="64 64 896 896"
+                          width="1em"
+                        >
+                          <path
+                            d="M512 64c247.4 0 448 200.6 448 448S759.4 960 512 960 64 759.4 64 512 264.6 64 512 64zm127.98 274.82h-.04l-.08.06L512 466.75 384.14 338.88c-.04-.05-.06-.06-.08-.06a.12.12 0 00-.07 0c-.03 0-.05.01-.09.05l-45.02 45.02a.2.2 0 00-.05.09.12.12 0 000 .07v.02a.27.27 0 00.06.06L466.75 512 338.88 639.86c-.05.04-.06.06-.06.08a.12.12 0 000 .07c0 .03.01.05.05.09l45.02 45.02a.2.2 0 00.09.05.12.12 0 00.07 0c.02 0 .04-.01.08-.05L512 557.25l127.86 127.87c.04.04.06.05.08.05a.12.12 0 00.07 0c.03 0 .05-.01.09-.05l45.02-45.02a.2.2 0 00.05-.09.12.12 0 000-.07v-.02a.27.27 0 00-.05-.06L557.25 512l127.87-127.86c.04-.04.05-.06.05-.08a.12.12 0 000-.07c0-.03-.01-.05-.05-.09l-45.02-45.02a.2.2 0 00-.09-.05.12.12 0 00-.07 0z"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="VIEW_EDIT_REPORT_mine_report_permit_requirement_id_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="report-options"
+        >
+          <div>
+            <div
+              class="ant-typography margin-large--top"
+              style="margin-bottom: 0px;"
+            >
+              <strong>
+                Health and Safety
+              </strong>
+            </div>
+            <div
+              class="ant-row"
+            >
+              <div
+                class="ant-col ant-col-24"
+              >
+                <button
+                  class="ant-btn ant-btn-text report-link btn-sm-padding"
+                  type="button"
+                >
+                  <span
+                    class="ant-typography"
+                  >
+                    Test Approved Report
+                  </span>
+                  <span
+                    class="margin-large--left"
+                  >
+                    <span
+                      aria-label="arrow-right"
+                      class="anticon anticon-arrow-right"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class=""
+                        data-icon="arrow-right"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M869 487.8L491.2 159.9c-2.9-2.5-6.6-3.9-10.5-3.9h-88.5c-7.4 0-10.8 9.2-5.2 14l350.2 304H152c-4.4 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h585.1L386.9 854c-5.6 4.9-2.2 14 5.2 14h91.5c1.9 0 3.8-.7 5.2-2L869 536.2a32.07 32.07 0 000-48.4z"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div
+              class="ant-typography margin-large--top"
+              style="margin-bottom: 0px;"
+            >
+              <strong>
+                General
+              </strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-12"
+      style="padding-left: 12px; padding-right: 12px;"
+    >
+      <div
+        class="report-info-box"
+      >
+        <div>
+          <h4
+            class="ant-typography primary-colour"
+          >
+            You are 
+            submitting
+            :
+          </h4>
+          <h5
+            class="ant-typography"
+          >
+            Test Approved Report
+          </h5>
+          <h5
+            class="ant-typography"
+          >
+            Condition:
+          </h5>
+          <div
+            class="ant-typography"
+          >
+            Health and Safety - 1
+          </div>
+          <div
+            class="ant-row"
+          >
+            <div
+              class="ant-col ant-col-24"
+            >
+              <h5
+                class="ant-typography"
+              >
+                Frequency:
+              </h5>
+              <div
+                class="ant-typography"
+              >
+                Annually
+              </div>
+              <h5
+                class="ant-typography"
+              >
+                Due Date:
+              </h5>
+              <div
+                class="ant-typography"
+              >
+                Jan 01 2024
+              </div>
+            </div>
+            <div
+              class="ant-col ant-col-24"
+            >
+              <h5
+                class="ant-typography"
+              >
+                Regulatory Authority:
+              </h5>
+              <div
+                class="ant-typography"
+              />
+              <h5
+                class="ant-typography"
+              >
+                Ministry Recipient:
+              </h5>
+              <div
+                class="ant-typography"
+              >
+                Major Mines Office 
+              </div>
+            </div>
+          </div>
+          <a
+            class="ant-btn ant-btn-default"
+            href="test"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span>
+              View Permit Condition 
+            </span>
+            <span
+              aria-label="export"
+              class="anticon anticon-export"
+              role="img"
+            >
+              <svg
+                aria-hidden="true"
+                class=""
+                data-icon="export"
+                fill="currentColor"
+                fill-rule="evenodd"
+                focusable="false"
+                height="1em"
+                viewBox="64 64 896 896"
+                width="1em"
+              >
+                <path
+                  d="M880 912H144c-17.7 0-32-14.3-32-32V144c0-17.7 14.3-32 32-32h360c4.4 0 8 3.6 8 8v56c0 4.4-3.6 8-8 8H184v656h656V520c0-4.4 3.6-8 8-8h56c4.4 0 8 3.6 8 8v360c0 17.7-14.3 32-32 32zM770.87 199.13l-52.2-52.2a8.01 8.01 0 014.7-13.6l179.4-21c5.1-.6 9.5 3.7 8.9 8.9l-21 179.4c-.8 6.6-8.9 9.4-13.6 4.7l-52.4-52.4-256.2 256.2a8.03 8.03 0 01-11.3 0l-42.4-42.4a8.03 8.03 0 010-11.3l256.1-256.3z"
+                />
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+`;
+
+exports[`ReportGetStarted renders default 1`] = `
+<form
+  class="ant-form ant-form-vertical common-form common-form-VIEW_EDIT_REPORT form-edit"
+  id="VIEW_EDIT_REPORT"
+>
+  <div>
+    <h3
+      class="ant-typography"
+    >
+      Getting Started with your Report Submission
+    </h3>
+    <div
+      class="ant-typography"
+    >
+      The Province is committed to ensuring that B.C. remains a leader in mining regulation and oversight, while enhancing responsible resource development and strengthening First Nations involvement in the B.C.'s mining sector. Find more guidance and related documents
+       
+      <a
+        href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/health-safety/health-safety-and-reclamation-code-for-mines-in-british-columbia/health-safety-reclamation-code-guidance?keyword=code&keyword=required&keyword=report"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        here
+      </a>
+      .
+    </div>
+    <h5
+      class="ant-typography"
+    >
+      What type of report are you submitting today?
+    </h5>
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <div
+                class="ant-radio-group ant-radio-group-solid vertical-radio-group"
+              >
+                <label
+                  class="ant-radio-wrapper ant-radio-wrapper-checked ant-radio-wrapper-in-form-item"
+                >
+                  <span
+                    class="ant-radio ant-radio-checked"
+                  >
+                    <input
+                      checked=""
+                      class="ant-radio-input"
+                      name="report_type"
+                      type="radio"
+                      value="CRR"
+                    />
+                    <span
+                      class="ant-radio-inner"
+                    />
+                  </span>
+                  <span>
+                    <b>
+                      Code Required Report
+                    </b>
+                    <br />
+                    Documents submitted pursuant to regulatory requirements established by the Health, Safety and Reclamation Code for Mines in British Columbia (HSRC).
+                  </span>
+                </label>
+                <label
+                  class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                >
+                  <span
+                    class="ant-radio"
+                  >
+                    <input
+                      class="ant-radio-input"
+                      name="report_type"
+                      type="radio"
+                      value="PRR"
+                    />
+                    <span
+                      class="ant-radio-inner"
+                    />
+                  </span>
+                  <span>
+                    <b>
+                      Permit Required Report
+                    </b>
+                    <br />
+                    Documents submitted pursuant to regulatory requirements established by conditions in site-specific Mines Act permits.
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="VIEW_EDIT_REPORT_report_type_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h5
+      class="ant-typography"
+    >
+      Enter code section or choose from the submission list or select report type in the next step.
+    </h5>
+    <div
+      class="ant-typography"
+    >
+      Quickly select a common report type or select another report type on the report details screen.
+    </div>
+    <div
+      class="ant-row margin-large--bottom"
+      style="margin-left: -12px; margin-right: -12px;"
+    >
+      <div
+        class="ant-col ant-col-12"
+        style="padding-left: 12px; padding-right: 12px;"
+      >
+        <div
+          class="light-grey-border"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="VIEW_EDIT_REPORT_mine_report_definition_guid"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    <h5
+                      class="ant-typography"
+                      style="display: inline;"
+                    >
+                      Report Code Requirement
+                    </h5>
+                    <br />
+                    <span
+                      class="label-subtitle"
+                    >
+                      Search for a code section or the report name you would like to submit
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      aria-required="true"
+                      class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                      data-cy="mine_report_definition_guid"
+                    >
+                      <div
+                        class="ant-select-selector"
+                      >
+                        <span
+                          class="ant-select-selection-search"
+                        >
+                          <input
+                            aria-activedescendant="VIEW_EDIT_REPORT_mine_report_definition_guid_list_0"
+                            aria-autocomplete="list"
+                            aria-controls="VIEW_EDIT_REPORT_mine_report_definition_guid_list"
+                            aria-haspopup="listbox"
+                            aria-owns="VIEW_EDIT_REPORT_mine_report_definition_guid_list"
+                            aria-required="true"
+                            autocomplete="off"
+                            class="ant-select-selection-search-input"
+                            id="VIEW_EDIT_REPORT_mine_report_definition_guid"
+                            role="combobox"
+                            type="search"
+                            value=""
+                          />
+                        </span>
+                        <span
+                          class="ant-select-selection-placeholder"
+                        >
+                          Enter a code section or report name
+                        </span>
+                      </div>
+                      <span
+                        aria-hidden="true"
+                        class="ant-select-arrow"
+                        style="user-select: none;"
+                        unselectable="on"
+                      >
+                        <span
+                          aria-label="down"
+                          class="anticon anticon-down ant-select-suffix"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="down"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="VIEW_EDIT_REPORT_mine_report_definition_guid_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-typography margin-large--top"
+            style="margin-bottom: 0px;"
+          >
+            <strong>
+              Common Reports
+            </strong>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-12"
+        style="padding-left: 12px; padding-right: 12px;"
+      />
+    </div>
+  </div>
+  <div>
+    <button
+      class="ant-btn ant-btn-default"
+      type="submit"
+    >
+      <span>
+        Submit
+      </span>
+    </button>
+  </div>
+</form>
+`;

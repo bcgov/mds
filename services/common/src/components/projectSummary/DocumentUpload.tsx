@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect } from "react";
-import { change, Field, getFormValues } from "redux-form";
+import { change, Field, getFormValues } from "@mds/common/components/forms/form";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Typography } from "antd";
 import { CSV, DOCUMENT, EXCEL, IMAGE, OTHER_SPATIAL, XML } from "@mds/common/constants/fileTypes";
@@ -10,12 +10,6 @@ import {
   uploadedByColumn,
 } from "../documents/DocumentColumns";
 import ProjectSummaryFileUpload from "./ProjectSummaryFileUpload";
-import {
-  ENVIRONMENT,
-  FORM,
-  isDocumentFieldDisabled,
-  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE,
-} from "@mds/common/constants";
 import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";
 import LinkButton from "../common/LinkButton";
 import * as API from "@mds/common/constants/API";
@@ -24,8 +18,13 @@ import AddSpatialDocumentsModal from "../documents/spatial/AddSpatialDocumentsMo
 import SpatialDocumentTable from "../documents/spatial/SpatialDocumentTable";
 import { FormContext } from "../forms/FormWrapper";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
-import { Feature } from "../..";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import { removeDocumentFromProjectSummary } from "@mds/common/redux/actionCreators/projectActionCreator";
+import { IProjectSummaryForm } from "@mds/common/interfaces";
+import { Feature } from "@mds/common/utils";
+import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE } from "@mds/common/constants/strings";
+import { FORM } from "@mds/common/constants/forms";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const RenderOldDocuments = ({
   documents,
@@ -67,9 +66,13 @@ const RenderOldDocuments = ({
   );
 };
 
-export const DocumentUpload: FC = () => {
-  const dispatch = useDispatch();
-  const systemFlag = useSelector(getSystemFlag);
+interface DocumentUploadProps {
+  docFieldsDisabled: boolean;
+  deleteEnabled: boolean;
+}
+
+export const DocumentUpload: FC<DocumentUploadProps> = ({ docFieldsDisabled, deleteEnabled }) => {
+  const dispatch = useAppDispatch();
   const {
     spatial_documents = [],
     support_documents = [],
@@ -77,8 +80,7 @@ export const DocumentUpload: FC = () => {
     project_guid,
     project_summary_guid,
     documents,
-    status_code,
-  } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
 
   const { isEditMode } = useContext(FormContext);
   const { isFeatureEnabled } = useFeatureFlag();
@@ -145,28 +147,44 @@ export const DocumentUpload: FC = () => {
     }
   };
 
+  const removeFile = (document) => {
+    if (document.project_summary_document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SPATIAL) {
+      const newSpatialDocuments = [...spatial_documents].filter(
+        (file) => document.document_manager_guid !== file.document_manager_guid
+      );
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", newSpatialDocuments));
+    } else if (document.project_summary_document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SUPPORTING) {
+      const newSupportDocuments = [...support_documents].filter(
+        (file) => document.document_manager_guid !== file.document_manager_guid
+      );
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", newSupportDocuments));
+    }
+  }
+
   const onRemoveFile = (err, fileItem) => {
     if (err) {
       console.log(err);
     }
-
     if (fileItem.serverId) {
-      const document_type_code = documents.find(
+      removeFile(documents.find(
         (file) => fileItem.serverId === file.document_manager_guid
-      )?.project_summary_document_type_code;
-      if (document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SPATIAL) {
-        const newSpatialDocuments = [...spatial_documents].filter(
-          (file) => fileItem.serverId !== file.document_manager_guid
-        );
-        dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", newSpatialDocuments));
-      } else if (document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SUPPORTING) {
-        const newSupportDocuments = [...support_documents].filter(
-          (file) => fileItem.serverId !== file.document_manager_guid
-        );
-        dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", newSupportDocuments));
-      }
+      ));
     }
   };
+
+  const onDeleteDocument = (event, key: string) => {
+    const document = documents.find((doc) => key === doc.mine_document_guid);
+    if (document) {
+      dispatch(
+        removeDocumentFromProjectSummary(
+          project_guid,
+          project_summary_guid,
+          document.mine_document_guid
+        )).then(() => {
+          removeFile(document);
+        })
+    }
+  }
 
   const downloadIRTTemplate = (url) => {
     const anchor = document.createElement("a");
@@ -220,9 +238,8 @@ export const DocumentUpload: FC = () => {
       </Typography.Paragraph>
       {spatialFeatureEnabled ? (
         <>
-          {isEditMode && (
+          {isEditMode && !docFieldsDisabled && (
             <Button
-              disabled={isDocumentFieldDisabled(systemFlag, status_code)}
               onClick={openSpatialDocumentModal}
               type="primary"
               className="block-button"
@@ -246,7 +263,6 @@ export const DocumentUpload: FC = () => {
       <Typography.Paragraph>
         Please upload any supporting documents such as a draft of the{" "}
         <LinkButton
-          disabled={isDocumentFieldDisabled(systemFlag, status_code)}
           onClick={() =>
             downloadIRTTemplate(
               ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE_TEMPLATE_DOWNLOAD
@@ -258,7 +274,7 @@ export const DocumentUpload: FC = () => {
         . To proceed to the final application, you must upload your final Joint Application IRT
         using the form provided in the next phase.
       </Typography.Paragraph>
-      {!isDocumentFieldDisabled(systemFlag, status_code) && (
+      {!docFieldsDisabled && (
         <Field
           id="support_documents"
           name="support_documents"
@@ -285,6 +301,7 @@ export const DocumentUpload: FC = () => {
         documents={support_documents}
         documentParent="project summary"
         documentColumns={documentColumns}
+        removeDocument={deleteEnabled && isEditMode ? onDeleteDocument : undefined}
       />
     </>
   );

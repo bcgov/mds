@@ -44,11 +44,11 @@ export const MINESPACE_USER = "/users/minespace";
 export const UPDATE_MINESPACE_USER = (id) => `/users/minespace/${id}`;
 export const PROVINCE_CODES = "/parties/sub-division-codes";
 
-// EMLI contacts
-export const EMLI_CONTACTS = "/EMLI-contacts";
-export const EMLI_CONTACTS_BY_REGION = (region, isMajorMine) =>
-  `/EMLI-contacts/${region}/contacts?is_major_mine=${isMajorMine}`;
-export const EMLI_CONTACT = (guid) => `/EMLI-contacts/${guid}`;
+// MCM contacts
+export const MINISTRY_CONTACTS = "/ministry-contacts";
+export const MINISTRY_CONTACTS_BY_REGION = (region, isMajorMine) =>
+  `/ministry-contacts/${region}/contacts?is_major_mine=${isMajorMine}`;
+export const MINISTRY_CONTACT = (guid) => `/ministry-contacts/${guid}`;
 
 export const MINE_VERIFIED_STATUSES = (params = {}) =>
   `/mines/verified-status?${queryString.stringify(params)}`;
@@ -86,10 +86,16 @@ export const PERMIT_CONDITIONS = (mineGuid, permitGuid, permitAmendmentGuid) =>
 export const PERMIT_CONDITION = (mineGuid, permitGuid, permitAmendmentGuid, permitConditionGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/conditions/${permitConditionGuid}`;
 
+export const PERMIT_AMENDMENT_CONDITION_CATEGORIES = (mineGuid, permitGuid, permitAmendmentGuid) =>
+  `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/condition-categories`;
+
 export const STANDARD_PERMIT_CONDITIONS = (noticeOfWorkType) =>
   `/mines/permits/standard-conditions/${noticeOfWorkType}`;
 export const STANDARD_PERMIT_CONDITION = (permitConditionGuid) =>
   `/mines/permits/standard-conditions/${permitConditionGuid}`;
+
+export const PERMIT_AMENDMENT_CONDITION_ASSIGN_REVIEWER = (params?: { permit_amendment_id: number }) =>
+  `mines/permits/condition-category/assign-review-user?${queryString.stringify(params ?? {})}`;
 
 export const PERMIT_SERVICE_EXTRACTION = `/mines/permits/condition-extraction`;
 export const POLL_PERMIT_SERVICE_EXTRACTION = (taskId: string) =>
@@ -126,6 +132,8 @@ export const EPIC_INFO = (mineGuid) => `/mines/${mineGuid}/epic`;
 export const SEARCH = (params) => (params ? `/search?${queryString.stringify(params)}` : "/search");
 export const SEARCH_OPTIONS = "/search/options";
 export const SIMPLE_SEARCH = "/search/simple";
+
+export const PERMIT_CONDITION_SEARCH = "/search/permit-conditions";
 
 // Reporting
 export const DASHBOARD = (dashboardId, type = "dashboard") => `/reporting/${type}/${dashboardId}`;
@@ -188,8 +196,6 @@ export const INFORMATION_REQUIREMENTS_TABLES = (projectGuid) =>
   `/projects/${projectGuid}/information-requirements-table`;
 export const INFORMATION_REQUIREMENTS_TABLE = (projectGuid, irtGuid) =>
   `/projects/${projectGuid}/information-requirements-table/${irtGuid}`;
-export const INFORMATION_REQUIREMENTS_TABLE_STATUS = (projectGuid, irtGuid) =>
-  `/projects/${projectGuid}/information-requirements-table/${irtGuid}/status`;
 
 // Major mine application
 export const MAJOR_MINE_APPLICATIONS = (projectGuid) =>
@@ -256,7 +262,10 @@ export const MINE_WORK_INFORMATION = (mineGuid, mineWorkInformationGuid) =>
 export const REPORTS = (params = {}) => `/mines/reports?${queryString.stringify(params)}`;
 export const REPORT_SUBMISSIONS = (params?) =>
   `/mines/reports/submissions?${queryString.stringify(params)}`;
-export const MINE_REPORT_DEFINITIONS = () => `/mines/reports/definitions`;
+export const MINE_REPORT_DEFINITIONS = (params = {}) =>
+  `/mines/reports/definitions?${queryString.stringify(params)}`;
+export const MINE_REPORT_DEFINITION = "/mines/reports/definitions";
+export const MINE_REPORT_DUE_DATE_TYPES = "/mines/reports/due-date-types";
 export const MINE_REPORTS = (mineGuid, params?) =>
   `/mines/${mineGuid}/reports?${queryString.stringify(params)}`;
 export const MINE_REPORT = (mineGuid, mineReportGuid) =>
@@ -275,6 +284,9 @@ export const MINE_REPORT_COMMENT = (mineGuid, reportGuid, commentGuid) =>
   `/mines/${mineGuid}/reports/${reportGuid}/comments/${commentGuid}`;
 export const MINE_REPORT_STATUS = "/mines/reports/status-codes";
 export const MINE_REPORT_CATEGORY = "/mines/reports/category-codes";
+
+export const MINE_REPORT_PERMIT_REQUIREMENT = (mineGuid) =>
+  `/mines/${mineGuid}/reports/permit-requirements`;
 
 // Compliance Codes
 export const COMPLIANCE_CODE_LIST = (params = {}) =>
@@ -379,3 +391,7 @@ export const REGIONS_LIST = "/regions";
 // App Help
 export const APP_HELP = (helpKey: string, params?: { system?: string; help_guid?: string }) =>
   `/help/${helpKey}?${queryString.stringify(params)}`;
+
+// User
+export const USER_PROFILE = () => "/users/profile";
+export const USER_SEARCH = (searchTerm: string) => `/users?search_term=${searchTerm}`;

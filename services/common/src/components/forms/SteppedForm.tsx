@@ -1,6 +1,6 @@
 import React, { FC, ReactElement, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getFormSyncErrors, getFormValues, submit } from "redux-form";
+import { getFormSyncErrors, getFormValues, submit } from "@mds/common/components/forms/form";
 import { Button, Col, Menu, Popconfirm, Row, StepProps } from "antd";
 import LeftOutlined from "@ant-design/icons/LeftOutlined";
 import RightOutlined from "@ant-design/icons/RightOutlined";
@@ -12,7 +12,7 @@ interface SteppedFormProps extends Omit<FormWrapperProps, "onSubmit"> {
   children: Array<ReactElement<StepProps>>;
   handleTabChange: (newTab: string) => void | Promise<void>;
   handleSaveDraft?: (formValues) => Promise<void>;
-  handleSaveData?: (values, newActiveTab?: string) => Promise<void>;
+  handleSaveData?: (values, newActiveTab?: string, currentTab?: string) => Promise<void>;
   handleCancel?: () => void | Promise<void>;
   transformPayload?: (values: any) => any;
   activeTab: string;
@@ -108,10 +108,11 @@ const SteppedForm: FC<SteppedFormProps> = ({
     setIsSubmitting(true);
     try {
       if (handleSaveData && (await saveCheck())) {
-        await handleSaveData(getValues(formValues), tab);
+        await handleSaveData(getValues(formValues), tab, `${tabs[tabIndex]}`);
       }
-      if (errors.length > 0) return;
-      setTabIndex(indexOf(tabs, tab));
+      if (errors.length === 0 && tab) {
+        setTabIndex(indexOf(tabs, tab));
+      }
     } finally {
       setIsSubmitting(false);
     }

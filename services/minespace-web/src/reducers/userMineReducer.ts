@@ -1,6 +1,6 @@
 import * as actionTypes from "@/constants/actionTypes";
 import { USER_MINE_INFO } from "@/constants/reducerTypes";
-import { IMine, IMineDocument, IPageData } from "@mds/common";
+import { IMine, IMineDocument, IPageData } from "@mds/common/interfaces";
 import { RootState } from "@mds/common/redux/rootState";
 
 /**

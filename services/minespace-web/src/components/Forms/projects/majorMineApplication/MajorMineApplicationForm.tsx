@@ -1,38 +1,30 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Field, change, getFormValues } from "redux-form";
+import { Field, change, getFormValues } from "@mds/common/components/forms/form";
 import { Col, Row, Typography, Button } from "antd";
 import {
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE,
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE,
-} from "@mds/common/constants/strings";
-import {
-  DOCUMENT,
-  Feature,
-  FORM,
-  IProject,
-  MODERN_EXCEL,
-  SPATIAL,
   SPATIAL_DATA_STANDARDS_URL,
-} from "@mds/common";
+} from "@mds/common/constants/strings";
 import * as routes from "@/constants/routes";
-
 import MajorMineApplicationFileUpload from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationFileUpload";
-
 import { openModal } from "@mds/common/redux/actions/modalActions";
 import AddSpatialDocumentsModal from "@mds/common/components/documents/spatial/AddSpatialDocumentsModal";
 import SpatialDocumentTable from "@mds/common/components/documents/spatial/SpatialDocumentTable";
 import * as API from "@mds/common/constants/API";
-import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
-
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
-
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import RenderField from "@mds/common/components/forms/RenderField";
 import ArchivedDocumentsSection from "@mds/common/components/projects/ArchivedDocumentsSection";
 import { required } from "@mds/common/redux/utils/Validate";
+import { IMajorMinesApplication, IProject } from "@mds/common/interfaces/projects";
+import { FORM } from "@mds/common/constants/forms";
+import { DOCUMENT, MODERN_EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
 
 interface MajorMineApplicationFormProps {
   project: IProject;
@@ -46,10 +38,14 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
   const dispatch = useDispatch();
 
   const { primary_documents, spatial_documents, supporting_documents } =
-    useSelector(getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION)) || {};
+    (useSelector(getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION)) as IMajorMinesApplication) || {};
+  const canModifyMmaDocs = !areDocumentFieldsDisabled(
+    SystemFlagEnum.ms,
+    project?.major_mine_application?.status_code
+  );
+
   const mineDocuments = useSelector(getMineDocuments);
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
-  const { isFeatureEnabled } = useFeatureFlag();
 
   const acceptedFileTypesMap = {
     ...SPATIAL,
@@ -151,11 +147,7 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
     project?.major_mine_application?.documents,
     "PRM"
   );
-  const spatialDocument = uniqueDocs(
-    spatial_documents,
-    project?.major_mine_application?.documents,
-    "SPT"
-  );
+
   const supportDocuments = uniqueDocs(
     supporting_documents,
     project?.major_mine_application?.documents,
@@ -230,9 +222,11 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         <DocumentTable
           documents={primaryDocument}
           documentParent="Major Mine Application"
-          canArchiveDocuments={true}
-          onArchivedDocuments={() => refreshData()}
+          canArchiveDocuments={canModifyMmaDocs}
+          canReplaceDocuments={canModifyMmaDocs}
+          onArchivedDocuments={refreshData}
           enableBulkActions={true}
+          showVersionHistory={true}
         />
       )}
 
@@ -250,62 +244,19 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         </Link>{" "}
         to learn more about shapefile requirements and standards.
       </Typography.Paragraph>
-      {isFeatureEnabled(Feature.SPATIAL_BUNDLE) ? (
-        <>
-          <Button
-            type="primary"
-            className="block-button"
-            style={{ marginBottom: 12 }}
-            onClick={openSpatialDocumentModal}
-          >
-            Upload Spatial Data
-          </Button>
-          {spatial_documents?.length > 0 && (
-            <SpatialDocumentTable
-              documents={spatial_documents}
-              documentParent="Major Mine Application"
-              onArchivedDocuments={refreshData}
-            />
-          )}
-        </>
-      ) : (
-        <>
-          <Field
-            id={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL}
-            name={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL}
-            label="Upload spatial components"
-            onFileLoad={(documentName, document_manager_guid) => {
-              onFileLoad(
-                documentName,
-                document_manager_guid,
-                MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.SPATIAL,
-                MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL
-              );
-            }}
-            onRemoveFile={(err: any, fileItem: any) => {
-              onRemoveFile(
-                err,
-                fileItem,
-                MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL,
-                spatial_documents
-              );
-            }}
-            projectGuid={project.project_guid}
-            allowMultiple
-            acceptedFileTypesMap={acceptedFileTypesMap}
-            component={MajorMineApplicationFileUpload}
-            uploadType="spatial_document"
-          />
-          {spatialDocument.length > 0 && (
-            <DocumentTable
-              documents={spatialDocument}
-              documentParent="Major Mine Application"
-              canArchiveDocuments={true}
-              onArchivedDocuments={refreshData}
-              enableBulkActions={true}
-            />
-          )}
-        </>
+      <Button
+        type="primary"
+        className="block-button"
+        style={{ marginBottom: 12 }}
+        onClick={openSpatialDocumentModal}
+      >
+        Upload Spatial Data
+      </Button>
+      {spatial_documents?.length > 0 && (
+        <SpatialDocumentTable
+          documents={spatial_documents}
+          documentParent="Major Mine Application"
+        />
       )}
 
       <br />
@@ -343,9 +294,11 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         <DocumentTable
           documents={supportDocuments}
           documentParent="Major Mine Application"
-          canArchiveDocuments={true}
-          onArchivedDocuments={() => refreshData()}
+          canArchiveDocuments={canModifyMmaDocs}
+          canReplaceDocuments={canModifyMmaDocs}
+          onArchivedDocuments={refreshData}
           enableBulkActions={true}
+          showVersionHistory={true}
         />
       )}
 

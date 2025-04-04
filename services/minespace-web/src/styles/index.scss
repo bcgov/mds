@@ -29,6 +29,11 @@
 @use "./components/ScrollSideMenuWrapper.scss";
 @use "./components/RichTextEditor.scss";
 @use "./components/HelpGuide.scss";
+@use "./components/MinesPage.scss";
+@use "components/CommonPageHeader";
+@use "./components/ViewPermit.scss";
+@use "./components/PermitConditions.scss";
+@use "./components/Button.scss";
 
 // UTILITIES - utilities and helper classes. This layer has the highest specificity.
 @use "./generic/helpers.scss";

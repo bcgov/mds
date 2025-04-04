@@ -1,8 +1,8 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import RenderField from "@/components/common/RenderField";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
-import { number } from "@common/utils/Validate";
+import RenderField from "@mds/common/components/forms/RenderField";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
+import { number } from "@mds/common/redux/utils/Validate";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 
 const propTypes = {

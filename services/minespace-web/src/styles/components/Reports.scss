@@ -23,6 +23,23 @@
   line-height: 32px;
   text-align: left;
   width: 100%;
+  text-wrap: wrap;
+  height: unset;
+}
+
+.report-link span {
+  display: inline;
+}
+
+.report-options {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.report-summary-box {
+  background: $lightest-grey;
+  padding: 24px;
+  margin: 12px 0;
 }
 
 .light-grey-border {
@@ -31,8 +48,9 @@
 }
 
 .report-info-box {
-  height: 100%;
   padding: 16px;
   border: 1px solid #96ABC0;
   background: #fff;
+  position: sticky;
+  top: 100px;
 }

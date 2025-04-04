@@ -4,17 +4,14 @@ import {
   Field,
   FieldArray,
   getFormSyncErrors,
-  InjectedFormProps,
-  reduxForm,
-} from "redux-form";
+  isPristine,
+} from "@mds/common/components/forms/form";
 import { Alert, Button, Col, Popconfirm, Row, Typography } from "antd";
-import { Form } from "@ant-design/compatible";
-import { maxLength, required, requiredRadioButton } from "@common/utils/Validate";
+import { maxLength, required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import {
   NOD_TYPE_FIELD_VALUE,
   NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
-  NOTICE_OF_DEPARTURE_STATUS_VALUES,
 } from "@mds/common/constants/strings";
 import { getNoticeOfDeparture } from "@mds/common/redux/reducers/noticeOfDepartureReducer";
 import { DOCUMENT, EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
@@ -22,41 +19,36 @@ import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import NoticeOfDepartureFileUpload from "@/components/Forms/noticeOfDeparture/NoticeOfDepartureFileUpload";
 import { EMPTY_FIELD } from "@/constants/strings";
-import RenderRadioButtons from "@/components/common/RenderRadioButtons";
+import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import { documentSection } from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureDetails";
 import NoticeOfDepartureCallout from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureCallout";
 import { renderContacts } from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
-import {
-  ICreateNoD,
-  INodDocumentPayload,
-  INoticeOfDeparture,
-  NoDStatusDisplayEnum,
-  NodStatusSaveEnum,
-} from "@mds/common";
-import { bindActionCreators, compose } from "redux";
-import { connect } from "react-redux";
+import { INodDocumentPayload, INoticeOfDeparture } from "@mds/common/interfaces";
+import { NodStatusSaveEnum } from "@mds/common/constants/enums";
+import { compose } from "redux";
+import { connect, useDispatch, useSelector } from "react-redux";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 
 interface EditNoticeOfDepartureFormProps {
   initialValues: INoticeOfDeparture;
   onSubmit: (nod_guid: string, values: any, documentArray: INodDocumentPayload[]) => any;
-  closeModal: () => void;
   mineGuid: string;
   noticeOfDeparture: INoticeOfDeparture;
-  handleSubmit?: any;
-  logFormErrors?: any;
-  pristine?: boolean;
-  change?: (field: string, value: any) => void;
 }
 
-const EditNoticeOfDepartureForm: React.FC<InjectedFormProps<Partial<ICreateNoD>> &
-  EditNoticeOfDepartureFormProps> = (props) => {
-  const { onSubmit, closeModal, handleSubmit, mineGuid, noticeOfDeparture, pristine } = props;
+const EditNoticeOfDepartureForm: React.FC<EditNoticeOfDepartureFormProps> = (props) => {
+  const { onSubmit, mineGuid, noticeOfDeparture } = props;
   const { permit, nod_guid, nod_no, nod_status } = noticeOfDeparture;
   const [submitting, setSubmitting] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [documentArray, setDocumentArray] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [hasChecklist, setHasChecklist] = useState(false);
+  const dispatch = useDispatch();
+  const formName = FORM.EDIT_NOTICE_OF_DEPARTURE;
+  const pristine = useSelector(isPristine(formName));
 
   const checklist = noticeOfDeparture.documents.find(
     (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
@@ -99,20 +91,20 @@ const EditNoticeOfDepartureForm: React.FC<InjectedFormProps<Partial<ICreateNoD>>
       },
     ]);
     if (documentType === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
-      props.change("self-assessment", documentName);
+      dispatch(change(formName, "self-assessment", documentName));
       setHasChecklist(true);
     }
   };
 
   useEffect(() => {
-    props.change("uploadedFiles", documentArray);
+    dispatch(change(formName, "uploadedFiles", documentArray));
   }, [documentArray]);
 
   const onRemoveFile = (_, fileItem) => {
     const removedDoc = documentArray.find((doc) => doc.document_manager_guid === fileItem.serverId);
     if (removedDoc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST) {
       setHasChecklist(false);
-      props.change("self-assessment", null);
+      dispatch(change(formName, "self-assessment", null));
     }
     setDocumentArray(
       documentArray.filter((document) => document.document_manager_guid !== fileItem.serverId)
@@ -143,7 +135,18 @@ const EditNoticeOfDepartureForm: React.FC<InjectedFormProps<Partial<ICreateNoD>>
   return (
     <div>
       <NoticeOfDepartureCallout nodStatus={nod_status as NodStatusSaveEnum} />
-      <Form layout="vertical" onSubmit={handleSubmit(handleNoticeOfDepartureSubmit)}>
+      <FormWrapper
+        initialValues={props.initialValues}
+        name={FORM.EDIT_NOTICE_OF_DEPARTURE}
+        isModal
+        onSubmit={handleNoticeOfDepartureSubmit}
+        reduxFormConfig={{
+          onSubmitSuccess: resetForm(FORM.EDIT_NOTICE_OF_DEPARTURE),
+          touchOnBlur: false,
+          forceUnregisterOnUnmount: true,
+          enableReinitialize: true,
+        }}
+      >
         <Typography.Title level={4}>Basic Information</Typography.Title>
         <Typography.Text>
           Enter the following information about your Notice of Departure.
@@ -153,6 +156,7 @@ const EditNoticeOfDepartureForm: React.FC<InjectedFormProps<Partial<ICreateNoD>>
           id="nodTitle"
           name="nod_title"
           component={renderConfig.FIELD}
+          required
           validate={[required, maxLength(50)]}
         />
         <Row gutter={24}>
@@ -170,35 +174,35 @@ const EditNoticeOfDepartureForm: React.FC<InjectedFormProps<Partial<ICreateNoD>>
           name="nod_description"
           label="Departure Summary"
           component={renderConfig.AUTO_SIZE_FIELD}
+          required
           validate={[maxLength(3000), required]}
         />
         <FieldArray props={{}} name="nod_contacts" component={renderContacts} />
         <h4 className="nod-modal-section-header">
           Notice of Departure Self-Assessment Determination
         </h4>
-        <Form.Item>
-          <Field
-            id="nod_type"
-            name="nod_type"
-            label="Based on the information established in your self-assessment form please determine your
+        <Field
+          id="nod_type"
+          name="nod_type"
+          label="Based on the information established in your self-assessment form please determine your
           submissions Notice of Departure type. If you are unsure what category you fall under,
           please contact us."
-            component={RenderRadioButtons}
-            validate={[requiredRadioButton]}
-            customOptions={[
-              {
-                value: NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL,
-                label:
-                  "This Notice of Departure is non-substantial and does not require ministry review.  (Proponent is responsible for ensuring all details have been completed correctly for submission and can begin work immediately)",
-              },
-              {
-                value: NOD_TYPE_FIELD_VALUE.POTENTIALLY_SUBSTANTIAL,
-                label:
-                  "This Notice of Departure is potentially substantial and requires ministry review.  (Ministry staff will review submission and determine if work can move forward as Notice of Departure)",
-              },
-            ]}
-          />
-        </Form.Item>
+          component={RenderRadioButtons}
+          required
+          validate={[requiredRadioButton]}
+          customOptions={[
+            {
+              value: NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL,
+              label:
+                "This Notice of Departure is non-substantial and does not require ministry review.  (Proponent is responsible for ensuring all details have been completed correctly for submission and can begin work immediately)",
+            },
+            {
+              value: NOD_TYPE_FIELD_VALUE.POTENTIALLY_SUBSTANTIAL,
+              label:
+                "This Notice of Departure is potentially substantial and requires ministry review.  (Ministry staff will review submission and determine if work can move forward as Notice of Departure)",
+            },
+          ]}
+        />
         <h4 className="nod-modal-section-header">
           Upload Notice of Departure Self-Assessment Form
         </h4>
@@ -316,27 +320,15 @@ const EditNoticeOfDepartureForm: React.FC<InjectedFormProps<Partial<ICreateNoD>>
         )}
 
         <div className="ant-modal-footer">
-          <Popconfirm
-            placement="top"
-            title="Are you sure you want to cancel?"
-            okText="Yes"
-            cancelText="No"
-            onConfirm={closeModal}
-          >
-            <Button disabled={submitting}>Cancel</Button>
-          </Popconfirm>
-          <Button
+          <RenderCancelButton />
+          <RenderSubmitButton
+            buttonText="Submit Notice of Departure"
             disabled={
               submitting || uploading || (pristine && documentArray.length === 0) || !hasChecklist
             }
-            type="primary"
-            className="full-mobile margin-small"
-            htmlType="submit"
-          >
-            Submit Notice of Departure
-          </Button>
+          />
         </div>
-      </Form>
+      </FormWrapper>
     </div>
   );
 };
@@ -346,21 +338,6 @@ const mapStateToProps = (state) => ({
   logFormErrors: getFormSyncErrors(FORM.EDIT_NOTICE_OF_DEPARTURE)(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      change,
-    },
-    dispatch
-  );
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: FORM.EDIT_NOTICE_OF_DEPARTURE,
-    onSubmitSuccess: resetForm(FORM.EDIT_NOTICE_OF_DEPARTURE),
-    touchOnBlur: false,
-    forceUnregisterOnUnmount: true,
-    enableReinitialize: true,
-  })
-)(EditNoticeOfDepartureForm) as React.FC<EditNoticeOfDepartureFormProps>;
+export default compose(connect(mapStateToProps))(
+  EditNoticeOfDepartureForm as any
+) as React.FC<EditNoticeOfDepartureFormProps>;

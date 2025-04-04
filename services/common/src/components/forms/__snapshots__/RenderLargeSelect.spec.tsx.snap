@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RenderLargeSelect renders properly without required (optional), failed validation + label 1`] = `
+<div>
+  <div
+    class="ant-form-item ant-form-item-with-help ant-form-item-has-error"
+  >
+    <div
+      class="ant-row ant-form-item-row"
+    >
+      <div
+        class="ant-col ant-form-item-label"
+      >
+        <label
+          class="ant-form-item-required"
+          title="Mock Label"
+        >
+          Mock Label
+        </label>
+      </div>
+      <div
+        class="ant-col ant-form-item-control"
+      >
+        <div
+          class="ant-form-item-control-input"
+        >
+          <div
+            class="ant-form-item-control-input-content"
+          >
+            <div
+              class="ant-select ant-select-in-form-item ant-select-status-error ant-select-single ant-select-show-arrow ant-select-show-search"
+              style="width: 100%;"
+            >
+              <div
+                class="ant-select-selector"
+              >
+                <span
+                  class="ant-select-selection-search"
+                >
+                  <input
+                    aria-activedescendant="field_list_0"
+                    aria-autocomplete="list"
+                    aria-controls="field_list"
+                    aria-haspopup="listbox"
+                    aria-owns="field_list"
+                    autocomplete="off"
+                    class="ant-select-selection-search-input"
+                    id="field"
+                    role="combobox"
+                    type="search"
+                    value=""
+                  />
+                </span>
+                <span
+                  class="ant-select-selection-item"
+                  title="Opt 4"
+                >
+                  Opt 4
+                </span>
+              </div>
+              <span
+                aria-hidden="true"
+                class="ant-select-arrow"
+                style="user-select: none;"
+                unselectable="on"
+              >
+                <span
+                  aria-label="down"
+                  class="anticon anticon-down ant-select-suffix"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    data-icon="down"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                    />
+                  </svg>
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          style="display: flex; flex-wrap: nowrap;"
+        >
+          <div
+            class="ant-form-item-explain ant-form-item-explain-connected"
+            role="alert"
+          >
+            <div
+              class="ant-form-item-explain-error"
+            >
+              <span>
+                Error message
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

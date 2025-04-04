@@ -259,7 +259,7 @@ html {
   height: 2px;
 }
 
-.btn--dropdown {
+.ant-btn.btn--dropdown {
   background: none;
   color: inherit;
   border: none;
@@ -275,7 +275,7 @@ html {
   }
 }
 
-.btn--expand {
+.ant-btn.btn--expand {
   background: none;
   color: variables.$hover-blue;
   align-self: flex-end;

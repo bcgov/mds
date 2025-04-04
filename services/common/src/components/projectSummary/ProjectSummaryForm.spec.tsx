@@ -1,11 +1,12 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { AUTHENTICATION, PROJECTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
-import { FORM, SystemFlagEnum } from "@mds/common/index";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { USER_ACCESS_DATA } from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import ProjectSummaryForm from "@mds/common/components/projectSummary/ProjectSummaryForm";
+import { FORM } from "@mds/common/constants/forms";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 const initialState = {
   form: {
@@ -26,7 +27,7 @@ const initialState = {
   },
 };
 
-const asyncSave = () => new Promise<void>(() => {});
+const asyncSave = () => new Promise<void>(() => { });
 
 describe("Project Management", () => {
   it("renders properly", async () => {
@@ -36,7 +37,7 @@ describe("Project Management", () => {
           initialValues={initialState.form[FORM.ADD_EDIT_PROJECT_SUMMARY].values}
           isEditMode={false}
           handleSaveData={asyncSave}
-          handleTabChange={() => {}}
+          handleTabChange={() => { }}
           activeTab={"basic-information"}
         />
       </ReduxWrapper>

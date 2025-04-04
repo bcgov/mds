@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import { ConnectedProps, connect } from "react-redux";
 import queryString from "query-string";
 import { Row, Col } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
@@ -19,7 +19,7 @@ import { ContactResultsTable } from "@/components/search/ContactResultsTable";
 import { DocumentResultsTable } from "@/components/search/DocumentResultsTable";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
-import PermitSearchResults from "@mds/common/components/permits/PermitSearchResults";
+import { ISearchResultList } from "@mds/common/interfaces";
 
 interface SearchResultsProps {
   location: { search: string };
@@ -28,8 +28,8 @@ interface SearchResultsProps {
   fetchSearchResults: (query, tab) => Promise<void>;
   searchOptions: any[];
   searchOptionsHash: { [key: string]: any };
-  searchResults: { [key: string]: any };
   searchTerms: string[];
+  searchResults: ISearchResultList;
   partyRelationshipTypeHash: { [key: string]: string };
   hideLoadingIndicator?: boolean;
 }
@@ -41,55 +41,48 @@ const TableForGroup = (
   query: { q?: string },
   showAdvancedLookup: boolean
 ) =>
-  ({
-    mine: (
-      <MineResultsTable
-        header="Mines"
-        highlightRegex={highlightRegex}
-        searchResults={group.results}
-        query={query.q}
-        showAdvancedLookup={showAdvancedLookup}
-      />
-    ),
-    party: (
-      <ContactResultsTable
-        header="Contacts"
-        highlightRegex={highlightRegex}
-        searchResults={group.results}
-        partyRelationshipTypeHash={partyRelationshipTypeHash}
-        query={query.q}
-        showAdvancedLookup={showAdvancedLookup}
-      />
-    ),
-    permit: (
-      <PermitResultsTable
-        header="Permits"
-        highlightRegex={highlightRegex}
-        searchResults={group.results}
-      />
-    ),
-    mine_documents: (
-      <DocumentResultsTable
-        header="Mine Documents"
-        highlightRegex={highlightRegex}
-        searchResults={group.results}
-      />
-    ),
-    permit_documents: (
-      <DocumentResultsTable
-        header="Permit Documents"
-        highlightRegex={highlightRegex}
-        searchResults={group.results}
-      />
-    ),
-    mines_act_permits: (
-      <PermitSearchResults
-        header="Permit Documents"
-        highlightRegex={highlightRegex}
-        searchResults={group.results}
-      />
-    ),
-  }[group.type]);
+({
+  mine: (
+    <MineResultsTable
+      header="Mines"
+      highlightRegex={highlightRegex}
+      searchResults={group.results}
+      query={query.q}
+      showAdvancedLookup={showAdvancedLookup}
+    />
+  ),
+  party: (
+    <ContactResultsTable
+      header="Contacts"
+      highlightRegex={highlightRegex}
+      searchResults={group.results}
+      partyRelationshipTypeHash={partyRelationshipTypeHash}
+      query={query.q}
+      showAdvancedLookup={showAdvancedLookup}
+    />
+  ),
+  permit: (
+    <PermitResultsTable
+      header="Permits"
+      highlightRegex={highlightRegex}
+      searchResults={group.results}
+    />
+  ),
+  mine_documents: (
+    <DocumentResultsTable
+      header="Mine Documents"
+      highlightRegex={highlightRegex}
+      searchResults={group.results}
+    />
+  ),
+  permit_documents: (
+    <DocumentResultsTable
+      header="Permit Documents"
+      highlightRegex={highlightRegex}
+      searchResults={group.results}
+    />
+  ),
+}[group.type]);
 
 const NoResults = (searchTerms: string[]) => {
   const searchTooShort = !searchTerms.find((term) => term.length > 2);
@@ -119,7 +112,7 @@ const CantFindIt = () => (
   </Row>
 );
 
-export const SearchResults: React.FC<SearchResultsProps> = (props) => {
+export const SearchResults: React.FC<SearchResultsProps & PropsFromRedux> = (props) => {
   const [isSearching, setIsSearching] = useState(false);
   const [hasSearchTerm, setHasSearchTerm] = useState(false);
   const [params, setParams] = useState<{ [key: string]: string }>({});
@@ -179,9 +172,8 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
       <div>
         <div className="landing-page__header">
           <h1 className="padding-sm--bottom">
-            {`${
-              type_filter ? props.searchOptionsHash[type_filter] : "Search results"
-            } for ${results}`}
+            {`${type_filter ? props.searchOptionsHash[type_filter] : "Search results"
+              } for ${results}`}
           </h1>
           <div>
             {type_filter ? (
@@ -260,4 +252,8 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(SearchResults);

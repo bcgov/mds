@@ -6,7 +6,7 @@ const dispatchProps = {};
 const props = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.handleSubmit = jest.fn();
+  dispatchProps.onSubmit = jest.fn();
   dispatchProps.handleCancel = jest.fn();
   dispatchProps.setConditionEditingFlag = jest.fn();
 };

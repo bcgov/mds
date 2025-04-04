@@ -7,7 +7,7 @@ from app.api.projects.project_summary.models.project_summary import ProjectSumma
 from app.api.projects.project_decision_package.models.project_decision_package import ProjectDecisionPackage
 from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
 
-from flask_restx import Resource, reqparse, fields
+from flask_restx import Resource, reqparse
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound
 
@@ -22,7 +22,7 @@ from app.api.mines.documents.mine_document_search_util import MineDocumentSearch
 from app.api.mines.response_models import ARCHIVE_MINE_DOCUMENT, MINE_DOCUMENT_MODEL, DOCUMENT_MANAGER_ZIP
 
 from app.api.services.document_manager_service import DocumentManagerService
-from app.api.projects.project.project_util import ProjectUtil
+from app.api.projects.project.project_util import notify_file_updates
 
 class MineDocumentListResource(Resource, UserMixin):
     @api.doc(description='Returns list of documents associated with mines')
@@ -136,24 +136,26 @@ class MineDocumentArchiveResource(Resource, UserMixin):
             project = None
             doc = documents[0]
             mine_document_guid = doc.mine_document_guid
-            isNotifiableDoc = False
+            is_notifiable_doc = False
+            status_code = None
 
             if doc.major_mine_application_document_xref:
                 project = MajorMineApplication.find_by_mine_document_guid(mine_document_guid).project
-                isNotifiableDoc = True
+                is_notifiable_doc = True
             elif doc.project_summary_document_xref:
                 project = ProjectSummary.find_by_mine_document_guid(mine_document_guid).project
-                isNotifiableDoc = True
+                is_notifiable_doc = True
+                status_code = project.project_summary.status_code
             elif doc.project_decision_package_document_xref:
                 project = ProjectDecisionPackage.find_by_mine_document_guid(mine_document_guid).project
-                isNotifiableDoc = True
+                is_notifiable_doc = True
             elif doc.information_requirements_table_document_xref:
                 project = InformationRequirementsTable.find_by_mine_document_guid(mine_document_guid).project
-                isNotifiableDoc = True
+                is_notifiable_doc = True
 
             # If one of the *xref value is not None that means the notification should be sent.
-            if isNotifiableDoc:
-                ProjectUtil.notifiy_file_updates(project, mine)
+            if is_notifiable_doc:
+                notify_file_updates(project, mine, status_code)
 
         return None, 204
 

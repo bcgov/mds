@@ -1,4 +1,6 @@
-import { Feature, IMineDocument, USER_ROLES, isFeatureEnabled } from "@mds/common/index";
+import { USER_ROLES } from "@mds/common/constants/environment";
+import { IMineDocument, IMineDocumentVersion } from "@mds/common/interfaces";
+import { isFeatureEnabled, Feature } from "@mds/common/utils";
 
 export enum FileOperations {
   View = "Open in document viewer",
@@ -88,7 +90,7 @@ export class MineDocument implements IMineDocument {
 
   public number_prev_versions: number;
 
-  public versions: MineDocumentVersion[]; // all previous file versions, not including latest
+  public versions: IMineDocumentVersion[]; // all previous file versions, not including latest
 
   public allowed_actions: FileOperations[];
 
@@ -136,6 +138,7 @@ export class MineDocument implements IMineDocument {
           this.makeChild(
             {
               ...version,
+              mine_guid: jsonObject.mine_guid,
               is_latest_version: false,
               mine_document_guid: this.mine_document_guid,
               document_manager_guid: this.document_manager_guid,

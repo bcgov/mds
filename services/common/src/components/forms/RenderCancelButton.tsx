@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { isDirty } from "redux-form";
+import { isDirty } from "@mds/common/components/forms/form";
 import { FormContext } from "./FormWrapper";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
 import { Modal, ModalFuncProps } from "antd";
@@ -15,14 +15,14 @@ export const cancelConfirmWrapper = (
   return !isFormDirty
     ? cancelFunction()
     : Modal.confirm(
-        modalProps ?? {
-          title: "Discard changes?",
-          content: "All changes made will not be saved.",
-          onOk: cancelFunction,
-          cancelText: "Continue Editing",
-          okText: "Discard",
-        }
-      );
+      modalProps ?? {
+        title: "Discard changes?",
+        content: "All changes made will not be saved.",
+        onOk: cancelFunction,
+        cancelText: "Continue Editing",
+        okText: "Discard",
+      }
+    );
 };
 
 interface RenderCancelButtonProps {
@@ -31,6 +31,9 @@ interface RenderCancelButtonProps {
   buttonProps?: BaseButtonProps;
   cancelFunction?: () => void | Promise<void>;
   cancelModalProps?: ModalFuncProps;
+  iconButton?: boolean;
+  disabled?: boolean;
+  loading?: boolean;
 }
 
 /**
@@ -47,6 +50,9 @@ const RenderCancelButton: FC<RenderCancelButtonProps> = ({
   buttonProps = { type: "default" },
   cancelFunction,
   cancelModalProps,
+  iconButton = false,
+  disabled = false,
+  loading = false,
 }) => {
   const dispatch = useDispatch();
   const { formName, isModal, isEditMode } = useContext(FormContext);
@@ -66,9 +72,12 @@ const RenderCancelButton: FC<RenderCancelButtonProps> = ({
     : handleCancel;
 
   const buttonType = buttonProps?.type ?? "default";
+  const buttonLabel = isEditMode ? buttonText : viewButtonText;
+  const className = `${buttonProps?.className ?? ""} form-btn`;
+
   return (
-    <CoreButton {...buttonProps} type={buttonType} onClick={() => buttonCancelFunction()}>
-      {isEditMode ? buttonText : viewButtonText}
+    <CoreButton aria-label="Cancel" loading={loading} disabled={disabled} {...buttonProps} className={className} type={buttonType} onClick={() => buttonCancelFunction()}>
+      {!iconButton && buttonLabel}
     </CoreButton>
   );
 };

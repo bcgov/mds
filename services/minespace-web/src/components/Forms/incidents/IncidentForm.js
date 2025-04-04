@@ -3,10 +3,8 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
-import { Field, reduxForm, change, getFormValues, FieldArray } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Card, Checkbox, Col, Row, Typography, Divider, Button } from "antd";
+import { Field, change, getFormValues, FieldArray } from "@mds/common/components/forms/form";
+import { Card, Checkbox, Col, Row, Typography, Divider, Button, Form } from "antd";
 import {
   required,
   maxLength,
@@ -20,7 +18,7 @@ import {
   wholeNumber,
   requiredRadioButton,
   requiredNotUndefined,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 import { normalizePhone, normalizeDatetime } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
 import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
@@ -29,7 +27,7 @@ import {
   getDropdownIncidentFollowupActionOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
-import { INCIDENT_CONTACT_METHOD_OPTIONS } from "@mds/common";
+import { INCIDENT_CONTACT_METHOD_OPTIONS } from "@mds/common/constants/strings";
 import * as FORM from "@/constants/forms";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import {
@@ -41,17 +39,17 @@ import { renderConfig } from "@/components/common/config";
 import Callout from "@/components/common/Callout";
 import customPropTypes from "@/customPropTypes";
 import IncidentFileUpload from "./IncidentFileUpload";
-import RenderDateTimeTz from "@/components/common/RenderDateTimeTz";
+import RenderDateTimeTz from "@mds/common/components/forms/RenderDateTimeTz";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const propTypes = {
   incident: customPropTypes.incident.isRequired,
   inspectorOptions: customPropTypes.groupedDropdownList.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  form: PropTypes.string.isRequired,
+  initialValues: PropTypes.any,
   handlers: PropTypes.shape({ deleteDocument: PropTypes.func }).isRequired,
   change: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
   applicationSubmitted: PropTypes.bool,
   isFinalReviewStage: PropTypes.bool,
   isReviewSubmitStage: PropTypes.bool,
@@ -101,12 +99,8 @@ const retrieveIncidentDetailsDynamicValidation = (childProps) => {
 };
 
 const confirmationSubmission = (childProps) => {
-  const {
-    applicationSubmitted,
-    location,
-    confirmedSubmission,
-    setConfirmedSubmission,
-  } = childProps;
+  const { applicationSubmitted, location, confirmedSubmission, setConfirmedSubmission } =
+    childProps;
   return (
     !applicationSubmitted &&
     location?.state?.current === 2 && (
@@ -228,56 +222,55 @@ const renderReporterDetails = (formDisabled) => {
         </Typography.Paragraph>
       </Col>
       <Col xs={24} md={10}>
-        <Form.Item label="Reported by">
-          <Field
-            id="reported_by_name"
-            name="reported_by_name"
-            placeholder="Enter name of reporter"
-            component={renderConfig.FIELD}
-            validate={[required]}
-            disabled={formDisabled}
-          />
-        </Form.Item>
+        <Field
+          label="Reported by"
+          id="reported_by_name"
+          name="reported_by_name"
+          placeholder="Enter name of reporter"
+          component={renderConfig.FIELD}
+          required
+          validate={[required]}
+          disabled={formDisabled}
+        />
       </Col>
       <Col xs={24} md={10}>
-        <Form.Item label="Phone number">
-          <Field
-            id="reported_by_phone_no"
-            name="reported_by_phone_no"
-            placeholder="xxx-xxx-xxxx"
-            component={renderConfig.FIELD}
-            validate={[required, phoneNumber, maxLength(12)]}
-            normalize={normalizePhone}
-            disabled={formDisabled}
-          />
-        </Form.Item>
+        <Field
+          label="Phone number"
+          id="reported_by_phone_no"
+          name="reported_by_phone_no"
+          placeholder="xxx-xxx-xxxx"
+          component={renderConfig.FIELD}
+          required
+          validate={[required, phoneNumber, maxLength(12)]}
+          normalize={normalizePhone}
+          disabled={formDisabled}
+        />
       </Col>
       <Col xs={24} md={4}>
-        <Form.Item label="Ext. (optional)">
-          <Field
-            id="reported_by_phone_ext"
-            name="reported_by_phone_ext"
-            placeholder="xxxxxx"
-            component={renderConfig.FIELD}
-            validate={[number, maxLength(6)]}
-            disabled={formDisabled}
-          />
-        </Form.Item>
+        <Field
+          label="Ext."
+          id="reported_by_phone_ext"
+          name="reported_by_phone_ext"
+          placeholder="xxxxxx"
+          component={renderConfig.FIELD}
+          validate={[number, maxLength(6)]}
+          disabled={formDisabled}
+        />
       </Col>
       <Col md={10} xs={24}>
-        <Form.Item label="* Email">
-          <Field
-            id="reported_by_email"
-            name="reported_by_email"
-            placeholder="example@domain.com"
-            component={renderConfig.FIELD}
-            validate={[required, email]}
-            disabled={formDisabled}
-            blockLabelText={
-              "Notification of record creation and updates will be sent to this address"
-            }
-          />
-        </Form.Item>
+        <Field
+          label="Email"
+          id="reported_by_email"
+          name="reported_by_email"
+          placeholder="example@domain.com"
+          component={renderConfig.FIELD}
+          required
+          validate={[required, email]}
+          disabled={formDisabled}
+          blockLabelText={
+            "Notification of record creation and updates will be sent to this address"
+          }
+        />
       </Col>
     </Row>
   );
@@ -312,109 +305,103 @@ const renderIncidentDetails = (childProps) => {
         </Typography.Paragraph>
       </Col>
       <Col span={24}>
-        <Form.Item label="Incident Location">
-          <Field
-            id="incident_location"
-            name="incident_location"
-            disabled={formDisabled}
-            component={renderConfig.RADIO}
-            validate={[requiredRadioButton]}
-            customOptions={locationOptions}
-          />
-        </Form.Item>
+        <Field
+          label="Incident Location"
+          id="incident_location"
+          name="incident_location"
+          disabled={formDisabled}
+          component={renderConfig.RADIO}
+          required
+          validate={[requiredRadioButton]}
+          customOptions={locationOptions}
+        />
       </Col>
       <Col md={12} xs={24}>
-        <Form.Item label="Incident date and time">
-          <Field
-            id="incident_timestamp"
-            name="incident_timestamp"
-            disabled={formDisabled}
-            validate={[dateNotInFutureTZ, required, dateTimezoneRequired("incident_timezone")]}
-            normalize={normalizeDatetime}
-            component={RenderDateTimeTz}
-            props={{ timezoneFieldProps: { name: "incident_timezone" } }}
-          />
-        </Form.Item>
+        <Field
+          label="Incident date and time"
+          id="incident_timestamp"
+          name="incident_timestamp"
+          disabled={formDisabled}
+          required
+          validate={[dateNotInFutureTZ, required, dateTimezoneRequired("incident_timezone")]}
+          normalize={normalizeDatetime}
+          component={RenderDateTimeTz}
+          props={{ timezoneFieldProps: { name: "incident_timezone" } }}
+        />
       </Col>
       <Col md={12} xs={24}>
-        <Form.Item label="Proponent incident number (optional)">
-          <Field
-            id="proponent_incident_no"
-            name="proponent_incident_no"
-            component={renderConfig.FIELD}
-            validate={[maxLength(20)]}
-            disabled={formDisabled}
-          />
-        </Form.Item>
+        <Field
+          label="Proponent incident number"
+          id="proponent_incident_no"
+          name="proponent_incident_no"
+          component={renderConfig.FIELD}
+          validate={[maxLength(20)]}
+          disabled={formDisabled}
+        />
       </Col>
       <Col md={12} xs={24}>
-        <Form.Item label="Number of injuries (optional)">
-          <Field
-            id="number_of_injuries"
-            name="number_of_injuries"
-            component={renderConfig.FIELD}
-            validate={[wholeNumber, maxLength(10)]}
-            disabled={formDisabled}
-          />
-        </Form.Item>
+        <Field
+          label="Number of injuries"
+          id="number_of_injuries"
+          name="number_of_injuries"
+          component={renderConfig.FIELD}
+          validate={[wholeNumber, maxLength(10)]}
+          disabled={formDisabled}
+        />
       </Col>
       <Col md={12} xs={24}>
-        <Form.Item label="Number of fatalities (optional)">
-          <Field
-            id="number_of_fatalities"
-            name="number_of_fatalities"
-            component={renderConfig.FIELD}
-            validate={[wholeNumber, maxLength(10)]}
-            disabled={formDisabled}
-          />
-        </Form.Item>
+        <Field
+          label="Number of fatalities"
+          id="number_of_fatalities"
+          name="number_of_fatalities"
+          component={renderConfig.FIELD}
+          validate={[wholeNumber, maxLength(10)]}
+          disabled={formDisabled}
+        />
       </Col>
       <Col md={12} xs={24}>
-        <Form.Item label="Were emergency services called? (optional)">
-          <Field
-            id="emergency_services_called"
-            name="emergency_services_called"
-            placeholder="Please choose one"
-            component={renderConfig.RADIO}
-            disabled={formDisabled}
-          />
-        </Form.Item>
+        <Field
+          label="Were emergency services called?"
+          id="emergency_services_called"
+          name="emergency_services_called"
+          placeholder="Please choose one"
+          component={renderConfig.RADIO}
+          disabled={formDisabled}
+        />
       </Col>
       <Col span={24}>
-        <Form.Item label="Description of incident">
-          <Field
-            id="incident_description"
-            name="incident_description"
-            placeholder="Provide a detailed description of the incident"
-            component={renderConfig.SCROLL_FIELD}
-            validate={[required, maxLength(4000)]}
-            disabled={formDisabled}
-          />
-        </Form.Item>
+        <Field
+          label="Description of incident"
+          id="incident_description"
+          name="incident_description"
+          placeholder="Provide a detailed description of the incident"
+          component={renderConfig.SCROLL_FIELD}
+          required
+          validate={[required, maxLength(4000)]}
+          disabled={formDisabled}
+        />
       </Col>
       <Col span={24}>
-        <Form.Item label="Immediate measures taken (optional)">
-          <Field
-            id="immediate_measures_taken"
-            name="immediate_measures_taken"
-            placeholder="Provide a detailed description of any immediate measures taken"
-            component={renderConfig.SCROLL_FIELD}
-            validate={[maxLength(4000)]}
-            disabled={formDisabled}
-          />
-        </Form.Item>
+        <Field
+          label="Immediate measures taken"
+          id="immediate_measures_taken"
+          name="immediate_measures_taken"
+          placeholder="Provide a detailed description of any immediate measures taken"
+          component={renderConfig.SCROLL_FIELD}
+          validate={[maxLength(4000)]}
+          disabled={formDisabled}
+        />
       </Col>
       <Col span={24}>
-        <Form.Item label="If any injuries, please describe (optional)">
-          <Field
-            id="injuries_description"
-            name="injuries_description"
-            placeholder="Provide a detailed description of any injuries"
-            component={renderConfig.SCROLL_FIELD}
-            validate={[maxLength(4000)]}
-            disabled={formDisabled}
-          />
-        </Form.Item>
+        <Field
+          label="If any injuries, please describe"
+          id="injuries_description"
+          name="injuries_description"
+          placeholder="Provide a detailed description of any injuries"
+          component={renderConfig.SCROLL_FIELD}
+          validate={[maxLength(4000)]}
+          disabled={formDisabled}
+        />
       </Col>
       <Divider />
       <Col span={24}>
@@ -431,75 +418,73 @@ const renderIncidentDetails = (childProps) => {
         <Typography.Title level={5}>Verbal Notification</Typography.Title>
       </Col>
       <Col md={12} xs={24}>
-        <Form.Item label="Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)?">
-          <Field
-            id="verbal_notification_provided"
-            name="verbal_notification_provided"
-            component={renderConfig.RADIO}
-            disabled={formDisabled}
-            validate={[requiredNotUndefined]}
-          />
-        </Form.Item>
+        <Field
+          label="Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)?"
+          id="verbal_notification_provided"
+          name="verbal_notification_provided"
+          component={renderConfig.RADIO}
+          disabled={formDisabled}
+          required
+          validate={[requiredNotUndefined]}
+        />
       </Col>
       <Col span={24}>
         <hr />
         <Typography.Title level={5}>OHSC Worker Representative</Typography.Title>
       </Col>
       <Col md={12} xs={24}>
-        <Form.Item label="OHSC Worker Rep Name (optional)">
-          <Field
-            id="johsc_worker_rep_name"
-            name="johsc_worker_rep_name"
-            component={renderConfig.FIELD}
-            placeholder="Enter name"
-            validate={[maxLength(100)]}
-            disabled={formDisabled}
-          />
-        </Form.Item>
+        <Field
+          label="OHSC Worker Rep Name"
+          id="johsc_worker_rep_name"
+          name="johsc_worker_rep_name"
+          component={renderConfig.FIELD}
+          placeholder="Enter name"
+          validate={[maxLength(100)]}
+          disabled={formDisabled}
+        />
       </Col>
       <Col md={12} xs={24}>
-        <Form.Item label="Has this person already been informed of the incident?">
-          <Field
-            id="johsc_worker_rep_contacted"
-            name="johsc_worker_rep_contacted"
-            component={renderConfig.RADIO}
-            disabled={formDisabled}
-            {...workerRepContactedValidation}
-          />
-        </Form.Item>
+        <Field
+          label="Has this person already been informed of the incident?"
+          id="johsc_worker_rep_contacted"
+          name="johsc_worker_rep_contacted"
+          component={renderConfig.RADIO}
+          disabled={formDisabled}
+          {...workerRepContactedValidation}
+        />
       </Col>
       {workerRepContacted && (
         <>
           <Col md={12} xs={24}>
-            <Form.Item label="Date and time">
-              <Field
-                id="johsc_worker_rep_contact_timestamp"
-                name="johsc_worker_rep_contact_timestamp"
-                component={RenderDateTimeTz}
-                normalize={normalizeDatetime}
-                timezone={formValues.incident_timezone}
-                showTime
-                disabled={formDisabled}
-                placeholder="Please select date and time"
-                validate={[
-                  required,
-                  dateNotInFuture,
-                  dateNotBeforeStrictOther(formValues.incident_timestamp),
-                ]}
-              />
-            </Form.Item>
+            <Field
+              label="Date and time"
+              id="johsc_worker_rep_contact_timestamp"
+              name="johsc_worker_rep_contact_timestamp"
+              component={RenderDateTimeTz}
+              normalize={normalizeDatetime}
+              timezone={formValues.incident_timezone}
+              showTime
+              disabled={formDisabled}
+              placeholder="Please select date and time"
+              required
+              validate={[
+                required,
+                dateNotInFuture,
+                dateNotBeforeStrictOther(formValues.incident_timestamp),
+              ]}
+            />
           </Col>
           <Col md={12} xs={24}>
-            <Form.Item label="Initial Contact Method">
-              <Field
-                id="johsc_worker_rep_contact_method"
-                name="johsc_worker_rep_contact_method"
-                component={renderConfig.RADIO}
-                customOptions={INCIDENT_CONTACT_METHOD_OPTIONS.filter((cm) => !cm?.inspectorOnly)}
-                disabled={formDisabled}
-                validate={[required]}
-              />
-            </Form.Item>
+            <Field
+              label="Initial Contact Method"
+              id="johsc_worker_rep_contact_method"
+              name="johsc_worker_rep_contact_method"
+              component={renderConfig.RADIO}
+              customOptions={INCIDENT_CONTACT_METHOD_OPTIONS.filter((cm) => !cm?.inspectorOnly)}
+              disabled={formDisabled}
+              required
+              validate={[required]}
+            />
           </Col>
         </>
       )}
@@ -508,60 +493,58 @@ const renderIncidentDetails = (childProps) => {
         <Typography.Title level={5}>OHSC Management Representative</Typography.Title>
       </Col>
       <Col md={12} xs={24}>
-        <Form.Item label="OHSC Management Rep Name (optional)">
-          <Field
-            id="johsc_management_rep_name"
-            name="johsc_management_rep_name"
-            component={renderConfig.FIELD}
-            placeholder="Enter name"
-            validate={[maxLength(100)]}
-            disabled={formDisabled}
-          />
-        </Form.Item>
+        <Field
+          label="OHSC Management Rep Name"
+          id="johsc_management_rep_name"
+          name="johsc_management_rep_name"
+          component={renderConfig.FIELD}
+          placeholder="Enter name"
+          validate={[maxLength(100)]}
+          disabled={formDisabled}
+        />
       </Col>
       <Col md={12} xs={24}>
-        <Form.Item label="Has this person already been informed of the incident?">
-          <Field
-            id="johsc_management_rep_contacted"
-            name="johsc_management_rep_contacted"
-            component={renderConfig.RADIO}
-            disabled={formDisabled}
-            {...managementRepContactedValidation}
-          />
-        </Form.Item>
+        <Field
+          label="Has this person already been informed of the incident?"
+          id="johsc_management_rep_contacted"
+          name="johsc_management_rep_contacted"
+          component={renderConfig.RADIO}
+          disabled={formDisabled}
+          {...managementRepContactedValidation}
+        />
       </Col>
       {managementRepContacted && (
         <>
           <Col md={12} xs={24}>
-            <Form.Item label="Date and time">
-              <Field
-                id="johsc_management_rep_contact_timestamp"
-                name="johsc_management_rep_contact_timestamp"
-                normalize={normalizeDatetime}
-                component={RenderDateTimeTz}
-                timezone={formValues.incident_timezone}
-                showTime
-                disabled={formDisabled}
-                placeholder="Please select date and time"
-                validate={[
-                  required,
-                  dateNotInFutureTZ,
-                  dateNotBeforeStrictOther(formValues.incident_timestamp),
-                ]}
-              />
-            </Form.Item>
+            <Field
+              label="Date and time"
+              id="johsc_management_rep_contact_timestamp"
+              name="johsc_management_rep_contact_timestamp"
+              normalize={normalizeDatetime}
+              component={RenderDateTimeTz}
+              timezone={formValues.incident_timezone}
+              showTime
+              disabled={formDisabled}
+              placeholder="Please select date and time"
+              required
+              validate={[
+                required,
+                dateNotInFutureTZ,
+                dateNotBeforeStrictOther(formValues.incident_timestamp),
+              ]}
+            />
           </Col>
           <Col md={12} xs={24}>
-            <Form.Item label="Initial Contact Method">
-              <Field
-                id="johsc_management_rep_contact_method"
-                name="johsc_management_rep_contact_method"
-                component={renderConfig.RADIO}
-                customOptions={INCIDENT_CONTACT_METHOD_OPTIONS.filter((cm) => !cm?.inspectorOnly)}
-                disabled={formDisabled}
-                validate={[required]}
-              />
-            </Form.Item>
+            <Field
+              label="Initial Contact Method"
+              id="johsc_management_rep_contact_method"
+              name="johsc_management_rep_contact_method"
+              component={renderConfig.RADIO}
+              customOptions={INCIDENT_CONTACT_METHOD_OPTIONS.filter((cm) => !cm?.inspectorOnly)}
+              disabled={formDisabled}
+              required
+              validate={[required]}
+            />
           </Col>
         </>
       )}
@@ -648,24 +631,22 @@ const renderUploadInitialNotificationDocuments = (
             </Typography.Paragraph>
           </Col>
           <Col span={24}>
-            <Form.Item>
-              <Field
-                id={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
-                name={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
-                onFileLoad={(document_name, document_manager_guid) =>
-                  handlers.onFileLoad(
-                    document_name,
-                    document_manager_guid,
-                    Strings.INCIDENT_DOCUMENT_TYPES.initial,
-                    INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD
-                  )
-                }
-                onRemoveFile={parentHandlers?.deleteDocument}
-                mineGuid={match.params?.mineGuid}
-                component={IncidentFileUpload}
-                labelIdle='<strong class="filepond--label-action">Drag & drop your files or Browse</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf .msg .png .jpeg .tiff .hiec</div>'
-              />
-            </Form.Item>
+            <Field
+              id={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
+              name={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
+              onFileLoad={(document_name, document_manager_guid) =>
+                handlers.onFileLoad(
+                  document_name,
+                  document_manager_guid,
+                  Strings.INCIDENT_DOCUMENT_TYPES.initial,
+                  INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD
+                )
+              }
+              onRemoveFile={parentHandlers?.deleteDocument}
+              mineGuid={match.params?.mineGuid}
+              component={IncidentFileUpload}
+              labelIdle='<strong class="filepond--label-action">Drag & drop your files or Browse</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf .msg .png .jpeg .tiff .hiec</div>'
+            />
           </Col>
         </>
       )}
@@ -723,24 +704,22 @@ const renderUploadInitialNotificationDocuments = (
               </Typography.Paragraph>
             </Col>
             <Col span={24}>
-              <Form.Item>
-                <Field
-                  id={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
-                  name={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
-                  onFileLoad={(document_name, document_manager_guid) =>
-                    handlers.onFileLoad(
-                      document_name,
-                      document_manager_guid,
-                      Strings.INCIDENT_DOCUMENT_TYPES.final,
-                      FINAL_REPORT_DOCUMENTS_FORM_FIELD
-                    )
-                  }
-                  onRemoveFile={parentHandlers?.deleteDocument}
-                  mineGuid={match.params?.mineGuid}
-                  component={IncidentFileUpload}
-                  labelIdle='<strong class="filepond--label-action">Final Report Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf .msg .png .jpeg .tiff .hiec</div>'
-                />
-              </Form.Item>
+              <Field
+                id={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
+                name={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
+                onFileLoad={(document_name, document_manager_guid) =>
+                  handlers.onFileLoad(
+                    document_name,
+                    document_manager_guid,
+                    Strings.INCIDENT_DOCUMENT_TYPES.final,
+                    FINAL_REPORT_DOCUMENTS_FORM_FIELD
+                  )
+                }
+                onRemoveFile={parentHandlers?.deleteDocument}
+                mineGuid={match.params?.mineGuid}
+                component={IncidentFileUpload}
+                labelIdle='<strong class="filepond--label-action">Final Report Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf .msg .png .jpeg .tiff .hiec</div>'
+              />
             </Col>
           </>
         )}
@@ -832,49 +811,45 @@ const renderMinistryFollowUp = (childProps, formDisabled, formValues) => {
         <Typography.Title level={4}>Follow-Up Information</Typography.Title>
       </Col>
       <Col md={12} xs={24}>
-        <Form.Item label="Was there a follow-up inspection?">
-          <Field
-            id="followup_inspection"
-            name="followup_inspection"
-            component={renderConfig.RADIO}
-            disabled={formDisabled}
-          />
-        </Form.Item>
+        <Field
+          label="Was there a follow-up inspection?"
+          id="followup_inspection"
+          name="followup_inspection"
+          component={renderConfig.RADIO}
+          disabled={formDisabled}
+        />
       </Col>
       <Col md={12} xs={24}>
-        <Form.Item label="Follow-up inspection date">
-          <Field
-            id="followup_inspection_date"
-            name="followup_inspection_date"
-            normalize={normalizeDatetime}
-            component={RenderDateTimeTz}
-            timezone={formValues.incident_timezone}
-            showTime={false}
-            disabled={formDisabled}
-          />
-        </Form.Item>
+        <Field
+          label="Follow-up inspection date"
+          id="followup_inspection_date"
+          name="followup_inspection_date"
+          normalize={normalizeDatetime}
+          component={RenderDateTimeTz}
+          timezone={formValues.incident_timezone}
+          showTime={false}
+          disabled={formDisabled}
+        />
       </Col>
       <Col md={12} xs={24}>
-        <Form.Item label="Was it escalated to EMLI investigation?">
-          <Field
-            id="followup_investigation_type_code"
-            name="followup_investigation_type_code"
-            component={renderConfig.SELECT}
-            data={incidentFollowupActionOptions}
-            disabled={formDisabled}
-          />
-        </Form.Item>
+        <Field
+          label="Was it escalated to MCM investigation?"
+          id="followup_investigation_type_code"
+          name="followup_investigation_type_code"
+          component={renderConfig.SELECT}
+          data={incidentFollowupActionOptions}
+          disabled={formDisabled}
+        />
       </Col>
       <Col md={12} xs={24}>
-        <Form.Item label="Incident Status">
-          <Field
-            id="status_code"
-            name="status_code"
-            component={renderConfig.SELECT}
-            data={incidentStatusCodeOptions}
-            disabled={formDisabled}
-          />
-        </Form.Item>
+        <Field
+          label="Incident Status"
+          id="status_code"
+          name="status_code"
+          component={renderConfig.SELECT}
+          data={incidentStatusCodeOptions}
+          disabled={formDisabled}
+        />
       </Col>
       <Col span={24}>
         <Form.Item label="Mine manager's recommendations">
@@ -906,7 +881,7 @@ export const IncidentForm = (props) => {
     handlers,
   } = props;
   const [uploadedFiles, setUploadedFiles] = useState([]);
-
+  const form = FORM.ADD_EDIT_INCIDENT;
   const onFileLoad = (fileName, document_manager_guid, documentTypeCode, documentFormField) => {
     const updatedUploadedFiles = [
       ...uploadedFiles,
@@ -919,7 +894,7 @@ export const IncidentForm = (props) => {
     ];
     setUploadedFiles(updatedUploadedFiles);
 
-    return props.change(documentFormField, updatedUploadedFiles);
+    return props.change(form, documentFormField, updatedUploadedFiles);
   };
   const onRemoveFile = (err, fileItem, documentFormField) => {
     const updatedUploadedFiles = uploadedFiles.filter(
@@ -927,13 +902,22 @@ export const IncidentForm = (props) => {
     );
     setUploadedFiles(updatedUploadedFiles);
 
-    return props.change(documentFormField, updatedUploadedFiles);
+    return props.change(form, documentFormField, updatedUploadedFiles);
   };
   const formDisabled = isReviewSubmitStage || isFinalReviewStage;
   const parentColumnProps = isFinalReviewStage ? {} : { span: 16, offset: 4 };
 
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit}>
+    <FormWrapper
+      name={FORM.ADD_EDIT_INCIDENT}
+      initialValues={props.initialValues}
+      onSubmit={() => {}}
+      reduxFormConfig={{
+        enableReinitialize: true,
+        touchOnBlur: true,
+        touchOnChange: true,
+      }}
+    >
       <Row>
         <Col {...parentColumnProps}>
           {renderIncidentStatusCallout({ incident })}
@@ -967,7 +951,7 @@ export const IncidentForm = (props) => {
           })}
         </Col>
       </Row>
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -991,13 +975,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default compose(
-  withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: FORM.ADD_EDIT_INCIDENT,
-    enableReinitialize: true,
-    touchOnBlur: true,
-    touchOnChange: true,
-  })
-)(IncidentForm);
+export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(IncidentForm);

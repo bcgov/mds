@@ -11,7 +11,7 @@ import {
   renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import { Feature } from "@mds/common";
+import { Feature } from "@mds/common/utils/featureFlag";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 /**

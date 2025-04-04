@@ -15,7 +15,7 @@ import keycloak, { keycloakInitConfig } from "@mds/common/keycloak";
 import { unAuthenticateUser } from "./actionCreators/authenticationActionCreator";
 import FeatureFlagProvider from "@mds/common/providers/featureFlags/featureFlag.provider";
 import { registerLicense } from "@syncfusion/ej2-base";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 
 // 5 minutes before user is inactive- across tabs
 const idleTimeout = 5 * 60_000;

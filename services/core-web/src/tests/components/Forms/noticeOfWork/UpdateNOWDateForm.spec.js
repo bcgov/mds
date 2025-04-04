@@ -1,14 +1,13 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { UpdateNOWDateForm } from "@/components/Forms/noticeOfWork/UpdateNOWDateForm";
-import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
 
 const dispatchProps = {};
 const props = {};
 
 const setupDispatchProps = () => {
   dispatchProps.closeModal = jest.fn();
-  dispatchProps.handleSubmit = jest.fn();
+  dispatchProps.onSubmit = jest.fn();
 };
 
 const setupProps = () => {

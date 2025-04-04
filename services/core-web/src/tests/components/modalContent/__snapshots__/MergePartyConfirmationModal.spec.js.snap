@@ -2,32 +2,15 @@
 
 exports[`MergePartyConfirmationModal renders properly 1`] = `
 <div>
-  <ReduxForm
+  <MergePartyConfirmationForm
     closeModal={[MockFunction]}
-    destroyOnUnmount={true}
-    enableReinitialize={false}
-    forceUnregisterOnUnmount={false}
-    form="MERGE_PARTY_CONFIRMATION"
-    getFormState={[Function]}
     initialValues={Object {}}
     isPerson={false}
-    keepDirtyOnReinitialize={false}
     onSubmit={[MockFunction]}
-    onSubmitSuccess={[Function]}
     partyRelationshipTypesHash={Object {}}
-    persistentSubmitErrors={false}
     provinceOptions={Array []}
-    pure={true}
     roles={Array []}
-    shouldAsyncValidate={[Function]}
-    shouldError={[Function]}
-    shouldValidate={[Function]}
-    shouldWarn={[Function]}
-    submitAsSideEffect={false}
     title="mockTitle"
-    touchOnBlur={false}
-    touchOnChange={false}
-    updateUnregisteredFields={false}
   />
 </div>
 `;

@@ -176,6 +176,7 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
         disabled={true}
         id="reclamation_description"
         name="reclamation_description"
+        required={true}
         validate={
           Array [
             [Function],
@@ -207,6 +208,7 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
         normalize={[Function]}
         onChange={[Function]}
         onFocus={[Function]}
+        required={true}
         validate={
           Array [
             [Function],

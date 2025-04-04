@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { useSelector } from "react-redux";
+import { getFormValues } from "@mds/common/components/forms/form";
 import { FORM } from "@mds/common/constants/forms";
 import DocumentUpload from "@mds/common/components/projectSummary/DocumentUpload";
 import ProjectContacts from "@mds/common/components/projectSummary/ProjectContacts";
@@ -9,7 +10,7 @@ import SteppedForm from "@mds/common/components/forms/SteppedForm";
 import Step from "@mds/common/components/forms/Step";
 import ProjectLinks from "@mds/common/components/projectSummary/ProjectLinks";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
-import { IProjectSummary } from "@mds/common/interfaces/projects";
+import { IProjectSummary, IProjectSummaryForm } from "@mds/common/interfaces/projects";
 import { Feature } from "@mds/common/utils/featureFlag";
 import { Agent } from "./Agent";
 import { LegalLandOwnerInformation } from "@mds/common/components/projectSummary/LegalLandOwnerInformation";
@@ -21,13 +22,14 @@ import { ApplicationSummary } from "./ApplicationSummary";
 import { getProjectSummaryAuthorizationTypesArray } from "@mds/common/redux/selectors/staticContentSelectors";
 import { ProjectManagement } from "./ProjectManagement";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
-import { SystemFlagEnum } from "../..";
 import { formatProjectPayload } from "@mds/common/utils/helpers";
+import { areAuthFieldsDisabled, areDocumentFieldsDisabled, areFieldsDisabled, isDocumentDeletionEnabled } from "../projects/projectUtils";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 interface ProjectSummaryFormProps {
   initialValues: IProjectSummary;
   handleTabChange: (newTab: string) => void;
-  handleSaveData: (formValues, newActiveTab?) => Promise<void>;
+  handleSaveData: (formValues, newActiveTab?, currentTab?) => Promise<void>;
   activeTab: string;
   isEditMode?: boolean;
 }
@@ -64,13 +66,17 @@ export const getProjectFormTabs = (
   return amsFeatureEnabled
     ? projectFormTabs
     : [
-        "basic-information",
-        "related-projects",
-        "project-contacts",
-        "project-dates",
-        "document-upload",
-      ];
+      "basic-information",
+      "related-projects",
+      "project-contacts",
+      "project-dates",
+      "document-upload",
+    ];
 };
+
+export interface ProjectSummaryFormComponentProps {
+  fieldsDisabled: boolean;
+}
 
 export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
   initialValues,
@@ -92,33 +98,41 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
   const projectSummaryAuthorizationTypesArray = useSelector(
     getProjectSummaryAuthorizationTypesArray
   );
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
+  const { status_code, confirmation_of_submission } = formValues ?? {};
+
+  const fieldsDisabled = areFieldsDisabled(systemFlag, status_code, confirmation_of_submission);
+  const docFieldsDisabled = areDocumentFieldsDisabled(systemFlag, status_code);
+  const authFieldsDisabled = areAuthFieldsDisabled(systemFlag, status_code, confirmation_of_submission);
+  const deleteEnabled = isDocumentDeletionEnabled(systemFlag, status_code);
 
   const handleTransformPayload = (valuesFromForm: any) => {
     return formatProjectPayload(valuesFromForm, { projectSummaryAuthorizationTypesArray });
   };
 
   const renderTabComponent = (tab) =>
-    ({
-      "project-management": <ProjectManagement />,
-      // TODO: FEATURE.MAJOR_PROJECT_REFACTOR - 'ministry-contact' can be removed once this flag is removed
-      "ministry-contact": <ProjectManagement />,
-      "location-access-and-land-use": <LegalLandOwnerInformation />,
-      "basic-information": <BasicInformation />,
-      "related-projects": (
-        <ProjectLinks
-          viewProject={(p) => GLOBAL_ROUTES?.EDIT_PROJECT.dynamicRoute(p.project_guid)}
-        />
-      ),
-      "project-contacts": <ProjectContacts />,
-      "project-dates": <ProjectDates />,
-      "applicant-information": <Applicant />,
-      "representing-agent": <Agent />,
-      "mine-components-and-offsite-infrastructure": <FacilityOperator />,
-      "purpose-and-authorization": <AuthorizationsInvolved />,
-      "document-upload": <DocumentUpload />,
-      "application-summary": <ApplicationSummary />,
-      declaration: <Declaration />,
-    }[tab]);
+  ({
+    "project-management": <ProjectManagement />,
+    // TODO: FEATURE.MAJOR_PROJECT_REFACTOR - 'ministry-contact' can be removed once this flag is removed
+    "ministry-contact": <ProjectManagement />,
+    "location-access-and-land-use": <LegalLandOwnerInformation fieldsDisabled={fieldsDisabled} />,
+    "basic-information": <BasicInformation fieldsDisabled={fieldsDisabled} />,
+    "related-projects": (
+      <ProjectLinks
+        fieldsDisabled={fieldsDisabled}
+        viewProject={(p) => GLOBAL_ROUTES?.EDIT_PROJECT.dynamicRoute(p.project_guid)}
+      />
+    ),
+    "project-contacts": <ProjectContacts fieldsDisabled={fieldsDisabled} />,
+    "project-dates": <ProjectDates fieldsDisabled={fieldsDisabled} />,
+    "applicant-information": <Applicant fieldsDisabled={fieldsDisabled} />,
+    "representing-agent": <Agent fieldsDisabled={fieldsDisabled} />,
+    "mine-components-and-offsite-infrastructure": <FacilityOperator fieldsDisabled={fieldsDisabled} />,
+    "purpose-and-authorization": <AuthorizationsInvolved fieldsDisabled={authFieldsDisabled} />,
+    "document-upload": <DocumentUpload docFieldsDisabled={docFieldsDisabled} deleteEnabled={deleteEnabled} />,
+    "application-summary": <ApplicationSummary fieldsDisabled={fieldsDisabled} />,
+    declaration: <Declaration />,
+  }[tab]);
 
   return (
     <SteppedForm

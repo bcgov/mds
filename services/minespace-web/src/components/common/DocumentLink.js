@@ -10,7 +10,7 @@ import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import { truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { USER_ROLES } from "@mds/common";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import { openDocument, isDocumentOpenable } from "@mds/common/components/syncfusion/DocumentViewer";
 
 const propTypes = {
@@ -30,7 +30,7 @@ const defaultProps = {
   onClickAlternative: null,
   linkTitleOverride: null,
   truncateDocumentName: true,
-  handleDelete: () => {},
+  handleDelete: () => { },
   deletePayload: {},
   deletePermission: false,
 };

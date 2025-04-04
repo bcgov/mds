@@ -1,32 +1,18 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { AddPermitForm } from "@/components/Forms/AddPermitForm";
-
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.handleSubmit = jest.fn();
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.getDropdownPermitStatusOptions = jest.fn();
-};
-
-const setupProps = () => {
-  props.title = "mockTitle";
-  props.submitting = false;
-  props.permitStatusOptions = [];
-  props.mine_guid = "";
-  props.mineTenureTypes = [];
-};
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
 describe("AddPermitForm", () => {
   it("renders properly", () => {
-    const component = shallow(<AddPermitForm {...dispatchProps} {...props} />);
-    expect(component).toMatchSnapshot();
+    const { container } = render(<ReduxWrapper><AddPermitForm
+      onSubmit={jest.fn()}
+      getDropdownPermitStatusOptions={jest.fn()}
+      title={"mockTitle"}
+      permitStatusOptions={[]}
+      mine_guid={""}
+      mineTenureTypes={[]}
+    /></ReduxWrapper>);
+    expect(container).toMatchSnapshot();
   });
 });

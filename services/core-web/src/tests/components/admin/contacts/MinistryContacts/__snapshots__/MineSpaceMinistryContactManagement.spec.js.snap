@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineSpaceMinistryContactManagement renders properly 1`] = `
+<div>
+  <div
+    className="landing-page__header"
+  >
+    <div
+      className="inline-flex between"
+    >
+      <h1>
+        MineSpace MCM Contact Management
+      </h1>
+      <Connect(AuthorizationWrapper)
+        permission="role_admin"
+      >
+        <AddButton
+          onClick={[Function]}
+        >
+          Create MCM Contact
+        </AddButton>
+      </Connect(AuthorizationWrapper)>
+    </div>
+  </div>
+  <div
+    className="tab__content"
+  >
+    <Alert
+      closable={true}
+      description={
+        <React.Fragment>
+          The Contacts are displayed in MineSpace to proponents.
+          <br />
+          The Offices are displayed in MineSpace, shown on the footer on permits, and NoW documents, and are the default email address for variances, code required reports, and mine information notifications.
+        </React.Fragment>
+      }
+      message="MCM contacts and offices are displayed in multiple places within Core and MineSpace."
+      showIcon={true}
+      type="info"
+    />
+    <h2>
+      Offices
+    </h2>
+    <Divider />
+    <MinistryContactsTable
+      MinistryContactTypesHash={Object {}}
+      contacts={Array []}
+      handleDeleteContact={[Function]}
+      isLoaded={false}
+      isOffice={true}
+      mineRegionHash={Object {}}
+      openEditModal={[Function]}
+    />
+    <br />
+    <h2>
+      Contacts
+    </h2>
+    <Divider />
+    <MinistryContactsTable
+      MinistryContactTypesHash={Object {}}
+      contacts={Array []}
+      handleDeleteContact={[Function]}
+      isLoaded={false}
+      isOffice={false}
+      mineRegionHash={Object {}}
+      openEditModal={[Function]}
+    />
+  </div>
+</div>
+`;

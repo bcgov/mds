@@ -9,7 +9,7 @@ import {
   removeFileFromDocumentManager,
 } from "@mds/common/redux/actionCreators/noticeOfDepartureActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import {
   NOTICE_OF_DEPARTURE,

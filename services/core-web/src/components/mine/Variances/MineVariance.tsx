@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from "react";
 import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import { ConnectedProps, connect } from "react-redux";
 import { Divider } from "antd";
 import moment from "moment";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
@@ -35,7 +35,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
 import AddButton from "@/components/common/buttons/AddButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { IMine, IVariance, IOption, IGroupedDropdownList } from "@mds/common";
+import { IMine, IVariance, IOption, IGroupedDropdownList } from "@mds/common/interfaces";
 import { ActionCreator } from "@/interfaces/actionCreator";
 
 interface MineVarianceProps {
@@ -57,7 +57,7 @@ interface MineVarianceProps {
   varianceStatusOptionsHash: any;
 }
 
-export const MineVariance: FC<MineVarianceProps> = (props) => {
+export const MineVariance: FC<MineVarianceProps & PropsFromRedux> = (props) => {
   const [isLoaded, setisLoaded] = useState(false);
 
   useEffect(() => {
@@ -262,4 +262,8 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(MineVariance);
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(MineVariance);

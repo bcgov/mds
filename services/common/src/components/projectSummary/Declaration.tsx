@@ -1,12 +1,13 @@
 import React, { FC } from "react";
 import { Collapse, Row, Typography } from "antd";
 import { useSelector } from "react-redux";
-import { Field, getFormValues } from "redux-form";
-import { FORM } from "../..";
+import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { getAmsAuthorizationTypes } from "@mds/common/redux/selectors/projectSelectors";
 import { required } from "@mds/common/redux/utils/Validate";
 import RenderCheckbox from "../forms/RenderCheckbox";
 import PageFoldScrollWrapper from "../common/PageFoldScrollWrapper";
+import { FORM } from "@mds/common/constants/forms";
+import { IProjectSummaryForm } from "@mds/common/interfaces";
 
 const terms = (
   <ol type="1" className="declaration-page-content">
@@ -86,7 +87,7 @@ const terms = (
 );
 
 const Declaration: FC = () => {
-  const { authorizationTypes = [] } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const { authorizationTypes = [] } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
   const amsAuthTypes = useSelector(getAmsAuthorizationTypes);
 
   const hasAmsAuths = amsAuthTypes.some((type: string) => authorizationTypes?.includes(type));

@@ -1,7 +1,7 @@
 import { MINE_ALERTS } from "@/constants/reducerTypes";
 import * as actionTypes from "../constants/actionTypes";
 import { RootState } from "@/App";
-import { IMineAlert, IMineAlertList } from "@mds/common";
+import { IMineAlert, IMineAlertList } from "@mds/common/interfaces";
 
 interface AlertState {
   mineAlerts: IMineAlert[];
@@ -33,7 +33,7 @@ const mineAlertReducerObject = {
   [MINE_ALERTS]: mineAlertReducer,
 };
 
-export const getMineAlerts = (state: RootState): IMineAlertList => state[MINE_ALERTS].mineAlerts;
+export const getMineAlerts = (state: RootState): IMineAlert[] => state[MINE_ALERTS].mineAlerts;
 export const getGlobalMineAlerts = (state: RootState): IMineAlertList =>
   state[MINE_ALERTS].globalMineAlerts;
 

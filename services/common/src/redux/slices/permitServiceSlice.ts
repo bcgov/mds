@@ -2,12 +2,9 @@ import { createAppSlice, rejectHandler } from "@mds/common/redux/createAppSlice"
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import CustomAxios from "@mds/common/redux/customAxios";
 import { ItemMap } from "@mds/common/interfaces";
-import {
-  ENVIRONMENT,
-  PERMIT_SERVICE_EXTRACTION,
-  POLL_PERMIT_SERVICE_EXTRACTION,
-} from "@mds/common/constants";
 import { createSelector } from "@reduxjs/toolkit";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
+import { PERMIT_SERVICE_EXTRACTION, POLL_PERMIT_SERVICE_EXTRACTION } from "@mds/common/constants/API";
 
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;
 
@@ -18,6 +15,7 @@ export enum PermitExtractionStatus {
   in_progress = "In Progress",
   complete = "Extraction Complete",
   error = "Error Extracting",
+  deleted = "Deleted",
 }
 
 const permitExtractionStatusMap = {
@@ -31,9 +29,10 @@ const permitExtractionStatusMap = {
   SUCCESS: PermitExtractionStatus.complete,
 };
 
-interface PermitExtraction {
+export interface PermitExtraction {
   task_status: PermitExtractionStatus;
   task_id: string;
+  permit_amendment_document_guid: string;
 }
 
 interface PermitServiceState {
@@ -67,10 +66,11 @@ const permitServiceSlice = createAppSlice({
       {
         fulfilled: (state, action) => {
           const { permit_amendment_id } = action.meta.arg;
-          const { task_id, task_status } = action.payload;
+          const { task_id, task_status, permit_amendment_document_guid } = action.payload;
           state.extractions[permit_amendment_id] = {
             task_id,
             task_status: permitExtractionStatusMap[task_status],
+            permit_amendment_document_guid,
           };
         },
         pending: (state, action) => {
@@ -78,6 +78,7 @@ const permitServiceSlice = createAppSlice({
           state.extractions[permit_amendment_id] = {
             task_status: PermitExtractionStatus.in_progress,
             task_id: null,
+            permit_amendment_document_guid: null,
           };
         },
         rejected: (state, action) => {
@@ -85,6 +86,7 @@ const permitServiceSlice = createAppSlice({
           state.extractions[permit_amendment_id] = {
             task_status: PermitExtractionStatus.error,
             task_id: null,
+            permit_amendment_document_guid: null,
           };
           rejectHandler(action);
         },
@@ -110,10 +112,11 @@ const permitServiceSlice = createAppSlice({
         fulfilled: (state, action) => {
           if (!action.payload) return;
           const { permit_amendment_id } = action.meta.arg;
-          const { task_id, task_status } = action.payload;
+          const { task_id, task_status, permit_amendment_document_guid } = action.payload;
           state.extractions[permit_amendment_id] = {
             task_id: task_id,
             task_status: permitExtractionStatusMap[task_status],
+            permit_amendment_document_guid
           };
         },
         rejected: (state, action) => {
@@ -139,10 +142,11 @@ const permitServiceSlice = createAppSlice({
       {
         fulfilled: (state, action) => {
           const { permit_amendment_id } = action.meta.arg;
-          const { task_id, task_status } = action.payload;
+          const { task_id, task_status, permit_amendment_document_guid } = action.payload;
           state.extractions[permit_amendment_id] = {
             task_id: task_id,
             task_status: permitExtractionStatusMap[task_status],
+            permit_amendment_document_guid
           };
         },
         rejected: (state, action) => {
@@ -171,6 +175,7 @@ const permitServiceSlice = createAppSlice({
           state.extractions[permit_amendment_id] = {
             task_status: PermitExtractionStatus.not_started,
             task_id: null,
+            permit_amendment_document_guid: null,
           };
         },
         rejected: (state, action) => {

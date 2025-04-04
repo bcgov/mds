@@ -1,13 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EditPartyModal renders properly 1`] = `
-<ReduxForm
+<EditFullPartyForm
   closeModal={[MockFunction]}
-  destroyOnUnmount={true}
-  enableReinitialize={true}
-  forceUnregisterOnUnmount={false}
-  form="EDIT_FULL_PARTY"
-  getFormState={[Function]}
   initialValues={
     Object {
       "address": Array [
@@ -25,8 +20,6 @@ exports[`EditPartyModal renders properly 1`] = `
       "party_type_code": "PER",
     }
   }
-  keepDirtyOnReinitialize={true}
-  onSubmitSuccess={[Function]}
   party={
     Object {
       "address": Array [
@@ -43,7 +36,6 @@ exports[`EditPartyModal renders properly 1`] = `
       "party_type_code": "PER",
     }
   }
-  persistentSubmitErrors={false}
   provinceOptions={
     Array [
       Object {
@@ -60,14 +52,5 @@ exports[`EditPartyModal renders properly 1`] = `
       },
     ]
   }
-  pure={true}
-  shouldAsyncValidate={[Function]}
-  shouldError={[Function]}
-  shouldValidate={[Function]}
-  shouldWarn={[Function]}
-  submitAsSideEffect={false}
-  touchOnBlur={true}
-  touchOnChange={false}
-  updateUnregisteredFields={false}
 />
 `;

@@ -1,9 +1,10 @@
 import { createAppSlice } from "@mds/common/redux/createAppSlice";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import CustomAxios from "@mds/common/redux/customAxios";
-import { ENVIRONMENT, MINES_ACT_PERMITS_VC_LIST } from "@mds/common/constants";
 import * as API from "@mds/common/constants/API";
 import { RootState } from "@mds/common/redux/rootState";
+import { MINES_ACT_PERMITS_VC_LIST } from "@mds/common/constants/API";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;
 

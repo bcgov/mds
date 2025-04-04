@@ -3,15 +3,26 @@ import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { AUTHENTICATION, MINES, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { REPORT_TYPE_CODES, SystemFlagEnum, USER_ROLES } from "@mds/common";
 import { RequestReportForm } from "@/components/Forms/reports/RequestReportForm";
+import { USER_ROLES } from "@mds/common/constants/environment";
+import { REPORT_TYPE_CODES, SystemFlagEnum } from "@mds/common/constants/enums";
+import { complianceReportReducerType, reportParamsGetAll } from "@mds/common/redux/slices/complianceReportsSlice";
 
 const initialState = {
   [STATIC_CONTENT]: {
     mineReportStatusOptions: MOCK.BULK_STATIC_CONTENT_RESPONSE.mineReportStatusOptions,
-    mineReportDefinitionOptions: MOCK.BULK_STATIC_CONTENT_RESPONSE.mineReportDefinitionOptions,
     permitConditionCategoryOptions:
       MOCK.BULK_STATIC_CONTENT_RESPONSE.permitConditionCategoryOptions,
+  },
+  [complianceReportReducerType]: {
+    reportPageData: {
+      records: MOCK.MINE_REPORT_DEFINITION_OPTIONS,
+      current_page: 1,
+      items_per_page: MOCK.MINE_REPORT_DEFINITION_OPTIONS.length,
+      total: MOCK.MINE_REPORT_DEFINITION_OPTIONS.length,
+      total_pages: 1
+    },
+    params: reportParamsGetAll,
   },
   [MINES]: MOCK.MINES,
   [AUTHENTICATION]: {
@@ -27,7 +38,7 @@ describe("RequestReportForm", () => {
         <RequestReportForm
           mineReportsType={REPORT_TYPE_CODES.CRR}
           mineGuid={MOCK.MINES.mineIds[0]}
-          onSubmit={() => {}}
+          onSubmit={() => { }}
         />
       </ReduxWrapper>
     );

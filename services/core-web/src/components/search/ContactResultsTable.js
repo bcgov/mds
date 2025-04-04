@@ -3,7 +3,7 @@ import { Divider } from "antd";
 import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
 import { Link } from "react-router-dom";
-import { Validate } from "@common/utils/Validate";
+import { Validate } from "@mds/common/redux/utils/Validate";
 import * as Strings from "@mds/common/constants/strings";
 import * as router from "@/constants/routes";
 import CoreTable from "@mds/common/components/common/CoreTable";
@@ -59,15 +59,15 @@ export const ContactResultsTable = (props) => {
       key: "roles",
       render: props.partyRelationshipTypeHash.PMT
         ? (record) => {
-            return record.mine_party_appt.map((pr) => (
-              <p key={"permit-record-" + pr.permit_no}>
-                {props.partyRelationshipTypeHash[pr.mine_party_appt_type_code]}
-                <span className="padding-sm--left" style={{ fontStyle: "italic" }}>
-                  ({pr.mine_party_appt_type_code === "PMT" ? pr.permit_no : pr.mine.mine_name})
-                </span>
-              </p>
-            ));
-          }
+          return record.mine_party_appt.map((pr) => (
+            <p key={"permit-record-" + pr.permit_no}>
+              {props.partyRelationshipTypeHash[pr.mine_party_appt_type_code]}
+              <span className="padding-sm--left" style={{ fontStyle: "italic" }}>
+                ({pr.mine_party_appt_type_code === "PMT" ? pr.permit_no : pr.mine.mine_name})
+              </span>
+            </p>
+          ));
+        }
         : null,
     },
     {

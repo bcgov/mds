@@ -3,7 +3,6 @@
 
 // Colours
 .color {
-
   // Theme Colours
   &-primary {
     color: theme.$primary-color !important;
@@ -21,15 +20,23 @@
     color: theme.$white !important;
   }
 
+  &-success {
+    color: variables.$ok-green !important;
+  }
+
   // Brand Colours
   &-gov-grey {
     color: variables.$gov-grey !important;
+  }
+
+  &-light-grey {
+    color: variables.$darkest-grey;
+    opacity: 0.55;
   }
 }
 
 // Background Colours
 .bg-color {
-
   // Theme Colours
   &-primary {
     background-color: theme.$primary-color !important;

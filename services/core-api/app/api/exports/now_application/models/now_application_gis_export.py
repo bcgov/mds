@@ -16,6 +16,7 @@ class NowApplicationGisExport(Base):
     now_application_status_code = db.Column(db.String)
     now_application_status_description = db.Column(db.String)
     type_of_application = db.Column(db.String)
+    application_type_code = db.Column(db.String)
     now_application_type_code = db.Column(db.String)
     now_application_type_description = db.Column(db.String)
     now_application_submitted_date = db.Column(db.String)
@@ -134,3 +135,9 @@ class NowApplicationGisExport(Base):
     def csv_row(self):
         model = inspect(self.__class__)
         return [str(getattr(self, c.name) or "") for c in model.columns]
+    
+    @staticmethod
+    def query_by_application_type(application_type_code=None):
+        if application_type_code is not None:
+            return NowApplicationGisExport.query.filter_by(application_type_code=application_type_code)
+        return NowApplicationGisExport.query

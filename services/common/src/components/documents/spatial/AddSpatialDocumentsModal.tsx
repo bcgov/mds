@@ -1,22 +1,20 @@
 import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import FormWrapper from "../../forms/FormWrapper";
-import { change, Field, getFormValues, reset, touch } from "redux-form";
+import { change, Field, getFormValues, reset, touch } from "@mds/common/components/forms/form";
 import RenderFileUpload from "../../forms/RenderFileUpload";
 import { spatialDocumentBundle } from "@mds/common/redux/utils/Validate";
-import {
-  OTHER_SPATIAL,
-  SPATIAL_DATA_STANDARDS_URL,
-  XML,
-  MAX_DOCUMENT_NAME_LENGTHS,
-} from "../../..";
 import { Alert, Button, Row, Steps, Typography } from "antd";
 import RenderCancelButton from "../../forms/RenderCancelButton";
 import RenderSubmitButton from "../../forms/RenderSubmitButton";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
 import ViewSpatialDetail from "./ViewSpatialDetail";
 import { createDocmanSpatialBundle } from "@mds/common/redux/slices/spatialDataSlice";
+import { OTHER_SPATIAL, XML } from "@mds/common/constants/fileTypes";
+import { SPATIAL_DATA_STANDARDS_URL } from "@mds/common/constants/strings";
+import { MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common/constants/enums";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 interface AddSpatialDocumentsModalProps {
   formName: string;
@@ -31,7 +29,7 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
   uploadUrl,
   transformFile,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const initialValues = useSelector(getFormValues(formName));
   const initialDocuments = initialValues[fieldName] ?? [];
   const modalFormName = `${formName}_${fieldName}`;

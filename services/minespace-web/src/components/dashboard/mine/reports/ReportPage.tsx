@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { getFormSubmitErrors, getFormValues, isDirty, submit } from "redux-form";
+import {
+  getFormSubmitErrors,
+  getFormValues,
+  isDirty,
+  submit,
+} from "@mds/common/components/forms/form";
 
 import { Button, Col, Row, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
@@ -11,12 +16,7 @@ import ReportDetailsForm from "@mds/common/components/reports/ReportDetailsForm"
 import Loading from "@/components/common/Loading";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
-import {
-  IMine,
-  IMineReportSubmission,
-  MINE_REPORT_STATUS_HASH,
-  MINE_REPORT_SUBMISSION_CODES,
-} from "@mds/common";
+
 import Callout from "@mds/common/components/common/Callout";
 import { reportStatusSeverity } from "./ReportsTable";
 import {
@@ -24,9 +24,14 @@ import {
   fetchLatestReportSubmission,
   getLatestReportSubmission,
 } from "@mds/common/components/reports/reportSubmissionSlice";
+import { MINE_REPORT_STATUS_HASH } from "@mds/common/constants/strings";
+import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants/enums";
+import { IMineReportSubmission } from "@mds/common/interfaces/reports/mineReportSubmission.interface";
+import { IMine } from "@mds/common/interfaces/mine.interface";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const ReportPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { state: routeState } = useLocation<{ isEditMode: boolean }>();
   const defaultEditMode = routeState?.isEditMode ?? false;
 
@@ -34,7 +39,7 @@ const ReportPage = () => {
   const latestSubmission: IMineReportSubmission = useSelector((state) =>
     getLatestReportSubmission(state, reportGuid)
   );
-  const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
+  const mine: IMine = useSelector(getMineById(mineGuid));
   const [loaded, setLoaded] = useState(Boolean(latestSubmission && mine));
   const [isEditMode, setIsEditMode] = useState(defaultEditMode);
 

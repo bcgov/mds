@@ -12,7 +12,7 @@ import * as FORM from "@/constants/forms";
 import { generateNoticeOfWorkApplicationDocument } from "@/actionCreators/documentActionCreator";
 import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import PropTypes from "prop-types";
-import { reset } from "redux-form";
+import { reset } from "@mds/common/components/forms/form";
 import { fetchImportedNoticeOfWorkApplication } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import NOWPermitGeneration from "@/components/noticeOfWork/applications/permitGeneration/NOWPermitGeneration";
 

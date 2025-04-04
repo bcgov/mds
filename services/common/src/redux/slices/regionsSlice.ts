@@ -1,8 +1,9 @@
 import { createAppSlice } from "@mds/common/redux/createAppSlice";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import CustomAxios from "@mds/common/redux/customAxios";
-import { ENVIRONMENT, REGIONS_LIST } from "@mds/common/constants";
 import { RootState } from "@mds/common/redux/rootState";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
+import { REGIONS_LIST } from "@mds/common/constants/API";
 
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;
 

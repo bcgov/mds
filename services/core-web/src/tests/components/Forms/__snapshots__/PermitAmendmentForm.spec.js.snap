@@ -1,11 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PermitAmendmentForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  initialValues={Object {}}
+  isModal={true}
+  name="PERMIT_AMENDMENT"
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "touchOnBlur": true,
+      "validate": [Function],
+    }
+  }
 >
   <Row
     gutter={48}
@@ -14,71 +20,57 @@ exports[`PermitAmendmentForm renders properly 1`] = `
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Connect(PartySelectField)
-          allowAddingParties={true}
-          id="permittee_party_guid"
-          label="Permittee*"
-          name="permittee_party_guid"
-          partyLabel="permittee"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="issue_date"
-          label="Issue Date*"
-          name="issue_date"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="authorization_end_date"
-          label="Authorization End Date*"
-          name="authorization_end_date"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="description"
-          label="Description"
-          name="description"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+      <PartySelectField
+        allowAddingParties={true}
+        id="permittee_party_guid"
+        label="Permittee"
+        name="permittee_party_guid"
+        partyLabel="permittee"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+      <Field
+        component={[Function]}
+        id="issue_date"
+        label="Issue Date"
+        name="issue_date"
+        required={true}
+        validate={
+          Array [
+            [Function],
+            [Function],
+          ]
+        }
+      />
+      <Field
+        component={[Function]}
+        id="authorization_end_date"
+        label="Authorization End Date"
+        name="authorization_end_date"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+      <Field
+        component={[Function]}
+        id="description"
+        label="Description"
+        name="description"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
       <Divider />
-      <FormItem
-        hasFeedback={false}
+      <InternalFormItem
         label="Securities"
       >
         <Field
@@ -88,55 +80,43 @@ exports[`PermitAmendmentForm renders properly 1`] = `
           name="security_not_required"
           onChange={[Function]}
         />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
+      </InternalFormItem>
+      <Field
+        autoComplete="off"
+        component={[Function]}
+        format={[Function]}
+        help="This amount will be added to the Total Assessed Liability amount for this permit.
+                Changes to this value in Core will not be updated in MMS."
+        id="liability_adjustment"
         label="Assessed Liability Adjustment"
-      >
-        <p
-          className="p-light"
-        >
-          This amount will be added to the Total Assessed Liability amount for this permit. Changes to this value in Core will not be updated in MMS.
-        </p>
-        <Field
-          autoComplete="off"
-          component={[Function]}
-          format={[Function]}
-          id="liability_adjustment"
-          name="liability_adjustment"
-          normalize={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-          warn={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="security_received_date"
-          label="Security Received"
-          name="security_received_date"
-        />
-      </FormItem>
+        name="liability_adjustment"
+        normalize={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+        warn={
+          Array [
+            [Function],
+          ]
+        }
+      />
+      <Field
+        component={[Function]}
+        id="security_received_date"
+        label="Security Received"
+        name="security_received_date"
+      />
     </Col>
     <Col
       className="border--left--layout"
       md={12}
       sm={24}
     >
-      <FormItem
-        hasFeedback={false}
+      <InternalFormItem
         label="Upload files"
       >
         <Field
@@ -148,7 +128,7 @@ exports[`PermitAmendmentForm renders properly 1`] = `
           onFileLoad={[Function]}
           onRemoveFile={[Function]}
         />
-      </FormItem>
+      </InternalFormItem>
     </Col>
   </Row>
   <div
@@ -159,28 +139,10 @@ exports[`PermitAmendmentForm renders properly 1`] = `
       }
     }
   >
-    <ForwardRef
-      cancelText="No"
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile"
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile"
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      mockTitle
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonText="mockTitle"
+    />
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

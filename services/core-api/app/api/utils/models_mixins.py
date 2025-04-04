@@ -1,6 +1,6 @@
 import decimal
 from numbers import Number
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 from dateutil import parser
 from flask import current_app
 from sqlalchemy.exc import SQLAlchemyError
@@ -23,6 +23,7 @@ from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from sqlalchemy.orm import validates
+import json
 
 
 class UserBoundQuery(db.Query):
@@ -36,7 +37,9 @@ class UserBoundQuery(db.Query):
 
     def paginate(self, page, per_page, error_out=True, max_per_page=None):
         # flask-sqlalchemy 3.0+ changed page and per_page to be optional. This is in place to support current use of pagination
-        return super(UserBoundQuery, self).paginate(page=page, per_page=per_page, error_out=error_out, max_per_page=max_per_page)
+        return super(UserBoundQuery, self).paginate(
+            page=page, per_page=per_page, error_out=error_out, max_per_page=max_per_page)
+
 
 # add listener for the before_compile event on UserBoundQuery
 @db.event.listens_for(UserBoundQuery, 'before_compile', retval=True)
@@ -45,7 +48,7 @@ def ensure_constrained(query):
 
     if not query._user_bound or not auth.apply_security:
         return query
-    
+
     mzero = query._entity_from_pre_ent_zero()
     if mzero is not None:
         if has_request_context():
@@ -295,6 +298,7 @@ class Base(db.Model):
                 raise (e)
         return
 
+
 class PermitMixin(object):
     ORIGINATING_SYSTEMS = ['Core', 'MineSpace', 'MMS']
 
@@ -308,13 +312,15 @@ class PermitMixin(object):
 
     @declared_attr
     def now_application_guid(cls):
-        return db.Column(UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
+        return db.Column(
+            UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
 
     @declared_attr
     def application_status(cls):
-        return db.Column(db.String, db.ForeignKey('explosives_permit_status.explosives_permit_status_code'))
+        return db.Column(db.String,
+                         db.ForeignKey('explosives_permit_status.explosives_permit_status_code'))
 
-    issue_date = db.Column(db.Date)
+    issue_date: date = db.Column(db.Date)
     expiry_date = db.Column(db.Date)
 
     application_number = db.Column(db.String)
@@ -344,14 +350,16 @@ class PermitMixin(object):
         return db.relationship(
             'MinePartyAppointment',
             lazy='select',
-            primaryjoin='MinePartyAppointment.mine_party_appt_id == cls.mine_manager_mine_party_appt_id')
+            primaryjoin=
+            'MinePartyAppointment.mine_party_appt_id == cls.mine_manager_mine_party_appt_id')
 
     @declared_attr
     def permittee(cls):
         return db.relationship(
             'MinePartyAppointment',
             lazy='select',
-            primaryjoin='MinePartyAppointment.mine_party_appt_id == cls.permittee_mine_party_appt_id')
+            primaryjoin='MinePartyAppointment.mine_party_appt_id == cls.permittee_mine_party_appt_id'
+        )
 
     @declared_attr
     def issuing_inspector_party_guid(cls):
@@ -370,15 +378,15 @@ class PermitMixin(object):
         return db.relationship(
             'Party',
             lazy='select',
-            primaryjoin=f'Party.party_guid == {cls.__name__}.issuing_inspector_party_guid'
-        )
+            primaryjoin=f'Party.party_guid == {cls.__name__}.issuing_inspector_party_guid')
 
     @declared_attr
     def mine_manager(cls):
         return db.relationship(
             'MinePartyAppointment',
             lazy='select',
-            primaryjoin=f'MinePartyAppointment.mine_party_appt_id == {cls.__name__}.mine_manager_mine_party_appt_id'
+            primaryjoin=
+            f'MinePartyAppointment.mine_party_appt_id == {cls.__name__}.mine_manager_mine_party_appt_id'
         )
 
     @declared_attr
@@ -386,7 +394,8 @@ class PermitMixin(object):
         return db.relationship(
             'MinePartyAppointment',
             lazy='select',
-            primaryjoin=f'MinePartyAppointment.mine_party_appt_id == {cls.__name__}.permittee_mine_party_appt_id'
+            primaryjoin=
+            f'MinePartyAppointment.mine_party_appt_id == {cls.__name__}.permittee_mine_party_appt_id'
         )
 
     @hybrid_property
@@ -422,7 +431,9 @@ class PermitMixin(object):
                 f'Originating system must be one of: {"".join(self.ORIGINATING_SYSTEMS, ", ")}')
         return val
 
+
 class PermitDocumentMixin(object):
+
     @declared_attr
     def mine_document_guid(cls):
         return db.Column(
@@ -434,11 +445,13 @@ class PermitDocumentMixin(object):
     @declared_attr
     def mine_document(cls):
         return db.relationship('MineDocument', lazy='select')
+
     mine_guid = association_proxy('mine_document', 'mine_guid')
     document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
     document_name = association_proxy('mine_document', 'document_name')
     upload_date = association_proxy('mine_document', 'upload_date')
     create_user = association_proxy('mine_document', 'create_user')
+
 
 class PermitMagazineMixin(object):
     type_no = db.Column(db.String, nullable=False)
@@ -454,6 +467,7 @@ class PermitMagazineMixin(object):
     distance_dwelling = db.Column(db.Numeric)
     detonator_type = db.Column(db.String)
 
+
 class AuditMixin(object):
     create_user = db.Column(db.String(60), nullable=False, default=User().get_user_username)
     create_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -465,6 +479,59 @@ class AuditMixin(object):
     update_timestamp = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+class HistoryMixin(object):
+    __versioned__ = {}
+
+    @hybrid_property
+    def history(self):
+        def dt_to_str(dt):
+            if isinstance(dt, datetime):
+                if dt.tzinfo:
+                    return dt.isoformat()
+                return dt.replace(tzinfo=timezone.utc).isoformat()
+            return dt
+        if self.versions:
+            hs = list(map(lambda version: {
+                'updated_by': version.update_user,
+                'updated_at': version.update_timestamp,
+                'changeset': list(map(lambda key: json.loads(json.dumps({
+                    'field_name': key,
+                    'from': dt_to_str(version.changeset[key][0]),
+                    'to': dt_to_str(version.changeset[key][1])
+                }, default=str)), version.changeset))
+            }, self.versions))
+
+            return hs
+        else:
+            return []
+
+class DocumentXrefMixin(object):
+    @declared_attr
+    def mine_document(cls):
+        return db.relationship('MineDocument', lazy='select')
+    
+    @declared_attr
+    def mine_document_guid(cls):
+        return db.Column(
+        UUID(as_uuid=True),
+        db.ForeignKey('mine_document.mine_document_guid'),
+        nullable=False,
+        unique=True)
+    
+    mine_guid = association_proxy('mine_document', 'mine_guid')
+    document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
+    document_name = association_proxy('mine_document', 'document_name')
+    upload_date = association_proxy('mine_document', 'upload_date')
+    create_user = association_proxy('mine_document', 'create_user')
+    versions = association_proxy('mine_document', 'versions')
+    update_timestamp = association_proxy('mine_document', 'update_timestamp')
+    mine_document_bundle_id = association_proxy('mine_document', 'mine_document_bundle_id')
+    deleted_ind = association_proxy('mine_document', 'deleted_ind')
+
+    @classmethod
+    def find_by_mine_document_guid(cls, mine_document_guid):
+        return cls.query.filter_by(mine_document_guid=mine_document_guid).filter( # type: ignore
+            cls.deleted_ind == False).one_or_none()
 
 class SoftDeleteMixin(object):
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())

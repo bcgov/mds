@@ -1,16 +1,9 @@
-from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
-from app.api.dams.dto import DAM_MODEL
-from app.api.parties.party_appt.models.mine_party_appt import (
-    MinePartyAcknowledgedStatus,
-    MinePartyAppointmentStatus,
-)
-from app.api.parties.response_models import PARTY
-from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.extensions import api
-from flask_restx import fields, marshal
+from flask_restx import fields
 
 PERMIT_CONDITION_EXTRACTION_TASK = api.model(
     'PermitExtractionTask', {
+        'create_timestamp': fields.DateTime,
         'permit_extraction_task_id': fields.String,
         'task_id': fields.String,
         'task_status': fields.String,

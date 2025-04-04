@@ -4,11 +4,12 @@ import {
   fetchCredentialExchangeDetails,
   getCredentialExchangeDetails,
 } from "@mds/common/redux/slices/verifiableCredentialsSlice";
-import { ICredentialExchange, IMine, VC_CRED_ISSUE_STATES } from "@mds/common";
+import { ICredentialExchange, IMine } from "@mds/common/interfaces";
 import DigitalCredentialDetails from "@/components/mine/DigitalPermitCredential/DigitalCredentialDetails";
 import { formatTractionDate } from "@mds/common/redux/utils/helpers";
 import { Alert, Typography } from "antd";
 import { formatDateTime } from "@common/utils/helpers";
+import { VC_CRED_ISSUE_STATES } from "@mds/common/constants/enums";
 
 const { Paragraph, Text } = Typography;
 

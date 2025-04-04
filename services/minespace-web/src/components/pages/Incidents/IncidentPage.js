@@ -4,15 +4,13 @@ import { flattenObject } from "@common/utils/helpers";
 import { connect, useSelector } from "react-redux";
 import { Link, useParams, withRouter } from "react-router-dom";
 import {
-  change,
   destroy,
   getFormSyncErrors,
   getFormValues,
   isDirty,
-  reset,
   submit,
   touch,
-} from "redux-form";
+} from "@mds/common/components/forms/form";
 import { Col, Row, Steps, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import PropTypes from "prop-types";
@@ -174,12 +172,6 @@ export const IncidentPage = (props) => {
   };
 
   const formatPayload = (values) => {
-    const reportedToInspectorDateSet =
-      values?.reported_to_inspector_contact_date && values?.reported_to_inspector_contact_time;
-    const johscWorkerRepDateSet =
-      values?.johsc_worker_rep_contact_date && values?.johsc_worker_rep_contact_time;
-    const johscManagementRepDateSet =
-      values?.johsc_management_rep_contact_date && values?.johsc_management_rep_contact_time;
     const updatedDocuments = [
       ...new Map(
         [
@@ -256,6 +248,7 @@ export const IncidentPage = (props) => {
     return props.openModal({
       props: {
         onSubmit: handleSaveData,
+        closeModal: props.closeModal,
         onCancel: props.closeModal,
         mineGuid: incident?.mine_guid,
         title: modalTitle,
@@ -364,9 +357,7 @@ const mapDispatchToProps = (dispatch) =>
       removeDocumentFromMineIncident,
       fetchInspectors,
       submit,
-      reset,
       touch,
-      change,
       destroy,
       openModal,
       closeModal,

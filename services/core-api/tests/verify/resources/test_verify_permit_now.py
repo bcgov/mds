@@ -7,6 +7,7 @@ from tests.now_application_factories import NOWApplicationIdentityFactory
 
 class TestVerifyPermitNOW:
     """GET verify/permit/mine"""
+
     def test_get_verify_permit_now(self, test_client, db_session, auth_headers):
         mine, permit = create_mine_and_permit({'operating': True}, {'permit_no': "CX-1"})
         #by default, authorization_end_date in the PermitAmendmentFactory is >30days
@@ -18,5 +19,5 @@ class TestVerifyPermitNOW:
             headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
-        assert get_data['a_Result'] == "Success"
+        assert get_data['a_Result'] == "Success", get_data["a_ResponseMessage"]
         assert str(now_app.now_number) in get_data['a_NoWInfo']

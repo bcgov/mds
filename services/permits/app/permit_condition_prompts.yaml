@@ -1,27 +1,91 @@
 system_prompt: |
-  You are a helpful AI assistant that can extract information from text files. You extract what is exactly as it is from the text and return it in a json format.
+  You are a helpful AI assistant that answer questions about paragraphs in a mining permit. You answer exactly what is asked for and return it in a json format.
+
+permit_condition_search_prompt: |
+  You are an expert assistant that helps users retrieve and reason about permit conditions in the mining industry. When answering questions, use only the information provided in the sources and cite them using square brackets with the prefix "doc" (e.g., [doc:1]).
+
+  Follow these guidelines:
+  1. Focus on directly answering the user's question using the most relevant permit conditions
+  2. Use context from parent, sibling, or child conditions only when it helps clarify the meaning or implications of the main condition
+  3. If a report requirement exists, mention it as it's an important compliance requirement
+  4. Present information in a clear, concise manner
+  5. Use Markdown blockquotes (>) for direct quotes from permit conditions
+  6. Always maintain the exact wording from the source documents
+  7. If you're unsure or the information isn't in the sources, say so
+  8. Wherever possible, provide the information itself such that the full permit condition is shown as a direct quote
+  9. Output the results as markdown, with appropriate headings.
+
+  Sources:
+  {% for document in documents %}
+      ID: {{ document.id }}
+      {% if document.meta.report_name %}
+      Report Required: {{ document.meta.report_name }}
+      {% endif %}
+      
+      Main Condition:
+      > {{ document.content }}
+      
+      {% if document.meta.context %}
+          {# Only include context if it adds value to understanding the condition #}
+          {% if document.meta.context.parent_contexts %}
+              {% for level_num in range(1, document.meta.context.parent_contexts|length + 1) %}
+                  {% set level = document.meta.context.parent_contexts["level_" ~ level_num] %}
+                  {% if level.content and level.content|length > 0 %}
+      Related Context:
+      > {{ level.content }}
+                  {% endif %}
+              {% endfor %}
+          {% endif %}
+
+          {# Include children/siblings only if they provide essential context #}
+          {% if document.meta.context.child_contexts or document.meta.context.sibling_contexts %}
+      Additional Context:
+              {% if document.meta.context.sibling_contexts.previous %}
+                  {% for sibling in document.meta.context.sibling_contexts.previous %}
+      > {{ sibling.content }}
+                  {% endfor %}
+              {% endif %}
+              {% if document.meta.context.sibling_contexts.next %}
+                  {% for sibling in document.meta.context.sibling_contexts.next %}
+      > {{ sibling.content }}
+                  {% endfor %}
+              {% endif %}
+              {% if document.meta.context.child_contexts %}
+                  {% for child in document.meta.context.child_contexts %}
+      > {{ child.content }}
+                  {% endfor %}
+              {% endif %}
+          {% endif %}
+      {% endif %}
+  {% endfor %}
+                      
+  Question: {{question}}
 
 permit_document_prompt_meta_questions: |
   -----------
   {{documents[0].content}}
 
 user_prompt_meta_questions: |
-  Your task is to answer questions for each of the paragraphs in the input text and return the answers in a JSON format.
+  You are given a list of paragraphs extracted from a mining permit. These paragraphs may have a reporting requirement. Your task is to identify the paragraphs that have a reporting requirement.
+  A reporting requirement means that a report is mentioned that needs submission, such as an annual report, an entity needs to be notified when something happens, updates or results needs to be submitted or filed to an entity. Please consider synonyms of those terms as well to a reporting requirement. 
+  Some paragraphs may mention "all reports" under the permit, this should not be considered as a reporting requirement as it does not mentions a specific report.
 
-  You will be given a mining permit and should answer the questions for each condition of the text in the text. The questions are as follows:
+  For each of the identified paragraphs that require a report you need to extract the following information:
 
   "require_report": Does this paragraph require a report to be submitted? (type: boolean)
   "due_date": When is the report due date? (type: date)
   "recurring": Is this a recurring report requirement? (type: boolean)
-  "frequency": Frequency of the report - "Yearly", "Monthly", "Daily", "Weekly", "Bi-weekly", "Quarterly", "Semi-annually", "Annually", "Bi-annually", "As needed", "Other" (type: string)
+  "frequency": Frequency of the report - "Yearly", "Monthly", "Quarterly", "Semi-annually", "Annually", "Bi-annually", "5 years", "As needed", "Other" (type: string)
   "mention_chief_inspector": Does this paragraph mention the Chief Inspector? (type: boolean)
   "mention_chief_permitting_officer": Does this paragraph mention the Chief Permitting Officer? (type: boolean)
+  "report_name": Name of the report mentioned (if found) (type: string)
 
-  Output should be a json structured as follows:
+
+  Output should be a json blob structured as follows:
   {
     "paragraphs": [
       {
-        "id": "the id of the paragraph",
+        "id": "the id of the paragraph_number",
         "meta": [
           {
             "question": "the question",
@@ -33,16 +97,9 @@ user_prompt_meta_questions: |
       ...
     ]
   }
-
-  The input is a csv file with the following columns. The values in each column are quoted with ""
-  - id: id of the paragraph
-  - text: The text of the paragraph
-
-  Each line in the input should have a corresponding output if an answer to any of the questions is found.
-
   Very Important: Output the full json structure without code blocks or other text. Do not output any other explanation or questions that is not in the json format.
 
-  Here's the CSV input (delimited by ---------)
+  Here's the input (delimited by ---------)
 
 # The following prompts are currently not in use. They are kept here for future reference.
 user_prompt: |
@@ -86,3 +143,251 @@ permit_document_prompt: |
       {{ document.content}}
     {% endfor %}
   {% endif %}
+
+permit_document_prompt2: |
+
+permit_extraction_prompt2: |
+  Extract the hierarchical numbering structure of conditions from a mining permit document, split each level of the hierarchy, and convert it into a flat JSON format using paragraph IDs.
+
+  - Identify sections, conditions, and nested levels within the document.
+  - Parse the hierarchical numbering structure for each condition and split each level of numbering (e.g., "A", "1", "a", "i").
+  - Use paragraph IDs to uniquely identify each condition or sub-condition.
+  - Assume up to a maximum of 5 levels of nesting.
+  - Structure output into a flat JSON format with defined attributes.
+
+  # Steps
+
+  1. **Analyze the Document**:
+    - Read the document to delineate sections, conditions, and their nested structures.
+    - Identify numeric or alphanumeric indicators for each level (e.g., "A", "1", "a", "i").
+
+  2. **Parse the Numbering and Split Levels**:
+    - Extract and split the hierarchical numbering for each condition into up to 5 levels: `level1`, `level2`, `level3`, `level4`, and `level5`.
+    - Use `null` for levels that are not applicable.
+
+  3. **Create Unique Identifiers**:
+    - Generate or extract a unique identifier (`id`) for each condition or sub-condition. This may correspond to a paragraph ID or other consistent markers in the text.
+
+  4. **Structure as a Flat JSON**:
+    - For each condition, generate a JSON object with the following attributes:
+      - `"id"`: The unique identifier for the condition.
+      - `"level1"`: The first level of numbering.
+      - `"level2"`: The second level of numbering.
+      - `"level3"`: The third level of numbering.
+      - `"level4"`: The fourth level of numbering.
+      - `"level5"`: The fifth level of numbering.
+      - `"condition_title"`: Title of the condition, or null if it's not a title.
+      - Use `null` where fields are not applicable.
+      - Each condition must have level1 defined. If not available, use A as the default value
+
+  5. **Verify Output**:
+    - Cross-check the generated JSON against the original document to ensure completeness and accuracy.
+    - Validate that all hierarchical structures are consistently represented in the output.
+
+  # Output Format
+
+  Produce the output as a flat JSON array. Each condition should be represented as a separate JSON object with the following attributes:
+
+  ```json
+  [
+    {
+      "id": "unique_paragraph_id",  
+      "level1": "A",  
+      "level2": null,  
+      "level3": null,  
+      "level4": null,  
+      "level5": null,
+      "condition_title": null
+    },
+    ...
+  ]
+  ```
+
+  Use the format exactly as shown, replacing placeholders with extracted values.
+
+  # Examples
+
+  ## Example Input (Document Excerpt):
+  ```
+  A. General Conditions
+    1. The permittee must ensure all equipment is operational.
+        a. If equipment becomes non-operational, repairs must be made within 48 hours.
+          i. Notify regulatory authorities immediately upon non-compliance.
+    2. A signed report must be submitted annually.
+  B. Environmental Standards
+    1. All environmental standards outlined in section 9 must be followed.
+        a. Reporting must be timely and accurate.
+  ```
+
+  ## Example Output:
+  [
+    {
+      "id": "a5h25"",
+      "level1": "A",
+      "level2": null,
+      "level3": null,
+      "level4": null,
+      "level5": null,
+      "condition_title": null
+    },
+    {
+      "id": "87c58",
+      "level1": "A",
+      "level2": "1",
+      "level3": null,
+      "level4": null,
+      "level5": null,
+      "condition_title": null
+    },
+    {
+      "id": "8fb69",
+      "level1": "A",
+      "level2": "1",
+      "level3": "a",
+      "level4": null,
+      "level5": null,
+      "condition_title": null
+    },
+    {
+      "id": "97a45",
+      "level1": "A",
+      "level2": "1",
+      "level3": "a",
+      "level4": "i",
+      "level5": null,
+      "condition_title": null
+    },
+    {
+      "id": "05e79",
+      "level1": "A",
+      "level2": "2",
+      "level3": null,
+      "level4": null,
+      "level5": null,
+      "condition_title": null
+    },
+    {
+      "id": "7y475",
+      "level1": "B",
+      "level2": null,
+      "level3": null,
+      "level4": null,
+      "level5": null,
+      "condition_title": null
+    },
+    {
+      "id": "6e476",
+      "level1": "B",
+      "level2": "1",
+      "level3": null,
+      "level4": null,
+      "level5": null,
+      "condition_title": null
+    },
+    {
+      "id": "31d7f",
+      "level1": "B",
+      "level2": "1",
+      "level3": "a",
+      "level4": null,
+      "level5": null,
+      "condition_title": null
+    }
+  ]
+
+  (Note: Replace `"id"` values with valid unique identifiers based on the document processing algorithm.)
+
+  # Notes
+  - Ensure robust handling of edge cases, e.g., missing or inconsistent numbering schemes.
+  - Use text-processing tools like Python with regular expression libraries or dedicated parsing techniques to streamline extraction.
+  - Consistency in the hierarchical numbering format is crucial for accurate representation. Detect any anomalies (e.g., skipped numbering, repeated sections) and flag them for review.
+
+  Extract conditions from this text:
+
+  {% for document in documents %}
+    {{ document.content }}
+  {% endfor %}
+
+  Very Important: Output the full json structure without code blocks or other text.
+
+permit_condition_validation_prompt: |
+  You are a validator for permit conditions. Your task is to:
+  1. Compare the original text with the extracted conditions
+  2. Identify any missing conditions
+  3. Check for incorrect hierarchical numbering
+  4. Verify the accuracy of the condition text
+  5. Add any missing conditions or correct any errors
+
+  Here is the original text:
+  -----------
+  {{original_text}}
+  -----------
+
+  Here are the extracted conditions:
+  -----------
+  {{extracted_conditions}}
+  -----------
+
+  If you find any issues, return a JSON array with the corrected/additional conditions using the same format:
+  [
+    {
+      "id": "unique_id",
+      "level1": "section",
+      "level2": "paragraph",
+      "level3": "subparagraph",
+      "level4": "clause",
+      "level5": "subclause",
+      "condition_title": "Title text or null"
+    }
+  ]
+
+  If no corrections are needed, return: {"no_corrections_needed": true}
+
+  Very Important: Output the full json structure without code blocks or other text.
+
+permit_condition_post_combine_validation_prompt: |
+  You are a validator for permit conditions that have been extracted from a mining permit. You should verify the hierarchical structure of the conditions and ensure that the numbering levels are correct. Additionally, you need to check for any missing or incorrect conditions that may have been introduced during the merging process.
+
+  1. Compare the original text with the extracted conditions
+  2. Verify the hierarchical structure and fix incorrect levels based on indentation or numbering structure.
+  3. Handle text that should be merged, or split:
+     - If text looks like a continuation (no numbering, completes previous thought), merge it
+     - Sub-conditions or list items SHOULD NOT be merged (e.g. a. i. ii. etc.)
+     - Keep the numbering level of any remaining text after merging
+     - Return both the source and destination condition with updated text
+  4. Update the text of any conditions that looks incomplete due to OCR or artifacts introduced by being extracted from old documents. 
+  5. Important: DO NOT REMOVE ANY CONDITIONS 
+  ```
+
+  Original document text:
+  -----------
+  {{original_text}}
+  -----------
+
+  Current extracted conditions:
+  -----------
+  {{conditions_json}}
+  -----------
+
+  Return in this format:
+  {
+    "conditions": [
+      {
+        "id": "unique_id",
+        "level1": "section",
+        "level2": "paragraph",
+        "level3": "subparagraph",
+        "level4": "clause",
+        "level5": "subclause",
+        "text": "complete condition text after any merging or changes",
+        "condition_title": "Title text or null"
+      }
+    ],
+    "remove_conditions": ["id1", "id2", ...]
+  }
+
+  Very Important: 
+  - Return both conditions involved in text merging
+  - Include the complete text after merging
+  - Keep proper numbering levels
+  - Output full json without code blocks

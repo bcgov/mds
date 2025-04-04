@@ -1,11 +1,7 @@
-import React, { Component } from "react";
-import { Action, bindActionCreators, Dispatch } from "redux";
-import { connect } from "react-redux";
-import { getFormValues, getFormSyncErrors } from "redux-form";
-import { Alert, Button, Col, Row, Menu, Dropdown, Popconfirm } from "antd";
+import React, { FC, useEffect, useState } from "react";
+import { Alert, Col, Row, Modal } from "antd";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
-import { formatDate } from "@common/utils/helpers";
-import { DownOutlined } from "@ant-design/icons";
+import { formatDate } from "@mds/common/redux/utils/helpers";
 import moment from "moment";
 import { getMineAlerts } from "@/selectors/mineAlertSelectors";
 import {
@@ -14,322 +10,248 @@ import {
   fetchMineAlertsByMine,
   deleteMineAlert,
 } from "@/actionCreators/mineAlertActionCreator";
-import * as FORM from "@/constants/forms";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
-import { IMineAlert } from "@mds/common";
+import { IMine, IMineAlert } from "@mds/common/interfaces";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import { ActionMenuButton, IHeaderAction } from "@mds/common/components/common/ActionMenu";
+
 
 interface MineAlertProps {
-  closeModal: () => void;
-  openModal: (arg: unknown) => void;
-  createMineAlert: (arg1: string, arg2: IMineAlert) => Promise<IMineAlert>;
-  updateMineAlert: (arg1: string, arg2: string, arg3: IMineAlert) => Promise<IMineAlert>;
-  deleteMineAlert: (arg1: string, arg2: string) => Promise<void>;
-  fetchMineAlertsByMine: (arg: string) => Promise<IMineAlert>;
-  mineAlerts: any;
-  mine: any;
+  mine: IMine;
 }
 
-interface MineAlertState {
-  loaded: boolean;
-  activeMineAlert: any;
-  pastMineAlerts: any[];
-}
+const MineAlert: FC<MineAlertProps> = ({ mine }) => {
+  const dispatch = useAppDispatch();
+  const [activeMineAlert, setActiveMineAlert] = useState<IMineAlert>();
+  const [pastMineAlerts, setPastMineAlerts] = useState<IMineAlert[]>([]);
+  const mineAlerts = useAppSelector(getMineAlerts);
+  const [loaded, setLoaded] = useState(mineAlerts.length > 0);
 
-export class MineAlert extends Component<MineAlertProps, MineAlertState> {
-  constructor(props: MineAlertProps) {
-    super(props);
-    this.state = {
-      loaded: false,
-      activeMineAlert: {},
-      pastMineAlerts: [],
-    };
-  }
 
-  componentDidMount() {
-    this.fetchAlerts();
-  }
+  const fetchAlerts = async () => {
+    setLoaded(false);
+    await dispatch(fetchMineAlertsByMine(mine.mine_guid));
+    setLoaded(true);
+  };
 
-  handleCreateMineAlert = (values: IMineAlert) => {
-    this.props
-      .createMineAlert(this.props.mine.mine_guid, values)
+  const remainingDays = (endDate: string) => {
+    const today = moment().startOf("day");
+    const end = moment(endDate).startOf("day");
+    return end.diff(today, "days");
+  };
+
+  useEffect(() => {
+    if (mineAlerts?.length > 0) {
+      const newActive = mineAlerts.filter((alert) => {
+        return alert.is_active && (alert.end_date == null || remainingDays(alert.end_date) >= 0)
+      })?.[0];
+      setActiveMineAlert(newActive);
+      const pastAlerts = mineAlerts.filter((alert) => {
+        return !alert.is_active || (alert.end_date && remainingDays(alert.end_date) < 0);
+      });
+      setPastMineAlerts(pastAlerts);
+    }
+
+  }, [mineAlerts])
+
+  useEffect(() => {
+    if (!loaded) {
+      fetchAlerts();
+    }
+  }, []);
+
+  const handleCreateMineAlert = (values: IMineAlert) => {
+    dispatch(createMineAlert(mine.mine_guid, values))
       .then(() => {
-        this.fetchAlerts();
+        fetchAlerts();
       })
       .finally(() => {
-        this.props.closeModal();
+        dispatch(closeModal());
       });
   };
 
-  handleUpdateMineAlert = (values: IMineAlert) => {
-    this.props
-      .updateMineAlert(this.props.mine.mine_guid, values.mine_alert_guid, values)
+  const handleUpdateMineAlert = (values: IMineAlert) => {
+    dispatch(updateMineAlert(mine.mine_guid, values.mine_alert_guid, values))
       .then(() => {
-        this.fetchAlerts();
-        this.props.closeModal();
+        fetchAlerts();
+        dispatch(closeModal());
       });
   };
 
-  handleRemoveAlert = (mineAlertGuid: string) => {
-    this.props
-      .deleteMineAlert(this.props.mine.mine_guid, mineAlertGuid)
-      .then(() => this.fetchAlerts());
+  const handleRemoveAlert = (mineAlertGuid: string) => {
+    dispatch(deleteMineAlert(mine.mine_guid, mineAlertGuid))
+      .then(() => fetchAlerts());
   };
 
-  submitCreateMineAlarmForm = () => (values: IMineAlert) => {
+  const removeConfirmWrapper = (mineAlert: IMineAlert) => {
+    const endDate = mineAlert.end_date ? ` - ${formatDate(activeMineAlert.end_date)}` : "";
+    const title = `Are you sure you want to delete alarm? ${formatDate(
+      mineAlert.start_date
+    )}${endDate}`;
+    return Modal.confirm({
+      title,
+      onOk: () => handleRemoveAlert(activeMineAlert.mine_alert_guid),
+      okText: "Delete",
+    })
+  };
+
+  const submitCreateMineAlarmForm = () => (values: IMineAlert) => {
     const payload = {
       ...values,
       start_date: moment(values.start_date).toISOString(),
       end_date: values.end_date ? moment(values.end_date).toISOString() : null,
     };
-    return this.handleCreateMineAlert(payload);
+    return handleCreateMineAlert(payload);
   };
 
-  submitUpdateMineAlarmForm = (mineAlertGuid: string) => (values: IMineAlert) => {
+  const submitUpdateMineAlarmForm = (mineAlertGuid: string) => (values: IMineAlert) => {
     const payload = {
       ...values,
       start_date: moment(values.start_date).toISOString(),
       end_date: values.end_date ? moment(values.end_date).toISOString() : null,
     };
     if (mineAlertGuid) {
-      return this.handleUpdateMineAlert(payload);
+      return handleUpdateMineAlert(payload);
     }
     return null;
   };
 
-  openCreateMineAlertModal = (activeMineAlert: any, mineAlerts: any) => {
-    return this.props.openModal({
+  const openCreateMineAlertModal = (activeMineAlert: IMineAlert, mineAlerts: IMineAlert[]) => {
+    dispatch(openModal({
       props: {
         title: ModalContent.CREATE_MINE_ALERT_RECORD,
         text: ModalContent.CREATE_MINE_ALERT_TEXT,
-        mineAlertGuid: this.state.activeMineAlert?.mine_alert_guid,
-        closeModal: this.props.closeModal,
-        onSubmit: this.submitCreateMineAlarmForm(),
+        mineAlertGuid: activeMineAlert?.mine_alert_guid,
+        closeModal: () => dispatch(closeModal()),
+        onSubmit: submitCreateMineAlarmForm(),
         activeMineAlert,
         mineAlerts,
       },
       content: modalConfig.ADD_MINE_ALERT,
-    });
+    }));
   };
 
-  openUpdateMineAlertModal = (activeMineAlert: any, mineAlerts: any) => {
-    return this.props.openModal({
+  const openUpdateMineAlertModal = (activeMineAlert: IMineAlert, mineAlerts: IMineAlert[]) => {
+    return dispatch(openModal({
       props: {
         title: ModalContent.EDIT_MINE_ALERT_RECORD,
         text: ModalContent.EDIT_MINE_ALERT_TEXT,
-        initialValues: this.state.activeMineAlert,
-        mineAlertGuid: this.state.activeMineAlert?.mine_alert_guid,
-        closeModal: this.props.closeModal,
-        onSubmit: this.submitUpdateMineAlarmForm(this.state.activeMineAlert?.mine_alert_guid),
+        initialValues: activeMineAlert,
+        mineAlertGuid: activeMineAlert?.mine_alert_guid,
+        closeModal: () => dispatch(closeModal()),
+        onSubmit: submitUpdateMineAlarmForm(activeMineAlert?.mine_alert_guid),
         activeMineAlert,
         mineAlerts,
       },
       content: modalConfig.ADD_MINE_ALERT,
-    });
+    }));
   };
 
-  openviewPastMineAlertModal = () => {
-    return this.props.openModal({
+  const openviewPastMineAlertModal = () => {
+    return dispatch(openModal({
       props: {
         title: ModalContent.PAST_MINE_ALERT_RECORD,
-        mineAlerts: this.state.pastMineAlerts,
-        closeModal: this.props.closeModal,
+        mineAlerts: pastMineAlerts,
+        closeModal: () => dispatch(closeModal()),
       },
       content: modalConfig.VIEW_PAST_MINE_ALERTS,
-    });
+    }));
   };
 
-  remainingDays = (endDate: Date) => {
-    const today = moment().startOf("day");
-    const end = moment(endDate).startOf("day");
-    return end.diff(today, "days");
-  };
-
-  async fetchAlerts(): Promise<void> {
-    await this.props.fetchMineAlertsByMine(this.props.mine.mine_guid);
-    this.setState({
-      activeMineAlert: this.props.mineAlerts?.filter(
-        (alert: { is_active: boolean; end_date: Date | null }) => {
-          return (
-            alert.is_active && (alert.end_date == null || this.remainingDays(alert.end_date) >= 0)
-          );
-        }
-      )?.[0],
-    });
-    this.setState({
-      pastMineAlerts: this.props.mineAlerts?.filter(
-        (alert: { is_active: boolean; end_date: Date | null }) => {
-          return !alert.is_active || (alert.end_date && this.remainingDays(alert.end_date) < 0);
-        }
-      ),
-    });
-    this.setState({ loaded: true });
-  }
-
-  render() {
-    const menu: any = (
-      <Menu>
-        <Menu.Item key="create">
-          <button
-            type="button"
-            className="full add-permit-dropdown-button"
-            onClick={() =>
-              this.openCreateMineAlertModal(this.state.activeMineAlert, this.state.pastMineAlerts)
-            }
-          >
-            Create New Alert
-          </button>
-        </Menu.Item>
-        {this.state.activeMineAlert && (
-          <Menu.Item key="edit">
-            <button
-              type="button"
-              className="full add-permit-dropdown-button"
-              onClick={() =>
-                this.openUpdateMineAlertModal(this.state.activeMineAlert, this.state.pastMineAlerts)
-              }
-            >
-              Edit Active Alert
-            </button>
-          </Menu.Item>
-        )}
-        {this.state.activeMineAlert && (
-          <Menu.Item key="remove">
-            <Popconfirm
-              title={`Are you sure you want to delete alarm? ${formatDate(
-                this.state.activeMineAlert?.start_date
-              )} ${
-                this.state.activeMineAlert.end_date
-                  ? `-  ${formatDate(this.state.activeMineAlert?.end_date)}`
-                  : ""
-              }`}
-              onConfirm={() => this.handleRemoveAlert(this.state.activeMineAlert?.mine_alert_guid)}
-              okText="Delete"
-              cancelText="Cancel"
-            >
-              <button
-                type="button"
-                className="full add-permit-dropdown-button"
-                disabled={!this.state.activeMineAlert}
-              >
-                Remove Alert
-              </button>
-            </Popconfirm>
-          </Menu.Item>
-        )}
-        <Menu.Item key="history">
-          <button
-            type="button"
-            className="full add-permit-dropdown-button"
-            onClick={() => this.openviewPastMineAlertModal()}
-          >
-            View Alert History
-          </button>
-        </Menu.Item>
-      </Menu>
-    );
-
-    return (
-      <div>
-        {this.state.loaded && !this.state.activeMineAlert && (
-          <Alert
-            message=""
-            description={
-              <Row>
-                <Col xs={24} md={18}>
-                  <p>
-                    <b>There are no active staff alerts for this mine.</b>
-                  </p>
-                </Col>
-                <Col xs={24} md={6}>
-                  <div className="right center-mobile">
-                    {/* @ts-ignore */}
-                    <Dropdown overlay={menu} placement="bottomLeft">
-                      {/* @ts-ignore */}
-                      <Button type="secondary" className="ant-btn-alert-info-ghost">
-                        Actions
-                        <DownOutlined className="padding-sm--left" />
-                      </Button>
-                    </Dropdown>
-                  </div>
-                </Col>
-              </Row>
-            }
-            type="info"
-            showIcon
-            style={{ backgroundColor: "#F4F0F0", border: "1.5px solid #525252" }}
-            className="ant-alert-info ant-alert-info-custom-with-black-icon"
-          />
-        )}
-        {this.state.loaded && this.state.activeMineAlert && (
-          <Alert
-            message=""
-            description={
-              <Row>
-                <Col xs={24} md={18}>
-                  <p>
-                    {this.state.activeMineAlert.end_date ? (
-                      <b>
-                        {`Active Alert: ${formatDate(
-                          this.state.activeMineAlert.start_date
-                        )} - ${formatDate(this.state.activeMineAlert.end_date)}`}
-                      </b>
-                    ) : (
-                      <b>{`Active Alert: ${formatDate(this.state.activeMineAlert.start_date)}`}</b>
-                    )}
-                  </p>
-                  <p>
-                    {this.state.activeMineAlert.message}
-                    <br />
-                    For more information contact: {this.state.activeMineAlert.contact_name} -{" "}
-                    {this.state.activeMineAlert.contact_phone}
-                  </p>
-                </Col>
-                <Col xs={24} md={6}>
-                  <div className="right center-mobile">
-                    {/* @ts-ignore */}
-                    <Dropdown
-                      className="full-height full-mobile"
-                      overlay={menu}
-                      placement="bottomLeft"
-                    >
-                      {/* @ts-ignore */}
-                      <Button type="secondary" className="ant-btn-alert-warning-ghost">
-                        Actions
-                        <DownOutlined className="padding-sm--left" />
-                      </Button>
-                    </Dropdown>
-                  </div>
-                </Col>
-              </Row>
-            }
-            type="warning"
-            showIcon
-            style={{ backgroundColor: "#FFF2F0", border: "1.5px solid #FF0000" }}
-            className="ant-alert-warning ant-alert-warning-custom-with-red-icon"
-          />
-        )}
-      </div>
-    );
-  }
-}
-const mapStateToProps = (state: any) => ({
-  mineAlerts: getMineAlerts(state),
-  formValues: getFormValues(FORM.ADD_EDIT_MINE_ALERT)(state),
-  formErrors: getFormSyncErrors(FORM.ADD_EDIT_MINE_ALERT)(state),
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<Action>) =>
-  bindActionCreators(
+  const menuActions: IHeaderAction[] = [
     {
-      openModal,
-      closeModal,
-      fetchMineAlertsByMine,
-      updateMineAlert,
-      deleteMineAlert,
-      createMineAlert,
+      key: "create",
+      label: "Create New Alert",
+      clickFunction: () => openCreateMineAlertModal(activeMineAlert, pastMineAlerts)
     },
-    dispatch
-  );
+    activeMineAlert && {
+      key: "edit",
+      label: "Edit Active Alert",
+      clickFunction: () => openUpdateMineAlertModal(activeMineAlert, pastMineAlerts)
+    },
+    activeMineAlert && {
+      key: "remove",
+      label: "Remove Alert",
+      clickFunction: () => removeConfirmWrapper(activeMineAlert)
+    },
+    {
+      key: "history",
+      label: "View Alert History",
+      clickFunction: () => openviewPastMineAlertModal()
+    }
+  ].filter(Boolean);
 
-export default connect(mapStateToProps, mapDispatchToProps)(MineAlert);
+  const dropdownMenu = <ActionMenuButton
+    actions={menuActions}
+    buttonProps={{ style: { backgroundColor: "transparent" } }}
+  />;
+
+  return (
+    <div>
+      {loaded && !activeMineAlert && (
+        <Alert
+          message=""
+          description={
+            <Row>
+              <Col xs={24} md={18}>
+                <p>
+                  <b>There are no active staff alerts for this mine.</b>
+                </p>
+              </Col>
+              <Col xs={24} md={6}>
+                <div className="right center-mobile">
+                  {dropdownMenu}
+                </div>
+              </Col>
+            </Row>
+          }
+          type="info"
+          showIcon
+          style={{ backgroundColor: "#F4F0F0", border: "1.5px solid #525252" }}
+          className="ant-alert-info ant-alert-info-custom-with-black-icon"
+        />
+      )}
+      {loaded && activeMineAlert && (
+        <Alert
+          message=""
+          description={
+            <Row>
+              <Col xs={24} md={18}>
+                <p>
+                  {activeMineAlert.end_date ? (
+                    <b>
+                      {`Active Alert: ${formatDate(
+                        activeMineAlert.start_date
+                      )} - ${formatDate(activeMineAlert.end_date)}`}
+                    </b>
+                  ) : (
+                    <b>{`Active Alert: ${formatDate(activeMineAlert.start_date)}`}</b>
+                  )}
+                </p>
+                <p>
+                  {activeMineAlert.message}
+                  <br />
+                  For more information contact: {activeMineAlert.contact_name} -{" "}
+                  {activeMineAlert.contact_phone}
+                </p>
+              </Col>
+              <Col xs={24} md={6}>
+                <div className="right center-mobile">
+                  {dropdownMenu}
+                </div>
+              </Col>
+            </Row>
+          }
+          type="warning"
+          showIcon
+          style={{ backgroundColor: "#FFF2F0", border: "1.5px solid #FF0000" }}
+          className="ant-alert-warning ant-alert-warning-custom-with-red-icon"
+        />
+      )}
+    </div>
+  );
+};
+
+
+export default MineAlert;

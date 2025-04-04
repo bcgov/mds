@@ -1,11 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ChangeNOWMineForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  isModal={true}
+  name="CHANGE_NOW_MINE"
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "touchOnBlur": false,
+    }
+  }
 >
   <Row
     gutter={16}
@@ -13,58 +17,35 @@ exports[`ChangeNOWMineForm renders properly 1`] = `
     <Col
       span={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={
-            Object {
-              "$$typeof": Symbol(react.memo),
-              "WrappedComponent": [Function],
-              "compare": null,
-              "displayName": "Connect(RenderMineSelect)",
-              "type": [Function],
-            }
+      <Field
+        component={
+          Object {
+            "$$typeof": Symbol(react.memo),
+            "WrappedComponent": [Function],
+            "compare": null,
+            "displayName": "Connect(RenderMineSelect)",
+            "type": [Function],
           }
-          id="mine_guid"
-          name="mine_guid"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
+        }
+        id="mine_guid"
+        name="mine_guid"
+        required={true}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
     </Col>
   </Row>
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      disabled={false}
-      okText="Yes"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile"
-        disabled={false}
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile"
-      disabled={true}
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      mockTitle
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonText="mockTitle"
+      disableOnClean={false}
+    />
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

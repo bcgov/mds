@@ -1,41 +1,43 @@
-from flask import current_app
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.dialects.postgresql import UUID
-
-from sqlalchemy.schema import FetchedValue
-from sqlalchemy import case
-from werkzeug.exceptions import BadRequest
-
-from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
-from app.api.parties.party import PartyOrgBookEntity
-from app.api.regions.models.regions import Regions
-from app.api.services.ams_api_service import AMSApiService
-from app.extensions import db
-
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
-from app.api.utils.access_decorators import is_minespace_user
-from app.api.projects.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
-from app.api.mines.mine.models.mine import Mine
-from app.api.mines.documents.models.mine_document import MineDocument
-from app.api.projects.project.models.project import Project
-from app.api.projects.project_contact.models.project_contact import ProjectContact
-from app.api.projects.project_summary.models.project_summary_contact import ProjectSummaryContact
-from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
-from app.api.projects.project_summary.models.project_summary_authorization_document_xref import \
-    ProjectSummaryAuthorizationDocumentXref
-from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
-from app.api.parties.party.models.party import Party
-from app.api.parties.party.models.address import Address
-from app.api.constants import PROJECT_SUMMARY_EMAILS, MDS_EMAIL
-from app.api.services.email_service import EmailService
-from app.config import Config
-from cerberus import Validator
 import json
 
-from app.api.utils.feature_flag import is_feature_enabled, Feature
-
-from app.api.utils.common_validation_schemas import primary_address_schema, base_address_schema, address_na_schema, \
-    address_int_schema, party_base_schema, project_summary_base_schema
+from app.api.constants import MDS_EMAIL, PERM_RECL_EMAIL, PROJECT_SUMMARY_EMAILS
+from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
+from app.api.mines.mine.models.mine import Mine
+from app.api.parties.party import PartyOrgBookEntity
+from app.api.parties.party.models.address import Address
+from app.api.parties.party.models.party import Party
+from app.api.projects.project.models.project import Project
+from app.api.projects.project_summary.models.project_summary_authorization import (
+    ProjectSummaryAuthorization,
+)
+from app.api.projects.project_summary.models.project_summary_authorization_document_xref import (
+    ProjectSummaryAuthorizationDocumentXref,
+)
+from app.api.projects.project_summary.models.project_summary_document_xref import (
+    ProjectSummaryDocumentXref,
+)
+from app.api.regions.models.regions import Regions
+from app.api.services.ams_api_service import AMSApiService
+from app.api.services.email_service import EmailService
+from app.api.utils.common_validation_schemas import (
+    address_int_schema,
+    address_na_schema,
+    base_address_schema,
+    party_base_schema,
+    primary_address_schema,
+    project_summary_base_schema,
+)
+from app.api.utils.feature_flag import Feature, is_feature_enabled
+from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
+from app.config import Config
+from app.extensions import db
+from cerberus import Validator
+from flask import current_app
+from sqlalchemy import case
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.schema import FetchedValue
 
 
 class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
@@ -134,7 +136,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     )
 
     municipality = db.relationship(
-        'Municipality', lazy='joined', foreign_keys=nearest_municipality_guid
+        'Municipality', lazy='joined', foreign_keys=nearest_municipality_guid,
+        overlaps="nearest_municipality"
     )
 
     payment_contact = db.relationship(
@@ -149,7 +152,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     def __get_address_type_code(cls, address_data):
         if isinstance(address_data, list):
             return address_data[0].get('address_type_code')
-        return address_data.get('address_type_code')
+        return address_data.get('address_type_code', None) if address_data else None
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.project_summary_id}'
@@ -166,6 +169,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         if self.project.project_lead_party_guid:
             return self.project.project_lead_party_guid
         return None
+    
+    @hybrid_property
+    def project_lead_email(self) -> str | None:
+        project_lead = Party.find_by_party_guid(self.project_summary_lead_party_guid)
+        return project_lead.email if project_lead else None
 
     @hybrid_property
     def mine_guid(self):
@@ -226,6 +234,29 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         except ValueError:
             return None
+        
+    @staticmethod
+    def has_new_documents(documents, ams_authorizations) -> bool:
+        new_documents = list(filter(lambda doc: doc.get("mine_document_guid") is None, documents))
+        has_new_docs = len(new_documents) > 0
+        
+        amendments = ams_authorizations.get('amendments', [])
+        new = ams_authorizations.get('new', [])
+        all_ams_auths = amendments + new
+        has_new_ams_docs = False
+
+        for auth in all_ams_auths:
+            docs = auth.get('amendment_documents', [])
+            for doc in docs:
+                if doc.get('mine_document_guid') is None:
+                    has_new_ams_docs = True
+                    break
+            else:
+                continue
+            break
+
+        return has_new_docs or has_new_ams_docs
+
 
     # will update the existing party and address data if it exists, else create a new one
     @classmethod
@@ -274,7 +305,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                         address_type_code=addr.get('address_type_code'),
                     )
                     new_party.address.append(new_address)
-            else:
+            elif address_data is not None:
                 new_address = Address.create(
                     suite_no=address_data.get('suite_no'),
                     address_line_1=address_data.get('address_line_1'),
@@ -845,9 +876,17 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             if do_full_validation and applicant == None:
                 errors_found['applicant_info'].append('Applicant Information not provided')
             elif applicant != None:
+                payment_contact = data.get('payment_contact', None)
                 applicant_validation = ProjectSummary.validate_project_party(applicant, 'applicant')
                 if applicant_validation != True:
                     errors_found['applicant_info'].append(applicant_validation)
+
+                if payment_contact['address'] == None:
+                    errors_found['applicant_info'].append('Payment contact address info not provided')
+                else:
+                    payment_contact_validation = ProjectSummary.validate_project_party(payment_contact, 'applicant')
+                    if payment_contact_validation != True:
+                        errors_found['applicant_info'].append(payment_contact_validation)
 
             # Validate Agent
             if do_full_validation and is_agent == None:
@@ -1014,9 +1053,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         # Update simple properties.
         # If we assign a project lead update status to Assigned and vice versa Submitted.
-        if project_lead_party_guid and project.project_lead_party_guid is None:
+        if project_lead_party_guid and project.project_lead_party_guid is None and self.status_code == status_code:
             self.status_code = "ASG"
-        elif project_lead_party_guid is None and project.project_lead_party_guid:
+        elif project_lead_party_guid is None and project.project_lead_party_guid and self.status_code == status_code:
             self.status_code = "SUB"
         else:
             self.status_code = status_code
@@ -1057,6 +1096,17 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             self.applicant_party_guid = applicant_party.party_guid
 
         if payment_contact is not None:
+            if self.payment_contact != None and len(payment_contact['address']) == 1 and len(self.payment_contact.address) == 0:
+                    temp_address = Address.create(
+                        suite_no=None,
+                        address_line_1=None,
+                        city=None,
+                        sub_division_code=None,
+                        post_code=None,
+                        address_type_code=None,
+                    )
+
+                    (self.payment_contact.address).append(temp_address)
             payment_contact_party = self.create_or_update_party(payment_contact, 'PAY', self.payment_contact)
             payment_contact_party.save()
             self.payment_contact_party_guid = payment_contact_party.party_guid
@@ -1253,16 +1303,60 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             doc.mine_document.delete(False)
         return super(ProjectSummary, self).delete(commit)
 
-    def send_project_summary_email(self, mine):
-        emli_recipients = PROJECT_SUMMARY_EMAILS
+    def send_project_summary_document_email(self, mine) -> None:
+        if is_feature_enabled(Feature.MINE_APPLICATION_FILE_UDPATE_ALERTS):
+            message = f'File(s) in project {self.project.project_title} has been updated for mine {mine.mine_name}'
+            project_lead_email = self.project_lead_email
+
+            emails = {
+                'SUB': [PERM_RECL_EMAIL],
+                'ASG': [PERM_RECL_EMAIL, project_lead_email],
+                'CHR': [PERM_RECL_EMAIL, project_lead_email] 
+            }
+            email_recipients = emails.get(self.status_code)
+
+            if email_recipients is not None:
+                ministry_body = open("app/templates/email/projects/ministry_project_summary_email.html", "r").read()
+                subject = f'Project Description Documents Notification for {mine.mine_name}'
+                cc = [MDS_EMAIL]
+
+                ministry_context = {
+                    "project_summary": {
+                        "project_summary_description": self.project_summary_description,
+                    },
+                    "mine": {
+                        "mine_name": mine.mine_name,
+                        "mine_no": mine.mine_no,
+                    },
+                    "message": message,
+                    "core_project_summary_link": f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/overview'
+                }
+                EmailService.send_template_email(subject, email_recipients, ministry_body, ministry_context, cc=cc)
+
+
+    def send_project_summary_email(self, mine, message) -> None:
+
+        project_lead_email = self.project_lead_email
+
+        ministry_emails = {
+            'SUB': [PERM_RECL_EMAIL] + PROJECT_SUMMARY_EMAILS,
+            'ASG': [project_lead_email],
+            'OHD': [PERM_RECL_EMAIL, project_lead_email],
+            'WDN': [PERM_RECL_EMAIL, project_lead_email],
+            'COM': [PERM_RECL_EMAIL, project_lead_email]
+        }
+
+        send_ms_email = self.status_code != "DFT" and self.status_code != "ASG"
+        
+        ministry_recipients = ministry_emails.get(self.status_code)
         cc = [MDS_EMAIL]
         minespace_recipients = [contact.email for contact in self.contacts if contact.is_primary]
 
-        emli_body = open("app/templates/email/projects/emli_project_summary_email.html", "r").read()
+        ministry_body = open("app/templates/email/projects/ministry_project_summary_email.html", "r").read()
         minespace_body = open("app/templates/email/projects/minespace_project_summary_email.html", "r").read()
         subject = f'Project Description Notification for {mine.mine_name}'
 
-        emli_context = {
+        ministry_context = {
             "project_summary": {
                 "project_summary_description": self.project_summary_description,
             },
@@ -1270,6 +1364,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 "mine_name": mine.mine_name,
                 "mine_no": mine.mine_no,
             },
+            "message": message,
             "core_project_summary_link": f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/overview'
         }
 
@@ -1278,9 +1373,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 "mine_name": mine.mine_name,
                 "mine_no": mine.mine_no,
             },
+            "message": message,
             "minespace_project_summary_link": f'{Config.MINESPACE_PROD_URL}/projects/{self.project.project_guid}/overview',
             "ema_auth_link": f'{Config.EMA_AUTH_LINK}',
         }
 
-        EmailService.send_template_email(subject, emli_recipients, emli_body, emli_context, cc=cc)
-        EmailService.send_template_email(subject, minespace_recipients, minespace_body, minespace_context, cc=cc)
+        EmailService.send_template_email(subject, ministry_recipients, ministry_body, ministry_context, cc=cc)
+        if send_ms_email:
+            EmailService.send_template_email(subject, minespace_recipients, minespace_body, minespace_context, cc=cc)

@@ -1,8 +1,8 @@
 import React from "react";
-import { Field, WrappedFieldProps } from "redux-form";
+import { Field, WrappedFieldProps } from "@mds/common/components/forms/form";
 import { NOTICE_OF_DEPARTURE_DOCUMENTS } from "@/constants/API";
 import FileUpload from "@/components/common/FileUpload";
-import { IAcceptedFileTypes } from "@mds/common";
+import { IAcceptedFileTypes } from "@mds/common/interfaces";
 
 interface NoticeOfDepartureFileUploadProps extends WrappedFieldProps {
   onFileLoad: (file: File) => void;

@@ -30,17 +30,17 @@ export const InformationRequirementsTableEntryTab = (props) => {
       label: irtExists ? "Resume" : "Start",
       link: irtExists
         ? () =>
-          props.history.push({
-            pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-              projectGuid,
-              irtGuid
-            )}`,
-            state: { current: 2 },
-          })
+            props.history.push({
+              pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+                projectGuid,
+                irtGuid
+              )}`,
+              state: { current: 2 },
+            })
         : () =>
-          props.history.push(
-            `${routes.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(projectGuid)}`
-          ),
+            props.history.push(
+              `${routes.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(projectGuid)}`
+            ),
     };
     let content = null;
 
@@ -61,7 +61,7 @@ export const InformationRequirementsTableEntryTab = (props) => {
     ) : (
       <ExclamationCircleOutlined
         style={{
-          color: "#D40D0D",
+          color: "#D8292F",
           marginTop: "3.0em",
           marginBottom: "4.5em",
           transform: "scale(6.0)",

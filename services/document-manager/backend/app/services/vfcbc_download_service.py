@@ -1,9 +1,10 @@
-import requests, io
-from flask import current_app
+import io
 from urllib.parse import urlparse
 
+import requests
+from app.constants import TIMEOUT_60_MINUTES, VFCBC_COOKIES
 from app.extensions import cache
-from app.constants import VFCBC_COOKIES, TIMEOUT_60_MINUTES
+from flask import current_app
 
 
 def vfcbc_login(download_session):
@@ -42,18 +43,39 @@ def vfcbc_login(download_session):
         postlogin_url = f'https://{login_netloc}/clp-cgi/int01/private/postLogon.cgi'
         postlogin_req = download_session.get(postlogin_url)
 
+        # A successful IDIR login sets the "SMSESSION" cookie (from Siteminder).
+        cooks = loginfcc_req.cookies.get_dict()
+
+        if not cooks or 'SMSESSION' not in cooks:
+            raise Exception('vFCBC login failed! SMSESSION cookie not found')
 
 class VFCBCDownloadService():
-    def download(file_url):
+    @staticmethod
+    def download(file_url, use_cache=True):
+        """
+        Download a file from VFCBC.
+        
+        Args:
+            file_url (str): URL of the file to download
+            use_cache (bool): Whether to use/update the cached cookies or always perform a fresh login
+                            Default is True (use cache)
+        
+        Returns:
+            BytesIO: File content as a BytesIO object
+        """
         download_session = requests.session()
 
-        _vfcbc_cookies = cache.get(VFCBC_COOKIES)
-        if _vfcbc_cookies is None:
-            vfcbc_login(download_session)
-            cache.set(VFCBC_COOKIES, download_session.cookies, timeout=TIMEOUT_60_MINUTES)
+        if use_cache:
+            _vfcbc_cookies = cache.get(VFCBC_COOKIES)
+            if _vfcbc_cookies is None:
+                vfcbc_login(download_session)
+                cache.set(VFCBC_COOKIES, download_session.cookies, timeout=TIMEOUT_60_MINUTES)
+            else:
+                download_session.cookies = _vfcbc_cookies
         else:
-            download_session.cookies = _vfcbc_cookies
-
+            # Always perform a fresh login when use_cache is False
+            vfcbc_login(download_session)
+            
         resp = download_session.get(file_url, stream=True)
         if resp.status_code != requests.codes.ok:
             raise Exception(f'vFCBC file download failed! Error {resp.status_code}: {resp.content}')

@@ -1,8 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UploadProjectDecisionPackageDocumentForm renders properly 1`] = `
-<ForwardRef(InternalForm)
-  layout="vertical"
+<Connect(ReduxForm)
+  name="UPDATE_PROJECT_DECISION_PACKAGE_DOCUMENT"
+  onSubmit={[Function]}
+  reduxFormConfig={
+    Object {
+      "enableReinitialize": true,
+      "touchOnBlur": false,
+    }
+  }
 >
   <Row
     gutter={16}
@@ -39,30 +46,15 @@ exports[`UploadProjectDecisionPackageDocumentForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      disabled={false}
-      okText="Yes"
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile"
-        disabled={false}
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile"
-      disabled={true}
-      loading={false}
-      onClick={[Function]}
-      type="primary"
-    >
-      Update
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonProps={
+        Object {
+          "disabled": true,
+        }
+      }
+      buttonText="Update"
+    />
   </div>
-</ForwardRef(InternalForm)>
+</Connect(ReduxForm)>
 `;

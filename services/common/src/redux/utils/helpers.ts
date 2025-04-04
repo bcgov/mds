@@ -7,15 +7,15 @@ import {
 import { get, isEmpty, isNil, sortBy } from "lodash";
 import { createNumberMask } from "redux-form-input-masks";
 import moment from "moment-timezone";
-import { reset } from "redux-form";
+import { reset } from "@mds/common/components/forms/form";
 import {
   IComplianceArticle,
   IMineReportDefinition,
   IMineReportSubmission,
-  IPermit,
+  IOption,
   ItemMap,
 } from "@mds/common/interfaces";
-import { MINE_REPORT_SUBMISSION_CODES } from "../..";
+import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants/enums";
 
 /**
  * Helper function to clear redux form after submission
@@ -59,7 +59,7 @@ export const createDropDownList = (
   subType = null,
   labelFormatter = null,
   orderByAlphabetically = true
-) => {
+): IOption[] => {
   const options = array?.map((item) => ({
     value: item[valueField],
     label: labelFormatter ? labelFormatter(item[labelField]) : item[labelField],
@@ -75,8 +75,12 @@ export const createDropDownList = (
 };
 
 // Function to create a hash given an array of values and labels
-export const createLabelHash = (arr) =>
-  arr.reduce((map, { value, label }) => ({ [value]: label, ...map }), {});
+export const createLabelHash = (arr) => {
+  return arr.reduce((map, { value, label }) => {
+    map[value] = label;
+    return map;
+  }, {});
+};
 
 export const formatTractionDate = (dateString: string) => {
   const year = dateString.slice(0, 4);
@@ -160,19 +164,21 @@ export const isDateRangeValid = (start, end) => {
   return Math.sign(milliseconds) !== -1;
 };
 
-export const dateSorter = (key: string, ascending = true) => (a: any, b: any) => {
-  if (a[key] === b[key]) {
-    return 0;
-  }
-  if (!a[key]) {
-    return 1;
-  }
-  if (!b[key]) {
-    return -1;
-  }
+export const dateSorter =
+  (key: string, ascending = true) =>
+    (a: any, b: any) => {
+      if (a[key] === b[key]) {
+        return 0;
+      }
+      if (!a[key]) {
+        return 1;
+      }
+      if (!b[key]) {
+        return -1;
+      }
 
-  return ascending ? moment(a[key]).diff(moment(b[key])) : moment(b[key]).diff(moment(a[key]));
-};
+      return ascending ? moment(a[key]).diff(moment(b[key])) : moment(b[key]).diff(moment(a[key]));
+    };
 
 export const nullableStringSorter = (path) => (a, b) => {
   const aObj = get(a, path, null);
@@ -200,7 +206,7 @@ export const sortListObjectsByPropertyDate = (list, property) => list.sort(dateS
 // Case insensitive filter for a SELECT field by label string
 // NOTE: this is for the NEW ant design component in common, which has option.label, not option.children
 export const caseInsensitiveLabelFilter = (input, option) =>
-  option.label.toLowerCase().includes(input.toLowerCase());
+  option.label?.toLowerCase().includes(input.toLowerCase());
 
 // function taken directly from redux-forms (https://redux-form.com/6.0.0-rc.1/examples/normalizing)
 // automatically adds dashes to phone number
@@ -356,6 +362,7 @@ export const formatComplianceCodeArticleNumber = (code: IComplianceArticle) => {
 };
 
 export const formatComplianceCodeReportName = (report: IMineReportDefinition) => {
+  if (!report?.compliance_articles[0]?.section) return report.report_name;
   const { section, sub_section, paragraph, sub_paragraph } = report?.compliance_articles[0];
   const formattedSubSection = sub_section ? `.${sub_section}` : "";
   const formattedParagraph = paragraph ? `.${paragraph}` : "";

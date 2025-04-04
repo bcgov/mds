@@ -147,7 +147,8 @@ exports[`ArchiveDocumentModal renders correctly and matches the snapshot 1`] = `
     class="ant-modal-footer"
   >
     <button
-      class="ant-btn ant-btn-default core-btn core-btn-default"
+      aria-label="Cancel"
+      class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
       type="button"
     >
       <span>
@@ -155,7 +156,8 @@ exports[`ArchiveDocumentModal renders correctly and matches the snapshot 1`] = `
       </span>
     </button>
     <button
-      class="ant-btn ant-btn-primary"
+      aria-label="Submit"
+      class="ant-btn ant-btn-primary  form-btn"
       type="submit"
     >
       <span>

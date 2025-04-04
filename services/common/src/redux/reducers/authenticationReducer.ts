@@ -1,7 +1,7 @@
 import * as ActionTypes from "@mds/common/constants/actionTypes";
 import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import { IUserInfo } from "@mds/common/interfaces";
-import { SystemFlagEnum, USER_ROLES } from "@mds/common/constants";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { RootState } from "@mds/common/redux/rootState";
 import * as ReducerTypes from "@mds/common/constants/reducerTypes";
 
@@ -84,11 +84,10 @@ const authenticationReducerObject = {
 };
 
 export const getSystemFlag = (state: RootState) => state[AUTHENTICATION].systemFlag;
+export const getIsCore = (state: RootState) => state[AUTHENTICATION].systemFlag === SystemFlagEnum.core;
 export const isAuthenticated = (state: RootState) => state[AUTHENTICATION].isAuthenticated;
 export const getUserAccessData = (state: RootState) => state[AUTHENTICATION].userAccessData;
 export const getUserInfo = (state: RootState) => state[AUTHENTICATION].userInfo;
-export const userHasRole = (state: RootState, role: string) =>
-  state[AUTHENTICATION].userAccessData.includes(USER_ROLES[role] ?? role);
 export const getRedirect = (state) => state[ReducerTypes.AUTHENTICATION].redirect;
 export const isProponent = (state) => state[ReducerTypes.AUTHENTICATION].isProponent;
 

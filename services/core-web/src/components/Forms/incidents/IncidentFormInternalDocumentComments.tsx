@@ -1,8 +1,8 @@
-import { IMineIncident, IMineIncidentDocument, INCIDENT_DOCUMENT_TYPES } from "@mds/common";
+import { IMineIncident, IMineIncidentDocument } from "@mds/common/interfaces";
 import React, { FC } from "react";
 import { Col, Divider, Empty, Form, Row, Typography } from "antd";
 import { LockOutlined } from "@ant-design/icons";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import {
   documentColumns,
   formatDocumentRecords,
@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import IncidentFileUpload from "@/components/Forms/incidents/IncidentFileUpload";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { MinistryInternalComments } from "@/components/mine/Incidents/MinistryInternalComments";
+import { INCIDENT_DOCUMENT_TYPES } from "@mds/common/constants/strings";
 
 interface IncidentFormInternalDocumentCommentsProps {
   documents: IMineIncidentDocument[];

@@ -87,12 +87,24 @@ from app.api.mines.permits.permit_amendment.resources.permit_amendment import (
     PermitAmendmentListResource,
     PermitAmendmentResource,
 )
+from app.api.mines.permits.permit_amendment.resources.permit_amendment_diff import (
+    PermitAmendmentDiffResource,
+)
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import (
     PermitAmendmentDocumentListResource,
     PermitAmendmentDocumentResource,
 )
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_vc import (
     PermitAmendmentVCResource,
+)
+from app.api.mines.permits.permit_conditions.resources.permit_amendment_condition_category_list_resource import (
+    PermitAmendmentConditionCategoryListResource,
+)
+from app.api.mines.permits.permit_conditions.resources.permit_amendment_condition_category_resource import (
+    PermitAmendmentConditionCategoryResource,
+)
+from app.api.mines.permits.permit_conditions.resources.permit_amendment_condition_category_user_resource import (
+    AssignUserToPermitConditionCategory,
 )
 from app.api.mines.permits.permit_conditions.resources.permit_condition_category_resource import (
     PermitConditionCategoryResource,
@@ -122,15 +134,21 @@ from app.api.mines.reports.resources.mine_report_comment import (
     MineReportCommentListResource,
     MineReportCommentResource,
 )
-from app.api.mines.reports.resources.mine_report_definition import (
-    MineReportDefinitionListResource,
-)
 from app.api.mines.reports.resources.mine_report_definition_compliance_article_xref_resource import (
     MineReportDefinitionComplianceArticleCreateResource,
     MineReportDefinitionComplianceArticleUpdateResource,
 )
+from app.api.mines.reports.resources.mine_report_definition_resource import (
+    MineReportDefinitionListResource,
+)
 from app.api.mines.reports.resources.mine_report_document import (
     MineReportDocumentListResource,
+)
+from app.api.mines.reports.resources.mine_report_due_date_type_resource import (
+    MineReportDueDateTypeResource,
+)
+from app.api.mines.reports.resources.mine_report_permit_requirement import (
+    MineReportPermitRequirementResource,
 )
 from app.api.mines.reports.resources.mine_report_submission_resource import (
     ReportSubmissionResource,
@@ -252,12 +270,15 @@ api.add_resource(
     MineReportDocumentListResource,
     '/<string:mine_guid>/reports/documents',
 )
+api.add_resource(MineReportPermitRequirementResource, '/<string:mine_guid>/reports/permit-requirements')
+api.add_resource(MineReportDueDateTypeResource, '/reports/due-date-types')
 
 api.add_resource(PermitResource, '/<string:mine_guid>/permits/<string:permit_guid>')
 api.add_resource(PermitListResource, '/<string:mine_guid>/permits')
 api.add_resource(PermitStatusCodeResource, '/permits/status-codes')
 api.add_resource(PermitConditionCategoryResource, '/permits/condition-category-codes')
 api.add_resource(PermitConditionTypeResource, '/permits/condition-type-codes')
+api.add_resource(AssignUserToPermitConditionCategory, '/permits/condition-category/assign-review-user')
 
 api.add_resource(StandardPermitConditionsListResource,
                  '/permits/standard-conditions/<string:notice_of_work_type>')
@@ -270,11 +291,25 @@ api.add_resource(
     PermitAmendmentResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>')
 
+api.add_resource(
+    PermitAmendmentConditionCategoryListResource,
+    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/condition-categories'
+)
+
+api.add_resource(
+    PermitAmendmentConditionCategoryResource,
+    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/condition-categories/<string:permit_condition_category_code>'
+)
+
 api.add_resource(PermitConditionExtractionResource, '/permits/condition-extraction')
 api.add_resource(PermitConditionExtractionProgressResource, '/permits/condition-extraction/<string:task_id>')
 api.add_resource(
     PermitAmendmentVCResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/verifiable-credential'
+)
+api.add_resource(
+    PermitAmendmentDiffResource,
+    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/diff'
 )
 
 api.add_resource(

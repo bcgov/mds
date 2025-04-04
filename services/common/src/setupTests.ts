@@ -26,6 +26,17 @@ Enzyme.configure({ adapter: new Adapter() });
     dynamicRoute: () => "test",
     helpKey: "Mine-Dashboard",
   },
+  EDIT_TAILINGS_STORAGE_FACILITY: {
+    route: "test",
+    dynamicRoute: () => "test",
+    helpKey: "Edit-TSF"
+  },
+  VIEW_MINE_PERMIT_AMENDMENT: {
+    route: "test",
+    dynamicRoute: () => "test",
+    hashRoute: () => "test",
+    helpKey: "View Permit Amendment"
+  }
 };
 
 beforeAll(() => {
@@ -48,11 +59,23 @@ jest.mock("react", () => {
   };
 });
 
+jest.mock("keycloak-js", () => {
+  return jest.fn()
+});
+
 jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
   useFeatureFlag: () => ({
     isFeatureEnabled: () => true,
   }),
 }));
+
+jest.mock("@mds/common/redux/createAppSlice", () => {
+  const original = jest.requireActual("@mds/common/redux/createAppSlice");
+  return {
+    ...original,
+    rejectHandler: jest.fn(),
+  };
+});
 window.scrollTo = jest.fn();
 const location = JSON.stringify(window.location);
 delete window.location;
@@ -86,7 +109,7 @@ global.document.createElementNS = function (namespaceURI, qualifiedName) {
   if (namespaceURI === "http://www.w3.org/2000/svg" && qualifiedName === "svg") {
     // eslint-disable-next-line prefer-rest-params
     const element = createElementNSOrig.apply(this, arguments);
-    element.createSVGRect = function () {};
+    element.createSVGRect = function () { };
     return element;
   }
   // eslint-disable-next-line prefer-rest-params

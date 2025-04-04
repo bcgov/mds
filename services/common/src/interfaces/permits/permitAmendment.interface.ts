@@ -1,10 +1,9 @@
-import {
-  INoWDocument,
-  IPermitAmendmentDocument,
-  INoWImportedApplicationDocument,
-  IPermitCondition,
-  VC_CRED_ISSUE_STATES,
-} from "@mds/common/index";
+import { VC_CRED_ISSUE_STATES } from "@mds/common/constants/enums";
+import { INoWDocument } from "../NoWDocument.interface";
+import { INoWImportedApplicationDocument } from "../NoWImportedApplicationDocument.interface";
+import { IMineReportPermitRequirement } from "./mineReportPermitRequirements.interface";
+import { IPermitAmendmentDocument } from "./permitAmendmentDocument.interface";
+import { IPermitCondition, IPermitConditionCategory } from "./permitCondition.interface";
 
 export interface IPermitAmendment {
   permit_amendment_id: number;
@@ -33,4 +32,7 @@ export interface IPermitAmendment {
   is_generated_in_core: boolean;
   preamble_text: string;
   vc_credential_exch_state: VC_CRED_ISSUE_STATES;
+  mine_report_permit_requirements?: IMineReportPermitRequirement[];
+  condition_categories: IPermitConditionCategory[];
+  conditions_review_completed: boolean;
 }

@@ -2,15 +2,16 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { PROJECTS, STATIC_CONTENT, AUTHENTICATION } from "@mds/common/constants/reducerTypes";
-import { FORM } from "../..";
+import { FORM } from "@mds/common/constants/forms";
 import FormWrapper from "../forms/FormWrapper";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import Applicant from "./Applicant";
 
+const initialValues = {};
 const initialState = {
   form: {
     [FORM.ADD_EDIT_PROJECT_SUMMARY]: {
-      values: {},
+      values: initialValues,
     },
   },
   [PROJECTS]: {
@@ -30,10 +31,10 @@ describe("Applicant Component", () => {
       <ReduxWrapper initialState={initialState}>
         <FormWrapper
           name={FORM.ADD_EDIT_PROJECT_SUMMARY}
-          initialValues={initialState}
-          onSubmit={() => {}}
+          initialValues={initialValues}
+          onSubmit={() => { }}
         >
-          <Applicant />
+          <Applicant fieldsDisabled={false} />
         </FormWrapper>
       </ReduxWrapper>
     );

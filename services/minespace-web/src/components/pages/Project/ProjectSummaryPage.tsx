@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, Prompt, useHistory, useLocation, useParams } from "react-router-dom";
-import { reset } from "redux-form";
+import { reset } from "@mds/common/components/forms/form";
 import { Col, Divider, Row, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
@@ -30,17 +30,20 @@ import {
 import ProjectSummaryForm, {
   getProjectFormTabs,
 } from "@mds/common/components/projectSummary/ProjectSummaryForm";
-import {
-  Feature,
-  PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION,
-  AMS_STATUS_CODES_SUCCESS,
-  AMS_STATUS_CODE_FAIL,
-  AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
-  SystemFlagEnum,
-} from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { fetchRegions } from "@mds/common/redux/slices/regionsSlice";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import {
+  AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
+  SystemFlagEnum,
+} from "@mds/common/constants/enums";
+import { Feature } from "@mds/common/utils/featureFlag";
+import {
+  AMS_STATUS_CODE_FAIL,
+  AMS_STATUS_CODES_SUCCESS,
+  PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION,
+} from "@mds/common/constants/strings";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 
 interface IParams {
   mineGuid?: string;
@@ -50,18 +53,18 @@ interface IParams {
 }
 
 export const ProjectSummaryPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const location = useLocation();
   const systemFlag = useSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;
 
   const { mineGuid, projectGuid, projectSummaryGuid, tab } = useParams<IParams>();
-  const anyTouched = useSelector(
+  const anyTouched = useAppSelector(
     (state) => state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.anyTouched || false
   );
 
-  const mine = useSelector((state) => getMineById(state, mineGuid));
+  const mine = useSelector(getMineById(mineGuid));
   const projectSummary = useSelector(getProjectSummary);
   const formattedProjectSummary = useSelector(getFormattedProjectSummary);
   const project = useSelector(getProject);
@@ -143,7 +146,7 @@ export const ProjectSummaryPage = () => {
       const areAuthorizationsSuccessful = authorizations
         .filter((authorization) =>
           Object.values(AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES).includes(
-            authorization.project_summary_authorization_type
+            authorization.project_summary_authorization_type as AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES
           )
         )
         .every((auth) => auth.ams_status_code === "200");
@@ -183,14 +186,20 @@ export const ProjectSummaryPage = () => {
     history.push(url);
   };
 
-  const handleSaveData = async (formValues, newActiveTab?: string) => {
+  const handleSaveData = async (formValues, newActiveTab?: string, currentTab?: string) => {
     let message = newActiveTab
       ? "Successfully updated the project description."
       : "Successfully submitted a project description to the Province of British Columbia.";
     let status_code = projectSummary.status_code;
     let is_historic = projectSummary.is_historic;
 
-    if (status_code === "CHR") {
+    if (
+      status_code === "CHR" &&
+      formValues.confirmation_of_submission &&
+      currentTab === "declaration"
+    ) {
+      // If a proponent re-submits the declaration, when changes are made to the project description,
+      // change it back to under review.
       status_code = "UNR";
     } else if ((!status_code || !isEditMode) && status_code !== "UNR") {
       status_code = "DFT";

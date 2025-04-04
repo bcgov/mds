@@ -2,7 +2,7 @@
 
 exports[`ReportPage renders view mode properly 1`] = `
 <div
-  class="scroll-side-menu-wrapper"
+  class="scroll-side-menu-wrapper scroll-side-menu-view--anchor"
 >
   <div
     class="view--header"
@@ -23,7 +23,7 @@ exports[`ReportPage renders view mode properly 1`] = `
             General Conditions
             <span
               class="ant-tag page-header-title-tag tag-primary"
-              title="Mine: undefined"
+              title="Mine: mine3"
             >
               <svg
                 aria-hidden="true"
@@ -42,9 +42,11 @@ exports[`ReportPage renders view mode properly 1`] = `
               </svg>
               <span>
                 <a
-                  href="/mine-dashboard/undefined/"
+                  href="/mine-dashboard/8e9ca839-a28e-427e-997e-9ef23d9d97cd/"
                   style="text-decoration: none;"
-                />
+                >
+                  mine3
+                </a>
               </span>
             </span>
           </div>
@@ -84,7 +86,7 @@ exports[`ReportPage renders view mode properly 1`] = `
     <div>
       <div
         class="ant-anchor-wrapper"
-        style="max-height: calc(100vh - 226px);"
+        style="max-height: calc(100vh - 250px);"
       >
         <div
           class="ant-anchor ant-anchor-fixed"
@@ -98,7 +100,7 @@ exports[`ReportPage renders view mode properly 1`] = `
             />
           </div>
           <div
-            class="ant-anchor-link now-menu-link ant-anchor-link-active"
+            class="ant-anchor-link now-menu-link fade-in ant-anchor-link-active"
           >
             <a
               class="ant-anchor-link-title ant-anchor-link-title-active"
@@ -108,12 +110,16 @@ exports[`ReportPage renders view mode properly 1`] = `
               <div
                 class="side-nav-title"
               >
-                Regulatory Authority
+                <div
+                  class="side-nav-title-content"
+                >
+                  Regulatory Authority
+                </div>
               </div>
             </a>
           </div>
           <div
-            class="ant-anchor-link now-menu-link"
+            class="ant-anchor-link now-menu-link fade-in"
           >
             <a
               class="ant-anchor-link-title"
@@ -123,12 +129,16 @@ exports[`ReportPage renders view mode properly 1`] = `
               <div
                 class="side-nav-title"
               >
-                Report Type
+                <div
+                  class="side-nav-title-content"
+                >
+                  Report Type
+                </div>
               </div>
             </a>
           </div>
           <div
-            class="ant-anchor-link now-menu-link"
+            class="ant-anchor-link now-menu-link fade-in"
           >
             <a
               class="ant-anchor-link-title"
@@ -138,12 +148,16 @@ exports[`ReportPage renders view mode properly 1`] = `
               <div
                 class="side-nav-title"
               >
-                Report Information
+                <div
+                  class="side-nav-title-content"
+                >
+                  Report Information
+                </div>
               </div>
             </a>
           </div>
           <div
-            class="ant-anchor-link now-menu-link"
+            class="ant-anchor-link now-menu-link fade-in"
           >
             <a
               class="ant-anchor-link-title"
@@ -153,12 +167,16 @@ exports[`ReportPage renders view mode properly 1`] = `
               <div
                 class="side-nav-title"
               >
-                Report Contact Information
+                <div
+                  class="side-nav-title-content"
+                >
+                  Report Contact Information
+                </div>
               </div>
             </a>
           </div>
           <div
-            class="ant-anchor-link now-menu-link"
+            class="ant-anchor-link now-menu-link fade-in"
           >
             <a
               class="ant-anchor-link-title"
@@ -168,12 +186,16 @@ exports[`ReportPage renders view mode properly 1`] = `
               <div
                 class="side-nav-title"
               >
-                Documentation
+                <div
+                  class="side-nav-title-content"
+                >
+                  Documentation
+                </div>
               </div>
             </a>
           </div>
           <div
-            class="ant-anchor-link now-menu-link"
+            class="ant-anchor-link now-menu-link fade-in"
           >
             <a
               class="ant-anchor-link-title"
@@ -183,10 +205,15 @@ exports[`ReportPage renders view mode properly 1`] = `
               <div
                 class="side-nav-title"
               >
-                Comments
+                <div
+                  class="side-nav-title-content"
+                >
+                  Comments
+                </div>
               </div>
             </a>
           </div>
+          
         </div>
       </div>
     </div>

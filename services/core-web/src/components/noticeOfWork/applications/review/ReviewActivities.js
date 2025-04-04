@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { FormSection } from "redux-form";
+import { FormSection } from "@mds/common/components/forms/form";
 import CustomPropTypes from "@/customPropTypes";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import AccessRoads from "@/components/noticeOfWork/applications/review/activities/AccessRoads";

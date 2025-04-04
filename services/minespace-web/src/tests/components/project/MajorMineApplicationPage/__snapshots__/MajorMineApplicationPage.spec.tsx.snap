@@ -86,7 +86,6 @@ exports[`MajorMinesApplicationPage renders properly 1`] = `
             </button>
             <button
               class="ant-btn ant-btn-primary"
-              disabled=""
               id="step2-next"
               type="submit"
             >
@@ -226,18 +225,17 @@ exports[`MajorMinesApplicationPage renders properly 1`] = `
         class="ant-col ant-col-24"
       >
         <div
-          class="bcgov-callout--danger nod-callout-text"
+          class="bcgov-callout--warning bcgov-callout"
         >
-          <div
-            class="information-requirements-table-callout"
+          <p
+            class="bcgov-callout-title"
           >
-            <h4>
-              Further information is required
-            </h4>
-            <p>
-              Your submission has been reviewed and some changes are required for completing the review process. Please check your inbox for more information.
-            </p>
-          </div>
+            Change Requested
+          </p>
+          <p>
+            This project requires changes by the mine. MineSpace users can update text fields and update documents. 
+        Note: Navigate to the submit section of the form to resubmit your application after making any changes to have them resubmitted to the ministry.
+          </p>
         </div>
         <div>
           <div
@@ -270,7 +268,6 @@ exports[`MajorMinesApplicationPage renders properly 1`] = `
             </button>
             <button
               class="ant-btn ant-btn-primary"
-              disabled=""
               id="step2-next"
               type="submit"
             >

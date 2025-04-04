@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RenderAutoSizeField renders properly 1`] = `
+<div>
+  <div
+    class="ant-form-item ant-form-item-with-help"
+  >
+    <div
+      class="ant-row ant-form-item-row"
+    >
+      <div
+        class="ant-col ant-form-item-control"
+      >
+        <div
+          class="ant-form-item-control-input"
+        >
+          <div
+            class="ant-form-item-control-input-content"
+          >
+            <textarea
+              class="ant-input"
+              id="autoInput"
+              name="autoInput"
+              style="height: 0px; resize: none; min-height: -12px;"
+            />
+            <div
+              class="ant-row ant-row-space-between form-item-help autoInput-form-help"
+            >
+              <span>
+                Maximum 50 characters
+              </span>
+              <span
+                class="flex-end"
+              >
+                50 / 50
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          style="display: flex; flex-wrap: nowrap;"
+        >
+          <div
+            class="ant-form-item-explain ant-form-item-explain-connected"
+            id="autoInput_help"
+            role="alert"
+          >
+            <div
+              class=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

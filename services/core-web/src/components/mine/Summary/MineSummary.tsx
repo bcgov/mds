@@ -23,7 +23,7 @@ import {
   IPermitPartyRelationship,
   IMineComplianceInfo,
   IPermit,
-} from "@mds/common";
+} from "@mds/common/interfaces";
 
 /**
  * @class MineSummary.js contains all content located under the 'Summary' tab on the MineDashboard.

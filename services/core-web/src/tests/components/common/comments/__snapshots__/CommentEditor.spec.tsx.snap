@@ -20,7 +20,7 @@ exports[`Comment renders properly 1`] = `
             >
               <div
                 class="ant-input-textarea ant-input-textarea-show-count ant-input-textarea-in-form-item"
-                data-count="0 / 300"
+                data-count="0 / 500"
               >
                 <textarea
                   class="ant-input"

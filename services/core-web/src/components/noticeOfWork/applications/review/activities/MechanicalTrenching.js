@@ -1,11 +1,11 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Field } from "redux-form";
+import { Field } from "@mds/common/components/forms/form";
 import { Row, Col } from "antd";
-import { maxLength, number, required } from "@common/utils/Validate";
-import RenderField from "@/components/common/RenderField";
+import { maxLength, number, required } from "@mds/common/redux/utils/Validate";
+import RenderField from "@mds/common/components/forms/RenderField";
 import { currencyMask } from "@common/utils/helpers";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import EditNoticeOfDepartureForm from "@/components/Forms/noticeOfDeparture/EditNoticeOfDepartureForm";
-import { INodDocumentPayload, INoticeOfDeparture } from "@mds/common";
+import { INodDocumentPayload, INoticeOfDeparture } from "@mds/common/interfaces";
 
 interface EditNoticeOfDepartureModalProps {
   onSubmit: (nod_guid: string, values: any, documentArray: INodDocumentPayload[]) => any;
@@ -25,7 +25,6 @@ const AddNoticeOfDepartureModal: React.FC<EditNoticeOfDepartureModalProps> = (pr
         initialValues={initialValues}
         mineGuid={mineGuid}
         onSubmit={onSubmit}
-        closeModal={close}
         noticeOfDeparture={noticeOfDeparture}
       />
     </div>

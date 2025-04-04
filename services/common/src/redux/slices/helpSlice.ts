@@ -3,8 +3,9 @@ import { hideLoading, showLoading } from "react-redux-loading-bar";
 import CustomAxios from "@mds/common/redux/customAxios";
 import { ItemMap } from "@mds/common/interfaces";
 import { createSelector } from "@reduxjs/toolkit";
-import { APP_HELP, ENVIRONMENT } from "@mds/common/constants";
 import { HelpGuide } from "@mds/common/interfaces/helpGuide.interface";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
+import { APP_HELP } from "@mds/common/constants/API";
 
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;
 export const helpReducerType = "help";

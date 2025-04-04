@@ -20,7 +20,7 @@ exports[`MineProjectTable renders properly 1`] = `
         "dataIndex": "project_lead_name",
         "key": "project_lead_name",
         "render": [Function],
-        "title": "EMLI Project Lead",
+        "title": "MCM Project Lead",
       },
       Object {
         "dataIndex": "project_contact",

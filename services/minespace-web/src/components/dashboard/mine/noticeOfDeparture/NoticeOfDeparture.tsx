@@ -10,16 +10,10 @@ import {
   updateNoticeOfDeparture,
 } from "@mds/common/redux/actionCreators/noticeOfDepartureActionCreator";
 import { getNoticesOfDeparture } from "@mds/common/redux/selectors/noticeOfDepartureSelectors";
-import { connect } from "react-redux";
+import { ConnectedProps, connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { useLocation } from "react-router-dom";
-import {
-  IMine,
-  INodDocumentPayload,
-  INoticeOfDeparture,
-  INoDPermit,
-  NodStatusSaveEnum,
-} from "@mds/common";
+import { IMine, INodDocumentPayload, INoticeOfDeparture, INoDPermit } from "@mds/common/interfaces";
 
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
@@ -32,6 +26,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import { MINE_DASHBOARD } from "@/constants/routes";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
+import { NodStatusSaveEnum } from "@mds/common/constants/enums";
 
 interface NoticeOfDepartureProps {
   mine: IMine;
@@ -47,7 +42,7 @@ interface NoticeOfDepartureProps {
   fetchPermits: ActionCreator<typeof fetchPermits>;
 }
 
-export const NoticeOfDeparture: FC<NoticeOfDepartureProps> = (props) => {
+export const NoticeOfDeparture: FC<NoticeOfDepartureProps & PropsFromRedux> = (props) => {
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
   const { nods, permits } = props;
   const [isLoaded, setIsLoaded] = useState(false);
@@ -232,4 +227,7 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(NoticeOfDeparture);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(NoticeOfDeparture);

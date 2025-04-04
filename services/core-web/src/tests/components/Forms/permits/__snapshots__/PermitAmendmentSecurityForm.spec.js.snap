@@ -1,11 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PermitAmendmentSecurityForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  name="EDIT_PERMIT"
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "enableReinitialize": true,
+      "touchOnBlur": true,
+    }
+  }
 >
   <Row
     gutter={16}
@@ -33,11 +37,6 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
     <Col
       span={12}
     >
-      <div
-        className="field-title"
-      >
-        Reason
-      </div>
       <Field
         component={[Function]}
         data={
@@ -62,6 +61,7 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
         }
         disabled={true}
         id="security_not_required_reason"
+        label="Reason"
         name="security_not_required_reason"
         placeholder="Please select a reason"
         validate={Array []}
@@ -127,30 +127,10 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      disabled={false}
-      okText="Yes"
-      onConfirm={[Function]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile"
-        disabled={false}
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile"
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      Save
-    </Button>
+    <RenderCancelButton />
+    <RenderSubmitButton
+      buttonText="Save"
+    />
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Alert } from "antd";
 import { connect } from "react-redux";
 import { formatMoney } from "@common/utils/helpers";
-import { getFormValues } from "redux-form";
+import { getFormValues } from "@mds/common/components/forms/form";
 import * as FORM from "@/constants/forms";
 import ReclamationInvoiceForm from "@/components/Forms/Securities/ReclamationInvoiceForm";
 import CustomPropTypes from "@/customPropTypes";
@@ -45,11 +45,11 @@ export const AddReclamationInvoiceModal = (props) => {
             message={
               props.edit
                 ? `Total Spent exceeds Total Confiscated. Current Balance: ${formatMoney(
-                    props.balance
-                  )}, Balance including the updated invoice amount: ${formatMoney(updatedBalance)}`
+                  props.balance
+                )}, Balance including the updated invoice amount: ${formatMoney(updatedBalance)}`
                 : `Total Spent exceeds Total Confiscated. Current Balance: ${formatMoney(
-                    props.balance
-                  )}, Balance including new Invoice Amount: ${formatMoney(newBalance)}`
+                  props.balance
+                )}, Balance including new Invoice Amount: ${formatMoney(newBalance)}`
             }
             type="warning"
             showIcon

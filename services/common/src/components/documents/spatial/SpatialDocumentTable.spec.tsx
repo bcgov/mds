@@ -2,9 +2,9 @@ import React from "react";
 import { render } from "@testing-library/react";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
-import { MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE } from "@mds/common/constants";
 import SpatialDocumentTable from "./SpatialDocumentTable";
 import { MineDocument } from "@mds/common/models/documents/document";
+import { MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE } from "@mds/common/constants/strings";
 
 const spatialDocuments = MOCK.PROJECT_SUMMARY.documents
   .filter(

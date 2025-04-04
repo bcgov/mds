@@ -821,7 +821,7 @@ exports[`Dashboard renders properly 1`] = `
                 <ForwardRef>
                   <div>
                     <h3>
-                      EMLI GIS Links
+                      MCM GIS Links
                     </h3>
                     <a
                       href="https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6"
@@ -882,25 +882,8 @@ exports[`Dashboard renders properly 1`] = `
                 md={10}
                 xs={24}
               >
-                <ReduxForm
-                  destroyOnUnmount={true}
-                  enableReinitialize={false}
-                  forceUnregisterOnUnmount={false}
-                  form="SEARCH_COORDINATES"
-                  getFormState={[Function]}
-                  keepDirtyOnReinitialize={false}
+                <SearchCoordinatesForm
                   onSubmit={[Function]}
-                  onSubmitSuccess={[Function]}
-                  persistentSubmitErrors={false}
-                  pure={true}
-                  shouldAsyncValidate={[Function]}
-                  shouldError={[Function]}
-                  shouldValidate={[Function]}
-                  shouldWarn={[Function]}
-                  submitAsSideEffect={false}
-                  touchOnBlur={false}
-                  touchOnChange={false}
-                  updateUnregisteredFields={false}
                 />
               </Col>
             </div>

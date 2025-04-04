@@ -1,4 +1,4 @@
-import { IPartyAddress } from "@mds/common/index";
+import { IPartyAddress } from "@mds/common/interfaces";
 
 export interface IContact {
   phone_number: string;

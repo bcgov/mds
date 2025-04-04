@@ -9,7 +9,7 @@ import { truncateFilename } from "@common/utils/helpers";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { openDocument, isDocumentOpenable } from "@mds/common/components/syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { USER_ROLES } from "@mds/common";
+import { USER_ROLES } from "@mds/common/constants/environment";
 
 const propTypes = {
   documentManagerGuid: PropTypes.string.isRequired,
@@ -30,7 +30,7 @@ const defaultProps = {
   truncateDocumentName: true,
   deletePermission: null,
   deleteFilePayload: {},
-  handleDelete: () => {},
+  handleDelete: () => { },
 };
 
 export const DocumentLink = (props) => {

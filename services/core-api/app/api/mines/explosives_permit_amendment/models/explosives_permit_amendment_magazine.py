@@ -122,3 +122,9 @@ class ExplosivesPermitAmendmentMagazine(SoftDeleteMixin, AuditMixin, PermitMagaz
         return cls.query.filter_by(
             explosives_permit_amendment_magazine_id=explosives_permit_amendment_magazine_id,
             deleted_ind=False).one_or_none()
+    
+    @classmethod
+    def find_by_explosives_permit_amendment_id(cls, explosives_permit_amendment_id):
+        return cls.query.filter_by(
+            explosives_permit_amendment_id=explosives_permit_amendment_id,
+            deleted_ind=False).order_by(cls.explosives_permit_amendment_magazine_id.asc()).all()

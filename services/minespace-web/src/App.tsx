@@ -18,8 +18,9 @@ import WarningBanner from "@/components/common/WarningBanner";
 
 import Routes from "./routes/Routes";
 import configureStore from "./store/configureStore";
-import { SystemFlagEnum, detectIE } from "@mds/common";
 import { storeSystemFlag } from "@mds/common/redux/actions/authenticationActions";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { detectIE } from "@mds/common/utils/environmentUtils";
 
 export const store = configureStore();
 

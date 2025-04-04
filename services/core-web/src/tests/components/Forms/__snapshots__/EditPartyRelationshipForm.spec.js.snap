@@ -1,11 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EditPartyRelationshipForm renders properly 1`] = `
-<Form
-  colon={true}
-  hideRequiredMark={false}
-  layout="vertical"
+<Connect(ReduxForm)
+  isModal={true}
+  name="EDIT_PARTY_RELATIONSHIP"
   onSubmit={[MockFunction]}
+  reduxFormConfig={
+    Object {
+      "touchOnBlur": false,
+      "validate": [Function],
+    }
+  }
 >
   <Row
     gutter={16}
@@ -14,33 +19,25 @@ exports[`EditPartyRelationshipForm renders properly 1`] = `
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="start_date"
-          label="Start Date"
-          name="start_date"
-          placeholder="yyyy-mm-dd"
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="start_date"
+        label="Start Date"
+        name="start_date"
+        placeholder="yyyy-mm-dd"
+      />
     </Col>
     <Col
       md={12}
       xs={24}
     >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="end_date"
-          label="End Date"
-          name="end_date"
-          placeholder="yyyy-mm-dd"
-        />
-      </FormItem>
+      <Field
+        component={[Function]}
+        id="end_date"
+        label="End Date"
+        name="end_date"
+        placeholder="yyyy-mm-dd"
+      />
     </Col>
   </Row>
   <TSFOptions
@@ -49,27 +46,8 @@ exports[`EditPartyRelationshipForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      disabled={false}
-      okText="Yes"
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-    >
-      <Button
-        className="full-mobile"
-        disabled={false}
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
-    <Button
-      className="full-mobile"
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    />
+    <RenderCancelButton />
+    <RenderSubmitButton />
   </div>
-</Form>
+</Connect(ReduxForm)>
 `;

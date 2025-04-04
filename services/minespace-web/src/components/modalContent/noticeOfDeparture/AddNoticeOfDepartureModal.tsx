@@ -1,11 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getFormValues } from "redux-form";
+import { getFormValues } from "@mds/common/components/forms/form";
 import * as FORM from "@/constants/forms";
 import AddNoticeOfDepartureForm, {
   AddNoticeOfDepartureFormProps,
 } from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
-import { INoDPermit, ICreateNoD, INodDocumentPayload, INoticeOfDeparture } from "@mds/common";
+import {
+  INoDPermit,
+  ICreateNoD,
+  INodDocumentPayload,
+  INoticeOfDeparture,
+} from "@mds/common/interfaces";
 import { AxiosResponse } from "axios";
 import { RootState } from "@/App";
 
@@ -36,7 +41,6 @@ const AddNoticeOfDepartureModal: React.FC<AddNoticeOfDepartureModalProps> = (pro
         permits={permits}
         onSubmit={onSubmit}
         mineGuid={mineGuid}
-        closeModal={close}
         initialValues={initialValues}
       />
     </div>

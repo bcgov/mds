@@ -1,4 +1,4 @@
-import { IMine, IMineDocument, IPageData } from "@mds/common";
+import { IMine, IMineDocument, IPageData } from "@mds/common/interfaces";
 import * as ActionTypes from "../constants/actionTypes";
 
 export const storeUserMineInfo = (payload: IPageData<IMine>) => ({

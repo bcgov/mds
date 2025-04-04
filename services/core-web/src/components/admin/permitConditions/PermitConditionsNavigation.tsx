@@ -9,6 +9,7 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { Feature } from "@mds/common/utils/featureFlag";
+import { COMPLIANCE_TABS } from "../complianceCodes/ComplianceManagement";
 
 interface AdminNavigationProps {
   activeButton: string;
@@ -17,26 +18,34 @@ interface AdminNavigationProps {
 
 const PermitConditionsNavigation: FC<AdminNavigationProps> = (props) => {
   const { isFeatureEnabled } = useFeatureFlag();
-  const complianceRolePresent = useSelector((state) =>
-    userHasRole(state, USER_ROLES.role_edit_compliance_codes)
+  const complianceRolePresent = useSelector(
+    userHasRole(USER_ROLES.role_edit_compliance_codes)
   );
   const complianceEnabled = isFeatureEnabled(Feature.HSRC_CODE_EDIT) && complianceRolePresent;
   const ifActiveButton = (route) => (includes(props.activeButton, route) ? "active-menu-btn" : "");
 
   const complianceItem = {
-    label: "Health and Safety Reclamation Code",
+    label: "Health, Safety and Reclamation Code",
     key: "hsrc-management",
     id: ifActiveButton("hsrc-management"),
     icon: <DownOutlined />,
     children: [
       {
-        key: "submenu-compliance-codes",
+        key: COMPLIANCE_TABS[0],
         label: (
-          <Link to={routes.ADMIN_HSRC_COMPLIANCE_CODE_MANAGEMENT.route}>
+          <Link to={routes.ADMIN_HSRC_COMPLIANCE_CODE_MANAGEMENT.dynamicRoute(COMPLIANCE_TABS[0])}>
             Manage Compliance Codes
           </Link>
         ),
       },
+      {
+        key: COMPLIANCE_TABS[1],
+        label: (
+          <Link to={routes.ADMIN_HSRC_COMPLIANCE_CODE_MANAGEMENT.dynamicRoute(COMPLIANCE_TABS[1])}>
+            Manage Compliance Reports
+          </Link>
+        )
+      }
     ],
   };
 

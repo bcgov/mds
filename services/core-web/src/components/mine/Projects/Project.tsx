@@ -5,7 +5,6 @@ import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import { fetchProjectById } from "@mds/common/redux/actionCreators/projectActionCreator";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
-import { Feature } from "@mds/common";
 import * as routes from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import ProjectOverviewTab from "@/components/mine/Projects/ProjectOverviewTab";
@@ -17,6 +16,7 @@ import ProjectDescriptionTab from "@mds/common/components/project/ProjectDescrip
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
 import ProjectDocumentsTab from "@mds/common/components/projects/ProjectDocumentsTab";
+import { Feature } from "@mds/common/utils/featureFlag";
 
 const Project: FC = () => {
   const { tab, projectGuid } = useParams<{ tab: string; projectGuid: string }>();
@@ -36,6 +36,7 @@ const Project: FC = () => {
 
   const handleFetchData = () => {
     if (projectGuid) {
+      // @ts-ignore
       dispatch(fetchProjectById(projectGuid)).catch(() => setIsValid(false));
     }
   };
@@ -64,8 +65,8 @@ const Project: FC = () => {
     let url = routes.EDIT_PROJECT.dynamicRoute(projectGuid, newActiveTab);
 
     switch (newActiveTab) {
-      case "final-app":
-        url = routes.PROJECT_FINAL_APPLICATION.dynamicRoute(projectGuid);
+      case "app":
+        url = routes.PROJECT_APPLICATION.dynamicRoute(projectGuid);
         break;
       case "decision-package":
         url = routes.PROJECT_DECISION_PACKAGE.dynamicRoute(projectGuid);
@@ -139,14 +140,10 @@ const Project: FC = () => {
       ),
     },
     {
-      key: "final-app",
-      label: "Final Application",
+      key: "app",
+      label: "Application",
       disabled: !hasFinalAplication,
-      children: (
-        <div className="padding-lg">
-          <MajorMineApplicationTab />
-        </div>
-      ),
+      children: <MajorMineApplicationTab />
     },
     isFeatureEnabled(Feature.MAJOR_PROJECT_DECISION_PACKAGE) && {
       key: "decision-package",

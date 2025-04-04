@@ -15,7 +15,6 @@ exports[`MinePermitInfo renders properly 1`] = `
   </div>
   <div
     class="ant-tabs ant-tabs-top ant-tabs-card"
-    style="text-align: left !important;"
   >
     <div
       class="ant-tabs-nav"
@@ -30,28 +29,28 @@ exports[`MinePermitInfo renders properly 1`] = `
         >
           <div
             class="ant-tabs-tab ant-tabs-tab-active"
-            data-node-key="1"
+            data-node-key="permits"
           >
             <div
-              aria-controls="rc-tabs-test-panel-1"
+              aria-controls="rc-tabs-test-panel-permits"
               aria-selected="true"
               class="ant-tabs-tab-btn"
-              id="rc-tabs-test-tab-1"
+              id="rc-tabs-test-tab-permits"
               role="tab"
               tabindex="0"
             >
-              Mines Act Permits (2)
+              Mines Act Permits (3)
             </div>
           </div>
           <div
             class="ant-tabs-tab"
-            data-node-key="2"
+            data-node-key="esups"
           >
             <div
-              aria-controls="rc-tabs-test-panel-2"
+              aria-controls="rc-tabs-test-panel-esups"
               aria-selected="false"
               class="ant-tabs-tab-btn"
-              id="rc-tabs-test-tab-2"
+              id="rc-tabs-test-tab-esups"
               role="tab"
               tabindex="0"
             >
@@ -60,17 +59,17 @@ exports[`MinePermitInfo renders properly 1`] = `
           </div>
           <div
             class="ant-tabs-tab"
-            data-node-key="3"
+            data-node-key="digital-permit-credentials"
           >
             <div
-              aria-controls="rc-tabs-test-panel-3"
+              aria-controls="rc-tabs-test-panel-digital-permit-credentials"
               aria-selected="false"
               class="ant-tabs-tab-btn"
-              id="rc-tabs-test-tab-3"
+              id="rc-tabs-test-tab-digital-permit-credentials"
               role="tab"
               tabindex="0"
             >
-              Digital Permit Credentials (2)
+              Digital Permit Credentials (3)
             </div>
           </div>
           <div
@@ -122,9 +121,9 @@ exports[`MinePermitInfo renders properly 1`] = `
       >
         <div
           aria-hidden="false"
-          aria-labelledby="rc-tabs-test-tab-1"
+          aria-labelledby="rc-tabs-test-tab-permits"
           class="ant-tabs-tabpane ant-tabs-tabpane-active"
-          id="rc-tabs-test-panel-1"
+          id="rc-tabs-test-panel-permits"
           role="tabpanel"
           tabindex="0"
         >
@@ -140,243 +139,447 @@ exports[`MinePermitInfo renders properly 1`] = `
               </h4>
             </div>
           </div>
-          <div
-            class="ant-table-wrapper permits-table core-table"
-          >
+          <div>
+            <div />
             <div
-              class="ant-spin-nested-loading"
+              class="ant-table-wrapper permits-table core-table"
             >
               <div
-                class="ant-spin-container"
+                class="ant-spin-nested-loading"
               >
                 <div
-                  class="ant-table"
+                  class="ant-spin-container"
                 >
                   <div
-                    class="ant-table-container"
+                    class="ant-table ant-table-has-fix-right"
                   >
                     <div
-                      class="ant-table-content"
+                      class="ant-table-container"
                     >
-                      <table
-                        style="table-layout: auto;"
+                      <div
+                        class="ant-table-content"
                       >
-                        <colgroup>
-                          <col
-                            class="ant-table-expand-icon-col"
-                          />
-                        </colgroup>
-                        <thead
-                          class="ant-table-thead"
+                        <table
+                          style="table-layout: auto;"
                         >
-                          <tr>
-                            <th
-                              class="ant-table-cell ant-table-row-expand-icon-cell"
+                          <colgroup>
+                            <col
+                              class="ant-table-expand-icon-col"
                             />
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Permit No.
-                            </th>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Status
-                            </th>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Permittee
-                            </th>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              First Issued
-                            </th>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Last Amended
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody
-                          class="ant-table-tbody"
-                        >
-                          <tr
-                            class="ant-table-row ant-table-row-level-0 fade-in"
-                            data-row-key="1628847c-060b-45f2-990f-815877174801"
+                          </colgroup>
+                          <thead
+                            class="ant-table-thead"
                           >
-                            <td
-                              class="ant-table-cell ant-table-row-expand-icon-cell"
-                            >
-                              <span>
-                                <a
-                                  class="expand-row-icon"
-                                  role="link"
-                                  style="cursor: pointer;"
-                                  tabindex="0"
-                                >
-                                  <span
-                                    aria-label="plus-square"
-                                    class="anticon anticon-plus-square icon-lg--lightgrey"
-                                    role="img"
-                                  >
-                                    <svg
-                                      aria-hidden="true"
-                                      class=""
-                                      data-icon="plus-square"
-                                      fill="currentColor"
-                                      focusable="false"
-                                      height="1em"
-                                      viewBox="64 64 896 896"
-                                      width="1em"
-                                    >
-                                      <path
-                                        d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM704 536c0 4.4-3.6 8-8 8H544v152c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V544H328c-4.4 0-8-3.6-8-8v-48c0-4.4 3.6-8 8-8h152V328c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v152h152c4.4 0 8 3.6 8 8v48z"
-                                      />
-                                    </svg>
-                                  </span>
-                                </a>
-                              </span>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                title="Permit No."
+                            <tr>
+                              <th
+                                class="ant-table-cell ant-table-row-expand-icon-cell"
+                              />
+                              <th
+                                class="ant-table-cell"
                               >
-                                C-12345
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                title="Status"
+                                Permit No.
+                              </th>
+                              <th
+                                class="ant-table-cell"
                               >
-                                Open
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="permittee-column"
-                                title="Permittee"
+                                Status
+                              </th>
+                              <th
+                                class="ant-table-cell"
                               >
-                                Current Permittee
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="firstIssued-column"
-                                title="First Issued"
+                                Permittee
+                              </th>
+                              <th
+                                class="ant-table-cell"
                               >
-                                Apr 01 2019
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="lastAmended-column"
-                                title="Last Amended"
+                                First Issued
+                              </th>
+                              <th
+                                class="ant-table-cell"
                               >
-                                Apr 01 2020
-                              </div>
-                            </td>
-                          </tr>
-                          <tr
-                            class="ant-table-row ant-table-row-level-0 fade-in"
-                            data-row-key="67074e37-b7c6-475d-ade6-eb24fdbd1e13"
+                                Last Amended
+                              </th>
+                              <th
+                                class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                style="position: sticky; right: 0px;"
+                              />
+                            </tr>
+                          </thead>
+                          <tbody
+                            class="ant-table-tbody"
                           >
-                            <td
-                              class="ant-table-cell ant-table-row-expand-icon-cell"
+                            <tr
+                              class="ant-table-row ant-table-row-level-0 fade-in"
+                              data-row-key="1628847c-060b-45f2-990f-815877174801"
                             >
-                              <span>
-                                <a
-                                  class="expand-row-icon"
-                                  role="link"
-                                  style="cursor: pointer;"
-                                  tabindex="0"
-                                >
-                                  <span
-                                    aria-label="plus-square"
-                                    class="anticon anticon-plus-square icon-lg--lightgrey"
-                                    role="img"
+                              <td
+                                class="ant-table-cell ant-table-row-expand-icon-cell"
+                              >
+                                <span>
+                                  <a
+                                    class="expand-row-icon"
+                                    role="link"
+                                    style="cursor: pointer;"
+                                    tabindex="0"
                                   >
-                                    <svg
-                                      aria-hidden="true"
-                                      class=""
-                                      data-icon="plus-square"
-                                      fill="currentColor"
-                                      focusable="false"
-                                      height="1em"
-                                      viewBox="64 64 896 896"
-                                      width="1em"
+                                    <span
+                                      aria-label="plus-square"
+                                      class="anticon anticon-plus-square icon-lg--lightgrey"
+                                      role="img"
                                     >
-                                      <path
-                                        d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM704 536c0 4.4-3.6 8-8 8H544v152c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V544H328c-4.4 0-8-3.6-8-8v-48c0-4.4 3.6-8 8-8h152V328c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v152h152c4.4 0 8 3.6 8 8v48z"
-                                      />
-                                    </svg>
-                                  </span>
-                                </a>
-                              </span>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                title="Permit No."
+                                      <svg
+                                        aria-hidden="true"
+                                        class=""
+                                        data-icon="plus-square"
+                                        fill="currentColor"
+                                        focusable="false"
+                                        height="1em"
+                                        viewBox="64 64 896 896"
+                                        width="1em"
+                                      >
+                                        <path
+                                          d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM704 536c0 4.4-3.6 8-8 8H544v152c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V544H328c-4.4 0-8-3.6-8-8v-48c0-4.4 3.6-8 8-8h152V328c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v152h152c4.4 0 8 3.6 8 8v48z"
+                                        />
+                                      </svg>
+                                    </span>
+                                  </a>
+                                </span>
+                              </td>
+                              <td
+                                class="ant-table-cell"
                               >
-                                M-12345
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                title="Status"
+                                <div
+                                  title="Permit No."
+                                >
+                                  C-12345
+                                </div>
+                              </td>
+                              <td
+                                class="ant-table-cell"
                               >
-                                Open
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="permittee-column"
-                                title="Permittee"
+                                <div
+                                  title="Status"
+                                >
+                                  Open
+                                </div>
+                              </td>
+                              <td
+                                class="ant-table-cell"
                               >
-                                TEST corp
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="firstIssued-column"
-                                title="First Issued"
+                                <div
+                                  class="permittee-column"
+                                  title="Permittee"
+                                >
+                                  Current Permittee
+                                </div>
+                              </td>
+                              <td
+                                class="ant-table-cell"
                               >
-                                Mar 07 2024
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="lastAmended-column"
-                                title="Last Amended"
+                                <div
+                                  class="firstIssued-column"
+                                  title="First Issued"
+                                >
+                                  Apr 01 2019
+                                </div>
+                              </td>
+                              <td
+                                class="ant-table-cell"
                               >
-                                Mar 07 2024
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                                <div
+                                  class="lastAmended-column"
+                                  title="Last Amended"
+                                >
+                                  Apr 01 2020
+                                </div>
+                              </td>
+                              <td
+                                class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                style="position: sticky; right: 0px;"
+                              >
+                                <div>
+                                  <button
+                                    class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
+                                    data-cy="menu-actions-button"
+                                    type="button"
+                                  >
+                                    <span>
+                                      Actions
+                                    </span>
+                                    <span
+                                      alt="Menu"
+                                      aria-label="caret-down"
+                                      class="anticon anticon-caret-down"
+                                      role="img"
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        class=""
+                                        data-icon="caret-down"
+                                        fill="currentColor"
+                                        focusable="false"
+                                        height="1em"
+                                        viewBox="0 0 1024 1024"
+                                        width="1em"
+                                      >
+                                        <path
+                                          d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                        />
+                                      </svg>
+                                    </span>
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr
+                              class="ant-table-row ant-table-row-level-0 fade-in"
+                              data-row-key="67074e37-b7c6-475d-ade6-eb24fdbd1e13"
+                            >
+                              <td
+                                class="ant-table-cell ant-table-row-expand-icon-cell"
+                              >
+                                <span>
+                                  <a
+                                    class="expand-row-icon"
+                                    role="link"
+                                    style="cursor: pointer;"
+                                    tabindex="0"
+                                  >
+                                    <span
+                                      aria-label="plus-square"
+                                      class="anticon anticon-plus-square icon-lg--lightgrey"
+                                      role="img"
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        class=""
+                                        data-icon="plus-square"
+                                        fill="currentColor"
+                                        focusable="false"
+                                        height="1em"
+                                        viewBox="64 64 896 896"
+                                        width="1em"
+                                      >
+                                        <path
+                                          d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM704 536c0 4.4-3.6 8-8 8H544v152c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V544H328c-4.4 0-8-3.6-8-8v-48c0-4.4 3.6-8 8-8h152V328c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v152h152c4.4 0 8 3.6 8 8v48z"
+                                        />
+                                      </svg>
+                                    </span>
+                                  </a>
+                                </span>
+                              </td>
+                              <td
+                                class="ant-table-cell"
+                              >
+                                <div
+                                  title="Permit No."
+                                >
+                                  M-12345
+                                </div>
+                              </td>
+                              <td
+                                class="ant-table-cell"
+                              >
+                                <div
+                                  title="Status"
+                                >
+                                  Open
+                                </div>
+                              </td>
+                              <td
+                                class="ant-table-cell"
+                              >
+                                <div
+                                  class="permittee-column"
+                                  title="Permittee"
+                                >
+                                  TEST corp
+                                </div>
+                              </td>
+                              <td
+                                class="ant-table-cell"
+                              >
+                                <div
+                                  class="firstIssued-column"
+                                  title="First Issued"
+                                >
+                                  Mar 07 2024
+                                </div>
+                              </td>
+                              <td
+                                class="ant-table-cell"
+                              >
+                                <div
+                                  class="lastAmended-column"
+                                  title="Last Amended"
+                                >
+                                  Mar 07 2024
+                                </div>
+                              </td>
+                              <td
+                                class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                style="position: sticky; right: 0px;"
+                              >
+                                <div>
+                                  <button
+                                    class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
+                                    data-cy="menu-actions-button"
+                                    type="button"
+                                  >
+                                    <span>
+                                      Actions
+                                    </span>
+                                    <span
+                                      alt="Menu"
+                                      aria-label="caret-down"
+                                      class="anticon anticon-caret-down"
+                                      role="img"
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        class=""
+                                        data-icon="caret-down"
+                                        fill="currentColor"
+                                        focusable="false"
+                                        height="1em"
+                                        viewBox="0 0 1024 1024"
+                                        width="1em"
+                                      >
+                                        <path
+                                          d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                        />
+                                      </svg>
+                                    </span>
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr
+                              class="ant-table-row ant-table-row-level-0 fade-in"
+                              data-row-key="c81915d2-bca0-4857-964c-0b9a3fd013ba"
+                            >
+                              <td
+                                class="ant-table-cell ant-table-row-expand-icon-cell"
+                              >
+                                <span>
+                                  <a
+                                    class="expand-row-icon"
+                                    role="link"
+                                    style="cursor: pointer;"
+                                    tabindex="0"
+                                  >
+                                    <span
+                                      aria-label="plus-square"
+                                      class="anticon anticon-plus-square icon-lg--lightgrey"
+                                      role="img"
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        class=""
+                                        data-icon="plus-square"
+                                        fill="currentColor"
+                                        focusable="false"
+                                        height="1em"
+                                        viewBox="64 64 896 896"
+                                        width="1em"
+                                      >
+                                        <path
+                                          d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM704 536c0 4.4-3.6 8-8 8H544v152c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V544H328c-4.4 0-8-3.6-8-8v-48c0-4.4 3.6-8 8-8h152V328c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v152h152c4.4 0 8 3.6 8 8v48z"
+                                        />
+                                      </svg>
+                                    </span>
+                                  </a>
+                                </span>
+                              </td>
+                              <td
+                                class="ant-table-cell"
+                              >
+                                <div
+                                  title="Permit No."
+                                >
+                                  M-222
+                                </div>
+                              </td>
+                              <td
+                                class="ant-table-cell"
+                              >
+                                <div
+                                  title="Status"
+                                >
+                                  Open
+                                </div>
+                              </td>
+                              <td
+                                class="ant-table-cell"
+                              >
+                                <div
+                                  class="permittee-column"
+                                  title="Permittee"
+                                >
+                                  TEST Verified permit corp
+                                </div>
+                              </td>
+                              <td
+                                class="ant-table-cell"
+                              >
+                                <div
+                                  class="firstIssued-column"
+                                  title="First Issued"
+                                >
+                                  Apr 01 2020
+                                </div>
+                              </td>
+                              <td
+                                class="ant-table-cell"
+                              >
+                                <div
+                                  class="lastAmended-column"
+                                  title="Last Amended"
+                                >
+                                  Apr 01 2020
+                                </div>
+                              </td>
+                              <td
+                                class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                style="position: sticky; right: 0px;"
+                              >
+                                <div>
+                                  <button
+                                    class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
+                                    data-cy="menu-actions-button"
+                                    type="button"
+                                  >
+                                    <span>
+                                      Actions
+                                    </span>
+                                    <span
+                                      alt="Menu"
+                                      aria-label="caret-down"
+                                      class="anticon anticon-caret-down"
+                                      role="img"
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        class=""
+                                        data-icon="caret-down"
+                                        fill="currentColor"
+                                        focusable="false"
+                                        height="1em"
+                                        viewBox="0 0 1024 1024"
+                                        width="1em"
+                                      >
+                                        <path
+                                          d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                        />
+                                      </svg>
+                                    </span>
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>

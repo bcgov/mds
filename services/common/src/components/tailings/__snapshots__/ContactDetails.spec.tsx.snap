@@ -1,0 +1,174 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tailings ContactDetails renders properly 1`] = `
+<div>
+  <div
+    class="ant-row"
+  >
+    <div
+      class="ant-col ant-col-12"
+    >
+      <div
+        class="ant-typography"
+      >
+        <span
+          class="ant-typography"
+        >
+          <strong>
+            First Name
+          </strong>
+        </span>
+        <br />
+        <span
+          class="ant-typography"
+        >
+          First
+        </span>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-12"
+    >
+      <div
+        class="ant-typography"
+      >
+        <span
+          class="ant-typography"
+        >
+          <strong>
+            Last Name
+          </strong>
+        </span>
+        <br />
+        <span
+          class="ant-typography"
+        >
+          mock name
+        </span>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-12"
+    >
+      <div
+        class="ant-typography"
+      >
+        <span
+          class="ant-typography"
+        >
+          <strong>
+            Job Title
+          </strong>
+        </span>
+        <br />
+        <span
+          class="ant-typography"
+        >
+          N/A
+        </span>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-12"
+    >
+      <div
+        class="ant-typography"
+      >
+        <span
+          class="ant-typography"
+        >
+          <strong>
+            Company Affiliation
+          </strong>
+        </span>
+        <br />
+        <span
+          class="ant-typography"
+        >
+          N/A
+        </span>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-12"
+    >
+      <div
+        class="ant-typography"
+      >
+        <span
+          class="ant-typography"
+        >
+          <strong>
+            Email
+          </strong>
+        </span>
+        <br />
+        <span
+          class="ant-typography"
+        />
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-8"
+    >
+      <div
+        class="ant-typography"
+      >
+        <span
+          class="ant-typography"
+        >
+          <strong>
+            Phone Number
+          </strong>
+        </span>
+        <br />
+        <span
+          class="ant-typography"
+        />
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-4"
+    >
+      <div
+        class="ant-typography"
+      >
+        <span
+          class="ant-typography"
+        >
+          <strong>
+            Ext.
+          </strong>
+        </span>
+        <br />
+        <span
+          class="ant-typography"
+        >
+          N/A
+        </span>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-12"
+    >
+      <div
+        class="ant-typography"
+      >
+        <span
+          class="ant-typography"
+        >
+          <strong>
+            Address (Optional)
+          </strong>
+        </span>
+        <br />
+        <span
+          class="ant-typography"
+        >
+          
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;

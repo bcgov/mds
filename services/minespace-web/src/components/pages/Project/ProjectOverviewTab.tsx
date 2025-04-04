@@ -1,22 +1,21 @@
 import React, { FC } from "react";
 import { useSelector } from "react-redux";
 import { Card, Col, Descriptions, Row, Typography } from "antd";
-import { getEMLIContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
+import { getMinistryContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
 import {
   getInformationRequirementsTableStatusCodesHash,
   getMajorMinesApplicationStatusCodesHash,
   getProjectSummaryStatusCodesHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import {
-  getInformationRequirementsTable,
   getMajorMinesApplication,
   getProject,
   getProjectSummary,
 } from "@mds/common/redux/selectors/projectSelectors";
 import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryContactItem";
-import { EMPTY_FIELD, UNKNOWN } from "@mds/common";
 import { formatDate } from "@common/utils/helpers";
 import ProjectStagesTable from "@/components/dashboard/mine/projects/ProjectStagesTable";
+import { EMPTY_FIELD, UNKNOWN } from "@mds/common/constants/strings";
 
 interface ProjectOverviewTabProps {
   navigateForward: (source: string, status?: string) => void;
@@ -24,10 +23,10 @@ interface ProjectOverviewTabProps {
 
 export const ProjectOverviewTab: FC<ProjectOverviewTabProps> = ({ navigateForward }) => {
   const projectSummary = useSelector(getProjectSummary);
-  const EMLIcontactInfo = useSelector(getEMLIContactsByRegion);
+  const MinistryContactInfo = useSelector(getMinistryContactsByRegion);
   const project = useSelector(getProject);
   const projectSummaryStatusCodesHash = useSelector(getProjectSummaryStatusCodesHash);
-  const informationRequirementsTable = useSelector(getInformationRequirementsTable);
+  const informationRequirementsTable = project?.information_requirements_table;
   const informationRequirementsTableStatusCodesHash = useSelector(
     getInformationRequirementsTableStatusCodesHash
   );
@@ -163,7 +162,7 @@ export const ProjectOverviewTab: FC<ProjectOverviewTabProps> = ({ navigateForwar
           <Col span={24}>{renderProjectContactsCard(project.contacts)}</Col>
           <Col span={24}>
             <Card title="Ministry Contacts">
-              {EMLIcontactInfo.map((contact) => (
+              {MinistryContactInfo.map((contact) => (
                 <MinistryContactItem contact={contact} key={contact.contact_id} />
               ))}
             </Card>

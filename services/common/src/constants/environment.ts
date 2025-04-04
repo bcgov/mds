@@ -7,6 +7,7 @@ export const DEFAULT_ENVIRONMENT = {
   matomoUrl: "https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/",
   environment: "development",
   filesystemProviderUrl: "http://localhost:62870/file-api/AmazonS3Provider/",
+  pdfViewerServiceUrl: "http://localhost:62870/file-api/PdfViewer",
   keycloak_resource: "mines-digital-services-mds-public-client-4414",
   keycloak_clientId: "mines-digital-services-mds-public-client-4414",
   keycloak_idpHint: "test",
@@ -22,6 +23,7 @@ export const ENVIRONMENT = {
   docManUrl: "<DOCUMENT_MANAGER_URL>",
   matomoUrl: "<MATOMO_URL>",
   filesystemProviderUrl: "<FILESYSTEM_PROVIDER_URL>",
+  pdfViewerServiceUrl: "<PDF_VIEWER_SERVICE_URL>",
   environment: "<ENV>",
   flagsmithKey: "<FLAGSMITH_KEY>",
   flagsmithUrl: "<FLAGSMITH_URL>",
@@ -29,6 +31,7 @@ export const ENVIRONMENT = {
   _loaded: false,
   geoMarkUrl: "<GEOMARK_URL_BASE>",
 };
+
 
 export const KEYCLOAK = {
   realm: "standard",
@@ -95,6 +98,12 @@ export function setupEnvironment(
   ENVIRONMENT.apiUrl = apiUrl;
   ENVIRONMENT.docManUrl = docManUrl;
   ENVIRONMENT.filesystemProviderUrl = filesystemProviderUrl;
+
+  ENVIRONMENT.pdfViewerServiceUrl = ENVIRONMENT.filesystemProviderUrl.replace(
+    "AmazonS3Provider/",
+    "PdfViewer"
+  );
+
   ENVIRONMENT.matomoUrl = matomoUrl;
   ENVIRONMENT.environment = environment || "development";
   ENVIRONMENT.flagsmithKey = flagsmithKey;
@@ -178,7 +187,7 @@ export const USER_ROLES = {
   role_edit_historical_amendments: "core_edit_historical_amendments",
   role_mds_administrative_users: "mds_administrative_users",
   role_edit_now_dates: "core_edit_now_dates",
-  role_edit_emli_contacts: "core_edit_emli_contacts",
+  role_edit_ministry_contacts: "core_edit_emli_contacts",
   role_edit_project_summaries: "core_edit_project_summaries",
   role_edit_project_decision_package: "core_edit_project_decision_packages",
   role_edit_major_mine_applications: "core_edit_major_mine_applications",

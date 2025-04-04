@@ -290,6 +290,14 @@
   padding: 0 7px !important;
   margin-right: 8px !important;
   line-height: 1.5 !important;
+
+  &-success {
+    color: variables.$success-dark;
+  }
+
+  &-error {
+    color: variables.$error-dark;
+  }
 }
 
 // RESULTS
@@ -313,7 +321,7 @@
 
   .ant-alert-content {
     .ant-alert-message {
-      color: black;
+      color: #313132;
       font-weight: 800;
     }
 
@@ -806,4 +814,12 @@ select {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.ant-typography a.ant-dropdown-link {
+  &--unstyled {
+    font-size: inherit;
+    color: inherit;
+    text-decoration: inherit;
+  }
 }

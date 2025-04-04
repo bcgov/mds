@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { hot } from "react-hot-loader";
 import Routes from "./routes/Routes";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
 import DocumentViewer from "@mds/common/components/syncfusion/DocumentViewer";
 import ScrollToTopWrapper from "@/components/common/wrappers/ScrollToTopWrapper";
 import getStore from "./store/configureStore";
 import { storeSystemFlag } from "@mds/common/redux/actions/authenticationActions";
-import { SystemFlagEnum } from "@mds/common";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 export const store = getStore();
 
@@ -45,4 +44,4 @@ const App = () => {
   );
 };
 
-export default hot(module)(App);
+export default App;

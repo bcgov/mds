@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { formatDate, getDurationText, flattenObject } from "@common/utils/helpers";
-import { getFormValues, reset, isSubmitting, getFormSyncErrors, submit } from "redux-form";
+import { getFormValues, reset, isSubmitting, getFormSyncErrors, submit } from "@mds/common/components/forms/form";
 import {
   getNoticeOfWorkApplicationTypeOptions,
   getDropdownPermitAmendmentTypeOptions,
@@ -78,7 +78,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  onPermitDraftSave: () => {},
+  onPermitDraftSave: () => { },
   isNoticeOfWorkTypeDisabled: true,
 };
 
@@ -216,10 +216,10 @@ export class NOWPermitGeneration extends Component {
         draftPermit.permit_status_code === "D"
           ? formatDate(amendment.issue_date)
           : formatDate(
-              draftPermit.permit_amendments
-                .filter((amend) => amend.permit_amendment_type_code === "OGP")
-                .map((a) => a.issue_date)[0]
-            );
+            draftPermit.permit_amendments
+              .filter((amend) => amend.permit_amendment_type_code === "OGP")
+              .map((a) => a.issue_date)[0]
+          );
     }
     const permitGenObject = {
       permit_number: "",
@@ -260,14 +260,14 @@ export class NOWPermitGeneration extends Component {
 
     const addressLineOne =
       !isEmpty(permittee) &&
-      !isEmpty(permittee.party.address[0]) &&
-      permittee.party.address[0].address_line_1
+        !isEmpty(permittee.party.address[0]) &&
+        permittee.party.address[0].address_line_1
         ? `${permittee.party.address[0].address_line_1}\n`
         : "";
     const addressLineTwo =
       !isEmpty(permittee) && !isEmpty(permittee.party.address[0])
         ? `${permittee.party.address[0].city || ""} ${permittee.party.address[0]
-            .sub_division_code || ""} ${permittee.party.address[0].post_code || ""}`
+          .sub_division_code || ""} ${permittee.party.address[0].post_code || ""}`
         : "";
     const mailingAddress = `${addressLineOne}${addressLineTwo}`;
     permitGenObject.permittee = !isEmpty(permittee) ? permittee.party.name : "";
@@ -293,10 +293,10 @@ export class NOWPermitGeneration extends Component {
     permitGenObject.site_property = this.props.noticeOfWork.site_property
       ? this.props.noticeOfWork.site_property
       : {
-          mine_tenure_type_code: "",
-          mine_commodity_code: [],
-          mine_disturbance_code: [],
-        };
+        mine_tenure_type_code: "",
+        mine_commodity_code: [],
+        mine_disturbance_code: [],
+      };
     let isPermitAmendmentTypeDropDownDisabled = true;
     let permitAmendmentDropdown = this.props.permitAmendmentTypeDropDownOptions;
     if (amendment && !isEmpty(amendment)) {
@@ -570,7 +570,7 @@ export class NOWPermitGeneration extends Component {
                     }
                     title={
                       isEmpty(this.state.permittee) ||
-                      !this.props.noticeOfWork?.issuing_inspector?.signature
+                        !this.props.noticeOfWork?.issuing_inspector?.signature
                         ? "The application must have a permittee assigned, and the issuing inspector must have a signature before viewing the draft."
                         : ""
                     }
