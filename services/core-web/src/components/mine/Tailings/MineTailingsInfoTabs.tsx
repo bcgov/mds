@@ -17,7 +17,6 @@ import {
 import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
-import { getMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
 import * as Strings from "@mds/common/constants/strings";
 import DamsPage from "@mds/common/components/tailings/dam/DamsPage";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
@@ -62,7 +61,6 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
   const mine: IMine = useAppSelector(getMineById(mineGuid));
 
   const mineReports: IMineReport[] = useAppSelector(getMineReports);
-  const mineReportDefinitionOptions = useAppSelector(getMineReportDefinitionOptions);
   const TSFOperatingStatusCodeHash = useAppSelector(getTSFOperatingStatusCodeOptionsHash);
   const consequenceClassificationStatusCodeHash = useAppSelector(getConsequenceClassificationStatusCodeOptionsHash);
   const itrbExemptionStatusCodeHash = useAppSelector(getITRBExemptionStatusCodeOptionsHash);
@@ -73,7 +71,6 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
   const [params, setParams] = useState({ sort_field: "received_date", sort_dir: "desc" });
 
   const canEditTSF = useAppSelector(userHasRole(USER_ROLES.role_edit_tsf));
-
 
   const { isFeatureEnabled } = useFeatureFlag();
   const tsfV2Enabled = isFeatureEnabled(Feature.TSF_V2);
@@ -173,19 +170,6 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
     }));
   };
 
-  const filteredReportDefinitionGuids =
-    mineReportDefinitionOptions?.filter((option) =>
-      option.categories.map((category) => category.mine_report_category).includes("TSF")
-    )
-      .map((definition) => definition.mine_report_definition_guid);
-
-  const filteredReports =
-    mineReports?.filter(
-      (report) =>
-        report.mine_report_definition_guid &&
-        filteredReportDefinitionGuids.includes(report.mine_report_definition_guid.toLowerCase())
-    );
-
   const tabItems = [
     {
       key: "tsfDetails",
@@ -231,7 +215,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
         <br />
         <MineReportTable
           isLoaded={isLoaded}
-          mineReports={filteredReports}
+          mineReports={mineReports}
           handleRemoveReport={handleRemoveReport}
           handleTableChange={handleReportFilterSubmit}
           sortField={params.sort_field}
