@@ -19,6 +19,7 @@ import {
   IProjectDecisionPackage,
   IProjectPageData,
   IProjectSummaryMinistryComment,
+  IProjectSummaryEnvironmentAuthorizationStatus,
 } from "@mds/common/interfaces";
 import { AppThunk } from "@mds/common/interfaces/appThunk.type";
 import { AxiosResponse } from "axios";
@@ -152,6 +153,30 @@ export const fetchProjectSummaryById = (
     })
     .finally(() => dispatch(hideLoading()));
 };
+
+export const fetchProjectSummaryEnvironmentAuthorizationStatuses = (
+  amsTrackingNumbers: string[],
+): AppThunk<Promise<AxiosResponse<IProjectSummaryEnvironmentAuthorizationStatus[]>>> => (
+  dispatch
+): Promise<AxiosResponse<IProjectSummaryEnvironmentAuthorizationStatus[]>> => {
+    dispatch(request(NetworkReducerTypes.GET_PROJECT_SUMMARY_ENVIRONMENT_AUTHORIZATION_STATUSES));
+    dispatch(showLoading());
+    return CustomAxios({ errorToastMessage: Strings.ERROR })
+      .post(
+        ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY_ENVIRONMENT_AUTHORIZATION_STATUSES(),
+        { ams_tracking_numbers: amsTrackingNumbers },
+        createRequestHeader()
+      )
+      .then((response: AxiosResponse<IProjectSummaryEnvironmentAuthorizationStatus[]>) => {
+        dispatch(success(NetworkReducerTypes.GET_PROJECT_SUMMARY_ENVIRONMENT_AUTHORIZATION_STATUSES));
+        return response.data;
+      })
+      .catch((err) => {
+        dispatch(error(NetworkReducerTypes.GET_PROJECT_SUMMARY_ENVIRONMENT_AUTHORIZATION_STATUSES));
+        throw new Error(err);
+      })
+      .finally(() => dispatch(hideLoading()));
+  }
 
 export const removeDocumentFromProjectSummary = (
   projectGuid: string,

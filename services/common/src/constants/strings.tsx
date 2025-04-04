@@ -456,6 +456,32 @@ export const PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION = "declaration";
 export const AMS_STATUS_CODES_SUCCESS = "success";
 export const AMS_STATUS_CODE_FAIL = "fail";
 export const AMS_STATUS_CODE_ERROR = "error";
+export const AMS_STATUS_CODE_WARNING = "warning";
+export const AMS_STATUS_CODE_DEFAULT = "default";
+
+export const AMS_APPROVED_STATUSES = {
+  "Approved": "Approved",
+  "Completed": "Completed",
+  "New": "New",
+};
+
+export const AMS_WARNING_STATUSES = {
+  "Review and Decision": "Review and Decision",
+  "Pending Customer": "Pending Customer",
+  "Pending Final Application": "Pending Final Application",
+  "Pending Suspension": "Pending Suspension",
+  "Preliminary Application Review": "Preliminary Application Review",
+  "Preliminary Withdrawal Review": "Preliminary Withdrawal Review",
+  "Reinstated": "Reinstated",
+  "Review Complete": "Review Complete",
+};
+
+export const AMS_STOPPED_STATUSES = {
+  "Expired": "Expired",
+  "Rejected": "AMS Rejected",
+  "Suspended": "Suspended",
+  "Withdrawn": "Withdrawn",
+};
 
 export const ENVIRONMENTAL_MANAGMENT_ACT = "ENVIRONMENTAL_MANAGMENT_ACT";
 
@@ -470,6 +496,9 @@ export const WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL =
   "https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/change";
 export const WASTE_DISCHARGE_AUTHORIZATION_PROCESS =
   "https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/process";
+
+export const AMS_ENVIRONMENT_PUBLIC_DOCUMENT_SEARCH_URL =
+  "https://j200.gov.bc.ca/pub/ams/Default.aspx?PossePresentation=DocumentSearch";
 
 export const REPORT_REGULATORY_AUTHORITY_CODES_HASH = {
   CPO: "Chief Permitting Officer",

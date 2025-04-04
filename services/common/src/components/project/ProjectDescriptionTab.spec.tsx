@@ -28,7 +28,7 @@ const initialState = {
           amendment_documents: [],
           exemption_requested: false,
           ams_tracking_number: "0",
-          ams_outcome: "Some error",
+          ams_outcome: ["some error"],
           ams_status_code: "400",
           ams_submission_timestamp: "2024-05-24T19:17:09.212499+00:00",
         }
@@ -44,7 +44,7 @@ describe("ProjectDescriptionTab", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
         <BrowserRouter>
-          <ProjectDescriptionTab />
+          <ProjectDescriptionTab tab={'project-description'} />
         </BrowserRouter>
       </ReduxWrapper>
     );

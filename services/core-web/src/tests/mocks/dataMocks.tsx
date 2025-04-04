@@ -7594,3 +7594,28 @@ export const ACTIVITIES = {
     total: 3,
   },
 };
+
+export const AMS_ENVIRONMENT_DOCUMENTS = [
+  {
+    name: "test1",
+    extension: "pdf",
+    url: "https://example.com",
+  },
+  {
+    name: "test2",
+    extension: "pdf",
+    url: "https://example.com",
+  },
+];
+
+export const AMS_ENVIRONMENT_AUTH_STATUS_RESPONSE = [
+  {
+    "ams_tracking_number": "442542",
+    "ams_mining_permit_number": null,
+    "ams_authorization_number": "112497",
+    "status": "New",
+    "regional_case_manager": null,
+    "documents": [],
+    "errors": [],
+  }
+];

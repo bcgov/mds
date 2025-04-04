@@ -115,7 +115,7 @@ const Routes = () => (
       />
       <Route
         path={routes.EDIT_PROJECT.route}
-        component={AuthenticationGuard()(routes.EDIT_PROJECT.component)}
+        component={ColumnWrapper()(AuthenticationGuard()(routes.EDIT_PROJECT.component))}
       />
       <Route
         path={routes.ADD_TAILINGS_STORAGE_FACILITY.route}

@@ -94,6 +94,7 @@ export interface ITableAction {
 export const renderActionsColumn = ({
   actions,
   recordActionsFilter,
+  title,
   isRowSelected = false,
   text = "Actions",
   dropdownAltText = "Menu",
@@ -105,17 +106,18 @@ export const renderActionsColumn = ({
   text?: string;
   dropdownAltText?: string;
   fixed?: boolean;
+  title?: string;
 }) => {
   return {
+    title,
     key: "actions",
     fixed: fixed ? ("right" as const) : null,
     className: "actions-column",
     render: (record) => {
       const filteredActions = recordActionsFilter ? recordActionsFilter(record, actions) : actions;
       const items = generateActionMenuItems(filteredActions, record);
-
       return (
-        <div>
+        <div title={title}>
           {items.length > 0 && (
             <Dropdown menu={{ items }} placement="bottomLeft" disabled={isRowSelected}>
               <Button data-cy="menu-actions-button" className="actions-dropdown-button" type="text">

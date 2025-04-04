@@ -206,7 +206,7 @@ const ProjectPage: FC = () => {
       key: "project-description",
       children: (
         <div className={pageClass}>
-          <ProjectDescriptionTab />
+          <ProjectDescriptionTab tab={activeTab} />
         </div>
       ),
     },

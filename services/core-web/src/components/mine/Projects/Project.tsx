@@ -125,7 +125,7 @@ const Project: FC = () => {
       label: "Project Description",
       children: (
         <div className="padding-lg">
-          <ProjectDescriptionTab />
+          <ProjectDescriptionTab tab={activeTab} />
         </div>
       ),
     },

@@ -198,10 +198,23 @@ class AMSApiService():
     @classmethod
     def __create_failed_ams_submission(cls, err, project_summary_authorization_guid, project_summary_authorization_type):
         ams_failure = {'project_summary_authorization_guid': project_summary_authorization_guid,
-                       'errorMessage': err,
-                       'statusCode': "500",
+                       'detail': err,
+                       'status': "500",
                        'project_summary_authorization_type': project_summary_authorization_type}
         return ams_failure
+    
+    @classmethod
+    def __ams_status_get_failed_request(cls, err):
+        ams_status_failure = {
+            'ams_tracking_number': None,
+            'ams_mining_permit_number': None,
+            'ams_authorization_number': None,
+            'status': None,
+            'regional_case_manager': None,
+            'documents': [],
+            'errors': [err],
+        }
+        return ams_status_failure
 
     @classmethod
     def __format_mailing_address(cls, payment_contact):
@@ -216,6 +229,61 @@ class AMSApiService():
             address.get('post_code', '')
         ]
         return ', '.join(filter(bool, address_components)).strip(', ')
+    
+    @classmethod
+    def get_ams_authorization_statuses(cls, ams_tracking_numbers):
+        """Get the AMS authorization application statuses"""
+
+        headers = {
+            'bearer': Config.AMS_BEARER_TOKEN,
+        }
+
+        ams_status_results = []
+
+        try: 
+            if (ams_tracking_numbers and len(ams_tracking_numbers) > 0):
+                for tracking_number in ams_tracking_numbers:
+                    response = requests.get(f'{Config.AMS_URL}/job?trackingNumber={tracking_number}', headers=headers)
+                    response_data = response.json()
+                    if (response_data and isinstance(response_data, list) and len(response_data) > 0):
+                        job_data = response_data[0]
+                        job_tracking_number = job_data.get('amsTrackingNumber', '0')
+
+                        ams_status_result = {}
+                        ams_status_result['ams_tracking_number'] = job_tracking_number
+                        ams_status_result['ams_mining_permit_number'] = job_data.get('amsMiningPermitNumber', None)
+                        ams_status_result['ams_authorization_number'] = job_data.get('amsAuthorizationNumber', None)
+                        ams_status_result['status'] = job_data.get('status', None)
+                        ams_status_result['regional_case_manager'] = job_data.get('regionalCaseManager', None)
+                        ams_status_result['documents'] = job_data.get('documents', [])
+                        ams_status_result['errors'] = []
+                        if job_tracking_number == '0':
+                            message = f'AMS Services get status request returned 400.\n Error: {response_data}'
+                            ams_error_messages = [error.get("message", None) for error in response_data]
+                            ams_status_result['errors'] = ams_error_messages
+                            current_app.logger.debug(message)
+                            current_app.logger.error(message)
+
+                        ams_status_results.append(ams_status_result)
+        except requests.exceptions.HTTPError as http_err:
+            err_message = f'AMS Service HTTP error occurred for GET request: {str(http_err)}'
+            ams_status_results.append(cls.__ams_status_get_failed_request(err_message))
+            current_app.logger.error(err_message)
+        except requests.exceptions.ConnectionError as conn_err:
+            err_message = f'AMS Service Connection error occurred for GET request: {str(conn_err)}'
+            ams_status_results.append(cls.__ams_status_get_failed_request(err_message))
+            current_app.logger.error(err_message)
+        except requests.exceptions.Timeout as timeout_err:
+            err_message = f'AMS Service Timeout error occurred for GET request: {str(timeout_err)}'
+            ams_status_results.append(cls.__ams_status_get_failed_request(err_message))
+            current_app.logger.error(err_message)
+        except Exception as err:
+            err_message = f'AMS Input Exception error occurred for GET request: {str(err)}'
+            ams_status_results.append(cls.__ams_status_get_failed_request(err_message))
+            current_app.logger.error(err_message)
+            current_app.logger.error(traceback.format_exc())
+
+        return ams_status_results
 
     @classmethod
     def create_new_ams_authorization(cls,
@@ -334,8 +402,17 @@ class AMSApiService():
                                 ams_authorization_data[contact_key] = cls.__set_additional_contact_details(contact)
 
                         payload = json.dumps(ams_authorization_data)
-                        response = requests.post(Config.AMS_URL, data=payload, headers=headers)
-                        ams_result = response.json()
+                        response = requests.post(f'{Config.AMS_URL}/auth', data=payload, headers=headers)
+                        response_data = response.json()
+                        current_app.logger.error(f'AMS Result: {response_data}')
+
+                        ams_result = {}
+                        if isinstance(response_data, list):
+                            ams_error_messages = [error.get("message", None) for error in response_data]
+                            ams_result['detail'] = ams_error_messages
+                        else:
+                            ams_result = response_data
+                        
                         ams_result['project_summary_authorization_guid'] = authorization.get(
                             'project_summary_authorization_guid')
                         ams_result['project_summary_guid'] = authorization.get('project_summary_guid')
@@ -417,7 +494,6 @@ class AMSApiService():
                 nearest_municipality_name = Municipality.find_by_guid(nearest_municipality).municipality_name
 
             authorization_list = cls.__get_authorization_details(ams_authorizations, 'amendments')
-
             for authorization in authorization_list:
                 existing_ams_status_code = authorization.get('ams_status_code')
                 amendment_changes = authorization.get('amendment_changes', [])
@@ -498,17 +574,23 @@ class AMSApiService():
                             ams_authorization_data[contact_key] = cls.__set_additional_contact_details(contact)
 
                     payload = json.dumps(ams_authorization_data)
-                    response = requests.post(Config.AMS_URL, data=payload, headers=headers)
-                    ams_result = response.json()
-                    current_app.logger.error(f'AMS Result: {ams_result}')
+                    response = requests.post(f'{Config.AMS_URL}/authamend', data=payload, headers=headers)
+                    response_data = response.json()
+                    current_app.logger.error(f'AMS Result: {response_data}')
+
+                    ams_result = {}
+                    if isinstance(response_data, list):
+                        ams_error_messages = [error.get("message", None) for error in response_data]
+                        ams_result['detail'] = ams_error_messages
+                    else:
+                        ams_result = response_data
+
                     ams_result['project_summary_authorization_guid'] = authorization.get(
                         'project_summary_authorization_guid')
                     ams_result['project_summary_guid'] = authorization.get('project_summary_guid')
                     ams_result['project_summary_authorization_type'] = authorization.get(
                         'project_summary_authorization_type')
                     ams_results.append(ams_result)
-
-
         except requests.exceptions.HTTPError as http_err:
             err_message = f'AMS Service HTTP error occurred for POST request: {str(http_err)}'
             ams_results.append(

@@ -168,6 +168,9 @@ export const PROJECT_LINKS = (projectGuid, projectLinkGuid = "") =>
 export const PROJECT_SUMMARY_MINISTRY_COMMENTS = (project_summary_guid) =>
   `/projects/${project_summary_guid}/ministry-comments`;
 
+export const PROJECT_SUMMARY_ENVIRONMENT_AUTHORIZATION_STATUSES = () =>
+  "/projects/project-summary-environment-authorization-statuses";
+
 //New file version upload
 export const NEW_VERSION_DOCUMENTS = ({ mineGuid, mineDocumentGuid }) =>
   `/mines/${mineGuid}/documents/${mineDocumentGuid}/versions/upload`;
