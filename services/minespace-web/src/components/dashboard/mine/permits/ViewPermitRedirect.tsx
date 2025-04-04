@@ -21,31 +21,12 @@ const ViewPermitRedirect: FC = () => {
   const permit: IPermit = useAppSelector(getPermitByGuid(permitGuid));
   const dispatch = useAppDispatch();
   useEffect(() => {
-    console.log("permit", permit);
     if (!permit?.permit_id) {
       dispatch(fetchPermits(mineGuid));
     }
   }, [permit]);
 
-  console.log("permit redirect");
-
   if (permit) {
-    console.log(
-      "should redirect",
-      mineGuid,
-      permitGuid,
-      permit.permit_amendments[0].permit_amendment_guid,
-      tab
-    );
-    console.log(
-      "Redirecting to:",
-      VIEW_MINE_PERMIT_AMENDMENT.dynamicRoute(
-        mineGuid,
-        permitGuid,
-        permit.permit_amendments[0].permit_amendment_guid,
-        tab
-      )
-    );
     return (
       <Redirect
         to={VIEW_MINE_PERMIT_AMENDMENT.dynamicRoute(
