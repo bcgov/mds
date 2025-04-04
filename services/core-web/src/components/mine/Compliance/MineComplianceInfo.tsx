@@ -16,7 +16,7 @@ import MineDashboardContentCard from "@/components/mine/MineDashboardContentCard
 import MineComplianceFilterForm from "@/components/mine/Compliance/MineComplianceFilterForm";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 
 const initialSearchValues = {
   order_no: "",
@@ -39,6 +39,7 @@ const MineComplianceInfo: FC = () => {
   
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
   const { mineGuid } = useParams<{mineGuid: string}>();
   const mine = useAppSelector(getMineById(mineGuid));
