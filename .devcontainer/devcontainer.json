@@ -3,5 +3,80 @@
   "features": {
     "ghcr.io/devcontainers/features/desktop-lite:1": {}
   },
-  "forwardPorts": [6080, 5901]
+  "forwardPorts": [
+    6080,
+    5901,
+    3000,
+    3020,
+    5000,
+    5001,
+    5432,
+    5500,
+    5555,
+    5556,
+    5601,
+    6379,
+    8004,
+    8080,
+    9200,
+    14250,
+    16686,
+    62870
+  ],
+  "portsAttributes": {
+    "6080": {
+      "label": "Web UI"
+    },
+    "5901": {
+      "label": "VNC"
+    },
+    "3000": {
+      "label": "mds_frontend"
+    },
+    "3020": {
+      "label": "mds_minespace"
+    },
+    "5000": {
+      "label": "mds_backend"
+    },
+    "5001": {
+      "label": "document_manager_backend"
+    },
+    "5432": {
+      "label": "mds_postgres"
+    },
+    "5500": {
+      "label": "nris_python"
+    },
+    "5555": {
+      "label": "document_manager_celery"
+    },
+    "5556": {
+      "label": "core_api_celery"
+    },
+    "5601": {
+      "label": "permits-kibana"
+    },
+    "6379": {
+      "label": "mds_cache"
+    },
+    "8004": {
+      "label": "permits-haystack"
+    },
+    "8080": {
+      "label": "cypress-keycloak"
+    },
+    "9200": {
+      "label": "elasticsearch"
+    },
+    "14250": {
+      "label": "mds_jaeger"
+    },
+    "16686": {
+      "label": "mds_jaeger"
+    },
+    "62870": {
+      "label": "filesystem_provider"
+    }
+  }
 }
