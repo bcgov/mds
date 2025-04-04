@@ -78,5 +78,15 @@
     "62870": {
       "label": "filesystem_provider"
     }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "dbaeumer.vscode-eslint",
+        "ms-python.python",
+        "ms-python.vscode-pylance"
+      ]
+    }
   }
 }
