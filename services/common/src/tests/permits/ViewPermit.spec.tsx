@@ -20,6 +20,14 @@ const initialState = {
   },
 };
 
+const mineSpaceInitialState = {
+  ...initialState,
+  [AUTHENTICATION]: {
+    userAccessData: [USER_ROLES.role_minespace_proponent],
+    systemFlag: SystemFlagEnum.ms,
+  },
+};
+
 function mockFunction() {
   const original = jest.requireActual("react-router-dom");
   return {
@@ -61,5 +69,30 @@ describe("ViewPermit", () => {
       </ReduxWrapper>
     );
     expect(container.firstChild).toMatchSnapshot();
+  });
+
+  it("renders the conditions tab in Core", () => {
+    const { getAllByRole } = render(
+      <ReduxWrapper initialState={initialState}>
+        <BrowserRouter>
+          <ViewPermit />
+        </BrowserRouter>
+      </ReduxWrapper>
+    );
+    const tabs = getAllByRole("tab");
+    expect(tabs.length).toEqual(2);
+  });
+
+  it("does not display unreviewed conditions on MineSpace", () => {
+    const { getAllByRole } = render(
+      <ReduxWrapper initialState={mineSpaceInitialState}>
+        <BrowserRouter>
+          <ViewPermit />
+        </BrowserRouter>
+      </ReduxWrapper>
+    );
+
+    const tabs = getAllByRole("tab");
+    expect(tabs.length).toEqual(1);
   });
 });
