@@ -1,0 +1,739 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineComplianceInfo renders properly 1`] = `
+<div
+  class="tab__content"
+>
+  <div>
+    <h2>
+      Inspections and Audits
+    </h2>
+    <div
+      class="ant-divider ant-divider-horizontal"
+      role="separator"
+    />
+  </div>
+  <div>
+    <div>
+      <h4>
+        COMPLIANCE OVERVIEW
+      </h4>
+      <div
+        class="ant-divider ant-divider-horizontal"
+        role="separator"
+      />
+      <div
+        class="compliance--container"
+      >
+        <div>
+          <div
+            class="loading-screen--small"
+          >
+            <div
+              aria-busy="true"
+              aria-live="polite"
+              class="ant-spin ant-spin-spinning"
+              id="spinner"
+            >
+              <span
+                aria-label="loading"
+                class="anticon anticon-loading ant-spin-dot"
+                role="img"
+                style="font-size: 80px; color: rgb(107, 99, 99);"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="anticon-spin"
+                  data-icon="loading"
+                  fill="currentColor"
+                  focusable="false"
+                  height="1em"
+                  viewBox="0 0 1024 1024"
+                  width="1em"
+                >
+                  <path
+                    d="M988 548c-19.9 0-36-16.1-36-36 0-59.4-11.6-117-34.6-171.3a440.45 440.45 0 00-94.3-139.9 437.71 437.71 0 00-139.9-94.3C629 83.6 571.4 72 512 72c-19.9 0-36-16.1-36-36s16.1-36 36-36c69.1 0 136.2 13.5 199.3 40.3C772.3 66 827 103 874 150c47 47 83.9 101.8 109.7 162.7 26.7 63.1 40.2 130.2 40.2 199.3.1 19.9-16 36-35.9 36z"
+                  />
+                </svg>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <br />
+        <h4>
+          INSPECTION ORDERS
+        </h4>
+        <div
+          class="ant-divider ant-divider-horizontal"
+          role="separator"
+        />
+        <div
+          class="compliance-filter--content"
+        >
+          <h4>
+            Filter By
+          </h4>
+          <form
+            class="ant-form ant-form-vertical common-form common-form-MINE_COMPLIANCE_FILTER form-edit"
+            id="MINE_COMPLIANCE_FILTER"
+          >
+            <div>
+              <div
+                class="ant-row"
+                style="margin-left: -3px; margin-right: -3px;"
+              >
+                <div
+                  class="ant-col ant-col-xs-24 ant-col-sm-12 ant-col-md-8"
+                  style="padding-left: 3px; padding-right: 3px;"
+                >
+                  <div
+                    class="ant-form-item ant-form-item-with-help"
+                  >
+                    <div
+                      class="ant-row ant-form-item-row"
+                    >
+                      <div
+                        class="ant-col ant-form-item-label"
+                      >
+                        <label
+                          class=""
+                          for="MINE_COMPLIANCE_FILTER_order_no"
+                          title=""
+                        >
+                          <div>
+                            Order Number
+                             
+                            <span
+                              class="form-item-optional"
+                            >
+                               (optional)
+                            </span>
+                          </div>
+                        </label>
+                      </div>
+                      <div
+                        class="ant-col ant-form-item-control"
+                      >
+                        <div
+                          class="ant-form-item-control-input"
+                        >
+                          <div
+                            class="ant-form-item-control-input-content"
+                          >
+                            <input
+                              aria-label="order_no"
+                              class="ant-input"
+                              data-testid="order_no"
+                              id="order_no"
+                              name="order_no"
+                              placeholder="Enter order number"
+                              type="text"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                        <div
+                          style="display: flex; flex-wrap: nowrap;"
+                        >
+                          <div
+                            class="ant-form-item-explain ant-form-item-explain-connected"
+                            id="MINE_COMPLIANCE_FILTER_order_no_help"
+                            role="alert"
+                          >
+                            <div
+                              class=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="ant-col ant-col-xs-24 ant-col-sm-12 ant-col-md-8"
+                  style="padding-left: 3px; padding-right: 3px;"
+                >
+                  <div
+                    class="ant-form-item ant-form-item-with-help"
+                  >
+                    <div
+                      class="ant-row ant-form-item-row"
+                    >
+                      <div
+                        class="ant-col ant-form-item-label"
+                      >
+                        <label
+                          class=""
+                          for="MINE_COMPLIANCE_FILTER_report_no"
+                          title=""
+                        >
+                          <div>
+                            Report Number
+                             
+                            <span
+                              class="form-item-optional"
+                            >
+                               (optional)
+                            </span>
+                          </div>
+                        </label>
+                      </div>
+                      <div
+                        class="ant-col ant-form-item-control"
+                      >
+                        <div
+                          class="ant-form-item-control-input"
+                        >
+                          <div
+                            class="ant-form-item-control-input-content"
+                          >
+                            <input
+                              aria-label="report_no"
+                              class="ant-input"
+                              data-testid="report_no"
+                              id="report_no"
+                              name="report_no"
+                              placeholder="Enter report number"
+                              type="text"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                        <div
+                          style="display: flex; flex-wrap: nowrap;"
+                        >
+                          <div
+                            class="ant-form-item-explain ant-form-item-explain-connected"
+                            id="MINE_COMPLIANCE_FILTER_report_no_help"
+                            role="alert"
+                          >
+                            <div
+                              class=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="ant-col ant-col-xs-24 ant-col-sm-12 ant-col-md-8"
+                  style="padding-left: 3px; padding-right: 3px;"
+                >
+                  <div
+                    class="form-multiselect"
+                  >
+                    <div
+                      class="ant-form-item ant-form-item-with-help"
+                    >
+                      <div
+                        class="ant-row ant-form-item-row"
+                      >
+                        <div
+                          class="ant-col ant-form-item-label"
+                        >
+                          <label
+                            class=""
+                            for="MINE_COMPLIANCE_FILTER_violation"
+                            title=""
+                          >
+                            <div>
+                              Code/Act Violation
+                               
+                              <span
+                                class="form-item-optional"
+                              >
+                                 (optional)
+                              </span>
+                            </div>
+                          </label>
+                        </div>
+                        <div
+                          class="ant-col ant-form-item-control"
+                        >
+                          <div
+                            class="ant-form-item-control-input"
+                          >
+                            <div
+                              class="ant-form-item-control-input-content"
+                            >
+                              <div
+                                class="ant-select ant-select-sm ant-select-in-form-item ant-select-multiple ant-select-show-arrow ant-select-show-search"
+                                style="width: 100%;"
+                              >
+                                <div
+                                  class="ant-select-selector"
+                                >
+                                  <div
+                                    class="ant-select-selection-overflow"
+                                  >
+                                    <div
+                                      class="ant-select-selection-overflow-item ant-select-selection-overflow-item-suffix"
+                                      style="opacity: 1;"
+                                    >
+                                      <div
+                                        class="ant-select-selection-search"
+                                        style="width: 0px;"
+                                      >
+                                        <input
+                                          aria-activedescendant="violation_list_0"
+                                          aria-autocomplete="list"
+                                          aria-controls="violation_list"
+                                          aria-haspopup="listbox"
+                                          aria-owns="violation_list"
+                                          autocomplete="off"
+                                          class="ant-select-selection-search-input"
+                                          id="violation"
+                                          readonly=""
+                                          role="combobox"
+                                          style="opacity: 0;"
+                                          type="search"
+                                          unselectable="on"
+                                          value=""
+                                        />
+                                        <span
+                                          aria-hidden="true"
+                                          class="ant-select-selection-search-mirror"
+                                        >
+                                          
+                                           
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <span
+                                    class="ant-select-selection-placeholder"
+                                  >
+                                    Select code/act violation
+                                  </span>
+                                </div>
+                                <span
+                                  aria-hidden="true"
+                                  class="ant-select-arrow"
+                                  style="user-select: none;"
+                                  unselectable="on"
+                                >
+                                  <span
+                                    aria-label="down"
+                                    class="anticon anticon-down ant-select-suffix"
+                                    role="img"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      data-icon="down"
+                                      fill="currentColor"
+                                      focusable="false"
+                                      height="1em"
+                                      viewBox="64 64 896 896"
+                                      width="1em"
+                                    >
+                                      <path
+                                        d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                      />
+                                    </svg>
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            style="display: flex; flex-wrap: nowrap;"
+                          >
+                            <div
+                              class="ant-form-item-explain ant-form-item-explain-connected"
+                              id="MINE_COMPLIANCE_FILTER_violation_help"
+                              role="alert"
+                            >
+                              <div
+                                class=""
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="ant-col ant-col-xs-24 ant-col-sm-12 ant-col-md-8"
+                  style="padding-left: 3px; padding-right: 3px;"
+                >
+                  <div
+                    class="ant-form-item ant-form-item-with-help"
+                  >
+                    <div
+                      class="ant-row ant-form-item-row"
+                    >
+                      <div
+                        class="ant-col ant-form-item-label"
+                      >
+                        <label
+                          class=""
+                          for="MINE_COMPLIANCE_FILTER_inspector"
+                          title=""
+                        >
+                          <div>
+                            Inspector IDIR
+                             
+                            <span
+                              class="form-item-optional"
+                            >
+                               (optional)
+                            </span>
+                          </div>
+                        </label>
+                      </div>
+                      <div
+                        class="ant-col ant-form-item-control"
+                      >
+                        <div
+                          class="ant-form-item-control-input"
+                        >
+                          <div
+                            class="ant-form-item-control-input-content"
+                          >
+                            <input
+                              aria-label="inspector"
+                              class="ant-input"
+                              data-testid="inspector"
+                              id="inspector"
+                              name="inspector"
+                              placeholder="Enter inspector IDIR"
+                              type="text"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                        <div
+                          style="display: flex; flex-wrap: nowrap;"
+                        >
+                          <div
+                            class="ant-form-item-explain ant-form-item-explain-connected"
+                            id="MINE_COMPLIANCE_FILTER_inspector_help"
+                            role="alert"
+                          >
+                            <div
+                              class=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="ant-col ant-col-xs-24 ant-col-sm-12 ant-col-md-8"
+                  style="padding-left: 3px; padding-right: 3px;"
+                >
+                  <div
+                    class="ant-form-item ant-form-item-with-help"
+                  >
+                    <div
+                      class="ant-row ant-form-item-row"
+                    >
+                      <div
+                        class="ant-col ant-form-item-label"
+                      >
+                        <label
+                          class=""
+                          for="MINE_COMPLIANCE_FILTER_order_status"
+                          title=""
+                        >
+                          <div>
+                            Order Status
+                             
+                            <span
+                              class="form-item-optional"
+                            >
+                               (optional)
+                            </span>
+                          </div>
+                        </label>
+                      </div>
+                      <div
+                        class="ant-col ant-form-item-control"
+                      >
+                        <div
+                          class="ant-form-item-control-input"
+                        >
+                          <div
+                            class="ant-form-item-control-input-content"
+                          >
+                            <div
+                              class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                              data-cy="order_status"
+                            >
+                              <div
+                                class="ant-select-selector"
+                              >
+                                <span
+                                  class="ant-select-selection-search"
+                                >
+                                  <input
+                                    aria-activedescendant="order_status_list_0"
+                                    aria-autocomplete="list"
+                                    aria-controls="order_status_list"
+                                    aria-haspopup="listbox"
+                                    aria-owns="order_status_list"
+                                    autocomplete="off"
+                                    class="ant-select-selection-search-input"
+                                    id="order_status"
+                                    role="combobox"
+                                    type="search"
+                                    value=""
+                                  />
+                                </span>
+                                <span
+                                  class="ant-select-selection-placeholder"
+                                >
+                                  Enter order status
+                                </span>
+                              </div>
+                              <span
+                                aria-hidden="true"
+                                class="ant-select-arrow"
+                                style="user-select: none;"
+                                unselectable="on"
+                              >
+                                <span
+                                  aria-label="down"
+                                  class="anticon anticon-down ant-select-suffix"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          style="display: flex; flex-wrap: nowrap;"
+                        >
+                          <div
+                            class="ant-form-item-explain ant-form-item-explain-connected"
+                            id="MINE_COMPLIANCE_FILTER_order_status_help"
+                            role="alert"
+                          >
+                            <div
+                              class=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="ant-col ant-col-xs-24 ant-col-sm-12 ant-col-md-8"
+                  style="padding-left: 3px; padding-right: 3px;"
+                >
+                  <div
+                    class="ant-form-item ant-form-item-with-help"
+                  >
+                    <div
+                      class="ant-row ant-form-item-row"
+                    >
+                      <div
+                        class="ant-col ant-form-item-label"
+                      >
+                        <label
+                          class=""
+                          for="MINE_COMPLIANCE_FILTER_due_date"
+                          title=""
+                        >
+                          <div>
+                            Order Due Date
+                             
+                            <span
+                              class="form-item-optional"
+                            >
+                               (optional)
+                            </span>
+                          </div>
+                        </label>
+                      </div>
+                      <div
+                        class="ant-col ant-form-item-control"
+                      >
+                        <div
+                          class="ant-form-item-control-input"
+                        >
+                          <div
+                            class="ant-form-item-control-input-content"
+                          >
+                            <div
+                              class="ant-picker"
+                            >
+                              <div
+                                class="ant-picker-input"
+                              >
+                                <input
+                                  autocomplete="off"
+                                  id="due_date"
+                                  name="due_date"
+                                  placeholder="Select order due date"
+                                  readonly=""
+                                  size="12"
+                                  title=""
+                                  value=""
+                                />
+                                <span
+                                  class="ant-picker-suffix"
+                                >
+                                  <span
+                                    aria-label="calendar"
+                                    class="anticon anticon-calendar"
+                                    role="img"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      data-icon="calendar"
+                                      fill="currentColor"
+                                      focusable="false"
+                                      height="1em"
+                                      viewBox="64 64 896 896"
+                                      width="1em"
+                                    >
+                                      <path
+                                        d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                                      />
+                                    </svg>
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          style="display: flex; flex-wrap: nowrap;"
+                        >
+                          <div
+                            class="ant-form-item-explain ant-form-item-explain-connected"
+                            id="MINE_COMPLIANCE_FILTER_due_date_help"
+                            role="alert"
+                          >
+                            <div
+                              class=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="right center-mobile"
+            >
+              <button
+                class="ant-btn ant-btn-default full-mobile"
+                type="reset"
+              >
+                <span>
+                  Clear Filters
+                </span>
+              </button>
+              <button
+                class="ant-btn ant-btn-primary full-mobile"
+                type="submit"
+              >
+                <span>
+                  Apply Filters
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+        <div
+          class="ant-table-wrapper"
+        >
+          <div
+            class="ant-spin-nested-loading"
+          >
+            <div
+              class="ant-spin-container"
+            >
+              <div
+                class="ant-table"
+              >
+                <div
+                  class="ant-table-container"
+                >
+                  <div
+                    class="ant-table-content"
+                  >
+                    <table
+                      style="table-layout: auto;"
+                    >
+                      <colgroup />
+                      <thead
+                        class="ant-table-thead"
+                      >
+                        <tr>
+                          <th
+                            class="ant-table-cell"
+                          >
+                            
+                          </th>
+                          <th
+                            class="ant-table-cell"
+                          >
+                            Order No.
+                          </th>
+                          <th
+                            class="ant-table-cell"
+                          >
+                            Violation
+                          </th>
+                          <th
+                            class="ant-table-cell"
+                          >
+                            Report No.
+                          </th>
+                          <th
+                            class="ant-table-cell"
+                          >
+                            Inspector
+                          </th>
+                          <th
+                            class="ant-table-cell"
+                          >
+                            Order Status
+                          </th>
+                          <th
+                            class="ant-table-cell"
+                          >
+                            Due Date
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        class="ant-table-tbody"
+                      />
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
