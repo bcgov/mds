@@ -100,18 +100,19 @@
     width: 100%;
     z-index: 1000;
     background-color: $white;
-    padding: 0 $fixed-page-margin;
   }
 
   .fixed-tabs-tabs {
+    padding-top: 0;
     &>.ant-tabs-nav {
       position: fixed;
       top: $layout-header-height + 103px; //ProjectDocumentsTab->headerHeight
-      width: calc(100vw - ($fixed-page-margin * 2));
+      width: 100%;
       background-color: $white;
       z-index: 1000;
-      margin-left: $fixed-page-margin;
       height: 49px;
+      padding-left: 20px;
+      padding-right: 20px;
     }
 
     &>.ant-tabs-content-holder {

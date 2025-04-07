@@ -238,7 +238,7 @@ const ProjectPage: FC = () => {
 
   return isLoaded ? (
     <div className="fixed-tabs-container">
-      <div className="view--header">
+      <div className="view--header padding-lg--sides">
         <Row>
           <Col span={24}>
             <Typography.Title>{project_title}</Typography.Title>

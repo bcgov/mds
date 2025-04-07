@@ -47,8 +47,4 @@
     box-shadow: 0 0 2px 0 $transparent-dark-grey; // $darkest-grey at 10% opacity
     background-color: $pure-white;
   }
-
-  .common-page-header {
-    height: calc(65px + $header-height);
-  }
 }
