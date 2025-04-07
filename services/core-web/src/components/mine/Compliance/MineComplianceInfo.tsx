@@ -3,7 +3,6 @@ import queryString from "query-string";
 import { useSelector } from "react-redux";
 import { Divider } from "antd";
 import { isEmpty } from "lodash";
-import { formatParamStringToArray, formatDate, getFiscalYear } from "@common/utils/helpers";
 import { fetchMineComplianceInfo } from "@mds/common/redux/actionCreators/complianceActionCreator";
 import { getMultiSelectComplianceCodes } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
@@ -17,6 +16,7 @@ import MineComplianceFilterForm from "@/components/mine/Compliance/MineComplianc
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { useHistory, useLocation, useParams } from "react-router-dom";
+import { formatDate, formatParamStringToArray, getFiscalYear } from "@mds/common/redux/utils/helpers";
 
 const initialSearchValues = {
   order_no: "",
@@ -90,7 +90,7 @@ const MineComplianceInfo: FC = () => {
       const { violation, ...rest } = values;
       history.push(
         routes.MINE_INSPECTIONS.dynamicRoute(mineGuid, {
-          violation: violation && violation.join(","),
+          violation: violation?.join(","),
           ...rest,
         })
       );
@@ -107,7 +107,7 @@ const MineComplianceInfo: FC = () => {
           <div className="compliance--container">
             <LoadingWrapper condition={isLoaded}>
               <div>
-                {mineComplianceInfo && mineComplianceInfo.last_inspection ? (
+                {mineComplianceInfo?.last_inspection ? (
                   <div className="dashboard--cards">
                     <MineDashboardContentCard
                       title="Inspections - Past 12 months"
