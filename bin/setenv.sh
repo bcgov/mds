@@ -138,7 +138,7 @@ function loadExternalSecrets() {
 
 if [ -z "$INPUT" ];
     then
-        echo "This command can be destructive if you have valid .env's in place and run this multiple times!"
+        echo "This command will overwrite all .env files with data from the example files and openshift secrets!"
         echo "${bold}Continue? (only accepts 'yes')${normal}"
         read INPUT
 fi
