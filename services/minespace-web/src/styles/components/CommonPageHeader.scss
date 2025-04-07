@@ -48,4 +48,8 @@
         background-color: $pure-white;
 
     }
+
+    .common-page-header {
+        height: calc(65px + $header-height);
+    }
 }
