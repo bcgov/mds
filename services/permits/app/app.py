@@ -3,6 +3,7 @@ import os
 
 from fastapi import FastAPI
 
+from fastapi.middleware.cors import CORSMiddleware
 from .openid_connect_middleware import OpenIdConnectMiddleware
 from .pipelines.permit_condition_extraction.resources.permit_condition_resource import (
     router as permit_condition_router,
@@ -29,3 +30,17 @@ if DEBUG_MODE:
         os.makedirs("app/cache")
 
 mds.add_middleware(OpenIdConnectMiddleware)
+
+origins = [
+    "http://localhost:8004",
+    "http://localhost:80",
+    "https://*.apps.silver.devops.gov.bc.ca"
+]
+
+mds.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
