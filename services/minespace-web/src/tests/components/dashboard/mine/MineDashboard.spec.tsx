@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import MineDashboard from "@/components/dashboard/mine/MineDashboard";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { BrowserRouter } from "react-router-dom";
 import { MINES } from "@mds/common/constants/reducerTypes";

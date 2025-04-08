@@ -10,7 +10,7 @@ import {
 } from "@mds/common/redux/actions/incidentActions";
 import { incidentReducer } from "@mds/common/redux/reducers/incidentReducer";
 import { INCIDENTS } from "@mds/common/constants/reducerTypes";
-import * as Mock from "@/tests/mocks/dataMocks";
+import * as Mock from "@mds/common/tests/mocks/dataMocks";
 
 const mockState = {
   mineIncidents: Mock.INCIDENTS.records,

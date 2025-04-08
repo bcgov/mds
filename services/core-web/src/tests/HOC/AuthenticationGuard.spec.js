@@ -3,7 +3,7 @@ import { shallow } from "enzyme";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import NullScreen from "@/components/common/NullScreen";
 import Loading from "@/components/common/Loading";
-import * as Mock from "@/tests/mocks/dataMocks";
+import * as Mock from "@mds/common/tests/mocks/dataMocks";
 
 const getJestMock = (mockInitialized, mockAuthenticated, mockClient_roles) => {
   jest.mock("@react-keycloak/web", () => ({

@@ -25,18 +25,25 @@ exports[`NoticesOfDeparture renders properly 1`] = `
       data={
         Array [
           Object {
-            "nod_description": "some description",
-            "nod_guid": "4ca454f5-7982-4936-bfb9-84f5976fdefe",
+            "create_timestamp": "2020-04-20 11:58",
+            "documents": Array [],
+            "mine": null,
+            "nod_description": "Some description",
+            "nod_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
             "nod_no": "NOD-X-45564456-01",
-            "nod_title": "ff",
+            "nod_status": "pending_review",
+            "nod_title": "Some title",
+            "nod_type": "potentially_substantial",
             "permit": Object {
               "current_permittee": "Haynes, Park and Brown",
-              "permit_guid": "d378ca4d-310a-4644-95cf-4d8dc47f294b",
-              "permit_id": 22,
+              "permit_guid": "10d3ec917-179f-4dbc-80a3-4c993fdfe596",
+              "permit_id": "1",
               "permit_no": "M-7594809",
               "permit_prefix": "M",
               "permit_status_code": "C",
             },
+            "submission_timestamp": "2020-04-20 11:58",
+            "update_timestamp": "2020-04-20 11:58",
           },
         ]
       }

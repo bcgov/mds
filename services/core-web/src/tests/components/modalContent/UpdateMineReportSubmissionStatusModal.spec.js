@@ -2,7 +2,7 @@ import React from "react";
 import { render, cleanup } from "@testing-library/react";
 import UpdateMineReportSubmissionStatusModal from "@/components/modalContent/UpdateMineReportSubmissionStatusModal";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 describe("UpdateMineReportSubmissionStatusModal Component", () => {
   const initialState = {
@@ -15,8 +15,8 @@ describe("UpdateMineReportSubmissionStatusModal Component", () => {
     const { getByText } = render(
       <ReduxWrapper initialState={initialState}>
         <UpdateMineReportSubmissionStatusModal
-          closeModal={() => {}}
-          handleSubmit={() => {}}
+          closeModal={() => { }}
+          handleSubmit={() => { }}
           currentStatus={"Received"}
           latestSubmission={{
             create_user: "testUser",

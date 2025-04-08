@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { MineSecurityInfo } from "@/components/mine/Securities/MineSecurityInfo";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const dispatchProps = {};
 const props = {};

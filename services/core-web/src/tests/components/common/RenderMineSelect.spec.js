@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { RenderMineSelect } from "@/components/common/RenderMineSelect";
-import { PARTY } from "@/tests/mocks/dataMocks";
+import { PARTY } from "@mds/common/tests/mocks/dataMocks";
 
 let props = {};
 

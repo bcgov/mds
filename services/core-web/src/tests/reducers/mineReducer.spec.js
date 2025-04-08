@@ -6,7 +6,7 @@ import {
   storeSubscribedMines,
   storeMineComments,
 } from "@mds/common/redux/actions/mineActions";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const baseExpectedValue = {
   mines: {},

@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { MineDocuments } from "@/components/mine/Documents/MineDocuments";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const setupProps = () => ({
   mines: MOCK.MINES.mines,

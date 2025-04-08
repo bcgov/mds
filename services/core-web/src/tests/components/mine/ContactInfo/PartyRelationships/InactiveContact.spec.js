@@ -1,12 +1,12 @@
 import React from "react";
 import { shallow } from "enzyme";
 import InactiveContact from "@/components/mine/ContactInfo/PartyRelationships/InactiveContact";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const dispatchProps = {};
 const reducerProps = {};
 
-const setupDispatchProps = () => {};
+const setupDispatchProps = () => { };
 
 const setupReducerProps = () => {
   reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];

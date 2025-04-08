@@ -3,7 +3,7 @@ import { shallow } from "enzyme";
 import { Provider } from "react-redux";
 import { store } from "@/App";
 import EditNoticeOfDepartureModal from "@/components/modalContent/noticeOfDeparture/EditNoticeOfDepartureModal";
-import { NOTICE_OF_DEPARTURE_DETAILS, MINES } from "@/tests/mocks/dataMocks";
+import { NOTICE_OF_DEPARTURE_DETAILS, MINES } from "@mds/common/tests/mocks/dataMocks";
 
 const dispatchProps: any = {};
 const props: any = {};

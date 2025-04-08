@@ -7,7 +7,7 @@ import {
 } from "@/actionCreators/userDashboardActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@mds/common/constants/API";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, "request");

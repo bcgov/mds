@@ -15,6 +15,7 @@ exports[`AuthenticationGuard should render the \`WrappedComponent\` if \`isAuthe
       "uma_authorization",
       "core_admin",
       "core_edit_reports",
+      "role_edit_project_summaries",
     ]
   }
 />

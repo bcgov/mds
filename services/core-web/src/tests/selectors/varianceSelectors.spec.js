@@ -2,7 +2,7 @@ import { getVariances, getVariance } from "@mds/common/redux/selectors/varianceS
 import { varianceReducer } from "@mds/common/redux/reducers/varianceReducer";
 import { storeVariances, storeVariance } from "@mds/common/redux/actions/varianceActions";
 import { VARIANCES } from "@mds/common/constants/reducerTypes";
-import * as Mock from "@/tests/mocks/dataMocks";
+import * as Mock from "@mds/common/tests/mocks/dataMocks";
 
 const mockState = {
   mineVariances: Mock.VARIANCES.records,

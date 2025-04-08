@@ -1,6 +1,6 @@
 import { orgbookReducer } from "@mds/common/redux/reducers/orgbookReducer";
 import { storeSearchOrgBookResults, storeOrgBookCredential } from "@mds/common/redux/actions/orgbookActions";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const baseExpectedValue = {
   searchOrgBookResults: [],

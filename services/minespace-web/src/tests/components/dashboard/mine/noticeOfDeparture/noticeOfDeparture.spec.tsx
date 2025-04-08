@@ -1,15 +1,12 @@
 import React from "react";
 import { shallow } from "enzyme";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { NoticeOfDeparture } from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDeparture";
-// import * as original from "react-router-dom";
 
 const dispatchProps: any = {};
 const reducerProps: any = {};
 
 function mockFunction() {
-
-  // @ts-ignore
   const original = jest.requireActual("react-router-dom");
   return {
     ...original,
@@ -36,7 +33,7 @@ const setupDispatchProps = () => {
 
 const setupReducerProps = () => {
   reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  reducerProps.permits = MOCK.PERMITS.permits;
+  reducerProps.permits = MOCK.PERMITS;
   reducerProps.nods = MOCK.NOTICES_OF_DEPARTURE.records;
   reducerProps.isAuthenticated = true;
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import Permittee from "@/components/mine/ContactInfo/PartyRelationships/Permittee";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const dispatchProps = {};
 const reducerProps = {};

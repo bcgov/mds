@@ -5,7 +5,7 @@ import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import { USER_MINE_INFO } from "@/constants/reducerTypes";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
-import { MINE_RESPONSE } from "@/tests/mocks/dataMocks";
+import { MINE_RESPONSE } from "@mds/common/tests/mocks/dataMocks";
 
 const initialState = {
   [USER_MINE_INFO]: {

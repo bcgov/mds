@@ -1,4 +1,4 @@
-import * as Mocks from "@/tests/mocks/dataMocks";
+import * as Mocks from "@mds/common/tests/mocks/dataMocks";
 import { noticeOfDepartureReducer } from "@mds/common/redux/reducers/noticeOfDepartureReducer";
 import {
   storeNoticesOfDeparture,

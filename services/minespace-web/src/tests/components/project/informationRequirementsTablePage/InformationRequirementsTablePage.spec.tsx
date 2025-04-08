@@ -1,6 +1,6 @@
 import React from "react";
 import { InformationRequirementsTablePage } from "@/components/pages/Project/InformationRequirementsTablePage";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import { AUTHENTICATION, PROJECTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";

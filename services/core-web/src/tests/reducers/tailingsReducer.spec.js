@@ -1,6 +1,6 @@
 import { tailingsReducer } from "@mds/common/redux/reducers/tailingsReducer";
 import { storeTsf, clearTsf } from "@mds/common/redux/actions/tailingsActions";
-import { TAILINGS_STORAGE_FACILITY } from "@/tests/mocks/dataMocks";
+import { TAILINGS_STORAGE_FACILITY } from "@mds/common/tests/mocks/dataMocks";
 
 const baseExpectedValue = {
   tsf: {},
