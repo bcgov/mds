@@ -111,7 +111,7 @@ const ComplianceOrdersTable = (props) => (
       getDataSource: (record) =>
         record.documents.map((file) => transformFileRowData(file, record.report_no)),
       subTableColumns: fileColumns,
-      rowExpandable: (record) => record.documents.length > 0,
+      rowExpandable: (record) => record.documents?.length > 0,
       recordDescription: "document details",
     }}
   />
