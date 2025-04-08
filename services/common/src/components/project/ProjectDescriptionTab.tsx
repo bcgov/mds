@@ -54,7 +54,7 @@ import { formatProjectPayload } from "@mds/common/utils/helpers";
 import ProjectCallout from "../projects/ProjectCallout";
 import EnvironmentAuthorizationDocumentsModal from "../documents/EnvironmentAuthorizationDocumentsModal";
 
-const ProjectDescriptionTab = ({ tab = "project-description" }) => {
+const ProjectDescriptionTab = () => {
   const [shouldDisplayRetryButton, setShouldDisplayRetryButton] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -295,43 +295,40 @@ const ProjectDescriptionTab = ({ tab = "project-description" }) => {
   };
 
   useEffect(() => {
-    if (tab === 'project-description') {
-      loadOtherActPermitData(
-        project.project_summary.authorizations,
-        AMS_MINES_ACT_TYPE,
-        setMinesActData
-      );
-      loadOtherActPermitData(
-        project.project_summary.authorizations,
-        AMS_WATER_SUSTAINABILITY_ACT_TYPES,
-        setWaterSustainabilityActData
-      );
-      loadOtherActPermitData(
-        project.project_summary.authorizations,
-        AMS_FORESTRY_ACT_TYPE,
-        setForestryActData
-      );
-      const amsAuthorizations = project?.project_summary.authorizations?.filter(
-        auth => auth.ams_tracking_number && auth.ams_tracking_number !== "0"
-      );
+    loadOtherActPermitData(
+      project.project_summary.authorizations,
+      AMS_MINES_ACT_TYPE,
+      setMinesActData
+    );
+    loadOtherActPermitData(
+      project.project_summary.authorizations,
+      AMS_WATER_SUSTAINABILITY_ACT_TYPES,
+      setWaterSustainabilityActData
+    );
+    loadOtherActPermitData(
+      project.project_summary.authorizations,
+      AMS_FORESTRY_ACT_TYPE,
+      setForestryActData
+    );
+    const amsAuthorizations = project?.project_summary.authorizations?.filter(
+      auth => auth.ams_tracking_number && auth.ams_tracking_number !== "0"
+    );
 
-      const amsTrackingNumbers = amsAuthorizations?.map(auth => auth.ams_tracking_number);
-      if (amsTrackingNumbers.length > 0) {
-        setIsLoaded(false);
-        // @ts-ignore
-        dispatch(fetchProjectSummaryEnvironmentAuthorizationStatuses(amsTrackingNumbers)).then((statuses) => {
-          loadEnvironmentActPermitData(project.project_summary.authorizations, statuses);
-          setIsLoaded(true);
-        });
-      } else {
-        loadEnvironmentActPermitData(project.project_summary.authorizations, amsTrackingNumbers);
-      }
+    const amsTrackingNumbers = amsAuthorizations?.map(auth => auth.ams_tracking_number);
+    if (amsTrackingNumbers.length > 0) {
+      setIsLoaded(false);
+      // @ts-ignore
+      dispatch(fetchProjectSummaryEnvironmentAuthorizationStatuses(amsTrackingNumbers)).then((statuses) => {
+        loadEnvironmentActPermitData(project.project_summary.authorizations, statuses);
+        setIsLoaded(true);
+      });
+    } else {
+      loadEnvironmentActPermitData(project.project_summary.authorizations, amsTrackingNumbers);
     }
   }, [
     project.project_summary.authorizations,
     transformedProjectSummaryAuthorizationTypes,
     dropdownProjectSummaryPermitTypes,
-    tab,
   ]);
 
   const handleViewProjectDescriptionClicked = () => {

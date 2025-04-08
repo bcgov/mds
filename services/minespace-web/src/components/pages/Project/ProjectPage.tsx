@@ -206,7 +206,7 @@ const ProjectPage: FC = () => {
       key: "project-description",
       children: (
         <div className={pageClass}>
-          <ProjectDescriptionTab tab={activeTab} />
+          <ProjectDescriptionTab />
         </div>
       ),
     },
@@ -260,6 +260,7 @@ const ProjectPage: FC = () => {
             onChange={handleTabChange}
             className="core-tabs fixed-tabs-tabs"
             items={tabItems}
+            destroyInactiveTabPane={true}
           />
         </Col>
       </Row>

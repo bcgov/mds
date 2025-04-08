@@ -125,7 +125,7 @@ const Project: FC = () => {
       label: "Project Description",
       children: (
         <div className="padding-lg">
-          <ProjectDescriptionTab tab={activeTab} />
+          <ProjectDescriptionTab />
         </div>
       ),
     },
@@ -177,6 +177,7 @@ const Project: FC = () => {
               centered
               onTabClick={handleTabChange}
               items={tabItems}
+              destroyInactiveTabPane={true}
             />
           </LoadingWrapper>
         }

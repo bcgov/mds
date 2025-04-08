@@ -936,6 +936,21 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         ams_tracking_result = next((item for item in ams_tracking_results if item.get(
             'project_summary_authorization_guid') == project_summary_authorization_guid), None)
         return ams_tracking_result
+    
+    def set_ams_tracking_details(self, authorization, ams_tracking_details):
+        ams_error_details = ams_tracking_details.get('detail', None)
+        if ams_error_details and isinstance(ams_error_details, list):
+            authorization['ams_status_code'] = '400'
+            authorization['ams_outcome'] = ams_error_details
+        elif ams_error_details and isinstance(ams_error_details, str):
+            authorization['ams_status_code'] = ams_tracking_details.get('status')
+            authorization['ams_outcome'] = [ams_error_details]
+        elif not ams_error_details:
+            authorization['ams_status_code'] = '200'
+            authorization['ams_outcome'] = [ams_tracking_details.get('outcome')]
+            authorization['ams_tracking_number'] = ams_tracking_details.get('trackingnumber', '0')
+        
+        return authorization
 
     @classmethod
     def create(cls,
@@ -1267,43 +1282,24 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 )
 
             for authorization in ams_authorizations.get('amendments', []):
+                amend_auth = authorization
                 if amendment_ams_results:
                     ams_tracking_details = self.get_ams_tracking_details(amendment_ams_results,
-                                                                         authorization.get(
+                                                                         amend_auth.get(
                                                                              'project_summary_authorization_guid'))
                     if ams_tracking_details:
-                        ams_error_details = ams_tracking_details.get('detail', None)
-                        if ams_error_details and isinstance(ams_error_details, list):
-                            authorization['ams_status_code'] = '400'
-                            authorization['ams_outcome'] = ams_error_details
-                        elif ams_error_details and isinstance(ams_error_details, str):
-                            authorization['ams_status_code'] = ams_tracking_details.get('status')
-                            authorization['ams_outcome'] = [ams_error_details]
-                        elif not ams_error_details:
-                            authorization['ams_status_code'] = '200'
-                            authorization['ams_outcome'] = [ams_tracking_details.get('outcome')]
-                        authorization['ams_tracking_number'] = ams_tracking_details.get('trackingnumber', '0')
-                self.create_or_update_authorization(authorization)
+                        amend_auth = self.set_ams_tracking_details(amend_auth, ams_tracking_details)
+                self.create_or_update_authorization(amend_auth)
 
             for authorization in ams_authorizations.get('new', []):
+                new_auth = authorization
                 if new_ams_results:
                     ams_tracking_details = self.get_ams_tracking_details(new_ams_results,
-                                                                         authorization.get(
+                                                                         new_auth.get(
                                                                              'project_summary_authorization_guid'))
                     if ams_tracking_details:
-                        ams_error_details = ams_tracking_details.get('detail', None)
-                        if ams_error_details and isinstance(ams_error_details, list):
-                            authorization['ams_status_code'] = '400'
-                            authorization['ams_outcome'] = ams_error_details
-                        elif ams_error_details and isinstance(ams_error_details, str):
-                            authorization['ams_status_code'] = ams_tracking_details.get('status')
-                            authorization['ams_outcome'] = [ams_error_details]
-                        elif not ams_error_details:
-                            authorization['ams_status_code'] = '200'
-                            authorization['ams_outcome'] = [ams_tracking_details.get('outcome')]
-                        authorization['ams_tracking_number'] = ams_tracking_details.get('trackingnumber', '0')
-
-                self.create_or_update_authorization(authorization)
+                        new_auth = self.set_ams_tracking_details(new_auth, ams_tracking_details)
+                self.create_or_update_authorization(new_auth)
 
         if add_to_session:
             self.save(commit=False)
