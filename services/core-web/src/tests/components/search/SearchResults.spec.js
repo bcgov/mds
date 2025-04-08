@@ -1,5 +1,5 @@
 import React from "react";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import SearchResults from "@/components/search/SearchResults";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";

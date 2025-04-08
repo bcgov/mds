@@ -1,6 +1,6 @@
 import { varianceReducer } from "@mds/common/redux/reducers/varianceReducer";
 import { storeVariances, storeVariance } from "@mds/common/redux/actions/varianceActions";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const baseExpectedValue = {
   variances: [],

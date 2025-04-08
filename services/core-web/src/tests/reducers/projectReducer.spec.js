@@ -7,7 +7,7 @@ import {
   storeMajorMinesApplication,
   storeProjectDecisionPackage,
 } from "@mds/common/redux/actions/projectActions";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const baseExpectedValue = {
   projectSummaries: [],

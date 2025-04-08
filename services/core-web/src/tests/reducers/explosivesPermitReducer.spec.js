@@ -1,6 +1,6 @@
 import { explosivesPermitReducer } from "@mds/common/redux/reducers/explosivesPermitReducer";
 import { storeExplosivesPermits } from "@mds/common/redux/actions/explosivesPermitActions";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const baseExpectedValue = {
   explosivesPermits: [],

@@ -5,7 +5,7 @@ import {
   storeMineIncidentNotes,
   storeMineIncident,
 } from "@mds/common/redux/actions/incidentActions";
-import * as Mocks from "@/tests/mocks/dataMocks";
+import * as Mocks from "@mds/common/tests/mocks/dataMocks";
 
 const baseExpectedValue = {
   incidents: [],

@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import AddPartyRelationshipForm from "@/components/Forms/PartyRelationships/AddPartyRelationshipForm";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants/enums";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { STATIC_CONTENT } from "@mds/common/constants/reducerTypes";

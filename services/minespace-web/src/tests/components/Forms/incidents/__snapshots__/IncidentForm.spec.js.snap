@@ -174,10 +174,6 @@ exports[`IncidentForm renders properly 1`] = `
                   "label": "Underground",
                   "value": "underground",
                 },
-                Object {
-                  "label": "Not Specified",
-                  "value": "",
-                },
               ]
             }
             disabled={true}
@@ -547,6 +543,8 @@ exports[`IncidentForm renders properly 1`] = `
                   "document_name": "Amazing_PDF.pdf",
                   "mine_document_guid": "75855dd1-1f51-4fc1-835f-2dd99ea96f90",
                   "mine_incident_document_type_code": "INI",
+                  "update_user": "test",
+                  "upload_date": "2019-07-04 14:05",
                 },
               ]
             }
@@ -671,6 +669,7 @@ exports[`IncidentForm renders properly 1`] = `
             name="followup_inspection_date"
             normalize={[Function]}
             showTime={false}
+            timezone="Canada/Pacific"
           />
         </Col>
         <Col

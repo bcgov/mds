@@ -21,7 +21,7 @@ import {
   storeMineComments,
 } from "@mds/common/redux/actions/mineActions";
 import { MINES } from "@mds/common/constants/reducerTypes";
-import * as Mock from "@/tests/mocks/dataMocks";
+import * as Mock from "@mds/common/tests/mocks/dataMocks";
 
 const mockResponse = Mock.MINE_RESPONSE;
 const mineResponse = Mock.MINE_RESPONSE.mines[1];

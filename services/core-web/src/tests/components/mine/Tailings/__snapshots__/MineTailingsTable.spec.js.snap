@@ -102,13 +102,38 @@ exports[`MineTailingsTable renders properly 1`] = `
       Array [
         Object {
           "consequence_classification_status_code": "LOW",
+          "dams": Array [
+            Object {
+              "consequence_classification": "LOW",
+              "current_dam_height": 2,
+              "current_elevation": 3,
+              "dam_guid": "123",
+              "dam_name": "Dam Name",
+              "dam_type": "dam",
+              "latitude": 48,
+              "longitude": -127.3,
+              "max_pond_elevation": 15,
+              "min_freeboard_required": 16,
+              "mine_tailings_storage_facility_guid": "abcde-12345",
+              "operating_status": "care_and_maintenance",
+              "permitted_dam_crest_elevation": 35,
+              "update_timestamp": "2019-04-05 21:05:40.123456+00:00",
+              "update_user": "update-user",
+            },
+          ],
+          "facility_type": "tailings_storage_facility",
           "itrb_exemption_status_code": "YES",
           "latitude": null,
           "longitude": null,
           "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
           "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
           "mine_tailings_storage_facility_name": "MockTSF",
+          "mines_act_permit_no": "P-123",
+          "storage_location": "above_ground",
+          "tailings_storage_facility_type": "conventional",
           "tsf_operating_status_code": "OPT",
+          "update_timestamp": "2019-04-05 21:05:40.123456+00:00",
+          "update_user": "test@bceid",
         },
       ]
     }

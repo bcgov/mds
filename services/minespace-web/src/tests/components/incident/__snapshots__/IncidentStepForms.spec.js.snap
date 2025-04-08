@@ -49,6 +49,11 @@ exports[`IncidentStepForm renders properly 1`] = `
     }
     incident={
       Object {
+        "categories": Array [
+          Object {
+            "mine_incident_category_code": "ENV",
+          },
+        ],
         "dangerous_occurrence_subparagraph_ids": Array [
           1747,
         ],
@@ -60,6 +65,8 @@ exports[`IncidentStepForm renders properly 1`] = `
             "document_name": "Amazing_PDF.pdf",
             "mine_document_guid": "75855dd1-1f51-4fc1-835f-2dd99ea96f90",
             "mine_incident_document_type_code": "INI",
+            "update_user": "test",
+            "upload_date": "2019-07-04 14:05",
           },
         ],
         "emergency_services_called": false,
@@ -67,13 +74,15 @@ exports[`IncidentStepForm renders properly 1`] = `
         "followup_inspection_date": null,
         "followup_investigation_type_code": "NO",
         "incident_description": "sHDJGFJAS",
+        "incident_location": "test",
         "incident_timestamp": "2019-07-04 14:05",
+        "incident_timezone": "Canada/Pacific",
         "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
         "mine_incident_guid": "036787af-51d0-4d9c-8f31-f6dc7e5b3cb3",
         "mine_incident_id_year": 2019,
         "mine_incident_no": null,
         "mine_incident_report_no": "2019-48",
-        "mine_name": "Ponderosa",
+        "mine_name": "Test Mine",
         "mms_inspector_initials": null,
         "number_of_fatalities": 0,
         "number_of_injuries": 0,
@@ -84,9 +93,14 @@ exports[`IncidentStepForm renders properly 1`] = `
         "reported_by_phone_ext": null,
         "reported_by_phone_no": "250-360-9494",
         "reported_timestamp": "2019-07-04 14:05",
+        "reported_to_inspector_contacted": false,
         "reported_to_inspector_party_guid": "c002cc91-555a-4edd-9a9c-fcfee8357b00",
+        "responsible_inspector_party": "test",
         "responsible_inspector_party_guid": "eda69201-b283-44ed-92b9-bcbcb5b83e69",
         "status_code": "CLD",
+        "update_timestamp": "test",
+        "update_user": "test",
+        "verbal_notification_provided": false,
       }
     }
     isEditMode={false}

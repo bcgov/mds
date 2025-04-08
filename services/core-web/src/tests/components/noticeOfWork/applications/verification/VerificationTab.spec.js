@@ -2,7 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import { VerificationTab } from "@/components/noticeOfWork/applications/verification/VerificationTab";
 import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const dispatchProps = {};
 const reducerProps = {};

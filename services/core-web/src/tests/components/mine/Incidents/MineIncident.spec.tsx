@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { MineIncident } from "@/components/mine/Incidents/MineIncident";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { store } from "@/App";
 import { Provider } from "react-redux";
 

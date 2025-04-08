@@ -1,4 +1,4 @@
-import { INoDPermit, INoDDocument, INoDContactInterface } from "@mds/common/interfaces";
+import { INoDDocument, INoDContactInterface, IPermit } from "@mds/common/interfaces";
 import { NoDStatusDisplayEnum, NodStatusSaveEnum, NoDTypeSaveEnum } from "@mds/common/constants/enums";
 
 export interface INoticeOfDeparture {
@@ -15,7 +15,7 @@ export interface INoticeOfDeparture {
     mine_name: string;
   };
   documents: INoDDocument[];
-  permit: Partial<INoDPermit>;
+  permit: Partial<IPermit>;
   submission_timestamp: string;
   update_timestamp: string;
   nod_contacts?: INoDContactInterface[];

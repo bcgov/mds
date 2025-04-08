@@ -8,7 +8,7 @@ import {
 } from "@mds/common/redux/actions/noticeOfDepartureActions";
 import { noticeOfDepartureReducer } from "@mds/common/redux/reducers/noticeOfDepartureReducer";
 import { NOTICES_OF_DEPARTURE } from "@mds/common/constants/reducerTypes";
-import * as Mock from "@/tests/mocks/dataMocks";
+import * as Mock from "@mds/common/tests/mocks/dataMocks";
 
 const mockState = {
   noticesOfDeparture: Mock.NOTICES_OF_DEPARTURE.records,

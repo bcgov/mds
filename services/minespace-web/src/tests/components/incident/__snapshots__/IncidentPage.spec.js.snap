@@ -49,6 +49,11 @@ exports[`IncidentPage renders properly 1`] = `
     }
     incident={
       Object {
+        "categories": Array [
+          Object {
+            "mine_incident_category_code": "ENV",
+          },
+        ],
         "dangerous_occurrence_subparagraph_ids": Array [
           1747,
         ],
@@ -60,6 +65,8 @@ exports[`IncidentPage renders properly 1`] = `
             "document_name": "Amazing_PDF.pdf",
             "mine_document_guid": "75855dd1-1f51-4fc1-835f-2dd99ea96f90",
             "mine_incident_document_type_code": "INI",
+            "update_user": "test",
+            "upload_date": "2019-07-04 14:05",
           },
         ],
         "emergency_services_called": false,
@@ -67,13 +74,15 @@ exports[`IncidentPage renders properly 1`] = `
         "followup_inspection_date": null,
         "followup_investigation_type_code": "NO",
         "incident_description": "sHDJGFJAS",
+        "incident_location": "test",
         "incident_timestamp": "2019-07-04 14:05",
+        "incident_timezone": "Canada/Pacific",
         "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
         "mine_incident_guid": "036787af-51d0-4d9c-8f31-f6dc7e5b3cb3",
         "mine_incident_id_year": 2019,
         "mine_incident_no": null,
         "mine_incident_report_no": "2019-48",
-        "mine_name": "Ponderosa",
+        "mine_name": "Test Mine",
         "mms_inspector_initials": null,
         "number_of_fatalities": 0,
         "number_of_injuries": 0,
@@ -84,9 +93,14 @@ exports[`IncidentPage renders properly 1`] = `
         "reported_by_phone_ext": null,
         "reported_by_phone_no": "250-360-9494",
         "reported_timestamp": "2019-07-04 14:05",
+        "reported_to_inspector_contacted": false,
         "reported_to_inspector_party_guid": "c002cc91-555a-4edd-9a9c-fcfee8357b00",
+        "responsible_inspector_party": "test",
         "responsible_inspector_party_guid": "eda69201-b283-44ed-92b9-bcbcb5b83e69",
         "status_code": "CLD",
+        "update_timestamp": "test",
+        "update_user": "test",
+        "verbal_notification_provided": false,
       }
     }
     location={
@@ -94,6 +108,24 @@ exports[`IncidentPage renders properly 1`] = `
         "state": Object {
           "current": 0,
           "mine": Object {
+            "latest_mine_status": Object {
+              "effective_date": "2024-03-07T15:49:45.989485+00:00",
+              "expiry_date": null,
+              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+              "mine_status_guid": "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
+              "mine_status_xref_guid": "4924b221-f895-479d-ad0d-7fde81795813",
+              "status_date": null,
+              "status_description": "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
+              "status_labels": Array [
+                "Operating",
+                "Seasonal",
+              ],
+              "status_values": Array [
+                "OP",
+                "SEA",
+              ],
+            },
+            "major_mine_ind": true,
             "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
             "mine_location": Object {
               "latitude": null,
@@ -101,51 +133,81 @@ exports[`IncidentPage renders properly 1`] = `
             },
             "mine_name": "mine3",
             "mine_no": "BLAH9091",
-            "mine_permit": Array [],
+            "mine_permit_numbers": Array [],
             "mine_region": "NE",
-            "mine_status": Object {
-              "effective_date": "2018-10-16",
-              "expiry_date": "9999-12-31",
-              "status_labels": Array [
-                "Closed",
-                "Care & Maintenance",
-              ],
-              "statusvalue": Array [
-                "CLD",
-                "CM",
-              ],
-            },
+            "mine_status": Array [
+              Object {
+                "effective_date": "2024-03-07T15:49:45.989485+00:00",
+                "expiry_date": null,
+                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "mine_status_guid": "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
+                "mine_status_xref_guid": "4924b221-f895-479d-ad0d-7fde81795813",
+                "status_date": null,
+                "status_description": "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
+                "status_labels": Array [
+                  "Operating",
+                  "Seasonal",
+                ],
+                "status_values": Array [
+                  "OP",
+                  "SEA",
+                ],
+              },
+            ],
             "mine_tailings_storage_facilities": Array [
               Object {
+                "consequence_classification_status_code": "LOW",
                 "dams": Array [
                   Object {
-                    "consequence_classification": "low",
-                    "current_dam_height": "123",
-                    "current_elevation": "123",
-                    "dam_guid": "e2629897-053e-4218-9299-479375e47f78",
-                    "dam_name": "MockDam",
+                    "consequence_classification": "LOW",
+                    "current_dam_height": 2,
+                    "current_elevation": 3,
+                    "dam_guid": "123",
+                    "dam_name": "Dam Name",
                     "dam_type": "dam",
-                    "latitude": "123",
-                    "longitude": "123",
-                    "max_pond_elevation": "123",
-                    "min_freeboard_required": "123",
-                    "operating_status": "operation",
-                    "permitted_dam_crest_elevation": "123",
+                    "latitude": 48,
+                    "longitude": -127.3,
+                    "max_pond_elevation": 15,
+                    "min_freeboard_required": 16,
+                    "mine_tailings_storage_facility_guid": "abcde-12345",
+                    "operating_status": "care_and_maintenance",
+                    "permitted_dam_crest_elevation": 35,
+                    "update_timestamp": "2019-04-05 21:05:40.123456+00:00",
+                    "update_user": "update-user",
                   },
                 ],
+                "facility_type": "tailings_storage_facility",
+                "itrb_exemption_status_code": "YES",
+                "latitude": null,
+                "longitude": null,
                 "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                 "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
                 "mine_tailings_storage_facility_name": "MockTSF",
+                "mines_act_permit_no": "P-123",
+                "storage_location": "above_ground",
+                "tailings_storage_facility_type": "conventional",
+                "tsf_operating_status_code": "OPT",
+                "update_timestamp": "2019-04-05 21:05:40.123456+00:00",
+                "update_user": "test@bceid",
               },
             ],
             "mine_type": Array [
               Object {
                 "mine_tenure_type_code": "PLR",
+                "mine_type_detail": Array [],
               },
               Object {
                 "mine_tenure_type_code": "MIN",
+                "mine_type_detail": Array [],
               },
             ],
+            "verified_status": Object {
+              "healthy_ind": null,
+              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+              "mine_name": null,
+              "verifying_timestamp": null,
+              "verifying_user": null,
+            },
           },
         },
       }

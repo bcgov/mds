@@ -1,6 +1,6 @@
 import * as actionTypes from "@mds/common/constants/actionTypes";
 import { COMPLIANCE } from "@mds/common/constants/reducerTypes";
-import { IComplianceArticle } from "@mds/common/interfaces";
+import { IComplianceArticle, IMineComplianceInfo } from "@mds/common/interfaces";
 import { RootState } from "@mds/common/redux/rootState";
 
 /**
@@ -36,6 +36,6 @@ const complianceReducerObject = {
   [COMPLIANCE]: complianceReducer,
 };
 
-export const getMineComplianceInfo = (state: RootState) => state[COMPLIANCE].mineComplianceInfo;
+export const getMineComplianceInfo = (state: RootState): IMineComplianceInfo => state[COMPLIANCE].mineComplianceInfo;
 
 export default complianceReducerObject;

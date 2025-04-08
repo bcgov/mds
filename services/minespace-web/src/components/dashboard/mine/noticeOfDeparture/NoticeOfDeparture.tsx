@@ -13,7 +13,7 @@ import { getNoticesOfDeparture } from "@mds/common/redux/selectors/noticeOfDepar
 import { ConnectedProps, connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { useLocation } from "react-router-dom";
-import { IMine, INodDocumentPayload, INoticeOfDeparture, INoDPermit } from "@mds/common/interfaces";
+import { IMine, INodDocumentPayload, INoticeOfDeparture, IPermit } from "@mds/common/interfaces";
 
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
@@ -29,9 +29,8 @@ import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { NodStatusSaveEnum } from "@mds/common/constants/enums";
 
 interface NoticeOfDepartureProps {
-  mine: IMine;
   nods: INoticeOfDeparture[];
-  permits: INoDPermit[];
+  permits: IPermit[];
   openModal: typeof openModal;
   closeModal: typeof closeModal;
   createNoticeOfDeparture: ActionCreator<typeof createNoticeOfDeparture>;

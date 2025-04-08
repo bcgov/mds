@@ -1,54 +1,30 @@
 import React from "react";
-import { connect } from "react-redux";
-import { getFormValues } from "@mds/common/components/forms/form";
-import * as FORM from "@/constants/forms";
-import AddNoticeOfDepartureForm, {
-  AddNoticeOfDepartureFormProps,
-} from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
+import AddNoticeOfDepartureForm from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
 import {
-  INoDPermit,
   ICreateNoD,
   INodDocumentPayload,
   INoticeOfDeparture,
+  IPermit,
 } from "@mds/common/interfaces";
 import { AxiosResponse } from "axios";
-import { RootState } from "@/App";
-
 interface AddNoticeOfDepartureModalProps {
   onSubmit: (
     permitNumber: string,
     values: ICreateNoD,
     documentArray: INodDocumentPayload[]
   ) => Promise<AxiosResponse<INoticeOfDeparture>>;
-  initialValues: AddNoticeOfDepartureFormProps;
-  afterClose: () => void;
-  closeModal: () => void;
   mineGuid: string;
-  permits: INoDPermit[];
+  permits: IPermit[];
 }
 
 const AddNoticeOfDepartureModal: React.FC<AddNoticeOfDepartureModalProps> = (props) => {
-  const { onSubmit, initialValues, afterClose, closeModal, mineGuid, permits } = props;
-
-  const close = () => {
-    closeModal();
-    afterClose();
-  };
+  const { onSubmit, mineGuid, permits } = props;
 
   return (
     <div>
-      <AddNoticeOfDepartureForm
-        permits={permits}
-        onSubmit={onSubmit}
-        mineGuid={mineGuid}
-        initialValues={initialValues}
-      />
+      <AddNoticeOfDepartureForm permits={permits} onSubmit={onSubmit} mineGuid={mineGuid} />
     </div>
   );
 };
 
-const mapStateToProps = (state: RootState) => ({
-  addNoticeOfDepartureFormValues: getFormValues(FORM.ADD_NOTICE_OF_DEPARTURE)(state) || {},
-});
-
-export default connect(mapStateToProps)(AddNoticeOfDepartureModal);
+export default AddNoticeOfDepartureModal;

@@ -52,19 +52,19 @@ exports[`ContactList renders properly 1`] = `
         ],
         "party_orgbook_entity": undefined,
         "phone": "N/A",
-        "role": "",
+        "role": "N/A",
       },
       Object {
         "email": undefined,
         "emptyField": "N/A",
         "key": "18145c75-49ad-0101-85f3-a43e45ae989a",
         "name": Array [
-          "mock Two",
+          "mock name",
           "mock Two",
         ],
         "party_orgbook_entity": undefined,
         "phone": "N/A",
-        "role": "",
+        "role": "N/A",
       },
     ]
   }
