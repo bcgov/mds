@@ -50,7 +50,7 @@ def test_create_new_ams_authorization_unsuccessful_outcome(test_client):
                                                       data.get('incorporation_number'))
 
         mock_create_new_ams_authorization.assert_called_once()
-        assert result[0]['detail'] == 'some error'
+        assert result[0]['detail'][0] == "some error"
 
 
 def test_create_new_ams_authorization_successful_outcome(test_client):
@@ -376,7 +376,7 @@ def test_create_amendment_ams_authorization_successful_outcome(test_client):
 
 def test_get_ams_authorization_status_unsuccessful_outcome(test_client):
     ams_tracking_numbers = ['12354']
-    ams_error_messages = 'AMS Services get status request returned 400.\n Error: No object found in AMS for trackingNumber: 12354'
+    ams_error_messages = "AMS Services get status request returned 400.\n Error: No object found in AMS for trackingNumber: 12354"
     mock_return_value = [
         {
             "ams_tracking_number": "12354",
@@ -396,7 +396,7 @@ def test_get_ams_authorization_status_unsuccessful_outcome(test_client):
         service = AMSApiService()
         result = service.get_ams_authorization_statuses(ams_tracking_numbers)
         mock_get_ams_authorization_status.assert_called_once()
-        assert result[0]['message'] == "No object found in AMS for trackingNumber: 12354"
+        assert result[0]['errors'][0] == ["AMS Services get status request returned 400.\n Error: No object found in AMS for trackingNumber: 12354"]
 
 def test_get_ams_authorization_status_successful_outcome(test_client):
     ams_tracking_numbers = ['442542']
