@@ -35,7 +35,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Git Ops Push
-        run: ./gitops/commit.sh core-web dev test ${{ github.actor }} ${{ secrets.GITHUB_TOKEN }}
+        run: ./gitops/commit.sh core-web dev test ${{ github.actor }} ${{ github.token }}
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install oc
