@@ -176,6 +176,7 @@ export const TailingsSummaryPage: FC = () => {
                 start_date: values[attr].start_date,
                 end_date: values[attr].end_date,
                 end_current: true,
+                is_draft: tsf.is_draft
               },
               successMessage
             )

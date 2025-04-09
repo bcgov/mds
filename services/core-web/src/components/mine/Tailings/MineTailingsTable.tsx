@@ -180,6 +180,11 @@ const MineTailingsTable: FC<MineTailingsTableProps> = (props) => {
       ),
     },
     {
+      title: "Submission Status",
+      dataIndex: "is_draft",
+      render: (is_draft: boolean) => <div title="Submission Status">{is_draft ? "Draft" : "Submitted"}</div>
+    },
+    {
       title: "Consequence Classification",
       key: "consequence_classification_status_code",
       render: (record) => <Typography.Text>{getHighestConsequence(record)}</Typography.Text>,

@@ -9,7 +9,8 @@ from sqlalchemy.schema import FetchedValue
 
 from app.api.constants import MINESPACE_TSF_UPDATE_EMAIL
 from app.api.services.email_service import EmailService
-from app.api.utils.models_mixins import AuditMixin, HistoryMixin, Base
+from app.api.utils.models_mixins import AuditMixin, HistoryMixin, Base, DraftMixin
+from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.config import Config
 from app.extensions import db
 from app.api.dams.models.dam import Dam
@@ -40,9 +41,10 @@ class TailingsStorageFacilityType(Enum):
     def __str__(self):
         return self.value
 
-class MineTailingsStorageFacility(AuditMixin, HistoryMixin, Base):
+class MineTailingsStorageFacility(AuditMixin, HistoryMixin, DraftMixin, Base):
     __tablename__ = "mine_tailings_storage_facility"
     __versioned__ = {}
+    __default_draft_state__ = True
 
     mine_tailings_storage_facility_guid = db.Column(
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
@@ -110,6 +112,20 @@ class MineTailingsStorageFacility(AuditMixin, HistoryMixin, Base):
             'mine_tailings_storage_facility_name': str(self.mine_tailings_storage_facility_name)
         }
 
+    def save_draft(self, commit=True):
+        if self.engineer_of_record:
+            self.engineer_of_record.save_draft(commit)
+        if self.qualified_person:
+            self.qualified_person.save_draft(commit)
+
+        super(MineTailingsStorageFacility, self).save_draft(commit)
+
+    def submit(self, commit=True):
+        self.engineer_of_record.submit(commit)
+        self.qualified_person.submit(commit)
+
+        super(MineTailingsStorageFacility, self).submit(commit)
+        
     @classmethod
     def create(cls,
                mine,
@@ -136,7 +152,8 @@ class MineTailingsStorageFacility(AuditMixin, HistoryMixin, Base):
             storage_location=storage_location,
             facility_type=facility_type,
             tailings_storage_facility_type=tailings_storage_facility_type,
-            mines_act_permit_no=mines_act_permit_no
+            mines_act_permit_no=mines_act_permit_no,
+            is_draft=is_feature_enabled(Feature.TSF_V2)
         )
         mine.mine_tailings_storage_facilities.append(new_tsf)
         if add_to_session:

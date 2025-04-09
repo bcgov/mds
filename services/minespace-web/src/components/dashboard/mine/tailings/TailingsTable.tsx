@@ -152,6 +152,13 @@ export const TailingsTable: FC<TailingsTableProps> = (props) => {
       sorter: (a, b) => (a.tsf_operating_status_code > b.tsf_operating_status_code ? -1 : 1),
     },
     {
+      title: "Submission Status",
+      dataIndex: "is_draft",
+      render: (is_draft: boolean) => (
+        <div title="Submission Status">{is_draft ? "Draft" : "Submitted"}</div>
+      ),
+    },
+    {
       title: "Consequence Classification",
       dataIndex: "consequence_classification_status_code",
       render: (text, record) => <Typography.Text>{getHighestConsequence(record)}</Typography.Text>,

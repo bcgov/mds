@@ -234,7 +234,10 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
         if tailings_storage_facility_type != None:
             setattr(mine_tsf, 'tailings_storage_facility_type', tailings_storage_facility_type)
 
-        mine_tsf.save()
+        if is_submitting or is_feature_enabled(Feature.TSF_V2) == False:
+            mine_tsf.submit()
+        else:
+            mine_tsf.save_draft()
 
         if is_minespace_user():
             mine_tsf.send_email_tsf_update()

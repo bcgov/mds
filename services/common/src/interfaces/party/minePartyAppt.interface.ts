@@ -15,4 +15,5 @@ export interface IMinePartyAppt {
   status?: string;
   party: IParty;
   union_rep_company?: string;
+  is_draft?: boolean;
 }

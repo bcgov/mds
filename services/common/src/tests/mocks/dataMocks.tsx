@@ -71,6 +71,7 @@ export const TSF: ITailingsStorageFacility = {
   mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
   mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
   mine_tailings_storage_facility_name: "MockTSF",
+  is_draft: false,
   latitude: null,
   longitude: null,
   consequence_classification_status_code: ConsequenceClassificationStatusCodeEnum.LOW,
