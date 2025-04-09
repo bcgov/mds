@@ -10,10 +10,7 @@ class OpenIdConnectMiddleware(BaseHTTPMiddleware):
     ) -> JSONResponse:
         if request.url.path == "/docs" or request.url.path == "/openapi.json":
             # Allow swagger UI to load without auth
-            response = await call_next(request)
-            headers = {"X-Content-Type-Options":"nosniff","Cross-Origin-Resource-Policy":"same-origin"}
-            response.headers.update(headers)
-            return response
+            return await call_next(request)
 
         authorization = request.headers.get("Authorization")
         if not authorization:
