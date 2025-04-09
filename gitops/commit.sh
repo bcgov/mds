@@ -37,7 +37,7 @@ function commit() {
 }
 
 if [ ! -d $REPO_LOCATION/gitops/tenant-gitops-4c2ba9 ]; then
-    git clone https://v-y-a-s:$GITHUB_TOKEN@github.com/bcgov-c/tenant-gitops-4c2ba9 $REPO_LOCATION/gitops/tenant-gitops-4c2ba9
+    git clone https://$ACTOR_NAME:$GITHUB_TOKEN@github.com/bcgov-c/tenant-gitops-4c2ba9 $REPO_LOCATION/gitops/tenant-gitops-4c2ba9
 fi
 
 # Replace the commit id with new commit id of latest push
