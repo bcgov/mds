@@ -176,7 +176,7 @@ const MineTailingsTable: FC<MineTailingsTableProps> = (props) => {
       title: "Operating Status",
       dataIndex: "tsf_operating_status_code",
       render: (text) => (
-        <div title="Operating Status">{TSFOperatingStatusCodeHash[text] || EMPTY_FIELD}</div>
+        <div title="Operating Status">{TSFOperatingStatusCodeHash[text] ?? EMPTY_FIELD}</div>
       ),
     },
     {
@@ -195,7 +195,7 @@ const MineTailingsTable: FC<MineTailingsTableProps> = (props) => {
       width: "5%",
       render: (text) => (
         <div title="Has Independent Tailings Review Board?">
-          {itrmExemptionStatusCodeHash[text] || EMPTY_FIELD}
+          {itrmExemptionStatusCodeHash[text] ?? EMPTY_FIELD}
         </div>
       ),
     },
@@ -220,12 +220,12 @@ const MineTailingsTable: FC<MineTailingsTableProps> = (props) => {
     {
       title: "Latitude",
       dataIndex: "latitude",
-      render: (text) => <div title="Latitude">{text || EMPTY_FIELD}</div>,
+      render: (text) => <div title="Latitude">{text ?? EMPTY_FIELD}</div>,
     },
     {
       title: "Longitude",
       dataIndex: "longitude",
-      render: (text) => <div title="Longitude">{text || EMPTY_FIELD}</div>,
+      render: (text) => <div title="Longitude">{text ?? EMPTY_FIELD}</div>,
     },
     ...(tsfV2Enabled ? [renderActionsColumn({ actions: newTSFActions })] : [renderOldTSFActions()]),
   ];
