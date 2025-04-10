@@ -1,6 +1,6 @@
 import React from "react";
 import Overview from "./overview/Overview";
-import Projects from "./projects/Projects";
+import ViewProjects from "./projects/ViewProjects";
 import PermitTabContainer from "./permits/PermitTabContainer";
 import Inspections from "./inspections/Inspections";
 import Tailings from "./tailings/Tailings";
@@ -23,7 +23,7 @@ import {
   faUserMagnifyingGlass,
 } from "@fortawesome/pro-light-svg-icons";
 
-export const getMineDashboardRoutes = (isMajorMine: boolean) =>
+export const getMineDashboardRoutes = () =>
   [
     {
       key: "overview",
@@ -31,11 +31,11 @@ export const getMineDashboardRoutes = (isMajorMine: boolean) =>
       icon: <FontAwesomeIcon icon={faHouse} style={{ width: "24px" }} />,
       component: Overview,
     },
-    isMajorMine && {
+    {
       key: "applications",
       label: "Applications",
       icon: <FontAwesomeIcon icon={faFiles} style={{ width: "24px" }} />,
-      component: Projects,
+      component: ViewProjects,
     },
     {
       key: "permits",
