@@ -15,7 +15,7 @@ import { getMineWorkInformations } from "@mds/common/redux/selectors/workInforma
 import { formatDateTime } from "@common/utils/helpers";
 import { EDIT_PENCIL } from "@/constants/assets";
 import AddMineWorkInformationForm from "@/components/Forms/AddMineWorkInformationForm";
-import { getWorkInformationBadgeStatusType } from "@/constants/theme";
+import { getWorkInformationBadgeStatusType } from "@mds/common/constants/theme";
 import { formatDate } from "@/utils/helpers";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";

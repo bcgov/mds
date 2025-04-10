@@ -8,7 +8,7 @@ import { Row, Col, Descriptions, Typography, Badge, Tooltip } from "antd";
 import { dateNotBeforeOther, dateNotAfterOther, date } from "@mds/common/redux/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import { getWorkInformationBadgeStatusType } from "@/constants/theme";
+import { getWorkInformationBadgeStatusType } from "@mds/common/constants/theme";
 import * as STRINGS from "@/constants/strings";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";

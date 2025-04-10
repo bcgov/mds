@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
-import { getApplicationStatusType } from "@/constants/theme";
+import { getApplicationStatusType } from "@mds/common/constants/theme";
 import DocumentLink from "@/components/common/DocumentLink";
 import { isEmpty } from "lodash";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
