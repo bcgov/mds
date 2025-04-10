@@ -9,7 +9,7 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAcknowled
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus
 
 from flask_restx import Resource, reqparse
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.response_models import MINE_TSF_DETAIL_MODEL, MINE_TSF_MODEL
@@ -31,13 +31,11 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
     parser.add_argument(
         'longitude',
         type=lambda x: Decimal(x) if x else None,
-        help='Longitude point for the mine.',
-        location='json')
+        help='Longitude point for the mine.')
     parser.add_argument(
         'latitude',
         type=lambda x: Decimal(x) if x else None,
-        help='Latitude point for the mine.',
-        location='json')
+        help='Latitude point for the mine.')
     parser.add_argument(
         'consequence_classification_status_code',
         type=str,
@@ -57,48 +55,40 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
         'eor_party_guid',
         type=str,
         help='GUID of the party that is the Engineer of Record for this TSF.',
-        location='json',
         store_missing=False)
     parser.add_argument(
         'tqp_party_guid',
         type=str,
         help='GUID of the party that is the Qualified Person for this TSF.',
-        location='json',
         store_missing=False)
     parser.add_argument(
         'notes',
         type=str,
         help='Any additional notes to be added to the tailing.',
-        trim=True,
-        location='json')
+        trim=True)
     parser.add_argument(
         'storage_location',
         type=str,
         help='Storage location of the tailings (above or below ground)',
-        location='json',
         store_missing=False)
     parser.add_argument(
         'facility_type',
         type=str,
         help='Type of facility.',
-        location='json',
         store_missing=False)
     parser.add_argument(
         'tailings_storage_facility_type',
         type=str,
         help='Type of tailings storage facility.',
-        location='json',
         store_missing=False)
     parser.add_argument(
         'mines_act_permit_no',
         type=str,
         help='Mines Act Permit Number',
-        location='json',
         store_missing=False)
     parser.add_argument(
         'is_submitting',
         type=bool,
-        location='json',
         store_missing=False
     )
 
@@ -235,7 +225,10 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
             setattr(mine_tsf, 'tailings_storage_facility_type', tailings_storage_facility_type)
 
         if is_submitting or is_feature_enabled(Feature.TSF_V2) == False:
-            mine_tsf.submit()
+            try:
+                mine_tsf.submit()
+            except Exception as error:
+                raise BadRequest(error)
         else:
             mine_tsf.save_draft()
 

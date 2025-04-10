@@ -121,6 +121,12 @@ class MineTailingsStorageFacility(AuditMixin, HistoryMixin, DraftMixin, Base):
         super(MineTailingsStorageFacility, self).save_draft(commit)
 
     def submit(self, commit=True):
+        missing_eor = None if self.engineer_of_record else "Engineer of Record"
+        missing_qp = None if self.qualified_person else "Qualified Person"
+
+        if missing_eor or missing_qp:
+            missing = filter(None, [missing_eor, missing_qp])
+            raise TypeError(f'Missing mine party appointments: {", ".join(missing)}')
         self.engineer_of_record.submit(commit)
         self.qualified_person.submit(commit)
 
