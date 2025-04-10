@@ -8,7 +8,7 @@ import * as Strings from "@mds/common/constants/strings";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";
-import { getWorkInformationBadgeStatusType } from "@mds/common/constants/theme";
+import { getWorkInformationBadgeStatusType } from "@mds/common/constants/badgeStatusTypes";
 import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
