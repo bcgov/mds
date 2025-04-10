@@ -801,6 +801,66 @@ NOW_VIEW_MODEL = api.model(
         fields.String,
     })
 
+NOW_VIEW_MODEL_PROPONENT = api.model(
+    'NOW_VIEW_MODEL_PROPONENT', {
+        'now_application_guid':
+        fields.String,
+        'mine_guid':
+        fields.String,
+        'mine_no':
+        fields.String,
+        'mine_name':
+        fields.String,
+        'mine_region':
+        fields.String,
+        'now_number':
+        fields.String,
+        'permit_no':
+        fields.String,
+        'party':
+        fields.String,
+        'lead_inspector_name':
+        fields.String,
+        'notice_of_work_type_description':
+        fields.String,
+        'now_application_status_description':
+        fields.String,
+        'received_date':
+        Date,
+        'is_historic':
+        fields.Boolean,
+        'originating_system':
+        fields.String,
+        'import_timestamp':
+        DateTime,
+        'update_timestamp':
+        DateTime,
+        'application_type_code':
+        fields.String,
+        'application_type_description':
+        fields.String,
+        'application_reason_codes':
+        fields.List(fields.Nested(APPLICATION_REASON_CODE)),
+        'permittee':
+        fields.Nested(PARTY, skip_none=True),
+        'status_reason':
+        fields.String,
+        'now_application_status_code':
+        fields.String,
+        'decision_date':
+        Date,
+        'source_permit_no':
+        fields.String,
+        'source_permit_amendment_issue_date':
+        fields.Date,
+        'latest_response_date':
+        fields.Date,
+        'regional_contact':
+        fields.String,
+        'mine_purpose':
+        fields.String,
+    })
+
 PAGINATED_LIST = api.model(
     'List', {
         'current_page': fields.Integer,

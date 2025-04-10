@@ -34,7 +34,7 @@ const applySortIndicator = (
   });
 
 const transformRowData = (applications: INoticeOfWork[]) =>
-  applications.map((application) => ({
+  applications?.map((application) => ({
     key: application.now_application_guid,
     now_application_guid: application.now_application_guid,
     now_number: application.now_number || Strings.EMPTY_FIELD,
@@ -134,7 +134,7 @@ export const NoticeOfWorkTable: FC<NoticeOfWorkTableProps> = ({
         <div title="">
           <Row gutter={1}>
             <Col span={12}>
-              <Link to={routes.EDIT_PROJECT.dynamicRoute("")}>View</Link>
+              <Link to={"#TODO"}>View</Link>
             </Col>
           </Row>
         </div>

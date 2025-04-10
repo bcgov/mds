@@ -17,7 +17,7 @@ import { INoticeOfWork, IOption } from "@mds/common/interfaces";
 import { ColumnType } from "antd/es/table";
 import { SortOrder } from "antd/es/table/interface";
 import { NoWSearchParams } from "./NoticeOfWorkHomePage";
-import { getApplicationStatusType } from "@mds/common/constants/theme";
+import { getApplicationStatusType } from "@mds/common/constants/badgeStatusTypes";
 
 /**
  * NoticeOfWorkTable - paginated list of notice of work applications

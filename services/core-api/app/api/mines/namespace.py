@@ -192,6 +192,7 @@ from app.api.notice_of_departure.resources.notice_of_departure_document import (
 from app.api.parties.party_appt.resources.mine_party_appt_document_upload_resource import (
     MinePartyApptDocumentUploadResource,
 )
+from app.api.now_applications.resources.now_application_list_proponent_resource import NOWApplicationListProponentResource
 from flask_restx import Namespace
 
 api = Namespace('mines', description='Mine related operations')
@@ -360,6 +361,8 @@ api.add_resource(MineCommentResource, '/<string:mine_guid>/comments/<string:mine
 api.add_resource(EPICResource, '/<string:mine_guid>/epic')
 
 api.add_resource(MineNoticeOfDepartureNewDocumentUploadResource, '/<string:mine_guid>/notices-of-departure/documents')
+
+api.add_resource(NOWApplicationListProponentResource, '/<string:mine_guid>/now-applications')
 
 api.add_resource(MineAlertListResource, '/<string:mine_guid>/alerts')
 api.add_resource(MineAlertResource, '/<string:mine_guid>/alerts/<string:mine_alert_guid>')

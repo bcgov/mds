@@ -1,13 +1,14 @@
 import React, { FC, useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Row, Col, Typography } from "antd";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { IMine } from "@mds/common/interfaces/mine.interface";
 import NoticeOfWorkTable from "./NoticeOfWorkTable";
 import queryString from "query-string";
 import { getNoticeOfWorkList } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
-import { fetchMineNoticeOfWorkApplications } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
+import { fetchProponentNoticeOfWorkApplications } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 export interface NoWSearchParams {
   sort_field: string;
@@ -22,7 +23,7 @@ const defaultParams = {
 export const Projects: FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const applications = useSelector(getNoticeOfWorkList);
 
   const { search } = useLocation();
@@ -33,14 +34,12 @@ export const Projects: FC = () => {
     setParams(searchParams);
   };
 
-  const handleFetchData = () => {
-    Promise.all([dispatch(fetchMineNoticeOfWorkApplications())]).then(() => {
-      setIsLoaded(true);
-    });
-  };
-
   useEffect(() => {
-    handleFetchData();
+    if (!isLoaded) {
+      dispatch(fetchProponentNoticeOfWorkApplications(mine.mine_guid)).then(() => {
+        setIsLoaded(true);
+      });
+    }
   }, []);
 
   return (

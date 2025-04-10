@@ -23,7 +23,7 @@ import {
   faUserMagnifyingGlass,
 } from "@fortawesome/pro-light-svg-icons";
 
-export const getMineDashboardRoutes = () =>
+export const getMineDashboardRoutes = (showApplications) =>
   [
     {
       key: "overview",
@@ -31,7 +31,7 @@ export const getMineDashboardRoutes = () =>
       icon: <FontAwesomeIcon icon={faHouse} style={{ width: "24px" }} />,
       component: Overview,
     },
-    {
+    showApplications && {
       key: "applications",
       label: "Applications",
       icon: <FontAwesomeIcon icon={faFiles} style={{ width: "24px" }} />,
