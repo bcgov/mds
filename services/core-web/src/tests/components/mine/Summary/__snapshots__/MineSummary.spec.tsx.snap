@@ -1,0 +1,584 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineSummary renders properly 1`] = `
+<div>
+  <div
+    class="tab__content"
+  >
+    <div>
+      <h2>
+        General
+      </h2>
+      <div
+        class="ant-divider ant-divider-horizontal"
+        role="separator"
+      />
+    </div>
+    <div
+      data-testid="mockMineHeader"
+    />
+    <br />
+    <br />
+    <br />
+    <br />
+    <div
+      class="ant-row"
+    >
+      <div
+        class="ant-col ant-col-24"
+      >
+        <h4>
+          Work Information
+        </h4>
+        <div
+          class="ant-divider ant-divider-horizontal"
+          role="separator"
+          style="margin: 0px;"
+        />
+      </div>
+    </div>
+    <div
+      class="ant-row"
+      style="margin-left: -8px; margin-right: -8px;"
+    >
+      <div
+        class="ant-col ant-col-24"
+        style="padding-left: 8px; padding-right: 8px;"
+      >
+        <br />
+        This mine has no recorded work information.
+      </div>
+    </div>
+    <br />
+    <div>
+      <br />
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-24"
+        >
+          <h4>
+            Main Contacts
+          </h4>
+          <div
+            class="ant-divider ant-divider-horizontal"
+            role="separator"
+          />
+        </div>
+      </div>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      />
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-24"
+        >
+          <div
+            class="right"
+          >
+            <a
+              href="/mine-dashboard/18145c75-49ad-0101-85f3-a43e45ae989a/mine-information/contacts"
+            >
+              See All Contacts
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-24"
+        >
+          <h4>
+            Permits
+          </h4>
+          <div
+            class="ant-divider ant-divider-horizontal"
+            role="separator"
+          />
+        </div>
+      </div>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12 ant-col-lg-8 ant-col-xl-6 ant-col-xxl-4"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div>
+            <h4>
+              C-12345
+            </h4>
+            <br />
+            <h6>
+              Last Amended
+            </h6>
+            <span>
+              Apr 01 2020
+            </span>
+            <br />
+            <br />
+            <h6>
+              Permittee
+            </h6>
+            <span>
+              <i>
+                None Assigned
+              </i>
+            </span>
+            <br />
+            <br />
+            <h6>
+              Site Property Tenure
+            </h6>
+            <span>
+              <i>
+                N/A
+              </i>
+            </span>
+            <br />
+            <br />
+            <h6>
+              Inspection Fee Exemption
+              <span
+                aria-label="info-circle"
+                class="anticon anticon-info-circle info-tooltip icon-sm"
+                role="img"
+                style="color: rgb(94, 70, 161);"
+              >
+                <svg
+                  aria-hidden="true"
+                  class=""
+                  data-icon="info-circle"
+                  fill="currentColor"
+                  focusable="false"
+                  height="1em"
+                  viewBox="64 64 896 896"
+                  width="1em"
+                >
+                  <path
+                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                  />
+                  <path
+                    d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+                  />
+                </svg>
+              </span>
+            </h6>
+            <span>
+              No
+            </span>
+            <br />
+            <br />
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12 ant-col-lg-8 ant-col-xl-6 ant-col-xxl-4"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div>
+            <h4>
+              M-12345
+            </h4>
+            <br />
+            <h6>
+              Last Amended
+            </h6>
+            <span>
+              Mar 07 2024
+            </span>
+            <br />
+            <br />
+            <h6>
+              Permittee
+            </h6>
+            <span>
+              <i>
+                None Assigned
+              </i>
+            </span>
+            <br />
+            <br />
+            <h6>
+              Site Property Tenure
+            </h6>
+            <span>
+              <i>
+                N/A
+              </i>
+            </span>
+            <br />
+            <br />
+            <h6>
+              Inspection Fee Exemption
+              <span
+                aria-label="info-circle"
+                class="anticon anticon-info-circle info-tooltip icon-sm"
+                role="img"
+                style="color: rgb(94, 70, 161);"
+              >
+                <svg
+                  aria-hidden="true"
+                  class=""
+                  data-icon="info-circle"
+                  fill="currentColor"
+                  focusable="false"
+                  height="1em"
+                  viewBox="64 64 896 896"
+                  width="1em"
+                >
+                  <path
+                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                  />
+                  <path
+                    d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+                  />
+                </svg>
+              </span>
+            </h6>
+            <span>
+              No
+            </span>
+            <br />
+            <br />
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12 ant-col-lg-8 ant-col-xl-6 ant-col-xxl-4"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div>
+            <h4>
+              M-222
+            </h4>
+            <br />
+            <h6>
+              Last Amended
+            </h6>
+            <span>
+              Apr 01 2020
+            </span>
+            <br />
+            <br />
+            <h6>
+              Permittee
+            </h6>
+            <span>
+              <i>
+                None Assigned
+              </i>
+            </span>
+            <br />
+            <br />
+            <h6>
+              Site Property Tenure
+            </h6>
+            <span>
+              <i>
+                N/A
+              </i>
+            </span>
+            <br />
+            <br />
+            <h6>
+              Inspection Fee Exemption
+              <span
+                aria-label="info-circle"
+                class="anticon anticon-info-circle info-tooltip icon-sm"
+                role="img"
+                style="color: rgb(94, 70, 161);"
+              >
+                <svg
+                  aria-hidden="true"
+                  class=""
+                  data-icon="info-circle"
+                  fill="currentColor"
+                  focusable="false"
+                  height="1em"
+                  viewBox="64 64 896 896"
+                  width="1em"
+                >
+                  <path
+                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                  />
+                  <path
+                    d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+                  />
+                </svg>
+              </span>
+            </h6>
+            <span>
+              No
+            </span>
+            <br />
+            <br />
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-24"
+        >
+          <div
+            class="right"
+          >
+            <a
+              href="/mine-dashboard/18145c75-49ad-0101-85f3-a43e45ae989a/permits-and-approvals/permits"
+            >
+              See All Permits
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-24"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <h4>
+            Compliance
+          </h4>
+          <div
+            class="ant-divider ant-divider-horizontal"
+            role="separator"
+          />
+        </div>
+      </div>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-xs-24 ant-col-lg-8"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-card compliance-card"
+          >
+            <div
+              class="ant-card-head"
+            >
+              <div
+                class="ant-card-head-wrapper"
+              >
+                <div
+                  class="ant-card-head-title"
+                >
+                  <div
+                    class="ant-row ant-row-center ant-row-middle"
+                  >
+                    <div
+                      class="center"
+                    >
+                      <span
+                        class="info-display"
+                      >
+                        Dec 12 2018
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-card-body"
+            >
+              <div
+                class="center"
+              >
+                <h4>
+                  Last Inspection Date
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-xs-12 ant-col-lg-8"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-card compliance-card"
+          >
+            <div
+              class="ant-card-head"
+            >
+              <div
+                class="ant-card-head-wrapper"
+              >
+                <div
+                  class="ant-card-head-title"
+                >
+                  <div
+                    class="ant-row ant-row-center ant-row-middle"
+                  >
+                    <img
+                      alt="Open Orders"
+                      src="[object Object]"
+                      style="height: 40px; padding-right: 5px;"
+                    />
+                    <span
+                      class="info-display"
+                    >
+                      5
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-card-body"
+            >
+              <div
+                class="center"
+              >
+                <h4>
+                  Open Orders
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-xs-12 ant-col-lg-8"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-card compliance-card"
+          >
+            <div
+              class="ant-card-head"
+            >
+              <div
+                class="ant-card-head-wrapper"
+              >
+                <div
+                  class="ant-card-head-title"
+                >
+                  <div
+                    class="ant-row ant-row-center ant-row-middle"
+                  >
+                    <img
+                      alt="Overdue Orders"
+                      src="[object Object]"
+                      style="height: 40px; padding-right: 5px;"
+                    />
+                    <span
+                      class="info-display"
+                    >
+                      5
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-card-body"
+            >
+              <div
+                class="center"
+              >
+                <h4>
+                  Overdue Orders
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-24"
+        >
+          <div
+            class="right"
+          >
+            <a
+              href="/mine-dashboard/18145c75-49ad-0101-85f3-a43e45ae989a/oversight/inspections-and-audits"
+            >
+              See All Compliance
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-24"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <h4>
+            Tailings Storage Facilities
+          </h4>
+          <div
+            class="ant-divider ant-divider-horizontal"
+            role="separator"
+          />
+        </div>
+      </div>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12 ant-col-lg-8 ant-col-xl-6 ant-col-xxl-4"
+        >
+          <div>
+            <h4>
+              MockTSF1
+            </h4>
+            <br />
+            <h6>
+              Engineer Of Record
+            </h6>
+            <span>
+              <i>
+                None Assigned
+              </i>
+            </span>
+            <br />
+            <br />
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-24"
+        >
+          <div
+            class="right"
+          >
+            <a
+              href="/mine-dashboard/18145c75-49ad-0101-85f3-a43e45ae989a/permits-and-approvals/tailings"
+            >
+              See All Tailings Storage Facilities
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
