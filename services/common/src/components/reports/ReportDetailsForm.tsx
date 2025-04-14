@@ -273,7 +273,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   }, [parties]);
 
   useEffect(() => {
-    if (mineReportDefinitionOptions) {
+    if (mineReportDefinitionOptions && mineReportDefinitionOptions.length) {
       // Format the mine report definition options for the search bar
       const newFormattedMineReportDefinitionOptions = mineReportDefinitionOptions
         .map((report) => {
