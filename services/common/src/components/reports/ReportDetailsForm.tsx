@@ -273,18 +273,20 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   }, [parties]);
 
   useEffect(() => {
-    // Format the mine report definition options for the search bar
-    const newFormattedMineReportDefinitionOptions = mineReportDefinitionOptions
-      .map((report) => {
-        return {
-          label: formatComplianceCodeReportName(report),
-          value: report.mine_report_definition_guid,
-        };
-      })
-      .sort((a, b) => a.label.localeCompare(b.label));
-    setFormattedMineReportDefinitionOptions(
-      uniqBy(newFormattedMineReportDefinitionOptions, "value")
-    );
+    if (mineReportDefinitionOptions) {
+      // Format the mine report definition options for the search bar
+      const newFormattedMineReportDefinitionOptions = mineReportDefinitionOptions
+        .map((report) => {
+          return {
+            label: formatComplianceCodeReportName(report),
+            value: report.mine_report_definition_guid,
+          };
+        })
+        .sort((a, b) => a.label.localeCompare(b.label));
+      setFormattedMineReportDefinitionOptions(
+        uniqBy(newFormattedMineReportDefinitionOptions, "value")
+      );
+    }
   }, [mineReportDefinitionOptions]);
 
   useEffect(() => {
