@@ -145,7 +145,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
               </a>
               , written acknowledgement to the Chief Inspector is required within 72 hours when an
               Qualified Person (QP) is retained or accepts the role. A report request will be
-              generated upon changes to the EoR
+              generated upon changes to the Qualified person
             </Paragraph>
           }
           showIcon

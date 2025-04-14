@@ -8,6 +8,7 @@ from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_view_all, requires_any_of, \
     MINESPACE_PROPONENT, EDIT_TSF
 from app.api.utils.resources_mixins import UserMixin
+from app.api.utils.feature_flag import Feature, is_feature_enabled
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility, StorageLocation, TailingsStorageFacilityType, FacilityType
@@ -18,6 +19,8 @@ from app.api.mines.response_models import MINE_TSF_DETAIL_MODEL, MINE_TSF_MODEL
 
 
 class MineTailingsStorageFacilityListResource(Resource, UserMixin):
+    tsf_v2 = is_feature_enabled(Feature.TSF_V2)
+
     parser = reqparse.RequestParser()
     parser.add_argument(
         'mine_tailings_storage_facility_name',
@@ -29,27 +32,32 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
         'longitude',
         type=lambda x: Decimal(x) if x else None,
         help='Longitude point for the mine.',
-        location='json')
+        location='json',
+        required=tsf_v2)
     parser.add_argument(
         'latitude',
         type=lambda x: Decimal(x) if x else None,
         help='Latitude point for the mine.',
-        location='json')
+        location='json',
+        required=tsf_v2)
     parser.add_argument(
         'consequence_classification_status_code',
         type=str,
         trim=True,
-        help='Risk Severity Classification')
+        help='Risk Severity Classification',
+        required=tsf_v2)
     parser.add_argument(
         'tsf_operating_status_code',
         type=str,
         trim=True,
-        help='Operating Status of the storage facility')
+        help='Operating Status of the storage facility',
+        required=tsf_v2)
     parser.add_argument(
         'itrb_exemption_status_code',
         type=str,
         trim=True,
-        help='Risk Severity Classification')
+        help='Independent Tailings Review Board Member',
+        required=tsf_v2)
     parser.add_argument(
         'eor_party_guid',
         type=str,
@@ -68,27 +76,31 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
         help='Storage location of the tailings (above or below ground)',
         location='json',
         choices=list(StorageLocation),
-        store_missing=False)
+        store_missing=False,
+        required=tsf_v2)
     parser.add_argument(
         'facility_type',
         type=FacilityType,
         help='Type of facility.',
         location='json',
         choices=list(FacilityType),
-        store_missing=False)
+        store_missing=False,
+        required=tsf_v2)
     parser.add_argument(
         'tailings_storage_facility_type',
         type=TailingsStorageFacilityType,
         help='Type of tailings storage facility.',
         location='json',
         choices=list(TailingsStorageFacilityType),
-        store_missing=False)
+        store_missing=False,
+        required=tsf_v2)
     parser.add_argument(
         'mines_act_permit_no',
         type=str,
         help='Mines Act Permit Number',
         location='json',
-        store_missing=False)
+        store_missing=False,
+        required=tsf_v2)
 
     @api.doc(description='Gets the tailing storage facilites for the given mine')
     @api.marshal_with(

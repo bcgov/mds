@@ -93,4 +93,36 @@ def test_dam_history(test_client, db_session, auth_headers):
     assert name_change['from'] == post_data.get('dam_name', None)
     assert name_change['to'] == new_name
 
-    
+def test_dam_required_fields(db_session, test_client, auth_headers):
+    tsf = MineTailingsStorageFacilityFactory()
+    new_dam_data = {
+        "dam_type": "dam",
+        "dam_name": "Dam Name",
+        "latitude": "48.1234",
+        "longitude": "-117.0987",
+        "operating_status": "construction",
+        "consequence_classification": "LOW",
+        "permitted_dam_crest_elevation": "1.11111",
+        "current_dam_height": "2.22222",
+        "current_elevation": "33.3333",
+        "max_pond_elevation": "4.44444",
+        "min_freeboard_required": "5.55555",
+        "mine_tailings_storage_facility_guid": str(tsf.mine_tailings_storage_facility_guid)
+    }     
+
+
+    for key, _ in new_dam_data.items():
+        data = new_dam_data.copy()
+        del data[key]
+
+        post_resp = test_client.post(
+        '/dams',
+        headers=auth_headers['full_auth_header'],
+        json=data
+    )
+    post_data = json.loads(post_resp.data.decode())
+
+    assert post_resp.status_code == 400, f'Failed assertion for tsf: status_code: field: {key}'
+    assert post_data['message'] == 'Input payload validation failed', f'Failed assertion for tsf: message: field: {key}'
+    error = post_data.get('errors', {}).get(key, '')
+    assert 'Missing required parameter' in error, f'Failed assertion for tsf: error: field: {key}'
