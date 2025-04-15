@@ -831,6 +831,8 @@ NOW_VIEW_MODEL_PROPONENT = api.model(
         fields.Boolean,
         'originating_system':
         fields.String,
+        'application_documents':
+        fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT), skip_none=True),
         'import_timestamp':
         DateTime,
         'update_timestamp':
