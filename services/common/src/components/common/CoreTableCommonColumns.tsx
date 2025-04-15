@@ -117,7 +117,7 @@ export const renderActionsColumn = ({
       const filteredActions = recordActionsFilter ? recordActionsFilter(record, actions) : actions;
       const items = generateActionMenuItems(filteredActions, record);
       return (
-        <Tooltip title={title}>
+        <Tooltip>
           {items.length > 0 && (
             <Dropdown menu={{ items }} placement="bottomLeft" disabled={isRowSelected}>
               <Button data-cy="menu-actions-button" className="actions-dropdown-button" type="text">
