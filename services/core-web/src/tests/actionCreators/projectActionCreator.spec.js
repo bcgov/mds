@@ -16,6 +16,7 @@ import {
   removeDocumentFromMajorMineApplication,
   fetchProjectSummaryMinistryComments,
   createProjectSummaryMinistryComment,
+  fetchProjectSummaryEnvironmentAuthorizationStatuses,
 } from "@mds/common/redux/actionCreators/projectActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
@@ -541,6 +542,34 @@ describe("`fetchProjectSummaryMinistryComments` action creator", () => {
     mockAxios.onGet(url).reply(418, MOCK.ERROR);
 
     return fetchProjectSummaryMinistryComments(projectSummaryGuid)(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`fetchProjectSummaryEnvironmentAuthorizationStatuses` action creator", () => {
+  const url = ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY_ENVIRONMENT_AUTHORIZATION_STATUSES(null);
+  const amsTrackingNumbers = ["442542"];
+  const mockPayload = { ams_tracking_numbers: amsTrackingNumbers };
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = {
+      data: MOCK.AMS_ENVIRONMENT_AUTH_STATUS_RESPONSE
+    };
+    mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
+
+    return fetchProjectSummaryEnvironmentAuthorizationStatuses(amsTrackingNumbers)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPost(url, mockPayload).reply(400, MOCK.ERROR);
+
+    return fetchProjectSummaryEnvironmentAuthorizationStatuses(amsTrackingNumbers)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

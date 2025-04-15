@@ -177,6 +177,7 @@ const Project: FC = () => {
               centered
               onTabClick={handleTabChange}
               items={tabItems}
+              destroyInactiveTabPane={true}
             />
           </LoadingWrapper>
         }

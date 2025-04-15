@@ -1,7 +1,5 @@
 from unittest.mock import patch
-
 from flask import current_app
-
 from app.api.services.ams_api_service import AMSApiService
 
 
@@ -9,8 +7,14 @@ def test_create_new_ams_authorization_unsuccessful_outcome(test_client):
     data = {}
 
     mock_return_value = [
-        {'statusCode': '400', 'errorMessage': 'Missing attribute Is Amendment'}
-    ]
+        {
+            "project_summary_authorization_guid": "ec130a0a-9b31-4ebf-89e4-9d62dc420839",
+            "project_summary_guid": "fb7d7a7d-452b-4357-b0b4-a0cab41d708f",
+            "project_summary_authorization_type": "some type",
+            "detail": ["some error"],
+        }
+]
+
     with current_app.test_request_context() as a, patch(
             "app.api.services.ams_api_service.AMSApiService.create_new_ams_authorization",
             return_value=mock_return_value
@@ -39,10 +43,14 @@ def test_create_new_ams_authorization_unsuccessful_outcome(test_client):
                                                       data.get('facility_pid_pin_crown_file_no'),
                                                       data.get('company_alias'),
                                                       data.get('zoning'),
-                                                      data.get('zoning_reason'))
+                                                      data.get('zoning_reason'),
+                                                      data.get('regional_district_name'),
+                                                      data.get('project_guid'),
+                                                      data.get('payment_contact'),
+                                                      data.get('incorporation_number'))
 
         mock_create_new_ams_authorization.assert_called_once()
-        assert result[0]['statusCode'] == '400'
+        assert result[0]['detail'][0] == "some error"
 
 
 def test_create_new_ams_authorization_successful_outcome(test_client):
@@ -161,7 +169,11 @@ def test_create_new_ams_authorization_successful_outcome(test_client):
                     'address_type_code': 'INT'
                 }
             ],
-        }
+        },
+        'regional_district_name': None,
+        'project_guid': '58336bde-ee23-4b58-ba0a-864fa033e555',
+        'payment_contact': {},
+        'incorporation_number': None,
     }
 
     mock_return_value = [
@@ -196,7 +208,11 @@ def test_create_new_ams_authorization_successful_outcome(test_client):
                                                       data.get('facility_pid_pin_crown_file_no'),
                                                       data.get('company_alias'),
                                                       data.get('zoning'),
-                                                      data.get('zoning_reason'))
+                                                      data.get('zoning_reason'),
+                                                      data.get('regional_district_name'),
+                                                      data.get('project_guid'),
+                                                      data.get('payment_contact'),
+                                                      data.get('incorporation_number'))
         mock_create_new_ams_authorization.assert_called_once()
         assert result[0]['trackingnumber'] == '123456'
 
@@ -350,6 +366,59 @@ def test_create_amendment_ams_authorization_successful_outcome(test_client):
                                                           data.get('facility_pid_pin_crown_file_no'),
                                                           data.get('company_alias'),
                                                           data.get('zoning'),
-                                                          data.get('zoning_reason'))
+                                                          data.get('zoning_reason'),
+                                                          data.get('regional_district_name'),
+                                                          data.get('project_guid'),
+                                                          data.get('payment_contact'),
+                                                          data.get('incorporation_number'))
             create_amendment_ams_authorization.assert_called_once()
             assert result[0]['trackingnumber'] == '123456'
+
+def test_get_ams_authorization_status_unsuccessful_outcome(test_client):
+    ams_tracking_numbers = ['12354']
+    ams_error_messages = "AMS Services get status request returned 400.\n Error: No object found in AMS for trackingNumber: 12354"
+    mock_return_value = [
+        {
+            "ams_tracking_number": "12354",
+            "ams_mining_permit_number": None,
+            "ams_authorization_number": None,
+            "status": None,
+            "regional_case_manager": None,
+            "documents": [],
+            "errors": [ams_error_messages],
+        }
+    ]
+
+    with current_app.test_request_context() as a, patch(
+            "app.api.services.ams_api_service.AMSApiService.get_ams_authorization_statuses",
+            return_value=mock_return_value
+    ) as mock_get_ams_authorization_status:
+        service = AMSApiService()
+        result = service.get_ams_authorization_statuses(ams_tracking_numbers)
+        mock_get_ams_authorization_status.assert_called_once()
+        assert result[0]['errors'][0] == "AMS Services get status request returned 400.\n Error: No object found in AMS for trackingNumber: 12354"
+
+def test_get_ams_authorization_status_successful_outcome(test_client):
+    ams_tracking_numbers = ['442542']
+
+    mock_return_value = [
+        {
+            "ams_tracking_number": "442542",
+            "ams_mining_permit_number": None,
+            "ams_authorization_number": "112497",
+            "status": "New",
+            "regional_case_manager": None,
+            "documents": [],
+            "errors": [],
+        }
+    ]
+
+    with current_app.test_request_context() as a, patch(
+            "app.api.services.ams_api_service.AMSApiService.get_ams_authorization_statuses",
+            return_value=mock_return_value
+    ) as mock_get_ams_authorization_status:
+        service = AMSApiService()
+        result = service.get_ams_authorization_statuses(ams_tracking_numbers)
+        mock_get_ams_authorization_status.assert_called_once()
+        assert result[0]['ams_tracking_number'] == "442542"
+        assert result[0]['status'] == "New"

@@ -38,7 +38,7 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
     exemption_reason = db.Column(db.String, nullable=True)
     exemption_requested = db.Column(db.Boolean, nullable=True)
     ams_tracking_number = db.Column(db.String, nullable=True)
-    ams_outcome = db.Column(db.String, nullable=True)
+    ams_outcome = db.Column(db.ARRAY(db.String), nullable=True)
     ams_status_code = db.Column(db.String, nullable=True)
     ams_submission_timestamp = db.Column(
         db.DateTime, nullable=True, default=datetime.utcnow, onupdate=datetime.utcnow)

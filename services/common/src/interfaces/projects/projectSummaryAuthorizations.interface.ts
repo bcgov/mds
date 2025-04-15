@@ -2,7 +2,7 @@ import { IProjectSummaryDocument } from "./projectSummaryDocuments.interface";
 
 export interface IProjectSummaryAuthorization {
   ams_tracking_number?: string;
-  ams_outcome?: string;
+  ams_outcome?: string[];
   ams_submission_timestamp?: string;
   project_summary_authorization_guid: string;
   project_summary_guid: string;

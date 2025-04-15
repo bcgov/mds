@@ -3,7 +3,7 @@ import Highlight from "react-highlighter";
 import { dateSorter, formatDate, nullableStringSorter } from "@mds/common/redux/utils/helpers";
 import { EMPTY_FIELD } from "@mds/common/constants/strings";
 import { ColumnType } from "antd/lib/table";
-import { Button, Dropdown, Tag } from "antd";
+import { Button, Dropdown, Tag, Tooltip } from "antd";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { generateActionMenuItems } from "./ActionMenu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -94,6 +94,7 @@ export interface ITableAction {
 export const renderActionsColumn = ({
   actions,
   recordActionsFilter,
+  title,
   isRowSelected = false,
   text = "Actions",
   dropdownAltText = "Menu",
@@ -105,17 +106,18 @@ export const renderActionsColumn = ({
   text?: string;
   dropdownAltText?: string;
   fixed?: boolean;
+  title?: string;
 }) => {
   return {
+    title,
     key: "actions",
     fixed: fixed ? ("right" as const) : null,
     className: "actions-column",
     render: (record) => {
       const filteredActions = recordActionsFilter ? recordActionsFilter(record, actions) : actions;
       const items = generateActionMenuItems(filteredActions, record);
-
       return (
-        <div>
+        <Tooltip>
           {items.length > 0 && (
             <Dropdown menu={{ items }} placement="bottomLeft" disabled={isRowSelected}>
               <Button data-cy="menu-actions-button" className="actions-dropdown-button" type="text">
@@ -124,7 +126,7 @@ export const renderActionsColumn = ({
               </Button>
             </Dropdown>
           )}
-        </div>
+        </Tooltip>
       );
     },
   };
