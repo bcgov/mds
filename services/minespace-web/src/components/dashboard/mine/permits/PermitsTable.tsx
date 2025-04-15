@@ -1,19 +1,17 @@
 import React, { FC } from "react";
-import { connect } from "react-redux";
 import {
   IExplosivesPermit,
   IExplosivesPermitAmendment,
   IPermit,
   IPermitAmendment,
 } from "@mds/common/interfaces";
-import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { truncateFilename } from "@common/utils/helpers";
-import { getDropdownPermitStatusOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import LinkButton from "@/components/common/LinkButton";
 import * as Strings from "@/constants/strings";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import {
+  ITableAction,
   renderActionsColumn,
   renderCategoryColumn,
   renderDateColumn,
@@ -37,22 +35,24 @@ interface PermitsTableProps {
   permits: IPermit[];
   explosivesPermits: IExplosivesPermit[];
   majorMineInd: boolean;
-  openModal: (value: any) => void;
-  closeModal: (value: any) => void;
   mineGuid: string;
 }
 
 export const PermitsTable: FC<PermitsTableProps> = (props) => {
   const history = useHistory();
 
-  const actions = [
+  const actions: ITableAction[] = [
     {
       key: "view",
       label: "View",
       clickFunction: (_event, record) => {
         _event.preventDefault();
         _event.stopPropagation();
-        history.push(PERMIT_VIEW.dynamicRoute(props.mineGuid, record.permit_guid));
+        if (record.permit_type === permitTypes.ESUP) {
+          history.push(VIEW_ESUP.dynamicRoute(props.mineGuid, record.key));
+        } else {
+          history.push(PERMIT_VIEW.dynamicRoute(props.mineGuid, record.permit_guid));
+        }
       },
       icon: <EyeOutlined />,
     },
@@ -69,40 +69,20 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
       ...renderDateColumn("lastAmended", "Last Amended", true),
       defaultSortOrder: "descend" as SortOrder,
     },
-    renderActionsColumn({ actions }),
-  ];
+    renderActionsColumn({
+      actions,
+      recordActionsFilter: (record, actionList) => {
+        let filteredActionList = actionList;
 
-  const handleOpenViewEsup = (event, record: any) => {
-    event.preventDefault();
-    event.stopPropagation();
-    history.push(VIEW_ESUP.dynamicRoute(props.mineGuid, record.key));
-  };
+        // filter for feature flag and view_esup key
+        if (!isFeatureEnabled(Feature.MINESPACE_ESUPS) && record.permit_type === permitTypes.ESUP) {
+          filteredActionList = filteredActionList.filter((a) => a.key !== "view");
+        }
 
-  if (isFeatureEnabled(Feature.MINESPACE_ESUPS)) {
-    const actions = [
-      {
-        key: "view_esup",
-        label: "View",
-        clickFunction: (event, esup: IExplosivesPermit) => {
-          handleOpenViewEsup(event, esup);
-        },
+        return filteredActionList;
       },
-    ];
-
-    const filterActions = (record, actionList) => {
-      let filteredActionList = actionList;
-
-      // filter for feature flag and view_esup key
-      if (!isFeatureEnabled(Feature.MINESPACE_ESUPS) || record.permit_type !== permitTypes.ESUP) {
-        filteredActionList = filteredActionList.filter((a) => a.key !== "view_esup");
-      }
-
-      return filteredActionList;
-    };
-
-    const actionColumn = renderActionsColumn({ actions, recordActionsFilter: filterActions });
-    columns.push(actionColumn);
-  }
+    }),
+  ];
 
   const finalApplicationPackage = (amendment) => {
     const finalAppPackageCore =
@@ -265,13 +245,4 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  permitStatusOptions: getDropdownPermitStatusOptions(state),
-});
-
-const mapDispatchToProps = {
-  openModal,
-  closeModal,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PermitsTable);
+export default PermitsTable;

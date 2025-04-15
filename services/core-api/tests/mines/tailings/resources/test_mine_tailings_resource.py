@@ -2,7 +2,7 @@ import json
 import uuid
 
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
-from tests.factories import MineFactory, MineTailingsStorageFacilityFactory, MinePartyAppointmentFactory, PartyFactory
+from tests.factories import MineFactory, MineTailingsStorageFacilityFactory, MinePartyAppointmentFactory
 
 
 def test_get_mine_tailings_storage_facility_by_mine_guid(test_client, db_session, auth_headers):
