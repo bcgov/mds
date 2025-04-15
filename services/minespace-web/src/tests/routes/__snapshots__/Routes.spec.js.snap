@@ -39,7 +39,7 @@ exports[`PrivateRoutes  renders properly 1`] = `
         }
       }
       exact={true}
-      path="/mines/:id/:activeTab"
+      path="/mines/:id/:activeTab/:subTab?"
     />
     <Route
       component={[Function]}
