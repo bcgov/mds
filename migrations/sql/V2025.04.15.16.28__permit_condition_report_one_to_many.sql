@@ -62,6 +62,14 @@ BEGIN
     END IF;
 END $$;
 
--- remove the extraneous records in mine_report_permit_requirement
+-- remove the extraneous records & column in mine_report_permit_requirement
 DELETE FROM mine_report_permit_requirement
 WHERE mine_report_permit_requirement_id NOT IN (SELECT mine_report_permit_requirement_id FROM mine_permit_report_condition_xref);
+
+ALTER TABLE mine_report_permit_requirement DROP COLUMN permit_condition_id;
+
+-- add table constraint to keep xref table free of duplicates, excluding rows where report_name is null
+ALTER TABLE mine_permit_report_condition_xref
+ADD CONSTRAINT unique_report_name_permit_amendment_id
+    UNIQUE (report_name, permit_amendment_id)
+    WHERE report_name IS NOT NULL;
