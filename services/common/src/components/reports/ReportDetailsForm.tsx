@@ -168,6 +168,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const {
     mine_report_category = "",
     mine_report_definition_guid = "",
+    report_name,
     mine_report_submission_status_code,
     documents = [],
     report_type,
@@ -273,7 +274,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   }, [parties]);
 
   useEffect(() => {
-    if (mineReportDefinitionOptions && mineReportDefinitionOptions.length) {
+    if (mineReportDefinitionOptions?.length > 0) {
       // Format the mine report definition options for the search bar
       const newFormattedMineReportDefinitionOptions = mineReportDefinitionOptions
         .map((report) => {
@@ -283,6 +284,15 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
           };
         })
         .sort((a, b) => a.label.localeCompare(b.label));
+
+      // If the current report is expired, add it to the options list
+      const reportNames = newFormattedMineReportDefinitionOptions.map((o) => o.label);
+      if (formValues.report_name && !reportNames.includes(formValues.report_name)) {
+        newFormattedMineReportDefinitionOptions.unshift({
+          label: formValues.report_name,
+          value: formValues.mine_report_definition_guid,
+        });
+      }
       setFormattedMineReportDefinitionOptions(
         uniqBy(newFormattedMineReportDefinitionOptions, "value")
       );
@@ -291,21 +301,28 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
 
   useEffect(() => {
     // update compliance article options when "Report Name" changes
-    if (mine_report_definition_guid && mineReportDefinitionOptions.length) {
-      const newReportComplianceArticle = mineReportDefinitionOptions.find((opt) => {
+    if (formattedMineReportDefinitionOptions?.length > 0) {
+      const newReportComplianceArticle = formattedMineReportDefinitionOptions.find((opt) => {
         return opt.mine_report_definition_guid === mine_report_definition_guid;
       });
-      setMineReportDefinition(newReportComplianceArticle);
+      setMineReportDefinition(newReportComplianceArticle ?? formValues);
 
-      setSelectedReportCode(formatComplianceCodeReportName(newReportComplianceArticle));
+      const newReportCode = newReportComplianceArticle
+        ? formatComplianceCodeReportName(newReportComplianceArticle)
+        : report_name;
+      setSelectedReportCode(newReportCode);
     } else {
       setSelectedReportCode("");
     }
-  }, [mine_report_definition_guid, mineReportDefinitionOptions]);
+  }, [
+    mine_report_definition_guid,
+    mineReportDefinitionOptions,
+    formattedMineReportDefinitionOptions,
+  ]);
 
   useEffect(() => {
     if (system === SystemFlagEnum.core) {
-      const selection = mineReportDefinition?.compliance_articles[0]?.cim_or_cpo;
+      const selection = mineReportDefinition?.compliance_articles?.[0]?.cim_or_cpo;
       dispatch(change(FORM.VIEW_EDIT_REPORT, "report_for", selection ?? "Not specified"));
     }
   }, [mineReportDefinition, !formValues?.report_for]);
