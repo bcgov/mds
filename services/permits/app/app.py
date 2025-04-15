@@ -3,7 +3,9 @@ import os
 
 from fastapi import FastAPI
 
+from fastapi.middleware.cors import CORSMiddleware
 from .openid_connect_middleware import OpenIdConnectMiddleware
+from .response_header_middleware import ResponseHeaderMiddleware
 from .pipelines.permit_condition_extraction.resources.permit_condition_resource import (
     router as permit_condition_router,
 )
@@ -13,6 +15,11 @@ from .pipelines.permit_condition_search.resources.permit_condition_search_resour
 
 DEBUG_MODE = os.environ.get("DEBUG_MODE", "False").lower() == "true"
 
+origins = [
+    "http://localhost:8004",
+    "http://localhost:80",
+    "https://*.apps.silver.devops.gov.bc.ca"
+]
 
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s", level=logging.DEBUG
@@ -28,4 +35,12 @@ if DEBUG_MODE:
     if not os.path.exists("app/cache"):
         os.makedirs("app/cache")
 
+mds.add_middleware(ResponseHeaderMiddleware)
 mds.add_middleware(OpenIdConnectMiddleware)
+mds.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
