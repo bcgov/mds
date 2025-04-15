@@ -67,6 +67,13 @@ class MinePartyApptResource(Resource, UserMixin):
         choices=list(MinePartyAppointmentStatus),
         help='Indicator of status of acknowledgement.',
         store_missing=False)
+    parser.add_argument(
+        'is_draft',
+        type=bool,
+        store_missing=False,
+        required=False,
+        help="Save the Mine Party Appointment in a draft state"
+    )
 
 
     @api.doc(
@@ -126,6 +133,7 @@ class MinePartyApptResource(Resource, UserMixin):
         start_date = data.get('start_date')
         end_date = data.get('end_date')
         union_rep_company = data.get('union_rep_company')
+        is_draft = data.get('is_draft', False)
 
         if start_date is None:
             raise BadRequest("Start date not provided")
@@ -203,7 +211,10 @@ class MinePartyApptResource(Resource, UserMixin):
         new_mpa.assign_related_guid(mine_party_appt_type_code, related_guid)
 
         try:
-            new_mpa.save()
+            if is_draft:
+                new_mpa.save_draft()
+            else:
+                new_mpa.submit()
         except alch_exceptions.IntegrityError as e:
             if "daterange_excl" in str(e):
                 mpa_type_name = MinePartyAppointmentType.find_by_mine_party_appt_type_code(

@@ -27,6 +27,7 @@ export interface ITailingsStorageFacility extends ICreateTailingsStorageFacility
   update_timestamp: string;
   update_user: string;
   history?: IDiffEntry[];
+  is_draft?: boolean;
 }
 
 export interface IEngineerOfRecord extends IPartyAppt {

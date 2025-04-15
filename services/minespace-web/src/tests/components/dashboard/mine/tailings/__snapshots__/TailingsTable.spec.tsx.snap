@@ -159,6 +159,11 @@ exports[`TailingsTable renders properly 1`] = `
                       </div>
                     </th>
                     <th
+                      class="ant-table-cell"
+                    >
+                      Submission Status
+                    </th>
+                    <th
                       aria-label="Consequence Classification"
                       class="ant-table-cell ant-table-column-has-sorters"
                       tabindex="0"
@@ -768,6 +773,15 @@ exports[`TailingsTable renders properly 1`] = `
                          
                       </div>
                     </td>
+                    <td
+                      style="padding: 0px; border: 0px; height: 0px;"
+                    >
+                      <div
+                        style="height: 0px; overflow: hidden;"
+                      >
+                         
+                      </div>
+                    </td>
                   </tr>
                   <tr
                     class="ant-table-row ant-table-row-level-0 fade-in"
@@ -822,6 +836,15 @@ exports[`TailingsTable renders properly 1`] = `
                         title="Operating Status"
                       >
                         Operating
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Submission Status"
+                      >
+                        Submitted
                       </div>
                     </td>
                     <td

@@ -467,6 +467,17 @@ class PermitMagazineMixin(object):
     distance_dwelling = db.Column(db.Numeric)
     detonator_type = db.Column(db.String)
 
+class DraftMixin(object):
+    __default_draft_state__ = False
+    is_draft = db.Column(db.Boolean, default=__default_draft_state__)
+
+    def save_draft(self, commit=True):
+        self.is_draft = True
+        self.save(commit)
+
+    def submit(self, commit=True):
+        self.is_draft = False
+        self.save(commit)
 
 class AuditMixin(object):
     create_user = db.Column(db.String(60), nullable=False, default=User().get_user_username)

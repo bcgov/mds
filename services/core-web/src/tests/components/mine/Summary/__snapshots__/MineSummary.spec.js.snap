@@ -678,6 +678,7 @@ exports[`MineSummary renders properly 1`] = `
                 },
               ],
               "facility_type": "tailings_storage_facility",
+              "is_draft": false,
               "itrb_exemption_status_code": "YES",
               "latitude": null,
               "longitude": null,

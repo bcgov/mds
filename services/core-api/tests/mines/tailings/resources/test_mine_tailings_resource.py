@@ -2,7 +2,7 @@ import json
 import uuid
 
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
-from tests.factories import MineFactory, MineTailingsStorageFacilityFactory
+from tests.factories import MineFactory, MineTailingsStorageFacilityFactory, MinePartyAppointmentFactory
 
 
 def test_get_mine_tailings_storage_facility_by_mine_guid(test_client, db_session, auth_headers):
@@ -134,10 +134,6 @@ def test_tsf_history_creates_record_on_update(test_client, db_session, auth_head
     entry = put_data['history'][1]
     changeset = entry['changeset']
 
-    print('hii')
-    print(json.dumps(put_data, indent=2, default=str))
-
-    print(put_data['history'])
     def find_change(field_name):
         return next((ch for ch in changeset if ch['field_name'] == field_name), None)
 
@@ -149,7 +145,8 @@ def test_tsf_history_creates_record_on_update(test_client, db_session, auth_head
     assert consequence_classification_status_code['to'] == 'SIG'
 
     assert tailings_storage_facility_type == None
-    assert storage_location == None # Cannot update storage location
+    assert storage_location['from'] == 'below_ground'
+    assert storage_location['to'] == 'above_ground'
     assert entry['updated_by'] == 'mds'
     assert entry['updated_at'] != None
 
@@ -282,3 +279,108 @@ def test_put_tailings_storage_facility_success(test_client, db_session, auth_hea
         'consequence_classification_status_code']
     assert put_data['tsf_operating_status_code'] == data['tsf_operating_status_code']
     assert put_data['itrb_exemption_status_code'] == data['itrb_exemption_status_code']
+
+def test_post_new_tsf_is_draft(test_client, db_session, auth_headers):
+    mine = MineFactory(minimal=True)
+    data = {
+        'mine_tailings_storage_facility_name': 'a name',
+        'latitude': '50.6598000',
+        'longitude': '-120.5134000',
+        'consequence_classification_status_code': 'LOW',
+        'tsf_operating_status_code': 'OPT',
+        'itrb_exemption_status_code': 'YES',
+        'storage_location': 'above_ground',
+        'facility_type': 'tailings_storage_facility',
+        'tailings_storage_facility_type': 'pit',
+        'mines_act_permit_no': 'xxx',
+    }
+
+    post_resp = test_client.post(
+        f'/mines/{mine.mine_guid}/tailings', json=data, headers=auth_headers['full_auth_header'])
+    
+    post_data = json.loads(post_resp.data.decode())
+
+    assert post_data['is_draft'] == True
+
+def test_put_tsf_is_draft(test_client, db_session, auth_headers):
+    tsf = MineTailingsStorageFacilityFactory()
+    tsf.save_draft()
+
+    data = {
+        'mine_tailings_storage_facility_name': 'Brand new name',
+    }
+
+    put_resp = test_client.put(
+        f'/mines/{tsf.mine.mine_guid}/tailings/{tsf.mine_tailings_storage_facility_guid}',
+        data=data,
+        headers=auth_headers['full_auth_header'])
+
+    put_data = json.loads(put_resp.data.decode())
+    assert put_data['mine_tailings_storage_facility_name'] == data['mine_tailings_storage_facility_name']
+    assert put_data['is_draft'] == True
+
+def test_submit_tsf(test_client, db_session, auth_headers):
+    tsf = MineTailingsStorageFacilityFactory()
+    
+    tsf.save_draft()
+
+    eor = MinePartyAppointmentFactory(mine=tsf.mine, mine_party_appt_type_code='EOR', mine_tailings_storage_facility=tsf)
+    qp = MinePartyAppointmentFactory(mine=tsf.mine, mine_party_appt_type_code='TQP', mine_tailings_storage_facility=tsf)
+    
+    eor.save_draft()
+    qp.save_draft()
+
+    data = {
+        'mine_tailings_storage_facility_name': tsf.mine_tailings_storage_facility_name,
+        'latitude': tsf.latitude,
+        'longitude': tsf.longitude,
+        'consequence_classification_status_code':
+            tsf.consequence_classification_status_code,
+        'tsf_operating_status_code': tsf.tsf_operating_status_code,
+        'itrb_exemption_status_code': tsf.itrb_exemption_status_code,
+        'storage_location': 'above_ground',
+        'facility_type': 'tailings_storage_facility',
+        'tailings_storage_facility_type': 'pit',
+        'mines_act_permit_no': 'xxx',
+        'is_submitting': 'true'
+    }
+
+    put_resp = test_client.put(
+        f'/mines/{tsf.mine.mine_guid}/tailings/{tsf.mine_tailings_storage_facility_guid}',
+        data=data,
+        headers=auth_headers['full_auth_header'])
+
+    put_data = json.loads(put_resp.data.decode())
+
+    assert put_data['is_draft'] == False
+    assert put_data['engineer_of_record']['is_draft'] == False
+    assert put_data['qualified_person']['is_draft'] == False
+
+def test_submit_tsf_missing_mpa_error(test_client, db_session, auth_headers):
+    tsf = MineTailingsStorageFacilityFactory()    
+    tsf.save_draft()
+
+    data = {
+        'mine_tailings_storage_facility_name': tsf.mine_tailings_storage_facility_name,
+        'latitude': tsf.latitude,
+        'longitude': tsf.longitude,
+        'consequence_classification_status_code':
+            tsf.consequence_classification_status_code,
+        'tsf_operating_status_code': tsf.tsf_operating_status_code,
+        'itrb_exemption_status_code': tsf.itrb_exemption_status_code,
+        'storage_location': 'above_ground',
+        'facility_type': 'tailings_storage_facility',
+        'tailings_storage_facility_type': 'pit',
+        'mines_act_permit_no': 'xxx',
+        'is_submitting': 'true'
+    }
+
+    put_resp = test_client.put(
+        f'/mines/{tsf.mine.mine_guid}/tailings/{tsf.mine_tailings_storage_facility_guid}',
+        data=data,
+        headers=auth_headers['full_auth_header'])
+    
+    put_data = json.loads(put_resp.data.decode())
+
+    assert put_resp.status_code == 400
+    assert 'Missing mine party appointments: Engineer of Record, Qualified Person' in put_data['message']

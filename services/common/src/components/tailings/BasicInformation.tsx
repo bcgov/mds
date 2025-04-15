@@ -71,6 +71,15 @@ const historyDiffValueMapper = {
   },
   create_timestamp: dateTransform,
   update_timestamp: dateTransform,
+  is_draft: {
+    title: "Submission Status",
+    transform: (is_draft) => {
+      if (typeof is_draft == "boolean") {
+        return is_draft ? "Draft" : "Submitted"
+      }
+      return "No Data";
+    }
+  }
 };
 
 export const BasicInformation: FC<BasicInformationProps> = (props) => {

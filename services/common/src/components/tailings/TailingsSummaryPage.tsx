@@ -176,6 +176,7 @@ export const TailingsSummaryPage: FC = () => {
                 start_date: values[attr].start_date,
                 end_date: values[attr].end_date,
                 end_current: true,
+                is_draft: tsf.is_draft
               },
               successMessage
             )
@@ -192,7 +193,7 @@ export const TailingsSummaryPage: FC = () => {
     if (newActiveTab) {
       history.push(
         GLOBAL_ROUTES?.EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
-          newTsf?.data.mine_tailings_storage_facility_guid || tsfGuid,
+          newTsf?.data.mine_tailings_storage_facility_guid ?? tsfGuid,
           mineGuid,
           newActiveTab,
           isUserActionEdit
