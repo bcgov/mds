@@ -1,38 +1,18 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Row, Col, Typography } from "antd";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { IMine } from "@mds/common/interfaces/mine.interface";
 import NoticeOfWorkTable from "./NoticeOfWorkTable";
-import queryString from "query-string";
 import { getNoticeOfWorkList } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import { fetchProponentNoticeOfWorkApplications } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import { useAppDispatch } from "@mds/common/redux/rootState";
-
-export interface NoWSearchParams {
-  sort_field: string;
-  sort_dir: string;
-}
-
-const defaultParams = {
-  sort_field: "received_date",
-  sort_dir: "desc",
-};
 
 export const Projects: FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
   const dispatch = useAppDispatch();
   const applications = useSelector(getNoticeOfWorkList);
-
-  const { search } = useLocation();
-  const initialParams = queryString.parse(search);
-  const [params, setParams] = useState({ ...defaultParams, ...initialParams });
-
-  const handleSearch = (searchParams: NoWSearchParams) => {
-    setParams(searchParams);
-  };
 
   useEffect(() => {
     if (!isLoaded) {
@@ -68,13 +48,7 @@ export const Projects: FC = () => {
           MineSpace. For assistance, please contact your regional office.
         </Typography.Paragraph>
 
-        <NoticeOfWorkTable
-          applications={applications}
-          isLoaded={isLoaded}
-          handleSearch={handleSearch}
-          sortField={params.sort_field}
-          sortDir={params.sort_dir}
-        />
+        <NoticeOfWorkTable applications={applications} isLoaded={isLoaded} />
       </Col>
     </Row>
   );

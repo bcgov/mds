@@ -1,25 +1,26 @@
 import { FC, useContext, useState } from "react";
 import Projects from "./Projects";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Tabs, Typography } from "antd";
 import NoticeOfWorkProjects from "./NoticeOfWorkProjects";
 import { IMine } from "@mds/common/interfaces";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
+import { MINE_DASHBOARD } from "@/constants/routes";
 
-const tabs = ["Major Mine Applications", "Notice of Work Applications"];
+const tabs = ["major-mine", "notice-of-work"];
 
 const ViewProjects: FC = () => {
-  const { id, tab } = useParams<{
-    id: string;
-    tab: string;
-  }>();
-
-  const { mine } = useContext<{ mine: IMine }>(SidebarContext);
+  const {
+    mine,
+    activeTab: dashboardTab,
+    subTab,
+  } = useContext<{ mine: IMine; activeTab: string; subTab: string }>(SidebarContext);
   const isMajorMine = mine?.major_mine_ind;
-  const [activeTab, setActiveTab] = useState(tab ?? tabs[0]);
+  const [activeTab, setActiveTab] = useState(subTab ?? tabs[0]);
+  const history = useHistory();
 
   const { isFeatureEnabled } = useFeatureFlag();
   const showNOWStatus = isFeatureEnabled(Feature.MINESPACE_NOW_STATUS);
@@ -39,6 +40,7 @@ const ViewProjects: FC = () => {
 
   const handleTabChange = (newActiveTab: string) => {
     setActiveTab(newActiveTab);
+    return history.push(MINE_DASHBOARD.dynamicRoute(mine?.mine_guid, dashboardTab, newActiveTab));
   };
 
   return (

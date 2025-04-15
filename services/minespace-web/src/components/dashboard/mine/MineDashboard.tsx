@@ -17,7 +17,7 @@ import { Feature } from "@mds/common/utils";
 
 const MineDashboard: FC = () => {
   const dispatch = useAppDispatch();
-  const { id, activeTab } = useParams<{ id: string; activeTab: string }>();
+  const { id, activeTab, subTab } = useParams<{ id: string; activeTab: string; subTab: string }>();
   const mine: IMine = useSelector(getMineById(id));
   const defaultIsLoadedValue: boolean = mine?.mine_guid === id;
   const [isLoaded, setIsLoaded] = useState(defaultIsLoadedValue);
@@ -50,13 +50,13 @@ const MineDashboard: FC = () => {
   }, [id]);
 
   const dynamicRoute = (key: string) => {
-    return MINE_DASHBOARD.dynamicRoute(mine?.mine_guid, key);
+    return MINE_DASHBOARD.dynamicRoute(mine?.mine_guid, key, "");
   };
   const items = getMineDashboardRoutes(showApplications).map((item) => ({
     ...item,
     path: dynamicRoute(item.key),
   }));
-  const sharedData = { mine };
+  const sharedData = { mine, activeTab, subTab };
   const selectedKeys = [activeTab];
 
   if (mineNotFound) {

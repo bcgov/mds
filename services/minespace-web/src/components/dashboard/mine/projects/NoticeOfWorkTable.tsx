@@ -2,7 +2,6 @@ import React, { FC } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Badge } from "antd";
 import { formatDate } from "@/utils/helpers";
-import * as routes from "@/constants/routes";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import * as Strings from "@mds/common/constants/strings";
 import { INoticeOfWork } from "@mds/common/interfaces";
@@ -10,28 +9,13 @@ import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import { isEmpty } from "lodash";
 import { getApplicationStatusType } from "@mds/common/constants/badgeStatusTypes";
-import { ColumnType, SortOrder } from "antd/es/table/interface";
-import { NoWSearchParams } from "./NoticeOfWorkProjects";
+import { SortOrder } from "antd/es/table/interface";
+import { dateSorter } from "@mds/common/redux/utils/helpers";
 
 interface NoticeOfWorkTableProps {
   isLoaded: boolean;
   applications: INoticeOfWork[];
-  sortField: string;
-  sortDir: string;
-  handleSearch: (searchParams: NoWSearchParams) => void;
 }
-
-const applySortIndicator = (
-  columns: ColumnType<Partial<INoticeOfWork>>[],
-  field: string,
-  dir: string
-): ColumnType<Partial<INoticeOfWork>>[] =>
-  columns.map((column) => {
-    return {
-      ...column,
-      sortOrder: dir && column.key === field ? (dir.concat("end") as SortOrder) : null,
-    };
-  });
 
 const transformRowData = (applications: INoticeOfWork[]) =>
   applications?.map((application) => ({
@@ -55,44 +39,29 @@ const transformRowData = (applications: INoticeOfWork[]) =>
     is_historic: application.is_historic,
   }));
 
-export const NoticeOfWorkTable: FC<NoticeOfWorkTableProps> = ({
-  isLoaded,
-  applications,
-  sortField,
-  sortDir,
-}) => {
-  const createLinkTo = (route, record) => {
-    return {
-      pathname: route.dynamicRoute(record.key),
-      state: {
-        applicationPageFromRoute: {
-          //route: this.props.location.pathname + this.props.location.search,
-          title: `${record.mine_name} Notice of Work Applications`,
-        },
-      },
-    };
-  };
-
+export const NoticeOfWorkTable: FC<NoticeOfWorkTableProps> = ({ isLoaded, applications }) => {
   const columns = [
     {
       title: "Number",
       key: "now_number",
       dataIndex: "now_number",
-      sorter: true,
+      sorter: (a, b) => (a.now_number > b.now_number ? -1 : 1),
       render: (text) => <div title="Number">{text}</div>,
     },
     {
       title: "Type",
       key: "notice_of_work_type_description",
       dataIndex: "notice_of_work_type_description",
-      sorter: true,
+      sorter: (a, b) =>
+        a.notice_of_work_type_description > b.notice_of_work_type_description ? -1 : 1,
       render: (text) => <div title="Type">{text}</div>,
     },
     {
       title: "Status",
       key: "now_application_status_description",
       dataIndex: "now_application_status_description",
-      sorter: true,
+      sorter: (a, b) =>
+        a.now_application_status_description > b.now_application_status_description ? -1 : 1,
       render: (text) => (
         <div title="Status">
           <Badge status={getApplicationStatusType(text)} text={text} />
@@ -103,8 +72,8 @@ export const NoticeOfWorkTable: FC<NoticeOfWorkTableProps> = ({
       title: "Received",
       key: "received_date",
       dataIndex: "received_date",
-      sorter: true,
-      //defaultSortOrder: "descend",
+      sorter: dateSorter("received_date"),
+      defaultSortOrder: "descend" as SortOrder,
       render: (text) => <div title="Received">{text}</div>,
     },
     {
@@ -145,7 +114,7 @@ export const NoticeOfWorkTable: FC<NoticeOfWorkTableProps> = ({
   return (
     <CoreTable
       loading={!isLoaded}
-      columns={applySortIndicator(columns, sortField, sortDir)}
+      columns={columns}
       dataSource={transformRowData(applications)}
       emptyText="This mine has no project data."
     />
