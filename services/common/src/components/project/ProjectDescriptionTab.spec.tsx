@@ -44,7 +44,7 @@ describe("ProjectDescriptionTab", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
         <BrowserRouter>
-          <ProjectDescriptionTab tab={'project-description'} />
+          <ProjectDescriptionTab />
         </BrowserRouter>
       </ReduxWrapper>
     );

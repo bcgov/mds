@@ -25,7 +25,8 @@ import {
 } from "@mds/common/constants/enums";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { getProject } from "@mds/common/redux/selectors/projectSelectors";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 import { openModal } from "@mds/common/redux/actions/modalActions";
 
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
@@ -56,7 +57,7 @@ import EnvironmentAuthorizationDocumentsModal from "../documents/EnvironmentAuth
 
 const ProjectDescriptionTab = () => {
   const [shouldDisplayRetryButton, setShouldDisplayRetryButton] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const [minesActData, setMinesActData] = useState([]);
   const [environmentalManagementActData, setEnvironmentalManagementActData] = useState([]);
@@ -317,7 +318,6 @@ const ProjectDescriptionTab = () => {
     const amsTrackingNumbers = amsAuthorizations?.map(auth => auth.ams_tracking_number);
     if (amsTrackingNumbers.length > 0) {
       setIsLoaded(false);
-      // @ts-ignore
       dispatch(fetchProjectSummaryEnvironmentAuthorizationStatuses(amsTrackingNumbers)).then((statuses) => {
         loadEnvironmentActPermitData(project.project_summary.authorizations, statuses);
         setIsLoaded(true);
