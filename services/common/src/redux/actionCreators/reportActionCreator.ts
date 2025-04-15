@@ -8,6 +8,7 @@ import * as API from "@mds/common/constants/API";
 import * as Strings from "@mds/common/constants/strings";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
+import { removeNullValues } from "@mds/common/constants/utils";
 
 export const deleteMineReport = (mineGuid, mineReportGuid) => (dispatch) => {
   dispatch(request(NetworkReducerTypes.DELETE_MINE_REPORT));
@@ -58,10 +59,11 @@ export const fetchMineReports = (
   dispatch(mineReportActions.clearMineReports());
   dispatch(request(NetworkReducerTypes.GET_MINE_REPORTS));
   dispatch(showLoading());
+  const filteredParams = removeNullValues(params);
   return CustomAxios()
     .get(
       `${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid, {
-        ...params,
+        ...filteredParams,
         mine_reports_type: reportsType,
       })}`,
       createRequestHeader()

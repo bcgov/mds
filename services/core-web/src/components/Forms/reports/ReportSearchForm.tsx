@@ -9,12 +9,15 @@ import {
   getMineRegionDropdownOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { fetchComplianceReports, getDropdownMineReportDefinitionOptions, getReportDefinitionsLoaded, reportParamsGetAll } from "@mds/common/redux/slices/complianceReportsSlice";
-import { sortListObjectsByPropertyLocaleCompare } from "@common/utils/helpers";
+import { sortListObjectsByPropertyLocaleCompare } from "@mds/common/redux/utils/helpers"
 import * as FORM from "@/constants/forms";
-import { renderConfig } from "@/components/common/config";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderResetButton from "@mds/common/components/forms/RenderResetButton";
 import { useAppSelector as useSelector, useAppDispatch as useDispatch } from "@mds/common/redux/rootState";
+import RenderField from "@mds/common/components/forms/RenderField";
+import RenderMultiSelect from "@mds/common/components/forms/RenderMultiSelect";
+import RenderDate from "@mds/common/components/forms/RenderDate";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
 
 interface ReportSearchFormProps {
   onSubmit: (values) => void | Promise<void>;
@@ -94,7 +97,7 @@ export const ReportSearchForm: FC<ReportSearchFormProps> = (props) => {
             id="search"
             name="search"
             placeholder="Search by mine name or number"
-            component={renderConfig.FIELD}
+            component={RenderField}
             allowClear
           />
         </Col>
@@ -107,7 +110,7 @@ export const ReportSearchForm: FC<ReportSearchFormProps> = (props) => {
                 id="report_type"
                 name="report_type"
                 placeholder="Select Report Type"
-                component={renderConfig.MULTI_SELECT}
+                component={RenderMultiSelect}
                 data={dropdownMineReportCategoryOptions}
               />
             </Col>
@@ -116,7 +119,7 @@ export const ReportSearchForm: FC<ReportSearchFormProps> = (props) => {
                 id="report_name"
                 name="report_name"
                 placeholder="Select Report Name"
-                component={renderConfig.MULTI_SELECT}
+                component={RenderMultiSelect}
                 data={sortListObjectsByPropertyLocaleCompare(
                   dropdownMineReportDefinitionOptions,
                   "label"
@@ -130,8 +133,8 @@ export const ReportSearchForm: FC<ReportSearchFormProps> = (props) => {
                 id="due_date_after"
                 name="due_date_after"
                 placeholder="Select Earliest Due Date"
-                component={renderConfig.DATE}
-                format={null}
+                component={RenderDate}
+                allowClear
               />
             </Col>
             <Col md={12} xs={24}>
@@ -139,8 +142,8 @@ export const ReportSearchForm: FC<ReportSearchFormProps> = (props) => {
                 id="due_date_before"
                 name="due_date_before"
                 placeholder="Select Latest Due Date"
-                component={renderConfig.DATE}
-                format={null}
+                component={RenderDate}
+                allowClear
               />
             </Col>
           </Row>
@@ -150,8 +153,8 @@ export const ReportSearchForm: FC<ReportSearchFormProps> = (props) => {
                 id="received_date_after"
                 name="received_date_after"
                 placeholder="Select Earliest Received Date"
-                component={renderConfig.DATE}
-                format={null}
+                component={RenderDate}
+                allowClear
               />
             </Col>
             <Col md={8} xs={24}>
@@ -159,15 +162,15 @@ export const ReportSearchForm: FC<ReportSearchFormProps> = (props) => {
                 id="received_date_before"
                 name="received_date_before"
                 placeholder="Select Latest Received Date"
-                component={renderConfig.DATE}
-                format={null}
+                component={RenderDate}
+                allowClear
               />
             </Col>
             <Col md={8} xs={24}>
               <Field
                 id="received_only"
                 name="received_only"
-                component={renderConfig.SELECT}
+                component={RenderSelect}
                 data={[
                   { value: "", label: "Received Only" },
                   { value: "false", label: "Received and Unreceived" },
@@ -181,8 +184,9 @@ export const ReportSearchForm: FC<ReportSearchFormProps> = (props) => {
                 id="compliance_year"
                 name="compliance_year"
                 placeholder="Select Compliance Year"
-                component={renderConfig.YEAR}
-                format={null}
+                component={RenderDate}
+                yearMode
+                allowClear
               />
             </Col>
             <Col md={12} xs={24}>
@@ -190,7 +194,7 @@ export const ReportSearchForm: FC<ReportSearchFormProps> = (props) => {
                 id="status"
                 name="status"
                 placeholder="Select Report Status"
-                component={renderConfig.MULTI_SELECT}
+                component={RenderMultiSelect}
                 data={dropdownMineReportStatusOptions}
               />
             </Col>
@@ -201,7 +205,7 @@ export const ReportSearchForm: FC<ReportSearchFormProps> = (props) => {
                 id="requested_by"
                 name="requested_by"
                 placeholder="Search Requested By"
-                component={renderConfig.FIELD}
+                component={RenderField}
               />
             </Col>
           </Row>
@@ -210,7 +214,7 @@ export const ReportSearchForm: FC<ReportSearchFormProps> = (props) => {
               <Field
                 id="major"
                 name="major"
-                component={renderConfig.SELECT}
+                component={RenderSelect}
                 data={[
                   { value: "", label: "Major and Regional Mines" },
                   { value: "true", label: "Major Mine" },
@@ -223,7 +227,7 @@ export const ReportSearchForm: FC<ReportSearchFormProps> = (props) => {
                 id="region"
                 name="region"
                 placeholder="Select Mine Region"
-                component={renderConfig.MULTI_SELECT}
+                component={RenderMultiSelect}
                 data={mineRegionOptions}
               />
             </Col>

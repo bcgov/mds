@@ -7,15 +7,19 @@ import {
   getDropdownMineReportStatusOptions,
   getDropdownPermitConditionCategoryOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
-import { createDropDownList, sortListObjectsByPropertyLocaleCompare } from "@common/utils/helpers";
+import { fetchComplianceReports, getMineReportDefinitionOptions, getReportDefinitionsLoaded, reportParamsGetAll } from "@mds/common/redux/slices/complianceReportsSlice";
+import { createDropDownList, sortListObjectsByPropertyLocaleCompare } from "@mds/common/redux/utils/helpers";
 import * as FORM from "@/constants/forms";
-import { renderConfig } from "@/components/common/config";
 import * as Strings from "@mds/common/constants/strings";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { MineReportParams } from "@mds/common/interfaces";
 import RenderResetButton from "@mds/common/components/forms/RenderResetButton";
+import { useAppDispatch } from "@mds/common/redux/rootState";
+import RenderDate from "@mds/common/components/forms/RenderDate";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
+import RenderMultiSelect from "@mds/common/components/forms/RenderMultiSelect";
+import RenderField from "@mds/common/components/forms/RenderField";
 
 interface ReportFilterFormProps {
   onSubmit: (params: any) => void;
@@ -39,6 +43,8 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
     setDropdownMineReportCategoryOptionsFiltered,
   ] = useState();
 
+  const dispatch = useAppDispatch();
+  const reportDefinitionsLoaded = useSelector(getReportDefinitionsLoaded(reportParamsGetAll));
   const permits = useSelector(getPermits);
   const dropdownMineReportStatusOptions = useSelector(getDropdownMineReportStatusOptions);
   const dropdownPermitConditionCategoryOptions = useSelector(
@@ -88,41 +94,35 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
       const selectedMineReportDefinition = mineReportDefinitionOptions.filter(
         (option) => option.mine_report_definition_guid === selectedMineReportDefinitionGuid
       )[0];
-
-      newDropdownMineReportCategoryOptionsFiltered = dropdownMineReportCategoryOptions.filter(
-        (cat) =>
-          selectedMineReportDefinition.categories
-            .map((category) => category.mine_report_category)
-            .includes(cat.value)
-      );
+      if (selectedMineReportDefinition) {
+        newDropdownMineReportCategoryOptionsFiltered = dropdownMineReportCategoryOptions.filter(
+          (cat) =>
+            selectedMineReportDefinition.categories
+              .map((category) => category.mine_report_category)
+              .includes(cat.value)
+        );
+      }
     }
 
     setDropdownMineReportCategoryOptionsFiltered(newDropdownMineReportCategoryOptionsFiltered);
   };
 
   useEffect(() => {
-    updateMineReportDefinitionOptions(mineReportDefinitionOptions);
-    updateMineReportCategoryOptions(dropdownMineReportCategoryOptions);
+    if (!reportDefinitionsLoaded) {
+      dispatch(fetchComplianceReports(reportParamsGetAll));
+    }
   }, []);
 
   useEffect(() => {
-    updateMineReportDefinitionOptions(mineReportDefinitionOptions);
-  }, [mineReportDefinitionOptions]);
-
-  useEffect(() => {
-    updateMineReportCategoryOptions(mineReportDefinitionOptions);
-  }, [dropdownMineReportCategoryOptions]);
-
-  useEffect(() => {
     updateMineReportDefinitionOptions(mineReportDefinitionOptions, selectedMineReportCategory);
-  }, [selectedMineReportCategory]);
+  }, [mineReportDefinitionOptions, selectedMineReportCategory]);
 
   useEffect(() => {
     updateMineReportCategoryOptions(
       dropdownMineReportCategoryOptions,
       selectedMineReportDefinitionGuid
     );
-  }, [selectedMineReportDefinitionGuid]);
+  }, [dropdownMineReportCategoryOptions, selectedMineReportDefinitionGuid]);
 
   let permitDropdown = [];
   if (permits) {
@@ -145,13 +145,13 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
               name="report_type"
               label="Report Type"
               placeholder="Select report type"
-              component={renderConfig.SELECT}
+              allowClear
+              component={RenderSelect}
               data={
                 mineReportType === Strings.MINE_REPORTS_TYPE.codeRequiredReports
                   ? dropdownMineReportCategoryOptionsFiltered
                   : dropdownPermitConditionCategoryOptions
               }
-              format={null}
             />
           </Col>
           {mineReportType === Strings.MINE_REPORTS_TYPE.codeRequiredReports && (
@@ -161,9 +161,9 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
                 name="report_name"
                 label="Report Name"
                 placeholder="Select report name"
-                component={renderConfig.SELECT}
+                component={RenderSelect}
                 data={dropdownMineReportDefinitionOptionsFiltered}
-                format={null}
+                allowClear
               />
             </Col>
           )}
@@ -174,9 +174,8 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
                 name="permit_guid"
                 label="Permit"
                 placeholder="Select a Permit"
-                component={renderConfig.SELECT}
+                component={RenderSelect}
                 data={permitDropdown}
-                format={null}
               />
             </Col>
           )}
@@ -186,7 +185,9 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
               name="compliance_year"
               label="Compliance Year"
               placeholder="Select compliance year"
-              component={renderConfig.YEAR}
+              component={RenderDate}
+              allowClear
+              yearMode
             />
           </Col>
         </Row>
@@ -199,7 +200,8 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
                     id="due_date_start"
                     name="due_date_start"
                     placeholder="Select earliest date"
-                    component={renderConfig.DATE}
+                    component={RenderDate}
+                    allowClear
                   />
                 </Col>
                 <Col md={12} sm={24}>
@@ -207,7 +209,8 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
                     id="due_date_end"
                     name="due_date_end"
                     placeholder="Select latest date"
-                    component={renderConfig.DATE}
+                    component={RenderDate}
+                    allowClear
                   />
                 </Col>
               </Row>
@@ -221,7 +224,8 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
                     id="received_date_start"
                     name="received_date_start"
                     placeholder="Select earliest date"
-                    component={renderConfig.DATE}
+                    component={RenderDate}
+                    allowClear
                   />
                 </Col>
                 <Col md={12} sm={24}>
@@ -229,7 +233,8 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
                     id="received_date_end"
                     name="received_date_end"
                     placeholder="Select latest date"
-                    component={renderConfig.DATE}
+                    component={RenderDate}
+                    allowClear
                   />
                 </Col>
               </Row>
@@ -241,7 +246,7 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
               name="requested_by"
               label="Requested By"
               placeholder="Enter keyword"
-              component={renderConfig.FIELD}
+              component={RenderField}
               allowClear
             />
           </Col>
@@ -253,9 +258,8 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
               name="status"
               label="Status"
               placeholder="Select status"
-              component={renderConfig.MULTI_SELECT}
+              component={RenderMultiSelect}
               data={dropdownMineReportStatusOptions}
-              format={null}
             />
           </Col>
           <Col md={8} sm={24}>
@@ -264,7 +268,7 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
               name="received_only"
               label="Received Status"
               placeholder="Select received status"
-              component={renderConfig.SELECT}
+              component={RenderSelect}
               data={[
                 { value: "true", label: "Received Only" },
                 {
@@ -272,7 +276,6 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
                   label: "Received and Unreceived",
                 },
               ]}
-              format={null}
             />
           </Col>
         </Row>

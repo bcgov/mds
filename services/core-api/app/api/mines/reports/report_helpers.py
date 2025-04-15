@@ -48,7 +48,7 @@ class ReportFilterHelper:
                 args["sort_field"] and sort_models[args['sort_field']] == 'Mine'):
             query = query.join(Mine)
 
-        if args["report_type"] or args["report_name"] or (args['sort_field'] and sort_models[
+        if args["report_type"] or (args['sort_field'] and sort_models[
             args['sort_field']] in ['MineReportCategoryXref', 'MineReportDefinition'] and not mine_guid):
             query = query.join(
                 MineReportDefinition, MineReport.mine_report_definition_id ==
