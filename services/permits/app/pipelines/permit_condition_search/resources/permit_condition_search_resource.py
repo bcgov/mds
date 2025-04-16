@@ -14,6 +14,8 @@ from app.pipelines.permit_condition_search.permit_condition_search_pipeline impo
     permit_condition_search_retrieval_pipeline,
 )
 from fastapi import APIRouter, File, HTTPException, UploadFile
+from haystack.dataclasses import ChatMessage
+from openai import BadRequestError
 from sse_starlette import ServerSentEvent
 from sse_starlette.sse import EventSourceResponse
 
@@ -120,9 +122,16 @@ async def stream_search_results(params: SearchParams) -> AsyncIterator[ServerSen
             if "llm" in partial_output:
                 async for event in _process_llm_output(partial_output["llm"]["replies"]):
                     yield event
+    except BadRequestError as e:
+        logger.info(f"Error during search: {str(e)}")
+
+        err = e.response.json() or {}
+        message = err.get('error', {}).get('message', 'Search failed. Please try again.')
+        yield _format_event("error", {"message": message})
+
     except Exception as e:
         logger.exception(f"Error during search: {str(e)}")
-        yield _format_event("error", {"message": f"Search failed: {str(e)}"})
+        yield _format_event("error", {"message": "Search failed. Please try again."})
 
 
 async def _process_documents(documents):
@@ -150,10 +159,11 @@ async def _process_documents(documents):
     yield _format_event("ai_start", {})
 
 
-async def _process_llm_output(replies):
+async def _process_llm_output(replies: list[ChatMessage]):
     """Process LLM replies."""
     for reply in replies:
-        yield _format_event("prompt", {"answers": [reply]})
+        logger.info(f"LLM reply: {str(reply.meta)}")
+        yield _format_event("prompt", {"answers": [reply.text]})
     yield _format_event("ai_complete", {})
 
 

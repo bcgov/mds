@@ -3,7 +3,7 @@ import { hideLoading, showLoading } from "react-redux-loading-bar";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { RootState } from "../rootState";
 import { createRequestHeader } from "../utils/RequestHeaders";
-import { ConditionOperator, Facet, FilterOperator, SearchQuery, SearchResult } from "@mds/common/interfaces/search/facet-search.interface";
+import { ConditionOperator, Facet, FilterOperator, HaystackPromptSearchResult, SearchQuery, SearchResult } from "@mds/common/interfaces/search/facet-search.interface";
 import { createEventSource } from 'eventsource-client'
 
 import * as API from "@mds/common/constants/API";
@@ -14,7 +14,8 @@ export enum SearchEventType {
     AI_START = 'ai_start',
     PROMPT = 'prompt',
     AI_COMPLETE = 'ai_complete',
-    COMPLETE = 'complete'
+    COMPLETE = 'complete',
+    ERROR = 'error',
 }
 
 export type PermitSearchFilters = Array<{ category: string; value: string }>;
@@ -59,7 +60,7 @@ const permitSearchSlice = createAppSlice({
 
             state.filters = existingFilters;
         }),
-        updatePromptResults: create.reducer((state, action: { payload: any }) => {
+        updatePromptResults: create.reducer((state, action: { payload: HaystackPromptSearchResult }) => {
             if (state.results) {
                 state.results.prompt = action.payload;
             }
@@ -148,6 +149,11 @@ const permitSearchSlice = createAppSlice({
                                     thunkApi.dispatch(updatePromptResults(payload));
                                     break;
                                 case SearchEventType.AI_COMPLETE:
+                                    thunkApi.dispatch(setAiLoading(false));
+                                    break;
+                                case SearchEventType.ERROR:
+                                    thunkApi.dispatch(updatePromptResults({ answers: [payload.message] }));
+                                    thunkApi.dispatch(setDocumentLoading(false));
                                     thunkApi.dispatch(setAiLoading(false));
                                     break;
                             }
