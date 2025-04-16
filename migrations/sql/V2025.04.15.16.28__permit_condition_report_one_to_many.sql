@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS mine_report_req_permit_condition_xref
 (
-    mine_permit_report_condition_xref_guid UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    mine_report_req_permit_condition_xref_guid UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     mine_report_permit_requirement_id INT NOT NULL,
     permit_condition_id INT NOT NULL,
     create_user VARCHAR(60) DEFAULT 'system', 
@@ -55,14 +55,14 @@ WHERE report_name IS NULL;
 DO $$
 DECLARE
     count_mine_report_permit_requirement INT;
-    count_mine_permit_report_condition_xref INT;
+    count_mine_report_req_permit_condition_xref INT;
 BEGIN
     SELECT COUNT(*) INTO count_mine_report_permit_requirement FROM mine_report_permit_requirement;
-    SELECT COUNT(*) INTO count_mine_permit_report_condition_xref FROM mine_report_req_permit_condition_xref;
+    SELECT COUNT(*) INTO count_mine_report_req_permit_condition_xref FROM mine_report_req_permit_condition_xref;
 
-    IF count_mine_report_permit_requirement != count_mine_permit_report_condition_xref THEN
+    IF count_mine_report_permit_requirement != count_mine_report_req_permit_condition_xref THEN
         RAISE EXCEPTION 'Record count mismatch: mine_report_permit_requirement = %, mine_report_req_permit_condition_xref = %',
-            count_mine_report_permit_requirement, count_mine_permit_report_condition_xref;
+            count_mine_report_permit_requirement, count_mine_report_req_permit_condition_xref;
     END IF;
 END $$;
 
