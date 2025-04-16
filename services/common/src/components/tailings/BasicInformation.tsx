@@ -8,6 +8,8 @@ import {
   maxLength,
   required,
   requiredList,
+  max,
+  min,
 } from "@mds/common/redux/utils/Validate";
 import { Field } from "@mds/common/components/forms/form";
 import { formatDateTime, formatDateTimeUserTz } from "@mds/common/redux/utils/helpers";
@@ -19,6 +21,7 @@ import { CONSEQUENCE_CLASSIFICATION_STATUS_CODE, FACILITY_TYPES, STORAGE_LOCATIO
 import RenderSelect from "../forms/RenderSelect";
 import RenderField from "../forms/RenderField";
 import { useAppSelector } from "@mds/common/redux/rootState";
+import { setupLatLonLabel } from "@mds/common/utils/helpers";
 
 export interface BasicInformationProps {
   mineName: string;
@@ -188,22 +191,22 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
           <Field
             id="latitude"
             name="latitude"
-            label="Latitude"
+            label={setupLatLonLabel("Latitude")}
             component={RenderField}
             disabled={!canEditTSFAndEditMode}
             required
-            validate={[lat, required]}
+            validate={[required, lat, max(61), min(48)]}
           />
         </Col>
         <Col span={12}>
           <Field
             id="longitude"
             name="longitude"
-            label="Longitude"
+            label={setupLatLonLabel("Longitude")}
             component={RenderField}
             disabled={!canEditTSFAndEditMode}
             required
-            validate={[lonNegative, lon, required]}
+            validate={[required, lonNegative, lon, max(-113), min(-140)]}
           />
         </Col>
       </Row>

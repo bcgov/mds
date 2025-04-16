@@ -13,6 +13,9 @@ import {
     number,
     required,
     requiredList,
+    max,
+    min,
+    lonNegative,
 } from "@mds/common/redux/utils/Validate";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { Field } from "@mds/common/components/forms/form";
@@ -24,6 +27,7 @@ import { formatDateTime } from "@mds/common/redux/utils/helpers";
 import { useAppDispatch } from "@mds/common/redux/rootState";
 import { openModal } from "@mds/common/redux/actions/modalActions";
 import DamDiffModal from "./DamDiffModal";
+import { setupLatLonLabel } from "@mds/common/utils/helpers";
 
 interface DamFormProps {
     tsf: ITailingsStorageFacility;
@@ -67,9 +71,9 @@ const DamForm: FC<DamFormProps> = (props) => {
 
     const returnLink = (
         <Link to={returnUrl} className="associated-dams-link">
-          Return to all Associated Dams of {tsf.mine_tailings_storage_facility_name}.
+            Return to all Associated Dams of {tsf.mine_tailings_storage_facility_name}.
         </Link>
-      );
+    );
 
     return (
         <div>
@@ -87,7 +91,7 @@ const DamForm: FC<DamFormProps> = (props) => {
                     >
                         {returnLink}
                     </Popconfirm>
-                ): (
+                ) : (
                     returnLink
                 )}
             </div>
@@ -139,10 +143,10 @@ const DamForm: FC<DamFormProps> = (props) => {
                     <Field
                         id="latitude"
                         name="latitude"
-                        label="Latitude"
+                        label={setupLatLonLabel("Latitude")}
                         component={RenderField}
                         required
-                        validate={[required, lat]}
+                        validate={[required, lat, max(61), min(48)]}
                         disabled={!canEditTSFAndEditMode}
                     />
                 </Col>
@@ -150,10 +154,10 @@ const DamForm: FC<DamFormProps> = (props) => {
                     <Field
                         id="longitude"
                         name="longitude"
-                        label="Longitude"
+                        label={setupLatLonLabel("Longitude")}
                         component={RenderField}
                         required
-                        validate={[required, lon]}
+                        validate={[required, lonNegative, lon, max(-113), min(-140)]}
                         disabled={!canEditTSFAndEditMode}
                     />
                 </Col>

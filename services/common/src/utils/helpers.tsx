@@ -2,8 +2,13 @@ import { isArray } from "lodash";
 import { removeNullValuesRecursive } from "@mds/common/constants/utils";
 import { AMS_AUTHORIZATION_TYPES } from "@mds/common/constants/enums";
 import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
-import { IMineReportPermitRequirement, IPermitAmendment } from "../interfaces/permits";
+import { IMineReportPermitRequirement } from "../interfaces/permits";
 import { REPORT_FREQUENCY_HASH, REPORT_MINISTRY_RECIPIENT_HASH, REPORT_REGULATORY_AUTHORITY_CODES_HASH } from "../constants/strings";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Typography, Popover } from "antd";
+import { faCircleQuestion } from "@fortawesome/pro-light-svg-icons";
+import React from "react";
+
 
 const transformAuthorizations = (
   valuesFromForm: any,
@@ -126,23 +131,23 @@ export const getConditionsWithRequirements = (conditions: IPermitCondition[], re
 export const findCondition = (permit_condition: string | number, conditions: IPermitCondition[]) => {
 
   const findConditionRecursive = (value: string | number, condition: IPermitCondition): IPermitCondition | null => {
-      // Check if either permit_condition_guid or permit_condition_id matches the given value
-      if (condition?.permit_condition_guid === value || condition?.permit_condition_id === value) {
-          return condition;
-      }
+    // Check if either permit_condition_guid or permit_condition_id matches the given value
+    if (condition?.permit_condition_guid === value || condition?.permit_condition_id === value) {
+      return condition;
+    }
 
-      if (condition.sub_conditions) {
-          for (const sub of condition.sub_conditions) {
-              const found = findConditionRecursive(value, sub);
-              if (found) return found;
-          }
+    if (condition.sub_conditions) {
+      for (const sub of condition.sub_conditions) {
+        const found = findConditionRecursive(value, sub);
+        if (found) return found;
       }
-      return null;
+    }
+    return null;
   };
 
   for (const condition of conditions) {
-      const found = findConditionRecursive(permit_condition, condition);
-      if (found) return found;
+    const found = findConditionRecursive(permit_condition, condition);
+    if (found) return found;
   }
   return null;
 }
@@ -150,22 +155,45 @@ export const findCondition = (permit_condition: string | number, conditions: IPe
 /** IMineReportPermitRequirement transformer */
 /** Logic from ReportPermitRequirementForm TODO use this transformer too? */
 
-export const transformPermitReportRequirement = (report : IMineReportPermitRequirement) => {
-  if(report){
+export const transformPermitReportRequirement = (report: IMineReportPermitRequirement) => {
+  if (report) {
     return {
       report_name: report.report_name,
       formattedConditionStep: "",
       mine_report_permit_requirement_id: report.mine_report_permit_requirement_id,
       regulatory_authority: report.cim_or_cpo ? REPORT_REGULATORY_AUTHORITY_CODES_HASH[report.cim_or_cpo] : "Not Specified",
       ministry_recipient: report.ministry_recipient?.map(
-        (dest,index) => 
-        `${REPORT_MINISTRY_RECIPIENT_HASH[dest]}${index < report.ministry_recipient.length - 1 ? ", " : ""} `
+        (dest, index) =>
+          `${REPORT_MINISTRY_RECIPIENT_HASH[dest]}${index < report.ministry_recipient.length - 1 ? ", " : ""} `
       ) ?? "None Specified",
       permit_condition_id: report.permit_condition_id,
       frequency: Object.keys(REPORT_FREQUENCY_HASH).find(key => REPORT_FREQUENCY_HASH[key] === report.due_date_period_months),
       initial_due_date: report.initial_due_date,
       condition_category_code: report.condition_category_code
     }
-  } 
+  }
   return null;
 }
+
+export const setupLatLonLabel = (type: string) => {
+  const format = type === "Latitude" ? "(XX.bbbbbb)" : "(-XXX.bbbbbb)";
+  const range = type === "Latitude" ? "Valid range: 48 to 61" : "Valid range: -140 to -113";
+  return (
+    <span>
+      {type}{" "}
+      <Popover
+        content={
+          <Typography.Paragraph>{format} < br /> {range} </Typography.Paragraph>
+        }
+        placement="topLeft"
+        color="white"
+        overlayStyle={{ width: "250px" }
+        }
+      >
+        <span>
+          <FontAwesomeIcon icon={faCircleQuestion} style={{ width: "20px" }} />
+        </span>
+      </Popover>
+    </span>
+  )
+};
