@@ -138,9 +138,10 @@ from app.api.mines.reports.resources.mine_report_definition_compliance_article_x
     MineReportDefinitionComplianceArticleCreateResource,
     MineReportDefinitionComplianceArticleUpdateResource,
 )
-from app.api.mines.reports.resources.mine_report_definition_resource import (
+from app.api.mines.reports.resources.mine_report_definition_list_resource import (
     MineReportDefinitionListResource,
 )
+from app.api.mines.reports.resources.mine_report_definition_resource import MineReportDefinitionResource
 from app.api.mines.reports.resources.mine_report_document import (
     MineReportDocumentListResource,
 )
@@ -258,6 +259,11 @@ api.add_resource(MineReportListResource, '/<string:mine_guid>/reports')
 api.add_resource(MineReportResource, '/<string:mine_guid>/reports/<string:mine_report_guid>')
 api.add_resource(ReportSubmissionResource, '/reports/submissions')
 api.add_resource(MineReportDefinitionListResource, '/reports/definitions')
+api.add_resource(
+    MineReportDefinitionResource,
+    '/reports/definition/<string:mine_report_definition_guid>',
+)
+
 api.add_resource(MineReportCommentListResource,
                  '/<string:mine_guid>/reports/<string:mine_report_guid>/comments')
 api.add_resource(

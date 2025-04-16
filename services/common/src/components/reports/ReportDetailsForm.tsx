@@ -16,9 +16,11 @@ import { faTrashAlt } from "@fortawesome/pro-light-svg-icons";
 import { getDropdownPermitConditionCategoryOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import {
   fetchComplianceReports,
+  getExpiredMineReportDefinition,
   getMineReportDefinitionOptions,
   getReportDefinitionsLoaded,
   reportParamsGetAll,
+  fetchExpiredReportDefinition,
 } from "@mds/common/redux/slices/complianceReportsSlice";
 import ReportFileUpload from "@mds/common/components/reports/ReportFileUpload";
 import { FORM } from "@mds/common/constants/forms";
@@ -168,13 +170,16 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const {
     mine_report_category = "",
     mine_report_definition_guid = "",
-    report_name,
     mine_report_submission_status_code,
     documents = [],
     report_type,
     permit_condition_category_code,
     permit_guid,
   } = formValues;
+
+  const expiredReportDefinition: IMineReportDefinition = useSelector(
+    getExpiredMineReportDefinition
+  );
 
   const [selectedReportCode, setSelectedReportCode] = useState("");
   const [formattedMineReportDefinitionOptions, setFormattedMineReportDefinitionOptions] = useState(
@@ -285,14 +290,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         })
         .sort((a, b) => a.label.localeCompare(b.label));
 
-      // If the current report is expired, add it to the options list
-      const reportNames = newFormattedMineReportDefinitionOptions.map((o) => o.label);
-      if (formValues.report_name && !reportNames.includes(formValues.report_name)) {
-        newFormattedMineReportDefinitionOptions.unshift({
-          label: formValues.report_name,
-          value: formValues.mine_report_definition_guid,
-        });
-      }
       setFormattedMineReportDefinitionOptions(
         uniqBy(newFormattedMineReportDefinitionOptions, "value")
       );
@@ -302,15 +299,19 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   useEffect(() => {
     // update compliance article options when "Report Name" changes
     if (formattedMineReportDefinitionOptions?.length > 0) {
-      const newReportComplianceArticle = formattedMineReportDefinitionOptions.find((opt) => {
+      const newReportComplianceArticle = mineReportDefinitionOptions.find((opt) => {
         return opt.mine_report_definition_guid === mine_report_definition_guid;
       });
-      setMineReportDefinition(newReportComplianceArticle ?? formValues);
 
-      const newReportCode = newReportComplianceArticle
-        ? formatComplianceCodeReportName(newReportComplianceArticle)
-        : report_name;
-      setSelectedReportCode(newReportCode);
+      if (newReportComplianceArticle) {
+        setMineReportDefinition(newReportComplianceArticle);
+
+        setSelectedReportCode(formatComplianceCodeReportName(newReportComplianceArticle));
+      } else if (!expiredReportDefinition) {
+        dispatch(
+          fetchExpiredReportDefinition({ mineReportDefinitionGuid: mine_report_definition_guid })
+        );
+      }
     } else {
       setSelectedReportCode("");
     }
@@ -319,6 +320,26 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     mineReportDefinitionOptions,
     formattedMineReportDefinitionOptions,
   ]);
+
+  useEffect(() => {
+    if (expiredReportDefinition) {
+      setMineReportDefinition(expiredReportDefinition);
+      setSelectedReportCode(formatComplianceCodeReportName(expiredReportDefinition));
+
+      // If the current report is expired, add it to the options list
+      const reportNames = formattedMineReportDefinitionOptions.map((o) => o.label);
+      if (formValues.report_name && !reportNames.includes(expiredReportDefinition.report_name)) {
+        const newFormattedMineReportDefinitionOptions = [
+          {
+            label: formatComplianceCodeReportName(expiredReportDefinition),
+            value: expiredReportDefinition.mine_report_definition_guid,
+          },
+          ...formattedMineReportDefinitionOptions,
+        ];
+        setFormattedMineReportDefinitionOptions(newFormattedMineReportDefinitionOptions);
+      }
+    }
+  }, [expiredReportDefinition]);
 
   useEffect(() => {
     if (system === SystemFlagEnum.core) {
