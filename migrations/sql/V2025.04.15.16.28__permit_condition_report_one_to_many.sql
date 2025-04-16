@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS mine_report_req_permit_condition_xref
     mine_report_req_permit_condition_xref_guid UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     mine_report_permit_requirement_id INT NOT NULL,
     permit_condition_id INT NOT NULL,
+    deleted_ind BOOLEAN DEFAULT FALSE,
     create_user VARCHAR(60) DEFAULT 'system', 
 	create_timestamp TIMESTAMP WITHOUT TIME ZONE DEFAULT now(), 
 	update_user VARCHAR(60) DEFAULT 'system', 
