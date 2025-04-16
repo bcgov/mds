@@ -849,7 +849,7 @@ exports[`Projects renders now application tab properly 1`] = `
                       class="ant-spin-container ant-spin-blur"
                     >
                       <div
-                        class="ant-table ant-table-empty"
+                        class="ant-table"
                       >
                         <div
                           class="ant-table-container"
@@ -1125,13 +1125,163 @@ exports[`Projects renders now application tab properly 1`] = `
                                 class="ant-table-tbody"
                               >
                                 <tr
-                                  class="ant-table-placeholder"
+                                  class="ant-table-row ant-table-row-level-0 fade-in"
+                                  data-row-key="07e801a0-fa33-4c3b-abcc-ac6df628d483"
                                 >
                                   <td
                                     class="ant-table-cell"
-                                    colspan="6"
                                   >
-                                    This mine has no project data.
+                                    <div
+                                      title="Number"
+                                    >
+                                      44
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      title="Type"
+                                    >
+                                      choice
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      title="Status"
+                                    >
+                                      <span
+                                        class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                      >
+                                        <span
+                                          class="ant-badge-status-dot ant-badge-status-success"
+                                        />
+                                        <span
+                                          class="ant-badge-status-text"
+                                        >
+                                          Approved
+                                        </span>
+                                      </span>
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell ant-table-column-sort"
+                                  >
+                                    <div
+                                      title="Received"
+                                    >
+                                      Aug 14 2019
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    N/A
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      title=""
+                                    >
+                                      <div
+                                        class="ant-row"
+                                        style="margin-left: -0.5px; margin-right: -0.5px;"
+                                      >
+                                        <div
+                                          class="ant-col ant-col-12"
+                                          style="padding-left: 0.5px; padding-right: 0.5px;"
+                                        >
+                                          <a
+                                            href="/#TODO"
+                                          >
+                                            View
+                                          </a>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr
+                                  class="ant-table-row ant-table-row-level-0 fade-in"
+                                  data-row-key="8e1536da-644c-4961-976b-b1326fa75825"
+                                >
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      title="Number"
+                                    >
+                                      52
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      title="Type"
+                                    >
+                                      technology
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      title="Status"
+                                    >
+                                      <span
+                                        class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                      >
+                                        <span
+                                          class="ant-badge-status-dot ant-badge-status-success"
+                                        />
+                                        <span
+                                          class="ant-badge-status-text"
+                                        >
+                                          Approved
+                                        </span>
+                                      </span>
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell ant-table-column-sort"
+                                  >
+                                    <div
+                                      title="Received"
+                                    >
+                                      Jul 21 2019
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    N/A
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      title=""
+                                    >
+                                      <div
+                                        class="ant-row"
+                                        style="margin-left: -0.5px; margin-right: -0.5px;"
+                                      >
+                                        <div
+                                          class="ant-col ant-col-12"
+                                          style="padding-left: 0.5px; padding-right: 0.5px;"
+                                        >
+                                          <a
+                                            href="/#TODO"
+                                          >
+                                            View
+                                          </a>
+                                        </div>
+                                      </div>
+                                    </div>
                                   </td>
                                 </tr>
                               </tbody>
