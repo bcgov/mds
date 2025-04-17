@@ -183,7 +183,7 @@ export const setupLatLonLabel = (type: string) => {
       {type}{" "}
       <Popover
         content={
-          <Typography.Paragraph>{format} < br /> {range} </Typography.Paragraph>
+          <Typography.Paragraph>{format} <br /> {range} </Typography.Paragraph>
         }
         placement="topLeft"
         color="white"
