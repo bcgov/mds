@@ -3,6 +3,8 @@ from typing import Optional
 from app.api.utils.field_template import FieldTemplate
 from app.api.utils.list_lettering_helpers import num_to_letter, num_to_roman
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
+from app.api.mines.reports.models.mine_report_req_permit_condition_xref import MineReportReqPermitConditionXref
+from app.api.mines.reports.models.mine_report_permit_requirement import MineReportPermitRequirement
 from app.extensions import db
 from marshmallow import fields
 from sqlalchemy.dialects.postgresql import JSONB, UUID
@@ -82,6 +84,13 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         backref=backref("parent", remote_side=[permit_condition_id]),
         foreign_keys=[parent_permit_condition_id]
     )
+    mine_report_permit_requirements = db.relationship(
+        MineReportPermitRequirement,
+        lazy="select",
+        overlaps="mine_report_req_permit_conditions",
+        secondary="mine_report_req_permit_condition_xref",
+        secondaryjoin='foreign(MineReportReqPermitConditionXref.mine_report_permit_requirement_id)==remote(MineReportPermitRequirement.mine_report_permit_requirement_id)',
+        )
 
     @hybrid_property
     def sub_conditions(self):
@@ -242,6 +251,12 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
             permit_condition_id=permit_condition_id, deleted_ind=False
         ).first()
 
+    @classmethod
+    def find_many_by_permit_condition_ids(cls, permit_condition_ids):
+        return cls.query.filter(
+            cls.permit_condition_id.in_(permit_condition_ids)
+        ).filter_by(deleted_ind=False).all()
+    
     @classmethod
     def find_by_condition_category_code(cls, condition_category_code):
         return cls.query.filter_by(

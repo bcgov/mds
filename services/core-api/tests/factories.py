@@ -1730,7 +1730,7 @@ class MineReportPermitRequirementFactory(BaseFactory):
 
     class Params:
         permit_amendment = factory.SubFactory(PermitAmendmentFactory)
-        permit_condition = factory.SubFactory(PermitConditionsFactory)
+        permit_conditions = factory.List([factory.SubFactory(PermitConditionsFactory) for _ in range(3)])
 
     due_date_period_months = factory.LazyFunction(lambda: random.randint(1, 12))
     initial_due_date = TODAY
@@ -1741,7 +1741,9 @@ class MineReportPermitRequirementFactory(BaseFactory):
         lambda: [random.choice(list(OfficeDestination))]
     )
     mine_report_permit_requirement_id = factory.LazyFunction(lambda: random.randint(1, 12))
-    permit_condition_id = factory.SelfAttribute('permit_condition.permit_condition_id')
+    permit_condition_ids = factory.LazyAttribute(
+        lambda o: [condition.permit_condition_id for condition in o.permit_conditions]
+    )
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
 
 class PermitExtractionTaskFactory(BaseFactory):
