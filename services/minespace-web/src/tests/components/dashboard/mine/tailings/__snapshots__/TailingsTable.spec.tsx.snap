@@ -876,7 +876,7 @@ exports[`TailingsTable renders properly 1`] = `
                       <div
                         title="Engineer of Record"
                       >
-                        N/A
+                        Egbert O'Reilly
                       </div>
                     </td>
                     <td
@@ -885,7 +885,7 @@ exports[`TailingsTable renders properly 1`] = `
                       <div
                         title="Qualified Person"
                       >
-                        N/A
+                        Quintessa Petersen
                       </div>
                     </td>
                     <td

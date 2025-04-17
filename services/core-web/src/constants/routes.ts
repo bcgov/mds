@@ -612,11 +612,12 @@ const ORGBOOK_URL = "https://orgbook.gov.bc.ca";
 export const ORGBOOK_ENTITY_URL = (sourceId) => `${ORGBOOK_URL}/entity/${sourceId}`;
 export const ORGBOOK_CREDENTIAL_URL = (sourceId, credentialId) =>
   `${ORGBOOK_URL}/entity/${sourceId}/cred/${credentialId}`;
+
 export const ADD_DAM = {
   route:
     "/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:parentTSFFormMode/:userAction",
   dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, editMode = "edit", userAction = "newDam") =>
-    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${editMode}/${userAction}`,
+    `/mine-dashboard/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${editMode}/${userAction}`,
   component: DamsDetailsPage,
   helpKey: "Dam-Details",
 };

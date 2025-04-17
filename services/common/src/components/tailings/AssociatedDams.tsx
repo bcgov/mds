@@ -2,6 +2,7 @@ import { Button, Col, Row, Typography } from "antd";
 import {
     CONSEQUENCE_CLASSIFICATION_CODE_HASH,
     DAM_OPERATING_STATUS_HASH,
+    EMPTY_FIELD,
 } from "@mds/common/constants/strings";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import React, { FC } from "react";
@@ -113,12 +114,12 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
         renderActionsColumn({ actions }),
     ];
 
-    const mostRecentUpdatedDate = moment(
+    const mostRecentUpdatedDate = tsf.dams.length ? moment(
         Math.max.apply(
             null,
             tsf.dams.map((dam) => moment(dam.update_timestamp))
         )
-    ).format("DD-MM-YYYY H:mm");
+    ).format("DD-MM-YYYY H:mm") : EMPTY_FIELD;
 
     return (
         <div>
@@ -132,22 +133,21 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
                     </Typography.Text>
                 </Col>
                 <Col>
-                    {isCore ? (
+                    {isCore &&
                         <div>
                             <Typography.Paragraph strong style={{ textAlign: "right" }}>
                                 Last Updated
                             </Typography.Paragraph>
-                            <Typography.Paragraph>{mostRecentUpdatedDate}</Typography.Paragraph>
+                            <Typography.Paragraph style={{ textAlign: "right" }}>{mostRecentUpdatedDate}</Typography.Paragraph>
                         </div>
-                    ) : (
-                        canEditTSF &&
-                        isEditMode && (
-                            <Button type="primary" onClick={handleNavigateToCreate}>
-                                <PlusCircleFilled />
-                                Create a new dam
-                            </Button>
-                        )
-                    )}
+                    }
+                    {
+                        canEditTSF && isEditMode &&
+                        <Button type="primary" onClick={handleNavigateToCreate}>
+                            <PlusCircleFilled />
+                            Create a new dam
+                        </Button>
+                    }
                 </Col>
             </Row>
             <CoreTable columns={columns} dataSource={tsf.dams} />

@@ -12,4 +12,5 @@ export interface IMineComplianceInfo {
   warnings: number;
   last_12_months: IMineComplianceStats;
   current_fiscal: IMineComplianceStats;
+  year_to_date: IMineComplianceStats;
 }

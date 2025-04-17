@@ -35,8 +35,10 @@ export interface IEngineerOfRecord extends IPartyAppt {
   status?: string;
 }
 
-export interface ITailingsStorageFacilityForm {
+export interface ITailingsStorageFacilityForm extends ITailingsStorageFacility {
   engineer_of_record?: IEngineerOfRecord;
   engineers_of_record?: IEngineerOfRecord[];
+  qualified_person?: IEngineerOfRecord;
+  qualified_persons?: IEngineerOfRecord[];
   mine_tailings_storage_facility_guid: string;
 }
