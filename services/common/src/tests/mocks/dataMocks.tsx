@@ -6,9 +6,11 @@ import {
   MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES,
   MINE_INCIDENT_DOCUMENT_TYPE_CODE,
   MINE_REPORT_SUBMISSION_CODES,
+  MinePartyAppointmentTypeCodeEnum,
   NodStatusSaveEnum,
   NoDTypeSaveEnum,
   OperatingStatusEnum,
+  PartyTypeCodeEnum,
   PROJECT_STATUS_CODES,
   PROJECT_SUMMARY_STATUS_CODES,
   StorageLocationEnum,
@@ -36,6 +38,8 @@ import {
   ITailingsStorageFacility,
   IMineReportSubmission,
   IDam,
+  ITailingsStorageFacilityForm,
+  IMineComplianceInfo,
 } from "@mds/common/interfaces";
 import { HaystackDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
 
@@ -67,7 +71,7 @@ export const USERS = [
   },
 ];
 
-export const TSF: ITailingsStorageFacility = {
+export const TSF_NO_CONTACTS: ITailingsStorageFacility = {
   mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
   mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
   mine_tailings_storage_facility_name: "MockTSF",
@@ -103,6 +107,63 @@ export const TSF: ITailingsStorageFacility = {
   storage_location: StorageLocationEnum.above_ground,
   mines_act_permit_no: "P-123",
 };
+
+export const TSF: ITailingsStorageFacilityForm = {
+  ...TSF_NO_CONTACTS,
+  mine_tailings_storage_facility_guid: TSF_NO_CONTACTS.mine_tailings_storage_facility_guid,
+  engineer_of_record: {
+    end_date: null,
+    is_draft: false,
+    mine_guid: TSF_NO_CONTACTS.mine_guid,
+    mine_party_acknowledgement_status: "acknowledged",
+    mine_party_appt_guid: "mine-party-appt-guid",
+    mine_party_appt_type_code: MinePartyAppointmentTypeCodeEnum.EOR,
+    party_guid: "party-guid-eor",
+    related_guid: TSF_NO_CONTACTS.mine_tailings_storage_facility_guid,
+    start_date: "2025-03-30",
+    party: {
+      party_guid: "party-guid-eor",
+      address: undefined,
+      business_role_appts: [],
+      email: "",
+      first_name: "Egbert",
+      mine_party_appt: [],
+      name: "Egbert O'Reilly",
+      now_party_appt: [],
+      organization: undefined,
+      organization_guid: "",
+      party_name: "O'Reilly",
+      party_orgbook_entity: undefined,
+      party_type_code: PartyTypeCodeEnum.PER,
+      phone_no: "123-123-1234"
+    }
+  },
+  qualified_person: {
+    related_guid: TSF_NO_CONTACTS.mine_tailings_storage_facility_guid,
+    start_date: "2025-03-30",
+    party: {
+      party_guid: "party-guid-qp",
+      first_name: "Quintessa",
+      mine_party_appt: [],
+      name: "Quintessa Petersen",
+      now_party_appt: [],
+      organization: undefined,
+      organization_guid: "",
+      party_name: "Petersen",
+      party_orgbook_entity: undefined,
+      party_type_code: PartyTypeCodeEnum.PER,
+      phone_no: "123-123-1234",
+      address: undefined,
+      business_role_appts: [],
+      email: ""
+    },
+    mine_party_acknowledgement_status: "pending",
+    mine_party_appt_guid: "qp-appt-guid",
+    mine_guid: TSF_NO_CONTACTS.mine_guid,
+    party_guid: "party-guid-qp",
+    mine_party_appt_type_code: MinePartyAppointmentTypeCodeEnum.TQP
+  }
+}
 
 export const DAM_WITH_HISTORY: IDam = {
   dam_guid: TSF.dams[0].dam_guid,
@@ -2865,7 +2926,7 @@ export const CONDITIONAL_DISTURBANCE_OPTIONS = {
   ],
 };
 
-export const COMPLIANCE = {
+export const COMPLIANCE: IMineComplianceInfo = {
   last_inspection: "2018-12-12 00:00",
   last_inspector: "test",
   num_open_orders: 5,
@@ -2873,9 +2934,6 @@ export const COMPLIANCE = {
   advisories: 5,
   warnings: 5,
   section_35_orders: 5,
-  open_orders: [
-    { order_no: "", report_no: "", due_date: "", inspector: "", violation: "", overdue: false },
-  ],
   orders: [
     {
       order_no: "1234-1",
@@ -2884,6 +2942,7 @@ export const COMPLIANCE = {
       inspector: "TEST",
       violation: "2.2",
       overdue: false,
+      order_status: ""
     },
     {
       order_no: "1234-2",
@@ -2892,6 +2951,7 @@ export const COMPLIANCE = {
       inspector: "TEST",
       violation: "2.3",
       overdue: true,
+      order_status: ""
     },
     {
       order_no: "1234-3",
@@ -2900,14 +2960,9 @@ export const COMPLIANCE = {
       inspector: "TEST",
       violation: "1.1.1",
       overdue: false,
+      order_status: ""
     },
   ],
-  all_time: {
-    num_inspections: 5,
-    num_advisories: 6,
-    num_warnings: 7,
-    num_requests: 8,
-  },
   current_fiscal: {
     num_inspections: 3,
     num_advisories: 4,
@@ -3029,108 +3084,108 @@ export const PARTY_RELATIONSHIP_TYPES = [
     mine_party_appt_type_code: "MMG",
     description: "Mine Manager",
     display_order: "1",
-    active_ind: "True",
-    person: "True",
-    organization: "False",
+    active_ind: true,
+    person: true,
+    organization: false,
     grouping_level: "3",
   },
   {
     mine_party_appt_type_code: "PMT",
     description: "Permitee",
     display_order: "2",
-    active_ind: "True",
-    person: "True",
-    organization: "True",
+    active_ind: true,
+    person: true,
+    organization: true,
     grouping_level: "3",
   },
   {
     mine_party_appt_type_code: "MOR",
     description: "Mine Operator",
     display_order: "3",
-    active_ind: "True",
-    person: "True",
-    organization: "False",
+    active_ind: true,
+    person: true,
+    organization: false,
     grouping_level: "3",
   },
   {
     mine_party_appt_type_code: "MOW",
     description: "Mine Owner",
     display_order: "4",
-    active_ind: "True",
-    person: "True",
-    organization: "False",
+    active_ind: true,
+    person: true,
+    organization: false,
     grouping_level: "3",
   },
   {
     mine_party_appt_type_code: "EOR",
     description: "Engineer Of Record",
     display_order: "5",
-    active_ind: "True",
-    person: "True",
-    organization: "False",
+    active_ind: true,
+    person: true,
+    organization: false,
     grouping_level: "2",
   },
   {
     mine_party_appt_type_code: "EVS",
     description: "Environmental Specialist",
     display_order: "6",
-    active_ind: "True",
-    person: "True",
-    organization: "False",
+    active_ind: true,
+    person: true,
+    organization: false,
     grouping_level: "2",
   },
   {
     mine_party_appt_type_code: "EMM",
     description: "Exploration Mine Manager",
     display_order: "7",
-    active_ind: "True",
-    person: "True",
-    organization: "False",
+    active_ind: true,
+    person: true,
+    organization: false,
     grouping_level: "2",
   },
   {
     mine_party_appt_type_code: "SVR",
     description: "Supervisor",
     display_order: "8",
-    active_ind: "True",
-    person: "True",
-    organization: "False",
+    active_ind: true,
+    person: true,
+    organization: false,
     grouping_level: "1",
   },
   {
     mine_party_appt_type_code: "SHB",
     description: "Shift Boss",
     display_order: "9",
-    active_ind: "True",
-    person: "True",
-    organization: "False",
+    active_ind: true,
+    person: true,
+    organization: false,
     grouping_level: "1",
   },
   {
     mine_party_appt_type_code: "FRB",
     description: "Fire Boss",
     display_order: "10",
-    active_ind: "True",
-    person: "True",
-    organization: "False",
+    active_ind: true,
+    person: true,
+    organization: false,
     grouping_level: "1",
   },
   {
     mine_party_appt_type_code: "BLA",
     description: "Blaster",
     display_order: "11",
-    active_ind: "True",
-    person: "True",
-    organization: "False",
+    active_ind: true,
+    person: true,
+    organization: false,
     grouping_level: "1",
   },
   {
     mine_party_appt_type_code: "MRC",
     description: "Mine Rescue Contact",
     display_order: "12",
-    active_ind: "True",
-    person: "True",
-    organization: "False",
+    active_ind: true,
+    person: true,
+    organization: false,
     grouping_level: "1",
   },
 ];
