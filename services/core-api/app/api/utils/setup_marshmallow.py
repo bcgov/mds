@@ -8,7 +8,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker, mapper
 from sqlalchemy import event
 from sqlalchemy.inspection import inspect
 from sqlalchemy.orm.attributes import InstrumentedAttribute
-from marshmallow import fields, pprint, validate, EXCLUDE
+from marshmallow import fields, validate, EXCLUDE
 from marshmallow_sqlalchemy import ModelConversionError, ModelConverter
 from app.api.utils.models_mixins import AuditMixin, Base as BaseModel
 from app.extensions import db
