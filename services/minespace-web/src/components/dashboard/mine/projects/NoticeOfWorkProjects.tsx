@@ -8,7 +8,7 @@ import { getNoticeOfWorkList } from "@mds/common/redux/selectors/noticeOfWorkSel
 import { fetchProponentNoticeOfWorkApplications } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import { useAppDispatch } from "@mds/common/redux/rootState";
 
-export const Projects: FC = () => {
+export const NoticeOfWorkProjects: FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
   const dispatch = useAppDispatch();
@@ -54,4 +54,4 @@ export const Projects: FC = () => {
   );
 };
 
-export default Projects;
+export default NoticeOfWorkProjects;

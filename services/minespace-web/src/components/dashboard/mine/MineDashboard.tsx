@@ -24,7 +24,6 @@ const MineDashboard: FC = () => {
   const [mineNotFound, setMineNotFound] = useState(false);
   const { isFeatureEnabled } = useFeatureFlag();
   const showApplications = mine?.major_mine_ind || isFeatureEnabled(Feature.MINESPACE_NOW_STATUS);
-  console.log(mine?.major_mine_ind, isFeatureEnabled(Feature.MINESPACE_NOW_STATUS));
 
   const loadData = async (mine_guid) => {
     return Promise.all([

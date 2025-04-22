@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Projects renders major mines application tab properly 1`] = `
+exports[`ViewProjects renders major mines application tab properly 1`] = `
 <div>
   <div
     class="fixed-tabs-container"
@@ -26,13 +26,13 @@ exports[`Projects renders major mines application tab properly 1`] = `
           >
             <div
               class="ant-tabs-tab ant-tabs-tab-active"
-              data-node-key="major-mine"
+              data-node-key="major-mine-application"
             >
               <div
-                aria-controls="rc-tabs-test-panel-major-mine"
+                aria-controls="rc-tabs-test-panel-major-mine-application"
                 aria-selected="true"
                 class="ant-tabs-tab-btn"
-                id="rc-tabs-test-tab-major-mine"
+                id="rc-tabs-test-tab-major-mine-application"
                 role="tab"
                 tabindex="0"
               >
@@ -103,9 +103,9 @@ exports[`Projects renders major mines application tab properly 1`] = `
         >
           <div
             aria-hidden="false"
-            aria-labelledby="rc-tabs-test-tab-major-mine"
+            aria-labelledby="rc-tabs-test-tab-major-mine-application"
             class="ant-tabs-tabpane ant-tabs-tabpane-active"
-            id="rc-tabs-test-panel-major-mine"
+            id="rc-tabs-test-panel-major-mine-application"
             role="tabpanel"
             tabindex="0"
           >
@@ -666,7 +666,7 @@ exports[`Projects renders major mines application tab properly 1`] = `
 </div>
 `;
 
-exports[`Projects renders now application tab properly 1`] = `
+exports[`ViewProjects renders now application tab properly 1`] = `
 <div>
   <div
     class="fixed-tabs-container"
@@ -692,13 +692,13 @@ exports[`Projects renders now application tab properly 1`] = `
           >
             <div
               class="ant-tabs-tab"
-              data-node-key="major-mine"
+              data-node-key="major-mine-application"
             >
               <div
-                aria-controls="rc-tabs-test-panel-major-mine"
+                aria-controls="rc-tabs-test-panel-major-mine-application"
                 aria-selected="false"
                 class="ant-tabs-tab-btn"
-                id="rc-tabs-test-tab-major-mine"
+                id="rc-tabs-test-tab-major-mine-application"
                 role="tab"
                 tabindex="0"
               >

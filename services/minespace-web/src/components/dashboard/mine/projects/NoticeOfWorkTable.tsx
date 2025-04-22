@@ -1,16 +1,15 @@
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Badge } from "antd";
-import { formatDate } from "@/utils/helpers";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import * as Strings from "@mds/common/constants/strings";
 import { INoticeOfWork } from "@mds/common/interfaces";
 import DocumentLink from "@mds/common/components/documents/DocumentLink";
-import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import { isEmpty } from "lodash";
 import { getApplicationStatusType } from "@mds/common/constants/badgeStatusTypes";
 import { SortOrder } from "antd/es/table/interface";
-import { dateSorter } from "@mds/common/redux/utils/helpers";
+import { dateSorter, formatDate } from "@mds/common/redux/utils/helpers";
+import { downloadNowDocument } from "@mds/common/redux/utils/actionlessNetworkCalls";
 
 interface NoticeOfWorkTableProps {
   isLoaded: boolean;
@@ -22,21 +21,14 @@ const transformRowData = (applications: INoticeOfWork[]) =>
     key: application.now_application_guid,
     now_application_guid: application.now_application_guid,
     now_number: application.now_number || Strings.EMPTY_FIELD,
-    mine_name: application.mine_name || Strings.EMPTY_FIELD,
-    mine_guid: application.mine_guid,
     notice_of_work_type_description:
       application.notice_of_work_type_description || Strings.EMPTY_FIELD,
-    lead_inspector_name: application.lead_inspector_name || Strings.EMPTY_FIELD,
-    lead_inspector_party_guid: application.lead_inspector_party_guid,
-    issuing_inspector_name: application.issuing_inspector_name || Strings.EMPTY_FIELD,
-    issuing_inspector_party_guid: application.issuing_inspector_party_guid,
     now_application_status_description:
       application.now_application_status_description || Strings.EMPTY_FIELD,
     received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
     originating_system: application.originating_system || Strings.EMPTY_FIELD,
     document:
       application.application_documents?.length > 0 ? application.application_documents[0] : {},
-    is_historic: application.is_historic,
   }));
 
 export const NoticeOfWorkTable: FC<NoticeOfWorkTableProps> = ({ isLoaded, applications }) => {

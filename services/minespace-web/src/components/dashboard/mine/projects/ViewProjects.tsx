@@ -10,7 +10,7 @@ import { Feature } from "@mds/common/utils";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { MINE_DASHBOARD } from "@/constants/routes";
 
-const tabs = ["major-mine", "notice-of-work"];
+const tabs = ["major-mine-application", "notice-of-work"];
 
 const ViewProjects: FC = () => {
   const {

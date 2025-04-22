@@ -14,7 +14,7 @@ const initialState = {
 
 const mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
 
-describe("Projects", () => {
+describe("ViewProjects", () => {
   it("renders major mines application tab properly", () => {
     const { container } = render(
       <BrowserRouter>
