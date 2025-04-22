@@ -344,6 +344,10 @@ export const NOTICE_OF_WORK_APPLICATION_DELAY = (applicationGuid, delayGuid) =>
     ? `/now-applications/${applicationGuid}/delays/${delayGuid}`
     : `/now-applications/${applicationGuid}/delays`;
 
+// Proponent Notice Of Work
+export const PROPONENT_NOTICE_OF_WORK_APPLICATION_LIST = (mineGuid) =>
+  `/mines/${mineGuid}/now-applications`;
+
 // Mine Party Appointments
 // NOTE: pretty sure the file generating the TS error should actually be passing MPAGuid below
 export const MINE_PARTY_APPOINTMENT_DOCUMENTS = (mineGuid, minePartyAppointmentGuid?) =>

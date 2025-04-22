@@ -12,6 +12,7 @@ export enum Feature {
   VC_ANONCREDS_MINESPACE = "vc_anoncreds_minespace",
   VC_W3C = "vc_w3c",
   MINESPACE_ESUPS = "minespace_esups",
+  MINESPACE_NOW_STATUS = "minespace_now_status",
   REPORT_ERROR = "report_error",
   MAJOR_PROJECT_LINK_PROJECTS = "major_project_link_projects",
   AMS_AGENT = "ams_agent",

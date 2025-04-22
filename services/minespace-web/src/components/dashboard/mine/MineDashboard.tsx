@@ -12,14 +12,18 @@ import { fetchMinistryContactsByRegion } from "@mds/common/redux/actionCreators/
 import { fetchPartyRelationships } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
 import { useAppDispatch } from "@mds/common/redux/rootState";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils";
 
 const MineDashboard: FC = () => {
   const dispatch = useAppDispatch();
-  const { id, activeTab } = useParams<{ id: string; activeTab: string }>();
+  const { id, activeTab, subTab } = useParams<{ id: string; activeTab: string; subTab: string }>();
   const mine: IMine = useSelector(getMineById(id));
   const defaultIsLoadedValue: boolean = mine?.mine_guid === id;
   const [isLoaded, setIsLoaded] = useState(defaultIsLoadedValue);
   const [mineNotFound, setMineNotFound] = useState(false);
+  const { isFeatureEnabled } = useFeatureFlag();
+  const showApplications = mine?.major_mine_ind || isFeatureEnabled(Feature.MINESPACE_NOW_STATUS);
 
   const loadData = async (mine_guid) => {
     return Promise.all([
@@ -45,13 +49,13 @@ const MineDashboard: FC = () => {
   }, [id]);
 
   const dynamicRoute = (key: string) => {
-    return MINE_DASHBOARD.dynamicRoute(mine?.mine_guid, key);
+    return MINE_DASHBOARD.dynamicRoute(mine?.mine_guid, key, "");
   };
-  const items = getMineDashboardRoutes(mine?.major_mine_ind).map((item) => ({
+  const items = getMineDashboardRoutes(showApplications).map((item) => ({
     ...item,
     path: dynamicRoute(item.key),
   }));
-  const sharedData = { mine };
+  const sharedData = { mine, activeTab, subTab };
   const selectedKeys = [activeTab];
 
   if (mineNotFound) {

@@ -19,7 +19,7 @@ import { formatDate, formatDateTime } from "@common/utils/helpers";
 import { isEmpty } from "lodash";
 import { modalConfig } from "@/components/modalContent/config";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
-import { getWorkInformationBadgeStatusType } from "@/constants/theme";
+import { getWorkInformationBadgeStatusType } from "@mds/common/constants/badgeStatusTypes";
 import { ActionCreator } from "@/interfaces/actionCreator";
 
 interface MineWorkInformationProps {
