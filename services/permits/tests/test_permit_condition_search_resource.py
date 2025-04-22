@@ -13,6 +13,8 @@ from app.pipelines.permit_condition_search.resources.permit_condition_search_res
     stream_search_results,
 )
 from fastapi import HTTPException, UploadFile
+from haystack import Document
+from haystack.dataclasses import ChatMessage
 from sse_starlette import ServerSentEvent
 
 
@@ -199,15 +201,15 @@ class TestPermitConditionSearchResource:
     async def test_stream_search_results_success(self, mock_retrieval_pipeline):
         search_params = SearchParams(query="mining permit", filters={})
         
-        mock_document = MagicMock()
+        mock_document = MagicMock(spec=Document)
         mock_document.id = "doc1"
-        mock_document.content = "Sample content"
+        mock_document.content = "This is a sample document content."
         mock_document.meta = {"key": "value"}
         mock_document.score = 0.95
         
         async def mock_generator(data, include_outputs_from):
             yield {"context_enricher": {"documents": [mock_document]}}
-            yield {"llm": {"replies": ["This is a generated answer"]}}
+            yield {"llm": {"replies": [ChatMessage.from_system("This is a generated answer")]}}
         
         mock_retrieval_pipeline.run_async_generator.return_value = mock_generator({}, {})
         

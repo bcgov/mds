@@ -75,7 +75,6 @@ async def index_permit_conditions(file: UploadFile = File(...)) -> IndexingRespo
 async def search_permit_conditions_endpoint(params: SearchParams) -> EventSourceResponse:
     """Search permit conditions and stream results."""
     logger.info(f"Received search request: {params.query}")
-    ServerSentEvent()
     return EventSourceResponse(
         stream_search_results(params),
         media_type="text/event-stream",
@@ -161,8 +160,8 @@ async def _process_documents(documents):
 
 async def _process_llm_output(replies: list[ChatMessage]):
     """Process LLM replies."""
+    print(replies)
     for reply in replies:
-        logger.info(f"LLM reply: {str(reply.meta)}")
         yield _format_event("prompt", {"answers": [reply.text]})
     yield _format_event("ai_complete", {})
 
