@@ -423,6 +423,7 @@ MINE_PARTY_APPT_PARTY = api.model(
         'update_user': fields.String,
         'mine_party_acknowledgement_status': fields.String(
             enum=MinePartyAcknowledgedStatus, attribute='mine_party_acknowledgement_status.name'),
+        'is_draft': fields.Boolean,
     })
 
 MINE_TSF_MODEL = api.model(
@@ -433,6 +434,7 @@ MINE_TSF_MODEL = api.model(
         'latitude': fields.Float,
         'longitude': fields.Float,
         'consequence_classification_status_code': fields.String,
+        'is_draft': fields.Boolean,
         'itrb_exemption_status_code': fields.String,
         'update_timestamp': fields.DateTime,
         'update_user': fields.String,
@@ -768,6 +770,7 @@ MINE_REPORT_SUBMISSION_MODEL = api.model(
         'submitter_name': fields.String,
         'submitter_email': fields.String,
         'mine_report_contacts': fields.List(fields.Nested(MINE_REPORT_CONTACT_MODEL)),
+        'formatted_mine_report_name': fields.String,
     })
 
 MINE_REPORT_MODEL = api.model(

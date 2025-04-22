@@ -10,7 +10,7 @@ const setupProps = () => {
   props.projects = MOCK.PROJECTS.records;
 };
 
-const setupDispatchProps = () => { };
+const setupDispatchProps = () => {};
 
 beforeEach(() => {
   setupProps();

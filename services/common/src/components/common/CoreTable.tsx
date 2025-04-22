@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Table, TableProps, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
 import PlusSquareFilled from "@ant-design/icons/PlusSquareFilled";
@@ -21,7 +21,7 @@ interface CoreTableProps<T> extends TableProps<T> {
   condition?: boolean;
   rowKey?: string | ((record: T) => string | number); // defaults to "key"
   classPrefix?: string;
-  emptyText?: string;
+  emptyText?: string | ReactNode;
   expandProps?: CoreTableExpandConfig<any> | null;
   rowSelection?: TableRowSelection<any>;
 }

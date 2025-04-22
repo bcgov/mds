@@ -7,9 +7,14 @@ import {
   ENVIRONMENTAL_MANAGMENT_ACT,
   AMS_STATUS_CODES_SUCCESS,
   AMS_STATUS_CODE_ERROR,
+  AMS_STATUS_CODE_WARNING,
+  AMS_STATUS_CODE_DEFAULT,
   WASTE_DISCHARGE_AUTHORIZATION_PROCESS,
   AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT,
-  AMS_AUTHORIZATION_TYPES_TEXT
+  AMS_AUTHORIZATION_TYPES_TEXT,
+  AMS_APPROVED_STATUSES,
+  AMS_WARNING_STATUSES,
+  AMS_STOPPED_STATUSES
 } from "@mds/common/constants/strings";
 import {
   AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
@@ -20,10 +25,12 @@ import {
 } from "@mds/common/constants/enums";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { getProject } from "@mds/common/redux/selectors/projectSelectors";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "@mds/common/redux/rootState";
+import { openModal } from "@mds/common/redux/actions/modalActions";
 
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
-import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import { renderTextColumn, renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { IAuthorizationSummary } from "@mds/common/interfaces";
 import { useHistory, Link } from "react-router-dom";
 
@@ -41,14 +48,16 @@ import { PresetStatusColorType } from "antd/es/_util/colors";
 import {
   updateProjectSummary,
   fetchProjectById,
+  fetchProjectSummaryEnvironmentAuthorizationStatuses,
 } from "@mds/common/redux/actionCreators/projectActionCreator";
 import Loading from "@mds/common/components/common/Loading";
 import { formatProjectPayload } from "@mds/common/utils/helpers";
 import ProjectCallout from "../projects/ProjectCallout";
+import EnvironmentAuthorizationDocumentsModal from "../documents/EnvironmentAuthorizationDocumentsModal";
 
 const ProjectDescriptionTab = () => {
   const [shouldDisplayRetryButton, setShouldDisplayRetryButton] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const [minesActData, setMinesActData] = useState([]);
   const [environmentalManagementActData, setEnvironmentalManagementActData] = useState([]);
@@ -86,6 +95,24 @@ const ProjectDescriptionTab = () => {
     render: (record) => <Badge status={record.status.status} text={record.status.text} />,
   };
 
+  const actions = [
+    {
+      key: "view",
+      label: "View ministry documents",
+      clickFunction: (_event, record) => {
+        dispatch(
+          openModal({
+            props: {
+              title: "View Ministry Documents",
+              documents: record.documents
+            },
+            content: EnvironmentAuthorizationDocumentsModal,
+          })
+        );
+      },
+    },
+  ];
+
   const nonAMSStatusColumn = createStatusColumn("Submitted", AMS_STATUS_CODES_SUCCESS);
 
   const nonAMSActColumns: ColumnsType<IAuthorizationSummary> = [
@@ -101,6 +128,7 @@ const ProjectDescriptionTab = () => {
     renderTextColumn("ams_tracking_number", "Tracking #", false),
     renderTextColumn("date_submitted", "Date", false),
     statusColumn,
+    renderActionsColumn({ actions, title: "Documents" }),
   ];
 
   const parseProjectTypeLabel = (authType: string) => {
@@ -158,7 +186,8 @@ const ProjectDescriptionTab = () => {
   const processEnvironmentalActAuthorization = (
     authorization,
     permitAuthorizationType,
-    projectSummaryAuthorizationType
+    projectSummaryAuthorizationType,
+    statusData,
   ) => {
     if (
       (authorization?.ams_status_code === "400" ||
@@ -182,17 +211,37 @@ const ProjectDescriptionTab = () => {
         authorization?.ams_tracking_number && authorization?.ams_tracking_number !== "0"
           ? authorization?.ams_tracking_number
           : NOT_APPLICABLE;
+      const amsAuthorizationNumber = statusData?.ams_authorization_number || null;
+      const regionalCaseManager = statusData?.regional_case_manager || null;
+      const documents = statusData?.documents || null;
+      const authorizationTitle = `${AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT[projectSummaryAuthorizationType]} 
+        ${AMS_AUTHORIZATION_TYPES_TEXT[authorization.project_summary_permit_type[0]]}(${permitNo}):`;
+      let ams_error_messages = {
+        title: authorizationTitle,
+        errors: authorization?.ams_outcome,
+      }
 
-      let status = createStatusBadge("Rejected", AMS_STATUS_CODE_ERROR);
-      let ams_error_message = `${AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT[projectSummaryAuthorizationType]} 
-        ${AMS_AUTHORIZATION_TYPES_TEXT[authorization.project_summary_permit_type[0]]}(${permitNo}): "${authorization?.ams_outcome}"`;
-
+      let status = createStatusBadge(NOT_APPLICABLE, AMS_STATUS_CODE_DEFAULT);
       if (authorization?.ams_status_code === "500") {
         status = createStatusBadge("Failed", AMS_STATUS_CODE_ERROR);
         setShouldDisplayRetryButton(true);
+      } else if (authorization?.ams_status_code === "400") {
+        status = createStatusBadge("Rejected", AMS_STATUS_CODE_ERROR);
       } else if (authorization?.ams_status_code === "200") {
-        status = createStatusBadge("Submitted", AMS_STATUS_CODES_SUCCESS);
-        ams_error_message = null;
+        if (statusData) {
+          if (AMS_APPROVED_STATUSES[statusData.status]) {
+            status = createStatusBadge(AMS_APPROVED_STATUSES[statusData.status], AMS_STATUS_CODES_SUCCESS);
+          }
+
+          if (AMS_WARNING_STATUSES[statusData.status]) {
+            status = createStatusBadge(AMS_WARNING_STATUSES[statusData.status], AMS_STATUS_CODE_WARNING);
+          }
+
+          if (AMS_STOPPED_STATUSES[statusData.status]) {
+            status = createStatusBadge(AMS_STOPPED_STATUSES[statusData.status], AMS_STATUS_CODE_ERROR);
+          }
+        }
+        ams_error_messages = null;
       }
 
       return {
@@ -202,7 +251,10 @@ const ProjectDescriptionTab = () => {
         date_submitted: dateSubmitted,
         project_summary_authorization_guid: projectSummaryAuthorizationGuid,
         status: status,
-        ams_error_message: ams_error_message,
+        ams_error_messages: ams_error_messages,
+        ams_authorization_number: amsAuthorizationNumber,
+        regional_case_manager: regionalCaseManager,
+        documents: documents,
       };
     }
     return null;
@@ -211,41 +263,36 @@ const ProjectDescriptionTab = () => {
   const processEnvironmentalActAuthorizations = (
     authorizations,
     permitAuthorizationType,
-    projectSummaryAuthorizationType
+    projectSummaryAuthorizationType,
+    statuses,
   ) => {
     const filteredResults = authorizations
-      .map((authorization) =>
-        processEnvironmentalActAuthorization(
+      .map((authorization) => {
+        const statusData = statuses.find(status => status.ams_tracking_number === authorization.ams_tracking_number);
+        return processEnvironmentalActAuthorization(
           authorization,
           permitAuthorizationType,
-          projectSummaryAuthorizationType
+          projectSummaryAuthorizationType,
+          statusData,
         )
+      }
       )
       .filter(Boolean);
 
     processedEnvironmentActPermitResult.push(...filteredResults);
   };
 
-  const processAndSetData = (authorizations, types, actType, setData) => {
-    Object.values(types).forEach((type) => {
-      processEnvironmentalActAuthorizations(authorizations, actType, type);
+  const loadEnvironmentActPermitData = (authorizations, statuses) => {
+    Object.values(AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES).forEach((type) => {
+      processEnvironmentalActAuthorizations(authorizations, ENVIRONMENTAL_MANAGMENT_ACT, type, statuses);
     });
 
     const hasSubmissionErrors = processedEnvironmentActPermitResult.some(
-      (fr) => fr.status.status !== AMS_STATUS_CODES_SUCCESS
+      (fr) => fr.status.text === "Failed" || fr.status.text === "Rejected"
     );
     setHasFailedAMSSubmission(hasSubmissionErrors);
-    setData([...processedEnvironmentActPermitResult]);
+    setEnvironmentalManagementActData([...processedEnvironmentActPermitResult]);
     processedEnvironmentActPermitResult = [];
-  };
-
-  const loadEnvironmentActPermitData = (authorizations) => {
-    processAndSetData(
-      authorizations,
-      AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
-      ENVIRONMENTAL_MANAGMENT_ACT,
-      setEnvironmentalManagementActData
-    );
   };
 
   useEffect(() => {
@@ -264,7 +311,20 @@ const ProjectDescriptionTab = () => {
       AMS_FORESTRY_ACT_TYPE,
       setForestryActData
     );
-    loadEnvironmentActPermitData(project.project_summary.authorizations);
+    const amsAuthorizations = project?.project_summary.authorizations?.filter(
+      auth => auth.ams_tracking_number && auth.ams_tracking_number !== "0"
+    );
+
+    const amsTrackingNumbers = amsAuthorizations?.map(auth => auth.ams_tracking_number);
+    if (amsTrackingNumbers.length > 0) {
+      setIsLoaded(false);
+      dispatch(fetchProjectSummaryEnvironmentAuthorizationStatuses(amsTrackingNumbers)).then((statuses) => {
+        loadEnvironmentActPermitData(project.project_summary.authorizations, statuses);
+        setIsLoaded(true);
+      });
+    } else {
+      loadEnvironmentActPermitData(project.project_summary.authorizations, amsTrackingNumbers);
+    }
   }, [
     project.project_summary.authorizations,
     transformedProjectSummaryAuthorizationTypes,
@@ -503,19 +563,32 @@ const ProjectDescriptionTab = () => {
                           itemLayout="horizontal"
                           dataSource={environmentalManagementActData}
                           renderItem={(item) => {
-                            return item.ams_error_message ? (
-                              <li key={item.project_summary_authorization_guid}>
+                            return item.ams_error_messages ?
+                              <li key={item.ams_error_messages.title}>
                                 <div className="inline-flex">
                                   <div className="flex-4">
                                     <Row>
                                       <Col span={21}>
-                                        {item.ams_error_message}
+                                        {item.ams_error_messages.title}
+                                        <List
+                                          className="project-description-tab-errors"
+                                          itemLayout="horizontal"
+                                          dataSource={item.ams_error_messages.errors}
+                                          renderItem={(msg) => {
+                                            return (<li key={`${item.ams_error_messages.title}-${msg}`}>
+                                              <Row>
+                                                <Col span={21}>
+                                                  {msg}
+                                                </Col>
+                                              </Row>
+                                            </li>)
+                                          }}
+                                        />
                                       </Col>
                                     </Row>
                                   </div>
                                 </div>
-                              </li>
-                            ) : null;
+                              </li> : null
                           }}
                         />
                       </div>}
@@ -537,7 +610,7 @@ const ProjectDescriptionTab = () => {
               </>
             )}
           </Col>
-        </Row>
+        </Row >
       ) : (
         <Loading />
       )}

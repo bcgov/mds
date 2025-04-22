@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EnvironmentAuthorizationDocumentsModal renders correctly and matches the snapshot 1`] = `
+<div>
+  <h3
+    class="ant-typography"
+  >
+    EMA AUthorization Documents
+  </h3>
+  <div
+    class="ant-typography"
+  >
+    View the final approval documents issued by the Ministry of Environment. For more details, visit
+     
+    <a
+      href="https://j200.gov.bc.ca/pub/ams/Default.aspx?PossePresentation=DocumentSearch"
+      target="_blank"
+    >
+      Authorization Management System (AMS)
+    </a>
+    .
+  </div>
+  <div
+    class="ant-table-wrapper  core-table"
+  >
+    <div
+      class="ant-spin-nested-loading"
+    >
+      <div
+        class="ant-spin-container"
+      >
+        <div
+          class="ant-table"
+        >
+          <div
+            class="ant-table-container"
+          >
+            <div
+              class="ant-table-content"
+            >
+              <table
+                style="table-layout: auto;"
+              >
+                <colgroup />
+                <thead
+                  class="ant-table-thead"
+                >
+                  <tr>
+                    <th
+                      class="ant-table-cell"
+                    >
+                      File Name
+                    </th>
+                    <th
+                      class="ant-table-cell"
+                    >
+                      File Type
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  class="ant-table-tbody"
+                >
+                  <tr
+                    class="ant-table-row ant-table-row-level-0 fade-in"
+                  >
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <a
+                        href="https://example.com"
+                        target="_blank"
+                      >
+                        test1
+                      </a>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="extension-column"
+                        title="File Type"
+                      >
+                        pdf
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    class="ant-table-row ant-table-row-level-0 fade-in"
+                  >
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <a
+                        href="https://example.com"
+                        target="_blank"
+                      >
+                        test2
+                      </a>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="extension-column"
+                        title="File Type"
+                      >
+                        pdf
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="ant-row ant-row-end"
+  >
+    <button
+      class="ant-btn ant-btn-primary"
+      type="button"
+    >
+      <span>
+        Close
+      </span>
+    </button>
+  </div>
+</div>
+`;

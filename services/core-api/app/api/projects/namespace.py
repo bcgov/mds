@@ -11,6 +11,7 @@ from app.api.projects.project_summary.resources.project_summary_status_codes imp
 from app.api.projects.project_summary.resources.project_summary_document_upload import ProjectSummaryDocumentUploadResource
 from app.api.projects.project_summary.resources.project_summary_uploaded_document import ProjectSummaryUploadedDocumentResource
 from app.api.projects.project_summary.resources.project_summary_authorization_types import ProjectSummaryAuthorizationTypeResource
+from app.api.projects.project_summary.resources.project_summary_authorization_statuses import ProjectSummaryAuthorizationStatusesResource
 from app.api.projects.project_summary.resources.project_summary_permit_types import ProjectSummaryPermitTypeResource
 from app.api.projects.information_requirements_table.resources.information_requirements_table import InformationRequirementsTableResource
 from app.api.projects.information_requirements_table.resources.information_requirements_table_list import InformationRequirementsTableListResource
@@ -54,6 +55,7 @@ api.add_resource(ProjectSummaryDocumentTypeResource, '/project-summary-document-
 api.add_resource(ProjectSummaryStatusCodeResource, '/project-summary-status-codes')
 api.add_resource(ProjectSummaryPermitTypeResource, '/project-summary-permit-types')
 api.add_resource(ProjectSummaryAuthorizationTypeResource, '/project-summary-authorization-types')
+api.add_resource(ProjectSummaryAuthorizationStatusesResource, '/project-summary-environment-authorization-statuses')
 
 # Project Summary Ministry Comments
 api.add_resource(ProjectSummaryMinistryCommentResource,

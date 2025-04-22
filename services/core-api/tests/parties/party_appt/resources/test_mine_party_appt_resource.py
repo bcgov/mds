@@ -272,3 +272,29 @@ def test_post_mine_party_appt_start_date_not_provided_fail(test_client, db_sessi
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['proponent_only_auth_header'])
     assert post_resp.status_code == 400
+
+
+def test_post_mine_party_appt_draft(test_client, db_session, auth_headers, setup_info):
+    test_data = {
+        'mine_guid': setup_info['mine_guid'],
+        'party_guid': setup_info['mine_manager_guid'],
+        'mine_party_appt_type_code': 'TQP',
+        'related_guid': setup_info['tsf_guid'],
+        'start_date': setup_info['start_date'],
+        'is_draft': 'true'
+    }
+    post_resp = test_client.post(
+        '/parties/mines', data=test_data, headers=auth_headers['proponent_only_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+
+    assert str(post_data['is_draft']) == 'True'
+
+def test_put_mine_party_appt_draft(test_client, db_session, auth_headers, setup_info):
+    test_data = {'start_date': '1999-12-12', 'end_date': '2001-01-01', 'is_draft': 'true'}
+    put_resp = test_client.put(
+        f'/parties/mines/{setup_info["mine_manager_appt_guid"]}',
+        data=test_data,
+        headers=auth_headers['full_auth_header'])
+    put_data = json.loads(put_resp.data.decode())
+
+    assert str(put_data['is_draft']) == 'True'

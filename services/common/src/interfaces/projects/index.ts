@@ -22,3 +22,5 @@ export * from "./requirement.interface";
 export * from "./authorizationSummary.interface";
 export * from "./projectSummaryMinistryComment.interface";
 export * from "./projectStage.interface";
+export * from "./projectSummaryEnvironmentAuthorizationStatus";
+export * from "./projectSummaryEnvironmentAuthorizationDocument";

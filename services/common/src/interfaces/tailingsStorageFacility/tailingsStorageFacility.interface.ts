@@ -27,6 +27,7 @@ export interface ITailingsStorageFacility extends ICreateTailingsStorageFacility
   update_timestamp: string;
   update_user: string;
   history?: IDiffEntry[];
+  is_draft?: boolean;
 }
 
 export interface IEngineerOfRecord extends IPartyAppt {
@@ -34,8 +35,10 @@ export interface IEngineerOfRecord extends IPartyAppt {
   status?: string;
 }
 
-export interface ITailingsStorageFacilityForm {
+export interface ITailingsStorageFacilityForm extends ITailingsStorageFacility {
   engineer_of_record?: IEngineerOfRecord;
   engineers_of_record?: IEngineerOfRecord[];
+  qualified_person?: IEngineerOfRecord;
+  qualified_persons?: IEngineerOfRecord[];
   mine_tailings_storage_facility_guid: string;
 }

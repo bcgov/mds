@@ -8,6 +8,7 @@ export interface IAddPartyAppointment {
   start_date: string;
   end_date?: string;
   end_current?: boolean;
+  is_draft?: boolean;
 }
 
 export interface IUpdatePartyAppointment extends IAddPartyAppointment {

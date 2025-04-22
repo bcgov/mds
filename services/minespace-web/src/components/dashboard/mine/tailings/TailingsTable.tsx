@@ -147,9 +147,16 @@ export const TailingsTable: FC<TailingsTableProps> = (props) => {
       title: "Operating Status",
       dataIndex: "tsf_operating_status_code",
       render: (text) => (
-        <div title="Operating Status">{TSFOperatingStatusCodeHash[text] || EMPTY_FIELD}</div>
+        <div title="Operating Status">{TSFOperatingStatusCodeHash[text] ?? EMPTY_FIELD}</div>
       ),
       sorter: (a, b) => (a.tsf_operating_status_code > b.tsf_operating_status_code ? -1 : 1),
+    },
+    {
+      title: "Submission Status",
+      dataIndex: "is_draft",
+      render: (is_draft: boolean) => (
+        <div title="Submission Status">{is_draft ? "Draft" : "Submitted"}</div>
+      ),
     },
     {
       title: "Consequence Classification",
@@ -165,7 +172,7 @@ export const TailingsTable: FC<TailingsTableProps> = (props) => {
       dataIndex: "itrb_exemption_status_code",
       render: (text) => (
         <div title="Has Independent Tailings Review Board?">
-          {itrmExemptionStatusCodeHash[text] || EMPTY_FIELD}
+          {itrmExemptionStatusCodeHash[text] ?? EMPTY_FIELD}
         </div>
       ),
       sorter: (a, b) => (a.itrb_exemption_status_code > b.itrb_exemption_status_code ? -1 : 1),
@@ -193,19 +200,19 @@ export const TailingsTable: FC<TailingsTableProps> = (props) => {
     {
       title: "Latitude",
       dataIndex: "latitude",
-      render: (text) => <div title="Latitude">{text || EMPTY_FIELD}</div>,
+      render: (text) => <div title="Latitude">{text ?? EMPTY_FIELD}</div>,
       sorter: (a, b) => (a.latitude > b.latitude ? -1 : 1),
     },
     {
       title: "Longitude",
       dataIndex: "longitude",
-      render: (text) => <div title="Longitude">{text || EMPTY_FIELD}</div>,
+      render: (text) => <div title="Longitude">{text ?? EMPTY_FIELD}</div>,
       sorter: (a, b) => (a.longitude > b.longitude ? -1 : 1),
     },
     {
       title: "Notes",
       dataIndex: "notes",
-      render: (text) => <div title="Notes">{text || EMPTY_FIELD}</div>,
+      render: (text) => <div title="Notes">{text ?? EMPTY_FIELD}</div>,
       sorter: (a, b) => (a.notes > b.notes ? -1 : 1),
     },
     ...(tsfV2Enabled ? [renderActionsColumn({ actions: newTSFActions })] : [renderOldTSFActions()]),

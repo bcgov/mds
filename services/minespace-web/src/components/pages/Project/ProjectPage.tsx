@@ -260,6 +260,7 @@ const ProjectPage: FC = () => {
             onChange={handleTabChange}
             className="core-tabs fixed-tabs-tabs"
             items={tabItems}
+            destroyInactiveTabPane={true}
           />
         </Col>
       </Row>

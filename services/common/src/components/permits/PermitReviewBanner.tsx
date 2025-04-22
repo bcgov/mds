@@ -42,7 +42,7 @@ export const PermitReviewBanner: FC<PermitReviewBannerProps> = ({
   };
 
   const paramsToUse = useMemo(() => {
-    if (!isCore) {
+    if (!isCore && isExtracted) {
       return mineSpaceParams;
     }
     if (isExtracted) {

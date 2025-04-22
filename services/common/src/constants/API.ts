@@ -168,6 +168,9 @@ export const PROJECT_LINKS = (projectGuid, projectLinkGuid = "") =>
 export const PROJECT_SUMMARY_MINISTRY_COMMENTS = (project_summary_guid) =>
   `/projects/${project_summary_guid}/ministry-comments`;
 
+export const PROJECT_SUMMARY_ENVIRONMENT_AUTHORIZATION_STATUSES = () =>
+  "/projects/project-summary-environment-authorization-statuses";
+
 //New file version upload
 export const NEW_VERSION_DOCUMENTS = ({ mineGuid, mineDocumentGuid }) =>
   `/mines/${mineGuid}/documents/${mineDocumentGuid}/versions/upload`;
@@ -264,6 +267,7 @@ export const REPORT_SUBMISSIONS = (params?) =>
   `/mines/reports/submissions?${queryString.stringify(params)}`;
 export const MINE_REPORT_DEFINITIONS = (params = {}) =>
   `/mines/reports/definitions?${queryString.stringify(params)}`;
+export const EXPIRED_REPORT_DEFINITIONS = (mineReportDefinitionGuid: string) => `/mines/reports/definition/${mineReportDefinitionGuid}`
 export const MINE_REPORT_DEFINITION = "/mines/reports/definitions";
 export const MINE_REPORT_DUE_DATE_TYPES = "/mines/reports/due-date-types";
 export const MINE_REPORTS = (mineGuid, params?) =>

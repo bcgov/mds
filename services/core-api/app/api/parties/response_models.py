@@ -49,6 +49,7 @@ MINE_PARTY_APPT = api.model(
         'status': fields.String(enum=MinePartyAppointmentStatus, attribute='status.name'),
         'mine_party_acknowledgement_status': fields.String(
             enum=MinePartyAcknowledgedStatus, attribute='mine_party_acknowledgement_status.name'),
+        'is_draft': fields.Boolean,
     })
 
 NOW_APPLICATION_MODEL = api.model('NOWApplication', {

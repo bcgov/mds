@@ -26,7 +26,7 @@ export const RenderSelect: FC<SelectProps> = ({
   input,
   placeholder = "Please select",
   data = [],
-  onSelect = () => {},
+  onSelect = () => { },
   allowClear = true,
   disabled = false,
   required = false,
@@ -83,7 +83,7 @@ export const RenderSelect: FC<SelectProps> = ({
               onSearch={onSearch}
               onChange={(changeValue) => {
                 setIsDirty(true);
-                input.onChange(changeValue);
+                input.onChange(changeValue ?? null);
               }}
               onDropdownVisibleChange={(open) => {
                 if (!open) {

@@ -108,6 +108,26 @@ PROJECT_SUMMARY_AUTHORIZATION_TYPE_MODEL = api.model(
         'project_summary_authorization_type_group_id': fields.String
     })
 
+PROJECT_SUMMARY_AUTHORIZATION_STATUS_DOCUMENT_MODEL = api.model(
+    'ProjectSummaryAuthorizationStatusDocument', {
+        'name': fields.String,
+        'extension': fields.String,
+        'url': fields.String,
+    }
+)
+
+PROJECT_SUMMARY_AUTHORIZATION_STATUS_MODEL = api.model(
+    'ProjectSummaryAuthorizationStatus', {
+        'ams_tracking_number': fields.String,
+        'ams_mining_permit_number': fields.String,
+        'ams_authorization_number': fields.String,
+        'status': fields.String,
+        'regional_case_manager': fields.String,
+        'documents': fields.List(fields.Nested(PROJECT_SUMMARY_AUTHORIZATION_STATUS_DOCUMENT_MODEL)),
+        'errors': fields.List(fields.String),
+    }
+)
+
 PROJECT_SUMMARY_CONTACT_MODEL = api.model(
     'ProjectSummaryContact', {
         'project_summary_contact_guid': fields.String,
@@ -145,7 +165,7 @@ PROJECT_SUMMARY_AUTHORIZATION_MODEL = api.model(
         'clause_amendment_documents': fields.List(fields.Nested(PROJECT_SUMMARY_DOCUMENT_MODEL)),
         'exemption_requested': fields.Boolean,
         'ams_tracking_number': fields.String,
-        'ams_outcome': fields.String,
+        'ams_outcome': fields.List(fields.String),
         'ams_status_code': fields.String,
         'ams_submission_timestamp': fields.DateTime,
     })

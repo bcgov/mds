@@ -8,7 +8,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 
 from app.extensions import db, cache
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, DraftMixin, Base
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES, TIMEOUT_24_HOURS
 
 from app.api.services.email_service import EmailService
@@ -35,7 +35,7 @@ class MinePartyAcknowledgedStatus(str, Enum):
         return self.value
 
 
-class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
+class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
     __tablename__ = 'mine_party_appt'
 
     mine_party_appt_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
@@ -149,6 +149,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
             str(self.start_date) if self.start_date else None,
             'end_date':
             str(self.end_date) if self.end_date else None,
+            'is_draft': str(self.is_draft),
             'union_rep_company':
             self.union_rep_company,
             'documents': [doc.json() for doc in self.documents],
@@ -461,6 +462,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                union_rep_company=None,
                permit=None,
                tsf=None,
+               is_draft=False,
                add_to_session=True,
                status=None,
                mine_party_acknowledgement_status=None):
@@ -477,6 +479,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
             mine=mine,
             permit=permit,
             mine_tailings_storage_facility=tsf,
+            is_draft=is_draft,
             party_guid=party_guid,
             mine_party_appt_type_code=mine_party_appt_type_code,
             start_date=start_date,

@@ -469,11 +469,13 @@ const PermitConditions: FC<PermitConditionProps> = ({
 
   const renderContent = () => (
     <Row align="middle" justify="space-between" gutter={[10, 16]}>
-      <LatestAmendmentWarning
-        latestAmendment={latestAmendment}
-        currentAmendment={currentAmendment}
-        onViewAmendment={viewPermitAmendment}
-      />
+      {isCore && (
+        <LatestAmendmentWarning
+          latestAmendment={latestAmendment}
+          currentAmendment={currentAmendment}
+          onViewAmendment={viewPermitAmendment}
+        />
+      )}
       <Col span={24}>
         <Title className="margin-none" level={2}>
           Permit Conditions

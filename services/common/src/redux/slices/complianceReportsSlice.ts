@@ -46,6 +46,7 @@ interface ComplianceReportState {
   reportPageData: IPageData<IMineReportDefinition>;
   params: ComplianceReportParams;
   dueDateTypes: IMineReportDueDateType[];
+  expiredMineReportDefinition: IMineReportDefinition;
 }
 
 const initialState: ComplianceReportState = {
@@ -58,6 +59,7 @@ const initialState: ComplianceReportState = {
   },
   params: {},
   dueDateTypes: [],
+  expiredMineReportDefinition: undefined,
 };
 
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;
@@ -87,6 +89,28 @@ const complianceReportSlice = createAppSlice({
           rejectHandler(action);
           // don't show loading forever if there's an error
           state.params = action.meta.arg;
+        },
+      }
+    ),
+    fetchExpiredReportDefinition: create.asyncThunk(
+      async ({ mineReportDefinitionGuid }: { mineReportDefinitionGuid: string }, thunkApi) => {
+        const headers = createRequestHeader();
+        thunkApi.dispatch(showLoading());
+        const resp = await CustomAxios({
+          errorToastMessage: "Failed to load the expired report definition",
+        }).get(
+          `${ENVIRONMENT.apiUrl}${API.EXPIRED_REPORT_DEFINITIONS(mineReportDefinitionGuid)}`,
+          headers
+        );
+        thunkApi.dispatch(hideLoading());
+        return resp.data;
+      },
+      {
+        fulfilled: (state: ComplianceReportState, action) => {
+          state.expiredMineReportDefinition = action.payload;
+        },
+        rejected: (state: ComplianceReportState, action) => {
+          rejectHandler(action);
         },
       }
     ),
@@ -146,6 +170,9 @@ const complianceReportSlice = createAppSlice({
     getMineReportDueDateTypes: (state): IMineReportDueDateType[] => {
       return state.dueDateTypes;
     },
+    getExpiredMineReportDefinition: (state): IMineReportDefinition => {
+      return state.expiredMineReportDefinition;
+    },
   },
 });
 
@@ -155,6 +182,7 @@ export const {
   getComplianceReportPageData,
   getReportSearchParams,
   getMineReportDueDateTypes,
+  getExpiredMineReportDefinition,
 } = complianceReportSlice.selectors;
 
 export const getDropdownMineReportDefinitionOptions = createSelectorWrapper(
@@ -190,8 +218,12 @@ export const getReportDefinitionsLoaded = (params: ComplianceReportParams) =>
     return isEqual(params, currentParams);
   });
 
-export const { fetchComplianceReports, fetchMineReportDueDateTypes, createMineReportDefinition } =
-  complianceReportSlice.actions;
+export const {
+  fetchComplianceReports,
+  fetchMineReportDueDateTypes,
+  createMineReportDefinition,
+  fetchExpiredReportDefinition,
+} = complianceReportSlice.actions;
 
 const complianceReportReducer = complianceReportSlice.reducer;
 export default complianceReportReducer;
