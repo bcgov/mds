@@ -267,6 +267,7 @@ export const REPORT_SUBMISSIONS = (params?) =>
   `/mines/reports/submissions?${queryString.stringify(params)}`;
 export const MINE_REPORT_DEFINITIONS = (params = {}) =>
   `/mines/reports/definitions?${queryString.stringify(params)}`;
+export const EXPIRED_REPORT_DEFINITIONS = (mineReportDefinitionGuid: string) => `/mines/reports/definition/${mineReportDefinitionGuid}`
 export const MINE_REPORT_DEFINITION = "/mines/reports/definitions";
 export const MINE_REPORT_DUE_DATE_TYPES = "/mines/reports/due-date-types";
 export const MINE_REPORTS = (mineGuid, params?) =>
