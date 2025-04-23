@@ -11,7 +11,7 @@ import { USER_ROLES } from "@mds/common/constants/environment";
 import { FORM } from "@mds/common/constants/forms";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
-import { createDam, getDamByGuid, updateDam } from "@mds/common/redux/slices/damSlice";
+import { createDam, fetchDamHistory, getDamByGuid, updateDam } from "@mds/common/redux/slices/damSlice";
 import { isDirty } from "../../forms/form";
 import { fetchTailingsStorageFacility, getTsfByGuid, storeTsf } from "@mds/common/redux/slices/tailingsSlice";
 
@@ -38,8 +38,11 @@ const DamsPage: FC = () => {
     const isFormDirty = useAppSelector(isDirty(FORM.ADD_EDIT_DAM))
 
     useEffect(() => {
-        if (!tsf.mine_tailings_storage_facility_guid) {
+        if (!tsf?.mine_tailings_storage_facility_guid) {
             dispatch(fetchTailingsStorageFacility({ mineGuid, tsfGuid: tailingsStorageFacilityGuid }));
+        }
+        if (damGuid && !initialValues) {
+            dispatch(fetchDamHistory(damGuid))
         }
     }, []);
 

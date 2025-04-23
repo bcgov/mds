@@ -237,6 +237,7 @@ export const TailingsSummaryPage: FC = () => {
 
   const mineName = mine?.mine_name || "";
   const hasCreatedTSF = !!initialValues?.mine_tailings_storage_facility_guid;
+  const disablePopConfirm = !isUserActionEdit || !isFormDirty;
 
   return (
     (isLoaded && (
@@ -253,12 +254,11 @@ export const TailingsSummaryPage: FC = () => {
         <Row>
           <Col span={24}>
             <Popconfirm
-              disabled={!isUserActionEdit || !isFormDirty}
+              disabled={disablePopConfirm}
               title="You have unsaved changes. Are you sure you want to leave this page?"
               onConfirm={() => history.push(GLOBAL_ROUTES?.MINE_TAILINGS.dynamicRoute(mineGuid))}
-              onCancel={(e) => { e.preventDefault(); console.log(e) }}
             >
-              <LinkButton onClick={() => history.push(GLOBAL_ROUTES?.MINE_TAILINGS.dynamicRoute(mineGuid))}>
+              <LinkButton onClick={disablePopConfirm ? () => history.push(GLOBAL_ROUTES?.MINE_TAILINGS.dynamicRoute(mineGuid)) : undefined}>
                 <ArrowLeftOutlined className="padding-sm--right" />
                 {`Back to: ${mineName} Tailings`}
               </LinkButton>

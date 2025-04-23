@@ -281,8 +281,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
         <h2>Tailings Storage Facilities</h2>
         <Divider />
       </div>
-      <Tabs type="card" items={tabItems}>
-      </Tabs>
+      {isLoaded && <Tabs type="card" items={tabItems} />}
     </div>
   );
 };
