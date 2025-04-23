@@ -30,10 +30,11 @@ const PATH_ALIASES = {
   vendor: PATHS.vendor,
   "@common": PATHS.commonPackage,
   "@mds/common": `${PATHS.sharedPackage}`,
+  "@assets": path.join(__dirname, "src", "assets"),
 };
 
 const envFile: any = {};
-envFile.BASE_PATH = JSON.stringify("");
+
 if (process.env) {
   Object.keys(process.env).map((key) => {
     envFile[key] = JSON.stringify(process.env[key]);
@@ -45,7 +46,8 @@ if (dotenv.parsed) {
   });
 }
 
-
+// Remove BASE_PATH from envFile for dev purposes only. When set, this adds a /"" to the path in RSBuild which causes some issues.
+delete envFile['BASE_PATH'];
 
 export default defineConfig({
   plugins: [
