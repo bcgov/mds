@@ -67,7 +67,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
   const TSFOperatingStatusCodeHash = useAppSelector(getTSFOperatingStatusCodeOptionsHash);
   const consequenceClassificationStatusCodeHash = useAppSelector(getConsequenceClassificationStatusCodeOptionsHash);
   const itrbExemptionStatusCodeHash = useAppSelector(getITRBExemptionStatusCodeOptionsHash);
-  const tailings = useAppSelector(getTsfsByMineGuid(mineGuid));
+  const tailings = useAppSelector(getTsfsByMineGuid(mineGuid)) ?? [];
 
   const pageData = useAppSelector(getReportsPageData);
 
