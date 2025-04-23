@@ -4,9 +4,6 @@ import React, { FC, useEffect } from "react";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import SteppedForm from "@mds/common/components/forms/SteppedForm";
 import Step from "@mds/common/components/forms/Step";
-import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
-import { getTsf } from "@mds/common/redux/selectors/tailingsSelectors";
-import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import DamForm from "./DamForm";
 import { ITailingsStorageFacility } from "@mds/common/interfaces";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
@@ -14,13 +11,13 @@ import { USER_ROLES } from "@mds/common/constants/environment";
 import { FORM } from "@mds/common/constants/forms";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
-import { createDam, getDamByGuid, storeDam, updateDam } from "@mds/common/redux/slices/damSlice";
+import { createDam, getDamByGuid, updateDam } from "@mds/common/redux/slices/damSlice";
 import { isDirty } from "../../forms/form";
+import { fetchTailingsStorageFacility, getTsfByGuid, storeTsf } from "@mds/common/redux/slices/tailingsSlice";
 
 const DamsPage: FC = () => {
     const dispatch = useAppDispatch();
     const history = useHistory();
-    const tsf: ITailingsStorageFacility = useAppSelector(getTsf);
 
     const { tailingsStorageFacilityGuid, damGuid, mineGuid, parentTSFFormMode, userAction } =
         useParams<{
@@ -31,6 +28,7 @@ const DamsPage: FC = () => {
             userAction: string;
         }>();
 
+    const tsf: ITailingsStorageFacility = useAppSelector(getTsfByGuid(mineGuid, tailingsStorageFacilityGuid));
     const initialValues = useAppSelector(getDamByGuid(damGuid));
     const isCore = useAppSelector(getIsCore);
     const coreCanEditTsf = useAppSelector(userHasRole(USER_ROLES.role_edit_tsf));
@@ -41,15 +39,7 @@ const DamsPage: FC = () => {
 
     useEffect(() => {
         if (!tsf.mine_tailings_storage_facility_guid) {
-            (async () => {
-                const mine = await dispatch(fetchMineRecordById(mineGuid));
-                const existingTsf = mine.data.mine_tailings_storage_facilities?.find(
-                    (t) => t.mine_tailings_storage_facility_guid === tailingsStorageFacilityGuid
-                );
-                dispatch(storeTsf(existingTsf));
-                const currentDam = existingTsf.dams.find((dam) => dam.dam_guid === damGuid);
-                dispatch(storeDam(currentDam));
-            })();
+            dispatch(fetchTailingsStorageFacility({ mineGuid, tsfGuid: tailingsStorageFacilityGuid }));
         }
     }, []);
 
@@ -72,7 +62,7 @@ const DamsPage: FC = () => {
     };
 
     const handleSave = async (values, newActiveTab) => {
-        if(isUserActionEdit && isFormDirty){
+        if (isUserActionEdit && isFormDirty) {
             if (damGuid) {
                 const updatedDam = await dispatch(updateDam(values));
                 handleCompleteSubmit(updatedDam);

@@ -24,7 +24,6 @@ import {
   searchReducer,
   securitiesReducer,
   staticContentReducer,
-  tailingsReducer,
   varianceReducer,
   verifiableCredentialReducer,
   workInformationReducer,
@@ -46,7 +45,7 @@ import mineReportPermitRequirementReducer, { mineReportPermitRequirementReducerT
 import permitConditionDiffReducer, { permitConditionDiffReducerType } from "../slices/permitConditionDiffSlice";
 import permitSearchReducer, { permitSearchReducerType } from "../slices/permitSearchSlice";
 import damReducer, { damReducerType } from "../slices/damSlice";
-
+import tailingsReducer, { tsfReducerType } from "../slices/tailingsSlice";
 
 const networkReducers = Object.fromEntries(Object.entries(NetworkReducerTypes).map(([key, value]) =>
   [NetworkReducerTypes[key], createReducer(networkReducer, value)]
@@ -73,7 +72,6 @@ export const sharedReducer = {
   ...searchReducer,
   ...securitiesReducer,
   ...staticContentReducer,
-  ...tailingsReducer,
   ...varianceReducer,
   ...verifiableCredentialReducer,
   ...workInformationReducer,
@@ -85,6 +83,7 @@ export const sharedReducer = {
   [spatialDataReducerType]: spatialDataReducer,
   [complianceCodeReducerType]: complianceCodeReducer,
   [damReducerType]: damReducer,
+  [tsfReducerType]: tailingsReducer,
   [complianceReportReducerType]: complianceReportReducer,
   [permitServiceReducerType]: permitServiceReducer,
   [helpReducerType]: helpReducer,

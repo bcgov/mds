@@ -5,15 +5,12 @@ import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { MINE_DASHBOARD, MINE_TAILINGS } from "@/constants/routes";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
-import { getTsf } from "@mds/common/redux/selectors/tailingsSelectors";
 import { ITailingsStorageFacility } from "@mds/common/interfaces";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/pro-regular-svg-icons";
 import { COLOR } from "@mds/common/constants/styles";
-import {
-  fetchMineRecordById,
-  fetchTailingsStorageFacility,
-} from "@mds/common/redux/actionCreators/mineActionCreator";
+import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
+import { fetchTailingsStorageFacility, getTsfByGuid } from "@mds/common/redux/slices/tailingsSlice";
 
 const { Title, Paragraph } = Typography;
 
@@ -26,11 +23,13 @@ const TailingsSubmitSuccess = () => {
   }>();
 
   const mine = useAppSelector(getMineById(mineGuid));
-  const tsf: ITailingsStorageFacility = useAppSelector(getTsf);
+  const tsf: ITailingsStorageFacility = useAppSelector(
+    getTsfByGuid(mineGuid, tailingsStorageFacilityGuid)
+  );
 
   useEffect(() => {
     if (!tsf?.mine_tailings_storage_facility_name) {
-      dispatch(fetchTailingsStorageFacility(mineGuid, tailingsStorageFacilityGuid));
+      dispatch(fetchTailingsStorageFacility({ mineGuid, tsfGuid: tailingsStorageFacilityGuid }));
     }
   }, [tsf?.mine_tailings_storage_facility_name]);
 

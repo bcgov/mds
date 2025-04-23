@@ -12,7 +12,6 @@ import { useHistory } from "react-router-dom";
 import React, { FC, useContext } from "react";
 import { getHighestConsequence } from "@common/utils/helpers";
 import { storeDam } from "@mds/common/redux/slices/damSlice";
-import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import { EDIT_PENCIL } from "@/constants/assets";
 import { EDIT_DAM } from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -33,6 +32,7 @@ interface TailingsTableProps {
   handleEditTailings: (values: ITailingsStorageFacility) => void;
   editTailings: (event, mineTsf: ITailingsStorageFacility, isEditMode: boolean) => void;
   canEditTSF: boolean;
+  isLoaded: boolean;
 }
 
 export const TailingsTable: FC<TailingsTableProps> = (props) => {
@@ -52,12 +52,7 @@ export const TailingsTable: FC<TailingsTableProps> = (props) => {
   const handleEditDam = (event, dam, isEditMode, canEditDam) => {
     event.preventDefault();
     dispatch(storeDam(dam));
-    const tsf = tailings.find(
-      (t) => t.mine_tailings_storage_facility_guid === dam.mine_tailings_storage_facility_guid
-    );
-    if (tsf) {
-      dispatch(storeTsf(tsf));
-    }
+
     const url = EDIT_DAM.dynamicRoute(
       mine_guid,
       dam.mine_tailings_storage_facility_guid,
@@ -241,6 +236,7 @@ export const TailingsTable: FC<TailingsTableProps> = (props) => {
 
   return (
     <CoreTable
+      loading={!props.isLoaded}
       columns={columns}
       rowKey={(record) => record.mine_tailings_storage_facility_guid}
       emptyText="This mine has no tailing storage facilities data."
