@@ -2,16 +2,18 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { TSF } from "@mds/common/tests/mocks/dataMocks";
-import { TAILINGS } from "@mds/common/constants/reducerTypes";
 import DamForm from "./DamForm";
 import FormWrapper from "../../forms/FormWrapper";
 import { FORM } from "@mds/common/constants/forms";
 import { BrowserRouter } from "react-router-dom";
+import { tsfReducerType } from "@mds/common/redux/slices/tailingsSlice";
 
 
 const initialState = {
-    [TAILINGS]: {
-        tsf: TSF
+    [tsfReducerType]: {
+        mineTsfs: {
+            [TSF.mine_guid]: [TSF]
+        }
     },
 };
 

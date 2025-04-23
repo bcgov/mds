@@ -6,6 +6,7 @@ import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { render } from "@testing-library/react";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { tsfReducerType } from "@mds/common/redux/slices/tailingsSlice";
 
 
 const initialState: any = {
@@ -15,6 +16,11 @@ const initialState: any = {
   [AUTHENTICATION]: {
     systemFlag: SystemFlagEnum.core,
     userAccessData: [USER_ROLES.role_edit_tsf],
+  },
+  [tsfReducerType]: {
+    mineTsfs: {
+      [MOCK.TSF.mine_guid]: [MOCK.TSF]
+    }
   },
 };
 

@@ -6,7 +6,6 @@ import {
   fetchMineRecords,
   fetchMineRecordById,
   fetchMineNameList,
-  createTailingsStorageFacility,
   removeMineType,
   fetchMineDocuments,
   fetchSubscribedMinesByUser,
@@ -17,7 +16,6 @@ import {
   fetchMineComments,
   createMineComment,
   deleteMineComment,
-  updateTailingsStorageFacility,
 } from "@mds/common/redux/actionCreators/mineActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
@@ -127,37 +125,6 @@ describe("`removeMineType` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onDelete(url).reply(418, MOCK.ERROR);
     return removeMineType(mineTypeGuid)(dispatch).catch(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-});
-
-describe("`createTailingsStorageFacility` action creator", () => {
-  const mine_tailings_storage_facility_name = "MockTSF";
-  const mine_guid = "12345-6789";
-  const url = ENVIRONMENT.apiUrl + API.MINE_TSFS(mine_guid);
-  const mockPayload = { mine_tailings_storage_facility_name };
-  it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
-    return createTailingsStorageFacility(
-      mine_guid,
-      mockPayload
-    )(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
-    });
-  });
-
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPost(url, mockPayload).reply(418, MOCK.ERROR);
-    return createTailingsStorageFacility(
-      mine_guid,
-      mockPayload
-    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -484,40 +451,6 @@ describe("`deleteMineComment` action creator", () => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
-    });
-  });
-});
-
-describe("`updateTailingsStorageFacility` action creator", () => {
-  const mine_tailings_storage_facility_name = "MockTSF";
-  const mine_guid = "12345-6789";
-  const TSFGuid = "12345-6789";
-  const url = ENVIRONMENT.apiUrl + API.MINE_TSF(mine_guid, TSFGuid);
-  const mockPayload = { mine_tailings_storage_facility_name };
-  it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onPut(url, mockPayload).reply(200, mockResponse);
-    return updateTailingsStorageFacility(
-      mine_guid,
-      TSFGuid,
-      mockPayload
-    )(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
-    });
-  });
-
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPut(url, mockPayload).reply(418, MOCK.ERROR);
-    return updateTailingsStorageFacility(
-      mine_guid,
-      TSFGuid,
-      mockPayload
-    )(dispatch).catch(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 });
