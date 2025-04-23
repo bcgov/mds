@@ -30,7 +30,6 @@ const PATH_ALIASES = {
   vendor: PATHS.vendor,
   "@common": PATHS.commonPackage,
   "@mds/common": `${PATHS.sharedPackage}`,
-  "@assets": path.join(__dirname, "src", "assets"),
 };
 
 const envFile: any = {};
