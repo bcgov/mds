@@ -16,7 +16,7 @@ import { Badge } from "antd";
 import DocumentLink from "@/components/common/DocumentLink";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import * as router from "@/constants/routes";
-import { getReportSubmissionBadgeStatusType } from "@/constants/theme";
+import { getReportSubmissionBadgeStatusType } from "@mds/common/constants/badgeStatusTypes";
 import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import DownloadOutlined from "@ant-design/icons/DownloadOutlined";

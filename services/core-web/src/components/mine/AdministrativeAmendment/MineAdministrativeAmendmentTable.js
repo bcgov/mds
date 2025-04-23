@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import { getApplicationStatusType } from "@/constants/theme";
+import { getApplicationStatusType } from "@mds/common/constants/badgeStatusTypes";
 import DocumentLink from "@/components/common/DocumentLink";
 
 /**

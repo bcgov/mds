@@ -801,6 +801,28 @@ NOW_VIEW_MODEL = api.model(
         fields.String,
     })
 
+NOW_VIEW_MODEL_PROPONENT = api.model(
+    'NOW_VIEW_MODEL_PROPONENT', {
+        'now_application_guid':
+        fields.String,
+        'mine_guid':
+        fields.String,
+        'mine_no':
+        fields.String,
+        'now_number':
+        fields.String,
+        'notice_of_work_type_description':
+        fields.String,
+        'now_application_status_description':
+        fields.String,
+        'received_date':
+        Date,
+        'originating_system':
+        fields.String,
+        'application_documents':
+        fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT), skip_none=True),
+    })
+
 PAGINATED_LIST = api.model(
     'List', {
         'current_page': fields.Integer,

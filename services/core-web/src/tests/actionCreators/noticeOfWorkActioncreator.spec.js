@@ -23,6 +23,7 @@ import {
   createNoticeOfWorkApplicationReview,
   fetchNoticeOfWorkApplicationReviews,
   fetchMineNoticeOfWorkApplications,
+  fetchProponentNoticeOfWorkApplications,
 } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
@@ -50,6 +51,28 @@ describe("`fetchNoticeOfWorkApplications` action creator", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
     return fetchNoticeOfWorkApplications()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
+    return fetchNoticeOfWorkApplications()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`fetchNoticeOfWorkApplications` action creator", () => {
+  const url = ENVIRONMENT.apiUrl + API.PROPONENT_NOTICE_OF_WORK_APPLICATION_LIST();
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchProponentNoticeOfWorkApplications()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
