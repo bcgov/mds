@@ -56,7 +56,7 @@ const tsfSlice = createAppSlice({
                 } finally {
                     thunkApi.dispatch(hideLoading());
                 }
-                return resp;
+                return resp.data;
             },
             {
                 fulfilled: (state: TailingsState, action) => {

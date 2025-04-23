@@ -151,9 +151,10 @@ export const TailingsSummaryPage: FC = () => {
             await dispatch(updateTailingsStorageFacility(payload));
           }
         } else {
-          newTsf = await dispatch(
+          const resp = await dispatch(
             createTailingsStorageFacility({ mine_guid: mineGuid, ...values } as ICreateTailingsStorageFacility)
           );
+          newTsf = resp?.payload;
         }
         break;
       case "engineer-of-record":
@@ -204,7 +205,7 @@ export const TailingsSummaryPage: FC = () => {
     if (newActiveTab) {
       history.push(
         GLOBAL_ROUTES?.EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
-          newTsf?.data.mine_tailings_storage_facility_guid ?? tsfGuid,
+          newTsf?.mine_tailings_storage_facility_guid ?? tsfGuid,
           mineGuid,
           newActiveTab,
           isUserActionEdit

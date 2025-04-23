@@ -75,7 +75,7 @@ describe('tailingsSlice', () => {
 
             const newTsfResp = { ...newTsf, mine_tailings_storage_facility_guid: new_tsf_guid };
             (CustomAxios as jest.Mock).mockImplementation(() => ({
-                post: jest.fn().mockResolvedValue(newTsfResp),
+                post: jest.fn().mockResolvedValue({ data: newTsfResp }),
             }));
 
             await store.dispatch(createTailingsStorageFacility(newTsf));

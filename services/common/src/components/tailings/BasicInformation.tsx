@@ -244,8 +244,8 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         onCancel={() => setDiffModalOpen(false)}
         valueMapper={historyDiffValueMapper}
         mineName={mineName}
-        tsfName={tsf.mine_tailings_storage_facility_name}
-        history={tsf.history}
+        tsfName={tsf?.mine_tailings_storage_facility_name}
+        history={tsf?.history}
       />
     </>
   );
