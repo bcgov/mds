@@ -238,7 +238,7 @@ const MineTailingsTable: FC<MineTailingsTableProps> = (props) => {
   return (
     <CoreTable
       condition={props.isLoaded}
-      dataSource={transformRowData(props.tailings)}
+      dataSource={transformRowData(tailings)}
       columns={columns as ColumnsType<ITailingsStorageFacility>}
       rowKey="mine_tailings_storage_facility_guid"
       classPrefix="tailings"

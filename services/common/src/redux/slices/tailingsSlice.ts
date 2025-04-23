@@ -6,9 +6,9 @@ import * as API from "@mds/common/constants/API";
 import {
     ICreateTailingsStorageFacility,
     ItemMap,
+    ITailingsStorageFacility
 } from "@mds/common/interfaces";
 import { createSelector } from "@reduxjs/toolkit";
-import { ITailingsStorageFacility } from "@mds/common/interfaces";
 
 export const tsfReducerType = "TAILINGS";
 
