@@ -119,8 +119,8 @@ export const TailingsSummaryPage: FC = () => {
         mine_guid: mineGuid,
         ...submitValues
       };
-      await dispatch(updateTailingsStorageFacility(payload));
-      if (!isCore) {
+      const resp = await dispatch(updateTailingsStorageFacility(payload));
+      if (!isCore && resp?.payload) {
         history.push(
           GLOBAL_ROUTES?.TAILINGS_SUBMIT_SUCCESS.dynamicRoute(
             mineGuid,
