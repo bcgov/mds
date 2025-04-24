@@ -88,19 +88,6 @@ export const NoticeOfWorkTable: FC<NoticeOfWorkTableProps> = ({ isLoaded, applic
           Strings.EMPTY_FIELD
         ),
     },
-    {
-      title: "",
-      dataIndex: "project",
-      render: (text, record) => (
-        <div title="">
-          <Row gutter={1}>
-            <Col span={12}>
-              <Link to={"#TODO"}>View</Link>
-            </Col>
-          </Row>
-        </div>
-      ),
-    },
   ];
 
   return (
