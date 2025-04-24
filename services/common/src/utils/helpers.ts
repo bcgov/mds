@@ -4,10 +4,6 @@ import { AMS_AUTHORIZATION_TYPES } from "@mds/common/constants/enums";
 import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
 import { IMineReportPermitRequirement } from "../interfaces/permits";
 import { REPORT_FREQUENCY_HASH, REPORT_MINISTRY_RECIPIENT_HASH, REPORT_REGULATORY_AUTHORITY_CODES_HASH } from "../constants/strings";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Typography, Popover } from "antd";
-import { faCircleQuestion } from "@fortawesome/pro-light-svg-icons";
-import React from "react";
 
 
 const transformAuthorizations = (
@@ -174,26 +170,3 @@ export const transformPermitReportRequirement = (report: IMineReportPermitRequir
   }
   return null;
 }
-
-export const setupLatLonLabel = (type: string) => {
-  const format = type === "Latitude" ? "(XX.bbbbbb)" : "(-XXX.bbbbbb)";
-  const range = type === "Latitude" ? "Valid range: 48 to 61" : "Valid range: -140 to -113";
-  return (
-    <span>
-      {type}{" "}
-      <Popover
-        content={
-          <Typography.Paragraph>{format} <br /> {range} </Typography.Paragraph>
-        }
-        placement="topLeft"
-        color="white"
-        overlayStyle={{ width: "250px" }
-        }
-      >
-        <span>
-          <FontAwesomeIcon icon={faCircleQuestion} style={{ width: "20px" }} />
-        </span>
-      </Popover>
-    </span>
-  )
-};

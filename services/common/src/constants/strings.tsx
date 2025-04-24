@@ -535,3 +535,6 @@ export const AMS_AUTHORIZATION_TYPES_TEXT = {
   "NEW": "New",
   "AMENDMENT": "Amendment",
 }
+
+export const LATITUDE_FORMAT_MESSAGE = "Must be between 47 and 60 with no more than 7 decimal places";
+export const LONGITUDE_FORMAT_MESSAGE = "Must be between -113 and -140 with no more than 7 decimal places";
