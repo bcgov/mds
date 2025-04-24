@@ -2,8 +2,8 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { TSF } from "@mds/common/tests/mocks/dataMocks";
-import { TAILINGS } from "@mds/common/constants/reducerTypes";
 import TailingsSummaryPage from "./TailingsSummaryPage";
+import { tsfReducerType } from "@mds/common/redux/slices/tailingsSlice";
 
 
 function mockFunction() {
@@ -21,8 +21,10 @@ function mockFunction() {
 jest.mock("react-router-dom", () => mockFunction());
 
 const initialState = {
-    [TAILINGS]: {
-        tsf: TSF
+    [tsfReducerType]: {
+        mineTsfs: {
+            [TSF.mine_guid]: [TSF]
+        }
     },
 };
 

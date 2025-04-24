@@ -22,6 +22,7 @@ describe("TailingsTable", () => {
         <ReduxWrapper initialState={initialState}>
           <SidebarProvider value={{ mine: mockMine }}>
             <TailingsTable
+              isLoaded={true}
               tailings={[TSF]}
               openEditTailingsModal={jest.fn()}
               handleEditTailings={jest.fn()}

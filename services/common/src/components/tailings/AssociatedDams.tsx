@@ -6,17 +6,19 @@ import {
 } from "@mds/common/constants/strings";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import React, { FC } from "react";
-import { getTsf } from "@mds/common/redux/reducers/tailingsReducer";
 import moment from "moment";
 import { storeDam } from "@mds/common/redux/slices/damSlice";
 import { useHistory } from "react-router-dom";
-import { IDam, ITailingsStorageFacility } from "@mds/common/interfaces";
+import { IDam, ITailingsStorageFacility, ITailingsStorageFacilityForm } from "@mds/common/interfaces";
 import { ColumnsType } from "antd/lib/table";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
+import { getFormValues } from "../forms/form";
+import { FORM } from "@mds/common/constants/forms";
+import { getTsfByGuid } from "@mds/common/redux/slices/tailingsSlice";
 
 interface AssociatedDamsProps {
     canEditTSF: boolean;
@@ -27,7 +29,8 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
     const history = useHistory();
     const dispatch = useAppDispatch();
     const { isEditMode, canEditTSF } = props;
-    const tsf: ITailingsStorageFacility = useAppSelector(getTsf);
+    const formValues = useAppSelector(getFormValues(FORM.ADD_TAILINGS_STORAGE_FACILITY)) as ITailingsStorageFacilityForm;
+    const tsf: ITailingsStorageFacility = useAppSelector(getTsfByGuid(formValues?.mine_guid, formValues?.mine_tailings_storage_facility_guid));
     const isCore = useAppSelector(getIsCore);
 
     const handleNavigateToEdit = (event, dam, canEditDam) => {

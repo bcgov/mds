@@ -138,9 +138,10 @@ from app.api.mines.reports.resources.mine_report_definition_compliance_article_x
     MineReportDefinitionComplianceArticleCreateResource,
     MineReportDefinitionComplianceArticleUpdateResource,
 )
-from app.api.mines.reports.resources.mine_report_definition_resource import (
+from app.api.mines.reports.resources.mine_report_definition_list_resource import (
     MineReportDefinitionListResource,
 )
+from app.api.mines.reports.resources.mine_report_definition_resource import MineReportDefinitionResource
 from app.api.mines.reports.resources.mine_report_document import (
     MineReportDocumentListResource,
 )
@@ -192,6 +193,7 @@ from app.api.notice_of_departure.resources.notice_of_departure_document import (
 from app.api.parties.party_appt.resources.mine_party_appt_document_upload_resource import (
     MinePartyApptDocumentUploadResource,
 )
+from app.api.now_applications.resources.now_application_list_proponent_resource import NOWApplicationListProponentResource
 from flask_restx import Namespace
 
 api = Namespace('mines', description='Mine related operations')
@@ -258,6 +260,11 @@ api.add_resource(MineReportListResource, '/<string:mine_guid>/reports')
 api.add_resource(MineReportResource, '/<string:mine_guid>/reports/<string:mine_report_guid>')
 api.add_resource(ReportSubmissionResource, '/reports/submissions')
 api.add_resource(MineReportDefinitionListResource, '/reports/definitions')
+api.add_resource(
+    MineReportDefinitionResource,
+    '/reports/definition/<string:mine_report_definition_guid>',
+)
+
 api.add_resource(MineReportCommentListResource,
                  '/<string:mine_guid>/reports/<string:mine_report_guid>/comments')
 api.add_resource(
@@ -360,6 +367,8 @@ api.add_resource(MineCommentResource, '/<string:mine_guid>/comments/<string:mine
 api.add_resource(EPICResource, '/<string:mine_guid>/epic')
 
 api.add_resource(MineNoticeOfDepartureNewDocumentUploadResource, '/<string:mine_guid>/notices-of-departure/documents')
+
+api.add_resource(NOWApplicationListProponentResource, '/<string:mine_guid>/now-applications')
 
 api.add_resource(MineAlertListResource, '/<string:mine_guid>/alerts')
 api.add_resource(MineAlertResource, '/<string:mine_guid>/alerts/<string:mine_alert_guid>')

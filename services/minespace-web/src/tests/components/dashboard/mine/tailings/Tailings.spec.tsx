@@ -7,6 +7,7 @@ import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { tsfReducerType } from "@mds/common/redux/slices/tailingsSlice";
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
@@ -19,6 +20,11 @@ const initialState = {
   [AUTHENTICATION]: {
     userAccessData: [USER_ROLES.role_minespace_proponent],
     systemFlag: SystemFlagEnum.ms,
+  },
+  [tsfReducerType]: {
+    mineTsfs: {
+      [MOCK.TSF.mine_guid]: [MOCK.TSF],
+    },
   },
 };
 

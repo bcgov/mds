@@ -11,12 +11,12 @@ import {
   max,
   min,
 } from "@mds/common/redux/utils/Validate";
-import { Field } from "@mds/common/components/forms/form";
+import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { formatDateTime, formatDateTimeUserTz } from "@mds/common/redux/utils/helpers";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
-import { getTsf } from "@mds/common/redux/selectors/tailingsSelectors";
+import { getTsfByGuid } from "@mds/common/redux/slices/tailingsSlice";
 import TailingsDiffModal from "@mds/common/components/tailings/TailingsDiffModal";
-import { IPermit, ITailingsStorageFacility } from "@mds/common/interfaces";
+import { IPermit, ITailingsStorageFacility, ITailingsStorageFacilityForm } from "@mds/common/interfaces";
 import {
   CONSEQUENCE_CLASSIFICATION_STATUS_CODE,
   FACILITY_TYPES,
@@ -30,6 +30,7 @@ import {
 import RenderSelect from "../forms/RenderSelect";
 import RenderField from "../forms/RenderField";
 import { useAppSelector } from "@mds/common/redux/rootState";
+import { FORM } from "@mds/common/constants/forms";
 
 export interface BasicInformationProps {
   mineName: string;
@@ -96,7 +97,8 @@ const historyDiffValueMapper = {
 export const BasicInformation: FC<BasicInformationProps> = (props) => {
   const { canEditTSF = false, isEditMode, mineName } = props;
   const permits: IPermit[] = useAppSelector(getPermits);
-  const tsf: ITailingsStorageFacility = useAppSelector(getTsf);
+  const formValues = useAppSelector(getFormValues(FORM.ADD_TAILINGS_STORAGE_FACILITY)) as ITailingsStorageFacilityForm;
+  const tsf: ITailingsStorageFacility = useAppSelector(getTsfByGuid(formValues?.mine_guid, formValues?.mine_tailings_storage_facility_guid));
   const [permitOptions, setPermitOptions] = useState([]);
   const [diffModalOpen, setDiffModalOpen] = useState(false);
 
@@ -255,8 +257,8 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         onCancel={() => setDiffModalOpen(false)}
         valueMapper={historyDiffValueMapper}
         mineName={mineName}
-        tsfName={tsf.mine_tailings_storage_facility_name}
-        history={tsf.history}
+        tsfName={tsf?.mine_tailings_storage_facility_name}
+        history={tsf?.history}
       />
     </>
   );

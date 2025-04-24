@@ -26,7 +26,6 @@ def mock_components():
     AzureOpenAITextEmbedder.__init__ = MagicMock(return_value=None)
     AzureOpenAIChatGenerator.__init__ = MagicMock(return_value=None)
     AzureAISearchHybridRetriever.__init__ = MagicMock(return_value=None)
-    ChatPromptBuilder.__init__ = MagicMock(return_value=None)
     AzureDocumentIntelligenceConverter.__init__ = MagicMock(return_value=None)
     AzureBlobUploader.__init__ = MagicMock(return_value=None)
 
@@ -37,7 +36,8 @@ def test_create_permit_condition_search_retrieval_pipeline_returns_pipeline(mock
 def test_indexing_pipeline_validates(mock_components):
     pipeline = create_permit_condition_search_retrieval_pipeline()
     try:
-        pipeline._validate_input({"text_embedder": {"text": "test query"}, "retriever": {"query": "test query"}})
+        query = "test query"
+        pipeline._validate_input({"text_embedder": {"text": query}, "retriever": {"query": query}, "prompt_builder": {"question": query}})
 
     except Exception as e:
         pytest.fail(f"Pipeline validation failed with error: {str(e)}")

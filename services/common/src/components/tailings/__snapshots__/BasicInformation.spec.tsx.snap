@@ -136,9 +136,10 @@ exports[`Tailings BasicInformation renders properly 1`] = `
                     />
                   </span>
                   <span
-                    class="ant-select-selection-placeholder"
+                    class="ant-select-selection-item"
+                    title="Tailing Storage Facility"
                   >
-                    Please select
+                    Tailing Storage Facility
                   </span>
                 </div>
                 <span
@@ -245,9 +246,10 @@ exports[`Tailings BasicInformation renders properly 1`] = `
                     />
                   </span>
                   <span
-                    class="ant-select-selection-placeholder"
+                    class="ant-select-selection-item"
+                    title="P-123"
                   >
-                    Please select
+                    P-123
                   </span>
                 </div>
                 <span
@@ -354,9 +356,10 @@ exports[`Tailings BasicInformation renders properly 1`] = `
                     />
                   </span>
                   <span
-                    class="ant-select-selection-placeholder"
+                    class="ant-select-selection-item"
+                    title="Conventional (impounded by dams)"
                   >
-                    Please select
+                    Conventional (impounded by dams)
                   </span>
                 </div>
                 <span
@@ -463,9 +466,10 @@ exports[`Tailings BasicInformation renders properly 1`] = `
                     />
                   </span>
                   <span
-                    class="ant-select-selection-placeholder"
+                    class="ant-select-selection-item"
+                    title="Above Ground"
                   >
-                    Please select
+                    Above Ground
                   </span>
                 </div>
                 <span
@@ -551,7 +555,7 @@ exports[`Tailings BasicInformation renders properly 1`] = `
                 id="mine_tailings_storage_facility_name"
                 name="mine_tailings_storage_facility_name"
                 type="text"
-                value=""
+                value="MockTSF"
               />
             </div>
           </div>
@@ -771,9 +775,10 @@ exports[`Tailings BasicInformation renders properly 1`] = `
                     />
                   </span>
                   <span
-                    class="ant-select-selection-placeholder"
+                    class="ant-select-selection-item"
+                    title="Low"
                   >
-                    Please select
+                    Low
                   </span>
                 </div>
                 <span
@@ -880,9 +885,10 @@ exports[`Tailings BasicInformation renders properly 1`] = `
                     />
                   </span>
                   <span
-                    class="ant-select-selection-placeholder"
+                    class="ant-select-selection-item"
+                    title="Operation"
                   >
-                    Please select
+                    Operation
                   </span>
                 </div>
                 <span
@@ -989,9 +995,10 @@ exports[`Tailings BasicInformation renders properly 1`] = `
                     />
                   </span>
                   <span
-                    class="ant-select-selection-placeholder"
+                    class="ant-select-selection-item"
+                    title="Yes"
                   >
-                    Please select
+                    Yes
                   </span>
                 </div>
                 <span
