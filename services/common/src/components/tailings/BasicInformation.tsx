@@ -8,6 +8,8 @@ import {
   maxLength,
   required,
   requiredList,
+  max,
+  min,
 } from "@mds/common/redux/utils/Validate";
 import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { formatDateTime, formatDateTimeUserTz } from "@mds/common/redux/utils/helpers";
@@ -15,7 +17,16 @@ import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getTsfByGuid } from "@mds/common/redux/slices/tailingsSlice";
 import TailingsDiffModal from "@mds/common/components/tailings/TailingsDiffModal";
 import { IPermit, ITailingsStorageFacility, ITailingsStorageFacilityForm } from "@mds/common/interfaces";
-import { CONSEQUENCE_CLASSIFICATION_STATUS_CODE, FACILITY_TYPES, STORAGE_LOCATION, TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD, TSF_OPERATING_STATUS_CODE, TSF_TYPES } from "@mds/common/constants/strings";
+import {
+  CONSEQUENCE_CLASSIFICATION_STATUS_CODE,
+  FACILITY_TYPES,
+  STORAGE_LOCATION,
+  TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD,
+  TSF_OPERATING_STATUS_CODE,
+  TSF_TYPES,
+  LATITUDE_FORMAT_MESSAGE,
+  LONGITUDE_FORMAT_MESSAGE,
+} from "@mds/common/constants/strings";
 import RenderSelect from "../forms/RenderSelect";
 import RenderField from "../forms/RenderField";
 import { useAppSelector } from "@mds/common/redux/rootState";
@@ -194,7 +205,8 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
             component={RenderField}
             disabled={!canEditTSFAndEditMode}
             required
-            validate={[lat, required]}
+            validate={[required, lat, max(61), min(48)]}
+            help={LATITUDE_FORMAT_MESSAGE}
           />
         </Col>
         <Col span={12}>
@@ -205,7 +217,8 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
             component={RenderField}
             disabled={!canEditTSFAndEditMode}
             required
-            validate={[lonNegative, lon, required]}
+            validate={[required, lonNegative, lon, max(-113), min(-140)]}
+            help={LONGITUDE_FORMAT_MESSAGE}
           />
         </Col>
       </Row>

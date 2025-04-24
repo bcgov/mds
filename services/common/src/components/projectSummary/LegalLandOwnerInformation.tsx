@@ -23,6 +23,10 @@ import CoreMap from "../common/Map";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 import { IProjectSummaryForm } from "@mds/common/interfaces";
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
+import {
+  LATITUDE_FORMAT_MESSAGE,
+  LONGITUDE_FORMAT_MESSAGE,
+} from "@mds/common/constants/strings";
 
 export const LegalLandOwnerInformation: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
@@ -162,7 +166,7 @@ export const LegalLandOwnerInformation: FC<ProjectSummaryFormComponentProps> = (
             validate={[required, lat, max(60), min(47)]}
             label="Latitude"
             component={RenderField}
-            help="Must be between 47 and 60 with no more than 7 decimal places"
+            help={LATITUDE_FORMAT_MESSAGE}
             disabled={fieldsDisabled}
           />
           <Field
@@ -171,7 +175,7 @@ export const LegalLandOwnerInformation: FC<ProjectSummaryFormComponentProps> = (
             validate={[required, lon, max(-113), min(-140)]}
             label="Longitude"
             component={RenderField}
-            help="Must be between -113 and -140 with no more than 7 decimal places"
+            help={LONGITUDE_FORMAT_MESSAGE}
             disabled={fieldsDisabled}
           />
           <Field
