@@ -78,6 +78,7 @@
   },
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
+    "@rsbuild/core": "^1.2.19",
     "@testing-library/jest-dom": "6.4.8",
     "@testing-library/react": "12.1.5",
     "@testing-library/user-event": "14.6.1",
@@ -149,6 +150,7 @@
     "jest-sonar-reporter": "2.0.0"
   },
   "scripts": {
+    "dev": "rsbuild dev",
     "serve": "cross-env HOST=0.0.0.0 PORT=3000 webpack-dev-server --hot --env development",
     "vfs": "webpack configtest ./webpack.config.ts",
     "build": "webpack --env production",
