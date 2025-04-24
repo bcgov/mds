@@ -13,7 +13,6 @@ import {
   getTSFOperatingStatusCodeOptionsHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { storeDam } from "@mds/common/redux/slices/damSlice";
-import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -67,12 +66,7 @@ const MineTailingsTable: FC<MineTailingsTableProps> = (props) => {
   const handleEditDam = (event, dam: IDam, isEditMode, canEditDam) => {
     event.preventDefault();
     dispatch(storeDam(dam));
-    const tsf = tailings.find(
-      (t) => t.mine_tailings_storage_facility_guid === dam.mine_tailings_storage_facility_guid
-    );
-    if (tsf) {
-      dispatch(storeTsf(tsf));
-    }
+
     const url = EDIT_DAM.dynamicRoute(
       mineGuid,
       dam.mine_tailings_storage_facility_guid,
@@ -244,7 +238,7 @@ const MineTailingsTable: FC<MineTailingsTableProps> = (props) => {
   return (
     <CoreTable
       condition={props.isLoaded}
-      dataSource={transformRowData(props.tailings)}
+      dataSource={transformRowData(tailings)}
       columns={columns as ColumnsType<ITailingsStorageFacility>}
       rowKey="mine_tailings_storage_facility_guid"
       classPrefix="tailings"

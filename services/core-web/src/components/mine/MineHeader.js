@@ -11,7 +11,6 @@ import {
   createMineTypes,
   removeMineType,
   fetchMineRecordById,
-  createTailingsStorageFacility,
 } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { formatDate } from "@common/utils/helpers";
 import {
@@ -46,7 +45,6 @@ const propTypes = {
   updateMineRecord: PropTypes.func.isRequired,
   createMineTypes: PropTypes.func.isRequired,
   removeMineType: PropTypes.func.isRequired,
-  createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -98,20 +96,6 @@ export class MineHeader extends Component {
       }
     });
   };
-
-  handleAddTailings = (values) =>
-    this.props.createTailingsStorageFacility(this.props.mine.mine_guid, values).then(() => {
-      this.props.closeModal();
-      this.props.fetchMineRecordById(this.props.mine.mine_guid);
-    });
-
-  openTailingsModal(event, onSubmit, title) {
-    event.preventDefault();
-    this.props.openModal({
-      props: { onSubmit, title },
-      content: modalConfig.ADD_TAILINGS,
-    });
-  }
 
   openModal(event, onSubmit, handleDelete, title, mine) {
     event.preventDefault();
@@ -412,7 +396,6 @@ const mapDispatchToProps = (dispatch) =>
       createMineTypes,
       removeMineType,
       fetchMineRecordById,
-      createTailingsStorageFacility,
     },
     dispatch
   );

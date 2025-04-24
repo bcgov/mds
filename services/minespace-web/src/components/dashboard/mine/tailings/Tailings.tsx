@@ -1,15 +1,15 @@
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Row, Col, Typography, Button } from "antd";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
-  fetchMineRecordById,
+  fetchTsfsByMineGuid,
+  getTsfsByMineGuid,
   updateTailingsStorageFacility,
-} from "@mds/common/redux/actionCreators/mineActionCreator";
+} from "@mds/common/redux/slices/tailingsSlice";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { useHistory } from "react-router-dom";
 import { resetForm } from "@common/utils/helpers";
-import { storeTsf, clearTsf } from "@mds/common/redux/actions/tailingsActions";
 import { modalConfig } from "@/components/modalContent/config";
 import { EDIT_TAILINGS_STORAGE_FACILITY, ADD_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import { FORM } from "@mds/common/constants/forms";
@@ -20,7 +20,8 @@ import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSel
 import { IMine } from "@mds/common/interfaces/mine.interface";
 import { Feature } from "@mds/common/utils/featureFlag";
 import { USER_ROLES } from "@mds/common/constants/environment";
-import { useAppDispatch } from "@mds/common/redux/rootState";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import { fetchPartyRelationships } from "@mds/common/redux/actionCreators/partiesActionCreator";
 
 const { Paragraph, Title, Text } = Typography;
 
@@ -35,22 +36,25 @@ export const Tailings: FC = () => {
     (r) => r === USER_ROLES.role_minespace_proponent || r === USER_ROLES.role_edit_tsf
   );
 
+  const tailings = useAppSelector(getTsfsByMineGuid(mine.mine_guid));
+  const [isLoaded, setIsLoaded] = useState(Boolean(tailings));
+
+  useEffect(() => {
+    if (!isLoaded) {
+      Promise.all([
+        dispatch(fetchTsfsByMineGuid(mine.mine_guid)),
+        dispatch(fetchPartyRelationships({ mine_guid: mine.mine_guid })),
+      ]).then(() => setIsLoaded(true));
+    }
+  }, []);
+
   const handleEditTailings = (values) => {
-    return dispatch(
-      updateTailingsStorageFacility(
-        values.mine_guid,
-        values.mine_tailings_storage_facility_guid,
-        values
-      )
-    )
-      .then(() => dispatch(closeModal()))
-      .then(() => dispatch(fetchMineRecordById(values.mine_guid)));
+    return dispatch(updateTailingsStorageFacility(values)).then(() => dispatch(closeModal()));
   };
 
   const navigateToEditTailings = async (event, mineTSF, isEditMode) => {
     event.preventDefault();
 
-    await dispatch(storeTsf(mineTSF));
     const url = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
       mineTSF.mine_tailings_storage_facility_guid,
       mine.mine_guid,
@@ -63,7 +67,7 @@ export const Tailings: FC = () => {
   const navigateToCreateTailings = async (event) => {
     event.preventDefault();
     resetForm(FORM.ADD_TAILINGS_STORAGE_FACILITY);
-    await dispatch(clearTsf());
+
     const url = ADD_TAILINGS_STORAGE_FACILITY.dynamicRoute(mine.mine_guid);
     history.push(url);
   };
@@ -113,8 +117,9 @@ export const Tailings: FC = () => {
         <Row gutter={[16, 32]}>
           <Col span={24}>
             <TailingsTable
+              isLoaded={isLoaded}
               editTailings={navigateToEditTailings}
-              tailings={mine.mine_tailings_storage_facilities}
+              tailings={tailings}
               openEditTailingsModal={openEditTailingsModal}
               handleEditTailings={handleEditTailings}
               canEditTSF={canEditTSF}
