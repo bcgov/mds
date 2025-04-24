@@ -61,15 +61,7 @@ const tsfSlice = createAppSlice({
             {
                 fulfilled: (state: TailingsState, action) => {
                     const newTsf = action.payload;
-                    const mineGuid = newTsf.mine_guid;
-                    if (!state.mineTsfs[mineGuid]) {
-                        state.mineTsfs[mineGuid] = [newTsf];
-                    } else {
-                        state.mineTsfs[mineGuid] = [
-                            newTsf,
-                            ...state.mineTsfs[mineGuid].filter((item) => item.mine_tailings_storage_facility_guid !== newTsf.mine_tailings_storage_facility_guid)
-                        ];
-                    }
+                    updateTsfInState(state, newTsf);
                 },
                 rejected: (state: TailingsState, action) => {
                     rejectHandler(action);
