@@ -1,4 +1,3 @@
-import { uniqBy } from "lodash";
 import * as actionTypes from "@mds/common/constants/actionTypes";
 import { PARTIES } from "@mds/common/constants/reducerTypes";
 import { createItemMap, createItemIdsArray } from "../utils/helpers";
@@ -67,31 +66,9 @@ export const partiesReducer = (state = initialState, action) => {
         partyIds: createItemIdsArray([action.payload], "party_guid"),
       };
     case actionTypes.STORE_PARTY_RELATIONSHIPS: {
-      const tsfGuid = action.mine_tailings_storage_facility_guid;
-      const eors = action.payload
-        .filter((p) => p.mine_party_appt_type_code === "EOR")
-        .map((p) => ({
-          value: p.party_guid,
-          label: p.party?.name,
-        }));
-
-      const eorRecords = tsfGuid
-        ? action.payload.filter(
-            (p) => p.mine_party_appt_type_code === "EOR" && p.related_guid === tsfGuid
-          )
-        : [];
-      const tqpRecords = tsfGuid
-        ? action.payload.filter(
-            (p) => p.mine_party_appt_type_code === "TQP" && p.related_guid === tsfGuid
-          )
-        : [];
-
       return {
         ...state,
         partyRelationships: action.payload,
-        engineersOfRecord: tsfGuid ? eorRecords : state.engineersOfRecord,
-        qualifiedPersons: tsfGuid ? tqpRecords : state.qualifiedPersons,
-        engineersOfRecordOptions: uniqBy(eors, "value"),
       };
     }
     case actionTypes.STORE_ALL_PARTY_RELATIONSHIPS:
@@ -140,8 +117,5 @@ export const getAddPartyFormState = (state: RootState) => state[PARTIES].addPart
 export const getLastCreatedParty = (state: RootState) => state[PARTIES].lastCreatedParty;
 export const getInspectors = (state: RootState) => state[PARTIES].inspectors;
 export const getProjectLeads = (state: RootState) => state[PARTIES].projectLeads;
-export const getEngineersOfRecordOptions = (state: RootState) =>
-  state[PARTIES].engineersOfRecordOptions;
-export const getEngineersOfRecord = (state: RootState) => state[PARTIES].engineersOfRecord;
-export const getQualifiedPersons = (state: RootState) => state[PARTIES].qualifiedPersons;
+
 export default partiesReducerObject;

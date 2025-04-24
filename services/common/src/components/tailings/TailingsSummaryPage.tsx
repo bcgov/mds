@@ -5,9 +5,7 @@ import {
   addPartyRelationship,
   fetchPartyRelationships,
 } from "@mds/common/redux/actionCreators/partiesActionCreator";
-import {
-  fetchMineRecordById,
-} from "@mds/common/redux/actionCreators/mineActionCreator";
+import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import {
   createTailingsStorageFacility,
   fetchTailingsStorageFacility,
@@ -24,10 +22,7 @@ import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import EngineerOfRecord from "./EngineerOfRecord";
 import QualifiedPerson from "./QualifiedPerson";
 import AssociatedDams from "./AssociatedDams";
-import {
-  getEngineersOfRecord,
-  getQualifiedPersons,
-} from "@mds/common/redux/selectors/partiesSelectors";
+import { getMatchingPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import {
   ICreateTailingsStorageFacility,
   IMine,
@@ -63,8 +58,8 @@ export const TailingsSummaryPage: FC = () => {
   const isCore = useAppSelector(getIsCore);
   const coreCanEditTsf = useAppSelector(userHasRole(USER_ROLES.role_edit_tsf));
   const isFormDirty = useAppSelector(isDirty(formName));
-  const engineers_of_record = useAppSelector(getEngineersOfRecord);
-  const qualified_persons = useAppSelector(getQualifiedPersons);
+  const engineers_of_record = useAppSelector(getMatchingPartyRelationships("EOR", tsfGuid));
+  const qualified_persons = useAppSelector(getMatchingPartyRelationships("TQP", tsfGuid));
   const initialValues = {
     ...tsf,
     mine_guid: mineGuid,
@@ -117,7 +112,7 @@ export const TailingsSummaryPage: FC = () => {
       const payload = {
         mine_tailings_storage_facility_guid: tsfGuid,
         mine_guid: mineGuid,
-        ...submitValues
+        ...submitValues,
       };
       const resp = await dispatch(updateTailingsStorageFacility(payload));
       if (!isCore && resp?.payload) {
@@ -152,7 +147,10 @@ export const TailingsSummaryPage: FC = () => {
           }
         } else {
           const resp = await dispatch(
-            createTailingsStorageFacility({ mine_guid: mineGuid, ...values } as ICreateTailingsStorageFacility)
+            createTailingsStorageFacility({
+              mine_guid: mineGuid,
+              ...values,
+            } as ICreateTailingsStorageFacility)
           );
           newTsf = resp?.payload;
         }
@@ -188,7 +186,7 @@ export const TailingsSummaryPage: FC = () => {
                 start_date: values[attr].start_date,
                 end_date: values[attr].end_date,
                 end_current: true,
-                is_draft: tsf.is_draft
+                is_draft: tsf.is_draft,
               },
               successMessage
             )
@@ -258,7 +256,13 @@ export const TailingsSummaryPage: FC = () => {
               title="You have unsaved changes. Are you sure you want to leave this page?"
               onConfirm={() => history.push(GLOBAL_ROUTES?.MINE_TAILINGS.dynamicRoute(mineGuid))}
             >
-              <LinkButton onClick={disablePopConfirm ? () => history.push(GLOBAL_ROUTES?.MINE_TAILINGS.dynamicRoute(mineGuid)) : undefined}>
+              <LinkButton
+                onClick={
+                  disablePopConfirm
+                    ? () => history.push(GLOBAL_ROUTES?.MINE_TAILINGS.dynamicRoute(mineGuid))
+                    : undefined
+                }
+              >
                 <ArrowLeftOutlined className="padding-sm--right" />
                 {`Back to: ${mineName} Tailings`}
               </LinkButton>
