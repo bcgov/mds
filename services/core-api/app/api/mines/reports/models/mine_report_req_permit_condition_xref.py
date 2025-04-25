@@ -1,5 +1,6 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
+import uuid
 
 from app.api.utils.models_mixins import Base, AuditMixin, SoftDeleteMixin, HistoryMixin
 from app.extensions import db
@@ -10,7 +11,8 @@ class MineReportReqPermitConditionXref(Base, AuditMixin, SoftDeleteMixin, Histor
 
     mine_report_req_permit_condition_xref_guid = db.Column(UUID(as_uuid=True),
                                                        primary_key=True,
-                                                       server_default=FetchedValue())
+                                                       default=uuid.uuid4,
+                                                       nullable=False)
     mine_report_permit_requirement_id = db.Column(
         db.Integer, db.ForeignKey('mine_report_permit_requirement.mine_report_permit_requirement_id'))
     permit_condition_id = db.Column(

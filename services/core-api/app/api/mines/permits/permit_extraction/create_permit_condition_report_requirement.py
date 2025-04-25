@@ -71,7 +71,7 @@ def create_permit_condition_report_requirement(
     # Create the MineReportPermitRequirement
     mine_report_permit_requirement = MineReportPermitRequirement(
         report_name=report_name,
-        permit_condition_id=condition.permit_condition_id,
+        permit_condition_ids=[condition.permit_condition_id],
         permit_amendment_id=task.permit_amendment.permit_amendment_id,
         cim_or_cpo=cim_or_cpo,
         due_date_period_months=due_date_period_months or 0,
@@ -164,7 +164,7 @@ def create_or_copy_permit_condition_report_requirements(
         if existing_requirements:
             return MineReportPermitRequirement(
                 report_name=existing_requirements.report_name,
-                permit_condition_id=condition.permit_condition_id,
+                permit_condition_ids=[condition.permit_condition_id],
                 permit_amendment_id=task.permit_amendment.permit_amendment_id,
                 cim_or_cpo=existing_requirements.cim_or_cpo,
                 due_date_period_months=existing_requirements.due_date_period_months,

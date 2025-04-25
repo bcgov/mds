@@ -56,7 +56,8 @@ async def extract_permit_conditions(file: UploadFile = File(...)) -> JobStatus:
             },
         )
         return JobStatus(id=res.task_id, status=res.status, meta=res.info)
-    except:
+    except Exception as error:
+        logger.error(f"Error extracting permit conditions {error}")
         tmp.close()
         raise
 
