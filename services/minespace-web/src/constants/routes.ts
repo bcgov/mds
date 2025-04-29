@@ -319,8 +319,8 @@ export const VIEW_MINE_PERMIT_AMENDMENT = {
 };
 
 export const MINE_PERMITS = {
-  route: "/mines/:id/:activeTab",
-  dynamicRoute: (id) => `/mines/${id}/permits`,
+  route: MINE_DASHBOARD.route,
+  dynamicRoute: (id) => MINE_DASHBOARD.dynamicRoute(id, "permits"),
 };
 
 export const PERMIT_VIEW = {
