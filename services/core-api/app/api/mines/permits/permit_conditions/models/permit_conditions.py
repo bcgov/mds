@@ -84,13 +84,6 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         backref=backref("parent", remote_side=[permit_condition_id]),
         foreign_keys=[parent_permit_condition_id]
     )
-    mine_report_permit_requirements = db.relationship(
-        MineReportPermitRequirement,
-        lazy="select",
-        overlaps="mine_report_req_permit_conditions",
-        secondary="mine_report_req_permit_condition_xref",
-        secondaryjoin='foreign(MineReportReqPermitConditionXref.mine_report_permit_requirement_id)==remote(MineReportPermitRequirement.mine_report_permit_requirement_id)',
-        )
 
     @hybrid_property
     def sub_conditions(self):

@@ -19,8 +19,8 @@ def test_post_mine_report_permit_requirement(test_client, db_session, auth_heade
         'initial_due_date': date.today().strftime('%Y-%m-%d'),
         'cim_or_cpo': 'CIM',
         'ministry_recipient': [OfficeDestination.MMO.value, OfficeDestination.HS.value],
-        'permit_condition_id': condition.permit_condition_id,
-        'permit_amendment_id': amendment.permit_amendment_id
+        'permit_amendment_id': amendment.permit_amendment_id,
+        'permit_condition_ids': [condition.permit_condition_id]
     }
 
     post_resp = test_client.post(
@@ -35,38 +35,45 @@ def test_post_mine_report_permit_requirement(test_client, db_session, auth_heade
     assert post_data['initial_due_date'] == date.today().strftime('%Y-%m-%d')
     assert post_data['cim_or_cpo'] == 'CIM'
     assert post_data['ministry_recipient'] == ['MMO', 'HS']
-    assert post_data['permit_condition_id'] == condition.permit_condition_id
+    assert post_data['permit_condition_ids'] == [condition.permit_condition_id]
 
 def test_delete_mine_report_permit_requirement(test_client, db_session, auth_headers):
     mine, permit = create_mine_and_permit()
     amendment = permit.permit_amendments[0]
     condition = amendment.conditions[0]
 
-    report_requirement = MineReportPermitRequirementFactory(permit_amendment=amendment, permit_condition=condition)
+    report_requirement = MineReportPermitRequirementFactory(
+        permit_amendment=amendment, permit_conditions=[condition]
+    )
 
     delete_resp = test_client.delete(
         f'/mines/{mine.mine_guid}/reports/permit-requirements?mine_report_permit_requirement_id={report_requirement.mine_report_permit_requirement_id}',
         headers=auth_headers['full_auth_header'],
     )
 
-    mine_report_permit_requirement = MineReportPermitRequirement.find_by_mine_report_permit_requirement_id(report_requirement.mine_report_permit_requirement_id)
+    mine_report_permit_requirement = MineReportPermitRequirement.find_by_mine_report_permit_requirement_id(
+        report_requirement.mine_report_permit_requirement_id
+    )
 
     assert delete_resp.status_code == 204
-    assert mine_report_permit_requirement == None
+    assert mine_report_permit_requirement is None
 
 def test_update_mine_report_permit_requirement(test_client, db_session, auth_headers):
     mine, permit = create_mine_and_permit()
     amendment = permit.permit_amendments[0]
     condition = amendment.conditions[0]
 
-    report_requirement = MineReportPermitRequirementFactory(permit_amendment=amendment, permit_condition=condition)
+    report_requirement = MineReportPermitRequirementFactory(
+        permit_amendment=amendment, permit_conditions=[condition]
+    )
 
+    assert len(report_requirement.permit_conditions) == len([condition])
     submission_data = {
         'due_date_period_months': 6,
         'initial_due_date': date.today().strftime('%Y-%m-%d'),
         'cim_or_cpo': 'CIM',
         'ministry_recipient': report_requirement.ministry_recipient,
-        'permit_condition_id': report_requirement.permit_condition_id,
+        'permit_condition_ids': report_requirement.permit_condition_ids,
         'permit_amendment_id': report_requirement.permit_amendment_id,
         'mine_report_permit_requirement_id': report_requirement.mine_report_permit_requirement_id,
     }
@@ -84,5 +91,5 @@ def test_update_mine_report_permit_requirement(test_client, db_session, auth_hea
     assert update_data['initial_due_date'] == date.today().strftime('%Y-%m-%d')
     assert update_data['cim_or_cpo'] == 'CIM'
     assert update_data['ministry_recipient'] == report_requirement.ministry_recipient
-    assert update_data['permit_condition_id'] == report_requirement.permit_condition_id
+    assert update_data['permit_condition_ids'] == [report_requirement.permit_condition_ids]
     assert update_data['mine_report_permit_requirement_id'] == report_requirement.mine_report_permit_requirement_id

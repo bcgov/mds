@@ -55,6 +55,9 @@ from app.api.mines.reports.models.mine_report_permit_requirement import (
     MineReportPermitRequirement,
     OfficeDestination,
 )
+from app.api.mines.reports.models.mine_report_req_permit_condition_xref import (
+    MineReportReqPermitConditionXref,
+)
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.subscription.models.subscription import Subscription
@@ -1723,14 +1726,18 @@ class MineReportDefinitionComplianceArticleXrefFactory(BaseFactory):
     mine_report_definition_id = factory.LazyFunction(RandomMineReportDefinition)
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
 
-
 class MineReportPermitRequirementFactory(BaseFactory):
     class Meta:
         model = MineReportPermitRequirement
 
     class Params:
         permit_amendment = factory.SubFactory(PermitAmendmentFactory)
-        permit_conditions = factory.List([factory.SubFactory(PermitConditionsFactory) for _ in range(3)])
+        permit_conditions = factory.List(
+            [
+                factory.SubFactory(PermitConditionsFactory, permit_amendment=factory.SelfAttribute('..permit_amendment'))
+                for _ in range(3)
+            ]
+        )
 
     due_date_period_months = factory.LazyFunction(lambda: random.randint(1, 12))
     initial_due_date = TODAY
@@ -1741,10 +1748,25 @@ class MineReportPermitRequirementFactory(BaseFactory):
         lambda: [random.choice(list(OfficeDestination))]
     )
     mine_report_permit_requirement_id = factory.LazyFunction(lambda: random.randint(1, 12))
-    permit_condition_ids = factory.LazyAttribute(
-        lambda o: [condition.permit_condition_id for condition in o.permit_conditions]
-    )
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
+
+    @factory.post_generation
+    def mine_report_req_permit_conditions(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        # Use the permit_conditions from Params to create the xrefs
+        permit_conditions = kwargs.pop('permit_conditions', [])
+        if not permit_conditions:
+            permit_conditions = [
+                PermitConditionsFactory(permit_amendment=obj.permit_amendment) for _ in range(3)
+            ]
+
+        for condition in permit_conditions:
+            MineReportReqPermitConditionXref.create(
+                mine_report_permit_requirement=obj,
+                permit_condition_id=condition.permit_condition_id
+            )
 
 class PermitExtractionTaskFactory(BaseFactory):
     class Meta:

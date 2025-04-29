@@ -2,13 +2,13 @@ from datetime import date
 from enum import Enum
 from typing import Optional
 
-from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
+from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin, HistoryMixin
 from app.extensions import db
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.orm import backref
 from app.api.mines.reports.models.mine_report_req_permit_condition_xref import MineReportReqPermitConditionXref
-
 
 class CimOrCpo(str, Enum):
     CIM = "CIM"
@@ -29,7 +29,7 @@ class OfficeDestination(str, Enum):
         return self.value
 
 
-class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin):
+class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin, HistoryMixin):
     __tablename__ = "mine_report_permit_requirement"
 
     mine_report_permit_requirement_id: int = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
@@ -48,10 +48,18 @@ class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin):
         lazy='joined',
         primaryjoin='MineReportPermitRequirement.mine_report_permit_requirement_id == MineReportReqPermitConditionXref.mine_report_permit_requirement_id',
     )
+    permit_conditions = db.relationship(
+        'PermitConditions',
+        secondary='mine_report_req_permit_condition_xref',
+        lazy='joined',
+        backref=backref('mine_report_permit_requirements', lazy='joined')
+    )
     
     @hybrid_property
     def permit_condition_ids(self) -> list[int]:
-        return [xref.permit_condition_id for xref in self.mine_report_req_permit_conditions or []]
+        if isinstance(self.mine_report_req_permit_conditions, list):
+            return [xref.permit_condition_id for xref in self.mine_report_req_permit_conditions or []]
+        return []
 
     def __repr__(self):
         return '<MineReportPermitRequirement %r>' % self.mine_report_permit_requirement_id
