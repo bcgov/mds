@@ -72,11 +72,6 @@ class MineReportDefinition(Base, AuditMixin):
         if not mine_report_due_date_type:
             raise BadRequest('Mine Report Due Date Type not found.')
 
-        # Check if a report with the same name already exists
-        existing_report = cls.query.filter_by(report_name=report_name).first()
-        if existing_report:
-            raise BadRequest(f"A report with the name '{report_name}' already exists.")
-
         is_prr_only = True if report_type == 'PRR' else False
 
         mine_report_definition = cls(report_name=report_name,
