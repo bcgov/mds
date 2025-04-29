@@ -356,6 +356,37 @@ def test_submit_tsf(test_client, db_session, auth_headers):
     assert put_data['engineer_of_record']['is_draft'] == False
     assert put_data['qualified_person']['is_draft'] == False
 
+def test_tsf_basic_information_missing_required_fields(test_client, db_session, auth_headers):
+    mine = MineFactory(minimal=True)
+
+    basic_info_data = {
+        'consequence_classification_status_code': 'SIG',
+        'facility_type': 'tailings_storage_facility',
+        'itrb_exemption_status_code': 'YES',
+        'latitude': '48.6598001',
+        'longitude': '-120.5134001',
+        'mines_act_permit_no': 'CX-123',
+        'mine_tailings_storage_facility_name': 'TSF Name',
+        'storage_location': 'above_ground',
+        'tailings_storage_facility_type': 'pit',
+        'tsf_operating_status_code': 'CON',
+    }
+
+    # Test for each required field by removing it from the data
+    for key, _ in basic_info_data.items():
+        data = basic_info_data.copy()
+        del data[key]
+
+        post_resp = test_client.post(
+            f'/mines/{mine.mine_guid}/tailings', json=data, headers=auth_headers['full_auth_header'])
+        post_data = json.loads(post_resp.data.decode())
+
+        assert post_resp.status_code == 400, f'Failed assertion for tsf: status_code: field: {key}'
+        assert post_data['message'] == 'Input payload validation failed', f'Failed assertion for tsf: message: field: {key}'
+        error = post_data.get('errors', {}).get(key, '')
+        assert 'Missing required parameter' in error, f'Failed assertion for tsf: error: field: {key}'
+        
+
 def test_submit_tsf_missing_mpa_error(test_client, db_session, auth_headers):
     tsf = MineTailingsStorageFacilityFactory()    
     tsf.save_draft()

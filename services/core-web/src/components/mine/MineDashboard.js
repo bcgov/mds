@@ -14,7 +14,6 @@ import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreat
 import {
   fetchMineRecordById,
   updateMineRecord,
-  createTailingsStorageFacility,
   removeMineType,
   fetchSubscribedMinesByUser,
   unSubscribe,
@@ -370,9 +369,8 @@ export class MineDashboard extends Component {
                     <Tooltip
                       title={
                         mine.verified_status.healthy_ind
-                          ? `Mine data verified by ${
-                              mine.verified_status.verifying_user
-                            } on ${formatDate(mine.verified_status.verifying_timestamp)}`
+                          ? `Mine data verified by ${mine.verified_status.verifying_user
+                          } on ${formatDate(mine.verified_status.verifying_timestamp)}`
                           : "Please double-check this mine's data and re-verify"
                       }
                       placement="top"
@@ -439,7 +437,6 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchMineRecordById,
       updateMineRecord,
-      createTailingsStorageFacility,
       removeMineType,
       fetchPartyRelationships,
       fetchAllPartyRelationships,

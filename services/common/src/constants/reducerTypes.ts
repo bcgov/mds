@@ -64,8 +64,5 @@ export const NOTICES_OF_DEPARTURE = "NOTICES_OF_DEPARTURE";
 // Activities
 export const ACTIVITIES = "ACTIVITIES";
 
-// Tailings Storage Facilities
-export const TAILINGS = "TAILINGS";
-
 //Verifiable Credentials
 export const VERIFIABLE_CREDENTIALS = "VERIFIABLE_CREDENTIALS";

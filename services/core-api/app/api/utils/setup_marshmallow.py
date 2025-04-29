@@ -8,7 +8,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker, mapper
 from sqlalchemy import event
 from sqlalchemy.inspection import inspect
 from sqlalchemy.orm.attributes import InstrumentedAttribute
-from marshmallow import fields, pprint, validate, EXCLUDE
+from marshmallow import fields, validate, EXCLUDE
 from marshmallow_sqlalchemy import ModelConversionError, ModelConverter
 from app.api.utils.models_mixins import AuditMixin, Base as BaseModel
 from app.extensions import db
@@ -62,22 +62,6 @@ class CoreConverter(ModelConverter):
 #     sqla_session = db.session
 #     model_converter = CoreConverter
 #     exclude = ('create_user', 'create_timestamp', 'update_user', 'update_timestamp')
-
-# class SmartNested(fields.Nested):
-#     def serialize(self, attr, obj, accessor=None):
-#         print(attr + str(obj.__dict__))
-#         if attr not in obj.__dict__:
-#             pprint(f'new {attr} ->' + str(obj.__class__))
-#         else:
-#             pprint(f'{attr} already loaded -> ' + str(obj.__class__))
-#         return super(SmartNested, self).serialize(attr, obj, accessor)
-
-# NOTE: This may not be needed, but is left in for potential future use.
-# @event.listens_for(mapper, "after_configured")
-# def run_after_configure():
-#     current_app.logger.debug('run_after_configure called')
-#     setup_marshmallow(db.session)
-
 
 def setup_marshmallow():
     setup_static_data(BaseModel)

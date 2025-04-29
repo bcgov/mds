@@ -4,14 +4,10 @@ import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { request, success, error } from "../actions/genericActions";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import * as mineActions from "../actions/mineActions";
-import * as tsfActions from "../actions/tailingsActions";
 import * as String from "@mds/common/constants/strings";
 import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
-import { ITailingsStorageFacility, ICreateTailingsStorageFacility } from "@mds/common/interfaces";
-import { AppThunk } from "@mds/common/interfaces/appThunk.type";
-import { AxiosResponse } from "axios";
 
 const handleError = (dispatch, reducer) => (err) => {
   notification.error({
@@ -91,78 +87,6 @@ export const removeMineType = (mineGuid, mineTypeGuid, tenure) => (dispatch) => 
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
-
-export const createTailingsStorageFacility = (
-  mine_guid: string,
-  payload: ICreateTailingsStorageFacility
-): AppThunk<Promise<AxiosResponse<ITailingsStorageFacility>>> => (
-  dispatch
-): Promise<AxiosResponse<ITailingsStorageFacility>> => {
-    dispatch(request(NetworkReducerTypes.CREATE_TSF));
-    dispatch(showLoading());
-    return CustomAxios()
-      .post(ENVIRONMENT.apiUrl + API.MINE_TSFS(mine_guid), payload, createRequestHeader())
-      .then((response) => {
-        notification.success({
-          message: "Successfully added a new Tailings Storage Facility.",
-          duration: 10,
-        });
-        dispatch(success(NetworkReducerTypes.CREATE_TSF));
-        dispatch(tsfActions.storeTsf(response.data));
-        return response;
-      })
-      .catch(() => {
-        dispatch(error(NetworkReducerTypes.CREATE_TSF));
-      })
-      .finally(() => dispatch(hideLoading()));
-  };
-
-export const updateTailingsStorageFacility = (
-  mineGuid: string,
-  TSFGuid: string,
-  payload: Partial<ITailingsStorageFacility>
-): AppThunk<Promise<AxiosResponse<ITailingsStorageFacility>>> => (
-  dispatch
-): Promise<AxiosResponse<ITailingsStorageFacility>> => {
-    dispatch(request(NetworkReducerTypes.UPDATE_TSF));
-    dispatch(showLoading());
-    return CustomAxios()
-      .put(`${ENVIRONMENT.apiUrl}${API.MINE_TSF(mineGuid, TSFGuid)}`, payload, createRequestHeader())
-      .then((response) => {
-        notification.success({
-          message: "Successfully updated Tailing Storage Facility.",
-          duration: 10,
-        });
-        dispatch(success(NetworkReducerTypes.UPDATE_TSF));
-        dispatch(tsfActions.storeTsf(response.data));
-        return response;
-      })
-      .catch(() => {
-        dispatch(error(NetworkReducerTypes.UPDATE_TSF));
-      })
-      .finally(() => dispatch(hideLoading()));
-  };
-
-export const fetchTailingsStorageFacility = (
-  mineGuid: string,
-  TSFGuid: string
-): AppThunk<Promise<AxiosResponse<ITailingsStorageFacility>>> => (
-  dispatch
-): Promise<AxiosResponse<ITailingsStorageFacility>> => {
-    dispatch(request(NetworkReducerTypes.GET_TSF));
-    dispatch(showLoading());
-    return CustomAxios()
-      .get(`${ENVIRONMENT.apiUrl}${API.MINE_TSF(mineGuid, TSFGuid)}`, createRequestHeader())
-      .then((response) => {
-        dispatch(success(NetworkReducerTypes.GET_TSF));
-        dispatch(tsfActions.storeTsf(response.data));
-        return response;
-      })
-      .catch(() => {
-        dispatch(error(NetworkReducerTypes.GET_TSF));
-      })
-      .finally(() => dispatch(hideLoading()));
-  };
 
 export const fetchMineRecords = (params = String.DEFAULT_DASHBOARD_PARAMS) => (dispatch) => {
   dispatch(request(NetworkReducerTypes.GET_MINE_RECORDS));

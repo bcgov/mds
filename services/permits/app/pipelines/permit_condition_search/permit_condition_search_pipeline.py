@@ -20,9 +20,13 @@ from app.pipelines.permit_condition_search.stores.ai_search_document_store impor
 )
 from azure.search.documents.indexes.models import VectorSearch
 from haystack import AsyncPipeline, Pipeline
-from haystack.components.builders import PromptBuilder
+from haystack.components.builders import ChatPromptBuilder, PromptBuilder
 from haystack.components.embedders import AzureOpenAITextEmbedder
+from haystack.components.extractors.llm_metadata_extractor import (
+    AzureOpenAIChatGenerator,
+)
 from haystack.components.generators import AzureOpenAIGenerator
+from haystack.dataclasses import ChatMessage
 from haystack_integrations.components.retrievers.azure_ai_search import (
     AzureAISearchHybridRetriever,
 )
@@ -153,9 +157,12 @@ def create_permit_condition_search_retrieval_pipeline():
     context_enricher = ContextEnricher(document_store=azure_search_document_store)
 
     search_template = prompts.get("permit_condition_search_prompt")
-    prompt_builder = PromptBuilder(template=search_template)
+    prompt_builder = ChatPromptBuilder(template=[
+        ChatMessage.from_system(search_template.get("system")),
+        ChatMessage.from_user(search_template.get("user")),
+    ])
 
-    llm = AzureOpenAIGenerator(
+    llm = AzureOpenAIChatGenerator(
         azure_endpoint=config.openai.endpoint,
         azure_deployment=config.openai.deployment_name,
         api_key=config.openai.api_key,

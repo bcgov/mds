@@ -770,6 +770,7 @@ MINE_REPORT_SUBMISSION_MODEL = api.model(
         'submitter_name': fields.String,
         'submitter_email': fields.String,
         'mine_report_contacts': fields.List(fields.Nested(MINE_REPORT_CONTACT_MODEL)),
+        'formatted_mine_report_name': fields.String,
     })
 
 MINE_REPORT_MODEL = api.model(

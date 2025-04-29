@@ -5,10 +5,14 @@ import {
   fetchMineReports,
 } from "@mds/common/redux/actionCreators/reportActionCreator";
 import {
-  createTailingsStorageFacility,
   fetchMineRecordById,
-  updateTailingsStorageFacility,
 } from "@mds/common/redux/actionCreators/mineActionCreator";
+import {
+  createTailingsStorageFacility,
+  fetchTsfsByMineGuid,
+  getTsfsByMineGuid,
+  updateTailingsStorageFacility,
+} from "@mds/common/redux/slices/tailingsSlice";
 import {
   getConsequenceClassificationStatusCodeOptionsHash,
   getITRBExemptionStatusCodeOptionsHash,
@@ -38,7 +42,6 @@ import { useHistory, useParams } from "react-router-dom";
 import { ADD_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import { resetForm } from "@mds/common/redux/utils/helpers";
 import { FORM } from "@mds/common/constants/forms";
-import { clearTsf } from "@mds/common/redux/actions/tailingsActions";
 
 
 /**
@@ -64,6 +67,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
   const TSFOperatingStatusCodeHash = useAppSelector(getTSFOperatingStatusCodeOptionsHash);
   const consequenceClassificationStatusCodeHash = useAppSelector(getConsequenceClassificationStatusCodeOptionsHash);
   const itrbExemptionStatusCodeHash = useAppSelector(getITRBExemptionStatusCodeOptionsHash);
+  const tailings = useAppSelector(getTsfsByMineGuid(mineGuid)) ?? [];
 
   const pageData = useAppSelector(getReportsPageData);
 
@@ -76,20 +80,18 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
   const tsfV2Enabled = isFeatureEnabled(Feature.TSF_V2);
 
   useEffect(() => {
-    dispatch(fetchMineReports(mineGuid, defaultParams.mineReportType)).then(() => {
+    Promise.all([
+      dispatch(fetchMineReports(mineGuid, defaultParams.mineReportType)),
+      dispatch(fetchTsfsByMineGuid(mineGuid))
+    ]).then(() => {
       setIsLoaded(true);
     });
   }, []);
 
   const handleEditTailings = (values) => {
     return dispatch(
-      updateTailingsStorageFacility(
-        values.mine_guid,
-        values.mine_tailings_storage_facility_guid,
-        values
-      ))
+      updateTailingsStorageFacility(values))
       .then(() => {
-        dispatch(fetchMineRecordById(mineGuid));
         dispatch(fetchMineReports(mineGuid, defaultParams.mineReportType, defaultParams));
       })
       .then(() => dispatch(closeModal()));
@@ -127,7 +129,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
 
   const handleAddTailings = (values) => {
     return dispatch(
-      createTailingsStorageFacility(mineGuid, values))
+      createTailingsStorageFacility({ mine_guid: mineGuid, ...values }))
       .then(() => {
         dispatch(fetchMineRecordById(mineGuid));
         dispatch(fetchMineReports(mineGuid, defaultParams.mineReportType, defaultParams));
@@ -147,7 +149,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
   };
 
   const handleCreateTailings = async (event) => {
-    if(tsfV2Enabled){
+    if (tsfV2Enabled) {
       navigateToCreateTailings(event);
     } else {
       openTailingsModal(event, handleAddTailings, "Add TSF")
@@ -157,7 +159,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
   const navigateToCreateTailings = async (event) => {
     event.preventDefault();
     resetForm(FORM.ADD_TAILINGS_STORAGE_FACILITY);
-    await dispatch(clearTsf());
+
     const url = ADD_TAILINGS_STORAGE_FACILITY.dynamicRoute(mine.mine_guid);
     history.push(url);
   };
@@ -173,17 +175,17 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
   const tabItems = [
     {
       key: "tsfDetails",
-      label: `Tailings Storage Facilities (${mine.mine_tailings_storage_facilities?.length})`,
+      label: `Tailings Storage Facilities (${tailings.length})`,
       children: <TailingsSummaryPageWrapper />
     },
     {
       key: "dam",
-      label: `Tailings Storage Facilities (${mine.mine_tailings_storage_facilities?.length})`,
+      label: `Tailings Storage Facilities (${tailings.length})`,
       children: <DamsPage />
     },
     {
       key: "tsf",
-      label: `Tailings Storage Facilities (${mine.mine_tailings_storage_facilities?.length})`,
+      label: `Tailings Storage Facilities (${tailings.length})`,
       children: <div>
         <br />
         <div className="inline-flex between">
@@ -197,7 +199,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
           )}
         </div>
         <MineTailingsTable
-          tailings={mine.mine_tailings_storage_facilities}
+          tailings={tailings}
           isLoaded={isLoaded}
           openEditTailingsModal={openEditTailingsModal}
           handleEditTailings={handleEditTailings}
@@ -261,7 +263,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
         <LoadingWrapper condition={isLoaded}>
           <MineTailingsMap
             mine={mine}
-            tailings={mine.mine_tailings_storage_facilities}
+            tailings={tailings}
             TSFOperatingStatusCodeHash={TSFOperatingStatusCodeHash}
             consequenceClassificationStatusCodeHash={
               consequenceClassificationStatusCodeHash
@@ -279,8 +281,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
         <h2>Tailings Storage Facilities</h2>
         <Divider />
       </div>
-      <Tabs type="card" items={tabItems}>
-      </Tabs>
+      {isLoaded && <Tabs type="card" items={tabItems} />}
     </div>
   );
 };

@@ -2,20 +2,23 @@ import { Button, Col, Row, Typography } from "antd";
 import {
     CONSEQUENCE_CLASSIFICATION_CODE_HASH,
     DAM_OPERATING_STATUS_HASH,
+    EMPTY_FIELD,
 } from "@mds/common/constants/strings";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import React, { FC } from "react";
-import { getTsf } from "@mds/common/redux/reducers/tailingsReducer";
 import moment from "moment";
 import { storeDam } from "@mds/common/redux/slices/damSlice";
 import { useHistory } from "react-router-dom";
-import { IDam, ITailingsStorageFacility } from "@mds/common/interfaces";
+import { IDam, ITailingsStorageFacility, ITailingsStorageFacilityForm } from "@mds/common/interfaces";
 import { ColumnsType } from "antd/lib/table";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
+import { getFormValues } from "../forms/form";
+import { FORM } from "@mds/common/constants/forms";
+import { getTsfByGuid } from "@mds/common/redux/slices/tailingsSlice";
 
 interface AssociatedDamsProps {
     canEditTSF: boolean;
@@ -26,7 +29,8 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
     const history = useHistory();
     const dispatch = useAppDispatch();
     const { isEditMode, canEditTSF } = props;
-    const tsf: ITailingsStorageFacility = useAppSelector(getTsf);
+    const formValues = useAppSelector(getFormValues(FORM.ADD_TAILINGS_STORAGE_FACILITY)) as ITailingsStorageFacilityForm;
+    const tsf: ITailingsStorageFacility = useAppSelector(getTsfByGuid(formValues?.mine_guid, formValues?.mine_tailings_storage_facility_guid));
     const isCore = useAppSelector(getIsCore);
 
     const handleNavigateToEdit = (event, dam, canEditDam) => {
@@ -113,12 +117,12 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
         renderActionsColumn({ actions }),
     ];
 
-    const mostRecentUpdatedDate = moment(
+    const mostRecentUpdatedDate = tsf.dams.length ? moment(
         Math.max.apply(
             null,
             tsf.dams.map((dam) => moment(dam.update_timestamp))
         )
-    ).format("DD-MM-YYYY H:mm");
+    ).format("DD-MM-YYYY H:mm") : EMPTY_FIELD;
 
     return (
         <div>
@@ -132,22 +136,21 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
                     </Typography.Text>
                 </Col>
                 <Col>
-                    {isCore ? (
+                    {isCore &&
                         <div>
                             <Typography.Paragraph strong style={{ textAlign: "right" }}>
                                 Last Updated
                             </Typography.Paragraph>
-                            <Typography.Paragraph>{mostRecentUpdatedDate}</Typography.Paragraph>
+                            <Typography.Paragraph style={{ textAlign: "right" }}>{mostRecentUpdatedDate}</Typography.Paragraph>
                         </div>
-                    ) : (
-                        canEditTSF &&
-                        isEditMode && (
-                            <Button type="primary" onClick={handleNavigateToCreate}>
-                                <PlusCircleFilled />
-                                Create a new dam
-                            </Button>
-                        )
-                    )}
+                    }
+                    {
+                        canEditTSF && isEditMode &&
+                        <Button type="primary" onClick={handleNavigateToCreate}>
+                            <PlusCircleFilled />
+                            Create a new dam
+                        </Button>
+                    }
                 </Col>
             </Row>
             <CoreTable columns={columns} dataSource={tsf.dams} />

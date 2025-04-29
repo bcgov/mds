@@ -1,14 +1,19 @@
 import React from "react";
-import { MINES, TAILINGS } from "@mds/common/constants/reducerTypes";
+import { MINES } from "@mds/common/constants/reducerTypes";
 import { render } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import TailingsSubmitSuccess from "@/components/pages/Tailings/TailingsSubmitSuccess";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { tsfReducerType } from "@mds/common/redux/slices/tailingsSlice";
 
 const initialState = {
   [MINES]: MOCK.MINES,
-  [TAILINGS]: { tsf: MOCK.TSF },
+  [tsfReducerType]: {
+    mineTsfs: {
+      [MOCK.TSF.mine_guid]: [MOCK.TSF],
+    },
+  },
 };
 
 function mockFunction() {

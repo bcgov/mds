@@ -2,6 +2,8 @@ import {
     CONSEQUENCE_CLASSIFICATION_STATUS_CODE,
     DAM_OPERATING_STATUS,
     DAM_TYPES,
+    LATITUDE_FORMAT_MESSAGE,
+    LONGITUDE_FORMAT_MESSAGE,
 } from "@mds/common/constants/strings";
 import { Alert, Button, Col, Popconfirm, Row, Typography } from "antd";
 import {
@@ -13,6 +15,9 @@ import {
     number,
     required,
     requiredList,
+    max,
+    min,
+    lonNegative,
 } from "@mds/common/redux/utils/Validate";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { Field } from "@mds/common/components/forms/form";
@@ -67,9 +72,9 @@ const DamForm: FC<DamFormProps> = (props) => {
 
     const returnLink = (
         <Link to={returnUrl} className="associated-dams-link">
-          Return to all Associated Dams of {tsf.mine_tailings_storage_facility_name}.
+            Return to all Associated Dams of {tsf.mine_tailings_storage_facility_name}.
         </Link>
-      );
+    );
 
     return (
         <div>
@@ -87,7 +92,7 @@ const DamForm: FC<DamFormProps> = (props) => {
                     >
                         {returnLink}
                     </Popconfirm>
-                ): (
+                ) : (
                     returnLink
                 )}
             </div>
@@ -142,8 +147,9 @@ const DamForm: FC<DamFormProps> = (props) => {
                         label="Latitude"
                         component={RenderField}
                         required
-                        validate={[required, lat]}
+                        validate={[required, lat, max(61), min(48)]}
                         disabled={!canEditTSFAndEditMode}
+                        help={LATITUDE_FORMAT_MESSAGE}
                     />
                 </Col>
                 <Col span={12}>
@@ -153,8 +159,9 @@ const DamForm: FC<DamFormProps> = (props) => {
                         label="Longitude"
                         component={RenderField}
                         required
-                        validate={[required, lon]}
+                        validate={[required, lonNegative, lon, max(-113), min(-140)]}
                         disabled={!canEditTSFAndEditMode}
+                        help={LONGITUDE_FORMAT_MESSAGE}
                     />
                 </Col>
             </Row>

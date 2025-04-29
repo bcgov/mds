@@ -13,7 +13,7 @@ import {
   fetchPartyRelationships,
   addDocumentToRelationship,
 } from "@mds/common/redux/actionCreators/partiesActionCreator";
-import { createTailingsStorageFacility } from "@mds/common/redux/actionCreators/mineActionCreator";
+import { createTailingsStorageFacility } from "@mds/common/redux/slices/tailingsSlice";
 import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import {
   getPartyRelationshipTypes,
@@ -156,7 +156,7 @@ export class ViewPartyRelationships extends Component {
   };
 
   handleAddTailings = (values) =>
-    this.props.createTailingsStorageFacility(this.props.mine.mine_guid, values).then(() => {
+    this.props.createTailingsStorageFacility({ mine_guid: this.props.mine.mine_guid, ...values }).then(() => {
       this.props.closeModal();
       this.props.fetchMineRecordById(this.props.mine.mine_guid);
     });

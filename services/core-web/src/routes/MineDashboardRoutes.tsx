@@ -1,9 +1,9 @@
-import React from "react";
+import React, { FC } from "react";
 import { Route, Switch } from "react-router-dom";
 import * as routes from "@/constants/routes";
 import PageNotFound from "@/components/common/PageNotFound";
 
-const MineDashboardRoutes = () => (
+const MineDashboardRoutes: FC = () => (
   <Switch>
     <Route exact path={routes.MINE_CONTACTS.route} component={routes.MINE_CONTACTS.component} />
     <Route exact path={routes.MINE_GENERAL.route} component={routes.MINE_GENERAL.component} />
@@ -70,6 +70,7 @@ const MineDashboardRoutes = () => (
       path={routes.ADD_TAILINGS_STORAGE_FACILITY.route}
       component={routes.ADD_TAILINGS_STORAGE_FACILITY.component}
     />
+    <Route exact path={routes.ADD_DAM.route} component={routes.ADD_DAM.component} />
     <Route exact path={routes.EDIT_DAM.route} component={routes.EDIT_DAM.component} />
     <Route exact path={routes.MINE_DOCUMENTS.route} component={routes.MINE_DOCUMENTS.component} />
     <Route

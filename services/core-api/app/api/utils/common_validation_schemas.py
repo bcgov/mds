@@ -265,6 +265,10 @@ mine_party_appointment_schema = {
     'party': {
         'nullable': True,
         'type': 'dict',
+    },
+    'is_draft': {
+        'nullable': True,
+        'type': 'boolean',
     }
 }
 

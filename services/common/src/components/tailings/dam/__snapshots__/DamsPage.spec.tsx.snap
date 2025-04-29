@@ -322,6 +322,11 @@ exports[`Tailings DamsPage renders properly 1`] = `
                               type="text"
                               value=""
                             />
+                            <div
+                              class="form-item-help latitude-form-help"
+                            >
+                              Must be between 47 and 60 with no more than 7 decimal places
+                            </div>
                           </div>
                         </div>
                         <div
@@ -384,6 +389,11 @@ exports[`Tailings DamsPage renders properly 1`] = `
                               type="text"
                               value=""
                             />
+                            <div
+                              class="form-item-help longitude-form-help"
+                            >
+                              Must be between -113 and -140 with no more than 7 decimal places
+                            </div>
                           </div>
                         </div>
                         <div

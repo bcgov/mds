@@ -3,6 +3,7 @@ import {
   storeNoticeOfWorkApplications,
   storeNoticeOfWorkApplication,
   storeNoticeOfWorkApplicationReviews,
+  storeProponentNoticeOfWorkApplications,
 } from "@mds/common/redux/actions/noticeOfWorkActions";
 import * as MOCK from "@/tests/mocks/noticeOfWorkMocks";
 
@@ -34,6 +35,16 @@ describe("noticeOfWorkReducer", () => {
     const result = noticeOfWorkReducer(
       undefined,
       storeNoticeOfWorkApplications(MOCK.NOTICE_OF_WORK_LIST)
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_PROPONENT_NOTICE_OF_WORK_APPLICATIONS", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.noticeOfWorkList = MOCK.NOTICE_OF_WORK_LIST.records;
+    const result = noticeOfWorkReducer(
+      undefined,
+      storeProponentNoticeOfWorkApplications(MOCK.NOTICE_OF_WORK_LIST.records)
     );
     expect(result).toEqual(expectedValue);
   });

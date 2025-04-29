@@ -79,6 +79,23 @@ export const fetchMineNoticeOfWorkApplications = (params = {}) => (dispatch) => 
     .finally(() => dispatch(hideLoading()));
 };
 
+export const fetchProponentNoticeOfWorkApplications = (mineGuid) => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.GET_PROPONENT_NOTICE_OF_WORK_APPLICATIONS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.PROPONENT_NOTICE_OF_WORK_APPLICATION_LIST(mineGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(NetworkReducerTypes.GET_PROPONENT_NOTICE_OF_WORK_APPLICATIONS));
+      dispatch(noticeOfWorkActions.storeProponentNoticeOfWorkApplications(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_PROPONENT_NOTICE_OF_WORK_APPLICATIONS)))
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
   dispatch(request(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
