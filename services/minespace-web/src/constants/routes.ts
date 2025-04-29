@@ -212,9 +212,9 @@ const getQueryString = (filterParams?) => {
 };
 
 export const MINE_DASHBOARD = {
-  route: "/mines/:id/:activeTab/:subTab?",
+  route: "/mines/:id/dashboard/:activeTab/:subTab?",
   dynamicRoute: (id, activeTab = "overview", subTab?, filterParams?: any) =>
-    `/mines/${id}/${activeTab}${subTab ? `/${subTab}` : ""}${getQueryString(filterParams)}`,
+    `/mines/${id}/dashboard/${activeTab}${subTab ? `/${subTab}` : ""}${getQueryString(filterParams)}`,
   component: MineDashboard,
   helpKey: "Mine-Dashboard",
 };
