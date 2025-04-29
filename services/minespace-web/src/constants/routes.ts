@@ -220,10 +220,11 @@ export const MINE_DASHBOARD = {
 };
 
 export const MINE_TAILINGS = {
-  route: "/mines/:id/:tailings",
-  dynamicRoute: (id, filterParams?: any) => `/mines/${id}/tailings${getQueryString(filterParams)}`,
-  component: MineDashboard,
-  helpKey: "Mine-Dashboard",
+  route: MINE_DASHBOARD.route,
+  dynamicRoute: (id, filterParams?: any) =>
+    MINE_DASHBOARD.dynamicRoute(id, "tailings", null, filterParams),
+  component: MINE_DASHBOARD.component,
+  helpKey: MINE_DASHBOARD.helpKey,
 };
 
 export const ADD_TAILINGS_STORAGE_FACILITY = {
