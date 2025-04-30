@@ -91,6 +91,35 @@ class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin, HistoryMixi
             return cls.query.all()
         except ValueError:
             return None
+        
+
+    def update_permit_conditions(self, new_permit_condition_ids) -> "MineReportPermitRequirement":
+        current_condition_ids = self.permit_condition_ids
+        
+        to_add = [c for c in new_permit_condition_ids if c not in current_condition_ids]
+        to_delete = [x for x in self.mine_report_req_permit_conditions if x.permit_condition_id not in new_permit_condition_ids]
+        
+        for xref in to_delete:
+            xref.delete()
+
+        for permit_condition_id in to_add:
+            xref = MineReportReqPermitConditionXref.create(
+                mine_report_permit_requirement=self,
+                permit_condition_id=permit_condition_id
+            )
+
+            self.mine_report_req_permit_conditions.append(xref)
+    
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            if key in ['mine_report_permit_requirement_id', 'permit_amendment_id', 'permit_condition_ids']:
+                continue     # non-editable fields from put or should be handled separately
+            setattr(self, key, value)
+        
+        new_permit_condition_ids = kwargs.get('permit_condition_ids')
+        self.update_permit_conditions(new_permit_condition_ids)
+        self.save()
+    
 
     @classmethod
     def create(cls,

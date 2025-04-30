@@ -185,10 +185,5 @@ class MineReportPermitRequirementResource(Resource, UserMixin):
         
         data['cim_or_cpo'] = cim_or_cpo
 
-        for key, value in data.items():
-            if key in ['mine_report_permit_requirement_id', 'permit_amendment_id']:
-                continue     # non-editable fields from put or should be handled separately
-            setattr(mine_report_permit_requirement, key, value)
-        
-        mine_report_permit_requirement.save()
+        mine_report_permit_requirement.update(**data)
         return mine_report_permit_requirement
