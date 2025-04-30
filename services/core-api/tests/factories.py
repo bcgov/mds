@@ -1732,12 +1732,6 @@ class MineReportPermitRequirementFactory(BaseFactory):
 
     class Params:
         permit_amendment = factory.SubFactory(PermitAmendmentFactory)
-        permit_conditions = factory.List(
-            [
-                factory.SubFactory(PermitConditionsFactory, permit_amendment=factory.SelfAttribute('..permit_amendment'))
-                for _ in range(3)
-            ]
-        )
 
     due_date_period_months = factory.LazyFunction(lambda: random.randint(1, 12))
     initial_due_date = TODAY
@@ -1750,23 +1744,18 @@ class MineReportPermitRequirementFactory(BaseFactory):
     mine_report_permit_requirement_id = factory.LazyFunction(lambda: random.randint(1, 12))
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
 
-    @factory.post_generation
-    def mine_report_req_permit_conditions(obj, create, extracted, **kwargs):
-        if not create:
-            return
 
-        # Use the permit_conditions from Params to create the xrefs
-        permit_conditions = kwargs.pop('permit_conditions', [])
-        if not permit_conditions:
-            permit_conditions = [
-                PermitConditionsFactory(permit_amendment=obj.permit_amendment) for _ in range(3)
-            ]
+class MineReportReqPermitConditionXrefFactory(BaseFactory):
+    class Meta:
+        model = MineReportReqPermitConditionXref
 
-        for condition in permit_conditions:
-            MineReportReqPermitConditionXref.create(
-                mine_report_permit_requirement=obj,
-                permit_condition_id=condition.permit_condition_id
-            )
+    class Params:
+        permit_condition = factory.SubFactory(PermitConditionsFactory)
+        mine_report_permit_requirement = factory.SubFactory(MineReportPermitRequirementFactory)
+
+    permit_condition_id = factory.SelfAttribute('permit_condition.permit_condition_id')
+    mine_report_permit_requirement_id = factory.SelfAttribute('mine_report_permit_requirement.mine_report_permit_requirement_id')
+
 
 class PermitExtractionTaskFactory(BaseFactory):
     class Meta:

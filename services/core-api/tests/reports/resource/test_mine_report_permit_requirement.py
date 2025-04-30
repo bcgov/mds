@@ -2,7 +2,7 @@ import json
 from datetime import date
 
 from app.api.mines.reports.models.mine_report_permit_requirement import OfficeDestination
-from tests.factories import create_mine_and_permit, MineReportPermitRequirementFactory, MineReportFactory, PermitConditionsFactory, PermitAmendmentFactory
+from tests.factories import create_mine_and_permit, MineReportPermitRequirementFactory, MineReportReqPermitConditionXrefFactory, MineReportFactory, PermitConditionsFactory, PermitAmendmentFactory
 from app.api.mines.reports.models.mine_report_permit_requirement import (
     MineReportPermitRequirement,
 )
@@ -43,7 +43,11 @@ def test_delete_mine_report_permit_requirement(test_client, db_session, auth_hea
     condition = amendment.conditions[0]
 
     report_requirement = MineReportPermitRequirementFactory(
-        permit_amendment=amendment, permit_conditions=[condition]
+        permit_amendment=amendment
+    )
+    MineReportReqPermitConditionXrefFactory(
+        permit_condition=condition,
+        mine_report_permit_requirement=report_requirement
     )
 
     delete_resp = test_client.delete(
@@ -61,13 +65,20 @@ def test_delete_mine_report_permit_requirement(test_client, db_session, auth_hea
 def test_update_mine_report_permit_requirement(test_client, db_session, auth_headers):
     mine, permit = create_mine_and_permit()
     amendment = permit.permit_amendments[0]
-    condition = amendment.conditions[0]
 
     report_requirement = MineReportPermitRequirementFactory(
-        permit_amendment=amendment, permit_conditions=[condition]
+        permit_amendment=amendment
     )
 
-    assert len(report_requirement.permit_conditions) == len([condition])
+    permit_conditions = [amendment.conditions[0], amendment.conditions[1]]
+    permit_condition_ids = [c.permit_condition_id for c in permit_conditions]
+    
+    for c in permit_conditions:
+        MineReportReqPermitConditionXrefFactory(
+            permit_condition=c,
+            mine_report_permit_requirement=report_requirement
+        )
+
     submission_data = {
         'due_date_period_months': 6,
         'initial_due_date': date.today().strftime('%Y-%m-%d'),
@@ -91,5 +102,5 @@ def test_update_mine_report_permit_requirement(test_client, db_session, auth_hea
     assert update_data['initial_due_date'] == date.today().strftime('%Y-%m-%d')
     assert update_data['cim_or_cpo'] == 'CIM'
     assert update_data['ministry_recipient'] == report_requirement.ministry_recipient
-    assert update_data['permit_condition_ids'] == [report_requirement.permit_condition_ids]
+    assert update_data['permit_condition_ids'] == permit_condition_ids
     assert update_data['mine_report_permit_requirement_id'] == report_requirement.mine_report_permit_requirement_id

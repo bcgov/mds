@@ -125,7 +125,7 @@ class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin, HistoryMixi
     def create(cls,
                report_name: Optional[str],
                due_date_period_months: int,
-               initial_due_date: date,
+               initial_due_date: Optional[date],
                cim_or_cpo: Optional[CimOrCpo],
                ministry_recipient: Optional[list[OfficeDestination]],
                permit_condition_ids: list[int],
