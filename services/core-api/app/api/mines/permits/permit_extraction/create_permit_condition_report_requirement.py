@@ -1,11 +1,14 @@
 from typing import Optional
+from datetime import date
 
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
     PermitConditions,
 )
 from app.api.mines.reports.models.mine_report_permit_requirement import (
+    CimOrCpo,
     MineReportPermitRequirement,
 )
+from app.api.mines.reports.models.mine_report_req_permit_condition_xref import MineReportReqPermitConditionXref
 from dateutil.parser import parse
 from flask import current_app
 
@@ -71,13 +74,17 @@ def create_permit_condition_report_requirement(
     # Create the MineReportPermitRequirement
     mine_report_permit_requirement = MineReportPermitRequirement(
         report_name=report_name,
-        permit_condition_ids=[condition.permit_condition_id],
         permit_amendment_id=task.permit_amendment.permit_amendment_id,
         cim_or_cpo=cim_or_cpo,
         due_date_period_months=due_date_period_months or 0,
         initial_due_date=initial_due_date,
         ministry_recipient=None,  # Not specified in permits themselves.
     )
+    xref = MineReportReqPermitConditionXref(
+        mine_report_permit_requirement=mine_report_permit_requirement,
+        permit_condition_id=condition.permit_condition_id
+    )
+    mine_report_permit_requirement.mine_report_req_permit_conditions.append(xref)
 
     return mine_report_permit_requirement
 
@@ -119,18 +126,18 @@ def _parse_due_date_period(recurring, frequency):
     return due_date_period_months
 
 
-def _parse_cim_cpo(mention_chief_inspector, mention_chief_permitting_officer):
+def _parse_cim_cpo(mention_chief_inspector, mention_chief_permitting_officer) -> CimOrCpo | None:
     cim_or_cpo = None
     if mention_chief_inspector and mention_chief_permitting_officer:
-        cim_or_cpo = "Both"
+        cim_or_cpo = CimOrCpo.Both
     elif mention_chief_inspector:
-        cim_or_cpo = "CIM"
+        cim_or_cpo = CimOrCpo.CIM
     elif mention_chief_permitting_officer:
-        cim_or_cpo = "CPO"
+        cim_or_cpo = CimOrCpo.CPO
     return cim_or_cpo
 
 
-def _parse_initial_due_date(condition_id, initial_due_date):
+def _parse_initial_due_date(condition_id, initial_due_date) -> Optional[date]:
     if initial_due_date == "":
         initial_due_date = None
 
@@ -162,14 +169,10 @@ def create_or_copy_permit_condition_report_requirements(
         ).first()
 
         if existing_requirements:
-            return MineReportPermitRequirement(
-                report_name=existing_requirements.report_name,
-                permit_condition_ids=[condition.permit_condition_id],
-                permit_amendment_id=task.permit_amendment.permit_amendment_id,
-                cim_or_cpo=existing_requirements.cim_or_cpo,
-                due_date_period_months=existing_requirements.due_date_period_months,
-                initial_due_date=existing_requirements.initial_due_date,
-                ministry_recipient=existing_requirements.ministry_recipient,
+            existing_requirements.update_permit_conditions(
+                [comparison.previous_condition.permit_condition_id, 
+                 condition.permit_condition_id]
             )
+            return existing_requirements
     # No match found, create new requirement
     return create_permit_condition_report_requirement(task, condition)
