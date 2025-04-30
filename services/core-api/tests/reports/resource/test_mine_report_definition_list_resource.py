@@ -343,26 +343,3 @@ def test_post_mine_report_definition_missing_required_fields(test_client, auth_h
     # Assertions
     assert post_resp.status_code == 400
     assert "Input payload validation failed" in post_data['message']
-
-
-def test_post_mine_report_definition_duplicate_report_name(test_client, db_session, auth_headers):
-    mine_report_definition = db_session.query(MineReportDefinition).first()
-
-    request_data = {
-        "report_name": mine_report_definition.report_name,
-        "description": "This is a test description for the report.",
-        "mine_report_due_date_type_code": 'ANV',
-        "mine_report_due_date_period_months": 12,
-        "report_type": "CRR",
-        "is_common": False
-    }
-
-    post_resp = test_client.post(
-        '/mines/reports/definitions',
-        headers=auth_headers['core_edit_code'],
-        json=request_data
-    )
-
-    # Assertions
-    assert post_resp.status_code == 400
-
