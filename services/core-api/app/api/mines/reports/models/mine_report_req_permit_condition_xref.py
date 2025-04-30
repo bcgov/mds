@@ -1,6 +1,6 @@
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.schema import FetchedValue
 import uuid
+from typing import Self
 
 from app.api.utils.models_mixins import Base, AuditMixin, SoftDeleteMixin, HistoryMixin
 from app.extensions import db
@@ -25,6 +25,10 @@ class MineReportReqPermitConditionXref(Base, AuditMixin, SoftDeleteMixin, Histor
 
     def __repr__(self):
         return '<MineReportReqPermitConditionXref %r>', self.mine_report_req_permit_condition_xref_guid
+    
+    @classmethod
+    def find_by_permit_condition_id(cls, id) -> Self:
+        return cls.query.filter_by(permit_condition_id=id, deleted_ind=False).one_or_none()
     
     @classmethod
     def create(cls,

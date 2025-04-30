@@ -1,6 +1,6 @@
 from datetime import date
 from enum import Enum
-from typing import Optional
+from typing import Optional, Self
 
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin, HistoryMixin
 from app.extensions import db
@@ -72,11 +72,11 @@ class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin, HistoryMixi
             return None
         
     @classmethod
-    def find_by_permit_condition_id(cls, id) -> "MineReportPermitRequirement":
-        try:
-            return cls.query.filter_by(permit_condition_id=id, deleted_ind=False).first()
-        except ValueError:
-            return None
+    def find_by_permit_condition_id(cls, id) -> Self | None:
+        xref = MineReportReqPermitConditionXref.find_by_permit_condition_id(id)
+        if xref:
+            return xref.mine_report_permit_requirement
+        return None
 
     @classmethod
     def find_by_report_name(cls, report_name) -> "MineReportPermitRequirement":
