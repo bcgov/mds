@@ -7,7 +7,7 @@ import { DownloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
-import { formatDate, getDurationText, flattenObject } from "@common/utils/helpers";
+import { formatDate, getDurationText, flattenObject, formatDateUTC } from "@common/utils/helpers";
 import { getFormValues, reset, isSubmitting, getFormSyncErrors, submit } from "@mds/common/components/forms/form";
 import {
   getNoticeOfWorkApplicationTypeOptions,
@@ -235,7 +235,7 @@ export class NOWPermitGeneration extends Component {
       conditions: "",
       issuing_inspector_title: "Inspector of Mines",
       application_last_updated_date: noticeOfWork.last_updated_date
-        ? formatDate(noticeOfWork.last_updated_date)
+        ? formatDateUTC(noticeOfWork.last_updated_date)
         : formatDate(noticeOfWork.submitted_date),
       proposed_start_date: noticeOfWork.proposed_start_date,
       proposed_end_date: noticeOfWork.proposed_end_date,

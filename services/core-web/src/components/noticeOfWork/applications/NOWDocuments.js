@@ -7,7 +7,7 @@ import { Button, Popconfirm, Tooltip, Row, Col, Descriptions } from "antd";
 import moment from "moment";
 import { FlagOutlined, MenuOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
-import { formatDateTime } from "@common/utils/helpers";
+import { formatDate, formatDateTime } from "@common/utils/helpers";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
   getNoticeOfWorkApplicationDocumentTypeOptionsHash,
@@ -102,7 +102,7 @@ const transformDocuments = (
       category:
         (noticeOfWorkApplicationDocumentTypeOptionsHash &&
           noticeOfWorkApplicationDocumentTypeOptionsHash[
-            document.now_application_document_type_code
+          document.now_application_document_type_code
           ]) ||
         document.documenttype ||
         Strings.EMPTY_FIELD,
@@ -306,27 +306,27 @@ export class NOWDocuments extends Component {
 
     const fileNameColumn = this.props.selectedRows
       ? {
-          title: "File Name",
-          dataIndex: "filename",
-          key: "filename",
-          sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
-          render: (text) => <div title="File Name">{text}</div>,
-        }
+        title: "File Name",
+        dataIndex: "filename",
+        key: "filename",
+        sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
+        render: (text) => <div title="File Name">{text}</div>,
+      }
       : {
-          title: "File Name",
-          dataIndex: "filename",
-          key: "filename",
-          sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
-          render: (text, record) => (
-            <div title="File Name">
-              <DocumentLink
-                documentManagerGuid={record.document_manager_guid}
-                documentName={record.filename}
-                truncateDocumentName={false}
-              />
-            </div>
-          ),
-        };
+        title: "File Name",
+        dataIndex: "filename",
+        key: "filename",
+        sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
+        render: (text, record) => (
+          <div title="File Name">
+            <DocumentLink
+              documentManagerGuid={record.document_manager_guid}
+              documentName={record.filename}
+              truncateDocumentName={false}
+            />
+          </div>
+        ),
+      };
 
     const descriptionColumn = {
       title: "Description",
@@ -354,7 +354,7 @@ export class NOWDocuments extends Component {
         dataIndex: "preamble_date",
         key: "preamble_date",
         render: (text, record) => (
-          <div title="Date">{formatDateTime(record.preamble_date) || "N/A"}</div>
+          <div title="Date">{formatDate(record.preamble_date) || "N/A"}</div>
         ),
       },
     ];
@@ -365,7 +365,7 @@ export class NOWDocuments extends Component {
       key: "category",
       filters: this.props.disableCategoryFilter ? null : categoryFilters,
       onFilter: this.props.disableCategoryFilter
-        ? () => {}
+        ? () => { }
         : (value, record) => record.category.includes(value),
       sorter: (a, b) => (a.category > b.category ? -1 : 1),
       render: (text) => <div title="Category">{text}</div>,
@@ -545,7 +545,7 @@ export class NOWDocuments extends Component {
         if (
           this.isInCompleteStatus() &&
           moment(record.upload_date, "YYYY-MM-DD") >
-            moment(this.props.noticeOfWork.decision_by_user_date, "YYYY-MM-DD")
+          moment(this.props.noticeOfWork.decision_by_user_date, "YYYY-MM-DD")
         ) {
           isPostDecision = true;
         }
@@ -661,11 +661,11 @@ export class NOWDocuments extends Component {
           rowSelection={
             this.props.selectedRows
               ? {
-                  selectedRowKeys: this.props.selectedRows.selectedCoreRows,
-                  onChange: (selectedRowKeys) => {
-                    this.props.selectedRows.setSelectedCoreRows(selectedRowKeys);
-                  },
-                }
+                selectedRowKeys: this.props.selectedRows.selectedCoreRows,
+                onChange: (selectedRowKeys) => {
+                  this.props.selectedRows.setSelectedCoreRows(selectedRowKeys);
+                },
+              }
               : null
           }
         />
