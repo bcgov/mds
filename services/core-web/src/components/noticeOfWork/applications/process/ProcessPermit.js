@@ -24,7 +24,7 @@ import {
   isPlacerAdjustmentFeeValid,
   isPitsQuarriesAdjustmentFeeValid,
   determineExemptionFeeStatus,
-} from "@common/utils/helpers";
+} from "@mds/common/redux/utils/helpers";
 import { bindActionCreators } from "redux";
 import {
   getDropdownNoticeOfWorkApplicationStatusCodes,
