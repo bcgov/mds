@@ -7,7 +7,7 @@ import { DownloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
-import { formatDate, getDurationText, flattenObject, formatDateUTC } from "@common/utils/helpers";
+import { formatDate, getDurationText, flattenObject, formatDateUTC } from "@mds/common/redux/utils/helpers";
 import { getFormValues, reset, isSubmitting, getFormSyncErrors, submit } from "@mds/common/components/forms/form";
 import {
   getNoticeOfWorkApplicationTypeOptions,

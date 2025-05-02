@@ -7,7 +7,7 @@ import { Button, Popconfirm, Tooltip, Row, Col, Descriptions } from "antd";
 import moment from "moment";
 import { FlagOutlined, MenuOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
-import { formatDate, formatDateTime } from "@common/utils/helpers";
+import { formatDate, formatDateTime } from "@mds/common/redux/utils/helpers";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
   getNoticeOfWorkApplicationDocumentTypeOptionsHash,

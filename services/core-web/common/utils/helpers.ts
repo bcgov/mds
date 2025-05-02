@@ -68,9 +68,6 @@ export const createLabelHash = (arr) =>
 export const formatDate = (dateString) =>
   dateString && dateString !== "None" && moment(dateString, "YYYY-MM-DD").format("MMM DD YYYY");
 
-export const formatDateUTC = (dateString) =>
-  dateString && dateString !== "None" && moment(dateString).format("MMM DD YYYY");
-
 export const formatTime = (timeStamp) => timeStamp && moment(timeStamp).format("h:mm a");
 
 export const formatDateTime = (dateTime) => dateTime && moment(dateTime).format("lll");
