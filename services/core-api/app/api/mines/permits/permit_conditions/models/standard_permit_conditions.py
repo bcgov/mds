@@ -35,7 +35,7 @@ class StandardPermitConditions(SoftDeleteMixin, AuditMixin, Base):
         backref=backref('parent', remote_side=[standard_permit_condition_id]))
 
     def __repr__(self):
-        return f'{self.__class__.__name__} {self.self.standard_permit_condition_id}, {self.standard_permit_condition_guid}'
+        return f'{self.__class__.__name__} {self.standard_permit_condition_id}, {self.standard_permit_condition_guid}'
 
     def __str__(self):
         return f'{self.__class__.__name__} standard_permit_condition_id: {self.standard_permit_condition_id}, standard_permit_condition_guid: {self.standard_permit_condition_guid}, condition: {self.condition}, condition_category_code: {self.condition_category_code}, condition_type_code: {self.condition_type_code}, notice_of_work_type: {self.notice_of_work_type}, parent_standard_permit_condition_id: {self.parent_standard_permit_condition_id}, display_order: {self.display_order}, all_sub_conditions: {self.all_sub_conditions}'
