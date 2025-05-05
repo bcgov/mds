@@ -31,7 +31,7 @@ class NOWApplicationDocumentIdentityXref(SoftDeleteMixin, AuditMixin, Base):
 
     preamble_title = db.Column(db.String)
     preamble_author = db.Column(db.String)
-    preamble_date = db.Column(db.DateTime)
+    preamble_date = db.Column(db.Date)
 
     now_application_id = db.Column(
         db.Integer,
