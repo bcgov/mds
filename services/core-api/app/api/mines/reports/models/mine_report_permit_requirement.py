@@ -1,14 +1,14 @@
 from datetime import date
 from enum import Enum
-from typing import Optional
+from typing import Optional, Self
 
-from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
+from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin, HistoryMixin
 from app.extensions import db
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import backref
 from sqlalchemy.schema import FetchedValue
-
+from sqlalchemy.orm import backref
+from app.api.mines.reports.models.mine_report_req_permit_condition_xref import MineReportReqPermitConditionXref
 
 class CimOrCpo(str, Enum):
     CIM = "CIM"
@@ -29,7 +29,7 @@ class OfficeDestination(str, Enum):
         return self.value
 
 
-class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin):
+class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin, HistoryMixin):
     __tablename__ = "mine_report_permit_requirement"
 
     mine_report_permit_requirement_id: int = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
@@ -41,19 +41,28 @@ class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin):
     cim_or_cpo: Optional[CimOrCpo] = db.Column(db.Enum(CimOrCpo, name='cim_or_cpo_type'), nullable=True)
     ministry_recipient: Optional[list[OfficeDestination]] = db.Column(
         ARRAY(db.Enum(OfficeDestination, name='ministry_recipient_type')), nullable=True)
-    permit_condition_id: int = db.Column(db.Integer, db.ForeignKey('permit_conditions.permit_condition_id'))
     permit_amendment_id: int = db.Column(db.Integer, db.ForeignKey('permit_amendment.permit_amendment_id'))
-
-    permit_condition = db.relationship('PermitConditions', backref=backref('mine_report_permit_requirement', uselist=False))
+    mine_report_req_permit_conditions: list[MineReportReqPermitConditionXref] = db.relationship(
+        MineReportReqPermitConditionXref,
+        overlaps="mine_report_permit_requirement",
+        lazy='joined',
+        primaryjoin='MineReportPermitRequirement.mine_report_permit_requirement_id == MineReportReqPermitConditionXref.mine_report_permit_requirement_id',
+    )
+    permit_conditions = db.relationship(
+        'PermitConditions',
+        secondary='mine_report_req_permit_condition_xref',
+        lazy='joined',
+        backref=backref('mine_report_permit_requirements', lazy='joined')
+    )
+    
+    @hybrid_property
+    def permit_condition_ids(self) -> list[int]:
+        if isinstance(self.mine_report_req_permit_conditions, list):
+            return [xref.permit_condition_id for xref in self.mine_report_req_permit_conditions or []]
+        return []
 
     def __repr__(self):
         return '<MineReportPermitRequirement %r>' % self.mine_report_permit_requirement_id
-
-    @hybrid_property
-    def condition_category_code(self):
-        if self.permit_condition:
-            return self.permit_condition.condition_category_code
-        return None
 
     @classmethod
     def find_by_mine_report_permit_requirement_id(cls, id) -> "MineReportPermitRequirement":
@@ -63,11 +72,11 @@ class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin):
             return None
         
     @classmethod
-    def find_by_permit_condition_id(cls, id) -> "MineReportPermitRequirement":
-        try:
-            return cls.query.filter_by(permit_condition_id=id, deleted_ind=False).first()
-        except ValueError:
-            return None
+    def find_by_permit_condition_id(cls, id) -> Self | None:
+        xref = MineReportReqPermitConditionXref.find_by_permit_condition_id(id)
+        if xref:
+            return xref.mine_report_permit_requirement
+        return None
 
     @classmethod
     def find_by_report_name(cls, report_name) -> "MineReportPermitRequirement":
@@ -82,15 +91,44 @@ class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin):
             return cls.query.all()
         except ValueError:
             return None
+        
+
+    def update_permit_conditions(self, new_permit_condition_ids) -> "MineReportPermitRequirement":
+        current_condition_ids = self.permit_condition_ids
+        
+        to_add = [c for c in new_permit_condition_ids if c not in current_condition_ids]
+        to_delete = [x for x in self.mine_report_req_permit_conditions if x.permit_condition_id not in new_permit_condition_ids]
+        
+        for xref in to_delete:
+            xref.delete()
+
+        for permit_condition_id in to_add:
+            xref = MineReportReqPermitConditionXref.create(
+                mine_report_permit_requirement=self,
+                permit_condition_id=permit_condition_id
+            )
+
+            self.mine_report_req_permit_conditions.append(xref)
+    
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            if key in ['mine_report_permit_requirement_id', 'permit_amendment_id', 'permit_condition_ids']:
+                continue     # non-editable fields from put or should be handled separately
+            setattr(self, key, value)
+        
+        new_permit_condition_ids = kwargs.get('permit_condition_ids')
+        self.update_permit_conditions(new_permit_condition_ids)
+        self.save()
+    
 
     @classmethod
     def create(cls,
                report_name: Optional[str],
                due_date_period_months: int,
-               initial_due_date: date,
+               initial_due_date: Optional[date],
                cim_or_cpo: Optional[CimOrCpo],
                ministry_recipient: Optional[list[OfficeDestination]],
-               permit_condition_id: int,
+               permit_condition_ids: list[int],
                permit_amendment_id: int) -> "MineReportPermitRequirement":
 
         mine_report_permit_requirement = cls(
@@ -99,9 +137,15 @@ class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin):
             initial_due_date=initial_due_date,
             cim_or_cpo=cim_or_cpo,
             ministry_recipient=ministry_recipient,
-            permit_condition_id=permit_condition_id,
             permit_amendment_id=permit_amendment_id
         )
+        for permit_condition_id in permit_condition_ids:
+            xref = MineReportReqPermitConditionXref.create(
+                mine_report_permit_requirement=mine_report_permit_requirement,
+                permit_condition_id=permit_condition_id
+            )
+
+            mine_report_permit_requirement.mine_report_req_permit_conditions.append(xref)
 
         mine_report_permit_requirement.save(commit=True)
         return mine_report_permit_requirement

@@ -55,6 +55,9 @@ from app.api.mines.reports.models.mine_report_permit_requirement import (
     MineReportPermitRequirement,
     OfficeDestination,
 )
+from app.api.mines.reports.models.mine_report_req_permit_condition_xref import (
+    MineReportReqPermitConditionXref,
+)
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.subscription.models.subscription import Subscription
@@ -1723,14 +1726,12 @@ class MineReportDefinitionComplianceArticleXrefFactory(BaseFactory):
     mine_report_definition_id = factory.LazyFunction(RandomMineReportDefinition)
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
 
-
 class MineReportPermitRequirementFactory(BaseFactory):
     class Meta:
         model = MineReportPermitRequirement
 
     class Params:
         permit_amendment = factory.SubFactory(PermitAmendmentFactory)
-        permit_condition = factory.SubFactory(PermitConditionsFactory)
 
     due_date_period_months = factory.LazyFunction(lambda: random.randint(1, 12))
     initial_due_date = TODAY
@@ -1741,8 +1742,20 @@ class MineReportPermitRequirementFactory(BaseFactory):
         lambda: [random.choice(list(OfficeDestination))]
     )
     mine_report_permit_requirement_id = factory.LazyFunction(lambda: random.randint(1, 12))
-    permit_condition_id = factory.SelfAttribute('permit_condition.permit_condition_id')
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
+
+
+class MineReportReqPermitConditionXrefFactory(BaseFactory):
+    class Meta:
+        model = MineReportReqPermitConditionXref
+
+    class Params:
+        permit_condition = factory.SubFactory(PermitConditionsFactory)
+        mine_report_permit_requirement = factory.SubFactory(MineReportPermitRequirementFactory)
+
+    permit_condition_id = factory.SelfAttribute('permit_condition.permit_condition_id')
+    mine_report_permit_requirement_id = factory.SelfAttribute('mine_report_permit_requirement.mine_report_permit_requirement_id')
+
 
 class PermitExtractionTaskFactory(BaseFactory):
     class Meta:
