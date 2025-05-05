@@ -87,7 +87,8 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
         return True
 
     except Exception as e:
-        current_app.logger.error("Failed to create permit conditions from task", e)
+        current_app.logger.error("Failed to create permit conditions from task")
+        current_app.logger.error(e)
         db.session.rollback()
         raise e
 
