@@ -27,16 +27,11 @@ const mineReportPermitRequirementSlice = createAppSlice({
         const headers = createRequestHeader();
         thunkApi.dispatch(showLoading());
 
-        const formatPayload = {
-          ...payload.values,
-          permit_condition_ids: [payload.values.permit_condition_id]
-        };
-
         const response = await CustomAxios({
           errorToastMessage: "default",
         }).post(
           `${ENVIRONMENT.apiUrl}${MINE_REPORT_PERMIT_REQUIREMENT(payload.mineGuid)}`,
-          formatPayload,
+          payload.values,
           headers
         );
 

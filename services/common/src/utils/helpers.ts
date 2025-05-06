@@ -162,10 +162,9 @@ export const transformPermitReportRequirement = (report: IMineReportPermitRequir
         (dest, index) =>
           `${REPORT_MINISTRY_RECIPIENT_HASH[dest]}${index < report.ministry_recipient.length - 1 ? ", " : ""} `
       ) ?? "None Specified",
-      permit_condition_id: report.permit_condition_id,
+      permit_condition_ids: report.permit_condition_ids,
       frequency: Object.keys(REPORT_FREQUENCY_HASH).find(key => REPORT_FREQUENCY_HASH[key] === report.due_date_period_months),
       initial_due_date: report.initial_due_date,
-      condition_category_code: report.condition_category_code
     }
   }
   return null;

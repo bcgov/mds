@@ -25,7 +25,7 @@ import {
     deletePermitCondition,
     updatePermitCondition,
 } from "@mds/common/redux/actionCreators/permitActionCreator";
-import { createMineReportPermitRequirement } from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
+import { createMineReportPermitRequirement, updateMineReportPermitRequirement } from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
 import RenderField from "@mds/common/components/forms/RenderField";
 import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import { formatPermitConditionStep, parsePermitConditionStep } from "@mds/common/utils/helpers";
@@ -131,8 +131,12 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
         });
     };
 
-    const addNewReport = async (values) => {
-        await dispatch(createMineReportPermitRequirement({ mineGuid, values }));
+    const addNewReportRequirement = async (values) => {
+        if (values.mine_report_permit_requirement_id) {
+            await dispatch(updateMineReportPermitRequirement({ mineGuid, values }));
+        } else {
+            await dispatch(createMineReportPermitRequirement({ mineGuid, values }));
+        }
         refreshData();
         dispatch(closeModal());
     };
@@ -142,13 +146,10 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
         dispatch(
             openModal({
                 props: {
-                    onSubmit: addNewReport,
-                    title: `Add Permit Required Report to Condition`,
+                    onSubmit: addNewReportRequirement,
+                    title: `Add Permit Required Report to Condition "${condition.stepPath}"`,
                     condition: reportCondition,
                     canEditPermitConditions: canEditPermitConditions,
-                    permitGuid,
-                    mineGuid,
-                    currentAmendment,
                 },
                 content: (props) => <PermitConditionsProvider value={permitConditionsValue}> <ReportPermitRequirementForm {...props} /> </PermitConditionsProvider>,
             })

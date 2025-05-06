@@ -29,7 +29,7 @@ class OfficeDestination(str, Enum):
         return self.value
 
 
-class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin, HistoryMixin):
+class MineReportPermitRequirement(SoftDeleteMixin, AuditMixin, HistoryMixin, Base):
     __tablename__ = "mine_report_permit_requirement"
 
     mine_report_permit_requirement_id: int = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
@@ -46,7 +46,7 @@ class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin, HistoryMixi
         MineReportReqPermitConditionXref,
         overlaps="mine_report_permit_requirement",
         lazy='joined',
-        primaryjoin='MineReportPermitRequirement.mine_report_permit_requirement_id == MineReportReqPermitConditionXref.mine_report_permit_requirement_id',
+        primaryjoin='and_(MineReportPermitRequirement.mine_report_permit_requirement_id == MineReportReqPermitConditionXref.mine_report_permit_requirement_id, MineReportReqPermitConditionXref.deleted_ind==False)',
     )
     permit_conditions = db.relationship(
         'PermitConditions',
