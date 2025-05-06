@@ -3,8 +3,8 @@ export interface IMineReportPermitRequirement {
   mine_report_permit_requirement_id: number;
   cim_or_cpo: string;
   ministry_recipient: string[];
-  permit_condition_id: number;
+  permit_condition_ids: number[];
   due_date_period_months: number;
   initial_due_date: string;
-  condition_category_code: string;
+  permit_amendment_id: number;
 }

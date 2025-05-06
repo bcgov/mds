@@ -38,14 +38,10 @@ const PermitConditionReportRequirements: FC<PermitConditionReportRequirementsPro
                         className="report-collapse"
                     >
                         <ReportPermitRequirementForm
-                            modalView={false}
                             condition={cond}
-                            permitGuid={permitGuid}
                             mineReportPermitRequirement={cond.mineReportPermitRequirement}
                             canEditPermitConditions={canEditPermitConditions}
                             refreshData={refreshData}
-                            currentAmendment={currentAmendment}
-                            mineGuid={mineGuid}
                         />
                     </Collapse.Panel>
                 )
