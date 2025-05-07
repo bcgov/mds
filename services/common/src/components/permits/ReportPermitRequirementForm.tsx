@@ -307,7 +307,8 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
             <Col>
               <CoreButton
                 disabled={loading}
-                type="danger"
+                type="primary"
+                danger
                 className="form-btn"
                 onClick={() => handleDeleteReportRequirement(mineReportPermitRequirement, true)}
               >

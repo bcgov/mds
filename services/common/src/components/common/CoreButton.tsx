@@ -3,10 +3,10 @@ import { Button, ButtonProps } from "antd";
 import { ButtonType } from "antd/lib/button";
 
 // DO NOT put antd button types in here: default, primary, ghost, dashed, link, text
-declare const AdditionalTypes: ["tertiary", "filled-tertiary", "danger"];
+declare const AdditionalTypes: ["tertiary", "filled-tertiary"];
 // Additional doesn't exist at compile-time, I have not found a way around this. :(
 // for now the two arrays should be duplicated.
-const additionalTypes = ["tertiary", "filled-tertiary", "danger"];
+const additionalTypes = ["tertiary", "filled-tertiary"];
 
 type CoreCustomType = typeof AdditionalTypes[number];
 
@@ -21,7 +21,7 @@ export interface CoreButtonProps extends Omit<ButtonProps, "type"> {
 const CoreButton: FC<CoreButtonProps> = ({ type, className, children, ...props }) => {
   const isAntdType = additionalTypes.includes(type);
   const buttonType = isAntdType ? defaultButtonType : (type as ButtonType);
-  const buttonClassName = ["core-btn", `core-btn-${type}`, `ant-btn-${type}`, className].join(" ").trim();
+  const buttonClassName = ["core-btn", `core-btn-${type}`, className].filter(Boolean).join(" ").trim();
 
   return (
     <Button {...props} type={buttonType} className={buttonClassName}>
