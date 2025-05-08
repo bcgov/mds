@@ -21,7 +21,7 @@ const badgeStatusTypes = {
   noticeOfWorkStage: {
     "In Progress": "warning",
     Complete: "success",
-    "Not started": "default",
+    "Not Started": "default",
   },
   variance: {
     Approved: "success",

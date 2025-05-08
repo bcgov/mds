@@ -16,8 +16,5 @@ class NOWApplicationProponentResource(Resource, UserMixin):
         if now_application_view:
             now_application_id = now_application_view.now_application_id
             now_application_progress = NOWApplicationProgress.find_by_id(now_application_id)
-            if now_application_progress is None:
-                now_application_view.application_progress = []
-            else:
-                now_application_view.application_progress = now_application_progress
+            now_application_view.application_progress = now_application_progress
         return now_application_view

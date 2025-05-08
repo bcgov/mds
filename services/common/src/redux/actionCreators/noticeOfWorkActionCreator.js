@@ -110,7 +110,7 @@ export const fetchProponentNoticeOfWorkApplication = (nowApplicationGuid) => (di
       return response;
     })
     .catch(() => dispatch(error(NetworkReducerTypes.GET_PROPONENT_NOTICE_OF_WORK_APPLICATION)))
-    .finally(() => dispatch(hideLoading));
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
