@@ -151,6 +151,7 @@ def create_permit_condition_search_retrieval_pipeline():
             "mine_number",
             "mine_name",
             "document_name",
+            "permit_type",
         ],
     )
 

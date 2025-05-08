@@ -133,6 +133,10 @@ def create_indexer():
                 target_field_name="permit_guid"
             ),
             FieldMapping(
+                source_field_name="/document/permit_type",
+                target_field_name="permit_type"
+            ),
+            FieldMapping(
                 source_field_name="/document/mine_guid",
                 target_field_name="mine_guid"
             ),
