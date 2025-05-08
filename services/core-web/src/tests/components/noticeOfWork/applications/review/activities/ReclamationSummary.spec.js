@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { ReclamationSummary } from "@/components/noticeOfWork/applications/review/activities/ReclamationSummary";
-import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
+import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 
 const reducerProps = {};
 

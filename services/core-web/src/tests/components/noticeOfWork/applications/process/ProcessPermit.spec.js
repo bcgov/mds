@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { ProcessPermit } from "@/components/noticeOfWork/applications/process/ProcessPermit";
-import * as NOWMocks from "@/tests/mocks/noticeOfWorkMocks";
+import * as NOWMocks from "@mds/common/tests/mocks/noticeOfWorkMock";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const props = {};

@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { NOWDocuments } from "@/components/noticeOfWork/applications/NOWDocuments";
-import * as NOWMocks from "@/tests/mocks/noticeOfWorkMocks";
+import * as NOWMocks from "@mds/common/tests/mocks/noticeOfWorkMock";
 
 const props = {};
 const dispatchProps = {};

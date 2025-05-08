@@ -5,7 +5,7 @@ import {
   storeNoticeOfWorkApplicationReviews,
   storeProponentNoticeOfWorkApplicationsList,
 } from "@mds/common/redux/actions/noticeOfWorkActions";
-import * as MOCK from "@/tests/mocks/noticeOfWorkMocks";
+import * as MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 
 const baseExpectedValue = {
   noticeOfWorkList: [],

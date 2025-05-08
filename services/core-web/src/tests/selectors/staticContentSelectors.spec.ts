@@ -84,7 +84,7 @@ import {
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import * as Mock from "@mds/common/tests/mocks/dataMocks";
-import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
+import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 
 const mockState = {
   [STATIC_CONTENT]: Mock.BULK_STATIC_CONTENT_RESPONSE,

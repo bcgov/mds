@@ -10,7 +10,7 @@ import {
   storeOriginalNoticeOfWorkApplication,
 } from "@mds/common/redux/actions/noticeOfWorkActions";
 import { NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
-import * as MOCKS from "@/tests/mocks/noticeOfWorkMocks";
+import * as MOCKS from "@mds/common/tests/mocks/noticeOfWorkMock";
 
 const mockState = {
   noticeOfWorkList: MOCKS.NOTICE_OF_WORK_LIST.records,
