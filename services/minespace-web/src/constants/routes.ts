@@ -225,18 +225,19 @@ const getQueryString = (filterParams?) => {
 };
 
 export const MINE_DASHBOARD = {
-  route: "/mines/:id/:activeTab/:subTab?",
+  route: "/mines/:id/dashboard/:activeTab/:subTab?",
   dynamicRoute: (id, activeTab = "overview", subTab?, filterParams?: any) =>
-    `/mines/${id}/${activeTab}${subTab ? `/${subTab}` : ""}${getQueryString(filterParams)}`,
+    `/mines/${id}/dashboard/${activeTab}${subTab ? `/${subTab}` : ""}${getQueryString(filterParams)}`,
   component: MineDashboard,
   helpKey: "Mine-Dashboard",
 };
 
 export const MINE_TAILINGS = {
-  route: "/mines/:id/:tailings",
-  dynamicRoute: (id, filterParams?: any) => `/mines/${id}/tailings${getQueryString(filterParams)}`,
-  component: MineDashboard,
-  helpKey: "Mine-Dashboard",
+  route: MINE_DASHBOARD.route,
+  dynamicRoute: (id, filterParams?: any) =>
+    MINE_DASHBOARD.dynamicRoute(id, "tailings", null, filterParams),
+  component: MINE_DASHBOARD.component,
+  helpKey: MINE_DASHBOARD.helpKey,
 };
 
 export const ADD_TAILINGS_STORAGE_FACILITY = {
@@ -331,8 +332,8 @@ export const VIEW_MINE_PERMIT_AMENDMENT = {
 };
 
 export const MINE_PERMITS = {
-  route: "/mines/:id/:activeTab",
-  dynamicRoute: (id) => `/mines/${id}/permits`,
+  route: MINE_DASHBOARD.route,
+  dynamicRoute: (id) => MINE_DASHBOARD.dynamicRoute(id, "permits"),
 };
 
 export const PERMIT_VIEW = {

@@ -336,7 +336,7 @@ NOW_APPLICATION_DOCUMENT = api.model(
         'is_consultation_package': fields.Boolean,
         'preamble_title': fields.String,
         'preamble_author': fields.String,
-        'preamble_date': fields.DateTime,
+        'preamble_date': fields.Date,
         'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
     })
 
@@ -407,7 +407,7 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'is_consultation_package': fields.Boolean,
         'preamble_title': fields.String,
         'preamble_author': fields.String,
-        'preamble_date': fields.DateTime,
+        'preamble_date': fields.Date,
         'now_application_document_xref_guid': fields.String,
         'now_application_id': fields.Integer,
         'update_timestamp': fields.DateTime
@@ -573,7 +573,7 @@ NOW_APPLICATION_MODEL = api.model(
         'security_not_required_reason':
         fields.String,
         'last_updated_date':
-        DateTime,
+        fields.DateTime(dt_format='iso8601'),
         'last_updated_by':
         fields.String,
         'permit_status':

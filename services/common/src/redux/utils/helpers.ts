@@ -16,6 +16,7 @@ import {
   ItemMap,
 } from "@mds/common/interfaces";
 import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants/enums";
+import { format, parseISO } from 'date-fns';
 
 /**
  * Helper function to clear redux form after submission
@@ -93,6 +94,9 @@ export const formatTractionDate = (dateString: string) => {
 // Function to format an API date string to human readable
 export const formatDate = (dateString) =>
   dateString && dateString !== "None" && moment(dateString, "YYYY-MM-DD").format("MMM DD YYYY");
+
+export const formatDateUTC = (dateString) =>
+  dateString && dateString !== "None" ? format(parseISO(dateString), 'MMM dd yyyy') : null;
 
 export const formatTime = (timeStamp) => timeStamp && moment(timeStamp).format("h:mm a");
 

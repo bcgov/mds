@@ -19,7 +19,7 @@ exports[`TailingsSubmitSuccess renders properly 1`] = `
         class="ant-col ant-col-24"
       >
         <a
-          href="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/tailings"
+          href="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/dashboard/tailings"
         >
           <span
             aria-label="arrow-left"
@@ -101,7 +101,7 @@ exports[`TailingsSubmitSuccess renders properly 1`] = `
       >
         <a
           class="ant-btn ant-btn-primary"
-          href="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/tailings"
+          href="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/dashboard/tailings"
         >
           <span>
             Back to Tailings and Dams
@@ -114,7 +114,7 @@ exports[`TailingsSubmitSuccess renders properly 1`] = `
       >
         <a
           class="ant-btn ant-btn-default"
-          href="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/reports"
+          href="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/dashboard/reports"
         >
           <span>
             Submit Written Acknowledgement in Reports

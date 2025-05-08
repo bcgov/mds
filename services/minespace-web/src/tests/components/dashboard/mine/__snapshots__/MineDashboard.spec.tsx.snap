@@ -38,7 +38,7 @@ exports[`MineDashboard renders properly 1`] = `
         <li
           class="ant-menu-item ant-menu-item-selected"
           data-menu-id="rc-menu-uuid-test-overview"
-          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/overview"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/dashboard/overview"
           role="menuitem"
           tabindex="-1"
         >
@@ -67,7 +67,7 @@ exports[`MineDashboard renders properly 1`] = `
         <li
           class="ant-menu-item"
           data-menu-id="rc-menu-uuid-test-applications"
-          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/applications"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/dashboard/applications"
           role="menuitem"
           tabindex="-1"
         >
@@ -96,7 +96,7 @@ exports[`MineDashboard renders properly 1`] = `
         <li
           class="ant-menu-item"
           data-menu-id="rc-menu-uuid-test-permits"
-          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/permits"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/dashboard/permits"
           role="menuitem"
           tabindex="-1"
         >
@@ -125,7 +125,7 @@ exports[`MineDashboard renders properly 1`] = `
         <li
           class="ant-menu-item"
           data-menu-id="rc-menu-uuid-test-inspections"
-          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/inspections"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/dashboard/inspections"
           role="menuitem"
           tabindex="-1"
         >
@@ -154,7 +154,7 @@ exports[`MineDashboard renders properly 1`] = `
         <li
           class="ant-menu-item"
           data-menu-id="rc-menu-uuid-test-reports"
-          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/reports"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/dashboard/reports"
           role="menuitem"
           tabindex="-1"
         >
@@ -183,7 +183,7 @@ exports[`MineDashboard renders properly 1`] = `
         <li
           class="ant-menu-item"
           data-menu-id="rc-menu-uuid-test-incidents"
-          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/incidents"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/dashboard/incidents"
           role="menuitem"
           tabindex="-1"
         >
@@ -212,7 +212,7 @@ exports[`MineDashboard renders properly 1`] = `
         <li
           class="ant-menu-item"
           data-menu-id="rc-menu-uuid-test-nods"
-          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/nods"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/dashboard/nods"
           role="menuitem"
           tabindex="-1"
         >
@@ -241,7 +241,7 @@ exports[`MineDashboard renders properly 1`] = `
         <li
           class="ant-menu-item"
           data-menu-id="rc-menu-uuid-test-variances"
-          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/variances"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/dashboard/variances"
           role="menuitem"
           tabindex="-1"
         >
@@ -270,7 +270,7 @@ exports[`MineDashboard renders properly 1`] = `
         <li
           class="ant-menu-item"
           data-menu-id="rc-menu-uuid-test-bonds"
-          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/bonds"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/dashboard/bonds"
           role="menuitem"
           tabindex="-1"
         >
@@ -299,7 +299,7 @@ exports[`MineDashboard renders properly 1`] = `
         <li
           class="ant-menu-item"
           data-menu-id="rc-menu-uuid-test-tailings"
-          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/tailings"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/dashboard/tailings"
           role="menuitem"
           tabindex="-1"
         >

@@ -76,7 +76,7 @@ function loadExternalSecrets() {
         echo -e "If you already have access, click here to generate a token and paste it into the terminal: ${bold}https://oauth-openshift.apps.silver.devops.gov.bc.ca/oauth/token/request${normal}\n\n"
         echo -e "${bold}...Paste Token Here...${normal}"
         read OC_TOKEN
-        
+
         # Log in to openshift and verify that you have access
         oc login --token=$OC_TOKEN --server=https://api.silver.devops.gov.bc.ca:6443
         OC_ACCESS=$(oc get project | grep 4c2ba9-dev)
@@ -101,19 +101,19 @@ function loadExternalSecrets() {
     for S in $SERVICES
     do
         echo "Configuring secrets for $S service"
-        for KEY in $SECRET_KEYS        
+        for KEY in $SECRET_KEYS
         do
             SECRET=$(kubectl get secret local-dev-secrets --namespace 4c2ba9-dev -o go-template="{{index .data.${KEY} | base64decode}}")
             if [ "$SECRET" = "" ]; then
                 echo -e "Secret $KEY not found in local-dev-secrets"
                 continue
             fi
-            # handle all special charactes in the secret, including new lines
-            ESCAPED_SECRET=$(printf '%s\n' "$SECRET" | sed ':a;N;$!ba;s/[&/\]/\\&/g;s/\n/\\n/g')
+            # handle all special characters in the secret, including new lines
+            ESCAPED_SECRET=$(printf '%s' "$SECRET" | perl -pe 's/([\/&])/\\$1/g; s/\n/\\n/g')
             if [ "$KEY" = "ELASTICSEARCH_CA_CERT" ]; then
                 ESCAPED_SECRET="\"$ESCAPED_SECRET\""
             fi
-            sed -i "s|$KEY=.*|$KEY=$ESCAPED_SECRET|g" $SERVICES_PATH/$S/.env || echo -e "Failed to set $KEY for $S service"
+            perl -i -pe "s|^$KEY=.*|$KEY=$ESCAPED_SECRET|g" "$SERVICES_PATH/$S/.env" || echo -e "Failed to set $KEY for $S service"
         done
     done
 
@@ -123,14 +123,14 @@ function loadExternalSecrets() {
     
     for S in $SERVICES
     do
-        sed -i "s/AWS_SECRET_ACCESS_KEY=.*/AWS_SECRET_ACCESS_KEY=$OBJECT_STORE_ACCESS_KEY/g" $SERVICES_PATH/$S/.env || echo -e "Failed to set AWS_SECRET_ACCESS_KEY for $S service"
+        perl -i -pe "s|^AWS_SECRET_ACCESS_KEY=.*|AWS_SECRET_ACCESS_KEY=$OBJECT_STORE_ACCESS_KEY|g" "$SERVICES_PATH/$S/.env" || echo -e "Failed to set AWS_SECRET_ACCESS_KEY for $S service"
     done
 
     for S in $FRONTEND_SERVICES    
     do
         echo "Configuring Syncfusion license key for $S service"
-        ESCAPED_SECRET=$(printf '%s\n' "$SYNCFUSION_FRONTEND_LICENSE_KEY" | sed ':a;N;$!ba;s/[&/\]/\\&/g;s/\n/\\n/g')
-        sed -i "s|SYNCFUSION_LICENSE_KEY=.*|SYNCFUSION_LICENSE_KEY=$ESCAPED_SECRET|g" $SERVICES_PATH/$S/.env || echo -e "Failed to set SYNCFUSION_LICENSE_KEY for $S service"
+        ESCAPED_SECRET=$(printf '%s\n' "$SYNCFUSION_FRONTEND_LICENSE_KEY" | perl -pe 's/([\/&])/\\$1/g; s/\n/\\n/g')
+        perl -i -pe "s|^SYNCFUSION_LICENSE_KEY=.*|SYNCFUSION_LICENSE_KEY=$ESCAPED_SECRET|g" "$SERVICES_PATH/$S/.env" || echo -e "Failed to set SYNCFUSION_LICENSE_KEY for $S service"
     done
 
     echo "Successfully configured secrets!"
