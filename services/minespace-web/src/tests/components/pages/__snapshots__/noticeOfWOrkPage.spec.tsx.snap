@@ -30,7 +30,7 @@ exports[`NoticeOfWorkPage renders properly 1`] = `
           style="padding-top: 8px; padding-bottom: 8px;"
         >
           <a
-            href="/mines/6e9d3426-ebf1-413f-9e5f-c3a71ab56797/applications/notice-of-work"
+            href="/mines/6e9d3426-ebf1-413f-9e5f-c3a71ab56797/dashboard/applications/notice-of-work"
           >
             <span
               aria-label="arrow-left"
