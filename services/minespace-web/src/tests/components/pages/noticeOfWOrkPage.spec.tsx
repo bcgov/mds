@@ -28,7 +28,6 @@ function mockFunction() {
       replace: jest.fn(),
       location: { hash: "" },
     }),
-    // isLoaded: jest.fn().mockReturnValue(true),
   };
 }
 jest.mock("react-router-dom", () => mockFunction());
