@@ -23,7 +23,8 @@ import {
   createNoticeOfWorkApplicationReview,
   fetchNoticeOfWorkApplicationReviews,
   fetchMineNoticeOfWorkApplications,
-  fetchProponentNoticeOfWorkApplications,
+  fetchProponentNoticeOfWorkApplicationsList,
+  fetchProponentNoticeOfWorkApplication,
 } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
@@ -67,12 +68,12 @@ describe("`fetchNoticeOfWorkApplications` action creator", () => {
   });
 });
 
-describe("`fetchNoticeOfWorkApplications` action creator", () => {
+describe("`fetchProponentNoticeOfWorkApplicationsList` action creator", () => {
   const url = ENVIRONMENT.apiUrl + API.PROPONENT_NOTICE_OF_WORK_APPLICATION_LIST();
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchProponentNoticeOfWorkApplications()(dispatch).then(() => {
+    return fetchProponentNoticeOfWorkApplicationsList()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -81,7 +82,29 @@ describe("`fetchNoticeOfWorkApplications` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return fetchNoticeOfWorkApplications()(dispatch).then(() => {
+    return fetchProponentNoticeOfWorkApplicationsList()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`fetchProponentNoticeOfWorkApplication` action creator", () => {
+  const url = ENVIRONMENT.apiUrl + API.PROPONENT_NOTICE_OF_WORK_APPLICATION();
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchProponentNoticeOfWorkApplication()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
+    return fetchProponentNoticeOfWorkApplication()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

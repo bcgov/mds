@@ -5,7 +5,7 @@ import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { IMine } from "@mds/common/interfaces/mine.interface";
 import NoticeOfWorkTable from "./NoticeOfWorkTable";
 import { getNoticeOfWorkList } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
-import { fetchProponentNoticeOfWorkApplications } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
+import { fetchProponentNoticeOfWorkApplicationsList } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import { useAppDispatch } from "@mds/common/redux/rootState";
 
 export const NoticeOfWorkProjects: FC = () => {
@@ -16,7 +16,7 @@ export const NoticeOfWorkProjects: FC = () => {
 
   useEffect(() => {
     if (!isLoaded) {
-      dispatch(fetchProponentNoticeOfWorkApplications(mine.mine_guid)).then(() => {
+      dispatch(fetchProponentNoticeOfWorkApplicationsList(mine.mine_guid)).then(() => {
         setIsLoaded(true);
       });
     }

@@ -79,8 +79,8 @@ export const fetchMineNoticeOfWorkApplications = (params = {}) => (dispatch) => 
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchProponentNoticeOfWorkApplications = (mineGuid) => (dispatch) => {
-  dispatch(request(NetworkReducerTypes.GET_PROPONENT_NOTICE_OF_WORK_APPLICATIONS));
+export const fetchProponentNoticeOfWorkApplicationsList = (mineGuid) => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.GET_PROPONENT_NOTICE_OF_WORK_APPLICATIONS_LIST));
   dispatch(showLoading());
   return CustomAxios()
     .get(
@@ -88,12 +88,29 @@ export const fetchProponentNoticeOfWorkApplications = (mineGuid) => (dispatch) =
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(NetworkReducerTypes.GET_PROPONENT_NOTICE_OF_WORK_APPLICATIONS));
-      dispatch(noticeOfWorkActions.storeProponentNoticeOfWorkApplications(response.data));
+      dispatch(success(NetworkReducerTypes.GET_PROPONENT_NOTICE_OF_WORK_APPLICATIONS_LIST));
+      dispatch(noticeOfWorkActions.storeProponentNoticeOfWorkApplicationsList(response.data));
       return response;
     })
-    .catch(() => dispatch(error(NetworkReducerTypes.GET_PROPONENT_NOTICE_OF_WORK_APPLICATIONS)))
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_PROPONENT_NOTICE_OF_WORK_APPLICATIONS_LIST)))
     .finally(() => dispatch(hideLoading()));
+};
+
+export const fetchProponentNoticeOfWorkApplication = (nowApplicationGuid) => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.GET_PROPONENT_NOTICE_OF_WORK_APPLICATION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.PROPONENT_NOTICE_OF_WORK_APPLICATION(nowApplicationGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(NetworkReducerTypes.GET_PROPONENT_NOTICE_OF_WORK_APPLICATION));
+      dispatch(noticeOfWorkActions.storeNoticeOfWorkApplication(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_PROPONENT_NOTICE_OF_WORK_APPLICATION)))
+    .finally(() => dispatch(hideLoading));
 };
 
 export const createNoticeOfWorkApplication = (payload) => (dispatch) => {

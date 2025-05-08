@@ -4433,6 +4433,14 @@ export const NOW: { applications: INoticeOfWork[] } = {
       issuing_inspector_name: "Inspector Gadget",
       issuing_inspector_party_guid: "95e79bd8-a9bf-42ab-9d57-e4864bcb81fd",
       originating_system: "MMS",
+      application_progress: [
+        {
+          start_date: "2024-12-19T09:38:27.003392+00:00",
+          created_by: "Walker, Miller and Chase",
+          application_progress_status_code: "REV",
+          last_updated_by: "system"
+        },
+      ],
     },
     {
       now_application_guid: "8e1536da-644c-4961-976b-b1326fa75825",

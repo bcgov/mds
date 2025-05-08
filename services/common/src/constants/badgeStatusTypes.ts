@@ -18,6 +18,11 @@ const badgeStatusTypes = {
     "Referral Complete": "processing",
     "Pending Verification": "processing",
   },
+  noticeOfWorkStage: {
+    "In Progress": "warning",
+    Complete: "success",
+    "Not started": "default",
+  },
   variance: {
     Approved: "success",
     Denied: "error",
@@ -54,6 +59,9 @@ const badgeStatusTypes = {
 
 export const getApplicationStatusType = (status) =>
   badgeStatusTypes.noticeOfWork[status] || undefinedStatusStyleType;
+
+export const getApplicationStageStatusType = (status) =>
+  badgeStatusTypes.noticeOfWorkStage[status] || undefinedStatusStyleType;
 
 export const getVarianceApplicationBadgeStatusType = (status) =>
   badgeStatusTypes.variance[status] || undefinedStatusStyleType;

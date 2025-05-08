@@ -1,0 +1,454 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NoticeOfWorkPage renders properly 1`] = `
+<div>
+  <div
+    class="fixed-tabs-container"
+  >
+    <div
+      class="view--header padding-lg--sides"
+    >
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-24"
+        >
+          <h1
+            class="ant-typography"
+          >
+            44
+          </h1>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+        style="margin-top: -8px; margin-bottom: -8px;"
+      >
+        <div
+          class="ant-col ant-col-24"
+          style="padding-top: 8px; padding-bottom: 8px;"
+        >
+          <a
+            href="/mines/6e9d3426-ebf1-413f-9e5f-c3a71ab56797/applications/notice-of-work"
+          >
+            <span
+              aria-label="arrow-left"
+              class="anticon anticon-arrow-left padding-sm-right"
+              role="img"
+            >
+              <svg
+                aria-hidden="true"
+                class=""
+                data-icon="arrow-left"
+                fill="currentColor"
+                focusable="false"
+                height="1em"
+                viewBox="64 64 896 896"
+                width="1em"
+              >
+                <path
+                  d="M872 474H286.9l350.2-304c5.6-4.9 2.2-14-5.2-14h-88.5c-3.9 0-7.6 1.4-10.5 3.9L155 487.8a31.96 31.96 0 000 48.3L535.1 866c1.5 1.3 3.3 2 5.2 2h91.5c7.4 0 10.8-9.2 5.2-14L286.9 550H872c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8z"
+                />
+              </svg>
+            </span>
+            Back to: 
+             Applications page
+          </a>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-row"
+      style="margin-top: -8px; margin-bottom: -8px;"
+    >
+      <div
+        class="ant-col ant-col-24"
+        style="padding-top: 8px; padding-bottom: 8px;"
+      >
+        <div
+          class="ant-tabs ant-tabs-top core-tabs fixed-tabs-tabs"
+        >
+          <div
+            class="ant-tabs-nav"
+            role="tablist"
+          >
+            <div
+              class="ant-tabs-nav-wrap"
+            >
+              <div
+                class="ant-tabs-nav-list"
+                style="transform: translate(0px, 0px);"
+              >
+                <div
+                  class="ant-tabs-tab ant-tabs-tab-active"
+                  data-node-key="overview"
+                >
+                  <div
+                    aria-controls="rc-tabs-test-panel-overview"
+                    aria-selected="true"
+                    class="ant-tabs-tab-btn"
+                    id="rc-tabs-test-tab-overview"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    Overview
+                  </div>
+                </div>
+                <div
+                  class="ant-tabs-ink-bar ant-tabs-ink-bar-animated"
+                />
+              </div>
+            </div>
+            <div
+              class="ant-tabs-nav-operations ant-tabs-nav-operations-hidden"
+            >
+              <button
+                aria-controls="rc-tabs-test-more-popup"
+                aria-expanded="false"
+                aria-haspopup="listbox"
+                aria-hidden="true"
+                class="ant-tabs-nav-more"
+                id="rc-tabs-test-more"
+                style="visibility: hidden; order: 1;"
+                tabindex="-1"
+                type="button"
+              >
+                <span
+                  aria-label="ellipsis"
+                  class="anticon anticon-ellipsis"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    data-icon="ellipsis"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M176 511a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0z"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </div>
+          </div>
+          <div
+            class="ant-tabs-content-holder"
+          >
+            <div
+              class="ant-tabs-content ant-tabs-content-top"
+            >
+              <div
+                aria-hidden="false"
+                aria-labelledby="rc-tabs-test-tab-overview"
+                class="ant-tabs-tabpane ant-tabs-tabpane-active"
+                id="rc-tabs-test-panel-overview"
+                role="tabpanel"
+                tabindex="0"
+              >
+                <div
+                  class="padding-lg--top"
+                >
+                  <div
+                    class="ant-row"
+                    style="margin-top: -8px; margin-bottom: -8px;"
+                  >
+                    <div
+                      class="ant-col ant-col-lg-14 ant-col-xl-16"
+                      style="padding-top: 8px; padding-bottom: 8px;"
+                    >
+                      <h4
+                        class="ant-typography"
+                      >
+                        Application Stages
+                      </h4>
+                      <div
+                        class="ant-typography"
+                      >
+                        Applications shown here were submitted through FrontCounter BC and cannot be edited in MineSpace. For assistance please contact your regional office.
+                      </div>
+                      <div
+                        class="ant-table-wrapper"
+                      >
+                        <div
+                          class="ant-spin-nested-loading"
+                        >
+                          <div
+                            class="ant-spin-container"
+                          >
+                            <div
+                              class="ant-table ant-table-small"
+                            >
+                              <div
+                                class="ant-table-container"
+                              >
+                                <div
+                                  class="ant-table-content"
+                                >
+                                  <table
+                                    style="table-layout: auto;"
+                                  >
+                                    <colgroup />
+                                    <thead
+                                      class="ant-table-thead"
+                                    >
+                                      <tr>
+                                        <th
+                                          class="ant-table-cell"
+                                        >
+                                          <b>
+                                            Stage
+                                          </b>
+                                        </th>
+                                        <th
+                                          class="ant-table-cell"
+                                        >
+                                          <b>
+                                            Status
+                                          </b>
+                                        </th>
+                                        <th
+                                          class="ant-table-cell"
+                                        >
+                                          <b>
+                                            In status since
+                                          </b>
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody
+                                      class="ant-table-tbody"
+                                    >
+                                      <tr
+                                        class="ant-table-row ant-table-row-level-0"
+                                      >
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <b
+                                            class="light"
+                                            title="Application Stage"
+                                          >
+                                            Application
+                                          </b>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Stage Status"
+                                          >
+                                            <span
+                                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                            >
+                                              <span
+                                                class="ant-badge-status-dot ant-badge-status-warning"
+                                              />
+                                              <span
+                                                class="ant-badge-status-text"
+                                              >
+                                                In Progress
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="In status since"
+                                          >
+                                            Dec 19 2024 / 4 Months 17 Days
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      <tr
+                                        class="ant-table-row ant-table-row-level-0"
+                                      >
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <b
+                                            class="light"
+                                            title="Application Stage"
+                                          />
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Stage Status"
+                                          >
+                                            <span
+                                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                            >
+                                              <span
+                                                class="ant-badge-status-dot ant-badge-status-default"
+                                              />
+                                              <span
+                                                class="ant-badge-status-text"
+                                              >
+                                                Not Started
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="In status since"
+                                          >
+                                            N/A
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      <tr
+                                        class="ant-table-row ant-table-row-level-0"
+                                      >
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <b
+                                            class="light"
+                                            title="Application Stage"
+                                          />
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Stage Status"
+                                          >
+                                            <span
+                                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                            >
+                                              <span
+                                                class="ant-badge-status-dot ant-badge-status-default"
+                                              />
+                                              <span
+                                                class="ant-badge-status-text"
+                                              >
+                                                Not Started
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="In status since"
+                                          >
+                                            N/A
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      <tr
+                                        class="ant-table-row ant-table-row-level-0"
+                                      >
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <b
+                                            class="light"
+                                            title="Application Stage"
+                                          />
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Stage Status"
+                                          >
+                                            <span
+                                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                            >
+                                              <span
+                                                class="ant-badge-status-dot ant-badge-status-default"
+                                              />
+                                              <span
+                                                class="ant-badge-status-text"
+                                              >
+                                                Not Started
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="In status since"
+                                          >
+                                            N/A
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      <tr
+                                        class="ant-table-row ant-table-row-level-0"
+                                      >
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <b
+                                            class="light"
+                                            title="Application Stage"
+                                          >
+                                            Permit
+                                          </b>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Stage Status"
+                                          >
+                                            <span
+                                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                            >
+                                              <span
+                                                class="ant-badge-status-dot ant-badge-status-default"
+                                              />
+                                              <span
+                                                class="ant-badge-status-text"
+                                              >
+                                                Not Started
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="In status since"
+                                          >
+                                            N/A
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1114,6 +1114,11 @@ exports[`ViewProjects renders now application tab properly 1`] = `
                                   >
                                     Application
                                   </th>
+                                  <th
+                                    class="ant-table-cell"
+                                  >
+                                    
+                                  </th>
                                 </tr>
                               </thead>
                               <tbody
@@ -1175,6 +1180,29 @@ exports[`ViewProjects renders now application tab properly 1`] = `
                                   >
                                     N/A
                                   </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      title=""
+                                    >
+                                      <div
+                                        class="ant-row"
+                                        style="margin-left: -0.5px; margin-right: -0.5px;"
+                                      >
+                                        <div
+                                          class="ant-col ant-col-12"
+                                          style="padding-left: 0.5px; padding-right: 0.5px;"
+                                        >
+                                          <a
+                                            href="/notice-of-work/07e801a0-fa33-4c3b-abcc-ac6df628d483/overview"
+                                          >
+                                            View
+                                          </a>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
                                 </tr>
                                 <tr
                                   class="ant-table-row ant-table-row-level-0 fade-in"
@@ -1231,6 +1259,29 @@ exports[`ViewProjects renders now application tab properly 1`] = `
                                     class="ant-table-cell"
                                   >
                                     N/A
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      title=""
+                                    >
+                                      <div
+                                        class="ant-row"
+                                        style="margin-left: -0.5px; margin-right: -0.5px;"
+                                      >
+                                        <div
+                                          class="ant-col ant-col-12"
+                                          style="padding-left: 0.5px; padding-right: 0.5px;"
+                                        >
+                                          <a
+                                            href="/notice-of-work/8e1536da-644c-4961-976b-b1326fa75825/overview"
+                                          >
+                                            View
+                                          </a>
+                                        </div>
+                                      </div>
+                                    </div>
                                   </td>
                                 </tr>
                               </tbody>
