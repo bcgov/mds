@@ -5,12 +5,12 @@ import { IGroupedDropdownList } from "@mds/common/interfaces/common/option.inter
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
 import { Typography } from "antd";
-import { getConditionsWithRequirements } from "@mds/common/utils/helpers";
-import { IPermitAmendment } from "@mds/common/interfaces";
 import { usePermitConditions } from "@mds/common/components/permits/PermitConditionsContext";
 import PermitConditionForm from "@mds/common/components/permits/PermitConditionForm";
 import PermitConditionReportRequirements from "@mds/common/components/permits/PermitConditionReportRequirements";
 import { PermitConditionStatus } from "./PermitConditionStatus";
+import { getReportRequirementsByCondition } from "@mds/common/redux/selectors/permitSelectors";
+import { useAppSelector } from "@mds/common/redux/rootState";
 
 const { Title } = Typography;
 
@@ -30,9 +30,6 @@ interface PermitConditionLayerProps {
   refreshData: () => Promise<void>;
   conditionSelected?: (condition: IPermitCondition) => void;
   categoryOptions?: IGroupedDropdownList[];
-  previousAmendment?: IPermitAmendment;
-  mineGuid?: string;
-  permitGuid: string;
 }
 
 const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
@@ -41,7 +38,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   isExpanded,
   conditionSelected,
   level = 0,
-  setParentExpand = () => {},
+  setParentExpand = () => { },
   canEditPermitConditions = false,
   setEditingConditionGuid,
   editingConditionGuid,
@@ -51,12 +48,11 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   permitAmendmentGuid,
   refreshData,
   categoryOptions,
-  previousAmendment,
-  permitGuid,
-  mineGuid,
 }) => {
-  const { loading } = usePermitConditions();
-
+  const { loading, previousAmendment, permitGuid } = usePermitConditions();
+  const requirements = useAppSelector(
+    getReportRequirementsByCondition(permitGuid, permitAmendmentGuid, condition.permit_condition_id)
+  );
   const editingCondition = useMemo(
     () => editingConditionGuid === condition.permit_condition_guid,
     [condition.permit_condition_guid, editingConditionGuid]
@@ -106,8 +102,6 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
     await handleMoveCondition(condition, false);
   };
 
-  const requirements = getConditionsWithRequirements([condition]);
-
   let matchingCondition = null;
   if (level === 0) {
     // Find the matching condition in the previous amendment
@@ -147,7 +141,6 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
             <div key={subCondition.permit_condition_id}>
               <PermitConditionLayer
                 isExtracted={isExtracted}
-                mineGuid={mineGuid}
                 permitAmendmentGuid={permitAmendmentGuid}
                 condition={subCondition}
                 level={level + 1}
@@ -160,7 +153,6 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
                 conditionCount={condition.sub_conditions.length}
                 refreshData={refreshData}
                 conditionSelected={conditionSelected}
-                permitGuid={permitGuid}
               />
             </div>
           );
@@ -184,7 +176,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
               </Title>
 
               <PermitConditionReportRequirements
-                conditionsWithRequirements={requirements}
+                requirements={requirements}
                 refreshData={refreshData}
                 canEditPermitConditions={canEditPermitConditions}
               />
@@ -196,6 +188,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
             canEditPermitConditions={canEditPermitConditions}
             isDisabled={isAddingListItem}
             permitAmendmentGuid={permitAmendmentGuid}
+            requirements={requirements}
             refreshData={refreshData}
           />
         </div>

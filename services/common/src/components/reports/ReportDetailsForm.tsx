@@ -307,7 +307,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         setMineReportDefinition(newReportComplianceArticle);
 
         setSelectedReportCode(formatComplianceCodeReportName(newReportComplianceArticle));
-      } else if (!expiredReportDefinition) {
+      } else if (!expiredReportDefinition && mine_report_definition_guid) {
         dispatch(
           fetchExpiredReportDefinition({ mineReportDefinitionGuid: mine_report_definition_guid })
         );

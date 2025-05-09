@@ -5,10 +5,8 @@ import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { PermitConditionsProvider } from "@mds/common/components/permits/PermitConditionsContext";
 import PermitConditionReportRequirements from "@mds/common/components/permits/PermitConditionReportRequirements";
 
-const conditionsWithRequirements = [
-    MOCK.PERMITS[0].permit_amendments[0].conditions[0],
 
-];
+const requirements = [MOCK.PERMITS[0].permit_amendments[0].conditions[0].mineReportPermitRequirement];
 
 const params = {
     mineGuid: MOCK.PERMITS[0].mine_guid,
@@ -26,7 +24,7 @@ describe("PermitConditionReportRequirements", () => {
             <ReduxWrapper>
                 <PermitConditionsProvider value={params}>
                     <PermitConditionReportRequirements
-                        conditionsWithRequirements={conditionsWithRequirements}
+                        requirements={requirements}
                     />
                 </PermitConditionsProvider>
             </ReduxWrapper>
@@ -40,7 +38,7 @@ describe("PermitConditionReportRequirements", () => {
             <ReduxWrapper>
                 <PermitConditionsProvider value={params}>
                     <PermitConditionReportRequirements
-                        conditionsWithRequirements={conditionsWithRequirements}
+                        requirements={requirements}
                     />
                 </PermitConditionsProvider>
             </ReduxWrapper>
@@ -60,7 +58,7 @@ describe("PermitConditionReportRequirements", () => {
             <ReduxWrapper>
                 <PermitConditionsProvider value={params}>
                     <PermitConditionReportRequirements
-                        conditionsWithRequirements={conditionsWithRequirements}
+                        requirements={requirements}
                         refreshData={refreshData}
                         canEditPermitConditions={true}
                     />
@@ -72,19 +70,17 @@ describe("PermitConditionReportRequirements", () => {
     });
 
     it("renders without report name when not provided", () => {
-        const conditionsWithoutReportName = [{
-            ...conditionsWithRequirements[0],
-            mineReportPermitRequirement: {
-                ...conditionsWithRequirements[0].mineReportPermitRequirement,
-                report_name: undefined
-            }
-        }];
+
+        const requirementWithoutReportName = {
+            ...requirements[0],
+            report_name: undefined
+        };
 
         const { getByText } = render(
             <ReduxWrapper>
                 <PermitConditionsProvider value={params}>
                     <PermitConditionReportRequirements
-                        conditionsWithRequirements={conditionsWithoutReportName}
+                        requirements={[requirementWithoutReportName]}
                     />
                 </PermitConditionsProvider>
             </ReduxWrapper>

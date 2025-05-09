@@ -7,7 +7,7 @@ import {
   IMineReportPermitRequirement,
   IPermitCondition,
 } from "@mds/common/interfaces";
-import { required, requiredRadioButton, maxLength } from "@mds/common/redux/utils/Validate";
+import { required, requiredRadioButton, maxLength, requiredList } from "@mds/common/redux/utils/Validate";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderDate from "@mds/common/components/forms/RenderDate";
@@ -29,12 +29,12 @@ import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import { usePermitConditions } from "@mds/common/components/permits/PermitConditionsContext";
 import { getMineReportPermitRequirementsByAmendment, getPermitConditionCategories } from "@mds/common/redux/selectors/permitSelectors";
 import CoreButton from "../common/CoreButton";
-import RenderMultiSelect from "../forms/RenderMultiSelect";
+import RenderTreeSelect from "../forms/RenderTreeSelect";
 
 
 interface ReportPermitRequirementProps {
   onSubmit?: (values: Partial<IMineReport>) => void | Promise<void>;
-  condition: IPermitCondition;
+  condition?: IPermitCondition;
   isModal?: boolean;
   mineReportPermitRequirement?: IMineReportPermitRequirement;
   canEditPermitConditions: boolean;
@@ -58,15 +58,13 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
   const existingRequirementsOptions = existingRequirements.map((r) => { return { label: r.report_name, value: r.mine_report_permit_requirement_id } });
   const disableFields = mineReportPermitRequirement?.mine_report_permit_requirement_id !== selectedRequirement?.mine_report_permit_requirement_id;
   const multipleConditions = selectedRequirement?.permit_condition_ids.length > 1;
-  const { conditionMap } = useAppSelector(getPermitConditionCategories(permitGuid, currentAmendment.permit_amendment_guid));
+  const { conditionMap, categoriesWithConditions } = useAppSelector(getPermitConditionCategories(permitGuid, currentAmendment.permit_amendment_guid));
 
-  const getLinkedConditionList = (includeSelf = false) => {
+  const getLinkedConditionList = () => {
     if (!hasExistingRequirements || !selectedRequirement) {
       return [];
     }
-    const condition_ids = includeSelf
-      ? selectedRequirement.permit_condition_ids
-      : selectedRequirement.permit_condition_ids.filter((id) => id !== condition.permit_condition_id);
+    const condition_ids = selectedRequirement.permit_condition_ids
 
     const linked = condition_ids
       .map((id) => {
@@ -106,7 +104,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
 
       const modalContent = {
         title: "Confirm Deletion",
-        content: <>Are you sure you want to delete this Report Requirement? It will also be deleted from the following conditions: {getLinkedConditionList(true)}</>,
+        content: <>Are you sure you want to delete this Report Requirement? It will also be deleted from the following conditions: {getLinkedConditionList()}</>,
         okText: "Delete",
         onOk: deleteFunction
       };
@@ -135,36 +133,71 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
       return;
     }
     const requirement = existingRequirements.find((r) => r.mine_report_permit_requirement_id === requirement_id);
-    const permit_condition_ids = [...requirement.permit_condition_ids, condition.permit_condition_id];
+    const permit_condition_ids = requirement.permit_condition_ids.includes(condition.permit_condition_id)
+      ? requirement.permit_condition_ids
+      : [...requirement.permit_condition_ids, condition.permit_condition_id];
     setSelectedRequirement({ ...requirement, permit_condition_ids });
+  };
+
+  const conditionToTree = (condition: IPermitCondition) => {
+    const children = condition.sub_conditions.map((c) => conditionToTree(c));
+    const value = condition.permit_condition_id;
+    const title = condition.stepPath;
+
+    return ({
+      value,
+      key: condition.permit_condition_id,
+      title,
+      children,
+      checkable: true
+    });
+  };
+
+  const conditionTreeData = categoriesWithConditions
+    .sort((a, b) => a.display_order - b.display_order)
+    .map((cat) => {
+      return ({
+        value: cat.condition_category_code,
+        key: cat.condition_category_code,
+        title: <span className="color-primary">{cat.description}</span>,
+        children: cat.conditions.map(conditionToTree),
+        checkable: false
+      })
+    });
+
+  const getInitialValues = () => {
+    const initialValues = {
+      permit_amendment_id: currentAmendment?.permit_amendment_id,
+      permit_guid: permitGuid,
+      permit_condition_type_code: REPORT_TYPE_CODES.PRR,
+      mine_report_status_code: MINE_REPORT_SUBMISSION_CODES.NON,
+    };
+
+    if (selectedRequirement) {
+      return ({
+        ...selectedRequirement,
+        ...initialValues
+      });
+    }
+    if (condition) {
+      return ({
+        ...initialValues,
+        permit_condition_ids: [condition.permit_condition_id],
+      })
+    }
+    return initialValues;
   };
 
   return (
     <div style={{ minHeight: isModal ? "380px" : "" }}>
       <FormWrapper
-        name={`${FORM.ADD_REPORT_TO_PERMIT_CONDITION}-${condition.permit_condition_id}`}
+        name={`${FORM.ADD_REPORT_TO_PERMIT_CONDITION}-${condition?.permit_condition_id ?? mineReportPermitRequirement?.mine_report_permit_requirement_id}`}
         onSubmit={!isModal ? handleEditReportRequirement : onSubmit}
         isModal={isModal}
         isEditMode={isEditMode}
         scrollOnToggleEdit={false}
         reduxFormConfig={{ enableReinitialize: true }}
-        initialValues={
-          selectedRequirement
-            ? {
-              ...selectedRequirement,
-              stepPath: condition.stepPath,
-              permit_amendment_id: currentAmendment?.permit_amendment_id,
-            }
-            : {
-              mine_report_status_code: MINE_REPORT_SUBMISSION_CODES.NON,
-              stepPath: condition.stepPath,
-              permit_condition_category_code: condition.condition_category_code,
-              permit_condition_type_code: REPORT_TYPE_CODES.PRR,
-              permit_condition_ids: [condition.permit_condition_id],
-              permit_guid: permitGuid,
-              permit_amendment_id: currentAmendment?.permit_amendment_id,
-            }
-        }
+        initialValues={getInitialValues()}
       >
         <Row gutter={[16, 16]}>
           {hasExistingRequirements && isEditMode &&
@@ -190,20 +223,15 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
             </>}
           <Col span={24}>
             <Field
-              name="stepPath"
-              label="Condition"
+              name="permit_condition_ids"
+              label="Condition(s)"
               required
-              validate={required}
-              component={RenderField}
-              disabled
+              validate={[requiredList]}
+              component={RenderTreeSelect}
+              treeData={conditionTreeData}
+              multiple
             />
           </Col>
-          {/* <Field
-            name="permit_condition_ids"
-            label="Other linked conditions"
-            component={RenderMultiSelect}
-            data={Object.values(conditionMap).map((cond) => ({ label: cond.stepPath, value: cond.permit_condition_id }))}
-          /> */}
           <Col span={24}>
             <Field
               name="report_name"
@@ -327,6 +355,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
             <div>
               <RenderCancelButton
                 loading={loading}
+                resetForm
                 cancelFunction={!isModal ? () => setIsEditMode(false) : undefined}
               />
               <Button type="primary" htmlType="submit" loading={loading}>

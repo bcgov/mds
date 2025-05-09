@@ -163,10 +163,9 @@ def create_or_copy_permit_condition_report_requirements(
     ):
 
         # Copy existing report requirements from previous condition
-        existing_requirements = MineReportPermitRequirement.query.filter_by(
-            permit_condition_id=comparison.previous_condition.permit_condition_id,
-            deleted_ind=False,
-        ).first()
+        existing_requirements = MineReportPermitRequirement.find_by_permit_condition_id(
+            comparison.previous_condition.permit_condition_id
+        )
 
         if existing_requirements:
             existing_requirements.update_permit_conditions(

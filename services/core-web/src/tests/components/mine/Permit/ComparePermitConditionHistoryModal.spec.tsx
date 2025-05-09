@@ -3,6 +3,8 @@ import { render, screen } from '@testing-library/react';
 import ComparePermitConditionHistoryModal, { ComparePermitConditionHistoryModalProps } from '@mds/common/components/permits/ComparePermitConditionHistoryModal';
 import { ReduxWrapper } from '@mds/common/tests/utils/ReduxWrapper';
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { PermitConditionsProvider } from '@mds/common/components/permits/PermitConditionsContext';
+import { PERMITS } from '@mds/common/constants/reducerTypes';
 
 // Mock child components
 jest.mock('@mds/common/components/permits/ConditionDiffViewer', () => ({
@@ -17,19 +19,36 @@ jest.mock('@mds/common/components/permits/PermitConditionReportRequirements', ()
 
 describe('ComparePermitConditionHistoryModal', () => {
 
+    const initialState = {
+        [PERMITS]: { permits: MOCK.PERMITS }
+    }
+
+    const providerValues = {
+        mineGuid: MOCK.PERMITS[0].mine_guid,
+        permitGuid: MOCK.PERMITS[0].permit_guid,
+        latestAmendment: MOCK.PERMITS[0].permit_amendments[0],
+        currentAmendment: MOCK.PERMITS[0].permit_amendments[0],
+        previousAmendment: MOCK.PERMITS[0].permit_amendments[1],
+        loading: false,
+        setLoading: jest.fn()
+    };
+
     const defaultProps: ComparePermitConditionHistoryModalProps = {
-        mineGuid: 'test-mine-guid',
-        permitGuid: 'test-permit-guid',
         currentAmendmentCondition: MOCK.PERMITS[0].permit_amendments[0].conditions[0],
         previousAmendmentCondition: MOCK.PERMITS[0].permit_amendments[1].conditions[0],
-        latestAmendment: MOCK.PERMITS[0].permit_amendments[0],
-        previousAmendment: MOCK.PERMITS[0].permit_amendments[1]
     };
 
     it('renders the modal with title', () => {
         render(
-            <ReduxWrapper>
-                <ComparePermitConditionHistoryModal {...defaultProps} />
+            <ReduxWrapper initialState={initialState}>
+                <PermitConditionsProvider
+                    value={providerValues}
+                >
+                    <ComparePermitConditionHistoryModal
+                        currentAmendmentCondition={MOCK.PERMITS[0].permit_amendments[0].conditions[0]}
+                        previousAmendmentCondition={MOCK.PERMITS[0].permit_amendments[1].conditions[0]}
+                    />
+                </PermitConditionsProvider>
             </ReduxWrapper>
         );
 
@@ -38,8 +57,12 @@ describe('ComparePermitConditionHistoryModal', () => {
 
     it('renders condition diff viewer', () => {
         render(
-            <ReduxWrapper>
-                <ComparePermitConditionHistoryModal {...defaultProps} />
+            <ReduxWrapper initialState={initialState}>
+                <PermitConditionsProvider
+                    value={providerValues}
+                >
+                    <ComparePermitConditionHistoryModal {...defaultProps} />
+                </PermitConditionsProvider>
             </ReduxWrapper>
         );
 
@@ -48,8 +71,12 @@ describe('ComparePermitConditionHistoryModal', () => {
 
     it('renders report requirements for both versions', () => {
         render(
-            <ReduxWrapper>
-                <ComparePermitConditionHistoryModal {...defaultProps} />
+            <ReduxWrapper initialState={initialState}>
+                <PermitConditionsProvider
+                    value={providerValues}
+                >
+                    <ComparePermitConditionHistoryModal {...defaultProps} />
+                </PermitConditionsProvider>
             </ReduxWrapper>
         );
 
@@ -65,8 +92,12 @@ describe('ComparePermitConditionHistoryModal', () => {
         };
 
         render(
-            <ReduxWrapper>
-                <ComparePermitConditionHistoryModal {...propsWithoutPrevious} />
+            <ReduxWrapper initialState={initialState}>
+                <PermitConditionsProvider
+                    value={{ ...providerValues, previousAmendment: null }}
+                >
+                    <ComparePermitConditionHistoryModal {...propsWithoutPrevious} />
+                </PermitConditionsProvider>
             </ReduxWrapper>
         );
 
