@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { ReviewNOWApplication } from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
-import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
+import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 
 const reducerProps = {};
 
@@ -10,7 +10,7 @@ const setupReducerProps = () => {
   reducerProps.noticeOfWork = NOW_MOCK.IMPORTED_NOTICE_OF_WORK;
   reducerProps.reclamationSummary = NOW_MOCK.RECLAMATION_SUMMARY;
   reducerProps.renderOriginalValues = jest.fn().mockReturnValue({ value: "N/A", edited: true });
-  reducerProps.userRoles = { includes: () => {} };
+  reducerProps.userRoles = { includes: () => { } };
 };
 
 beforeEach(() => {

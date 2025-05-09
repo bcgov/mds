@@ -253,7 +253,6 @@ export const MineReportInfo: FC = () => {
           initialValues={stateParams}
           mineReportType={mine_reports_type}
         />
-        {mine_reports_type}
       </div>
       <MineReportTable
         isLoaded={isLoaded}

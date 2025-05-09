@@ -18,6 +18,9 @@ const MajorMineApplicationSuccessPage = React.lazy(
 const MineDashboard = React.lazy(() => import("@/components/dashboard/mine/MineDashboard"));
 const MinesPage = React.lazy(() => import("@/components/pages/MinesPage"));
 const ProjectPage = React.lazy(() => import("@/components/pages/Project/ProjectPage"));
+const NoticeOfWorkPage = React.lazy(
+  () => import("@/components/pages/NoticeOfWork/NoticeOfWorkPage")
+);
 const ProjectSummaryPage = React.lazy(
   () => import("@/components/pages/Project/ProjectSummaryPage")
 );
@@ -101,6 +104,16 @@ export const EDIT_PROJECT = {
     `/projects/${projectGuid}/${activeTab}/${link}`,
   component: ProjectPage,
   helpKey: "Edit-Project",
+};
+
+export const VIEW_NOTICE_OF_WORK = {
+  route: "/notice-of-work/:nowApplicationGuid/:tab",
+  dynamicRoute: (nowApplicationGuid, activeTab = "overview") =>
+    `/notice-of-work/${nowApplicationGuid}/${activeTab}`,
+  hashRoute: (nowApplicationGuid, activeTab = "overview", link) =>
+    `/notice-of-work/${nowApplicationGuid}/${activeTab}/${link}`,
+  component: NoticeOfWorkPage,
+  helpKey: "View-Notice-Of-Work",
 };
 
 export const ADD_INFORMATION_REQUIREMENTS_TABLE = {

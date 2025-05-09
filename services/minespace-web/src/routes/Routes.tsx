@@ -82,6 +82,13 @@ const Routes = () => (
         )}
       />
       <Route
+        exact
+        path={routes.VIEW_NOTICE_OF_WORK.route}
+        component={FeatureFlagGuard(Feature.MINESPACE_NOW_APPLICATION_DETAILS_VIEW)(
+          AuthenticationGuard()(routes.VIEW_NOTICE_OF_WORK.component)
+        )}
+      />
+      <Route
         path={routes.ADD_PROJECT_SUMMARY.route}
         component={ColumnWrapper()(AuthenticationGuard()(routes.ADD_PROJECT_SUMMARY.component))}
       />
