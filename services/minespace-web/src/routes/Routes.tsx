@@ -83,9 +83,9 @@ const Routes = () => (
       />
       <Route
         exact
-        path={routes.VIEW_PROPONENT_NOTICE_OF_WORK.route}
+        path={routes.VIEW_NOTICE_OF_WORK.route}
         component={FeatureFlagGuard(Feature.MINESPACE_NOW_APPLICATION_DETAILS_VIEW)(
-          AuthenticationGuard()(routes.VIEW_PROPONENT_NOTICE_OF_WORK.component)
+          AuthenticationGuard()(routes.VIEW_NOTICE_OF_WORK.component)
         )}
       />
       <Route

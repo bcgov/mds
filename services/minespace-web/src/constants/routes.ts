@@ -106,14 +106,14 @@ export const EDIT_PROJECT = {
   helpKey: "Edit-Project",
 };
 
-export const VIEW_PROPONENT_NOTICE_OF_WORK = {
+export const VIEW_NOTICE_OF_WORK = {
   route: "/notice-of-work/:nowApplicationGuid/:tab",
   dynamicRoute: (nowApplicationGuid, activeTab = "overview") =>
     `/notice-of-work/${nowApplicationGuid}/${activeTab}`,
   hashRoute: (nowApplicationGuid, activeTab = "overview", link) =>
     `/notice-of-work/${nowApplicationGuid}/${activeTab}/${link}`,
   component: NoticeOfWorkPage,
-  helpKey: "View-Proponent-Notice-Of-Work",
+  helpKey: "View-Notice-Of-Work",
 };
 
 export const ADD_INFORMATION_REQUIREMENTS_TABLE = {

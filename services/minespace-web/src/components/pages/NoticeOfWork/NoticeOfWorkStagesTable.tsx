@@ -22,7 +22,7 @@ export const NoticeOfWorkStagesTable: FC<NoticeOfWorkStagesTableProps> = ({
     }));
   const columns: ColumnsType<any> = [
     {
-      title: <b>Stage</b>,
+      title: "Stage",
       dataIndex: "application_stage",
       render: (text) => (
         <b className="light" title="Application Stage">
@@ -31,7 +31,7 @@ export const NoticeOfWorkStagesTable: FC<NoticeOfWorkStagesTableProps> = ({
       ),
     },
     {
-      title: <b>Status</b>,
+      title: "Status",
       dataIndex: "stage_status",
       render: (text, record) => {
         return (
@@ -42,7 +42,7 @@ export const NoticeOfWorkStagesTable: FC<NoticeOfWorkStagesTableProps> = ({
       },
     },
     {
-      title: <b>In status since</b>,
+      title: "In status since",
       dataIndex: "in_status_since",
       render: (text, record) => <div title="In status since">{text}</div>,
     },

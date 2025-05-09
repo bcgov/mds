@@ -40,14 +40,8 @@ const NoticeOfWorkPage: FC = () => {
 
   const handleTabChange = (newActiveTab) => {
     setActiveTab(newActiveTab);
-    let url: string;
-    switch (newActiveTab) {
-      case "overview":
-        url = router.VIEW_PROPONENT_NOTICE_OF_WORK.dynamicRoute(nowApplicationGuid, newActiveTab);
-        return history.push(url);
-      default:
-        return null;
-    }
+    let url = router.VIEW_NOTICE_OF_WORK.dynamicRoute(nowApplicationGuid, newActiveTab);
+    return history.push(url);
   };
 
   useEffect(() => {

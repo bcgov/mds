@@ -200,23 +200,17 @@ exports[`NoticeOfWorkPage renders properly 1`] = `
                                         <th
                                           class="ant-table-cell"
                                         >
-                                          <b>
-                                            Stage
-                                          </b>
+                                          Stage
                                         </th>
                                         <th
                                           class="ant-table-cell"
                                         >
-                                          <b>
-                                            Status
-                                          </b>
+                                          Status
                                         </th>
                                         <th
                                           class="ant-table-cell"
                                         >
-                                          <b>
-                                            In status since
-                                          </b>
+                                          In status since
                                         </th>
                                       </tr>
                                     </thead>
@@ -262,7 +256,7 @@ exports[`NoticeOfWorkPage renders properly 1`] = `
                                           <div
                                             title="In status since"
                                           >
-                                            Dec 19 2024 / 4 Months 18 Days
+                                            Dec 19 2024 / 4 Months 19 Days
                                           </div>
                                         </td>
                                       </tr>

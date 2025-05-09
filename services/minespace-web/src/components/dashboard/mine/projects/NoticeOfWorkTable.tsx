@@ -105,9 +105,7 @@ export const NoticeOfWorkTable: FC<NoticeOfWorkTableProps> = ({ isLoaded, applic
                   <Row gutter={1}>
                     <Col span={12}>
                       <Link
-                        to={routes.VIEW_PROPONENT_NOTICE_OF_WORK.dynamicRoute(
-                          record.now_application_guid
-                        )}
+                        to={routes.VIEW_NOTICE_OF_WORK.dynamicRoute(record.now_application_guid)}
                       >
                         View
                       </Link>
