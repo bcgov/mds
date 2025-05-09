@@ -50,9 +50,6 @@ describe("RenderTreeSelect", () => {
                         treeData={treeData}
                         component={RenderTreeSelect}
                         multiple
-                        treeCheckable
-                        treeLine
-                        treeCheckStrictly
                     />
                     <Field
                         name="tree_with_no_values"
@@ -61,9 +58,6 @@ describe("RenderTreeSelect", () => {
                         treeData={treeData}
                         component={RenderTreeSelect}
                         multiple
-                        treeCheckable
-                        treeLine
-                        treeCheckStrictly
                     />
                 </FormWrapper>
             </ReduxWrapper>
@@ -86,9 +80,6 @@ describe("RenderTreeSelect", () => {
                         treeData={treeData}
                         component={RenderTreeSelect}
                         multiple
-                        treeCheckable
-                        treeLine
-                        treeCheckStrictly
                     />
                     <Field
                         name="tree_with_no_values"
@@ -97,9 +88,6 @@ describe("RenderTreeSelect", () => {
                         treeData={treeData}
                         component={RenderTreeSelect}
                         multiple
-                        treeCheckable
-                        treeLine
-                        treeCheckStrictly
                     />
                 </FormWrapper>
             </ReduxWrapper>

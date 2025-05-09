@@ -4,7 +4,6 @@ import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreat
 import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import {
-  getCategoriesWithReports,
   getPermits,
   getLatestAmendmentByPermitGuid,
   getMineReportPermitRequirementById,
@@ -12,94 +11,26 @@ import {
 import { getDropdownPermitConditionCategoryOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { required } from "@mds/common/redux/utils/Validate";
 import { createDropDownList } from "@mds/common/redux/utils/helpers";
-import { Typography, Row, Col, Button } from "antd";
+import { Typography, Row, Col } from "antd";
 import React, { FC, useEffect, useState } from "react";
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import RenderSelect from "../forms/RenderSelect";
 import { Field, getFormValues, change } from "@mds/common/components/forms/form";
 import { PermitReportInfoBox } from "./ReportInfoBox";
-import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
 import { uniqBy } from "lodash";
 
-export const ConditionCategories: FC<{ permitGuid: string; formName: FORM }> = ({
-  permitGuid,
-  formName,
-}) => {
-  const dispatch = useAppDispatch();
-  const conditionCategories = useAppSelector(getCategoriesWithReports(permitGuid));
-
-  function handleSelectedReportChange(value: any): void {
-    dispatch(change(formName, "mine_report_permit_requirement_id", value));
-  }
-
-  return (
-    <div className="report-options">
-      {conditionCategories?.map((category) => (
-        <div key={category.condition_category_code}>
-          <Typography.Paragraph strong className="margin-large--top" style={{ marginBottom: 0 }}>
-            {category.description}
-          </Typography.Paragraph>
-
-          {category.reports?.map((report) => (
-            <Row key={report.report_name}>
-              <Col span={24}>
-                <Button
-                  onClick={() =>
-                    handleSelectedReportChange(report.mine_report_permit_requirement_id)
-                  }
-                  type="text"
-                  className="report-link btn-sm-padding"
-                >
-                  <Typography.Text>{report.report_name}</Typography.Text>
-                  <span className="margin-large--left">
-                    <ArrowRightOutlined />
-                  </span>
-                </Button>
-              </Col>
-            </Row>
-          ))}
-        </div>
-      ))}
-    </div>
-  );
-};
-
 export const PermitReportCodeRequirement: FC<{
-  permitGuid: string;
   amendment: IPermitAmendment;
-  formValues: IMineReportSubmission;
-  formName: FORM;
   summary?: boolean;
-}> = ({ permitGuid, amendment, formValues, summary = false, formName }) => {
-  const dispatch = useAppDispatch();
-  const conditionCategories = useAppSelector(getCategoriesWithReports(permitGuid));
+}> = ({ amendment, summary = false }) => {
   const reports = amendment?.mine_report_permit_requirements;
   const reportOptions = createDropDownList(
     uniqBy(reports, "report_name"),
     "report_name",
     "mine_report_permit_requirement_id"
   );
-  const selectedReport = reports
-    ? reports.find(
-        (report) =>
-          report.mine_report_permit_requirement_id === formValues?.mine_report_permit_requirement_id
-      )
-    : null;
-  const selectedCategory = selectedReport
-    ? conditionCategories.find(
-        (cat) => cat.condition_category_code === selectedReport?.condition_category_code
-      )
-    : null;
-
-  useEffect(() => {
-    if (selectedReport) {
-      dispatch(
-        change(formName, "permit_condition_category_code", selectedCategory.condition_category_code)
-      );
-    }
-  }, [formValues.mine_report_permit_requirement_id]);
 
   return (
     <Field
@@ -167,7 +98,7 @@ export const RenderPRRFields: FC<{
     if (selectedPermitReportDefinition) {
       dispatch(change(formName, "due_date", selectedPermitReportDefinition.initial_due_date));
     }
-  }, [selectedPermitReportDefinition?.condition_category_code]);
+  }, [selectedPermitReportDefinition]);
 
   return (
     <>
@@ -222,9 +153,6 @@ export const RenderPRRFields: FC<{
         <Col md={!fullWidth && 12} sm={24}>
           <PermitReportCodeRequirement
             amendment={latestAmendment}
-            permitGuid={formValues?.permit_guid}
-            formValues={formValues}
-            formName={formName}
             summary={summary}
           />
         </Col>
@@ -235,11 +163,7 @@ export const RenderPRRFields: FC<{
             <div className="light-grey-border">
               <PermitReportCodeRequirement
                 amendment={latestAmendment}
-                permitGuid={formValues?.permit_guid}
-                formValues={formValues}
-                formName={formName}
               />
-              <ConditionCategories formName={formName} permitGuid={formValues?.permit_guid} />
             </div>
           </Col>
           <Col span={12}>

@@ -13,6 +13,7 @@ from app.api.mines.reports.models.mine_report_submission import MineReportSubmis
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 from app.api.mines.reports.models.mine_report_contact import MineReportContact
 from app.api.mines.permits.permit_conditions.models.permit_condition_category import PermitConditionCategory
+from app.api.mines.reports.models.mine_report_permit_requirement import MineReportPermitRequirement
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -39,11 +40,16 @@ class ReportSubmissionResource(Resource, UserMixin):
         return mine_report_definition.mine_report_definition_id
 
     @staticmethod
-    def get_check_permit_id(permit_condition_category_code, permit_guid, mine_guid):
-        permit_condition_category = PermitConditionCategory.find_by_permit_condition_category_code(
-            permit_condition_category_code)
-        if not permit_condition_category:
-            raise BadRequest('A permit required report type must be selected from the list.')
+    def get_check_permit_id(permit_condition_category_code, mine_report_permit_requirement_id, permit_guid, mine_guid):
+        if permit_condition_category_code:
+            permit_condition_category = PermitConditionCategory.find_by_permit_condition_category_code(
+                permit_condition_category_code)        
+            if not permit_condition_category:
+                raise BadRequest('A permit required report type must be selected from the list.')
+        elif mine_report_permit_requirement_id:
+            permit_requirement = MineReportPermitRequirement.find_by_mine_report_permit_requirement_id(mine_report_permit_requirement_id)
+            if not permit_requirement:
+                raise BadRequest('Mine report permit requirement is required')
         permit_error_message = 'A permit must be selected for Permit Required Report'
         if not permit_guid:
             raise BadRequest(permit_error_message)
@@ -92,6 +98,7 @@ class ReportSubmissionResource(Resource, UserMixin):
             submitter_name=request_data.get('submitter_name'),
             permit_id=permit_id,
             permit_condition_category_code=request_data.get('permit_condition_category_code'),
+            mine_report_permit_requirement_id=request_data.get('mine_report_permit_requirement_id'),
             submitter_email=request_data.get('submitter_email'),
         )
         mine_report.save()
@@ -211,7 +218,9 @@ class ReportSubmissionResource(Resource, UserMixin):
         if not mine_report_submission_status_code or is_proponent:
             mine_report_submission_status_code = "INI"
 
-        is_code_required_report = permit_condition_category_code == None
+        is_legacy_prr = permit_condition_category_code is not None
+        is_new_prr = mine_report_permit_requirement_id is not None
+        is_code_required_report = not is_legacy_prr and not is_new_prr
         mine_report_definition_id = None
         permit_id = None
 
@@ -220,7 +229,7 @@ class ReportSubmissionResource(Resource, UserMixin):
         if is_code_required_report:
             mine_report_definition_id = self.get_check_mine_report_definition_id(mine_report_definition_guid)
         else:
-            permit_id = self.get_check_permit_id(permit_condition_category_code, permit_guid, mine_guid)
+            permit_id = self.get_check_permit_id(permit_condition_category_code, mine_report_permit_requirement_id, permit_guid, mine_guid)
 
         report_documents = ReportSubmissionResource.get_updated_documents(documents, is_proponent, mine_guid)        
         

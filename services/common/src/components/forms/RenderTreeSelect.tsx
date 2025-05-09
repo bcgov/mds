@@ -64,6 +64,9 @@ export const RenderTreeSelect: FC<RenderTreeSelectProps & TreeSelectProps> = ({
     // or treeData can be used to pass in nested data. node data has more available properties such as checkable
     treeData = [],
     treeDataSimpleMode = false,
+    treeCheckStrictly = true, // don't associate parent/child
+    treeCheckable = true,
+    treeLine = true,
     disabled = false,
     label = "",
     multiple = false,
@@ -127,6 +130,9 @@ export const RenderTreeSelect: FC<RenderTreeSelectProps & TreeSelectProps> = ({
                                     treeDefaultExpandAll={treeDefaultExpandAll}
                                     showArrow
                                     value={input.value}
+                                    treeCheckStrictly={treeCheckStrictly}
+                                    treeLine={treeLine}
+                                    treeCheckable={treeCheckable}
                                     {...props}
                                     {...extraProps}
                                 />

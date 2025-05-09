@@ -93,34 +93,6 @@ export const formatPermitConditionStep = (step: string, condition?: string) => {
   return formattedStep != "" ? `${formattedStep} ${condition}` : condition;
 }
 
-export const getConditionsWithRequirements = (conditions: IPermitCondition[], requirements?: IMineReportPermitRequirement[]) => {
-  let result = [];
-
-  const requirementsByCondition = requirements?.length ? requirements.reduce((acc, requirement) => {
-    if (!acc[requirement.permit_condition_id]) {
-      acc[requirement.permit_condition_id] = [];
-    }
-    acc[requirement.permit_condition_id].push(requirement);
-    return acc;
-  }, {}) : {};
-
-  conditions.forEach((condition) => {
-    if (requirements && condition?.permit_condition_id) {
-      const reqs = requirementsByCondition[condition.permit_condition_id];
-      const conditionWithRequirement = reqs?.map(req => ({ ...condition, mineReportPermitRequirement: req }));
-      result = [...result, ...(conditionWithRequirement || [])];
-    } else if (condition?.mineReportPermitRequirement) {
-      result.push(condition);
-    }
-
-    if (condition?.sub_conditions?.length > 0) {
-      result = result.concat(getConditionsWithRequirements(condition.sub_conditions, requirements));
-    }
-  });
-
-  return result;
-};
-
 /**
      * Find a condition recursively by guid or id in the given list of conditions.
      */
