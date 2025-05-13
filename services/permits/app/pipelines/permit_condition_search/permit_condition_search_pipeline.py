@@ -47,6 +47,7 @@ doc_metadata_fields = {
     "category": str,
     "issue_date": datetime,
     "permit": str,
+    "permit_type": str,
     "mine_number": str,
     "mine_name": str,
     "document_name": str,
