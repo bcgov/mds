@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { ReferralTabs } from "@/components/noticeOfWork/applications/referals/ReferralTabs";
-import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
+import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 
 const dispatchProps = {};
 const reducerProps = {};

@@ -339,7 +339,7 @@ export const SORT_NOTICE_OF_WORK_DOCUMENTS = (now_document_guid) =>
 export const NOW_APPLICATION_PERMIT_TYPES = "/now-applications/application-permit-types";
 export const IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB = (applicationGuid) =>
   `/import-now-submission-documents?now_application_guid=${applicationGuid}&most_recent_only=true`;
-export const NOTICE_OF_WORK_APPLICATION_DELAY = (applicationGuid, delayGuid) =>
+export const NOTICE_OF_WORK_APPLICATION_DELAY = (applicationGuid, delayGuid?) =>
   delayGuid
     ? `/now-applications/${applicationGuid}/delays/${delayGuid}`
     : `/now-applications/${applicationGuid}/delays`;
@@ -347,6 +347,8 @@ export const NOTICE_OF_WORK_APPLICATION_DELAY = (applicationGuid, delayGuid) =>
 // Proponent Notice Of Work
 export const PROPONENT_NOTICE_OF_WORK_APPLICATION_LIST = (mineGuid) =>
   `/mines/${mineGuid}/now-applications`;
+export const PROPONENT_NOTICE_OF_WORK_APPLICATION = (nowApplicationGuid) =>
+  `/now-applications/${nowApplicationGuid}/proponent`;
 
 // Mine Party Appointments
 // NOTE: pretty sure the file generating the TS error should actually be passing MPAGuid below

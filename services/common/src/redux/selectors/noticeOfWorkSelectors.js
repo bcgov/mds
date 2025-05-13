@@ -57,7 +57,7 @@ const getAmountSum = (arr) => arr.reduce((sum, ar) => +sum + +ar, 0);
 export const getTotalApplicationDelayDuration = createSelector([getApplicationDelays], (delays) => {
   const today = new Date();
   const totalArr = [];
-  delays.map((delay) => {
+  delays?.map((delay) => {
     const endDate = delay.end_date ? delay.end_date : today;
     const delayDuration = moment.duration(moment(endDate).diff(moment(delay.start_date)));
     // eslint-disable-next-line no-underscore-dangle

@@ -1,4 +1,4 @@
-import { IMineDocument } from "./mineDocument.interface";
+import { IMineDocument, INoticeOfWorkApplicationProgress } from "@mds/common/interfaces";
 
 export interface INoticeOfWork {
   mine_region: any;
@@ -19,4 +19,5 @@ export interface INoticeOfWork {
   now_number: string;
   mine_name: string;
   mine_no?: string;
+  application_progress?: INoticeOfWorkApplicationProgress[];
 }

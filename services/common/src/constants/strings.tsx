@@ -43,6 +43,7 @@ export const UNKNOWN = "Unknown";
 export const EMPTY = "";
 export const ZERO = "0.00";
 export const UNASSIGNED = "Unassigned";
+export const NOT_STARTED = "Not Started";
 export const DATE_FORMAT = "YYYY-MM-DD";
 
 // default coordinates for center of BC
