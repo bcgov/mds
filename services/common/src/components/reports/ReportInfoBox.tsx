@@ -103,7 +103,7 @@ export const PermitReportInfoBox: FC<{
               {conditions.map((condition) => (
                 <Collapse
                   expandIconPosition="end"
-                  className="taratest light-header"
+                  className="light-header"
                   key={condition.permit_condition_id}
                 >
                   <Collapse.Panel

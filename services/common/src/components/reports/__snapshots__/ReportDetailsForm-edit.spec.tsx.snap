@@ -3628,7 +3628,7 @@ exports[`ReportDetailsForm renders verified PRR edit mode properly 1`] = `
                 Conditions:
               </h5>
               <div
-                class="ant-collapse ant-collapse-icon-position-end taratest light-header"
+                class="ant-collapse ant-collapse-icon-position-end light-header"
               >
                 <div
                   class="ant-collapse-item"

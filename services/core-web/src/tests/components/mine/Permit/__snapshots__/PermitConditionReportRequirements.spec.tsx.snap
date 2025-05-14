@@ -61,8 +61,8 @@ exports[`PermitConditionReportRequirements expands collapse panel on click 1`] =
         >
           <div>
             <form
-              class="ant-form ant-form-vertical common-form common-form-ADD_REPORT_TO_PERMIT_CONDITION-1639 form-view"
-              id="ADD_REPORT_TO_PERMIT_CONDITION-1639"
+              class="ant-form ant-form-vertical common-form common-form-ADD_REPORT_TO_PERMIT_CONDITION-1 form-view"
+              id="ADD_REPORT_TO_PERMIT_CONDITION-1"
             >
               <div
                 class="ant-row"
@@ -78,13 +78,33 @@ exports[`PermitConditionReportRequirements expands collapse panel on click 1`] =
                     <div
                       class="ant-typography view-item-label"
                     >
-                      Condition
+                      Condition(s)
                     </div>
-                    <div
-                      class="ant-typography view-item-value"
+                    <ul
+                      class="tree-select-view margin-large--left"
                     >
-                      N/A
-                    </div>
+                      <li>
+                        <div
+                          class="ant-typography view-item-value"
+                        >
+                          Health and Safety - 1
+                        </div>
+                      </li>
+                      <li>
+                        <div
+                          class="ant-typography view-item-value"
+                        >
+                          Environmental Land and Watercourses - 1.b.i.1
+                        </div>
+                      </li>
+                      <li>
+                        <div
+                          class="ant-typography view-item-value"
+                        >
+                          Environmental Land and Watercourses - 1.b.i.2
+                        </div>
+                      </li>
+                    </ul>
                   </div>
                 </div>
                 <div

@@ -56,7 +56,7 @@ export const EditPermitConditionCategoryInline: FC<IPermitConditionCategoryProps
     setIsEditMode(false);
   }
 
-  const titleElement = <Typography.Title style={{ marginBottom: 0 }} level={3}>{formatPermitConditionStep(category.step)} {category.description} ({props.conditionCount})</Typography.Title>;
+  const titleElement = <span style={{ marginBottom: 0 }}>{formatPermitConditionStep(category.step)} {category.description} ({props.conditionCount})</span>;
   if (!props.canEdit) {
     return titleElement;
   }
