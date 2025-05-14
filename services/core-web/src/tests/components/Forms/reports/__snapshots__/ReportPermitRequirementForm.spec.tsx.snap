@@ -204,7 +204,7 @@ exports[`RequestReportForm renders form properly 1`] = `
                 <div
                   style="width: 100%;"
                 >
-                  Report Type
+                  Report Name
                 </div>
               </label>
             </div>
@@ -829,7 +829,7 @@ exports[`RequestReportForm renders view mode properly 1`] = `
           <div
             class="ant-typography view-item-label"
           >
-            Report Type
+            Report Name
           </div>
           <div
             class="ant-typography view-item-value"
