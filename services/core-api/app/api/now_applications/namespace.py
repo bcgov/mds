@@ -22,10 +22,12 @@ from app.api.now_applications.resources.now_application_review_type_resource imp
 from app.api.now_applications.resources.now_application_export_resource import NOWApplicationExportResource
 from app.api.now_applications.resources.administrative_amendment_list_resource import AdministrativeAmendmentListResource
 from app.api.now_applications.resources.now_application_import_submission_documents_job import NOWApplicationImportSubmissionDocumentsJobResource
+from app.api.now_applications.resources.now_application_proponent_resource import NOWApplicationProponentResource
 
 api = Namespace('now-applications', description='Core Notice of Work operations')
 
 api.add_resource(NOWApplicationListResource, '')
+api.add_resource(NOWApplicationProponentResource,'/<string:now_application_guid>/proponent')
 api.add_resource(NOWApplicationNOWNumbersListResource, '/now-numbers')
 api.add_resource(NOWApplicationImportResource, '/<string:application_guid>/import')
 api.add_resource(NOWApplicationImportSubmissionDocumentsJobResource,

@@ -10,8 +10,8 @@ export const storeMineNoticeOfWorkApplications = (payload) => ({
   payload,
 });
 
-export const storeProponentNoticeOfWorkApplications = (payload) => ({
-  type: actionTypes.STORE_PROPONENT_NOTICE_OF_WORK_APPLICATIONS,
+export const storeProponentNoticeOfWorkApplicationsList = (payload) => ({
+  type: actionTypes.STORE_PROPONENT_NOTICE_OF_WORK_APPLICATIONS_LIST,
   payload,
 });
 

@@ -38,7 +38,9 @@ class AMSApiService():
 
     @classmethod
     def __create_full_address(cls, address_line1, city, sub_division_code, post_code, suite_no):
-        return f"{suite_no} {address_line1}, {city}, {sub_division_code}, {post_code}"
+        components = [suite_no, address_line1, city, sub_division_code, post_code]
+        # Filter out empty values and join them to form the full address
+        return ', '.join(filter(None, components))
 
     @classmethod
     def __get_authorization_details(cls, ams_authorizations, detail_type):

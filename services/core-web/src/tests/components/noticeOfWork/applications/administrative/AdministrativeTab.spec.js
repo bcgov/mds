@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { AdministrativeTab } from "@/components/noticeOfWork/applications/administrative/AdministrativeTab";
-import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
+import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 
 const dispatchProps = {};
 const reducerProps = {};

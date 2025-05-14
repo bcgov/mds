@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { ReviewApplicationFeeContent } from "@/components/noticeOfWork/applications/review/ReviewApplicationFeeContent";
-import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
+import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 
 const props = {};
 
@@ -19,7 +19,7 @@ const setupProps = () => {
   props.proposedTonnage = 10000;
   props.proposedStartDate = "2016-03-01";
   props.proposedAuthorizationEndDate = "2020-03-01";
-  props.change = () => {};
+  props.change = () => { };
 };
 
 beforeEach(() => {

@@ -56,3 +56,7 @@ class NOWApplicationProgress(Base, AuditMixin):
     @classmethod
     def get_active(cls):
         return cls.query.filter_by(active_ind=True).all()
+    
+    @classmethod
+    def find_by_id(cls, now_application_id):
+        return cls.query.filter_by(now_application_id=now_application_id).all()

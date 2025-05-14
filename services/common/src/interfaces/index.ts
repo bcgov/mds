@@ -46,3 +46,5 @@ export * from "./mineStatus.interface";
 export * from "./mineCommodityOption.interface";
 export * from "./mineDisturbanceOption.interface";
 export * from "./mineSearch.interface"
+export * from "./noticeOfWorkApplicationProgress.interface";
+export * from "./noticeOfWorkApplicationStages.interface";

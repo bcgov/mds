@@ -10,6 +10,9 @@ import { getApplicationStatusType } from "@mds/common/constants/badgeStatusTypes
 import { SortOrder } from "antd/es/table/interface";
 import { dateSorter, formatDate } from "@mds/common/redux/utils/helpers";
 import { downloadNowDocument } from "@mds/common/redux/utils/actionlessNetworkCalls";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils";
+import * as routes from "@/constants/routes";
 
 interface NoticeOfWorkTableProps {
   isLoaded: boolean;
@@ -29,9 +32,12 @@ const transformRowData = (applications: INoticeOfWork[]) =>
     originating_system: application.originating_system ?? Strings.EMPTY_FIELD,
     document:
       application.application_documents?.length > 0 ? application.application_documents[0] : {},
+    application_progress: application.application_progress,
+    mine_guid: application.mine_guid,
   }));
 
 export const NoticeOfWorkTable: FC<NoticeOfWorkTableProps> = ({ isLoaded, applications }) => {
+  const { isFeatureEnabled } = useFeatureFlag();
   const columns = [
     {
       title: "Number",
@@ -88,6 +94,29 @@ export const NoticeOfWorkTable: FC<NoticeOfWorkTableProps> = ({ isLoaded, applic
           Strings.EMPTY_FIELD
         ),
     },
+    ...(isFeatureEnabled(Feature.MINESPACE_NOW_APPLICATION_DETAILS_VIEW)
+      ? [
+          {
+            title: "",
+            dataIndex: "project",
+            render: (text, record) => {
+              return (
+                <div title="">
+                  <Row gutter={1}>
+                    <Col span={12}>
+                      <Link
+                        to={routes.VIEW_NOTICE_OF_WORK.dynamicRoute(record.now_application_guid)}
+                      >
+                        View
+                      </Link>
+                    </Col>
+                  </Row>
+                </div>
+              );
+            },
+          },
+        ]
+      : []),
   ];
 
   return (

@@ -25,7 +25,7 @@ export const noticeOfWorkReducer = (state = initialState, action) => {
         ...state,
         noticeOfWorkList: action.payload.records,
       };
-    case actionTypes.STORE_PROPONENT_NOTICE_OF_WORK_APPLICATIONS:
+    case actionTypes.STORE_PROPONENT_NOTICE_OF_WORK_APPLICATIONS_LIST:
       return {
         ...state,
         noticeOfWorkList: action.payload,

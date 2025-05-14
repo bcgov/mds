@@ -2,7 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applications/administrative/NOWApplicationAdministrative";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { IMPORTED_NOTICE_OF_WORK } from "@/tests/mocks/noticeOfWorkMocks";
+import { IMPORTED_NOTICE_OF_WORK } from "@mds/common/tests/mocks/noticeOfWorkMock";
 
 const dispatchProps = {};
 const reducerProps = {};

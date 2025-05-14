@@ -81,6 +81,14 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
               Array [
                 Object {
                   "application_documents": Array [],
+                  "application_progress": Array [
+                    Object {
+                      "application_progress_status_code": "REV",
+                      "created_by": "Walker, Miller and Chase",
+                      "last_updated_by": "system",
+                      "start_date": "2024-12-19T09:38:27.003392+00:00",
+                    },
+                  ],
                   "imported_to_core": true,
                   "is_historic": false,
                   "issuing_inspector_name": "Inspector Gadget",
