@@ -1,4 +1,5 @@
 import json
+import uuid
 
 from app.api.constants import MINE_REPORT_TYPE
 from app.api.mines.reports.models.mine_report import MineReport
@@ -192,3 +193,51 @@ def test_post_additional_mine_report_submission(test_client, db_session, auth_he
     # fields that should not change
     assert previous_submission['received_date'] == latest_submission['received_date']
     assert parser.parse(previous_submission['create_timestamp']).replace(tzinfo=None) == parser.parse(latest_submission['create_timestamp']).replace(tzinfo=None)
+
+
+def test_post_submission_invalid_permit_guid_returns_bad_request(test_client, db_session, auth_headers):
+    """Test that invalid permit_guid triggers BadRequest with the expected message via POST."""
+    mine = MineFactory(minimal=True)
+
+    submission_data = {
+        'description_comment': "description comment",
+        'documents': [],
+        'due_date': "2024-02-11",
+        'mine_guid': mine.mine_guid,
+        'permit_guid': str(uuid.uuid4()),
+        'permit_condition_category_code': "HSC",
+        'received_date': "2024-02-09",
+        'submission_year': "2024",
+        'submitter_email': "email@email.com",
+        'submitter_name': "Submitter Name",
+    }
+
+    post_resp = test_client.post(
+        f'mines/reports/submissions', headers=auth_headers['full_auth_header'], json=submission_data)
+    assert post_resp.status_code == 400
+    data = json.loads(post_resp.data.decode())
+    assert "A permit must be selected for Permit Required Report" in data.get("message", "")
+
+
+def test_post_submission_invalid_mine_report_permit_requirement_id_returns_bad_request(test_client, db_session, auth_headers):
+    """Test that invalid mine_report_permit_requirement_id triggers BadRequest with the expected message via POST when permit_guid is present and permit_condition_category_code is not provided."""
+    mine = MineFactory(minimal=True)
+
+    submission_data = {
+        'description_comment': "description comment",
+        'documents': [],
+        'due_date': "2024-02-11",
+        'mine_guid': mine.mine_guid,
+        'permit_guid': "some-valid-guid",
+        'mine_report_permit_requirement_id': 999,
+        'received_date': "2024-02-09",
+        'submission_year': "2024",
+        'submitter_email': "email@email.com",
+        'submitter_name': "Submitter Name",
+    }
+
+    post_resp = test_client.post(
+        f'mines/reports/submissions', headers=auth_headers['full_auth_header'], json=submission_data)
+    assert post_resp.status_code == 400
+    data = json.loads(post_resp.data.decode())
+    assert "Mine report permit requirement is required" in data.get("message", "")
