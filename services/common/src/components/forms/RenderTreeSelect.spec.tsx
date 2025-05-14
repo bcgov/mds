@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import RenderTreeSelect from "./RenderTreeSelect";
+import RenderTreeSelect, { parseTreeValues } from "./RenderTreeSelect";
 import FormWrapper from "./FormWrapper";
 import { Field } from "./form";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
@@ -50,6 +50,7 @@ describe("RenderTreeSelect", () => {
                         treeData={treeData}
                         component={RenderTreeSelect}
                         multiple
+                        parse={parseTreeValues}
                     />
                     <Field
                         name="tree_with_no_values"
@@ -58,6 +59,7 @@ describe("RenderTreeSelect", () => {
                         treeData={treeData}
                         component={RenderTreeSelect}
                         multiple
+                        parse={parseTreeValues}
                     />
                 </FormWrapper>
             </ReduxWrapper>

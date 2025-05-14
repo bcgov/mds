@@ -52,11 +52,25 @@ describe("RequestReportForm", () => {
       <ReduxWrapper initialState={initialState}>
         <PermitConditionsProvider value={providerParams}>
           <ReportPermitRequirementForm
-            onSubmit={() => { }}
             canEditPermitConditions={true}
             refreshData={jest.fn()}
             condition={MOCK.PERMITS[0].permit_amendments[0].conditions[0]}
             isModal // isModal is passed by the modal wrapper
+          />
+        </PermitConditionsProvider>
+      </ReduxWrapper>
+    );
+
+    expect(container.firstChild).toMatchSnapshot();
+  });
+  it("renders view mode properly", () => {
+    const { container } = render(
+      <ReduxWrapper initialState={initialState}>
+        <PermitConditionsProvider value={providerParams}>
+          <ReportPermitRequirementForm
+            canEditPermitConditions={true}
+            refreshData={jest.fn()}
+            mineReportPermitRequirement={MOCK.PERMITS[0].permit_amendments[0].conditions[0].mineReportPermitRequirement}
           />
         </PermitConditionsProvider>
       </ReduxWrapper>

@@ -4,7 +4,14 @@ import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { PermitConditionsProvider } from "@mds/common/components/permits/PermitConditionsContext";
 import PermitConditionReportRequirements from "@mds/common/components/permits/PermitConditionReportRequirements";
+import { PERMITS } from "@mds/common/constants/reducerTypes";
 
+const initialState = {
+    [PERMITS]: {
+        permits: MOCK.PERMITS,
+        latestPermitAmendments: MOCK.PERMIT_AMENDMENT_STATE,
+    },
+};
 
 const requirements = [MOCK.PERMITS[0].permit_amendments[0].conditions[0].mineReportPermitRequirement];
 
@@ -21,7 +28,7 @@ const params = {
 describe("PermitConditionReportRequirements", () => {
     it("renders report requirements correctly", () => {
         const { getByText } = render(
-            <ReduxWrapper>
+            <ReduxWrapper initialState={initialState}>
                 <PermitConditionsProvider value={params}>
                     <PermitConditionReportRequirements
                         requirements={requirements}
@@ -35,7 +42,7 @@ describe("PermitConditionReportRequirements", () => {
 
     it("expands collapse panel on click", () => {
         const { getByText, container } = render(
-            <ReduxWrapper>
+            <ReduxWrapper initialState={initialState}>
                 <PermitConditionsProvider value={params}>
                     <PermitConditionReportRequirements
                         requirements={requirements}
@@ -55,7 +62,7 @@ describe("PermitConditionReportRequirements", () => {
         const refreshData = jest.fn().mockResolvedValue(undefined);
 
         render(
-            <ReduxWrapper>
+            <ReduxWrapper initialState={initialState}>
                 <PermitConditionsProvider value={params}>
                     <PermitConditionReportRequirements
                         requirements={requirements}
@@ -77,7 +84,7 @@ describe("PermitConditionReportRequirements", () => {
         };
 
         const { getByText } = render(
-            <ReduxWrapper>
+            <ReduxWrapper initialState={initialState}>
                 <PermitConditionsProvider value={params}>
                     <PermitConditionReportRequirements
                         requirements={[requirementWithoutReportName]}

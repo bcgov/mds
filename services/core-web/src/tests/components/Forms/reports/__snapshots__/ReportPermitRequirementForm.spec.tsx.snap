@@ -756,7 +756,8 @@ exports[`RequestReportForm renders form properly 1`] = `
           </span>
         </button>
         <button
-          class="ant-btn ant-btn-primary"
+          aria-label="Submit"
+          class="ant-btn ant-btn-primary  form-btn"
           type="submit"
         >
           <span>
@@ -764,6 +765,165 @@ exports[`RequestReportForm renders form properly 1`] = `
           </span>
         </button>
       </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`RequestReportForm renders view mode properly 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-ADD_REPORT_TO_PERMIT_CONDITION-1 form-view"
+    id="ADD_REPORT_TO_PERMIT_CONDITION-1"
+  >
+    <div
+      class="ant-row"
+      style="margin: -8px -8px -8px -8px;"
+    >
+      <div
+        class="ant-col ant-col-24"
+        style="padding: 8px 8px 8px 8px;"
+      >
+        <div
+          class="view-item ant-form-item"
+        >
+          <div
+            class="ant-typography view-item-label"
+          >
+            Condition(s)
+          </div>
+          <ul
+            class="multi-select-view margin-large--left"
+          >
+            <li>
+              <div
+                class="ant-typography view-item-value"
+              >
+                Health and Safety - 1
+              </div>
+            </li>
+            <li>
+              <div
+                class="ant-typography view-item-value"
+              >
+                Environmental Land and Watercourses - 1.b.i.1
+              </div>
+            </li>
+            <li>
+              <div
+                class="ant-typography view-item-value"
+              >
+                Environmental Land and Watercourses - 1.b.i.2
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-24"
+        style="padding: 8px 8px 8px 8px;"
+      >
+        <div
+          class="view-item ant-form-item"
+        >
+          <div
+            class="ant-typography view-item-label"
+          >
+            Report Type
+          </div>
+          <div
+            class="ant-typography view-item-value"
+          >
+            Test Report
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-12"
+        style="padding: 8px 8px 8px 8px;"
+      >
+        <div
+          class="view-item ant-form-item"
+        >
+          <div
+            class="ant-typography view-item-label"
+          >
+            Report Frequency
+          </div>
+          <div
+            class="ant-typography view-item-value"
+          >
+            Annually
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-sm-24 ant-col-md-12"
+        style="padding: 8px 8px 8px 8px;"
+      >
+        <div
+          class="view-item ant-form-item"
+        >
+          <div
+            class="ant-typography view-item-label"
+          >
+            Initial Due Date
+          </div>
+          <div
+            class="ant-typography view-item-value"
+          >
+            Jan 01 2024
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-sm-24 ant-col-md-12"
+        style="padding: 8px 8px 8px 8px;"
+      >
+        <div>
+          <div
+            class="ant-typography margin-none"
+          >
+            <strong>
+              Regulatory Authority
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          />
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-sm-24 ant-col-md-12"
+        style="padding: 8px 8px 8px 8px;"
+      >
+        <div>
+          <div
+            class="ant-typography margin-none"
+          >
+            <strong>
+              Ministry Recipient
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            Major Mines Office 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-row ant-row-end"
+    >
+      <button
+        class="ant-btn ant-btn-primary"
+        type="button"
+      >
+        <span>
+          Edit Report
+        </span>
+      </button>
     </div>
   </form>
 </div>

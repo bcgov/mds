@@ -89,8 +89,9 @@ export const requiredRadioButton = (value) =>
 export const requiredNotUndefined = (value) =>
   value !== undefined ? undefined : "This is a required field";
 
-export const requiredList = (value) =>
-  value && value.length > 0 ? undefined : "This is a required field";
+export const requiredList = (value) => {
+  return value && value.length > 0 ? undefined : "This is a required field"
+};
 
 export const requiredNewFiles = (files: any[]) => {
   const hasNewFiles =
@@ -409,3 +410,9 @@ export const assessedLiabilityNegativeWarning = (value) =>
   positiveNumber(value)
     ? "A negative value will decrease the current assessed liability"
     : undefined;
+
+export const notInList = (list = [], message: string) => (value) => {
+  return list.includes(value)
+    ? message
+    : undefined;
+}

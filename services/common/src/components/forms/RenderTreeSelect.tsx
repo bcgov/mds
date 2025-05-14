@@ -18,13 +18,13 @@ interface RenderTreeSelectProps extends BaseInputProps {
 const defaultViewDisplay = (opts: any[]): ReactNode => {
 
     if (!opts.length) {
-        return <div className="multi-select-view">
+        return <div className="tree-select-view">
             <Typography.Paragraph className="view-item-value">
                 {EMPTY_FIELD}
-            </Typography.Paragraph>
+            </Typography.Paragraph>s
         </div>
     }
-    return <ul className="multi-select-view margin-large--left">
+    return <ul className="tree-select-view margin-large--left">
         {opts.map((opt) =>
             <li key={opt.value ?? opt.id}>
                 <Typography.Paragraph className="view-item-value">{opt.title}</Typography.Paragraph>
@@ -124,9 +124,7 @@ export const RenderTreeSelect: FC<RenderTreeSelectProps & TreeSelectProps> = ({
                                     placeholder={placeholder}
                                     id={props.id ?? input.name}
                                     treeData={treeData}
-                                    onChange={(newValue) => {
-                                        input.onChange(parseTreeValues(newValue))
-                                    }}
+                                    onChange={input.onChange}
                                     treeDefaultExpandAll={treeDefaultExpandAll}
                                     showArrow
                                     value={input.value}
