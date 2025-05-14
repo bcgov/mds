@@ -59,7 +59,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
   const disableFields = mineReportPermitRequirement?.mine_report_permit_requirement_id !== selectedRequirement?.mine_report_permit_requirement_id;
   const multipleConditions = selectedRequirement?.permit_condition_ids.length > 1;
   const { conditionMap, categoriesWithConditions } = useAppSelector(getPermitConditionCategories(permitGuid, currentAmendment.permit_amendment_guid));
-  console.log("HI TARA multipleConditions?", multipleConditions)
+
   const getLinkedConditionList = () => {
     if (!hasExistingRequirements || !selectedRequirement) {
       return [];
