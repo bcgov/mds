@@ -248,7 +248,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
               required
               validate={[required, maxLength(255), notInList(
                 otherReportNames,
-                "Report name must be unique. Please select an existing report requirement to refer to the same report.")
+                "Report name already exists for this permit. Please select from the Report Type selector or create a new report name.")
               ]}
               component={RenderField}
               disabled={loading || disableFields}
