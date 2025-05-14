@@ -21,7 +21,7 @@ const defaultViewDisplay = (opts: any[]): ReactNode => {
         return <div className="tree-select-view">
             <Typography.Paragraph className="view-item-value">
                 {EMPTY_FIELD}
-            </Typography.Paragraph>s
+            </Typography.Paragraph>
         </div>
     }
     return <ul className="tree-select-view margin-large--left">
