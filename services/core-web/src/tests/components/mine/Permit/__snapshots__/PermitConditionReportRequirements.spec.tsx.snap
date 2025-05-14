@@ -117,7 +117,7 @@ exports[`PermitConditionReportRequirements expands collapse panel on click 1`] =
                     <div
                       class="ant-typography view-item-label"
                     >
-                      Report Type
+                      Report Name
                     </div>
                     <div
                       class="ant-typography view-item-value"

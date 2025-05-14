@@ -214,12 +214,13 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
             <Col span={24}>
               <Field
                 name="mine_report_permit_requirement_id"
-                label="Select an existing report requirement"
+                label="Select an Existing Report"
                 data={existingRequirementsOptions}
                 component={RenderSelect}
                 onChange={(value) => handleSelectReportRequirement(value)}
                 allowClear={!mineReportPermitRequirement}
               />
+              OR
             </Col>}
           {isEditMode && multipleConditions && <Col span={24}>
             <Alert
@@ -244,11 +245,11 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
           <Col span={24}>
             <Field
               name="report_name"
-              label="Report Type"
+              label="Report Name"
               required
               validate={[required, maxLength(255), notInList(
                 otherReportNames,
-                "Report name already exists for this permit. Please select from the Report Type selector or create a new report name.")
+                "Report Name already exists for this permit. Please select from the Existing Report selector or create a new Report Name.")
               ]}
               component={RenderField}
               disabled={loading || disableFields}
