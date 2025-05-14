@@ -240,12 +240,12 @@ exports[`NoticeOfWorkPage renders properly 1`] = `
                                               class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
                                             >
                                               <span
-                                                class="ant-badge-status-dot ant-badge-status-warning"
+                                                class="ant-badge-status-dot ant-badge-status-default"
                                               />
                                               <span
                                                 class="ant-badge-status-text"
                                               >
-                                                In Progress
+                                                Not Started
                                               </span>
                                             </span>
                                           </div>
@@ -256,7 +256,7 @@ exports[`NoticeOfWorkPage renders properly 1`] = `
                                           <div
                                             title="In status since"
                                           >
-                                            Dec 19 2024 / 4 Months 19 Days
+                                            N/A
                                           </div>
                                         </td>
                                       </tr>
