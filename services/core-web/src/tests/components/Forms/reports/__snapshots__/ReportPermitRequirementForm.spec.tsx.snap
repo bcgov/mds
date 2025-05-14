@@ -793,7 +793,7 @@ exports[`RequestReportForm renders view mode properly 1`] = `
             Condition(s)
           </div>
           <ul
-            class="multi-select-view margin-large--left"
+            class="tree-select-view margin-large--left"
           >
             <li>
               <div

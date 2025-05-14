@@ -59,7 +59,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
   const disableFields = mineReportPermitRequirement?.mine_report_permit_requirement_id !== selectedRequirement?.mine_report_permit_requirement_id;
   const multipleConditions = selectedRequirement?.permit_condition_ids.length > 1;
   const { conditionMap, categoriesWithConditions } = useAppSelector(getPermitConditionCategories(permitGuid, currentAmendment.permit_amendment_guid));
-
+  console.log("HI TARA multipleConditions?", multipleConditions)
   const getLinkedConditionList = () => {
     if (!hasExistingRequirements || !selectedRequirement) {
       return [];
@@ -211,26 +211,24 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
       >
         <Row gutter={[16, 16]}>
           {hasExistingRequirements && isEditMode && condition &&
-            <>
-              <Col span={24}>
-                <Field
-                  name="mine_report_permit_requirement_id"
-                  label="Select an existing report requirement"
-                  data={existingRequirementsOptions}
-                  component={RenderSelect}
-                  onChange={(value) => handleSelectReportRequirement(value)}
-                  allowClear={!mineReportPermitRequirement}
-                />
-              </Col>
-              {multipleConditions && <Col span={24}>
-                <Alert
-                  message="This report is linked to the following conditions. Editing this report requirement will affect all linked report requirements."
-                  description={getLinkedConditionList()}
-                  showIcon
-                  type="warning"
-                />
-              </Col>}
-            </>}
+            <Col span={24}>
+              <Field
+                name="mine_report_permit_requirement_id"
+                label="Select an existing report requirement"
+                data={existingRequirementsOptions}
+                component={RenderSelect}
+                onChange={(value) => handleSelectReportRequirement(value)}
+                allowClear={!mineReportPermitRequirement}
+              />
+            </Col>}
+          {isEditMode && multipleConditions && <Col span={24}>
+            <Alert
+              message="This report is linked to the following conditions. Editing this report requirement will affect all linked report requirements."
+              description={getLinkedConditionList()}
+              showIcon
+              type="warning"
+            />
+          </Col>}
           {!loading && <Col span={24}>
             <Field
               name="permit_condition_ids"
