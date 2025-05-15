@@ -165,6 +165,7 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             'name': self.name,
             'address': self.address[0].json() if len(self.address) > 0 else [{}],
             'job_title': self.job_title,
+            'job_title_code': self.job_title_code,
             'postnominal_letters': self.postnominal_letters,
             'idir_username': self.idir_username,
             'organization_guid': str(self.organization_guid) if self.organization_guid else None,

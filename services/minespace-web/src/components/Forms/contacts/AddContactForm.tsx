@@ -13,15 +13,15 @@ export interface AddContactFormProps {
 }
 
 export const AddContactForm: FC<AddContactFormProps> = (props) => {
-  const [selectedParty, setSelectedParty] = useState(null);
+  const [selectedParty, setSelectedParty] = useState<any>({
+    job_title_code: props?.mine_party_appt_type_code,
+  });
   const parties = useAppSelector(getPartyRelationships) as IMinePartyAppt[];
-
   const handleSelectChange = (party_guid: string) => {
     if (!party_guid) {
-      setSelectedParty(null);
+      setSelectedParty({ job_title_code: props?.mine_party_appt_type_code });
     } else {
       const partyRelationship = parties.find((p) => p.party.party_guid === party_guid);
-
       if (partyRelationship) {
         setSelectedParty(partyRelationship.party);
       }
