@@ -111,6 +111,7 @@ function loadExternalSecrets() {
                 echo -e "Secret $KEY not found in local-dev-secrets"
                 continue
             fi
+
             # handle all special characters in the secret, including new lines
             ESCAPED_SECRET=$(printf '%s' "$SECRET" | perl -pe 's/([\/&])/\\$1/g; s/\n/\\n/g')
             if [ "$KEY" = "ELASTICSEARCH_CA_CERT" ]; then
