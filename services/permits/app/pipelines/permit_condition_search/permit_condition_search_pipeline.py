@@ -47,6 +47,7 @@ doc_metadata_fields = {
     "category": str,
     "issue_date": datetime,
     "permit": str,
+    "permit_type": str,
     "mine_number": str,
     "mine_name": str,
     "document_name": str,
@@ -151,6 +152,7 @@ def create_permit_condition_search_retrieval_pipeline():
             "mine_number",
             "mine_name",
             "document_name",
+            "permit_type",
         ],
     )
 

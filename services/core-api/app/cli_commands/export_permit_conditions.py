@@ -13,7 +13,7 @@ headers = [
     'permit', 'mine_number', 'mine_name', 'document_name',
     'document_manager_guid', 'id', 'condition', 'permit_guid',
     'mine_guid', 'permit_amendment_guid', 'permit_condition_guid',
-    'step_path', 'parent_ids', 'sibling_ids', 'child_ids', 'report_name'
+    'step_path', 'parent_ids', 'sibling_ids', 'child_ids', 'report_name', 'permit_type'
 ]
 
 
@@ -82,6 +82,7 @@ def export_permit_conditions(permit_amendment_guid, csv_writer=None):
                 'document_manager_guid': document_guid,
                 'permit_guid': str(permit.permit_guid),
                 'mine_guid': str(mine.mine_guid),
+                'permit_type': 'Notice of Work' if amendment.now_application_guid else 'Major Mine',
                 'permit_amendment_guid': str(amendment.permit_amendment_guid),
                 'permit_condition_guid': str(condition.permit_condition_guid),
                 'report_name': report_name,
@@ -106,6 +107,7 @@ def export_permit_conditions(permit_amendment_guid, csv_writer=None):
                 'mine_guid': str(mine.mine_guid),
                 'permit_amendment_guid': str(amendment.permit_amendment_guid),
                 'permit_condition_guid': str(condition.permit_condition_guid),
+                'permit_type': 'Notice of Work' if amendment.now_application_guid else 'Major Mine',
                 'id': str(condition.permit_condition_guid),
                 'condition': condition.condition,
                 'report_name': report_name,

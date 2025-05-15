@@ -198,6 +198,14 @@ fields = [
         sortable=True,
         facetable=True,
     ),
+    SearchField(
+        name="permit_type",
+        type=SearchFieldDataType.String,
+        searchable=True,
+        filterable=True,
+        sortable=True,
+        facetable=True,
+    ),
 ]
 
 # Vector search configuration
