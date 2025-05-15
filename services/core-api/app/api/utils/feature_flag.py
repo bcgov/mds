@@ -34,5 +34,5 @@ def is_feature_enabled(feature):
 
         return feature in flags.flags and flags.is_feature_enabled(feature)
     except Exception as e:
-        current_app.logger.error(f'Failed to look up feature flag for: {feature}. ' + str(e))
+        print(f'Failed to look up feature flag for: {feature}. ' + str(e))
         return False
