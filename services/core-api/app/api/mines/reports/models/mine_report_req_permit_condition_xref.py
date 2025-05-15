@@ -5,7 +5,7 @@ from typing import Self
 from app.api.utils.models_mixins import Base, AuditMixin, SoftDeleteMixin, HistoryMixin
 from app.extensions import db
 
-class MineReportReqPermitConditionXref(Base, AuditMixin, SoftDeleteMixin, HistoryMixin):
+class MineReportReqPermitConditionXref(SoftDeleteMixin, AuditMixin, HistoryMixin, Base):
     __tablename__ = "mine_report_req_permit_condition_xref"
     __versioned__ = {}
 

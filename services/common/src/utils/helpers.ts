@@ -93,34 +93,6 @@ export const formatPermitConditionStep = (step: string, condition?: string) => {
   return formattedStep != "" ? `${formattedStep} ${condition}` : condition;
 }
 
-export const getConditionsWithRequirements = (conditions: IPermitCondition[], requirements?: IMineReportPermitRequirement[]) => {
-  let result = [];
-
-  const requirementsByCondition = requirements?.length ? requirements.reduce((acc, requirement) => {
-    if (!acc[requirement.permit_condition_id]) {
-      acc[requirement.permit_condition_id] = [];
-    }
-    acc[requirement.permit_condition_id].push(requirement);
-    return acc;
-  }, {}) : {};
-
-  conditions.forEach((condition) => {
-    if (requirements && condition?.permit_condition_id) {
-      const reqs = requirementsByCondition[condition.permit_condition_id];
-      const conditionWithRequirement = reqs?.map(req => ({ ...condition, mineReportPermitRequirement: req }));
-      result = [...result, ...(conditionWithRequirement || [])];
-    } else if (condition?.mineReportPermitRequirement) {
-      result.push(condition);
-    }
-
-    if (condition?.sub_conditions?.length > 0) {
-      result = result.concat(getConditionsWithRequirements(condition.sub_conditions, requirements));
-    }
-  });
-
-  return result;
-};
-
 /**
      * Find a condition recursively by guid or id in the given list of conditions.
      */
@@ -162,10 +134,9 @@ export const transformPermitReportRequirement = (report: IMineReportPermitRequir
         (dest, index) =>
           `${REPORT_MINISTRY_RECIPIENT_HASH[dest]}${index < report.ministry_recipient.length - 1 ? ", " : ""} `
       ) ?? "None Specified",
-      permit_condition_id: report.permit_condition_id,
+      permit_condition_ids: report.permit_condition_ids,
       frequency: Object.keys(REPORT_FREQUENCY_HASH).find(key => REPORT_FREQUENCY_HASH[key] === report.due_date_period_months),
       initial_due_date: report.initial_due_date,
-      condition_category_code: report.condition_category_code
     }
   }
   return null;

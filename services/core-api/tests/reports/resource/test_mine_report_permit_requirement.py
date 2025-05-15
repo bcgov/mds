@@ -104,3 +104,106 @@ def test_update_mine_report_permit_requirement(test_client, db_session, auth_hea
     assert update_data['ministry_recipient'] == report_requirement.ministry_recipient
     assert update_data['permit_condition_ids'] == permit_condition_ids
     assert update_data['mine_report_permit_requirement_id'] == report_requirement.mine_report_permit_requirement_id
+
+def test_post_duplicate_mine_report_permit_requirement_returns_bad_request(test_client, db_session, auth_headers):
+    """Test that posting a duplicate report_name returns a 400 Bad Request with an appropriate error message."""
+    mine, permit = create_mine_and_permit()
+    amendment = permit.permit_amendments[0]
+    condition = amendment.conditions[0]
+
+    duplicate_report_name = "DUPLICATE_REPORT_NAME_TEST"
+
+    submission_data = {
+        'due_date_period_months': 6,
+        'initial_due_date': date.today().strftime('%Y-%m-%d'),
+        'cim_or_cpo': 'CIM',
+        'ministry_recipient': [OfficeDestination.MMO.value, OfficeDestination.HS.value],
+        'permit_amendment_id': amendment.permit_amendment_id,
+        'permit_condition_ids': [condition.permit_condition_id],
+        'report_name': duplicate_report_name
+    }
+
+    # First post should succeed
+    post_resp_1 = test_client.post(
+        f'/mines/{mine.mine_guid}/reports/permit-requirements',
+        headers=auth_headers['full_auth_header'],
+        json=submission_data
+    )
+    assert post_resp_1.status_code == 201
+
+    # Second post with the same report_name should fail
+    post_resp_2 = test_client.post(
+        f'/mines/{mine.mine_guid}/reports/permit-requirements',
+        headers=auth_headers['full_auth_header'],
+        json=submission_data
+    )
+    assert post_resp_2.status_code == 400
+    data = json.loads(post_resp_2.data.decode())
+    assert "Report name must be unique" in data.get("message", "")
+
+def test_update_mine_report_permit_requirement_duplicate_report_name_returns_bad_request(test_client, db_session, auth_headers):
+    """Test that updating a report requirement to a duplicate report_name returns a 400 Bad Request with an appropriate error message."""
+    mine, permit = create_mine_and_permit()
+    amendment = permit.permit_amendments[0]
+    condition = amendment.conditions[0]
+    condition2 = amendment.conditions[1]
+
+    # Create two report requirements with different names
+    report_name_1 = "REPORT_NAME_1"
+    report_name_2 = "REPORT_NAME_2"
+
+    # First requirement
+    submission_data_1 = {
+        'due_date_period_months': 6,
+        'initial_due_date': date.today().strftime('%Y-%m-%d'),
+        'cim_or_cpo': 'CIM',
+        'ministry_recipient': [OfficeDestination.MMO.value, OfficeDestination.HS.value],
+        'permit_amendment_id': amendment.permit_amendment_id,
+        'permit_condition_ids': [condition.permit_condition_id],
+        'report_name': report_name_1
+    }
+    post_resp_1 = test_client.post(
+        f'/mines/{mine.mine_guid}/reports/permit-requirements',
+        headers=auth_headers['full_auth_header'],
+        json=submission_data_1
+    )
+    assert post_resp_1.status_code == 201
+    data_1 = json.loads(post_resp_1.data.decode())
+
+    # Second requirement
+    submission_data_2 = {
+        'due_date_period_months': 12,
+        'initial_due_date': date.today().strftime('%Y-%m-%d'),
+        'cim_or_cpo': 'CPO',
+        'ministry_recipient': [OfficeDestination.MMO.value],
+        'permit_amendment_id': amendment.permit_amendment_id,
+        'permit_condition_ids': [condition2.permit_condition_id],
+        'report_name': report_name_2
+    }
+    post_resp_2 = test_client.post(
+        f'/mines/{mine.mine_guid}/reports/permit-requirements',
+        headers=auth_headers['full_auth_header'],
+        json=submission_data_2
+    )
+    assert post_resp_2.status_code == 201
+    data_2 = json.loads(post_resp_2.data.decode())
+
+    # Attempt to update the second requirement to have the same report_name as the first
+    update_data = {
+        'due_date_period_months': 12,
+        'initial_due_date': date.today().strftime('%Y-%m-%d'),
+        'cim_or_cpo': 'CPO',
+        'ministry_recipient': [OfficeDestination.MMO.value],
+        'permit_amendment_id': amendment.permit_amendment_id,
+        'permit_condition_ids': [condition2.permit_condition_id],
+        'mine_report_permit_requirement_id': data_2['mine_report_permit_requirement_id'],
+        'report_name': report_name_1  # duplicate name
+    }
+    put_resp = test_client.put(
+        f'/mines/{mine.mine_guid}/reports/permit-requirements',
+        headers=auth_headers['full_auth_header'],
+        json=update_data
+    )
+    assert put_resp.status_code == 400
+    put_resp_data = json.loads(put_resp.data.decode())
+    assert "Report name must be unique" in put_resp_data.get("message", "")

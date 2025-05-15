@@ -19,13 +19,12 @@ import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeFiel
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
+import { openModal } from "@mds/common/redux/actions/modalActions";
 import { ReportPermitRequirementForm } from "@mds/common/components/permits/ReportPermitRequirementForm";
 import {
     deletePermitCondition,
     updatePermitCondition,
 } from "@mds/common/redux/actionCreators/permitActionCreator";
-import { createMineReportPermitRequirement } from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
 import RenderField from "@mds/common/components/forms/RenderField";
 import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import { formatPermitConditionStep, parsePermitConditionStep } from "@mds/common/utils/helpers";
@@ -131,24 +130,15 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
         });
     };
 
-    const addNewReport = async (values) => {
-        await dispatch(createMineReportPermitRequirement({ mineGuid, values }));
-        refreshData();
-        dispatch(closeModal());
-    };
-
     const handleOpenAddReportModal = (event, reportCondition: IPermitCondition) => {
         event.stopPropagation();
         dispatch(
             openModal({
                 props: {
-                    onSubmit: addNewReport,
-                    title: `Add Permit Required Report to Condition`,
+                    title: `Add Permit Required Report to Condition "${condition.stepPath}"`,
                     condition: reportCondition,
                     canEditPermitConditions: canEditPermitConditions,
-                    permitGuid,
-                    mineGuid,
-                    currentAmendment,
+                    refreshData: refreshData
                 },
                 content: (props) => <PermitConditionsProvider value={permitConditionsValue}> <ReportPermitRequirementForm {...props} /> </PermitConditionsProvider>,
             })

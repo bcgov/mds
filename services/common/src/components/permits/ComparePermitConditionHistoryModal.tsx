@@ -1,20 +1,16 @@
 import React, { FC } from "react";
 import { Col, Row, Typography } from "antd";
-import { IMineReportPermitRequirement, IPermitAmendment, IPermitCondition } from "@mds/common/interfaces";
+import { IPermitCondition } from "@mds/common/interfaces";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import ConditionDiffViewer from "@mds/common/components/permits/ConditionDiffViewer";
 import PermitConditionReportRequirements from "@mds/common/components/permits/PermitConditionReportRequirements";
-import { getMineReportPermitRequirements, getMineReportPermitRequirementsByAmendment } from "@mds/common/redux/selectors/permitSelectors";
+import { getReportRequirementsByCondition } from "@mds/common/redux/selectors/permitSelectors";
 import { useSelector } from "react-redux";
-import { getConditionsWithRequirements } from "@mds/common/utils/helpers";
+import { usePermitConditions } from "./PermitConditionsContext";
 
 export interface ComparePermitConditionHistoryModalProps {
     currentAmendmentCondition: IPermitCondition;
     previousAmendmentCondition: IPermitCondition;
-    mineGuid: string;
-    permitGuid: string;
-    latestAmendment: IPermitAmendment;
-    previousAmendment?: IPermitAmendment;
 }
 
 /**
@@ -22,17 +18,14 @@ export interface ComparePermitConditionHistoryModalProps {
  * in a diff viewer. Also displays the reports associated with the current and previous permit conditions.
  */
 const ComparePermitConditionHistoryModal: FC<ComparePermitConditionHistoryModalProps> = (props) => {
+    const { mineGuid, permitGuid, latestAmendment, previousAmendment } = usePermitConditions();
 
-    const newMineReportPermitRequirements: IMineReportPermitRequirement[] = useSelector(
-        getMineReportPermitRequirements(props.permitGuid)
-    );
-
-    const previousMineReportPermitRequirements: IMineReportPermitRequirement[] = useSelector(
-        getMineReportPermitRequirementsByAmendment(props.permitGuid, props.previousAmendment?.permit_amendment_guid)
-    );
-
-    const oldReports = getConditionsWithRequirements([props.previousAmendmentCondition], previousMineReportPermitRequirements);
-    const newReports = getConditionsWithRequirements([props.currentAmendmentCondition], newMineReportPermitRequirements);
+    const newMineReportPermitRequirements = useSelector(getReportRequirementsByCondition(
+        permitGuid, latestAmendment.permit_amendment_guid, props.currentAmendmentCondition.permit_condition_id
+    ));
+    const previousMineReportPermitRequirements = useSelector(getReportRequirementsByCondition(
+        permitGuid, previousAmendment?.permit_amendment_guid, props.previousAmendmentCondition?.permit_condition_id
+    ));
 
     return (
         <FormWrapper name={"compare-conditions-form"} isModal scrollOnToggleEdit={false}>
@@ -42,10 +35,10 @@ const ComparePermitConditionHistoryModal: FC<ComparePermitConditionHistoryModalP
                 </Col>
                 <Col span={24}>
                     <ConditionDiffViewer
-                        mineGuid={props.mineGuid}
-                        permitGuid={props.permitGuid}
-                        latestAmendment={props.latestAmendment}
-                        previousAmendment={props.previousAmendment}
+                        mineGuid={mineGuid}
+                        permitGuid={permitGuid}
+                        latestAmendment={latestAmendment}
+                        previousAmendment={previousAmendment}
                         currentCondition={props.currentAmendmentCondition}
                         previousCondition={props.previousAmendmentCondition}
                     />
@@ -53,13 +46,13 @@ const ComparePermitConditionHistoryModal: FC<ComparePermitConditionHistoryModalP
                 <Col span={12}>
                     <Typography.Title level={4}>Reports</Typography.Title>
                     <PermitConditionReportRequirements
-                        conditionsWithRequirements={oldReports} />
+                        requirements={previousMineReportPermitRequirements} />
 
                 </Col>
                 <Col span={12}>
                     <Typography.Title level={4}>Reports</Typography.Title>
                     <PermitConditionReportRequirements
-                        conditionsWithRequirements={newReports} />
+                        requirements={newMineReportPermitRequirements} />
 
                 </Col>
             </Row>

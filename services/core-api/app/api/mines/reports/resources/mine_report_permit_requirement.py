@@ -18,9 +18,12 @@ from flask import current_app
 from flask_restx import Resource
 from werkzeug.exceptions import BadRequest, NotFound
 from flask_restx import reqparse
+from sqlalchemy.exc import IntegrityError
 
 
 class MineReportPermitRequirementResource(Resource, UserMixin):
+    unique_report_error_message = "Report name must be unique"
+
     parser = CustomReqparser()
 
     parser.add_argument("mine_report_permit_requirement_id", type=int, location="json")
@@ -79,15 +82,19 @@ class MineReportPermitRequirementResource(Resource, UserMixin):
         else:
             cim_or_cpo = CimOrCpo(cim_or_cpo)
 
-        mine_report_permit_requirement = MineReportPermitRequirement.create(
-            report_name=data.get("report_name"),
-            due_date_period_months=data.get("due_date_period_months"),
-            initial_due_date=data.get("initial_due_date"),
-            cim_or_cpo=cim_or_cpo,
-            ministry_recipient=data.get("ministry_recipient"),
-            permit_condition_ids=permit_condition_ids,
-            permit_amendment_id=permit_amendment_id,
-        )
+        try:
+            mine_report_permit_requirement = MineReportPermitRequirement.create(
+                report_name=data.get("report_name"),
+                due_date_period_months=data.get("due_date_period_months"),
+                initial_due_date=data.get("initial_due_date"),
+                cim_or_cpo=cim_or_cpo,
+                ministry_recipient=data.get("ministry_recipient"),
+                permit_condition_ids=permit_condition_ids,
+                permit_amendment_id=permit_amendment_id,
+            )
+        except IntegrityError as e:
+            current_app.logger.info(e)
+            raise BadRequest(self.unique_report_error_message)
 
         return mine_report_permit_requirement, 201
     
@@ -193,5 +200,10 @@ class MineReportPermitRequirementResource(Resource, UserMixin):
         
         data['cim_or_cpo'] = cim_or_cpo
 
-        mine_report_permit_requirement.update(**data)
+        try:
+            mine_report_permit_requirement.update(**data)
+        except IntegrityError as e:
+            current_app.logger.info(e)
+            raise BadRequest(self.unique_report_error_message)
+
         return mine_report_permit_requirement

@@ -4,9 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClipboard, faClockRotateLeft } from "@fortawesome/pro-regular-svg-icons";
 import { CheckCircleOutlined, CheckOutlined, ClockCircleOutlined } from "@ant-design/icons";
 import CoreButton from "@mds/common/components/common/CoreButton";
-import { IPermitCondition } from "@mds/common/interfaces/permits";
+import { IMineReportPermitRequirement, IPermitCondition } from "@mds/common/interfaces/permits";
 import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
-import { getConditionsWithRequirements } from "@mds/common/utils/helpers";
 import { useAppDispatch } from "@mds/common/redux/rootState";
 import { updatePermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { openModal } from "@mds/common/redux/actions/modalActions";
@@ -15,6 +14,7 @@ import { PermitConditionsProvider, usePermitConditions } from "@mds/common/compo
 
 interface PermitConditionStatusProps {
   condition: IPermitCondition;
+  requirements: IMineReportPermitRequirement[];
   previousCondition?: IPermitCondition;
   isDisabled?: boolean;
   canEditPermitConditions?: boolean;
@@ -24,6 +24,7 @@ interface PermitConditionStatusProps {
 
 export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
   condition,
+  requirements,
   previousCondition,
   isDisabled,
   canEditPermitConditions = false,
@@ -57,10 +58,6 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
           title: `Compare Conditions`,
           currentAmendmentCondition: condition,
           previousAmendmentCondition: previousCondition,
-          mineGuid,
-          permitGuid,
-          latestAmendment,
-          previousAmendment,
         },
         width: 2048,
         content: (props) => {
@@ -70,8 +67,6 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
       })
     );
   }
-
-  const requirements = getConditionsWithRequirements([condition]);
 
   const dispatch = useAppDispatch();
 
