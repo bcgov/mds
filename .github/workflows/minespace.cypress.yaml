@@ -44,7 +44,7 @@ jobs:
       - name: Run app
         run: |
           ARTIFACTORY_TOKEN=${{ secrets.ARTIFACTORY_TOKEN }} EXTRA_SERVICES=minespace make be-minimal
-      - name: Seed database with Memory Monitoring
+      - name: Seed database
         run: |
           make ENTRIES=10 seeddb
       - name: Run cypress tests
