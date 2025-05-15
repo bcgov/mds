@@ -175,3 +175,10 @@ form .ant-row>button+button {
         font-weight: normal;
     }
 }
+
+.tree-select-view,
+.multi-select-view {
+    li {
+        list-style-position: outside;
+    }
+}

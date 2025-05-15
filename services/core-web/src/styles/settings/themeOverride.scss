@@ -415,6 +415,18 @@
 .ant-collapse {
   border: none;
   background-color: variables.$pure-white;
+
+  &.light-header {
+    .ant-collapse-item {
+      border-radius: 0 0 0 0 !important;
+      background-color: variables.$light-grey;
+      border-color: variables.$background;
+    }
+
+    .ant-collapse-content {
+      border-radius: 0 0 0 0 !important;
+    }
+  }
 }
 
 .ant-collapse-borderless>.ant-collapse-item>.ant-collapse-content {

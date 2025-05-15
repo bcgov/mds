@@ -37,11 +37,11 @@ const initialState = {
 };
 
 const providerParams = {
-  mineGuid: "mineGuid",
-  permitGuid: "permitGuid",
+  mineGuid: MOCK.PERMITS[0].mine_guid,
+  permitGuid: MOCK.PERMITS[0].permit_guid,
   latestAmendment: null,
   previousAmendment: null,
-  currentAmendment: null,
+  currentAmendment: MOCK.PERMITS[0].permit_amendments[0],
   loading: false,
   setLoading: jest.fn(),
 };
@@ -52,13 +52,25 @@ describe("RequestReportForm", () => {
       <ReduxWrapper initialState={initialState}>
         <PermitConditionsProvider value={providerParams}>
           <ReportPermitRequirementForm
-            permitGuid={MOCK.PERMITS[0].permit_guid}
-            onSubmit={() => { }}
             canEditPermitConditions={true}
             refreshData={jest.fn()}
-            currentAmendment={MOCK.PERMITS[0].permit_amendments[0]}
-            mineGuid={MOCK.PERMITS[0].mine_guid}
             condition={MOCK.PERMITS[0].permit_amendments[0].conditions[0]}
+            isModal // isModal is passed by the modal wrapper
+          />
+        </PermitConditionsProvider>
+      </ReduxWrapper>
+    );
+
+    expect(container.firstChild).toMatchSnapshot();
+  });
+  it("renders view mode properly", () => {
+    const { container } = render(
+      <ReduxWrapper initialState={initialState}>
+        <PermitConditionsProvider value={providerParams}>
+          <ReportPermitRequirementForm
+            canEditPermitConditions={true}
+            refreshData={jest.fn()}
+            mineReportPermitRequirement={MOCK.PERMITS[0].permit_amendments[0].conditions[0].mineReportPermitRequirement}
           />
         </PermitConditionsProvider>
       </ReduxWrapper>

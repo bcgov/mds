@@ -65,7 +65,7 @@ export const RequestReportForm: FC<RequestReportFormProps> = ({
         change(FORM.REQUEST_REPORT, "due_date", selectedPermitReportDefinition.initial_due_date)
       );
     }
-  }, [reportDefinitionsLoaded, selectedPermitReportDefinition?.condition_category_code]);
+  }, [reportDefinitionsLoaded, selectedPermitReportDefinition]);
 
   return (
     <div style={{ minHeight: "380px" }}>
