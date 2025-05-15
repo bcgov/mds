@@ -125,20 +125,22 @@ exports[`TransferBondModal renders properly 1`] = `
                   "display_order": 1,
                   "mineReportPermitRequirement": Object {
                     "cim_or_cpo": "cpo",
-                    "condition_category_code": "HSC",
                     "due_date_period_months": 12,
                     "initial_due_date": "2024-01-01",
                     "mine_report_permit_requirement_id": 1,
                     "ministry_recipient": Array [
                       "MMO",
                     ],
-                    "permit_condition_id": 1639,
+                    "permit_amendment_id": 3,
+                    "permit_condition_ids": Array [
+                      1638,
+                    ],
                     "report_name": "Test Approved Report",
                   },
                   "parent_permit_condition_id": null,
-                  "permit_amendment_id": 2,
+                  "permit_amendment_id": 3,
                   "permit_condition_guid": "6fd71a4d-a55e-4e0b-a249-0ed54c3d2387",
-                  "permit_condition_id": 1639,
+                  "permit_condition_id": 1638,
                   "permit_condition_status_code": "COM",
                   "step": "1.",
                   "sub_conditions": Array [],
@@ -155,14 +157,16 @@ exports[`TransferBondModal renders properly 1`] = `
               "mine_report_permit_requirements": Array [
                 Object {
                   "cim_or_cpo": "cpo",
-                  "condition_category_code": "HSC",
                   "due_date_period_months": 12,
                   "initial_due_date": "2024-01-01",
                   "mine_report_permit_requirement_id": 1,
                   "ministry_recipient": Array [
                     "MMO",
                   ],
-                  "permit_condition_id": 1639,
+                  "permit_amendment_id": 3,
+                  "permit_condition_ids": Array [
+                    1638,
+                  ],
                   "report_name": "Test Approved Report",
                 },
               ],
