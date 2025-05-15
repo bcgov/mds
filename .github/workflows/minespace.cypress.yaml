@@ -46,10 +46,7 @@ jobs:
           ARTIFACTORY_TOKEN=${{ secrets.ARTIFACTORY_TOKEN }} EXTRA_SERVICES=minespace make be-minimal
       - name: Seed database with Memory Monitoring
         run: |
-          echo "Starting memory monitoring..."
-          free -h
-          echo "Running seeddb step..."
-           /usr/bin/time -v make ENTRIES=10 seeddb || (echo "Seed DB failed. Checking memory usage..."; free -h)
+          make ENTRIES=10 seeddb
       - name: Run cypress tests
         run: yarn workspace @mds/minespace-web cypress run
         env:
