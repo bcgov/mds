@@ -1,6 +1,7 @@
 export interface HaystackDocumentMeta {
     permit: string;
     permit_guid: string;
+    permit_type: string;
     mine_name: string;
     mine_guid: string;
     mine_number: string;
