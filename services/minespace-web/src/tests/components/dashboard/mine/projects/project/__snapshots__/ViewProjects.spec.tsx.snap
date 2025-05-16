@@ -1183,9 +1183,7 @@ exports[`ViewProjects renders now application tab properly 1`] = `
                                   <td
                                     class="ant-table-cell"
                                   >
-                                    <div
-                                      title=""
-                                    >
+                                    <div>
                                       <div
                                         class="ant-row"
                                         style="margin-left: -0.5px; margin-right: -0.5px;"
@@ -1263,9 +1261,7 @@ exports[`ViewProjects renders now application tab properly 1`] = `
                                   <td
                                     class="ant-table-cell"
                                   >
-                                    <div
-                                      title=""
-                                    >
+                                    <div>
                                       <div
                                         class="ant-row"
                                         style="margin-left: -0.5px; margin-right: -0.5px;"

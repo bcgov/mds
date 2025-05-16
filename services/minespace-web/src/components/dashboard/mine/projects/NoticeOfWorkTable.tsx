@@ -101,7 +101,7 @@ export const NoticeOfWorkTable: FC<NoticeOfWorkTableProps> = ({ isLoaded, applic
             dataIndex: "project",
             render: (text, record) => {
               return (
-                <div title="">
+                <div>
                   <Row gutter={1}>
                     <Col span={12}>
                       <Link

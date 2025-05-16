@@ -26,8 +26,7 @@ const MineAlert: FC<MineAlertProps> = ({ mine }) => {
   const [activeMineAlert, setActiveMineAlert] = useState<IMineAlert>();
   const [pastMineAlerts, setPastMineAlerts] = useState<IMineAlert[]>([]);
   const mineAlerts = useAppSelector(getMineAlerts);
-  const [loaded, setLoaded] = useState(mineAlerts.length > 0);
-
+  const [loaded, setLoaded] = useState(mineAlerts.some(alert => alert.mine_guid === mine.mine_guid));
 
   const fetchAlerts = async () => {
     setLoaded(false);
