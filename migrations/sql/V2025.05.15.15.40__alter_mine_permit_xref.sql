@@ -1,34 +1,43 @@
 CREATE UNIQUE INDEX mine_permit_xref_unique ON mine_permit_xref (mine_guid, permit_id) WHERE deleted_ind = false;
 
--- Cleanup transferred now_applications with mismatched mine_guids
--- Create new mine_permit_xref records
-INSERT INTO mine_permit_xref (mine_guid, permit_id, create_user, create_timestamp)
+-- MDS-6062, Cleanup draft permits of transferred now applications
+CREATE TEMPORARY TABLE original_now_permits AS (
+	SELECT
+		pa.permit_id,
+		pa.mine_guid AS old_mine_guid,
+		na.mine_guid AS new_mine_guid
+	FROM permit_amendment pa
+	JOIN now_application_identity na ON pa.now_application_guid = na.now_application_guid
+	WHERE pa.permit_amendment_status_code = 'DFT'
+	AND pa.mine_guid != na.mine_guid
+);
+
+-- Create new xref
+INSERT INTO mine_permit_xref (mine_guid, permit_id, create_user, create_timestamp, update_user, update_timestamp, start_date)
 SELECT 
-    na.mine_guid AS now_application_mine_guid,
-    pa.permit_id,
-    'migration_script',
-    NOW()
-FROM now_application na
-JOIN permit_amendment pa ON pa.now_application_guid = na.now_application_guid
-WHERE pa.permit_amendment_status_code = 'DFT'
-  AND pa.mine_guid != na.mine_guid;
+  new_mine_guid,
+  permit_id,
+  'system-mds',
+  NOW(),
+  'system-mds',
+  NOW(),
+  NOW()
+FROM original_now_permits;
 
 -- Update mine_guid
 UPDATE permit_amendment pa
-SET mine_guid = na.mine_guid
-FROM now_application na
-WHERE pa.now_application_guid = na.now_application_guid
-  AND pa.permit_amendment_status_code = 'DFT'
-  AND pa.mine_guid != na.mine_guid;
+SET mine_guid = onp.new_mine_guid
+FROM original_now_permits onp
+WHERE pa.permit_id = onp.permit_id;
 
--- Soft delete old mine_permit_xref records
+-- Soft delete old xref
 UPDATE mine_permit_xref mp
 SET deleted_ind = TRUE,
-    update_user = 'migration_script',
-    update_timestamp = NOW()
-FROM permit_amendment pa
-JOIN now_application na ON pa.now_application_guid = na.now_application_guid
-WHERE mp.mine_guid = pa.mine_guid
-  AND mp.permit_id = pa.permit_id
-  AND pa.permit_amendment_status_code = 'DFT'
-  AND pa.mine_guid != na.mine_guid;
+  update_user = 'system-mds',
+  update_timestamp = NOW()
+FROM original_now_permits onp
+WHERE mp.mine_guid = onp.old_mine_guid
+  AND mp.permit_id = onp.permit_id;
+
+-- Cleanup
+DROP TABLE original_now_permits;
