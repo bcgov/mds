@@ -6,7 +6,8 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.sql.expression import and_, cast
-
+from werkzeug.exceptions import BadRequest
+from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
 
@@ -56,8 +57,26 @@ class NOWApplicationIdentity(Base, AuditMixin):
         return f'{self.__class__.__name__} {self.now_application_guid}'
 
     def transfer(self, mine):
+
+        if self.now_application.now_application_status_code in ['AIA','REJ', 'WDN', 'NPR']:
+            raise BadRequest(f'Unable to transfer NOW application with status {self.now_application.now_application_status_code}')
+        
         self.now_number = NOWApplicationIdentity.create_now_number(mine, self.now_number_year)
         self.mine = mine
+
+        if self.now_application.draft_permit:
+            #Create new xref, replace, then delete old one
+            MinePermitXref.create(
+                permit_id = self.now_application.draft_permit.permit_id,
+                mine_guid=mine.mine_guid,
+                start_date=datetime.now()
+            )
+            self.now_application.draft_permit.mine_guid = mine.mine_guid
+            self.now_application.draft_permit.mine_permit_xref.delete()
+            if self.now_application.site_property:
+                self.now_application.site_property.mine_guid = mine.mine_guid
+                self.now_application.site_property.save()
+            self.now_application.draft_permit.save()
 
     @hybrid_property
     def now_number_year(self):
