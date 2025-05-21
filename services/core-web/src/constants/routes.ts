@@ -605,7 +605,7 @@ const MINESPACE_URLS = {
 
 export const VIEW_MINESPACE = (mineGuid) => {
   const MINESPACE_URL = MINESPACE_URLS[getEnvironment() ?? "production"];
-  return `${MINESPACE_URL}mines/${mineGuid}/overview?redirectingFromCore=true`;
+  return `${MINESPACE_URL}mines/${mineGuid}/dashboard/overview?redirectingFromCore=true`;
 };
 
 const ORGBOOK_URL = "https://orgbook.gov.bc.ca";
