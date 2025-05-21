@@ -7692,6 +7692,7 @@ export const MINE_ALERTS = {
       contact_name: "mock name",
       contact_phone: "337-588-3109",
       message: "Mine under construction",
+      mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
     },
   ],
 };
