@@ -413,6 +413,15 @@ exports[`PermitConditionSearch Integration Tests shows and applies filters 1`] =
                                           style="cursor: pointer;"
                                         />
                                       </div>
+                                      <div
+                                        class="ant-col"
+                                        style="padding: 4px 4px 4px 4px;"
+                                      >
+                                        <span
+                                          class="ant-tag ant-tag-magenta"
+                                          style="cursor: pointer;"
+                                        />
+                                      </div>
                                     </div>
                                   </div>
                                   <div

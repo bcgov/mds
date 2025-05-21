@@ -3535,6 +3535,7 @@ export const MOCK_PERMIT_SEARCH_RESULT: HaystackDocumentSearchResult = {
   meta: {
     mine_guid: 'mine-123',
     permit_guid: 'permit-123',
+    permit_type: 'Major Mine',
     permit_amendment_guid: 'amendment-123',
     mine_name: 'Test Mine',
     permit: 'M-123',
