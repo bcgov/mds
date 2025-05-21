@@ -209,6 +209,17 @@ exports[`ResultItem Rendering renders basic result information 1`] = `
                 BC-123
               </span>
             </div>
+            <div
+              class="ant-col"
+              style="padding: 4px 4px 4px 4px;"
+            >
+              <span
+                class="ant-tag ant-tag-magenta"
+                style="cursor: pointer;"
+              >
+                Major Mine
+              </span>
+            </div>
           </div>
         </div>
         <div

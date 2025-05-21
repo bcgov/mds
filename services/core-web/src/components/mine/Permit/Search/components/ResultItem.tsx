@@ -291,6 +291,15 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
                                     {meta.mine_number}
                                 </Tag>
                             </Col>
+                            <Col>
+                                <Tag
+                                    color="magenta"
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => onFilterClick?.('permit_type', meta.permit_type)}
+                                >
+                                    {meta.permit_type}
+                                </Tag>
+                            </Col>
                         </Row>
                     </Col>
 
