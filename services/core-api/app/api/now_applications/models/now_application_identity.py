@@ -64,19 +64,37 @@ class NOWApplicationIdentity(Base, AuditMixin):
         self.now_number = NOWApplicationIdentity.create_now_number(mine, self.now_number_year)
         self.mine = mine
 
+        if self.now_application.documents:
+            for document in self.now_application.documents:
+                document.mine_document.mine_guid = mine.mine_guid
+                document.mine_document.save()
+
         if self.now_application.draft_permit:
-            #Create new xref, replace, then delete old one
-            MinePermitXref.create(
-                permit_id = self.now_application.draft_permit.permit_id,
-                mine_guid=mine.mine_guid,
-                start_date=datetime.now()
-            )
+
+            existing_xref = MinePermitXref.query.filter_by(
+                permit_id=self.now_application.draft_permit.permit_id,
+                mine_guid=mine.mine_guid
+            ).one_or_none()
+            if existing_xref:
+                existing_xref.is_deleted = False
+                existing_xref.start_date = datetime.now()
+                existing_xref.save()
+            
+            else:
+                MinePermitXref.create(
+                    permit_id = self.now_application.draft_permit.permit_id,
+                    mine_guid=mine.mine_guid,
+                    start_date=datetime.now()
+                )
+                self.now_application.draft_permit.mine_permit_xref.delete()
+
             self.now_application.draft_permit.mine_guid = mine.mine_guid
-            self.now_application.draft_permit.mine_permit_xref.delete()
+            self.now_application.draft_permit.save()
+
             if self.now_application.site_property:
                 self.now_application.site_property.mine_guid = mine.mine_guid
                 self.now_application.site_property.save()
-            self.now_application.draft_permit.save()
+            
 
     @hybrid_property
     def now_number_year(self):

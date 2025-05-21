@@ -1,4 +1,3 @@
-CREATE UNIQUE INDEX mine_permit_xref_unique ON mine_permit_xref (mine_guid, permit_id) WHERE deleted_ind = false;
 
 -- MDS-6062, Cleanup draft permits of transferred now applications
 CREATE TEMPORARY TABLE original_now_permits AS (
