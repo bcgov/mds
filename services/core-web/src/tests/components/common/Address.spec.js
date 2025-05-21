@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import Address from "@/components/common/Address";
 
 const props = {};
@@ -14,7 +14,7 @@ beforeEach(() => {
 
 describe("Address", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<Address {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container: component } = render(<Address {...props} />);
+    expect(component).toMatchSnapshot();
   });
 });

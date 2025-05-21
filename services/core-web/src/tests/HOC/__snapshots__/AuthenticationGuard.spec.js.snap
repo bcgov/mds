@@ -1,22 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`AuthenticationGuard should render the \`NullScreen\` if \`isAuthenticated\` && \`userAccessData !== role_view\` 1`] = `
+<div>
+  <div
+    class="null-screen fade-in"
+  >
+    <div
+      class="no-nav-bar"
+    >
+      <img
+        alt="mine_img"
+        src="[object Object]"
+      />
+      <h3>
+        You do not have permission to access this site
+      </h3>
+      <p>
+        Contact your system administrator at 
+        <b>
+          mds@gov.bc.ca
+        </b>
+         to request access
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`AuthenticationGuard should render the \`WrappedComponent\` if \`isAuthenticated\` && \`userAccessData === role_view\` 1`] = `
-<Component
-  authenticateUser={[MockFunction]}
-  isAuthenticated={true}
-  storeUserAccessData={[MockFunction]}
-  userAccessData={
-    Array [
-      "core_view_all",
-      "idir",
-      "core_edit_mines",
-      "offline_access",
-      "admin",
-      "uma_authorization",
-      "core_admin",
-      "core_edit_reports",
-      "role_edit_project_summaries",
-    ]
-  }
-/>
+<div>
+  <div>
+    Test
+  </div>
+</div>
 `;

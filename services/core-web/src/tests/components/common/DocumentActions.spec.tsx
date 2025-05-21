@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { DocumentActions } from "@/components/common/DocumentActions";
 
 const dispatchProps: any = {};
@@ -23,7 +23,7 @@ beforeEach(() => {
 
 describe("DocumentActions", () => {
   it("renders properly", () => {
-    const component = shallow(<DocumentActions {...dispatchProps} {...props} />);
+    const { container: component } = render(<DocumentActions {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

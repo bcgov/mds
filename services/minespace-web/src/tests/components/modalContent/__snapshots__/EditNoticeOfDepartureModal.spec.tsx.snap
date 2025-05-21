@@ -1,80 +1,601 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EditNoticeOfDepartureModal renders properly 1`] = `
-<ContextProvider
-  value={
-    Object {
-      "store": Object {
-        "@@observable": [Function],
-        "dispatch": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": Object {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": Object {
-          "@@observable": [Function],
-          "dispatch": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
-    }
-  }
->
-  <AddNoticeOfDepartureModal
-    addNoticeOfDepartureFormValues={Object {}}
-    afterClose={[MockFunction]}
-    closeModal={[MockFunction]}
-    initialValues={Object {}}
-    mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"
-    noticeOfDeparture={
-      Object {
-        "create_timestamp": "2022-05-05T15:44:48.204164+00:00",
-        "documents": Array [
-          Object {
-            "create_timestamp": "2022-05-05T15:44:49.419460+00:00",
-            "create_user": "create-user",
-            "document_manager_guid": "8e1e0182-fef4-4f93-b76a-d2b65b6f3908",
-            "document_name": "Excel_Comments_Template.xlsx",
-            "document_type": "checklist",
-            "mine_document_guid": "f678c3b6-8514-43fb-a147-a6caf5deeb50",
-            "mine_guid": "29050da9-5d9e-4a80-9f6d-1d06f02fc589",
-            "upload_date": null,
-          },
-        ],
-        "mine": Object {
-          "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
-          "mine_name": "mine3",
-          "mine_no": "BLAH9091",
-        },
-        "nod_description": "Checklist description",
-        "nod_guid": "56c75a01-248f-4e2c-961a-131790205682",
-        "nod_no": "NOD-123",
-        "nod_status": "pending_review",
-        "nod_title": "Test with checklist 1",
-        "nod_type": "potentially_substantial",
-        "permit": Object {
-          "current_permittee": "Richardson-Weiss",
-          "permit_guid": "b6cc4e58-993f-4045-8e3b-27b0935d5ef7",
-          "permit_id": "10",
-          "permit_no": "CX-6515762",
-          "permit_prefix": "C",
-          "permit_status_code": "O",
-        },
-        "submission_timestamp": "2022-05-05T15:44:48.205086",
-        "update_timestamp": "2022-05-05T15:44:48.205068+00:00",
-      }
-    }
-    onSubmit={[MockFunction]}
-  />
-</ContextProvider>
+<div>
+  <div>
+    <div>
+      <div
+        class="bcgov-callout--warning nod-callout-text"
+      >
+        <div
+          class="nod-callout"
+        >
+          <h4>
+            Pending Review
+          </h4>
+          <p>
+            A notification has been sent to the Ministry that your Notice of Departure has been submitted. Please check MineSpace for updates to your submission status.
+          </p>
+        </div>
+      </div>
+      <form
+        class="ant-form ant-form-vertical common-form common-form-EDIT_NOTICE_OF_DEPARTURE form-edit"
+        id="EDIT_NOTICE_OF_DEPARTURE"
+      >
+        <h4
+          class="ant-typography"
+        >
+          Basic Information
+        </h4>
+        <span
+          class="ant-typography"
+        >
+          Enter the following information about your Notice of Departure.
+        </span>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="EDIT_NOTICE_OF_DEPARTURE_nod_title"
+                title=""
+              >
+                <div
+                  style="width: 100%;"
+                >
+                  Project Title
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    aria-label="nod_title"
+                    class="ant-input"
+                    data-testid="nod_title"
+                    id="nodTitle"
+                    name="nod_title"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="EDIT_NOTICE_OF_DEPARTURE_nod_title_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-row"
+          style="margin-left: -12px; margin-right: -12px;"
+        >
+          <div
+            class="ant-col ant-col-12"
+            style="padding-left: 12px; padding-right: 12px;"
+          >
+            <p
+              class="field-title"
+            >
+              Permit #
+            </p>
+            <p
+              class="content--light-grey padding-sm"
+            >
+              CX-6515762
+            </p>
+          </div>
+          <div
+            class="ant-col ant-col-12"
+            style="padding-left: 12px; padding-right: 12px;"
+          >
+            <p
+              class="field-title"
+            >
+              NOD #
+            </p>
+            <p
+              class="content--light-grey padding-sm"
+            >
+              NOD-123
+            </p>
+          </div>
+        </div>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="EDIT_NOTICE_OF_DEPARTURE_nod_description"
+                title=""
+              >
+                <div
+                  style="width: 100%;"
+                >
+                  Departure Summary
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <textarea
+                    class="ant-input"
+                    id="nod_description"
+                    name="nod_description"
+                    style="height: 0px; resize: none; min-height: -12px;"
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="EDIT_NOTICE_OF_DEPARTURE_nod_description_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="margin-large--bottom"
+        />
+        <h4
+          class="nod-modal-section-header"
+        >
+          Notice of Departure Self-Assessment Determination
+        </h4>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="EDIT_NOTICE_OF_DEPARTURE_nod_type"
+                title=""
+              >
+                <div
+                  style="width: 100%;"
+                >
+                  Based on the information established in your self-assessment form please determine your
+          submissions Notice of Departure type. If you are unsure what category you fall under,
+          please contact us.
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    class="ant-radio-group ant-radio-group-solid"
+                  >
+                    <label
+                      class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                    >
+                      <span
+                        class="ant-radio"
+                      >
+                        <input
+                          class="ant-radio-input"
+                          name="nod_type"
+                          type="radio"
+                          value="non_substantial"
+                        />
+                        <span
+                          class="ant-radio-inner"
+                        />
+                      </span>
+                      <span>
+                        This Notice of Departure is non-substantial and does not require ministry review.  (Proponent is responsible for ensuring all details have been completed correctly for submission and can begin work immediately)
+                      </span>
+                    </label>
+                    <label
+                      class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                    >
+                      <span
+                        class="ant-radio"
+                      >
+                        <input
+                          class="ant-radio-input"
+                          name="nod_type"
+                          type="radio"
+                          value="potentially_substantial"
+                        />
+                        <span
+                          class="ant-radio-inner"
+                        />
+                      </span>
+                      <span>
+                        This Notice of Departure is potentially substantial and requires ministry review.  (Ministry staff will review submission and determine if work can move forward as Notice of Departure)
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="EDIT_NOTICE_OF_DEPARTURE_nod_type_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h4
+          class="nod-modal-section-header"
+        >
+          Upload Notice of Departure Self-Assessment Form
+        </h4>
+        <span
+          class="ant-typography"
+        >
+          Please upload your completed Self-assessment form (
+          <a
+            href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mines-act-permits/mines-act-departures-from-approval"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            click here to download
+          </a>
+          ) below. Remember your completed form must be signed by the Mine Manager and any supporting information included or uploaded.
+        </span>
+        <div
+          class="ant-alert ant-alert-warning margin-y-large"
+          data-show="true"
+          role="alert"
+        >
+          <span
+            aria-label="exclamation-circle"
+            class="anticon anticon-exclamation-circle ant-alert-icon"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              data-icon="exclamation-circle"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm-32 232c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V296zm32 440a48.01 48.01 0 010-96 48.01 48.01 0 010 96z"
+              />
+            </svg>
+          </span>
+          <div
+            class="ant-alert-content"
+          >
+            <div
+              class="ant-alert-message"
+            >
+              Note: Uploading a new self-assessment form will replace the existing version.  Additional files can be uploaded in the 'Upload Application Documents' section at the end of this form
+            </div>
+          </div>
+        </div>
+        <div
+          class="margin-y-large"
+        >
+          <div
+            class="whirlpool-container"
+          >
+            <div
+              class="ant-form-item ant-form-item-with-help"
+            >
+              <div
+                class="ant-row ant-form-item-row"
+              >
+                <div
+                  class="ant-col ant-form-item-label"
+                >
+                  <label
+                    class=""
+                    for="EDIT_NOTICE_OF_DEPARTURE_checklist"
+                    title=""
+                  />
+                </div>
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
+                  >
+                    <div
+                      class="ant-form-item-control-input-content"
+                    >
+                      <div
+                        class="filepond--wrapper"
+                      >
+                        <input
+                          accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                          id="checklist"
+                          multiple=""
+                          name="file"
+                          type="file"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; flex-wrap: nowrap;"
+                  >
+                    <div
+                      class="ant-form-item-explain ant-form-item-explain-connected"
+                      id="EDIT_NOTICE_OF_DEPARTURE_checklist_help"
+                      role="alert"
+                    >
+                      <div
+                        class=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h4
+            class="nod-modal-section-header"
+          />
+          <div
+            class="ant-row"
+          >
+            <div
+              class="ant-col ant-col-16"
+            >
+              <p
+                class="field-title"
+              >
+                Uploaded File
+              </p>
+            </div>
+            <div
+              class="ant-col ant-col-5"
+            >
+              <p
+                class="field-title"
+              >
+                Upload Date
+              </p>
+            </div>
+            <div
+              class="ant-col ant-col-3"
+            >
+              <p
+                class="field-title"
+              >
+                 
+              </p>
+            </div>
+          </div>
+          <div
+            class="ant-row"
+          >
+            <div
+              class="ant-col ant-col-16"
+            >
+              <p>
+                Excel_Comments_Template.xlsx
+              </p>
+            </div>
+            <div
+              class="ant-col ant-col-5"
+            >
+              <p>
+                May 05 2022
+              </p>
+            </div>
+            <div
+              class="ant-col ant-col-3"
+            >
+              <a
+                role="link"
+                tabindex="0"
+              >
+                Download
+              </a>
+            </div>
+          </div>
+        </div>
+        <h4
+          class="nod-modal-section-header"
+        >
+          Upload Application Documents
+        </h4>
+        <span
+          class="ant-typography"
+        >
+          Please support your Notice of Departure by uploading additional supporting application documents. These items documents can include:
+        </span>
+        <ul>
+          <li>
+            A detailed project description
+          </li>
+          <li>
+            Location (with map, showing Mine boundary)
+          </li>
+          <li>
+            Total disturbance area
+          </li>
+          <li>
+            Total new disturbance area
+          </li>
+          <li>
+            Relevant supporting info (management plans, field surveys, etc...)
+          </li>
+        </ul>
+        <div
+          class="margin-y-large"
+        >
+          <div
+            class="whirlpool-container"
+          >
+            <div
+              class="ant-form-item ant-form-item-with-help"
+            >
+              <div
+                class="ant-row ant-form-item-row"
+              >
+                <div
+                  class="ant-col ant-form-item-label"
+                >
+                  <label
+                    class=""
+                    for="EDIT_NOTICE_OF_DEPARTURE_other"
+                    title=""
+                  />
+                </div>
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
+                  >
+                    <div
+                      class="ant-form-item-control-input-content"
+                    >
+                      <div
+                        class="filepond--wrapper"
+                      >
+                        <input
+                          accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.geo+json,application/gml+xml,application/dbf,application/x-dbf,application/x-dbase,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,text/csv,application/xml,text/xml"
+                          id="other"
+                          multiple=""
+                          name="file"
+                          type="file"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; flex-wrap: nowrap;"
+                  >
+                    <div
+                      class="ant-form-item-explain ant-form-item-explain-connected"
+                      id="EDIT_NOTICE_OF_DEPARTURE_other_help"
+                      role="alert"
+                    >
+                      <div
+                        class=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="content--light-grey padding-lg margin-large--bottom"
+        >
+          <h4
+            class="nod-modal-section-header"
+          >
+            Withdraw Submission
+          </h4>
+          <span
+            class="ant-typography"
+          >
+            If you would like to withdraw this submission you may do so by clicking below. If you choose to submit this Notice of Departure again you will need to begin a new submission.
+          </span>
+          <div
+            class="margin-y-large"
+          >
+            <button
+              class="ant-btn ant-btn-primary full-mobile"
+              type="button"
+            >
+              <span>
+                Withdraw Submission
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          class="ant-modal-footer"
+        >
+          <button
+            aria-label="Cancel"
+            class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
+            type="button"
+          >
+            <span>
+              Cancel
+            </span>
+          </button>
+          <button
+            aria-label="Submit"
+            class="ant-btn ant-btn-primary  form-btn"
+            disabled=""
+            type="submit"
+          >
+            <span>
+              Submit Notice of Departure
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 `;

@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Mock from "@mds/common/tests/mocks/dataMocks";
 
@@ -23,15 +23,13 @@ beforeEach(() => {
 
 describe("AuthorizationGuard", () => {
   it("should render the `WrappedComponent` if `userRoles === role_edit_mines || role_admin`", () => {
-    const component = shallow(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
+    const { container: component } = render(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
     expect(component).toMatchSnapshot();
-    expect(component.html()).not.toEqual("<div></div>");
-    expect(component.html()).toEqual("<div>Test</div>");
   });
 
   it("should render the `<NullScreen /> if `userRoles !== role_edit_mines || role_admin`", () => {
     reducerProps.userRoles = [];
-    const component = shallow(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
-    expect(component.html()).not.toEqual("<div>Test</div>");
+    const { container: component } = render(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
+    expect(component).toMatchSnapshot();
   });
 });

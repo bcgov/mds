@@ -1,6 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MergeContactsDashboard } from "@/components/admin/contacts/MergeContactsDashboard";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { BrowserRouter } from "react-router-dom";
 
 const dispatchProps = {};
 const props = {};
@@ -24,7 +26,7 @@ beforeEach(() => {
 
 describe("MergeContactDashboard", () => {
   it("renders properly", () => {
-    const component = shallow(<MergeContactsDashboard {...dispatchProps} {...props} />);
+    const { container: component } = render(<BrowserRouter><ReduxWrapper><MergeContactsDashboard {...dispatchProps} {...props} /></ReduxWrapper></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

@@ -1,6 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { DocumentCategoryForm } from "@/components/Forms/DocumentCategoryForm";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const props = {};
 
@@ -20,7 +22,7 @@ beforeEach(() => {
 
 describe("DocumentCategoryForm", () => {
   it("renders properly", () => {
-    const component = shallow(<DocumentCategoryForm {...props} />);
+    const { container: component } = render(<ReduxWrapper><FormWrapper name="formName"><DocumentCategoryForm {...props} /></FormWrapper></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

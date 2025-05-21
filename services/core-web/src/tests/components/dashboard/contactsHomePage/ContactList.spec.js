@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import ContactList from "@/components/dashboard/contactsHomePage/ContactList";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { BrowserRouter } from "react-router-dom";
 
 const props = {};
 
@@ -17,7 +18,7 @@ beforeEach(() => {
 
 describe("ContactList", () => {
   it("renders properly", () => {
-    const component = shallow(<ContactList {...props} />);
+    const { container: component } = render(<BrowserRouter><ContactList {...props} /></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

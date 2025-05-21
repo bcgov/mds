@@ -2,88 +2,358 @@
 
 exports[`AmazonS3Provider renders properly 1`] = `
 <div>
-  <div
-    className="control-section"
-  >
-    <m
-      ajaxSettings={
-        {
-          "downloadUrl": "<FILESYSTEM_PROVIDER_URL>AmazonS3Download",
-          "getImageUrl": "<FILESYSTEM_PROVIDER_URL>AmazonS3GetImage",
-          "url": "<FILESYSTEM_PROVIDER_URL>AmazonS3FileOperations",
-        }
-      }
-      allowDragAndDrop={false}
-      allowMultiSelection={true}
-      beforeDownload={[Function]}
-      beforeImageLoad={[Function]}
-      beforeSend={[Function]}
-      contextMenuSettings={
-        {
-          "file": [
-            "Open",
-            "|",
-            "Details",
-          ],
-          "folder": [
-            "Open",
-            "|",
-            "Details",
-          ],
-          "layout": [
-            "SortBy",
-            "View",
-            "Refresh",
-            "|",
-            "Details",
-            "|",
-            "SelectAll",
-          ],
-          "visible": true,
-        }
-      }
-      enablePersistence={false}
-      fileOpen={[Function]}
-      id="filemanager"
-      menuClick={[Function]}
-      rootAliasName="Files"
-      searchSettings={
-        {
-          "allowSearchOnTyping": false,
-          "filterType": "contains",
-          "ignoreCase": true,
-        }
-      }
-      showFileExtension={true}
-      showHiddenItems={false}
-      showThumbnail={true}
-      toolbarClick={[Function]}
-      toolbarSettings={
-        {
-          "items": [
-            "Download",
-            "SortBy",
-            "Refresh",
-            "Selection",
-            "View",
-            "Details",
-          ],
-          "visible": true,
-        }
-      }
-      view="Details"
+  <div>
+    <div
+      class="control-section"
     >
-      <g
-        services={
-          [
-            [Function],
-            [Function],
-            [Function],
-            [Function],
-          ]
-        }
-      />
-    </m>
+      <div
+        class="e-control e-filemanager e-lib e-fe-cb-select e-keyboard"
+        id="filemanager"
+        style="width: 100%; height: 400px;"
+      >
+        <div
+          class="e-spinner-pane e-spin-hide"
+        >
+          <div
+            aria-disabled="true"
+            class="e-spinner-inner"
+          />
+        </div>
+        <div
+          aria-disabled="false"
+          aria-orientation="horizontal"
+          class="e-control e-toolbar e-lib e-toolpop e-keyboard"
+          id="filemanager_toolbar"
+          role="toolbar"
+          style="height: auto; width: auto;"
+        >
+          <div
+            class="e-toolbar-items e-tbar-pos"
+          >
+            <div
+              class="e-toolbar-left"
+            >
+              <div
+                class="e-toolbar-item e-hidden"
+                title="Download"
+              >
+                <button
+                  aria-disabled="false"
+                  aria-label="Download"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+                  data-ripple="true"
+                  data-tabindex="-1"
+                  id="filemanager_tb_download"
+                  style="width: auto;"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="e-btn-icon e-icons e-fe-download e-icon-left"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                  >
+                    Download
+                  </span>
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-template"
+                title="Sort by"
+              >
+                <button
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  aria-label="Sort by"
+                  class="e-tbar-btn e-tbtn-txt e-control e-dropdown-btn e-lib e-btn e-fe-popup"
+                  data-ripple="true"
+                  data-tabindex="-1"
+                  id="filemanager_tb_sortby"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="e-btn-icon e-icons e-fe-sort e-icon-left"
+                  />
+                  <span
+                    class="e-tbar-btn-text e-tbar-ddb-text"
+                  >
+                    Sort by
+                  </span>
+                  <span
+                    class="e-btn-icon e-icons e-icon-right e-caret"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item"
+                title="Refresh"
+              >
+                <button
+                  aria-disabled="false"
+                  aria-label="Refresh"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+                  data-ripple="true"
+                  data-tabindex="-1"
+                  id="filemanager_tb_refresh"
+                  style="width: auto;"
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-btn-icon e-icons e-fe-refresh e-icon-left"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                  >
+                    Refresh
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
+              class="e-toolbar-center"
+            />
+            <div
+              class="e-toolbar-right"
+            >
+              <div
+                class="e-toolbar-item e-overflow-show e-hidden"
+                title="Clear selection"
+              >
+                <button
+                  aria-disabled="false"
+                  aria-label="Selection"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+                  data-ripple="true"
+                  data-tabindex="-1"
+                  id="filemanager_tb_selection"
+                  style="width: auto;"
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-tbar-btn-text"
+                  >
+                    Selection
+                  </span>
+                  <span
+                    class="e-btn-icon e-icons e-fe-clear e-icon-right"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-template e-popup-text e-overflow-show"
+                title="View"
+              >
+                <button
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  aria-label="View"
+                  class="e-tbar-btn e-tbtn-txt e-control e-dropdown-btn e-lib e-btn e-caret-hide e-fe-popup"
+                  data-ripple="true"
+                  data-tabindex="-1"
+                  id="filemanager_tb_view"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="e-btn-icon e-icons e-fe-grid e-icon-left"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                  >
+                    View
+                  </span>
+                  <span
+                    class="e-btn-icon e-icons e-icon-right e-caret"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-popup-text e-overflow-show"
+                title="Details"
+              >
+                <button
+                  aria-disabled="false"
+                  aria-label="Details"
+                  class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+                  data-ripple="true"
+                  data-tabindex="-1"
+                  id="filemanager_tb_details"
+                  style="width: auto;"
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="e-btn-icon e-icons e-fe-details e-icon-left"
+                  />
+                  <span
+                    class="e-tbar-btn-text"
+                  >
+                    Details
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="e-layout e-control e-splitter e-lib e-splitter-horizontal"
+          id="filemanager_layout"
+          style="height: 0px; width: 100%;"
+        >
+          <div
+            class="e-navigation e-pane e-pane-horizontal e-scrollable e-static-pane e-resizable"
+            id="filemanager_navigation"
+            style="flex-basis: 25%; order: 0;"
+          >
+            <div
+              id="filemanager_tree"
+            />
+          </div>
+          <div
+            class="e-layout-content e-pane e-pane-horizontal e-scrollable e-resizable"
+            id="filemanager_content"
+            style="order: 2;"
+          >
+            <div
+              class="e-address e-lib e-keyboard"
+              id="filemanager_breadcrumbbar"
+            />
+            <div
+              id="filemanager_grid"
+            />
+            <div
+              class="e-large-icons e-display-none"
+              id="filemanager_largeicons"
+              role="group"
+            />
+            <span
+              class="e-fe-overlay"
+            />
+          </div>
+          <div
+            aria-hidden="true"
+            aria-orientation="horizontal"
+            aria-valuenow="0"
+            class="e-split-bar e-split-bar-horizontal e-resizable-split-bar e-last-bar"
+            role="separator"
+            style="width: 1px; order: 1;"
+            tabindex="-1"
+          >
+            <button
+              aria-label="Toggle navigation"
+              class="e-navigate-arrow e-arrow-left e-icon-hidden"
+              tabindex="-1"
+              type="button"
+            />
+            <div
+              class="e-resize-handler e-icons"
+              style="width: 1px;"
+            />
+            <button
+              aria-label="Toggle navigation"
+              class="e-navigate-arrow e-arrow-right e-icon-hidden"
+              tabindex="-1"
+              type="button"
+            />
+          </div>
+        </div>
+        <div
+          id="filemanager_dialog"
+        />
+        <ul
+          id="contextmenu_0"
+          style="display: none;"
+        />
+        <div
+          id="filemanager_img_dialog"
+        />
+        <div
+          id="filemanager_extn_dialog"
+        />
+        <div
+          class="e-dlg-ref-element"
+        />
+        <div
+          class="e-dlg-container e-fe-popup e-dlg-center-center"
+          style="z-index: 1000000000;"
+        >
+          <div
+            aria-describedby="filemanager_upload_dialog_title filemanager_upload_dialog_dialog-content"
+            aria-labelledby="filemanager_upload_dialog_dialog-header"
+            aria-modal="true"
+            class="e-control e-dialog e-lib e-fe-popup e-draggable e-dlg-modal e-popup e-popup-close"
+            id="filemanager_upload_dialog"
+            role="dialog"
+            style="max-height: -20px; z-index: 1000000000; width: 350px; left: 0px; top: 0px;"
+          >
+            <div
+              class="e-dlg-header-content"
+              id="filemanager_upload_dialog_dialog-header"
+            >
+              <button
+                aria-label="Close"
+                class="e-dlg-closeicon-btn e-control e-btn e-lib e-flat e-icon-btn"
+                data-ripple="true"
+                title="Close"
+                type="button"
+              >
+                <span
+                  class="e-btn-icon e-icon-dlg-close e-icons"
+                />
+              </button>
+              <div
+                class="e-dlg-header"
+                id="filemanager_upload_dialog_title"
+              >
+                Upload Files
+              </div>
+            </div>
+            <div
+              class="e-dlg-content"
+              id="filemanager_upload_dialog_dialog-content"
+            >
+              <div
+                class="e-upload e-control-wrapper e-lib e-keyboard"
+              >
+                <div
+                  class="e-file-select-wrap"
+                >
+                  <button
+                    class="e-css e-btn"
+                    tabindex="0"
+                    title="undefined"
+                    type="button"
+                  >
+                    Browse...
+                  </button>
+                  <span
+                    class="e-file-select"
+                  >
+                    <input
+                      aria-label="Uploader"
+                      class="e-control e-uploader e-lib"
+                      id="filemanager_upload"
+                      multiple="multiple"
+                      name="uploadFiles"
+                      tabindex="-1"
+                      type="file"
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="e-dlg-overlay"
+            style="z-index: 999999999; display: none;"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 `;

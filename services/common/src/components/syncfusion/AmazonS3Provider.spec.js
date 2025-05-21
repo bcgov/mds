@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { AmazonS3Provider } from "@/components/syncfusion/AmazonS3Provider";
 
 const props = {};
@@ -14,7 +14,7 @@ beforeEach(() => {
 
 describe("AmazonS3Provider", () => {
   it("renders properly", () => {
-    const component = shallow(<AmazonS3Provider {...props} />);
+    const { container: component } = render(<AmazonS3Provider {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

@@ -1,73 +1,220 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ContactList renders properly 1`] = `
-<CoreTable
-  columns={
-    Array [
-      Object {
-        "dataIndex": "name",
-        "key": "name",
-        "render": [Function],
-        "sortField": "party_name",
-        "sortOrder": false,
-        "sorter": true,
-        "title": "Name",
-        "width": 150,
-      },
-      Object {
-        "dataIndex": "role",
-        "key": "role",
-        "render": [Function],
-        "sortOrder": false,
-        "title": "Role",
-        "width": 150,
-      },
-      Object {
-        "dataIndex": "email",
-        "key": "email",
-        "render": [Function],
-        "sortOrder": false,
-        "title": "Email",
-        "width": 150,
-      },
-      Object {
-        "dataIndex": "phone",
-        "key": "phone",
-        "render": [Function],
-        "sortOrder": false,
-        "title": "Phone",
-        "width": 150,
-      },
-    ]
-  }
-  dataSource={
-    Array [
-      Object {
-        "email": undefined,
-        "emptyField": "N/A",
-        "key": "18133c75-49ad-4101-85f3-a43e35ae989a",
-        "name": Array [
-          "mock name",
-          "mock name",
-        ],
-        "party_orgbook_entity": undefined,
-        "phone": "N/A",
-        "role": "N/A",
-      },
-      Object {
-        "email": undefined,
-        "emptyField": "N/A",
-        "key": "18145c75-49ad-0101-85f3-a43e45ae989a",
-        "name": Array [
-          "mock name",
-          "mock Two",
-        ],
-        "party_orgbook_entity": undefined,
-        "phone": "N/A",
-        "role": "N/A",
-      },
-    ]
-  }
-  onChange={[Function]}
-/>
+<div>
+  <div
+    class="ant-table-wrapper  core-table"
+  >
+    <div
+      class="ant-spin-nested-loading"
+    >
+      <div
+        class="ant-spin-container"
+      >
+        <div
+          class="ant-table"
+        >
+          <div
+            class="ant-table-container"
+          >
+            <div
+              class="ant-table-content"
+            >
+              <table
+                style="table-layout: auto;"
+              >
+                <colgroup>
+                  <col
+                    style="width: 150px;"
+                  />
+                  <col
+                    style="width: 150px;"
+                  />
+                  <col
+                    style="width: 150px;"
+                  />
+                  <col
+                    style="width: 150px;"
+                  />
+                </colgroup>
+                <thead
+                  class="ant-table-thead"
+                >
+                  <tr>
+                    <th
+                      aria-label="Name"
+                      class="ant-table-cell ant-table-column-has-sorters"
+                      tabindex="0"
+                    >
+                      <div
+                        class="ant-table-column-sorters"
+                      >
+                        <span
+                          class="ant-table-column-title"
+                        >
+                          Name
+                        </span>
+                        <span
+                          class="ant-table-column-sorter ant-table-column-sorter-full"
+                        >
+                          <span
+                            class="ant-table-column-sorter-inner"
+                          >
+                            <span
+                              aria-label="caret-up"
+                              class="anticon anticon-caret-up ant-table-column-sorter-up"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-up"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                            <span
+                              aria-label="caret-down"
+                              class="anticon anticon-caret-down ant-table-column-sorter-down"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </th>
+                    <th
+                      class="ant-table-cell"
+                    >
+                      Role
+                    </th>
+                    <th
+                      class="ant-table-cell"
+                    >
+                      Email
+                    </th>
+                    <th
+                      class="ant-table-cell"
+                    >
+                      Phone
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  class="ant-table-tbody"
+                >
+                  <tr
+                    class="ant-table-row ant-table-row-level-0 fade-in"
+                    data-row-key="18133c75-49ad-4101-85f3-a43e35ae989a"
+                  >
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <a
+                        href="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/profile"
+                        title="Name"
+                      >
+                        mock name, mock name
+                      </a>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="role-column"
+                        title="Role"
+                      >
+                        N/A
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="email-column"
+                        title="Email"
+                      />
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="phone-column"
+                        title="Phone"
+                      >
+                        N/A
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    class="ant-table-row ant-table-row-level-0 fade-in"
+                    data-row-key="18145c75-49ad-0101-85f3-a43e45ae989a"
+                  >
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <a
+                        href="/dashboard/18145c75-49ad-0101-85f3-a43e45ae989a/profile"
+                        title="Name"
+                      >
+                        mock Two, mock name
+                      </a>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="role-column"
+                        title="Role"
+                      >
+                        N/A
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="email-column"
+                        title="Email"
+                      />
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="phone-column"
+                        title="Phone"
+                      >
+                        N/A
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;

@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { ChangeNOWMineForm } from "@/components/Forms/noticeOfWork/ChangeNOWMineForm";
 import { NOW } from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -27,7 +28,7 @@ beforeEach(() => {
 
 describe("ChangeNOWMineForm", () => {
   it("renders properly", () => {
-    const component = shallow(<ChangeNOWMineForm {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><ChangeNOWMineForm {...dispatchProps} {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

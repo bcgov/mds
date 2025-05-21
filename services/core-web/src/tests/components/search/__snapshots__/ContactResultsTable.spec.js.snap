@@ -1,137 +1,525 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ContactResultsTable renders properly 1`] = `
-<div
-  className="padding-lg--bottom"
->
-  <h2>
-    Contacts
-  </h2>
-  <Divider
-    style={
-      Object {
-        "padding": "0",
-      }
-    }
-  />
-  <CoreTable
-    columns={
-      Array [
-        Object {
-          "dataIndex": "name",
-          "key": "name",
-          "render": [Function],
-          "sorter": [Function],
-          "title": "Name",
-        },
-        Object {
-          "key": "roles",
-          "render": [Function],
-          "title": "Roles",
-        },
-        Object {
-          "dataIndex": "phone_no",
-          "key": "phone_no",
-          "render": [Function],
-          "title": "Phone",
-        },
-        Object {
-          "dataIndex": "email",
-          "key": "email",
-          "render": [Function],
-          "sorter": [Function],
-          "title": "Email",
-        },
-      ]
-    }
-    dataSource={
-      Array [
-        Object {
-          "email": "Cody.Abbott@example.com",
-          "mine_party_appt": Array [
-            Object {
-              "mine": Object {
-                "mine_name": "Lopez-Hale",
-              },
-              "mine_party_appt_type_code": "EOR",
-            },
-          ],
-          "name": "Cody Abbott",
-          "party_guid": "c0816fad-ef1d-4fa8-be74-2a57d1b3d05b",
-          "phone_no": "401-392-0090",
-        },
-        Object {
-          "email": "Eric.Abbott@example.com",
-          "mine_party_appt": Array [
-            Object {
-              "mine": Object {
-                "mine_name": "French Inc",
-              },
-              "mine_party_appt_type_code": "EOR",
-            },
-          ],
-          "name": "Eric Abbott",
-          "party_guid": "bb93b7de-8ef3-44c2-8c3c-d1ce21e98aa6",
-          "phone_no": "659-797-6365",
-        },
-        Object {
-          "email": "Chad.Abbott@example.com",
-          "mine_party_appt": Array [
-            Object {
-              "mine": Object {
-                "mine_name": "Nguyen, Case and Fernandez",
-              },
-              "mine_party_appt_type_code": "EOR",
-            },
-          ],
-          "name": "Chad Abbott",
-          "party_guid": "e59f15a0-4bf1-4963-9546-1009e7e96f23",
-          "phone_no": "242-001-2306",
-        },
-        Object {
-          "email": "Kyle.Abbott@example.com",
-          "mine_party_appt": Array [
-            Object {
-              "mine": Object {
-                "mine_name": "Anderson-Martin",
-              },
-              "mine_party_appt_type_code": "MMG",
-            },
-          ],
-          "name": "Kyle Abbott",
-          "party_guid": "e412fdd0-e640-4bfa-805e-86b331f29b6d",
-          "phone_no": "988-817-2676",
-        },
-        Object {
-          "email": "Lee.Abbott@example.com",
-          "mine_party_appt": Array [
-            Object {
-              "mine": Object {
-                "mine_name": "Garza, Kelly and Williams",
-              },
-              "mine_party_appt_type_code": "MMG",
-            },
-          ],
-          "name": "Lee Abbott",
-          "party_guid": "70bf5e33-26a2-4bfa-9841-7fe46b089712",
-          "phone_no": "593-906-1501",
-        },
-        Object {
-          "email": "Dawn.Abbott@example.com",
-          "mine_party_appt": Array [
-            Object {
-              "mine": Object {
-                "mine_name": "Schmidt Ltd",
-              },
-              "mine_party_appt_type_code": "MMG",
-            },
-          ],
-          "name": "Dawn Abbott",
-          "party_guid": "b4058b95-a367-428c-bc85-50c2e008e96f",
-          "phone_no": "743-912-5775",
-        },
-      ]
-    }
-  />
+<div>
+  <div
+    class="padding-lg--bottom"
+  >
+    <h2>
+      Contacts
+    </h2>
+    <div
+      class="ant-divider ant-divider-horizontal"
+      role="separator"
+      style="padding: 0px;"
+    />
+    <div
+      class="ant-table-wrapper  core-table"
+    >
+      <div
+        class="ant-spin-nested-loading"
+      >
+        <div
+          class="ant-spin-container"
+        >
+          <div
+            class="ant-table"
+          >
+            <div
+              class="ant-table-container"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <colgroup />
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        aria-label="Name"
+                        class="ant-table-cell ant-table-column-has-sorters"
+                        tabindex="0"
+                      >
+                        <div
+                          class="ant-table-column-sorters"
+                        >
+                          <span
+                            class="ant-table-column-title"
+                          >
+                            Name
+                          </span>
+                          <span
+                            class="ant-table-column-sorter ant-table-column-sorter-full"
+                          >
+                            <span
+                              class="ant-table-column-sorter-inner"
+                            >
+                              <span
+                                aria-label="caret-up"
+                                class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                role="presentation"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-up"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                  />
+                                </svg>
+                              </span>
+                              <span
+                                aria-label="caret-down"
+                                class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                role="presentation"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-down"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                  />
+                                </svg>
+                              </span>
+                            </span>
+                          </span>
+                        </div>
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Roles
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Phone
+                      </th>
+                      <th
+                        aria-label="Email"
+                        class="ant-table-cell ant-table-column-has-sorters"
+                        tabindex="0"
+                      >
+                        <div
+                          class="ant-table-column-sorters"
+                        >
+                          <span
+                            class="ant-table-column-title"
+                          >
+                            Email
+                          </span>
+                          <span
+                            class="ant-table-column-sorter ant-table-column-sorter-full"
+                          >
+                            <span
+                              class="ant-table-column-sorter-inner"
+                            >
+                              <span
+                                aria-label="caret-up"
+                                class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                role="presentation"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-up"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                  />
+                                </svg>
+                              </span>
+                              <span
+                                aria-label="caret-down"
+                                class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                role="presentation"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-down"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                  />
+                                </svg>
+                              </span>
+                            </span>
+                          </span>
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <a
+                          href="/dashboard/c0816fad-ef1d-4fa8-be74-2a57d1b3d05b/profile"
+                        >
+                          <span>
+                            <mark
+                              class="highlight"
+                            >
+                              Cody Abbott
+                            </mark>
+                          </span>
+                        </a>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <p>
+                          Engineer Of Record
+                          <span
+                            class="padding-sm--left"
+                            style="font-style: italic;"
+                          >
+                            (
+                            Lopez-Hale
+                            )
+                          </span>
+                        </p>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span>
+                          <mark
+                            class="highlight"
+                          >
+                            401-392-0090
+                          </mark>
+                        </span>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span>
+                          <mark
+                            class="highlight"
+                          >
+                            Cody.Abbott@example.com
+                          </mark>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <a
+                          href="/dashboard/bb93b7de-8ef3-44c2-8c3c-d1ce21e98aa6/profile"
+                        >
+                          <span>
+                            <mark
+                              class="highlight"
+                            >
+                              Eric Abbott
+                            </mark>
+                          </span>
+                        </a>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <p>
+                          Engineer Of Record
+                          <span
+                            class="padding-sm--left"
+                            style="font-style: italic;"
+                          >
+                            (
+                            French Inc
+                            )
+                          </span>
+                        </p>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span>
+                          <mark
+                            class="highlight"
+                          >
+                            659-797-6365
+                          </mark>
+                        </span>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span>
+                          <mark
+                            class="highlight"
+                          >
+                            Eric.Abbott@example.com
+                          </mark>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <a
+                          href="/dashboard/e59f15a0-4bf1-4963-9546-1009e7e96f23/profile"
+                        >
+                          <span>
+                            <mark
+                              class="highlight"
+                            >
+                              Chad Abbott
+                            </mark>
+                          </span>
+                        </a>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <p>
+                          Engineer Of Record
+                          <span
+                            class="padding-sm--left"
+                            style="font-style: italic;"
+                          >
+                            (
+                            Nguyen, Case and Fernandez
+                            )
+                          </span>
+                        </p>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span>
+                          <mark
+                            class="highlight"
+                          >
+                            242-001-2306
+                          </mark>
+                        </span>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span>
+                          <mark
+                            class="highlight"
+                          >
+                            Chad.Abbott@example.com
+                          </mark>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <a
+                          href="/dashboard/e412fdd0-e640-4bfa-805e-86b331f29b6d/profile"
+                        >
+                          <span>
+                            <mark
+                              class="highlight"
+                            >
+                              Kyle Abbott
+                            </mark>
+                          </span>
+                        </a>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <p>
+                          Mine Manager
+                          <span
+                            class="padding-sm--left"
+                            style="font-style: italic;"
+                          >
+                            (
+                            Anderson-Martin
+                            )
+                          </span>
+                        </p>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span>
+                          <mark
+                            class="highlight"
+                          >
+                            988-817-2676
+                          </mark>
+                        </span>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span>
+                          <mark
+                            class="highlight"
+                          >
+                            Kyle.Abbott@example.com
+                          </mark>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <a
+                          href="/dashboard/70bf5e33-26a2-4bfa-9841-7fe46b089712/profile"
+                        >
+                          <span>
+                            <mark
+                              class="highlight"
+                            >
+                              Lee Abbott
+                            </mark>
+                          </span>
+                        </a>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <p>
+                          Mine Manager
+                          <span
+                            class="padding-sm--left"
+                            style="font-style: italic;"
+                          >
+                            (
+                            Garza, Kelly and Williams
+                            )
+                          </span>
+                        </p>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span>
+                          <mark
+                            class="highlight"
+                          >
+                            593-906-1501
+                          </mark>
+                        </span>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span>
+                          <mark
+                            class="highlight"
+                          >
+                            Lee.Abbott@example.com
+                          </mark>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <a
+                          href="/dashboard/b4058b95-a367-428c-bc85-50c2e008e96f/profile"
+                        >
+                          <span>
+                            <mark
+                              class="highlight"
+                            >
+                              Dawn Abbott
+                            </mark>
+                          </span>
+                        </a>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <p>
+                          Mine Manager
+                          <span
+                            class="padding-sm--left"
+                            style="font-style: italic;"
+                          >
+                            (
+                            Schmidt Ltd
+                            )
+                          </span>
+                        </p>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span>
+                          <mark
+                            class="highlight"
+                          >
+                            743-912-5775
+                          </mark>
+                        </span>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span>
+                          <mark
+                            class="highlight"
+                          >
+                            Dawn.Abbott@example.com
+                          </mark>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;

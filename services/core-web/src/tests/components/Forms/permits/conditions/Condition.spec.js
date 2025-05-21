@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { Condition } from "@/components/Forms/permits/conditions/Condition";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -25,7 +26,7 @@ beforeEach(() => {
 
 describe("Condition", () => {
   it("renders properly", () => {
-    const component = shallow(<Condition {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><Condition {...dispatchProps} {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

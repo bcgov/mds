@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { AddMineWorkInformationForm } from "@/components/Forms/AddMineWorkInformationForm";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const props = {};
 const dispatchProps = {};
@@ -28,7 +29,11 @@ beforeEach(() => {
 
 describe("AddMineWorkInformationForm", () => {
   it("renders properly", () => {
-    const component = shallow(<AddMineWorkInformationForm {...props} {...dispatchProps} />);
+    const { container: component } = render(
+      <ReduxWrapper>
+        <AddMineWorkInformationForm {...props} {...dispatchProps} />
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 });

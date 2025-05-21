@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { AdminVerifiedMinesList } from "@/components/admin/AdminVerifiedMinesList";
 
 const dispatchProps = {};
@@ -20,7 +20,7 @@ beforeEach(() => {
 
 describe("AdminVerifiedMinesList", () => {
   it("renders properly", () => {
-    const component = shallow(<AdminVerifiedMinesList {...dispatchProps} {...props} />);
+    const { container: component } = render(<AdminVerifiedMinesList {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

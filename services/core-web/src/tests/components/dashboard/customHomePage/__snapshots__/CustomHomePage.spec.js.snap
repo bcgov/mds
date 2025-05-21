@@ -1,98 +1,108 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CustomHomePage renders properly 1`] = `
-<div
-  className="landing-page"
->
+<div>
   <div
-    className="landing-page__header"
+    class="landing-page"
   >
-    <h1>
-      My Dashboard
-    </h1>
-  </div>
-  <div
-    className="landing-page__content page__content"
-  >
-    <h4>
-      Subscribed Mines
-    </h4>
-    <br />
-    <SubscriptionTable
-      handleUnSubscribe={[Function]}
-      isLoaded={false}
-      mineCommodityOptionsHash={
-        Object {
-          "CG": "Construction Aggregate",
-          "MC": "Metallurgic",
-          "TO": "Thermal Coal",
-        }
-      }
-      mineRegionHash={
-        Object {
-          "NE": "North East",
-          "NW": "North West",
-          "SC": "South Central",
-          "SE": "South East",
-          "SW": "South West",
-        }
-      }
-      mineTenureHash={
-        Object {
-          "BCL": "BC Land",
-          "COL": "Coal",
-          "MIN": "Mineral",
-          "PLR": "Placer",
-        }
-      }
-      subscribedMines={
-        Array [
-          Object {
-            "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-            "mine_location": Object {
-              "latitude": null,
-              "longitude": null,
-            },
-            "mine_name": "mine3",
-            "mine_no": "BLAH9091",
-            "mine_permit_numbers": Array [],
-            "mine_status": Object {
-              "effective_date": "2018-10-16",
-              "expiry_date": null,
-              "status_labels": Array [
-                "Closed",
-                "Care & Maintenance",
-              ],
-              "status_values": Array [
-                "CLD",
-                "CM",
-              ],
-            },
-            "mine_tailings_storage_facility": Array [
-              Object {
-                "consequence_classification_status_code": "LOW",
-                "itrb_exemption_status_code": "YES",
-                "latitude": null,
-                "longitude": null,
-                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-                "mine_tailings_storage_facility_name": "MockTSF",
-                "tsf_operating_status_code": "OPT",
-              },
-            ],
-            "mine_type": Array [
-              Object {
-                "mine_tenure_type_code": "PLR",
-              },
-              Object {
-                "mine_tenure_type_code": "MIN",
-              },
-            ],
-            "region_code": "NE",
-          },
-        ]
-      }
-    />
+    <div
+      class="landing-page__header"
+    >
+      <h1>
+        My Dashboard
+      </h1>
+    </div>
+    <div
+      class="landing-page__content page__content"
+    >
+      <h4>
+        Subscribed Mines
+      </h4>
+      <br />
+      <div
+        class="ant-table-wrapper"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <thead
+                      class="ant-table-thead"
+                    >
+                      <tr>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Name
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Number
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Operational Status
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Permits
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Region
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Tenure
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Commodity
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          TSF
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="ant-table-tbody"
+                    />
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 `;

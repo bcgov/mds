@@ -3011,6 +3011,7 @@ export const PARTYRELATIONSHIPS = [
       name: "test company 2 ",
     },
     related_guid: "97b59b9c-8576-47cb-9a04-d7d0340730d5",
+    description: "Permittee"
   },
   {
     mine_party_appt_guid: "17dbf02d-a3ba-40dd-8347-36cd04b7a49b",

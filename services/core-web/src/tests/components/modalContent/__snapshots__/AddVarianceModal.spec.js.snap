@@ -2,49 +2,542 @@
 
 exports[`AddVarianceModal renders properly 1`] = `
 <div>
-  <AddVarianceForm
-    closeModal={[MockFunction]}
-    complianceCodes={
-      Array [
-        Object {
-          "label": "2.3.7 - Spills",
-          "value": 305,
-        },
-        Object {
-          "label": "2.3.8 - Flammable Waste Storage",
-          "value": 306,
-        },
-      ]
-    }
-    inspectors={
-      Object {
-        "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-          "address": Array [
-            Object {},
-          ],
-          "business_role_appts": Array [
-            Object {},
-          ],
-          "first_name": "First",
-          "party_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-          "party_name": "mock name",
-          "party_type_code": "PER",
-        },
-        "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-          "address": Array [
-            Object {},
-          ],
-          "business_role_appts": Array [
-            Object {},
-          ],
-          "party_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-          "party_name": "mock Two",
-          "party_type_code": "PER",
-        },
-      }
-    }
-    mineGuid="48593"
-    onSubmit={[MockFunction]}
-  />
+  <div>
+    <form
+      class="ant-form ant-form-vertical common-form common-form-ADD_VARIANCE form-edit"
+      id="ADD_VARIANCE"
+    >
+      <div
+        class="ant-form-item"
+      >
+        <div
+          class="ant-row ant-form-item-row"
+        >
+          <div
+            class="ant-col ant-form-item-label"
+          >
+            <label
+              class=""
+              title="Are you creating an application or an approved variance?"
+            >
+              Are you creating an application or an approved variance?
+            </label>
+          </div>
+          <div
+            class="ant-col ant-form-item-control"
+          >
+            <div
+              class="ant-form-item-control-input"
+            >
+              <div
+                class="ant-form-item-control-input-content"
+              >
+                <div
+                  class="ant-radio-group ant-radio-group-outline"
+                >
+                  <label
+                    class="ant-radio-wrapper ant-radio-wrapper-checked ant-radio-wrapper-in-form-item"
+                  >
+                    <span
+                      class="ant-radio ant-radio-checked"
+                    >
+                      <input
+                        checked=""
+                        class="ant-radio-input"
+                        type="radio"
+                        value="true"
+                      />
+                      <span
+                        class="ant-radio-inner"
+                      />
+                    </span>
+                    <span>
+                       Application 
+                    </span>
+                  </label>
+                  <label
+                    class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                  >
+                    <span
+                      class="ant-radio"
+                    >
+                      <input
+                        class="ant-radio-input"
+                        type="radio"
+                        value="false"
+                      />
+                      <span
+                        class="ant-radio-inner"
+                      />
+                    </span>
+                    <span>
+                       Approved Variance 
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-form-item ant-form-item-with-help"
+      >
+        <div
+          class="ant-row ant-form-item-row"
+        >
+          <div
+            class="ant-col ant-form-item-label"
+          >
+            <label
+              class="ant-form-item-required"
+              for="ADD_VARIANCE_compliance_article_id"
+              title=""
+            >
+              <div
+                style="width: 100%;"
+              >
+                Part of Code
+              </div>
+            </label>
+          </div>
+          <div
+            class="ant-col ant-form-item-control"
+          >
+            <div
+              class="ant-form-item-control-input"
+            >
+              <div
+                class="ant-form-item-control-input-content"
+              >
+                <div
+                  aria-required="true"
+                  class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                  data-cy="compliance_article_id"
+                >
+                  <div
+                    class="ant-select-selector"
+                  >
+                    <span
+                      class="ant-select-selection-search"
+                    >
+                      <input
+                        aria-activedescendant="compliance_article_id_list_0"
+                        aria-autocomplete="list"
+                        aria-controls="compliance_article_id_list"
+                        aria-haspopup="listbox"
+                        aria-owns="compliance_article_id_list"
+                        aria-required="true"
+                        autocomplete="off"
+                        class="ant-select-selection-search-input"
+                        id="compliance_article_id"
+                        role="combobox"
+                        type="search"
+                        value=""
+                      />
+                    </span>
+                    <span
+                      class="ant-select-selection-placeholder"
+                    >
+                      Select a part of the code
+                    </span>
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="ant-select-arrow"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      aria-label="down"
+                      class="anticon anticon-down ant-select-suffix"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="down"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              style="display: flex; flex-wrap: nowrap;"
+            >
+              <div
+                class="ant-form-item-explain ant-form-item-explain-connected"
+                id="ADD_VARIANCE_compliance_article_id_help"
+                role="alert"
+              >
+                <div
+                  class=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-form-item ant-form-item-with-help"
+      >
+        <div
+          class="ant-row ant-form-item-row"
+        >
+          <div
+            class="ant-col ant-form-item-label"
+          >
+            <label
+              class=""
+              for="ADD_VARIANCE_received_date"
+              title=""
+            >
+              <div>
+                Received date
+                 
+                <span
+                  class="form-item-optional"
+                >
+                   (optional)
+                </span>
+              </div>
+            </label>
+          </div>
+          <div
+            class="ant-col ant-form-item-control"
+          >
+            <div
+              class="ant-form-item-control-input"
+            >
+              <div
+                class="ant-form-item-control-input-content"
+              >
+                <div
+                  class="ant-picker"
+                >
+                  <div
+                    class="ant-picker-input"
+                  >
+                    <input
+                      autocomplete="off"
+                      id="received_date"
+                      name="received_date"
+                      placeholder=""
+                      readonly=""
+                      size="12"
+                      title=""
+                      value=""
+                    />
+                    <span
+                      class="ant-picker-suffix"
+                    >
+                      <span
+                        aria-label="calendar"
+                        class="anticon anticon-calendar"
+                        role="img"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          data-icon="calendar"
+                          fill="currentColor"
+                          focusable="false"
+                          height="1em"
+                          viewBox="64 64 896 896"
+                          width="1em"
+                        >
+                          <path
+                            d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              style="display: flex; flex-wrap: nowrap;"
+            >
+              <div
+                class="ant-form-item-explain ant-form-item-explain-connected"
+                id="ADD_VARIANCE_received_date_help"
+                role="alert"
+              >
+                <div
+                  class=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-form-item ant-form-item-with-help"
+      >
+        <div
+          class="ant-row ant-form-item-row"
+        >
+          <div
+            class="ant-col ant-form-item-label"
+          >
+            <label
+              class=""
+              for="ADD_VARIANCE_note"
+              title=""
+            >
+              <div>
+                Description
+                 
+                <span
+                  class="form-item-optional"
+                >
+                   (optional)
+                </span>
+              </div>
+            </label>
+          </div>
+          <div
+            class="ant-col ant-form-item-control"
+          >
+            <div
+              class="ant-form-item-control-input"
+            >
+              <div
+                class="ant-form-item-control-input-content"
+              >
+                <textarea
+                  class="ant-input"
+                  id="note"
+                  name="note"
+                  style="height: 0px; resize: none; min-height: -12px;"
+                />
+              </div>
+            </div>
+            <div
+              style="display: flex; flex-wrap: nowrap;"
+            >
+              <div
+                class="ant-form-item-explain ant-form-item-explain-connected"
+                id="ADD_VARIANCE_note_help"
+                role="alert"
+              >
+                <div
+                  class=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <h5>
+        upload files
+      </h5>
+      <p
+        class="p-light"
+      >
+        All documents uploaded will be associated with the category selected. If you would like to add a different category of document, please submit and re-open the form.
+      </p>
+      <br />
+      <div
+        class="ant-form-item ant-form-item-with-help"
+      >
+        <div
+          class="ant-row ant-form-item-row"
+        >
+          <div
+            class="ant-col ant-form-item-label"
+          >
+            <label
+              class=""
+              for="ADD_VARIANCE_variance_document_category_code"
+              title=""
+            >
+              <div>
+                Document Category
+                 
+                <span
+                  class="form-item-optional"
+                >
+                   (optional)
+                </span>
+              </div>
+            </label>
+          </div>
+          <div
+            class="ant-col ant-form-item-control"
+          >
+            <div
+              class="ant-form-item-control-input"
+            >
+              <div
+                class="ant-form-item-control-input-content"
+              >
+                <div
+                  class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                  data-cy="variance_document_category_code"
+                >
+                  <div
+                    class="ant-select-selector"
+                  >
+                    <span
+                      class="ant-select-selection-search"
+                    >
+                      <input
+                        aria-activedescendant="variance_document_category_code_list_0"
+                        aria-autocomplete="list"
+                        aria-controls="variance_document_category_code_list"
+                        aria-haspopup="listbox"
+                        aria-owns="variance_document_category_code_list"
+                        autocomplete="off"
+                        class="ant-select-selection-search-input"
+                        id="variance_document_category_code"
+                        role="combobox"
+                        type="search"
+                        value=""
+                      />
+                    </span>
+                    <span
+                      class="ant-select-selection-placeholder"
+                    >
+                      Please select category
+                    </span>
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="ant-select-arrow"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      aria-label="down"
+                      class="anticon anticon-down ant-select-suffix"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="down"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              style="display: flex; flex-wrap: nowrap;"
+            >
+              <div
+                class="ant-form-item-explain ant-form-item-explain-connected"
+                id="ADD_VARIANCE_variance_document_category_code_help"
+                role="alert"
+              >
+                <div
+                  class=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="whirlpool-container"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="ADD_VARIANCE_fileUpload"
+                title=""
+              />
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    class="filepond--wrapper"
+                  >
+                    <input
+                      accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                      id="fileUpload"
+                      multiple=""
+                      name="file"
+                      type="file"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="ADD_VARIANCE_fileUpload_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="right center-mobile"
+      >
+        <button
+          aria-label="Cancel"
+          class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
+          type="button"
+        >
+          <span>
+            Cancel
+          </span>
+        </button>
+        <button
+          aria-label="Submit"
+          class="ant-btn ant-btn-primary  form-btn"
+          disabled=""
+          type="submit"
+        >
+          <span>
+            Add Variance
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
 `;

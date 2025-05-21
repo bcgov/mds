@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
+import { BrowserRouter } from "react-router-dom";
 
 const dispatchProps = {};
 const props = {};
@@ -18,7 +19,7 @@ beforeEach(() => {
 
 describe("AdminDashboard", () => {
   it("renders properly", () => {
-    const component = shallow(<AdminDashboard {...dispatchProps} {...props} />);
+    const { container: component } = render(<BrowserRouter><AdminDashboard {...dispatchProps} {...props} /></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

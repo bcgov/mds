@@ -1,10 +1,11 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import AdminDashboardRoutes from "@/routes/AdminDashboardRoutes";
+import { BrowserRouter } from "react-router-dom";
 
 describe("AdminDashboardRoutes ", () => {
   it("renders properly", () => {
-    const component = shallow(<AdminDashboardRoutes />);
+    const { container: component } = render(<BrowserRouter><AdminDashboardRoutes /></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

@@ -1,7 +1,9 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { CutLines } from "@/components/noticeOfWork/applications/review/activities/CutLines";
 import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const reducerProps = {};
 
@@ -19,7 +21,7 @@ beforeEach(() => {
 
 describe("CutLines", () => {
   it("renders properly", () => {
-    const component = shallow(<CutLines {...reducerProps} />);
+    const { container: component } = render(<ReduxWrapper><FormWrapper name="formName"><CutLines {...reducerProps} /></FormWrapper></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

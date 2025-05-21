@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { EditPartyModal } from "@/components/modalContent/EditPartyModal";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -25,7 +26,7 @@ beforeEach(() => {
 
 describe("EditPartyModal", () => {
   it("renders properly", () => {
-    const component = shallow(<EditPartyModal {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><EditPartyModal {...dispatchProps} {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

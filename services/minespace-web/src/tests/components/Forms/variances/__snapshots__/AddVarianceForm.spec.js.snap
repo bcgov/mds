@@ -1,94 +1,291 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddVarianceForm renders properly 1`] = `
-<Connect(ReduxForm)
-  isModal={true}
-  name="ADD_VARIANCE"
-  onSubmit={[Function]}
-  reduxFormConfig={
-    Object {
-      "touchOnBlur": false,
-    }
-  }
->
-  <Field
-    component={[Function]}
-    data={
-      Array [
-        Object {
-          "article_act_code": "HSRCM",
-          "cim_or_cpo": "CIM",
-          "compliance_article_id": "305",
-          "description": "Spills",
-          "effective_date": "1970-01-01",
-          "expiry_date": null,
-          "help_reference_link": "https://example.com",
-          "long_description": "long description",
-          "paragraph": "7",
-          "section": "2",
-          "sub_paragraph": null,
-          "sub_section": "3",
-        },
-        Object {
-          "article_act_code": "HSRCM",
-          "cim_or_cpo": null,
-          "compliance_article_id": "306",
-          "description": "Flammable Waste Storage",
-          "effective_date": "1970-01-01",
-          "expiry_date": null,
-          "help_reference_link": null,
-          "long_description": "long description",
-          "paragraph": "8",
-          "section": "2",
-          "sub_paragraph": null,
-          "sub_section": "3",
-        },
-      ]
-    }
-    id="compliance_article_id"
-    label="Part of Code"
-    name="compliance_article_id"
-    placeholder="Select a part of the code"
-    required={true}
-    validate={
-      Array [
-        [Function],
-      ]
-    }
-  />
-  <Field
-    component={[Function]}
-    id="note"
-    label="Description"
-    name="note"
-    validate={
-      Array [
-        [Function],
-      ]
-    }
-  />
-  <InternalFormItem
-    label="Attached Files"
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-ADD_VARIANCE form-edit"
+    id="ADD_VARIANCE"
   >
-    <ForwardRef>
-      Please upload all of the required documents.
-    </ForwardRef>
-    <Field
-      component={[Function]}
-      id="uploadedFiles"
-      mineGuid="1738472"
-      name="uploadedFiles"
-      onFileLoad={[Function]}
-      onRemoveFile={[Function]}
-    />
-  </InternalFormItem>
-  <div
-    className="ant-modal-footer"
-  >
-    <RenderCancelButton />
-    <RenderSubmitButton
-      buttonText="Submit"
-    />
-  </div>
-</Connect(ReduxForm)>
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class="ant-form-item-required"
+            for="ADD_VARIANCE_compliance_article_id"
+            title=""
+          >
+            <div
+              style="width: 100%;"
+            >
+              Part of Code
+            </div>
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <div
+                aria-required="true"
+                class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                data-cy="compliance_article_id"
+              >
+                <div
+                  class="ant-select-selector"
+                >
+                  <span
+                    class="ant-select-selection-search"
+                  >
+                    <input
+                      aria-activedescendant="compliance_article_id_list_0"
+                      aria-autocomplete="list"
+                      aria-controls="compliance_article_id_list"
+                      aria-haspopup="listbox"
+                      aria-owns="compliance_article_id_list"
+                      aria-required="true"
+                      autocomplete="off"
+                      class="ant-select-selection-search-input"
+                      id="compliance_article_id"
+                      role="combobox"
+                      type="search"
+                      value=""
+                    />
+                  </span>
+                  <span
+                    class="ant-select-selection-placeholder"
+                  >
+                    Select a part of the code
+                  </span>
+                </div>
+                <span
+                  aria-hidden="true"
+                  class="ant-select-arrow"
+                  style="user-select: none;"
+                  unselectable="on"
+                >
+                  <span
+                    aria-label="down"
+                    class="anticon anticon-down ant-select-suffix"
+                    role="img"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      data-icon="down"
+                      fill="currentColor"
+                      focusable="false"
+                      height="1em"
+                      viewBox="64 64 896 896"
+                      width="1em"
+                    >
+                      <path
+                        d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="ADD_VARIANCE_compliance_article_id_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class=""
+            for="ADD_VARIANCE_note"
+            title=""
+          >
+            <div>
+              Description
+               
+              <span
+                class="form-item-optional"
+              >
+                 (optional)
+              </span>
+            </div>
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <textarea
+                class="ant-input"
+                id="note"
+                name="note"
+                style="height: 0px; resize: none; min-height: -12px;"
+              />
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="ADD_VARIANCE_note_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-form-item"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class=""
+            title="Attached Files"
+          >
+            Attached Files
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <div
+                class="ant-typography"
+              >
+                Please upload all of the required documents.
+              </div>
+              <div
+                class="whirlpool-container"
+              >
+                <div
+                  class="ant-form-item ant-form-item-with-help"
+                >
+                  <div
+                    class="ant-row ant-form-item-row"
+                  >
+                    <div
+                      class="ant-col ant-form-item-label"
+                    >
+                      <label
+                        class=""
+                        for="ADD_VARIANCE_fileUpload"
+                        title=""
+                      />
+                    </div>
+                    <div
+                      class="ant-col ant-form-item-control"
+                    >
+                      <div
+                        class="ant-form-item-control-input"
+                      >
+                        <div
+                          class="ant-form-item-control-input-content"
+                        >
+                          <div
+                            class="filepond--wrapper"
+                          >
+                            <input
+                              accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                              id="fileUpload"
+                              multiple=""
+                              name="file"
+                              type="file"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        style="display: flex; flex-wrap: nowrap;"
+                      >
+                        <div
+                          class="ant-form-item-explain ant-form-item-explain-connected"
+                          id="ADD_VARIANCE_fileUpload_help"
+                          role="alert"
+                        >
+                          <div
+                            class=""
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-modal-footer"
+    >
+      <button
+        aria-label="Cancel"
+        class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
+        type="button"
+      >
+        <span>
+          Cancel
+        </span>
+      </button>
+      <button
+        aria-label="Submit"
+        class="ant-btn ant-btn-primary  form-btn"
+        disabled=""
+        type="submit"
+      >
+        <span>
+          Submit
+        </span>
+      </button>
+    </div>
+  </form>
+</div>
 `;

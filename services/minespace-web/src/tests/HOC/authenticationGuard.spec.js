@@ -1,7 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
-import UnauthenticatedNotice from "@/components/common/UnauthenticatedNotice";
 
 jest.mock("react", () => ({
   ...jest.requireActual("react"),
@@ -37,26 +36,27 @@ beforeEach(() => {
 });
 
 describe("AuthenticationGuard", (isPublic = false) => {
-  let fromCore;
   it("should render the `WrappedComponent` if `isAuthenticated`", () => {
-    const wrapper = shallow(<Component.WrappedComponent {...dispatchProps} {...props} />);
-    expect(wrapper).toMatchSnapshot();
-    expect(wrapper.html()).toEqual("<div>Test</div>");
-    expect(wrapper.find(UnauthenticatedNotice).length).toEqual(0);
+    const { container: component } = render(
+      <Component.WrappedComponent {...dispatchProps} {...props} />
+    );
+    expect(component).toMatchSnapshot();
   });
 
   it("should render the `WrappedComponent` if `isPublic`", () => {
     isPublic = true;
-    const wrapper = shallow(<Component.WrappedComponent {...dispatchProps} {...props} />);
-    expect(wrapper).toMatchSnapshot();
-    expect(wrapper.html()).toEqual("<div>Test</div>");
-    expect(wrapper.find(UnauthenticatedNotice).length).toEqual(0);
+    const { container: component } = render(
+      <Component.WrappedComponent {...dispatchProps} {...props} />
+    );
+    expect(component).toMatchSnapshot();
   });
 
   it("should render the `NullScreen` if `!isAuthenticated`", () => {
     props.isAuthenticated = false;
-    const wrapper = shallow(<Component.WrappedComponent {...dispatchProps} {...props} />);
-    expect(wrapper.find(UnauthenticatedNotice).length).toEqual(1);
+    const { container: component } = render(
+      <Component.WrappedComponent {...dispatchProps} {...props} />
+    );
+    expect(component).toMatchSnapshot();
   });
 
   describe("lifecycle methods", () => {

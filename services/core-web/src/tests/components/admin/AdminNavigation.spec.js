@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import AdminNavigation from "@/components/admin/AdminNavigation";
 
 const dispatchProps = {};
@@ -20,7 +20,7 @@ beforeEach(() => {
 
 describe("AdminNavigation", () => {
   it("renders properly", () => {
-    const component = shallow(<AdminNavigation {...dispatchProps} {...props} />);
+    const { container: component } = render(<AdminNavigation {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

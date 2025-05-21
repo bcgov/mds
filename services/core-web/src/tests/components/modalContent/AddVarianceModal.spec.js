@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { AddVarianceModal } from "@/components/modalContent/AddVarianceModal";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -25,7 +26,7 @@ beforeEach(() => {
 
 describe("AddVarianceModal", () => {
   it("renders properly", () => {
-    const component = shallow(<AddVarianceModal {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><AddVarianceModal {...dispatchProps} {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

@@ -1,11 +1,13 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { AdminPermitConditionManagement } from "@/components/admin/permitConditions/AdminPermitConditionManagement";
+import { BrowserRouter } from "react-router-dom";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
 
-const setupDispatchProps = () => {};
+const setupDispatchProps = () => { };
 
 const setupProps = () => {
   props.location = {
@@ -20,7 +22,7 @@ beforeEach(() => {
 
 describe("AdminPermitConditionManagement", () => {
   it("renders properly", () => {
-    const component = shallow(<AdminPermitConditionManagement {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><BrowserRouter><AdminPermitConditionManagement {...dispatchProps} {...props} /></BrowserRouter></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

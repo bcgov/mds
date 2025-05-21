@@ -1,9 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
-import { Provider } from "react-redux";
-import { store } from "@/App";
+import { render } from "@testing-library/react";
 import EditNoticeOfDepartureModal from "@/components/modalContent/noticeOfDeparture/EditNoticeOfDepartureModal";
 import { NOTICE_OF_DEPARTURE_DETAILS, MINES } from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps: any = {};
 const props: any = {};
@@ -32,10 +31,10 @@ beforeEach(() => {
 
 describe("EditNoticeOfDepartureModal", () => {
   it("renders properly", () => {
-    const component = shallow(
-      <Provider store={store}>
+    const { container: component } = render(
+      <ReduxWrapper>
         <EditNoticeOfDepartureModal {...dispatchProps} {...props} />
-      </Provider>
+      </ReduxWrapper>
     );
     expect(component).toMatchSnapshot();
   });

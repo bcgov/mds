@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { DocumentLink } from "@/components/common/DocumentLink";
 
 let props = {};
@@ -24,7 +24,7 @@ beforeEach(() => {
 
 describe("DocumentLink", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<DocumentLink {...props} {...dispatchProps} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container: component } = render(<DocumentLink {...props} {...dispatchProps} />);
+    expect(component).toMatchSnapshot();
   });
 });

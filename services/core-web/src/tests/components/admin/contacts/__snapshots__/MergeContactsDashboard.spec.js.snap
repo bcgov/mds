@@ -2,538 +2,578 @@
 
 exports[`MergeContactDashboard renders properly 1`] = `
 <div>
-  <Prompt
-    message={[Function]}
-    when={false}
-  />
-  <div
-    className="landing-page__header"
-  >
-    <Row>
-      <Col
-        lg={12}
-        md={14}
-        sm={22}
-      >
-        <h1>
-          Merge Contacts
-        </h1>
-      </Col>
-    </Row>
-    <Tabs
-      animated={
-        Object {
-          "inkBar": false,
-          "tabPane": false,
-        }
-      }
-      centered={true}
-      onTabClick={[Function]}
-      size="large"
+  <div>
+    <div
+      class="landing-page__header"
     >
-      <DeprecatedTabPane
-        key="PER"
-        tab="Merge Person"
+      <div
+        class="ant-row"
       >
         <div
-          className="tab__content"
+          class="ant-col ant-col-sm-22 ant-col-md-14 ant-col-lg-12"
+        >
+          <h1>
+            Merge Contacts
+          </h1>
+        </div>
+      </div>
+      <div
+        class="ant-tabs ant-tabs-top ant-tabs-large ant-tabs-centered"
+      >
+        <div
+          class="ant-tabs-nav"
+          role="tablist"
         >
           <div
-            className="merge-dashboard"
+            class="ant-tabs-nav-wrap"
           >
-            <h4
-              className="padding-sm"
-            >
-              Merge 
-            </h4>
-            <Alert
-              closable={true}
-              description={
-                <React.Fragment>
-                  The following contacts will be disabled in the dropdown list:
-                  <div
-                    className="hidden"
-                    style={
-                      Object {
-                        "marginLeft": "40px",
-                      }
-                    }
-                  >
-                    <ul>
-                      <li>
-                        Contacts with the role of Permittee.
-                      </li>
-                      <li>
-                        Contacts with the role of Inspector.
-                      </li>
-                      <li>
-                        Organizations connected to OrgBook.
-                      </li>
-                    </ul>
-                  </div>
-                  <Button
-                    className="btn--expand"
-                    onClick={[Function]}
-                  >
-                      ...Read more
-                  </Button>
-                </React.Fragment>
-              }
-              message="Not all contacts can be merged at this time"
-              showIcon={true}
-              type="info"
-            />
-            <br />
             <div
-              className="search-contents inline-flex between"
+              class="ant-tabs-nav-list"
+              style="transform: translate(0px, 0px);"
             >
               <div
-                className="flex-1 padding-sm"
-              >
-                <p>
-                  <b>
-                    Search and select contacts to merge
-                  </b>
-                </p>
-              </div>
-              <div
-                className="flex-4"
-              >
-                <Connect(RenderMultiSelectPartySearch)
-                  isLoading={false}
-                  onSelectedPartySearchResultsChanged={[Function]}
-                  triggerSelectReset={false}
-                />
-              </div>
-              <br />
-            </div>
-            <br />
-            <div
-              className="merge-container"
-            >
-              <div
-                className="merge-container--tall inline-flex between"
+                class="ant-tabs-tab ant-tabs-tab-active"
+                data-node-key="PER"
               >
                 <div
-                  className="flex-1"
+                  aria-controls="rc-tabs-test-panel-PER"
+                  aria-selected="true"
+                  class="ant-tabs-tab-btn"
+                  id="rc-tabs-test-tab-PER"
+                  role="tab"
+                  tabindex="0"
+                >
+                  Merge Person
+                </div>
+              </div>
+              <div
+                class="ant-tabs-tab"
+                data-node-key="ORG"
+              >
+                <div
+                  aria-controls="rc-tabs-test-panel-ORG"
+                  aria-selected="false"
+                  class="ant-tabs-tab-btn"
+                  id="rc-tabs-test-tab-ORG"
+                  role="tab"
+                  tabindex="0"
+                >
+                  Merge Organization
+                </div>
+              </div>
+              <div
+                class="ant-tabs-ink-bar"
+              />
+            </div>
+          </div>
+          <div
+            class="ant-tabs-nav-operations ant-tabs-nav-operations-hidden"
+          >
+            <button
+              aria-controls="rc-tabs-test-more-popup"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              aria-hidden="true"
+              class="ant-tabs-nav-more"
+              id="rc-tabs-test-more"
+              style="visibility: hidden; order: 1;"
+              tabindex="-1"
+              type="button"
+            >
+              <span
+                aria-label="ellipsis"
+                class="anticon anticon-ellipsis"
+                role="img"
+              >
+                <svg
+                  aria-hidden="true"
+                  data-icon="ellipsis"
+                  fill="currentColor"
+                  focusable="false"
+                  height="1em"
+                  viewBox="64 64 896 896"
+                  width="1em"
+                >
+                  <path
+                    d="M176 511a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0z"
+                  />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          class="ant-tabs-content-holder"
+        >
+          <div
+            class="ant-tabs-content ant-tabs-content-top"
+          >
+            <div
+              aria-hidden="false"
+              aria-labelledby="rc-tabs-test-tab-PER"
+              class="ant-tabs-tabpane ant-tabs-tabpane-active"
+              id="rc-tabs-test-panel-PER"
+              role="tabpanel"
+              tabindex="0"
+            >
+              <div
+                class="tab__content"
+              >
+                <div
+                  class="merge-dashboard"
                 >
                   <h4
-                    className="padding-sm"
+                    class="padding-sm"
                   >
-                    Proposed Merged Contact
+                    Merge 
                   </h4>
-                  <Col
-                    span={24}
-                  >
-                    <ForwardRef
-                      bordered={false}
-                      className="no-header inherit-height"
-                    >
-                      <Row>
-                        <Col
-                          className="grid padding-sm"
-                          span={24}
-                        >
-                          <h6>
-                            Organization Name
-                          </h6>
-                          <p>
-                            N/A
-                          </p>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col
-                          className="grid padding-sm"
-                          span={24}
-                        >
-                          <h6>
-                            Phone Number
-                          </h6>
-                          <p>
-                            <ForwardRef(PhoneOutlined)
-                              className="icon-sm padding-sm--right"
-                            />
-                            N/A
-                          </p>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col
-                          className="grid padding-sm"
-                          span={24}
-                        >
-                          <h6>
-                            Email
-                          </h6>
-                          <p>
-                            <ForwardRef(MailOutlined)
-                              className="icon-sm padding-sm--right"
-                            />
-                            N/A
-                          </p>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col
-                          className="grid padding-sm"
-                          span={24}
-                        >
-                          <h6>
-                            Address
-                          </h6>
-                          <Address
-                            address={Object {}}
-                            showIcon={true}
-                          />
-                        </Col>
-                      </Row>
-                      <div
-                        className="roles-container"
-                      >
-                        <Row>
-                          <Col
-                            className="grid padding-sm"
-                            span={24}
-                          >
-                            <h6>
-                              Active Roles
-                            </h6>
-                            <p>
-                              <p>
-                                N/A
-                              </p>
-                            </p>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col
-                            className="grid padding-sm"
-                            span={24}
-                          >
-                            <h6>
-                              In-active Roles
-                            </h6>
-                            <p>
-                              <p>
-                                N/A
-                              </p>
-                            </p>
-                          </Col>
-                        </Row>
-                      </div>
-                    </ForwardRef>
-                  </Col>
-                </div>
-                <div
-                  className="flex-4"
-                >
                   <div
-                    className="contact-container"
+                    class="ant-alert ant-alert-info ant-alert-with-description"
+                    data-show="true"
+                    role="alert"
                   >
-                    <Alert
-                      closable={true}
-                      description="All contacts selected will be deleted when the merge is complete and the proposed
-          contact will be created."
-                      showIcon={true}
-                      type="info"
-                    />
+                    <span
+                      aria-label="info-circle"
+                      class="anticon anticon-info-circle ant-alert-icon"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="info-circle"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                        />
+                        <path
+                          d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+                        />
+                      </svg>
+                    </span>
+                    <div
+                      class="ant-alert-content"
+                    >
+                      <div
+                        class="ant-alert-message"
+                      >
+                        Not all contacts can be merged at this time
+                      </div>
+                      <div
+                        class="ant-alert-description"
+                      >
+                        The following contacts will be disabled in the dropdown list:
+                        <div
+                          class="hidden"
+                          style="margin-left: 40px;"
+                        >
+                          <ul>
+                            <li>
+                              Contacts with the role of Permittee.
+                            </li>
+                            <li>
+                              Contacts with the role of Inspector.
+                            </li>
+                            <li>
+                              Organizations connected to OrgBook.
+                            </li>
+                          </ul>
+                        </div>
+                        <button
+                          class="ant-btn ant-btn-default btn--expand"
+                          type="button"
+                        >
+                          <span>
+                              ...Read more
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      class="ant-alert-close-icon"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span
+                        aria-label="close"
+                        class="anticon anticon-close"
+                        role="img"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          data-icon="close"
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          focusable="false"
+                          height="1em"
+                          viewBox="64 64 896 896"
+                          width="1em"
+                        >
+                          <path
+                            d="M799.86 166.31c.02 0 .04.02.08.06l57.69 57.7c.04.03.05.05.06.08a.12.12 0 010 .06c0 .03-.02.05-.06.09L569.93 512l287.7 287.7c.04.04.05.06.06.09a.12.12 0 010 .07c0 .02-.02.04-.06.08l-57.7 57.69c-.03.04-.05.05-.07.06a.12.12 0 01-.07 0c-.03 0-.05-.02-.09-.06L512 569.93l-287.7 287.7c-.04.04-.06.05-.09.06a.12.12 0 01-.07 0c-.02 0-.04-.02-.08-.06l-57.69-57.7c-.04-.03-.05-.05-.06-.07a.12.12 0 010-.07c0-.03.02-.05.06-.09L454.07 512l-287.7-287.7c-.04-.04-.05-.06-.06-.09a.12.12 0 010-.07c0-.02.02-.04.06-.08l57.7-57.69c.03-.04.05-.05.07-.06a.12.12 0 01.07 0c.03 0 .05.02.09.06L512 454.07l287.7-287.7c.04-.04.06-.05.09-.06a.12.12 0 01.07 0z"
+                          />
+                        </svg>
+                      </span>
+                    </button>
+                  </div>
+                  <br />
+                  <div
+                    class="search-contents inline-flex between"
+                  >
+                    <div
+                      class="flex-1 padding-sm"
+                    >
+                      <p>
+                        <b>
+                          Search and select contacts to merge
+                        </b>
+                      </p>
+                    </div>
+                    <div
+                      class="flex-4"
+                    >
+                      <div
+                        class="ant-select ant-select-multiple ant-select-show-search"
+                        debouncetimeout="800"
+                        style="width: 100%;"
+                      >
+                        <div
+                          class="ant-select-selector"
+                        >
+                          <div
+                            class="ant-select-selection-overflow"
+                          >
+                            <div
+                              class="ant-select-selection-overflow-item ant-select-selection-overflow-item-suffix"
+                              style="opacity: 1;"
+                            >
+                              <div
+                                class="ant-select-selection-search"
+                                style="width: 0px;"
+                              >
+                                <input
+                                  aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+                                  aria-autocomplete="list"
+                                  aria-controls="rc_select_TEST_OR_SSR_list"
+                                  aria-haspopup="listbox"
+                                  aria-owns="rc_select_TEST_OR_SSR_list"
+                                  autocomplete="off"
+                                  class="ant-select-selection-search-input"
+                                  id="rc_select_TEST_OR_SSR"
+                                  readonly=""
+                                  role="combobox"
+                                  style="opacity: 0;"
+                                  type="search"
+                                  unselectable="on"
+                                  value=""
+                                />
+                                <span
+                                  aria-hidden="true"
+                                  class="ant-select-selection-search-mirror"
+                                >
+                                  
+                                   
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <span
+                            class="ant-select-selection-placeholder"
+                          >
+                            Search for contacts
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                     <br />
-                    <NullScreen
-                      message=""
-                      type="merged-contacts"
-                    />
+                  </div>
+                  <br />
+                  <div
+                    class="merge-container"
+                  >
+                    <div
+                      class="merge-container--tall inline-flex between"
+                    >
+                      <div
+                        class="flex-1"
+                      >
+                        <h4
+                          class="padding-sm"
+                        >
+                          Proposed Merged Contact
+                        </h4>
+                        <div
+                          class="ant-col ant-col-24"
+                        >
+                          <div
+                            class="ant-card no-header inherit-height"
+                          >
+                            <div
+                              class="ant-card-body"
+                            >
+                              <div
+                                class="ant-row"
+                              >
+                                <div
+                                  class="ant-col ant-col-24 grid padding-sm"
+                                >
+                                  <h6>
+                                    Organization Name
+                                  </h6>
+                                  <p>
+                                    N/A
+                                  </p>
+                                </div>
+                              </div>
+                              <div
+                                class="ant-row"
+                              >
+                                <div
+                                  class="ant-col ant-col-24 grid padding-sm"
+                                >
+                                  <h6>
+                                    Phone Number
+                                  </h6>
+                                  <p>
+                                    <span
+                                      aria-label="phone"
+                                      class="anticon anticon-phone icon-sm padding-sm--right"
+                                      role="img"
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        class=""
+                                        data-icon="phone"
+                                        fill="currentColor"
+                                        focusable="false"
+                                        height="1em"
+                                        viewBox="64 64 896 896"
+                                        width="1em"
+                                      >
+                                        <path
+                                          d="M877.1 238.7L770.6 132.3c-13-13-30.4-20.3-48.8-20.3s-35.8 7.2-48.8 20.3L558.3 246.8c-13 13-20.3 30.5-20.3 48.9 0 18.5 7.2 35.8 20.3 48.9l89.6 89.7a405.46 405.46 0 01-86.4 127.3c-36.7 36.9-79.6 66-127.2 86.6l-89.6-89.7c-13-13-30.4-20.3-48.8-20.3a68.2 68.2 0 00-48.8 20.3L132.3 673c-13 13-20.3 30.5-20.3 48.9 0 18.5 7.2 35.8 20.3 48.9l106.4 106.4c22.2 22.2 52.8 34.9 84.2 34.9 6.5 0 12.8-.5 19.2-1.6 132.4-21.8 263.8-92.3 369.9-198.3C818 606 888.4 474.6 910.4 342.1c6.3-37.6-6.3-76.3-33.3-103.4zm-37.6 91.5c-19.5 117.9-82.9 235.5-178.4 331s-213 158.9-330.9 178.4c-14.8 2.5-30-2.5-40.8-13.2L184.9 721.9 295.7 611l119.8 120 .9.9 21.6-8a481.29 481.29 0 00285.7-285.8l8-21.6-120.8-120.7 110.8-110.9 104.5 104.5c10.8 10.8 15.8 26 13.3 40.8z"
+                                        />
+                                      </svg>
+                                    </span>
+                                    N/A
+                                  </p>
+                                </div>
+                              </div>
+                              <div
+                                class="ant-row"
+                              >
+                                <div
+                                  class="ant-col ant-col-24 grid padding-sm"
+                                >
+                                  <h6>
+                                    Email
+                                  </h6>
+                                  <p>
+                                    <span
+                                      aria-label="mail"
+                                      class="anticon anticon-mail icon-sm padding-sm--right"
+                                      role="img"
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        class=""
+                                        data-icon="mail"
+                                        fill="currentColor"
+                                        focusable="false"
+                                        height="1em"
+                                        viewBox="64 64 896 896"
+                                        width="1em"
+                                      >
+                                        <path
+                                          d="M928 160H96c-17.7 0-32 14.3-32 32v640c0 17.7 14.3 32 32 32h832c17.7 0 32-14.3 32-32V192c0-17.7-14.3-32-32-32zm-40 110.8V792H136V270.8l-27.6-21.5 39.3-50.5 42.8 33.3h643.1l42.8-33.3 39.3 50.5-27.7 21.5zM833.6 232L512 482 190.4 232l-42.8-33.3-39.3 50.5 27.6 21.5 341.6 265.6a55.99 55.99 0 0068.7 0L888 270.8l27.6-21.5-39.3-50.5-42.7 33.2z"
+                                        />
+                                      </svg>
+                                    </span>
+                                    N/A
+                                  </p>
+                                </div>
+                              </div>
+                              <div
+                                class="ant-row"
+                              >
+                                <div
+                                  class="ant-col ant-col-24 grid padding-sm"
+                                >
+                                  <h6>
+                                    Address
+                                  </h6>
+                                  <div
+                                    style="min-height: 70px;"
+                                  >
+                                    <div
+                                      class="inline-flex"
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        class="svg-inline--fa fa-building fa-lg fa-fw"
+                                        data-icon="building"
+                                        data-prefix="fal"
+                                        focusable="false"
+                                        role="img"
+                                        viewBox="0 0 384 512"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <path
+                                          d="M64 32C46.3 32 32 46.3 32 64V448c0 17.7 14.3 32 32 32h64V416c0-35.3 28.7-64 64-64s64 28.7 64 64v64h64c17.7 0 32-14.3 32-32V64c0-17.7-14.3-32-32-32H64zM224 416c0-17.7-14.3-32-32-32s-32 14.3-32 32v64h64V416zm-96 96H64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0H320c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H256 224 160 128zM64 120c0-13.3 10.7-24 24-24h48c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H88c-13.3 0-24-10.7-24-24V120zm32 8v32h32V128H96zM248 96h48c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H248c-13.3 0-24-10.7-24-24V120c0-13.3 10.7-24 24-24zm8 64h32V128H256v32zM64 248c0-13.3 10.7-24 24-24h48c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H88c-13.3 0-24-10.7-24-24V248zm32 8v32h32V256H96zm152-32h48c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H248c-13.3 0-24-10.7-24-24V248c0-13.3 10.7-24 24-24zm8 64h32V256H256v32z"
+                                          fill="currentColor"
+                                        />
+                                      </svg>
+                                      <p>
+                                        <span>
+                                          N/A
+                                        </span>
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="roles-container"
+                              >
+                                <div
+                                  class="ant-row"
+                                >
+                                  <div
+                                    class="ant-col ant-col-24 grid padding-sm"
+                                  >
+                                    <h6>
+                                      Active Roles
+                                    </h6>
+                                    <p>
+                                      <p>
+                                        N/A
+                                      </p>
+                                    </p>
+                                  </div>
+                                </div>
+                                <div
+                                  class="ant-row"
+                                >
+                                  <div
+                                    class="ant-col ant-col-24 grid padding-sm"
+                                  >
+                                    <h6>
+                                      In-active Roles
+                                    </h6>
+                                    <p>
+                                      <p>
+                                        N/A
+                                      </p>
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="flex-4"
+                      >
+                        <div
+                          class="contact-container"
+                        >
+                          <div
+                            class="ant-alert ant-alert-info ant-alert-with-description"
+                            data-show="true"
+                            role="alert"
+                          >
+                            <span
+                              aria-label="info-circle"
+                              class="anticon anticon-info-circle ant-alert-icon"
+                              role="img"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="info-circle"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="64 64 896 896"
+                                width="1em"
+                              >
+                                <path
+                                  d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                                />
+                                <path
+                                  d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+                                />
+                              </svg>
+                            </span>
+                            <div
+                              class="ant-alert-content"
+                            >
+                              <div
+                                class="ant-alert-description"
+                              >
+                                All contacts selected will be deleted when the merge is complete and the proposed
+          contact will be created.
+                              </div>
+                            </div>
+                            <button
+                              class="ant-alert-close-icon"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                aria-label="close"
+                                class="anticon anticon-close"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="close"
+                                  fill="currentColor"
+                                  fill-rule="evenodd"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M799.86 166.31c.02 0 .04.02.08.06l57.69 57.7c.04.03.05.05.06.08a.12.12 0 010 .06c0 .03-.02.05-.06.09L569.93 512l287.7 287.7c.04.04.05.06.06.09a.12.12 0 010 .07c0 .02-.02.04-.06.08l-57.7 57.69c-.03.04-.05.05-.07.06a.12.12 0 01-.07 0c-.03 0-.05-.02-.09-.06L512 569.93l-287.7 287.7c-.04.04-.06.05-.09.06a.12.12 0 01-.07 0c-.02 0-.04-.02-.08-.06l-57.69-57.7c-.04-.03-.05-.05-.06-.07a.12.12 0 010-.07c0-.03.02-.05.06-.09L454.07 512l-287.7-287.7c-.04-.04-.05-.06-.06-.09a.12.12 0 010-.07c0-.02.02-.04.06-.08l57.7-57.69c.03-.04.05-.05.07-.06a.12.12 0 01.07 0c.03 0 .05.02.09.06L512 454.07l287.7-287.7c.04-.04.06-.05.09-.06a.12.12 0 01.07 0z"
+                                  />
+                                </svg>
+                              </span>
+                            </button>
+                          </div>
+                          <br />
+                          <div
+                            class="null-screen fade-in"
+                          >
+                            <div>
+                              <img
+                                alt="mine_img"
+                                src="[object Object]"
+                              />
+                              <h3>
+                                No contacts selected
+                              </h3>
+                              <p>
+                                Search and select contacts to begin merge.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br />
                   </div>
                 </div>
               </div>
-              <br />
-              <Connect(AuthorizationWrapper)
-                permission="role_mds_administrative_users"
-              >
-                <div
-                  className="right center-mobile"
-                >
-                  <ForwardRef
-                    cancelText="No"
-                    okText="Yes"
-                    onConfirm={[Function]}
-                    placement="topRight"
-                    title="Are you sure you want to cancel?"
-                  >
-                    <Button
-                      className="full-mobile"
-                      type="secondary"
-                    >
-                      Clear All
-                    </Button>
-                  </ForwardRef>
-                  <Button
-                    className="full-mobile"
-                    disabled={true}
-                    htmlType="submit"
-                    onClick={[Function]}
-                    type="primary"
-                  >
-                    Proceed to Merge
-                  </Button>
-                </div>
-              </Connect(AuthorizationWrapper)>
             </div>
           </div>
         </div>
-      </DeprecatedTabPane>
-      <DeprecatedTabPane
-        key="ORG"
-        tab="Merge Organization"
-      >
-        <div
-          className="tab__content"
-        >
-          <div
-            className="merge-dashboard"
-          >
-            <h4
-              className="padding-sm"
-            >
-              Merge 
-            </h4>
-            <Alert
-              closable={true}
-              description={
-                <React.Fragment>
-                  The following contacts will be disabled in the dropdown list:
-                  <div
-                    className="hidden"
-                    style={
-                      Object {
-                        "marginLeft": "40px",
-                      }
-                    }
-                  >
-                    <ul>
-                      <li>
-                        Contacts with the role of Permittee.
-                      </li>
-                      <li>
-                        Contacts with the role of Inspector.
-                      </li>
-                      <li>
-                        Organizations connected to OrgBook.
-                      </li>
-                    </ul>
-                  </div>
-                  <Button
-                    className="btn--expand"
-                    onClick={[Function]}
-                  >
-                      ...Read more
-                  </Button>
-                </React.Fragment>
-              }
-              message="Not all contacts can be merged at this time"
-              showIcon={true}
-              type="info"
-            />
-            <br />
-            <div
-              className="search-contents inline-flex between"
-            >
-              <div
-                className="flex-1 padding-sm"
-              >
-                <p>
-                  <b>
-                    Search and select contacts to merge
-                  </b>
-                </p>
-              </div>
-              <div
-                className="flex-4"
-              >
-                <Connect(RenderMultiSelectPartySearch)
-                  isLoading={false}
-                  onSelectedPartySearchResultsChanged={[Function]}
-                  triggerSelectReset={false}
-                />
-              </div>
-              <br />
-            </div>
-            <br />
-            <div
-              className="merge-container"
-            >
-              <div
-                className="merge-container--tall inline-flex between"
-              >
-                <div
-                  className="flex-1"
-                >
-                  <h4
-                    className="padding-sm"
-                  >
-                    Proposed Merged Contact
-                  </h4>
-                  <Col
-                    span={24}
-                  >
-                    <ForwardRef
-                      bordered={false}
-                      className="no-header inherit-height"
-                    >
-                      <Row>
-                        <Col
-                          className="grid padding-sm"
-                          span={24}
-                        >
-                          <h6>
-                            Organization Name
-                          </h6>
-                          <p>
-                            N/A
-                          </p>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col
-                          className="grid padding-sm"
-                          span={24}
-                        >
-                          <h6>
-                            Phone Number
-                          </h6>
-                          <p>
-                            <ForwardRef(PhoneOutlined)
-                              className="icon-sm padding-sm--right"
-                            />
-                            N/A
-                          </p>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col
-                          className="grid padding-sm"
-                          span={24}
-                        >
-                          <h6>
-                            Email
-                          </h6>
-                          <p>
-                            <ForwardRef(MailOutlined)
-                              className="icon-sm padding-sm--right"
-                            />
-                            N/A
-                          </p>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col
-                          className="grid padding-sm"
-                          span={24}
-                        >
-                          <h6>
-                            Address
-                          </h6>
-                          <Address
-                            address={Object {}}
-                            showIcon={true}
-                          />
-                        </Col>
-                      </Row>
-                      <div
-                        className="roles-container"
-                      >
-                        <Row>
-                          <Col
-                            className="grid padding-sm"
-                            span={24}
-                          >
-                            <h6>
-                              Active Roles
-                            </h6>
-                            <p>
-                              <p>
-                                N/A
-                              </p>
-                            </p>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col
-                            className="grid padding-sm"
-                            span={24}
-                          >
-                            <h6>
-                              In-active Roles
-                            </h6>
-                            <p>
-                              <p>
-                                N/A
-                              </p>
-                            </p>
-                          </Col>
-                        </Row>
-                      </div>
-                    </ForwardRef>
-                  </Col>
-                </div>
-                <div
-                  className="flex-4"
-                >
-                  <div
-                    className="contact-container"
-                  >
-                    <Alert
-                      closable={true}
-                      description="All contacts selected will be deleted when the merge is complete and the proposed
-          contact will be created."
-                      showIcon={true}
-                      type="info"
-                    />
-                    <br />
-                    <NullScreen
-                      message=""
-                      type="merged-contacts"
-                    />
-                  </div>
-                </div>
-              </div>
-              <br />
-              <Connect(AuthorizationWrapper)
-                permission="role_mds_administrative_users"
-              >
-                <div
-                  className="right center-mobile"
-                >
-                  <ForwardRef
-                    cancelText="No"
-                    okText="Yes"
-                    onConfirm={[Function]}
-                    placement="topRight"
-                    title="Are you sure you want to cancel?"
-                  >
-                    <Button
-                      className="full-mobile"
-                      type="secondary"
-                    >
-                      Clear All
-                    </Button>
-                  </ForwardRef>
-                  <Button
-                    className="full-mobile"
-                    disabled={true}
-                    htmlType="submit"
-                    onClick={[Function]}
-                    type="primary"
-                  >
-                    Proceed to Merge
-                  </Button>
-                </div>
-              </Connect(AuthorizationWrapper)>
-            </div>
-          </div>
-        </div>
-      </DeprecatedTabPane>
-    </Tabs>
+      </div>
+    </div>
   </div>
 </div>
 `;

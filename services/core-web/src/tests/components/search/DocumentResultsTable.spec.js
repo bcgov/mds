@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { DocumentResultsTable } from "@/components/search/DocumentResultsTable";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const reducerProps = {};
 
@@ -17,7 +18,7 @@ beforeEach(() => {
 
 describe("DocumentResultsTable", () => {
   it("renders properly", () => {
-    const component = shallow(<DocumentResultsTable {...reducerProps} />);
+    const { container: component } = render(<ReduxWrapper><DocumentResultsTable {...reducerProps} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

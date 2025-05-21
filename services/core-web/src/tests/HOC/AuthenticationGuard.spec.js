@@ -1,8 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
-import NullScreen from "@/components/common/NullScreen";
-import Loading from "@/components/common/Loading";
 import * as Mock from "@mds/common/tests/mocks/dataMocks";
 
 const getJestMock = (mockInitialized, mockAuthenticated, mockClient_roles) => {
@@ -55,18 +53,14 @@ beforeEach(() => {
 describe("AuthenticationGuard", () => {
   it("should render the `WrappedComponent` if `isAuthenticated` && `userAccessData === role_view`", () => {
     getJestMock(true, true, ["role_view"]);
-    const wrapper = shallow(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
-    expect(wrapper).toMatchSnapshot();
-    expect(wrapper.html()).toEqual("<div>Test</div>");
-    expect(wrapper.find(Loading).length).toEqual(0);
-    expect(wrapper.find(NullScreen).length).toEqual(0);
+    const { container: component } = render(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
+    expect(component).toMatchSnapshot();
   });
 
   it("should render the `NullScreen` if `isAuthenticated` && `userAccessData !== role_view`", () => {
     getJestMock(true, true, []);
     reducerProps.userAccessData = [];
-    const wrapper = shallow(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
-    expect(wrapper.find(NullScreen).length).toEqual(1);
-    expect(wrapper.find(Loading).length).toEqual(0);
+    const { container: component } = render(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
+    expect(component).toMatchSnapshot();
   });
 });

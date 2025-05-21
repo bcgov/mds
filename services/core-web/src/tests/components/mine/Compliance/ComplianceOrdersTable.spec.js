@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import ComplianceOrdersTable from "@/components/mine/Compliance/ComplianceOrdersTable";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
@@ -18,7 +18,7 @@ beforeEach(() => {
 
 describe("ComplianceOrdersTable", () => {
   it("renders properly", () => {
-    const component = shallow(<ComplianceOrdersTable {...props} />);
+    const { container: component } = render(<ComplianceOrdersTable {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

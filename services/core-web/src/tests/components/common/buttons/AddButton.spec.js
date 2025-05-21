@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import AddButton from "@/components/common/buttons/AddButton";
 
 const props = {};
@@ -20,7 +20,7 @@ beforeEach(() => {
 
 describe("AddButton", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<AddButton {...props} {...dispatchProps} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container: component } = render(<AddButton {...props} {...dispatchProps} />);
+    expect(component).toMatchSnapshot();
   });
 });

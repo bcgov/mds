@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { AddTailingsForm } from "@/components/Forms/AddTailingsForm";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -25,7 +26,7 @@ beforeEach(() => {
 
 describe("AddTailingsForm", () => {
   it("renders properly", () => {
-    const component = shallow(<AddTailingsForm {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><AddTailingsForm {...dispatchProps} {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

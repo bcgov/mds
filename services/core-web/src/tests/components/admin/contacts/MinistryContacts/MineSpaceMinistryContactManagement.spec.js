@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MineSpaceMinistryContactManagement } from "@/components/admin/contacts/MinistryContacts/MineSpaceMinistryContactManagement";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -27,7 +28,7 @@ beforeEach(() => {
 
 describe("MineSpaceMinistryContactManagement", () => {
   it("renders properly", () => {
-    const component = shallow(<MineSpaceMinistryContactManagement {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><MineSpaceMinistryContactManagement {...dispatchProps} {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

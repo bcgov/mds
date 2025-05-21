@@ -1,20 +1,19 @@
 import React from "react";
-import { shallow } from "enzyme";
-import { Provider } from "react-redux";
+import { render } from "@testing-library/react";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import AddNoticeOfDepartureForm from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
-import { store } from "@/App";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 describe("AddNoticeOfDepartureForm", () => {
   it("renders properly", () => {
-    const component = shallow(
-      <Provider store={store}>
+    const { container: component } = render(
+      <ReduxWrapper>
         <AddNoticeOfDepartureForm
           mineGuid={MOCK.MINES.mineIds[0]}
           permits={MOCK.PERMITS.map((p) => ({ ...p, amendments: [] }))}
           onSubmit={jest.fn()}
         />
-      </Provider>
+      </ReduxWrapper>
     );
     expect(component).toMatchSnapshot();
   });

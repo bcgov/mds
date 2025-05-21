@@ -1,92 +1,618 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DocumentResultsTable renders properly 1`] = `
-<div
-  className="padding-lg--bottom"
->
-  <h2>
-    Mine Documents
-  </h2>
-  <Divider />
-  <CoreTable
-    columns={
-      Array [
-        Object {
-          "dataIndex": "document_name",
-          "key": "document_name",
-          "render": [Function],
-          "sorter": [Function],
-          "title": "File Name",
-        },
-        Object {
-          "dataIndex": "mine_name",
-          "key": "mine_name",
-          "render": [Function],
-          "sorter": [Function],
-          "title": "Mine",
-        },
-        Object {
-          "dataIndex": "upload_date",
-          "key": "upload_date",
-          "render": [Function],
-          "sorter": [Function],
-          "title": "Uploaded",
-        },
-        Object {
-          "dataIndex": "create_user",
-          "key": "create_user",
-          "render": [Function],
-          "sorter": [Function],
-          "title": "Uploaded By",
-        },
-      ]
-    }
-    dataSource={
-      Array [
-        Object {
-          "document_manager_guid": "a8248ab9-43d0-478a-9380-0891868e3f8d",
-          "document_name": "above.js",
-          "mine_document_guid": "f8341ebb-d673-42c1-bad2-8db22d7e3ddb",
-          "mine_guid": "e56e4252-1ce2-45e7-b362-762aa144bae0",
-          "mine_name": "Conrad Ltd",
-        },
-        Object {
-          "document_manager_guid": "dfc16cff-6542-4807-9ffc-af7ec00efd79",
-          "document_name": "about.js",
-          "mine_document_guid": "be071be2-346d-44dc-8f8f-fb4201b50d7e",
-          "mine_guid": "6f165b2a-fa60-4ed5-aa06-0aeed06659b5",
-          "mine_name": "Lozano, Hanson and Smith",
-        },
-        Object {
-          "document_manager_guid": "a79fb6bd-d7b8-4a92-98e6-85598a2f853f",
-          "document_name": "above.avi",
-          "mine_document_guid": "25db4852-83dd-4916-8c10-33e1d78aa279",
-          "mine_guid": "5422ce91-774a-4ced-beba-78d36bbb8676",
-          "mine_name": "Rose Inc",
-        },
-        Object {
-          "document_manager_guid": "14bd5393-8586-4561-afbe-727fdbefcb65",
-          "document_name": "above.avi",
-          "mine_document_guid": "c207486f-dbdd-4b3f-99a0-a650abddf85e",
-          "mine_guid": "7f2319d0-920d-4776-8856-4903c39665db",
-          "mine_name": "Hall Ltd",
-        },
-        Object {
-          "document_manager_guid": "a8034837-a710-40f8-9c3b-8ae08a444b4d",
-          "document_name": "above.avi",
-          "mine_document_guid": "2c111d6b-f360-4eb5-b37d-fe9a935cd40f",
-          "mine_guid": "51884cec-18d8-4dc3-87a3-6ed7047056f1",
-          "mine_name": "Lawrence-Vargas",
-        },
-        Object {
-          "document_manager_guid": "99e7cf58-6b48-473c-9d05-4c010839eb8d",
-          "document_name": "about.js",
-          "mine_document_guid": "28060d75-f434-4f58-9082-fc4a05a696ad",
-          "mine_guid": "fa173dcb-4d5c-4e3d-a3d6-e379308688ea",
-          "mine_name": "Thomas-Jackson",
-        },
-      ]
-    }
-  />
+<div>
+  <div
+    class="padding-lg--bottom"
+  >
+    <h2>
+      Mine Documents
+    </h2>
+    <div
+      class="ant-divider ant-divider-horizontal"
+      role="separator"
+    />
+    <div
+      class="ant-table-wrapper  core-table"
+    >
+      <div
+        class="ant-spin-nested-loading"
+      >
+        <div
+          class="ant-spin-container"
+        >
+          <div
+            class="ant-table"
+          >
+            <div
+              class="ant-table-container"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <colgroup />
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        aria-label="File Name"
+                        class="ant-table-cell ant-table-column-has-sorters"
+                        tabindex="0"
+                      >
+                        <div
+                          class="ant-table-column-sorters"
+                        >
+                          <span
+                            class="ant-table-column-title"
+                          >
+                            File Name
+                          </span>
+                          <span
+                            class="ant-table-column-sorter ant-table-column-sorter-full"
+                          >
+                            <span
+                              class="ant-table-column-sorter-inner"
+                            >
+                              <span
+                                aria-label="caret-up"
+                                class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                role="presentation"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-up"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                  />
+                                </svg>
+                              </span>
+                              <span
+                                aria-label="caret-down"
+                                class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                role="presentation"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-down"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                  />
+                                </svg>
+                              </span>
+                            </span>
+                          </span>
+                        </div>
+                      </th>
+                      <th
+                        aria-label="Mine"
+                        class="ant-table-cell ant-table-column-has-sorters"
+                        tabindex="0"
+                      >
+                        <div
+                          class="ant-table-column-sorters"
+                        >
+                          <span
+                            class="ant-table-column-title"
+                          >
+                            Mine
+                          </span>
+                          <span
+                            class="ant-table-column-sorter ant-table-column-sorter-full"
+                          >
+                            <span
+                              class="ant-table-column-sorter-inner"
+                            >
+                              <span
+                                aria-label="caret-up"
+                                class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                role="presentation"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-up"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                  />
+                                </svg>
+                              </span>
+                              <span
+                                aria-label="caret-down"
+                                class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                role="presentation"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-down"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                  />
+                                </svg>
+                              </span>
+                            </span>
+                          </span>
+                        </div>
+                      </th>
+                      <th
+                        aria-label="Uploaded"
+                        class="ant-table-cell ant-table-column-has-sorters"
+                        tabindex="0"
+                      >
+                        <div
+                          class="ant-table-column-sorters"
+                        >
+                          <span
+                            class="ant-table-column-title"
+                          >
+                            Uploaded
+                          </span>
+                          <span
+                            class="ant-table-column-sorter ant-table-column-sorter-full"
+                          >
+                            <span
+                              class="ant-table-column-sorter-inner"
+                            >
+                              <span
+                                aria-label="caret-up"
+                                class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                role="presentation"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-up"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                  />
+                                </svg>
+                              </span>
+                              <span
+                                aria-label="caret-down"
+                                class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                role="presentation"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-down"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                  />
+                                </svg>
+                              </span>
+                            </span>
+                          </span>
+                        </div>
+                      </th>
+                      <th
+                        aria-label="Uploaded By"
+                        class="ant-table-cell ant-table-column-has-sorters"
+                        tabindex="0"
+                      >
+                        <div
+                          class="ant-table-column-sorters"
+                        >
+                          <span
+                            class="ant-table-column-title"
+                          >
+                            Uploaded By
+                          </span>
+                          <span
+                            class="ant-table-column-sorter ant-table-column-sorter-full"
+                          >
+                            <span
+                              class="ant-table-column-sorter-inner"
+                            >
+                              <span
+                                aria-label="caret-up"
+                                class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                role="presentation"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-up"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                  />
+                                </svg>
+                              </span>
+                              <span
+                                aria-label="caret-down"
+                                class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                role="presentation"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-down"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                  />
+                                </svg>
+                              </span>
+                            </span>
+                          </span>
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          title="File Name"
+                        >
+                          <a
+                            role="link"
+                            tabindex="0"
+                          >
+                            <span>
+                              <mark
+                                class="highlight"
+                              >
+                                above.js
+                              </mark>
+                            </span>
+                          </a>
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="mine_name-column"
+                          title="Mine"
+                        >
+                          Conrad Ltd
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          title="Uploaded"
+                        >
+                          N/A
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="create_user-column"
+                          title="Uploaded By"
+                        >
+                          N/A
+                        </div>
+                      </td>
+                    </tr>
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          title="File Name"
+                        >
+                          <a
+                            role="link"
+                            tabindex="0"
+                          >
+                            <span>
+                              <mark
+                                class="highlight"
+                              >
+                                about.js
+                              </mark>
+                            </span>
+                          </a>
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="mine_name-column"
+                          title="Mine"
+                        >
+                          Lozano, Hanson and Smith
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          title="Uploaded"
+                        >
+                          N/A
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="create_user-column"
+                          title="Uploaded By"
+                        >
+                          N/A
+                        </div>
+                      </td>
+                    </tr>
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          title="File Name"
+                        >
+                          <a
+                            role="link"
+                            tabindex="0"
+                          >
+                            <span>
+                              <mark
+                                class="highlight"
+                              >
+                                above.avi
+                              </mark>
+                            </span>
+                          </a>
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="mine_name-column"
+                          title="Mine"
+                        >
+                          Rose Inc
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          title="Uploaded"
+                        >
+                          N/A
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="create_user-column"
+                          title="Uploaded By"
+                        >
+                          N/A
+                        </div>
+                      </td>
+                    </tr>
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          title="File Name"
+                        >
+                          <a
+                            role="link"
+                            tabindex="0"
+                          >
+                            <span>
+                              <mark
+                                class="highlight"
+                              >
+                                above.avi
+                              </mark>
+                            </span>
+                          </a>
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="mine_name-column"
+                          title="Mine"
+                        >
+                          Hall Ltd
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          title="Uploaded"
+                        >
+                          N/A
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="create_user-column"
+                          title="Uploaded By"
+                        >
+                          N/A
+                        </div>
+                      </td>
+                    </tr>
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          title="File Name"
+                        >
+                          <a
+                            role="link"
+                            tabindex="0"
+                          >
+                            <span>
+                              <mark
+                                class="highlight"
+                              >
+                                above.avi
+                              </mark>
+                            </span>
+                          </a>
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="mine_name-column"
+                          title="Mine"
+                        >
+                          Lawrence-Vargas
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          title="Uploaded"
+                        >
+                          N/A
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="create_user-column"
+                          title="Uploaded By"
+                        >
+                          N/A
+                        </div>
+                      </td>
+                    </tr>
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          title="File Name"
+                        >
+                          <a
+                            role="link"
+                            tabindex="0"
+                          >
+                            <span>
+                              <mark
+                                class="highlight"
+                              >
+                                about.js
+                              </mark>
+                            </span>
+                          </a>
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="mine_name-column"
+                          title="Mine"
+                        >
+                          Thomas-Jackson
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          title="Uploaded"
+                        >
+                          N/A
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="create_user-column"
+                          title="Uploaded By"
+                        >
+                          N/A
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;

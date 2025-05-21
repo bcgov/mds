@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { AddContactModal } from "@/components/modalContent/contacts/AddContactModal";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 
@@ -15,7 +16,11 @@ beforeEach(() => {
 
 describe("AddContactModal", () => {
   it("renders properly", () => {
-    const component = shallow(<AddContactModal {...dispatchProps} />);
+    const { container: component } = render(
+      <ReduxWrapper>
+        <AddContactModal {...dispatchProps} />
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 });

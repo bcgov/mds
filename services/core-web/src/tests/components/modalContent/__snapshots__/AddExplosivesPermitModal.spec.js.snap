@@ -2,16 +2,175 @@
 
 exports[`AddExplosivesPermitModal renders properly 1`] = `
 <div>
-  <Connect(ExplosivesPermitFormNew)
-    closeModal={[MockFunction]}
-    documentTypeDropdownOptions={Array []}
-    initialValues={Object {}}
-    inspectors={Array []}
-    isApproved={false}
-    isPermitTab={false}
-    mineGuid="523642546"
-    onSubmit={[MockFunction]}
-    title="Permit"
-  />
+  <div>
+    <form
+      class="ant-form ant-form-vertical"
+    >
+      <h2
+        class="ant-typography"
+      >
+        Add Permit
+      </h2>
+      <div>
+        <div
+          class="ant-typography"
+        >
+          Let's get your permit started, in CORE you can...
+        </div>
+        <div>
+          <div
+            class="ant-typography"
+          >
+            <ul
+              class="landing-list"
+            >
+              <li>
+                <span
+                  class="ant-typography"
+                >
+                  <strong>
+                    Add an existing permit 
+                  </strong>
+                </span>
+                <span
+                  class="ant-typography"
+                >
+                  that was previously issued but does not exist in CORE and Minespace. This will help you keep track of your past permits and activities.
+                </span>
+              </li>
+              <li>
+                <span
+                  class="ant-typography"
+                >
+                  <strong>
+                    Create a new permit 
+                  </strong>
+                </span>
+                <span
+                  class="ant-typography"
+                >
+                  this is meant for new explosive storage and use permits.
+                </span>
+              </li>
+              <li>
+                <span
+                  class="ant-typography"
+                >
+                  <strong>
+                    Amend an existing permit 
+                  </strong>
+                </span>
+                <span
+                  class="ant-typography"
+                >
+                  that has already been added to CORE and Minespace. This will allow you to make changes to your permit conditions, such as the dates, amount of explosives.
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div
+        class="landing-list"
+      >
+        <br />
+        <span
+          class="ant-typography"
+        >
+          Select an action below to get started:
+        </span>
+        <div
+          class="landing-list"
+        >
+          <div
+            class="ant-radio-group ant-radio-group-outline vertical-radio-group"
+          >
+            <label
+              class="ant-radio-wrapper"
+            >
+              <span
+                class="ant-radio"
+              >
+                <input
+                  class="ant-radio-input"
+                  type="radio"
+                  value="2"
+                />
+                <span
+                  class="ant-radio-inner"
+                />
+              </span>
+              <span>
+                Add an existing explosive storage and use permit
+              </span>
+            </label>
+            <label
+              class="ant-radio-wrapper ant-radio-wrapper-checked"
+            >
+              <span
+                class="ant-radio ant-radio-checked"
+              >
+                <input
+                  checked=""
+                  class="ant-radio-input"
+                  type="radio"
+                  value="1"
+                />
+                <span
+                  class="ant-radio-inner"
+                />
+              </span>
+              <span>
+                Create new explosive storage and use permit
+              </span>
+            </label>
+            <label
+              class="ant-radio-wrapper"
+            >
+              <span
+                class="ant-radio"
+              >
+                <input
+                  class="ant-radio-input"
+                  type="radio"
+                  value="3"
+                />
+                <span
+                  class="ant-radio-inner"
+                />
+              </span>
+              <span>
+                Amend an existing explosive storage and use permit
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div
+        style="padding-top: 16px;"
+      />
+      <div
+        class="right center-mobile"
+        style="padding-top: 14px;"
+      >
+        <button
+          class="ant-btn ant-btn-ghost full-mobile"
+          type="button"
+        >
+          <span>
+            Cancel
+          </span>
+        </button>
+        <button
+          class="ant-btn ant-btn-primary"
+          type="button"
+        >
+          <span>
+            Next
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
 `;

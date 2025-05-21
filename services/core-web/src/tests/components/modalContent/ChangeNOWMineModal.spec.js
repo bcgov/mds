@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { ChangeNOWMineModal } from "@/components/modalContent/ChangeNOWMineModal";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -28,7 +29,7 @@ beforeEach(() => {
 
 describe("ChangeNOWMineModal", () => {
   it("renders properly", () => {
-    const component = shallow(<ChangeNOWMineModal {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><ChangeNOWMineModal {...dispatchProps} {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

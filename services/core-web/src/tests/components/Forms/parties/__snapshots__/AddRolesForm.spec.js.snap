@@ -2,36 +2,48 @@
 
 exports[`AddFullPartyForm renders properly 1`] = `
 <div>
-  <Connect(ReduxForm)
-    name="ADD_ROLES"
-    onSubmit={[Function]}
-    reduxFormConfig={
-      Object {
-        "destroyOnUnmount": false,
-      }
-    }
-  >
-    <Collapse
-      accordion={true}
-      activeKey={
-        Array [
-          undefined,
-        ]
-      }
-    />
-    <Button
-      className="btn--dropdown"
-      onClick={[Function]}
+  <div>
+    <form
+      class="ant-form ant-form-vertical common-form common-form-ADD_ROLES form-edit"
+      id="ADD_ROLES"
     >
-      <ForwardRef(PlusOutlined)
-        style={
-          Object {
-            "color": "#6b6363",
-          }
-        }
+      <div
+        class="ant-collapse ant-collapse-icon-position-start"
+        role="tablist"
       />
-      Add Role
-    </Button>
-  </Connect(ReduxForm)>
+      <button
+        class="ant-btn ant-btn-default btn--dropdown"
+        type="button"
+      >
+        <span
+          aria-label="plus"
+          class="anticon anticon-plus"
+          role="img"
+          style="color: rgb(107, 99, 99);"
+        >
+          <svg
+            aria-hidden="true"
+            class=""
+            data-icon="plus"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
+          >
+            <path
+              d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"
+            />
+            <path
+              d="M192 474h672q8 0 8 8v60q0 8-8 8H160q-8 0-8-8v-60q0-8 8-8z"
+            />
+          </svg>
+        </span>
+        <span>
+          Add Role
+        </span>
+      </button>
+    </form>
+  </div>
 </div>
 `;

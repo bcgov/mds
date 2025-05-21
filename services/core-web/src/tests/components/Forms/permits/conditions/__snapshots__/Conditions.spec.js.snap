@@ -1,25 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Conditions renders properly 1`] = `
-<Fragment>
+<div>
   <div
-    style={
-      Object {
-        "backgroundColor": "#f4f0f0",
-        "borderRadius": 5,
-        "display": "inline-block",
-        "marginBottom": 20,
-        "minWidth": 345,
-        "padding": 16,
-      }
-    }
+    style="display: inline-block; background-color: rgb(244, 240, 240); padding: 16px; border-radius: 5px; margin-bottom: 20px; min-width: 345px;"
   >
     <div
-      style={
-        Object {
-          "marginLeft": 24,
-        }
-      }
+      style="margin-left: 24px;"
     >
       <p>
         <b>
@@ -36,7 +23,9 @@ exports[`Conditions renders properly 1`] = `
     </div>
   </div>
   <div>
-    <Collapse />
+    <div
+      class="ant-collapse ant-collapse-icon-position-start"
+    />
   </div>
-</Fragment>
+</div>
 `;

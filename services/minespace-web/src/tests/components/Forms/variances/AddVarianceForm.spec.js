@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { AddVarianceForm } from "@/components/Forms/variances/AddVarianceForm";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const props = {};
 const dispatchProps = {};
@@ -25,7 +26,11 @@ beforeEach(() => {
 
 describe("AddVarianceForm", () => {
   it("renders properly", () => {
-    const component = shallow(<AddVarianceForm {...props} {...dispatchProps} />);
+    const { container: component } = render(
+      <ReduxWrapper>
+        <AddVarianceForm {...props} {...dispatchProps} />
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 });
