@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MineSecurityInfo } from "@/components/mine/Securities/MineSecurityInfo";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
@@ -36,12 +36,12 @@ beforeEach(() => {
 
 describe("MineSecurityInfo", () => {
   it("renders properly", () => {
-    const component = shallow(<MineSecurityInfo {...dispatchProps} {...props} />);
+    const { container: component } = render(<MineSecurityInfo {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 
   it("getAmountSum is called for invoice amounts", () => {
-    const component = shallow(<MineSecurityInfo {...dispatchProps} {...props} />);
+    const { container: component } = render(<MineSecurityInfo {...dispatchProps} {...props} />);
     const instance = component.instance();
     const getAmountSumSpy = jest.spyOn(instance, "getAmountSum");
     instance.getAmountSum(props.permits[0]);

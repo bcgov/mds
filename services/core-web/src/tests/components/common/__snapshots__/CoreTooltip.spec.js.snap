@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CoreTooltip renders properly 1`] = `
+exports[`CoreTooltip CoreTooltip renders properly 1`] = `
 <Tooltip
   mouseEnterDelay={0.3}
   overlayClassName="core-tooltip"
@@ -18,7 +18,7 @@ exports[`CoreTooltip renders properly 1`] = `
 </Tooltip>
 `;
 
-exports[`NOWFieldOriginTooltip renders properly 1`] = `
+exports[`CoreTooltip NOWFieldOriginTooltip renders properly 1`] = `
 <Tooltip
   mouseEnterDelay={0.3}
   placement="right"
@@ -30,11 +30,18 @@ exports[`NOWFieldOriginTooltip renders properly 1`] = `
 </Tooltip>
 `;
 
-exports[`NOWOriginalValueTooltip renders properly 1`] = `
+exports[`CoreTooltip NOWOriginalValueTooltip renders properly 1`] = `
 <Tooltip
   className="position-right"
   mouseEnterDelay={0.3}
   placement="right"
   title="Original Value: mock value"
-/>
+>
+  <span
+    className="violet"
+    style={Object {}}
+  >
+    Edited
+  </span>
+</Tooltip>
 `;
