@@ -16,6 +16,15 @@ beforeEach(() => {
   setupReducerProps();
 });
 
+// TypeError: Cannot read properties of undefined (reading 'camp')
+
+//       346 | export default connect(
+//       347 |   (state) => ({
+//     > 348 |     campFormValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state).camp || {},
+//           |                                                                   ^
+//       349 |   }),
+//       350 |   null
+//       351 | )(Camps);
 describe("ReviewActivities", () => {
   it("renders properly", () => {
     const component = shallow(<ReviewActivities {...reducerProps} />);

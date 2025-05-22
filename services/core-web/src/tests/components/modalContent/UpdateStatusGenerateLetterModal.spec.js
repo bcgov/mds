@@ -30,6 +30,15 @@ beforeEach(() => {
   setupProps();
 });
 
+//  TypeError: Cannot read properties of undefined (reading 'form_spec')
+
+//        99 |       )}
+//       100 |       <Row gutter={16}>
+//     > 101 |         <Col span={24}>{createFields(props.documentType.document_template.form_spec)}</Col>
+//           |                                                                           ^
+//       102 |       </Row>
+//       103 |       <div className="right center-mobile">
+//       104 |         <RenderCancelButton />
 describe("UpdateStatusGenerateLetterModal", () => {
   it("renders properly", () => {
     const component = shallow(<UpdateStatusGenerateLetterModal {...dispatchProps} {...props} />);

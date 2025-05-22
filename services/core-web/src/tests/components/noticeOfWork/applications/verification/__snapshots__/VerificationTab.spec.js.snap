@@ -1,869 +1,1195 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`VerificationTab renders properly 1`] = `
-<div>
-  <div
-    class="tab__content"
-  >
-    <form
-      class="ant-form ant-form-vertical common-form common-form-VERIFY_NOW_APPLICATION_FORM form-edit"
-      id="VERIFY_NOW_APPLICATION_FORM"
-    >
-      <h4>
-        Verify Mine
-      </h4>
-      <p>
-        Review the information below to confirm that this Notice of Work belongs with this mine record.
-      </p>
-      <br />
-      <p>
-        You can change the mine and/or update the NoW‘s Longitude and Latitude. All information can be updated on the Administrative tab after the initial verification until issuance of the permit.
-      </p>
-      <br />
-      <div>
-        <div
-          class="ant-row"
-          style="margin-left: -8px; margin-right: -8px;"
-        >
-          <div
-            class="ant-col ant-col-md-12"
-            s="24"
-            style="padding-left: 8px; padding-right: 8px;"
-          >
-            <div>
-              <div
-                class="ant-form-item ant-form-item-with-help"
-              >
-                <div
-                  class="ant-row ant-form-item-row"
-                >
-                  <div
-                    class="ant-col ant-form-item-label"
-                  >
-                    <label
-                      class="ant-form-item-required"
-                      title=""
-                    >
-                      <div
-                        style="width: 100%;"
-                      >
-                        Mine Name
-                      </div>
-                    </label>
-                  </div>
-                  <div
-                    class="ant-col ant-form-item-control"
-                  >
-                    <div
-                      class="ant-form-item-control-input"
-                    >
-                      <div
-                        class="ant-form-item-control-input-content"
-                      >
-                        <div
-                          aria-label="mine_guid"
-                          class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
-                          style="width: 100%;"
-                        >
-                          <div
-                            class="ant-select-selector"
-                          >
-                            <span
-                              class="ant-select-selection-search"
-                            >
-                              <input
-                                aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
-                                aria-autocomplete="list"
-                                aria-controls="rc_select_TEST_OR_SSR_list"
-                                aria-haspopup="listbox"
-                                aria-label="mine_guid"
-                                aria-owns="rc_select_TEST_OR_SSR_list"
-                                autocomplete="off"
-                                class="ant-select-selection-search-input"
-                                id="rc_select_TEST_OR_SSR"
-                                role="combobox"
-                                type="search"
-                                value=""
-                              />
-                            </span>
-                            <span
-                              class="ant-select-selection-item"
-                              title="20af050d-2a1a-4870-9016-eacabaa68f02"
-                            >
-                              20af050d-2a1a-4870-9016-eacabaa68f02
-                            </span>
-                          </div>
-                          <span
-                            aria-hidden="true"
-                            class="ant-select-arrow"
-                            style="user-select: none;"
-                            unselectable="on"
-                          >
-                            <span
-                              aria-label="down"
-                              class="anticon anticon-down ant-select-suffix"
-                              role="img"
-                            >
-                              <svg
-                                aria-hidden="true"
-                                data-icon="down"
-                                fill="currentColor"
-                                focusable="false"
-                                height="1em"
-                                viewBox="64 64 896 896"
-                                width="1em"
-                              >
-                                <path
-                                  d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
-                                />
-                              </svg>
-                            </span>
-                          </span>
-                          <span
-                            aria-hidden="true"
-                            class="ant-select-clear"
-                            style="user-select: none;"
-                            unselectable="on"
-                          >
-                            <span
-                              aria-label="close-circle"
-                              class="anticon anticon-close-circle"
-                              role="img"
-                            >
-                              <svg
-                                aria-hidden="true"
-                                data-icon="close-circle"
-                                fill="currentColor"
-                                fill-rule="evenodd"
-                                focusable="false"
-                                height="1em"
-                                viewBox="64 64 896 896"
-                                width="1em"
-                              >
-                                <path
-                                  d="M512 64c247.4 0 448 200.6 448 448S759.4 960 512 960 64 759.4 64 512 264.6 64 512 64zm127.98 274.82h-.04l-.08.06L512 466.75 384.14 338.88c-.04-.05-.06-.06-.08-.06a.12.12 0 00-.07 0c-.03 0-.05.01-.09.05l-45.02 45.02a.2.2 0 00-.05.09.12.12 0 000 .07v.02a.27.27 0 00.06.06L466.75 512 338.88 639.86c-.05.04-.06.06-.06.08a.12.12 0 000 .07c0 .03.01.05.05.09l45.02 45.02a.2.2 0 00.09.05.12.12 0 00.07 0c.02 0 .04-.01.08-.05L512 557.25l127.86 127.87c.04.04.06.05.08.05a.12.12 0 00.07 0c.03 0 .05-.01.09-.05l45.02-45.02a.2.2 0 00.05-.09.12.12 0 000-.07v-.02a.27.27 0 00-.05-.06L557.25 512l127.87-127.86c.04-.04.05-.06.05-.08a.12.12 0 000-.07c0-.03-.01-.05-.05-.09l-45.02-45.02a.2.2 0 00-.09-.05.12.12 0 00-.07 0z"
-                                />
-                              </svg>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      style="display: flex; flex-wrap: nowrap;"
-                    >
-                      <div
-                        class="ant-form-item-explain ant-form-item-explain-connected"
-                        role="alert"
-                      >
-                        <div
-                          class=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                style="position: relative; height: inherit; width: 93vw;"
-              >
-                <div>
-                  <div
-                    class="loading-screen--small"
-                  >
-                    <div
-                      aria-busy="true"
-                      aria-live="polite"
-                      class="ant-spin ant-spin-spinning"
-                      id="spinner"
-                    >
-                      <span
-                        aria-label="loading"
-                        class="anticon anticon-loading ant-spin-dot"
-                        role="img"
-                        style="font-size: 80px; color: rgb(107, 99, 99);"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="anticon-spin"
-                          data-icon="loading"
-                          fill="currentColor"
-                          focusable="false"
-                          height="1em"
-                          viewBox="0 0 1024 1024"
-                          width="1em"
-                        >
-                          <path
-                            d="M988 548c-19.9 0-36-16.1-36-36 0-59.4-11.6-117-34.6-171.3a440.45 440.45 0 00-94.3-139.9 437.71 437.71 0 00-139.9-94.3C629 83.6 571.4 72 512 72c-19.9 0-36-16.1-36-36s16.1-36 36-36c69.1 0 136.2 13.5 199.3 40.3C772.3 66 827 103 874 150c47 47 83.9 101.8 109.7 162.7 26.7 63.1 40.2 130.2 40.2 199.3.1 19.9-16 36-35.9 36z"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="ant-col ant-col-md-6"
-            s="12"
-            style="padding-left: 8px; padding-right: 8px;"
-          >
-            <div
-              class="ant-form-item ant-form-item-with-help"
-            >
-              <div
-                class="ant-row ant-form-item-row"
-              >
-                <div
-                  class="ant-col ant-form-item-label"
-                >
-                  <label
-                    class=""
-                    for="VERIFY_NOW_APPLICATION_FORM_latitude"
-                    title=""
-                  >
-                    <div>
-                      <span
-                        class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                      >
-                        <span
-                          class="ant-badge-status-dot"
-                          style="background: rgb(252, 186, 5);"
-                        />
-                      </span>
-                      NoW Latitude
-                       
-                      <span
-                        class="form-item-optional"
-                      >
-                         (optional)
-                      </span>
-                    </div>
-                  </label>
-                </div>
-                <div
-                  class="ant-col ant-form-item-control"
-                >
-                  <div
-                    class="ant-form-item-control-input"
-                  >
-                    <div
-                      class="ant-form-item-control-input-content"
-                    >
-                      <input
-                        aria-label="latitude"
-                        class="ant-input"
-                        data-testid="latitude"
-                        id="latitude"
-                        name="latitude"
-                        type="text"
-                        value=""
-                      />
-                    </div>
-                  </div>
-                  <div
-                    style="display: flex; flex-wrap: nowrap;"
-                  >
-                    <div
-                      class="ant-form-item-explain ant-form-item-explain-connected"
-                      id="VERIFY_NOW_APPLICATION_FORM_latitude_help"
-                      role="alert"
-                    >
-                      <div
-                        class=""
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="ant-col ant-col-md-6"
-            s="12"
-            style="padding-left: 8px; padding-right: 8px;"
-          >
-            <div
-              class="ant-form-item ant-form-item-with-help"
-            >
-              <div
-                class="ant-row ant-form-item-row"
-              >
-                <div
-                  class="ant-col ant-form-item-label"
-                >
-                  <label
-                    class=""
-                    for="VERIFY_NOW_APPLICATION_FORM_longitude"
-                    title=""
-                  >
-                    <div>
-                      NoW Longitude
-                       
-                      <span
-                        class="form-item-optional"
-                      >
-                         (optional)
-                      </span>
-                    </div>
-                  </label>
-                </div>
-                <div
-                  class="ant-col ant-form-item-control"
-                >
-                  <div
-                    class="ant-form-item-control-input"
-                  >
-                    <div
-                      class="ant-form-item-control-input-content"
-                    >
-                      <input
-                        aria-label="longitude"
-                        class="ant-input"
-                        data-testid="longitude"
-                        id="longitude"
-                        name="longitude"
-                        type="text"
-                        value=""
-                      />
-                    </div>
-                  </div>
-                  <div
-                    style="display: flex; flex-wrap: nowrap;"
-                  >
-                    <div
-                      class="ant-form-item-explain ant-form-item-explain-connected"
-                      id="VERIFY_NOW_APPLICATION_FORM_longitude_help"
-                      role="alert"
-                    >
-                      <div
-                        class=""
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br />
-      <br />
-      <h4>
-        Match the contacts from the Notice of Work application to contacts in Core.
-      </h4>
-      <div
-        class="ant-divider ant-divider-horizontal"
-        role="separator"
-      />
-      <div
-        class="ant-row"
-        style="margin: -8px -8px -8px -8px;"
-      >
-        <div
-          class="ant-col ant-col-8"
-          style="padding: 8px 8px 8px 8px;"
-        >
-          <div
-            class="ant-row contact-rows"
-          >
-            <div
-              class="scroll"
-            >
-              <div
-                class="ant-col ant-col-24"
-                style="min-height: 150px;"
-              >
-                <h3>
-                  Application Contacts
-                </h3>
-                <p>
-                  Contacts listed here come from the original Notice of Work. Click "Search Contact" to see a list of possible Core matches in the "Matching Contact Options" column. Ensure the correct role has been assigned to the application contact.
-                </p>
-              </div>
-              <div
-                class="ant-col ant-col-24"
-              >
-                <div
-                  class="ant-card ant-card-hoverable ant-card-now white inherit-height "
-                >
-                  <div
-                    class="ant-card-head"
-                  >
-                    <div
-                      class="ant-card-head-wrapper"
-                    >
-                      <div
-                        class="ant-card-head-title"
-                      >
-                        <div
-                          class="inline-flex between"
-                          style="align-items: center; height: 55px;"
-                        >
-                          <span
-                            class="field-title"
-                          >
-                            Application Contact
-                          </span>
-                          <button
-                            class="ant-btn ant-btn-default ant-btn-background-ghost"
-                            type="button"
-                          >
-                            <img
-                              alt="Remove Application Contact"
-                              class=""
-                              name="remove"
-                              src="[object Object]"
-                            />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="ant-card-body"
-                  >
-                    <div
-                      class="ant-row ant-row-center ant-row-middle"
-                    >
-                      <div
-                        class="ant-col ant-col-15"
-                      >
-                        <div
-                          class="inline-flex"
-                        >
-                          <img
-                            alt="user"
-                            class="icon-sm padding-sm--right"
-                            height="25"
-                            src="[object Object]"
-                          />
-                          <h4>
-                            New Contact
-                          </h4>
-                        </div>
-                      </div>
-                      <div
-                        class="ant-col ant-col-9"
-                      >
-                        <div
-                          class="ant-form-item ant-form-item-with-help"
-                        >
-                          <div
-                            class="ant-row ant-form-item-row"
-                          >
-                            <div
-                              class="ant-col ant-form-item-label"
-                            >
-                              <label
-                                class="ant-form-item-required"
-                                for="VERIFY_NOW_APPLICATION_FORM_contacts[0].mine_party_appt_type_code"
-                                title=""
-                              >
-                                <div
-                                  style="width: 100%;"
-                                >
-                                  Role
-                                </div>
-                              </label>
-                            </div>
-                            <div
-                              class="ant-col ant-form-item-control"
-                            >
-                              <div
-                                class="ant-form-item-control-input"
-                              >
-                                <div
-                                  class="ant-form-item-control-input-content"
-                                >
-                                  <div
-                                    aria-required="true"
-                                    class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
-                                    data-cy="contacts[0].mine_party_appt_type_code"
-                                  >
-                                    <div
-                                      class="ant-select-selector"
-                                    >
-                                      <span
-                                        class="ant-select-selection-search"
-                                      >
-                                        <input
-                                          aria-activedescendant="contacts[0].mine_party_appt_type_code_list_0"
-                                          aria-autocomplete="list"
-                                          aria-controls="contacts[0].mine_party_appt_type_code_list"
-                                          aria-haspopup="listbox"
-                                          aria-owns="contacts[0].mine_party_appt_type_code_list"
-                                          aria-required="true"
-                                          autocomplete="off"
-                                          class="ant-select-selection-search-input"
-                                          id="contacts[0].mine_party_appt_type_code"
-                                          role="combobox"
-                                          type="search"
-                                          value=""
-                                        />
-                                      </span>
-                                      <span
-                                        class="ant-select-selection-placeholder"
-                                      >
-                                        Please select
-                                      </span>
-                                    </div>
-                                    <span
-                                      aria-hidden="true"
-                                      class="ant-select-arrow"
-                                      style="user-select: none;"
-                                      unselectable="on"
-                                    >
-                                      <span
-                                        aria-label="down"
-                                        class="anticon anticon-down ant-select-suffix"
-                                        role="img"
-                                      >
-                                        <svg
-                                          aria-hidden="true"
-                                          data-icon="down"
-                                          fill="currentColor"
-                                          focusable="false"
-                                          height="1em"
-                                          viewBox="64 64 896 896"
-                                          width="1em"
-                                        >
-                                          <path
-                                            d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
-                                          />
-                                        </svg>
-                                      </span>
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                              <div
-                                style="display: flex; flex-wrap: nowrap;"
-                              >
-                                <div
-                                  class="ant-form-item-explain ant-form-item-explain-connected"
-                                  id="VERIFY_NOW_APPLICATION_FORM_contacts[0].mine_party_appt_type_code_help"
-                                  role="alert"
-                                >
-                                  <div
-                                    class=""
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="ant-row"
-                    >
-                      <div
-                        class="ant-col ant-col-12"
-                      />
-                      <div
-                        class="ant-col ant-col-12"
-                      >
-                        <button
-                          class="ant-btn ant-btn-primary"
-                          disabled=""
-                          style="float: right;"
-                          type="button"
-                        >
-                          <span>
-                            Search Contact
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="ant-col ant-col-24"
-              >
-                <div
-                  class="ant-card ant-card-hoverable ant-card-now white inherit-height "
-                >
-                  <div
-                    class="ant-card-head"
-                  >
-                    <div
-                      class="ant-card-head-wrapper"
-                    >
-                      <div
-                        class="ant-card-head-title"
-                      >
-                        <div
-                          class="inline-flex between"
-                          style="align-items: center; height: 55px;"
-                        >
-                          <span
-                            class="field-title"
-                          >
-                            Application Contact
-                          </span>
-                          <button
-                            class="ant-btn ant-btn-default ant-btn-background-ghost"
-                            type="button"
-                          >
-                            <img
-                              alt="Remove Application Contact"
-                              class=""
-                              name="remove"
-                              src="[object Object]"
-                            />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="ant-card-body"
-                  >
-                    <div
-                      class="ant-row ant-row-center ant-row-middle"
-                    >
-                      <div
-                        class="ant-col ant-col-15"
-                      >
-                        <div
-                          class="inline-flex"
-                        >
-                          <img
-                            alt="user"
-                            class="icon-sm padding-sm--right"
-                            height="25"
-                            src="[object Object]"
-                          />
-                          <h4>
-                            New Contact
-                          </h4>
-                        </div>
-                      </div>
-                      <div
-                        class="ant-col ant-col-9"
-                      >
-                        <div
-                          class="ant-form-item ant-form-item-with-help"
-                        >
-                          <div
-                            class="ant-row ant-form-item-row"
-                          >
-                            <div
-                              class="ant-col ant-form-item-label"
-                            >
-                              <label
-                                class="ant-form-item-required"
-                                for="VERIFY_NOW_APPLICATION_FORM_contacts[1].mine_party_appt_type_code"
-                                title=""
-                              >
-                                <div
-                                  style="width: 100%;"
-                                >
-                                  Role
-                                </div>
-                              </label>
-                            </div>
-                            <div
-                              class="ant-col ant-form-item-control"
-                            >
-                              <div
-                                class="ant-form-item-control-input"
-                              >
-                                <div
-                                  class="ant-form-item-control-input-content"
-                                >
-                                  <div
-                                    aria-required="true"
-                                    class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
-                                    data-cy="contacts[1].mine_party_appt_type_code"
-                                  >
-                                    <div
-                                      class="ant-select-selector"
-                                    >
-                                      <span
-                                        class="ant-select-selection-search"
-                                      >
-                                        <input
-                                          aria-activedescendant="contacts[1].mine_party_appt_type_code_list_0"
-                                          aria-autocomplete="list"
-                                          aria-controls="contacts[1].mine_party_appt_type_code_list"
-                                          aria-haspopup="listbox"
-                                          aria-owns="contacts[1].mine_party_appt_type_code_list"
-                                          aria-required="true"
-                                          autocomplete="off"
-                                          class="ant-select-selection-search-input"
-                                          id="contacts[1].mine_party_appt_type_code"
-                                          role="combobox"
-                                          type="search"
-                                          value=""
-                                        />
-                                      </span>
-                                      <span
-                                        class="ant-select-selection-placeholder"
-                                      >
-                                        Please select
-                                      </span>
-                                    </div>
-                                    <span
-                                      aria-hidden="true"
-                                      class="ant-select-arrow"
-                                      style="user-select: none;"
-                                      unselectable="on"
-                                    >
-                                      <span
-                                        aria-label="down"
-                                        class="anticon anticon-down ant-select-suffix"
-                                        role="img"
-                                      >
-                                        <svg
-                                          aria-hidden="true"
-                                          data-icon="down"
-                                          fill="currentColor"
-                                          focusable="false"
-                                          height="1em"
-                                          viewBox="64 64 896 896"
-                                          width="1em"
-                                        >
-                                          <path
-                                            d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
-                                          />
-                                        </svg>
-                                      </span>
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                              <div
-                                style="display: flex; flex-wrap: nowrap;"
-                              >
-                                <div
-                                  class="ant-form-item-explain ant-form-item-explain-connected"
-                                  id="VERIFY_NOW_APPLICATION_FORM_contacts[1].mine_party_appt_type_code_help"
-                                  role="alert"
-                                >
-                                  <div
-                                    class=""
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="ant-row"
-                    >
-                      <div
-                        class="ant-col ant-col-12"
-                      />
-                      <div
-                        class="ant-col ant-col-12"
-                      >
-                        <button
-                          class="ant-btn ant-btn-primary"
-                          disabled=""
-                          style="float: right;"
-                          type="button"
-                        >
-                          <span>
-                            Search Contact
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="ant-col ant-col-24"
-              />
-            </div>
-          </div>
-        </div>
-        <div
-          class="ant-col ant-col-8"
-          style="padding: 8px 8px 8px 8px;"
-        >
-          <div
-            class="ant-row contact-rows"
-          >
-            <div
-              class="scroll"
-            >
-              <div
-                class="ant-col ant-col-24"
-                style="min-height: 150px;"
-              >
-                <h3>
-                  Matching Contact Options
-                </h3>
-                <p>
-                  Click on a contact(s) below to see their detailed information in the "Contact Detail" column. If you cannot find a match, you can either search or create a new contact.
-                </p>
-              </div>
-              <div
-                class="ant-col ant-col-24 card--white"
-              >
-                <p
-                  class="null"
-                >
-                  No Contact selected to verify
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="ant-col ant-col-8"
-          style="padding: 8px 8px 8px 8px;"
-        >
-          <div
-            class="ant-row contact-rows"
-          >
-            <div
-              class="scroll"
-            >
-              <div
-                class="ant-col ant-col-24"
-                style="min-height: 150px;"
-              >
-                <h3>
-                  Core Contact Detail
-                </h3>
-                <p>
-                  Use this information to determine if this is the correct contact to use in Core for this application. Click "Select Contact" when you have found the right match. You may update the contact if the information is incorrect.
-                </p>
-              </div>
-              <div
-                class="ant-col ant-col-24 card--white"
-              >
-                <p
-                  class="null"
-                >
-                  No Contact selected to verify
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="right center-mobile"
-      >
-        <p
-          class="violet"
-        >
-          0/2 contacts confirmed
-        </p>
-        <p
-          class="red"
-        />
-      </div>
-    </form>
-  </div>
+<div
+  className="tab__content"
+>
+  <Connect(VerifyApplicationInformationForm)
+    initialValues={
+      Object {
+        "anyotherinformation": null,
+        "applicant": Object {
+          "dayphonenumber": null,
+          "dayphonenumberext": null,
+          "email": null,
+          "faxnumber": null,
+          "ind_firstname": null,
+          "ind_lastname": null,
+          "ind_middlename": null,
+          "ind_phonenumber": null,
+          "mailingaddresscity": null,
+          "mailingaddresscountry": null,
+          "mailingaddressline1": null,
+          "mailingaddressline2": null,
+          "mailingaddresspostalzip": null,
+          "mailingaddressprovstate": null,
+          "org_bcfedincorpnumber": null,
+          "org_bcregnumber": null,
+          "org_contactname": null,
+          "org_doingbusinessas": null,
+          "org_hstregnumber": null,
+          "org_legalname": null,
+          "org_societynumber": null,
+          "type": null,
+        },
+        "applicantclientid": 42,
+        "application_guid": "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
+        "application_reason_codes": Array [],
+        "applicationtype": null,
+        "archsitesaffected": null,
+        "bcexplosivespermitexpiry": null,
+        "bcexplosivespermitissued": null,
+        "bcexplosivespermitnumber": null,
+        "bldgdisturbedarea": null,
+        "bldgtimbervolume": null,
+        "campbuildstgetotaldistarea": null,
+        "campdisturbedarea": null,
+        "camptimbervolume": null,
+        "cbsfreclamation": null,
+        "cbsfreclamationcost": null,
+        "contacts": Array [
+          Object {
+            "contactcertificationid": null,
+            "contactcertificationtype": null,
+            "contacttype": null,
+            "dayphonenumber": null,
+            "dayphonenumberext": null,
+            "email": null,
+            "faxnumber": null,
+            "ind_firstname": null,
+            "ind_lastname": null,
+            "ind_middlename": null,
+            "ind_phonenumber": null,
+            "mailingaddresscity": null,
+            "mailingaddresscountry": null,
+            "mailingaddressline1": null,
+            "mailingaddressline2": null,
+            "mailingaddresspostalzip": null,
+            "mailingaddressprovstate": null,
+            "org_bcfedincorpnumber": null,
+            "org_bcregnumber": null,
+            "org_contactname": null,
+            "org_doingbusinessas": null,
+            "org_hstregnumber": null,
+            "org_legalname": null,
+            "org_societynumber": null,
+            "seq_no": null,
+            "type": null,
+          },
+          Object {
+            "contactcertificationid": null,
+            "contactcertificationtype": null,
+            "contacttype": null,
+            "dayphonenumber": null,
+            "dayphonenumberext": null,
+            "email": null,
+            "faxnumber": null,
+            "ind_firstname": null,
+            "ind_lastname": null,
+            "ind_middlename": null,
+            "ind_phonenumber": null,
+            "mailingaddresscity": null,
+            "mailingaddresscountry": null,
+            "mailingaddressline1": null,
+            "mailingaddressline2": null,
+            "mailingaddresspostalzip": null,
+            "mailingaddressprovstate": null,
+            "org_bcfedincorpnumber": null,
+            "org_bcregnumber": null,
+            "org_contactname": null,
+            "org_doingbusinessas": null,
+            "org_hstregnumber": null,
+            "org_legalname": null,
+            "org_societynumber": null,
+            "seq_no": null,
+            "type": null,
+          },
+        ],
+        "crowngrantlotnumbers": null,
+        "cutlinesexplgriddisturbedarea": null,
+        "cutlinesexplgridtimbervolume": null,
+        "cutlinesexplgridtotallinekms": null,
+        "cutlinesreclamation": null,
+        "cutlinesreclamationcost": null,
+        "descexplorationprogram": null,
+        "documents": Array [
+          Object {
+            "description": null,
+            "documenttype": null,
+            "documenturl": null,
+            "filename": null,
+            "mine_document_guid": "12345-678",
+          },
+          Object {
+            "description": null,
+            "documenttype": null,
+            "documenturl": null,
+            "filename": null,
+            "mine_document_guid": "12345-6789",
+          },
+        ],
+        "existing_placer_activity": Array [
+          Object {
+            "depth": null,
+            "disturbedarea": null,
+            "length": null,
+            "quantity": null,
+            "timbervolume": null,
+            "type": null,
+            "width": null,
+          },
+        ],
+        "existing_settling_pond": Array [
+          Object {
+            "constructionmethod": null,
+            "depth": null,
+            "disturbedarea": null,
+            "length": null,
+            "pondid": null,
+            "timbervolume": null,
+            "watersource": null,
+            "width": null,
+          },
+        ],
+        "exp_access_activity": Array [],
+        "exp_surface_drill_activity": Array [],
+        "expaccessreclamation": null,
+        "expaccessreclamationcost": null,
+        "expaccesstotaldistarea": null,
+        "expsurfacedrillreclamation": null,
+        "expsurfacedrillreclamationcost": null,
+        "expsurfacedrillreclcorestorage": null,
+        "expsurfacedrilltotaldistarea": null,
+        "filtered_submission_documents": Array [
+          Object {
+            "description": null,
+            "document_manager_guid": null,
+            "documenttype": null,
+            "documenturl": null,
+            "filename": null,
+            "is_final_package": false,
+            "messageid": 0,
+            "mine_document_guid": null,
+            "now_application_document_xref_guid": null,
+            "now_application_id": null,
+          },
+        ],
+        "firstaidcertlevel": null,
+        "firstaidequipmentonsite": null,
+        "freeusepermit": null,
+        "fuellubstored": null,
+        "fuellubstoremethodbarrel": null,
+        "fuellubstoremethodbulk": null,
+        "fuellubstoreonsite": null,
+        "isblastselect": null,
+        "isonprivateland": null,
+        "istimberselect": null,
+        "landcommunitywatershed": null,
+        "landlegaldesc": null,
+        "landprivate": null,
+        "latitude": null,
+        "licencetocut": null,
+        "longitude": null,
+        "mech_trenching_activity": Array [],
+        "mechtrenchingreclamation": null,
+        "mechtrenchingreclamationcost": null,
+        "mechtrenchingtotaldistarea": null,
+        "messagecreateddate": null,
+        "mine_guid": "20af050d-2a1a-4870-9016-eacabaa68f02",
+        "mine_name": null,
+        "mine_region": "NW",
+        "minenumber": null,
+        "nameofproperty": null,
+        "noticeofworktype": null,
+        "now_application_guid": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
+        "nrsosapplicationid": null,
+        "placerhandoperations": null,
+        "placerreclamation": null,
+        "placerreclamationarea": null,
+        "placerreclamationcost": null,
+        "placertotaldistarea": null,
+        "placerundergroundoperations": null,
+        "pondsdischargedtoenv": null,
+        "pondsexfiltratedtoground": null,
+        "pondsreclamation": null,
+        "pondsreclamationcost": null,
+        "pondsrecycled": null,
+        "pondstotaldistarea": null,
+        "pondswastewatertreatfacility": null,
+        "processed": null,
+        "processeddate": null,
+        "proposed_placer_activity": Array [
+          Object {
+            "depth": null,
+            "disturbedarea": null,
+            "length": null,
+            "quantity": null,
+            "timbervolume": null,
+            "type": null,
+            "width": null,
+          },
+        ],
+        "proposed_settling_pond": Array [
+          Object {
+            "constructionmethod": null,
+            "depth": null,
+            "disturbedarea": null,
+            "length": null,
+            "pondid": null,
+            "timbervolume": null,
+            "watersource": null,
+            "width": null,
+          },
+        ],
+        "proposedenddate": null,
+        "proposedstartdate": null,
+        "receiveddate": null,
+        "reclareaexist": null,
+        "reclarearecl": null,
+        "reclareasubtotal": null,
+        "reclareatotal": null,
+        "reclcostexist": null,
+        "reclcostrecl": null,
+        "reclcostsubtotal": null,
+        "reclcosttotal": null,
+        "sand_grv_qry_activity": Array [
+          Object {
+            "disturbedarea": null,
+            "timbervolume": null,
+            "type": null,
+          },
+        ],
+        "sandgravelquarryoperations": null,
+        "sandgrvqryalrpermitnumber": null,
+        "sandgrvqryannualextrest": null,
+        "sandgrvqryannualextrestunits": null,
+        "sandgrvqrydepthoverburden": null,
+        "sandgrvqrydepthtopsoil": null,
+        "sandgrvqryendlanduse": null,
+        "sandgrvqrygrdwtravgdepth": null,
+        "sandgrvqrygrdwtrexistingareas": null,
+        "sandgrvqrygrdwtrmeasprotect": null,
+        "sandgrvqrygrdwtrother": null,
+        "sandgrvqrygrdwtrtestpits": null,
+        "sandgrvqrygrdwtrtestwells": null,
+        "sandgrvqryimpactdistres": null,
+        "sandgrvqryimpactdistwater": null,
+        "sandgrvqryimpactminvisual": null,
+        "sandgrvqryimpactnoise": null,
+        "sandgrvqryimpactprevtdust": null,
+        "sandgrvqryimpactprvtaccess": null,
+        "sandgrvqrylandusezoning": null,
+        "sandgrvqrylocalgovsoilrembylaw": null,
+        "sandgrvqryofficialcommplan": null,
+        "sandgrvqryreclamation": null,
+        "sandgrvqryreclamationbackfill": null,
+        "sandgrvqryreclamationcost": null,
+        "sandgrvqrystabilizemeasures": null,
+        "sandgrvqrytotaldistarea": null,
+        "sandgrvqrytotalexistdistarea": null,
+        "sandgrvqrytotalmineres": null,
+        "sandgrvqrytotalmineresunits": null,
+        "sandgrvqrywithinaglandres": null,
+        "site_property": Object {
+          "mine_commodity_code": Array [],
+          "mine_disturbance_code": Array [],
+          "mine_tenure_type_code": "",
+        },
+        "sitedirections": null,
+        "status": null,
+        "stgedisturbedarea": null,
+        "stgetimbervolume": null,
+        "storeexplosivesonsite": null,
+        "submitteddate": null,
+        "submitter": Object {
+          "dayphonenumber": null,
+          "dayphonenumberext": null,
+          "email": "someone@submitter.com",
+          "faxnumber": null,
+          "ind_firstname": null,
+          "ind_lastname": null,
+          "ind_middlename": null,
+          "ind_phonenumber": null,
+          "mailingaddresscity": null,
+          "mailingaddresscountry": null,
+          "mailingaddressline1": null,
+          "mailingaddressline2": null,
+          "mailingaddresspostalzip": null,
+          "mailingaddressprovstate": null,
+          "org_bcfedincorpnumber": null,
+          "org_bcregnumber": null,
+          "org_contactname": null,
+          "org_doingbusinessas": null,
+          "org_hstregnumber": null,
+          "org_legalname": null,
+          "org_societynumber": null,
+          "type": null,
+        },
+        "submitterclientid": 43,
+        "surface_bulk_sample_activity": Array [
+          Object {
+            "disturbedarea": 1.11,
+            "quantity": null,
+            "timbervolume": null,
+            "type": null,
+          },
+        ],
+        "surfacebulksampleprocmethods": null,
+        "surfacebulksamplereclamation": null,
+        "surfacebulksamplereclcost": null,
+        "surfacebulksamplerecldrainmiti": null,
+        "surfacebulksamplereclsephandl": null,
+        "surfacebulksampletotaldistarea": null,
+        "tenurenumbers": null,
+        "timbertotalvolume": null,
+        "trackingnumber": null,
+        "typeofapplication": null,
+        "typeofpermit": null,
+        "under_exp_new_activity": Array [
+          Object {
+            "height": null,
+            "incline": null,
+            "inclineunits": null,
+            "length": null,
+            "quantity": 400,
+            "seq_no": null,
+            "type": null,
+            "width": null,
+          },
+        ],
+        "under_exp_rehab_activity": Array [
+          Object {
+            "height": null,
+            "incline": null,
+            "inclineunits": null,
+            "length": null,
+            "quantity": 711,
+            "seq_no": null,
+            "type": null,
+            "width": null,
+          },
+        ],
+        "under_exp_surface_activity": Array [
+          Object {
+            "disturbedarea": null,
+            "quantity": 810,
+            "timbervolume": null,
+            "type": null,
+          },
+        ],
+        "underexpreclamation": null,
+        "underexpreclamationcost": null,
+        "underexptotaldistarea": null,
+        "underexptotalore": null,
+        "underexptotaloreunits": null,
+        "underexptotalwaste": null,
+        "underexptotalwasteunits": null,
+        "vfcbcapplicationurl": null,
+        "water_source_activity": Array [
+          Object {
+            "estimateratewater": null,
+            "locationwaterintake": null,
+            "pumpsizeinwater": null,
+            "seq_no": null,
+            "sourcewatersupply": null,
+            "type": null,
+            "useofwater": null,
+          },
+        ],
+        "yearroundseasonal": null,
+      }
+    }
+    isImporting={false}
+    mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"
+    noticeOfWork={
+      Object {
+        "anyotherinformation": null,
+        "applicant": Object {
+          "dayphonenumber": null,
+          "dayphonenumberext": null,
+          "email": null,
+          "faxnumber": null,
+          "ind_firstname": null,
+          "ind_lastname": null,
+          "ind_middlename": null,
+          "ind_phonenumber": null,
+          "mailingaddresscity": null,
+          "mailingaddresscountry": null,
+          "mailingaddressline1": null,
+          "mailingaddressline2": null,
+          "mailingaddresspostalzip": null,
+          "mailingaddressprovstate": null,
+          "org_bcfedincorpnumber": null,
+          "org_bcregnumber": null,
+          "org_contactname": null,
+          "org_doingbusinessas": null,
+          "org_hstregnumber": null,
+          "org_legalname": null,
+          "org_societynumber": null,
+          "type": null,
+        },
+        "applicantclientid": 42,
+        "application_guid": "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
+        "application_reason_codes": Array [],
+        "applicationtype": null,
+        "archsitesaffected": null,
+        "bcexplosivespermitexpiry": null,
+        "bcexplosivespermitissued": null,
+        "bcexplosivespermitnumber": null,
+        "bldgdisturbedarea": null,
+        "bldgtimbervolume": null,
+        "campbuildstgetotaldistarea": null,
+        "campdisturbedarea": null,
+        "camptimbervolume": null,
+        "cbsfreclamation": null,
+        "cbsfreclamationcost": null,
+        "contacts": Array [
+          Object {
+            "contactcertificationid": null,
+            "contactcertificationtype": null,
+            "contacttype": null,
+            "dayphonenumber": null,
+            "dayphonenumberext": null,
+            "email": null,
+            "faxnumber": null,
+            "ind_firstname": null,
+            "ind_lastname": null,
+            "ind_middlename": null,
+            "ind_phonenumber": null,
+            "mailingaddresscity": null,
+            "mailingaddresscountry": null,
+            "mailingaddressline1": null,
+            "mailingaddressline2": null,
+            "mailingaddresspostalzip": null,
+            "mailingaddressprovstate": null,
+            "org_bcfedincorpnumber": null,
+            "org_bcregnumber": null,
+            "org_contactname": null,
+            "org_doingbusinessas": null,
+            "org_hstregnumber": null,
+            "org_legalname": null,
+            "org_societynumber": null,
+            "seq_no": null,
+            "type": null,
+          },
+          Object {
+            "contactcertificationid": null,
+            "contactcertificationtype": null,
+            "contacttype": null,
+            "dayphonenumber": null,
+            "dayphonenumberext": null,
+            "email": null,
+            "faxnumber": null,
+            "ind_firstname": null,
+            "ind_lastname": null,
+            "ind_middlename": null,
+            "ind_phonenumber": null,
+            "mailingaddresscity": null,
+            "mailingaddresscountry": null,
+            "mailingaddressline1": null,
+            "mailingaddressline2": null,
+            "mailingaddresspostalzip": null,
+            "mailingaddressprovstate": null,
+            "org_bcfedincorpnumber": null,
+            "org_bcregnumber": null,
+            "org_contactname": null,
+            "org_doingbusinessas": null,
+            "org_hstregnumber": null,
+            "org_legalname": null,
+            "org_societynumber": null,
+            "seq_no": null,
+            "type": null,
+          },
+        ],
+        "crowngrantlotnumbers": null,
+        "cutlinesexplgriddisturbedarea": null,
+        "cutlinesexplgridtimbervolume": null,
+        "cutlinesexplgridtotallinekms": null,
+        "cutlinesreclamation": null,
+        "cutlinesreclamationcost": null,
+        "descexplorationprogram": null,
+        "documents": Array [
+          Object {
+            "description": null,
+            "documenttype": null,
+            "documenturl": null,
+            "filename": null,
+            "mine_document_guid": "12345-678",
+          },
+          Object {
+            "description": null,
+            "documenttype": null,
+            "documenturl": null,
+            "filename": null,
+            "mine_document_guid": "12345-6789",
+          },
+        ],
+        "existing_placer_activity": Array [
+          Object {
+            "depth": null,
+            "disturbedarea": null,
+            "length": null,
+            "quantity": null,
+            "timbervolume": null,
+            "type": null,
+            "width": null,
+          },
+        ],
+        "existing_settling_pond": Array [
+          Object {
+            "constructionmethod": null,
+            "depth": null,
+            "disturbedarea": null,
+            "length": null,
+            "pondid": null,
+            "timbervolume": null,
+            "watersource": null,
+            "width": null,
+          },
+        ],
+        "exp_access_activity": Array [],
+        "exp_surface_drill_activity": Array [],
+        "expaccessreclamation": null,
+        "expaccessreclamationcost": null,
+        "expaccesstotaldistarea": null,
+        "expsurfacedrillreclamation": null,
+        "expsurfacedrillreclamationcost": null,
+        "expsurfacedrillreclcorestorage": null,
+        "expsurfacedrilltotaldistarea": null,
+        "filtered_submission_documents": Array [
+          Object {
+            "description": null,
+            "document_manager_guid": null,
+            "documenttype": null,
+            "documenturl": null,
+            "filename": null,
+            "is_final_package": false,
+            "messageid": 0,
+            "mine_document_guid": null,
+            "now_application_document_xref_guid": null,
+            "now_application_id": null,
+          },
+        ],
+        "firstaidcertlevel": null,
+        "firstaidequipmentonsite": null,
+        "freeusepermit": null,
+        "fuellubstored": null,
+        "fuellubstoremethodbarrel": null,
+        "fuellubstoremethodbulk": null,
+        "fuellubstoreonsite": null,
+        "isblastselect": null,
+        "isonprivateland": null,
+        "istimberselect": null,
+        "landcommunitywatershed": null,
+        "landlegaldesc": null,
+        "landprivate": null,
+        "latitude": null,
+        "licencetocut": null,
+        "longitude": null,
+        "mech_trenching_activity": Array [],
+        "mechtrenchingreclamation": null,
+        "mechtrenchingreclamationcost": null,
+        "mechtrenchingtotaldistarea": null,
+        "messagecreateddate": null,
+        "mine_guid": "20af050d-2a1a-4870-9016-eacabaa68f02",
+        "mine_name": null,
+        "mine_region": "NW",
+        "minenumber": null,
+        "nameofproperty": null,
+        "noticeofworktype": null,
+        "now_application_guid": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
+        "nrsosapplicationid": null,
+        "placerhandoperations": null,
+        "placerreclamation": null,
+        "placerreclamationarea": null,
+        "placerreclamationcost": null,
+        "placertotaldistarea": null,
+        "placerundergroundoperations": null,
+        "pondsdischargedtoenv": null,
+        "pondsexfiltratedtoground": null,
+        "pondsreclamation": null,
+        "pondsreclamationcost": null,
+        "pondsrecycled": null,
+        "pondstotaldistarea": null,
+        "pondswastewatertreatfacility": null,
+        "processed": null,
+        "processeddate": null,
+        "proposed_placer_activity": Array [
+          Object {
+            "depth": null,
+            "disturbedarea": null,
+            "length": null,
+            "quantity": null,
+            "timbervolume": null,
+            "type": null,
+            "width": null,
+          },
+        ],
+        "proposed_settling_pond": Array [
+          Object {
+            "constructionmethod": null,
+            "depth": null,
+            "disturbedarea": null,
+            "length": null,
+            "pondid": null,
+            "timbervolume": null,
+            "watersource": null,
+            "width": null,
+          },
+        ],
+        "proposedenddate": null,
+        "proposedstartdate": null,
+        "receiveddate": null,
+        "reclareaexist": null,
+        "reclarearecl": null,
+        "reclareasubtotal": null,
+        "reclareatotal": null,
+        "reclcostexist": null,
+        "reclcostrecl": null,
+        "reclcostsubtotal": null,
+        "reclcosttotal": null,
+        "sand_grv_qry_activity": Array [
+          Object {
+            "disturbedarea": null,
+            "timbervolume": null,
+            "type": null,
+          },
+        ],
+        "sandgravelquarryoperations": null,
+        "sandgrvqryalrpermitnumber": null,
+        "sandgrvqryannualextrest": null,
+        "sandgrvqryannualextrestunits": null,
+        "sandgrvqrydepthoverburden": null,
+        "sandgrvqrydepthtopsoil": null,
+        "sandgrvqryendlanduse": null,
+        "sandgrvqrygrdwtravgdepth": null,
+        "sandgrvqrygrdwtrexistingareas": null,
+        "sandgrvqrygrdwtrmeasprotect": null,
+        "sandgrvqrygrdwtrother": null,
+        "sandgrvqrygrdwtrtestpits": null,
+        "sandgrvqrygrdwtrtestwells": null,
+        "sandgrvqryimpactdistres": null,
+        "sandgrvqryimpactdistwater": null,
+        "sandgrvqryimpactminvisual": null,
+        "sandgrvqryimpactnoise": null,
+        "sandgrvqryimpactprevtdust": null,
+        "sandgrvqryimpactprvtaccess": null,
+        "sandgrvqrylandusezoning": null,
+        "sandgrvqrylocalgovsoilrembylaw": null,
+        "sandgrvqryofficialcommplan": null,
+        "sandgrvqryreclamation": null,
+        "sandgrvqryreclamationbackfill": null,
+        "sandgrvqryreclamationcost": null,
+        "sandgrvqrystabilizemeasures": null,
+        "sandgrvqrytotaldistarea": null,
+        "sandgrvqrytotalexistdistarea": null,
+        "sandgrvqrytotalmineres": null,
+        "sandgrvqrytotalmineresunits": null,
+        "sandgrvqrywithinaglandres": null,
+        "site_property": Object {
+          "mine_commodity_code": Array [],
+          "mine_disturbance_code": Array [],
+          "mine_tenure_type_code": "",
+        },
+        "sitedirections": null,
+        "status": null,
+        "stgedisturbedarea": null,
+        "stgetimbervolume": null,
+        "storeexplosivesonsite": null,
+        "submitteddate": null,
+        "submitter": Object {
+          "dayphonenumber": null,
+          "dayphonenumberext": null,
+          "email": "someone@submitter.com",
+          "faxnumber": null,
+          "ind_firstname": null,
+          "ind_lastname": null,
+          "ind_middlename": null,
+          "ind_phonenumber": null,
+          "mailingaddresscity": null,
+          "mailingaddresscountry": null,
+          "mailingaddressline1": null,
+          "mailingaddressline2": null,
+          "mailingaddresspostalzip": null,
+          "mailingaddressprovstate": null,
+          "org_bcfedincorpnumber": null,
+          "org_bcregnumber": null,
+          "org_contactname": null,
+          "org_doingbusinessas": null,
+          "org_hstregnumber": null,
+          "org_legalname": null,
+          "org_societynumber": null,
+          "type": null,
+        },
+        "submitterclientid": 43,
+        "surface_bulk_sample_activity": Array [
+          Object {
+            "disturbedarea": 1.11,
+            "quantity": null,
+            "timbervolume": null,
+            "type": null,
+          },
+        ],
+        "surfacebulksampleprocmethods": null,
+        "surfacebulksamplereclamation": null,
+        "surfacebulksamplereclcost": null,
+        "surfacebulksamplerecldrainmiti": null,
+        "surfacebulksamplereclsephandl": null,
+        "surfacebulksampletotaldistarea": null,
+        "tenurenumbers": null,
+        "timbertotalvolume": null,
+        "trackingnumber": null,
+        "typeofapplication": null,
+        "typeofpermit": null,
+        "under_exp_new_activity": Array [
+          Object {
+            "height": null,
+            "incline": null,
+            "inclineunits": null,
+            "length": null,
+            "quantity": 400,
+            "seq_no": null,
+            "type": null,
+            "width": null,
+          },
+        ],
+        "under_exp_rehab_activity": Array [
+          Object {
+            "height": null,
+            "incline": null,
+            "inclineunits": null,
+            "length": null,
+            "quantity": 711,
+            "seq_no": null,
+            "type": null,
+            "width": null,
+          },
+        ],
+        "under_exp_surface_activity": Array [
+          Object {
+            "disturbedarea": null,
+            "quantity": 810,
+            "timbervolume": null,
+            "type": null,
+          },
+        ],
+        "underexpreclamation": null,
+        "underexpreclamationcost": null,
+        "underexptotaldistarea": null,
+        "underexptotalore": null,
+        "underexptotaloreunits": null,
+        "underexptotalwaste": null,
+        "underexptotalwasteunits": null,
+        "vfcbcapplicationurl": null,
+        "water_source_activity": Array [
+          Object {
+            "estimateratewater": null,
+            "locationwaterintake": null,
+            "pumpsizeinwater": null,
+            "seq_no": null,
+            "sourcewatersupply": null,
+            "type": null,
+            "useofwater": null,
+          },
+        ],
+        "yearroundseasonal": null,
+      }
+    }
+    onSubmit={[Function]}
+    originalNoticeOfWork={
+      Object {
+        "anyotherinformation": null,
+        "applicant": Object {
+          "dayphonenumber": null,
+          "dayphonenumberext": null,
+          "email": null,
+          "faxnumber": null,
+          "ind_firstname": null,
+          "ind_lastname": null,
+          "ind_middlename": null,
+          "ind_phonenumber": null,
+          "mailingaddresscity": null,
+          "mailingaddresscountry": null,
+          "mailingaddressline1": null,
+          "mailingaddressline2": null,
+          "mailingaddresspostalzip": null,
+          "mailingaddressprovstate": null,
+          "org_bcfedincorpnumber": null,
+          "org_bcregnumber": null,
+          "org_contactname": null,
+          "org_doingbusinessas": null,
+          "org_hstregnumber": null,
+          "org_legalname": null,
+          "org_societynumber": null,
+          "type": null,
+        },
+        "applicantclientid": 42,
+        "application_guid": "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
+        "application_reason_codes": Array [],
+        "applicationtype": null,
+        "archsitesaffected": null,
+        "bcexplosivespermitexpiry": null,
+        "bcexplosivespermitissued": null,
+        "bcexplosivespermitnumber": null,
+        "bldgdisturbedarea": null,
+        "bldgtimbervolume": null,
+        "campbuildstgetotaldistarea": null,
+        "campdisturbedarea": null,
+        "camptimbervolume": null,
+        "cbsfreclamation": null,
+        "cbsfreclamationcost": null,
+        "contacts": Array [
+          Object {
+            "contactcertificationid": null,
+            "contactcertificationtype": null,
+            "contacttype": null,
+            "dayphonenumber": null,
+            "dayphonenumberext": null,
+            "email": null,
+            "faxnumber": null,
+            "ind_firstname": null,
+            "ind_lastname": null,
+            "ind_middlename": null,
+            "ind_phonenumber": null,
+            "mailingaddresscity": null,
+            "mailingaddresscountry": null,
+            "mailingaddressline1": null,
+            "mailingaddressline2": null,
+            "mailingaddresspostalzip": null,
+            "mailingaddressprovstate": null,
+            "org_bcfedincorpnumber": null,
+            "org_bcregnumber": null,
+            "org_contactname": null,
+            "org_doingbusinessas": null,
+            "org_hstregnumber": null,
+            "org_legalname": null,
+            "org_societynumber": null,
+            "seq_no": null,
+            "type": null,
+          },
+          Object {
+            "contactcertificationid": null,
+            "contactcertificationtype": null,
+            "contacttype": null,
+            "dayphonenumber": null,
+            "dayphonenumberext": null,
+            "email": null,
+            "faxnumber": null,
+            "ind_firstname": null,
+            "ind_lastname": null,
+            "ind_middlename": null,
+            "ind_phonenumber": null,
+            "mailingaddresscity": null,
+            "mailingaddresscountry": null,
+            "mailingaddressline1": null,
+            "mailingaddressline2": null,
+            "mailingaddresspostalzip": null,
+            "mailingaddressprovstate": null,
+            "org_bcfedincorpnumber": null,
+            "org_bcregnumber": null,
+            "org_contactname": null,
+            "org_doingbusinessas": null,
+            "org_hstregnumber": null,
+            "org_legalname": null,
+            "org_societynumber": null,
+            "seq_no": null,
+            "type": null,
+          },
+        ],
+        "crowngrantlotnumbers": null,
+        "cutlinesexplgriddisturbedarea": null,
+        "cutlinesexplgridtimbervolume": null,
+        "cutlinesexplgridtotallinekms": null,
+        "cutlinesreclamation": null,
+        "cutlinesreclamationcost": null,
+        "descexplorationprogram": null,
+        "documents": Array [
+          Object {
+            "description": null,
+            "documenttype": null,
+            "documenturl": null,
+            "filename": null,
+            "mine_document_guid": "12345-678",
+          },
+          Object {
+            "description": null,
+            "documenttype": null,
+            "documenturl": null,
+            "filename": null,
+            "mine_document_guid": "12345-6789",
+          },
+        ],
+        "existing_placer_activity": Array [
+          Object {
+            "depth": null,
+            "disturbedarea": null,
+            "length": null,
+            "quantity": null,
+            "timbervolume": null,
+            "type": null,
+            "width": null,
+          },
+        ],
+        "existing_settling_pond": Array [
+          Object {
+            "constructionmethod": null,
+            "depth": null,
+            "disturbedarea": null,
+            "length": null,
+            "pondid": null,
+            "timbervolume": null,
+            "watersource": null,
+            "width": null,
+          },
+        ],
+        "exp_access_activity": Array [],
+        "exp_surface_drill_activity": Array [],
+        "expaccessreclamation": null,
+        "expaccessreclamationcost": null,
+        "expaccesstotaldistarea": null,
+        "expsurfacedrillreclamation": null,
+        "expsurfacedrillreclamationcost": null,
+        "expsurfacedrillreclcorestorage": null,
+        "expsurfacedrilltotaldistarea": null,
+        "filtered_submission_documents": Array [
+          Object {
+            "description": null,
+            "document_manager_guid": null,
+            "documenttype": null,
+            "documenturl": null,
+            "filename": null,
+            "is_final_package": false,
+            "messageid": 0,
+            "mine_document_guid": null,
+            "now_application_document_xref_guid": null,
+            "now_application_id": null,
+          },
+        ],
+        "firstaidcertlevel": null,
+        "firstaidequipmentonsite": null,
+        "freeusepermit": null,
+        "fuellubstored": null,
+        "fuellubstoremethodbarrel": null,
+        "fuellubstoremethodbulk": null,
+        "fuellubstoreonsite": null,
+        "isblastselect": null,
+        "isonprivateland": null,
+        "istimberselect": null,
+        "landcommunitywatershed": null,
+        "landlegaldesc": null,
+        "landprivate": null,
+        "latitude": null,
+        "licencetocut": null,
+        "longitude": null,
+        "mech_trenching_activity": Array [],
+        "mechtrenchingreclamation": null,
+        "mechtrenchingreclamationcost": null,
+        "mechtrenchingtotaldistarea": null,
+        "messagecreateddate": null,
+        "mine_guid": "20af050d-2a1a-4870-9016-eacabaa68f02",
+        "mine_name": null,
+        "mine_region": "NW",
+        "minenumber": null,
+        "nameofproperty": null,
+        "noticeofworktype": null,
+        "now_application_guid": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
+        "nrsosapplicationid": null,
+        "placerhandoperations": null,
+        "placerreclamation": null,
+        "placerreclamationarea": null,
+        "placerreclamationcost": null,
+        "placertotaldistarea": null,
+        "placerundergroundoperations": null,
+        "pondsdischargedtoenv": null,
+        "pondsexfiltratedtoground": null,
+        "pondsreclamation": null,
+        "pondsreclamationcost": null,
+        "pondsrecycled": null,
+        "pondstotaldistarea": null,
+        "pondswastewatertreatfacility": null,
+        "processed": null,
+        "processeddate": null,
+        "proposed_placer_activity": Array [
+          Object {
+            "depth": null,
+            "disturbedarea": null,
+            "length": null,
+            "quantity": null,
+            "timbervolume": null,
+            "type": null,
+            "width": null,
+          },
+        ],
+        "proposed_settling_pond": Array [
+          Object {
+            "constructionmethod": null,
+            "depth": null,
+            "disturbedarea": null,
+            "length": null,
+            "pondid": null,
+            "timbervolume": null,
+            "watersource": null,
+            "width": null,
+          },
+        ],
+        "proposedenddate": null,
+        "proposedstartdate": null,
+        "receiveddate": null,
+        "reclareaexist": null,
+        "reclarearecl": null,
+        "reclareasubtotal": null,
+        "reclareatotal": null,
+        "reclcostexist": null,
+        "reclcostrecl": null,
+        "reclcostsubtotal": null,
+        "reclcosttotal": null,
+        "sand_grv_qry_activity": Array [
+          Object {
+            "disturbedarea": null,
+            "timbervolume": null,
+            "type": null,
+          },
+        ],
+        "sandgravelquarryoperations": null,
+        "sandgrvqryalrpermitnumber": null,
+        "sandgrvqryannualextrest": null,
+        "sandgrvqryannualextrestunits": null,
+        "sandgrvqrydepthoverburden": null,
+        "sandgrvqrydepthtopsoil": null,
+        "sandgrvqryendlanduse": null,
+        "sandgrvqrygrdwtravgdepth": null,
+        "sandgrvqrygrdwtrexistingareas": null,
+        "sandgrvqrygrdwtrmeasprotect": null,
+        "sandgrvqrygrdwtrother": null,
+        "sandgrvqrygrdwtrtestpits": null,
+        "sandgrvqrygrdwtrtestwells": null,
+        "sandgrvqryimpactdistres": null,
+        "sandgrvqryimpactdistwater": null,
+        "sandgrvqryimpactminvisual": null,
+        "sandgrvqryimpactnoise": null,
+        "sandgrvqryimpactprevtdust": null,
+        "sandgrvqryimpactprvtaccess": null,
+        "sandgrvqrylandusezoning": null,
+        "sandgrvqrylocalgovsoilrembylaw": null,
+        "sandgrvqryofficialcommplan": null,
+        "sandgrvqryreclamation": null,
+        "sandgrvqryreclamationbackfill": null,
+        "sandgrvqryreclamationcost": null,
+        "sandgrvqrystabilizemeasures": null,
+        "sandgrvqrytotaldistarea": null,
+        "sandgrvqrytotalexistdistarea": null,
+        "sandgrvqrytotalmineres": null,
+        "sandgrvqrytotalmineresunits": null,
+        "sandgrvqrywithinaglandres": null,
+        "site_property": Object {
+          "mine_commodity_code": Array [],
+          "mine_disturbance_code": Array [],
+          "mine_tenure_type_code": "",
+        },
+        "sitedirections": null,
+        "status": null,
+        "stgedisturbedarea": null,
+        "stgetimbervolume": null,
+        "storeexplosivesonsite": null,
+        "submitteddate": null,
+        "submitter": Object {
+          "dayphonenumber": null,
+          "dayphonenumberext": null,
+          "email": "someone@submitter.com",
+          "faxnumber": null,
+          "ind_firstname": null,
+          "ind_lastname": null,
+          "ind_middlename": null,
+          "ind_phonenumber": null,
+          "mailingaddresscity": null,
+          "mailingaddresscountry": null,
+          "mailingaddressline1": null,
+          "mailingaddressline2": null,
+          "mailingaddresspostalzip": null,
+          "mailingaddressprovstate": null,
+          "org_bcfedincorpnumber": null,
+          "org_bcregnumber": null,
+          "org_contactname": null,
+          "org_doingbusinessas": null,
+          "org_hstregnumber": null,
+          "org_legalname": null,
+          "org_societynumber": null,
+          "type": null,
+        },
+        "submitterclientid": 43,
+        "surface_bulk_sample_activity": Array [
+          Object {
+            "disturbedarea": 1.11,
+            "quantity": null,
+            "timbervolume": null,
+            "type": null,
+          },
+        ],
+        "surfacebulksampleprocmethods": null,
+        "surfacebulksamplereclamation": null,
+        "surfacebulksamplereclcost": null,
+        "surfacebulksamplerecldrainmiti": null,
+        "surfacebulksamplereclsephandl": null,
+        "surfacebulksampletotaldistarea": null,
+        "tenurenumbers": null,
+        "timbertotalvolume": null,
+        "trackingnumber": null,
+        "typeofapplication": null,
+        "typeofpermit": null,
+        "under_exp_new_activity": Array [
+          Object {
+            "height": null,
+            "incline": null,
+            "inclineunits": null,
+            "length": null,
+            "quantity": 400,
+            "seq_no": null,
+            "type": null,
+            "width": null,
+          },
+        ],
+        "under_exp_rehab_activity": Array [
+          Object {
+            "height": null,
+            "incline": null,
+            "inclineunits": null,
+            "length": null,
+            "quantity": 711,
+            "seq_no": null,
+            "type": null,
+            "width": null,
+          },
+        ],
+        "under_exp_surface_activity": Array [
+          Object {
+            "disturbedarea": null,
+            "quantity": 810,
+            "timbervolume": null,
+            "type": null,
+          },
+        ],
+        "underexpreclamation": null,
+        "underexpreclamationcost": null,
+        "underexptotaldistarea": null,
+        "underexptotalore": null,
+        "underexptotaloreunits": null,
+        "underexptotalwaste": null,
+        "underexptotalwasteunits": null,
+        "vfcbcapplicationurl": null,
+        "water_source_activity": Array [
+          Object {
+            "estimateratewater": null,
+            "locationwaterintake": null,
+            "pumpsizeinwater": null,
+            "seq_no": null,
+            "sourcewatersupply": null,
+            "type": null,
+            "useofwater": null,
+          },
+        ],
+        "yearroundseasonal": null,
+      }
+    }
+  />
 </div>
 `;

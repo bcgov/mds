@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import ViewNoticeOfDepartureModal from "@/components/modalContent/noticeOfDeparture/ViewNoticeOfDepartureModal";
 
@@ -13,7 +13,6 @@ const setupDispatchProps = () => {
 };
 
 const setupProps = () => {
-  // eslint-disable-next-line prefer-destructuring
   props.noticeOfDeparture = MOCK.NOTICES_OF_DEPARTURE.records[0];
 };
 
@@ -24,7 +23,9 @@ beforeEach(() => {
 
 describe("ViewNoticeOfDepartureModal", () => {
   it("renders properly", () => {
-    const component = shallow(<ViewNoticeOfDepartureModal {...dispatchProps} {...props} />);
+    const { container: component } = render(
+      <ViewNoticeOfDepartureModal {...dispatchProps} {...props} />
+    );
     expect(component).toMatchSnapshot();
   });
 });

@@ -45,6 +45,8 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
+// Objects are not valid as a React child (found: object with keys {title, content, buttons}). If you meant to render a collection of children, use an array instead.
+//         in StepForms
 describe("IncidentStepForm", () => {
   it("renders properly", () => {
     const component = shallow(

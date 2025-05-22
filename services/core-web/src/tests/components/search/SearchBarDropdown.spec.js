@@ -19,7 +19,10 @@ const setupReducerProps = () => {
 beforeEach(() => {
   setupReducerProps();
 });
-
+//  React.Children.only expected to receive a single React element child.
+// The above error occurred in the <Dropdown> component:
+//         in Dropdown (created by SearchBarDropdown)
+//         in SearchBarDropdown
 describe("SearchBarDropdown", () => {
   it("renders properly", () => {
     const component = shallow(<SearchBarDropdown {...dispatchProps} {...reducerProps} />);

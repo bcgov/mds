@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { UpdateMinespaceUserModal } from "@/components/modalContent/UpdateMinespaceUserModal";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -11,6 +12,7 @@ const setupDispatchProps = () => {
 
 const setupProps = () => {
   props.title = "mock title";
+  props.initialValues = { mineNames: [{ mine_guid: "mine-guid" }] }
 };
 
 beforeEach(() => {
@@ -20,7 +22,7 @@ beforeEach(() => {
 
 describe("UpdateMinespaceUserModal", () => {
   it("renders properly", () => {
-    const component = shallow(<UpdateMinespaceUserModal {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><UpdateMinespaceUserModal {...dispatchProps} {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

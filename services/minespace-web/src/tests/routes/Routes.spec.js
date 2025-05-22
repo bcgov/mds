@@ -10,6 +10,7 @@ beforeEach(() => {
   setupProps();
 });
 
+// react testing library passes but doesn't provide useful results.
 describe("PrivateRoutes ", () => {
   it("renders properly", () => {
     const component = shallow(<Routes {...props} />);

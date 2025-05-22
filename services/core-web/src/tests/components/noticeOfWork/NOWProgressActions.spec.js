@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { NOWProgressActions } from "@/components/noticeOfWork/NOWProgressActions";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const reducerProps = {};
 const dispatchProps = {};
@@ -36,7 +37,7 @@ beforeEach(() => {
 
 describe("NOWProgressActions", () => {
   it("renders properly", () => {
-    const component = shallow(<NOWProgressActions {...reducerProps} {...dispatchProps} />);
+    const { container: component } = render(<ReduxWrapper><NOWProgressActions {...reducerProps} {...dispatchProps} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

@@ -10152,6 +10152,7 @@ export const NOTICES_OF_DEPARTURE: { records: INoticeOfDeparture[] } = {
       },
       nod_status: NodStatusSaveEnum.pending_review,
       nod_type: NoDTypeSaveEnum.potentially_substantial,
+      nod_contacts: [],
     },
   ],
 };

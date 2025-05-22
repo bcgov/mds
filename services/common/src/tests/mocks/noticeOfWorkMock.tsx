@@ -462,6 +462,7 @@ export const IMPORTED_NOTICE_OF_WORK = {
     filtered_submission_documents: [],
     application_documents: [],
     lead_inspector: {},
+    application_progress: []
 };
 
 export const NOTICE_OF_WORK_ACTIVITY_TYPES = {

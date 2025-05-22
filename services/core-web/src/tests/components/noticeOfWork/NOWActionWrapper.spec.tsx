@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { NOWActionWrapper } from "@/components/noticeOfWork/NOWActionWrapper";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const reducerProps: any = {};
 
@@ -24,7 +25,7 @@ beforeEach(() => {
 
 describe("NOWActionWrapper", () => {
   it("renders properly", () => {
-    const component = shallow(<NOWActionWrapper {...reducerProps} />);
+    const { container: component } = render(<ReduxWrapper><NOWActionWrapper {...reducerProps} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

@@ -1,10 +1,9 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { shallow } from "enzyme";
 import * as String from "@mds/common/constants/strings";
 import { Dashboard } from "@/components/dashboard/minesHomePage/Dashboard";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import * as router from "@/constants/routes";
-import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const reducerProps = {};
@@ -49,16 +48,15 @@ beforeEach(() => {
 
 // TypeError: component.instance is not a function
 //  TypeError: component.update is not a function
-
-describe.skip("Dashboard", () => {
+describe("Dashboard", () => {
   it("renders properly", () => {
-    const { container: component } = render(<ReduxWrapper><Dashboard {...dispatchProps} {...reducerProps} /></ReduxWrapper>);
+    const component = shallow(<Dashboard {...dispatchProps} {...reducerProps} />);
     expect(component).toMatchSnapshot();
   });
 
   describe("lifecycle methods", () => {
     it("componentDidMount with `params` from the URL", () => {
-      const { container: component } = render(<ReduxWrapper><Dashboard {...dispatchProps} {...reducerProps} /></ReduxWrapper>);
+      const component = shallow(<Dashboard {...dispatchProps} {...reducerProps} />);
       const instance = component.instance();
       const renderDataFromURLSpy = jest.spyOn(instance, "renderDataFromURL");
       reducerProps.location.search = "?page=1&per_page=25";
@@ -68,7 +66,7 @@ describe.skip("Dashboard", () => {
     });
 
     it("componentDidMount without `params` from the URL", () => {
-      const { container: component } = render(<ReduxWrapper><Dashboard {...dispatchProps} {...reducerProps} /></ReduxWrapper>);
+      const component = shallow(<Dashboard {...dispatchProps} {...reducerProps} />);
       component.update();
       reducerProps.history.push(
         router.MINE_HOME_PAGE.dynamicRoute({

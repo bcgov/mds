@@ -25,6 +25,15 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
+// TypeError: Cannot read properties of undefined (reading 'incident_timezone')
+
+//       59 |   if (timezoneFieldProps) {
+//       60 |     const formValues = useSelector((state) => getFormValues(meta.form)(state));
+//     > 61 |     formTimezone = formValues[timezoneFieldProps.name];
+//          |                              ^
+//       62 |   }
+//       63 |
+//       64 |   const defaultTimezone = formTimezone ?? timezone ?? userTz;
 describe("IncidentForm", () => {
   it("renders properly", () => {
     const component = shallow(<IncidentForm {...dispatchProps} {...props} />);

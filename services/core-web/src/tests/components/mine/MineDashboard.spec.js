@@ -63,6 +63,7 @@ beforeEach(() => {
   setupReducerProps();
 });
 
+// "Works" with react testing library, but renders an empty div
 describe("MineDashboard", () => {
   it("renders properly", () => {
     const component = shallow(

@@ -3,6 +3,7 @@ import { render } from "@testing-library/react";
 import { MineVariance } from "@/components/mine/Variances/MineVariance";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { BrowserRouter } from "react-router-dom";
 
 const dispatchProps = {};
 const reducerProps = {};
@@ -35,12 +36,9 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-// Test suite failed to run
-
-//     Jest worker encountered 4 child process exceptions, exceeding retry limit
-describe.skip("MineVariance", () => {
+describe("MineVariance", () => {
   it("renders properly", () => {
-    const { container: component } = render(<ReduxWrapper><MineVariance {...dispatchProps} {...reducerProps} /></ReduxWrapper>);
+    const { container: component } = render(<BrowserRouter><ReduxWrapper><MineVariance {...dispatchProps} {...reducerProps} /></ReduxWrapper></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

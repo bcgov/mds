@@ -1,8 +1,10 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { NoticeOfWorkHomePage } from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkHomePage";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { INoticeOfWork, IOption } from "@mds/common/interfaces";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { BrowserRouter } from "react-router-dom";
 
 const dispatchProps = {
   fetchNoticeOfWorkApplications: jest.fn(() => Promise.resolve({} as INoticeOfWork)),
@@ -47,9 +49,9 @@ const setupReducerProps = () => {
 
 const requiredProps = {
   mineRegionHash: {},
-  mineRegionOptions: {} as IOption,
-  applicationTypeOptions: {} as IOption,
-  applicationStatusOptions: {} as IOption,
+  mineRegionOptions: [] as IOption[],
+  applicationTypeOptions: [] as IOption[],
+  applicationStatusOptions: [] as IOption[],
 };
 
 beforeEach(() => {
@@ -59,8 +61,13 @@ beforeEach(() => {
 
 describe("NoticeOfWorkHomePage", () => {
   it("renders properly", () => {
-    const component = shallow(
-      <NoticeOfWorkHomePage {...dispatchProps} {...reducerProps} {...requiredProps} />
+    const { container: component } = render(
+      <BrowserRouter>
+        <ReduxWrapper>
+          {/* @ts-ignore: looks like the props definitions are wrong. */}
+          <NoticeOfWorkHomePage {...dispatchProps} {...reducerProps} {...requiredProps} />
+        </ReduxWrapper>
+      </BrowserRouter>
     );
     expect(component).toMatchSnapshot();
   });

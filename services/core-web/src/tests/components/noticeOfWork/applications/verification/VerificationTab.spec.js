@@ -1,9 +1,8 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { shallow } from "enzyme";
 import { VerificationTab } from "@/components/noticeOfWork/applications/verification/VerificationTab";
 import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const reducerProps = {};
@@ -24,12 +23,16 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-// Test suite failed to run
+// if (name.length > 2) {
+//                      ^
 
-//     Jest worker encountered 4 child process exceptions, exceeding retry limit
-describe.skip("VerificationTab", () => {
+// TypeError: Cannot read properties of undefined (reading 'length')
+//     at RenderMineSelect.handleChange (/workspaces/mds/services/core-web/src/components/common/RenderMineSelect.js:97:22)
+
+
+describe("VerificationTab", () => {
   it("renders properly", () => {
-    const { container: component } = render(<ReduxWrapper><VerificationTab {...dispatchProps} {...reducerProps} /></ReduxWrapper>);
+    const component = shallow(<VerificationTab {...dispatchProps} {...reducerProps} />);
     expect(component).toMatchSnapshot();
   });
 });

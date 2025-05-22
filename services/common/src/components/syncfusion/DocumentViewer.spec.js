@@ -1,5 +1,4 @@
 import React from "react";
-import { shallow } from "enzyme";
 import DocumentViewer from "@mds/common/components/syncfusion/DocumentViewer";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";

@@ -1,9 +1,8 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { shallow } from "enzyme";
 import { VerifyApplicationInformationForm } from "@/components/noticeOfWork/applications/verification/VerifyApplicationInformationForm";
 import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const reducerProps = {};
@@ -28,19 +27,19 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-// Test suite failed to run
+// if (name.length > 2) {
+//                      ^
 
-//     Jest worker encountered 4 child process exceptions, exceeding retry limit
-describe.skip("VerifyApplicationInformationForm", () => {
+// TypeError: Cannot read properties of undefined (reading 'length')
+
+describe("VerifyApplicationInformationForm", () => {
   it("renders properly", () => {
-    const { container: component } = render(
-      <ReduxWrapper>
-        <VerifyApplicationInformationForm
-          {...dispatchProps}
-          {...reducerProps}
-          match={{ params: { id: 1 } }}
-        />
-      </ReduxWrapper>
+    const component = shallow(
+      <VerifyApplicationInformationForm
+        {...dispatchProps}
+        {...reducerProps}
+        match={{ params: { id: 1 } }}
+      />
     );
     expect(component).toMatchSnapshot();
   });

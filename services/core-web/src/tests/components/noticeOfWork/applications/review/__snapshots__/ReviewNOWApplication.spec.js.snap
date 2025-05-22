@@ -64,6 +64,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               Object {
                 "adjusted_annual_maximum_tonnage": "",
                 "application_documents": Array [],
+                "application_progress": Array [],
+                "application_type_code": "NOW",
                 "blasting_operation": Object {},
                 "camp": Object {
                   "details": Array [],
@@ -2077,6 +2079,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
           Object {
             "adjusted_annual_maximum_tonnage": "",
             "application_documents": Array [],
+            "application_progress": Array [],
+            "application_type_code": "NOW",
             "blasting_operation": Object {},
             "camp": Object {
               "details": Array [],

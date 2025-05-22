@@ -1,120 +1,757 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineNoticeOfWorkTable renders properly 1`] = `
-<CoreTable
-  columns={
-    Array [
-      Object {
-        "dataIndex": "now_number",
-        "key": "now_number",
-        "render": [Function],
-        "sortOrder": false,
-        "sorter": [Function],
-        "title": "Number",
-      },
-      Object {
-        "dataIndex": "notice_of_work_type_description",
-        "key": "notice_of_work_type_description",
-        "render": [Function],
-        "sortOrder": false,
-        "sorter": [Function],
-        "title": "Type",
-      },
-      Object {
-        "dataIndex": "now_application_status_description",
-        "key": "now_application_status_description",
-        "render": [Function],
-        "sortField": "now_application_status_description",
-        "sortOrder": false,
-        "sorter": true,
-        "title": "Status",
-      },
-      Object {
-        "dataIndex": "lead_inspector_name",
-        "key": "lead_inspector_name",
-        "render": [Function],
-        "sortField": "lead_inspector_name",
-        "sortOrder": false,
-        "sorter": true,
-        "title": "Lead Inspector",
-      },
-      Object {
-        "dataIndex": "issuing_inspector_name",
-        "key": "issuing_inspector_name",
-        "render": [Function],
-        "sortField": "issuing_inspector_name",
-        "sortOrder": false,
-        "sorter": true,
-        "title": "Issuing Inspector",
-      },
-      Object {
-        "dataIndex": "received_date",
-        "key": "received_date",
-        "render": [Function],
-        "sortOrder": false,
-        "sorter": [Function],
-        "title": "Received",
-      },
-      Object {
-        "dataIndex": "originating_system",
-        "key": "originating_system",
-        "render": [Function],
-        "sortOrder": false,
-        "sorter": [Function],
-        "title": "Source",
-      },
-      Object {
-        "dataIndex": "document",
-        "key": "document",
-        "render": [Function],
-        "sortOrder": false,
-        "title": "Application",
-      },
-      Object {
-        "key": "operations",
-        "render": [Function],
-        "sortOrder": false,
-      },
-    ]
-  }
-  dataSource={
-    Array [
-      Object {
-        "document": Object {},
-        "is_historic": false,
-        "issuing_inspector_name": "Inspector Gadget",
-        "issuing_inspector_party_guid": "95e79bd8-a9bf-42ab-9d57-e4864bcb81fd",
-        "key": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
-        "lead_inspector_name": "Test Inspector",
-        "lead_inspector_party_guid": "2bf47c5d-2c7a-4ce7-9c8b-900b9c8e755a",
-        "mine_guid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
-        "mine_name": "Hamilton, Herrera and Mccormick",
-        "notice_of_work_type_description": "choice",
-        "now_application_guid": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
-        "now_application_status_description": "Approved",
-        "now_number": "44",
-        "originating_system": "MMS",
-        "received_date": "2019-08-14",
-      },
-      Object {
-        "document": Object {},
-        "is_historic": true,
-        "issuing_inspector_name": "Inspector Gadget",
-        "issuing_inspector_party_guid": "95e79bd8-a9bf-42ab-9d57-e4864bcb81fd",
-        "key": "8e1536da-644c-4961-976b-b1326fa75825",
-        "lead_inspector_name": "Test Inspector",
-        "lead_inspector_party_guid": "2bf47c5d-2c7a-4ce7-9c8b-900b9c8e755a",
-        "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
-        "mine_name": "Thompson-Sullivan",
-        "notice_of_work_type_description": "technology",
-        "now_application_guid": "8e1536da-644c-4961-976b-b1326fa75825",
-        "now_application_status_description": "Approved",
-        "now_number": "52",
-        "originating_system": "MMS",
-        "received_date": "2019-07-21",
-      },
-    ]
-  }
-  onChange={[Function]}
-/>
+<div>
+  <div
+    class="ant-table-wrapper  core-table"
+  >
+    <div
+      class="ant-spin-nested-loading"
+    >
+      <div
+        class="ant-spin-container"
+      >
+        <div
+          class="ant-table"
+        >
+          <div
+            class="ant-table-container"
+          >
+            <div
+              class="ant-table-content"
+            >
+              <table
+                style="table-layout: auto;"
+              >
+                <colgroup />
+                <thead
+                  class="ant-table-thead"
+                >
+                  <tr>
+                    <th
+                      aria-label="Number"
+                      class="ant-table-cell ant-table-column-has-sorters"
+                      tabindex="0"
+                    >
+                      <div
+                        class="ant-table-column-sorters"
+                      >
+                        <span
+                          class="ant-table-column-title"
+                        >
+                          Number
+                        </span>
+                        <span
+                          class="ant-table-column-sorter ant-table-column-sorter-full"
+                        >
+                          <span
+                            class="ant-table-column-sorter-inner"
+                          >
+                            <span
+                              aria-label="caret-up"
+                              class="anticon anticon-caret-up ant-table-column-sorter-up"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-up"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                            <span
+                              aria-label="caret-down"
+                              class="anticon anticon-caret-down ant-table-column-sorter-down"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </th>
+                    <th
+                      aria-label="Type"
+                      class="ant-table-cell ant-table-column-has-sorters"
+                      tabindex="0"
+                    >
+                      <div
+                        class="ant-table-column-sorters"
+                      >
+                        <span
+                          class="ant-table-column-title"
+                        >
+                          Type
+                        </span>
+                        <span
+                          class="ant-table-column-sorter ant-table-column-sorter-full"
+                        >
+                          <span
+                            class="ant-table-column-sorter-inner"
+                          >
+                            <span
+                              aria-label="caret-up"
+                              class="anticon anticon-caret-up ant-table-column-sorter-up"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-up"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                            <span
+                              aria-label="caret-down"
+                              class="anticon anticon-caret-down ant-table-column-sorter-down"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </th>
+                    <th
+                      aria-label="Status"
+                      class="ant-table-cell ant-table-column-has-sorters"
+                      tabindex="0"
+                    >
+                      <div
+                        class="ant-table-column-sorters"
+                      >
+                        <span
+                          class="ant-table-column-title"
+                        >
+                          Status
+                        </span>
+                        <span
+                          class="ant-table-column-sorter ant-table-column-sorter-full"
+                        >
+                          <span
+                            class="ant-table-column-sorter-inner"
+                          >
+                            <span
+                              aria-label="caret-up"
+                              class="anticon anticon-caret-up ant-table-column-sorter-up"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-up"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                            <span
+                              aria-label="caret-down"
+                              class="anticon anticon-caret-down ant-table-column-sorter-down"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </th>
+                    <th
+                      aria-label="Lead Inspector"
+                      class="ant-table-cell ant-table-column-has-sorters"
+                      tabindex="0"
+                    >
+                      <div
+                        class="ant-table-column-sorters"
+                      >
+                        <span
+                          class="ant-table-column-title"
+                        >
+                          Lead Inspector
+                        </span>
+                        <span
+                          class="ant-table-column-sorter ant-table-column-sorter-full"
+                        >
+                          <span
+                            class="ant-table-column-sorter-inner"
+                          >
+                            <span
+                              aria-label="caret-up"
+                              class="anticon anticon-caret-up ant-table-column-sorter-up"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-up"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                            <span
+                              aria-label="caret-down"
+                              class="anticon anticon-caret-down ant-table-column-sorter-down"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </th>
+                    <th
+                      aria-label="Issuing Inspector"
+                      class="ant-table-cell ant-table-column-has-sorters"
+                      tabindex="0"
+                    >
+                      <div
+                        class="ant-table-column-sorters"
+                      >
+                        <span
+                          class="ant-table-column-title"
+                        >
+                          Issuing Inspector
+                        </span>
+                        <span
+                          class="ant-table-column-sorter ant-table-column-sorter-full"
+                        >
+                          <span
+                            class="ant-table-column-sorter-inner"
+                          >
+                            <span
+                              aria-label="caret-up"
+                              class="anticon anticon-caret-up ant-table-column-sorter-up"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-up"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                            <span
+                              aria-label="caret-down"
+                              class="anticon anticon-caret-down ant-table-column-sorter-down"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </th>
+                    <th
+                      aria-label="Received"
+                      class="ant-table-cell ant-table-column-has-sorters"
+                      tabindex="0"
+                    >
+                      <div
+                        class="ant-table-column-sorters"
+                      >
+                        <span
+                          class="ant-table-column-title"
+                        >
+                          Received
+                        </span>
+                        <span
+                          class="ant-table-column-sorter ant-table-column-sorter-full"
+                        >
+                          <span
+                            class="ant-table-column-sorter-inner"
+                          >
+                            <span
+                              aria-label="caret-up"
+                              class="anticon anticon-caret-up ant-table-column-sorter-up"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-up"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                            <span
+                              aria-label="caret-down"
+                              class="anticon anticon-caret-down ant-table-column-sorter-down"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </th>
+                    <th
+                      aria-label="Source"
+                      class="ant-table-cell ant-table-column-has-sorters"
+                      tabindex="0"
+                    >
+                      <div
+                        class="ant-table-column-sorters"
+                      >
+                        <span
+                          class="ant-table-column-title"
+                        >
+                          Source
+                        </span>
+                        <span
+                          class="ant-table-column-sorter ant-table-column-sorter-full"
+                        >
+                          <span
+                            class="ant-table-column-sorter-inner"
+                          >
+                            <span
+                              aria-label="caret-up"
+                              class="anticon anticon-caret-up ant-table-column-sorter-up"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-up"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                            <span
+                              aria-label="caret-down"
+                              class="anticon anticon-caret-down ant-table-column-sorter-down"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </th>
+                    <th
+                      class="ant-table-cell"
+                    >
+                      Application
+                    </th>
+                    <th
+                      class="ant-table-cell"
+                    />
+                  </tr>
+                </thead>
+                <tbody
+                  class="ant-table-tbody"
+                >
+                  <tr
+                    class="ant-table-row ant-table-row-level-0 fade-in"
+                    data-row-key="07e801a0-fa33-4c3b-abcc-ac6df628d483"
+                  >
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="now_number-column"
+                        title="Number"
+                      >
+                        44
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="notice_of_work_type_description-column"
+                        title="Type"
+                      >
+                        choice
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Status"
+                      >
+                        <span
+                          class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                        >
+                          <span
+                            class="ant-badge-status-dot ant-badge-status-success"
+                          />
+                          <span
+                            class="ant-badge-status-text"
+                          >
+                            Approved
+                          </span>
+                        </span>
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <a
+                        href="/dashboard/2bf47c5d-2c7a-4ce7-9c8b-900b9c8e755a/profile"
+                        title="Lead Inspector"
+                      >
+                        Test Inspector
+                      </a>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <a
+                        href="/dashboard/95e79bd8-a9bf-42ab-9d57-e4864bcb81fd/profile"
+                        title="Issuing Inspector"
+                      >
+                        Inspector Gadget
+                      </a>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Received"
+                      >
+                        Aug 14 2019
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="originating_system-column"
+                        title="Source"
+                      >
+                        MMS
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      N/A
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="btn--middle flex"
+                      >
+                        <a
+                          href="/dashboard/notice-of-work/app/07e801a0-fa33-4c3b-abcc-ac6df628d483/verification"
+                        >
+                          <button
+                            class="ant-btn ant-btn-primary"
+                            type="button"
+                          >
+                            <span>
+                              Open
+                            </span>
+                          </button>
+                        </a>
+                        <a
+                          href="/dashboard/view-notice-of-work/app/07e801a0-fa33-4c3b-abcc-ac6df628d483/application"
+                        >
+                          <button
+                            class="ant-btn ant-btn-primary ant-btn-sm ant-btn-background-ghost"
+                            type="button"
+                          >
+                            <span
+                              aria-label="eye"
+                              class="anticon anticon-eye icon-lg icon-svg-filter"
+                              role="img"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class=""
+                                data-icon="eye"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="64 64 896 896"
+                                width="1em"
+                              >
+                                <path
+                                  d="M942.2 486.2C847.4 286.5 704.1 186 512 186c-192.2 0-335.4 100.5-430.2 300.3a60.3 60.3 0 000 51.5C176.6 737.5 319.9 838 512 838c192.2 0 335.4-100.5 430.2-300.3 7.7-16.2 7.7-35 0-51.5zM512 766c-161.3 0-279.4-81.8-362.7-254C232.6 339.8 350.7 258 512 258c161.3 0 279.4 81.8 362.7 254C791.5 684.2 673.4 766 512 766zm-4-430c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm0 288c-61.9 0-112-50.1-112-112s50.1-112 112-112 112 50.1 112 112-50.1 112-112 112z"
+                                />
+                              </svg>
+                            </span>
+                          </button>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    class="ant-table-row ant-table-row-level-0 fade-in"
+                    data-row-key="8e1536da-644c-4961-976b-b1326fa75825"
+                  >
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="now_number-column"
+                        title="Number"
+                      >
+                        52
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="notice_of_work_type_description-column"
+                        title="Type"
+                      >
+                        technology
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Status"
+                      >
+                        <span
+                          class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                        >
+                          <span
+                            class="ant-badge-status-dot ant-badge-status-success"
+                          />
+                          <span
+                            class="ant-badge-status-text"
+                          >
+                            Approved
+                          </span>
+                        </span>
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <a
+                        href="/dashboard/2bf47c5d-2c7a-4ce7-9c8b-900b9c8e755a/profile"
+                        title="Lead Inspector"
+                      >
+                        Test Inspector
+                      </a>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <a
+                        href="/dashboard/95e79bd8-a9bf-42ab-9d57-e4864bcb81fd/profile"
+                        title="Issuing Inspector"
+                      >
+                        Inspector Gadget
+                      </a>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Received"
+                      >
+                        Jul 21 2019
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="originating_system-column"
+                        title="Source"
+                      >
+                        MMS
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      N/A
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="btn--middle flex"
+                      >
+                        <a
+                          href="/dashboard/notice-of-work/app/8e1536da-644c-4961-976b-b1326fa75825/verification"
+                        >
+                          <button
+                            class="ant-btn ant-btn-primary"
+                            disabled=""
+                            type="button"
+                          >
+                            <span>
+                              Open
+                            </span>
+                          </button>
+                        </a>
+                        <a
+                          href="/dashboard/view-notice-of-work/app/8e1536da-644c-4961-976b-b1326fa75825/application"
+                        >
+                          <button
+                            class="ant-btn ant-btn-primary ant-btn-sm ant-btn-background-ghost"
+                            type="button"
+                          >
+                            <span
+                              aria-label="eye"
+                              class="anticon anticon-eye icon-lg icon-svg-filter"
+                              role="img"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class=""
+                                data-icon="eye"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="64 64 896 896"
+                                width="1em"
+                              >
+                                <path
+                                  d="M942.2 486.2C847.4 286.5 704.1 186 512 186c-192.2 0-335.4 100.5-430.2 300.3a60.3 60.3 0 000 51.5C176.6 737.5 319.9 838 512 838c192.2 0 335.4-100.5 430.2-300.3 7.7-16.2 7.7-35 0-51.5zM512 766c-161.3 0-279.4-81.8-362.7-254C232.6 339.8 350.7 258 512 258c161.3 0 279.4 81.8 362.7 254C791.5 684.2 673.4 766 512 766zm-4-430c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm0 288c-61.9 0-112-50.1-112-112s50.1-112 112-112 112 50.1 112 112-50.1 112-112 112z"
+                                />
+                              </svg>
+                            </span>
+                          </button>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;

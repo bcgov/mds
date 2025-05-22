@@ -18,6 +18,7 @@ beforeEach(() => {
   setupProps();
 });
 
+// react testing library passes but renders an empty div
 describe("RedirectRoute ", () => {
   it("renders properly", () => {
     const component = shallow(<RedirectRoute {...props} />);

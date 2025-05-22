@@ -2,13 +2,642 @@
 
 exports[`MinistryContactModal renders properly 1`] = `
 <div>
-  <Connect(MinistryContactForm)
-    MinistryContactTypes={Array []}
-    closeModal={[MockFunction]}
-    initialValues={Object {}}
-    isEdit={true}
-    oSubmit={[MockFunction]}
-    regionDropdownOptions={Array []}
-  />
+  <div>
+    <div>
+      <form
+        class="ant-form ant-form-vertical common-form common-form-MINISTRY_CONTACT_FORM form-edit"
+        id="MINISTRY_CONTACT_FORM"
+      >
+        <div
+          class="ant-row"
+          style="margin-left: -8px; margin-right: -8px;"
+        >
+          <div
+            class="ant-col ant-col-12"
+            style="padding-left: 8px; padding-right: 8px;"
+          >
+            <div
+              class="ant-form-item ant-form-item-with-help"
+            >
+              <div
+                class="ant-row ant-form-item-row"
+              >
+                <div
+                  class="ant-col ant-form-item-label"
+                >
+                  <label
+                    class="ant-form-item-required"
+                    for="MINISTRY_CONTACT_FORM_is_major_mine"
+                    title=""
+                  >
+                    <div
+                      style="width: 100%;"
+                    >
+                      Is this a Major Mine Contact?
+                    </div>
+                  </label>
+                </div>
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
+                  >
+                    <div
+                      class="ant-form-item-control-input-content"
+                    >
+                      <div
+                        class="ant-radio-group ant-radio-group-solid"
+                      >
+                        <label
+                          class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                        >
+                          <span
+                            class="ant-radio ant-radio-disabled"
+                          >
+                            <input
+                              class="ant-radio-input"
+                              disabled=""
+                              name="is_major_mine"
+                              type="radio"
+                              value="true"
+                            />
+                            <span
+                              class="ant-radio-inner"
+                            />
+                          </span>
+                          <span>
+                            Yes
+                          </span>
+                        </label>
+                        <label
+                          class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                        >
+                          <span
+                            class="ant-radio ant-radio-disabled"
+                          >
+                            <input
+                              class="ant-radio-input"
+                              disabled=""
+                              name="is_major_mine"
+                              type="radio"
+                              value="false"
+                            />
+                            <span
+                              class="ant-radio-inner"
+                            />
+                          </span>
+                          <span>
+                            No
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; flex-wrap: nowrap;"
+                  >
+                    <div
+                      class="ant-form-item-explain ant-form-item-explain-connected"
+                      id="MINISTRY_CONTACT_FORM_is_major_mine_help"
+                      role="alert"
+                    >
+                      <div
+                        class=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-row"
+          style="margin-left: -8px; margin-right: -8px;"
+        >
+          <div
+            class="ant-col ant-col-xs-24 ant-col-md-12"
+            style="padding-left: 8px; padding-right: 8px;"
+          >
+            <div
+              class="ant-form-item ant-form-item-with-help"
+            >
+              <div
+                class="ant-row ant-form-item-row"
+              >
+                <div
+                  class="ant-col ant-form-item-label"
+                >
+                  <label
+                    class="ant-form-item-required"
+                    for="MINISTRY_CONTACT_FORM_mine_region_code"
+                    title=""
+                  >
+                    <div
+                      style="width: 100%;"
+                    >
+                      Mine Region
+                    </div>
+                  </label>
+                </div>
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
+                  >
+                    <div
+                      class="ant-form-item-control-input-content"
+                    >
+                      <div
+                        aria-required="true"
+                        class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-disabled ant-select-show-search"
+                        data-cy="mine_region_code"
+                      >
+                        <div
+                          class="ant-select-selector"
+                        >
+                          <span
+                            class="ant-select-selection-search"
+                          >
+                            <input
+                              aria-activedescendant="mine_region_code_list_0"
+                              aria-autocomplete="list"
+                              aria-controls="mine_region_code_list"
+                              aria-expanded="false"
+                              aria-haspopup="listbox"
+                              aria-owns="mine_region_code_list"
+                              aria-required="true"
+                              autocomplete="off"
+                              class="ant-select-selection-search-input"
+                              disabled=""
+                              id="mine_region_code"
+                              role="combobox"
+                              type="search"
+                              value=""
+                            />
+                          </span>
+                          <span
+                            class="ant-select-selection-placeholder"
+                          >
+                            Select a mine Region
+                          </span>
+                        </div>
+                        <span
+                          aria-hidden="true"
+                          class="ant-select-arrow"
+                          style="user-select: none;"
+                          unselectable="on"
+                        >
+                          <span
+                            aria-label="down"
+                            class="anticon anticon-down ant-select-suffix"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="down"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; flex-wrap: nowrap;"
+                  >
+                    <div
+                      class="ant-form-item-explain ant-form-item-explain-connected"
+                      id="MINISTRY_CONTACT_FORM_mine_region_code_help"
+                      role="alert"
+                    >
+                      <div
+                        class=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-col ant-col-xs-24 ant-col-md-12"
+            style="padding-left: 8px; padding-right: 8px;"
+          >
+            <div
+              class="ant-form-item ant-form-item-with-help"
+            >
+              <div
+                class="ant-row ant-form-item-row"
+              >
+                <div
+                  class="ant-col ant-form-item-label"
+                >
+                  <label
+                    class="ant-form-item-required"
+                    for="MINISTRY_CONTACT_FORM_emli_contact_type_code"
+                    title=""
+                  >
+                    <div
+                      style="width: 100%;"
+                    >
+                      Contact Type
+                    </div>
+                  </label>
+                </div>
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
+                  >
+                    <div
+                      class="ant-form-item-control-input-content"
+                    >
+                      <div
+                        aria-required="true"
+                        class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-disabled ant-select-show-search"
+                        data-cy="emli_contact_type_code"
+                      >
+                        <div
+                          class="ant-select-selector"
+                        >
+                          <span
+                            class="ant-select-selection-search"
+                          >
+                            <input
+                              aria-activedescendant="emli_contact_type_code_list_0"
+                              aria-autocomplete="list"
+                              aria-controls="emli_contact_type_code_list"
+                              aria-expanded="false"
+                              aria-haspopup="listbox"
+                              aria-owns="emli_contact_type_code_list"
+                              aria-required="true"
+                              autocomplete="off"
+                              class="ant-select-selection-search-input"
+                              disabled=""
+                              id="emli_contact_type_code"
+                              role="combobox"
+                              type="search"
+                              value=""
+                            />
+                          </span>
+                          <span
+                            class="ant-select-selection-placeholder"
+                          >
+                            Select a contact type
+                          </span>
+                        </div>
+                        <span
+                          aria-hidden="true"
+                          class="ant-select-arrow"
+                          style="user-select: none;"
+                          unselectable="on"
+                        >
+                          <span
+                            aria-label="down"
+                            class="anticon anticon-down ant-select-suffix"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="down"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; flex-wrap: nowrap;"
+                  >
+                    <div
+                      class="ant-form-item-explain ant-form-item-explain-connected"
+                      id="MINISTRY_CONTACT_FORM_emli_contact_type_code_help"
+                      role="alert"
+                    >
+                      <div
+                        class=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-row"
+          style="margin-left: -8px; margin-right: -8px;"
+        >
+          <div
+            class="ant-col ant-col-xs-24 ant-col-md-12"
+            style="padding-left: 8px; padding-right: 8px;"
+          >
+            <div
+              class="ant-form-item ant-form-item-with-help"
+            >
+              <div
+                class="ant-row ant-form-item-row"
+              >
+                <div
+                  class="ant-col ant-form-item-label"
+                >
+                  <label
+                    class="ant-form-item-required"
+                    for="MINISTRY_CONTACT_FORM_first_name"
+                    title=""
+                  >
+                    <div
+                      style="width: 100%;"
+                    >
+                      First Name
+                    </div>
+                  </label>
+                </div>
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
+                  >
+                    <div
+                      class="ant-form-item-control-input-content"
+                    >
+                      <input
+                        aria-label="first_name"
+                        class="ant-input ant-input-disabled"
+                        data-testid="first_name"
+                        disabled=""
+                        id="first_name"
+                        name="first_name"
+                        type="text"
+                        value=""
+                      />
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; flex-wrap: nowrap;"
+                  >
+                    <div
+                      class="ant-form-item-explain ant-form-item-explain-connected"
+                      id="MINISTRY_CONTACT_FORM_first_name_help"
+                      role="alert"
+                    >
+                      <div
+                        class=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-col ant-col-xs-24 ant-col-md-12"
+            style="padding-left: 8px; padding-right: 8px;"
+          >
+            <div
+              class="ant-form-item ant-form-item-with-help"
+            >
+              <div
+                class="ant-row ant-form-item-row"
+              >
+                <div
+                  class="ant-col ant-form-item-label"
+                >
+                  <label
+                    class="ant-form-item-required"
+                    for="MINISTRY_CONTACT_FORM_last_name"
+                    title=""
+                  >
+                    <div
+                      style="width: 100%;"
+                    >
+                      Surname
+                    </div>
+                  </label>
+                </div>
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
+                  >
+                    <div
+                      class="ant-form-item-control-input-content"
+                    >
+                      <input
+                        aria-label="last_name"
+                        class="ant-input ant-input-disabled"
+                        data-testid="last_name"
+                        disabled=""
+                        id="last_name"
+                        name="last_name"
+                        type="text"
+                        value=""
+                      />
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; flex-wrap: nowrap;"
+                  >
+                    <div
+                      class="ant-form-item-explain ant-form-item-explain-connected"
+                      id="MINISTRY_CONTACT_FORM_last_name_help"
+                      role="alert"
+                    >
+                      <div
+                        class=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-row"
+          style="margin-left: -8px; margin-right: -8px;"
+        >
+          <div
+            class="ant-col ant-col-24"
+            style="padding-left: 8px; padding-right: 8px;"
+          >
+            <div
+              class="ant-form-item ant-form-item-with-help"
+            >
+              <div
+                class="ant-row ant-form-item-row"
+              >
+                <div
+                  class="ant-col ant-form-item-label"
+                >
+                  <label
+                    class="ant-form-item-required"
+                    for="MINISTRY_CONTACT_FORM_email"
+                    title=""
+                  >
+                    <div
+                      style="width: 100%;"
+                    >
+                      Email
+                    </div>
+                  </label>
+                </div>
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
+                  >
+                    <div
+                      class="ant-form-item-control-input-content"
+                    >
+                      <input
+                        aria-label="email"
+                        class="ant-input ant-input-disabled"
+                        data-testid="email"
+                        disabled=""
+                        id="email"
+                        name="email"
+                        type="text"
+                        value=""
+                      />
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; flex-wrap: nowrap;"
+                  >
+                    <div
+                      class="ant-form-item-explain ant-form-item-explain-connected"
+                      id="MINISTRY_CONTACT_FORM_email_help"
+                      role="alert"
+                    >
+                      <div
+                        class=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-row"
+          style="margin-left: -8px; margin-right: -8px;"
+        >
+          <div
+            class="ant-col ant-col-24"
+            style="padding-left: 8px; padding-right: 8px;"
+          >
+            <div
+              class="ant-form-item ant-form-item-with-help"
+            >
+              <div
+                class="ant-row ant-form-item-row"
+              >
+                <div
+                  class="ant-col ant-form-item-label"
+                >
+                  <label
+                    class="ant-form-item-required"
+                    for="MINISTRY_CONTACT_FORM_phone_number"
+                    title=""
+                  >
+                    <div
+                      style="width: 100%;"
+                    >
+                      Phone Number
+                    </div>
+                  </label>
+                </div>
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
+                  >
+                    <div
+                      class="ant-form-item-control-input-content"
+                    >
+                      <input
+                        aria-label="phone_number"
+                        class="ant-input ant-input-disabled"
+                        data-testid="phone_number"
+                        disabled=""
+                        id="phone_number"
+                        name="phone_number"
+                        placeholder="e.g. xxx-xxx-xxxx"
+                        type="text"
+                        value=""
+                      />
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; flex-wrap: nowrap;"
+                  >
+                    <div
+                      class="ant-form-item-explain ant-form-item-explain-connected"
+                      id="MINISTRY_CONTACT_FORM_phone_number_help"
+                      role="alert"
+                    >
+                      <div
+                        class=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="right center-mobile"
+        >
+          <button
+            aria-label="Cancel"
+            class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
+            type="button"
+          >
+            <span>
+              Cancel
+            </span>
+          </button>
+          <button
+            aria-label="Submit"
+            class="ant-btn ant-btn-primary  form-btn"
+            disabled=""
+            type="submit"
+          >
+            <span>
+              Save Changes
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 `;

@@ -45,15 +45,15 @@ const initialState = {
     project: MOCK.PROJECT
   }
 }
-  ^
-  describe("MajorMineApplicationTab", () => {
-    it("renders properly", () => {
-      const { container: component } = render(
-        <ReduxWrapper initialState={initialState}>
-          <MajorMineApplicationTab {...props} />
-        </ReduxWrapper>
-      );
 
-      expect(component).toMatchSnapshot();
-    });
+describe("MajorMineApplicationTab", () => {
+  it("renders properly", () => {
+    const { container: component } = render(
+      <ReduxWrapper initialState={initialState}>
+        <MajorMineApplicationTab {...props} />
+      </ReduxWrapper>
+    );
+
+    expect(component).toMatchSnapshot();
   });
+});

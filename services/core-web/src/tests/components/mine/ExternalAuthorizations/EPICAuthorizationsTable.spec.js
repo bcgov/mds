@@ -1,12 +1,12 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { EPICAuthorizationsTable } from "@/components/mine/ExternalAuthorizations/EPICAuthorizationsTable";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const props = {};
 
 const setupProps = () => {
-  props.isLoaded = false;
+  props.isLoaded = true;
   props.data = MOCK.MINE_EPIC_INFO.records;
 };
 
@@ -16,7 +16,7 @@ beforeEach(() => {
 
 describe("EPICAuthorizationsTable", () => {
   it("renders properly", () => {
-    const component = shallow(<EPICAuthorizationsTable {...props} />);
+    const { container: component } = render(<EPICAuthorizationsTable {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

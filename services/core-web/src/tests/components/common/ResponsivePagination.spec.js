@@ -24,6 +24,7 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
+// react testing library works but renders an empty div
 describe("ResponsivePagination", () => {
   it("renders properly", () => {
     const wrapper = shallow(<ResponsivePagination {...props} {...dispatchProps} />);

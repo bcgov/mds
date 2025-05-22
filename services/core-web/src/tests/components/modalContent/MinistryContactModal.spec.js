@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MinistryContactModal } from "@/components/modalContent/MinistryContactModal";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -15,6 +16,7 @@ const setupProps = () => {
   props.regionDropdownOptions = [];
   props.MinistryContactTypes = [];
   props.isEdit = true;
+  props.contacts = [];
 };
 
 beforeEach(() => {
@@ -24,7 +26,7 @@ beforeEach(() => {
 
 describe("MinistryContactModal", () => {
   it("renders properly", () => {
-    const component = shallow(<MinistryContactModal {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><MinistryContactModal {...dispatchProps} {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

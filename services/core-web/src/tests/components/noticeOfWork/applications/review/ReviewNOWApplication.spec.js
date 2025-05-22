@@ -17,6 +17,15 @@ beforeEach(() => {
   setupReducerProps();
 });
 
+// TypeError: Cannot read properties of undefined (reading 'blasting_operation')
+
+//       37 |         id="blasting-operation"
+//       38 |         title="Blasting"
+//     > 39 |         data={props.noticeOfWork.blasting_operation}
+//          |                                  ^
+//       40 |         isViewMode={props.isViewMode}
+//       41 |       >
+//       42 |         <FormSection name="blasting_operation"></FormSection>
 describe("ReviewNOWApplication", () => {
   it("renders properly", () => {
     const component = shallow(<ReviewNOWApplication {...reducerProps} />);

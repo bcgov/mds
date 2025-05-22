@@ -1,7 +1,9 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MineNoticeOfWorkTable } from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { BrowserRouter } from "react-router-dom";
 
 const props = {};
 
@@ -11,6 +13,7 @@ const setupProps = () => {
   props.sortField = "now_number";
   props.sortDir = "asc";
   props.searchParams = { noticeofworktype: "other" };
+  props.location = { pathname: "pathname", search: "search" }
 };
 
 beforeEach(() => {
@@ -19,7 +22,7 @@ beforeEach(() => {
 
 describe("MineNoticeOfWorkTable", () => {
   it("renders properly", () => {
-    const component = shallow(<MineNoticeOfWorkTable {...props} />);
+    const { container: component } = render(<BrowserRouter><ReduxWrapper><MineNoticeOfWorkTable {...props} /></ReduxWrapper></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkTable";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { BrowserRouter } from "react-router-dom";
 
 const props = {};
 
@@ -12,6 +13,9 @@ const setupProps = () => {
   props.sortDir = "asc";
   props.searchParams = { mine_search: "substring", mine_region: "SW,NE" };
   props.mineRegionHash = MOCK.REGION_HASH;
+  props.mineRegionOptions = [];
+  props.applicationTypeOptions = [];
+  props.applicationStatusOptions = [];
 };
 
 beforeEach(() => {
@@ -20,7 +24,7 @@ beforeEach(() => {
 
 describe("NoticeOfWorkTable", () => {
   it("renders properly", () => {
-    const component = shallow(<NoticeOfWorkTable {...props} />);
+    const { container: component } = render(<BrowserRouter><NoticeOfWorkTable {...props} /></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

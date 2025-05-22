@@ -27,6 +27,15 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
+// TypeError: Cannot read properties of undefined (reading 'undefined')
+
+//       62 |     className,
+//       63 |     key: dataIndex,
+//     > 64 |     render: (text: string) => <div title={title}>{categoryMap[text] ?? placeHolder}</div>,
+//          |                                                              ^
+//       65 |     ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
+//       66 |   };
+//       67 | };
 describe("EditVarianceForm", () => {
   it("renders properly", () => {
     const component = shallow(<EditVarianceForm {...props} {...dispatchProps} />);

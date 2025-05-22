@@ -43,6 +43,11 @@ beforeEach(() => {
   setupReducerProps();
 });
 
+// A React component suspended while rendering, but no fallback UI was specified.
+
+//     Add a <Suspense fallback=...> component higher in the tree to provide a loading indicator or placeholder to display.
+//         in Unknown (created by EditIcon)
+//         in EditIcon (created by Cell)
 describe("NoticesOfDeparture", () => {
   it("renders properly", () => {
     const component = shallow(<NoticeOfDeparture {...dispatchProps} {...reducerProps} />);

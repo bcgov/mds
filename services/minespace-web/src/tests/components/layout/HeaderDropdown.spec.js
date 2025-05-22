@@ -20,6 +20,7 @@ beforeEach(() => {
   setupProps();
 });
 
+// this works with react testing library, but renders a lot less without any events interaction
 describe("HeaderDropdown", () => {
   it("renders properly", () => {
     const wrapper = shallow(<HeaderDropdown {...props} {...dispatchProps} />);

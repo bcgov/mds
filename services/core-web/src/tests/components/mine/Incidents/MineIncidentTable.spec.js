@@ -21,6 +21,15 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
+// TypeError: text.map is not a function
+
+//       245 |           ) : (
+//       246 |             <span>
+//     > 247 |               {text.map((code) => (
+//           |                     ^
+//       248 |                 <div key={code}>{complianceCodesHash[code]}</div>
+//       249 |               ))}
+//       250 |             </span>
 describe("MineIncidentTable", () => {
   it("renders properly", () => {
     const component = shallow(<MineIncidentTable {...dispatchProps} {...props} />);

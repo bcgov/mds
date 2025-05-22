@@ -19,6 +19,13 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
+// TypeError: Cannot read properties of null (reading '_layerAdd')
+
+//       139 |       showCoverageOnHover: false,
+//       140 |     });
+//     > 141 |     this.map.addLayer(this.markerClusterGroup);
+//           |              ^
+//       142 |   }
 describe("MineCard", () => {
   it("renders properly", () => {
     const component = shallow(<MineCard {...props} {...dispatchProps} />);

@@ -16,6 +16,14 @@ beforeEach(() => {
   setupProps();
 });
 
+// TypeError: Cannot read properties of null (reading '_layerAdd')
+
+//       83 |         showCoverageOnHover: false,
+//       84 |       });
+//     > 85 |       mapRef.current?.addLayer(markerClusterGroupRef.current);
+//          |                       ^
+//       86 |     }
+//       87 |   };
 describe("ViewMagazineModal", () => {
   it("renders properly", () => {
     const component = shallow(<ViewMagazineModal {...props} />);

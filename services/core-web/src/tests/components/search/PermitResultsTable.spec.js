@@ -15,6 +15,13 @@ beforeEach(() => {
   setupReducerProps();
 });
 
+// TypeError: Cannot read properties of undefined (reading 'map')
+
+//       55 |       key: "mine_guid",
+//       56 |       render: (record) => {
+//     > 57 |         return record.mine.map((mine) => (
+//          |                            ^
+//       58 |           <Link
 describe("PermitResultsTable", () => {
   it("renders properly", () => {
     const component = shallow(<PermitResultsTable {...reducerProps} />);

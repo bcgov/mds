@@ -30,6 +30,13 @@ beforeEach(() => {
   setupProps();
 });
 
+// TypeError: Cannot read properties of null (reading '_layerAdd')
+
+//       139 |       showCoverageOnHover: false,
+//       140 |     });
+//     > 141 |     this.map.addLayer(this.markerClusterGroup);
+//           |              ^
+//       142 |   }
 describe("MineHeader", () => {
   it("renders dispatchProperly", () => {
     const component = shallow(<MineHeader {...dispatchProps} {...props} />);
