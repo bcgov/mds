@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import UnauthenticatedNotice from "@/components/common/UnauthenticatedNotice";
 
 const props = {};
@@ -14,7 +14,7 @@ beforeEach(() => {
 
 describe("NullScreen", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<UnauthenticatedNotice {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container: component } = render(<UnauthenticatedNotice {...props} />);
+    expect(component).toMatchSnapshot();
   });
 });

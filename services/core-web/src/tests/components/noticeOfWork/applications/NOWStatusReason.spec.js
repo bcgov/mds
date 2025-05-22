@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { NOWStatusReason } from "@/components/noticeOfWork/applications/NOWStatusReason";
 import * as NOWMocks from "@mds/common/tests/mocks/noticeOfWorkMock";
 
@@ -16,7 +16,7 @@ beforeEach(() => {
 
 describe("NOWStatusReason", () => {
   it("renders properly", () => {
-    const component = shallow(<NOWStatusReason {...reducerProps} />);
+    const { container: component } = render(<NOWStatusReason {...reducerProps} />);
     expect(component).toMatchSnapshot();
   });
 });

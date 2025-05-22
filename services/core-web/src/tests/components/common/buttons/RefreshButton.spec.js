@@ -1,10 +1,10 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import RefreshButton from "@/components/common/buttons/RefreshButton";
 
 describe("RefreshButton", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<RefreshButton />);
-    expect(wrapper).toMatchSnapshot();
+    const { container: component } = render(<RefreshButton />);
+    expect(component).toMatchSnapshot();
   });
 });

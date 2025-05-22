@@ -1,7 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ScrollSideMenu renders properly 1`] = `
-<ContextConsumer>
-  <Component />
-</ContextConsumer>
+<div>
+  <div>
+    <div
+      class="ant-anchor-wrapper"
+      style="max-height: calc(100vh - 160px);"
+    >
+      <div
+        class="ant-anchor ant-anchor-fixed"
+      >
+        <div
+          class="ant-anchor-ink"
+        >
+          <span
+            class="ant-anchor-ink-ball"
+          />
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#section-1"
+            title="Section #1"
+          >
+            Section #1
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;

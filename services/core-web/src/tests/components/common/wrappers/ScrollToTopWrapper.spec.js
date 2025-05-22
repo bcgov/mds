@@ -1,11 +1,11 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { ScrollToTopWrapper } from "@/components/common/wrappers/ScrollToTopWrapper";
 
 const dispatchProps = {};
 const props = {};
 
-const setupDispatchProps = () => {};
+const setupDispatchProps = () => { };
 
 const setupProps = () => {
   props.location = { hash: "", pathname: "/dashboard" };
@@ -19,7 +19,7 @@ beforeEach(() => {
 
 describe("ScrollToTopWrapper", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<ScrollToTopWrapper {...dispatchProps} {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container: component } = render(<ScrollToTopWrapper {...dispatchProps} {...props} />);
+    expect(component).toMatchSnapshot();
   });
 });

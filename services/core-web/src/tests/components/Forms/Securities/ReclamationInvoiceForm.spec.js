@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { ReclamationInvoiceForm } from "@/components/Forms/Securities/ReclamationInvoiceForm";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -26,7 +27,7 @@ beforeEach(() => {
 
 describe("ReclamationInvoiceForm", () => {
   it("renders properly", () => {
-    const component = shallow(<ReclamationInvoiceForm {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><ReclamationInvoiceForm {...dispatchProps} {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

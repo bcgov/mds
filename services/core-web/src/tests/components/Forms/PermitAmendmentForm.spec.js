@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { PermitAmendmentForm } from "@/components/Forms/PermitAmendmentForm";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -26,12 +27,14 @@ beforeEach(() => {
 
 describe("PermitAmendmentForm", () => {
   it("renders properly", () => {
-    const component = shallow(
-      <PermitAmendmentForm
-        {...dispatchProps}
-        {...props}
-        handleRemovePermitAmendmentDocument={jest.fn()}
-      />
+    const { container: component } = render(
+      <ReduxWrapper>
+        <PermitAmendmentForm
+          {...dispatchProps}
+          {...props}
+          handleRemovePermitAmendmentDocument={jest.fn()}
+        />
+      </ReduxWrapper>
     );
     expect(component).toMatchSnapshot();
   });

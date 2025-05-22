@@ -1,35 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PageNotFound renders properly 1`] = `
-<div
-  className="null-screen"
->
+<div>
   <div
-    className="no-nav-bar"
+    class="null-screen"
   >
-    <img
-      alt="Page Not Found (Error 404)"
-      src={
-        Object {
-          "process": [Function],
-        }
-      }
-    />
-    <h1>
-      Uh Oh!
-    </h1>
-    <p>
-      The page you're looking for can't be found. It may have moved, or it no longer exists.
-    </p>
-    <p>
-      Return to the 
-      <Link
-        to="/home/"
-      >
-        home page
-      </Link>
-       to get back on track.
-    </p>
+    <div
+      class="no-nav-bar"
+    >
+      <img
+        alt="Page Not Found (Error 404)"
+        src="[object Object]"
+      />
+      <h1>
+        Uh Oh!
+      </h1>
+      <p>
+        The page you're looking for can't be found. It may have moved, or it no longer exists.
+      </p>
+      <p>
+        Return to the 
+        <a
+          href="/home/"
+        >
+          home page
+        </a>
+         to get back on track.
+      </p>
+    </div>
   </div>
 </div>
 `;

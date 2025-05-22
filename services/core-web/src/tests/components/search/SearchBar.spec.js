@@ -1,9 +1,10 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import SearchBar from "@/components/search/SearchBar";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { store } from "@/App";
+import { BrowserRouter } from "react-router-dom";
 
 const dispatchProps = {};
 const reducerProps = {};
@@ -33,10 +34,12 @@ beforeEach(() => {
 
 describe("SearchBar", () => {
   it("renders properly", () => {
-    const component = shallow(
-      <Provider store={store}>
-        <SearchBar {...dispatchProps} {...reducerProps} />
-      </Provider>);
+    const { container: component } = render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <SearchBar {...dispatchProps} {...reducerProps} />
+        </Provider>
+      </BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

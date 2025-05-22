@@ -2,490 +2,1241 @@
 
 exports[`UndergroundExploration renders properly 1`] = `
 <div>
-  <Row
-    gutter={16}
+  <form
+    class="ant-form ant-form-vertical common-form common-form-formName form-edit"
+    id="formName"
   >
-    <div
-      className="field-title"
-    >
-      Proposed Activities
+    <div>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="field-title"
+        >
+          Proposed Activities
+        </div>
+        <div
+          class="ant-col ant-col-sm-24"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <label
+                      class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                    >
+                      <span
+                        class="ant-checkbox ant-checkbox-disabled"
+                      >
+                        <input
+                          class="ant-checkbox-input"
+                          disabled=""
+                          id="proposed_bulk_sample"
+                          type="checkbox"
+                          value=""
+                        />
+                        <span
+                          class="ant-checkbox-inner"
+                        />
+                      </span>
+                      <span>
+                        Bulk Sample
+                        <span
+                          class="violet"
+                          style="margin-left: 5px;"
+                        >
+                          Edited
+                        </span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_proposed_bulk_sample_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <label
+                      class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                    >
+                      <span
+                        class="ant-checkbox ant-checkbox-disabled"
+                      >
+                        <input
+                          class="ant-checkbox-input"
+                          disabled=""
+                          id="proposed_de_watering"
+                          type="checkbox"
+                          value=""
+                        />
+                        <span
+                          class="ant-checkbox-inner"
+                        />
+                      </span>
+                      <span>
+                        De-watering
+                        <span
+                          class="violet"
+                          style="margin-left: 5px;"
+                        >
+                          Edited
+                        </span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_proposed_de_watering_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <label
+                      class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                    >
+                      <span
+                        class="ant-checkbox ant-checkbox-disabled"
+                      >
+                        <input
+                          class="ant-checkbox-input"
+                          disabled=""
+                          id="proposed_diamond_drilling"
+                          type="checkbox"
+                          value=""
+                        />
+                        <span
+                          class="ant-checkbox-inner"
+                        />
+                      </span>
+                      <span>
+                        Diamond Drilling
+                        <span
+                          class="violet"
+                          style="margin-left: 5px;"
+                        >
+                          Edited
+                        </span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_proposed_diamond_drilling_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <label
+                      class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                    >
+                      <span
+                        class="ant-checkbox ant-checkbox-disabled"
+                      >
+                        <input
+                          class="ant-checkbox-input"
+                          disabled=""
+                          id="proposed_mapping_chip_sampling"
+                          type="checkbox"
+                          value=""
+                        />
+                        <span
+                          class="ant-checkbox-inner"
+                        />
+                      </span>
+                      <span>
+                        Mapping / Chip Sampling
+                        <span
+                          class="violet"
+                          style="margin-left: 5px;"
+                        >
+                          Edited
+                        </span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_proposed_mapping_chip_sampling_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <label
+                      class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                    >
+                      <span
+                        class="ant-checkbox ant-checkbox-disabled"
+                      >
+                        <input
+                          class="ant-checkbox-input"
+                          disabled=""
+                          id="proposed_new_development"
+                          type="checkbox"
+                          value=""
+                        />
+                        <span
+                          class="ant-checkbox-inner"
+                        />
+                      </span>
+                      <span>
+                        New Development
+                        <span
+                          class="violet"
+                          style="margin-left: 5px;"
+                        >
+                          Edited
+                        </span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_proposed_new_development_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <label
+                      class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                    >
+                      <span
+                        class="ant-checkbox ant-checkbox-disabled"
+                      >
+                        <input
+                          class="ant-checkbox-input"
+                          disabled=""
+                          id="proposed_rehab"
+                          type="checkbox"
+                          value=""
+                        />
+                        <span
+                          class="ant-checkbox-inner"
+                        />
+                      </span>
+                      <span>
+                        Rehab
+                        <span
+                          class="violet"
+                          style="margin-left: 5px;"
+                        >
+                          Edited
+                        </span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_proposed_rehab_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <label
+                      class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                    >
+                      <span
+                        class="ant-checkbox ant-checkbox-disabled"
+                      >
+                        <input
+                          class="ant-checkbox-input"
+                          disabled=""
+                          id="proposed_underground_fuel_storage"
+                          type="checkbox"
+                          value=""
+                        />
+                        <span
+                          class="ant-checkbox-inner"
+                        />
+                      </span>
+                      <span>
+                        Underground Fuel Storage
+                        <span
+                          class="violet"
+                          style="margin-left: 5px;"
+                        >
+                          Edited
+                        </span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_proposed_underground_fuel_storage_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <h4>
+        Activities 
+      </h4>
+      <div>
+        <div>
+          <div
+            class="ant-table-wrapper"
+            style="position: relative; z-index: 5;"
+          >
+            <div
+              class="ant-table ant-table-empty"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Exploration Type
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Activity
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Quantity
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Incline
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Width (m)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Length (m)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Height (m)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Disturbed Area (ha)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Merchantable timber volume (m³)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      />
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-placeholder"
+                    >
+                      <td
+                        class="ant-table-cell"
+                        colspan="100%"
+                        style="color: rgb(191, 191, 191);"
+                      >
+                        No Data Yet
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <h4>
+        New Underground Exploration Development
+      </h4>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Total Ore
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="inline-flex"
+                    >
+                      
+                      <span
+                        class="ant-input-group-wrapper"
+                      >
+                        <span
+                          class="ant-input-wrapper ant-input-group"
+                        >
+                          <input
+                            class="ant-input ant-input-disabled"
+                            disabled=""
+                            id="total_ore_amount"
+                            name="total_ore_amount"
+                            placeholder=""
+                            type="text"
+                            value=""
+                          />
+                          <span
+                            class="ant-input-group-addon"
+                          >
+                            <div
+                              class="ant-select ant-select-single ant-select-show-arrow ant-select-disabled"
+                              style="width: 150px;"
+                            >
+                              <div
+                                class="ant-select-selector"
+                              >
+                                <span
+                                  class="ant-select-selection-search"
+                                >
+                                  <input
+                                    aria-activedescendant="total_ore_unit_type_code_list_0"
+                                    aria-autocomplete="list"
+                                    aria-controls="total_ore_unit_type_code_list"
+                                    aria-expanded="false"
+                                    aria-haspopup="listbox"
+                                    aria-owns="total_ore_unit_type_code_list"
+                                    autocomplete="off"
+                                    class="ant-select-selection-search-input"
+                                    disabled=""
+                                    id="total_ore_unit_type_code"
+                                    readonly=""
+                                    role="combobox"
+                                    style="opacity: 0;"
+                                    type="search"
+                                    unselectable="on"
+                                    value=""
+                                  />
+                                </span>
+                                <span
+                                  class="ant-select-selection-placeholder"
+                                />
+                              </div>
+                              <span
+                                aria-hidden="true"
+                                class="ant-select-arrow"
+                                style="user-select: none;"
+                                unselectable="on"
+                              >
+                                <span
+                                  aria-label="down"
+                                  class="anticon anticon-down ant-select-suffix"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </div>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Total Waste
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="inline-flex"
+                    >
+                      
+                      <span
+                        class="ant-input-group-wrapper"
+                      >
+                        <span
+                          class="ant-input-wrapper ant-input-group"
+                        >
+                          <input
+                            class="ant-input ant-input-disabled"
+                            disabled=""
+                            id="total_waste_amount"
+                            name="total_waste_amount"
+                            placeholder=""
+                            type="text"
+                            value=""
+                          />
+                          <span
+                            class="ant-input-group-addon"
+                          >
+                            <div
+                              class="ant-select ant-select-single ant-select-show-arrow ant-select-disabled"
+                              style="width: 150px;"
+                            >
+                              <div
+                                class="ant-select-selector"
+                              >
+                                <span
+                                  class="ant-select-selection-search"
+                                >
+                                  <input
+                                    aria-activedescendant="total_waste_unit_type_code_list_0"
+                                    aria-autocomplete="list"
+                                    aria-controls="total_waste_unit_type_code_list"
+                                    aria-expanded="false"
+                                    aria-haspopup="listbox"
+                                    aria-owns="total_waste_unit_type_code_list"
+                                    autocomplete="off"
+                                    class="ant-select-selection-search-input"
+                                    disabled=""
+                                    id="total_waste_unit_type_code"
+                                    readonly=""
+                                    role="combobox"
+                                    style="opacity: 0;"
+                                    type="search"
+                                    unselectable="on"
+                                    value=""
+                                  />
+                                </span>
+                                <span
+                                  class="ant-select-selection-placeholder"
+                                />
+                              </div>
+                              <span
+                                aria-hidden="true"
+                                class="ant-select-arrow"
+                                style="user-select: none;"
+                                unselectable="on"
+                              >
+                                <span
+                                  aria-label="down"
+                                  class="anticon anticon-down ant-select-suffix"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </div>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h4>
+        Surface Disturbance
+      </h4>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Total Ore
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="inline-flex"
+                    >
+                      
+                      <span
+                        class="ant-input-group-wrapper"
+                      >
+                        <span
+                          class="ant-input-wrapper ant-input-group"
+                        >
+                          <input
+                            class="ant-input ant-input-disabled"
+                            disabled=""
+                            id="surface_total_ore_amount"
+                            name="surface_total_ore_amount"
+                            placeholder=""
+                            type="text"
+                            value=""
+                          />
+                          <span
+                            class="ant-input-group-addon"
+                          >
+                            <div
+                              class="ant-select ant-select-single ant-select-show-arrow ant-select-disabled"
+                              style="width: 150px;"
+                            >
+                              <div
+                                class="ant-select-selector"
+                              >
+                                <span
+                                  class="ant-select-selection-search"
+                                >
+                                  <input
+                                    aria-activedescendant="surface_total_ore_unit_type_code_list_0"
+                                    aria-autocomplete="list"
+                                    aria-controls="surface_total_ore_unit_type_code_list"
+                                    aria-expanded="false"
+                                    aria-haspopup="listbox"
+                                    aria-owns="surface_total_ore_unit_type_code_list"
+                                    autocomplete="off"
+                                    class="ant-select-selection-search-input"
+                                    disabled=""
+                                    id="surface_total_ore_unit_type_code"
+                                    readonly=""
+                                    role="combobox"
+                                    style="opacity: 0;"
+                                    type="search"
+                                    unselectable="on"
+                                    value=""
+                                  />
+                                </span>
+                                <span
+                                  class="ant-select-selection-placeholder"
+                                />
+                              </div>
+                              <span
+                                aria-hidden="true"
+                                class="ant-select-arrow"
+                                style="user-select: none;"
+                                unselectable="on"
+                              >
+                                <span
+                                  aria-label="down"
+                                  class="anticon anticon-down ant-select-suffix"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </div>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Total Waste
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="inline-flex"
+                    >
+                      
+                      <span
+                        class="ant-input-group-wrapper"
+                      >
+                        <span
+                          class="ant-input-wrapper ant-input-group"
+                        >
+                          <input
+                            class="ant-input ant-input-disabled"
+                            disabled=""
+                            id="surface_total_waste_amount"
+                            name="surface_total_waste_amount"
+                            placeholder=""
+                            type="text"
+                            value=""
+                          />
+                          <span
+                            class="ant-input-group-addon"
+                          >
+                            <div
+                              class="ant-select ant-select-single ant-select-show-arrow ant-select-disabled"
+                              style="width: 150px;"
+                            >
+                              <div
+                                class="ant-select-selector"
+                              >
+                                <span
+                                  class="ant-select-selection-search"
+                                >
+                                  <input
+                                    aria-activedescendant="surface_total_waste_unit_type_code_list_0"
+                                    aria-autocomplete="list"
+                                    aria-controls="surface_total_waste_unit_type_code_list"
+                                    aria-expanded="false"
+                                    aria-haspopup="listbox"
+                                    aria-owns="surface_total_waste_unit_type_code_list"
+                                    autocomplete="off"
+                                    class="ant-select-selection-search-input"
+                                    disabled=""
+                                    id="surface_total_waste_unit_type_code"
+                                    readonly=""
+                                    role="combobox"
+                                    style="opacity: 0;"
+                                    type="search"
+                                    unselectable="on"
+                                    value=""
+                                  />
+                                </span>
+                                <span
+                                  class="ant-select-selection-placeholder"
+                                />
+                              </div>
+                              <span
+                                aria-hidden="true"
+                                class="ant-select-arrow"
+                                style="user-select: none;"
+                                unselectable="on"
+                              >
+                                <span
+                                  aria-label="down"
+                                  class="anticon anticon-down ant-select-suffix"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </div>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h4>
+        Reclamation Program
+      </h4>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Proposed reclamation and timing for this specific activity
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="reclamation_description"
+                      name="reclamation_description"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_reclamation_description_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Estimated Cost of reclamation activities described above
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="reclamation_cost"
+                      class="ant-input ant-input-disabled"
+                      data-testid="reclamation_cost"
+                      disabled=""
+                      id="reclamation_cost"
+                      name="reclamation_cost"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_reclamation_cost_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <Col
-      sm={24}
-    >
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="proposed_bulk_sample"
-        label={
-          <React.Fragment>
-            Bulk Sample
-            <NOWOriginalValueTooltip
-              isVisible={true}
-              originalValue="N/A"
-              style={
-                Object {
-                  "marginLeft": "5px",
-                }
-              }
-            />
-          </React.Fragment>
-        }
-        name="proposed_bulk_sample"
-        type="checkbox"
-      />
-    </Col>
-    <Col
-      sm={24}
-    >
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="proposed_de_watering"
-        label={
-          <React.Fragment>
-            De-watering
-            <NOWOriginalValueTooltip
-              isVisible={true}
-              originalValue="N/A"
-              style={
-                Object {
-                  "marginLeft": "5px",
-                }
-              }
-            />
-          </React.Fragment>
-        }
-        name="proposed_de_watering"
-        type="checkbox"
-      />
-    </Col>
-    <Col
-      sm={24}
-    >
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="proposed_diamond_drilling"
-        label={
-          <React.Fragment>
-            Diamond Drilling
-            <NOWOriginalValueTooltip
-              isVisible={true}
-              originalValue="N/A"
-              style={
-                Object {
-                  "marginLeft": "5px",
-                }
-              }
-            />
-          </React.Fragment>
-        }
-        name="proposed_diamond_drilling"
-        type="checkbox"
-      />
-    </Col>
-    <Col
-      sm={24}
-    >
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="proposed_mapping_chip_sampling"
-        label={
-          <React.Fragment>
-            Mapping / Chip Sampling
-            <NOWOriginalValueTooltip
-              isVisible={true}
-              originalValue="N/A"
-              style={
-                Object {
-                  "marginLeft": "5px",
-                }
-              }
-            />
-          </React.Fragment>
-        }
-        name="proposed_mapping_chip_sampling"
-        type="checkbox"
-      />
-    </Col>
-    <Col
-      sm={24}
-    >
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="proposed_new_development"
-        label={
-          <React.Fragment>
-            New Development
-            <NOWOriginalValueTooltip
-              isVisible={true}
-              originalValue="N/A"
-              style={
-                Object {
-                  "marginLeft": "5px",
-                }
-              }
-            />
-          </React.Fragment>
-        }
-        name="proposed_new_development"
-        type="checkbox"
-      />
-    </Col>
-    <Col
-      sm={24}
-    >
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="proposed_rehab"
-        label={
-          <React.Fragment>
-            Rehab
-            <NOWOriginalValueTooltip
-              isVisible={true}
-              originalValue="N/A"
-              style={
-                Object {
-                  "marginLeft": "5px",
-                }
-              }
-            />
-          </React.Fragment>
-        }
-        name="proposed_rehab"
-        type="checkbox"
-      />
-    </Col>
-    <Col
-      sm={24}
-    >
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="proposed_underground_fuel_storage"
-        label={
-          <React.Fragment>
-            Underground Fuel Storage
-            <NOWOriginalValueTooltip
-              isVisible={true}
-              originalValue="N/A"
-              style={
-                Object {
-                  "marginLeft": "5px",
-                }
-              }
-            />
-          </React.Fragment>
-        }
-        name="proposed_underground_fuel_storage"
-        type="checkbox"
-      />
-    </Col>
-  </Row>
-  <br />
-  <h4>
-    Activities 
-  </h4>
-  <Connect(CoreEditableTable)
-    fieldID="activity_detail_id"
-    fieldName="details"
-    isViewMode={true}
-    tableContent={
-      Array [
-        Object {
-          "component": [Function],
-          "data": undefined,
-          "dataHash": undefined,
-          "title": "Exploration Type",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "underground_exploration_type_code",
-        },
-        Object {
-          "component": [Function],
-          "minRows": 1,
-          "title": "Activity",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "activity_type_description",
-        },
-        Object {
-          "component": [Function],
-          "title": "Quantity",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "quantity",
-        },
-        Object {
-          "component": [Function],
-          "hasUnit": true,
-          "title": "Incline",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "incline",
-        },
-        Object {
-          "component": [Function],
-          "data": Array [],
-          "isUnit": true,
-          "title": "Incline Unit",
-          "value": "incline_unit_type_code",
-        },
-        Object {
-          "component": [Function],
-          "title": "Width (m)",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "width",
-        },
-        Object {
-          "component": [Function],
-          "title": "Length (m)",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "length",
-        },
-        Object {
-          "component": [Function],
-          "title": "Height (m)",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "height",
-        },
-        Object {
-          "component": [Function],
-          "title": "Disturbed Area (ha)",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "disturbed_area",
-        },
-        Object {
-          "component": [Function],
-          "title": "Merchantable timber volume (m³)",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "timber_volume",
-        },
-      ]
-    }
-  />
-  <br />
-  <h4>
-    New Underground Exploration Development
-  </h4>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Total Ore
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Fields
-        component={[Function]}
-        data={Array []}
-        disabled={true}
-        dropdownID="total_ore_unit_type_code"
-        id="total_ore_amount"
-        names={
-          Array [
-            "total_ore_amount",
-            "total_ore_unit_type_code",
-          ]
-        }
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Total Waste
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Fields
-        component={[Function]}
-        data={Array []}
-        disabled={true}
-        dropdownID="total_waste_unit_type_code"
-        id="total_waste_amount"
-        names={
-          Array [
-            "total_waste_amount",
-            "total_waste_unit_type_code",
-          ]
-        }
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-  </Row>
-  <h4>
-    Surface Disturbance
-  </h4>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Total Ore
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Fields
-        component={[Function]}
-        data={Array []}
-        disabled={true}
-        dropdownID="surface_total_ore_unit_type_code"
-        id="surface_total_ore_amount"
-        names={
-          Array [
-            "surface_total_ore_amount",
-            "surface_total_ore_unit_type_code",
-          ]
-        }
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Total Waste
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Fields
-        component={[Function]}
-        data={Array []}
-        disabled={true}
-        dropdownID="surface_total_waste_unit_type_code"
-        id="surface_total_waste_amount"
-        names={
-          Array [
-            "surface_total_waste_amount",
-            "surface_total_waste_unit_type_code",
-          ]
-        }
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-  </Row>
-  <h4>
-    Reclamation Program
-  </h4>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Proposed reclamation and timing for this specific activity
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="reclamation_description"
-        name="reclamation_description"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Estimated Cost of reclamation activities described above
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Field
-        autoComplete="off"
-        component={[Function]}
-        disabled={true}
-        format={[Function]}
-        id="reclamation_cost"
-        name="reclamation_cost"
-        normalize={[Function]}
-        onChange={[Function]}
-        onFocus={[Function]}
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-  </Row>
+  </form>
 </div>
 `;

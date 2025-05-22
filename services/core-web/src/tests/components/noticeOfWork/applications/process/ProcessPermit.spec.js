@@ -1,8 +1,10 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { ProcessPermit } from "@/components/noticeOfWork/applications/process/ProcessPermit";
 import * as NOWMocks from "@mds/common/tests/mocks/noticeOfWorkMock";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { BrowserRouter } from "react-router-dom";
 
 const props = {};
 const dispatchProps = {};
@@ -31,7 +33,7 @@ beforeEach(() => {
 
 describe("ProcessPermit", () => {
   it("renders properly", () => {
-    const component = shallow(<ProcessPermit {...props} {...dispatchProps} />);
+    const { container: component } = render(<BrowserRouter><ReduxWrapper><ProcessPermit {...props} {...dispatchProps} /></ReduxWrapper></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { UpdateNOWDateForm } from "@/components/Forms/noticeOfWork/UpdateNOWDateForm";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -25,7 +26,7 @@ beforeEach(() => {
 
 describe("UpdateNOWDateForm", () => {
   it("renders properly", () => {
-    const component = shallow(<UpdateNOWDateForm {...props} {...dispatchProps} />);
+    const { container: component } = render(<ReduxWrapper><UpdateNOWDateForm {...props} {...dispatchProps} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

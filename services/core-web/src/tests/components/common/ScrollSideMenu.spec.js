@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
+import { BrowserRouter } from "react-router-dom";
 
 const props = {};
 
@@ -24,7 +25,7 @@ beforeEach(() => {
 
 describe("ScrollSideMenu", () => {
   it("renders properly", () => {
-    const component = shallow(<ScrollSideMenu {...props} />);
+    const { container: component } = render(<BrowserRouter><ScrollSideMenu {...props} /></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

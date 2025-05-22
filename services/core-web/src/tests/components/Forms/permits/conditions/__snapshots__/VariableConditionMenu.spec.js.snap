@@ -1,133 +1,163 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`VariableConditionMenu renders properly 1`] = `
-<div
-  className="condition-menu-container"
->
-  <h4>
-    Condition Data Variables
-    <CoreTooltip
-      iconColor="white"
-      title="Hover your mouse over the menus until you find the variable data you'd like to enter. Put it into your edited Permit Condition by clicking on it. This will populate the edited condition with a variable in the Draft permit screen. The Data from the Application tab will show up correctly in the PDF Draft permit in place of the variable. Please ensure all variable data fields you select have the correct information in the Application tab before adding these fields to your draft permit."
-    />
-  </h4>
-  <Menu
-    className="variable-menu"
-    mode="vertical"
-    onClick={[Function]}
+<div>
+  <div
+    class="condition-menu-container"
   >
-    <SubMenu
-      key="mine"
-      title="Mine"
+    <h4>
+      Condition Data Variables
+      <span
+        aria-label="info-circle"
+        class="anticon anticon-info-circle info-tooltip icon-sm"
+        role="img"
+        style="color: white;"
+      >
+        <svg
+          aria-hidden="true"
+          class=""
+          data-icon="info-circle"
+          fill="currentColor"
+          focusable="false"
+          height="1em"
+          viewBox="64 64 896 896"
+          width="1em"
+        >
+          <path
+            d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+          />
+          <path
+            d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+          />
+        </svg>
+      </span>
+    </h4>
+    <ul
+      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light variable-menu"
+      data-menu-list="true"
+      role="menu"
+      tabindex="0"
     >
-      <MenuItem
-        className="variable-item"
-        key="{mine_name}"
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical"
+        role="none"
       >
-        Mine Name
-      </MenuItem>
-      <MenuItem
-        className="variable-item"
-        key="{mine_no}"
+        <div
+          aria-controls="rc-menu-uuid-test-mine-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-mine"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Mine
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical"
+        role="none"
       >
-        Mine Number
-      </MenuItem>
-    </SubMenu>
-    <SubMenu
-      key="now"
-      title="Notice of Work"
-    >
-      <MenuItem
-        className="variable-item"
-        key="{proposed_annual_maximum_tonnage}"
+        <div
+          aria-controls="rc-menu-uuid-test-now-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-now"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Notice of Work
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical"
+        role="none"
       >
-        Proposed Annual Tonnage
-      </MenuItem>
-      <MenuItem
-        className="variable-item"
-        key="{application_type}"
+        <div
+          aria-controls="rc-menu-uuid-test-draft-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-draft"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Draft Permit
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical"
+        role="none"
       >
-        Application Type
-      </MenuItem>
-      <MenuItem
-        className="variable-item"
-        key="{application_dated}"
+        <div
+          aria-controls="rc-menu-uuid-test-sec-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-sec"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Security
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical"
+        role="none"
       >
-        Application Dated
-      </MenuItem>
-      <MenuItem
-        className="variable-item"
-        key="{application_last_updated_date}"
-      >
-        Application Last Updated
-      </MenuItem>
-    </SubMenu>
-    <SubMenu
-      key="draft"
-      title="Draft Permit"
-    >
-      <MenuItem
-        className="variable-item"
-        key="{issue_date}"
-      >
-        Issue Date
-      </MenuItem>
-      <MenuItem
-        className="variable-item"
-        key="{authorization_end_date}"
-      >
-        Authorization End Date
-      </MenuItem>
-      <MenuItem
-        className="variable-item"
-        key="{permit_no}"
-      >
-        Permit Number
-      </MenuItem>
-    </SubMenu>
-    <SubMenu
-      key="sec"
-      title="Security"
-    >
-      <MenuItem
-        className="variable-item"
-        key="{total_liability}"
-      >
-        Total Liability
-      </MenuItem>
-      <MenuItem
-        className="variable-item"
-        key="{liability_adjustment}"
-      >
-        Assessed Liability Adjustment
-      </MenuItem>
-      <MenuItem
-        className="variable-item"
-        key="{security_received_date}"
-      >
-        Security Received Date
-      </MenuItem>
-    </SubMenu>
-    <SubMenu
-      key="email"
-      title="Emails"
-    >
-      <MenuItem
-        className="variable-item"
-        key="{major_mine_inbox}"
-      >
-        Major Mine Inbox
-      </MenuItem>
-      <MenuItem
-        className="variable-item"
-        key="{regional_mine_inbox}"
-      >
-        Regional Mine Inbox
-        <CoreTooltip
-          title="Defaults to the region associated with the Mine."
-        />
-      </MenuItem>
-    </SubMenu>
-  </Menu>
+        <div
+          aria-controls="rc-menu-uuid-test-email-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-email"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Emails
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+    </ul>
+    <div
+      aria-hidden="true"
+      style="display: none;"
+    />
+  </div>
 </div>
 `;

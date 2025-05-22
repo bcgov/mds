@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { ReclamationSummary } from "@/components/noticeOfWork/applications/review/activities/ReclamationSummary";
 import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 
@@ -15,7 +15,7 @@ beforeEach(() => {
 
 describe("ReclamationSummary", () => {
   it("renders properly", () => {
-    const component = shallow(<ReclamationSummary {...reducerProps} />);
+    const { container: component } = render(<ReclamationSummary {...reducerProps} />);
     expect(component).toMatchSnapshot();
   });
 });

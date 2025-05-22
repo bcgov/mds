@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { UploadPermitDocumentModal } from "@/components/modalContent/UploadPermitDocumentModal";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -20,7 +21,7 @@ beforeEach(() => {
 
 describe("UploadPermitDocumentModal", () => {
   it("renders properly", () => {
-    const component = shallow(<UploadPermitDocumentModal {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><UploadPermitDocumentModal {...dispatchProps} {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

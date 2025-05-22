@@ -2,896 +2,2682 @@
 
 exports[`SandGravelQuarry renders properly 1`] = `
 <div>
-  <h4>
-    Soil Conservation
-  </h4>
-  <Row
-    gutter={16}
+  <form
+    class="ant-form ant-form-vertical common-form common-form-formName form-edit"
+    id="formName"
   >
-    <Col
-      md={12}
-      sm={24}
-    >
+    <div>
+      <h4>
+        Soil Conservation
+      </h4>
       <div
-        className="field-title"
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
       >
-        Average Depth Overburden
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Average Depth Overburden
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="inline-flex"
+                    >
+                      
+                      <span
+                        class="ant-input-group-wrapper"
+                      >
+                        <span
+                          class="ant-input-wrapper ant-input-group"
+                        >
+                          <input
+                            class="ant-input ant-input-disabled"
+                            disabled=""
+                            id="average_overburden_depth"
+                            name="average_overburden_depth"
+                            placeholder=""
+                            type="text"
+                            value=""
+                          />
+                          <span
+                            class="ant-input-group-addon"
+                          >
+                            <div
+                              class="ant-select ant-select-single ant-select-show-arrow ant-select-disabled"
+                              style="width: 150px;"
+                            >
+                              <div
+                                class="ant-select-selector"
+                              >
+                                <span
+                                  class="ant-select-selection-search"
+                                >
+                                  <input
+                                    aria-activedescendant="average_overburden_depth_unit_type_code_list_0"
+                                    aria-autocomplete="list"
+                                    aria-controls="average_overburden_depth_unit_type_code_list"
+                                    aria-expanded="false"
+                                    aria-haspopup="listbox"
+                                    aria-owns="average_overburden_depth_unit_type_code_list"
+                                    autocomplete="off"
+                                    class="ant-select-selection-search-input"
+                                    disabled=""
+                                    id="average_overburden_depth_unit_type_code"
+                                    readonly=""
+                                    role="combobox"
+                                    style="opacity: 0;"
+                                    type="search"
+                                    unselectable="on"
+                                    value=""
+                                  />
+                                </span>
+                                <span
+                                  class="ant-select-selection-placeholder"
+                                />
+                              </div>
+                              <span
+                                aria-hidden="true"
+                                class="ant-select-arrow"
+                                style="user-select: none;"
+                                unselectable="on"
+                              >
+                                <span
+                                  aria-label="down"
+                                  class="anticon anticon-down ant-select-suffix"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </div>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Average Depth of topsoil
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="inline-flex"
+                    >
+                      
+                      <span
+                        class="ant-input-group-wrapper"
+                      >
+                        <span
+                          class="ant-input-wrapper ant-input-group"
+                        >
+                          <input
+                            class="ant-input ant-input-disabled"
+                            disabled=""
+                            id="average_top_soil_depth"
+                            name="average_top_soil_depth"
+                            placeholder=""
+                            type="text"
+                            value=""
+                          />
+                          <span
+                            class="ant-input-group-addon"
+                          >
+                            <div
+                              class="ant-select ant-select-single ant-select-show-arrow ant-select-disabled"
+                              style="width: 150px;"
+                            >
+                              <div
+                                class="ant-select-selector"
+                              >
+                                <span
+                                  class="ant-select-selection-search"
+                                >
+                                  <input
+                                    aria-activedescendant="average_top_soil_depth_unit_type_code_list_0"
+                                    aria-autocomplete="list"
+                                    aria-controls="average_top_soil_depth_unit_type_code_list"
+                                    aria-expanded="false"
+                                    aria-haspopup="listbox"
+                                    aria-owns="average_top_soil_depth_unit_type_code_list"
+                                    autocomplete="off"
+                                    class="ant-select-selection-search-input"
+                                    disabled=""
+                                    id="average_top_soil_depth_unit_type_code"
+                                    readonly=""
+                                    role="combobox"
+                                    style="opacity: 0;"
+                                    type="search"
+                                    unselectable="on"
+                                    value=""
+                                  />
+                                </span>
+                                <span
+                                  class="ant-select-selection-placeholder"
+                                />
+                              </div>
+                              <span
+                                aria-hidden="true"
+                                class="ant-select-arrow"
+                                style="user-select: none;"
+                                unselectable="on"
+                              >
+                                <span
+                                  aria-label="down"
+                                  class="anticon anticon-down ant-select-suffix"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </div>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Fields
-        component={[Function]}
-        disabled={true}
-        dropdownID="average_overburden_depth_unit_type_code"
-        id="average_overburden_depth"
-        names={
-          Array [
-            "average_overburden_depth",
-            "average_overburden_depth_unit_type_code",
-          ]
-        }
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
       <div
-        className="field-title"
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
       >
-        Average Depth of topsoil
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Measures to stabilize soil overburden stockpiles and control noxious weeds
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="stability_measures_description"
+                      name="stability_measures_description"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_stability_measures_description_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Fields
-        component={[Function]}
-        disabled={true}
-        dropdownID="average_top_soil_depth_unit_type_code"
-        id="average_top_soil_depth"
-        names={
-          Array [
-            "average_top_soil_depth",
-            "average_top_soil_depth_unit_type_code",
-          ]
-        }
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-  </Row>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
+      <br />
+      <h4>
+        Land Use
+      </h4>
       <div
-        className="field-title"
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
       >
-        Measures to stabilize soil overburden stockpiles and control noxious weeds
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Is this site within the Agricultural Land Reserve?
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-radio-group ant-radio-group-solid"
+                    >
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="is_agricultural_land_reserve"
+                            type="radio"
+                            value="true"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Yes
+                        </span>
+                      </label>
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="is_agricultural_land_reserve"
+                            type="radio"
+                            value="false"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          No
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_is_agricultural_land_reserve_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Current land use zoning for the site
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="land_use_zoning"
+                      name="land_use_zoning"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_land_use_zoning_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="stability_measures_description"
-        name="stability_measures_description"
-      />
-    </Col>
-  </Row>
-  <br />
-  <h4>
-    Land Use
-  </h4>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
       <div
-        className="field-title"
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
       >
-        Is this site within the Agricultural Land Reserve?
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title--light"
+          >
+            Permit Application Number
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="agri_lnd_rsrv_permit_application_number"
+                      name="agri_lnd_rsrv_permit_application_number"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_agri_lnd_rsrv_permit_application_number_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Proposed land use
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="proposed_land_use"
+                      name="proposed_land_use"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_proposed_land_use_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="is_agricultural_land_reserve"
-        name="is_agricultural_land_reserve"
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
       <div
-        className="field-title"
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
       >
-        Current land use zoning for the site
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Official community plan for the site
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="community_plan"
+                      name="community_plan"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_community_plan_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Does the local government have a soil removal bylaw?
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-radio-group ant-radio-group-solid"
+                    >
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="has_local_soil_removal_bylaw"
+                            type="radio"
+                            value="true"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Yes
+                        </span>
+                      </label>
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="has_local_soil_removal_bylaw"
+                            type="radio"
+                            value="false"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          No
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_has_local_soil_removal_bylaw_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="land_use_zoning"
-        name="land_use_zoning"
-      />
-    </Col>
-  </Row>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
       <div
-        className="field-title--light"
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
       >
-        Permit Application Number
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Total mineable reserves over the life of the mine
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="inline-flex"
+                    >
+                      
+                      <span
+                        class="ant-input-group-wrapper"
+                      >
+                        <span
+                          class="ant-input-wrapper ant-input-group"
+                        >
+                          <input
+                            class="ant-input ant-input-disabled"
+                            disabled=""
+                            id="total_mineable_reserves"
+                            name="total_mineable_reserves"
+                            placeholder=""
+                            type="text"
+                            value=""
+                          />
+                          <span
+                            class="ant-input-group-addon"
+                          >
+                            <div
+                              class="ant-select ant-select-single ant-select-show-arrow ant-select-disabled"
+                              style="width: 150px;"
+                            >
+                              <div
+                                class="ant-select-selector"
+                              >
+                                <span
+                                  class="ant-select-selection-search"
+                                >
+                                  <input
+                                    aria-activedescendant="total_mineable_reserves_unit_type_code_list_0"
+                                    aria-autocomplete="list"
+                                    aria-controls="total_mineable_reserves_unit_type_code_list"
+                                    aria-expanded="false"
+                                    aria-haspopup="listbox"
+                                    aria-owns="total_mineable_reserves_unit_type_code_list"
+                                    autocomplete="off"
+                                    class="ant-select-selection-search-input"
+                                    disabled=""
+                                    id="total_mineable_reserves_unit_type_code"
+                                    readonly=""
+                                    role="combobox"
+                                    style="opacity: 0;"
+                                    type="search"
+                                    unselectable="on"
+                                    value=""
+                                  />
+                                </span>
+                                <span
+                                  class="ant-select-selection-placeholder"
+                                />
+                              </div>
+                              <span
+                                aria-hidden="true"
+                                class="ant-select-arrow"
+                                style="user-select: none;"
+                                unselectable="on"
+                              >
+                                <span
+                                  aria-label="down"
+                                  class="anticon anticon-down ant-select-suffix"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </div>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Annual extraction from site
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="inline-flex"
+                    >
+                      
+                      <span
+                        class="ant-input-group-wrapper"
+                      >
+                        <span
+                          class="ant-input-wrapper ant-input-group"
+                        >
+                          <input
+                            class="ant-input ant-input-disabled"
+                            disabled=""
+                            id="total_annual_extraction"
+                            name="total_annual_extraction"
+                            placeholder=""
+                            type="text"
+                            value=""
+                          />
+                          <span
+                            class="ant-input-group-addon"
+                          >
+                            <div
+                              class="ant-select ant-select-single ant-select-show-arrow ant-select-disabled"
+                              style="width: 150px;"
+                            >
+                              <div
+                                class="ant-select-selector"
+                              >
+                                <span
+                                  class="ant-select-selection-search"
+                                >
+                                  <input
+                                    aria-activedescendant="total_annual_extraction_unit_type_code_list_0"
+                                    aria-autocomplete="list"
+                                    aria-controls="total_annual_extraction_unit_type_code_list"
+                                    aria-expanded="false"
+                                    aria-haspopup="listbox"
+                                    aria-owns="total_annual_extraction_unit_type_code_list"
+                                    autocomplete="off"
+                                    class="ant-select-selection-search-input"
+                                    disabled=""
+                                    id="total_annual_extraction_unit_type_code"
+                                    readonly=""
+                                    role="combobox"
+                                    style="opacity: 0;"
+                                    type="search"
+                                    unselectable="on"
+                                    value=""
+                                  />
+                                </span>
+                                <span
+                                  class="ant-select-selection-placeholder"
+                                />
+                              </div>
+                              <span
+                                aria-hidden="true"
+                                class="ant-select-arrow"
+                                style="user-select: none;"
+                                unselectable="on"
+                              >
+                                <span
+                                  aria-label="down"
+                                  class="anticon anticon-down ant-select-suffix"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </div>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="agri_lnd_rsrv_permit_application_number"
-        name="agri_lnd_rsrv_permit_application_number"
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
+      <br />
+      <h4>
+        Activities
+      </h4>
+      <div>
+        <div>
+          <div
+            class="ant-table-wrapper"
+            style="position: relative; z-index: 5;"
+          >
+            <div
+              class="ant-table ant-table-empty"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Activity
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Disturbed Area (ha)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Merchantable timber volume (m³)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      />
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-placeholder"
+                    >
+                      <td
+                        class="ant-table-cell"
+                        colspan="100%"
+                        style="color: rgb(191, 191, 191);"
+                      >
+                        No Data Yet
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
       <div
-        className="field-title"
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
       >
-        Proposed land use
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-18"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Is the work year round or only seasonal?
+            <span
+              class="violet"
+              style="margin-left: 5px;"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-radio-group ant-radio-group-solid"
+                    >
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="work_year_info"
+                            type="radio"
+                            value="Year round"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Year round
+                        </span>
+                      </label>
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="work_year_info"
+                            type="radio"
+                            value="Seasonal"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Seasonal
+                        </span>
+                      </label>
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="work_year_info"
+                            type="radio"
+                            value="Intermittent"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Intermittent
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_work_year_info_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Brief description of operation, including proposed work schedule
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="proposed_activity_description"
+                      name="proposed_activity_description"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_proposed_activity_description_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="proposed_land_use"
-        name="proposed_land_use"
-      />
-    </Col>
-  </Row>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
+      <br />
+      <h4>
+        Reclamation Program
+      </h4>
       <div
-        className="field-title"
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
       >
-        Official community plan for the site
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Proposed reclamation and timing for this specific activity
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="reclamation_description"
+                      name="reclamation_description"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_reclamation_description_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Estimated Cost of reclamation activities described above
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="reclamation_cost"
+                      class="ant-input ant-input-disabled"
+                      data-testid="reclamation_cost"
+                      disabled=""
+                      id="reclamation_cost"
+                      name="reclamation_cost"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_reclamation_cost_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="community_plan"
-        name="community_plan"
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
       <div
-        className="field-title"
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
       >
-        Does the local government have a soil removal bylaw?
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            If backfilling of pits or pit slopes is proposed in the final configuration for reclamation, details of materials to be used and placement procedures
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="reclamation_backfill_detail"
+                      name="reclamation_backfill_detail"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_reclamation_backfill_detail_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Will progressive reclamation be carried out?
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-radio-group ant-radio-group-solid"
+                    >
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="progressive_reclamation"
+                            type="radio"
+                            value="true"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Yes
+                        </span>
+                      </label>
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="progressive_reclamation"
+                            type="radio"
+                            value="false"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          No
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_progressive_reclamation_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Maximum unreclaimed disturbance at any given time
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="inline-flex"
+                    >
+                      
+                      <span
+                        class="ant-input-group-wrapper"
+                      >
+                        <span
+                          class="ant-input-wrapper ant-input-group"
+                        >
+                          <input
+                            class="ant-input ant-input-disabled"
+                            disabled=""
+                            id="max_unreclaimed"
+                            name="max_unreclaimed"
+                            placeholder=""
+                            type="text"
+                            value=""
+                          />
+                          <span
+                            class="ant-input-group-addon"
+                          >
+                            <div
+                              class="ant-select ant-select-single ant-select-show-arrow ant-select-disabled"
+                              style="width: 150px;"
+                            >
+                              <div
+                                class="ant-select-selector"
+                              >
+                                <span
+                                  class="ant-select-selection-search"
+                                >
+                                  <input
+                                    aria-activedescendant="max_unreclaimed_unit_type_code_list_0"
+                                    aria-autocomplete="list"
+                                    aria-controls="max_unreclaimed_unit_type_code_list"
+                                    aria-expanded="false"
+                                    aria-haspopup="listbox"
+                                    aria-owns="max_unreclaimed_unit_type_code_list"
+                                    autocomplete="off"
+                                    class="ant-select-selection-search-input"
+                                    disabled=""
+                                    id="max_unreclaimed_unit_type_code"
+                                    readonly=""
+                                    role="combobox"
+                                    style="opacity: 0;"
+                                    type="search"
+                                    unselectable="on"
+                                    value=""
+                                  />
+                                </span>
+                                <span
+                                  class="ant-select-selection-placeholder"
+                                />
+                              </div>
+                              <span
+                                aria-hidden="true"
+                                class="ant-select-arrow"
+                                style="user-select: none;"
+                                unselectable="on"
+                              >
+                                <span
+                                  aria-label="down"
+                                  class="anticon anticon-down ant-select-suffix"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </div>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="has_local_soil_removal_bylaw"
-        name="has_local_soil_removal_bylaw"
-      />
-    </Col>
-  </Row>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
+      <br />
+      <br />
+      <h4>
+        Groundwater Protection
+      </h4>
       <div
-        className="field-title"
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
       >
-        Total mineable reserves over the life of the mine
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Average depth to the high groundwater table at the proposed excavation
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="inline-flex"
+                    >
+                      
+                      <span
+                        class="ant-input-group-wrapper"
+                      >
+                        <span
+                          class="ant-input-wrapper ant-input-group"
+                        >
+                          <input
+                            class="ant-input ant-input-disabled"
+                            disabled=""
+                            id="average_groundwater_depth"
+                            name="average_groundwater_depth"
+                            placeholder=""
+                            type="text"
+                            value=""
+                          />
+                          <span
+                            class="ant-input-group-addon"
+                          >
+                            <div
+                              class="ant-select ant-select-single ant-select-show-arrow ant-select-disabled"
+                              style="width: 150px;"
+                            >
+                              <div
+                                class="ant-select-selector"
+                              >
+                                <span
+                                  class="ant-select-selection-search"
+                                >
+                                  <input
+                                    aria-activedescendant="average_groundwater_depth_unit_type_code_list_0"
+                                    aria-autocomplete="list"
+                                    aria-controls="average_groundwater_depth_unit_type_code_list"
+                                    aria-expanded="false"
+                                    aria-haspopup="listbox"
+                                    aria-owns="average_groundwater_depth_unit_type_code_list"
+                                    autocomplete="off"
+                                    class="ant-select-selection-search-input"
+                                    disabled=""
+                                    id="average_groundwater_depth_unit_type_code"
+                                    readonly=""
+                                    role="combobox"
+                                    style="opacity: 0;"
+                                    type="search"
+                                    unselectable="on"
+                                    value=""
+                                  />
+                                </span>
+                                <span
+                                  class="ant-select-selection-placeholder"
+                                />
+                              </div>
+                              <span
+                                aria-hidden="true"
+                                class="ant-select-arrow"
+                                style="user-select: none;"
+                                unselectable="on"
+                              >
+                                <span
+                                  aria-label="down"
+                                  class="anticon anticon-down ant-select-suffix"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </div>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Elevation of the groundwater table was determined from
+            <div
+              class="ant-form-item ant-form-item-with-help"
+            >
+              <div
+                class="ant-row ant-form-item-row"
+              >
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
+                  >
+                    <div
+                      class="ant-form-item-control-input-content"
+                    >
+                      <label
+                        class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-checkbox ant-checkbox-disabled"
+                        >
+                          <input
+                            class="ant-checkbox-input"
+                            disabled=""
+                            id="has_groundwater_from_existing_area"
+                            type="checkbox"
+                            value=""
+                          />
+                          <span
+                            class="ant-checkbox-inner"
+                          />
+                        </span>
+                        <span>
+                          Existing area wells
+                          <span
+                            class="violet"
+                            style="margin-left: 5px;"
+                          >
+                            Edited
+                          </span>
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; flex-wrap: nowrap;"
+                  >
+                    <div
+                      class="ant-form-item-explain ant-form-item-explain-connected"
+                      id="formName_has_groundwater_from_existing_area_help"
+                      role="alert"
+                    >
+                      <div
+                        class=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-form-item ant-form-item-with-help"
+            >
+              <div
+                class="ant-row ant-form-item-row"
+              >
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
+                  >
+                    <div
+                      class="ant-form-item-control-input-content"
+                    >
+                      <label
+                        class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-checkbox ant-checkbox-disabled"
+                        >
+                          <input
+                            class="ant-checkbox-input"
+                            disabled=""
+                            id="has_groundwater_from_test_pits"
+                            type="checkbox"
+                            value=""
+                          />
+                          <span
+                            class="ant-checkbox-inner"
+                          />
+                        </span>
+                        <span>
+                          Test pits
+                          <span
+                            class="violet"
+                            style="margin-left: 5px;"
+                          >
+                            Edited
+                          </span>
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; flex-wrap: nowrap;"
+                  >
+                    <div
+                      class="ant-form-item-explain ant-form-item-explain-connected"
+                      id="formName_has_groundwater_from_test_pits_help"
+                      role="alert"
+                    >
+                      <div
+                        class=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-form-item ant-form-item-with-help"
+            >
+              <div
+                class="ant-row ant-form-item-row"
+              >
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
+                  >
+                    <div
+                      class="ant-form-item-control-input-content"
+                    >
+                      <label
+                        class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-checkbox ant-checkbox-disabled"
+                        >
+                          <input
+                            class="ant-checkbox-input"
+                            disabled=""
+                            id="has_groundwater_from_test_wells"
+                            type="checkbox"
+                            value=""
+                          />
+                          <span
+                            class="ant-checkbox-inner"
+                          />
+                        </span>
+                        <span>
+                          Test wells drilled for this purpose
+                          <span
+                            class="violet"
+                            style="margin-left: 5px;"
+                          >
+                            Edited
+                          </span>
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; flex-wrap: nowrap;"
+                  >
+                    <div
+                      class="ant-form-item-explain ant-form-item-explain-connected"
+                      id="formName_has_groundwater_from_test_wells_help"
+                      role="alert"
+                    >
+                      <div
+                        class=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-form-item ant-form-item-with-help"
+            >
+              <div
+                class="ant-row ant-form-item-row"
+              >
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
+                  >
+                    <div
+                      class="ant-form-item-control-input-content"
+                    >
+                      <label
+                        class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-checkbox ant-checkbox-disabled"
+                        >
+                          <input
+                            class="ant-checkbox-input"
+                            disabled=""
+                            id="has_ground_water_from_other"
+                            type="checkbox"
+                            value=""
+                          />
+                          <span
+                            class="ant-checkbox-inner"
+                          />
+                        </span>
+                        <span>
+                          Other
+                          <span
+                            class="violet"
+                            style="margin-left: 5px;"
+                          >
+                            Edited
+                          </span>
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; flex-wrap: nowrap;"
+                  >
+                    <div
+                      class="ant-form-item-explain ant-form-item-explain-connected"
+                      id="formName_has_ground_water_from_other_help"
+                      role="alert"
+                    >
+                      <div
+                        class=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-form-item ant-form-item-with-help"
+            >
+              <div
+                class="ant-row ant-form-item-row"
+              >
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
+                  >
+                    <div
+                      class="ant-form-item-control-input-content"
+                    >
+                      <textarea
+                        class="ant-input ant-input-disabled"
+                        disabled=""
+                        id="groundwater_from_other_description"
+                        name="groundwater_from_other_description"
+                        style="height: 0px; resize: none; min-height: -12px;"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; flex-wrap: nowrap;"
+                  >
+                    <div
+                      class="ant-form-item-explain ant-form-item-explain-connected"
+                      id="formName_groundwater_from_other_description_help"
+                      role="alert"
+                    >
+                      <div
+                        class=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Fields
-        component={[Function]}
-        disabled={true}
-        dropdownID="total_mineable_reserves_unit_type_code"
-        id="total_mineable_reserves"
-        names={
-          Array [
-            "total_mineable_reserves",
-            "total_mineable_reserves_unit_type_code",
-          ]
-        }
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
       <div
-        className="field-title"
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
       >
-        Annual extraction from site
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Measures proposed to protect groundwater from potential impacts of the proposed mining activity
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="groundwater_protection_plan"
+                      name="groundwater_protection_plan"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_groundwater_protection_plan_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Fields
-        component={[Function]}
-        disabled={true}
-        dropdownID="total_annual_extraction_unit_type_code"
-        id="total_annual_extraction"
-        names={
-          Array [
-            "total_annual_extraction",
-            "total_annual_extraction_unit_type_code",
-          ]
-        }
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-  </Row>
-  <br />
-  <h4>
-    Activities
-  </h4>
-  <Connect(CoreEditableTable)
-    fieldID="activity_detail_id"
-    fieldName="details"
-    isViewMode={true}
-    tableContent={
-      Array [
-        Object {
-          "component": [Function],
-          "minRows": 1,
-          "title": "Activity",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "activity_type_description",
-        },
-        Object {
-          "component": [Function],
-          "title": "Disturbed Area (ha)",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "disturbed_area",
-        },
-        Object {
-          "component": [Function],
-          "title": "Merchantable timber volume (m³)",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "timber_volume",
-        },
-      ]
-    }
-  />
-  <br />
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={18}
-      sm={24}
-    >
+      <br />
+      <h4>
+        Impact Minimization
+      </h4>
       <div
-        className="field-title"
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
       >
-        Is the work year round or only seasonal?
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-          style={
-            Object {
-              "marginLeft": "5px",
-            }
-          }
-        />
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Shortest Distance between proposed excavation to nearest residence
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="inline-flex"
+                    >
+                      
+                      <span
+                        class="ant-input-group-wrapper"
+                      >
+                        <span
+                          class="ant-input-wrapper ant-input-group"
+                        >
+                          <input
+                            class="ant-input ant-input-disabled"
+                            disabled=""
+                            id="nearest_residence_distance"
+                            name="nearest_residence_distance"
+                            placeholder=""
+                            type="text"
+                            value=""
+                          />
+                          <span
+                            class="ant-input-group-addon"
+                          >
+                            <div
+                              class="ant-select ant-select-single ant-select-show-arrow ant-select-disabled"
+                              style="width: 150px;"
+                            >
+                              <div
+                                class="ant-select-selector"
+                              >
+                                <span
+                                  class="ant-select-selection-search"
+                                >
+                                  <input
+                                    aria-activedescendant="nearest_residence_distance_unit_type_code_list_0"
+                                    aria-autocomplete="list"
+                                    aria-controls="nearest_residence_distance_unit_type_code_list"
+                                    aria-expanded="false"
+                                    aria-haspopup="listbox"
+                                    aria-owns="nearest_residence_distance_unit_type_code_list"
+                                    autocomplete="off"
+                                    class="ant-select-selection-search-input"
+                                    disabled=""
+                                    id="nearest_residence_distance_unit_type_code"
+                                    readonly=""
+                                    role="combobox"
+                                    style="opacity: 0;"
+                                    type="search"
+                                    unselectable="on"
+                                    value=""
+                                  />
+                                </span>
+                                <span
+                                  class="ant-select-selection-placeholder"
+                                />
+                              </div>
+                              <span
+                                aria-hidden="true"
+                                class="ant-select-arrow"
+                                style="user-select: none;"
+                                unselectable="on"
+                              >
+                                <span
+                                  aria-label="down"
+                                  class="anticon anticon-down ant-select-suffix"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </div>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Shortest distance between proposed excavation to nearest residential water source
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="inline-flex"
+                    >
+                      
+                      <span
+                        class="ant-input-group-wrapper"
+                      >
+                        <span
+                          class="ant-input-wrapper ant-input-group"
+                        >
+                          <input
+                            class="ant-input ant-input-disabled"
+                            disabled=""
+                            id="nearest_water_source_distance"
+                            name="nearest_water_source_distance"
+                            placeholder=""
+                            type="text"
+                            value=""
+                          />
+                          <span
+                            class="ant-input-group-addon"
+                          >
+                            <div
+                              class="ant-select ant-select-single ant-select-show-arrow ant-select-disabled"
+                              style="width: 150px;"
+                            >
+                              <div
+                                class="ant-select-selector"
+                              >
+                                <span
+                                  class="ant-select-selection-search"
+                                >
+                                  <input
+                                    aria-activedescendant="nearest_water_source_distance_unit_type_code_list_0"
+                                    aria-autocomplete="list"
+                                    aria-controls="nearest_water_source_distance_unit_type_code_list"
+                                    aria-expanded="false"
+                                    aria-haspopup="listbox"
+                                    aria-owns="nearest_water_source_distance_unit_type_code_list"
+                                    autocomplete="off"
+                                    class="ant-select-selection-search-input"
+                                    disabled=""
+                                    id="nearest_water_source_distance_unit_type_code"
+                                    readonly=""
+                                    role="combobox"
+                                    style="opacity: 0;"
+                                    type="search"
+                                    unselectable="on"
+                                    value=""
+                                  />
+                                </span>
+                                <span
+                                  class="ant-select-selection-placeholder"
+                                />
+                              </div>
+                              <span
+                                aria-hidden="true"
+                                class="ant-select-arrow"
+                                style="user-select: none;"
+                                unselectable="on"
+                              >
+                                <span
+                                  aria-label="down"
+                                  class="anticon anticon-down ant-select-suffix"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </div>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Measures proposed to prevent inadvertent access of unauthorized persons to the mine site
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="secure_access_plan"
+                      name="secure_access_plan"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_secure_access_plan_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Measures proposed to minimize noise impacts of the operation
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="noise_impact_plan"
+                      name="noise_impact_plan"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_noise_impact_plan_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Measures proposed to minimize the dust impacts of the operation
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="dust_impact_plan"
+                      name="dust_impact_plan"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_dust_impact_plan_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Measures proposed to minimize visual impacts of the operation
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="visual_impact_plan"
+                      name="visual_impact_plan"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_visual_impact_plan_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Field
-        component={[Function]}
-        customOptions={
-          Array [
-            Object {
-              "label": "Year round",
-              "value": "Year round",
-            },
-            Object {
-              "label": "Seasonal",
-              "value": "Seasonal",
-            },
-            Object {
-              "label": "Intermittent",
-              "value": "Intermittent",
-            },
-          ]
-        }
-        disabled={true}
-        id="work_year_info"
-        name="work_year_info"
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Brief description of operation, including proposed work schedule
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="proposed_activity_description"
-        name="proposed_activity_description"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-  </Row>
-  <br />
-  <h4>
-    Reclamation Program
-  </h4>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Proposed reclamation and timing for this specific activity
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="reclamation_description"
-        name="reclamation_description"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Estimated Cost of reclamation activities described above
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Field
-        autoComplete="off"
-        component={[Function]}
-        disabled={true}
-        format={[Function]}
-        id="reclamation_cost"
-        name="reclamation_cost"
-        normalize={[Function]}
-        onChange={[Function]}
-        onFocus={[Function]}
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-  </Row>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        If backfilling of pits or pit slopes is proposed in the final configuration for reclamation, details of materials to be used and placement procedures
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="reclamation_backfill_detail"
-        name="reclamation_backfill_detail"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Will progressive reclamation be carried out?
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="progressive_reclamation"
-        name="progressive_reclamation"
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Maximum unreclaimed disturbance at any given time
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Fields
-        component={[Function]}
-        disabled={true}
-        dropdownID="max_unreclaimed_unit_type_code"
-        id="max_unreclaimed"
-        names={
-          Array [
-            "max_unreclaimed",
-            "max_unreclaimed_unit_type_code",
-          ]
-        }
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-  </Row>
-  <br />
-  <br />
-  <h4>
-    Groundwater Protection
-  </h4>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Average depth to the high groundwater table at the proposed excavation
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Fields
-        component={[Function]}
-        disabled={true}
-        dropdownID="average_groundwater_depth_unit_type_code"
-        id="average_groundwater_depth"
-        names={
-          Array [
-            "average_groundwater_depth",
-            "average_groundwater_depth_unit_type_code",
-          ]
-        }
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Elevation of the groundwater table was determined from
-        <Field
-          component={[Function]}
-          disabled={true}
-          id="has_groundwater_from_existing_area"
-          label={
-            <React.Fragment>
-              Existing area wells
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={
-                  Object {
-                    "marginLeft": "5px",
-                  }
-                }
-              />
-            </React.Fragment>
-          }
-          name="has_groundwater_from_existing_area"
-          type="checkbox"
-        />
-        <Field
-          component={[Function]}
-          disabled={true}
-          id="has_groundwater_from_test_pits"
-          label={
-            <React.Fragment>
-              Test pits
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={
-                  Object {
-                    "marginLeft": "5px",
-                  }
-                }
-              />
-            </React.Fragment>
-          }
-          name="has_groundwater_from_test_pits"
-          type="checkbox"
-        />
-        <Field
-          component={[Function]}
-          disabled={true}
-          id="has_groundwater_from_test_wells"
-          label={
-            <React.Fragment>
-              Test wells drilled for this purpose
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={
-                  Object {
-                    "marginLeft": "5px",
-                  }
-                }
-              />
-            </React.Fragment>
-          }
-          name="has_groundwater_from_test_wells"
-          type="checkbox"
-        />
-        <Field
-          component={[Function]}
-          disabled={true}
-          id="has_ground_water_from_other"
-          label={
-            <React.Fragment>
-              Other
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={
-                  Object {
-                    "marginLeft": "5px",
-                  }
-                }
-              />
-            </React.Fragment>
-          }
-          name="has_ground_water_from_other"
-          type="checkbox"
-        />
-        <Field
-          component={[Function]}
-          disabled={true}
-          id="groundwater_from_other_description"
-          name="groundwater_from_other_description"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </div>
-    </Col>
-  </Row>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Measures proposed to protect groundwater from potential impacts of the proposed mining activity
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="groundwater_protection_plan"
-        name="groundwater_protection_plan"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-  </Row>
-  <br />
-  <h4>
-    Impact Minimization
-  </h4>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Shortest Distance between proposed excavation to nearest residence
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Fields
-        component={[Function]}
-        disabled={true}
-        dropdownID="nearest_residence_distance_unit_type_code"
-        id="nearest_residence_distance"
-        names={
-          Array [
-            "nearest_residence_distance",
-            "nearest_residence_distance_unit_type_code",
-          ]
-        }
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Shortest distance between proposed excavation to nearest residential water source
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Fields
-        component={[Function]}
-        disabled={true}
-        dropdownID="nearest_water_source_distance_unit_type_code"
-        id="nearest_water_source_distance"
-        names={
-          Array [
-            "nearest_water_source_distance",
-            "nearest_water_source_distance_unit_type_code",
-          ]
-        }
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Measures proposed to prevent inadvertent access of unauthorized persons to the mine site
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="secure_access_plan"
-        name="secure_access_plan"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Measures proposed to minimize noise impacts of the operation
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="noise_impact_plan"
-        name="noise_impact_plan"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Measures proposed to minimize the dust impacts of the operation
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="dust_impact_plan"
-        name="dust_impact_plan"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Measures proposed to minimize visual impacts of the operation
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="visual_impact_plan"
-        name="visual_impact_plan"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-  </Row>
+    </div>
+  </form>
 </div>
 `;

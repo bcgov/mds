@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { UploadProjectDecisionPackageDocumentModal } from "@/components/modalContent/UploadProjectDecisionPackageDocumentModal";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const props = {};
 
@@ -10,6 +11,7 @@ const setupProps = () => {
   props.instructions = "These are instructions.";
   props.onSubmit = jest.fn();
   props.closeModal = jest.fn();
+  props.change = jest.fn();
 };
 
 beforeEach(() => {
@@ -18,7 +20,7 @@ beforeEach(() => {
 
 describe("UploadProjectDecisionPackageDocumentModal", () => {
   it("renders properly", () => {
-    const component = shallow(<UploadProjectDecisionPackageDocumentModal {...props} />);
+    const { container: component } = render(<ReduxWrapper><UploadProjectDecisionPackageDocumentModal {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

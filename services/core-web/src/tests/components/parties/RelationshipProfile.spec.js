@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { RelationshipProfile } from "@/components/parties/RelationshipProfile";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
@@ -28,7 +28,7 @@ beforeEach(() => {
 
 describe("RelationshipProfile", () => {
   it("renders properly", () => {
-    const component = shallow(
+    const { container: component } = render(
       <RelationshipProfile
         {...dispatchProps}
         {...reducerProps}

@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { SearchCoordinatesForm } from "@/components/Forms/SearchCoordinatesForm";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 
@@ -14,7 +15,7 @@ beforeEach(() => {
 
 describe("SearchCoordinatesForm", () => {
   it("renders properly", () => {
-    const component = shallow(<SearchCoordinatesForm {...dispatchProps} />);
+    const { container: component } = render(<ReduxWrapper><SearchCoordinatesForm {...dispatchProps} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

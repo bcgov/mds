@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { UploadProjectDecisionPackageDocumentForm } from "@/components/Forms/UploadProjectDecisionPackageDocumentForm";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
 const props = {};
 
@@ -21,7 +22,7 @@ beforeEach(() => {
 
 describe("UploadProjectDecisionPackageDocumentForm", () => {
   it("renders properly", () => {
-    const component = shallow(<UploadProjectDecisionPackageDocumentForm {...props} />);
+    const { container: component } = render(<ReduxWrapper><UploadProjectDecisionPackageDocumentForm {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

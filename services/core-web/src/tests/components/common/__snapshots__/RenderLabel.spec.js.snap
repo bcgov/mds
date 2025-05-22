@@ -1,39 +1,77 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RenderLabel renders properly 1`] = `
-<InternalFormItem>
-  <Row
-    className="template-letter-content"
+<div>
+  <div
+    class="ant-form-item"
   >
-    <Col
-      span={2}
+    <div
+      class="ant-row ant-form-item-row"
     >
-      <ForwardRef
-        disabled={true}
+      <div
+        class="ant-col ant-form-item-control"
       >
-        test
-      </ForwardRef>
-    </Col>
-    <Col
-      span={1}
-    >
-      <Divider
-        plain={true}
-        type="vertical"
-      />
-    </Col>
-    <Col
-      span={21}
-    >
-      <ForwardRef
-        ellipsis={
-          Object {
-            "expandable": true,
-            "rows": 3,
-          }
-        }
-      />
-    </Col>
-  </Row>
-</InternalFormItem>
+        <div
+          class="ant-form-item-control-input"
+        >
+          <div
+            class="ant-form-item-control-input-content"
+          >
+            <div
+              class="ant-row template-letter-content"
+            >
+              <div
+                class="ant-col ant-col-2"
+              >
+                <div
+                  class="ant-typography ant-typography-disabled"
+                >
+                  test
+                </div>
+              </div>
+              <div
+                class="ant-col ant-col-1"
+              >
+                <div
+                  class="ant-divider ant-divider-vertical ant-divider-plain"
+                  role="separator"
+                />
+              </div>
+              <div
+                class="ant-col ant-col-21"
+              >
+                <div
+                  class="ant-typography ant-typography-ellipsis"
+                >
+                  <span
+                    aria-hidden="true"
+                    style="position: fixed; display: block; left: 0px; top: 0px; z-index: -9999; visibility: hidden; pointer-events: none; font-size: 0px; word-break: keep-all; white-space: nowrap;"
+                  >
+                    lg
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    style="position: fixed; display: block; left: 0px; top: 0px; z-index: -9999; visibility: hidden; pointer-events: none; font-size: 0px; width: 0px; white-space: normal; margin: 0px; padding: 0px;"
+                  >
+                    <span
+                      aria-hidden="true"
+                    >
+                      ...
+                    </span>
+                    <a
+                      aria-label="Expand"
+                      class="ant-typography-expand"
+                    >
+                      Expand
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;

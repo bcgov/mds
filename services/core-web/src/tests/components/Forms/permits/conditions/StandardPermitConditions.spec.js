@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { StandardPermitConditions } from "@/components/Forms/permits/conditions/StandardPermitConditions";
 
 const dispatchProps = {};
@@ -28,7 +28,7 @@ beforeEach(() => {
 
 describe("StandardPermitConditions", () => {
   it("renders properly", () => {
-    const component = shallow(<StandardPermitConditions {...dispatchProps} {...props} />);
+    const { container: component } = render(<StandardPermitConditions {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

@@ -1,13 +1,99 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UnionRep renders properly 1`] = `
-<DefaultContact
-  editPermission="role_edit_parties"
-  partyRelationship={
-    Object {
-      "union_rep_company": "company name",
-    }
-  }
-  partyRelationshipSubTitle="company name"
-/>
+<div>
+  <div
+    class="ant-card"
+  >
+    <div
+      class="ant-card-head"
+      style="min-height: 0px;"
+    >
+      <div
+        class="ant-card-head-wrapper"
+      >
+        <div
+          class="ant-card-head-title"
+        >
+          <div>
+            <div
+              class="flex flex-between"
+            >
+              <div
+                class="flex items-center"
+              >
+                <h4
+                  class="margin-large--right"
+                />
+                <p>
+                  (
+                  company name
+                  )
+                </p>
+              </div>
+            </div>
+            <div
+              class="padding-md--top"
+            >
+              <a
+                href="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/history/undefined"
+              >
+                <button
+                  class="ant-btn ant-btn-default margin-none"
+                  type="button"
+                >
+                  <span>
+                    See History
+                  </span>
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-card-body"
+    >
+      <div
+        class="default-contact"
+      >
+        <a
+          href="/dashboard/party-guid/profile"
+        >
+          <h4
+            class="link-colour"
+          />
+        </a>
+        <div>
+          <h6>
+            Email Address
+          </h6>
+          <p>
+            N/A
+          </p>
+        </div>
+        <div>
+          <h6>
+            Phone Number
+          </h6>
+          <p>
+            N/A
+          </p>
+        </div>
+        <div>
+          <h6>
+             Since
+          </h6>
+          <span>
+            Unknown
+          </span>
+        </div>
+      </div>
+      <div
+        class="right"
+      />
+    </div>
+  </div>
+</div>
 `;

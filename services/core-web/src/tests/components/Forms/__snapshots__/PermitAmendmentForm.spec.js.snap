@@ -1,148 +1,720 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PermitAmendmentForm renders properly 1`] = `
-<Connect(ReduxForm)
-  initialValues={Object {}}
-  isModal={true}
-  name="PERMIT_AMENDMENT"
-  onSubmit={[MockFunction]}
-  reduxFormConfig={
-    Object {
-      "touchOnBlur": true,
-      "validate": [Function],
-    }
-  }
->
-  <Row
-    gutter={48}
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-PERMIT_AMENDMENT form-edit"
+    id="PERMIT_AMENDMENT"
   >
-    <Col
-      md={12}
-      sm={24}
+    <div
+      class="ant-row"
+      style="margin-left: -24px; margin-right: -24px;"
     >
-      <PartySelectField
-        allowAddingParties={true}
-        id="permittee_party_guid"
-        label="Permittee"
-        name="permittee_party_guid"
-        partyLabel="permittee"
-        required={true}
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-      <Field
-        component={[Function]}
-        id="issue_date"
-        label="Issue Date"
-        name="issue_date"
-        required={true}
-        validate={
-          Array [
-            [Function],
-            [Function],
-          ]
-        }
-      />
-      <Field
-        component={[Function]}
-        id="authorization_end_date"
-        label="Authorization End Date"
-        name="authorization_end_date"
-        required={true}
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-      <Field
-        component={[Function]}
-        id="description"
-        label="Description"
-        name="description"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-      <Divider />
-      <InternalFormItem
-        label="Securities"
+      <div
+        class="ant-col ant-col-sm-24 ant-col-md-12"
+        style="padding-left: 24px; padding-right: 24px;"
       >
-        <Field
-          component={[Function]}
-          id="security_not_required"
-          label="Security Not Required"
-          name="security_not_required"
-          onChange={[Function]}
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                title="Permittee"
+              >
+                Permittee
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    class="ant-select ant-select-in-form-item ant-select-single ant-select-show-arrow ant-select-show-search"
+                    style="width: 100%;"
+                  >
+                    <div
+                      class="ant-select-selector"
+                    >
+                      <span
+                        class="ant-select-selection-search"
+                      >
+                        <input
+                          aria-activedescendant="permittee_party_guid_list_0"
+                          aria-autocomplete="list"
+                          aria-controls="permittee_party_guid_list"
+                          aria-haspopup="listbox"
+                          aria-owns="permittee_party_guid_list"
+                          autocomplete="off"
+                          class="ant-select-selection-search-input"
+                          id="permittee_party_guid"
+                          role="combobox"
+                          type="search"
+                          value=""
+                        />
+                      </span>
+                      <span
+                        class="ant-select-selection-item"
+                        title=""
+                      />
+                    </div>
+                    <span
+                      aria-hidden="true"
+                      class="ant-select-arrow"
+                      style="user-select: none;"
+                      unselectable="on"
+                    >
+                      <span
+                        aria-label="down"
+                        class="anticon anticon-down ant-select-suffix"
+                        role="img"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          data-icon="down"
+                          fill="currentColor"
+                          focusable="false"
+                          height="1em"
+                          viewBox="64 64 896 896"
+                          width="1em"
+                        >
+                          <path
+                            d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="PERMIT_AMENDMENT_issue_date"
+                title=""
+              >
+                <div
+                  style="width: 100%;"
+                >
+                  Issue Date
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    class="ant-picker"
+                  >
+                    <div
+                      class="ant-picker-input"
+                    >
+                      <input
+                        aria-required="true"
+                        autocomplete="off"
+                        id="issue_date"
+                        name="issue_date"
+                        placeholder=""
+                        readonly=""
+                        size="12"
+                        title=""
+                        value=""
+                      />
+                      <span
+                        class="ant-picker-suffix"
+                      >
+                        <span
+                          aria-label="calendar"
+                          class="anticon anticon-calendar"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="calendar"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="PERMIT_AMENDMENT_issue_date_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="PERMIT_AMENDMENT_authorization_end_date"
+                title=""
+              >
+                <div
+                  style="width: 100%;"
+                >
+                  Authorization End Date
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    class="ant-picker"
+                  >
+                    <div
+                      class="ant-picker-input"
+                    >
+                      <input
+                        aria-required="true"
+                        autocomplete="off"
+                        id="authorization_end_date"
+                        name="authorization_end_date"
+                        placeholder=""
+                        readonly=""
+                        size="12"
+                        title=""
+                        value=""
+                      />
+                      <span
+                        class="ant-picker-suffix"
+                      >
+                        <span
+                          aria-label="calendar"
+                          class="anticon anticon-calendar"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="calendar"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="PERMIT_AMENDMENT_authorization_end_date_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="PERMIT_AMENDMENT_description"
+                title=""
+              >
+                <div>
+                  Description
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <textarea
+                    class="ant-input"
+                    id="description"
+                    name="description"
+                    style="height: 0px; resize: none; min-height: -12px;"
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="PERMIT_AMENDMENT_description_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-divider ant-divider-horizontal"
+          role="separator"
         />
-      </InternalFormItem>
-      <Field
-        autoComplete="off"
-        component={[Function]}
-        format={[Function]}
-        help="This amount will be added to the Total Assessed Liability amount for this permit.
-                Changes to this value in Core will not be updated in MMS."
-        id="liability_adjustment"
-        label="Assessed Liability Adjustment"
-        name="liability_adjustment"
-        normalize={[Function]}
-        onChange={[Function]}
-        onFocus={[Function]}
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-        warn={
-          Array [
-            [Function],
-          ]
-        }
-      />
-      <Field
-        component={[Function]}
-        id="security_received_date"
-        label="Security Received"
-        name="security_received_date"
-      />
-    </Col>
-    <Col
-      className="border--left--layout"
-      md={12}
-      sm={24}
+        <div
+          class="ant-form-item"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                title="Securities"
+              >
+                Securities
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    class="ant-form-item ant-form-item-with-help"
+                  >
+                    <div
+                      class="ant-row ant-form-item-row"
+                    >
+                      <div
+                        class="ant-col ant-form-item-control"
+                      >
+                        <div
+                          class="ant-form-item-control-input"
+                        >
+                          <div
+                            class="ant-form-item-control-input-content"
+                          >
+                            <label
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
+                            >
+                              <span
+                                class="ant-checkbox"
+                              >
+                                <input
+                                  class="ant-checkbox-input"
+                                  id="security_not_required"
+                                  type="checkbox"
+                                  value=""
+                                />
+                                <span
+                                  class="ant-checkbox-inner"
+                                />
+                              </span>
+                              <span>
+                                Security Not Required
+                              </span>
+                            </label>
+                          </div>
+                        </div>
+                        <div
+                          style="display: flex; flex-wrap: nowrap;"
+                        >
+                          <div
+                            class="ant-form-item-explain ant-form-item-explain-connected"
+                            id="PERMIT_AMENDMENT_security_not_required_help"
+                            role="alert"
+                          >
+                            <div
+                              class=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="PERMIT_AMENDMENT_liability_adjustment"
+                title=""
+              >
+                <div>
+                  Assessed Liability Adjustment
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    aria-label="liability_adjustment"
+                    class="ant-input"
+                    data-testid="liability_adjustment"
+                    id="liability_adjustment"
+                    name="liability_adjustment"
+                    type="text"
+                    value=""
+                  />
+                  <div
+                    class="form-item-help liability_adjustment-form-help"
+                  >
+                    This amount will be added to the Total Assessed Liability amount for this permit.
+                Changes to this value in Core will not be updated in MMS.
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="PERMIT_AMENDMENT_liability_adjustment_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="PERMIT_AMENDMENT_security_received_date"
+                title=""
+              >
+                <div>
+                  Security Received
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    class="ant-picker"
+                  >
+                    <div
+                      class="ant-picker-input"
+                    >
+                      <input
+                        autocomplete="off"
+                        id="security_received_date"
+                        name="security_received_date"
+                        placeholder=""
+                        readonly=""
+                        size="12"
+                        title=""
+                        value=""
+                      />
+                      <span
+                        class="ant-picker-suffix"
+                      >
+                        <span
+                          aria-label="calendar"
+                          class="anticon anticon-calendar"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="calendar"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="PERMIT_AMENDMENT_security_received_date_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col border--left--layout ant-col-sm-24 ant-col-md-12"
+        style="padding-left: 24px; padding-right: 24px;"
+      >
+        <div
+          class="ant-form-item"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                title="Upload files"
+              >
+                Upload files
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    class="whirlpool-container"
+                  >
+                    <div
+                      class="ant-form-item ant-form-item-with-help"
+                    >
+                      <div
+                        class="ant-row ant-form-item-row"
+                      >
+                        <div
+                          class="ant-col ant-form-item-label"
+                        >
+                          <label
+                            class=""
+                            for="PERMIT_AMENDMENT_fileUpload"
+                            title=""
+                          />
+                        </div>
+                        <div
+                          class="ant-col ant-form-item-control"
+                        >
+                          <div
+                            class="ant-form-item-control-input"
+                          >
+                            <div
+                              class="ant-form-item-control-input-content"
+                            >
+                              <div
+                                class="filepond--wrapper"
+                              >
+                                <input
+                                  accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                  id="fileUpload"
+                                  multiple=""
+                                  name="file"
+                                  type="file"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            style="display: flex; flex-wrap: nowrap;"
+                          >
+                            <div
+                              class="ant-form-item-explain ant-form-item-explain-connected"
+                              id="PERMIT_AMENDMENT_fileUpload_help"
+                              role="alert"
+                            >
+                              <div
+                                class=""
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="right center-mobile"
+      style="padding-top: 14px;"
     >
-      <InternalFormItem
-        label="Upload files"
+      <button
+        aria-label="Cancel"
+        class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
+        type="button"
       >
-        <Field
-          allowMultiple={true}
-          component={[Function]}
-          id="PermitDocumentFileUpload"
-          mineGuid=""
-          name="PermitDocumentFileUpload"
-          onFileLoad={[Function]}
-          onRemoveFile={[Function]}
-        />
-      </InternalFormItem>
-    </Col>
-  </Row>
-  <div
-    className="right center-mobile"
-    style={
-      Object {
-        "paddingTop": "14px",
-      }
-    }
-  >
-    <RenderCancelButton />
-    <RenderSubmitButton
-      buttonText="mockTitle"
-    />
-  </div>
-</Connect(ReduxForm)>
+        <span>
+          Cancel
+        </span>
+      </button>
+      <button
+        aria-label="Submit"
+        class="ant-btn ant-btn-primary  form-btn"
+        disabled=""
+        type="submit"
+      >
+        <span>
+          mockTitle
+        </span>
+      </button>
+    </div>
+  </form>
+</div>
 `;

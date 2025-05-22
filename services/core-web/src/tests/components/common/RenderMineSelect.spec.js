@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { RenderMineSelect } from "@/components/common/RenderMineSelect";
 import { PARTY } from "@mds/common/tests/mocks/dataMocks";
 
@@ -36,7 +36,7 @@ beforeEach(() => {
 
 describe("RenderMineSelect", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<RenderMineSelect {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container: component } = render(<RenderMineSelect {...props} />);
+    expect(component).toMatchSnapshot();
   });
 });

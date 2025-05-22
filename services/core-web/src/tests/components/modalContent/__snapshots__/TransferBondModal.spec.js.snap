@@ -2,216 +2,260 @@
 
 exports[`TransferBondModal renders properly 1`] = `
 <div>
-  <Alert
-    description="This action will release the current bond and create a new bond using the same information under the selected permit. Any note created will be added to the new bond and the transferred bond."
-    message="Transfer this bond to a different permit"
-    showIcon={true}
-    style={
-      Object {
-        "textAlign": "left",
-      }
-    }
-    type="info"
-  />
-  <br />
-  <TransferBondForm
-    closeModal={[MockFunction]}
-    initialValues={
-      Object {
-        "note": null,
-      }
-    }
-    onSubmit={[Function]}
-    permits={
-      Array [
-        Object {
-          "active_bond_total": 0,
-          "assessed_liability_total": 1000000,
-          "bonds": Array [],
-          "confiscated_bond_total": 0,
-          "current_permittee": "TEST corp",
-          "current_permittee_digital_wallet_connection_state": "Active",
-          "current_permittee_guid": "c391c1ab-3652-4804-80ae-7b81b8d05ed9",
-          "exemption_fee_status_code": "MIM",
-          "exemption_fee_status_note": null,
-          "permit_amendments": Array [
-            Object {
-              "authorization_end_date": "2026-03-26T00:00:00",
-              "condition_categories": Array [],
-              "conditions": Array [],
-              "conditions_review_completed": false,
-              "description": "Initial permit issued.",
-              "has_permit_conditions": false,
-              "imported_now_application_documents": Array [],
-              "is_generated_in_core": false,
-              "issue_date": "2024-03-07T00:00:00",
-              "issuing_inspector_title": null,
-              "liability_adjustment": 1000000,
-              "now_application_documents": Array [],
-              "now_application_guid": null,
-              "permit_amendment_guid": "b056f07b-08ac-47ef-8ba9-98b97a060b3d",
-              "permit_amendment_id": 2484,
-              "permit_amendment_status_code": "ACT",
-              "permit_amendment_type_code": "OGP",
-              "permit_conditions_last_updated_by": null,
-              "permit_conditions_last_updated_date": null,
-              "permit_no": "M-12345",
-              "preamble_text": null,
-              "received_date": null,
-              "regional_office": null,
-              "related_documents": Array [],
-              "security_not_required": null,
-              "security_not_required_reason": null,
-              "security_received_date": "2024-03-07T00:00:00",
-              "vc_credential_exch_state": null,
-            },
-          ],
-          "permit_guid": "67074e37-b7c6-475d-ade6-eb24fdbd1e13",
-          "permit_id": "2484",
-          "permit_no": "M-12345",
-          "permit_prefix": "M",
-          "permit_status_code": "O",
-          "project_id": null,
-          "remaining_static_liability": null,
-          "site_properties": Object {
-            "mine_commodity_code": Array [
-              "AL",
-            ],
-            "mine_disturbance_code": Array [
-              "UND",
-            ],
-            "mine_guid": "3b118b13-7397-4512-8021-c11ed90ce14c",
-            "mine_tenure_type_code": "MIN",
-            "mine_type_detail": Array [],
-            "mine_type_guid": "2cf4cd5c-c7f8-4607-afe4-245ee0fd20db",
-            "now_application_guid": null,
-            "permit_guid": "67074e37-b7c6-475d-ade6-eb24fdbd1e13",
-          },
-          "update_timestamp": "2019-04-05 21:05:40.123456+00:00",
-          "update_user": "update-user",
-        },
-        Object {
-          "active_bond_total": 0,
-          "assessed_liability_total": 1000000,
-          "bonds": Array [],
-          "confiscated_bond_total": 0,
-          "current_permittee": "TEST Verified permit corp",
-          "current_permittee_digital_wallet_connection_state": "Active",
-          "current_permittee_guid": "c391c1ab-3652-4804-80ae-7b81b8d05ed9",
-          "exemption_fee_status_code": "MIM",
-          "exemption_fee_status_note": null,
-          "permit_amendments": Array [
-            Object {
-              "authorization_end_date": null,
-              "condition_categories": Array [
-                Object {
-                  "condition_category_code": "HSC",
-                  "description": "Health and Safety",
-                  "display_order": 0,
-                  "step": "A.",
-                },
-                Object {
-                  "condition_category_code": "GEN",
-                  "description": "General",
-                  "display_order": 1,
-                  "step": "B.",
-                },
-              ],
-              "conditions": Array [
-                Object {
-                  "condition": "Verified Condition with report",
-                  "condition_category_code": "HSC",
-                  "condition_type_code": "SEC",
-                  "display_order": 1,
-                  "mineReportPermitRequirement": Object {
-                    "cim_or_cpo": "cpo",
-                    "condition_category_code": "HSC",
-                    "due_date_period_months": 12,
-                    "initial_due_date": "2024-01-01",
-                    "mine_report_permit_requirement_id": 1,
-                    "ministry_recipient": Array [
-                      "MMO",
-                    ],
-                    "permit_condition_id": 1639,
-                    "report_name": "Test Approved Report",
-                  },
-                  "parent_permit_condition_id": null,
-                  "permit_amendment_id": 2,
-                  "permit_condition_guid": "6fd71a4d-a55e-4e0b-a249-0ed54c3d2387",
-                  "permit_condition_id": 1639,
-                  "permit_condition_status_code": "COM",
-                  "step": "1.",
-                  "sub_conditions": Array [],
-                },
-              ],
-              "conditions_review_completed": true,
-              "description": "Amendment",
-              "has_permit_conditions": true,
-              "imported_now_application_documents": Array [],
-              "is_generated_in_core": false,
-              "issue_date": "2020-04-01",
-              "issuing_inspector_title": "Inspector Gadget",
-              "liability_adjustment": 7000000,
-              "mine_report_permit_requirements": Array [
-                Object {
-                  "cim_or_cpo": "cpo",
-                  "condition_category_code": "HSC",
-                  "due_date_period_months": 12,
-                  "initial_due_date": "2024-01-01",
-                  "mine_report_permit_requirement_id": 1,
-                  "ministry_recipient": Array [
-                    "MMO",
-                  ],
-                  "permit_condition_id": 1639,
-                  "report_name": "Test Approved Report",
-                },
-              ],
-              "now_application_documents": Array [],
-              "now_application_guid": "",
-              "permit_amendment_guid": "b9798208-410c-4f05-b413-cb2f063d82ca",
-              "permit_amendment_id": 3,
-              "permit_amendment_status_code": "ACT",
-              "permit_amendment_type_code": "AMD",
-              "permit_conditions_last_updated_by": "Condition Approver",
-              "permit_conditions_last_updated_date": "2024-04-04",
-              "permit_no": "M-222",
-              "preamble_text": "words",
-              "received_date": null,
-              "regional_office": "region",
-              "related_documents": Array [],
-              "security_not_required": false,
-              "security_not_required_reason": "",
-              "security_received_date": "2024-04-03",
-              "vc_credential_exch_state": "credential-issued",
-            },
-          ],
-          "permit_guid": "c81915d2-bca0-4857-964c-0b9a3fd013ba",
-          "permit_id": "3000",
-          "permit_no": "M-222",
-          "permit_prefix": "M",
-          "permit_status_code": "O",
-          "project_id": null,
-          "remaining_static_liability": null,
-          "site_properties": Object {
-            "mine_commodity_code": Array [
-              "AL",
-            ],
-            "mine_disturbance_code": Array [
-              "UND",
-            ],
-            "mine_guid": "3b118b13-7397-4512-8021-c11ed90ce14c",
-            "mine_tenure_type_code": "MIN",
-            "mine_type_detail": Array [],
-            "mine_type_guid": "2cf4cd5c-c7f8-4607-afe4-245ee0fd20db",
-            "now_application_guid": null,
-            "permit_guid": "c81915d2-bca0-4857-964c-0b9a3fd013ba",
-          },
-          "update_timestamp": "2024-04-05 21:05:40.123456+00:00",
-          "update_user": "update-user",
-        },
-      ]
-    }
-    title="Transfer Bond"
-  />
+  <div>
+    <div
+      class="ant-alert ant-alert-info ant-alert-with-description"
+      data-show="true"
+      role="alert"
+      style="text-align: left;"
+    >
+      <span
+        aria-label="info-circle"
+        class="anticon anticon-info-circle ant-alert-icon"
+        role="img"
+      >
+        <svg
+          aria-hidden="true"
+          data-icon="info-circle"
+          fill="currentColor"
+          focusable="false"
+          height="1em"
+          viewBox="64 64 896 896"
+          width="1em"
+        >
+          <path
+            d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+          />
+          <path
+            d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+          />
+        </svg>
+      </span>
+      <div
+        class="ant-alert-content"
+      >
+        <div
+          class="ant-alert-message"
+        >
+          Transfer this bond to a different permit
+        </div>
+        <div
+          class="ant-alert-description"
+        >
+          This action will release the current bond and create a new bond using the same information under the selected permit. Any note created will be added to the new bond and the transferred bond.
+        </div>
+      </div>
+    </div>
+    <br />
+    <form
+      class="ant-form ant-form-vertical common-form common-form-TRANSFER_BOND form-edit"
+      id="TRANSFER_BOND"
+    >
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-24"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="TRANSFER_BOND_permit_guid"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    Permit
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      aria-required="true"
+                      class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                      data-cy="permit_guid"
+                    >
+                      <div
+                        class="ant-select-selector"
+                      >
+                        <span
+                          class="ant-select-selection-search"
+                        >
+                          <input
+                            aria-activedescendant="permit_guid_list_0"
+                            aria-autocomplete="list"
+                            aria-controls="permit_guid_list"
+                            aria-haspopup="listbox"
+                            aria-owns="permit_guid_list"
+                            aria-required="true"
+                            autocomplete="off"
+                            class="ant-select-selection-search-input"
+                            id="permit_guid"
+                            role="combobox"
+                            type="search"
+                            value=""
+                          />
+                        </span>
+                        <span
+                          class="ant-select-selection-placeholder"
+                        >
+                          Please select
+                        </span>
+                      </div>
+                      <span
+                        aria-hidden="true"
+                        class="ant-select-arrow"
+                        style="user-select: none;"
+                        unselectable="on"
+                      >
+                        <span
+                          aria-label="down"
+                          class="anticon anticon-down ant-select-suffix"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="down"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="TRANSFER_BOND_permit_guid_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-md-24"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="TRANSFER_BOND_note"
+                  title=""
+                >
+                  <div>
+                    Notes
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input"
+                      id="note"
+                      name="note"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="TRANSFER_BOND_note_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="right center-mobile"
+      >
+        <button
+          aria-label="Cancel"
+          class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
+          type="button"
+        >
+          <span>
+            Cancel
+          </span>
+        </button>
+        <button
+          aria-label="Submit"
+          class="ant-btn ant-btn-primary  form-btn"
+          disabled=""
+          type="submit"
+        >
+          <span>
+            Transfer Bond
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
 `;

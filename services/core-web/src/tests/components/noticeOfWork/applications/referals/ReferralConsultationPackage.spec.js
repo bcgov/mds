@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { ReferralConsultationPackage } from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
 import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 
@@ -29,7 +29,7 @@ beforeEach(() => {
 
 describe("ReferralConsultationPackage", () => {
   it("renders properly", () => {
-    const component = shallow(<ReferralConsultationPackage {...dispatchProps} {...reducerProps} />);
+    const { container: component } = render(<ReferralConsultationPackage {...dispatchProps} {...reducerProps} />);
     expect(component).toMatchSnapshot();
   });
 });

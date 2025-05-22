@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { TransferBondModal } from "@/components/modalContent/TransferBondModal";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -26,7 +27,7 @@ beforeEach(() => {
 
 describe("TransferBondModal", () => {
   it("renders properly", () => {
-    const component = shallow(<TransferBondModal {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><TransferBondModal {...dispatchProps} {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

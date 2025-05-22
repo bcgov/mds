@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import EditPartyRelationshipModal from "@/components/modalContent/EditPartyRelationshipModal";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -13,7 +14,8 @@ const setupDispatchProps = () => {
 };
 
 const setupProps = () => {
-  props.partyRelationship = MOCK.PARTYRELATIONSHIP;
+  props.partyRelationship = MOCK.PARTYRELATIONSHIPS[0];
+  props.partyRelationshipType = { description: "Permittee" }
 };
 
 beforeEach(() => {
@@ -23,7 +25,7 @@ beforeEach(() => {
 
 describe("EditPartyRelationshipModal", () => {
   it("renders properly", () => {
-    const component = shallow(<EditPartyRelationshipModal {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><EditPartyRelationshipModal {...dispatchProps} {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

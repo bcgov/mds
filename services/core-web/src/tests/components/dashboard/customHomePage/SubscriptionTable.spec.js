@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { SubscriptionTable } from "@/components/dashboard/customHomePage/SubscriptionTable";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { BrowserRouter } from "react-router-dom";
 
 const dispatchProps = {};
 const reducerProps = {};
@@ -24,7 +25,7 @@ beforeEach(() => {
 
 describe("SubscriptionTable", () => {
   it("renders properly", () => {
-    const component = shallow(<SubscriptionTable {...dispatchProps} {...reducerProps} />);
+    const { container: component } = render(<BrowserRouter><SubscriptionTable {...dispatchProps} {...reducerProps} /></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

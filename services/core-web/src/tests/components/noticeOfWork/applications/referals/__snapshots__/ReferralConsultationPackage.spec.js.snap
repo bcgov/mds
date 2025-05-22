@@ -1,11 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ReferralConsultationPackage renders properly 1`] = `
-<Button
-  className="full-mobile"
-  onClick={[Function]}
-  type="secondary"
->
-  Referral Package
-</Button>
+<div>
+  <button
+    class="ant-btn ant-btn-secondary full-mobile"
+    type="button"
+  >
+    <span>
+      Referral Package
+    </span>
+  </button>
+</div>
 `;

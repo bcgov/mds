@@ -1,3 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ScrollToTopWrapper renders properly 1`] = `<div />`;
+exports[`ScrollToTopWrapper renders properly 1`] = `
+<div>
+  <div />
+</div>
+`;

@@ -2,221 +2,485 @@
 
 exports[`SurfaceBulkSamples renders properly 1`] = `
 <div>
-  <h4>
-    Activities
-  </h4>
-  <Connect(CoreEditableTable)
-    fieldID="activity_detail_id"
-    fieldName="details"
-    isViewMode={true}
-    tableContent={
-      Array [
-        Object {
-          "component": [Function],
-          "title": "Activity",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "activity_type_description",
-        },
-        Object {
-          "component": [Function],
-          "title": "Quantity",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "quantity",
-        },
-        Object {
-          "component": [Function],
-          "title": "Disturbed Area (ha)",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "disturbed_area",
-        },
-        Object {
-          "component": [Function],
-          "title": "Merchantable timber volume (m³)",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "timber_volume",
-        },
-      ]
-    }
-  />
-  <br />
-  <br />
-  <h4>
-    Processing Methods
-  </h4>
-  <Row
-    gutter={16}
+  <form
+    class="ant-form ant-form-vertical common-form common-form-formName form-edit"
+    id="formName"
   >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Describe handling and on-site processing methods
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
+    <div>
+      <h4>
+        Activities
+      </h4>
+      <div>
+        <div>
+          <div
+            class="ant-table-wrapper"
+            style="position: relative; z-index: 5;"
+          >
+            <div
+              class="ant-table ant-table-empty"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Activity
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Quantity
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Disturbed Area (ha)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Merchantable timber volume (m³)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      />
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-placeholder"
+                    >
+                      <td
+                        class="ant-table-cell"
+                        colspan="100%"
+                        style="color: rgb(191, 191, 191);"
+                      >
+                        No Data Yet
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="processing_method_description"
-        name="processing_method_description"
-      />
-    </Col>
-  </Row>
-  <h4>
-    Bedrock Excavation
-  </h4>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
+      <br />
+      <br />
+      <h4>
+        Processing Methods
+      </h4>
       <div
-        className="field-title"
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
       >
-        Proposing bedrock excavation that will be 1,000 tonnes or more?
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-          style={
-            Object {
-              "marginLeft": "5%",
-            }
-          }
-        />
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Describe handling and on-site processing methods
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="processing_method_description"
+                      name="processing_method_description"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_processing_method_description_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="has_bedrock_excavation"
-        name="has_bedrock_excavation"
-      />
-    </Col>
-  </Row>
-  <br />
-  <h4>
-    Reclamation Program
-  </h4>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
+      <h4>
+        Bedrock Excavation
+      </h4>
       <div
-        className="field-title"
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
       >
-        If the material has potential for spontaneous combustion, give details of separate handling.
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Proposing bedrock excavation that will be 1,000 tonnes or more?
+            <span
+              class="violet"
+              style="margin-left: 5%;"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-radio-group ant-radio-group-solid"
+                    >
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="has_bedrock_excavation"
+                            type="radio"
+                            value="true"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Yes
+                        </span>
+                      </label>
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="has_bedrock_excavation"
+                            type="radio"
+                            value="false"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          No
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_has_bedrock_excavation_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="handling_instructions"
-        name="handling_instructions"
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
+      <br />
+      <h4>
+        Reclamation Program
+      </h4>
       <div
-        className="field-title"
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
       >
-        Surface water drainage and mitigation strategies
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            If the material has potential for spontaneous combustion, give details of separate handling.
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="handling_instructions"
+                      name="handling_instructions"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_handling_instructions_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Surface water drainage and mitigation strategies
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="drainage_mitigation_description"
+                      name="drainage_mitigation_description"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_drainage_mitigation_description_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="drainage_mitigation_description"
-        name="drainage_mitigation_description"
-      />
-    </Col>
-  </Row>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
       <div
-        className="field-title"
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
       >
-        Proposed reclamation and timing for this specific activity*
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Proposed reclamation and timing for this specific activity*
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="reclamation_description"
+                      name="reclamation_description"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_reclamation_description_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Estimated Cost of reclamation activities described above*
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="reclamation_cost"
+                      class="ant-input ant-input-disabled"
+                      data-testid="reclamation_cost"
+                      disabled=""
+                      id="reclamation_cost"
+                      name="reclamation_cost"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_reclamation_cost_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="reclamation_description"
-        name="reclamation_description"
-        required={true}
-        validate={
-          Array [
-            [Function],
-            [Function],
-          ]
-        }
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Estimated Cost of reclamation activities described above*
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
-      </div>
-      <Field
-        autoComplete="off"
-        component={[Function]}
-        disabled={true}
-        format={[Function]}
-        id="reclamation_cost"
-        name="reclamation_cost"
-        normalize={[Function]}
-        onChange={[Function]}
-        onFocus={[Function]}
-        required={true}
-        validate={
-          Array [
-            [Function],
-            [Function],
-          ]
-        }
-      />
-    </Col>
-  </Row>
+    </div>
+  </form>
 </div>
 `;

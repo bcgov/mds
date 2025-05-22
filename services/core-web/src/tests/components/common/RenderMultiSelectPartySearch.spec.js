@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import {
   RenderMultiSelectPartySearch,
   DebounceSelect,
@@ -26,14 +26,14 @@ beforeEach(() => {
 
 describe("RenderMultiSelectPartySearch", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<RenderMultiSelectPartySearch {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container: component } = render(<RenderMultiSelectPartySearch {...props} />);
+    expect(component).toMatchSnapshot();
   });
 });
 
 describe("DebounceSelect", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<DebounceSelect {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container: component } = render(<DebounceSelect {...props} />);
+    expect(component).toMatchSnapshot();
   });
 });

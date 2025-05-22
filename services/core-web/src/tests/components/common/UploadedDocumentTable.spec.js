@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import UploadedDocumentTable from "@/components/common/UploadedDocumentTable";
 
 let props = {};
@@ -23,7 +23,7 @@ beforeEach(() => {
 
 describe("UploadedDocumentTable", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<UploadedDocumentTable {...props} {...dispatchProps} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container: component } = render(<UploadedDocumentTable {...props} {...dispatchProps} />);
+    expect(component).toMatchSnapshot();
   });
 });

@@ -1,7 +1,9 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { NOWTabHeader } from "@/components/noticeOfWork/applications/NOWTabHeader";
 import * as NOWMocks from "@mds/common/tests/mocks/noticeOfWorkMock";
+import { BrowserRouter } from "react-router-dom";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const props = {};
 const dispatchProps = {};
@@ -30,7 +32,7 @@ beforeEach(() => {
 
 describe("NOWTabHeader", () => {
   it("renders properly", () => {
-    const component = shallow(<NOWTabHeader {...props} {...dispatchProps} />);
+    const { container: component } = render(<ReduxWrapper><BrowserRouter><NOWTabHeader {...props} {...dispatchProps} /></BrowserRouter></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import PageNotFound from "@/components/common/PageNotFound";
+import { BrowserRouter } from "react-router-dom";
 
 const props = {};
 
@@ -14,7 +15,7 @@ beforeEach(() => {
 
 describe("PageNotFound", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<PageNotFound {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container: component } = render(<BrowserRouter><PageNotFound {...props} /></BrowserRouter>);
+    expect(component).toMatchSnapshot();
   });
 });

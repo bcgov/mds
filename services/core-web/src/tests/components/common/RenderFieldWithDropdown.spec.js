@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 
 let props = {};
@@ -46,7 +46,7 @@ beforeEach(() => {
 
 describe("RenderFieldWithDropdown", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<RenderFieldWithDropdown {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container: component } = render(<RenderFieldWithDropdown {...props} />);
+    expect(component).toMatchSnapshot();
   });
 });

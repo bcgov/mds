@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import NullScreen from "@/components/common/NullScreen";
 
 const props = {};
@@ -14,7 +14,7 @@ beforeEach(() => {
 
 describe("NullScreen", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<NullScreen {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container: component } = render(<NullScreen {...props} />);
+    expect(component).toMatchSnapshot();
   });
 });

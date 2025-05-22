@@ -1,11 +1,236 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EditPartyRelationshipModal renders properly 1`] = `
-<EditPartyRelationshipForm
-  handleChange={[MockFunction]}
-  handlePartySubmit={[MockFunction]}
-  mine={Object {}}
-  onSubmit={[MockFunction]}
-  partyRelationships={Array []}
-/>
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-EDIT_PARTY_RELATIONSHIP form-edit"
+    id="EDIT_PARTY_RELATIONSHIP"
+  >
+    <div
+      class="ant-row"
+      style="margin-left: -8px; margin-right: -8px;"
+    >
+      <div
+        class="ant-col ant-col-xs-24 ant-col-md-12"
+        style="padding-left: 8px; padding-right: 8px;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="EDIT_PARTY_RELATIONSHIP_start_date"
+                title=""
+              >
+                <div>
+                  Start Date
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    class="ant-picker"
+                  >
+                    <div
+                      class="ant-picker-input"
+                    >
+                      <input
+                        autocomplete="off"
+                        id="start_date"
+                        name="start_date"
+                        placeholder="yyyy-mm-dd"
+                        readonly=""
+                        size="12"
+                        title="2019-01-01"
+                        value="2019-01-01"
+                      />
+                      <span
+                        class="ant-picker-suffix"
+                      >
+                        <span
+                          aria-label="calendar"
+                          class="anticon anticon-calendar"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="calendar"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="EDIT_PARTY_RELATIONSHIP_start_date_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-xs-24 ant-col-md-12"
+        style="padding-left: 8px; padding-right: 8px;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="EDIT_PARTY_RELATIONSHIP_end_date"
+                title=""
+              >
+                <div>
+                  End Date
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    class="ant-picker"
+                  >
+                    <div
+                      class="ant-picker-input"
+                    >
+                      <input
+                        autocomplete="off"
+                        id="end_date"
+                        name="end_date"
+                        placeholder="yyyy-mm-dd"
+                        readonly=""
+                        size="12"
+                        title="2019-01-03"
+                        value="2019-01-03"
+                      />
+                      <span
+                        class="ant-picker-suffix"
+                      >
+                        <span
+                          aria-label="calendar"
+                          class="anticon anticon-calendar"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="calendar"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="EDIT_PARTY_RELATIONSHIP_end_date_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div />
+    <div
+      class="right center-mobile"
+    >
+      <button
+        aria-label="Cancel"
+        class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
+        type="button"
+      >
+        <span>
+          Cancel
+        </span>
+      </button>
+      <button
+        aria-label="Submit"
+        class="ant-btn ant-btn-primary  form-btn"
+        disabled=""
+        type="submit"
+      >
+        <span>
+          Save Changes
+        </span>
+      </button>
+    </div>
+  </form>
+</div>
 `;

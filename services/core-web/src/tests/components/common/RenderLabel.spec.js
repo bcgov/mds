@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import RenderLabel from "@/components/common/RenderLabel";
 
 let props = {};
@@ -25,7 +25,7 @@ beforeEach(() => {
 
 describe("RenderLabel", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<RenderLabel {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container: component } = render(<RenderLabel {...props} />);
+    expect(component).toMatchSnapshot();
   });
 });

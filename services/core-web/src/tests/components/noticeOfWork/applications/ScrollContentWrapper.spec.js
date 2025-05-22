@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { ScrollContentWrapper } from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import * as NOWMocks from "@mds/common/tests/mocks/noticeOfWorkMock";
 
@@ -30,7 +30,7 @@ beforeEach(() => {
 
 describe("ScrollContentWrapper", () => {
   it("renders properly", () => {
-    const component = shallow(<ScrollContentWrapper {...props} {...dispatchProps} />);
+    const { container: component } = render(<ScrollContentWrapper {...props} {...dispatchProps} />);
     expect(component).toMatchSnapshot();
   });
 });

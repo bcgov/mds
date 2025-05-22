@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { UpdateProjectDecisionPackageDocumentModal } from "@/components/modalContent/UpdateProjectDecisionPackageDocumentModal";
 
 const props = {};
@@ -17,7 +17,7 @@ beforeEach(() => {
 
 describe("UpdateProjectDecisionPackageDocumentModal", () => {
   it("renders properly", () => {
-    const component = shallow(<UpdateProjectDecisionPackageDocumentModal {...props} />);
+    const { container: component } = render(<UpdateProjectDecisionPackageDocumentModal {...props} />);
     expect(component).toMatchSnapshot();
   });
 });
