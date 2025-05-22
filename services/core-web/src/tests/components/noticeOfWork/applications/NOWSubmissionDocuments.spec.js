@@ -1,7 +1,10 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { NOWSubmissionDocuments } from "@/components/noticeOfWork/applications/NOWSubmissionDocuments";
 import * as NOWMocks from "@mds/common/tests/mocks/noticeOfWorkMock";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { BrowserRouter } from "react-router-dom";
+import { NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
 
 const props = {};
 const dispatchProps = {};
@@ -46,9 +49,15 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
+const initialState = {
+  [NOTICE_OF_WORK]: {
+    noticeOfWork: NOWMocks.IMPORTED_NOTICE_OF_WORK,
+    applicationDelays: [],
+  }
+}
 describe("NOWSubmissionDocuments", () => {
   it("renders properly", () => {
-    const component = shallow(<NOWSubmissionDocuments {...props} {...dispatchProps} />);
+    const { container: component } = render(<BrowserRouter><ReduxWrapper initialState={initialState}><NOWSubmissionDocuments {...props} {...dispatchProps} /></ReduxWrapper></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

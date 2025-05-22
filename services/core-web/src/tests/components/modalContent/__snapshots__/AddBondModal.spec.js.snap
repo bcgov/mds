@@ -2,70 +2,1553 @@
 
 exports[`AddBondModal renders properly 1`] = `
 <div>
-  <BondForm
-    bond={
-      Object {
-        "amount": 300,
-        "bond_guid": "erjvnaqekrj",
-        "bond_id": 1,
-        "bond_status_code": "ACT",
-        "bond_type_code": "CAS",
-        "documents": Array [],
-        "institution_city": null,
-        "institution_name": null,
-        "institution_postal_code": null,
-        "institution_province": null,
-        "institution_street": null,
-        "issue_date": "2018-10-16",
-        "note": null,
-        "payer": Object {},
-        "payer_party_guid": "sethwrt",
-        "permit_guid": "1628847c-060b-45f2-990f-815877174801",
-        "reference_number": "",
-      }
-    }
-    closeModal={[MockFunction]}
-    editBond={false}
-    initialPartyValue=""
-    initialValues={
-      Object {
-        "amount": 300,
-        "bond_guid": "erjvnaqekrj",
-        "bond_id": 1,
-        "bond_status_code": "ACT",
-        "bond_type_code": "CAS",
-        "documents": Array [],
-        "institution_city": null,
-        "institution_name": null,
-        "institution_postal_code": null,
-        "institution_province": null,
-        "institution_street": null,
-        "issue_date": "2018-10-16",
-        "note": null,
-        "payer": Object {},
-        "payer_party_guid": "sethwrt",
-        "permit_guid": "1628847c-060b-45f2-990f-815877174801",
-        "reference_number": "",
-      }
-    }
-    onSubmit={[Function]}
-    provinceOptions={
-      Array [
-        Object {
-          "isActive": true,
-          "label": "AB",
-          "subType": "CAN",
-          "value": "AB",
-        },
-        Object {
-          "isActive": true,
-          "label": "BC",
-          "subType": "CAN",
-          "value": "BC",
-        },
-      ]
-    }
-    title="Add Bond"
-  />
+  <div>
+    <form
+      class="ant-form ant-form-vertical common-form common-form-ADD_BOND form-edit"
+      id="ADD_BOND"
+    >
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="ADD_BOND_amount"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    Bond Amount
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="amount"
+                      class="ant-input"
+                      data-testid="amount"
+                      id="amount"
+                      name="amount"
+                      type="text"
+                      value="$300.00"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_BOND_amount_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="ADD_BOND_bond_type_code"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    Bond Type
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      aria-required="true"
+                      class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                      data-cy="bond_type_code"
+                    >
+                      <div
+                        class="ant-select-selector"
+                      >
+                        <span
+                          class="ant-select-selection-search"
+                        >
+                          <input
+                            aria-activedescendant="bond_type_code_list_0"
+                            aria-autocomplete="list"
+                            aria-controls="bond_type_code_list"
+                            aria-haspopup="listbox"
+                            aria-owns="bond_type_code_list"
+                            aria-required="true"
+                            autocomplete="off"
+                            class="ant-select-selection-search-input"
+                            id="bond_type_code"
+                            role="combobox"
+                            type="search"
+                            value=""
+                          />
+                        </span>
+                        <span
+                          class="ant-select-selection-item"
+                          title="CAS"
+                        >
+                          CAS
+                        </span>
+                      </div>
+                      <span
+                        aria-hidden="true"
+                        class="ant-select-arrow"
+                        style="user-select: none;"
+                        unselectable="on"
+                      >
+                        <span
+                          aria-label="down"
+                          class="anticon anticon-down ant-select-suffix"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="down"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                      <span
+                        aria-hidden="true"
+                        class="ant-select-clear"
+                        style="user-select: none;"
+                        unselectable="on"
+                      >
+                        <span
+                          aria-label="close-circle"
+                          class="anticon anticon-close-circle"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="close-circle"
+                            fill="currentColor"
+                            fill-rule="evenodd"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M512 64c247.4 0 448 200.6 448 448S759.4 960 512 960 64 759.4 64 512 264.6 64 512 64zm127.98 274.82h-.04l-.08.06L512 466.75 384.14 338.88c-.04-.05-.06-.06-.08-.06a.12.12 0 00-.07 0c-.03 0-.05.01-.09.05l-45.02 45.02a.2.2 0 00-.05.09.12.12 0 000 .07v.02a.27.27 0 00.06.06L466.75 512 338.88 639.86c-.05.04-.06.06-.06.08a.12.12 0 000 .07c0 .03.01.05.05.09l45.02 45.02a.2.2 0 00.09.05.12.12 0 00.07 0c.02 0 .04-.01.08-.05L512 557.25l127.86 127.87c.04.04.06.05.08.05a.12.12 0 00.07 0c.03 0 .05-.01.09-.05l45.02-45.02a.2.2 0 00.05-.09.12.12 0 000-.07v-.02a.27.27 0 00-.05-.06L557.25 512l127.87-127.86c.04-.04.05-.06.05-.08a.12.12 0 000-.07c0-.03-.01-.05-.05-.09l-45.02-45.02a.2.2 0 00-.09-.05.12.12 0 00-.07 0z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_BOND_bond_type_code_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  title="Payer"
+                >
+                  Payer
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-select ant-select-in-form-item ant-select-single ant-select-show-arrow ant-select-show-search"
+                      style="width: 100%;"
+                    >
+                      <div
+                        class="ant-select-selector"
+                      >
+                        <span
+                          class="ant-select-selection-search"
+                        >
+                          <input
+                            aria-activedescendant="payer_party_guid_list_0"
+                            aria-autocomplete="list"
+                            aria-controls="payer_party_guid_list"
+                            aria-haspopup="listbox"
+                            aria-owns="payer_party_guid_list"
+                            autocomplete="off"
+                            class="ant-select-selection-search-input"
+                            id="payer_party_guid"
+                            role="combobox"
+                            type="search"
+                            value=""
+                          />
+                        </span>
+                        <span
+                          class="ant-select-selection-placeholder"
+                        />
+                      </div>
+                      <span
+                        aria-hidden="true"
+                        class="ant-select-arrow"
+                        style="user-select: none;"
+                        unselectable="on"
+                      >
+                        <span
+                          aria-label="down"
+                          class="anticon anticon-down ant-select-suffix"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="down"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="ADD_BOND_issue_date"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    Issue Date
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-picker"
+                    >
+                      <div
+                        class="ant-picker-input"
+                      >
+                        <input
+                          aria-required="true"
+                          autocomplete="off"
+                          id="issue_date"
+                          name="issue_date"
+                          placeholder=""
+                          readonly=""
+                          size="18"
+                          title="2018-10-16 00:00"
+                          value="2018-10-16 00:00"
+                        />
+                        <span
+                          class="ant-picker-suffix"
+                        >
+                          <span
+                            aria-label="calendar"
+                            class="anticon anticon-calendar"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="calendar"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_BOND_issue_date_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_BOND_reference_number"
+                  title=""
+                >
+                  <div>
+                    Reference Number
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="reference_number"
+                      class="ant-input"
+                      data-testid="reference_number"
+                      id="reference_number"
+                      name="reference_number"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_BOND_reference_number_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_BOND_project_id"
+                  title=""
+                >
+                  <div>
+                    Project ID
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="project_id"
+                      class="ant-input"
+                      data-testid="project_id"
+                      id="project_id"
+                      name="project_id"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_BOND_project_id_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-md-24"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_BOND_note"
+                  title=""
+                >
+                  <div>
+                    Notes
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input"
+                      id="note"
+                      name="note"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_BOND_note_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-xs-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <h5>
+            Institution
+          </h5>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-md-24 ant-col-lg-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_BOND_institution_name"
+                  title=""
+                >
+                  <div>
+                    Institution Name
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="institution_name"
+                      class="ant-input"
+                      data-testid="institution_name"
+                      id="institution_name"
+                      name="institution_name"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_BOND_institution_name_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-xs-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_BOND_institution_street"
+                  title=""
+                >
+                  <div>
+                    Street Address
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="institution_street"
+                      class="ant-input"
+                      data-testid="institution_street"
+                      id="institution_street"
+                      name="institution_street"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_BOND_institution_street_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-xs-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_BOND_institution_city"
+                  title=""
+                >
+                  <div>
+                    City
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="institution_city"
+                      class="ant-input"
+                      data-testid="institution_city"
+                      id="institution_city"
+                      name="institution_city"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_BOND_institution_city_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-xs-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_BOND_institution_province"
+                  title=""
+                >
+                  <div>
+                    Province
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                      data-cy="institution_province"
+                    >
+                      <div
+                        class="ant-select-selector"
+                      >
+                        <span
+                          class="ant-select-selection-search"
+                        >
+                          <input
+                            aria-activedescendant="institution_province_list_0"
+                            aria-autocomplete="list"
+                            aria-controls="institution_province_list"
+                            aria-haspopup="listbox"
+                            aria-owns="institution_province_list"
+                            autocomplete="off"
+                            class="ant-select-selection-search-input"
+                            id="institution_province"
+                            role="combobox"
+                            type="search"
+                            value=""
+                          />
+                        </span>
+                        <span
+                          class="ant-select-selection-placeholder"
+                        >
+                          Please select province
+                        </span>
+                      </div>
+                      <span
+                        aria-hidden="true"
+                        class="ant-select-arrow"
+                        style="user-select: none;"
+                        unselectable="on"
+                      >
+                        <span
+                          aria-label="down"
+                          class="anticon anticon-down ant-select-suffix"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="down"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_BOND_institution_province_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-xs-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_BOND_institution_postal_code"
+                  title=""
+                >
+                  <div>
+                    Postal Code
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="institution_postal_code"
+                      class="ant-input"
+                      data-testid="institution_postal_code"
+                      id="institution_postal_code"
+                      name="institution_postal_code"
+                      placeholder="e.g xxxxxx"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_BOND_institution_postal_code_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-xs-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <h5>
+            Documents
+          </h5>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-xs-24"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div>
+            <div />
+            <div
+              class="ant-table-wrapper  core-table"
+            >
+              <div
+                class="ant-spin-nested-loading"
+              >
+                <div
+                  class="ant-spin-container"
+                >
+                  <div
+                    class="ant-table ant-table-empty"
+                  >
+                    <div
+                      class="ant-table-container"
+                    >
+                      <div
+                        class="ant-table-content"
+                      >
+                        <table
+                          style="table-layout: auto;"
+                        >
+                          <colgroup />
+                          <thead
+                            class="ant-table-thead"
+                          >
+                            <tr>
+                              <th
+                                aria-label="File Name"
+                                class="ant-table-cell ant-table-column-has-sorters"
+                                tabindex="0"
+                              >
+                                <div
+                                  class="ant-table-column-sorters"
+                                >
+                                  <span
+                                    class="ant-table-column-title"
+                                  >
+                                    File Name
+                                  </span>
+                                  <span
+                                    class="ant-table-column-sorter ant-table-column-sorter-full"
+                                  >
+                                    <span
+                                      class="ant-table-column-sorter-inner"
+                                    >
+                                      <span
+                                        aria-label="caret-up"
+                                        class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                        role="presentation"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          data-icon="caret-up"
+                                          fill="currentColor"
+                                          focusable="false"
+                                          height="1em"
+                                          viewBox="0 0 1024 1024"
+                                          width="1em"
+                                        >
+                                          <path
+                                            d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                          />
+                                        </svg>
+                                      </span>
+                                      <span
+                                        aria-label="caret-down"
+                                        class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                        role="presentation"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          data-icon="caret-down"
+                                          fill="currentColor"
+                                          focusable="false"
+                                          height="1em"
+                                          viewBox="0 0 1024 1024"
+                                          width="1em"
+                                        >
+                                          <path
+                                            d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                          />
+                                        </svg>
+                                      </span>
+                                    </span>
+                                  </span>
+                                </div>
+                              </th>
+                              <th
+                                class="ant-table-cell"
+                              >
+                                Category
+                              </th>
+                              <th
+                                aria-sort="descending"
+                                class="ant-table-cell ant-table-column-sort ant-table-column-has-sorters"
+                                tabindex="0"
+                              >
+                                <div
+                                  class="ant-table-column-sorters"
+                                >
+                                  <span
+                                    class="ant-table-column-title"
+                                  >
+                                    Uploaded
+                                  </span>
+                                  <span
+                                    class="ant-table-column-sorter ant-table-column-sorter-full"
+                                  >
+                                    <span
+                                      class="ant-table-column-sorter-inner"
+                                    >
+                                      <span
+                                        aria-label="caret-up"
+                                        class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                        role="presentation"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          data-icon="caret-up"
+                                          fill="currentColor"
+                                          focusable="false"
+                                          height="1em"
+                                          viewBox="0 0 1024 1024"
+                                          width="1em"
+                                        >
+                                          <path
+                                            d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                          />
+                                        </svg>
+                                      </span>
+                                      <span
+                                        aria-label="caret-down"
+                                        class="anticon anticon-caret-down ant-table-column-sorter-down active"
+                                        role="presentation"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          data-icon="caret-down"
+                                          fill="currentColor"
+                                          focusable="false"
+                                          height="1em"
+                                          viewBox="0 0 1024 1024"
+                                          width="1em"
+                                        >
+                                          <path
+                                            d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                          />
+                                        </svg>
+                                      </span>
+                                    </span>
+                                  </span>
+                                </div>
+                              </th>
+                              <th
+                                class="ant-table-cell"
+                              />
+                            </tr>
+                          </thead>
+                          <tbody
+                            class="ant-table-tbody"
+                          >
+                            <tr
+                              class="ant-table-placeholder"
+                            >
+                              <td
+                                class="ant-table-cell"
+                                colspan="4"
+                              >
+                                No Data Yet
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-xs-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <h5>
+            Document Upload
+          </h5>
+        </div>
+      </div>
+      <p
+        class="p-light"
+      >
+        All documents uploaded will be associated with the category selected. If you would like to add a different category of document, please submit and re-open the form.
+      </p>
+      <br />
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-xs-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_BOND_document_date"
+                  title=""
+                >
+                  <div>
+                    Document Date
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-picker"
+                    >
+                      <div
+                        class="ant-picker-input"
+                      >
+                        <input
+                          autocomplete="off"
+                          id="document_date"
+                          name="document_date"
+                          placeholder=""
+                          readonly=""
+                          size="18"
+                          title=""
+                          value=""
+                        />
+                        <span
+                          class="ant-picker-suffix"
+                        >
+                          <span
+                            aria-label="calendar"
+                            class="anticon anticon-calendar"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="calendar"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_BOND_document_date_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-xs-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_BOND_bond_document_type_code"
+                  title=""
+                >
+                  <div>
+                    Document Category
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                      data-cy="bond_document_type_code"
+                    >
+                      <div
+                        class="ant-select-selector"
+                      >
+                        <span
+                          class="ant-select-selection-search"
+                        >
+                          <input
+                            aria-activedescendant="bond_document_type_code_list_0"
+                            aria-autocomplete="list"
+                            aria-controls="bond_document_type_code_list"
+                            aria-haspopup="listbox"
+                            aria-owns="bond_document_type_code_list"
+                            autocomplete="off"
+                            class="ant-select-selection-search-input"
+                            id="bond_document_type_code"
+                            role="combobox"
+                            type="search"
+                            value=""
+                          />
+                        </span>
+                        <span
+                          class="ant-select-selection-placeholder"
+                        >
+                          Please select category
+                        </span>
+                      </div>
+                      <span
+                        aria-hidden="true"
+                        class="ant-select-arrow"
+                        style="user-select: none;"
+                        unselectable="on"
+                      >
+                        <span
+                          aria-label="down"
+                          class="anticon anticon-down ant-select-suffix"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="down"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_BOND_bond_document_type_code_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="whirlpool-container"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="ADD_BOND_documents"
+                title=""
+              />
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    class="filepond--wrapper"
+                  >
+                    <input
+                      accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                      id="documents"
+                      multiple=""
+                      name="file"
+                      type="file"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="ADD_BOND_documents_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="right center-mobile"
+      >
+        <button
+          aria-label="Cancel"
+          class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
+          type="button"
+        >
+          <span>
+            Cancel
+          </span>
+        </button>
+        <button
+          aria-label="Submit"
+          class="ant-btn ant-btn-primary  form-btn"
+          disabled=""
+          type="submit"
+        >
+          <span>
+            Add Bond
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
 `;

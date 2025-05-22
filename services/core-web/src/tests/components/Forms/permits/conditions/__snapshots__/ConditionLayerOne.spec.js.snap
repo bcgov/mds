@@ -1,161 +1,69 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ConditionLayerOne renders properly 1`] = `
-<Fragment>
-  <Row
-    gutter={32}
+<div>
+  <div
+    class="ant-row"
+    style="margin-left: -16px; margin-right: -16px;"
   >
-    <Col
-      span={24}
+    <div
+      class="ant-col ant-col-24"
+      style="padding-left: 16px; padding-right: 16px;"
     >
        
-    </Col>
-  </Row>
-  <Row
-    className="hover-row"
-    gutter={
-      Array [
-        16,
-        24,
-      ]
-    }
+    </div>
+  </div>
+  <div
+    class="ant-row hover-row"
+    style="margin: -12px -8px -12px -8px;"
   >
-    <Col
-      span={1}
+    <div
+      class="ant-col ant-col-1"
+      style="padding: 12px 8px 12px 8px;"
     />
-    <Col
-      className=""
-      span={18}
+    <div
+      class="ant-col ant-col-18"
+      style="padding: 12px 8px 12px 8px;"
     >
-      <Highlighter
-        caseSensitive={false}
-        className="injectable-string"
-        diacriticsBlacklist=""
-        ignoreDiacritics={false}
-        matchClass="highlight"
-        matchElement="mark"
-        matchStyle={Object {}}
-        search={/\\{\\(\\.\\*\\?\\)\\}/}
+      <span
+        class="injectable-string"
       />
-    </Col>
-    <Col
-      className="float-right show-on-hover"
-      span={4}
+    </div>
+    <div
+      class="ant-col ant-col-4 float-right show-on-hover"
+      style="padding: 12px 8px 12px 8px;"
     >
       <div
-        className="float-right"
+        class="float-right"
       >
-        <withRouter(Connect(NOWActionWrapper))
-          permission="role_edit_permits"
-          tab="DFT"
-        >
-          <Button
-            className="no-margin"
-            disabled={true}
-            ghost={true}
-            onClick={[Function]}
-            size="small"
-            type="primary"
-          >
-            <ForwardRef(UpOutlined) />
-          </Button>
-        </withRouter(Connect(NOWActionWrapper))>
-        <withRouter(Connect(NOWActionWrapper))
-          permission="role_edit_permits"
-          tab="DFT"
-        >
-          <Button
-            className="no-margin"
-            disabled={true}
-            ghost={true}
-            onClick={[Function]}
-            size="small"
-            type="primary"
-          >
-            <ForwardRef(DownOutlined) />
-          </Button>
-        </withRouter(Connect(NOWActionWrapper))>
-        <withRouter(Connect(NOWActionWrapper))
-          permission="role_edit_permits"
-          tab="DFT"
-        >
-          <Button
-            className="no-margin"
-            disabled={true}
-            ghost={true}
-            onClick={[Function]}
-            size="small"
-            type="primary"
-          >
-            <img
-              alt="Edit Condition"
-              className="disabled-icon"
-              name="edit"
-              src={
-                Object {
-                  "process": [Function],
-                }
-              }
-            />
-          </Button>
-        </withRouter(Connect(NOWActionWrapper))>
-        <withRouter(Connect(NOWActionWrapper))
-          permission="role_edit_permits"
-          tab="DFT"
-        >
-          <Button
-            className="no-margin"
-            disabled={true}
-            ghost={true}
-            onClick={[Function]}
-            size="small"
-            type="primary"
-          >
-            <img
-              alt="Remove Condition"
-              className="disabled-icon"
-              name="remove"
-              src={
-                Object {
-                  "process": [Function],
-                }
-              }
-            />
-          </Button>
-        </withRouter(Connect(NOWActionWrapper))>
+        <div />
+        <div />
+        <div />
+        <div />
       </div>
-    </Col>
-  </Row>
-  <Row
-    gutter={32}
+    </div>
+  </div>
+  <div
+    class="ant-row"
+    style="margin-left: -16px; margin-right: -16px;"
   >
-    <Col
-      span={22}
+    <div
+      class="ant-col ant-col-22"
+      style="padding-left: 16px; padding-right: 16px;"
     >
-      <Connect(AddCondition)
-        initialValues={
-          Object {
-            "condition_category_code": undefined,
-            "condition_type_code": "CON",
-            "display_order": 1,
-            "parent_condition_type_code": undefined,
-            "parent_permit_condition_id": undefined,
-            "permit_amendment_id": undefined,
-            "sibling_condition_type_code": null,
-          }
-        }
-        layer={1}
-      />
-    </Col>
-  </Row>
-  <Row
-    gutter={32}
+      <div />
+    </div>
+  </div>
+  <div
+    class="ant-row"
+    style="margin-left: -16px; margin-right: -16px;"
   >
-    <Col
-      span={24}
+    <div
+      class="ant-col ant-col-24"
+      style="padding-left: 16px; padding-right: 16px;"
     >
        
-    </Col>
-  </Row>
-</Fragment>
+    </div>
+  </div>
+</div>
 `;

@@ -1,7 +1,10 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { ReferralTabs } from "@/components/noticeOfWork/applications/referals/ReferralTabs";
 import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { BrowserRouter } from "react-router-dom";
+import { NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
 
 const dispatchProps = {};
 const reducerProps = {};
@@ -34,9 +37,15 @@ beforeEach(() => {
   setupReducerProps();
 });
 
+const initialState = {
+  [NOTICE_OF_WORK]: {
+    noticeOfWork: NOW_MOCK.IMPORTED_NOTICE_OF_WORK,
+    applicationDelays: [],
+  }
+}
 describe("ReferralTabs", () => {
   it("renders properly", () => {
-    const component = shallow(<ReferralTabs {...dispatchProps} {...reducerProps} />);
+    const { container: component } = render(<BrowserRouter><ReduxWrapper initialState={initialState}><ReferralTabs {...dispatchProps} {...reducerProps} /></ReduxWrapper></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

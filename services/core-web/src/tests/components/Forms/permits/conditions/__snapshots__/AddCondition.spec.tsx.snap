@@ -1,21 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddCondition renders properly 1`] = `
-<Fragment>
-  <withRouter(Connect(NOWActionWrapper))
-    permission="role_edit_permits"
-    tab="DFT"
-  >
-    <Dropdown
-      className="full-height"
-      placement="bottomLeft"
-    >
-      <AddButton
-        type="secondary"
-      >
-        Create
-      </AddButton>
-    </Dropdown>
-  </withRouter(Connect(NOWActionWrapper))>
-</Fragment>
+<div>
+  <div />
+</div>
 `;

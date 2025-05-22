@@ -19,7 +19,7 @@ const setupDispatchProps = () => {
 
 const setupProps = () => {
   props.permits = MOCK.MINES.mines[MOCK.MINES.mineIds[0]].mine_permit_numbers;
-  props.bondStatusOptionsHash = {};
+  props.bondStatusOptionsHash = MOCK.BOND_STATUS_OPTIONS_HASH;
   props.bondTypeOptionsHash = {};
   props.isLoaded = true;
   props.expandedRowKeys = [];

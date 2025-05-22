@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { AddBondModal } from "@/components/modalContent/AddBondModal";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -18,6 +19,7 @@ const setupProps = () => {
   props.bondTypeOptions = [];
   [props.bond] = MOCK.BONDS.records;
   [props.formValues] = MOCK.BONDS.records;
+  props.bondStatusOptionsHash = MOCK.BOND_STATUS_OPTIONS_HASH;
 };
 
 beforeEach(() => {
@@ -27,7 +29,7 @@ beforeEach(() => {
 
 describe("AddBondModal", () => {
   it("renders properly", () => {
-    const component = shallow(<AddBondModal {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><AddBondModal {...dispatchProps} {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });
