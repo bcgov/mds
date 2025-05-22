@@ -16,3 +16,11 @@ class MinePermitXref(SoftDeleteMixin, AuditMixin, Base):
     end_date = db.Column(db.DateTime)
 
     mine = db.relationship('Mine')
+
+    @classmethod
+    def create(cls, mine_guid, permit_id, start_date, end_date=None, add_to_session=True):
+        new_xref = cls(start_date=start_date, end_date=end_date, mine_guid=mine_guid, permit_id=permit_id)
+
+        if add_to_session:
+            new_xref.save(commit=False)
+        return new_xref
