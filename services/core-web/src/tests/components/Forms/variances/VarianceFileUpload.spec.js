@@ -1,6 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { VarianceFileUpload } from "@/components/Forms/variances/VarianceFileUpload";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -22,7 +24,7 @@ beforeEach(() => {
 
 describe("VarianceFileUpload", () => {
   it("renders properly", () => {
-    const component = shallow(<VarianceFileUpload {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><FormWrapper name="formName"><VarianceFileUpload {...dispatchProps} {...props} /></FormWrapper></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

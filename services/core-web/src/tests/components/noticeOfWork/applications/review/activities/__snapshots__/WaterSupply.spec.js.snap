@@ -2,71 +2,91 @@
 
 exports[`WaterSupply renders properly 1`] = `
 <div>
-  <h4>
-    Source of Water
-  </h4>
-  <Connect(CoreEditableTable)
-    fieldID="activity_detail_id"
-    fieldName="details"
-    isViewMode={true}
-    tableContent={
-      Array [
-        Object {
-          "component": [Function],
-          "minRows": 1,
-          "title": "Source",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "supply_source_description",
-        },
-        Object {
-          "component": [Function],
-          "minRows": 1,
-          "title": "Activity",
-          "value": "supply_source_type",
-        },
-        Object {
-          "component": [Function],
-          "minRows": 1,
-          "title": "Water Use",
-          "value": "water_use_description",
-        },
-        Object {
-          "component": [Function],
-          "title": "Pump Size (in)",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "pump_size",
-        },
-        Object {
-          "component": [Function],
-          "title": "Intake Location",
-          "value": "intake_location",
-        },
-        Object {
-          "component": [Function],
-          "hasUnit": true,
-          "title": "Estimate Rate",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "estimate_rate",
-        },
-        Object {
-          "component": [Function],
-          "data": Array [],
-          "isUnit": true,
-          "title": "Estimate Rate Unit",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "estimate_rate_unit_type_code",
-        },
-      ]
-    }
-  />
-  <br />
+  <form
+    class="ant-form ant-form-vertical common-form common-form-formName form-edit"
+    id="formName"
+  >
+    <div>
+      <h4>
+        Source of Water
+      </h4>
+      <div>
+        <div>
+          <div
+            class="ant-table-wrapper"
+            style="position: relative; z-index: 5;"
+          >
+            <div
+              class="ant-table ant-table-empty"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Source
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Activity
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Water Use
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Pump Size (in)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Intake Location
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Estimate Rate
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      />
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-placeholder"
+                    >
+                      <td
+                        class="ant-table-cell"
+                        colspan="100%"
+                        style="color: rgb(191, 191, 191);"
+                      >
+                        No Data Yet
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+    </div>
+  </form>
 </div>
 `;

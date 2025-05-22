@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { VariancesTable } from "@/components/dashboard/mine/variances/VariancesTable";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
@@ -26,7 +26,7 @@ beforeEach(() => {
 
 describe("VariancesTable", () => {
   it("renders properly", () => {
-    const component = shallow(<VariancesTable {...props} {...dispatchProps} />);
+    const { container: component } = render(<VariancesTable {...props} {...dispatchProps} />);
     expect(component).toMatchSnapshot();
   });
 });

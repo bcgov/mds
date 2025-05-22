@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { ViewBondModal } from "@/components/modalContent/ViewBondModal";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -24,7 +25,7 @@ beforeEach(() => {
 
 describe("ViewBondModal", () => {
   it("renders properly", () => {
-    const component = shallow(<ViewBondModal {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><ViewBondModal {...dispatchProps} {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

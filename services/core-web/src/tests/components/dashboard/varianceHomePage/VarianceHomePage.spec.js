@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { VarianceHomePage } from "@/components/dashboard/varianceHomePage/VarianceHomePage";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const reducerProps = {};
@@ -28,7 +29,7 @@ const setupReducerProps = () => {
     location: {},
   };
 
-  reducerProps.variances = MOCK.VARIANCES;
+  reducerProps.variances = MOCK.VARIANCES.records;
   reducerProps.variancePageData = MOCK.VARIANCE_PAGE_DATA;
   reducerProps.complianceCodesHash = MOCK.COMPLIANCE_CODES;
   reducerProps.getDropdownHSRCMComplianceCodes = MOCK.DROPDOWN_HSRCM_CODES;
@@ -43,7 +44,7 @@ beforeEach(() => {
 
 describe("VarianceHomePage", () => {
   it("renders properly", () => {
-    const component = shallow(<VarianceHomePage {...dispatchProps} {...reducerProps} />);
+    const { container: component } = render(<ReduxWrapper><VarianceHomePage {...dispatchProps} {...reducerProps} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

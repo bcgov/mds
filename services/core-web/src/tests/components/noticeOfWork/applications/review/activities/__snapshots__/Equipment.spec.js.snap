@@ -2,70 +2,166 @@
 
 exports[`Equipment renders edit properly 1`] = `
 <div>
-  <Connect(CoreEditableTable)
-    fieldID="equipment_id"
-    fieldName="equipment"
-    isViewMode={false}
-    tableContent={
-      Array [
-        Object {
-          "component": [Function],
-          "title": "Quantity",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "quantity",
-        },
-        Object {
-          "component": [Function],
-          "minRows": 1,
-          "title": "Description",
-          "value": "description",
-        },
-        Object {
-          "component": [Function],
-          "title": "Capacity",
-          "value": "capacity",
-        },
-      ]
-    }
-    type="Equipment"
-  />
-  <br />
+  <form
+    class="ant-form ant-form-vertical common-form common-form-formName form-edit"
+    id="formName"
+  >
+    <div>
+      <div>
+        <div>
+          <div
+            class="ant-table-wrapper"
+            style="position: relative; z-index: 5;"
+          >
+            <div
+              class="ant-table ant-table-empty"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Quantity
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Description
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Capacity
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      />
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-placeholder"
+                    >
+                      <td
+                        class="ant-table-cell"
+                        colspan="100%"
+                        style="color: rgb(191, 191, 191);"
+                      >
+                        No Data Yet
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button
+              class="ant-btn ant-btn-primary"
+              type="button"
+            >
+              <span>
+                Add Equipment
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <br />
+    </div>
+  </form>
 </div>
 `;
 
 exports[`Equipment renders view properly 1`] = `
 <div>
-  <Connect(CoreEditableTable)
-    fieldID="equipment_id"
-    fieldName="equipment"
-    isViewMode={false}
-    tableContent={
-      Array [
-        Object {
-          "component": [Function],
-          "title": "Quantity",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "quantity",
-        },
-        Object {
-          "component": [Function],
-          "minRows": 1,
-          "title": "Description",
-          "value": "description",
-        },
-        Object {
-          "component": [Function],
-          "title": "Capacity",
-          "value": "capacity",
-        },
-      ]
-    }
-    type="Equipment"
-  />
-  <br />
+  <form
+    class="ant-form ant-form-vertical common-form common-form-formName form-edit"
+    id="formName"
+  >
+    <div>
+      <div>
+        <div>
+          <div
+            class="ant-table-wrapper"
+            style="position: relative; z-index: 5;"
+          >
+            <div
+              class="ant-table ant-table-empty"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Quantity
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Description
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Capacity
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      />
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-placeholder"
+                    >
+                      <td
+                        class="ant-table-cell"
+                        colspan="100%"
+                        style="color: rgb(191, 191, 191);"
+                      >
+                        No Data Yet
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button
+              class="ant-btn ant-btn-primary"
+              type="button"
+            >
+              <span>
+                Add Equipment
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <br />
+    </div>
+  </form>
 </div>
 `;

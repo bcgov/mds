@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { ViewAllConditionsModal } from "@/components/modalContent/ViewAllConditionsModal";
 
 const dispatchProps = {};
@@ -21,7 +21,7 @@ beforeEach(() => {
 
 describe("ViewAllConditionsModal", () => {
   it("renders properly", () => {
-    const component = shallow(<ViewAllConditionsModal {...dispatchProps} {...props} />);
+    const { container: component } = render(<ViewAllConditionsModal {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

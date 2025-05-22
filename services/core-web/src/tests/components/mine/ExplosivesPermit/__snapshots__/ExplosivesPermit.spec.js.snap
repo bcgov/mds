@@ -2,215 +2,380 @@
 
 exports[`ExplosivesPermit renders properly 1`] = `
 <div>
-  <br />
-  <div
-    className="inline-flex between"
-  >
-    <h4
-      className="uppercase"
+  <div>
+    <br />
+    <div
+      class="inline-flex between"
     >
-      Explosives Storage & Use Permit Applications
-    </h4>
-    <Connect(AuthorizationWrapper)
-      permission="role_edit_explosives_permits"
-    >
-      <AddButton
-        onClick={[Function]}
+      <h4
+        class="uppercase"
       >
-        Add 
         Explosives Storage & Use Permit Applications
-      </AddButton>
-    </Connect(AuthorizationWrapper)>
+      </h4>
+    </div>
+    <br />
+    <div
+      class="ant-table-wrapper explosives-permits-table core-table"
+    >
+      <div
+        class="ant-spin-nested-loading"
+      >
+        <div
+          class="ant-spin-container"
+        >
+          <div
+            class="ant-table"
+          >
+            <div
+              class="ant-table-container"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <colgroup>
+                    <col
+                      class="ant-table-expand-icon-col"
+                    />
+                  </colgroup>
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell ant-table-row-expand-icon-cell"
+                      />
+                      <th
+                        class="ant-table-cell"
+                      >
+                        ESUP #
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Mines Act Permit #
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Notice of Work #
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Amendments
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Status
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Expiry Date
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="ant-row"
+                        >
+                          <span
+                            class="ant-typography margin-medium--right"
+                          >
+                            Explosives
+                          </span>
+                          <span
+                            aria-label="question-circle"
+                            class="anticon anticon-question-circle info-tooltip icon-sm"
+                            role="img"
+                            style="color: rgb(107, 99, 99);"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class=""
+                              data-icon="question-circle"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                              />
+                              <path
+                                d="M623.6 316.7C593.6 290.4 554 276 512 276s-81.6 14.5-111.6 40.7C369.2 344 352 380.7 352 420v7.6c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V420c0-44.1 43.1-80 96-80s96 35.9 96 80c0 31.1-22 59.6-56.1 72.7-21.2 8.1-39.2 22.3-52.1 40.9-13.1 19-19.9 41.8-19.9 64.9V620c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8v-22.7a48.3 48.3 0 0130.9-44.8c59-22.7 97.1-74.7 97.1-132.5.1-39.3-17.1-76-48.3-103.3zM472 732a40 40 0 1080 0 40 40 0 10-80 0z"
+                              />
+                            </svg>
+                          </span>
+                        </div>
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="ant-row"
+                        >
+                          <span
+                            class="ant-typography margin-medium--right"
+                          >
+                            Detonators
+                          </span>
+                          <span
+                            aria-label="question-circle"
+                            class="anticon anticon-question-circle info-tooltip icon-sm"
+                            role="img"
+                            style="color: rgb(107, 99, 99);"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class=""
+                              data-icon="question-circle"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                              />
+                              <path
+                                d="M623.6 316.7C593.6 290.4 554 276 512 276s-81.6 14.5-111.6 40.7C369.2 344 352 380.7 352 420v7.6c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V420c0-44.1 43.1-80 96-80s96 35.9 96 80c0 31.1-22 59.6-56.1 72.7-21.2 8.1-39.2 22.3-52.1 40.9-13.1 19-19.9 41.8-19.9 64.9V620c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8v-22.7a48.3 48.3 0 0130.9-44.8c59-22.7 97.1-74.7 97.1-132.5.1-39.3-17.1-76-48.3-103.3zM472 732a40 40 0 1080 0 40 40 0 10-80 0z"
+                              />
+                            </svg>
+                          </span>
+                        </div>
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                        style="text-align: right;"
+                      >
+                        
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                      data-row-key="816459817365978135"
+                    >
+                      <td
+                        class="ant-table-cell ant-table-row-expand-icon-cell"
+                      >
+                        <span />
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="ant-row ant-row-space-between"
+                        >
+                          <div
+                            class="ant-col"
+                          >
+                            <span
+                              class="ant-typography"
+                            >
+                              BC-11111
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="mines_permit_number-column"
+                          title="Mines Act Permit #"
+                        >
+                          P-39039404
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="now_number-column"
+                          title="Notice of Work #"
+                        >
+                          1500615-2021-12
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="amendment_count-column"
+                          title="Amendments"
+                        >
+                          0
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span
+                          class="ant-typography"
+                        >
+                          Open
+                        </span>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          title="Expiry Date"
+                        >
+                          Dec 04 2007
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="underline"
+                        >
+                          0
+                           kg
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="underline"
+                        >
+                          0
+                           units
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                        style="text-align: right;"
+                      >
+                        <div
+                          class="btn--middle flex"
+                        />
+                      </td>
+                    </tr>
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                      data-row-key="81324623978135"
+                    >
+                      <td
+                        class="ant-table-cell ant-table-row-expand-icon-cell"
+                      >
+                        <span />
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="ant-row ant-row-space-between"
+                        >
+                          <div
+                            class="ant-col"
+                          >
+                            <span
+                              class="ant-typography"
+                            >
+                              BC-145411
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="mines_permit_number-column"
+                          title="Mines Act Permit #"
+                        >
+                          P-39039404
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="now_number-column"
+                          title="Notice of Work #"
+                        >
+                          1500615-2021-12
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="amendment_count-column"
+                          title="Amendments"
+                        >
+                          0
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span
+                          class="ant-typography"
+                        >
+                          Open
+                        </span>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          title="Expiry Date"
+                        >
+                          Dec 04 2007
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="underline"
+                        >
+                          0
+                           kg
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="underline"
+                        >
+                          0
+                           units
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                        style="text-align: right;"
+                      >
+                        <div
+                          class="btn--middle flex"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <br />
-  <withRouter(MineExplosivesPermitTable)
-    data={
-      Array [
-        Object {
-          "amendment_count": 0,
-          "amendment_no": 0,
-          "application_date": "2007-12-04",
-          "application_number": "52135425",
-          "application_status": "APP",
-          "detonator_magazines": Array [
-            Object {
-              "construction": "string",
-              "detonator_type": "text field",
-              "distance_dwelling": 60,
-              "distance_road": 70,
-              "explosives_permit_id": 1,
-              "explosives_permit_magazine_id": 1,
-              "explosives_permit_magazine_type_code": "DET",
-              "height": 2,
-              "latitude": null,
-              "length": 1,
-              "longitude": null,
-              "quantity": 12,
-              "tag_no": "1",
-              "type_no": "1",
-              "width": 2,
-            },
-            Object {
-              "construction": "string",
-              "detonator_type": "text field",
-              "distance_dwelling": 60,
-              "distance_road": 70,
-              "explosives_permit_id": 1,
-              "explosives_permit_magazine_id": 2,
-              "explosives_permit_magazine_type_code": "DET",
-              "height": 2,
-              "latitude": null,
-              "length": 1,
-              "longitude": null,
-              "quantity": 12,
-              "tag_no": "1",
-              "type_no": "1",
-              "width": 2,
-            },
-          ],
-          "documents": Array [],
-          "expiry_date": "2007-12-04",
-          "explosive_magazines": Array [
-            Object {
-              "construction": "string",
-              "detonator_type": "text field",
-              "distance_dwelling": 60,
-              "distance_road": 70,
-              "explosives_permit_id": 1,
-              "explosives_permit_magazine_id": 3,
-              "explosives_permit_magazine_type_code": "DET",
-              "height": 2,
-              "latitude": null,
-              "length": 1,
-              "longitude": null,
-              "quantity": 12,
-              "tag_no": "1",
-              "type_no": "1",
-              "width": 2,
-            },
-          ],
-          "explosives_permit_amendments": Array [],
-          "explosives_permit_guid": "816459817365978135",
-          "explosives_permit_id": 1,
-          "isAmendment": false,
-          "issue_date": "2007-12-04",
-          "issuing_inspector_name": "John",
-          "issuing_inspector_party_guid": null,
-          "latitude": null,
-          "longitude": null,
-          "mines_permit_number": "P-39039404",
-          "now_number": "1500615-2021-12",
-          "originating_system": "Core",
-          "permit_number": "BC-11111",
-          "permittee_mine_party_appt_id": 0,
-          "permittee_name": "Mike",
-        },
-        Object {
-          "amendment_count": 0,
-          "amendment_no": 0,
-          "application_date": "2007-12-04",
-          "application_number": "12351235",
-          "application_status": "REC",
-          "detonator_magazines": Array [
-            Object {
-              "construction": "string",
-              "detonator_type": "text field",
-              "distance_dwelling": 60,
-              "distance_road": 70,
-              "explosives_permit_id": 2,
-              "explosives_permit_magazine_id": 4,
-              "explosives_permit_magazine_type_code": "DET",
-              "height": 2,
-              "latitude": null,
-              "length": 1,
-              "longitude": null,
-              "quantity": 12,
-              "tag_no": "1",
-              "type_no": "1",
-              "width": 2,
-            },
-            Object {
-              "construction": "string",
-              "detonator_type": "text field",
-              "distance_dwelling": 60,
-              "distance_road": 70,
-              "explosives_permit_id": 2,
-              "explosives_permit_magazine_id": 5,
-              "explosives_permit_magazine_type_code": "DET",
-              "height": 2,
-              "latitude": null,
-              "length": 1,
-              "longitude": null,
-              "quantity": 12,
-              "tag_no": "1",
-              "type_no": "1",
-              "width": 2,
-            },
-          ],
-          "documents": Array [],
-          "expiry_date": "2007-12-04",
-          "explosive_magazines": Array [
-            Object {
-              "construction": "string",
-              "detonator_type": "text field",
-              "distance_dwelling": 60,
-              "distance_road": 70,
-              "explosives_permit_id": 2,
-              "explosives_permit_magazine_id": 6,
-              "explosives_permit_magazine_type_code": "EXP",
-              "height": 2,
-              "latitude": null,
-              "length": 1,
-              "longitude": null,
-              "quantity": 12,
-              "tag_no": "1",
-              "type_no": "1",
-              "width": 2,
-            },
-            Object {
-              "construction": "string",
-              "detonator_type": "text field",
-              "distance_dwelling": 60,
-              "distance_road": 70,
-              "explosives_permit_id": 2,
-              "explosives_permit_magazine_id": 7,
-              "explosives_permit_magazine_type_code": "EXP",
-              "height": 2,
-              "latitude": null,
-              "length": 1,
-              "longitude": null,
-              "quantity": 12,
-              "tag_no": "1",
-              "type_no": "1",
-              "width": 2,
-            },
-          ],
-          "explosives_permit_amendments": Array [],
-          "explosives_permit_guid": "81324623978135",
-          "explosives_permit_id": 2,
-          "isAmendment": false,
-          "issue_date": "2007-12-04",
-          "issuing_inspector_name": "John",
-          "issuing_inspector_party_guid": null,
-          "latitude": null,
-          "longitude": null,
-          "mines_permit_number": "P-39039404",
-          "now_number": "1500615-2021-12",
-          "originating_system": "Core",
-          "permit_number": "BC-145411",
-        },
-      ]
-    }
-    explosivesPermitDocumentTypeOptionsHash={Object {}}
-    explosivesPermitStatusOptionsHash={Object {}}
-    handleDeleteExplosivesPermit={[Function]}
-    handleOpenAmendExplosivesPermitModal={[Function]}
-    handleOpenEditExplosivesPermitModal={[Function]}
-    handleOpenExplosivesPermitDecisionModal={[Function]}
-    handleOpenViewExplosivesPermitModal={[Function]}
-    handleOpenViewMagazineModal={[Function]}
-    isLoaded={true}
-    isPermitTab={false}
-  />
 </div>
 `;

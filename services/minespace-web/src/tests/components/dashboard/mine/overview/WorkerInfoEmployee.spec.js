@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { WorkerInfoEmployee } from "@/components/dashboard/mine/overview/WorkerInfoEmployee";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const props = {};
 const dispatchProps = {};
@@ -22,7 +23,11 @@ beforeEach(() => {
 
 describe("WorkerInfoEmployee", () => {
   it("renders properly", () => {
-    const component = shallow(<WorkerInfoEmployee {...props} {...dispatchProps} />);
+    const { container: component } = render(
+      <ReduxWrapper>
+        <WorkerInfoEmployee {...props} {...dispatchProps} />
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 });

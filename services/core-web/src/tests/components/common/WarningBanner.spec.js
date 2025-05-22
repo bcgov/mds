@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import WarningBanner from "@/components/common/WarningBanner";
 
 let props = {};
@@ -20,7 +20,7 @@ beforeEach(() => {
 
 describe("WarningBanner", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<WarningBanner {...props} {...dispatchProps} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container: component } = render(<WarningBanner {...props} {...dispatchProps} />);
+    expect(component).toMatchSnapshot();
   });
 });

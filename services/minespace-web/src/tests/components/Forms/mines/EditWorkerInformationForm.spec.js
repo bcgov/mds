@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { EditWorkerInformationForm } from "@/components/Forms/mines/EditWorkerInformationForm";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
 const props = {};
 const dispatchProps = {};
@@ -22,7 +23,11 @@ beforeEach(() => {
 
 describe("EditWorkerInformationForm", () => {
   it("renders properly", () => {
-    const component = shallow(<EditWorkerInformationForm {...props} {...dispatchProps} />);
+    const { container: component } = render(
+      <ReduxWrapper>
+        <EditWorkerInformationForm {...props} {...dispatchProps} />
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 });

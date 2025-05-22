@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { ViewPartyRelationships } from "@/components/mine/ContactInfo/ViewPartyRelationships";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
@@ -32,7 +32,7 @@ beforeEach(() => {
 
 describe("ViewPartyRelationships", () => {
   it("renders properly", () => {
-    const component = shallow(<ViewPartyRelationships {...dispatchProps} {...props} />);
+    const { container: component } = render(<ViewPartyRelationships {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

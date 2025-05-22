@@ -1,96 +1,212 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EditWorkerInformationForm renders properly 1`] = `
-<div
-  className="work-information-container "
->
-  <Connect(ReduxForm)
-    name="EDIT_EMPLOYEE_COUNT_FORM"
-    onSubmit={[MockFunction]}
-    reduxFormConfig={
-      Object {
-        "enableReinitialize": true,
-        "touchOnBlur": false,
-      }
-    }
-    scrollOnToggleEdit={false}
+<div>
+  <div
+    class="work-information-container "
   >
-    <ForwardRef
-      level={4}
+    <form
+      class="ant-form ant-form-vertical common-form common-form-EDIT_EMPLOYEE_COUNT_FORM form-edit"
+      id="EDIT_EMPLOYEE_COUNT_FORM"
     >
-      Worker Information
-      <Tooltip
-        mouseEnterDelay={0.3}
-        overlayClassName="minespace-tooltip"
-        placement="right"
-        title="Approximate number of workers on site that includes mine employees and contractors."
+      <h4
+        class="ant-typography"
       >
-        <ForwardRef(InfoCircleOutlined)
-          className="padding-sm"
-        />
-      </Tooltip>
-    </ForwardRef>
-    <Row
-      gutter={16}
-    >
-      <Col
-        span={22}
-      >
-        <Descriptions
-          colon={false}
-          column={5}
+        Worker Information
+        <span
+          aria-label="info-circle"
+          class="anticon anticon-info-circle padding-sm"
+          role="img"
         >
-          <DescriptionsItem
-            label="Number of Mine Employees"
+          <svg
+            aria-hidden="true"
+            class=""
+            data-icon="info-circle"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
           >
-            <Field
-              autoComplete="off"
-              component={[Function]}
-              format={[Function]}
-              id="number_of_mine_employees"
-              name="number_of_mine_employees"
-              normalize={[Function]}
-              onChange={[Function]}
-              onFocus={[Function]}
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
+            <path
+              d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
             />
-          </DescriptionsItem>
-          <DescriptionsItem
-            label="Number of Contractors"
+            <path
+              d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+            />
+          </svg>
+        </span>
+      </h4>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-22"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-descriptions"
           >
-            <Field
-              autoComplete="off"
-              component={[Function]}
-              format={[Function]}
-              id="number_of_contractors"
-              name="number_of_contractors"
-              normalize={[Function]}
-              onChange={[Function]}
-              onFocus={[Function]}
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-          </DescriptionsItem>
-        </Descriptions>
-      </Col>
-    </Row>
-    <div
-      className="right center-mobile"
-    >
-      <RenderCancelButton
-        cancelFunction={[MockFunction]}
-      />
-      <RenderSubmitButton
-        buttonText="Update Mine Worker Information"
-      />
-    </div>
-  </Connect(ReduxForm)>
+            <div
+              class="ant-descriptions-view"
+            >
+              <table>
+                <tbody>
+                  <tr
+                    class="ant-descriptions-row"
+                  >
+                    <td
+                      class="ant-descriptions-item"
+                      colspan="1"
+                    >
+                      <div
+                        class="ant-descriptions-item-container"
+                      >
+                        <span
+                          class="ant-descriptions-item-label ant-descriptions-item-no-colon"
+                        >
+                          Number of Mine Employees
+                        </span>
+                        <span
+                          class="ant-descriptions-item-content"
+                        >
+                          <div
+                            class="ant-form-item ant-form-item-with-help"
+                          >
+                            <div
+                              class="ant-row ant-form-item-row"
+                            >
+                              <div
+                                class="ant-col ant-form-item-control"
+                              >
+                                <div
+                                  class="ant-form-item-control-input"
+                                >
+                                  <div
+                                    class="ant-form-item-control-input-content"
+                                  >
+                                    <input
+                                      aria-label="number_of_mine_employees"
+                                      class="ant-input"
+                                      data-testid="number_of_mine_employees"
+                                      id="number_of_mine_employees"
+                                      name="number_of_mine_employees"
+                                      type="text"
+                                      value=""
+                                    />
+                                  </div>
+                                </div>
+                                <div
+                                  style="display: flex; flex-wrap: nowrap;"
+                                >
+                                  <div
+                                    class="ant-form-item-explain ant-form-item-explain-connected"
+                                    id="EDIT_EMPLOYEE_COUNT_FORM_number_of_mine_employees_help"
+                                    role="alert"
+                                  >
+                                    <div
+                                      class=""
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </span>
+                      </div>
+                    </td>
+                    <td
+                      class="ant-descriptions-item"
+                      colspan="4"
+                    >
+                      <div
+                        class="ant-descriptions-item-container"
+                      >
+                        <span
+                          class="ant-descriptions-item-label ant-descriptions-item-no-colon"
+                        >
+                          Number of Contractors
+                        </span>
+                        <span
+                          class="ant-descriptions-item-content"
+                        >
+                          <div
+                            class="ant-form-item ant-form-item-with-help"
+                          >
+                            <div
+                              class="ant-row ant-form-item-row"
+                            >
+                              <div
+                                class="ant-col ant-form-item-control"
+                              >
+                                <div
+                                  class="ant-form-item-control-input"
+                                >
+                                  <div
+                                    class="ant-form-item-control-input-content"
+                                  >
+                                    <input
+                                      aria-label="number_of_contractors"
+                                      class="ant-input"
+                                      data-testid="number_of_contractors"
+                                      id="number_of_contractors"
+                                      name="number_of_contractors"
+                                      type="text"
+                                      value=""
+                                    />
+                                  </div>
+                                </div>
+                                <div
+                                  style="display: flex; flex-wrap: nowrap;"
+                                >
+                                  <div
+                                    class="ant-form-item-explain ant-form-item-explain-connected"
+                                    id="EDIT_EMPLOYEE_COUNT_FORM_number_of_contractors_help"
+                                    role="alert"
+                                  >
+                                    <div
+                                      class=""
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="right center-mobile"
+      >
+        <button
+          aria-label="Cancel"
+          class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
+          type="button"
+        >
+          <span>
+            Cancel
+          </span>
+        </button>
+        <button
+          aria-label="Submit"
+          class="ant-btn ant-btn-primary  form-btn"
+          disabled=""
+          type="submit"
+        >
+          <span>
+            Update Mine Worker Information
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
 `;

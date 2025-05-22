@@ -1,7 +1,9 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { ExplosivesPermit } from "@/components/mine/ExplosivesPermit/ExplosivesPermit";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { BrowserRouter } from "react-router-dom";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const props = {};
 
@@ -32,7 +34,7 @@ beforeEach(() => {
 
 describe("ExplosivesPermit", () => {
   it("renders properly", () => {
-    const component = shallow(<ExplosivesPermit {...props} />);
+    const { container: component } = render(<ReduxWrapper><BrowserRouter><ExplosivesPermit {...props} /></BrowserRouter></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });
