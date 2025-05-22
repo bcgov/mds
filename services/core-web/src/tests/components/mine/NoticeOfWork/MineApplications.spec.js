@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MineApplications } from "@/components/mine/NoticeOfWork/MineApplications";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { BrowserRouter } from "react-router-dom";
 
 const props = {};
 const dispatchProps = {};
@@ -29,7 +30,7 @@ beforeEach(() => {
 
 describe("MineApplications", () => {
   it("renders properly", () => {
-    const component = shallow(<MineApplications {...props} {...dispatchProps} />);
+    const { container: component } = render(<BrowserRouter><MineApplications {...props} {...dispatchProps} /></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

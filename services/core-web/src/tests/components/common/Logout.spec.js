@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { Logout } from "@/components/common/Logout";
+import { BrowserRouter } from "react-router-dom";
 
 const props = {};
 
@@ -23,7 +24,7 @@ beforeEach(() => {
 
 describe("Logout", () => {
   it("renders properly", () => {
-    const component = shallow(<Logout {...props} />);
+    const { container: component } = render(<BrowserRouter><Logout {...props} /></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

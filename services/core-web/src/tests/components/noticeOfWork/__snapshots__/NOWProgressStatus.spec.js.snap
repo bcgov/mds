@@ -2,16 +2,26 @@
 
 exports[`NOWProgressStatus renders properly 1`] = `
 <div>
-  <p
-    className="small-p"
-  >
-     Status:
-     
-    <Badge
-      className="padding-sm--left progress-status"
-      color="#6b6363"
-      text="Not Started"
-    />
-  </p>
+  <div>
+    <p
+      class="small-p"
+    >
+       Status:
+       
+      <span
+        class="ant-badge ant-badge-status ant-badge-not-a-wrapper padding-sm--left progress-status"
+      >
+        <span
+          class="ant-badge-status-dot"
+          style="background: rgb(107, 99, 99);"
+        />
+        <span
+          class="ant-badge-status-text"
+        >
+          Not Started
+        </span>
+      </span>
+    </p>
+  </div>
 </div>
 `;

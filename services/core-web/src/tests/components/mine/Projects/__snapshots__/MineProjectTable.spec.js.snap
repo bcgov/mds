@@ -1,110 +1,223 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineProjectTable renders properly 1`] = `
-<CoreTable
-  columns={
-    Array [
-      Object {
-        "dataIndex": "project_name",
-        "key": "project_name",
-        "render": [Function],
-        "title": "Project name",
-      },
-      Object {
-        "dataIndex": "proponent_project_id",
-        "key": "proponent_project_id",
-        "render": [Function],
-        "title": "Project ID",
-      },
-      Object {
-        "dataIndex": "project_lead_name",
-        "key": "project_lead_name",
-        "render": [Function],
-        "title": "MCM Project Lead",
-      },
-      Object {
-        "dataIndex": "project_contact",
-        "key": "project_contact",
-        "render": [Function],
-        "title": "Proponent contact",
-      },
-      Object {
-        "dataIndex": "project_stage",
-        "key": "project_stage",
-        "render": [Function],
-        "title": "Overall Project stage",
-      },
-      Object {
-        "dataIndex": "last_updated_date",
-        "defaultSortOrder": "descend",
-        "key": "last_updated_date",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "Last Submission date",
-      },
-      Object {
-        "dataIndex": "project",
-        "render": [Function],
-        "title": "",
-      },
-    ]
-  }
-  condition={true}
-  dataSource={
-    Array [
-      Object {
-        "key": "35633148-57f8-4967-be35-7f89abfbd02e",
-        "last_updated_date": undefined,
-        "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
-        "project": Object {
-          "contacts": Array [],
-          "information_requirements_table": Object {
-            "documents": Array [],
-          },
-          "major_mine_application": Object {
-            "documents": Array [
-              Object {
-                "document_manager_guid": "5c910ea7-31ec-4064-8f73-5ce151d25af8",
-                "document_name": "test.pdf",
-                "major_mine_application_document_type_code": "PRM",
-                "major_mine_application_id": 7,
-                "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
-              },
-              Object {
-                "document_manager_guid": "6d910ea7-31ec-4064-8f73-5ce151d25af0",
-                "document_name": "test.kmz",
-                "major_mine_application_document_type_code": "SPT",
-                "major_mine_application_id": 8,
-                "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
-              },
-              Object {
-                "document_manager_guid": "8f910ea7-31ec-4064-8f73-5ce151d25af1",
-                "document_name": "test.pdf",
-                "major_mine_application_document_type_code": "SPR",
-                "major_mine_application_id": 9,
-                "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
-              },
-            ],
-          },
-          "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
-          "mine_name": "Sample Mine",
-          "project_decision_package": Object {
-            "documents": Array [],
-          },
-          "project_guid": "35633148-57f8-4967-be35-7f89abfbd02e",
-          "project_summary": Object {
-            "documents": Array [],
-          },
-          "project_title": "Test Project Title",
-        },
-        "project_contact": "N/A",
-        "project_id": "N/A",
-        "project_lead_name": undefined,
-        "project_name": "Test Project Title",
-        "project_stage": undefined,
-        "proponent_project_id": "N/A",
-      },
-    ]
-  }
-/>
+<div>
+  <div
+    class="ant-table-wrapper  core-table"
+  >
+    <div
+      class="ant-spin-nested-loading"
+    >
+      <div
+        class="ant-spin-container"
+      >
+        <div
+          class="ant-table"
+        >
+          <div
+            class="ant-table-container"
+          >
+            <div
+              class="ant-table-content"
+            >
+              <table
+                style="table-layout: auto;"
+              >
+                <colgroup />
+                <thead
+                  class="ant-table-thead"
+                >
+                  <tr>
+                    <th
+                      class="ant-table-cell"
+                    >
+                      Project name
+                    </th>
+                    <th
+                      class="ant-table-cell"
+                    >
+                      Project ID
+                    </th>
+                    <th
+                      class="ant-table-cell"
+                    >
+                      MCM Project Lead
+                    </th>
+                    <th
+                      class="ant-table-cell"
+                    >
+                      Proponent contact
+                    </th>
+                    <th
+                      class="ant-table-cell"
+                    >
+                      Overall Project stage
+                    </th>
+                    <th
+                      aria-sort="descending"
+                      class="ant-table-cell ant-table-column-sort ant-table-column-has-sorters"
+                      tabindex="0"
+                    >
+                      <div
+                        class="ant-table-column-sorters"
+                      >
+                        <span
+                          class="ant-table-column-title"
+                        >
+                          Last Submission date
+                        </span>
+                        <span
+                          class="ant-table-column-sorter ant-table-column-sorter-full"
+                        >
+                          <span
+                            class="ant-table-column-sorter-inner"
+                          >
+                            <span
+                              aria-label="caret-up"
+                              class="anticon anticon-caret-up ant-table-column-sorter-up"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-up"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                            <span
+                              aria-label="caret-down"
+                              class="anticon anticon-caret-down ant-table-column-sorter-down active"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </th>
+                    <th
+                      class="ant-table-cell"
+                    >
+                      
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  class="ant-table-tbody"
+                >
+                  <tr
+                    class="ant-table-row ant-table-row-level-0 fade-in"
+                    data-row-key="35633148-57f8-4967-be35-7f89abfbd02e"
+                  >
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        data-cy="project-name-column"
+                        title="Project name"
+                      >
+                        Test Project Title
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Project ID"
+                      >
+                        N/A
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="MCM Project Lead"
+                      />
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Proponent contact"
+                      >
+                        N/A
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Overall Project stage"
+                      >
+                        N/A
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell ant-table-column-sort"
+                    >
+                      <div
+                        title="Last updated date"
+                      />
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        align="right"
+                        title=""
+                      >
+                        <div
+                          class="ant-row"
+                          style="margin-left: -0.5px; margin-right: -0.5px;"
+                        >
+                          <div
+                            class="ant-col ant-col-12"
+                            style="padding-left: 0.5px; padding-right: 0.5px;"
+                          >
+                            <a
+                              href="/pre-applications/35633148-57f8-4967-be35-7f89abfbd02e/overview"
+                            >
+                              <button
+                                class="ant-btn ant-btn-primary"
+                                type="button"
+                              >
+                                <span>
+                                  Open
+                                </span>
+                              </button>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;

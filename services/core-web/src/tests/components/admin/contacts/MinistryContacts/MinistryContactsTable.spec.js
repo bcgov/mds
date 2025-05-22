@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MinistryContactsTable } from "@/components/admin/contacts/MinistryContacts/MinistryContactsTable";
 
 const dispatchProps = {};
@@ -25,7 +25,7 @@ beforeEach(() => {
 
 describe("MinistryContactsTable", () => {
   it("renders properly", () => {
-    const component = shallow(<MinistryContactsTable {...dispatchProps} {...props} />);
+    const { container: component } = render(<MinistryContactsTable {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

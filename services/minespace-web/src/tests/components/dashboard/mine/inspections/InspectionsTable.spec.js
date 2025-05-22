@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { InspectionsTable } from "@/components/dashboard/mine/inspections/InspectionsTable";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
@@ -17,7 +17,7 @@ beforeEach(() => {
 
 describe("InspectionsTable", () => {
   it("renders properly", () => {
-    const component = shallow(<InspectionsTable {...props} {...dispatchProps} />);
+    const { container: component } = render(<InspectionsTable {...props} {...dispatchProps} />);
     expect(component).toMatchSnapshot();
   });
 });

@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { NOWSideMenu } from "@/components/noticeOfWork/applications/NOWSideMenu";
 
 const reducerProps = {};
@@ -18,7 +18,7 @@ beforeEach(() => {
 
 describe("NOWSideMenu", () => {
   it("renders properly", () => {
-    const component = shallow(<NOWSideMenu {...reducerProps} match={{ params: { id: 1 } }} />);
+    const { container: component } = render(<NOWSideMenu {...reducerProps} match={{ params: { id: 1 } }} />);
     expect(component).toMatchSnapshot();
   });
 });

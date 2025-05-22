@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MineReclamationInvoiceTable } from "@/components/mine/Securities/MineReclamationInvoiceTable";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
@@ -29,7 +29,7 @@ beforeEach(() => {
 
 describe("MineReclamationInvoiceTable", () => {
   it("renders properly", () => {
-    const component = shallow(<MineReclamationInvoiceTable {...dispatchProps} {...props} />);
+    const { container: component } = render(<MineReclamationInvoiceTable {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

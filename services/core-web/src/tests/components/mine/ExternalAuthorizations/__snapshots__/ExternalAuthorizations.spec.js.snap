@@ -1,74 +1,237 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ExternalAuthorizations renders properly 1`] = `
-<div
-  className="tab__content"
->
-  <h2>
-    Other Ministry Applications and Authorizations
-  </h2>
-  <Divider />
-  <Tabs
-    style={
-      Object {
-        "textAlign": "left !important",
-      }
-    }
-    type="card"
+<div>
+  <div
+    class="tab__content"
   >
-    <DeprecatedTabPane
-      key="1"
-      tab="Epic Authorizations (0)"
+    <h2>
+      Other Ministry Applications and Authorizations
+    </h2>
+    <div
+      class="ant-divider ant-divider-horizontal"
+      role="separator"
+    />
+    <div
+      class="ant-tabs ant-tabs-top ant-tabs-card"
+      style="text-align: left !important;"
     >
-      <br />
       <div
-        className="inline-flex between"
+        class="ant-tabs-nav"
+        role="tablist"
       >
-        <h3
-          className="uppercase"
+        <div
+          class="ant-tabs-nav-wrap"
         >
-          EPIC Authorizations
-        </h3>
+          <div
+            class="ant-tabs-nav-list"
+            style="transform: translate(0px, 0px);"
+          >
+            <div
+              class="ant-tabs-tab ant-tabs-tab-active"
+              data-node-key="1"
+            >
+              <div
+                aria-controls="rc-tabs-test-panel-1"
+                aria-selected="true"
+                class="ant-tabs-tab-btn"
+                id="rc-tabs-test-tab-1"
+                role="tab"
+                tabindex="0"
+              >
+                Epic Authorizations (0)
+              </div>
+            </div>
+            <div
+              class="ant-tabs-ink-bar ant-tabs-ink-bar-animated"
+            />
+          </div>
+        </div>
+        <div
+          class="ant-tabs-nav-operations ant-tabs-nav-operations-hidden"
+        >
+          <button
+            aria-controls="rc-tabs-test-more-popup"
+            aria-expanded="false"
+            aria-haspopup="listbox"
+            aria-hidden="true"
+            class="ant-tabs-nav-more"
+            id="rc-tabs-test-more"
+            style="visibility: hidden; order: 1;"
+            tabindex="-1"
+            type="button"
+          >
+            <span
+              aria-label="ellipsis"
+              class="anticon anticon-ellipsis"
+              role="img"
+            >
+              <svg
+                aria-hidden="true"
+                data-icon="ellipsis"
+                fill="currentColor"
+                focusable="false"
+                height="1em"
+                viewBox="64 64 896 896"
+                width="1em"
+              >
+                <path
+                  d="M176 511a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0z"
+                />
+              </svg>
+            </span>
+          </button>
+        </div>
       </div>
-      <br />
-      <withRouter(EPICAuthorizationsTable)
-        data={
-          Object {
-            "mine_info": Object {
-              "mine_guid": "a157accf-7a61-40ea-a78c-6d23a6bb944b",
-              "projects": Array [
-                Object {
-                  "link": "https://projects.eao.gov.bc.ca/p/58851185aaecd9001b821677/project-details",
-                  "project_id": "58851185aaecd9001b821677",
-                  "project_lead": "Karen Christie",
-                  "project_lead_email": "test@test.ca",
-                  "project_lead_phone": "123-456-7890",
-                  "project_legislation_year": 2002,
-                  "responsible_EPD": "Karen Christie",
-                  "responsible_EPD_email": "test@test.ca",
-                  "responsible_EPD_phone": "778 698-9347",
-                },
-                Object {
-                  "link": "https://projects.eao.gov.bc.ca/p/58851079aaecd9001b810cb5/project-details",
-                  "project_id": "58851079aaecd9001b810cb5",
-                  "project_lead": "Karen Christie",
-                  "project_lead_email": "test@test.ca",
-                  "project_lead_phone": "123-456-7890",
-                  "project_legislation_year": 1996,
-                  "responsible_EPD": "Karen Christie",
-                  "responsible_EPD_email": "test@test.ca",
-                  "responsible_EPD_phone": "123-456-7890",
-                },
-              ],
-              "summary": "<p>Located about 25 km north of the town of Sparwood, Line Creek Operations is one of Teck's five metallurgical coal mines in southeast British Columbia's Elk Valley.
-<p>Line Creek Operations opened in 1981 and currently employs about 490 workers. Proven and probable reserves are projected to support mining at Line Creek at currently planned production rates for another 23 years.
-<p>The West Line Creek Active Water Treatment Facility began full operations in March 2016. This is the first of the water treatment facilities planned for Teck's Elk Valley mines, as outlined in the Elk Valley Water Quality Plan. The goal of the Elk Valley Water Quality Plan is to stabilize and reverse the increasing trend of selenium and other substances to maintain the health of the Elk Valley watershed, while at the same time allowing for mining in the region to continue. Selenium concentrations in water treated at the West Line Creek Active Water Treatment Facility are reduced by about 96%, and nitrate concentrations in treated water are reduced by over 99%.</p>",
-            },
-          }
-        }
-        isLoaded={false}
-      />
-    </DeprecatedTabPane>
-  </Tabs>
+      <div
+        class="ant-tabs-content-holder"
+      >
+        <div
+          class="ant-tabs-content ant-tabs-content-top"
+        >
+          <div
+            aria-hidden="false"
+            aria-labelledby="rc-tabs-test-tab-1"
+            class="ant-tabs-tabpane ant-tabs-tabpane-active"
+            id="rc-tabs-test-panel-1"
+            role="tabpanel"
+            tabindex="0"
+          >
+            <br />
+            <div
+              class="inline-flex between"
+            >
+              <h3
+                class="uppercase"
+              >
+                EPIC Authorizations
+              </h3>
+            </div>
+            <br />
+            <div>
+              <div>
+                <h4>
+                  Summary
+                </h4>
+                <div>
+                  <div
+                    class="loading-screen--small"
+                  >
+                    <div
+                      aria-busy="true"
+                      aria-live="polite"
+                      class="ant-spin ant-spin-spinning"
+                      id="spinner"
+                    >
+                      <span
+                        aria-label="loading"
+                        class="anticon anticon-loading ant-spin-dot"
+                        role="img"
+                        style="font-size: 80px; color: rgb(107, 99, 99);"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="anticon-spin"
+                          data-icon="loading"
+                          fill="currentColor"
+                          focusable="false"
+                          height="1em"
+                          viewBox="0 0 1024 1024"
+                          width="1em"
+                        >
+                          <path
+                            d="M988 548c-19.9 0-36-16.1-36-36 0-59.4-11.6-117-34.6-171.3a440.45 440.45 0 00-94.3-139.9 437.71 437.71 0 00-139.9-94.3C629 83.6 571.4 72 512 72c-19.9 0-36-16.1-36-36s16.1-36 36-36c69.1 0 136.2 13.5 199.3 40.3C772.3 66 827 103 874 150c47 47 83.9 101.8 109.7 162.7 26.7 63.1 40.2 130.2 40.2 199.3.1 19.9-16 36-35.9 36z"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div
+                class="ant-table-wrapper"
+              >
+                <div
+                  class="ant-spin-nested-loading"
+                >
+                  <div
+                    class="ant-spin-container"
+                  >
+                    <div
+                      class="ant-table"
+                    >
+                      <div
+                        class="ant-table-container"
+                      >
+                        <div
+                          class="ant-table-content"
+                        >
+                          <table
+                            style="table-layout: auto;"
+                          >
+                            <colgroup />
+                            <thead
+                              class="ant-table-thead"
+                            >
+                              <tr>
+                                <th
+                                  class="ant-table-cell"
+                                >
+                                  Legislation Year
+                                </th>
+                                <th
+                                  class="ant-table-cell"
+                                >
+                                  Project Lead
+                                </th>
+                                <th
+                                  class="ant-table-cell"
+                                >
+                                  Project Lead Email
+                                </th>
+                                <th
+                                  class="ant-table-cell"
+                                >
+                                  Project Lead Phone
+                                </th>
+                                <th
+                                  class="ant-table-cell"
+                                >
+                                  Responsible EPD
+                                </th>
+                                <th
+                                  class="ant-table-cell"
+                                >
+                                  Responsible EPD Email
+                                </th>
+                                <th
+                                  class="ant-table-cell"
+                                >
+                                  Responsible EPD Phone
+                                </th>
+                                <th
+                                  class="ant-table-cell"
+                                >
+                                  EPIC Link
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody
+                              class="ant-table-tbody"
+                            />
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;

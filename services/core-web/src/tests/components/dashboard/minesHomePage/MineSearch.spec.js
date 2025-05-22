@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MineSearch } from "@/components/dashboard/minesHomePage/MineSearch";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -25,7 +26,7 @@ beforeEach(() => {
 
 describe("MineSearch", () => {
   it("renders properly", () => {
-    const component = shallow(<MineSearch {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><MineSearch {...dispatchProps} {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

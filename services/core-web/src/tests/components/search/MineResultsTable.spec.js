@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MineResultsTable } from "@/components/search/MineResultsTable";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { BrowserRouter } from "react-router-dom";
 
 const reducerProps = {};
 
@@ -18,7 +19,7 @@ beforeEach(() => {
 
 describe("MineResultsTable", () => {
   it("renders properly", () => {
-    const component = shallow(<MineResultsTable {...reducerProps} />);
+    const { container: component } = render(<BrowserRouter><MineResultsTable {...reducerProps} /></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

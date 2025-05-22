@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import LinkButton from "@/components/common/buttons/LinkButton";
 
 const props = {};
@@ -22,7 +22,7 @@ beforeEach(() => {
 
 describe("LinkButton", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<LinkButton {...props} {...dispatchProps} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container: component } = render(<LinkButton {...props} {...dispatchProps} />);
+    expect(component).toMatchSnapshot();
   });
 });

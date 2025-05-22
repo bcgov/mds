@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { NoticeOfWorkSearch } from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const props = {};
 
@@ -15,7 +16,7 @@ beforeEach(() => {
 
 describe("NoticeOfWorkSearch", () => {
   it("renders properly", () => {
-    const component = shallow(<NoticeOfWorkSearch {...props} />);
+    const { container: component } = render(<ReduxWrapper><NoticeOfWorkSearch {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

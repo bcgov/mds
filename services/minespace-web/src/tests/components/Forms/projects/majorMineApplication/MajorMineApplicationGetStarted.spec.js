@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MajorMineApplicationGetStarted } from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationGetStarted";
 
 const dispatchProps = {};
@@ -16,7 +16,9 @@ beforeEach(() => {
 
 describe("MajorMineApplicationGetStarted", () => {
   it("renders properly", () => {
-    const component = shallow(<MajorMineApplicationGetStarted {...dispatchProps} {...props} />);
+    const { container: component } = render(
+      <MajorMineApplicationGetStarted {...dispatchProps} {...props} />
+    );
     expect(component).toMatchSnapshot();
   });
 });

@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MinistryInternalComments } from "@/components/mine/Incidents/MinistryInternalComments";
 import { store } from "@/App";
 import { Provider } from "react-redux";
@@ -24,7 +24,7 @@ beforeEach(() => {
 
 describe("MinistryInternalComments", () => {
   it("renders properly", () => {
-    const component = shallow(
+    const { container: component } = render(
       <Provider store={store}>
         <MinistryInternalComments {...dispatchProps} {...props} />
       </Provider>

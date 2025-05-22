@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MineDashboardContentCard } from "@/components/mine/MineDashboardContentCard";
 
 const props = {};
@@ -16,7 +16,7 @@ beforeEach(() => {
 
 describe("MineDashboardContentCard", () => {
   it("renders properly", () => {
-    const component = shallow(<MineDashboardContentCard {...props} />);
+    const { container: component } = render(<MineDashboardContentCard {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

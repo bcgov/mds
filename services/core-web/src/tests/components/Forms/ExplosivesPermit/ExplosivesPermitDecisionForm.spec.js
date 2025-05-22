@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { ExplosivesPermitDecisionForm } from "@/components/Forms/ExplosivesPermit/ExplosivesPermitDecisionForm";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
 const props = {};
 
@@ -25,7 +26,7 @@ beforeEach(() => {
 
 describe("ExplosivesPermitDecisionForm", () => {
   it("renders properly", () => {
-    const component = shallow(<ExplosivesPermitDecisionForm {...props} />);
+    const { container: component } = render(<ReduxWrapper><ExplosivesPermitDecisionForm {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

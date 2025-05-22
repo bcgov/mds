@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MineAdministrativeAmendmentTable } from "@/components/mine/AdministrativeAmendment/MineAdministrativeAmendmentTable";
 const props = {};
 
@@ -23,7 +23,7 @@ beforeEach(() => {
 
 describe("MineAdministrativeAmendmentTable", () => {
   it("renders properly", () => {
-    const component = shallow(<MineAdministrativeAmendmentTable {...props} />);
+    const { container: component } = render(<MineAdministrativeAmendmentTable {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

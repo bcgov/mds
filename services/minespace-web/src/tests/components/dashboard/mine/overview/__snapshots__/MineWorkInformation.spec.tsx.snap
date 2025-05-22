@@ -1,180 +1,265 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineWorkInformation renders properly 1`] = `
-<div
-  className="work-information-container "
->
+<div>
   <div
-    className="inline-flex between"
+    class="work-information-container "
   >
-    <ForwardRef
-      level={3}
+    <div
+      class="inline-flex between"
     >
-      Work Information
-    </ForwardRef>
-    <span>
-      <Connect(AuthorizationWrapper)>
-        <Button
-          onClick={[Function]}
-          type="link"
-        >
-          <img
-            alt="Edit"
-            src={
-              Object {
-                "process": [Function],
-              }
-            }
-          />
-        </Button>
-      </Connect(AuthorizationWrapper)>
-    </span>
-  </div>
-  <Row
-    gutter={5}
-  >
-    <ForwardRef>
-      Keep your start and stop work dates current. Sections 6.1.2 and 6.2.2 of the Health, Safety & Reclamation Code apply to any person doing any work (mining activity) at, on, or about the mine site.
-    </ForwardRef>
-  </Row>
-  <Row
-    gutter={16}
-  >
-    <Col
-      span={24}
-    >
-      <LoadingWrapper
-        delay={1000}
-        iconSize={80}
-        isLoaded={true}
-        tip=""
+      <h3
+        class="ant-typography"
       >
-        <div>
-          <Row>
+        Work Information
+      </h3>
+      <span>
+        <span />
+      </span>
+    </div>
+    <div
+      class="ant-row"
+      style="margin-left: -2.5px; margin-right: -2.5px;"
+    >
+      <div
+        class="ant-typography"
+      >
+        Keep your start and stop work dates current. Sections 6.1.2 and 6.2.2 of the Health, Safety & Reclamation Code apply to any person doing any work (mining activity) at, on, or about the mine site.
+      </div>
+    </div>
+    <div
+      class="ant-row"
+      style="margin-left: -8px; margin-right: -8px;"
+    >
+      <div
+        class="ant-col ant-col-24"
+        style="padding-left: 8px; padding-right: 8px;"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
             <div>
-              <Row
-                gutter={16}
+              <div
+                class="ant-row"
               >
-                <Col
-                  span={22}
-                >
-                  <Descriptions
-                    colon={false}
-                    column={5}
+                <div>
+                  <div
+                    class="ant-row"
+                    style="margin-left: -8px; margin-right: -8px;"
                   >
-                    <DescriptionsItem
-                      label={
-                        <React.Fragment>
-                          <Tooltip
-                            mouseEnterDelay={0.3}
-                            overlayClassName="minespace-tooltip"
-                            placement="right"
-                            title={
-                              <React.Fragment>
-                                <ForwardRef(Text)
-                                  strong={true}
-                                >
-                                  Health, Safety and Reclamation Code for Mines in British Columbia
-                                </ForwardRef(Text)>
-                                <br />
-                                <ForwardRef(Text)
-                                  underline={true}
-                                >
-                                  Notice To Start Work
-                                </ForwardRef(Text)>
-                                <br />
-                                <ForwardRef(Text)>
-                                  6.2.1 The manager shall give 10 days’ notice to an inspector of intention to start [any mining activity] in, at, or about a mine, including seasonal reactivation.
-                                </ForwardRef(Text)>
-                              </React.Fragment>
-                            }
-                          >
-                            <ForwardRef(InfoCircleOutlined)
-                              className="padding-sm"
-                            />
-                          </Tooltip>
-                          Work Start Date
-                        </React.Fragment>
-                      }
+                    <div
+                      class="ant-col ant-col-22"
+                      style="padding-left: 8px; padding-right: 8px;"
                     >
-                      Aug 24 2021
-                    </DescriptionsItem>
-                    <DescriptionsItem
-                      label={
-                        <React.Fragment>
-                          <Tooltip
-                            mouseEnterDelay={0.3}
-                            overlayClassName="minespace-tooltip"
-                            placement="right"
-                            title={
-                              <React.Fragment>
-                                <ForwardRef(Text)
-                                  strong={true}
+                      <div
+                        class="ant-descriptions"
+                      >
+                        <div
+                          class="ant-descriptions-view"
+                        >
+                          <table>
+                            <tbody>
+                              <tr
+                                class="ant-descriptions-row"
+                              >
+                                <td
+                                  class="ant-descriptions-item"
+                                  colspan="1"
                                 >
-                                  Health, Safety and Reclamation Code for Mines in British Columbia
-                                </ForwardRef(Text)>
-                                <br />
-                                <ForwardRef(Text)
-                                  underline={true}
+                                  <div
+                                    class="ant-descriptions-item-container"
+                                  >
+                                    <span
+                                      class="ant-descriptions-item-label ant-descriptions-item-no-colon"
+                                    >
+                                      <span
+                                        aria-label="info-circle"
+                                        class="anticon anticon-info-circle padding-sm"
+                                        role="img"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          class=""
+                                          data-icon="info-circle"
+                                          fill="currentColor"
+                                          focusable="false"
+                                          height="1em"
+                                          viewBox="64 64 896 896"
+                                          width="1em"
+                                        >
+                                          <path
+                                            d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                                          />
+                                          <path
+                                            d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+                                          />
+                                        </svg>
+                                      </span>
+                                      Work Start Date
+                                    </span>
+                                    <span
+                                      class="ant-descriptions-item-content"
+                                    >
+                                      Aug 24 2021
+                                    </span>
+                                  </div>
+                                </td>
+                                <td
+                                  class="ant-descriptions-item"
+                                  colspan="1"
                                 >
-                                  Notice to Stop Work
-                                </ForwardRef(Text)>
-                                <br />
-                                <ForwardRef(Text)>
-                                  6.2.2 The manager shall give notice to an inspector of intention to stop [any mining activity] in, at, or about a mine, permanently, indefinitely, or for a definite period exceeding 30 days, and except in an emergency, the notice shall be not less than seven days.
-                                </ForwardRef(Text)>
-                              </React.Fragment>
-                            }
-                          >
-                            <ForwardRef(InfoCircleOutlined)
-                              className="padding-sm"
-                            />
-                          </Tooltip>
-                          Work Stop Date
-                        </React.Fragment>
-                      }
-                    >
-                      Aug 03 2023
-                    </DescriptionsItem>
-                    <DescriptionsItem
-                      label="Work Status"
-                    >
-                      <Badge
-                        status="warning"
-                        text="Not Working"
-                      />
-                    </DescriptionsItem>
-                  </Descriptions>
-                </Col>
-              </Row>
-              <Row
-                gutter={16}
+                                  <div
+                                    class="ant-descriptions-item-container"
+                                  >
+                                    <span
+                                      class="ant-descriptions-item-label ant-descriptions-item-no-colon"
+                                    >
+                                      <span
+                                        aria-label="info-circle"
+                                        class="anticon anticon-info-circle padding-sm"
+                                        role="img"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          class=""
+                                          data-icon="info-circle"
+                                          fill="currentColor"
+                                          focusable="false"
+                                          height="1em"
+                                          viewBox="64 64 896 896"
+                                          width="1em"
+                                        >
+                                          <path
+                                            d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                                          />
+                                          <path
+                                            d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+                                          />
+                                        </svg>
+                                      </span>
+                                      Work Stop Date
+                                    </span>
+                                    <span
+                                      class="ant-descriptions-item-content"
+                                    >
+                                      Aug 03 2023
+                                    </span>
+                                  </div>
+                                </td>
+                                <td
+                                  class="ant-descriptions-item"
+                                  colspan="3"
+                                >
+                                  <div
+                                    class="ant-descriptions-item-container"
+                                  >
+                                    <span
+                                      class="ant-descriptions-item-label ant-descriptions-item-no-colon"
+                                    >
+                                      Work Status
+                                    </span>
+                                    <span
+                                      class="ant-descriptions-item-content"
+                                    >
+                                      <span
+                                        class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                      >
+                                        <span
+                                          class="ant-badge-status-dot ant-badge-status-warning"
+                                        />
+                                        <span
+                                          class="ant-badge-status-text"
+                                        >
+                                          Not Working
+                                        </span>
+                                      </span>
+                                    </span>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="ant-row"
+                    style="margin-left: -8px; margin-right: -8px;"
+                  >
+                    <div
+                      class="ant-col ant-col-24"
+                      style="padding-left: 8px; padding-right: 8px;"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ant-row"
               >
-                <Col
-                  span={24}
-                />
-              </Row>
+                <div
+                  class="ant-descriptions ant-descriptions-small"
+                >
+                  <div
+                    class="ant-descriptions-view"
+                  >
+                    <table>
+                      <tbody>
+                        <tr
+                          class="ant-descriptions-row"
+                        >
+                          <td
+                            class="ant-descriptions-item"
+                            colspan="1"
+                          >
+                            <div
+                              class="ant-descriptions-item-container"
+                            >
+                              <span
+                                class="ant-descriptions-item-label"
+                              >
+                                Updated By
+                              </span>
+                              <span
+                                class="ant-descriptions-item-content"
+                              >
+                                test
+                              </span>
+                            </div>
+                          </td>
+                          <td
+                            class="ant-descriptions-item"
+                            colspan="2"
+                          >
+                            <div
+                              class="ant-descriptions-item-container"
+                            >
+                              <span
+                                class="ant-descriptions-item-label"
+                              >
+                                Updated Date
+                              </span>
+                              <span
+                                class="ant-descriptions-item-content"
+                              >
+                                Aug 23, 2021 12:00 AM
+                              </span>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
-          </Row>
-          <Row>
-            <Descriptions
-              size="small"
-            >
-              <DescriptionsItem
-                label="Updated By"
-              >
-                test
-              </DescriptionsItem>
-              <DescriptionsItem
-                label="Updated Date"
-              >
-                Aug 23, 2021 12:00 AM
-              </DescriptionsItem>
-            </Descriptions>
-          </Row>
+          </div>
         </div>
-      </LoadingWrapper>
-    </Col>
-  </Row>
+      </div>
+    </div>
+  </div>
 </div>
 `;

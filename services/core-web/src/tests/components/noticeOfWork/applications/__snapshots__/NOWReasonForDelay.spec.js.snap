@@ -2,22 +2,83 @@
 
 exports[`NOWReasonForDelay renders properly 1`] = `
 <div>
-  <Descriptions
-    column={1}
-  >
-    <DescriptionsItem
-      label="Reason for Delay"
-    />
-    <DescriptionsItem
-      label="Comments"
+  <div>
+    <div
+      class="ant-descriptions"
     >
-      mock delay
-    </DescriptionsItem>
-    <DescriptionsItem
-      label="Start Date of delay"
-    >
-      Oct 26 2021
-    </DescriptionsItem>
-  </Descriptions>
+      <div
+        class="ant-descriptions-view"
+      >
+        <table>
+          <tbody>
+            <tr
+              class="ant-descriptions-row"
+            >
+              <td
+                class="ant-descriptions-item"
+                colspan="1"
+              >
+                <div
+                  class="ant-descriptions-item-container"
+                >
+                  <span
+                    class="ant-descriptions-item-label"
+                  >
+                    Reason for Delay
+                  </span>
+                </div>
+              </td>
+            </tr>
+            <tr
+              class="ant-descriptions-row"
+            >
+              <td
+                class="ant-descriptions-item"
+                colspan="1"
+              >
+                <div
+                  class="ant-descriptions-item-container"
+                >
+                  <span
+                    class="ant-descriptions-item-label"
+                  >
+                    Comments
+                  </span>
+                  <span
+                    class="ant-descriptions-item-content"
+                  >
+                    mock delay
+                  </span>
+                </div>
+              </td>
+            </tr>
+            <tr
+              class="ant-descriptions-row"
+            >
+              <td
+                class="ant-descriptions-item"
+                colspan="1"
+              >
+                <div
+                  class="ant-descriptions-item-container"
+                >
+                  <span
+                    class="ant-descriptions-item-label"
+                  >
+                    Start Date of delay
+                  </span>
+                  <span
+                    class="ant-descriptions-item-content"
+                  >
+                    Oct 26 2021
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
 `;

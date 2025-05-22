@@ -1,7 +1,9 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { NoticeOfWorkApplication } from "@/components/noticeOfWork/applications/NoticeOfWorkApplication";
 import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { BrowserRouter } from "react-router-dom";
 
 const dispatchProps: any = {};
 const reducerProps: any = {};
@@ -25,12 +27,16 @@ beforeEach(() => {
 
 describe("NoticeOfWorkApplication", () => {
   it("renders properly", () => {
-    const component = shallow(
-      <NoticeOfWorkApplication
-        {...dispatchProps}
-        {...reducerProps}
-        match={{ params: { id: 1, tab: "application" } }}
-      />
+    const { container: component } = render(
+      <BrowserRouter>
+        <ReduxWrapper>
+          <NoticeOfWorkApplication
+            {...dispatchProps}
+            {...reducerProps}
+            match={{ params: { id: 1, tab: "application" } }}
+          />
+        </ReduxWrapper>
+      </BrowserRouter>
     );
     expect(component).toMatchSnapshot();
   });

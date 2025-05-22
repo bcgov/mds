@@ -1,198 +1,620 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineResultsTable renders properly 1`] = `
-<div
-  className="padding-lg--bottom"
->
-  <h2>
-    Mines
-  </h2>
-  <Divider />
-  <CoreTable
-    columns={
-      Array [
-        Object {
-          "dataIndex": "mine_name",
-          "key": "mine_name",
-          "render": [Function],
-          "sorter": [Function],
-          "title": "Mine Name",
-        },
-        Object {
-          "dataIndex": "mms_alias",
-          "key": "mms_alias",
-          "render": [Function],
-          "sorter": [Function],
-          "title": "Legacy Alias",
-        },
-        Object {
-          "dataIndex": "mine_no",
-          "key": "mine_no",
-          "render": [Function],
-          "sorter": [Function],
-          "title": "Mine No.",
-        },
-        Object {
-          "key": "permit_no",
-          "render": [Function],
-          "title": "Permit No.",
-        },
-        Object {
-          "dataIndex": "mine_region",
-          "key": "mine_region",
-          "render": [Function],
-          "title": "Region",
-        },
-        Object {
-          "key": "status",
-          "render": [Function],
-          "title": "Status",
-        },
-      ]
-    }
-    dataSource={
-      Array [
-        Object {
-          "mine_guid": "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
-          "mine_name": "Abbott Inc",
-          "mine_no": "13353605",
-          "mine_permit": Array [
-            Object {
-              "mine_guid": "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
-              "mine_name": "Abbott Inc",
-              "permit_guid": "dfbc581b-fedf-415f-9543-b590d8ff9dcc",
-              "permit_no": "P-1707761",
-              "permitee": "Leslie Reed, Bailey and Gomez",
-            },
-          ],
-          "mine_region": "SW",
-          "mine_status": Array [
-            Object {
-              "status_labels": Array [
-                "Closed",
-                "Unknown",
-              ],
-            },
-          ],
-        },
-        Object {
-          "mine_guid": "5a993f02-1006-4a07-a448-f4064294de11",
-          "mine_name": "Abbott PLC",
-          "mine_no": "63830194",
-          "mine_permit": Array [
-            Object {
-              "mine_guid": "5a993f02-1006-4a07-a448-f4064294de11",
-              "mine_name": "Abbott PLC",
-              "permit_guid": "ffcf7d9a-8a1a-4c56-9a2e-b5bbf82bc175",
-              "permit_no": "G-3117130",
-              "permitee": "Rachel Patterson LLC",
-            },
-          ],
-          "mine_region": "SC",
-          "mine_status": Array [
-            Object {
-              "status_labels": Array [
-                "Closed",
-                "Unknown",
-              ],
-            },
-          ],
-        },
-        Object {
-          "mine_guid": "bbf2ccfe-9da6-4d88-95df-fe9997d64d96",
-          "mine_name": "Abbott Ltd",
-          "mine_no": "24326469",
-          "mine_permit": Array [
-            Object {
-              "mine_guid": "bbf2ccfe-9da6-4d88-95df-fe9997d64d96",
-              "mine_name": "Abbott Ltd",
-              "permit_guid": "3528ffc0-f917-4553-aa14-639a396cbf71",
-              "permit_no": "M-8412263",
-              "permitee": "Julia Martin, Chapman and White",
-            },
-          ],
-          "mine_region": "SW",
-          "mine_status": Array [
-            Object {
-              "status_labels": Array [
-                "Closed",
-              ],
-            },
-          ],
-        },
-        Object {
-          "mine_guid": "72de71d3-edc9-4e42-ba7b-7a18ff97a8e2",
-          "mine_name": "Abbott PLC",
-          "mine_no": "14676857",
-          "mine_permit": Array [
-            Object {
-              "mine_guid": "72de71d3-edc9-4e42-ba7b-7a18ff97a8e2",
-              "mine_name": "Abbott PLC",
-              "permit_guid": "a4132a01-9d78-458a-b4d2-e7bb9ee0900b",
-              "permit_no": "Q-9936020",
-              "permitee": "Cheryl Hernandez, Cook and Galvan",
-            },
-          ],
-          "mine_region": "NW",
-          "mine_status": Array [
-            Object {
-              "status_labels": Array [
-                "Operating",
-                "Year-Round",
-              ],
-            },
-          ],
-        },
-        Object {
-          "mine_guid": "e8ccfdd4-c852-4116-be2c-b2cc7f3148a3",
-          "mine_name": "Abbott Inc",
-          "mine_no": "75293246",
-          "mine_permit": Array [
-            Object {
-              "mine_guid": "e8ccfdd4-c852-4116-be2c-b2cc7f3148a3",
-              "mine_name": "Abbott Inc",
-              "permit_guid": "732002b5-fc47-4203-bd59-a41772392ccd",
-              "permit_no": "CX-4742851",
-              "permitee": "Christina Brown PLC",
-            },
-          ],
-          "mine_region": "NE",
-          "mine_status": Array [
-            Object {
-              "status_labels": Array [
-                "Closed",
-                "Orphaned",
-                "Site Visit Required",
-              ],
-            },
-          ],
-        },
-        Object {
-          "mine_guid": "2b626772-1c3d-4e98-98d5-10d66b9d5555",
-          "mine_name": "Abbott-Garza",
-          "mine_no": "11557593",
-          "mine_permit": Array [
-            Object {
-              "mine_guid": "2b626772-1c3d-4e98-98d5-10d66b9d5555",
-              "mine_name": "Abbott-Garza",
-              "permit_guid": "ed8395ec-b7c2-4e07-82e5-5bfb1a143bf3",
-              "permit_no": "G-1987651",
-              "permitee": "Justin Bray Group",
-            },
-          ],
-          "mine_region": "NW",
-          "mine_status": Array [
-            Object {
-              "status_labels": Array [
-                "Closed",
-                "Reclamation",
-                "Long-Term Maintenance",
-              ],
-            },
-          ],
-        },
-      ]
-    }
-  />
+<div>
+  <div
+    class="padding-lg--bottom"
+  >
+    <h2>
+      Mines
+    </h2>
+    <div
+      class="ant-divider ant-divider-horizontal"
+      role="separator"
+    />
+    <div
+      class="ant-table-wrapper  core-table"
+    >
+      <div
+        class="ant-spin-nested-loading"
+      >
+        <div
+          class="ant-spin-container"
+        >
+          <div
+            class="ant-table"
+          >
+            <div
+              class="ant-table-container"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <colgroup />
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        aria-label="Mine Name"
+                        class="ant-table-cell ant-table-column-has-sorters"
+                        tabindex="0"
+                      >
+                        <div
+                          class="ant-table-column-sorters"
+                        >
+                          <span
+                            class="ant-table-column-title"
+                          >
+                            Mine Name
+                          </span>
+                          <span
+                            class="ant-table-column-sorter ant-table-column-sorter-full"
+                          >
+                            <span
+                              class="ant-table-column-sorter-inner"
+                            >
+                              <span
+                                aria-label="caret-up"
+                                class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                role="presentation"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-up"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                  />
+                                </svg>
+                              </span>
+                              <span
+                                aria-label="caret-down"
+                                class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                role="presentation"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-down"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                  />
+                                </svg>
+                              </span>
+                            </span>
+                          </span>
+                        </div>
+                      </th>
+                      <th
+                        aria-label="Legacy Alias"
+                        class="ant-table-cell ant-table-column-has-sorters"
+                        tabindex="0"
+                      >
+                        <div
+                          class="ant-table-column-sorters"
+                        >
+                          <span
+                            class="ant-table-column-title"
+                          >
+                            Legacy Alias
+                          </span>
+                          <span
+                            class="ant-table-column-sorter ant-table-column-sorter-full"
+                          >
+                            <span
+                              class="ant-table-column-sorter-inner"
+                            >
+                              <span
+                                aria-label="caret-up"
+                                class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                role="presentation"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-up"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                  />
+                                </svg>
+                              </span>
+                              <span
+                                aria-label="caret-down"
+                                class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                role="presentation"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-down"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                  />
+                                </svg>
+                              </span>
+                            </span>
+                          </span>
+                        </div>
+                      </th>
+                      <th
+                        aria-label="Mine No."
+                        class="ant-table-cell ant-table-column-has-sorters"
+                        tabindex="0"
+                      >
+                        <div
+                          class="ant-table-column-sorters"
+                        >
+                          <span
+                            class="ant-table-column-title"
+                          >
+                            Mine No.
+                          </span>
+                          <span
+                            class="ant-table-column-sorter ant-table-column-sorter-full"
+                          >
+                            <span
+                              class="ant-table-column-sorter-inner"
+                            >
+                              <span
+                                aria-label="caret-up"
+                                class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                role="presentation"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-up"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                  />
+                                </svg>
+                              </span>
+                              <span
+                                aria-label="caret-down"
+                                class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                role="presentation"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-down"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                  />
+                                </svg>
+                              </span>
+                            </span>
+                          </span>
+                        </div>
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Permit No.
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Region
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Status
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <a
+                          href="/mine-dashboard/aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d/"
+                        >
+                          <span>
+                            <mark
+                              class="highlight"
+                            >
+                              Abbott Inc
+                            </mark>
+                          </span>
+                        </a>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span />
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span>
+                          <mark
+                            class="highlight"
+                          >
+                            13353605
+                          </mark>
+                        </span>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <p>
+                          <a
+                            href="/mine-dashboard/aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d/permits-and-approvals/permits/dfbc581b-fedf-415f-9543-b590d8ff9dcc/overview"
+                          >
+                            P-1707761
+                          </a>
+                        </p>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="mine_region-column"
+                          title="Region"
+                        >
+                          SW
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        Closed, Unknown
+                      </td>
+                    </tr>
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <a
+                          href="/mine-dashboard/5a993f02-1006-4a07-a448-f4064294de11/"
+                        >
+                          <span>
+                            <mark
+                              class="highlight"
+                            >
+                              Abbott PLC
+                            </mark>
+                          </span>
+                        </a>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span />
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span>
+                          <mark
+                            class="highlight"
+                          >
+                            63830194
+                          </mark>
+                        </span>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <p>
+                          <a
+                            href="/mine-dashboard/5a993f02-1006-4a07-a448-f4064294de11/permits-and-approvals/permits/ffcf7d9a-8a1a-4c56-9a2e-b5bbf82bc175/overview"
+                          >
+                            G-3117130
+                          </a>
+                        </p>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="mine_region-column"
+                          title="Region"
+                        >
+                          SC
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        Closed, Unknown
+                      </td>
+                    </tr>
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <a
+                          href="/mine-dashboard/bbf2ccfe-9da6-4d88-95df-fe9997d64d96/"
+                        >
+                          <span>
+                            <mark
+                              class="highlight"
+                            >
+                              Abbott Ltd
+                            </mark>
+                          </span>
+                        </a>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span />
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span>
+                          <mark
+                            class="highlight"
+                          >
+                            24326469
+                          </mark>
+                        </span>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <p>
+                          <a
+                            href="/mine-dashboard/bbf2ccfe-9da6-4d88-95df-fe9997d64d96/permits-and-approvals/permits/3528ffc0-f917-4553-aa14-639a396cbf71/overview"
+                          >
+                            M-8412263
+                          </a>
+                        </p>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="mine_region-column"
+                          title="Region"
+                        >
+                          SW
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        Closed
+                      </td>
+                    </tr>
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <a
+                          href="/mine-dashboard/72de71d3-edc9-4e42-ba7b-7a18ff97a8e2/"
+                        >
+                          <span>
+                            <mark
+                              class="highlight"
+                            >
+                              Abbott PLC
+                            </mark>
+                          </span>
+                        </a>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span />
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span>
+                          <mark
+                            class="highlight"
+                          >
+                            14676857
+                          </mark>
+                        </span>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <p>
+                          <a
+                            href="/mine-dashboard/72de71d3-edc9-4e42-ba7b-7a18ff97a8e2/permits-and-approvals/permits/a4132a01-9d78-458a-b4d2-e7bb9ee0900b/overview"
+                          >
+                            Q-9936020
+                          </a>
+                        </p>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="mine_region-column"
+                          title="Region"
+                        >
+                          NW
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        Operating, Year-Round
+                      </td>
+                    </tr>
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <a
+                          href="/mine-dashboard/e8ccfdd4-c852-4116-be2c-b2cc7f3148a3/"
+                        >
+                          <span>
+                            <mark
+                              class="highlight"
+                            >
+                              Abbott Inc
+                            </mark>
+                          </span>
+                        </a>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span />
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span>
+                          <mark
+                            class="highlight"
+                          >
+                            75293246
+                          </mark>
+                        </span>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <p>
+                          <a
+                            href="/mine-dashboard/e8ccfdd4-c852-4116-be2c-b2cc7f3148a3/permits-and-approvals/permits/732002b5-fc47-4203-bd59-a41772392ccd/overview"
+                          >
+                            CX-4742851
+                          </a>
+                        </p>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="mine_region-column"
+                          title="Region"
+                        >
+                          NE
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        Closed, Orphaned, Site Visit Required
+                      </td>
+                    </tr>
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <a
+                          href="/mine-dashboard/2b626772-1c3d-4e98-98d5-10d66b9d5555/"
+                        >
+                          <span>
+                            <mark
+                              class="highlight"
+                            >
+                              Abbott-Garza
+                            </mark>
+                          </span>
+                        </a>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span />
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <span>
+                          <mark
+                            class="highlight"
+                          >
+                            11557593
+                          </mark>
+                        </span>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <p>
+                          <a
+                            href="/mine-dashboard/2b626772-1c3d-4e98-98d5-10d66b9d5555/permits-and-approvals/permits/ed8395ec-b7c2-4e07-82e5-5bfb1a143bf3/overview"
+                          >
+                            G-1987651
+                          </a>
+                        </p>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="mine_region-column"
+                          title="Region"
+                        >
+                          NW
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        Closed, Reclamation, Long-Term Maintenance
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;

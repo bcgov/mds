@@ -1,11 +1,11 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { LoadingWrapper } from "@/components/common/wrappers/LoadingWrapper";
 
 const dispatchProps = {};
 const props = {};
 
-const setupDispatchProps = () => {};
+const setupDispatchProps = () => { };
 
 const setupProps = () => {
   props.condition = false;
@@ -19,7 +19,7 @@ beforeEach(() => {
 
 describe("LoadingWrapper", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<LoadingWrapper {...dispatchProps} {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container: component } = render(<LoadingWrapper {...dispatchProps} {...props} />);
+    expect(component).toMatchSnapshot();
   });
 });

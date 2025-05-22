@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MineDocuments } from "@/components/mine/Documents/MineDocuments";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
 const setupProps = () => ({
   mines: MOCK.MINES.mines,
@@ -10,7 +11,7 @@ const setupProps = () => ({
 
 describe("MineDocuments", () => {
   it("renders properly", () => {
-    const component = shallow(<MineDocuments {...setupProps()} />);
+    const { container: component } = render(<ReduxWrapper><MineDocuments {...setupProps()} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import FormItemLabel from "@/components/common/FormItemLabel";
 
 const props = {};
@@ -15,7 +15,7 @@ beforeEach(() => {
 
 describe("FormItemLabel", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<FormItemLabel {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container: component } = render(<FormItemLabel {...props} />);
+    expect(component).toMatchSnapshot();
   });
 });

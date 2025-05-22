@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { NOWStatusIndicator } from "@/components/noticeOfWork/NOWStatusIndicator";
 
 const reducerProps = {};
@@ -20,7 +20,7 @@ beforeEach(() => {
 
 describe("NOWStatusIndicator", () => {
   it("renders properly", () => {
-    const component = shallow(
+    const { container: component } = render(
       <NOWStatusIndicator {...reducerProps} match={{ params: { id: 1 } }} />
     );
     expect(component).toMatchSnapshot();

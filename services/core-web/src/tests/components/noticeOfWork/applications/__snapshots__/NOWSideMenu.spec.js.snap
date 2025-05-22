@@ -2,147 +2,320 @@
 
 exports[`NOWSideMenu renders properly 1`] = `
 <div>
-  <Anchor
-    affix={false}
-    offsetTop={160}
-    onChange={[Function]}
-    onClick={[Function]}
-  >
-    <AnchorLink
-      className="now-menu-link"
-      href="#applicant-info"
-      title="Applicant Information"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#application-info"
-      title="Application Information"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#permit-type"
-      title="One Year, Multi-Year or Multi-Year Area Based Permit"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#mine-info"
-      title="Mine Information"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#first-aid"
-      title="First Aid"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#work-plan"
-      title="Description of Work Program"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#access"
-      title="Access"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#access-to-tenure"
-      title="Access to Tenure"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#state-of-land"
-      title="Present State of Land"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#land-ownership"
-      title="Land Ownership"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#first-nations-engagement"
-      title="First Nations Engagement"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#indigenous-engagement"
-      title="Indigenous Engagement"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#blasting-operation"
-      title="Blasting"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#camp"
-      title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#mechanical-trenching"
-      title="Mechanical Trenching / Test Pits"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#exploration-surface-drilling"
-      title="Exploration Surface Drilling"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#exploration-access"
-      title="Access Roads, Trails, Helipads, Air Strips, Boat Ramps"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#underground-exploration"
-      title="Underground Exploration"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#placer-operation"
-      title="Placer Operations"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#water-supply"
-      title="Water Supply"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#cut-lines-polarization-survey"
-      title="Cut Lines and Induced Polarization Survey"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#settling-pond"
-      title="Settling Ponds"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#equipment"
-      title="Equipment"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#reclamation"
-      title="Summary of Reclamation"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#contacts"
-      title="Contacts"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#other-information"
-      title="Other Information"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#application-files"
-      title="Application Files"
-    />
-  </Anchor>
+  <div>
+    <div
+      class="ant-anchor-wrapper"
+      style="max-height: calc(100vh - 160px);"
+    >
+      <div
+        class="ant-anchor ant-anchor-fixed"
+      >
+        <div
+          class="ant-anchor-ink"
+        >
+          <span
+            class="ant-anchor-ink-ball"
+          />
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#applicant-info"
+            title="Applicant Information"
+          >
+            Applicant Information
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#application-info"
+            title="Application Information"
+          >
+            Application Information
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#permit-type"
+            title="One Year, Multi-Year or Multi-Year Area Based Permit"
+          >
+            One Year, Multi-Year or Multi-Year Area Based Permit
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#mine-info"
+            title="Mine Information"
+          >
+            Mine Information
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#first-aid"
+            title="First Aid"
+          >
+            First Aid
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#work-plan"
+            title="Description of Work Program"
+          >
+            Description of Work Program
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#access"
+            title="Access"
+          >
+            Access
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#access-to-tenure"
+            title="Access to Tenure"
+          >
+            Access to Tenure
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#state-of-land"
+            title="Present State of Land"
+          >
+            Present State of Land
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#land-ownership"
+            title="Land Ownership"
+          >
+            Land Ownership
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#first-nations-engagement"
+            title="First Nations Engagement"
+          >
+            First Nations Engagement
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#indigenous-engagement"
+            title="Indigenous Engagement"
+          >
+            Indigenous Engagement
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#blasting-operation"
+            title="Blasting"
+          >
+            Blasting
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#camp"
+            title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
+          >
+            Camps, Buildings, Staging Areas, Fuel/Lubricant Storage
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#mechanical-trenching"
+            title="Mechanical Trenching / Test Pits"
+          >
+            Mechanical Trenching / Test Pits
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#exploration-surface-drilling"
+            title="Exploration Surface Drilling"
+          >
+            Exploration Surface Drilling
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#exploration-access"
+            title="Access Roads, Trails, Helipads, Air Strips, Boat Ramps"
+          >
+            Access Roads, Trails, Helipads, Air Strips, Boat Ramps
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#underground-exploration"
+            title="Underground Exploration"
+          >
+            Underground Exploration
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#placer-operation"
+            title="Placer Operations"
+          >
+            Placer Operations
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#water-supply"
+            title="Water Supply"
+          >
+            Water Supply
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#cut-lines-polarization-survey"
+            title="Cut Lines and Induced Polarization Survey"
+          >
+            Cut Lines and Induced Polarization Survey
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#settling-pond"
+            title="Settling Ponds"
+          >
+            Settling Ponds
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#equipment"
+            title="Equipment"
+          >
+            Equipment
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#reclamation"
+            title="Summary of Reclamation"
+          >
+            Summary of Reclamation
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#contacts"
+            title="Contacts"
+          >
+            Contacts
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#other-information"
+            title="Other Information"
+          >
+            Other Information
+          </a>
+        </div>
+        <div
+          class="ant-anchor-link now-menu-link"
+        >
+          <a
+            class="ant-anchor-link-title"
+            href="#application-files"
+            title="Application Files"
+          >
+            Application Files
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;

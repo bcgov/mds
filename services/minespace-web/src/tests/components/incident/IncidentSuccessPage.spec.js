@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { IncidentSuccessPage } from "@/components/pages/Incidents/IncidentSuccessPage";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { BrowserRouter } from "react-router-dom";
 
 const props = {};
 
@@ -15,7 +16,11 @@ beforeEach(() => {
 
 describe("IncidentSuccessPage", () => {
   it("renders properly", () => {
-    const component = shallow(<IncidentSuccessPage {...props} />);
+    const { container: component } = render(
+      <BrowserRouter>
+        <IncidentSuccessPage {...props} />
+      </BrowserRouter>
+    );
     expect(component).toMatchSnapshot();
   });
 });

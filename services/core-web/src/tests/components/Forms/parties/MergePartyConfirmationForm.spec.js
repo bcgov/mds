@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { MergePartyConfirmationForm } from "@/components/Forms/parties/MergePartyConfirmationForm";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 describe("MergePartyConfirmationForm", () => {
   it("renders properly", () => {

@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MineRecordForm } from "@/components/Forms/MineRecordForm";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -35,7 +36,7 @@ beforeEach(() => {
 
 describe("MineRecordForm", () => {
   it("renders properly", () => {
-    const component = shallow(<MineRecordForm {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><MineRecordForm {...dispatchProps} {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

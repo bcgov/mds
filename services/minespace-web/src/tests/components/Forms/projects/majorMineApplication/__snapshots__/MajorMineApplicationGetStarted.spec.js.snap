@@ -1,54 +1,65 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MajorMineApplicationGetStarted renders properly 1`] = `
-<Row>
-  <Col
-    style={
-      Object {
-        "marginLeft": "15%",
-      }
-    }
+<div>
+  <div
+    class="ant-row"
   >
-    <ForwardRef
-      level={3}
+    <div
+      class="ant-col"
+      style="margin-left: 15%;"
     >
-      Getting Started with your Major Mine Submission
-    </ForwardRef>
-    <ForwardRef>
-      Basic information about what a major mine submission is will go here
-    </ForwardRef>
-    <ForwardRef
-      level={4}
-    >
-      Basic Information
-    </ForwardRef>
-    <ForwardRef>
-      Information what is needed for this section
-    </ForwardRef>
-    <ForwardRef
-      level={4}
-    >
-      Upload Primary Document
-    </ForwardRef>
-    <ForwardRef>
-      Information what is needed for this section
-    </ForwardRef>
-    <ForwardRef
-      level={4}
-    >
-      Upload Spatial Components
-    </ForwardRef>
-    <ForwardRef>
-      Information what is needed for this section
-    </ForwardRef>
-    <ForwardRef
-      level={4}
-    >
-      Upload Supporting Documents
-    </ForwardRef>
-    <ForwardRef>
-      Information what is needed for this section
-    </ForwardRef>
-  </Col>
-</Row>
+      <h3
+        class="ant-typography"
+      >
+        Getting Started with your Major Mine Submission
+      </h3>
+      <div
+        class="ant-typography"
+      >
+        Basic information about what a major mine submission is will go here
+      </div>
+      <h4
+        class="ant-typography"
+      >
+        Basic Information
+      </h4>
+      <div
+        class="ant-typography"
+      >
+        Information what is needed for this section
+      </div>
+      <h4
+        class="ant-typography"
+      >
+        Upload Primary Document
+      </h4>
+      <div
+        class="ant-typography"
+      >
+        Information what is needed for this section
+      </div>
+      <h4
+        class="ant-typography"
+      >
+        Upload Spatial Components
+      </h4>
+      <div
+        class="ant-typography"
+      >
+        Information what is needed for this section
+      </div>
+      <h4
+        class="ant-typography"
+      >
+        Upload Supporting Documents
+      </h4>
+      <div
+        class="ant-typography"
+      >
+        Information what is needed for this section
+      </div>
+    </div>
+  </div>
+</div>
 `;

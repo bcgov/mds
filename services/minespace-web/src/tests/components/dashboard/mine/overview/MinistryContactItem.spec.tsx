@@ -21,11 +21,11 @@ const setupProps = () => ({
 
 describe("MinistryContactItem", () => {
   it("renders properly", () => {
-    const wrapper = render(
+    const { container } = render(
       <ReduxWrapper initialState={initialState}>
         <MinistryContactItem {...setupProps()} />
       </ReduxWrapper>
     );
-    expect(wrapper).toMatchSnapshot();
+    expect(container).toMatchSnapshot();
   });
 });

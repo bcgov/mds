@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import InactiveContact from "@/components/mine/ContactInfo/PartyRelationships/InactiveContact";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
@@ -21,7 +21,7 @@ beforeEach(() => {
 
 describe("InactiveContact", () => {
   it("renders properly", () => {
-    const component = shallow(<InactiveContact {...dispatchProps} {...reducerProps} />);
+    const { container: component } = render(<InactiveContact {...dispatchProps} {...reducerProps} />);
     expect(component).toMatchSnapshot();
   });
 });

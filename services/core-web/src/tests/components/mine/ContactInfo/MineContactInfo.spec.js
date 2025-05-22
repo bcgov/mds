@@ -1,7 +1,9 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MineContactInfo } from "@/components/mine/ContactInfo/MineContactInfo";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { BrowserRouter } from "react-router-dom";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const reducerProps = {};
@@ -29,7 +31,7 @@ beforeEach(() => {
 
 describe("MineContactInfo", () => {
   it("renders properly", () => {
-    const component = shallow(<MineContactInfo {...dispatchProps} {...reducerProps} />);
+    const { container: component } = render(<ReduxWrapper><BrowserRouter><MineContactInfo {...dispatchProps} {...reducerProps} /></BrowserRouter></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
 });

@@ -1,7 +1,9 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MineVarianceTable } from "@/components/mine/Variances/MineVarianceTable";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { BrowserRouter } from "react-router-dom";
 
 const props = {};
 const dispatchProps = {};
@@ -30,7 +32,7 @@ beforeEach(() => {
 
 describe("MineVarianceTable", () => {
   it("renders properly", () => {
-    const component = shallow(<MineVarianceTable {...props} {...dispatchProps} />);
+    const { container: component } = render(<BrowserRouter><ReduxWrapper><MineVarianceTable {...props} {...dispatchProps} /></ReduxWrapper></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

@@ -1,6 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MajorMineApplicationFileUpload } from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationFileUpload";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -25,7 +27,13 @@ beforeEach(() => {
 
 describe("MajorMineApplicationFileUpload", () => {
   it("renders properly", () => {
-    const component = shallow(<MajorMineApplicationFileUpload {...dispatchProps} {...props} />);
+    const { container: component } = render(
+      <ReduxWrapper>
+        <FormWrapper name="formName">
+          <MajorMineApplicationFileUpload {...dispatchProps} {...props} />
+        </FormWrapper>
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 });

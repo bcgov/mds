@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { IncidentForm } from "@/components/Forms/incidents/IncidentForm";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
@@ -29,7 +29,7 @@ beforeEach(() => {
 
 describe("IncidentForm", () => {
   it("renders properly", () => {
-    const component = shallow(
+    const { container: component } = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[`/${mockedMineGuid}/${mockedMineIncidentGuid}`]}>
           <IncidentForm {...props} />
