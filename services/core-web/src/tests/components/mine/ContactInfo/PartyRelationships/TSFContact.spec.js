@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import TSFContact from "@/components/mine/ContactInfo/PartyRelationships/TSFContact";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { BrowserRouter } from "react-router-dom";
 
 const dispatchProps = {};
 const reducerProps = {};
@@ -18,9 +19,10 @@ const setupReducerProps = () => {
   reducerProps.partyRelationship = {
     mine_party_appt_type_code: "EOR",
     related_guid: "e2629897-053e-4218-9299-479375e47f78",
+    party: { party_guid: "party-guid" }
   };
   reducerProps.partyRelationshipTitle = "Engineer of Record";
-  reducerProps.otherDetails = {};
+  reducerProps.otherDetails = "other details";
   reducerProps.isEditable = false;
   reducerProps.compact = false;
 };
@@ -32,7 +34,7 @@ beforeEach(() => {
 
 describe("TSFContact", () => {
   it("renders properly", () => {
-    const component = shallow(<TSFContact {...dispatchProps} {...reducerProps} />);
+    const { container: component } = render(<BrowserRouter><TSFContact {...dispatchProps} {...reducerProps} /></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

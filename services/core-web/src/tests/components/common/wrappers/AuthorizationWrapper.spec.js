@@ -1,6 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
-import ReactDOMServer from "react-dom/server";
+import { render } from "@testing-library/react";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { AuthorizationWrapper } from "@/components/common/wrappers/AuthorizationWrapper";
 import * as PERMISSIONS from "@/constants/permissions";
@@ -22,20 +21,17 @@ beforeEach(() => {
 
 describe("AuthorizationWrapper", () => {
   it("empty params ", () => {
-    const component = shallow(<AuthorizationWrapper {...props} />);
-    expect(component.html()).toEqual(
-      ReactDOMServer.renderToStaticMarkup(React.createElement("span", null, props.children))
-    );
+    const { container: component } = render(<AuthorizationWrapper {...props} />);
+    expect(component).toMatchSnapshot();
+
   });
 });
 
 describe("AuthorizationWrapper", () => {
   it("renders major mine properly", () => {
     props.isMajorMine = true;
-    const component = shallow(<AuthorizationWrapper {...props} />);
-    expect(component.html()).toEqual(
-      ReactDOMServer.renderToStaticMarkup(React.createElement("span", null, props.children))
-    );
+    const { container: component } = render(<AuthorizationWrapper {...props} />);
+    expect(component).toMatchSnapshot();
   });
 });
 
@@ -43,10 +39,8 @@ describe("AuthorizationWrapper", () => {
   it("renders properly admin overrides is major mine", () => {
     props.userRoles.push(USER_ROLES[PERMISSIONS.ADMIN]);
     props.isMajorMine = true;
-    const component = shallow(<AuthorizationWrapper {...props} />);
-    expect(component.html()).toEqual(
-      ReactDOMServer.renderToStaticMarkup(React.createElement("span", null, props.children))
-    );
+    const { container: component } = render(<AuthorizationWrapper {...props} />);
+    expect(component).toMatchSnapshot();
   });
 });
 
@@ -56,10 +50,8 @@ describe("AuthorizationWrapper", () => {
     props.permission = PERMISSIONS.EDIT_MINES;
     props.isMajorMine = true;
 
-    const component = shallow(<AuthorizationWrapper {...props} />);
-    expect(component.html()).toEqual(
-      ReactDOMServer.renderToStaticMarkup(React.createElement("span", null, props.children))
-    );
+    const { container: component } = render(<AuthorizationWrapper {...props} />);
+    expect(component).toMatchSnapshot();
   });
 });
 
@@ -68,8 +60,8 @@ describe("AuthorizationWrapper", () => {
     props.isMajorMine = true;
     // set to value NOT IN userRoles
     props.permission = PERMISSIONS.EDIT_DO;
-    const component = shallow(<AuthorizationWrapper {...props} />);
-    expect(component.html()).toEqual(null);
+    const { container: component } = render(<AuthorizationWrapper {...props} />);
+    expect(component).toMatchSnapshot();
   });
 });
 
@@ -78,7 +70,7 @@ describe("AuthorizationWrapper", () => {
     // set to value in userRoles
     props.isMajorMine = false;
     props.permission = PERMISSIONS.EDIT_MINES;
-    const component = shallow(<AuthorizationWrapper {...props} />);
-    expect(component.html()).toEqual(null);
+    const { container: component } = render(<AuthorizationWrapper {...props} />);
+    expect(component).toMatchSnapshot();
   });
 });

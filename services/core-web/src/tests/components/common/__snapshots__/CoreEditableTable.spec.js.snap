@@ -2,15 +2,65 @@
 
 exports[`CoreEditableTable renders properly 1`] = `
 <div>
-  <FieldArray
-    component={[Function]}
-    fieldID="123"
-    isViewMode={false}
-    name="permit Number"
-    rerenderOnEveryChange={true}
-    tableContent={Object {}}
-    type="Activity"
-    unitTypeHash={Object {}}
-  />
+  <form
+    class="ant-form ant-form-vertical common-form common-form-test-form form-edit"
+    id="test-form"
+  >
+    <div>
+      <div>
+        <div
+          class="ant-table-wrapper"
+          style="position: relative; z-index: 5;"
+        >
+          <div
+            class="ant-table ant-table-empty"
+          >
+            <div
+              class="ant-table-content"
+            >
+              <table
+                style="table-layout: auto;"
+              >
+                <thead
+                  class="ant-table-thead"
+                >
+                  <tr>
+                    <th
+                      class="ant-table-cell"
+                    />
+                  </tr>
+                </thead>
+                <tbody
+                  class="ant-table-tbody"
+                >
+                  <tr
+                    class="ant-table-placeholder"
+                  >
+                    <td
+                      class="ant-table-cell"
+                      colspan="100%"
+                      style="color: rgb(191, 191, 191);"
+                    >
+                      No Data Yet
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button
+            class="ant-btn ant-btn-primary"
+            type="button"
+          >
+            <span>
+              Add Activity
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
 `;

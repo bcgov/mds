@@ -1,6 +1,7 @@
 import React from "react";
-import { shallow } from "enzyme";
-import { DefaultContact } from "@/components/mine/ContactInfo/PartyRelationships/DefaultContact";
+import { render } from "@testing-library/react";
+import DefaultContact from "@/components/mine/ContactInfo/PartyRelationships/DefaultContact";
+import { BrowserRouter } from "react-router-dom";
 
 const dispatchProps = {};
 const reducerProps = {};
@@ -19,7 +20,7 @@ const setupReducerProps = () => {
   };
   reducerProps.partyRelationshipTitle = "Permittee";
   reducerProps.partyRelationshipSubTitle = "Permittee since";
-  reducerProps.otherDetails = {};
+  reducerProps.otherDetails = "other details";
   reducerProps.isEditable = false;
   reducerProps.compact = false;
   reducerProps.editPermission = "Admin";
@@ -32,7 +33,7 @@ beforeEach(() => {
 
 describe("DefaultContact", () => {
   it("renders properly", () => {
-    const component = shallow(<DefaultContact {...dispatchProps} {...reducerProps} />);
+    const { container: component } = render(<BrowserRouter><DefaultContact {...dispatchProps} {...reducerProps} /></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

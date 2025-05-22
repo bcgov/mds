@@ -34,6 +34,11 @@ beforeEach(() => {
   setupReducerProps();
 });
 
+// TypeError: Cannot read properties of undefined (reading 'length')
+
+//     80 |     phone: party.phone_no && party.phone_no !== "Unknown" ? party.phone_no : Strings.EMPTY_FIELD,
+//     81 |     role:
+//   > 82 |       party.mine_party_appt.length > 0
 describe("ContactHomePage", () => {
   it("renders properly", () => {
     const component = shallow(<ContactHomePage {...dispatchProps} {...reducerProps} />);

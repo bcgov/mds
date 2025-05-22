@@ -1,179 +1,103 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TSFContact renders properly 1`] = `
-<DefaultContact
-  compact={false}
-  editPermission="role_edit_parties"
-  handleChange={[MockFunction]}
-  isEditable={false}
-  mine={
-    Object {
-      "latest_mine_status": Object {
-        "effective_date": "2024-03-07T15:49:45.989485+00:00",
-        "expiry_date": null,
-        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-        "mine_status_guid": "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
-        "mine_status_xref_guid": "4924b221-f895-479d-ad0d-7fde81795813",
-        "status_date": null,
-        "status_description": "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
-        "status_labels": Array [
-          "Operating",
-          "Seasonal",
-        ],
-        "status_values": Array [
-          "OP",
-          "SEA",
-        ],
-      },
-      "major_mine_ind": true,
-      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-      "mine_location": Object {
-        "latitude": null,
-        "longitude": null,
-      },
-      "mine_name": "mine3",
-      "mine_no": "BLAH9091",
-      "mine_permit_numbers": Array [],
-      "mine_region": "NE",
-      "mine_status": Array [
-        Object {
-          "effective_date": "2024-03-07T15:49:45.989485+00:00",
-          "expiry_date": null,
-          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-          "mine_status_guid": "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
-          "mine_status_xref_guid": "4924b221-f895-479d-ad0d-7fde81795813",
-          "status_date": null,
-          "status_description": "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
-          "status_labels": Array [
-            "Operating",
-            "Seasonal",
-          ],
-          "status_values": Array [
-            "OP",
-            "SEA",
-          ],
-        },
-      ],
-      "mine_tailings_storage_facilities": Array [
-        Object {
-          "consequence_classification_status_code": "LOW",
-          "dams": Array [
-            Object {
-              "consequence_classification": "LOW",
-              "current_dam_height": 2,
-              "current_elevation": 3,
-              "dam_guid": "123",
-              "dam_name": "Dam Name",
-              "dam_type": "dam",
-              "latitude": 48,
-              "longitude": -127.3,
-              "max_pond_elevation": 15,
-              "min_freeboard_required": 16,
-              "mine_tailings_storage_facility_guid": "abcde-12345",
-              "operating_status": "care_and_maintenance",
-              "permitted_dam_crest_elevation": 35,
-              "update_timestamp": "2019-04-05 21:05:40.123456+00:00",
-              "update_user": "update-user",
-            },
-          ],
-          "engineer_of_record": Object {
-            "end_date": null,
-            "is_draft": false,
-            "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-            "mine_party_acknowledgement_status": "acknowledged",
-            "mine_party_appt_guid": "mine-party-appt-guid",
-            "mine_party_appt_type_code": "EOR",
-            "party": Object {
-              "address": undefined,
-              "business_role_appts": Array [],
-              "email": "",
-              "first_name": "Egbert",
-              "mine_party_appt": Array [],
-              "name": "Egbert O'Reilly",
-              "now_party_appt": Array [],
-              "organization": undefined,
-              "organization_guid": "",
-              "party_guid": "party-guid-eor",
-              "party_name": "O'Reilly",
-              "party_orgbook_entity": undefined,
-              "party_type_code": "PER",
-              "phone_no": "123-123-1234",
-            },
-            "party_guid": "party-guid-eor",
-            "related_guid": "e2629897-053e-4218-9299-479375e47f78",
-            "start_date": "2025-03-30",
-          },
-          "facility_type": "tailings_storage_facility",
-          "is_draft": false,
-          "itrb_exemption_status_code": "YES",
-          "latitude": null,
-          "longitude": null,
-          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-          "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-          "mine_tailings_storage_facility_name": "MockTSF",
-          "mines_act_permit_no": "P-123",
-          "qualified_person": Object {
-            "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-            "mine_party_acknowledgement_status": "pending",
-            "mine_party_appt_guid": "qp-appt-guid",
-            "mine_party_appt_type_code": "TQP",
-            "party": Object {
-              "address": undefined,
-              "business_role_appts": Array [],
-              "email": "",
-              "first_name": "Quintessa",
-              "mine_party_appt": Array [],
-              "name": "Quintessa Petersen",
-              "now_party_appt": Array [],
-              "organization": undefined,
-              "organization_guid": "",
-              "party_guid": "party-guid-qp",
-              "party_name": "Petersen",
-              "party_orgbook_entity": undefined,
-              "party_type_code": "PER",
-              "phone_no": "123-123-1234",
-            },
-            "party_guid": "party-guid-qp",
-            "related_guid": "e2629897-053e-4218-9299-479375e47f78",
-            "start_date": "2025-03-30",
-          },
-          "storage_location": "above_ground",
-          "tailings_storage_facility_type": "conventional",
-          "tsf_operating_status_code": "OPT",
-          "update_timestamp": "2019-04-05 21:05:40.123456+00:00",
-          "update_user": "test@bceid",
-        },
-      ],
-      "mine_type": Array [
-        Object {
-          "mine_tenure_type_code": "PLR",
-          "mine_type_detail": Array [],
-        },
-        Object {
-          "mine_tenure_type_code": "MIN",
-          "mine_type_detail": Array [],
-        },
-      ],
-      "verified_status": Object {
-        "healthy_ind": null,
-        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-        "mine_name": null,
-        "verifying_timestamp": null,
-        "verifying_user": null,
-      },
-    }
-  }
-  onSubmitEditPartyRelationship={[MockFunction]}
-  openEditPartyRelationshipModal={[MockFunction]}
-  otherDetails={Object {}}
-  partyRelationship={
-    Object {
-      "mine_party_appt_type_code": "EOR",
-      "related_guid": "e2629897-053e-4218-9299-479375e47f78",
-    }
-  }
-  partyRelationshipSubTitle="MockTSF"
-  partyRelationshipTitle="Engineer of Record"
-  removePartyRelationship={[MockFunction]}
-/>
+<div>
+  <div
+    class="ant-card"
+  >
+    <div
+      class="ant-card-head"
+      style="min-height: 0px;"
+    >
+      <div
+        class="ant-card-head-wrapper"
+      >
+        <div
+          class="ant-card-head-title"
+        >
+          <div>
+            <div
+              class="flex flex-between"
+            >
+              <div
+                class="flex items-center"
+              >
+                <h4
+                  class="margin-large--right"
+                >
+                  Engineer of Record
+                </h4>
+                <p>
+                  (
+                  MockTSF
+                  )
+                </p>
+              </div>
+            </div>
+            <div
+              class="padding-md--top"
+            >
+              <a
+                href="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/history/EOR"
+              >
+                <button
+                  class="ant-btn ant-btn-default margin-none"
+                  type="button"
+                >
+                  <span>
+                    See History
+                  </span>
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-card-body"
+    >
+      <div
+        class="default-contact"
+      >
+        <a
+          href="/dashboard/party-guid/profile"
+        >
+          <h4
+            class="link-colour"
+          />
+        </a>
+        <div>
+          <h6>
+            Email Address
+          </h6>
+          <p>
+            N/A
+          </p>
+        </div>
+        <div>
+          <h6>
+            Phone Number
+          </h6>
+          <p>
+            N/A
+          </p>
+        </div>
+        <div>
+          <h6>
+            Engineer of Record
+             Since
+          </h6>
+          <span>
+            Unknown
+          </span>
+        </div>
+      </div>
+      other details
+      <div
+        class="right"
+      />
+    </div>
+  </div>
+</div>
 `;

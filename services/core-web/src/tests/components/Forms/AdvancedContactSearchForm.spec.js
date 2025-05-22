@@ -1,6 +1,8 @@
 import React from "react";
 import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { AdvancedContactSearchForm } from "@/components/Forms/AdvancedContactSearchForm";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const props = {};
@@ -12,7 +14,7 @@ const setupDispatchProps = () => {
   dispatchProps.handleNameFieldReset = jest.fn();
   dispatchProps.toggleAdvancedSearch = jest.fn();
   dispatchProps.reset = jest.fn();
-  dispatchProps.partyTypeOptions = { value: "PER", label: "Person" };
+  dispatchProps.partyTypeOptions = [{ value: "PER", label: "Person" }, { value: "ORG", label: "Organization" }];
   dispatchProps.relationshipTypes = [{ value: "PER", label: "Person" }];
   dispatchProps.initialValues = { type: "PER" };
 };
@@ -29,19 +31,18 @@ beforeEach(() => {
 
 describe("AdvancedContactSearch form", () => {
   it("renders properly", () => {
-    const component = shallow(<AdvancedContactSearchForm {...dispatchProps} {...props} />);
+    const { container: component } = render(<ReduxWrapper><AdvancedContactSearchForm {...dispatchProps} {...props} /></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
-});
 
-describe("AdvancedContactSearch resets properly", () => {
+  // TypeError: component.instance is not a function
   it("resets the stat to a person when handleReset is called", () => {
-    const component = shallow(<AdvancedContactSearchForm {...dispatchProps} {...props} />);
-    const instance = component.instance();
+    const wrapper = shallow(<AdvancedContactSearchForm {...dispatchProps} {...props} />);
+    const instance = wrapper.instance();
     const testString = "test String";
     instance.handleContactTypeChange(testString, "ORG");
-    expect(component.state("contactType")).toBe("ORG");
+    expect(wrapper.state("contactType")).toBe("ORG");
     instance.handleReset();
-    expect(component.state("contactType")).toBe("PER");
+    expect(wrapper.state("contactType")).toBe("PER");
   });
 });

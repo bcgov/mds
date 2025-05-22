@@ -1,44 +1,107 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Contact renders properly 1`] = `
-<Permittee
-  compact={false}
-  handleChange={[MockFunction]}
-  isEditable={false}
-  onSubmitEditPartyRelationship={[MockFunction]}
-  openEditPartyRelationshipModal={[MockFunction]}
-  otherDetails={Object {}}
-  partyRelationship={
-    Object {
-      "mine_party_appt_type_code": "PMT",
-    }
-  }
-  partyRelationshipTitle="Permittee"
-  permits={
-    Array [
-      Object {
-        "mine_guid": "4a20dc10-fb8b-47e8-96bc-fbe287356ab5",
-        "permit_guid": "6515d1bf-23a9-4f36-8f12-bacbca8b138d",
-        "permit_id": "25",
-        "permit_no": "SdT1PbJX0R8c",
-        "permit_status_code": "C",
-      },
-      Object {
-        "mine_guid": "4a20dc10-fb8b-47e8-96bc-fbe287356ab5",
-        "permit_guid": "44a7f4c6-313d-4040-97d5-7944665d9556",
-        "permit_id": "24",
-        "permit_no": "TSRWCIB7Czc9",
-        "permit_status_code": "C",
-      },
-      Object {
-        "mine_guid": "4a20dc10-fb8b-47e8-96bc-fbe287356ab5",
-        "permit_guid": "b2dfa766-3de5-40d0-92f9-f31d7f98a65f",
-        "permit_id": "23",
-        "permit_no": "6oB0VXBqtzC1",
-        "permit_status_code": "O",
-      },
-    ]
-  }
-  removePartyRelationship={[MockFunction]}
-/>
+<div>
+  <div
+    class="ant-card"
+  >
+    <div
+      class="ant-card-head"
+      style="min-height: 0px;"
+    >
+      <div
+        class="ant-card-head-wrapper"
+      >
+        <div
+          class="ant-card-head-title"
+        >
+          <div>
+            <div
+              class="flex flex-between"
+            >
+              <div
+                class="flex items-center"
+              >
+                <h4
+                  class="margin-large--right"
+                >
+                  Permittee
+                </h4>
+                <p>
+                  (
+                  No permit assigned
+                  )
+                </p>
+              </div>
+            </div>
+            <div
+              class="padding-md--top"
+            >
+              <a
+                href="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/history/PMT"
+              >
+                <button
+                  class="ant-btn ant-btn-default margin-none"
+                  type="button"
+                >
+                  <span>
+                    See History
+                  </span>
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-card-body"
+    >
+      <div
+        class="default-contact"
+      >
+        <a
+          href="/dashboard/43f513af-1142-443b-a1e6-f14ef857f4ea/profile"
+        >
+          <h4
+            class="link-colour"
+          >
+            test company 2 
+          </h4>
+        </a>
+        <div>
+          <h6>
+            Email Address
+          </h6>
+          <a
+            href="mailto:test@test.test"
+          >
+            test@test.test
+          </a>
+        </div>
+        <div>
+          <h6>
+            Phone Number
+          </h6>
+          <p>
+            123-123-1234
+          </p>
+        </div>
+        <div>
+          <h6>
+            Permittee
+             Since
+          </h6>
+          <span>
+            Jan 01 2019
+          </span>
+        </div>
+      </div>
+      other details
+      <div
+        class="right"
+      />
+    </div>
+  </div>
+</div>
 `;
