@@ -1,40 +1,45 @@
 import React from "react";
-import { shallow } from "enzyme";
-import { Project } from "@/components/mine/Projects/Project";
+import { render } from "@testing-library/react";
+import Project from "@/components/mine/Projects/Project";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import FeatureFlagContext from "@mds/common/providers/featureFlags/featureFlag.context";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { PROJECTS } from "@mds/common/constants/reducerTypes";
+import { BrowserRouter } from "react-router-dom";
 
-const props = {};
-const dispatchProps = {};
-
-const setupProps = () => {
-  props.match = {
-    params: {
-      projectGuid: "18145c75-49ad-0101-85f3-a43e45ae989a",
-    },
+function mockFunction() {
+  const original = jest.requireActual("react-router-dom");
+  return {
+    ...original,
+    useParams: jest.fn().mockReturnValue({
+      projectGuid: "35633148-57f8-4967-be35-7f89abfbd02e",
+      tab: "",
+    }),
+    useLocation: jest.fn().mockReturnValue({
+      hash: ""
+    }),
+    useHistory: jest.fn().mockReturnValue({
+      action: ""
+    }),
   };
-  props.project = MOCK.PROJECT;
-};
+}
 
-const setupDispatchProps = () => {
-  dispatchProps.fetchProjectById = jest.fn(() => Promise.resolve());
-};
+jest.mock("react-router-dom", () => mockFunction());
 
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
+const initialState = {
+  [PROJECTS]: {
+    project: MOCK.PROJECT,
+    projects: MOCK.PROJECTS.records
+  }
+}
 
 describe("Project", () => {
   it("renders properly", () => {
-    const component = shallow(
-      <FeatureFlagContext.Provider
-        value={{
-          isFeatureEnabled: () => true,
-        }}
-      >
-        <Project {...dispatchProps} {...props} />
-      </FeatureFlagContext.Provider>
+    const { container: component } = render(
+      <BrowserRouter>
+        <ReduxWrapper initialState={initialState}>
+          <Project />
+        </ReduxWrapper>
+      </BrowserRouter>
     );
 
     expect(component).toMatchSnapshot();

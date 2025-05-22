@@ -3,6 +3,7 @@ import { render } from "@testing-library/react";
 import { MineProject } from "@/components/mine/Projects/MineProject";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { BrowserRouter } from "react-router-dom";
 
 const props = {};
 const dispatchProps = {};
@@ -23,12 +24,9 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
-// Test suite failed to run
-
-//     Jest worker encountered 4 child process exceptions, exceeding retry limit
-describe.skip("MineProject", () => {
+describe("MineProject", () => {
   it("renders properly", () => {
-    const { container: component } = render(<ReduxWrapper><MineProject {...dispatchProps} {...props} /></ReduxWrapper>);
+    const { container: component } = render(<BrowserRouter><ReduxWrapper><MineProject {...dispatchProps} {...props} /></ReduxWrapper></BrowserRouter>);
     expect(component).toMatchSnapshot();
   });
 });

@@ -1,14 +1,14 @@
 import React from "react";
-import { shallow } from "enzyme";
-import { MajorMineApplicationTab } from "@/components/mine/Projects/MajorMineApplicationTab";
+import { render } from "@testing-library/react";
+import MajorMineApplicationTab from "@/components/mine/Projects/MajorMineApplicationTab";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import FeatureFlagContext from "@mds/common/providers/featureFlags/featureFlag.context";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { PROJECTS } from "@mds/common/constants/reducerTypes";
 
 const props = {};
 
 const setupProps = () => {
   props.project = MOCK.PROJECT;
-  props.match = { params: { projectGuid: "1234-4567-xwqy" } };
   props.majorMineAppStatusCodesHash = MOCK.MAJOR_MINES_APPLICATION_STATUS_CODES_HASH;
 };
 
@@ -21,18 +21,39 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
-describe("MajorMineApplicationTab", () => {
-  it("renders properly", () => {
-    const component = shallow(
-      <FeatureFlagContext.Provider
-        value={{
-          isFeatureEnabled: () => true,
-        }}
-      >
-        <MajorMineApplicationTab {...props} />
-      </FeatureFlagContext.Provider>
-    );
+function mockFunction() {
+  const original = jest.requireActual("react-router-dom");
+  return {
+    ...original,
+    useParams: jest.fn().mockReturnValue({
+      projectGuid: "35633148-57f8-4967-be35-7f89abfbd02e",
+      tab: "app",
+    }),
+    useLocation: jest.fn().mockReturnValue({
+      hash: ""
+    }),
+    useHistory: jest.fn().mockReturnValue({
+      action: ""
+    }),
+  };
+}
 
-    expect(component).toMatchSnapshot();
+jest.mock("react-router-dom", () => mockFunction());
+
+const initialState = {
+  [PROJECTS]: {
+    project: MOCK.PROJECT
+  }
+}
+  ^
+  describe("MajorMineApplicationTab", () => {
+    it("renders properly", () => {
+      const { container: component } = render(
+        <ReduxWrapper initialState={initialState}>
+          <MajorMineApplicationTab {...props} />
+        </ReduxWrapper>
+      );
+
+      expect(component).toMatchSnapshot();
+    });
   });
-});

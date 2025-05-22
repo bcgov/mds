@@ -1,9 +1,9 @@
 import React from "react";
-import { shallow } from "enzyme";
-import { Provider } from "react-redux";
+import { render } from "@testing-library/react";
 import { IncidentPage } from "@/components/pages/Incidents/IncidentPage";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { store } from "@/App";
+import { BrowserRouter } from "react-router-dom";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const props = {};
 const dispatchProps = {};
@@ -19,7 +19,6 @@ const setupProps = () => {
   props.location = {
     state: { current: 0, mine: MOCK.MINES.mines["18133c75-49ad-4101-85f3-a43e35ae989a"] },
   };
-  props.history = { push: jest.fn(), replace: jest.fn() };
   props.formValues = {};
   props.formIsDirty = false;
   props.closeModal = jest.fn();
@@ -45,12 +44,27 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
+function mockFunction() {
+  const original = jest.requireActual("react-router-dom");
+  return {
+    ...original,
+    useParams: jest.fn().mockReturnValue({
+      mineGuid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+    }),
+    useHistory: jest.fn(),
+  };
+}
+
+jest.mock("react-router-dom", () => mockFunction());
+
 describe("IncidentPage", () => {
   it("renders properly", () => {
-    const component = shallow(
-      <Provider store={store}>
-        <IncidentPage {...dispatchProps} {...props} />
-      </Provider>
+    const { container: component } = render(
+      <BrowserRouter>
+        <ReduxWrapper>
+          <IncidentPage {...dispatchProps} {...props} />
+        </ReduxWrapper>
+      </BrowserRouter>
     );
     expect(component).toMatchSnapshot();
   });

@@ -1,11 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineTailingsInfo renders properly 1`] = `
-<MineTailingsInfoTabs
-  enabledTabs={
-    Array [
-      "tsf",
-    ]
-  }
-/>
+<div>
+  <div
+    class="tab__content"
+  >
+    <div>
+      <h2>
+        Tailings Storage Facilities
+      </h2>
+      <div
+        class="ant-divider ant-divider-horizontal"
+        role="separator"
+      />
+    </div>
+  </div>
+</div>
 `;
