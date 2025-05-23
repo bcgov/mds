@@ -4,7 +4,7 @@ import { getStore } from "@mds/common/redux/rootState";
 import { STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import { BULK_STATIC_CONTENT_RESPONSE } from "../mocks/dataMocks";
 
-export const defaultState = {
+export const defaultInitialState = {
   [STATIC_CONTENT]: BULK_STATIC_CONTENT_RESPONSE
 };
 
@@ -12,7 +12,7 @@ export const defaultState = {
 // and the opportunity to pass in values for an initial state
 export const ReduxWrapper = ({ children, initialState = {} }) => {
   const stateToUse = {
-    ...defaultState,
+    ...defaultInitialState,
     ...initialState
   }
   const store = getStore(stateToUse);

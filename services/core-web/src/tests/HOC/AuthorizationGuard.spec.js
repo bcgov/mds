@@ -23,13 +23,21 @@ beforeEach(() => {
 
 describe("AuthorizationGuard", () => {
   it("should render the `WrappedComponent` if `userRoles === role_edit_mines || role_admin`", () => {
-    const { container: component } = render(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
-    expect(component).toMatchSnapshot();
+    const { container, queryByText } = render(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
+    expect(container).toMatchSnapshot();
+    // Explicit assertion: should see the wrapped component's text
+    expect(queryByText("Test")).toBeInTheDocument();
+    // Explicit assertion: should NOT see the NullScreen message
+    expect(queryByText("You do not have permission to access this page")).not.toBeInTheDocument();
   });
 
   it("should render the `<NullScreen /> if `userRoles !== role_edit_mines || role_admin`", () => {
     reducerProps.userRoles = [];
-    const { container: component } = render(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
-    expect(component).toMatchSnapshot();
+    const { container, queryByText } = render(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
+    expect(container).toMatchSnapshot();
+    // Explicit assertion: should see the NullScreen message
+    expect(queryByText("You do not have permission to access this page")).toBeInTheDocument();
+    // Explicit assertion: should NOT see the wrapped component's text
+    expect(queryByText("Test")).not.toBeInTheDocument();
   });
 });
