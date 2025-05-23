@@ -1,9 +1,9 @@
-import React from "react";
-import { shallow } from "enzyme";
-import { Provider } from "react-redux";
+import React, { FC } from "react";
+import { render } from "@testing-library/react";
 import StepForms from "@/components/pages/Incidents/IncidentStepForms";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { store } from "@/App";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { BrowserRouter } from "react-router-dom";
 
 const props = {
   formIsDirty: false,
@@ -36,14 +36,38 @@ const dispatchProps = {
   destroy: jest.fn(() => Promise.resolve()),
 };
 
-// Objects are not valid as a React child (found: object with keys {title, content, buttons}). If you meant to render a collection of children, use an array instead.
-//         in StepForms
+const StepFormsComponent = (props) => {
+  return (
+    <>
+      {(
+        StepForms({ ...props }) as {
+          title: string;
+          content: React.ReactElement;
+          buttons: React.ReactElement[];
+        }[]
+      ).map((step, idx) => (
+        <div key={idx}>
+          <h2>{step.title}</h2>
+          {step.content}
+          <div>
+            {step.buttons.map((btn, bIdx) => (
+              <span key={bIdx}>{btn}</span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </>
+  );
+};
+
 describe("IncidentStepForm", () => {
   it("renders properly", () => {
-    const component = shallow(
-      <Provider store={store}>
-        <StepForms {...props} {...dispatchProps} />
-      </Provider>
+    const component = render(
+      <BrowserRouter>
+        <ReduxWrapper>
+          <StepFormsComponent {...props} />
+        </ReduxWrapper>
+      </BrowserRouter>
     );
     expect(component).toMatchSnapshot();
   });

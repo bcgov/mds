@@ -9,7 +9,7 @@ const dispatchProps = {
 const props = {
   incident: MOCK.INCIDENT,
   isFinalReviewStage: true,
-  incidentCategoryCodeOptions: MOCK.INCIDENT_CATEGORY_CODE_OPTIONS,
+  incidentCategoryCodeOptions: MOCK.INCIDENT_CATEGORY_OPTIONS_HASH,
   formValues: { ...MOCK.INCIDENT },
   handlers: { deleteDocument: jest.fn(() => Promise.resolve()) },
   match: { params: { mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a" } },
