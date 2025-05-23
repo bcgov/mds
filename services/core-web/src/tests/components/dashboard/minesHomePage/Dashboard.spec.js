@@ -5,46 +5,37 @@ import { Dashboard } from "@/components/dashboard/minesHomePage/Dashboard";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import * as router from "@/constants/routes";
 
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.fetchMineRecords = jest.fn(() => Promise.resolve({}));
-  dispatchProps.createMineRecord = jest.fn();
-  dispatchProps.fetchStatusOptions = jest.fn();
-  dispatchProps.fetchRegionOptions = jest.fn();
-  dispatchProps.fetchMineDisturbanceOptions = jest.fn();
-  dispatchProps.fetchMineTenureTypes = jest.fn();
-  dispatchProps.fetchMineCommodityOptions = jest.fn();
-  dispatchProps.openModal = jest.fn();
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.fetchPartyRelationshipTypes = jest.fn();
-  dispatchProps.fetchPermitStatusOptions = jest.fn();
-  dispatchProps.fetchApplicationStatusOptions = jest.fn();
-  dispatchProps.fetchMineReportStatusOptions = jest.fn();
+const dispatchProps = {
+  fetchMineRecords: jest.fn(() => Promise.resolve({})),
+  createMineRecord: jest.fn(),
+  fetchStatusOptions: jest.fn(),
+  fetchRegionOptions: jest.fn(),
+  fetchMineDisturbanceOptions: jest.fn(),
+  fetchMineTenureTypes: jest.fn(),
+  fetchMineCommodityOptions: jest.fn(),
+  openModal: jest.fn(),
+  closeModal: jest.fn(),
+  fetchPartyRelationshipTypes: jest.fn(),
+  fetchPermitStatusOptions: jest.fn(),
+  fetchApplicationStatusOptions: jest.fn(),
+  fetchMineReportStatusOptions: jest.fn(),
 };
-
-const setupReducerProps = () => {
-  reducerProps.location = { search: " " };
-  reducerProps.history = {
+const reducerProps = {
+  location: { search: " " },
+  history: {
     push: jest.fn(),
     location: {},
-  };
-  reducerProps.mines = MOCK.MINES.mines;
-  reducerProps.mineIds = MOCK.MINES.mineIds;
-  reducerProps.pageData = MOCK.PAGE_DATA;
-  reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS.records;
-  reducerProps.mineRegionOptions = MOCK.REGION_DROPDOWN_OPTIONS;
-  reducerProps.mineDisturbanceOptions = MOCK.DISTURBANCE_OPTIONS;
-  reducerProps.mineRegionHash = MOCK.REGION_HASH;
-  reducerProps.mineTenureTypes = MOCK.TENURE_TYPES_DROPDOWN_OPTIONS;
-  reducerProps.mineTenureHash = MOCK.TENURE_HASH;
+  },
+  mines: MOCK.MINES.mines,
+  mineIds: MOCK.MINES.mineIds,
+  pageData: MOCK.PAGE_DATA,
+  mineStatusOptions: MOCK.STATUS_OPTIONS.records,
+  mineRegionOptions: MOCK.REGION_DROPDOWN_OPTIONS,
+  mineDisturbanceOptions: MOCK.DISTURBANCE_OPTIONS,
+  mineRegionHash: MOCK.REGION_HASH,
+  mineTenureTypes: MOCK.TENURE_TYPES_DROPDOWN_OPTIONS,
+  mineTenureHash: MOCK.TENURE_HASH,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 
 // TypeError: component.instance is not a function
 //  TypeError: component.update is not a function

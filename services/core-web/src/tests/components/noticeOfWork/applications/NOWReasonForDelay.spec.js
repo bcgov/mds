@@ -3,16 +3,10 @@ import { render } from "@testing-library/react";
 import { NOWReasonForDelay } from "@/components/noticeOfWork/applications/NOWReasonForDelay";
 import * as NOWMocks from "@mds/common/tests/mocks/noticeOfWorkMock";
 
-const reducerProps = {};
-
-const setupReducerProps = () => {
-  [reducerProps.applicationDelay] = NOWMocks.NOW_APPLICATION_DELAY;
-  reducerProps.delayTypeOptionsHash = {};
+const reducerProps = {
+  applicationDelay: NOWMocks.NOW_APPLICATION_DELAY[0],
+  delayTypeOptionsHash: {},
 };
-
-beforeEach(() => {
-  setupReducerProps();
-});
 
 describe("NOWReasonForDelay", () => {
   it("renders properly", () => {

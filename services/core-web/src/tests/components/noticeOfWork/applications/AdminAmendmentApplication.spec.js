@@ -6,25 +6,17 @@ import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { BrowserRouter } from "react-router-dom";
 import { NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
 
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.renderTabTitle = jest.fn();
+const dispatchProps = {
+  renderTabTitle: jest.fn(),
 };
 
-const setupReducerProps = () => {
-  reducerProps.match = {};
-  reducerProps.history = { push: jest.fn(), location: { state: {} } };
-  reducerProps.noticeOfWork = NOW_MOCK.NOTICE_OF_WORK;
-  reducerProps.applicationPageFromRoute = "mock/url";
-  reducerProps.fixedTop = false;
+const reducerProps = {
+  match: {},
+  history: { push: jest.fn(), location: { state: {} } },
+  noticeOfWork: NOW_MOCK.NOTICE_OF_WORK,
+  applicationPageFromRoute: "mock/url",
+  fixedTop: false,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 
 const initialState = {
   [NOTICE_OF_WORK]: {
@@ -32,7 +24,7 @@ const initialState = {
     originalNoticeOfWork: NOW_MOCK.IMPORTED_NOTICE_OF_WORK,
     applicationDelays: [],
   }
-}
+};
 
 describe("AdminAmendmentApplication", () => {
   it("renders properly", () => {

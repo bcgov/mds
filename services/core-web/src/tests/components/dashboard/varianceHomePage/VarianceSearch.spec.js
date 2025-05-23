@@ -4,27 +4,22 @@ import VarianceSearch from "@/components/dashboard/varianceHomePage/VarianceSear
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.handleVarianceSearch = jest.fn();
+const dispatchProps = {
+  handleVarianceSearch: jest.fn(),
 };
-
-const setupProps = () => {
-  props.initialValues = {};
-  props.mineRegionOptions = MOCK.REGION_OPTIONS;
-  props.complianceCodes = MOCK.COMPLIANCE_CODES;
+const props = {
+  initialValues: {},
+  mineRegionOptions: MOCK.REGION_OPTIONS,
+  complianceCodes: MOCK.COMPLIANCE_CODES,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("Variance Search Component", () => {
   it("renders properly", () => {
-    const { container: component } = render(<ReduxWrapper><VarianceSearch {...props} /></ReduxWrapper>);
+    const { container: component } = render(
+      <ReduxWrapper>
+        <VarianceSearch {...dispatchProps} {...props} />
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 });

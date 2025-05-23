@@ -19,6 +19,13 @@ const reducerProps = {
   pageData: MOCK.PAGE_DATA,
 };
 
+const requiredProps = {
+  mineRegionHash: {},
+  mineRegionOptions: [] as IOption[],
+  applicationTypeOptions: [] as IOption[],
+  applicationStatusOptions: [] as IOption[],
+};
+
 function mockFunction() {
   const original = jest.requireActual("react-router-dom");
   return {
@@ -33,31 +40,6 @@ function mockFunction() {
 }
 
 jest.mock("react-router-dom", () => mockFunction());
-
-const setupDispatchProps = () => {
-  dispatchProps.fetchNoticeOfWorkApplications = jest.fn(() => Promise.resolve({} as INoticeOfWork));
-  dispatchProps.fetchRegionOptions = jest.fn();
-  dispatchProps.fetchNoticeOfWorkApplicationStatusOptions = jest.fn();
-  dispatchProps.fetchNoticeOfWorkApplicationTypeOptions = jest.fn();
-};
-
-const setupReducerProps = () => {
-  reducerProps.noticeOfWorkApplications = NowApplications;
-
-  reducerProps.pageData = MOCK.PAGE_DATA;
-};
-
-const requiredProps = {
-  mineRegionHash: {},
-  mineRegionOptions: [] as IOption[],
-  applicationTypeOptions: [] as IOption[],
-  applicationStatusOptions: [] as IOption[],
-};
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 
 describe("NoticeOfWorkHomePage", () => {
   it("renders properly", () => {

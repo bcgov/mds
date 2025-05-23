@@ -4,30 +4,21 @@ import { MajorProjectHomePage } from "@/components/dashboard/majorProjectHomePag
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.fetchProjects = jest.fn(() => Promise.resolve({}));
-  dispatchProps.projectSummaryStatusCodes = jest.fn();
-  dispatchProps.informationRequirementsTableStatusCodes = jest.fn();
-  dispatchProps.majorMinesApplicationStatusCodes = jest.fn();
+const dispatchProps = {
+  fetchProjects: jest.fn(() => Promise.resolve({})),
+  projectSummaryStatusCodes: jest.fn(),
+  informationRequirementsTableStatusCodes: jest.fn(),
+  majorMinesApplicationStatusCodes: jest.fn(),
 };
-
-const setupReducerProps = () => {
-  reducerProps.location = { search: " " };
-  reducerProps.history = {
+const reducerProps = {
+  location: { search: " " },
+  history: {
     replace: jest.fn(),
     location: {},
-  };
-  reducerProps.projects = MOCK.MAJOR_PROJECTS_DASHBOARD;
-  reducerProps.projectPageData = MOCK.MAJOR_PROJECTS_PAGE_DATA;
+  },
+  projects: MOCK.MAJOR_PROJECTS_DASHBOARD,
+  projectPageData: MOCK.MAJOR_PROJECTS_PAGE_DATA,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 
 describe("MajorProjectHomePage", () => {
   it("renders properly", () => {

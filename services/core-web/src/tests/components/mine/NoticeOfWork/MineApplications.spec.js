@@ -4,33 +4,28 @@ import { MineApplications } from "@/components/mine/NoticeOfWork/MineApplication
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { BrowserRouter } from "react-router-dom";
 
-const props = {};
-const dispatchProps = {};
-
-const setupProps = () => {
-  props.mineGuid = MOCK.NOW.applications[0].mine_guid;
-  props.mines = { [MOCK.NOW.applications[0].mine_guid]: { major_mine_ind: true } };
-  props.history = { replace: jest.fn() };
-  props.location = { search: "" };
-  props.noticeOfWorkApplications = MOCK.NOW.applications;
-  props.mineRegionHash = MOCK.REGION_HASH;
-  props.explosivesPermits = [];
+const props = {
+  mineGuid: MOCK.NOW.applications[0].mine_guid,
+  mines: { [MOCK.NOW.applications[0].mine_guid]: { major_mine_ind: true } },
+  history: { replace: jest.fn() },
+  location: { search: "" },
+  noticeOfWorkApplications: MOCK.NOW.applications,
+  mineRegionHash: MOCK.REGION_HASH,
+  explosivesPermits: [],
 };
-
-const setupDispatchProps = () => {
-  dispatchProps.fetchRegionOptions = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchExplosivesPermits = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchMineNoticeOfWorkApplications = jest.fn(() => Promise.resolve());
+const dispatchProps = {
+  fetchRegionOptions: jest.fn(() => Promise.resolve()),
+  fetchExplosivesPermits: jest.fn(() => Promise.resolve()),
+  fetchMineNoticeOfWorkApplications: jest.fn(() => Promise.resolve()),
 };
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 describe("MineApplications", () => {
   it("renders properly", () => {
-    const { container: component } = render(<BrowserRouter><MineApplications {...props} {...dispatchProps} /></BrowserRouter>);
+    const { container: component } = render(
+      <BrowserRouter>
+        <MineApplications {...props} {...dispatchProps} />
+      </BrowserRouter>
+    );
     expect(component).toMatchSnapshot();
   });
 });

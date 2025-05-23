@@ -6,31 +6,21 @@ import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { store } from "@/App";
 import { BrowserRouter } from "react-router-dom";
 
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.fetchSearchBarResults = jest.fn();
-  dispatchProps.clearSearchBarResults = jest.fn();
+const dispatchProps = {
+  fetchSearchBarResults: jest.fn(),
+  clearSearchBarResults: jest.fn(),
 };
-
-const setupReducerProps = () => {
-  reducerProps.searchBarResults = MOCK.SIMPLE_SEARCH_RESULTS;
-  reducerProps.history = {
+const reducerProps = {
+  searchBarResults: MOCK.SIMPLE_SEARCH_RESULTS,
+  history: {
     push: jest.fn(),
     location: {},
-  };
+  },
 };
-
 const props = {
   iconPlacement: "prefix",
 
 }
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 
 describe("SearchBar", () => {
   it("renders properly", () => {

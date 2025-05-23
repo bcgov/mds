@@ -4,38 +4,35 @@ import { render } from "@testing-library/react";
 import { AdvancedContactSearchForm } from "@/components/Forms/AdvancedContactSearchForm";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.onSubmit = jest.fn();
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.handleSearch = jest.fn();
-  dispatchProps.handleNameFieldReset = jest.fn();
-  dispatchProps.toggleAdvancedSearch = jest.fn();
-  dispatchProps.reset = jest.fn();
-  dispatchProps.partyTypeOptions = [{ value: "PER", label: "Person" }, { value: "ORG", label: "Organization" }];
-  dispatchProps.relationshipTypes = [{ value: "PER", label: "Person" }];
-  dispatchProps.initialValues = { type: "PER" };
+const dispatchProps = {
+  onSubmit: jest.fn(),
+  closeModal: jest.fn(),
+  handleSearch: jest.fn(),
+  handleNameFieldReset: jest.fn(),
+  toggleAdvancedSearch: jest.fn(),
+  reset: jest.fn(),
+  partyTypeOptions: [
+    { value: "PER", label: "Person" },
+    { value: "ORG", label: "Organization" },
+  ],
+  relationshipTypes: [{ value: "PER", label: "Person" }],
+  initialValues: { type: "PER" },
 };
-
-const setupProps = () => {
-  props.title = "mockTitle";
-  props.submitting = false;
+const props = {
+  title: "mockTitle",
+  submitting: false,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("AdvancedContactSearch form", () => {
   it("renders properly", () => {
-    const { container: component } = render(<ReduxWrapper><AdvancedContactSearchForm {...dispatchProps} {...props} /></ReduxWrapper>);
+    const { container: component } = render(
+      <ReduxWrapper>
+        <AdvancedContactSearchForm {...dispatchProps} {...props} />
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 
-  // TypeError: component.instance is not a function
   it("resets the stat to a person when handleReset is called", () => {
     const wrapper = shallow(<AdvancedContactSearchForm {...dispatchProps} {...props} />);
     const instance = wrapper.instance();

@@ -2,25 +2,15 @@ import React from "react";
 import { render } from "@testing-library/react";
 import AdminNavigation from "@/components/admin/AdminNavigation";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => { };
-
-const setupProps = () => {
-  props.activeButton = "verified";
-  props.openSubMenuKey = [];
-  props.userRoles = [];
+const props = {
+  activeButton: "verified",
+  openSubMenuKey: [],
+  userRoles: [],
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("AdminNavigation", () => {
   it("renders properly", () => {
-    const { container: component } = render(<AdminNavigation {...dispatchProps} {...props} />);
+    const { container: component } = render(<AdminNavigation {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

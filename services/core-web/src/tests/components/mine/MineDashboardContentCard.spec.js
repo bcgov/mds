@@ -2,17 +2,11 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { MineDashboardContentCard } from "@/components/mine/MineDashboardContentCard";
 
-const props = {};
-
-const setupProps = () => {
-  props.content = "mock content";
-  props.icon = null;
-  props.title = "mock title";
+const props = {
+  content: "mock content",
+  icon: null,
+  title: "mock title",
 };
-
-beforeEach(() => {
-  setupProps();
-});
 
 describe("MineDashboardContentCard", () => {
   it("renders properly", () => {

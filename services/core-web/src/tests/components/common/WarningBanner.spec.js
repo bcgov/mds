@@ -2,21 +2,12 @@ import React from "react";
 import { render } from "@testing-library/react";
 import WarningBanner from "@/components/common/WarningBanner";
 
-let props = {};
-let dispatchProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.onClose = jest.fn();
+const props = {
+  type: "test",
 };
-
-const setupProps = () => {
-  props.type = "test";
+const dispatchProps = {
+  onClose: jest.fn(),
 };
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 describe("WarningBanner", () => {
   it("renders properly", () => {

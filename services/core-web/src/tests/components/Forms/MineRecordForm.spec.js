@@ -4,39 +4,34 @@ import { MineRecordForm } from "@/components/Forms/MineRecordForm";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.onSubmit = jest.fn();
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.handleDelete = jest.fn();
-  dispatchProps.change = jest.fn();
+const dispatchProps = {
+  onSubmit: jest.fn(),
+  closeModal: jest.fn(),
+  handleDelete: jest.fn(),
+  change: jest.fn(),
 };
-
-const setupProps = () => {
-  props.title = "mockTitle";
-  props.mineStatusOptions = MOCK.STATUS_OPTIONS.records;
-  props.mineRegionOptions = MOCK.REGION_DROPDOWN_OPTIONS;
-  props.mineTenureTypes = MOCK.TENURE_TYPES_DROPDOWN_OPTIONS;
-  props.mineCommodityOptionsHash = MOCK.COMMODITY_OPTIONS_HASH;
-  props.mineDisturbanceOptionsHash = MOCK.DISTURBANCE_OPTIONS_HASH;
-  props.mine_types = MOCK.MINE_TYPES;
-  props.mineTenureHash = MOCK.TENURE_HASH;
-  props.conditionalDisturbanceOptions = MOCK.CONDITIONAL_DISTURBANCE_OPTIONS;
-  props.conditionalCommodityOptions = MOCK.CONDITIONAL_COMMODITY_OPTIONS.records;
-  props.currentMineTypes = MOCK.MINE_TYPES;
-  props.submitting = false;
+const props = {
+  title: "mockTitle",
+  mineStatusOptions: MOCK.STATUS_OPTIONS.records,
+  mineRegionOptions: MOCK.REGION_DROPDOWN_OPTIONS,
+  mineTenureTypes: MOCK.TENURE_TYPES_DROPDOWN_OPTIONS,
+  mineCommodityOptionsHash: MOCK.COMMODITY_OPTIONS_HASH,
+  mineDisturbanceOptionsHash: MOCK.DISTURBANCE_OPTIONS_HASH,
+  mine_types: MOCK.MINE_TYPES,
+  mineTenureHash: MOCK.TENURE_HASH,
+  conditionalDisturbanceOptions: MOCK.CONDITIONAL_DISTURBANCE_OPTIONS,
+  conditionalCommodityOptions: MOCK.CONDITIONAL_COMMODITY_OPTIONS.records,
+  currentMineTypes: MOCK.MINE_TYPES,
+  submitting: false,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("MineRecordForm", () => {
   it("renders properly", () => {
-    const { container: component } = render(<ReduxWrapper><MineRecordForm {...dispatchProps} {...props} /></ReduxWrapper>);
+    const { container: component } = render(
+      <ReduxWrapper>
+        <MineRecordForm {...dispatchProps} {...props} />
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 });

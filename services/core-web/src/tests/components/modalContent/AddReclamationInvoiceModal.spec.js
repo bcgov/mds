@@ -4,27 +4,18 @@ import { AddReclamationInvoiceModal } from "@/components/modalContent/AddReclama
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.oSubmit = jest.fn();
-  dispatchProps.closeModal = jest.fn();
+const dispatchProps = {
+  oSubmit: jest.fn(),
+  closeModal: jest.fn(),
 };
-
-const setupProps = () => {
-  props.title = "Add Bond";
-  props.permitGuid = "462562457";
-  props.mineGuid = "1436613";
-  [props.invoice] = MOCK.RECLAMATION_INVOICES.records;
-  [props.formValues] = MOCK.RECLAMATION_INVOICES.records;
-  props.edit = false;
+const props = {
+  title: "Add Bond",
+  permitGuid: "462562457",
+  mineGuid: "1436613",
+  invoice: MOCK.RECLAMATION_INVOICES.records[0],
+  formValues: MOCK.RECLAMATION_INVOICES.records[0],
+  edit: false,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("AddReclamationInvoiceModal", () => {
   it("renders properly", () => {

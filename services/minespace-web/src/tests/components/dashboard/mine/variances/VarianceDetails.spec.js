@@ -3,24 +3,16 @@ import { shallow } from "enzyme";
 import { VarianceDetails } from "@/components/dashboard/mine/variances/VarianceDetails";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.removeDocument = jest.fn();
+const dispatchProps = {
+  removeDocument: jest.fn(),
 };
-const setupProps = () => {
-  props.variance = MOCK.VARIANCE;
-  props.complianceCodesHash = MOCK.HSRCM_HASH;
-  props.varianceStatusOptionsHash = MOCK.VARIANCE_STATUS_OPTIONS_HASH;
-  props.mineName = "mockMineName";
-  props.isViewOnly = false;
+const props = {
+  variance: MOCK.VARIANCE,
+  complianceCodesHash: MOCK.HSRCM_HASH,
+  varianceStatusOptionsHash: MOCK.VARIANCE_STATUS_OPTIONS_HASH,
+  mineName: "mockMineName",
+  isViewOnly: false,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 // TypeError: Cannot read properties of undefined (reading 'undefined')
 

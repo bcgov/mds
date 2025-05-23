@@ -4,28 +4,19 @@ import { AddPartyModal } from "@/components/modalContent/AddPartyModal";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { PROVINCE_OPTIONS } from "@mds/common/tests/mocks/dataMocks";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.submit = jest.fn();
-  dispatchProps.fetchData = jest.fn();
-  dispatchProps.fetchMineNameList = jest.fn();
-  dispatchProps.createParty = jest.fn();
-  dispatchProps.reset = jest.fn();
+const dispatchProps = {
+  submit: jest.fn(),
+  fetchData: jest.fn(),
+  fetchMineNameList: jest.fn(),
+  createParty: jest.fn(),
+  reset: jest.fn(),
 };
-
-const setupProps = () => {
-  props.title = "mockTitle";
-  props.addPartyFormValues = {};
-  props.addPartyForm = {};
-  props.provinceOptions = PROVINCE_OPTIONS.records
+const props = {
+  title: "mockTitle",
+  addPartyFormValues: {},
+  addPartyForm: {},
+  provinceOptions: PROVINCE_OPTIONS.records,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("AddPartyModal", () => {
   it("renders properly", () => {

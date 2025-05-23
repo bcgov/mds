@@ -3,40 +3,25 @@ import { shallow } from "enzyme";
 import { MineHeader } from "@/components/mine/MineHeader";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
-const props = {};
-const dispatchProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.updateMineRecord = jest.fn();
-  dispatchProps.fetchMineRecordById = jest.fn();
-  dispatchProps.removeMineType = jest.fn();
-  dispatchProps.createTailingsStorageFacility = jest.fn();
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.openModal = jest.fn();
+const dispatchProps = {
+  updateMineRecord: jest.fn(),
+  fetchMineRecordById: jest.fn(),
+  removeMineType: jest.fn(),
+  createTailingsStorageFacility: jest.fn(),
+  closeModal: jest.fn(),
+  openModal: jest.fn(),
 };
 
-const setupProps = () => {
-  props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  props.mineStatusOptions = MOCK.STATUS_OPTIONS.records;
-  props.mineRegionOptions = MOCK.REGION_DROPDOWN_OPTIONS;
-  props.mineRegionHash = MOCK.REGION_HASH;
-  props.mineTenureTypes = MOCK.TENURE_TYPES_DROPDOWN_OPTIONS;
-  props.mineTenureHash = MOCK.TENURE_HASH;
-  [props.transformedMineTypes] = MOCK.MINE_TYPES;
+const props = {
+  mine: MOCK.MINES.mines[MOCK.MINES.mineIds[0]],
+  mineStatusOptions: MOCK.STATUS_OPTIONS.records,
+  mineRegionOptions: MOCK.REGION_DROPDOWN_OPTIONS,
+  mineRegionHash: MOCK.REGION_HASH,
+  mineTenureTypes: MOCK.TENURE_TYPES_DROPDOWN_OPTIONS,
+  mineTenureHash: MOCK.TENURE_HASH,
+  transformedMineTypes: MOCK.MINE_TYPES[0],
 };
 
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
-
-// TypeError: Cannot read properties of null (reading '_layerAdd')
-
-//       139 |       showCoverageOnHover: false,
-//       140 |     });
-//     > 141 |     this.map.addLayer(this.markerClusterGroup);
-//           |              ^
-//       142 |   }
 describe("MineHeader", () => {
   it("renders dispatchProperly", () => {
     const component = shallow(<MineHeader {...dispatchProps} {...props} />);

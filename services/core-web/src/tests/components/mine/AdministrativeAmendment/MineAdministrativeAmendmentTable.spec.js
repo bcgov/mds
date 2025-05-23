@@ -1,25 +1,20 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { MineAdministrativeAmendmentTable } from "@/components/mine/AdministrativeAmendment/MineAdministrativeAmendmentTable";
-const props = {};
 
-const setupProps = () => {
-  props.handleSearch = jest.fn();
-  props.administrativeAmendmentApplications = [];
-  props.sortField = undefined;
-  props.sortDir = undefined;
-  props.isLoaded = true;
-  props.location = {
+const props = {
+  handleSearch: jest.fn(),
+  administrativeAmendmentApplications: [],
+  sortField: undefined,
+  sortDir: undefined,
+  isLoaded: true,
+  location: {
     pathname: "mock pathname",
     search: "mock search",
-  };
-  props.onExpand = jest.fn();
-  props.expandedRowKeys = [];
+  },
+  onExpand: jest.fn(),
+  expandedRowKeys: [],
 };
-
-beforeEach(() => {
-  setupProps();
-});
 
 describe("MineAdministrativeAmendmentTable", () => {
   it("renders properly", () => {

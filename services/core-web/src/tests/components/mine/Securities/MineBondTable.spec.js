@@ -3,32 +3,23 @@ import { render } from "@testing-library/react";
 import { MineBondTable } from "@/components/mine/Securities/MineBondTable";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.openEditBondModal = jest.fn();
-  dispatchProps.openViewBondModal = jest.fn();
-  dispatchProps.openAddBondModal = jest.fn();
-  dispatchProps.releaseOrConfiscateBond = jest.fn();
-  dispatchProps.onExpand = jest.fn();
-  dispatchProps.recordsByPermit = jest.fn();
-  dispatchProps.activeBondCount = jest.fn();
-  dispatchProps.getSum = jest.fn();
+const dispatchProps = {
+  openEditBondModal: jest.fn(),
+  openViewBondModal: jest.fn(),
+  openAddBondModal: jest.fn(),
+  releaseOrConfiscateBond: jest.fn(),
+  onExpand: jest.fn(),
+  recordsByPermit: jest.fn(),
+  activeBondCount: jest.fn(),
+  getSum: jest.fn(),
 };
-
-const setupProps = () => {
-  props.permits = MOCK.MINES.mines[MOCK.MINES.mineIds[0]].mine_permit_numbers;
-  props.bondStatusOptionsHash = MOCK.BOND_STATUS_OPTIONS_HASH;
-  props.bondTypeOptionsHash = {};
-  props.isLoaded = true;
-  props.expandedRowKeys = [];
+const props = {
+  permits: MOCK.MINES.mines[MOCK.MINES.mineIds[0]].mine_permit_numbers,
+  bondStatusOptionsHash: MOCK.BOND_STATUS_OPTIONS_HASH,
+  bondTypeOptionsHash: {},
+  isLoaded: true,
+  expandedRowKeys: [],
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("MineBondTable", () => {
   it("renders properly", () => {

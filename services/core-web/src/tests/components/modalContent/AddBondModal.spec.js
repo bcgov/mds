@@ -4,28 +4,19 @@ import { AddBondModal } from "@/components/modalContent/AddBondModal";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.oSubmit = jest.fn();
-  dispatchProps.closeModal = jest.fn();
+const dispatchProps = {
+  oSubmit: jest.fn(),
+  closeModal: jest.fn(),
 };
-
-const setupProps = () => {
-  props.title = "Add Bond";
-  props.permitGuid = "462562457";
-  props.provinceOptions = MOCK.DROPDOWN_PROVINCE_OPTIONS;
-  props.bondTypeOptions = [];
-  [props.bond] = MOCK.BONDS.records;
-  [props.formValues] = MOCK.BONDS.records;
-  props.bondStatusOptionsHash = MOCK.BOND_STATUS_OPTIONS_HASH;
+const props = {
+  title: "Add Bond",
+  permitGuid: "462562457",
+  provinceOptions: MOCK.DROPDOWN_PROVINCE_OPTIONS,
+  bondTypeOptions: [],
+  bond: MOCK.BONDS.records[0],
+  formValues: MOCK.BONDS.records[0],
+  bondStatusOptionsHash: MOCK.BOND_STATUS_OPTIONS_HASH,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("AddBondModal", () => {
   it("renders properly", () => {

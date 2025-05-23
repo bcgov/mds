@@ -5,24 +5,21 @@ import { BrowserRouter } from "react-router-dom";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => { };
-
-const setupProps = () => {
-  props.location = {
+const props = {
+  location: {
     pathname: "",
-  };
+  },
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("AdminPermitConditionManagement", () => {
   it("renders properly", () => {
-    const { container: component } = render(<ReduxWrapper><BrowserRouter><AdminPermitConditionManagement {...dispatchProps} {...props} /></BrowserRouter></ReduxWrapper>);
+    const { container: component } = render(
+      <ReduxWrapper>
+        <BrowserRouter>
+          <AdminPermitConditionManagement {...dispatchProps} {...props} />
+        </BrowserRouter>
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 });

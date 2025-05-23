@@ -4,22 +4,13 @@ import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Mock from "@mds/common/tests/mocks/dataMocks";
 
 const Component = AuthorizationGuard("role_edit_mines")(() => <div>Test</div>);
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.logoutUser = jest.fn();
-  dispatchProps.mapStateToProps = jest.fn();
+const dispatchProps = {
+  logoutUser: jest.fn(),
+  mapStateToProps: jest.fn(),
 };
-
-const setupReducerProps = () => {
-  reducerProps.userRoles = Mock.USER_ACCESS_DATA;
+const reducerProps = {
+  userRoles: Mock.USER_ACCESS_DATA,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 
 describe("AuthorizationGuard", () => {
   it("should render the `WrappedComponent` if `userRoles === role_edit_mines || role_admin`", () => {

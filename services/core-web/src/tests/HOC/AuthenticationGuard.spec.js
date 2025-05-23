@@ -31,24 +31,14 @@ jest.mock("@react-keycloak/web", () => ({
 }));
 
 const Component = AuthenticationGuard(() => <div>Test</div>);
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.authenticateUser = jest.fn();
-  dispatchProps.storeUserAccessData = jest.fn();
+const dispatchProps = {
+  authenticateUser: jest.fn(),
+  storeUserAccessData: jest.fn(),
 };
-
-const setupReducerProps = () => {
-  reducerProps.isAuthenticated = true;
-  reducerProps.userAccessData = Mock.USER_ACCESS_DATA;
+const reducerProps = {
+  isAuthenticated: true,
+  userAccessData: Mock.USER_ACCESS_DATA,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-  jest.resetModules();
-});
 
 describe("AuthenticationGuard", () => {
   it("should render the `WrappedComponent` if `isAuthenticated` && `userAccessData === role_view`", () => {

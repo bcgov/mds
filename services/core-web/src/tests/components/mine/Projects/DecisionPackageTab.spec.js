@@ -4,23 +4,13 @@ import { DecisionPackageTab } from "@/components/mine/Projects/DecisionPackageTa
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const props = {};
-
-const setupProps = () => {
-  props.project = MOCK.MAJOR_PROJECTS_DASHBOARD.records[0];
-  props.match = { params: { projectGuid: "1234-4567-xwqy" } };
-  props.projectDecisionPackageStatusCodesHash = MOCK.PROJECT_SUMMARY_STATUS_CODES_HASH;
+const props = {
+  project: MOCK.MAJOR_PROJECTS_DASHBOARD.records[0],
+  match: { params: { projectGuid: "1234-4567-xwqy" } },
+  projectDecisionPackageStatusCodesHash: MOCK.PROJECT_SUMMARY_STATUS_CODES_HASH,
+  fetchProjectById: jest.fn(() => Promise.resolve()),
+  isFeatureEnabled: (feature) => true,
 };
-
-const setupDispatchProps = () => {
-  props.fetchProjectById = jest.fn(() => Promise.resolve());
-  props.isFeatureEnabled = (feature) => true
-};
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 function mockFunction() {
   const original = jest.requireActual("react-router-dom");

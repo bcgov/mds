@@ -4,22 +4,13 @@ import { WorkerInfoEmployee } from "@/components/dashboard/mine/overview/WorkerI
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const props = {};
-const dispatchProps = {};
-
-const setupProps = () => {
-  props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
+const props = {
+  mine: MOCK.MINES.mines[MOCK.MINES.mineIds[0]],
 };
-
-const setupDispatchProps = () => {
-  dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve());
-  dispatchProps.updateMineRecord = jest.fn(() => Promise.resolve());
+const dispatchProps = {
+  fetchMineRecordById: jest.fn(() => Promise.resolve()),
+  updateMineRecord: jest.fn(() => Promise.resolve()),
 };
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 describe("WorkerInfoEmployee", () => {
   it("renders properly", () => {

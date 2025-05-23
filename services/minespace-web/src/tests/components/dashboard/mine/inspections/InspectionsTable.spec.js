@@ -3,17 +3,11 @@ import { render } from "@testing-library/react";
 import { InspectionsTable } from "@/components/dashboard/mine/inspections/InspectionsTable";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
-const props = {};
-const dispatchProps = {};
-
-const setupProps = () => {
-  props.orders = MOCK.COMPLIANCE.orders;
-  props.isLoaded = true;
+const props = {
+  orders: MOCK.COMPLIANCE.orders,
+  isLoaded: true,
 };
-
-beforeEach(() => {
-  setupProps();
-});
+const dispatchProps = {};
 
 describe("InspectionsTable", () => {
   it("renders properly", () => {

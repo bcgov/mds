@@ -17,23 +17,14 @@ jest.mock("@react-keycloak/web", () => ({
 }));
 
 const Component = AuthenticationGuard()(() => <div>Test</div>);
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.getUserInfoFromToken = jest.fn(() => Promise.resolve());
-  dispatchProps.authenticateUser = jest.fn(() => Promise.resolve());
+const dispatchProps = {
+  getUserInfoFromToken: jest.fn(() => Promise.resolve()),
+  authenticateUser: jest.fn(() => Promise.resolve()),
 };
-
-const setupprops = () => {
-  props.isAuthenticated = true;
-  props.fromCore = false;
+const props = {
+  isAuthenticated: true,
+  fromCore: false,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupprops();
-});
 
 describe("AuthenticationGuard", (isPublic = false) => {
   it("should render the `WrappedComponent` if `isAuthenticated`", () => {

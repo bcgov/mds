@@ -4,43 +4,32 @@ import { VarianceHomePage } from "@/components/dashboard/varianceHomePage/Varian
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.fetchMineTenureTypes = jest.fn();
-  dispatchProps.fetchVarianceDocumentCategoryOptions = jest.fn();
-  dispatchProps.addDocumentToVariance = jest.fn();
-  dispatchProps.updateVariance = jest.fn();
-  dispatchProps.fetchMineComplianceCodes = jest.fn();
-  dispatchProps.fetchRegionOptions = jest.fn();
-  dispatchProps.openModal = jest.fn();
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.fetchInspectors = jest.fn();
-  dispatchProps.fetchMineCommodityOptions = jest.fn();
-  dispatchProps.fetchVarianceStatusOptions = jest.fn();
-  dispatchProps.fetchVariances = jest.fn(() => Promise.resolve({}));
+const dispatchProps = {
+  fetchMineTenureTypes: jest.fn(),
+  fetchVarianceDocumentCategoryOptions: jest.fn(),
+  addDocumentToVariance: jest.fn(),
+  updateVariance: jest.fn(),
+  fetchMineComplianceCodes: jest.fn(),
+  fetchRegionOptions: jest.fn(),
+  openModal: jest.fn(),
+  closeModal: jest.fn(),
+  fetchInspectors: jest.fn(),
+  fetchMineCommodityOptions: jest.fn(),
+  fetchVarianceStatusOptions: jest.fn(),
+  fetchVariances: jest.fn(() => Promise.resolve({})),
 };
-
-const setupReducerProps = () => {
-  reducerProps.location = { search: " " };
-  reducerProps.history = {
+const reducerProps = {
+  location: { search: " " },
+  history: {
     replace: jest.fn(),
     location: {},
-  };
-
-  reducerProps.variances = MOCK.VARIANCES.records;
-  reducerProps.variancePageData = MOCK.VARIANCE_PAGE_DATA;
-  reducerProps.complianceCodesHash = MOCK.COMPLIANCE_CODES;
-  reducerProps.getDropdownHSRCMComplianceCodes = MOCK.DROPDOWN_HSRCM_CODES;
-  reducerProps.filterVarianceStatusOptions =
-    MOCK.BULK_STATIC_CONTENT_RESPONSE.varianceStatusOptions;
+  },
+  variances: MOCK.VARIANCES.records,
+  variancePageData: MOCK.VARIANCE_PAGE_DATA,
+  complianceCodesHash: MOCK.COMPLIANCE_CODES,
+  getDropdownHSRCMComplianceCodes: MOCK.DROPDOWN_HSRCM_CODES,
+  filterVarianceStatusOptions: MOCK.BULK_STATIC_CONTENT_RESPONSE.varianceStatusOptions,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 
 describe("VarianceHomePage", () => {
   it("renders properly", () => {

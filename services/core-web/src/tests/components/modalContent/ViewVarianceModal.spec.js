@@ -4,22 +4,16 @@ import { ViewVarianceModal } from "@/components/modalContent/ViewVarianceModal";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const props = {};
-
-const setupProps = () => {
-  props.closeModal = jest.fn();
-  props.type = "EXP";
-  props.mineName = "Mock Mine";
-  [props.variance] = MOCK.VARIANCES.records;
-  props.inspectorsHash = MOCK.INSPECTORS_HASH;
-  props.varianceStatusOptionsHash = MOCK.VARIANCE_STATUS_OPTIONS_HASH;
-  props.varianceDocumentCategoryOptionsHash = MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS_HASH;
-  props.complianceCodesHash = {};
+const props = {
+  closeModal: jest.fn(),
+  type: "EXP",
+  mineName: "Mock Mine",
+  variance: MOCK.VARIANCES.records[0],
+  inspectorsHash: MOCK.INSPECTORS_HASH,
+  varianceStatusOptionsHash: MOCK.VARIANCE_STATUS_OPTIONS_HASH,
+  varianceDocumentCategoryOptionsHash: MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS_HASH,
+  complianceCodesHash: {},
 };
-
-beforeEach(() => {
-  setupProps();
-});
 
 describe("ViewVarianceModal", () => {
   it("renders properly", () => {

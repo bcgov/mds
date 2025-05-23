@@ -4,21 +4,21 @@ import { EditNOWMineAndLocation } from "@/components/Forms/noticeOfWork/EditNOWM
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const props = {};
-
-const setupProps = () => {
-  props.locationOnly = true;
-  props.latitude = "";
-  props.longitude = "";
+const props = {
+  locationOnly: true,
+  latitude: "",
+  longitude: "",
 };
-
-beforeEach(() => {
-  setupProps();
-});
 
 describe("EditNOWMineAndLocation", () => {
   it("renders properly", () => {
-    const { container: component } = render(<ReduxWrapper><FormWrapper name="formName"><EditNOWMineAndLocation {...props} /></FormWrapper></ReduxWrapper>);
+    const { container: component } = render(
+      <ReduxWrapper>
+        <FormWrapper name="formName">
+          <EditNOWMineAndLocation {...props} />
+        </FormWrapper>
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 });

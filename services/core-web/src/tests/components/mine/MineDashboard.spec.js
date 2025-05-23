@@ -3,67 +3,58 @@ import { shallow } from "enzyme";
 import { MineDashboard } from "@/components/mine/MineDashboard";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve({}));
-  dispatchProps.updateMineRecord = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchSubscribedMinesByUser = jest.fn(() => Promise.resolve());
-  dispatchProps.subscribe = jest.fn(() => Promise.resolve());
-  dispatchProps.unSubscribe = jest.fn(() => Promise.resolve());
-  dispatchProps.createVariance = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchVarianceDocumentCategoryOptions = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchMineComplianceCodes = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchMineComplianceInfo = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchVariancesByMine = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchStatusOptions = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchMineDisturbanceOptions = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchRegionOptions = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchMineTenureTypes = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchMineCommodityOptions = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchRelationshipTypes = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchPartyRelationshipTypes = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchPermits = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchExplosivesPermits = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchPermitStatusOptions = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchInspectors = jest.fn(() => Promise.resolve());
-  dispatchProps.updateVariance = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchVarianceStatusOptions = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchMineReportDefinitionOptions = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchMineReportStatusOptions = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchMineNoticeOfWorkApplications = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchAllPartyRelationships = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchMineReclamationInvoices = jest.fn(() => Promise.resolve());
+const dispatchProps = {
+  fetchMineRecordById: jest.fn(() => Promise.resolve({})),
+  updateMineRecord: jest.fn(() => Promise.resolve()),
+  fetchSubscribedMinesByUser: jest.fn(() => Promise.resolve()),
+  subscribe: jest.fn(() => Promise.resolve()),
+  unSubscribe: jest.fn(() => Promise.resolve()),
+  createVariance: jest.fn(() => Promise.resolve()),
+  fetchVarianceDocumentCategoryOptions: jest.fn(() => Promise.resolve()),
+  fetchMineComplianceCodes: jest.fn(() => Promise.resolve()),
+  fetchMineComplianceInfo: jest.fn(() => Promise.resolve()),
+  fetchVariancesByMine: jest.fn(() => Promise.resolve()),
+  fetchStatusOptions: jest.fn(() => Promise.resolve()),
+  fetchMineDisturbanceOptions: jest.fn(() => Promise.resolve()),
+  fetchRegionOptions: jest.fn(() => Promise.resolve()),
+  fetchMineTenureTypes: jest.fn(() => Promise.resolve()),
+  fetchMineCommodityOptions: jest.fn(() => Promise.resolve()),
+  fetchRelationshipTypes: jest.fn(() => Promise.resolve()),
+  fetchPartyRelationshipTypes: jest.fn(() => Promise.resolve()),
+  fetchPartyRelationships: jest.fn(() => Promise.resolve()),
+  fetchPermits: jest.fn(() => Promise.resolve()),
+  fetchExplosivesPermits: jest.fn(() => Promise.resolve()),
+  fetchPermitStatusOptions: jest.fn(() => Promise.resolve()),
+  fetchInspectors: jest.fn(() => Promise.resolve()),
+  updateVariance: jest.fn(() => Promise.resolve()),
+  fetchVarianceStatusOptions: jest.fn(() => Promise.resolve()),
+  fetchMineReportDefinitionOptions: jest.fn(() => Promise.resolve()),
+  fetchMineReportStatusOptions: jest.fn(() => Promise.resolve()),
+  fetchMineNoticeOfWorkApplications: jest.fn(() => Promise.resolve()),
+  fetchAllPartyRelationships: jest.fn(() => Promise.resolve()),
+  fetchMineReclamationInvoices: jest.fn(() => Promise.resolve()),
 };
 
-const setupReducerProps = () => {
-  reducerProps.match = {};
-  reducerProps.location = { pathname: "" };
-  reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  reducerProps.mines = MOCK.MINES.mines;
-  reducerProps.mineIds = MOCK.MINES.mineIds;
-  reducerProps.variances = MOCK.VARIANCES.records;
-  reducerProps.complianceCodesHash = MOCK.HSRCM_HASH;
-  reducerProps.complianceCodes = MOCK.DROPDOWN_HSRCM_CODES;
-  reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS.records;
-  reducerProps.mineRegionOptions = MOCK.REGION_DROPDOWN_OPTIONS;
-  reducerProps.mineDisturbanceOptions = MOCK.DISTURBANCE_OPTIONS;
-  reducerProps.mineTenureTypes = MOCK.TENURE_TYPES_DROPDOWN_OPTIONS;
-  reducerProps.mineTenureHash = MOCK.TENURE_HASH;
-  reducerProps.varianceStatusOptions = MOCK.VARIANCE_DROPDOWN_STATUS_OPTIONS;
-  reducerProps.varianceStatusOptionsHash = MOCK.VARIANCE_STATUS_OPTIONS_HASH;
-  reducerProps.varianceDocumentCategoryOptions = MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS_DROPDOWN;
-  reducerProps.userRoles = MOCK.USER_ACCESS_DATA;
+const reducerProps = {
+  match: {},
+  location: { pathname: "" },
+  mine: MOCK.MINES.mines[MOCK.MINES.mineIds[0]],
+  mines: MOCK.MINES.mines,
+  mineIds: MOCK.MINES.mineIds,
+  variances: MOCK.VARIANCES.records,
+  complianceCodesHash: MOCK.HSRCM_HASH,
+  complianceCodes: MOCK.DROPDOWN_HSRCM_CODES,
+  mineStatusOptions: MOCK.STATUS_OPTIONS.records,
+  mineRegionOptions: MOCK.REGION_DROPDOWN_OPTIONS,
+  mineDisturbanceOptions: MOCK.DISTURBANCE_OPTIONS,
+  mineTenureTypes: MOCK.TENURE_TYPES_DROPDOWN_OPTIONS,
+  mineTenureHash: MOCK.TENURE_HASH,
+  varianceStatusOptions: MOCK.VARIANCE_DROPDOWN_STATUS_OPTIONS,
+  varianceStatusOptionsHash: MOCK.VARIANCE_STATUS_OPTIONS_HASH,
+  varianceDocumentCategoryOptions: MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS_DROPDOWN,
+  userRoles: MOCK.USER_ACCESS_DATA,
 };
 
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
-
-// "Works" with react testing library, but renders an empty div
 describe("MineDashboard", () => {
   it("renders properly", () => {
     const component = shallow(

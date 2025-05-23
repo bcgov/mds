@@ -6,26 +6,17 @@ import { BrowserRouter } from "react-router-dom";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
 
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.updateNoticeOfWorkApplication = jest.fn();
-  dispatchProps.fetchImportedNoticeOfWorkApplication = jest.fn();
-  dispatchProps.fetchNoticeOfWorkApplicationReviews = jest.fn();
+const dispatchProps = {
+  updateNoticeOfWorkApplication: jest.fn(),
+  fetchImportedNoticeOfWorkApplication: jest.fn(),
+  fetchNoticeOfWorkApplicationReviews: jest.fn(),
 };
-
-const setupReducerProps = () => {
-  reducerProps.mineGuid = NOW_MOCK.NOTICE_OF_WORK.mineGuid;
-  reducerProps.noticeOfWork = NOW_MOCK.NOTICE_OF_WORK;
-  reducerProps.isLoaded = true;
-  reducerProps.noticeOfWorkReviews = [];
+const reducerProps = {
+  mineGuid: NOW_MOCK.NOTICE_OF_WORK.mineGuid,
+  noticeOfWork: NOW_MOCK.NOTICE_OF_WORK,
+  isLoaded: true,
+  noticeOfWorkReviews: [],
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 
 const initialState = {
   [NOTICE_OF_WORK]: {

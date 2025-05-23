@@ -5,24 +5,15 @@ import { ChangeNOWLocationModal } from "@/components/modalContent/ChangeNOWLocat
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.onSubmit = jest.fn();
-  dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve({}));
+const dispatchProps = {
+  onSubmit: jest.fn(),
+  fetchMineRecordById: jest.fn(() => Promise.resolve({})),
 };
-
-const setupProps = () => {
-  props.title = "mockTitle";
-  props.noticeOfWork = MOCK.NOW.applications[0];
-  props.mineGuid = MOCK.MINES.mineIds[0];
+const props = {
+  title: "mockTitle",
+  noticeOfWork: MOCK.NOW.applications[0],
+  mineGuid: MOCK.MINES.mineIds[0],
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 // TODO: use the newer map, it doesn't run into this.
 // TypeError: Cannot read properties of undefined (reading 'latitude')

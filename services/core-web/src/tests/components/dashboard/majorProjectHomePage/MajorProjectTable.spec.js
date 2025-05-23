@@ -5,19 +5,13 @@ import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { BrowserRouter } from "react-router-dom";
 
-const props = {};
-
-const setupProps = () => {
-  props.handleSearch = jest.fn();
-  props.projects = MOCK.MAJOR_PROJECTS_DASHBOARD.records;
-  props.sortField = "project_id";
-  props.sortDir = "asc";
-  props.searchParams = { search: "substring" };
+const props = {
+  handleSearch: jest.fn(),
+  projects: MOCK.MAJOR_PROJECTS_DASHBOARD.records,
+  sortField: "project_id",
+  sortDir: "asc",
+  searchParams: { search: "substring" },
 };
-
-beforeEach(() => {
-  setupProps();
-});
 
 describe("MajorProjectTable", () => {
   it("renders properly", () => {

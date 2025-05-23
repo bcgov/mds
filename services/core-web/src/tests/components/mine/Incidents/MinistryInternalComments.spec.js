@@ -4,23 +4,14 @@ import { MinistryInternalComments } from "@/components/mine/Incidents/MinistryIn
 import { store } from "@/App";
 import { Provider } from "react-redux";
 
-const props = {};
-const dispatchProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.createMineIncidentNote = jest.fn();
-  dispatchProps.fetchMineIncidentNotes = jest.fn(() => Promise.resolve());
+const dispatchProps = {
+  createMineIncidentNote: jest.fn(),
+  fetchMineIncidentNotes: jest.fn(() => Promise.resolve()),
 };
-
-const setupProps = () => {
-  props.notes = [];
-  props.mineIncidentGuid = "04db885d-3e9f-45dd-9383-52bb52be9a7e";
+const props = {
+  notes: [],
+  mineIncidentGuid: "04db885d-3e9f-45dd-9383-52bb52be9a7e",
 };
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 describe("MinistryInternalComments", () => {
   it("renders properly", () => {

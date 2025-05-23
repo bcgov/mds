@@ -2,20 +2,11 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { ScrollToTopWrapper } from "@/components/common/wrappers/ScrollToTopWrapper";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => { };
-
-const setupProps = () => {
-  props.location = { hash: "", pathname: "/dashboard" };
-  props.children = "";
+const props = {
+  location: { hash: "", pathname: "/dashboard" },
+  children: "",
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
+const dispatchProps = {};
 
 describe("ScrollToTopWrapper", () => {
   it("renders properly", () => {

@@ -6,26 +6,20 @@ import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { store } from "@/App";
 import { MemoryRouter } from "react-router-dom";
 
-const props: any = {};
-
-const setupProps = () => {
-  props.incident = MOCK.INCIDENT;
-  props.initialValues = MOCK.INCIDENT;
-  props.isEditMode = false;
-  props.isNewIncident = false;
-  props.handleSubmit = jest.fn();
-  props.handlers = {
+const props: any = {
+  incident: MOCK.INCIDENT,
+  initialValues: MOCK.INCIDENT,
+  isEditMode: false,
+  isNewIncident: false,
+  handleSubmit: jest.fn(),
+  handlers: {
     handleSaveData: jest.fn(() => Promise.resolve()),
     handleFetchData: jest.fn(() => Promise.resolve()),
-  };
+  },
 };
 
 const mockedMineGuid = "1";
 const mockedMineIncidentGuid = "2";
-
-beforeEach(() => {
-  setupProps();
-});
 
 describe("IncidentForm", () => {
   it("renders properly", () => {

@@ -2,24 +2,15 @@ import React from "react";
 import { render } from "@testing-library/react";
 import UploadedDocumentTable from "@/components/common/UploadedDocumentTable";
 
-let props = {};
-let dispatchProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.removeFileHandler = jest.fn();
+const props = {
+  files: [],
+  showRemove: false,
+  documentTypeOptionsHash: {},
+  showCategory: true,
 };
-
-const setupProps = () => {
-  props.files = [];
-  props.showRemove = false;
-  props.documentTypeOptionsHash = {};
-  props.showCategory = true;
+const dispatchProps = {
+  removeFileHandler: jest.fn(),
 };
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 describe("UploadedDocumentTable", () => {
   it("renders properly", () => {

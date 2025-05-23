@@ -4,15 +4,9 @@ import { InformationRequirementsTableSuccessPage } from "@/components/pages/Proj
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { BrowserRouter } from "react-router-dom";
 
-const props = {};
-
-const setupProps = () => {
-  props.location = { state: { project: MOCK.PROJECT } };
+const props = {
+  location: { state: { project: MOCK.PROJECT } },
 };
-
-beforeEach(() => {
-  setupProps();
-});
 
 describe("InformationRequirementsTableSuccessPage", () => {
   it("renders properly", () => {

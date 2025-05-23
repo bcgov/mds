@@ -4,24 +4,16 @@ import { VarianceDetails } from "@/components/mine/Variances/VarianceDetails";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.removeDocument = jest.fn();
+const dispatchProps = {
+  removeDocument: jest.fn(),
 };
-const setupProps = () => {
-  props.variance = MOCK.VARIANCES.records;
-  props.complianceCodesHash = MOCK.HSRCM_HASH;
-  props.mineName = "mockMineName";
-  props.documentCategoryOptionsHash = MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS_HASH;
-  props.isViewOnly = false;
+const props = {
+  variance: MOCK.VARIANCES.records,
+  complianceCodesHash: MOCK.HSRCM_HASH,
+  mineName: "mockMineName",
+  documentCategoryOptionsHash: MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS_HASH,
+  isViewOnly: false,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("VarianceDetails", () => {
   it("renders properly", () => {

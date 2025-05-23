@@ -3,37 +3,27 @@ import { render } from "@testing-library/react";
 import { NOWProgressActions } from "@/components/noticeOfWork/NOWProgressActions";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const reducerProps = {};
-const dispatchProps = {};
-
-const setupReducerProps = () => {
-  reducerProps.applicationDelay = {};
-  reducerProps.progress = {};
-  reducerProps.progressStatusHash = {};
-  reducerProps.tab = "application";
-  reducerProps.noticeOfWork = { notice_of_work_type_code: "PLA", application_type_code: "NOW" };
-  reducerProps.progressStatusHash = {};
-  reducerProps.delayTypeOptions = [];
-  reducerProps.draftPermitAmendment = {};
-  reducerProps.isNoticeOfWorkTypeDisabled = false;
+const reducerProps = {
+  applicationDelay: {},
+  progress: {},
+  progressStatusHash: {},
+  tab: "application",
+  noticeOfWork: { notice_of_work_type_code: "PLA", application_type_code: "NOW" },
+  delayTypeOptions: [],
+  draftPermitAmendment: {},
+  isNoticeOfWorkTypeDisabled: false,
 };
-
-const setupDispatchProps = () => {
-  dispatchProps.openModal = jest.fn();
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.createNoticeOfWorkApplicationProgress = jest.fn();
-  dispatchProps.updateNoticeOfWorkApplicationProgress = jest.fn();
-  dispatchProps.fetchImportedNoticeOfWorkApplication = jest.fn();
-  dispatchProps.updateApplicationDelay = jest.fn();
-  dispatchProps.createApplicationDelay = jest.fn();
-  dispatchProps.fetchApplicationDelay = jest.fn();
-  dispatchProps.handleDraftPermit = jest.fn();
+const dispatchProps = {
+  openModal: jest.fn(),
+  closeModal: jest.fn(),
+  createNoticeOfWorkApplicationProgress: jest.fn(),
+  updateNoticeOfWorkApplicationProgress: jest.fn(),
+  fetchImportedNoticeOfWorkApplication: jest.fn(),
+  updateApplicationDelay: jest.fn(),
+  createApplicationDelay: jest.fn(),
+  fetchApplicationDelay: jest.fn(),
+  handleDraftPermit: jest.fn(),
 };
-
-beforeEach(() => {
-  setupReducerProps();
-  setupDispatchProps();
-});
 
 describe("NOWProgressActions", () => {
   it("renders properly", () => {

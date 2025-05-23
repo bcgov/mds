@@ -7,31 +7,23 @@ import { BrowserRouter } from "react-router-dom";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
 
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.fetchPermits = jest.fn();
-  dispatchProps.createNoticeOfWorkApplication = jest.fn(() => Promise.resolve());
-  dispatchProps.handleSaveNOWEdit = jest.fn();
+const dispatchProps = {
+  fetchPermits: jest.fn(),
+  createNoticeOfWorkApplication: jest.fn(() => Promise.resolve()),
+  handleSaveNOWEdit: jest.fn(),
 };
 
-const setupReducerProps = () => {
-  [reducerProps.mineGuid] = MOCK.MINES.mineIds;
-  reducerProps.noticeOfWork = IMPORTED_NOTICE_OF_WORK;
+const reducerProps = {
+  mineGuid: MOCK.MINES.mineIds[0],
+  noticeOfWork: IMPORTED_NOTICE_OF_WORK,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 
 const initialState = {
   [NOTICE_OF_WORK]: {
     noticeOfWork: IMPORTED_NOTICE_OF_WORK,
     applicationDelays: [],
   }
-}
+};
 
 describe("NOWApplicationAdministrative", () => {
   it("renders properly", () => {

@@ -3,19 +3,13 @@ import DocumentViewer from "@mds/common/components/syncfusion/DocumentViewer";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
-const props = {};
-
-const setupReducerProps = () => {
-  props.documentPath = "mock path name";
-  props.closeDocumentViewer = jest.fn();
-  props.fetchInspectors = jest.fn();
-  props.isDocumentViewerOpen = true;
-  props.props = { title: "mock title" };
+const props = {
+  documentPath: "mock path name",
+  closeDocumentViewer: jest.fn(),
+  fetchInspectors: jest.fn(),
+  isDocumentViewerOpen: true,
+  props: { title: "mock title" },
 };
-
-beforeEach(() => {
-  setupReducerProps();
-});
 
 describe("DocumentViewer", () => {
   it("renders properly", () => {

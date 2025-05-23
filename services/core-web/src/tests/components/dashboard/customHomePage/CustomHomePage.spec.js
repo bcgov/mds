@@ -4,33 +4,25 @@ import { CustomHomePage } from "@/components/dashboard/customHomePage/CustomHome
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { BrowserRouter } from "react-router-dom";
 
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.fetchSubscribedMinesByUser = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchMineTenureTypes = jest.fn();
-  dispatchProps.fetchMineComplianceCodes = jest.fn();
-  dispatchProps.fetchRegionOptions = jest.fn();
-  dispatchProps.openModal = jest.fn();
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.fetchMineCommodityOptions = jest.fn();
-  dispatchProps.unSubscribe = jest.fn();
+const dispatchProps = {
+  fetchSubscribedMinesByUser: jest.fn(() => Promise.resolve()),
+  fetchMineTenureTypes: jest.fn(),
+  fetchMineComplianceCodes: jest.fn(),
+  fetchRegionOptions: jest.fn(),
+  openModal: jest.fn(),
+  closeModal: jest.fn(),
+  fetchMineCommodityOptions: jest.fn(),
+  unSubscribe: jest.fn(),
+};
+const reducerProps = {
+  subscribedMines: MOCK.SUBSCRIBED_MINES.mines,
+  mineRegionHash: MOCK.REGION_HASH,
+  mineCommodityOptionsHash: MOCK.COMMODITY_OPTIONS_HASH,
+  mineTenureHash: MOCK.TENURE_HASH,
 };
 
-const setupReducerProps = () => {
-  reducerProps.subscribedMines = MOCK.SUBSCRIBED_MINES.mines;
-  reducerProps.mineRegionHash = MOCK.REGION_HASH;
-  reducerProps.mineCommodityOptionsHash = MOCK.COMMODITY_OPTIONS_HASH;
-  reducerProps.mineTenureHash = MOCK.TENURE_HASH;
-};
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 // Test suite failed to run
-
+//
 //     Jest worker encountered 4 child process exceptions, exceeding retry limit
 describe("CustomHomePage", () => {
   it("renders properly", () => {

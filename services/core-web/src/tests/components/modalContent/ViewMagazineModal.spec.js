@@ -3,18 +3,12 @@ import { shallow } from "enzyme";
 import { ViewMagazineModal } from "@/components/modalContent/ViewMagazineModal";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
-const props = {};
-
-const setupProps = () => {
-  props.onSubmit = jest.fn();
-  props.type = "EXP";
-  props.mine = {};
-  [props.explosivesPermit] = MOCK.EXPLOSIVES_PERMITS.data.records;
+const props = {
+  onSubmit: jest.fn(),
+  type: "EXP",
+  mine: {},
+  explosivesPermit: MOCK.EXPLOSIVES_PERMITS.data.records[0],
 };
-
-beforeEach(() => {
-  setupProps();
-});
 
 // TypeError: Cannot read properties of null (reading '_layerAdd')
 

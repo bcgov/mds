@@ -6,25 +6,21 @@ import { store } from "@/App";
 import MineExplosivesPermitTable from "@/components/mine/ExplosivesPermit/MineExplosivesPermitTable";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
-const props = {};
-
-const setupProps = () => {
-  props.data = [];
-  props.isPermitTab = false;
-  props.isLoaded = false;
-  props.expandedRowKeys = [];
-  props.data = MOCK.EXPLOSIVES_PERMITS.data.records;
-  props.explosivesPermitStatusOptionsHash = {};
-  props.explosivesPermitDocumentTypeDropdownOptions = [];
-  props.explosivesPermitDocumentTypeOptionsHash = {};
-
-  props.onExpand = jest.fn();
-  props.handleOpenExplosivesPermitDecisionModal = jest.fn();
-  props.handleOpenExplosivesPermitStatusModal = jest.fn();
-  props.handleDeleteExplosivesPermit = jest.fn();
-  props.handleOpenAddExplosivesPermitModal = jest.fn();
-  props.handleOpenViewMagazineModal = jest.fn();
-  props.handleOpenExplosivesPermitCloseModal = jest.fn();
+const props = {
+  data: MOCK.EXPLOSIVES_PERMITS.data.records,
+  isPermitTab: false,
+  isLoaded: false,
+  expandedRowKeys: [],
+  explosivesPermitStatusOptionsHash: {},
+  explosivesPermitDocumentTypeDropdownOptions: [],
+  explosivesPermitDocumentTypeOptionsHash: {},
+  onExpand: jest.fn(),
+  handleOpenExplosivesPermitDecisionModal: jest.fn(),
+  handleOpenExplosivesPermitStatusModal: jest.fn(),
+  handleDeleteExplosivesPermit: jest.fn(),
+  handleOpenAddExplosivesPermitModal: jest.fn(),
+  handleOpenViewMagazineModal: jest.fn(),
+  handleOpenExplosivesPermitCloseModal: jest.fn(),
 };
 
 // See SO for matchMedia issue: https://stackoverflow.com/questions/39830580/jest-test-fails-typeerror-window-matchmedia-is-not-a-function
@@ -38,9 +34,6 @@ beforeAll(() => {
       removeListener: jest.fn(),
     })),
   });
-});
-beforeEach(() => {
-  setupProps();
 });
 
 describe("MineExplosivesPermitTable", () => {

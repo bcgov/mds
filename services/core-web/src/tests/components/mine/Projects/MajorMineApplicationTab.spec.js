@@ -5,21 +5,11 @@ import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { PROJECTS } from "@mds/common/constants/reducerTypes";
 
-const props = {};
-
-const setupProps = () => {
-  props.project = MOCK.PROJECT;
-  props.majorMineAppStatusCodesHash = MOCK.MAJOR_MINES_APPLICATION_STATUS_CODES_HASH;
+const props = {
+  project: MOCK.PROJECT,
+  majorMineAppStatusCodesHash: MOCK.MAJOR_MINES_APPLICATION_STATUS_CODES_HASH,
+  fetchProjectById: jest.fn(() => Promise.resolve()),
 };
-
-const setupDispatchProps = () => {
-  props.fetchProjectById = jest.fn(() => Promise.resolve());
-};
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 function mockFunction() {
   const original = jest.requireActual("react-router-dom");
@@ -37,14 +27,13 @@ function mockFunction() {
     }),
   };
 }
-
 jest.mock("react-router-dom", () => mockFunction());
 
 const initialState = {
   [PROJECTS]: {
     project: MOCK.PROJECT
   }
-}
+};
 
 describe("MajorMineApplicationTab", () => {
   it("renders properly", () => {
@@ -53,7 +42,6 @@ describe("MajorMineApplicationTab", () => {
         <MajorMineApplicationTab {...props} />
       </ReduxWrapper>
     );
-
     expect(component).toMatchSnapshot();
   });
 });

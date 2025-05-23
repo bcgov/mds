@@ -3,21 +3,12 @@ import { render } from "@testing-library/react";
 import { AddTailingsModal } from "@/components/modalContent/AddTailingsModal";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.onSubmit = jest.fn();
+const dispatchProps = {
+  onSubmit: jest.fn(),
 };
-
-const setupProps = () => {
-  props.title = "mockTitle";
+const props = {
+  title: "mockTitle",
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("AddTailingsModal", () => {
   it("renders properly", () => {

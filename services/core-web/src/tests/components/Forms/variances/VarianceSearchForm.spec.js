@@ -3,28 +3,24 @@ import { render } from "@testing-library/react";
 import { VarianceSearchForm, validate } from "@/components/Forms/variances/VarianceSearchForm";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const props = {};
-const setupDispatchProps = () => {
-  dispatchProps.onSubmit = jest.fn();
-  dispatchProps.handleVarianceSearch = jest.fn();
-  dispatchProps.reset = jest.fn();
-  dispatchProps.complianceCodes = [{ value: "11", label: "Person must comply" }];
-  dispatchProps.mineRegionOptions = [{ value: "11", label: "Region must comply" }];
+const dispatchProps = {
+  onSubmit: jest.fn(),
+  handleVarianceSearch: jest.fn(),
+  reset: jest.fn(),
+  complianceCodes: [{ value: "11", label: "Person must comply" }],
+  mineRegionOptions: [{ value: "11", label: "Region must comply" }],
 };
-
-const setupProps = () => {
-  props.isAdvanceSearch = true;
+const props = {
+  isAdvanceSearch: true,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("VarianceSearchForm form", () => {
   it("renders properly", () => {
-    const { container: component } = render(<ReduxWrapper><VarianceSearchForm {...dispatchProps} {...props} /></ReduxWrapper>);
+    const { container: component } = render(
+      <ReduxWrapper>
+        <VarianceSearchForm {...dispatchProps} {...props} />
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 

@@ -3,27 +3,18 @@ import { render } from "@testing-library/react";
 import { MergePartyConfirmationModal } from "@/components/modalContent/MergePartyConfirmationModal";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.onSubmit = jest.fn();
-  dispatchProps.closeModal = jest.fn();
+const dispatchProps = {
+  onSubmit: jest.fn(),
+  closeModal: jest.fn(),
 };
-
-const setupProps = () => {
-  props.title = "mockTitle";
-  props.initialValues = {};
-  props.provinceOptions = [];
-  props.isPerson = false;
-  props.partyRelationshipTypesHash = {};
-  props.roles = [];
+const props = {
+  title: "mockTitle",
+  initialValues: {},
+  provinceOptions: [],
+  isPerson: false,
+  partyRelationshipTypesHash: {},
+  roles: [],
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("MergePartyConfirmationModal", () => {
   it("renders properly", () => {

@@ -3,15 +3,9 @@ import { render } from "@testing-library/react";
 import { SearchCoordinatesForm } from "@/components/Forms/SearchCoordinatesForm";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.onSubmit = jest.fn();
+const dispatchProps = {
+  onSubmit: jest.fn(),
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-});
 
 describe("SearchCoordinatesForm", () => {
   it("renders properly", () => {

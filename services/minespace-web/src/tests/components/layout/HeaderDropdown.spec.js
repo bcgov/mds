@@ -2,23 +2,14 @@ import React from "react";
 import { shallow } from "enzyme";
 import { HeaderDropdown } from "@/components/layout/HeaderDropdown";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.logoutUser = jest.fn();
+const dispatchProps = {
+  logoutUser: jest.fn(),
 };
-
-const setupProps = () => {
-  props.keycloak = { logout: jest.fn() };
-  props.isAuthenticated = true;
-  props.location = { pathname: "/mines" };
+const props = {
+  keycloak: { logout: jest.fn() },
+  isAuthenticated: true,
+  location: { pathname: "/mines" },
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 // this works with react testing library, but renders a lot less without any events interaction
 describe("HeaderDropdown", () => {

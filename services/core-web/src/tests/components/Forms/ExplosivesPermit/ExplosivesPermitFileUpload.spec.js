@@ -6,17 +6,11 @@ import { ExplosivesPermitFileUpload } from "@/components/Forms/ExplosivesPermit/
 import { store } from "@/App";
 import { EXPLOSIVES_PERMIT_NEW } from "@/constants/forms";
 
-const props = {};
-
-const setupProps = () => {
-  props.mineGuid = "6234612345";
-  props.onFileLoad = jest.fn();
-  props.onRemoveFile = jest.fn();
+const props = {
+  mineGuid: "6234612345",
+  onFileLoad: jest.fn(),
+  onRemoveFile: jest.fn(),
 };
-
-beforeEach(() => {
-  setupProps();
-});
 
 describe("ExplosivesPermitFileUpload", () => {
   const FieldInForm = () => (

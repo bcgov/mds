@@ -2,21 +2,12 @@ import React from "react";
 import { render } from "@testing-library/react";
 import AddButton from "@/components/common/buttons/AddButton";
 
-const props = {};
-const dispatchProps = {};
-
-const setupProps = () => {
-  props.children = <></>;
+const props = {
+  children: <></>,
 };
-
-const setupDispatchProps = () => {
-  dispatchProps.onClick = jest.fn();
+const dispatchProps = {
+  onClick: jest.fn(),
 };
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 describe("AddButton", () => {
   it("renders properly", () => {

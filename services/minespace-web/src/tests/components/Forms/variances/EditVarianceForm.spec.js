@@ -3,29 +3,19 @@ import { shallow } from "enzyme";
 import { EditVarianceForm } from "@/components/Forms/variances/EditVarianceForm";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
-const props = {};
-const dispatchProps = {};
-
-const setupProps = () => {
-  props.submitting = false;
-  props.mineGuid = "1738472";
-  props.mineName = "mockMineName";
-  props.variance = MOCK.VARIANCE;
-  props.complianceCodesHash = MOCK.HSRCM_HASH;
-  props.varianceStatusOptionsHash = MOCK.VARIANCE_STATUS_OPTIONS_HASH;
+const dispatchProps = {
+  onSubmit: jest.fn(),
+  closeModal: jest.fn(),
+  removeDocument: jest.fn(),
 };
-
-const setupDispatchProps = () => {
-  dispatchProps.onSubmit = jest.fn();
-  dispatchProps.onSubmit = jest.fn();
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.removeDocument = jest.fn();
+const props = {
+  submitting: false,
+  mineGuid: "1738472",
+  mineName: "mockMineName",
+  variance: MOCK.VARIANCE,
+  complianceCodesHash: MOCK.HSRCM_HASH,
+  varianceStatusOptionsHash: MOCK.VARIANCE_STATUS_OPTIONS_HASH,
 };
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 // TypeError: Cannot read properties of undefined (reading 'undefined')
 

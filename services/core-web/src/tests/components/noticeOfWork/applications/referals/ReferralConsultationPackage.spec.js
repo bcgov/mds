@@ -3,29 +3,20 @@ import { render } from "@testing-library/react";
 import { ReferralConsultationPackage } from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
 import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.openModal = jest.fn();
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.setNoticeOfWorkApplicationDocumentDownloadState = jest.fn();
-  dispatchProps.updateNoticeOfWorkApplication = jest.fn();
-  dispatchProps.fetchImportedNoticeOfWorkApplication = jest.fn();
+const dispatchProps = {
+  openModal: jest.fn(),
+  closeModal: jest.fn(),
+  setNoticeOfWorkApplicationDocumentDownloadState: jest.fn(),
+  updateNoticeOfWorkApplication: jest.fn(),
+  fetchImportedNoticeOfWorkApplication: jest.fn(),
 };
-
-const setupReducerProps = () => {
-  reducerProps.noticeOfWork = NOW_MOCK.NOTICE_OF_WORK;
-  reducerProps.importNowSubmissionDocumentsJob = {};
-  reducerProps.progress = "REV";
-  reducerProps.type = "REF";
-  reducerProps.isTableHeaderView = false;
+const reducerProps = {
+  noticeOfWork: NOW_MOCK.NOTICE_OF_WORK,
+  importNowSubmissionDocumentsJob: {},
+  progress: "REV",
+  type: "REF",
+  isTableHeaderView: false,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 
 describe("ReferralConsultationPackage", () => {
   it("renders properly", () => {

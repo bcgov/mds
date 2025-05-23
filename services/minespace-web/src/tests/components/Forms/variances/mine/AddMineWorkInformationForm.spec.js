@@ -4,28 +4,18 @@ import { AddMineWorkInformationForm } from "@/components/Forms/AddMineWorkInform
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const props = {};
-const dispatchProps = {};
-
-const setupProps = () => {
-  props.submitting = false;
-  props.mineWorkInformationGuid = "1738472";
-  props.complianceCodes = MOCK.COMPLIANCE_CODES.records;
-  props.title = "testing title";
-  props.isEditMode = true;
-  props.formValues = {};
+const dispatchProps = {
+  onSubmit: jest.fn(),
+  cancelEdit: jest.fn(),
 };
-
-const setupDispatchProps = () => {
-  dispatchProps.onSubmit = jest.fn();
-  dispatchProps.onSubmit = jest.fn();
-  dispatchProps.cancelEdit = jest.fn();
+const props = {
+  submitting: false,
+  mineWorkInformationGuid: "1738472",
+  complianceCodes: MOCK.COMPLIANCE_CODES.records,
+  title: "testing title",
+  isEditMode: true,
+  formValues: {},
 };
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 describe("AddMineWorkInformationForm", () => {
   it("renders properly", () => {

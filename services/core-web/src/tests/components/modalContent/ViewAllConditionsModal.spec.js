@@ -2,22 +2,13 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { ViewAllConditionsModal } from "@/components/modalContent/ViewAllConditionsModal";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.closeModal = jest.fn();
+const dispatchProps = {
+  closeModal: jest.fn(),
 };
-
-const setupProps = () => {
-  props.permitConditionCategoryOptions = [];
-  props.conditions = [];
+const props = {
+  permitConditionCategoryOptions: [],
+  conditions: [],
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("ViewAllConditionsModal", () => {
   it("renders properly", () => {

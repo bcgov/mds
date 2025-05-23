@@ -5,19 +5,13 @@ import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const reducerProps = {};
-
-const setupReducerProps = () => {
-  reducerProps.isViewMode = true;
-  reducerProps.initialValues = NOW_MOCK.IMPORTED_NOTICE_OF_WORK.cut_lines_polarization_survey;
-  reducerProps.editRecord = jest.fn();
-  reducerProps.addRecord = jest.fn();
-  reducerProps.renderOriginalValues = jest.fn().mockReturnValue({ value: "N/A", edited: true });
+const reducerProps = {
+  isViewMode: true,
+  initialValues: NOW_MOCK.IMPORTED_NOTICE_OF_WORK.cut_lines_polarization_survey,
+  editRecord: jest.fn(),
+  addRecord: jest.fn(),
+  renderOriginalValues: jest.fn().mockReturnValue({ value: "N/A", edited: true }),
 };
-
-beforeEach(() => {
-  setupReducerProps();
-});
 
 describe("CutLines", () => {
   it("renders properly", () => {

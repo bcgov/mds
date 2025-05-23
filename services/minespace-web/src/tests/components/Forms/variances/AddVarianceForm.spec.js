@@ -4,25 +4,15 @@ import { AddVarianceForm } from "@/components/Forms/variances/AddVarianceForm";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const props = {};
-const dispatchProps = {};
-
-const setupProps = () => {
-  props.submitting = false;
-  props.mineGuid = "1738472";
-  props.complianceCodes = MOCK.COMPLIANCE_CODES.records;
+const dispatchProps = {
+  onSubmit: jest.fn(),
+  closeModal: jest.fn(),
 };
-
-const setupDispatchProps = () => {
-  dispatchProps.onSubmit = jest.fn();
-  dispatchProps.onSubmit = jest.fn();
-  dispatchProps.closeModal = jest.fn();
+const props = {
+  submitting: false,
+  mineGuid: "1738472",
+  complianceCodes: MOCK.COMPLIANCE_CODES.records,
 };
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 describe("AddVarianceForm", () => {
   it("renders properly", () => {

@@ -5,34 +5,25 @@ import { ContactHomePage } from "@/components/dashboard/contactsHomePage/Contact
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import * as router from "@/constants/routes";
 
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.fetchParties = jest.fn(() => Promise.resolve({}));
-  dispatchProps.fetchProvinceCodes = jest.fn();
-  dispatchProps.fetchPartyRelationshipTypes = jest.fn(() => Promise.resolve({}));
-  dispatchProps.openModal = jest.fn();
-  dispatchProps.closeModal = jest.fn();
+const dispatchProps = {
+  fetchParties: jest.fn(() => Promise.resolve({})),
+  fetchProvinceCodes: jest.fn(),
+  fetchPartyRelationshipTypes: jest.fn(() => Promise.resolve({})),
+  openModal: jest.fn(),
+  closeModal: jest.fn(),
 };
-
-const setupReducerProps = () => {
-  reducerProps.location = { search: " " };
-  reducerProps.history = {
+const reducerProps = {
+  location: { search: " " },
+  history: {
     replace: jest.fn(),
     location: {},
-  };
-  reducerProps.parties = MOCK.PARTY.parties;
-  reducerProps.provinceOptions = MOCK.DROPDOWN_PROVINCE_OPTIONS;
-  reducerProps.pageData = MOCK.PAGE_DATA;
-  reducerProps.partyRelationshipTypesList = MOCK.PARTY_RELATIONSHIP_TYPES;
-  reducerProps.relationshipTypeHash = MOCK.PARTY_RELATIONSHIP_TYPE_HASH;
+  },
+  parties: MOCK.PARTY.parties,
+  provinceOptions: MOCK.DROPDOWN_PROVINCE_OPTIONS,
+  pageData: MOCK.PAGE_DATA,
+  partyRelationshipTypesList: MOCK.PARTY_RELATIONSHIP_TYPES,
+  relationshipTypeHash: MOCK.PARTY_RELATIONSHIP_TYPE_HASH,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 
 // TypeError: Cannot read properties of undefined (reading 'length')
 

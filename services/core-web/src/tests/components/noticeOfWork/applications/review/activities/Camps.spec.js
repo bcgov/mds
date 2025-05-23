@@ -5,22 +5,16 @@ import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
-const reducerProps = {};
-
-const setupReducerProps = () => {
-  reducerProps.isViewMode = true;
-  reducerProps.initialValues = NOW_MOCK.IMPORTED_NOTICE_OF_WORK.camp;
-  reducerProps.editRecord = jest.fn();
-  reducerProps.addRecord = jest.fn();
-  reducerProps.campFormValues = {
+const reducerProps = {
+  isViewMode: true,
+  initialValues: NOW_MOCK.IMPORTED_NOTICE_OF_WORK.camp,
+  editRecord: jest.fn(),
+  addRecord: jest.fn(),
+  campFormValues: {
     has_fuel_stored: false,
-  };
-  reducerProps.renderOriginalValues = jest.fn().mockReturnValue({ value: "N/A", edited: true });
+  },
+  renderOriginalValues: jest.fn().mockReturnValue({ value: "N/A", edited: true }),
 };
-
-beforeEach(() => {
-  setupReducerProps();
-});
 
 describe("Camps", () => {
   it("renders properly", () => {

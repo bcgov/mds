@@ -3,32 +3,22 @@ import { render } from "@testing-library/react";
 import { ViewPartyRelationships } from "@/components/mine/ContactInfo/ViewPartyRelationships";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.openModal = jest.fn();
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.handleChange = jest.fn();
-  dispatchProps.createParty = jest.fn();
-  dispatchProps.fetchParties = jest.fn();
-  dispatchProps.fetchMineRecordById = jest.fn();
-  dispatchProps.addPartyRelationship = jest.fn();
-  dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());
-  dispatchProps.createTailingsStorageFacility = jest.fn();
-  dispatchProps.fetchMineRecordById = jest.fn();
-  dispatchProps.updatePartyRelationship = jest.fn();
-  dispatchProps.removePartyRelationship = jest.fn();
+const dispatchProps = {
+  openModal: jest.fn(),
+  closeModal: jest.fn(),
+  handleChange: jest.fn(),
+  createParty: jest.fn(),
+  fetchParties: jest.fn(),
+  fetchMineRecordById: jest.fn(),
+  addPartyRelationship: jest.fn(),
+  fetchPartyRelationships: jest.fn(() => Promise.resolve()),
+  createTailingsStorageFacility: jest.fn(),
+  updatePartyRelationship: jest.fn(),
+  removePartyRelationship: jest.fn(),
 };
-
-const setupProps = () => {
-  props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
+const props = {
+  mine: MOCK.MINES.mines[MOCK.MINES.mineIds[0]],
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("ViewPartyRelationships", () => {
   it("renders properly", () => {

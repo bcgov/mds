@@ -4,32 +4,23 @@ import SearchResults from "@/components/search/SearchResults";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.fetchSearchOptions = jest.fn();
-  dispatchProps.fetchPartyRelationshipTypes = jest.fn();
-  dispatchProps.fetchSearchResults = jest.fn();
+const dispatchProps = {
+  fetchSearchOptions: jest.fn(),
+  fetchPartyRelationshipTypes: jest.fn(),
+  fetchSearchResults: jest.fn(),
 };
-
-const setupReducerProps = () => {
-  reducerProps.searchOptions = MOCK.SEARCH_OPTIONS;
-  reducerProps.searchResults = MOCK.SEARCH_RESULTS;
-  reducerProps.searchTerms = ["Abb"];
-  reducerProps.partyRelationshipTypeHash = MOCK.MINE_INFO_HASH;
-  reducerProps.location = { search: "q=test" };
-  reducerProps.history = {
+const reducerProps = {
+  searchOptions: MOCK.SEARCH_OPTIONS,
+  searchResults: MOCK.SEARCH_RESULTS,
+  searchTerms: ["Abb"],
+  partyRelationshipTypeHash: MOCK.MINE_INFO_HASH,
+  location: { search: "q=test" },
+  history: {
     push: jest.fn(),
-  };
-  reducerProps.searchResults = MOCK.SEARCH_RESULTS;
-  reducerProps.hideLoadingIndicator = true;
+  },
+  searchResults: MOCK.SEARCH_RESULTS,
+  hideLoadingIndicator: true,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 
 describe("Search", () => {
   it("renders properly", () => {

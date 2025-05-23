@@ -6,35 +6,26 @@ import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { BrowserRouter } from "react-router-dom";
 
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.updateNoticeOfWorkApplication = jest.fn();
-  dispatchProps.fetchImportedNoticeOfWorkApplication = jest.fn();
-  dispatchProps.exportNoticeOfWorkApplicationDocument = jest.fn();
-  dispatchProps.reset = jest.fn();
-  dispatchProps.submit = jest.fn();
+const dispatchProps = {
+  updateNoticeOfWorkApplication: jest.fn(),
+  fetchImportedNoticeOfWorkApplication: jest.fn(),
+  exportNoticeOfWorkApplicationDocument: jest.fn(),
+  reset: jest.fn(),
+  submit: jest.fn(),
 };
-
-const setupReducerProps = () => {
-  reducerProps.noticeOfWork = NOW_MOCK.NOTICE_OF_WORK;
-  reducerProps.originalNoticeOfWork = NOW_MOCK.NOTICE_OF_WORK;
-  reducerProps.importNowSubmissionDocumentsJob = {};
-  reducerProps.formValues = NOW_MOCK.NOTICE_OF_WORK;
-  reducerProps.formErrors = {};
-  reducerProps.fixedTop = false;
-  reducerProps.submitFailed = false;
-  reducerProps.inspectors = [];
-  reducerProps.reclamationSummary = [];
-  reducerProps.generatableApplicationDocuments = {};
-  reducerProps.location = {};
+const reducerProps = {
+  noticeOfWork: NOW_MOCK.NOTICE_OF_WORK,
+  originalNoticeOfWork: NOW_MOCK.NOTICE_OF_WORK,
+  importNowSubmissionDocumentsJob: {},
+  formValues: NOW_MOCK.NOTICE_OF_WORK,
+  formErrors: {},
+  fixedTop: false,
+  submitFailed: false,
+  inspectors: [],
+  reclamationSummary: [],
+  generatableApplicationDocuments: {},
+  location: {},
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 
 // TypeError: Cannot read properties of undefined (reading 'party_guid')
 

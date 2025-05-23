@@ -3,33 +3,24 @@ import { render } from "@testing-library/react";
 import DefaultContact from "@/components/mine/ContactInfo/PartyRelationships/DefaultContact";
 import { BrowserRouter } from "react-router-dom";
 
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.openEditPartyRelationshipModal = jest.fn();
-  dispatchProps.onSubmitEditPartyRelationship = jest.fn();
-  dispatchProps.handleChange = jest.fn();
+const dispatchProps = {
+  openEditPartyRelationshipModal: jest.fn(),
+  onSubmitEditPartyRelationship: jest.fn(),
+  handleChange: jest.fn(),
 };
-
-const setupReducerProps = () => {
-  reducerProps.mine = { mine_guid: "3124624567" };
-  reducerProps.partyRelationship = {
+const reducerProps = {
+  mine: { mine_guid: "3124624567" },
+  partyRelationship: {
     mine_party_appt_type_code: "PMT",
     party: { party_guid: "253462" },
-  };
-  reducerProps.partyRelationshipTitle = "Permittee";
-  reducerProps.partyRelationshipSubTitle = "Permittee since";
-  reducerProps.otherDetails = "other details";
-  reducerProps.isEditable = false;
-  reducerProps.compact = false;
-  reducerProps.editPermission = "Admin";
+  },
+  partyRelationshipTitle: "Permittee",
+  partyRelationshipSubTitle: "Permittee since",
+  otherDetails: "other details",
+  isEditable: false,
+  compact: false,
+  editPermission: "Admin",
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 
 describe("DefaultContact", () => {
   it("renders properly", () => {

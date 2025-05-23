@@ -2,29 +2,15 @@ import React from "react";
 import { shallow } from "enzyme";
 import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 
-let props = {};
-let dispatchProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps = {
-    onPageChange: jest.fn(),
-  };
+const props = {
+  currentPage: 1,
+  pageTotal: 1000,
+  itemsPerPage: 25,
+};
+const dispatchProps = {
+  onPageChange: jest.fn(),
 };
 
-const setupProps = () => {
-  props = {
-    currentPage: 1,
-    pageTotal: 1000,
-    itemsPerPage: 25,
-  };
-};
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
-
-// react testing library works but renders an empty div
 describe("ResponsivePagination", () => {
   it("renders properly", () => {
     const wrapper = shallow(<ResponsivePagination {...props} {...dispatchProps} />);

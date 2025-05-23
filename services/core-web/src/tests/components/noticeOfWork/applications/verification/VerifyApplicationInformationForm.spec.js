@@ -4,33 +4,19 @@ import { VerifyApplicationInformationForm } from "@/components/noticeOfWork/appl
 import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.onSubmit = jest.fn();
+const dispatchProps = {
+  onSubmit: jest.fn(),
 };
-
-const setupReducerProps = () => {
-  reducerProps.longitude = "";
-  reducerProps.latitude = "";
-  reducerProps.noticeOfWork = NOW_MOCK.NOTICE_OF_WORK;
-  reducerProps.initialValues = NOW_MOCK.NOTICE_OF_WORK;
-  reducerProps.contacts = NOW_MOCK.NOTICE_OF_WORK.contacts;
-  reducerProps.originalNoticeOfWork = NOW_MOCK.NOTICE_OF_WORK;
-  [reducerProps.mineGuid] = MOCK.MINES.mineIds;
-  reducerProps.submitting = false;
+const reducerProps = {
+  longitude: "",
+  latitude: "",
+  noticeOfWork: NOW_MOCK.NOTICE_OF_WORK,
+  initialValues: NOW_MOCK.NOTICE_OF_WORK,
+  contacts: NOW_MOCK.NOTICE_OF_WORK.contacts,
+  originalNoticeOfWork: NOW_MOCK.NOTICE_OF_WORK,
+  mineGuid: MOCK.MINES.mineIds[0],
+  submitting: false,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
-
-// if (name.length > 2) {
-//                      ^
-
-// TypeError: Cannot read properties of undefined (reading 'length')
 
 describe("VerifyApplicationInformationForm", () => {
   it("renders properly", () => {

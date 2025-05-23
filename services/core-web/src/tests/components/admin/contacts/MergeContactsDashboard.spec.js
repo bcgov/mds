@@ -4,29 +4,26 @@ import { MergeContactsDashboard } from "@/components/admin/contacts/MergeContact
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { BrowserRouter } from "react-router-dom";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.openModal = jest.fn();
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.mergeParties = jest.fn();
+const dispatchProps = {
+  openModal: jest.fn(),
+  closeModal: jest.fn(),
+  mergeParties: jest.fn(),
 };
-
-const setupProps = () => {
-  props.history = { replace: jest.fn() };
-  props.location = { pathname: "" };
-  props.match = { params: { tab: "" } };
+const props = {
+  history: { replace: jest.fn() },
+  location: { pathname: "" },
+  match: { params: { tab: "" } },
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("MergeContactDashboard", () => {
   it("renders properly", () => {
-    const { container: component } = render(<BrowserRouter><ReduxWrapper><MergeContactsDashboard {...dispatchProps} {...props} /></ReduxWrapper></BrowserRouter>);
+    const { container: component } = render(
+      <BrowserRouter>
+        <ReduxWrapper>
+          <MergeContactsDashboard {...dispatchProps} {...props} />
+        </ReduxWrapper>
+      </BrowserRouter>
+    );
     expect(component).toMatchSnapshot();
   });
 });

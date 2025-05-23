@@ -4,24 +4,15 @@ import EditPartyRelationshipModal from "@/components/modalContent/EditPartyRelat
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.onSubmit = jest.fn();
-  dispatchProps.handleChange = jest.fn();
-  dispatchProps.handlePartySubmit = jest.fn();
+const dispatchProps = {
+  onSubmit: jest.fn(),
+  handleChange: jest.fn(),
+  handlePartySubmit: jest.fn(),
 };
-
-const setupProps = () => {
-  props.partyRelationship = MOCK.PARTYRELATIONSHIPS[0];
-  props.partyRelationshipType = { description: "Permittee" }
+const props = {
+  partyRelationship: MOCK.PARTYRELATIONSHIPS[0],
+  partyRelationshipType: { description: "Permittee" },
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("EditPartyRelationshipModal", () => {
   it("renders properly", () => {

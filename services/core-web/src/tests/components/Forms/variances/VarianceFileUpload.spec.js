@@ -4,27 +4,24 @@ import { VarianceFileUpload } from "@/components/Forms/variances/VarianceFileUpl
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.onFileLoad = jest.fn();
-  dispatchProps.onRemoveFile = jest.fn();
+const dispatchProps = {
+  onFileLoad: jest.fn(),
+  onRemoveFile: jest.fn(),
 };
-
-const setupProps = () => {
-  props.mineGuid = "48593";
-  props.mineNo = "B01034";
+const props = {
+  mineGuid: "48593",
+  mineNo: "B01034",
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("VarianceFileUpload", () => {
   it("renders properly", () => {
-    const { container: component } = render(<ReduxWrapper><FormWrapper name="formName"><VarianceFileUpload {...dispatchProps} {...props} /></FormWrapper></ReduxWrapper>);
+    const { container: component } = render(
+      <ReduxWrapper>
+        <FormWrapper name="formName">
+          <VarianceFileUpload {...dispatchProps} {...props} />
+        </FormWrapper>
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 });

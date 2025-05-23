@@ -3,18 +3,12 @@ import { render } from "@testing-library/react";
 import { InformationRequirementsTableEntryTab } from "@/components/pages/Project/InformationRequirementsTableEntryTab";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
-const props = {};
-
-const setupProps = () => {
-  props.irt = MOCK.INFORMATION_REQUIREMENTS_TABLE;
-  props.match = { params: { projectGuid: "1234-5678-x" } };
-  props.history = { push: jest.fn() };
-  props.mrcReviewRequired = false;
+const props = {
+  irt: MOCK.INFORMATION_REQUIREMENTS_TABLE,
+  match: { params: { projectGuid: "1234-5678-x" } },
+  history: { push: jest.fn() },
+  mrcReviewRequired: false,
 };
-
-beforeEach(() => {
-  setupProps();
-});
 
 describe("InformationRequirementsTableEntryTab", () => {
   it("renders properly", () => {

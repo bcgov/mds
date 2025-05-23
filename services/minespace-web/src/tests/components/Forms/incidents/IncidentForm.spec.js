@@ -3,27 +3,18 @@ import { shallow } from "enzyme";
 import { IncidentForm } from "@/components/Forms/incidents/IncidentForm";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
-const dispatchProps = {};
-const props = {};
-
-const setupProps = () => {
-  props.incident = MOCK.INCIDENT;
-  props.isFinalReviewStage = true;
-  props.incidentCategoryCodeOptions = MOCK.INCIDENT_CATEGORY_CODE_OPTIONS;
-  props.formValues = { ...MOCK.INCIDENT };
-  props.handlers = { deleteDocument: jest.fn(() => Promise.resolve()) };
-  props.match = { params: { mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a" } };
-  props.inspectorOptions = [];
+const dispatchProps = {
+  change: jest.fn(),
 };
-
-const setupDispatchProps = () => {
-  dispatchProps.change = jest.fn();
+const props = {
+  incident: MOCK.INCIDENT,
+  isFinalReviewStage: true,
+  incidentCategoryCodeOptions: MOCK.INCIDENT_CATEGORY_CODE_OPTIONS,
+  formValues: { ...MOCK.INCIDENT },
+  handlers: { deleteDocument: jest.fn(() => Promise.resolve()) },
+  match: { params: { mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a" } },
+  inspectorOptions: [],
 };
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 // TypeError: Cannot read properties of undefined (reading 'incident_timezone')
 

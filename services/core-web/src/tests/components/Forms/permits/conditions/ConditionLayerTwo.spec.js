@@ -6,29 +6,26 @@ import { BrowserRouter } from "react-router-dom";
 import * as MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 import { NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.onSubmit = jest.fn();
-  dispatchProps.handleCancel = jest.fn();
-  dispatchProps.handleDelete = jest.fn();
-  dispatchProps.reorderConditions = jest.fn();
-  dispatchProps.setConditionEditingFlag = jest.fn();
+const dispatchProps = {
+  onSubmit: jest.fn(),
+  handleCancel: jest.fn(),
+  handleDelete: jest.fn(),
+  reorderConditions: jest.fn(),
+  setConditionEditingFlag: jest.fn(),
 };
-
-const setupProps = () => {
-  props.condition = { sub_conditions: [] };
-  props.new = false;
-  props.initialValues = {};
-  props.editingConditionFlag = true;
-  props.isViewOnly = false;
+const props = {
+  condition: { sub_conditions: [] },
+  new: false,
+  initialValues: {},
+  editingConditionFlag: true,
+  isViewOnly: false,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
+const initialState = {
+  [NOTICE_OF_WORK]: {
+    noticeOfWork: MOCK.IMPORTED_NOTICE_OF_WORK,
+    applicationDelays: [],
+  },
+};
 
 function mockFunction() {
   const original = jest.requireActual("react-router-dom");
@@ -46,16 +43,15 @@ function mockFunction() {
 
 jest.mock("react-router-dom", () => mockFunction());
 
-const initialState = {
-  [NOTICE_OF_WORK]: {
-    noticeOfWork: MOCK.IMPORTED_NOTICE_OF_WORK,
-    applicationDelays: [],
-  }
-}
-
 describe("ConditionLayerTwo", () => {
   it("renders properly", () => {
-    const { container: component } = render(<BrowserRouter><ReduxWrapper initialState={initialState}><ConditionLayerTwo {...dispatchProps} {...props} /></ReduxWrapper></BrowserRouter>);
+    const { container: component } = render(
+      <BrowserRouter>
+        <ReduxWrapper initialState={initialState}>
+          <ConditionLayerTwo {...dispatchProps} {...props} />
+        </ReduxWrapper>
+      </BrowserRouter>
+    );
     expect(component).toMatchSnapshot();
   });
 });

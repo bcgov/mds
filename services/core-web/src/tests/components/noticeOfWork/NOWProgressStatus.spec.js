@@ -2,19 +2,13 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { NOWProgressStatus } from "@/components/noticeOfWork/NOWProgressStatus";
 
-const reducerProps = {};
-
-const setupReducerProps = () => {
-  reducerProps.progressStatusHash = {};
-  reducerProps.showProgress = true;
-  reducerProps.progress = {};
-  reducerProps.tab = "application";
-  reducerProps.noticeOfWork = { notice_of_work_type_code: "PLA", application_type_code: "NOW" };
+const reducerProps = {
+  progressStatusHash: {},
+  showProgress: true,
+  progress: {},
+  tab: "application",
+  noticeOfWork: { notice_of_work_type_code: "PLA", application_type_code: "NOW" },
 };
-
-beforeEach(() => {
-  setupReducerProps();
-});
 
 describe("NOWProgressStatus", () => {
   it("renders properly", () => {

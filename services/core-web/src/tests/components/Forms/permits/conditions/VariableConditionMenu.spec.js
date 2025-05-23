@@ -3,20 +3,11 @@ import { render } from "@testing-library/react";
 import { VariableConditionMenu } from "@/components/Forms/permits/conditions/VariableConditionMenu";
 
 const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => { };
-
-const setupProps = () => {
-  props.reclamationSummary = [];
-  props.activityTypeOptions = [];
-  props.isManagementView = false;
+const props = {
+  reclamationSummary: [],
+  activityTypeOptions: [],
+  isManagementView: false,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("VariableConditionMenu", () => {
   it("renders properly", () => {

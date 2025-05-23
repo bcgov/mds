@@ -3,8 +3,19 @@ import { shallow } from "enzyme";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { NoticeOfDeparture } from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDeparture";
 
-const dispatchProps: any = {};
-const reducerProps: any = {};
+const dispatchProps: any = {
+  openModal: jest.fn(),
+  closeModal: jest.fn(),
+  fetchPermits: jest.fn(() => Promise.resolve()),
+  fetchNoticesOfDeparture: jest.fn(() => Promise.resolve()),
+  createNoticeOfDeparture: jest.fn(),
+};
+const reducerProps: any = {
+  mine: MOCK.MINES.mines[MOCK.MINES.mineIds[0]],
+  permits: MOCK.PERMITS,
+  nods: MOCK.NOTICES_OF_DEPARTURE.records,
+  isAuthenticated: true,
+};
 
 function mockFunction() {
   const original = jest.requireActual("react-router-dom");
@@ -23,31 +34,6 @@ function mockFunction() {
 
 jest.mock("react-router-dom", () => mockFunction());
 
-const setupDispatchProps = () => {
-  dispatchProps.openModal = jest.fn();
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.fetchPermits = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchNoticesOfDeparture = jest.fn(() => Promise.resolve());
-  dispatchProps.createNoticeOfDeparture = jest.fn();
-};
-
-const setupReducerProps = () => {
-  reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  reducerProps.permits = MOCK.PERMITS;
-  reducerProps.nods = MOCK.NOTICES_OF_DEPARTURE.records;
-  reducerProps.isAuthenticated = true;
-};
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
-
-// A React component suspended while rendering, but no fallback UI was specified.
-
-//     Add a <Suspense fallback=...> component higher in the tree to provide a loading indicator or placeholder to display.
-//         in Unknown (created by EditIcon)
-//         in EditIcon (created by Cell)
 describe("NoticesOfDeparture", () => {
   it("renders properly", () => {
     const component = shallow(<NoticeOfDeparture {...dispatchProps} {...reducerProps} />);

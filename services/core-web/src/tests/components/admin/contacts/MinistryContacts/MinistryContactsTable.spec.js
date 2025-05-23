@@ -2,30 +2,23 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { MinistryContactsTable } from "@/components/admin/contacts/MinistryContacts/MinistryContactsTable";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.openEditModal = jest.fn();
-  dispatchProps.handleDeleteContact = jest.fn();
+const dispatchProps = {
+  openEditModal: jest.fn(),
+  handleDeleteContact: jest.fn(),
 };
-
-const setupProps = () => {
-  props.contacts = [];
-  props.mineRegionHash = {};
-  props.MinistryContactTypesHash = {};
-  props.isLoaded = true;
-  props.isOffice = false;
+const props = {
+  contacts: [],
+  mineRegionHash: {},
+  MinistryContactTypesHash: {},
+  isLoaded: true,
+  isOffice: false,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("MinistryContactsTable", () => {
   it("renders properly", () => {
-    const { container: component } = render(<MinistryContactsTable {...dispatchProps} {...props} />);
+    const { container: component } = render(
+      <MinistryContactsTable {...dispatchProps} {...props} />
+    );
     expect(component).toMatchSnapshot();
   });
 });

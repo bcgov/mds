@@ -3,23 +3,14 @@ import { render } from "@testing-library/react";
 import { EditWorkerInformationForm } from "@/components/Forms/mines/EditWorkerInformationForm";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
-const props = {};
-const dispatchProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.onSubmit = jest.fn();
-  dispatchProps.handleToggleEdit = jest.fn();
+const dispatchProps = {
+  onSubmit: jest.fn(),
+  handleToggleEdit: jest.fn(),
 };
-
-const setupProps = () => {
-  props.title = "mockTitle";
-  props.submitting = false;
+const props = {
+  title: "mockTitle",
+  submitting: false,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("EditWorkerInformationForm", () => {
   it("renders properly", () => {

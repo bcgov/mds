@@ -2,23 +2,14 @@ import React from "react";
 import { render } from "@testing-library/react";
 import LinkButton from "@/components/common/buttons/LinkButton";
 
-const props = {};
-const dispatchProps = {};
-
-const setupProps = () => {
-  props.tabIndex = 1;
-  props.style = {};
-  props.children = <></>;
+const props = {
+  tabIndex: 1,
+  style: {},
+  children: <></>,
 };
-
-const setupDispatchProps = () => {
-  dispatchProps.onClick = jest.fn();
+const dispatchProps = {
+  onClick: jest.fn(),
 };
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 describe("LinkButton", () => {
   it("renders properly", () => {

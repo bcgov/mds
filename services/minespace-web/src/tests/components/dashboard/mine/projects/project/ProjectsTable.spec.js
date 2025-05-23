@@ -4,19 +4,10 @@ import { ProjectsTable } from "@/components/dashboard/mine/projects/ProjectsTabl
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { BrowserRouter } from "react-router-dom";
 
-const props = {};
-const dispatchProps = {};
-
-const setupProps = () => {
-  props.projects = MOCK.PROJECTS.records;
+const props = {
+  projects: MOCK.PROJECTS.records,
 };
-
-const setupDispatchProps = () => {};
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
+const dispatchProps = {};
 
 describe("ProjectsTable", () => {
   it("renders properly", () => {

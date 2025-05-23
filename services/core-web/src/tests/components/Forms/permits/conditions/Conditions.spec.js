@@ -2,32 +2,23 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { Conditions } from "@/components/Forms/permits/conditions/Conditions";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.openModal = jest.fn();
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.fetchPermitConditions = jest.fn();
-  dispatchProps.setEditingConditionFlag = jest.fn();
-  dispatchProps.deletePermitCondition = jest.fn();
-  dispatchProps.updatePermitCondition = jest.fn();
-  dispatchProps.fetchDraftPermitByNOW = jest.fn();
+const dispatchProps = {
+  openModal: jest.fn(),
+  closeModal: jest.fn(),
+  fetchPermitConditions: jest.fn(),
+  setEditingConditionFlag: jest.fn(),
+  deletePermitCondition: jest.fn(),
+  updatePermitCondition: jest.fn(),
+  fetchDraftPermitByNOW: jest.fn(),
 };
-
-const setupProps = () => {
-  props.conditions = [];
-  props.permitConditionCategoryOptions = [];
-  props.editingConditionFlag = false;
-  props.isNoWApplication = true;
-  props.isSourcePermitGeneratedInCore = true;
-  props.draftPermitAmendment = {};
+const props = {
+  conditions: [],
+  permitConditionCategoryOptions: [],
+  editingConditionFlag: false,
+  isNoWApplication: true,
+  isSourcePermitGeneratedInCore: true,
+  draftPermitAmendment: {},
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("Conditions", () => {
   it("renders properly", () => {

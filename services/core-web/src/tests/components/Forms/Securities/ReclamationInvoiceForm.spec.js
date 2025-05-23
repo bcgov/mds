@@ -4,30 +4,24 @@ import { ReclamationInvoiceForm } from "@/components/Forms/Securities/Reclamatio
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.onSubmit = jest.fn();
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.onSubmit = jest.fn();
+const dispatchProps = {
+  onSubmit: jest.fn(),
+  closeModal: jest.fn(),
 };
-
-const setupProps = () => {
-  props.title = "Add Reclamation Invoice";
-  props.mineGuid = "462562457";
-  props.submitting = false;
-  [props.invoice] = MOCK.RECLAMATION_INVOICES.records;
+const props = {
+  title: "Add Reclamation Invoice",
+  mineGuid: "462562457",
+  submitting: false,
+  invoice: MOCK.RECLAMATION_INVOICES.records[0],
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("ReclamationInvoiceForm", () => {
   it("renders properly", () => {
-    const { container: component } = render(<ReduxWrapper><ReclamationInvoiceForm {...dispatchProps} {...props} /></ReduxWrapper>);
+    const { container: component } = render(
+      <ReduxWrapper>
+        <ReclamationInvoiceForm {...dispatchProps} {...props} />
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 });

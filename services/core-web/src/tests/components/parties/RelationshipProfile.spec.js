@@ -3,28 +3,19 @@ import { render } from "@testing-library/react";
 import { RelationshipProfile } from "@/components/parties/RelationshipProfile";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.fetchMineRecordById = jest.fn();
-  dispatchProps.fetchPermits = jest.fn();
-  dispatchProps.fetchPartyRelationshipTypes = jest.fn();
-  dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());
+const dispatchProps = {
+  fetchMineRecordById: jest.fn(),
+  fetchPermits: jest.fn(),
+  fetchPartyRelationshipTypes: jest.fn(),
+  fetchPartyRelationships: jest.fn(() => Promise.resolve()),
 };
-
-const setupReducerProps = () => {
-  reducerProps.match = {};
-  reducerProps.parties = MOCK.PARTY.parties[MOCK.PARTY.partyIds[0]];
-  reducerProps.partyRelationships = MOCK.PARTY_RELATIONSHIPS;
-  reducerProps.partyRelationshipTypes = MOCK.PARTY_RELATIONSHIP_TYPES;
-  reducerProps.mines = MOCK.MINES;
+const reducerProps = {
+  match: {},
+  parties: MOCK.PARTY.parties[MOCK.PARTY.partyIds[0]],
+  partyRelationships: MOCK.PARTY_RELATIONSHIPS,
+  partyRelationshipTypes: MOCK.PARTY_RELATIONSHIP_TYPES,
+  mines: MOCK.MINES,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 
 describe("RelationshipProfile", () => {
   it("renders properly", () => {

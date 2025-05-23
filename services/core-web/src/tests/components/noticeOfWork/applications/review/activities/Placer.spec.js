@@ -5,18 +5,12 @@ import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
-const reducerProps = {};
-
-const setupReducerProps = () => {
-  reducerProps.isViewMode = true;
-  reducerProps.initialValues = NOW_MOCK.IMPORTED_NOTICE_OF_WORK.placer_operation;
-  reducerProps.unitTypeOptions = [{ value: "MED", lable: "Meters cubed/day" }];
-  reducerProps.renderOriginalValues = jest.fn().mockReturnValue({ value: "N/A", edited: true });
+const reducerProps = {
+  isViewMode: true,
+  initialValues: NOW_MOCK.IMPORTED_NOTICE_OF_WORK.placer_operation,
+  unitTypeOptions: [{ value: "MED", lable: "Meters cubed/day" }],
+  renderOriginalValues: jest.fn().mockReturnValue({ value: "N/A", edited: true }),
 };
-
-beforeEach(() => {
-  setupReducerProps();
-});
 
 describe("Placer", () => {
   it("renders properly", () => {

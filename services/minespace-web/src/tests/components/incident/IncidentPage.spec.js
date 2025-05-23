@@ -5,44 +5,35 @@ import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { BrowserRouter } from "react-router-dom";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const props = {};
-const dispatchProps = {};
-
-const setupProps = () => {
-  props.incident = MOCK.INCIDENT;
-  props.match = {
+const props = {
+  incident: MOCK.INCIDENT,
+  match: {
     params: {
       mineGuid: "5c654fe9-bce5-4ee4-891c-806c46266d54",
       mineIncidentGuid: "4d654fe9-bce5-4ee4-891c-806c46266d55",
     },
-  };
-  props.location = {
+  },
+  location: {
     state: { current: 0, mine: MOCK.MINES.mines["18133c75-49ad-4101-85f3-a43e35ae989a"] },
-  };
-  props.formValues = {};
-  props.formIsDirty = false;
-  props.closeModal = jest.fn();
-  props.openModal = jest.fn();
+  },
+  formValues: {},
+  formIsDirty: false,
+  closeModal: jest.fn(),
+  openModal: jest.fn(),
 };
-
-const setupDispatchProps = () => {
-  dispatchProps.clearMineIncident = jest.fn(() => Promise.resolve());
-  dispatchProps.createMineIncident = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchMineIncident = jest.fn(() => Promise.resolve());
-  dispatchProps.updateMineIncident = jest.fn(() => Promise.resolve());
-  dispatchProps.removeDocumentFromMineIncident = jest.fn(() => Promise.resolve());
-  dispatchProps.submit = jest.fn(() => Promise.resolve());
-  dispatchProps.reset = jest.fn(() => Promise.resolve());
-  dispatchProps.touch = jest.fn(() => Promise.resolve());
-  dispatchProps.change = jest.fn(() => Promise.resolve());
-  dispatchProps.destroy = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchInspectors = jest.fn(() => Promise.resolve());
+const dispatchProps = {
+  clearMineIncident: jest.fn(() => Promise.resolve()),
+  createMineIncident: jest.fn(() => Promise.resolve()),
+  fetchMineIncident: jest.fn(() => Promise.resolve()),
+  updateMineIncident: jest.fn(() => Promise.resolve()),
+  removeDocumentFromMineIncident: jest.fn(() => Promise.resolve()),
+  submit: jest.fn(() => Promise.resolve()),
+  reset: jest.fn(() => Promise.resolve()),
+  touch: jest.fn(() => Promise.resolve()),
+  change: jest.fn(() => Promise.resolve()),
+  destroy: jest.fn(() => Promise.resolve()),
+  fetchInspectors: jest.fn(() => Promise.resolve()),
 };
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 function mockFunction() {
   const original = jest.requireActual("react-router-dom");

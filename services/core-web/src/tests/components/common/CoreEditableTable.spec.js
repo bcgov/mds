@@ -5,28 +5,24 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => { };
-
-const setupProps = () => {
-  props.isViewMode = false;
-  props.fieldName = "permit Number";
-  props.fieldID = "123";
-  props.type = "Activity";
-  props.unitTypeHash = {};
-  props.tableContent = [];
+const props = {
+  isViewMode: false,
+  fieldName: "permit Number",
+  fieldID: "123",
+  type: "Activity",
+  unitTypeHash: {},
+  tableContent: [],
 };
 
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
-
-// TypeError: tableContent.map is not a function
 describe("CoreEditableTable", () => {
   it("renders properly", () => {
-    const { container: component } = render(<ReduxWrapper><FormWrapper name="test-form"><CoreEditableTable {...props} {...dispatchProps} /></FormWrapper></ReduxWrapper>);
+    const { container: component } = render(
+      <ReduxWrapper>
+        <FormWrapper name="test-form">
+          <CoreEditableTable {...props} {...dispatchProps} />
+        </FormWrapper>
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 });

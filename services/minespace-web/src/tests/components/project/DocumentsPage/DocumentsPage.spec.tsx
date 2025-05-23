@@ -4,20 +4,14 @@ import { DocumentsPage } from "@/components/pages/Project/DocumentsPage";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
-const props: any = {};
-
-const setupProps = () => {
-  props.title = "mockTitle";
-  props.documents = [
+const props: any = {
+  title: "mockTitle",
+  documents: [
     ...MOCK.PROJECT_SUMMARY.documents,
     ...MOCK.INFORMATION_REQUIREMENTS_TABLE.documents,
     ...MOCK.MAJOR_MINES_APPLICATION.documents,
-  ];
+  ],
 };
-
-beforeEach(() => {
-  setupProps();
-});
 
 describe("DocumentsPage", () => {
   it("renders properly", () => {

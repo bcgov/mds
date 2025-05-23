@@ -5,24 +5,16 @@ import {
   DebounceSelect,
 } from "@/components/common/RenderMultiSelectPartySearch";
 
-let props = {};
-
-const setupProps = () => {
-  props = {
-    onSelectedPartySearchResultsChanged: jest.fn(),
-    onSearchResultsChanged: jest.fn(),
-    onSearchSubsetResultsChanged: jest.fn(),
-    partyType: "person",
-    fetchSearchResults: jest.fn(),
-    triggerSelectReset: false,
-    fetchOptions: jest.fn(),
-    debounceTimeout: "3000",
-  };
+const props = {
+  onSelectedPartySearchResultsChanged: jest.fn(),
+  onSearchResultsChanged: jest.fn(),
+  onSearchSubsetResultsChanged: jest.fn(),
+  partyType: "person",
+  fetchSearchResults: jest.fn(),
+  triggerSelectReset: false,
+  fetchOptions: jest.fn(),
+  debounceTimeout: "3000",
 };
-
-beforeEach(() => {
-  setupProps();
-});
 
 describe("RenderMultiSelectPartySearch", () => {
   it("renders properly", () => {

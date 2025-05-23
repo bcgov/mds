@@ -6,27 +6,18 @@ import { BrowserRouter } from "react-router-dom";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
 
-const props = {};
 const dispatchProps = {};
-
-const setupDispatchProps = () => { };
-
-const setupProps = () => {
-  props.editPreambleFileMetadata = false;
-  props.previousAmendmentDocuments = [];
+const props = {
+  editPreambleFileMetadata: false,
+  previousAmendmentDocuments: [],
 };
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 const initialState = {
   [NOTICE_OF_WORK]: {
     noticeOfWork: NOWMocks.IMPORTED_NOTICE_OF_WORK,
     applicationDelays: [],
   }
-}
+};
 describe("PermitPackage", () => {
   it("renders properly", () => {
     const { container: component } = render(<ReduxWrapper initialState={initialState}><BrowserRouter><PermitPackage {...props} {...dispatchProps} /></BrowserRouter></ReduxWrapper>);

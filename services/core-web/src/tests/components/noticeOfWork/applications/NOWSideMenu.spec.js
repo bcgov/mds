@@ -2,19 +2,13 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { NOWSideMenu } from "@/components/noticeOfWork/applications/NOWSideMenu";
 
-const reducerProps = {};
-
-const setupReducerProps = () => {
-  reducerProps.match = {};
-  reducerProps.history = { push: jest.fn() };
-  reducerProps.location = {};
-  reducerProps.tabSection = "application";
-  reducerProps.noticeOfWork = { notice_of_work_type_code: "PLA", application_type_code: "NOW" };
+const reducerProps = {
+  match: {},
+  history: { push: jest.fn() },
+  location: {},
+  tabSection: "application",
+  noticeOfWork: { notice_of_work_type_code: "PLA", application_type_code: "NOW" },
 };
-
-beforeEach(() => {
-  setupReducerProps();
-});
 
 describe("NOWSideMenu", () => {
   it("renders properly", () => {

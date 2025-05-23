@@ -4,15 +4,9 @@ import { IncidentSuccessPage } from "@/components/pages/Incidents/IncidentSucces
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { BrowserRouter } from "react-router-dom";
 
-const props = {};
-
-const setupProps = () => {
-  props.location = { state: { project: MOCK.INCIDENT } };
+const props = {
+  location: { state: { project: MOCK.INCIDENT } },
 };
-
-beforeEach(() => {
-  setupProps();
-});
 
 describe("IncidentSuccessPage", () => {
   it("renders properly", () => {

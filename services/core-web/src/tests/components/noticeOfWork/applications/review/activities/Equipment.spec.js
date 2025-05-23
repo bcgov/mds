@@ -5,19 +5,13 @@ import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
-const reducerProps = {};
-
-const setupReducerProps = () => {
-  reducerProps.equipment = NOW_MOCK.EQUIPMENT;
-  reducerProps.isViewMode = false;
-  reducerProps.activity = "TEST ACTIVITY";
-  reducerProps.editRecord = jest.fn();
-  reducerProps.addRecord = jest.fn();
+const reducerProps = {
+  equipment: NOW_MOCK.EQUIPMENT,
+  isViewMode: false,
+  activity: "TEST ACTIVITY",
+  editRecord: jest.fn(),
+  addRecord: jest.fn(),
 };
-
-beforeEach(() => {
-  setupReducerProps();
-});
 
 describe("Equipment", () => {
   it("renders view properly", () => {

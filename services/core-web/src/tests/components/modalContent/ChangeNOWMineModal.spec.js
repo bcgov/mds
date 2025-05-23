@@ -4,28 +4,18 @@ import { ChangeNOWMineModal } from "@/components/modalContent/ChangeNOWMineModal
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const props = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.submit = jest.fn();
-  dispatchProps.setMineGuid = jest.fn();
-  dispatchProps.fetchMineNameList = jest.fn();
-  dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve());
-  dispatchProps.onSubmit = jest.fn();
+const dispatchProps = {
+  submit: jest.fn(),
+  setMineGuid: jest.fn(),
+  fetchMineNameList: jest.fn(),
+  fetchMineRecordById: jest.fn(() => Promise.resolve()),
+  onSubmit: jest.fn(),
 };
-
-const setupProps = () => {
-  props.title = "mockTitle";
-  // eslint-disable-next-line prefer-destructuring
-  props.noticeOfWork = MOCK.NOW.applications[0];
-  props.mineNameList = MOCK.MINE_NAME_LIST.mines;
+const props = {
+  title: "mockTitle",
+  noticeOfWork: MOCK.NOW.applications[0],
+  mineNameList: MOCK.MINE_NAME_LIST.mines,
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("ChangeNOWMineModal", () => {
   it("renders properly", () => {

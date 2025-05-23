@@ -2,21 +2,15 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { NOWStatusIndicator } from "@/components/noticeOfWork/NOWStatusIndicator";
 
-const reducerProps = {};
-
-const setupReducerProps = () => {
-  reducerProps.applicationDelay = {};
-  reducerProps.progress = {};
-  reducerProps.delayTypeOptionsHash = {};
-  reducerProps.tabSection = "application";
-  reducerProps.noticeOfWork = { notice_of_work_type_code: "PLA", application_type_code: "NOW" };
-  reducerProps.isEditMode = false;
-  reducerProps.type = "NOW";
+const reducerProps = {
+  applicationDelay: {},
+  progress: {},
+  delayTypeOptionsHash: {},
+  tabSection: "application",
+  noticeOfWork: { notice_of_work_type_code: "PLA", application_type_code: "NOW" },
+  isEditMode: false,
+  type: "NOW",
 };
-
-beforeEach(() => {
-  setupReducerProps();
-});
 
 describe("NOWStatusIndicator", () => {
   it("renders properly", () => {

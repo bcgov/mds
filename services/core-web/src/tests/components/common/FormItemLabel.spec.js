@@ -2,16 +2,10 @@ import React from "react";
 import { render } from "@testing-library/react";
 import FormItemLabel from "@/components/common/FormItemLabel";
 
-const props = {};
-
-const setupProps = () => {
-  props.children = <></>;
-  props.underline = false;
+const props = {
+  children: <></>,
+  underline: false,
 };
-
-beforeEach(() => {
-  setupProps();
-});
 
 describe("FormItemLabel", () => {
   it("renders properly", () => {

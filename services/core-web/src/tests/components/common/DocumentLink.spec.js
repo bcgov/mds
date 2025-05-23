@@ -2,29 +2,22 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { DocumentLink } from "@/components/common/DocumentLink";
 
-let props = {};
-let dispatchProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.openDocument = jest.fn();
-  dispatchProps.onClickAlternative = jest.fn();
+const props = {
+  documentManagerGuid: "mockGuid",
+  documentName: "Mock name",
+  linkTitleOverride: "Mock Title",
+  truncateDocumentName: true,
 };
-
-const setupProps = () => {
-  props.documentManagerGuid = "mockGuid";
-  props.documentName = "Mock name";
-  props.linkTitleOverride = "Mock Title";
-  props.truncateDocumentName = true;
+const dispatchProps = {
+  openDocument: jest.fn(),
+  onClickAlternative: jest.fn(),
 };
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 describe("DocumentLink", () => {
   it("renders properly", () => {
-    const { container: component } = render(<DocumentLink {...props} {...dispatchProps} />);
+    const { container: component } = render(
+      <DocumentLink {...props} {...dispatchProps} />
+    );
     expect(component).toMatchSnapshot();
   });
 });

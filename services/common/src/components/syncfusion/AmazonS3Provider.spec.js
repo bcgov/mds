@@ -2,15 +2,9 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { AmazonS3Provider } from "@/components/syncfusion/AmazonS3Provider";
 
-const props = {};
-
-const setupReducerProps = () => {
-  props.path = "mock path";
+const props = {
+  path: "mock path",
 };
-
-beforeEach(() => {
-  setupReducerProps();
-});
 
 describe("AmazonS3Provider", () => {
   it("renders properly", () => {

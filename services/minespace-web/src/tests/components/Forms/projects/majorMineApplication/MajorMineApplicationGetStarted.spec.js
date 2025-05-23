@@ -5,15 +5,6 @@ import { MajorMineApplicationGetStarted } from "@/components/Forms/projects/majo
 const dispatchProps = {};
 const props = {};
 
-const setupDispatchProps = () => {};
-
-const setupProps = () => {};
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
-
 describe("MajorMineApplicationGetStarted", () => {
   it("renders properly", () => {
     const { container: component } = render(

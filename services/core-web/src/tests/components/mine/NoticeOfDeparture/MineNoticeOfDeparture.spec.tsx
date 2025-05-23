@@ -4,8 +4,18 @@ import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import matchMedia from "@/tests/mocks/matchMedia";
 import { renderWithProvider } from "@/tests/mocks/utils";
 
-const dispatchProps: any = {};
-const reducerProps: any = {};
+const dispatchProps: any = {
+  openModal: jest.fn(),
+  closeModal: jest.fn(),
+  fetchNoticesOfDeparture: jest.fn(() => Promise.resolve()),
+  fetchDetailedNoticeOfDeparture: jest.fn(() => Promise.resolve()),
+  fetchPermits: jest.fn(() => Promise.resolve()),
+};
+const reducerProps: any = {
+  mines: MOCK.MINES.mines,
+  mineGuid: MOCK.MINES.mineIds[0],
+  nods: MOCK.NOTICES_OF_DEPARTURE.records,
+};
 
 function mockFunction() {
   // @ts-ignore
@@ -23,25 +33,6 @@ function mockFunction() {
 }
 
 jest.mock("react-router-dom", () => mockFunction());
-
-const setupDispatchProps = () => {
-  dispatchProps.openModal = jest.fn();
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.fetchNoticesOfDeparture = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchDetailedNoticeOfDeparture = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchPermits = jest.fn(() => Promise.resolve());
-};
-
-const setupReducerProps = () => {
-  reducerProps.mines = MOCK.MINES.mines;
-  [reducerProps.mineGuid] = MOCK.MINES.mineIds;
-  reducerProps.nods = MOCK.NOTICES_OF_DEPARTURE.records;
-};
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 
 beforeAll(() => {
   window.matchMedia = matchMedia;

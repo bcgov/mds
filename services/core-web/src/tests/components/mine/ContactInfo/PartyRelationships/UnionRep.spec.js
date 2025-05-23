@@ -5,19 +5,10 @@ import { MINES } from "@mds/common/tests/mocks/dataMocks";
 import { BrowserRouter } from "react-router-dom";
 
 const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => { };
-
-const setupReducerProps = () => {
-  reducerProps.partyRelationship = { union_rep_company: "company name", party: { party_guid: "party-guid" } };
-  reducerProps.mine = MINES.mines[MINES.mineIds[0]]
+const reducerProps = {
+  partyRelationship: { union_rep_company: "company name", party: { party_guid: "party-guid" } },
+  mine: MINES.mines[MINES.mineIds[0]]
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 
 describe("UnionRep", () => {
   it("renders properly", () => {

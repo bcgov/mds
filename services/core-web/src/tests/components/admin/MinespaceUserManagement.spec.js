@@ -4,33 +4,28 @@ import { MinespaceUserManagement } from "@/components/admin/MinespaceUserManagem
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const props = {};
-const dispatchProps = {};
-
-const setupProps = () => {
-  props.mines = MOCK.MINE_NAME_LIST;
-  props.minespaceUsers = MOCK.MINESPACE_USER_LIST;
+const props = {
+  mines: MOCK.MINE_NAME_LIST,
+  minespaceUsers: MOCK.MINESPACE_USER_LIST,
 };
-
-const setupDispatchProps = () => {
-  dispatchProps.fetchMineNameList = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchMinespaceUsers = jest.fn(() => Promise.resolve());
-  dispatchProps.deleteMinespaceUser = jest.fn(() => Promise.resolve());
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.openModal = jest.fn();
-  dispatchProps.createMinespaceUser = jest.fn();
-  dispatchProps.updateMinespaceUserMines = jest.fn();
-  dispatchProps.fetchMinespaceUserMines = jest.fn();
+const dispatchProps = {
+  fetchMineNameList: jest.fn(() => Promise.resolve()),
+  fetchMinespaceUsers: jest.fn(() => Promise.resolve()),
+  deleteMinespaceUser: jest.fn(() => Promise.resolve()),
+  closeModal: jest.fn(),
+  openModal: jest.fn(),
+  createMinespaceUser: jest.fn(),
+  updateMinespaceUserMines: jest.fn(),
+  fetchMinespaceUserMines: jest.fn(),
 };
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 describe("MinespaceUserManagement", () => {
   it("renders properly", () => {
-    const { container: component } = render(<ReduxWrapper><MinespaceUserManagement {...props} {...dispatchProps} /></ReduxWrapper>);
+    const { container: component } = render(
+      <ReduxWrapper>
+        <MinespaceUserManagement {...props} {...dispatchProps} />
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 });

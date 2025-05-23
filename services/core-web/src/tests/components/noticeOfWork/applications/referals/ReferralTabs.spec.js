@@ -6,36 +6,27 @@ import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { BrowserRouter } from "react-router-dom";
 import { NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
 
-const dispatchProps = {};
-const reducerProps = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.openModal = jest.fn();
-  dispatchProps.closeModal = jest.fn();
-  dispatchProps.createNoticeOfWorkApplicationReview = jest.fn();
-  dispatchProps.fetchNoticeOfWorkApplicationReviews = jest.fn(() => Promise.resolve());
-  dispatchProps.updateNoticeOfWorkApplicationReview = jest.fn();
-  dispatchProps.deleteNoticeOfWorkApplicationReview = jest.fn();
-  dispatchProps.deleteNoticeOfWorkApplicationDocument = jest.fn();
-  dispatchProps.updateNoticeOfWorkApplication = jest.fn();
-  dispatchProps.setNoticeOfWorkApplicationDocumentDownloadState = jest.fn();
-  dispatchProps.fetchImportedNoticeOfWorkApplication = jest.fn();
+const dispatchProps = {
+  openModal: jest.fn(),
+  closeModal: jest.fn(),
+  createNoticeOfWorkApplicationReview: jest.fn(),
+  fetchNoticeOfWorkApplicationReviews: jest.fn(() => Promise.resolve()),
+  updateNoticeOfWorkApplicationReview: jest.fn(),
+  deleteNoticeOfWorkApplicationReview: jest.fn(),
+  deleteNoticeOfWorkApplicationDocument: jest.fn(),
+  updateNoticeOfWorkApplication: jest.fn(),
+  setNoticeOfWorkApplicationDocumentDownloadState: jest.fn(),
+  fetchImportedNoticeOfWorkApplication: jest.fn(),
 };
-
-const setupReducerProps = () => {
-  reducerProps.fixedTop = false;
-  reducerProps.noticeOfWork = NOW_MOCK.NOTICE_OF_WORK;
-  reducerProps.noticeOfWorkReviewTypesHash = {};
-  reducerProps.type = "REF";
-  reducerProps.importNowSubmissionDocumentsJob = {};
-  reducerProps.noticeOfWorkReviewTypes = [];
-  reducerProps.noticeOfWorkReviews = [];
+const reducerProps = {
+  fixedTop: false,
+  noticeOfWork: NOW_MOCK.NOTICE_OF_WORK,
+  noticeOfWorkReviewTypesHash: {},
+  type: "REF",
+  importNowSubmissionDocumentsJob: {},
+  noticeOfWorkReviewTypes: [],
+  noticeOfWorkReviews: [],
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
 
 const initialState = {
   [NOTICE_OF_WORK]: {
