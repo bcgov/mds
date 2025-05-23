@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { AmazonS3Provider } from "@/components/syncfusion/AmazonS3Provider";
+import { AmazonS3Provider } from "./AmazonS3Provider";
 
 const props = {
   path: "mock path",
