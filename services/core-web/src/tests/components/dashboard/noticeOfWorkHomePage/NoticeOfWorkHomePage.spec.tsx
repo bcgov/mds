@@ -46,7 +46,6 @@ describe("NoticeOfWorkHomePage", () => {
     const { container: component } = render(
       <BrowserRouter>
         <ReduxWrapper>
-          {/* @ts-ignore: looks like the props definitions are wrong. */}
           <NoticeOfWorkHomePage {...dispatchProps} {...reducerProps} {...requiredProps} />
         </ReduxWrapper>
       </BrowserRouter>

@@ -1,12 +1,9 @@
-/* eslint-disable */
-import React from "react";
-import ReactDOMServer from "react-dom/server";
+import React, { ReactNode } from "react";
 import { connect } from "react-redux";
 import { startCase, camelCase } from "lodash";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { Tooltip } from "antd";
 import * as Permission from "@/constants/permissions";
-import PropTypes from "prop-types";
 import { detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common/utils/environmentUtils";
 import { USER_ROLES } from "@mds/common/constants/environment";
 
@@ -42,19 +39,6 @@ import { USER_ROLES } from "@mds/common/constants/environment";
  * inTesting - if the feature is ready to be shared with a larger audience, but not ready to be displayed in PROD, `inTesting` will display content in every environment except Prod.
  */
 
-const propTypes = {
-  permission: PropTypes.string,
-  isMajorMine: PropTypes.bool,
-  inDevelopment: PropTypes.bool,
-  inTesting: PropTypes.bool,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.element.isRequired),
-    PropTypes.element.isRequired,
-  ]),
-  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
-  showToolTip: PropTypes.bool,
-};
-
 const defaultProps = {
   isMajorMine: undefined,
   inDevelopment: undefined,
@@ -63,7 +47,17 @@ const defaultProps = {
   showToolTip: true,
 };
 
-export const AuthorizationWrapper = (props) => {
+interface AuthorizationWrapperProps {
+  permission?: string;
+  isMajorMine?: boolean;
+  inDevelopment?: boolean;
+  inTesting?: boolean;
+  children?: ReactNode;
+  userRoles: string[];
+  showToolTip?: boolean;
+}
+
+export const AuthorizationWrapper: React.FC<AuthorizationWrapperProps> = (props) => {
   const inDevCheck =
     props.inDevelopment === undefined || (props.inDevelopment && detectDevelopmentEnvironment());
   const inTestCheck =
@@ -106,7 +100,7 @@ export const AuthorizationWrapper = (props) => {
     )
   );
 };
-AuthorizationWrapper.propTypes = propTypes;
+
 AuthorizationWrapper.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({

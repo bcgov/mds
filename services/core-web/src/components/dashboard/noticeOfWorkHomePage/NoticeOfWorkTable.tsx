@@ -31,10 +31,10 @@ interface NoticeOfWorkTableProps {
   sortDir: string;
   searchParams: NoWSearchParams;
   defaultParams: NoWSearchParams;
-  mineRegionHash: object;
-  mineRegionOptions: IOption;
-  applicationTypeOptions: IOption;
-  applicationStatusOptions: IOption;
+  mineRegionHash: any;
+  mineRegionOptions: IOption[];
+  applicationTypeOptions: IOption[];
+  applicationStatusOptions: IOption[];
 }
 
 const handleTableChange = (updateNOWList, tableFilters) => (pagination, filters, sorter) => {
