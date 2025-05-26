@@ -27,14 +27,14 @@ describe("VarianceSearchForm form", () => {
   it("throws an error when issue_date_after occurs after issue_date_before", () => {
     const values = { issue_date_after: "1999-12-12", issue_date_before: "1989-12-12" };
     const errors = validate(values);
-    expect(errors.issue_date_before === "Must be after issue date.");
-    expect(errors.expiry_date_before === null);
+    expect(errors.issue_date_before).toEqual("Must be after issue date.");
+    expect(errors.expiry_date_before).toBeUndefined();
   });
 
   it("throws an error when expiry_date_after occurs after expiry_date_before", () => {
     const values = { expiry_date_after: "1999-12-12", expiry_date_before: "1989-12-12" };
     const errors = validate(values);
-    expect(errors.issue_date_before === null);
-    expect(errors.expiry_date_before === "Must be after expiry date.");
+    expect(errors.issue_date_before).toBeUndefined();
+    expect(errors.expiry_date_before).toEqual("Must be after expiry date.");
   });
 });
