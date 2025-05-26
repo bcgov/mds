@@ -22,6 +22,7 @@ exports[`EditVarianceForm renders properly 1`] = `
     removeDocument={[MockFunction]}
     variance={
       Object {
+        "applicant_guid": "",
         "compliance_article_id": 1,
         "documents": Array [
           Object {
@@ -33,9 +34,11 @@ exports[`EditVarianceForm renders properly 1`] = `
           },
         ],
         "expiry_date": "2019-03-30",
+        "inspector_party_guid": "",
         "issue_date": "2019-03-01",
         "note": "notesss",
         "received_date": "2019-03-01",
+        "variance_application_status_code": "",
         "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
         "variance_no": 1,
       }

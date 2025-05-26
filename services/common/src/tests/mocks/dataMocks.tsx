@@ -40,6 +40,7 @@ import {
   IDam,
   ITailingsStorageFacilityForm,
   IMineComplianceInfo,
+  IVariance,
 } from "@mds/common/interfaces";
 import { HaystackDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
 
@@ -3275,7 +3276,7 @@ export const VARIANCES = {
   total_pages: 5,
 };
 
-export const VARIANCE = {
+export const VARIANCE: IVariance = {
   variance_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
   variance_no: 1,
   compliance_article_id: 1,
@@ -3292,6 +3293,9 @@ export const VARIANCE = {
       mine_guid: "59e73109-48f7-4ad2-977c-3005b5bff010",
     },
   ],
+  variance_application_status_code: "",
+  applicant_guid: "",
+  inspector_party_guid: ""
 };
 
 export const VARIANCE_PAGE_DATA = {
