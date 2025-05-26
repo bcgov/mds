@@ -1,6 +1,8 @@
+from numbers import Number
 from typing import Optional
 from datetime import date
 
+from app.extensions import db
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
     PermitConditions,
 )
@@ -15,6 +17,11 @@ from flask import current_app
 from ..permit_conditions.services.permit_condition_comparer import ConditionChangeType
 from .models.permit_condition_result import PermitConditionResult
 
+def append_condition_id(condition_id: Number, requirement_conditions: PermitConditions):
+    condition_ids = [condition_id]
+    for condition in requirement_conditions:
+        condition_ids.append(condition.permit_condition_id)
+    return condition_ids
 
 def create_permit_condition_report_requirement(
     task, condition: PermitConditions
@@ -71,23 +78,47 @@ def create_permit_condition_report_requirement(
     # Calculate due_date_period_months based on frequency
     due_date_period_months = _parse_due_date_period(recurring, frequency)
 
-    # Create the MineReportPermitRequirement
-    mine_report_permit_requirement = MineReportPermitRequirement(
-        report_name=report_name,
-        permit_amendment_id=task.permit_amendment.permit_amendment_id,
-        cim_or_cpo=cim_or_cpo,
-        due_date_period_months=due_date_period_months or 0,
-        initial_due_date=initial_due_date,
-        ministry_recipient=None,  # Not specified in permits themselves.
-    )
-    xref = MineReportReqPermitConditionXref(
-        mine_report_permit_requirement=mine_report_permit_requirement,
-        permit_condition_id=condition.permit_condition_id
-    )
-    mine_report_permit_requirement.mine_report_req_permit_conditions.append(xref)
+    if report_name is None:
+        report_name = f"Unknown Report Name - {condition.permit_condition_id}"
 
-    return mine_report_permit_requirement
+    # Check for report_requirements that have been added to the session, but not yet committed
+    existing_requirement_in_session = None
+    for obj in db.session.identity_map.values():
+        if isinstance(obj, MineReportPermitRequirement):
+            if obj.report_name == report_name and obj.permit_amendment_id == condition.permit_amendment_id:
+                existing_requirement_in_session = obj
 
+    # Check for report_requirements that have been committed to the DB
+    existing_requirement_in_db = MineReportPermitRequirement.query.filter_by(report_name=report_name, permit_amendment_id=task.permit_amendment.permit_amendment_id, deleted_ind=False).first()
+
+    # if there is an existing requirement in the session or the db, append this condition id to it
+    if existing_requirement_in_session is not None:
+        condition_ids = append_condition_id(condition.permit_condition_id, existing_requirement_in_session.permit_conditions)
+        existing_requirement_in_session.update_permit_conditions(condition_ids)
+        return None
+    elif existing_requirement_in_db is not None:
+        condition_ids = append_condition_id(condition.permit_condition_id, existing_requirement_in_db.permit_conditions)
+        existing_requirement_in_db.update_permit_conditions(condition_ids)
+        return None
+    else:
+        # Create the MineReportPermitRequirement
+        mine_report_permit_requirement = MineReportPermitRequirement(
+            report_name=report_name,
+            permit_amendment_id=task.permit_amendment.permit_amendment_id,
+            cim_or_cpo=cim_or_cpo,
+            due_date_period_months=due_date_period_months or 0,
+            initial_due_date=initial_due_date,
+            ministry_recipient=None,  # Not specified in permits themselves.
+        )
+        xref = MineReportReqPermitConditionXref(
+            mine_report_permit_requirement=mine_report_permit_requirement,
+            permit_condition_id=condition.permit_condition_id
+        )
+        mine_report_permit_requirement.mine_report_req_permit_conditions.append(xref)
+        mine_report_permit_requirement.save()
+
+
+        return mine_report_permit_requirement
 
 def _parse_due_date_period(recurring, frequency):
     due_date_period_months = None
@@ -151,7 +182,6 @@ def _parse_initial_due_date(condition_id, initial_due_date) -> Optional[date]:
             initial_due_date = None
     return initial_due_date
 
-
 def create_or_copy_permit_condition_report_requirements(
     task, condition, comparison
 ):
@@ -172,6 +202,5 @@ def create_or_copy_permit_condition_report_requirements(
                 [comparison.previous_condition.permit_condition_id, 
                  condition.permit_condition_id]
             )
-            return existing_requirements
     # No match found, create new requirement
     return create_permit_condition_report_requirement(task, condition)
