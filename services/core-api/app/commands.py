@@ -243,9 +243,8 @@ def register_commands(app):
         - core user isn't a foreign key so no user created/queried
 
         Example usage:
-            flask seed_user_data IDIR=myidir
-            flask seed_user_data BCEID=mybceid
-            flask seed_user_data IDIR=myidir BCEID=mybceid        
+            flask seed_user_data myidir true
+            flask seed_user_data mybceid false    
         """
         _seed_user_data(user_name, is_idir)
 
