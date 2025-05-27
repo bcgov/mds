@@ -206,6 +206,14 @@ fields = [
         sortable=True,
         facetable=True,
     ),
+    SearchField(
+        name="tenure",
+        type="Collection(Edm.String)",
+        searchable=False,
+        filterable=True,
+        sortable=False,
+        facetable=True,
+    ),
 ]
 
 # Vector search configuration
