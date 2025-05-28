@@ -92,7 +92,7 @@ function loadExternalSecrets() {
     echo "Configuring Access to Fontawesome"
     # Read ARTIFACTORY_TOKEN from local-dev-secrets ocp secret
     ARTIFACTORY_TOKEN=$(kubectl get secret local-dev-secrets --namespace 4c2ba9-dev -o go-template='{{.data.ARTIFACTORY_TOKEN | base64decode}}')
-    
+
     # Update yarn config with token
     yarn config set 'npmScopes["fortawesome"].npmAuthIdent' "$ARTIFACTORY_TOKEN" -H
     yarn config set 'npmScopes["fortawesome"].npmAlwaysAuth' true -H

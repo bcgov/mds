@@ -83,7 +83,8 @@ def create_permit_condition_report_requirement(
 
     # Check for report_requirements that have been added to the session, but not yet committed
     existing_requirement_in_session = None
-    for obj in db.session.identity_map.values():
+    session_values = db.session.identity_map.values() if db.session else []
+    for obj in session_values:
         if isinstance(obj, MineReportPermitRequirement):
             if obj.report_name == report_name and obj.permit_amendment_id == condition.permit_amendment_id:
                 existing_requirement_in_session = obj
