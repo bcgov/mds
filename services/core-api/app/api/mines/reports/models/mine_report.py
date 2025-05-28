@@ -106,11 +106,15 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def report_type(self):
-        return "PRR" if self.permit_condition_category_code else "CRR"
+        return "PRR" if self.permit_condition_category_code or self.mine_report_permit_requirement_id else "CRR"
 
     @hybrid_property
     def report_name(self):
-        return self.mine_report_definition_report_name if self.mine_report_definition_report_name else self.permit_condition_category_description
+        if self.mine_report_definition_report_name:
+            return self.mine_report_definition_report_name
+        if self.permit_condition_category_description:
+            return self.permit_condition_category_description
+        return self.mine_report_permit_requirement.report_name
 
     @mine_report_status_code.expression
     def mine_report_status_code(cls):
@@ -341,6 +345,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
                submitter_name,
                permit_id=None,
                permit_condition_category_code=None,
+               mine_report_permit_requirement_id=None,
                submitter_email=None,
                add_to_session=True,
                system_created=False):
@@ -353,6 +358,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             description_comment=description_comment,
             permit_id=permit_id,
             permit_condition_category_code=permit_condition_category_code,
+            mine_report_permit_requirement_id=mine_report_permit_requirement_id,
             submitter_name=submitter_name,
             submitter_email=submitter_email,
             created_by_idir='system' if system_created else None,

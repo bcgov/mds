@@ -548,7 +548,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
                   {category.conditions.map((sc, idx) => (
                     <Col span={24} key={sc.permit_condition_id} className="fade-in">
                       <PermitConditionLayer
-                        previousAmendment={previousAmendment}
                         isExtracted={isExtracted}
                         permitAmendmentGuid={currentAmendment?.permit_amendment_guid}
                         condition={sc}
@@ -564,8 +563,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
                         refreshData={refreshData}
                         conditionSelected={setSelectedCondition}
                         categoryOptions={dropdownCategories}
-                        mineGuid={mineGuid}
-                        permitGuid={permitGuid}
                       />
                     </Col>
                   ))}

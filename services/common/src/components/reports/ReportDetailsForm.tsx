@@ -307,7 +307,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         setMineReportDefinition(newReportComplianceArticle);
 
         setSelectedReportCode(formatComplianceCodeReportName(newReportComplianceArticle));
-      } else if (!expiredReportDefinition) {
+      } else if (!expiredReportDefinition && mine_report_definition_guid) {
         dispatch(
           fetchExpiredReportDefinition({ mineReportDefinitionGuid: mine_report_definition_guid })
         );
@@ -586,8 +586,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               )}
               <Col span={24}>
                 <div
-                  className="grey-box"
-                  style={{ backgroundColor: "#F2F2F2", padding: "16px 24px" }}
+                  className="grey-filled-box"
                 >
                   <Row>
                     <Col xs={24} md={18}>

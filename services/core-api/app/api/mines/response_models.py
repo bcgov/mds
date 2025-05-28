@@ -258,8 +258,8 @@ MINE_REPORT_PERMIT_REQUIREMENT = api.model(
         'initial_due_date': fields.Date,
         'cim_or_cpo': fields.String(enum=[e.value for e in CimOrCpo], attribute='cim_or_cpo.name'),
         'ministry_recipient': fields.List(fields.String(enum=[e.value for e in OfficeDestination])),
-        'permit_condition_id': fields.Integer,
-        'condition_category_code': fields.String
+        'permit_condition_ids': fields.List(fields.Integer),
+        'permit_amendment_id': fields.Integer
     }
 )
 

@@ -48,7 +48,7 @@ def test_create_report_requirement_basic(mock_task):
     result = create_permit_condition_report_requirement(mock_task, condition)
     assert result is not None
     assert result.report_name == "Test Report"
-    assert result.permit_condition_id == "test-id"
+    assert result.permit_condition_ids == ["test-id"]
     assert result.permit_amendment_id == "test-amendment-id"
     assert result.cim_or_cpo == "CIM"
     assert result.due_date_period_months == 1

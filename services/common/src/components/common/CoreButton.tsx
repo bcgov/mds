@@ -21,7 +21,7 @@ export interface CoreButtonProps extends Omit<ButtonProps, "type"> {
 const CoreButton: FC<CoreButtonProps> = ({ type, className, children, ...props }) => {
   const isAntdType = additionalTypes.includes(type);
   const buttonType = isAntdType ? defaultButtonType : (type as ButtonType);
-  const buttonClassName = ["core-btn", `core-btn-${type}`, className].join(" ").trim();
+  const buttonClassName = ["core-btn", `core-btn-${type}`, className].filter(Boolean).join(" ").trim();
 
   return (
     <Button {...props} type={buttonType} className={buttonClassName}>
