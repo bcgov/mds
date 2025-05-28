@@ -65,7 +65,10 @@ def test_create_report_requirement_basic(mock_task):
 def test_create_report_requirement_both_cim_cpo(mock_task):
     condition = PermitConditions(
         condition="Test condition text",
-        permit_condition_id=mock_task.permit_amendment.permit_amendment_id,
+        permit_amendment_id=mock_task.permit_amendment.permit_amendment_id,
+        condition_category_code="GEC",
+        condition_type_code="CON",
+        display_order=1,
         meta={
             "questions": [
                 {"question_key": "require_report", "answer": True},
@@ -74,6 +77,8 @@ def test_create_report_requirement_both_cim_cpo(mock_task):
             ]
         },
     )
+
+    condition.save()
 
     result = create_permit_condition_report_requirement(mock_task, condition)
     assert result is not None
