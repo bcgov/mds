@@ -60,9 +60,11 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
                     created_cond.append(title_cond)
                 
                 created_cond.append(main_cond)
+
         comparison_by_id = {}
 
         comparison_by_id = {comp.current_condition.permit_condition_id: comp for comp in comparisons}
+
 
         for condition in created_cond:
             _add_report_name_if_missing(condition)
