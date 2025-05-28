@@ -18,6 +18,10 @@ from .permit_condition_creator import PermitConditionCreator
 from app.api.mines.reports.models.mine_report_permit_requirement import (
     MineReportPermitRequirement,
 )
+from app.api.mines.permits.permit_conditions.models.permit_condition_category import (
+    PermitConditionCategory,
+)
+from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 
 
 def create_permit_conditions_from_task(task: PermitExtractionTask):
@@ -56,13 +60,12 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
                     created_cond.append(title_cond)
                 
                 created_cond.append(main_cond)
-        
         comparison_by_id = {}
 
         comparison_by_id = {comp.current_condition.permit_condition_id: comp for comp in comparisons}
 
-
         for condition in created_cond:
+            _add_report_name_if_missing(condition)
             comparison = comparison_by_id.get(condition.permit_condition_id)
             parent_mine_report = MineReportPermitRequirement.find_by_permit_condition_id(condition.parent_permit_condition_id)
             is_duplicate_of_parent_report = False
@@ -151,3 +154,20 @@ def _add_toplevel_category_if_missing(result):
             c.set_section(top_level_section)
         conditions = [top_level_section] + conditions
     return conditions
+
+def _add_report_name_if_missing(condition):
+    if condition.meta and condition.meta.get("questions", None):
+        report_name_question = next((q for q in condition.meta["questions"] if (q and q["question_key"] == "report_name")), None)
+        if report_name_question and report_name_question["answer"] == None:
+            condition_category = PermitConditionCategory.find_by_permit_condition_category_code(condition.condition_category_code)
+            category_text = condition_category.description
+            section_text = ""
+            current_condition_level = condition
+            while current_condition_level:
+                if current_condition_level._step != '':
+                    section_text = f"{current_condition_level._step}{'.' if section_text != '' else ''}{section_text}"
+                if current_condition_level and current_condition_level.parent_permit_condition_id:
+                    current_condition_level = PermitConditions.find_by_permit_condition_id(current_condition_level.parent_permit_condition_id)
+                else:
+                    break
+            report_name_question["answer"] = f"{category_text} - {section_text}"
