@@ -30,9 +30,6 @@ CSS_CLIENT_SECRET
 PERMITS_CLIENT_SECRET
 AZURE_API_KEY
 AZURE_SEARCH_API_KEY
-AZURE_STORAGE_CONNECTION_STRING
-AZURE_STORAGE_CONTAINER
-DOCUMENTINTELLIGENCE_API_KEY
 ELASTICSEARCH_CA_CERT
 SYNCFUSION_LICENSE_KEY
 SYNCFUSION_FRONTEND_LICENSE_KEY
@@ -92,7 +89,7 @@ function loadExternalSecrets() {
     echo "Configuring Access to Fontawesome"
     # Read ARTIFACTORY_TOKEN from local-dev-secrets ocp secret
     ARTIFACTORY_TOKEN=$(kubectl get secret local-dev-secrets --namespace 4c2ba9-dev -o go-template='{{.data.ARTIFACTORY_TOKEN | base64decode}}')
-    
+
     # Update yarn config with token
     yarn config set 'npmScopes["fortawesome"].npmAuthIdent' "$ARTIFACTORY_TOKEN" -H
     yarn config set 'npmScopes["fortawesome"].npmAlwaysAuth' true -H
