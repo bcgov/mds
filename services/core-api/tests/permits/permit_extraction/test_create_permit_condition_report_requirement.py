@@ -65,7 +65,7 @@ def test_create_report_requirement_basic(mock_task):
 def test_create_report_requirement_both_cim_cpo(mock_task):
     condition = PermitConditions(
         condition="Test condition text",
-        permit_condition_id=22,
+        permit_condition_id=mock_task.permit_amendment.permit_amendment_id,
         meta={
             "questions": [
                 {"question_key": "require_report", "answer": True},
