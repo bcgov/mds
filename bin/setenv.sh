@@ -30,9 +30,6 @@ CSS_CLIENT_SECRET
 PERMITS_CLIENT_SECRET
 AZURE_API_KEY
 AZURE_SEARCH_API_KEY
-AZURE_STORAGE_CONNECTION_STRING
-AZURE_STORAGE_CONTAINER
-DOCUMENTINTELLIGENCE_API_KEY
 ELASTICSEARCH_CA_CERT
 SYNCFUSION_LICENSE_KEY
 SYNCFUSION_FRONTEND_LICENSE_KEY
@@ -79,7 +76,6 @@ function loadExternalSecrets() {
         echo -e "If you already have access, click here to generate a token and paste it into the terminal: ${bold}https://oauth-openshift.apps.silver.devops.gov.bc.ca/oauth/token/request${normal}\n\n"
         echo -e "${bold}...Paste Token Here...${normal}"
         read OC_TOKEN
-        
         # Log in to openshift and verify that you have access
         oc login --token=$OC_TOKEN --server=https://api.silver.devops.gov.bc.ca:6443
         OC_ACCESS=$(oc get project | grep 4c2ba9-dev)
@@ -104,14 +100,13 @@ function loadExternalSecrets() {
     for S in $SERVICES
     do
         echo "Configuring secrets for $S service"
-        for KEY in $SECRET_KEYS        
+        for KEY in $SECRET_KEYS
         do
             SECRET=$(kubectl get secret local-dev-secrets --namespace 4c2ba9-dev -o go-template="{{index .data.${KEY} | base64decode}}")
             if [ "$SECRET" = "" ]; then
                 echo -e "Secret $KEY not found in local-dev-secrets"
                 continue
             fi
-
             # handle all special characters in the secret, including new lines
             ESCAPED_SECRET=$(printf '%s' "$SECRET" | perl -pe 's/([\/&])/\\$1/g; s/\n/\\n/g')
             if [ "$KEY" = "ELASTICSEARCH_CA_CERT" ]; then
