@@ -131,7 +131,6 @@ def permit_conditions(permit_amendment, db_session):
 def test_create_permit_conditions_from_task(
     permit_conditions, permit_amendment, db_session
 ): 
-
     assert len(permit_conditions) == 7
     ### General Section
     gen_cat = permit_conditions[0]
@@ -392,3 +391,41 @@ def test_display_order_with_titles(test_client, db_session, permit_amendment):
     # Verify display orders with titles
     assert conditions_map["Sub 1"].display_order == 1
     assert conditions_map["Sub 2"].display_order == 2
+
+def test_condition_report_requirement_name_setup(permit_amendment, db_session):
+    task = PermitExtractionTaskFactory(
+        permit_amendment=permit_amendment,
+        task_result={
+            "conditions": [
+                {
+                    "section": "D",
+                    "paragraph": "1",
+                    "subparagraph": None,
+                    "clause": None,
+                    "subclause": None,
+                    "subsubclause": None,
+                    "condition_title": None,
+                    "condition_text": "This is a report requirement",
+                    "meta": {
+                        "questions": [
+                            {"question_key": "require_report", "answer": True},
+                            {"question_key": "report_name", "answer": None},
+                            {"question_key": "due_date", "answer": "2023-12-31"},
+                            {"question_key": "recurring", "answer": True},
+                            {"question_key": "frequency", "answer": "monthly"},
+                            {"question_key": "mention_chief_inspector", "answer": True},
+                            {
+                                "question_key": "mention_chief_permitting_officer",
+                                "answer": False,
+                            },
+                        ]
+                    },
+                }
+            ]
+        }
+    )
+
+    create_permit_conditions_from_task(task)
+    report_requirements = MineReportPermitRequirement.query.all()
+    assert len(report_requirements) == 1
+    assert report_requirements[0].report_name == "Terms and conditions - 1"
