@@ -20,6 +20,7 @@ export interface HaystackDocumentMeta {
         sibling_contexts?: SiblingContexts;
         child_contexts?: ContextItem[];
     }
+    tenure: string[]
 }
 
 export interface ContextItem {

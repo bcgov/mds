@@ -62,6 +62,7 @@ doc_metadata_fields = {
     "sibling_ids": List[str],  # Add sibling_ids
     "child_ids": List[str],  # Add child_ids
     "report_name": str,  # Add report_name field
+    "tenure": List[str],
 }
 
 vector_search_config = VectorSearch()
@@ -153,6 +154,7 @@ def create_permit_condition_search_retrieval_pipeline():
             "mine_name",
             "document_name",
             "permit_type",
+            "tenure"
         ],
     )
 

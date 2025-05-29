@@ -151,7 +151,11 @@ def create_indexer():
             FieldMapping(
                 source_field_name="/document/embedding",
                 target_field_name="embedding"
-            )
+            ),
+            FieldMapping(
+                source_field_name="/document/tenure",
+                target_field_name="tenure"
+            ),
         ],
     )
     

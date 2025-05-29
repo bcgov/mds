@@ -13,7 +13,7 @@ headers = [
     'permit', 'mine_number', 'mine_name', 'document_name',
     'document_manager_guid', 'id', 'condition', 'permit_guid',
     'mine_guid', 'permit_amendment_guid', 'permit_condition_guid',
-    'step_path', 'parent_ids', 'sibling_ids', 'child_ids', 'report_name', 'permit_type'
+    'step_path', 'parent_ids', 'sibling_ids', 'child_ids', 'report_name', 'permit_type', 'tenure'
 ]
 
 
@@ -52,10 +52,20 @@ def export_permit_conditions(permit_amendment_guid, csv_writer=None):
     document_name = ''
     document_guid = ''
 
-    if latest_task and latest_task.permit_amendment_document:
+    if amendment.now_application_guid and amendment.now_application_documents:
+        doc = amendment.now_application_documents[0].mine_document
+        document_name = doc.document_name
+        document_guid = doc.document_manager_guid
+
+    elif latest_task and latest_task.permit_amendment_document:
         doc = latest_task.permit_amendment_document
         document_name = doc.document_name
         document_guid = doc.document_manager_guid
+
+    tenure = []
+
+    for property in permit.site_properties:
+        tenure.append(property.mine_tenure_type.description)
 
     condition_rows = []
     processed_ids = set()
@@ -86,6 +96,7 @@ def export_permit_conditions(permit_amendment_guid, csv_writer=None):
                 'permit_amendment_guid': str(amendment.permit_amendment_guid),
                 'permit_condition_guid': str(condition.permit_condition_guid),
                 'report_name': report_name,
+                'tenure': tenure,
                 **merged_data  # Include merged data
             }
             processed_ids.add(str(condition.permit_condition_guid))
@@ -108,6 +119,7 @@ def export_permit_conditions(permit_amendment_guid, csv_writer=None):
                 'permit_amendment_guid': str(amendment.permit_amendment_guid),
                 'permit_condition_guid': str(condition.permit_condition_guid),
                 'permit_type': 'Notice of Work' if amendment.now_application_guid else 'Major Mine',
+                'tenure': tenure,
                 'id': str(condition.permit_condition_guid),
                 'condition': condition.condition,
                 'report_name': report_name,

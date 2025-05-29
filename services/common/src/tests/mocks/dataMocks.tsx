@@ -3566,7 +3566,8 @@ export const MOCK_PERMIT_SEARCH_RESULT: HaystackDocumentSearchResult = {
       child_contexts: [
         { id: 'child1', content: 'Child 1', step: 'B', hierarchy: 'B' }
       ]
-    }
+    },
+    tenure: ["Coal", "Placer"],
   }
 };
 
