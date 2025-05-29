@@ -24,6 +24,7 @@ import { ActionMenuButton } from "../common/ActionMenu";
 import EditTsfAppointmentForm, { AppointmentEditAction } from "./EditTsfAppointmentForm";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
+import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
 
 const { Paragraph } = Typography;
 
@@ -37,6 +38,7 @@ interface EngineerOfRecordProps {
 export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
   const { mineGuid, loading, canEditTSF, isEditMode } = props;
 
+  const isCore = useAppSelector(getIsCore);
   const dispatch = useAppDispatch();
   const { isFeatureEnabled } = useFeatureFlag();
   const canTerminateAppts = isFeatureEnabled(Feature.TSF_TERMINATE_APPTS);
@@ -120,26 +122,6 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
 
   const showEditFields = canEditEOR && !loading && canEditTSFAndEditMode;
 
-  const hasPendingEOR = formValues?.engineers_of_record?.some(
-    (eor) => PARTY_APPOINTMENT_STATUS[eor.status] === PARTY_APPOINTMENT_STATUS.pending
-  );
-
-  const hasCurrentEOR = formValues?.engineers_of_record?.some(
-    (eor) => PARTY_APPOINTMENT_STATUS[eor.status] === PARTY_APPOINTMENT_STATUS.active
-  );
-
-  // const handleCreateEORModal = (newOpen: boolean) => {
-  //   if (!newOpen) {
-  //     setOpenPopConfirm(newOpen);
-  //     return;
-  //   }
-  //   if (hasCurrentEOR || hasPendingEOR) {
-  //     setOpenPopConfirm(true);
-  //   } else {
-  //     openCreateEORModal();
-  //   }
-  // };
-
   const eorActions = [
     {
       key: "assign",
@@ -159,7 +141,6 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
         <Col span={24}>
           <Row justify="space-between">
             <Typography.Title level={3}>Engineer of Record</Typography.Title>
-
             <Col span={12}>
               <Row justify="end">
                 {canEditTSFAndEditMode && (
@@ -196,8 +177,8 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
                 >
                   Per Health, Safety and Reclamation Code
                 </a>
-                , written acknowledgement to the Chief Inspector is required within 72 hours when an
-                Engineer of Record (EoR) is retained or accepts the role. A report request will be
+                {" "}10.4.1, written acknowledgement to the Chief Inspector is required within 72 hours when an
+                Engineer of Record (EoR) is retained, accepts or departs the role. A report request will be
                 generated upon changes to the EoR.
               </Paragraph>
             }

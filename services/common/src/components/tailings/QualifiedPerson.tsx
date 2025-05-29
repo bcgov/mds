@@ -162,9 +162,9 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
               >
                 Per Health, Safety and Reclamation Code
               </a>
-              , written acknowledgement to the Chief Inspector is required within 72 hours when an
-              Qualified Person (QP) is retained or accepts the role. A report request will be
-              generated upon changes to the Qualified person
+              {" "}10.4.2, written acknowledgement to the Chief Inspector is required within 72 hours when a
+              Qualified Person (QP) is retained, accepts or departs the role. A report request will be
+              generated upon changes to the Qualified Person.
             </Paragraph>
           }
           showIcon

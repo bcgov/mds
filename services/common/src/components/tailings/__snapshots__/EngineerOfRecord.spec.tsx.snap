@@ -27,7 +27,7 @@ exports[`Tailings EngineerOfRecord renders properly 1`] = `
               class="ant-row ant-row-end"
             >
               <button
-                class="ant-btn ant-btn-primary ant-dropdown-trigger"
+                class="ant-btn ant-btn-primary ant-dropdown-trigger actions-dropdown-button"
                 data-testid=""
                 type="button"
               >
@@ -113,7 +113,8 @@ exports[`Tailings EngineerOfRecord renders properly 1`] = `
                 >
                   Per Health, Safety and Reclamation Code
                 </a>
-                , written acknowledgement to the Chief Inspector is required within 72 hours when an Engineer of Record (EoR) is retained or accepts the role. A report request will be generated upon changes to the EoR.
+                 
+                10.4.1, written acknowledgement to the Chief Inspector is required within 72 hours when an Engineer of Record (EoR) is retained, accepts or departs the role. A report request will be generated upon changes to the EoR.
               </div>
             </div>
           </div>

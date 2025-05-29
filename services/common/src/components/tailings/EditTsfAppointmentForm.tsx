@@ -38,7 +38,6 @@ const EditTsfAppointmentForm: FC<EditTsfProps> = ({
     const partyTitle = useAppSelector(getPartyRelationshipTitle(partyAppointment.mine_party_appt_type_code))
 
     const onSubmit = (values) => {
-        console.log('values', values)
         dispatch(updatePartyRelationship(values)).then((resp) => {
             if (resp?.data) {
                 const mineGuid = partyAppointment.mine_guid;
@@ -49,7 +48,6 @@ const EditTsfAppointmentForm: FC<EditTsfProps> = ({
                         fetchPartyRelationships({
                             mine_guid: mineGuid,
                             relationships: "party",
-                            // include_permit_contacts: "true",
                             mine_tailings_storage_facility_guid: tsfGuid,
                         })
                     )

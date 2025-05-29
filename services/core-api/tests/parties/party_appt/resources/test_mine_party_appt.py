@@ -150,3 +150,68 @@ def test_find_expired_appointments_includes_multiple(setup_info):
     appts = MinePartyAppointment.find_expired_appointments('EOR')
 
     assert len(appts) == 2
+
+# termination reports generation tests
+
+def test_request_termination_report_if_required_no_end_date(monkeypatch, setup_info):
+    eor = setup_info['eor']
+    eor.end_date = None
+    eor.save()
+
+    monkeypatch.setattr(
+        'app.api.parties.party_appt.models.mine_party_appt.is_feature_enabled',
+        lambda feature: True
+    )
+    # Should do nothing (no error, no report)
+    assert eor.request_termination_report_if_required() is None
+
+
+def test_request_termination_report_if_required_creates_report(monkeypatch, setup_info):
+    eor = setup_info['eor']
+    eor.end_date = datetime.utcnow()
+    eor.save()
+
+    monkeypatch.setattr(
+        'app.api.parties.party_appt.models.mine_party_appt.is_feature_enabled',
+        lambda feature: True
+    )
+    # Patch MineReportDefinition.find_one_by_section to return a mock with id
+    class DummyDef:
+        mine_report_definition_id = 123
+    monkeypatch.setattr(
+        'app.api.mines.reports.models.mine_report_definition.MineReportDefinition.find_one_by_section',
+        staticmethod(lambda *args, **kwargs: DummyDef())
+    )
+    # Patch MineReport.create and .save
+    created = {}
+    class DummyReport:
+        def __init__(self, **kwargs):
+            created.update(kwargs)
+        def save(self):
+            created['saved'] = True
+    monkeypatch.setattr(
+        'app.api.mines.reports.models.mine_report.MineReport.create',
+        staticmethod(lambda **kwargs: DummyReport(**kwargs))
+    )
+    eor.request_termination_report_if_required()
+    assert created['mine_report_definition_id'] == 123
+    assert created['saved'] is True
+
+
+def test_request_termination_report_if_required_not_found(monkeypatch, setup_info):
+    from werkzeug.exceptions import NotFound
+    eor = setup_info['eor']
+    eor.end_date = datetime.utcnow()
+    eor.save()
+
+    monkeypatch.setattr(
+        'app.api.parties.party_appt.models.mine_party_appt.is_feature_enabled',
+        lambda feature: True
+    )
+    # Patch MineReportDefinition.find_one_by_section to return None
+    monkeypatch.setattr(
+        'app.api.mines.reports.models.mine_report_definition.MineReportDefinition.find_one_by_section',
+        staticmethod(lambda *args, **kwargs: None)
+    )
+    with pytest.raises(NotFound):
+        eor.request_termination_report_if_required()

@@ -7,7 +7,7 @@ from flask import current_app
 
 class Feature(Enum):
     TSF_V2 = 'tsf_v2'
-    TSF_TERMINATE_APPTS = 'tsf_terminate_appts',
+    TSF_TERMINATE_APPTS = 'tsf_terminate_appts'
     MAJOR_PROJECT_REPLACE_FILE = 'major_project_replace_file'
     MINE_APPLICATION_FILE_UDPATE_ALERTS = 'mine_application_file_update_alerts'
     TRACTION_VERIFIABLE_CREDENTIALS = 'verifiable_credentials'
