@@ -8,6 +8,7 @@ export enum Feature {
   MAJOR_PROJECT_DECISION_PACKAGE = "major_project_decision_package",
   FLAGSMITH = "flagsmith",
   TSF_V2 = "tsf_v2",
+  TSF_TERMINATE_APPTS = "tsf_terminate_appts",
   VC_ANONCREDS_CORE = "vc_anoncreds_core",
   VC_ANONCREDS_MINESPACE = "vc_anoncreds_minespace",
   VC_W3C = "vc_w3c",

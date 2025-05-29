@@ -282,7 +282,7 @@ class MinePartyApptResource(Resource, UserMixin):
             'mine_party_appt_guid':
             'mine party appointment guid, this endpoint only respects form data keys: start_date and end_date, and related_guid'
         })
-    @requires_role_mine_edit
+    @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
     def put(self, mine_party_appt_guid=None):
         if not mine_party_appt_guid:
             raise BadRequest('missing mine party appointment guid')
@@ -292,24 +292,33 @@ class MinePartyApptResource(Resource, UserMixin):
         if not mpa:
             raise NotFound('mine party appointment not found')
 
-        for key, value in data.items():
-            if key in ['party_guid', 'mine_guid']:
-                continue
-            elif key == 'related_guid':
-                related_guid = data.get('related_guid', None)
-                mpa.assign_related_guid(mpa.mine_party_appt_type_code, related_guid)
-            
-            elif key == 'mine_party_acknowledgement_status' \
-                    and value == MinePartyAcknowledgedStatus.acknowledged \
-                    and mpa.status != MinePartyAppointmentStatus.active:
-                # Make this appointment active if it has been acknowledged
-                mpa.set_active()
-                setattr(mpa, key, value)
-            else:
-                setattr(mpa, key, value)
+        end_date = data.get("end_date", None)
+        terminate_mpa = mpa.end_date is None and end_date is not None
+        # MS user can only update end date
+        if is_minespace_user() and end_date is not None:
+            mpa.end_date = end_date
+        
+        else: 
+            for key, value in data.items():
+                if key in ['party_guid', 'mine_guid']:
+                    continue
+                elif key == 'related_guid':
+                    related_guid = data.get('related_guid', None)
+                    mpa.assign_related_guid(mpa.mine_party_appt_type_code, related_guid)
+                
+                elif key == 'mine_party_acknowledgement_status' \
+                        and value == MinePartyAcknowledgedStatus.acknowledged \
+                        and mpa.status != MinePartyAppointmentStatus.active:
+                    # Make this appointment active if it has been acknowledged
+                    mpa.set_active()
+                    setattr(mpa, key, value)
+                else:
+                    setattr(mpa, key, value)
 
         try:
             mpa.save()
+            if terminate_mpa:
+                mpa.request_termination_report_if_required()
         except alch_exceptions.IntegrityError as e:
             if "daterange_excl" in str(e):
                 mpa_type_name = mpa.mine_party_appt_type.description

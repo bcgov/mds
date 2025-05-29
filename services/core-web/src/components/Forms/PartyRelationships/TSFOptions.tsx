@@ -1,22 +1,18 @@
-import React from "react";
+import React, { FC } from "react";
 import { Field } from "@mds/common/components/forms/form";
 import { Col, Row } from "antd";
 import { notnone } from "@mds/common/redux/utils/Validate";
 import { createDropDownList } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
-import CustomPropTypes from "@/customPropTypes";
+import { IMine } from "@mds/common/interfaces";
 
-const propTypes = {
-  mine: CustomPropTypes.mine,
-};
+interface TSFOptionsProps {
+  mine: IMine;
+}
 
-const defaultProps = {
-  mine: {},
-};
-
-export const TSFOptions = (props) => {
+export const TSFOptions: FC<TSFOptionsProps> = ({ mine }) => {
   const tsfDropdown = createDropDownList(
-    props.mine.mine_tailings_storage_facilities,
+    mine.mine_tailings_storage_facilities,
     "mine_tailings_storage_facility_name",
     "mine_tailings_storage_facility_guid"
   );
@@ -39,8 +35,5 @@ export const TSFOptions = (props) => {
     </Row>
   );
 };
-
-TSFOptions.propTypes = propTypes;
-TSFOptions.defaultProps = defaultProps;
 
 export default TSFOptions;
