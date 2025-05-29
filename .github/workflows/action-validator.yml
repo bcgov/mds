@@ -6,15 +6,25 @@ on:
     branches:
       - develop
     paths:
-      - ".github/workflows/**"
+      - ".github/workflows/**/*.yaml"
+      - ".github/workflows/**/*.yml"
   pull_request:
     paths:
-      - ".github/workflows/**"
+      - ".github/workflows/**/*.yaml"
+      - ".github/workflows/**/*.yml"
 
 jobs:
   validate-actions:
     runs-on: ubuntu-latest
     steps:
+      - name: Install Act dependencies
+        run: |
+          apt-get update && apt-get install sudo -y
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install curl build-essential -y
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -22,7 +32,7 @@ jobs:
         uses: asdf-vm/actions/install@v4
         with:
           tool_versions: |
-            action-validator main
+            action-validator 0.6.0
 
       - name: Lint Actions
         run: |
