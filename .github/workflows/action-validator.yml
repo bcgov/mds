@@ -22,7 +22,7 @@ jobs:
         uses: asdf-vm/actions/install@v4
         with:
           tool_versions: |
-            action-validator
+            action-validator main
 
       - name: Lint Actions
         run: |
