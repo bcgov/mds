@@ -8,6 +8,7 @@ import {
 } from "../utils/helpers";
 import { RootState } from "@mds/common/redux/rootState";
 import { getMunicipalityOptions } from "../reducers/staticContentReducer";
+import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants/enums";
 
 export const {
   getStaticContentLoadingIsComplete,
@@ -621,6 +622,13 @@ export const getPartyRelationshipTypesList = createSelectorWrapper(
   createDropDownList,
   ["description", "mine_party_appt_type_code", "active_ind"]
 );
+
+export const getPartyRelationshipTitle = (minePartyApptTypeCode: MinePartyAppointmentTypeCodeEnum) => createSelector(
+  [getPartyRelationshipTypes], (types) => {
+    const type = types.find((t) => t.mine_party_appt_type_code === minePartyApptTypeCode);
+    return type?.description;
+  }
+)
 
 export const getPartyRelationshipTypeHash = createSelector(
   [getPartyRelationshipTypesList],

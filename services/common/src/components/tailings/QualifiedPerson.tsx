@@ -1,9 +1,8 @@
-import { Alert, Button, Col, Empty, Popconfirm, Row, Typography } from "antd";
+import { Alert, Col, Empty, Row, Typography } from "antd";
 import { change, Field, getFormValues } from "@mds/common/components/forms/form";
 import React, { FC, useContext } from "react";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
-import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import {
   dateInFuture,
   dateNotInFuture,
@@ -19,6 +18,8 @@ import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants/enums";
 import PartyAppointmentTable from "@mds/common/components/tailings/PartyAppointmentTable";
 import { formatDateTime } from "@mds/common/redux/utils/helpers";
+import { ActionMenuButton } from "../common/ActionMenu";
+import EditTsfAppointmentForm, { AppointmentEditAction } from "./EditTsfAppointmentForm";
 
 const { Paragraph } = Typography;
 
@@ -48,15 +49,14 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
     dispatch(closeModal());
   };
 
-  const openCreateQPModal = (event) => {
-    event.preventDefault();
+  const openCreateQPModal = () => {
     dispatch(
       openModal({
         props: {
           onSubmit: handleCreateQP,
           title: "Select Contact",
           mine_party_appt_type_code: MinePartyAppointmentTypeCodeEnum.TQP,
-          mine: mineGuid,
+          mine: { mine_guid: mineGuid, mine_tailings_storage_facilities: [] },
           createPartyOnly: true,
         },
         content: addContactModalConfig,
@@ -94,6 +94,33 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
 
   const fieldsDisabled = !canEditQFP || props.loading || !canEditTSFAndEditMode;
 
+  const openEditQPModal = () => {
+    dispatch(
+      openModal({
+        props: {
+          title: "Terminate Qualified Person",
+          partyAppointment: formValues?.qualified_person,
+          tsfGuid: formValues?.mine_tailings_storage_facility_guid,
+          action: AppointmentEditAction.END,
+        },
+        content: EditTsfAppointmentForm,
+      })
+    );
+  };
+
+  const qpActions = [
+    {
+      key: "assign",
+      label: "Assign New Qualified Person",
+      clickFunction: openCreateQPModal,
+    },
+    (formValues?.qualified_person && formValues?.qualified_person?.party_guid) && {
+      key: "terminate",
+      label: "Terminate Qualified Person",
+      clickFunction: openEditQPModal,
+    },
+  ].filter(Boolean);
+
   return (
     <Row>
       <Col span={24}>
@@ -102,19 +129,11 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
           <Col span={12}>
             <Row justify="end">
               {canEditTSFAndEditMode && (
-                <Popconfirm
-                  style={{ maxWidth: "150px" }}
-                  placement="top"
-                  title="Once acknowledged by the Ministry, assigning a new Qualified Person will replace the current one and set the previous status to inactive. Continue?"
-                  okText="Yes"
-                  cancelText="No"
-                  onConfirm={openCreateQPModal}
-                >
-                  <Button style={{ display: "inline", float: "right" }} type="primary">
-                    <PlusCircleFilled />
-                    Assign a new Qualified Person
-                  </Button>
-                </Popconfirm>
+                <ActionMenuButton
+                  buttonText="Manage Qualified Person"
+                  buttonProps={{ type: "primary" }}
+                  actions={qpActions}
+                />
               )}
               {formValues?.qualified_person?.update_timestamp && (
                 <div>
@@ -182,7 +201,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
               disabled={fieldsDisabled}
               component={RenderDate}
               required={!fieldsDisabled}
-              validate={!fieldsDisabled && [required, dateNotInFuture, validateQPStartDateOverlap]}
+              validate={!fieldsDisabled ? [required, dateNotInFuture, validateQPStartDateOverlap] : []}
             />
           </Col>
           <Col span={12}>
@@ -191,7 +210,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
               name="qualified_person.end_date"
               label="End Date"
               disabled={fieldsDisabled}
-              validate={!fieldsDisabled && [dateInFuture]}
+              validate={!fieldsDisabled ? [dateInFuture] : []}
               component={RenderDate}
             />
           </Col>

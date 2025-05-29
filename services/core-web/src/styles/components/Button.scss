@@ -128,13 +128,15 @@ label .ant-btn {
 
 .actions-dropdown-button {
   margin: 0;
-  color: $violet;
-  background: transparent;
   box-shadow: none;
 
   &:disabled {
     color: $medium-grey;
     cursor: not-allowed;
+  }
+
+  &::after {
+    display: none !important;
   }
 
   &.ant-btn-text {
