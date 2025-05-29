@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UploadPermitDocumentModal renders properly 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-UPLOAD_PERMIT_DOCUMENT form-edit"
+    id="UPLOAD_PERMIT_DOCUMENT"
+  >
+    <div
+      class="ant-row"
+      style="margin-left: -8px; margin-right: -8px;"
+    >
+      <div
+        class="ant-col ant-col-24"
+        style="padding-left: 8px; padding-right: 8px;"
+      >
+        <div
+          class="whirlpool-container"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="UPLOAD_PERMIT_DOCUMENT_fileUpload"
+                  title=""
+                />
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="filepond--wrapper"
+                    >
+                      <input
+                        accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                        id="fileUpload"
+                        name="file"
+                        type="file"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="UPLOAD_PERMIT_DOCUMENT_fileUpload_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="right center-mobile"
+    >
+      <button
+        aria-label="Cancel"
+        class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
+        type="button"
+      >
+        <span>
+          Cancel
+        </span>
+      </button>
+      <button
+        aria-label="Submit"
+        class="ant-btn ant-btn-primary  form-btn"
+        type="submit"
+      >
+        <span>
+          Upload Documents
+        </span>
+      </button>
+    </div>
+  </form>
+</div>
+`;

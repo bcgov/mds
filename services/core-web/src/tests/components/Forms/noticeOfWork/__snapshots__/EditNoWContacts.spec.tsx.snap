@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditNoWContacts renders properly 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-formName form-edit"
+    id="formName"
+  >
+    <div
+      class="ant-row"
+      style="margin-left: -12px; margin-right: -12px;"
+    >
+      <div
+        class="ant-col ant-col-sm-24 ant-col-lg-12 ant-col-xxl-8"
+        style="padding-left: 12px; padding-right: 12px;"
+      />
+    </div>
+  </form>
+</div>
+`;

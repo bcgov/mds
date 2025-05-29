@@ -1,157 +1,226 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NoticeOfWorkHomePage renders properly 1`] = `
-<div
-  className="landing-page"
->
-  <PageTracker
-    title="NoW Page"
-  />
+<div>
   <div
-    className="landing-page__header"
-  >
-    <div>
-      <h1>
-        Browse Notices of Work
-      </h1>
-    </div>
-  </div>
-  <div
-    className="landing-page__content"
+    class="landing-page"
   >
     <div
-      className="page__content"
+      class="landing-page__header"
     >
-      <NoticeOfWorkSearch
-        handleSearch={[Function]}
-        initialValues={
-          Object {
-            "mine_search": undefined,
-          }
-        }
-        searchParams={
-          Object {
-            "application_type": "NOW",
-            "issuing_inspector_name": undefined,
-            "lead_inspector_name": undefined,
-            "mine_name": undefined,
-            "mine_region": "SW,NE",
-            "mine_search": undefined,
-            "notice_of_work_type_description": Array [],
-            "now_application_status_description": Array [],
-            "now_number": undefined,
-            "originating_system": Array [],
-            "page": "1",
-            "per_page": "10",
-            "sort_dir": "desc",
-            "sort_field": "received_date",
-          }
-        }
-      />
       <div>
-        <div
-          className="tab__content"
-        >
-          <withRouter(NoticeOfWorkTable)
-            applicationStatusOptions={Object {}}
-            applicationTypeOptions={Object {}}
-            defaultParams={
-              Object {
-                "application_type": "NOW",
-                "issuing_inspector_name": undefined,
-                "lead_inspector_name": undefined,
-                "mine_name": undefined,
-                "mine_region": Array [],
-                "mine_search": undefined,
-                "notice_of_work_type_description": Array [],
-                "now_application_status_description": Array [],
-                "now_number": undefined,
-                "originating_system": Array [],
-                "page": "1",
-                "per_page": "10",
-                "sort_dir": "desc",
-                "sort_field": "received_date",
-              }
-            }
-            handleSearch={[Function]}
-            isLoaded={false}
-            mineRegionHash={Object {}}
-            mineRegionOptions={Object {}}
-            noticeOfWorkApplications={
-              Array [
-                Object {
-                  "application_documents": Array [],
-                  "application_progress": Array [],
-                  "imported_to_core": true,
-                  "is_historic": false,
-                  "issuing_inspector_name": "Inspector Gadget",
-                  "issuing_inspector_party_guid": "95e79bd8-a9bf-42ab-9d57-e4864bcb81fd",
-                  "lead_inspector_name": "Test Inspector",
-                  "lead_inspector_party_guid": "2bf47c5d-2c7a-4ce7-9c8b-900b9c8e755a",
-                  "mine_guid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
-                  "mine_name": "Hamilton, Herrera and Mccormick",
-                  "mine_no": "brother",
-                  "mine_region": "SW",
-                  "notice_of_work_type_code": "MIN",
-                  "notice_of_work_type_description": "choice",
-                  "now_application_guid": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
-                  "now_application_status_description": "Approved",
-                  "now_number": "44",
-                  "originating_system": "MMS",
-                  "received_date": "2019-08-14",
-                },
-                Object {
-                  "application_documents": Array [],
-                  "imported_to_core": false,
-                  "is_historic": true,
-                  "issuing_inspector_name": "Inspector Gadget",
-                  "issuing_inspector_party_guid": "95e79bd8-a9bf-42ab-9d57-e4864bcb81fd",
-                  "lead_inspector_name": "Test Inspector",
-                  "lead_inspector_party_guid": "2bf47c5d-2c7a-4ce7-9c8b-900b9c8e755a",
-                  "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
-                  "mine_name": "Thompson-Sullivan",
-                  "mine_no": "other",
-                  "mine_region": "SW",
-                  "notice_of_work_type_code": "MIN",
-                  "notice_of_work_type_description": "technology",
-                  "now_application_guid": "8e1536da-644c-4961-976b-b1326fa75825",
-                  "now_application_status_description": "Approved",
-                  "now_number": "52",
-                  "originating_system": "MMS",
-                  "received_date": "2019-07-21",
-                },
-              ]
-            }
-            searchParams={
-              Object {
-                "application_type": "NOW",
-                "issuing_inspector_name": undefined,
-                "lead_inspector_name": undefined,
-                "mine_name": undefined,
-                "mine_region": "SW,NE",
-                "mine_search": undefined,
-                "notice_of_work_type_description": Array [],
-                "now_application_status_description": Array [],
-                "now_number": undefined,
-                "originating_system": Array [],
-                "page": "1",
-                "per_page": "10",
-                "sort_dir": "desc",
-                "sort_field": "received_date",
-              }
-            }
-            sortDir="desc"
-            sortField="received_date"
-          />
+        <h1>
+          Browse Notices of Work
+        </h1>
+      </div>
+    </div>
+    <div
+      class="landing-page__content"
+    >
+      <div
+        class="page__content"
+      >
+        <div>
           <div
-            className="center"
+            class="ant-row"
           >
-            <ResponsivePagination
-              currentPage={1}
-              itemsPerPage={10}
-              onPageChange={[Function]}
-              pageTotal={9000}
-            />
+            <div
+              class="ant-col ant-col-xs-20 ant-col-xs-offset-2 ant-col-md-12 ant-col-md-offset-6"
+            >
+              <span
+                class="advanced-search__container"
+              >
+                <form
+                  class="ant-form ant-form-vertical common-form common-form-NOTICE_OF_WORK_SEARCH form-edit"
+                  id="NOTICE_OF_WORK_SEARCH"
+                >
+                  <div
+                    class="ant-row"
+                    style="margin-left: -3px; margin-right: -3px;"
+                  >
+                    <div
+                      class="ant-col ant-col-xs-24 ant-col-md-24"
+                      style="padding-left: 3px; padding-right: 3px;"
+                    >
+                      <div
+                        class="ant-form-item ant-form-item-with-help"
+                      >
+                        <div
+                          class="ant-row ant-form-item-row"
+                        >
+                          <div
+                            class="ant-col ant-form-item-control"
+                          >
+                            <div
+                              class="ant-form-item-control-input"
+                            >
+                              <div
+                                class="ant-form-item-control-input-content"
+                              >
+                                <input
+                                  aria-label="mine_search"
+                                  class="ant-input"
+                                  data-testid="mine_search"
+                                  id="mine_search"
+                                  name="mine_search"
+                                  placeholder="Search by mine name or number"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                            <div
+                              style="display: flex; flex-wrap: nowrap;"
+                            >
+                              <div
+                                class="ant-form-item-explain ant-form-item-explain-connected"
+                                id="NOTICE_OF_WORK_SEARCH_mine_search_help"
+                                role="alert"
+                              >
+                                <div
+                                  class=""
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="right center-mobile"
+                  >
+                    <button
+                      class="ant-btn ant-btn-primary full-mobile"
+                      type="submit"
+                    >
+                      <span
+                        aria-label="search"
+                        class="anticon anticon-search"
+                        role="img"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class=""
+                          data-icon="search"
+                          fill="currentColor"
+                          focusable="false"
+                          height="1em"
+                          viewBox="64 64 896 896"
+                          width="1em"
+                        >
+                          <path
+                            d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0011.6 0l43.6-43.5a8.2 8.2 0 000-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z"
+                          />
+                        </svg>
+                      </span>
+                    </button>
+                  </div>
+                </form>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div
+            class="tab__content"
+          >
+            <div
+              class="ant-table-wrapper"
+            >
+              <div
+                class="ant-spin-nested-loading"
+              >
+                <div
+                  class="ant-spin-container"
+                >
+                  <div
+                    class="ant-table"
+                  >
+                    <div
+                      class="ant-table-container"
+                    >
+                      <div
+                        class="ant-table-content"
+                      >
+                        <table
+                          style="table-layout: auto;"
+                        >
+                          <colgroup />
+                          <thead
+                            class="ant-table-thead"
+                          >
+                            <tr>
+                              <th
+                                class="ant-table-cell"
+                              >
+                                Number
+                              </th>
+                              <th
+                                class="ant-table-cell"
+                              >
+                                Mine
+                              </th>
+                              <th
+                                class="ant-table-cell"
+                              >
+                                Region
+                              </th>
+                              <th
+                                class="ant-table-cell"
+                              >
+                                Type
+                              </th>
+                              <th
+                                class="ant-table-cell"
+                              >
+                                Lead Inspector
+                              </th>
+                              <th
+                                class="ant-table-cell"
+                              >
+                                Issuing Inspector
+                              </th>
+                              <th
+                                class="ant-table-cell"
+                              >
+                                Status
+                              </th>
+                              <th
+                                class="ant-table-cell"
+                              >
+                                Received
+                              </th>
+                              <th
+                                class="ant-table-cell"
+                              >
+                                Source
+                              </th>
+                              <th
+                                class="ant-table-cell"
+                              >
+                                Application
+                              </th>
+                              <th
+                                class="ant-table-cell"
+                              />
+                            </tr>
+                          </thead>
+                          <tbody
+                            class="ant-table-tbody"
+                          />
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="center"
+            >
+              <div />
+            </div>
           </div>
         </div>
       </div>

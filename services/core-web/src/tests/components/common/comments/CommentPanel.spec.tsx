@@ -4,29 +4,19 @@ import { render } from "@testing-library/react";
 import { MINE_COMMENTS } from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
-const dispatchProps: any = {};
-const props: any = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.onSubmit = jest.fn();
-  dispatchProps.onChange = jest.fn();
-  dispatchProps.onRemove = jest.fn();
+const props: any = {
+  location: { hash: "", pathname: "/dashboard" },
+  children: "",
+  loading: false,
+  renderEditor: false,
+  comments: MINE_COMMENTS.records,
+  userRoles: [],
 };
-
-const setupProps = () => {
-  props.location = { hash: "", pathname: "/dashboard" };
-  props.children = "";
-
-  props.loading = false;
-  props.renderEditor = false;
-  props.comments = MINE_COMMENTS.records;
-  props.userRoles = [];
+const dispatchProps: any = {
+  onSubmit: jest.fn(),
+  onChange: jest.fn(),
+  onRemove: jest.fn(),
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("Comment", () => {
   it("renders properly", () => {

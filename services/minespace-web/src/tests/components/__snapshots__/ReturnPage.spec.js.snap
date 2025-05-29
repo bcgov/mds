@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`ReturnPage renders properly 1`] = `
-<Redirect
-  push={true}
-  to="/"
-/>
-`;

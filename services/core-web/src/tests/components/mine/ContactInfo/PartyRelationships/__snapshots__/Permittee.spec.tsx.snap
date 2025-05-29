@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Permittee renders properly 1`] = `
+<div>
+  <div
+    class="ant-card"
+  >
+    <div
+      class="ant-card-head"
+      style="min-height: 0px;"
+    >
+      <div
+        class="ant-card-head-wrapper"
+      >
+        <div
+          class="ant-card-head-title"
+        >
+          <div>
+            <div
+              class="flex flex-between"
+            >
+              <div
+                class="flex items-center"
+              >
+                <h4
+                  class="margin-large--right"
+                >
+                  Permittee
+                </h4>
+                <p>
+                  (
+                  No permit assigned
+                  )
+                </p>
+              </div>
+            </div>
+            <div
+              class="padding-md--top"
+            >
+              <a
+                href="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/history/PMT"
+              >
+                <button
+                  class="ant-btn ant-btn-default margin-none"
+                  type="button"
+                >
+                  <span>
+                    See History
+                  </span>
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-card-body"
+    >
+      <div
+        class="default-contact"
+      >
+        <a
+          href="/dashboard/43f513af-1142-443b-a1e6-f14ef857f4ea/profile"
+        >
+          <h4
+            class="link-colour"
+          >
+            test company 2 
+          </h4>
+        </a>
+        <div>
+          <h6>
+            Email Address
+          </h6>
+          <a
+            href="mailto:test@test.test"
+          >
+            test@test.test
+          </a>
+        </div>
+        <div>
+          <h6>
+            Phone Number
+          </h6>
+          <p>
+            123-123-1234
+          </p>
+        </div>
+        <div>
+          <h6>
+            Permittee
+             Since
+          </h6>
+          <span>
+            Jan 01 2019
+          </span>
+        </div>
+      </div>
+      other details
+      <div
+        class="right"
+      />
+    </div>
+  </div>
+</div>
+`;

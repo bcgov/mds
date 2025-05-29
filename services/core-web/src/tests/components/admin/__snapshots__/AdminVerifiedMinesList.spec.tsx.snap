@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdminVerifiedMinesList renders properly 1`] = `
+<div>
+  <div
+    class="tab__content"
+  >
+    <h2>
+      Mine Verification
+    </h2>
+    <div
+      class="ant-divider ant-divider-horizontal"
+      role="separator"
+    />
+    <br />
+    <h4>
+      0
+       
+      Mine(s) needing re-verification
+    </h4>
+    <div
+      class="ant-table-wrapper"
+    >
+      <div
+        class="ant-spin-nested-loading"
+      >
+        <div
+          class="ant-spin-container"
+        >
+          <div
+            class="ant-table"
+          >
+            <div
+              class="ant-table-container"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <colgroup />
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Mine Name
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Last Verified By
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Last Verified On
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  />
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

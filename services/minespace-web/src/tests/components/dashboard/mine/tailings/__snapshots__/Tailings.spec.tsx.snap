@@ -911,7 +911,7 @@ Object {
                                   <div
                                     title="Operating Status"
                                   >
-                                    N/A
+                                    Operating
                                   </div>
                                 </td>
                                 <td
@@ -938,7 +938,7 @@ Object {
                                   <div
                                     title="Has Independent Tailings Review Board?"
                                   >
-                                    N/A
+                                    Yes
                                   </div>
                                 </td>
                                 <td
@@ -1948,7 +1948,7 @@ Object {
                                 <div
                                   title="Operating Status"
                                 >
-                                  N/A
+                                  Operating
                                 </div>
                               </td>
                               <td
@@ -1975,7 +1975,7 @@ Object {
                                 <div
                                   title="Has Independent Tailings Review Board?"
                                 >
-                                  N/A
+                                  Yes
                                 </div>
                               </td>
                               <td

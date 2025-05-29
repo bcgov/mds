@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Conditions renders properly 1`] = `
+<div>
+  <div
+    style="display: inline-block; background-color: rgb(244, 240, 240); padding: 16px; border-radius: 5px; margin-bottom: 20px; min-width: 345px;"
+  >
+    <div
+      style="margin-left: 24px;"
+    >
+      <p>
+        <b>
+          Updated at: 
+        </b>
+        N/A
+        <br />
+        <b>
+          Updated by: 
+        </b>
+        N/A
+        <br />
+      </p>
+    </div>
+  </div>
+  <div>
+    <div
+      class="ant-collapse ant-collapse-icon-position-start"
+    />
+  </div>
+</div>
+`;

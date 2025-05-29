@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ExecutiveReportingDashboard renders properly 1`] = `
+<div>
+  <div>
+    <h1>
+      Executive Dashboard
+    </h1>
+  </div>
+</div>
+`;

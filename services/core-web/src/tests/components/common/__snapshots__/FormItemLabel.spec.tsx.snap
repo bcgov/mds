@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FormItemLabel renders properly 1`] = `
+<div>
+  <div
+    class="padding-md--bottom"
+  >
+    <div
+      class="ant-col ant-form-item-label padding-lg--top "
+    >
+      <label
+        for="label"
+      />
+    </div>
+  </div>
+</div>
+`;

@@ -1,46 +1,68 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RenderFileUpload component renders correctly 1`] = `
-<div
-  class="whirlpool-container"
->
-  <div
-    class="ant-form-item"
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-formName form-edit"
+    id="formName"
   >
     <div
-      class="ant-row ant-form-item-row"
+      class="whirlpool-container"
     >
       <div
-        class="ant-col ant-form-item-label"
-      >
-        <label
-          class=""
-          title=""
-        />
-      </div>
-      <div
-        class="ant-col ant-form-item-control"
+        class="ant-form-item ant-form-item-with-help"
       >
         <div
-          class="ant-form-item-control-input"
+          class="ant-row ant-form-item-row"
         >
           <div
-            class="ant-form-item-control-input-content"
+            class="ant-col ant-form-item-label"
+          >
+            <label
+              class=""
+              for="formName_test-name"
+              title=""
+            >
+              <a
+                href="https://example.com"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                File Upload Label
+              </a>
+            </label>
+          </div>
+          <div
+            class="ant-col ant-form-item-control"
           >
             <div
-              class="filepond--wrapper"
+              class="ant-form-item-control-input"
             >
-              <input
-                accept="application/pdf"
-                multiple=""
-                name="file"
-                type="file"
-              />
+              <div
+                class="ant-form-item-control-input-content"
+              >
+                <div
+                  data-testid="mock-filepond"
+                />
+              </div>
+            </div>
+            <div
+              style="display: flex; flex-wrap: nowrap;"
+            >
+              <div
+                class="ant-form-item-explain ant-form-item-explain-connected"
+                id="formName_test-name_help"
+                role="alert"
+              >
+                <div
+                  class=""
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </form>
 </div>
 `;

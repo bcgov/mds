@@ -1,0 +1,234 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineVariance renders properly 1`] = `
+<div>
+  <div
+    class="tab__content"
+  >
+    <div>
+      <h2>
+        Variances
+      </h2>
+      <div
+        class="ant-divider ant-divider-horizontal"
+        role="separator"
+      />
+    </div>
+    <div
+      class="inline-flex flex-end"
+    />
+    <div>
+      <br />
+      <h4
+        class="uppercase"
+      >
+        Variance Applications
+      </h4>
+      <br />
+      <div
+        class="ant-table-wrapper"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <thead
+                      class="ant-table-thead"
+                    >
+                      <tr>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Number
+                        </th>
+                        <th
+                          class="ant-table-cell column-hide"
+                        >
+                          Mine
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Code
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Lead Inspector
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Submission Date
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Application Status
+                        </th>
+                        <th
+                          class="ant-table-cell column-hide"
+                        >
+                          Issue Date
+                        </th>
+                        <th
+                          class="ant-table-cell column-hide"
+                        >
+                          Expiry Date
+                        </th>
+                        <th
+                          class="ant-table-cell column-hide"
+                        >
+                          Approval Status
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Documents
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="ant-table-tbody"
+                    />
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <h4
+        class="uppercase"
+      >
+        Approved Variances
+      </h4>
+      <br />
+      <div
+        class="ant-table-wrapper"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <thead
+                      class="ant-table-thead"
+                    >
+                      <tr>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Number
+                        </th>
+                        <th
+                          class="ant-table-cell column-hide"
+                        >
+                          Mine
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Code
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Lead Inspector
+                        </th>
+                        <th
+                          class="ant-table-cell column-hide"
+                        >
+                          Submission Date
+                        </th>
+                        <th
+                          class="ant-table-cell column-hide"
+                        >
+                          Application Status
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Issue Date
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Expiry Date
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Approval Status
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Documents
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="ant-table-tbody"
+                    />
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

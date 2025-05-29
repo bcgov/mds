@@ -44,10 +44,10 @@ interface NoticeOfWorkHomePageProps {
   fetchNoticeOfWorkApplications: (params: NoWSearchParams) => Promise<INoticeOfWork>;
   pageData: IPageData<INoticeOfWork>;
   noticeOfWorkApplications: INoticeOfWork[];
-  mineRegionHash: object;
-  mineRegionOptions: IOption;
-  applicationTypeOptions: IOption;
-  applicationStatusOptions: IOption;
+  mineRegionHash: any;
+  mineRegionOptions: IOption[];
+  applicationTypeOptions: IOption[];
+  applicationStatusOptions: IOption[];
 }
 
 const defaultParams = {

@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LinkButton renders properly 1`] = `
+<div>
+  <a
+    role="link"
+    tabindex="1"
+  />
+</div>
+`;

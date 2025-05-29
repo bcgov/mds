@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NOWTabHeader renders properly 1`] = `
+<div>
+  <div
+    class="view--header fixed-scroll"
+  >
+    <div
+      class="inline-flex flex-center view--header--content"
+    />
+    <div
+      class="ant-alert ant-alert-warning ant-alert-no-icon ant-alert-banner status-banner"
+      data-show="true"
+      role="alert"
+      style="color: rgb(255, 255, 255);"
+    >
+      <div
+        class="ant-alert-content"
+      >
+        <div
+          class="ant-alert-message"
+        >
+          Edit Mode
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

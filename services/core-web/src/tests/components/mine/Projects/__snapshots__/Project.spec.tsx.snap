@@ -1,0 +1,256 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Project renders properly 1`] = `
+<div>
+  <div
+    class="page fixed-tabs-container"
+  >
+    <div
+      class="scroll-side-menu-wrapper scroll-side-menu-view--anchor"
+    >
+      <div
+        class="view--header"
+        style="padding-bottom: 0px; height: 181px;"
+      >
+        <div
+          class="padding-lg"
+        >
+          <h1>
+            Test Project Title
+            <span
+              class="padding-sm--left"
+            >
+              <span
+                class="ant-tag"
+                title="Mine: Sample Mine"
+              >
+                <a
+                  href="/mine-dashboard/40fb0ca4-4dfb-4660-a184-6d031a21f3e9/mine-information/general"
+                  style="text-decoration: none;"
+                >
+                  <span
+                    aria-label="environment"
+                    class="anticon anticon-environment padding-sm--right"
+                    role="img"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class=""
+                      data-icon="environment"
+                      fill="currentColor"
+                      focusable="false"
+                      height="1em"
+                      viewBox="64 64 896 896"
+                      width="1em"
+                    >
+                      <path
+                        d="M854.6 289.1a362.49 362.49 0 00-79.9-115.7 370.83 370.83 0 00-118.2-77.8C610.7 76.6 562.1 67 512 67c-50.1 0-98.7 9.6-144.5 28.5-44.3 18.3-84 44.5-118.2 77.8A363.6 363.6 0 00169.4 289c-19.5 45-29.4 92.8-29.4 142 0 70.6 16.9 140.9 50.1 208.7 26.7 54.5 64 107.6 111 158.1 80.3 86.2 164.5 138.9 188.4 153a43.9 43.9 0 0022.4 6.1c7.8 0 15.5-2 22.4-6.1 23.9-14.1 108.1-66.8 188.4-153 47-50.4 84.3-103.6 111-158.1C867.1 572 884 501.8 884 431.1c0-49.2-9.9-97-29.4-142zM512 880.2c-65.9-41.9-300-207.8-300-449.1 0-77.9 31.1-151.1 87.6-206.3C356.3 169.5 431.7 139 512 139s155.7 30.5 212.4 85.9C780.9 280 812 353.2 812 431.1c0 241.3-234.1 407.2-300 449.1zm0-617.2c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm79.2 255.2A111.6 111.6 0 01512 551c-29.9 0-58-11.7-79.2-32.8A111.6 111.6 0 01400 439c0-29.9 11.7-58 32.8-79.2C454 338.6 482.1 327 512 327c29.9 0 58 11.6 79.2 32.8C612.4 381 624 409.1 624 439c0 29.9-11.6 58-32.8 79.2z"
+                      />
+                    </svg>
+                  </span>
+                  Sample Mine
+                </a>
+              </span>
+            </span>
+          </h1>
+          <a
+            data-cy="back-to-major-project-link"
+            href="/mine-dashboard/40fb0ca4-4dfb-4660-a184-6d031a21f3e9/permits-and-approvals/pre-applications"
+          >
+            <span
+              aria-label="arrow-left"
+              class="anticon anticon-arrow-left padding-sm--right"
+              role="img"
+            >
+              <svg
+                aria-hidden="true"
+                class=""
+                data-icon="arrow-left"
+                fill="currentColor"
+                focusable="false"
+                height="1em"
+                viewBox="64 64 896 896"
+                width="1em"
+              >
+                <path
+                  d="M872 474H286.9l350.2-304c5.6-4.9 2.2-14-5.2-14h-88.5c-3.9 0-7.6 1.4-10.5 3.9L155 487.8a31.96 31.96 0 000 48.3L535.1 866c1.5 1.3 3.3 2 5.2 2h91.5c7.4 0 10.8-9.2 5.2-14L286.9 550H872c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8z"
+                />
+              </svg>
+            </span>
+            Back to: 
+            Sample Mine
+             Major projects
+          </a>
+        </div>
+      </div>
+      <div
+        class=""
+        style="top: 0px;"
+      >
+        <div>
+          <div
+            class="fade-in"
+          >
+            <div
+              class="ant-tabs ant-tabs-top ant-tabs-large ant-tabs-centered now-tabs core-tabs fixed-tabs-tabs"
+              style="margin: 0px;"
+            >
+              <div
+                class="ant-tabs-nav"
+                role="tablist"
+              >
+                <div
+                  class="ant-tabs-nav-wrap"
+                >
+                  <div
+                    class="ant-tabs-nav-list"
+                    style="transform: translate(0px, 0px);"
+                  >
+                    <div
+                      class="ant-tabs-tab"
+                      data-node-key="overview"
+                    >
+                      <div
+                        aria-controls="rc-tabs-test-panel-overview"
+                        aria-selected="false"
+                        class="ant-tabs-tab-btn"
+                        id="rc-tabs-test-tab-overview"
+                        role="tab"
+                        tabindex="0"
+                      >
+                        Overview
+                      </div>
+                    </div>
+                    <div
+                      class="ant-tabs-tab"
+                      data-node-key="project-description"
+                    >
+                      <div
+                        aria-controls="rc-tabs-test-panel-project-description"
+                        aria-selected="false"
+                        class="ant-tabs-tab-btn"
+                        id="rc-tabs-test-tab-project-description"
+                        role="tab"
+                        tabindex="0"
+                      >
+                        Project Description
+                      </div>
+                    </div>
+                    <div
+                      class="ant-tabs-tab"
+                      data-node-key="information-requirements-table"
+                    >
+                      <div
+                        aria-controls="rc-tabs-test-panel-information-requirements-table"
+                        aria-disabled="false"
+                        aria-selected="false"
+                        class="ant-tabs-tab-btn"
+                        id="rc-tabs-test-tab-information-requirements-table"
+                        role="tab"
+                        tabindex="0"
+                      >
+                        IRT
+                      </div>
+                    </div>
+                    <div
+                      class="ant-tabs-tab"
+                      data-node-key="app"
+                    >
+                      <div
+                        aria-controls="rc-tabs-test-panel-app"
+                        aria-disabled="false"
+                        aria-selected="false"
+                        class="ant-tabs-tab-btn"
+                        id="rc-tabs-test-tab-app"
+                        role="tab"
+                        tabindex="0"
+                      >
+                        Application
+                      </div>
+                    </div>
+                    <div
+                      class="ant-tabs-tab"
+                      data-node-key="decision-package"
+                    >
+                      <div
+                        aria-controls="rc-tabs-test-panel-decision-package"
+                        aria-selected="false"
+                        class="ant-tabs-tab-btn"
+                        id="rc-tabs-test-tab-decision-package"
+                        role="tab"
+                        tabindex="0"
+                      >
+                        Decision Package
+                      </div>
+                    </div>
+                    <div
+                      class="ant-tabs-tab"
+                      data-node-key="documents"
+                    >
+                      <div
+                        aria-controls="rc-tabs-test-panel-documents"
+                        aria-selected="false"
+                        class="ant-tabs-tab-btn"
+                        id="rc-tabs-test-tab-documents"
+                        role="tab"
+                        tabindex="0"
+                      >
+                        All Documents
+                      </div>
+                    </div>
+                    <div
+                      class="ant-tabs-ink-bar ant-tabs-ink-bar-animated"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="ant-tabs-nav-operations ant-tabs-nav-operations-hidden"
+                >
+                  <button
+                    aria-controls="rc-tabs-test-more-popup"
+                    aria-expanded="false"
+                    aria-haspopup="listbox"
+                    aria-hidden="true"
+                    class="ant-tabs-nav-more"
+                    id="rc-tabs-test-more"
+                    style="visibility: hidden; order: 1;"
+                    tabindex="-1"
+                    type="button"
+                  >
+                    <span
+                      aria-label="ellipsis"
+                      class="anticon anticon-ellipsis"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="ellipsis"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M176 511a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0z"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <div
+                class="ant-tabs-content-holder"
+              >
+                <div
+                  class="ant-tabs-content ant-tabs-content-top"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

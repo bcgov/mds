@@ -148,7 +148,9 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
                             class="project_type-column"
                             title="Type"
                           >
-                            <div />
+                            <div>
+                              Amendment to an existing permit
+                            </div>
                           </div>
                         </td>
                         <td
@@ -264,7 +266,9 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
                             class="project_type-column"
                             title="Type"
                           >
-                            <div />
+                            <div>
+                              Closure of an existing permit
+                            </div>
                           </div>
                         </td>
                         <td
@@ -527,7 +531,7 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
                             class="project_type-column"
                             title="Type"
                           >
-                            undefined - undefined
+                            Refuse discharge permit - Amendment to an existing permit
                           </div>
                         </td>
                         <td

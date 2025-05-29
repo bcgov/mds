@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineDashboardContentCard renders properly 1`] = `
+<div>
+  <div
+    class="content--card"
+  >
+    <div
+      class="content--card--head"
+    >
+      <div
+        class="content--card--head--content"
+      >
+        <span
+          class="info-display"
+        >
+          mock content
+        </span>
+      </div>
+    </div>
+    <div
+      class="content--card--body"
+    >
+      <h4>
+        mock title
+      </h4>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CustomHomePage renders properly 1`] = `
+<div>
+  <div
+    class="landing-page"
+  >
+    <div
+      class="landing-page__header"
+    >
+      <h1>
+        My Dashboard
+      </h1>
+    </div>
+    <div
+      class="landing-page__content page__content"
+    >
+      <h4>
+        Subscribed Mines
+      </h4>
+      <br />
+      <div
+        class="ant-table-wrapper"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <thead
+                      class="ant-table-thead"
+                    >
+                      <tr>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Name
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Number
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Operational Status
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Permits
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Region
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Tenure
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Commodity
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          TSF
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="ant-table-tbody"
+                    />
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -9,28 +9,14 @@ import matchMedia from "@/tests/mocks/matchMedia";
 import { mine } from "@/customPropTypes/mines";
 
 const props: MineNoticeOfDepartureTableProps = {
-  nods: [],
+  nods: NOTICES_OF_DEPARTURE.records,
   isLoaded: false,
   sortDir: "desc",
   sortField: "received_date",
   isPaginated: false,
   isDashboardView: false,
-  openViewNodModal: () => { },
+  openViewNodModal: jest.fn(),
 };
-const dispatchProps: Partial<MineNoticeOfDepartureTableProps> = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.openViewNodModal = jest.fn();
-};
-
-const setupProps = () => {
-  props.nods = NOTICES_OF_DEPARTURE.records;
-};
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 beforeAll(() => {
   window.matchMedia = matchMedia;
@@ -38,7 +24,7 @@ beforeAll(() => {
 
 describe("MineNoticeOfDepartureTable", () => {
   it("renders properly", () => {
-    const { container } = render(<MineNoticeOfDepartureTable {...dispatchProps} {...props} />);
+    const { container } = render(<MineNoticeOfDepartureTable {...props} />);
     expect(container).toMatchSnapshot();
   });
 });

@@ -1,8 +1,10 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { NoticeOfWorkHomePage } from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkHomePage";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { INoticeOfWork, IOption } from "@mds/common/interfaces";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { BrowserRouter } from "react-router-dom";
 
 const dispatchProps = {
   fetchNoticeOfWorkApplications: jest.fn(() => Promise.resolve({} as INoticeOfWork)),
@@ -15,6 +17,13 @@ const NowApplications: INoticeOfWork[] = MOCK.NOW.applications;
 const reducerProps = {
   noticeOfWorkApplications: NowApplications,
   pageData: MOCK.PAGE_DATA,
+};
+
+const requiredProps = {
+  mineRegionHash: {},
+  mineRegionOptions: [] as IOption[],
+  applicationTypeOptions: [] as IOption[],
+  applicationStatusOptions: [] as IOption[],
 };
 
 function mockFunction() {
@@ -32,35 +41,14 @@ function mockFunction() {
 
 jest.mock("react-router-dom", () => mockFunction());
 
-const setupDispatchProps = () => {
-  dispatchProps.fetchNoticeOfWorkApplications = jest.fn(() => Promise.resolve({} as INoticeOfWork));
-  dispatchProps.fetchRegionOptions = jest.fn();
-  dispatchProps.fetchNoticeOfWorkApplicationStatusOptions = jest.fn();
-  dispatchProps.fetchNoticeOfWorkApplicationTypeOptions = jest.fn();
-};
-
-const setupReducerProps = () => {
-  reducerProps.noticeOfWorkApplications = NowApplications;
-
-  reducerProps.pageData = MOCK.PAGE_DATA;
-};
-
-const requiredProps = {
-  mineRegionHash: {},
-  mineRegionOptions: {} as IOption,
-  applicationTypeOptions: {} as IOption,
-  applicationStatusOptions: {} as IOption,
-};
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupReducerProps();
-});
-
 describe("NoticeOfWorkHomePage", () => {
   it("renders properly", () => {
-    const component = shallow(
-      <NoticeOfWorkHomePage {...dispatchProps} {...reducerProps} {...requiredProps} />
+    const { container: component } = render(
+      <BrowserRouter>
+        <ReduxWrapper>
+          <NoticeOfWorkHomePage {...dispatchProps} {...reducerProps} {...requiredProps} />
+        </ReduxWrapper>
+      </BrowserRouter>
     );
     expect(component).toMatchSnapshot();
   });

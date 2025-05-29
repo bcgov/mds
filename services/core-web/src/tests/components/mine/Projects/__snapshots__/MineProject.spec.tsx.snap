@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineProject renders properly 1`] = `
+<div>
+  <div
+    class="tab__content"
+  >
+    <div
+      class="inline-flex between"
+    >
+      <div>
+        <h2>
+          Major Projects
+        </h2>
+      </div>
+      <div />
+    </div>
+    <br />
+    <div>
+      <div
+        class="ant-table-wrapper"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <thead
+                      class="ant-table-thead"
+                    >
+                      <tr>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Project name
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Project ID
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          MCM Project Lead
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Proponent contact
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Overall Project stage
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Last Submission date
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="ant-table-tbody"
+                    />
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
