@@ -17,14 +17,6 @@ jobs:
   validate-actions:
     runs-on: ubuntu-latest
     steps:
-      - name: Install Act dependencies
-        run: |
-          apt-get update && apt-get install sudo -y
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get update && sudo apt-get install curl build-essential -y
-
       - name: Checkout
         uses: actions/checkout@v4
 
