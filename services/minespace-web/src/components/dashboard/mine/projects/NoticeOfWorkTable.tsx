@@ -37,7 +37,7 @@ const transformRowData = (applications: INoticeOfWork[]) =>
     mine_guid: application.mine_guid,
     review_started:
       formatDate(
-        application.application_progress.find((p) => p.application_progress_status_code == "REV")
+        application.application_progress?.find((p) => p.application_progress_status_code == "REV")
           ?.start_date
       ) ?? Strings.EMPTY_FIELD,
   }));
