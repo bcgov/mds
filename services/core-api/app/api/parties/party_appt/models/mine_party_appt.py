@@ -500,7 +500,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
     def request_termination_report_if_required(self):
         if not is_feature_enabled(Feature.TSF_TERMINATE_APPTS):
             return
-        
+
         mine_report_definition = None
         required_reports = {
             'EOR': ['10', '4', '1', '3'],
@@ -513,7 +513,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
                 section_output = '.'.join(section)
                 raise NotFound(f'{self.mine_party_appt_type_code} Report definition not found by section {section_output}')
             calculated_due_date = self.end_date + timedelta(hours=72)
-            MineReport.create(
+            report = MineReport.create(
                 mine_report_definition_id=mine_report_definition.mine_report_definition_id,
                 mine_guid=self.mine_guid,
                 due_date=calculated_due_date,
@@ -522,5 +522,5 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
                 description_comment=None,
                 submitter_name=None,
                 permit_id=None,
-                add_to_session=True,
                 system_created=True)
+            report.save()

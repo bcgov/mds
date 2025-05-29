@@ -298,3 +298,38 @@ def test_put_mine_party_appt_draft(test_client, db_session, auth_headers, setup_
     put_data = json.loads(put_resp.data.decode())
 
     assert str(put_data['is_draft']) == 'True'
+
+def test_minespace_user_can_only_add_end_date(test_client, db_session, auth_headers, setup_info):
+    # Arrange: create a TQP appointment as a minespace user
+    test_data = {
+        'mine_guid': setup_info['mine_guid'],
+        'party_guid': setup_info['mine_manager_guid'],
+        'mine_party_appt_type_code': 'TQP',
+        'related_guid': setup_info['tsf_guid'],
+        'start_date': setup_info['start_date'],
+    }
+    post_resp = test_client.post(
+        '/parties/mines', data=test_data, headers=auth_headers['proponent_only_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    appt_guid = post_data['mine_party_appt_guid']
+
+    # Act: try to update multiple fields as a minespace user
+    new_end_date = '2025-12-31'
+    put_data = {
+        'start_date': '1999-01-01',  # should be ignored
+        'end_date': new_end_date,    # should be updated
+        'mine_party_appt_type_code': 'BLA',  # should be ignored
+        'party_guid': str(uuid.uuid4()),     # should be ignored
+    }
+    put_resp = test_client.put(
+        f'/parties/mines/{appt_guid}',
+        data=put_data,
+        headers=auth_headers['proponent_only_auth_header'])
+    assert put_resp.status_code == 200
+    updated = json.loads(put_resp.data.decode())
+
+    # Assert: only end_date is changed, other fields remain as originally created
+    assert updated['end_date'] == new_end_date
+    assert updated['start_date'] == setup_info['start_date']
+    assert updated['mine_party_appt_type_code'] == 'TQP'
+    assert updated['party_guid'] == setup_info['mine_manager_guid']
