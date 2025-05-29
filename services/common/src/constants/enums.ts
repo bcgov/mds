@@ -204,6 +204,15 @@ export enum MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES {
   UNR = "Under review",
   CHR = "Change Requested",
 }
+
+export enum NOW_APPLICATION_PROGRESS_STATUS_CODES {
+  TECHNICAL_REVIEW = "REV",
+  REFERRAL = "REF",
+  CONSULTATION = "CON",
+  PUBLIC_COMMENT = "PUB",
+  DRAFT = "DFT"
+}
+
 export enum PROJECT_DECISION_PACKAGE_STATUS_CODES {
   CMP = "Completed",
   INP = "In Progress",
