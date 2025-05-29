@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
-import { Row, Col, Badge } from "antd";
+import { Row, Col, Badge, Tooltip } from "antd";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import * as Strings from "@mds/common/constants/strings";
 import { INoticeOfWork } from "@mds/common/interfaces";
@@ -13,6 +13,7 @@ import { downloadNowDocument } from "@mds/common/redux/utils/actionlessNetworkCa
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
 import * as routes from "@/constants/routes";
+import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
 
 interface NoticeOfWorkTableProps {
   isLoaded: boolean;
@@ -34,6 +35,11 @@ const transformRowData = (applications: INoticeOfWork[]) =>
       application.application_documents?.length > 0 ? application.application_documents[0] : {},
     application_progress: application.application_progress,
     mine_guid: application.mine_guid,
+    review_started:
+      formatDate(
+        application.application_progress.find((p) => p.application_progress_status_code == "REV")
+          ?.start_date
+      ) ?? Strings.EMPTY_FIELD,
   }));
 
 export const NoticeOfWorkTable: FC<NoticeOfWorkTableProps> = ({ isLoaded, applications }) => {
@@ -71,8 +77,26 @@ export const NoticeOfWorkTable: FC<NoticeOfWorkTableProps> = ({ isLoaded, applic
       key: "received_date",
       dataIndex: "received_date",
       sorter: dateSorter("received_date"),
+      render: (text) => <div title="Received">{text} </div>,
+    },
+    {
+      title: (
+        <div>
+          Review Started
+          <Tooltip
+            overlayClassName="minespace-tooltip"
+            title="Accepted by Ministry to initiate Technical Review"
+          >
+            {" "}
+            <InfoCircleOutlined className="info-tooltip icon-sm" />
+          </Tooltip>
+        </div>
+      ),
+      key: "review_started",
+      dataIndex: "review_started",
+      sorter: dateSorter("review_started"),
       defaultSortOrder: "descend" as SortOrder,
-      render: (text) => <div title="Received">{text}</div>,
+      render: (text) => <div title="Review Started">{text}</div>,
     },
     {
       title: "Application",
