@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NOWProgressActions renders properly 1`] = `
+<div>
+  <div
+    class="inline-flex progress-actions"
+  />
+</div>
+`;

@@ -1,0 +1,454 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProcessPermit renders properly 1`] = `
+<div>
+  <div
+    class="view--header"
+  >
+    <div
+      class="inline-flex between view--header--content"
+    >
+      <div
+        class="inline-flex"
+      >
+        <h2
+          class="tab-title"
+        >
+          <span>
+            Process Permit
+          </span>
+        </h2>
+        <div
+          class="view--header--content--actions"
+        >
+          <div
+            class="inline-flex progress-actions"
+          />
+        </div>
+      </div>
+      <div>
+        <div />
+      </div>
+    </div>
+    <div
+      class="ant-alert ant-alert-warning ant-alert-no-icon ant-alert-banner status-banner"
+      data-show="true"
+      role="alert"
+      style="color: rgb(255, 255, 255); background: transparent; display: none;"
+    >
+      <div
+        class="ant-alert-content"
+      >
+        <div
+          class="ant-alert-message"
+        >
+          Not Started
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="side-menu--timeline"
+  >
+    <ul
+      class="ant-timeline"
+    />
+  </div>
+  <div
+    class="view--content side-menu--content"
+  >
+    <div
+      class="ant-result ant-result-warning"
+      style="padding-top: 0px;"
+    >
+      <div
+        class="ant-result-icon"
+      >
+        <span
+          aria-label="warning"
+          class="anticon anticon-warning"
+          role="img"
+        >
+          <svg
+            aria-hidden="true"
+            data-icon="warning"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
+          >
+            <path
+              d="M955.7 856l-416-720c-6.2-10.7-16.9-16-27.7-16s-21.6 5.3-27.7 16l-416 720C56 877.4 71.4 904 96 904h832c24.6 0 40-26.6 27.7-48zM480 416c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v184c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V416zm32 352a48.01 48.01 0 010-96 48.01 48.01 0 010 96z"
+            />
+          </svg>
+        </span>
+      </div>
+      <div
+        class="ant-result-title"
+      />
+      <div
+        class="ant-result-extra"
+      >
+        <div
+          style="text-align: left; width: 100%;"
+        >
+          <div
+            class="ant-row ant-row-center padding-md--bottom"
+          >
+            <div
+              class="ant-col"
+            >
+              <h3>
+                The following issues shall be resolved before you can issue this amendment.
+              </h3>
+            </div>
+          </div>
+          <div
+            class="ant-row padding-md--bottom"
+          >
+            <div
+              class="ant-col ant-col-2 ant-col-offset-2"
+            >
+              <span
+                aria-label="stop"
+                class="anticon anticon-stop icon-sm padding-sm--top"
+                role="img"
+              >
+                <svg
+                  aria-hidden="true"
+                  class=""
+                  data-icon="stop"
+                  fill="currentColor"
+                  focusable="false"
+                  height="1em"
+                  viewBox="64 64 896 896"
+                  width="1em"
+                >
+                  <path
+                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372 0-89 31.3-170.8 83.5-234.8l523.3 523.3C682.8 852.7 601 884 512 884zm288.5-137.2L277.2 223.5C341.2 171.3 423 140 512 140c205.4 0 372 166.6 372 372 0 89-31.3 170.8-83.5 234.8z"
+                  />
+                </svg>
+              </span>
+            </div>
+            <div
+              class="ant-col ant-col-16"
+            >
+              The Site Property fields must be specified.  
+              <a
+                role="link"
+                tabindex="0"
+              >
+                <span
+                  aria-label="link"
+                  class="anticon anticon-link"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class=""
+                    data-icon="link"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M574 665.4a8.03 8.03 0 00-11.3 0L446.5 781.6c-53.8 53.8-144.6 59.5-204 0-59.5-59.5-53.8-150.2 0-204l116.2-116.2c3.1-3.1 3.1-8.2 0-11.3l-39.8-39.8a8.03 8.03 0 00-11.3 0L191.4 526.5c-84.6 84.6-84.6 221.5 0 306s221.5 84.6 306 0l116.2-116.2c3.1-3.1 3.1-8.2 0-11.3L574 665.4zm258.6-474c-84.6-84.6-221.5-84.6-306 0L410.3 307.6a8.03 8.03 0 000 11.3l39.7 39.7c3.1 3.1 8.2 3.1 11.3 0l116.2-116.2c53.8-53.8 144.6-59.5 204 0 59.5 59.5 53.8 150.2 0 204L665.3 562.6a8.03 8.03 0 000 11.3l39.8 39.8c3.1 3.1 8.2 3.1 11.3 0l116.2-116.2c84.5-84.6 84.5-221.5 0-306.1zM610.1 372.3a8.03 8.03 0 00-11.3 0L372.3 598.7a8.03 8.03 0 000 11.3l39.6 39.6c3.1 3.1 8.2 3.1 11.3 0l226.4-226.4c3.1-3.1 3.1-8.2 0-11.3l-39.5-39.6z"
+                    />
+                  </svg>
+                </span>
+                 Resolve
+              </a>
+            </div>
+          </div>
+          <div
+            class="ant-row padding-md--bottom"
+          >
+            <div
+              class="ant-col ant-col-2 ant-col-offset-2"
+            >
+              <span
+                aria-label="stop"
+                class="anticon anticon-stop icon-sm padding-sm--top"
+                role="img"
+              >
+                <svg
+                  aria-hidden="true"
+                  class=""
+                  data-icon="stop"
+                  fill="currentColor"
+                  focusable="false"
+                  height="1em"
+                  viewBox="64 64 896 896"
+                  width="1em"
+                >
+                  <path
+                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372 0-89 31.3-170.8 83.5-234.8l523.3 523.3C682.8 852.7 601 884 512 884zm288.5-137.2L277.2 223.5C341.2 171.3 423 140 512 140c205.4 0 372 166.6 372 372 0 89-31.3 170.8-83.5 234.8z"
+                  />
+                </svg>
+              </span>
+            </div>
+            <div
+              class="ant-col ant-col-16"
+            >
+              The issuing inspector must have a signature on file before the permit can be issued. Contact an administrator to update the inspector with a signature.  
+            </div>
+          </div>
+          <div
+            class="ant-row padding-md--bottom"
+          >
+            <div
+              class="ant-col ant-col-2 ant-col-offset-2"
+            >
+              <span
+                aria-label="stop"
+                class="anticon anticon-stop icon-sm padding-sm--top"
+                role="img"
+              >
+                <svg
+                  aria-hidden="true"
+                  class=""
+                  data-icon="stop"
+                  fill="currentColor"
+                  focusable="false"
+                  height="1em"
+                  viewBox="64 64 896 896"
+                  width="1em"
+                >
+                  <path
+                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372 0-89 31.3-170.8 83.5-234.8l523.3 523.3C682.8 852.7 601 884 512 884zm288.5-137.2L277.2 223.5C341.2 171.3 423 140 512 140c205.4 0 372 166.6 372 372 0 89-31.3 170.8-83.5 234.8z"
+                  />
+                </svg>
+              </span>
+            </div>
+            <div
+              class="ant-col ant-col-16"
+            >
+              The application must have a permittee. Add a permittee in Contacts under Application.  
+              <a
+                role="link"
+                tabindex="0"
+              >
+                <span
+                  aria-label="link"
+                  class="anticon anticon-link"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class=""
+                    data-icon="link"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M574 665.4a8.03 8.03 0 00-11.3 0L446.5 781.6c-53.8 53.8-144.6 59.5-204 0-59.5-59.5-53.8-150.2 0-204l116.2-116.2c3.1-3.1 3.1-8.2 0-11.3l-39.8-39.8a8.03 8.03 0 00-11.3 0L191.4 526.5c-84.6 84.6-84.6 221.5 0 306s221.5 84.6 306 0l116.2-116.2c3.1-3.1 3.1-8.2 0-11.3L574 665.4zm258.6-474c-84.6-84.6-221.5-84.6-306 0L410.3 307.6a8.03 8.03 0 000 11.3l39.7 39.7c3.1 3.1 8.2 3.1 11.3 0l116.2-116.2c53.8-53.8 144.6-59.5 204 0 59.5 59.5 53.8 150.2 0 204L665.3 562.6a8.03 8.03 0 000 11.3l39.8 39.8c3.1 3.1 8.2 3.1 11.3 0l116.2-116.2c84.5-84.6 84.5-221.5 0-306.1zM610.1 372.3a8.03 8.03 0 00-11.3 0L372.3 598.7a8.03 8.03 0 000 11.3l39.6 39.6c3.1 3.1 8.2 3.1 11.3 0l226.4-226.4c3.1-3.1 3.1-8.2 0-11.3l-39.5-39.6z"
+                    />
+                  </svg>
+                </span>
+                 Resolve
+              </a>
+            </div>
+          </div>
+          <div
+            class="ant-row padding-md--bottom"
+          >
+            <div
+              class="ant-col ant-col-2 ant-col-offset-2"
+            >
+              <span
+                aria-label="stop"
+                class="anticon anticon-stop icon-sm padding-sm--top"
+                role="img"
+              >
+                <svg
+                  aria-hidden="true"
+                  class=""
+                  data-icon="stop"
+                  fill="currentColor"
+                  focusable="false"
+                  height="1em"
+                  viewBox="64 64 896 896"
+                  width="1em"
+                >
+                  <path
+                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372 0-89 31.3-170.8 83.5-234.8l523.3 523.3C682.8 852.7 601 884 512 884zm288.5-137.2L277.2 223.5C341.2 171.3 423 140 512 140c205.4 0 372 166.6 372 372 0 89-31.3 170.8-83.5 234.8z"
+                  />
+                </svg>
+              </span>
+            </div>
+            <div
+              class="ant-col ant-col-16"
+            >
+              The reclamation securities must be recorded. Edit the Reclamation Securities under Administrative.  
+              <a
+                role="link"
+                tabindex="0"
+              >
+                <span
+                  aria-label="link"
+                  class="anticon anticon-link"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class=""
+                    data-icon="link"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M574 665.4a8.03 8.03 0 00-11.3 0L446.5 781.6c-53.8 53.8-144.6 59.5-204 0-59.5-59.5-53.8-150.2 0-204l116.2-116.2c3.1-3.1 3.1-8.2 0-11.3l-39.8-39.8a8.03 8.03 0 00-11.3 0L191.4 526.5c-84.6 84.6-84.6 221.5 0 306s221.5 84.6 306 0l116.2-116.2c3.1-3.1 3.1-8.2 0-11.3L574 665.4zm258.6-474c-84.6-84.6-221.5-84.6-306 0L410.3 307.6a8.03 8.03 0 000 11.3l39.7 39.7c3.1 3.1 8.2 3.1 11.3 0l116.2-116.2c53.8-53.8 144.6-59.5 204 0 59.5 59.5 53.8 150.2 0 204L665.3 562.6a8.03 8.03 0 000 11.3l39.8 39.8c3.1 3.1 8.2 3.1 11.3 0l116.2-116.2c84.5-84.6 84.5-221.5 0-306.1zM610.1 372.3a8.03 8.03 0 00-11.3 0L372.3 598.7a8.03 8.03 0 000 11.3l39.6 39.6c3.1 3.1 8.2 3.1 11.3 0l226.4-226.4c3.1-3.1 3.1-8.2 0-11.3l-39.5-39.6z"
+                    />
+                  </svg>
+                </span>
+                 Resolve
+              </a>
+            </div>
+          </div>
+          <div
+            class="padding-lg--bottom"
+          />
+          <div
+            class="ant-row ant-row-center padding-md--bottom"
+          >
+            <div
+              class="ant-col"
+            >
+              <h3>
+                Review the following warnings before issuing the  amendment.
+              </h3>
+            </div>
+          </div>
+          <div
+            class="ant-row padding-md--bottom"
+          >
+            <div
+              class="ant-col ant-col-2 ant-col-offset-2"
+            >
+              <span
+                aria-label="warning"
+                class="anticon anticon-warning icon-sm padding-sm--top"
+                role="img"
+              >
+                <svg
+                  aria-hidden="true"
+                  class=""
+                  data-icon="warning"
+                  fill="currentColor"
+                  focusable="false"
+                  height="1em"
+                  viewBox="64 64 896 896"
+                  width="1em"
+                >
+                  <path
+                    d="M464 720a48 48 0 1096 0 48 48 0 10-96 0zm16-304v184c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V416c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8zm475.7 440l-416-720c-6.2-10.7-16.9-16-27.7-16s-21.6 5.3-27.7 16l-416 720C56 877.4 71.4 904 96 904h832c24.6 0 40-26.6 27.7-48zm-783.5-27.9L512 239.9l339.8 588.2H172.2z"
+                  />
+                </svg>
+              </span>
+            </div>
+            <div
+              class="ant-col ant-col-16"
+            >
+              The final application package is missing a Mine Emergency Response Plan. You can Edit the Final Application Package under Administrative.  
+              <a
+                role="link"
+                tabindex="0"
+              >
+                <span
+                  aria-label="link"
+                  class="anticon anticon-link"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class=""
+                    data-icon="link"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M574 665.4a8.03 8.03 0 00-11.3 0L446.5 781.6c-53.8 53.8-144.6 59.5-204 0-59.5-59.5-53.8-150.2 0-204l116.2-116.2c3.1-3.1 3.1-8.2 0-11.3l-39.8-39.8a8.03 8.03 0 00-11.3 0L191.4 526.5c-84.6 84.6-84.6 221.5 0 306s221.5 84.6 306 0l116.2-116.2c3.1-3.1 3.1-8.2 0-11.3L574 665.4zm258.6-474c-84.6-84.6-221.5-84.6-306 0L410.3 307.6a8.03 8.03 0 000 11.3l39.7 39.7c3.1 3.1 8.2 3.1 11.3 0l116.2-116.2c53.8-53.8 144.6-59.5 204 0 59.5 59.5 53.8 150.2 0 204L665.3 562.6a8.03 8.03 0 000 11.3l39.8 39.8c3.1 3.1 8.2 3.1 11.3 0l116.2-116.2c84.5-84.6 84.5-221.5 0-306.1zM610.1 372.3a8.03 8.03 0 00-11.3 0L372.3 598.7a8.03 8.03 0 000 11.3l39.6 39.6c3.1 3.1 8.2 3.1 11.3 0l226.4-226.4c3.1-3.1 3.1-8.2 0-11.3l-39.5-39.6z"
+                    />
+                  </svg>
+                </span>
+                 Resolve
+              </a>
+            </div>
+          </div>
+          <div
+            class="ant-row padding-md--bottom"
+          >
+            <div
+              class="ant-col ant-col-2 ant-col-offset-2"
+            >
+              <span
+                aria-label="warning"
+                class="anticon anticon-warning icon-sm padding-sm--top"
+                role="img"
+              >
+                <svg
+                  aria-hidden="true"
+                  class=""
+                  data-icon="warning"
+                  fill="currentColor"
+                  focusable="false"
+                  height="1em"
+                  viewBox="64 64 896 896"
+                  width="1em"
+                >
+                  <path
+                    d="M464 720a48 48 0 1096 0 48 48 0 10-96 0zm16-304v184c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V416c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8zm475.7 440l-416-720c-6.2-10.7-16.9-16-27.7-16s-21.6 5.3-27.7 16l-416 720C56 877.4 71.4 904 96 904h832c24.6 0 40-26.6 27.7-48zm-783.5-27.9L512 239.9l339.8 588.2H172.2z"
+                  />
+                </svg>
+              </span>
+            </div>
+            <div
+              class="ant-col ant-col-16"
+            >
+              The final application package is missing an Archaeological Chance Find Procedure. You can Edit the Final Application Package under Administrative.  
+              <a
+                role="link"
+                tabindex="0"
+              >
+                <span
+                  aria-label="link"
+                  class="anticon anticon-link"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class=""
+                    data-icon="link"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M574 665.4a8.03 8.03 0 00-11.3 0L446.5 781.6c-53.8 53.8-144.6 59.5-204 0-59.5-59.5-53.8-150.2 0-204l116.2-116.2c3.1-3.1 3.1-8.2 0-11.3l-39.8-39.8a8.03 8.03 0 00-11.3 0L191.4 526.5c-84.6 84.6-84.6 221.5 0 306s221.5 84.6 306 0l116.2-116.2c3.1-3.1 3.1-8.2 0-11.3L574 665.4zm258.6-474c-84.6-84.6-221.5-84.6-306 0L410.3 307.6a8.03 8.03 0 000 11.3l39.7 39.7c3.1 3.1 8.2 3.1 11.3 0l116.2-116.2c53.8-53.8 144.6-59.5 204 0 59.5 59.5 53.8 150.2 0 204L665.3 562.6a8.03 8.03 0 000 11.3l39.8 39.8c3.1 3.1 8.2 3.1 11.3 0l116.2-116.2c84.5-84.6 84.5-221.5 0-306.1zM610.1 372.3a8.03 8.03 0 00-11.3 0L372.3 598.7a8.03 8.03 0 000 11.3l39.6 39.6c3.1 3.1 8.2 3.1 11.3 0l226.4-226.4c3.1-3.1 3.1-8.2 0-11.3l-39.5-39.6z"
+                    />
+                  </svg>
+                </span>
+                 Resolve
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

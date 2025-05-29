@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ExplosivesPermitApplicationDecisionModal renders properly 1`] = `
+<Connect(ExplosivesPermitDecisionForm)
+  closeModal={[MockFunction]}
+  documentType="LET"
+  initialValues={
+    Object {
+      "amendment_count": 0,
+      "amendment_no": 0,
+      "application_date": "2007-12-04",
+      "application_number": "52135425",
+      "application_status": "APP",
+      "detonator_magazines": Array [
+        Object {
+          "construction": "string",
+          "detonator_type": "text field",
+          "distance_dwelling": 60,
+          "distance_road": 70,
+          "explosives_permit_id": 1,
+          "explosives_permit_magazine_id": 1,
+          "explosives_permit_magazine_type_code": "DET",
+          "height": 2,
+          "latitude": null,
+          "length": 1,
+          "longitude": null,
+          "quantity": 12,
+          "tag_no": "1",
+          "type_no": "1",
+          "width": 2,
+        },
+        Object {
+          "construction": "string",
+          "detonator_type": "text field",
+          "distance_dwelling": 60,
+          "distance_road": 70,
+          "explosives_permit_id": 1,
+          "explosives_permit_magazine_id": 2,
+          "explosives_permit_magazine_type_code": "DET",
+          "height": 2,
+          "latitude": null,
+          "length": 1,
+          "longitude": null,
+          "quantity": 12,
+          "tag_no": "1",
+          "type_no": "1",
+          "width": 2,
+        },
+      ],
+      "documents": Array [],
+      "expiry_date": "2007-12-04",
+      "explosive_magazines": Array [
+        Object {
+          "construction": "string",
+          "detonator_type": "text field",
+          "distance_dwelling": 60,
+          "distance_road": 70,
+          "explosives_permit_id": 1,
+          "explosives_permit_magazine_id": 3,
+          "explosives_permit_magazine_type_code": "DET",
+          "height": 2,
+          "latitude": null,
+          "length": 1,
+          "longitude": null,
+          "quantity": 12,
+          "tag_no": "1",
+          "type_no": "1",
+          "width": 2,
+        },
+      ],
+      "explosives_permit_amendments": Array [],
+      "explosives_permit_guid": "816459817365978135",
+      "explosives_permit_id": 1,
+      "isAmendment": false,
+      "issue_date": "2007-12-04",
+      "issuing_inspector_name": "John",
+      "issuing_inspector_party_guid": null,
+      "latitude": null,
+      "longitude": null,
+      "mines_permit_number": "P-39039404",
+      "now_number": "1500615-2021-12",
+      "originating_system": "Core",
+      "permit_number": "BC-11111",
+      "permittee_mine_party_appt_id": 0,
+      "permittee_name": "Mike",
+    }
+  }
+  inspectors={Array []}
+  onSubmit={[MockFunction]}
+  previewDocument={[MockFunction]}
+/>
+`;

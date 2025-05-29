@@ -1,8 +1,11 @@
 import React from "react";
 import { AddCondition } from "@/components/Forms/permits/conditions/AddCondition";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { PERMITS } from "@mds/common/tests/mocks/dataMocks";
-
+import { BrowserRouter } from "react-router-dom";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
+import * as MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 
 function mockFunction() {
   const original = jest.requireActual("react-router-dom");
@@ -23,14 +26,25 @@ function mockFunction() {
 jest.mock("react-router-dom", () => mockFunction());
 const condition = PERMITS[0].permit_amendments[0].conditions[0];
 
+const initialState = {
+  [NOTICE_OF_WORK]: {
+    noticeOfWork: MOCK.IMPORTED_NOTICE_OF_WORK,
+    applicationDelays: [],
+  }
+}
+
 describe("AddCondition", () => {
   it("renders properly", async () => {
-    const component = shallow(
-      <AddCondition
-        initialValues={condition}
-        layer={0}
-        editingConditionFlag={false}
-      />
+    const { container: component } = render(
+      <BrowserRouter>
+        <ReduxWrapper initialState={initialState}>
+          <AddCondition
+            initialValues={condition}
+            layer={0}
+            editingConditionFlag={true}
+          />
+        </ReduxWrapper>
+      </BrowserRouter>
     );
     expect(component).toMatchSnapshot();
   });

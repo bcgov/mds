@@ -3,21 +3,12 @@ import { CommentEditor } from "@mds/common/components/comments/CommentEditor";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
-const dispatchProps: any = {};
-const props: any = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.onSubmit = jest.fn();
+const props: any = {
+  submitting: false,
 };
-
-const setupProps = () => {
-  props.submitting = false;
+const dispatchProps: any = {
+  onSubmit: jest.fn(),
 };
-
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
 
 describe("Comment", () => {
   it("renders properly", () => {

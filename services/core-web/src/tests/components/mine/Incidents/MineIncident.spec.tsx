@@ -20,9 +20,9 @@ const props: any = {
   },
 };
 const dispatchProps = {
-  submit: jest.fn(),
-  touch: jest.fn(),
-  change: jest.fn(),
+  submit: jest.fn(() => Promise.resolve()),
+  touch: jest.fn(() => Promise.resolve()),
+  change: jest.fn(() => Promise.resolve()),
 };
 
 function mockFunction() {
@@ -41,16 +41,6 @@ function mockFunction() {
 }
 
 jest.mock("react-router-dom", () => mockFunction());
-
-const setupDispatchProps = () => {
-  dispatchProps.submit = jest.fn(() => Promise.resolve());
-  dispatchProps.touch = jest.fn(() => Promise.resolve());
-  dispatchProps.change = jest.fn(() => Promise.resolve());
-};
-
-beforeEach(() => {
-  setupDispatchProps();
-});
 
 describe("MineIncident", () => {
   it("renders properly", () => {

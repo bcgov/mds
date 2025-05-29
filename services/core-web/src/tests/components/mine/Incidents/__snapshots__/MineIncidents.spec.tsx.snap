@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineIncidents renders properly 1`] = `
+<div>
+  <div
+    class="tab__content"
+  >
+    <div>
+      <h2>
+        Incidents and Investigation
+      </h2>
+      <div
+        class="ant-divider ant-divider-horizontal"
+        role="separator"
+      />
+    </div>
+    <div
+      class="inline-flex flex-end"
+    />
+    <div>
+      <div
+        class="ant-table-wrapper"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <thead
+                      class="ant-table-thead"
+                    >
+                      <tr>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Number
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Occurred On
+                        </th>
+                        <th
+                          class="ant-table-cell column-hide"
+                        >
+                          Mine
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Incident Type(s)
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Status
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Inspector Responsible
+                        </th>
+                        <th
+                          class="ant-table-cell column-hide"
+                        >
+                          Determination
+                        </th>
+                        <th
+                          class="ant-table-cell column-hide"
+                        >
+                          Code
+                        </th>
+                        <th
+                          class="ant-table-cell column-hide"
+                        >
+                          MCM Action
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Initial Report Documents
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Final Report Documents
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="ant-table-tbody"
+                    />
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

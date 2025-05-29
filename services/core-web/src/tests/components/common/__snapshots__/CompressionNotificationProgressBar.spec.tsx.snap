@@ -1,17 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CompressionNotificationProgressBar renders properly 1`] = `
-<Progress
-  className="compressionProgressBar"
-  percent={0}
-  showInfo={false}
-  strokeColor="#5e46a1"
-  strokeLinecap="square"
-  style={
-    Object {
-      "top": "-11px",
-    }
-  }
-  trailColor="#d9d9d9"
-/>
+<div>
+  <div
+    class="ant-progress ant-progress-line ant-progress-status-normal ant-progress-default compressionProgressBar"
+    role="progressbar"
+    style="top: -11px;"
+  >
+    <div
+      class="ant-progress-outer"
+    >
+      <div
+        class="ant-progress-inner"
+        style="background-color: rgb(217, 217, 217); border-radius: 0;"
+      >
+        <div
+          class="ant-progress-bg"
+          style="width: 0%; height: 8px; border-radius: 0; background: rgb(94, 70, 161);"
+        />
+      </div>
+    </div>
+  </div>
+</div>
 `;

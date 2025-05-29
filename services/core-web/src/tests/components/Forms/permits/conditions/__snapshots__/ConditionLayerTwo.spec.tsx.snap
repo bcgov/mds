@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConditionLayerTwo renders properly 1`] = `
+<div>
+  <div
+    class="ant-row hover-row"
+    style="margin: -8px -4px -8px -4px;"
+  >
+    <div
+      class="ant-col ant-col-1"
+      style="padding: 8px 4px 8px 4px;"
+    />
+    <div
+      class="ant-col ant-col-1"
+      style="padding: 8px 4px 8px 4px;"
+    />
+    <div
+      class="ant-col ant-col-18"
+      style="padding: 8px 4px 8px 4px;"
+    >
+      <span
+        class="injectable-string"
+      />
+    </div>
+    <div
+      class="ant-col ant-col-3 float-right show-on-hover"
+      style="padding: 8px 4px 8px 4px;"
+    >
+      <div
+        class="float-right"
+      >
+        <div />
+        <div />
+        <div />
+        <div />
+      </div>
+    </div>
+  </div>
+  <div
+    class="ant-row"
+    style="margin: -8px -4px -8px -4px;"
+  >
+    <div
+      class="ant-col ant-col-22 ant-col-offset-1"
+      style="padding: 8px 4px 8px 4px;"
+    >
+      <div />
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ViewAllConditionsModal renders properly 1`] = `
+<div>
+  <div>
+    <div
+      class="null-screen fade-in"
+    >
+      <div>
+        <img
+          alt="mine_img"
+          src="[object Object]"
+        />
+        <h3>
+          No Permit Conditions
+        </h3>
+        <p>
+          This permit was not generated in Core, and does not contain any digital conditions.
+        </p>
+      </div>
+    </div>
+    <div
+      class="right center-mobile"
+    >
+      <button
+        class="ant-btn ant-btn-secondary full-mobile"
+        type="button"
+      >
+        <span>
+          Close
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

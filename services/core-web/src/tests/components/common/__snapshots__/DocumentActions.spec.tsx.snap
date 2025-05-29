@@ -2,49 +2,21 @@
 
 exports[`DocumentActions renders properly 1`] = `
 <div>
-  <Dropdown
-    menu={
-      Object {
-        "items": Array [
-          false,
-          Object {
-            "icon": <ForwardRef(DownloadOutlined) />,
-            "key": "1",
-            "label": <button
-              className="full add-permit-dropdown-button"
-              onClick={[Function]}
-              type="button"
-            >
-              <div>
-                Download File
-              </div>
-            </button>,
-          },
-        ],
-      }
-    }
-    placement="bottomLeft"
-  >
-    <Button
-      className="actions-dropdown-button"
-      type="text"
+  <div>
+    <button
+      class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
+      type="button"
     >
-      Actions
+      <span>
+        Actions
+      </span>
       <img
         alt="Menu"
-        className="padding-sm--right icon-svg-filter"
-        src={
-          Object {
-            "process": [Function],
-          }
-        }
-        style={
-          Object {
-            "paddingLeft": "5px",
-          }
-        }
+        class="padding-sm--right icon-svg-filter"
+        src="[object Object]"
+        style="padding-left: 5px;"
       />
-    </Button>
-  </Dropdown>
+    </button>
+  </div>
 </div>
 `;

@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Condition renders properly 1`] = `
+<div>
+  <div
+    class="ant-row"
+    style="margin: -12px -8px -12px -8px;"
+  >
+    <div
+      class="ant-col ant-col-2"
+      style="padding: 12px 8px 12px 8px;"
+    />
+    <div
+      class="ant-col ant-col-19"
+      style="padding: 12px 8px 12px 8px;"
+    >
+      <form
+        class="ant-form ant-form-vertical common-form common-form-CONDITION_SECTION form-edit"
+        id="CONDITION_SECTION"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <textarea
+                    class="ant-input"
+                    id="condition"
+                    name="condition"
+                    style="height: 0px; resize: none; min-height: -12px;"
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="CONDITION_SECTION_condition_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="right center-mobile"
+        >
+          <button
+            aria-label="Cancel"
+            class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
+            type="button"
+          >
+            <span>
+              Cancel
+            </span>
+          </button>
+          <button
+            aria-label="Submit"
+            class="ant-btn ant-btn-primary  form-btn"
+            disabled=""
+            type="submit"
+          >
+            <span>
+              Save
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+    <div
+      class="ant-col ant-col-3"
+      style="padding: 12px 8px 12px 8px;"
+    />
+  </div>
+</div>
+`;

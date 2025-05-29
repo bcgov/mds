@@ -140,9 +140,7 @@ exports[`MineSummary renders properly 1`] = `
               Site Property Tenure
             </h6>
             <span>
-              <i>
-                N/A
-              </i>
+              Mineral
             </span>
             <br />
             <br />
@@ -211,9 +209,7 @@ exports[`MineSummary renders properly 1`] = `
               Site Property Tenure
             </h6>
             <span>
-              <i>
-                N/A
-              </i>
+              Mineral
             </span>
             <br />
             <br />
@@ -282,9 +278,7 @@ exports[`MineSummary renders properly 1`] = `
               Site Property Tenure
             </h6>
             <span>
-              <i>
-                N/A
-              </i>
+              Mineral
             </span>
             <br />
             <br />

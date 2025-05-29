@@ -1,0 +1,18 @@
+import React from "react";
+import { render } from "@testing-library/react";
+import { NOWSideMenu } from "@/components/noticeOfWork/applications/NOWSideMenu";
+
+const reducerProps = {
+  match: {},
+  history: { push: jest.fn() },
+  location: {},
+  tabSection: "application",
+  noticeOfWork: { notice_of_work_type_code: "PLA", application_type_code: "NOW" },
+};
+
+describe("NOWSideMenu", () => {
+  it("renders properly", () => {
+    const { container: component } = render(<NOWSideMenu {...reducerProps} match={{ params: { id: 1 } }} />);
+    expect(component).toMatchSnapshot();
+  });
+});

@@ -30,5 +30,4 @@ module.exports = {
   },
 
   transformIgnorePatterns: ["node_modules", "../../node_modules", "vendor"],
-  snapshotSerializers: ["enzyme-to-json/serializer"],
 };

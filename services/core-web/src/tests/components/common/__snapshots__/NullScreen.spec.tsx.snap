@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NullScreen renders properly 1`] = `
+<div>
+  <div
+    class="null-screen fade-in"
+  >
+    <div>
+      <img
+        alt="mine_img"
+        src="[object Object]"
+      />
+      <h3>
+        No data available
+      </h3>
+    </div>
+  </div>
+</div>
+`;

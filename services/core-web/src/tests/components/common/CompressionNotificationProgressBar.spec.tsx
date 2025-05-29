@@ -1,21 +1,15 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { CompressionNotificationProgressBar } from "@mds/common/components/documents/CompressionNotificationProgressBar";
 
-const props: any = {};
-
-const setupProps = () => {
-  props.compressionProgress = 0;
-  props.notificationTopPosition = 0;
+const props: any = {
+  compressionProgress: 0,
+  notificationTopPosition: 0,
 };
-
-beforeEach(() => {
-  setupProps();
-});
 
 describe("CompressionNotificationProgressBar", () => {
   it("renders properly", () => {
-    const component = shallow(<CompressionNotificationProgressBar {...props} />);
+    const { container: component } = render(<CompressionNotificationProgressBar {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

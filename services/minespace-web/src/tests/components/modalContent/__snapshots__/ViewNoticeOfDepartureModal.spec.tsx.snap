@@ -2,39 +2,223 @@
 
 exports[`ViewNoticeOfDepartureModal renders properly 1`] = `
 <div>
-  <NoticeOfDepartureDetails
-    noticeOfDeparture={
-      Object {
-        "create_timestamp": "2020-04-20 11:58",
-        "documents": Array [],
-        "mine": null,
-        "nod_description": "Some description",
-        "nod_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-        "nod_no": "NOD-X-45564456-01",
-        "nod_status": "pending_review",
-        "nod_title": "Some title",
-        "nod_type": "potentially_substantial",
-        "permit": Object {
-          "current_permittee": "Haynes, Park and Brown",
-          "permit_guid": "10d3ec917-179f-4dbc-80a3-4c993fdfe596",
-          "permit_id": "1",
-          "permit_no": "M-7594809",
-          "permit_prefix": "M",
-          "permit_status_code": "C",
-        },
-        "submission_timestamp": "2020-04-20 11:58",
-        "update_timestamp": "2020-04-20 11:58",
-      }
-    }
-  />
-  <div
-    className="ant-modal-footer"
-  >
-    <Button
-      onClick={[MockFunction]}
+  <div>
+    <div>
+      <div
+        class="nod-section-padding"
+      >
+        <div
+          class="bcgov-callout--warning nod-callout-text"
+        >
+          <div
+            class="nod-callout"
+          >
+            <h4>
+              Pending Review
+            </h4>
+            <p>
+              A notification has been sent to the Ministry that your Notice of Departure has been submitted. Please check MineSpace for updates to your submission status.
+            </p>
+          </div>
+        </div>
+        <h4
+          class="nod-modal-section-header"
+        >
+          Basic Information
+        </h4>
+        <div>
+          <p
+            class="field-title"
+          >
+            Departure Project Title
+          </p>
+          <p
+            class="content--light-grey padding-sm"
+          >
+            Some title
+          </p>
+        </div>
+        <div
+          class="ant-row ant-row-space-between"
+          style="margin-left: -12px; margin-right: -12px;"
+        >
+          <div
+            class="ant-col ant-col-12"
+            style="padding-left: 12px; padding-right: 12px;"
+          >
+            <p
+              class="field-title"
+            >
+              Permit #
+            </p>
+            <p
+              class="content--light-grey padding-sm"
+            >
+              M-7594809
+            </p>
+          </div>
+          <div
+            class="ant-col ant-col-12"
+            style="padding-left: 12px; padding-right: 12px;"
+          >
+            <p
+              class="field-title"
+            >
+              NOD #
+            </p>
+            <p
+              class="content--light-grey padding-sm"
+            >
+              NOD-X-45564456-01
+            </p>
+          </div>
+        </div>
+        <div>
+          <p
+            class="field-title"
+          >
+            Departure Summary
+          </p>
+          <p
+            class="content--light-grey padding-sm"
+          >
+            Some description
+          </p>
+        </div>
+        <div
+          class="ant-divider ant-divider-horizontal nod-divider"
+          role="separator"
+        />
+        <div
+          class="ant-row ant-row-space-between"
+          style="margin-left: -12px; margin-right: -12px;"
+        >
+          <div
+            class="ant-col ant-col-12"
+            style="padding-left: 12px; padding-right: 12px;"
+          >
+            <p
+              class="field-title"
+            >
+              Submitted
+            </p>
+            <p
+              class="content--light-grey padding-sm"
+            >
+              Apr 20 2020
+            </p>
+          </div>
+          <div
+            class="ant-col ant-col-12"
+            style="padding-left: 12px; padding-right: 12px;"
+          >
+            <p
+              class="field-title"
+            >
+              Status
+            </p>
+            <p
+              class="content--light-grey padding-sm"
+            >
+              Pending Review
+            </p>
+          </div>
+        </div>
+        <div
+          class="ant-row ant-row-start"
+        >
+          <div
+            class="ant-col ant-col-12"
+          >
+            <p
+              class="field-title"
+            >
+              Self Determination Type
+            </p>
+            <p
+              class="content--light-grey padding-sm"
+            >
+              Potentially Substantial
+            </p>
+          </div>
+        </div>
+        <div>
+          <h4
+            class="nod-modal-section-header"
+          >
+            Self-Assessment Form
+          </h4>
+          <div
+            class="ant-row"
+          >
+            <div
+              class="ant-col ant-col-16"
+            >
+              <p
+                class="field-title"
+              >
+                Uploaded File
+              </p>
+            </div>
+            <div
+              class="ant-col ant-col-5"
+            >
+              <p
+                class="field-title"
+              >
+                Upload Date
+              </p>
+            </div>
+            <div
+              class="ant-col ant-col-3"
+            >
+              <p
+                class="field-title"
+              >
+                 
+              </p>
+            </div>
+          </div>
+          <div
+            class="ant-row"
+          >
+            <div
+              class="ant-col ant-col-16"
+            >
+              <p>
+                N/A
+              </p>
+            </div>
+            <div
+              class="ant-col ant-col-5"
+            >
+              <p>
+                N/A
+              </p>
+            </div>
+            <div
+              class="ant-col ant-col-3"
+            >
+              <p>
+                N/A
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-modal-footer"
     >
-      Close
-    </Button>
+      <button
+        class="ant-btn ant-btn-default"
+        type="button"
+      >
+        <span>
+          Close
+        </span>
+      </button>
+    </div>
   </div>
 </div>
 `;

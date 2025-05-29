@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AuthorizationGuard should render the \`<NullScreen /> if \`userRoles !== role_edit_mines || role_admin\` 1`] = `
+<div>
+  <div
+    class="null-screen fade-in"
+  >
+    <div
+      class="no-nav-bar"
+    >
+      <img
+        alt="mine_img"
+        src="[object Object]"
+      />
+      <h3>
+        You do not have permission to access this page
+      </h3>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AuthorizationGuard should render the \`WrappedComponent\` if \`userRoles === role_edit_mines || role_admin\` 1`] = `
+<div>
+  <div>
+    Test
+  </div>
+</div>
+`;

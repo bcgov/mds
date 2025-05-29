@@ -40,6 +40,7 @@ import {
   IDam,
   ITailingsStorageFacilityForm,
   IMineComplianceInfo,
+  IVariance,
 } from "@mds/common/interfaces";
 import { HaystackDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
 
@@ -3011,6 +3012,7 @@ export const PARTYRELATIONSHIPS = [
       name: "test company 2 ",
     },
     related_guid: "97b59b9c-8576-47cb-9a04-d7d0340730d5",
+    description: "Permittee"
   },
   {
     mine_party_appt_guid: "17dbf02d-a3ba-40dd-8347-36cd04b7a49b",
@@ -3274,7 +3276,7 @@ export const VARIANCES = {
   total_pages: 5,
 };
 
-export const VARIANCE = {
+export const VARIANCE: IVariance = {
   variance_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
   variance_no: 1,
   compliance_article_id: 1,
@@ -3291,6 +3293,9 @@ export const VARIANCE = {
       mine_guid: "59e73109-48f7-4ad2-977c-3005b5bff010",
     },
   ],
+  variance_application_status_code: "",
+  applicant_guid: "",
+  inspector_party_guid: ""
 };
 
 export const VARIANCE_PAGE_DATA = {
@@ -10151,6 +10156,7 @@ export const NOTICES_OF_DEPARTURE: { records: INoticeOfDeparture[] } = {
       },
       nod_status: NodStatusSaveEnum.pending_review,
       nod_type: NoDTypeSaveEnum.potentially_substantial,
+      nod_contacts: [],
     },
   ],
 };

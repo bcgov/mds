@@ -1,0 +1,163 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VariableConditionMenu renders properly 1`] = `
+<div>
+  <div
+    class="condition-menu-container"
+  >
+    <h4>
+      Condition Data Variables
+      <span
+        aria-label="info-circle"
+        class="anticon anticon-info-circle info-tooltip icon-sm"
+        role="img"
+        style="color: white;"
+      >
+        <svg
+          aria-hidden="true"
+          class=""
+          data-icon="info-circle"
+          fill="currentColor"
+          focusable="false"
+          height="1em"
+          viewBox="64 64 896 896"
+          width="1em"
+        >
+          <path
+            d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+          />
+          <path
+            d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+          />
+        </svg>
+      </span>
+    </h4>
+    <ul
+      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light variable-menu"
+      data-menu-list="true"
+      role="menu"
+      tabindex="0"
+    >
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical"
+        role="none"
+      >
+        <div
+          aria-controls="rc-menu-uuid-test-mine-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-mine"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Mine
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical"
+        role="none"
+      >
+        <div
+          aria-controls="rc-menu-uuid-test-now-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-now"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Notice of Work
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical"
+        role="none"
+      >
+        <div
+          aria-controls="rc-menu-uuid-test-draft-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-draft"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Draft Permit
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical"
+        role="none"
+      >
+        <div
+          aria-controls="rc-menu-uuid-test-sec-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-sec"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Security
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical"
+        role="none"
+      >
+        <div
+          aria-controls="rc-menu-uuid-test-email-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-email"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Emails
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+    </ul>
+    <div
+      aria-hidden="true"
+      style="display: none;"
+    />
+  </div>
+</div>
+`;
