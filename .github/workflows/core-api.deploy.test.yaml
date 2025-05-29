@@ -32,7 +32,7 @@ jobs:
           oc -n ${{secrets.NS_TOOLS}} tag \
           ${{ secrets.NS_TOOLS }}/flyway:${{ env.ORIG_TAG }} \
           ${{ secrets.NS_TOOLS }}/flyway:${{ env.PROMOTE_TAG }}
-      
+
   schemaspy-rollout:
     uses: ./.github/workflows/schemaspy-rollout-test.yaml
     needs: [promote-image-to-test]
@@ -45,8 +45,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Setup SSH Agent
+        uses: ./.github/actions/setup-ssh
+        with:
+          ssh-private-key: ${{ secrets.GITOPS_REPO_DEPLOY_KEY }}
+
       - name: Git Ops Push
-        run: ./gitops/commit.sh core-api dev test ${{ github.actor }} ${{ secrets.GH_TOKEN }}
+        run: ./gitops/commit.sh core-api dev test ${{ github.actor }}
       - name: Install oc
         if: ${{ env.NEEDS_ROLLOUT=='true' }}
         uses: redhat-actions/openshift-tools-installer@v1
