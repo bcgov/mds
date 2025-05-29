@@ -1,6 +1,7 @@
 name: Validate GitHub Actions
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - develop
