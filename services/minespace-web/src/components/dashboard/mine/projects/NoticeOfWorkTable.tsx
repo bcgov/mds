@@ -14,6 +14,7 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import { Feature } from "@mds/common/utils";
 import * as routes from "@/constants/routes";
 import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
+import { NOW_APPLICATION_PROGRESS_STATUS_CODES } from "@mds/common/constants/enums";
 
 interface NoticeOfWorkTableProps {
   isLoaded: boolean;
@@ -37,8 +38,11 @@ const transformRowData = (applications: INoticeOfWork[]) =>
     mine_guid: application.mine_guid,
     review_started:
       formatDate(
-        application.application_progress?.find((p) => p.application_progress_status_code == "REV")
-          ?.start_date
+        application.application_progress?.find(
+          (p) =>
+            p.application_progress_status_code ==
+            NOW_APPLICATION_PROGRESS_STATUS_CODES.TECHNICAL_REVIEW
+        )?.start_date
       ) ?? Strings.EMPTY_FIELD,
   }));
 
