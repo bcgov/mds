@@ -299,7 +299,15 @@ def test_put_mine_party_appt_draft(test_client, db_session, auth_headers, setup_
 
     assert str(put_data['is_draft']) == 'True'
 
-def test_minespace_user_can_only_add_end_date(test_client, db_session, auth_headers, setup_info):
+def test_minespace_user_can_only_add_end_date(test_client, db_session, auth_headers, setup_info, monkeypatch):
+    # Mock MineReportDefinition.find_one_by_section to always return a dummy object
+    class DummyDef:
+        mine_report_definition_id = 123
+    monkeypatch.setattr(
+        'app.api.mines.reports.models.mine_report_definition.MineReportDefinition.find_one_by_section',
+        staticmethod(lambda *args, **kwargs: DummyDef())
+    )
+
     # Arrange: create a TQP appointment as a minespace user
     test_data = {
         'mine_guid': setup_info['mine_guid'],
@@ -318,7 +326,7 @@ def test_minespace_user_can_only_add_end_date(test_client, db_session, auth_head
     put_data = {
         'start_date': '1999-01-01',  # should be ignored
         'end_date': new_end_date,    # should be updated
-        'mine_party_appt_type_code': 'BLA',  # should be ignored
+        'mine_party_appt_type_code': 'EOR',  # should be ignored
         'party_guid': str(uuid.uuid4()),     # should be ignored
     }
     put_resp = test_client.put(
