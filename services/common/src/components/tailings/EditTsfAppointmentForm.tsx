@@ -52,7 +52,9 @@ const EditTsfAppointmentForm: FC<EditTsfProps> = ({
                         })
                     )
                 ]);
-                dispatch(closeModal());
+                if (isModal) {
+                    dispatch(closeModal());
+                }
             }
         });
     };
