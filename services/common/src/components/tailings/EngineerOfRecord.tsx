@@ -150,20 +150,20 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
                     actions={eorActions}
                   />
                 )}
-                {formValues?.engineer_of_record?.update_timestamp && (
-                  <div>
-                    <Typography.Paragraph
-                      className="margin-none--bottom margin-large--top"
-                      style={{ textAlign: "right" }}
-                    >
-                      Updated By: {formValues.engineer_of_record.update_user}
-                    </Typography.Paragraph>
-                    <Typography.Paragraph style={{ textAlign: "right" }}>
-                      Updated Date: {formatDateTime(formValues.engineer_of_record.update_timestamp)}
-                    </Typography.Paragraph>
-                  </div>
-                )}
               </Row>
+              {formValues?.engineer_of_record?.update_timestamp && (
+                <div>
+                  <Typography.Paragraph
+                    className="margin-none--bottom margin-large--top"
+                    style={{ textAlign: "right" }}
+                  >
+                    Updated By: {formValues.engineer_of_record.update_user}
+                  </Typography.Paragraph>
+                  <Typography.Paragraph style={{ textAlign: "right" }}>
+                    Updated Date: {formatDateTime(formValues.engineer_of_record.update_timestamp)}
+                  </Typography.Paragraph>
+                </div>
+              )}
             </Col>
           </Row>
           <Alert

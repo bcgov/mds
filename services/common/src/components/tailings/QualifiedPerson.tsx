@@ -135,20 +135,20 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
                   actions={qpActions}
                 />
               )}
-              {formValues?.qualified_person?.update_timestamp && (
-                <div>
-                  <Typography.Paragraph
-                    className="margin-none--bottom margin-large--top"
-                    style={{ textAlign: "right" }}
-                  >
-                    Updated By: {formValues.qualified_person.update_user}
-                  </Typography.Paragraph>
-                  <Typography.Paragraph style={{ textAlign: "right" }}>
-                    Updated Date: {formatDateTime(formValues.qualified_person.update_timestamp)}
-                  </Typography.Paragraph>
-                </div>
-              )}
             </Row>
+            {formValues?.qualified_person?.update_timestamp && (
+              <div>
+                <Typography.Paragraph
+                  className="margin-none--bottom margin-large--top"
+                  style={{ textAlign: "right" }}
+                >
+                  Updated By: {formValues.qualified_person.update_user}
+                </Typography.Paragraph>
+                <Typography.Paragraph style={{ textAlign: "right" }}>
+                  Updated Date: {formatDateTime(formValues.qualified_person.update_timestamp)}
+                </Typography.Paragraph>
+              </div>
+            )}
           </Col>
         </Row>
         <Alert
