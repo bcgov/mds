@@ -5,8 +5,7 @@ on:
     paths:
       - migrations/**
       - services/core-api/**
-      - services/postgres/**
-      - docker-compose
+      - services/postgres/*
       - docker-compose.ci.yaml
   push:
     branches:

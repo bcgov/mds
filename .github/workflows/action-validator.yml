@@ -1,0 +1,32 @@
+name: Validate GitHub Actions
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+    paths:
+      - ".github/workflows/**/*.yaml"
+      - ".github/workflows/**/*.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/**/*.yaml"
+      - ".github/workflows/**/*.yml"
+
+jobs:
+  validate-actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install action-validator with asdf
+        uses: asdf-vm/actions/install@v4
+        with:
+          tool_versions: |
+            action-validator 0.6.0
+
+      - name: Lint Actions
+        run: |
+          find .github/workflows -type f \( -iname \*.yaml -o -iname \*.yml \) \
+            | xargs -I {} action-validator --verbose {}
