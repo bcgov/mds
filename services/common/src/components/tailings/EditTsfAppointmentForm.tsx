@@ -41,7 +41,7 @@ const EditTsfAppointmentForm: FC<EditTsfProps> = ({
         dispatch(updatePartyRelationship(values)).then((resp) => {
             if (resp?.data) {
                 const mineGuid = partyAppointment.mine_guid;
-                console.log(resp, values, partyAppointment)
+
                 Promise.all([
                     dispatch(fetchTailingsStorageFacility({ mineGuid, tsfGuid })),
                     dispatch(
