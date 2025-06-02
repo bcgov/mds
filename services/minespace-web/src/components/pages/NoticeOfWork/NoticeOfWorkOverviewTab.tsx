@@ -5,31 +5,29 @@ import { formatDate } from "@mds/common/redux/utils/helpers";
 import { EMPTY_FIELD, NOT_STARTED } from "@mds/common/constants/strings";
 
 import { getNOWProgress } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
-import { getNoticeOfWorkApplicationProgressStatusCodeOptionsHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import NoticeOfWorkStagesTable from "./NoticeOfWorkStagesTable";
 
 export const NoticeOfWorkOverviewTab: FC = () => {
   const noticeOfWorkProgress = useSelector(getNOWProgress) ?? {};
-  const progressStatusHash = useSelector(getNoticeOfWorkApplicationProgressStatusCodeOptionsHash);
   const nowApplicationStages = [
     {
-      title: "Application",
+      title: "Technical Review",
       stageCode: "REV",
     },
     {
-      title: progressStatusHash["REF"],
+      title: "Referral to Other Agencies",
       stageCode: "REF",
     },
     {
-      title: progressStatusHash["CON"],
+      title: "First Nations Consultation",
       stageCode: "CON",
     },
     {
-      title: progressStatusHash["PUB"],
+      title: "Open for Public Comment",
       stageCode: "PUB",
     },
     {
-      title: "Permit",
+      title: "Permit Considerations in Review",
       stageCode: "DFT",
     },
   ];
