@@ -41,7 +41,7 @@ export const NoticeOfWorkOverviewTab: FC = () => {
         ? noticeOfWorkProgress[stageCode].status
         : NOT_STARTED;
       const inStatusSince = noticeOfWorkProgress[stageCode]
-        ? `${formatDate(noticeOfWorkProgress[stageCode].start_date)} / ${noticeOfWorkProgress[stageCode].duration.trim() || "0 Days"}`
+        ? `${formatDate(noticeOfWorkProgress[stageCode].start_date)}`
         : EMPTY_FIELD;
       return {
         ...stage,
