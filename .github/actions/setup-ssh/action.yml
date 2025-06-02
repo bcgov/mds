@@ -1,0 +1,18 @@
+name: "Setup SSH Agent"
+description: "Sets up SSH agent with a private key and adds github.com to known_hosts"
+inputs:
+  ssh-private-key:
+    description: "The SSH private key"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Setup SSH Agent
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ inputs.ssh-private-key }}
+    - name: Add GitHub to known hosts
+      shell: bash
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan github.com >> ~/.ssh/known_hosts
