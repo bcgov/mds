@@ -24,7 +24,7 @@ class MineReportReqPermitConditionXref(SoftDeleteMixin, AuditMixin, HistoryMixin
     )
 
     def __repr__(self):
-        return '<MineReportReqPermitConditionXref %r>', self.mine_report_req_permit_condition_xref_guid
+        return f'<MineReportReqPermitConditionXref {self.mine_report_req_permit_condition_xref_guid}>'
     
     @classmethod
     def find_by_permit_condition_id(cls, id) -> Self:
