@@ -45,8 +45,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Setup SSH Agent
+        uses: ./.github/actions/setup-ssh
+        with:
+          ssh-private-key: ${{ secrets.GITOPS_REPO_DEPLOY_KEY }}
       - name: Git Ops Push
-        run: ./gitops/commit.sh core-api test prod ${{ github.actor }} ${{ secrets.GH_TOKEN }}
+        run: ./gitops/commit.sh core-api test prod ${{ github.actor }}
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
         with:

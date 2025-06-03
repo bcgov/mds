@@ -1,11 +1,13 @@
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+from pytz import timezone as pytz_timezone
 
 def get_formatted_current_time():
     return datetime.now().strftime("%d/%b/%Y %H:%M:%S")
 
 def get_date_iso8601_string():
-    return datetime.now().strftime("%Y-%m-%d")
+    pst = pytz_timezone('Canada/Pacific')
+    return datetime.now(pst).strftime("%Y-%m-%d")
 
 def get_duration_text(start_date, end_date):
     def get_duration_text_or_default(duration, unit):

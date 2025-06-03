@@ -5,7 +5,6 @@ TARGET_APP=${1?"Enter App Name !"}
 SOURCE_ENV=${2?"Enter Source Env Name !"}
 TARGET_ENV=${3?"Enter Target Env Name !"}
 ACTOR_NAME=${4?"Enter Actor Name !"}
-GITHUB_TOKEN=${5?"Enter Github Token !"}
 
 MDS_GIT_HASH=$(git rev-parse --verify HEAD)
 REPO_URL="https://github.com/bcgov/mds/commit"
@@ -37,7 +36,7 @@ function commit() {
 }
 
 if [ ! -d $REPO_LOCATION/gitops/tenant-gitops-4c2ba9 ]; then
-    git clone https://v-y-a-s:$GITHUB_TOKEN@github.com/bcgov-c/tenant-gitops-4c2ba9 $REPO_LOCATION/gitops/tenant-gitops-4c2ba9
+    git clone git@github.com:bcgov-c/tenant-gitops-4c2ba9.git $REPO_LOCATION/gitops/tenant-gitops-4c2ba9
 fi
 
 # Replace the commit id with new commit id of latest push
