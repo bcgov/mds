@@ -179,7 +179,10 @@ export const MinesPage = () => {
                 <div style={{ height: "400px" }}>
                   <Map
                     controls={false}
-                    additionalPins={mines.map((mine) => [mine.latitude, mine.longitude])}
+                    additionalPins={mines.map((mine) => [
+                      mine?.mine_location?.latitude,
+                      mine?.mine_location?.longitude,
+                    ])}
                   />
                 </div>
                 <Typography.Paragraph style={{ paddingTop: "16px" }}>

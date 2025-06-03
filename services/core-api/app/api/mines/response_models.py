@@ -518,7 +518,8 @@ MINES_MODEL = api.model(
         'has_minespace_users': fields.Boolean,
         'mms_alias': fields.String,
         'mine_work_information': fields.Nested(MINE_WORK_INFORMATION_MODEL, skip_none=True),
-        'latest_mine_status': fields.Nested(STATUS_MODEL)
+        'latest_mine_status': fields.Nested(STATUS_MODEL),
+        'mine_location': fields.Nested(MINE_LOCATION_MODEL)
     })
 
 MINE_MODEL = api.inherit(

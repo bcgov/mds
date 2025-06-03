@@ -31,17 +31,17 @@ const RenderAutoComplete = (props: BaseInputProps & IRenderAutoCompleteProps) =>
           return <BaseViewInput value={props.input.value} label={props.label} />;
         }
 
-        const ariaLabel = props.label && props.label instanceof String ? props.label + "" : props.input.name;
+        const ariaLabel = props.label && props.label instanceof String ? props.label + "" : props?.input?.name;
 
         return (
           <Form.Item
             label={getFormItemLabel(props.label, props.required, props.labelSubtitle)}
             validateStatus={
-              props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
+              props.meta?.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
             }
             required={props.required}
             help={
-              props.meta.touched &&
+              props.meta?.touched &&
               ((props.meta.error && <span>{props.meta.error}</span>) ||
                 (props.meta.warning && <span>{props.meta.warning}</span>))
             }
