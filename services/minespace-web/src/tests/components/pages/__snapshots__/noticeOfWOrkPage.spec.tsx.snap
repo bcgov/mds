@@ -227,7 +227,7 @@ exports[`NoticeOfWorkPage renders properly 1`] = `
                                             class="light"
                                             title="Application Stage"
                                           >
-                                            Application
+                                            Technical Review
                                           </b>
                                         </td>
                                         <td
@@ -269,89 +269,9 @@ exports[`NoticeOfWorkPage renders properly 1`] = `
                                           <b
                                             class="light"
                                             title="Application Stage"
-                                          />
-                                        </td>
-                                        <td
-                                          class="ant-table-cell"
-                                        >
-                                          <div
-                                            title="Stage Status"
                                           >
-                                            <span
-                                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                                            >
-                                              <span
-                                                class="ant-badge-status-dot ant-badge-status-default"
-                                              />
-                                              <span
-                                                class="ant-badge-status-text"
-                                              >
-                                                Not Started
-                                              </span>
-                                            </span>
-                                          </div>
-                                        </td>
-                                        <td
-                                          class="ant-table-cell"
-                                        >
-                                          <div
-                                            title="In status since"
-                                          >
-                                            N/A
-                                          </div>
-                                        </td>
-                                      </tr>
-                                      <tr
-                                        class="ant-table-row ant-table-row-level-0"
-                                      >
-                                        <td
-                                          class="ant-table-cell"
-                                        >
-                                          <b
-                                            class="light"
-                                            title="Application Stage"
-                                          />
-                                        </td>
-                                        <td
-                                          class="ant-table-cell"
-                                        >
-                                          <div
-                                            title="Stage Status"
-                                          >
-                                            <span
-                                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                                            >
-                                              <span
-                                                class="ant-badge-status-dot ant-badge-status-default"
-                                              />
-                                              <span
-                                                class="ant-badge-status-text"
-                                              >
-                                                Not Started
-                                              </span>
-                                            </span>
-                                          </div>
-                                        </td>
-                                        <td
-                                          class="ant-table-cell"
-                                        >
-                                          <div
-                                            title="In status since"
-                                          >
-                                            N/A
-                                          </div>
-                                        </td>
-                                      </tr>
-                                      <tr
-                                        class="ant-table-row ant-table-row-level-0"
-                                      >
-                                        <td
-                                          class="ant-table-cell"
-                                        >
-                                          <b
-                                            class="light"
-                                            title="Application Stage"
-                                          />
+                                            Referral to Other Agencies
+                                          </b>
                                         </td>
                                         <td
                                           class="ant-table-cell"
@@ -393,7 +313,93 @@ exports[`NoticeOfWorkPage renders properly 1`] = `
                                             class="light"
                                             title="Application Stage"
                                           >
-                                            Permit
+                                            First Nations Consultation
+                                          </b>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Stage Status"
+                                          >
+                                            <span
+                                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                            >
+                                              <span
+                                                class="ant-badge-status-dot ant-badge-status-default"
+                                              />
+                                              <span
+                                                class="ant-badge-status-text"
+                                              >
+                                                Not Started
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="In status since"
+                                          >
+                                            N/A
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      <tr
+                                        class="ant-table-row ant-table-row-level-0"
+                                      >
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <b
+                                            class="light"
+                                            title="Application Stage"
+                                          >
+                                            Open for Public Comment
+                                          </b>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Stage Status"
+                                          >
+                                            <span
+                                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                            >
+                                              <span
+                                                class="ant-badge-status-dot ant-badge-status-default"
+                                              />
+                                              <span
+                                                class="ant-badge-status-text"
+                                              >
+                                                Not Started
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="In status since"
+                                          >
+                                            N/A
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      <tr
+                                        class="ant-table-row ant-table-row-level-0"
+                                      >
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <b
+                                            class="light"
+                                            title="Application Stage"
+                                          >
+                                            Permit Considerations in Review
                                           </b>
                                         </td>
                                         <td
