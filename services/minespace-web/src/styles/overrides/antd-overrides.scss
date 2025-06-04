@@ -455,7 +455,7 @@ th.ant-descriptions-item.vertical-description {
 
   .ant-btn.modal__close {
     position: absolute;
-    top: 7px;
+    top: 14px;
     color: $gov-blue;
     font-size: 24px;
     right: 14px;
@@ -476,12 +476,16 @@ th.ant-descriptions-item.vertical-description {
   }
 
   &-header {
-    border: none;
+    border-bottom: 3px solid $light-grey-accent;
+    padding: 24px;
   }
 
   &-title {
     font-weight: bold;
-    font-size: $heading-4-size;
+    font-size: 18px;
+    line-height: 20px;
+    letter-spacing: -0.41px;
+    color: $darkest-grey;
   }
 
   // Because we only use a modal wrapper and provide the ok/cancel buttons inside the modal body

@@ -211,7 +211,7 @@ from app.api.utils.access_decorators import (
      (MineListSearch, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineMapResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MinePartyApptResource, "get", [VIEW_ALL]), (MinePartyApptResource, "post", [MINE_EDIT, MINESPACE_PROPONENT]),
-     (MinePartyApptResource, "put", [MINE_EDIT]), (MinePartyApptResource, "delete", [MINE_EDIT]),
+     (MinePartyApptResource, "put", [MINE_EDIT, MINESPACE_PROPONENT]), (MinePartyApptResource, "delete", [MINE_EDIT]),
      (MinePartyApptTypeResource, "get", [VIEW_ALL]), (MineRegionResource, "get", [VIEW_ALL]),
      (MineResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineResource, "put", [MINE_EDIT, MINESPACE_PROPONENT]),

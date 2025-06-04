@@ -1,10 +1,9 @@
-import { Alert, Button, Col, Empty, Popconfirm, Row, Typography } from "antd";
+import { Alert, Col, Empty, Row, Typography } from "antd";
 import { change, Field, getFormValues } from "@mds/common/components/forms/form";
-import React, { FC, useContext, useState } from "react";
+import React, { FC, useContext } from "react";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { IMine, IMinePartyAppt, ITailingsStorageFacilityForm } from "@mds/common/interfaces";
 import { TailingsContext } from "./TailingsContext";
-import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import {
   dateInFuture,
@@ -21,6 +20,11 @@ import { FORM } from "@mds/common/constants/forms";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import ContactDetails from "./ContactDetails";
 import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants/enums";
+import { ActionMenuButton } from "../common/ActionMenu";
+import EditTsfAppointmentForm, { AppointmentEditAction } from "./EditTsfAppointmentForm";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils";
+import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
 
 const { Paragraph } = Typography;
 
@@ -34,8 +38,10 @@ interface EngineerOfRecordProps {
 export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
   const { mineGuid, loading, canEditTSF, isEditMode } = props;
 
+  const isCore = useAppSelector(getIsCore);
   const dispatch = useAppDispatch();
-  const [openPopConfirm, setOpenPopConfirm] = useState(false);
+  const { isFeatureEnabled } = useFeatureFlag();
+  const canTerminateAppts = isFeatureEnabled(Feature.TSF_TERMINATE_APPTS);
 
   const { addContactModalConfig } = useContext(TailingsContext);
   const tsfFormName = FORM.ADD_TAILINGS_STORAGE_FACILITY;
@@ -55,10 +61,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
 
   const canEditTSFAndEditMode = canEditTSF && isEditMode;
 
-  const openCreateEORModal = (event) => {
-    event?.preventDefault();
-    setOpenPopConfirm(false);
-
+  const openCreateEORModal = () => {
     dispatch(
       openModal({
         props: {
@@ -73,6 +76,20 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
       })
     );
   };
+
+  const openEditEORModal = () => {
+    dispatch(
+      openModal({
+        props: {
+          title: "Terminate Engineer of Record",
+          partyAppointment: formValues?.engineer_of_record,
+          tsfGuid: formValues?.mine_tailings_storage_facility_guid,
+          action: AppointmentEditAction.END
+        },
+        content: EditTsfAppointmentForm
+      })
+    )
+  }
 
   const existingEors = partyRelationships?.filter(
     (p) =>
@@ -105,25 +122,18 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
 
   const showEditFields = canEditEOR && !loading && canEditTSFAndEditMode;
 
-  const hasPendingEOR = formValues?.engineers_of_record?.some(
-    (eor) => PARTY_APPOINTMENT_STATUS[eor.status] === PARTY_APPOINTMENT_STATUS.pending
-  );
-
-  const hasCurrentEOR = formValues?.engineers_of_record?.some(
-    (eor) => PARTY_APPOINTMENT_STATUS[eor.status] === PARTY_APPOINTMENT_STATUS
-  );
-
-  const handleCreateEORModal = (newOpen: boolean) => {
-    if (!newOpen) {
-      setOpenPopConfirm(newOpen);
-      return;
+  const eorActions = [
+    {
+      key: "assign",
+      label: "Assign New Engineer of Record",
+      clickFunction: openCreateEORModal
+    },
+    (formValues?.engineer_of_record && canTerminateAppts) && {
+      key: "terminate",
+      label: "Terminate Current Engineer of Record",
+      clickFunction: openEditEORModal
     }
-    if (hasCurrentEOR || hasPendingEOR) {
-      setOpenPopConfirm(true);
-    } else {
-      openCreateEORModal(undefined);
-    }
-  };
+  ].filter(Boolean);
 
   return (
     <>
@@ -131,41 +141,29 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
         <Col span={24}>
           <Row justify="space-between">
             <Typography.Title level={3}>Engineer of Record</Typography.Title>
-
             <Col span={12}>
               <Row justify="end">
                 {canEditTSFAndEditMode && (
-                  <Popconfirm
-                    style={{ maxWidth: "150px" }}
-                    open={openPopConfirm}
-                    placement="top"
-                    title="Once acknowledged by the Ministry, assigning a new Engineer of Record will replace the current one and set the previous status to inactive. Continue?"
-                    okText="Yes"
-                    cancelText="No"
-                    onOpenChange={handleCreateEORModal}
-                    onConfirm={openCreateEORModal}
-                    onCancel={() => setOpenPopConfirm(false)}
-                  >
-                    <Button style={{ display: "inline", float: "right" }} type="primary">
-                      <PlusCircleFilled />
-                      Assign a new Engineer of Record
-                    </Button>
-                  </Popconfirm>
-                )}
-                {formValues?.engineer_of_record?.update_timestamp && (
-                  <div>
-                    <Typography.Paragraph
-                      className="margin-none--bottom margin-large--top"
-                      style={{ textAlign: "right" }}
-                    >
-                      Updated By: {formValues.engineer_of_record.update_user}
-                    </Typography.Paragraph>
-                    <Typography.Paragraph style={{ textAlign: "right" }}>
-                      Updated Date: {formatDateTime(formValues.engineer_of_record.update_timestamp)}
-                    </Typography.Paragraph>
-                  </div>
+                  <ActionMenuButton
+                    buttonText="Manage Engineer of Record"
+                    buttonProps={{ type: "primary" }}
+                    actions={eorActions}
+                  />
                 )}
               </Row>
+              {formValues?.engineer_of_record?.update_timestamp && (
+                <div>
+                  <Typography.Paragraph
+                    className="margin-none--bottom margin-large--top"
+                    style={{ textAlign: "right" }}
+                  >
+                    Updated By: {formValues.engineer_of_record.update_user}
+                  </Typography.Paragraph>
+                  <Typography.Paragraph style={{ textAlign: "right" }}>
+                    Updated Date: {formatDateTime(formValues.engineer_of_record.update_timestamp)}
+                  </Typography.Paragraph>
+                </div>
+              )}
             </Col>
           </Row>
           <Alert
@@ -179,8 +177,8 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
                 >
                   Per Health, Safety and Reclamation Code
                 </a>
-                , written acknowledgement to the Chief Inspector is required within 72 hours when an
-                Engineer of Record (EoR) is retained or accepts the role. A report request will be
+                {" "}10.4.1, written acknowledgement to the Chief Inspector is required within 72 hours when an
+                Engineer of Record (EoR) is retained, accepts or departs the role. A report request will be
                 generated upon changes to the EoR.
               </Paragraph>
             }
@@ -225,7 +223,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
                 component={RenderDate}
                 required={!!showEditFields}
                 validate={
-                  showEditFields && [required, dateNotInFuture, validateEorStartDateOverlap]
+                  showEditFields ? [required, dateNotInFuture, validateEorStartDateOverlap] : []
                 }
               />
             </Col>
@@ -235,7 +233,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
                 name="engineer_of_record.end_date"
                 label="End Date"
                 fieldEditMode={showEditFields}
-                validate={showEditFields && [dateInFuture]}
+                validate={showEditFields ? [dateInFuture] : []}
                 component={RenderDate}
               />
             </Col>

@@ -58,6 +58,12 @@
     font-weight: normal;
 }
 
+.hide-required-indicator {
+    .form-item-optional {
+        display: none;
+    }
+}
+
 .vertical-radio-group {
     display: flex;
     flex-direction: column;

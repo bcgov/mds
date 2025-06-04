@@ -10,12 +10,16 @@ from sqlalchemy.schema import FetchedValue
 from app.extensions import db, cache
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, DraftMixin, Base
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES, TIMEOUT_24_HOURS
+from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
+from app.api.utils.feature_flag import Feature, is_feature_enabled
+from app.api.mines.reports.models.mine_report import MineReport
 
 from app.api.services.email_service import EmailService
 from app.api.services.css_sso_service import CSSService
 from app.config import Config
 from app.api.utils.access_decorators import EDIT_TSF
 from app.api.utils.helpers import format_email_datetime_to_string
+from werkzeug.exceptions import NotFound
 
 
 class MinePartyAppointmentStatus(str, Enum):
@@ -492,3 +496,31 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
         if add_to_session:
             mpa.save(commit=False)
         return mpa
+    
+    def request_termination_report_if_required(self):
+        if not is_feature_enabled(Feature.TSF_TERMINATE_APPTS):
+            return
+
+        mine_report_definition = None
+        required_reports = {
+            'EOR': ['10', '4', '1', '3'],
+            'TQP': ['10', '4', '2', '1(d)'],
+        }
+        section = required_reports.get(self.mine_party_appt_type_code, None)
+        if section and self.end_date:
+            mine_report_definition = MineReportDefinition.find_one_by_section(*section)
+            if not mine_report_definition:
+                section_output = '.'.join(section)
+                raise NotFound(f'{self.mine_party_appt_type_code} Report definition not found by section {section_output}')
+            calculated_due_date = self.end_date + timedelta(hours=72)
+            report = MineReport.create(
+                mine_report_definition_id=mine_report_definition.mine_report_definition_id,
+                mine_guid=self.mine_guid,
+                due_date=calculated_due_date,
+                received_date=None,
+                submission_year=calculated_due_date.year,
+                description_comment=None,
+                submitter_name=None,
+                permit_id=None,
+                system_created=True)
+            report.save()
