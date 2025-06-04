@@ -1,0 +1,2 @@
+ALTER TABLE mine_report DROP CONSTRAINT IF EXISTS condition_category_or_report_definition_should_be_specified;
+ALTER TABLE mine_report_submission DROP CONSTRAINT IF EXISTS submission_condition_category_or_report_def_should_be_specified;

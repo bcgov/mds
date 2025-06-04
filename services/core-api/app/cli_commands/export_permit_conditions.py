@@ -76,7 +76,7 @@ def export_permit_conditions(permit_amendment_guid, csv_writer=None):
             continue
 
         # Get report requirement if exists
-        report_requirement = condition.mine_report_permit_requirement
+        report_requirement = condition.mine_report_permit_requirements[0] if len(condition.mine_report_permit_requirements) > 0 else None
         report_name = report_requirement.report_name if report_requirement else None
 
         if should_merge_with_parent(condition):

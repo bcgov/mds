@@ -122,15 +122,35 @@ export const getMineReportPermitRequirementById = (permitGuid, reportId) =>
     }
   );
 
-export const getCategoriesWithReports = (permitGuid) => createSelector([getLatestAmendmentByPermitGuid(permitGuid)], (latestAmendment) => {
-  return latestAmendment?.condition_categories.map((category) => {
-    const reports = uniqBy(latestAmendment.mine_report_permit_requirements,"report_name").filter((report) => category.condition_category_code === report.condition_category_code);
-    return {
-      ...category,
-      reports
+const getSubConditionIds = (conditions: IPermitCondition[]) => {
+  if (!conditions?.length) {
+    return [];
+  }
+  const topLevelIds = conditions.map((c) => c.permit_condition_id);
+  const ids = conditions.reduce((acc, c) => {
+    const subConditionIds = getSubConditionIds(c.sub_conditions);
+    return [...acc, ...subConditionIds]
+  }, topLevelIds);
+  return ids;
+};
+
+// conditionId must be for top-level condition
+export const getReportRequirementsByCondition = (permitGuid, permitAmendmentGuid, conditionId) =>
+  createSelector(
+    [getAmendment(permitGuid, permitAmendmentGuid), getMineReportPermitRequirementsByAmendment(permitGuid, permitAmendmentGuid)],
+    (amendment, requirements) => {
+      if (!amendment || !requirements.length) {
+        return [];
+      }
+      const condition = amendment.conditions.find((c) => c.permit_condition_id === conditionId);
+      if (!condition) {
+        return [];
+      }
+      const allConditionIds = getSubConditionIds([condition]);
+      const reqByCondition = requirements.filter((r) => r.permit_condition_ids.some((id) => allConditionIds.includes(id)));
+      return reqByCondition;
     }
-  })
-})
+  );
 
 export const getPermitConditionCategories = (permitGuid, permitAmendmentGuid) =>
   createSelector(
@@ -172,7 +192,7 @@ export const getPermitConditionCategories = (permitGuid, permitAmendmentGuid) =>
             const stepPath = currentPath.replace(/\.+$/, "");
 
             const mineReportPermitRequirement = mineReportPermitRequirements.find(
-              (requirement) => requirement.permit_condition_id === condition.permit_condition_id
+              (requirement) => requirement.permit_condition_ids.includes(condition.permit_condition_id)
             );
 
             const sub_conditions =

@@ -1,10 +1,11 @@
-import React, { FC, useRef } from "react";
-import { Select, Form } from "antd";
+import React, { FC, ReactNode, useRef } from "react";
+import { Select, Form, Typography } from "antd";
 import { caseInsensitiveLabelFilter } from "@mds/common/redux/utils/helpers";
 import { debounce } from "lodash";
-import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
+import { BaseInputProps, getFormItemLabel } from "./BaseInput";
 import { FormConsumer, IFormContext } from "./FormWrapper";
 import { IOption } from "@mds/common/interfaces/common/option.interface";
+import { EMPTY_FIELD } from "@mds/common/constants/strings";
 
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
@@ -15,7 +16,25 @@ interface MultiSelectProps extends BaseInputProps {
   filterOption?: any;
   onSearch?: any;
   loading?: boolean;
+  viewDisplay?: (opts: IOption[]) => ReactNode;
 }
+
+const defaultViewDisplay = (opts: IOption[]): ReactNode => {
+  if (!opts.length) {
+    return <div className="multi-select-view">
+      <Typography.Paragraph className="view-item-value">
+        {EMPTY_FIELD}
+      </Typography.Paragraph>
+    </div>
+  }
+  return <ul className="multi-select-view margin-large--left">
+    {opts.map((opt) =>
+      <li>
+        <Typography.Paragraph key={opt.value} className="view-item-value">{opt.label}</Typography.Paragraph>
+      </li>
+    )}
+  </ul>
+};
 
 export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
   const {
@@ -25,6 +44,8 @@ export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
     onSearch = () => { },
     filterOption = false,
     label = "",
+    viewDisplay = defaultViewDisplay,
+    showNA,
     meta,
     input,
   } = props;
@@ -35,8 +56,14 @@ export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
       {(value: IFormContext) => {
         const { isEditMode, isModal } = value;
         if (!isEditMode) {
-          const stringValue = "";
-          return <BaseViewInput value={stringValue} label={label} />;
+          const selectedOptions = data.filter((opt) => input.value.includes(opt.value));
+
+          return <div className="view-item ant-form-item">
+            {label && label !== "" && (
+              <Typography.Paragraph className="view-item-label">{label}</Typography.Paragraph>
+            )}
+            {(input.value.length > 0 || showNA) && (viewDisplay(selectedOptions))}
+          </div>
         }
 
         const extraProps = isModal ? null : { getPopupContainer: (trigger) => trigger.parentNode };

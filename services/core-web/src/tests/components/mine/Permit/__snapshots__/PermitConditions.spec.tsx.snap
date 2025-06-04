@@ -792,8 +792,7 @@ exports[`PermitConditions renders properly 1`] = `
                                     id="hsc"
                                   >
                                     <div>
-                                      <h3
-                                        class="ant-typography"
+                                      <span
                                         style="margin-bottom: 0px;"
                                       >
                                         A.
@@ -802,7 +801,7 @@ exports[`PermitConditions renders properly 1`] = `
                                          (
                                         1
                                         )
-                                      </h3>
+                                      </span>
                                     </div>
                                   </h3>
                                   <button
@@ -1110,8 +1109,7 @@ exports[`PermitConditions renders properly 1`] = `
                                     class="ant-typography margin-none"
                                     id="rcc"
                                   >
-                                    <h3
-                                      class="ant-typography"
+                                    <span
                                       style="margin-bottom: 0px;"
                                     >
                                       B.
@@ -1120,7 +1118,7 @@ exports[`PermitConditions renders properly 1`] = `
                                        (
                                       1
                                       )
-                                    </h3>
+                                    </span>
                                   </h3>
                                 </div>
                                 <form
@@ -1361,8 +1359,7 @@ exports[`PermitConditions renders properly 1`] = `
                                     class="ant-typography margin-none"
                                     id="elc"
                                   >
-                                    <h3
-                                      class="ant-typography"
+                                    <span
                                       style="margin-bottom: 0px;"
                                     >
                                       C.
@@ -1371,7 +1368,7 @@ exports[`PermitConditions renders properly 1`] = `
                                        (
                                       2
                                       )
-                                    </h3>
+                                    </span>
                                   </h3>
                                 </div>
                                 <form

@@ -18,9 +18,12 @@ from flask import current_app
 from flask_restx import Resource
 from werkzeug.exceptions import BadRequest, NotFound
 from flask_restx import reqparse
+from sqlalchemy.exc import IntegrityError
 
 
 class MineReportPermitRequirementResource(Resource, UserMixin):
+    unique_report_error_message = "Report name must be unique"
+
     parser = CustomReqparser()
 
     parser.add_argument("mine_report_permit_requirement_id", type=int, location="json")
@@ -32,7 +35,7 @@ class MineReportPermitRequirementResource(Resource, UserMixin):
     )
     parser.add_argument("cim_or_cpo", type=str, location="json")
     parser.add_argument("ministry_recipient", type=list, location="json")
-    parser.add_argument("permit_condition_id", type=int, location="json")
+    parser.add_argument("permit_condition_ids", type=list, location="json")
     parser.add_argument("permit_amendment_id", type=int, location="json")
     parser.add_argument("report_name", type=str, location="json")
 
@@ -62,12 +65,16 @@ class MineReportPermitRequirementResource(Resource, UserMixin):
                     "The permit must be associated with the selected mine."
                 )
 
-        permit_condition_id = data.get("permit_condition_id")
-        permit_condition = PermitConditions.find_by_permit_condition_id(
-            permit_condition_id
-        )
-        if permit_condition is None:
-            raise NotFound("Permit Condition not found")
+        permit_condition_ids = data.get("permit_condition_ids")
+        permit_conditions = PermitConditions.find_many_by_permit_condition_ids(permit_condition_ids
+                                                                               )
+        if not permit_conditions:
+            raise NotFound("Permit Conditions not found")
+        for condition in permit_conditions:
+            if condition.permit_amendment_id != permit_amendment_id:
+                raise BadRequest(
+                    "The permit condition is not associated with the given permit amendment"
+                )
 
         cim_or_cpo = data.get("cim_or_cpo")
         if cim_or_cpo == "NONE":
@@ -75,15 +82,19 @@ class MineReportPermitRequirementResource(Resource, UserMixin):
         else:
             cim_or_cpo = CimOrCpo(cim_or_cpo)
 
-        mine_report_permit_requirement = MineReportPermitRequirement.create(
-            report_name=data.get("report_name"),
-            due_date_period_months=data.get("due_date_period_months"),
-            initial_due_date=data.get("initial_due_date"),
-            cim_or_cpo=cim_or_cpo,
-            ministry_recipient=data.get("ministry_recipient"),
-            permit_condition_id=permit_condition_id,
-            permit_amendment_id=permit_amendment_id,
-        )
+        try:
+            mine_report_permit_requirement = MineReportPermitRequirement.create(
+                report_name=data.get("report_name"),
+                due_date_period_months=data.get("due_date_period_months"),
+                initial_due_date=data.get("initial_due_date"),
+                cim_or_cpo=cim_or_cpo,
+                ministry_recipient=data.get("ministry_recipient"),
+                permit_condition_ids=permit_condition_ids,
+                permit_amendment_id=permit_amendment_id,
+            )
+        except IntegrityError as e:
+            current_app.logger.info(e)
+            raise BadRequest(self.unique_report_error_message)
 
         return mine_report_permit_requirement, 201
     
@@ -162,16 +173,23 @@ class MineReportPermitRequirementResource(Resource, UserMixin):
                     "The report requirement to be updated is not associated with the given permit"
                 )
 
-        permit_condition_id = data.get("permit_condition_id")
-        permit_condition = PermitConditions.find_by_permit_condition_id(
-            permit_condition_id
-        )
-        if permit_condition is None:
-            raise NotFound("Permit Condition not found")
-        if permit_condition:
-            if permit_condition_id != mine_report_permit_requirement.permit_condition_id:
+        permit_condition_ids = data.get("permit_condition_ids")
+
+        if not permit_condition_ids or len(permit_condition_ids) == 0:
+            raise BadRequest("Report requirement must be associated with one or more permit conditions.")
+        
+        permit_conditions = PermitConditions.find_many_by_permit_condition_ids(permit_condition_ids
+                                                                               )
+        if len(permit_conditions) != len(permit_condition_ids):
+            not_found_ids = [x.permit_condition_id for x in permit_conditions if x.permit_condition_id not in permit_condition_ids]
+            current_app.logger.info(f"Permit conditions with the following ids were not found: {', '.join(map(str, not_found_ids))}")
+            raise BadRequest(f"{len(not_found_ids)} permit conditions were not found")
+        
+        for condition in permit_conditions:
+            if condition.permit_amendment_id != permit_amendment_id:
+                current_app.logger.info(f"Permit condition {condition.permit_condition_id} is not associated with amendment {permit_amendment_id}")
                 raise BadRequest(
-                    "The report requirement to be updated is not associated with the given condition"
+                    "The permit condition is not associated with the given permit amendment"
                 )
             
         cim_or_cpo = data.get("cim_or_cpo")
@@ -182,10 +200,10 @@ class MineReportPermitRequirementResource(Resource, UserMixin):
         
         data['cim_or_cpo'] = cim_or_cpo
 
-        for key, value in data.items():
-            if key in ['mine_report_permit_requirement_id', 'permit_condition_id', 'permit_amendment_id']:
-                continue     # non-editable fields from put or should be handled separately
-            setattr(mine_report_permit_requirement, key, value)
-        
-        mine_report_permit_requirement.save()
+        try:
+            mine_report_permit_requirement.update(**data)
+        except IntegrityError as e:
+            current_app.logger.info(e)
+            raise BadRequest(self.unique_report_error_message)
+
         return mine_report_permit_requirement

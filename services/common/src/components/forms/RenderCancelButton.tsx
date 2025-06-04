@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { isDirty } from "@mds/common/components/forms/form";
+import { isDirty, reset } from "@mds/common/components/forms/form";
 import { FormContext } from "./FormWrapper";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
 import { Modal, ModalFuncProps } from "antd";
@@ -34,6 +34,7 @@ interface RenderCancelButtonProps {
   iconButton?: boolean;
   disabled?: boolean;
   loading?: boolean;
+  resetForm?: boolean;
 }
 
 /**
@@ -53,6 +54,7 @@ const RenderCancelButton: FC<RenderCancelButtonProps> = ({
   iconButton = false,
   disabled = false,
   loading = false,
+  resetForm = false,
 }) => {
   const dispatch = useDispatch();
   const { formName, isModal, isEditMode } = useContext(FormContext);
@@ -61,6 +63,9 @@ const RenderCancelButton: FC<RenderCancelButtonProps> = ({
   const handleCancel = () => {
     if (cancelFunction) {
       cancelFunction();
+    }
+    if (resetForm) {
+      dispatch(reset(formName));
     }
     if (isModal) {
       dispatch(closeModal());

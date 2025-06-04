@@ -654,6 +654,12 @@ th.ant-descriptions-item.vertical-description {
   border-bottom: none !important;
 }
 
+.ant-collapse.light-header {
+  .ant-collapse-item {
+    background-color: $normal-color;
+  }
+}
+
 // Collapse Component
 .ant-collapse:not(.ant-collapse-borderless) {
   border-color: $background;
