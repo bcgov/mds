@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import { pluginSass } from '@rsbuild/plugin-sass';
 import { pluginLess } from '@rsbuild/plugin-less';
 import { pluginReact } from '@rsbuild/plugin-react';
-import { defineConfig } from '@rsbuild/core';
+import { defineConfig, rspack } from '@rsbuild/core';
 import { pluginTypeCheck } from '@rsbuild/plugin-type-check';
 
 
@@ -83,9 +83,6 @@ export default defineConfig({
     assetsInclude: /\.(?:png|jpe?g|gif|svg|mp3|pdf|docx?|xlsx?|woff2?|ttf|eot)$/,
     define: {
       "process.env": JSON.stringify(envFile),
-      REQUEST_HEADER: JSON.stringify(path.resolve(__dirname, "common/utils/RequestHeaders.js")),
-      GLOBAL_ROUTES: JSON.stringify(path.resolve(__dirname, "src/constants/routes.ts")),
-
     }
   },
   resolve: {
@@ -109,6 +106,14 @@ export default defineConfig({
         }
       }
 
+    },
+    rspack: {
+      plugins: [
+        new rspack.ProvidePlugin({
+          REQUEST_HEADER: path.resolve(__dirname, "common/utils/RequestHeaders.js"),
+          GLOBAL_ROUTES: path.resolve(__dirname, "src/constants/routes.ts"),
+        })
+      ]
     }
 
   }
