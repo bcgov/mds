@@ -62,11 +62,15 @@
   z-index: 1001;
 }
 
-.header-dropdown-button {
+.ant-btn.header-dropdown-button {
   color: $gov-yellow;
   border: none;
   background-color: transparent !important;
   font-weight: bold;
+
+  span {
+    font-size: 16px !important;
+  }
 
   &:active,
   &:focus,
@@ -80,6 +84,11 @@
   background-color: transparent !important;
   box-shadow: none !important;
   font-weight: bold !important;
+  margin-bottom: 0 !important;
+
+  span {
+    font-size: 16px !important;
+  }
 
   & a {
     text-decoration: none;
@@ -214,31 +223,45 @@
   height: 16px;
 }
 
-.notification-button-all-container {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  background-color: #FFFFFF;
-}
+.notification-button {
 
-.notification-button-all,
-.notification-button-all:active {
-  border: none;
-  background-color: #FFFFFF;
-  display: flex;
-  align-items: center;
-  transition: 0.3s ease-in-out;
-}
+  &:hover,
+  &:focus {
+    background-color: unset !important;
 
-.notification-button-all>span {
-  font-size: 12px;
-}
+    .notification-icon {
+      svg {
+        scale: 1.1;
+      }
+    }
+  }
 
-.notification-button-all:hover {
-  background-color: #FFFFFF;
-  border: none;
-}
+  .notification-button-all-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: #FFFFFF;
+  }
 
-.notification-button-all:hover>span {
-  text-decoration: underline;
+  .notification-button-all,
+  .notification-button-all:active {
+    border: none;
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    transition: 0.3s ease-in-out;
+  }
+
+  .notification-button-all>span {
+    font-size: 12px;
+  }
+
+  .notification-button-all:hover {
+    background-color: #FFFFFF;
+    border: none;
+  }
+
+  .notification-button-all:hover>span {
+    text-decoration: underline;
+  }
 }

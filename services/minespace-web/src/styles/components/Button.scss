@@ -8,18 +8,21 @@
   padding: 0 16px;
   font-weight: variables.$semi-bold;
 
-  // these and the hover rules are really only for default,
-  // but due to precendence rules, kept at top level
-  color: variables.$secondary-btn-color; // #medium-grey
-  border: 2px solid variables.$secondary-btn-color;
+  .ant-btn-default,
+  .ant-btn-secondary {
+    color: variables.$secondary-btn-color; // #medium-grey
+    border: 2px solid variables.$secondary-btn-color;
 
-  &:hover {
-    color: variables.$secondary-btn-color-hover;
-    border-color: variables.$secondary-btn-border-color-hover;
+    &:hover {
+      color: variables.$secondary-btn-color-hover;
+      border-color: variables.$secondary-btn-border-color-hover;
+    }
   }
 
-  span {
-    font-size: 14px;
+  &:not(.ant-btn-icon-only) {
+    span {
+      font-size: 14px;
+    }
   }
 
   &-primary {
