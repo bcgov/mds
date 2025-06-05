@@ -150,13 +150,14 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
     const children = condition.sub_conditions.map((c) => conditionToTree(c));
     const value = condition.permit_condition_id;
     const title = condition.stepPath;
-
+    
     return ({
       value,
       key: condition.permit_condition_id,
       title,
       children,
-      checkable: true
+      checkable: true,
+      disabled: condition.mineReportPermitRequirement && condition.mineReportPermitRequirement !== mineReportPermitRequirement
     });
   };
 
