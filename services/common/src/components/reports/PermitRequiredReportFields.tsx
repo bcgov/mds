@@ -25,7 +25,7 @@ export const PermitReportCodeRequirement: FC<{
   amendment: IPermitAmendment;
   summary?: boolean;
 }> = ({ amendment, summary = false }) => {
-  const reports = amendment?.mine_report_permit_requirements;
+  const reports = amendment?.mine_report_permit_requirements.filter( report => report.permit_condition_ids.length > 0 ) || [];
   const reportOptions = createDropDownList(
     uniqBy(reports, "report_name"),
     "report_name",
