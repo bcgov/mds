@@ -78,7 +78,11 @@ export const PermitReportInfoBox: FC<{
     const { conditionMap } = useAppSelector(
       getPermitConditionCategories(permitGuid, permitAmendmentGuid)
     );
-    const conditions = permitReport?.permit_condition_ids.map((id) => conditionMap[id]).sort((a, b) => a.stepPath.localeCompare(b.stepPath))
+
+    const conditions = permitReport?.permit_condition_ids
+      .map((id) => conditionMap[id])
+      .filter(Boolean)
+      .sort((a, b) => a.stepPath.localeCompare(b.stepPath))
 
     const getConditionHref = (condition: IPermitCondition) => {
       return GLOBAL_ROUTES?.VIEW_MINE_PERMIT_AMENDMENT.hashRoute(
