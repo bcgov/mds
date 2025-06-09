@@ -19,6 +19,7 @@ from app.api.mines.permits.permit_extraction.models.response_model import (
 from app.api.mines.permits.permit_extraction.tasks import (
     poll_update_permit_extraction_status,
 )
+from app.api.mines.reports.models.mine_report_req_permit_condition_xref import MineReportReqPermitConditionXref
 from app.api.search.search.permit_search_service import PermitSearchService
 from app.api.utils.access_decorators import (
     VIEW_ALL,
@@ -121,6 +122,7 @@ class PermitConditionExtractionResource(Resource, UserMixin):
 
         PermitConditions.delete_all_by_permit_amendment_id(args['permit_amendment_id'], commit=True)
         PermitConditionCategory.delete_all_by_permit_amendment_id(args['permit_amendment_id'])
+        MineReportReqPermitConditionXref.delete_all_by_permit_amendment_id(args['permit_amendment_id'])
 
         permit_amendment = PermitAmendment.find_by_permit_amendment_id(args['permit_amendment_id'])
         permit_extraction_tasks = PermitExtractionTask.get_by_permit_amendment_guid(permit_amendment.permit_amendment_guid)

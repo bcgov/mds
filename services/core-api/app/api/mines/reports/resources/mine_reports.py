@@ -173,6 +173,8 @@ class MineReportListResource(Resource, UserMixin):
                 permit_requirement = MineReportPermitRequirement.find_by_mine_report_permit_requirement_id(mine_report_permit_requirement_id)
                 if not permit_requirement:
                     raise BadRequest('Mine report permit requirement is required')
+                if permit_requirement.permit_condition_ids is None or len(permit_requirement.permit_condition_ids) == 0:
+                    raise BadRequest('Mine report permit requirement must have at least one permit condition associated with it.')
             if not permit_guid:
                 raise BadRequest('A permit must be selected for Permit Required Report')
 

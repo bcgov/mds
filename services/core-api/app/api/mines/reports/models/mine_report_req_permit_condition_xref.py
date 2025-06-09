@@ -39,3 +39,17 @@ class MineReportReqPermitConditionXref(SoftDeleteMixin, AuditMixin, HistoryMixin
             permit_condition_id=permit_condition_id,    
         )
         return mine_report_req_permit_condition_xref
+    
+    @classmethod
+    def delete_all_by_permit_amendment_id(cls, permit_amendment_id, commit=False):
+        xrefs = (
+            cls.query.join(cls.mine_report_permit_requirement).filter_by(
+                permit_amendment_id=permit_amendment_id,
+                deleted_ind=False,
+            )
+            .all()
+        )
+        for xref in xrefs:
+            xref.delete(commit=commit)
+
+        db.session.commit()

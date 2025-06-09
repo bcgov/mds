@@ -4,6 +4,7 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from marshmallow.exceptions import MarshmallowError
 from datetime import datetime, timezone
 
+from app.api.mines.reports.models.mine_report_req_permit_condition_xref import MineReportReqPermitConditionXref
 from app.extensions import api, jwt, db
 from app.api.mines.response_models import PERMIT_CONDITION_MODEL
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
@@ -166,7 +167,7 @@ class PermitConditionsResource(Resource, UserMixin):
             raise BadRequest('No permit condition found with that guid.')
 
         permit_condition.deleted_ind = True
-        permit_condition.save()
+        permit_condition.save(commit=False)
 
         conditions = []
         if permit_condition.parent_permit_condition_id is not None:
@@ -181,6 +182,11 @@ class PermitConditionsResource(Resource, UserMixin):
         for i, condition in enumerate(sorted(conditions, key=lambda x: x.display_order)):
             condition.display_order = i + 1
             condition.save(commit=False)
+
+        xref = MineReportReqPermitConditionXref.find_by_permit_condition_id(permit_condition.permit_condition_id)
+        if xref:
+            xref.deleted_ind = True
+            xref.save(commit=False)
 
         set_audit_metadata(permit_amendment, False)
         db.session.commit()

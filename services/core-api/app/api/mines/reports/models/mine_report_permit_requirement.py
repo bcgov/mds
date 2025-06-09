@@ -51,6 +51,7 @@ class MineReportPermitRequirement(SoftDeleteMixin, AuditMixin, HistoryMixin, Bas
     permit_conditions = db.relationship(
         'PermitConditions',
         secondary='mine_report_req_permit_condition_xref',
+        secondaryjoin='and_(MineReportReqPermitConditionXref.permit_condition_id == PermitConditions.permit_condition_id, MineReportReqPermitConditionXref.deleted_ind==False)',
         lazy='joined',
         backref=backref('mine_report_permit_requirements', lazy='joined')
     )
