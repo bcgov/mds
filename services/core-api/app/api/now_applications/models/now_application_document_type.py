@@ -242,6 +242,11 @@ class NOWApplicationDocumentType(AuditMixin, Base):
         # Transform template data for "Acknowledgement Letter" (CAL), "Withdrawal Letter" (WDL), "Rejection Letter" (RJL), and "Permit Enclosed Letter" (NPE)
         def transform_letter(template_data, now_application):
             validate_issuing_inspector(now_application)
+            agent_contact = next(
+                (contact for contact in now_application.contacts if contact.mine_party_appt_type_code == 'AGT'),
+                None
+            )
+            template_data['agent_email'] = agent_contact.party.email if agent_contact else None
 
             template_data['images'] = {
                 'issuing_inspector_signature':
