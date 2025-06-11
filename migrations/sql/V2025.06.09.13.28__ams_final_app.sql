@@ -1,6 +1,7 @@
 -- 1. -- a table for the final application itself
-CREATE TABLE IF NOT EXISTS ams_authorization_final_application (
-    ams_authorization_final_application_guid    uuid DEFAULT gen_random_uuid()          PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS ams_final_application (
+    ams_final_application_guid    uuid DEFAULT gen_random_uuid()          PRIMARY KEY,
+    project_summary_authorization_guid          uuid                                    NOT NULL,
     submitter_name                              VARCHAR(255)                            NOT NULL,
     is_agent                                    boolean DEFAULT false                   NOT NULL,
     is_draft                                    boolean DEFAULT true                    NOT NULL,
@@ -10,12 +11,15 @@ CREATE TABLE IF NOT EXISTS ams_authorization_final_application (
     create_user                                 character varying(60)                   NOT NULL,
     create_timestamp                            timestamp with time zone DEFAULT now()  NOT NULL,
     update_user                                 character varying(60)                   NOT NULL,
-    update_timestamp                            timestamp with time zone DEFAULT now()  NOT NULL              
+    update_timestamp                            timestamp with time zone DEFAULT now()  NOT NULL,
+
+    CONSTRAINT project_summary_authorization_guid_fkey FOREIGN KEY (project_summary_authorization_guid)
+        REFERENCES project_summary_authorization(project_summary_authorization_guid) DEFERRABLE INITIALLY DEFERRED              
 );
 
 -- 2. -- a table for the document categories for the final application
-CREATE TABLE IF NOT EXISTS ams_authorization_final_application_document_type (
-    ams_authorization_final_application_document_type_code   VARCHAR(3)                         PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS ams_final_application_document_type (
+    ams_final_application_document_type_code   VARCHAR(3)                         PRIMARY KEY,
     description                                         VARCHAR(100)                            NOT NULL,
     active_ind                                          BOOLEAN DEFAULT true                    NOT NULL,
     create_user                                         character varying(60)                   NOT NULL,
@@ -25,8 +29,8 @@ CREATE TABLE IF NOT EXISTS ams_authorization_final_application_document_type (
 );
 
 -- populate document categories
-INSERT INTO ams_authorization_final_application_document_type (
-  ams_authorization_final_application_document_type_code,
+INSERT INTO ams_final_application_document_type (
+  ams_final_application_document_type_code,
   description,
   active_ind,
   create_user,
@@ -44,17 +48,17 @@ INSERT INTO ams_authorization_final_application_document_type (
   ('NEN', 'Notification and Engagement', true, 'system-mds', 'system-mds');
 
 -- 3. -- a joining table for final application documents
-CREATE TABLE IF NOT EXISTS ams_authorization_final_application_document_xref (
-    ams_authorization_final_application_document_xref_guid uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-    ams_authorization_final_application_guid uuid NOT NULL,
-    ams_authorization_final_application_document_type_code VARCHAR(3) NOT NULL,
+CREATE TABLE IF NOT EXISTS ams_final_application_document_xref (
+    ams_final_application_document_xref_guid uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    ams_final_application_guid uuid NOT NULL,
+    ams_final_application_document_type_code VARCHAR(3) NOT NULL,
     mine_document_guid uuid NOT NULL,
     deleted_ind BOOLEAN DEFAULT false NOT NULL,
     
-    CONSTRAINT ams_authorization_final_application_guid_fkey FOREIGN KEY (ams_authorization_final_application_guid)
-        REFERENCES ams_authorization_final_application(ams_authorization_final_application_guid) DEFERRABLE INITIALLY DEFERRED,
-    CONSTRAINT ams_authorization_final_application_document_type_code_fkey FOREIGN KEY (ams_authorization_final_application_document_type_code)
-        REFERENCES ams_authorization_final_application_document_type(ams_authorization_final_application_document_type_code) DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT ams_final_application_guid_fkey FOREIGN KEY (ams_final_application_guid)
+        REFERENCES ams_final_application(ams_final_application_guid) DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT ams_final_application_document_type_code_fkey FOREIGN KEY (ams_final_application_document_type_code)
+        REFERENCES ams_final_application_document_type(ams_final_application_document_type_code) DEFERRABLE INITIALLY DEFERRED,
     CONSTRAINT mine_document_guid_fkey FOREIGN KEY (mine_document_guid)
         REFERENCES mine_document(mine_document_guid) DEFERRABLE INITIALLY DEFERRED
 );

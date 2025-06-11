@@ -5,6 +5,8 @@ from random import randrange
 import factory
 import factory.fuzzy
 from app.api.activity.models.activity_notification import ActivityNotification
+from app.api.projects.ams_final_application.models.ams_final_application import AmsFinalApplication
+from app.api.projects.ams_final_application.models.ams_final_application_document_xref import AmsFinalApplicationDocumentXref
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES
 from app.api.dams import Dam
 from app.api.dams.models.dam import ConsequenceClassification, DamType, OperatingStatus
@@ -1788,3 +1790,46 @@ class PermitExtractionTaskFactory(BaseFactory):
     core_status_task_id = factory.Faker('uuid4')
     permit_amendment_guid = factory.SelfAttribute('permit_amendment.permit_amendment_guid')
     permit_amendment_document_guid = factory.SelfAttribute('permit_amendment_document.permit_amendment_document_guid')
+
+
+class AmsFinalApplicationDocumentXrefFactory(BaseFactory):
+    class Meta:
+        model = AmsFinalApplicationDocumentXref
+
+    class Params:
+        mine_guid = GUID
+        ams_final_application = factory.SubFactory('tests.factories.AmsFinalApplicationFactory')
+
+    ams_final_application_document_xref_guid = GUID
+    ams_final_application_guid = factory.SelfAttribute('ams_final_application.ams_final_application_guid')
+    ams_final_application_document_type_code = factory.LazyFunction(RandomAmsFinalApplicationDocumentTypeCode)
+    mine_document = factory.SubFactory(MineDocumentFactory, mine_guid=factory.SelfAttribute('..mine_guid'))
+    mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
+    deleted_ind = False
+
+
+class AmsFinalApplicationFactory(BaseFactory):
+    class Meta:
+        model = AmsFinalApplication
+
+    class Params:
+        project_summary_authorization = factory.SubFactory(ProjectSummaryAuthorizationFactory)
+
+    ams_final_application_guid = GUID
+    project_summary_authorization_guid = factory.SelfAttribute('project_summary_authorization.project_summary_authorization_guid')
+    submitter_name = factory.Faker('name')
+    is_agent = factory.Faker('boolean', chance_of_getting_true=30)
+    pre_submitted_files = []
+    submitted_timestamp = TODAY
+    documents = []
+
+    @factory.post_generation
+    def documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        AmsFinalApplicationDocumentXrefFactory.create_batch(
+            size=extracted, ams_final_application=obj, mine_document__mine=None, **kwargs)

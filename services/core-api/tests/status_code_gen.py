@@ -1,6 +1,7 @@
 import random
 
 from app.extensions import db
+from app.api.projects.ams_final_application.models.ams_final_application_document_type import AmsFinalApplicationDocumentType
 from app.api.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
 from app.api.incidents.models.mine_incident_status_code import MineIncidentStatusCode
 from app.api.incidents.models.mine_incident_document_type_code import MineIncidentDocumentTypeCode
@@ -169,6 +170,10 @@ def RandomExplosivesPermitMagazineTypeCode():
 def RandomProjectSummaryDocumentTypeCode():
     return random.choice(
         [x.project_summary_document_type_code for x in ProjectSummaryDocumentType.get_all()])
+
+def RandomAmsFinalApplicationDocumentTypeCode():
+    return random.choice(
+        [x.ams_final_application_document_type_code for x in AmsFinalApplicationDocumentType.get_all()])
 
 def RandomProjectDecisionPackageDocumentTypeCode():
     return random.choice(

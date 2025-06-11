@@ -42,6 +42,7 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
     ams_status_code = db.Column(db.String, nullable=True)
     ams_submission_timestamp = db.Column(
         db.DateTime, nullable=True, default=datetime.utcnow, onupdate=datetime.utcnow)
+    ams_final_application = db.relationship("AmsFinalApplication", uselist=False, back_populates="project_summary_authorization")
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.project_summary_authorization_guid}'
