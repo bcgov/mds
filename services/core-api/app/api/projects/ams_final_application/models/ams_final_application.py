@@ -31,3 +31,7 @@ class AmsFinalApplication(HistoryMixin, SoftDeleteMixin, DraftMixin, AuditMixin,
     @staticmethod
     def find_by_authorization_guid(authorization_guid):
         return AmsFinalApplication.query.filter_by(project_summary_authorization_guid=authorization_guid).one_or_none()
+    
+    @staticmethod
+    def find_by_project_summary_guid(project_summary_guid):
+        return AmsFinalApplication.query.join(AmsFinalApplication.project_summary_authorization).filter_by(project_summary_guid=project_summary_guid).all()
