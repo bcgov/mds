@@ -35,11 +35,14 @@ def test_get_ams_final_apps_by_project_summary_auth_guid(test_client, db_session
     project_summary = ProjectSummaryFactory()
 
     auth = ProjectSummaryAmsAuthorizationFactory(project_summary=project_summary)
+    other_auth = ProjectSummaryAmsAuthorizationFactory(project_summary=project_summary)
 
     final_app = AmsFinalApplicationFactory(project_summary_authorization=auth)
+    # should not be returned in get request
+    other_app = AmsFinalApplicationFactory(project_summary_authorization=other_auth)
 
     get_resp = test_client.get(
-        f'/projects/{project_summary.project_summary_guid}/ams-final-application/{auth.project_summary_authorization_guid}',
+        f'/projects/{project_summary.project_summary_guid}/ams-final-application?project_summary_authorization_guid={auth.project_summary_authorization_guid}',
         headers=auth_headers['full_auth_header']
     )
     get_data = json.loads(get_resp.data.decode())

@@ -9,6 +9,7 @@ from app.api.projects.project_summary.models.project_summary_authorization impor
 from app.api.projects.ams_final_application.models.ams_final_application import AmsFinalApplication
 from app.api.utils.custom_reqparser import CustomReqparser
 
+
 class AmsFinalApplicationResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument('ams_final_application_guid', type=str, store_missing=False, required=False)
@@ -39,7 +40,7 @@ class AmsFinalApplicationResource(Resource, UserMixin):
         # Create new
         final_app = AmsFinalApplication.create(**data)
         return final_app, 201
-
+    
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES ])
     @api.expect(parser)
     @api.marshal_with(AMS_FINAL_APPLICATION_MODEL, code=200)
@@ -59,9 +60,18 @@ class AmsFinalApplicationResource(Resource, UserMixin):
         final_app = final_app.update(submitter_name, documents, is_agent, pre_submitted_files, is_submitting)
         return final_app, 200
 
+    
+
+class AmsFinalApplicationListResource(Resource, UserMixin):
+    parser = CustomReqparser()
+    parser.add_argument('project_summary_authorization_guid', type=str, store_missing=False, required=False)
+
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
+    @api.expect(parser)
     @api.marshal_with(AMS_FINAL_APPLICATION_MODEL, code=200, as_list=True, envelope="records") 
-    def get(self, project_summary_guid, project_summary_authorization_guid=None):
+    def get(self, project_summary_guid):
+        data = self.parser.parse_args()
+        project_summary_authorization_guid = data.get('project_summary_authorization_guid', None)
         if project_summary_authorization_guid is None:
             final_applications = AmsFinalApplication.find_by_project_summary_guid(project_summary_guid)
             return final_applications
