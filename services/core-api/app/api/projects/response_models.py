@@ -162,6 +162,7 @@ AMS_FINAL_APPLICATION_MODEL = api.model(
         'project_summary_authorization_guid': fields.String,
         'submitter_name': fields.String,
         'is_agent': fields.Boolean,
+        'is_draft': fields.Boolean,
         'pre_submitted_files': fields.List(fields.String),
         'submitted_timestamp': fields.DateTime,
         'documents': fields.List(fields.Nested(AMS_FINAL_APPLICATION_DOCUMENT_MODEL)), 

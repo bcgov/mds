@@ -1,8 +1,7 @@
 import json
 import uuid
-from tests.factories import AmsFinalApplicationFactory, AmsFinalApplicationDocumentXrefFactory, MineDocumentFactory, ProjectSummaryAmsAuthorizationFactory, ProjectSummaryFactory, ProjectFactory, MineFactory
+from tests.factories import AmsFinalApplicationFactory, ProjectSummaryAmsAuthorizationFactory, ProjectSummaryFactory, ProjectFactory, MineFactory
 from tests.status_code_gen import RandomAmsFinalApplicationDocumentTypeCode
-from app.api.projects.ams_final_application.models.ams_final_application import AmsFinalApplication
 
 # test get by project summary guid
 def test_get_all_ams_final_apps_by_project_summary_guid(test_client, db_session, auth_headers):
@@ -52,7 +51,7 @@ def test_get_ams_final_apps_by_project_summary_auth_guid(test_client, db_session
 # test create
 def test_post_ams_final_application(test_client, db_session, auth_headers):
     project_summary = ProjectSummaryFactory()
-    auth = ProjectSummaryAmsAuthorizationFactory(project_summary=project_summary)
+    auth = ProjectSummaryAmsAuthorizationFactory(project_summary=project_summary, submit_success=True)
 
     post_data = {
         'project_summary_authorization_guid': auth.project_summary_authorization_guid,
@@ -67,7 +66,7 @@ def test_post_ams_final_application(test_client, db_session, auth_headers):
     post_resp_data = json.loads(post_resp.data.decode())
 
     assert post_resp.status_code == 201
-    assert post_resp_data['project_summary_authorization_guid'] == auth.project_summary_authorization_guid
+    assert post_resp_data['project_summary_authorization_guid'] == str(auth.project_summary_authorization_guid)
     assert post_resp_data['submitter_name'] == 'Submitter Name'
     assert post_resp_data['is_agent'] == False
     assert post_resp_data['is_draft'] == True
@@ -80,7 +79,7 @@ def test_put_ams_final_application_documents(test_client, db_session, auth_heade
     mine = MineFactory(minimal=True)
     project = ProjectFactory(mine=mine)
     project_summary = ProjectSummaryFactory(project=project)
-    auth = ProjectSummaryAmsAuthorizationFactory(project_summary=project_summary)
+    auth = ProjectSummaryAmsAuthorizationFactory(project_summary=project_summary, submit_success=True)
 
     post_data = {
         'project_summary_authorization_guid': auth.project_summary_authorization_guid,
@@ -120,7 +119,7 @@ def test_put_ams_final_application_documents(test_client, db_session, auth_heade
         'ams_final_application_guid': final_app_guid,
     }
 
-    put_docs_resp = test_client.post(
+    put_docs_resp = test_client.put(
         f'/projects/{project_summary.project_summary_guid}/ams-final-application/{auth.project_summary_authorization_guid}',
         headers=auth_headers['full_auth_header'], json=put_docs_data
     )
@@ -142,9 +141,6 @@ def test_put_ams_final_application_documents(test_client, db_session, auth_heade
 def test_put_ams_final_application_submit(test_client, db_session, auth_headers):
     final_app = AmsFinalApplicationFactory(is_submitted=False)
 
-    # # Ensure the relationship is loaded
-    # db_session.flush()
-
     documents = [
         {
             'document_manager_guid': d.document_manager_guid,
@@ -165,7 +161,7 @@ def test_put_ams_final_application_submit(test_client, db_session, auth_headers)
         'is_submitting': True
     }
 
-    put_resp = test_client.post(
+    put_resp = test_client.put(
         f'/projects/{final_app.project_summary_authorization.project_summary_guid}/ams-final-application/{final_app.project_summary_authorization_guid}',
         headers=auth_headers['full_auth_header'], json=put_data
     )
@@ -176,6 +172,27 @@ def test_put_ams_final_application_submit(test_client, db_session, auth_headers)
     assert put_resp_data['is_draft'] == False
     assert put_resp_data['submitted_timestamp'] is not None
 
+def test_ams_final_app_unsubmitted_raises_error(test_client, db_session, auth_headers):
+    mine = MineFactory(minimal=True)
+    project = ProjectFactory(mine=mine)
+    project_summary = ProjectSummaryFactory(project=project)
+    auth = ProjectSummaryAmsAuthorizationFactory(project_summary=project_summary, submit_success=False)
+
+    post_data = {
+        'project_summary_authorization_guid': auth.project_summary_authorization_guid,
+        'submitter_name': 'Submitter Name',
+        'is_agent': False,
+    }
+
+    post_resp = test_client.post(
+        f'/projects/{project_summary.project_summary_guid}/ams-final-application/{auth.project_summary_authorization_guid}',
+        headers=auth_headers['full_auth_header'], json=post_data
+    )
+    post_resp_data = json.loads(post_resp.data.decode())
+
+    assert post_resp.status_code == 400
+    assert "Authorization must be successfully submitted before creating the final application" in post_resp_data['message']
+    
 def test_put_ams_final_remove_documents(test_client, db_session, auth_headers):
     final_app = AmsFinalApplicationFactory(is_submitted=False, documents=2)
 
@@ -186,17 +203,25 @@ def test_put_ams_final_remove_documents(test_client, db_session, auth_headers):
         'submitter_name': final_app.submitter_name,
         'is_agent': final_app.is_agent,
         'pre_submitted_files': final_app.pre_submitted_files,
-        'documents': [],
+        'documents': [
+            {
+                'ams_final_application_document_guid': str(final_app.documents[0].ams_final_application_document_xref_guid),
+                'document_manager_guid': str(final_app.documents[0].document_manager_guid),
+                'document_name': final_app.documents[0].document_name,
+                'mine_document_guid': str(final_app.documents[0].mine_document_guid),
+                'ams_final_application_document_type_code': final_app.documents[0].ams_final_application_document_type_code
+        }
+        ],
     }
-
-    put_resp = test_client.post(
+    
+    put_resp = test_client.put(
         f'/projects/{final_app.project_summary_authorization.project_summary_guid}/ams-final-application/{final_app.project_summary_authorization_guid}',
         headers=auth_headers['full_auth_header'], json=put_data
     )
 
     put_resp_data = json.loads(put_resp.data.decode())
 
-    # request should not un-submit the final application
     assert put_resp.status_code == 200
-    assert put_resp_data['is_draft'] == False
-    assert len(put_resp_data['documents']) == 0
+    assert put_resp_data['is_draft'] == True
+    assert len(put_resp_data['documents']) == 1
+    assert put_resp_data['documents'][0]['document_manager_guid'] == str(final_app.documents[0].document_manager_guid)

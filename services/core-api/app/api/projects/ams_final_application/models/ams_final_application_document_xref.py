@@ -35,3 +35,8 @@ class AmsFinalApplicationDocumentXref(SoftDeleteMixin, Base):
     document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
     document_name = association_proxy('mine_document', 'document_name')
     create_user = association_proxy('mine_document', 'create_user')
+
+    @classmethod
+    def find_by_mine_document_guid(cls, mine_document_guid):
+        return cls.query.filter_by(mine_document_guid=mine_document_guid).filter(
+            MineDocument.deleted_ind == False).one_or_none()

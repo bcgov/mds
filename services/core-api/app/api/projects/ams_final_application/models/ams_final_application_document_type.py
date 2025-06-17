@@ -15,5 +15,9 @@ class AmsFinalApplicationDocumentType(AuditMixin, Base):
         return f'{self.__class__.__name__} {self.ams_final_application_document_type_code}'
     
     @staticmethod
+    def get_by_document_code(document_code):
+        return AmsFinalApplicationDocumentType.query.filter_by(ams_final_application_document_type_code=document_code).first()
+    
+    @staticmethod
     def get_all():
         return AmsFinalApplicationDocumentType.query.order_by(AmsFinalApplicationDocumentType.description).all()

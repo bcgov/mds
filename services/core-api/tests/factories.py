@@ -1509,7 +1509,13 @@ class ProjectSummaryAmsAuthorizationFactory(ProjectSummaryAuthorizationFactory):
         authorization_description = factory.Faker('sentence', nb_words=10)
         exemption_requested = False
         is_contaminated = False
-        exemption_reason = factory.Faker('sentence', nb_words=5)        
+        exemption_reason = factory.Faker('sentence', nb_words=5) 
+        submit_success = factory.Trait(
+            ams_status_code='200',
+            ams_tracking_number=factory.LazyFunction(lambda: str(random.randint(1000, 99999))),
+            ams_outcome='{Successfully create new Authorization Amendment}',
+            ams_submission_timestamp=TODAY
+        )       
 
     project_summary_authorization_type = factory.LazyFunction(RandomAmsAuthType)
     project_summary_permit_type = factory.LazyFunction(lambda: [random.choice(["NEW", "AMENDMENT"])])    
