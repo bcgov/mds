@@ -70,12 +70,12 @@ class AmsFinalApplication(HistoryMixin, SoftDeleteMixin, DraftMixin, AuditMixin,
                submitter_name,
                documents=[],
                is_agent=False,
-               pre_submitted_files=[],
+               pre_submitted_files=None,
                is_submitting=False
                ):
         self.submitter_name = submitter_name
         self.is_agent = is_agent
-        self.pre_submitted_files = pre_submitted_files
+        self.pre_submitted_files = pre_submitted_files or []
         self._update_documents(documents)
 
         if is_submitting and not self.submitted_timestamp:
