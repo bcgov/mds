@@ -142,7 +142,7 @@ export const transformPermitReportRequirement = (report: IMineReportPermitRequir
   return null;
 }
 
-export const InspectionOrderNumberSorter = (a, b, dataIndex) => {
+export const inspectionOrderNumberSorter = (a, b, dataIndex) => {
   const getValue = (record) => {
     const keys = Array.isArray(dataIndex) ? dataIndex : [dataIndex];
     return keys.reduce((obj, key) => obj?.[key], record);
