@@ -10,6 +10,7 @@ import {
   renderDateColumn,
   renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
+import { InspectionOrderNumberSorter } from "@mds/common/utils/helpers";
 
 const propTypes = {
   filteredOrders: CustomPropTypes.complianceOrders,
@@ -66,7 +67,13 @@ const columns = [
       </div>
     ),
   },
-  renderTextColumn("order_no", "Order No.", true, "-"),
+  {
+    title: "Order No.",
+    key: "order_no",
+    dataIndex: "order_no",
+    render: (text) => <div title="Order No.">{text || "-"}</div>,
+    sorter: (a, b) => InspectionOrderNumberSorter(a, b, "order_no"),
+  },
   {
     title: "Violation",
     key: "violation",

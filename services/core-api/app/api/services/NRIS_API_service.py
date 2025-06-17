@@ -108,7 +108,6 @@ def _process_NRIS_data(raw_data):
             result['last_inspection'] = inspection_date
             result['last_inspector'] = inspector
 
-        order_count = 1
         for location in inspection['inspected_locations']:
             for stop in location['stop_details']:
                 legislation = stop['noncompliance_legislations']
@@ -130,7 +129,7 @@ def _process_NRIS_data(raw_data):
                     documents.append(document)
 
                 order = {
-                    'order_no': str(inspection['external_id']) + '-' + str(order_count),
+                    'order_no': str(inspection['external_id']) + '-' + str(stop['order_number']),
                     'violation': violation,
                     'report_no': inspection['external_id'],
                     'inspector': inspector,
@@ -154,7 +153,6 @@ def _process_NRIS_data(raw_data):
                     order['order_status'] = "Overdue"
 
                 result['orders'].append(order)
-                order_count += 1
 
             result['all_time']['num_advisories'] += len(location['advisory_details'])
             result['all_time']['num_warnings'] += len(location['warning_details'])

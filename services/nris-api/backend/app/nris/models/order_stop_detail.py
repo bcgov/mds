@@ -37,6 +37,8 @@ STOP_DETAILS_RESPONSE_MODEL = api.model(
         fields.String,
         'documents':
         fields.List(fields.Nested(DOCUMENT_RESPONSE_MODEL)),
+        'order_number':
+        fields.String,
     })
 
 
@@ -63,6 +65,7 @@ class OrderStopDetail(Base):
     authority_act_section = db.Column(db.String(10485760))
     documents = db.relationship(
         'Document', lazy='selectin', secondary='order_stop_detail_document_xref')
+    order_number = db.Column(db.String())
 
     def __repr__(self):
         return f'<OrderStopDetail order_stop_detail_id={self.order_stop_detail_id}> inspected_location_id={self.inspected_location_id}'
