@@ -262,19 +262,32 @@ def register_commands(app):
 
             if is_idir:
                 from app.api.mines.subscription.models.subscription import Subscription
+                existing_subscriptions = Subscription.query.filter_by(user_name=full_user_name).all()
+                subscribed_mine_guids = [s.mine_guid for s in existing_subscriptions]
                 for mine in all_mines:
-                    print(f'Creating mine subscription. Username: {full_user_name}, Mine: {mine.mine_name}')
-                    subscription = Subscription(mine_guid=mine.mine_guid, user_name=full_user_name)
-                    db.session.add(subscription)                    
+                    if mine.mine_guid in subscribed_mine_guids:
+                        print(f'Skipping already subscribed mine. Username: {full_user_name}, Mine: {mine.mine_name}')
+                    else:
+                        print(f'Creating mine subscription. Username: {full_user_name}, Mine: {mine.mine_name}')
+                        subscription = Subscription(mine_guid=mine.mine_guid, user_name=full_user_name)
+                        db.session.add(subscription)                    
             else:
                 minespace_user = MinespaceUser.find_by_email(full_user_name)
+                subscribed_mine_guids = []
                 if not minespace_user:
                     minespace_user = MinespaceUserFactory(
                         email_or_username=full_user_name,
-                        keycloak_guid='b28dfc3a-5e5c-4501-ab2f-399d8e64f2c8')               
+                        keycloak_guid='b28dfc3a-5e5c-4501-ab2f-399d8e64f2c8')
+                else:
+                    from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
+                    existing_subscriptions = MinespaceUserMine.query.filter_by(user_id=minespace_user.user_id).all()
+                    subscribed_mine_guids = [s.mine_guid for s in existing_subscriptions]
                 for mine in all_mines:
-                    print(f'Creating mine subscription. Username: {full_user_name}, Mine: {mine.mine_name}')
-                    MinespaceSubscriptionFactory(mine=mine, minespace_user=minespace_user)                        
+                    if mine.mine_guid in subscribed_mine_guids:
+                        print(f'Skipping already subscribed mine. Username: {full_user_name}, Mine: {mine.mine_name}')
+                    else:
+                        print(f'Creating mine subscription. Username: {full_user_name}, Mine: {mine.mine_name}')
+                        MinespaceSubscriptionFactory(mine=mine, minespace_user=minespace_user)                        
 
             try:
                 db.session.commit()
