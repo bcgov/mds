@@ -149,8 +149,8 @@ export const InspectionOrderNumberSorter = (a, b, dataIndex) => {
   };
 
   const parseOrder = (order) => {
-    const [main, sub] = order?.split("-").map(Number);
-    return [main || 0, sub || 0];
+    const [main, sub] = (order ? order.split("-") : ["0", "0"]).map(Number);
+    return [main, sub];
   };
 
   const [mainA, subA] = parseOrder(getValue(a));
