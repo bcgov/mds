@@ -50,14 +50,14 @@ class AmsFinalApplication(HistoryMixin, SoftDeleteMixin, DraftMixin, AuditMixin,
                project_summary_authorization_guid,
                submitter_name,
                is_agent=False,
-               pre_submitted_files=[],
+               pre_submitted_files=None,
                is_submitting=False
                ):
         final_app = cls(
             project_summary_authorization_guid=project_summary_authorization_guid,
             submitter_name=submitter_name,
             is_agent=is_agent,
-            pre_submitted_files=pre_submitted_files,
+            pre_submitted_files=pre_submitted_files or [],
         )
         if is_submitting:
             final_app.submitted_timestamp = datetime.now(timezone.utc)
