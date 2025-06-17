@@ -237,7 +237,8 @@ def setup_info(test_client):
                             "noncompliance_permits": [],
                             "authority_act": "Mines Act",
                             "authority_act_section": "Section 15(4)",
-                            "documents": []
+                            "documents": [],
+                            "order_number": "1",
                         }
                     ],
                     "warning_details": []
