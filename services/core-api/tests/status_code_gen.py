@@ -1,6 +1,7 @@
 import random
 
 from app.extensions import db
+from app.api.projects.ams_final_application.models.ams_final_application_document_type import AmsFinalApplicationDocumentType
 from app.api.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
 from app.api.incidents.models.mine_incident_status_code import MineIncidentStatusCode
 from app.api.incidents.models.mine_incident_document_type_code import MineIncidentDocumentTypeCode
@@ -18,6 +19,7 @@ from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
 from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
 from app.api.mines.explosives_permit.models.explosives_permit_magazine_type import ExplosivesPermitMagazineType
 from app.api.projects.project_summary.models.project_summary_document_type import ProjectSummaryDocumentType
+from app.api.projects.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
 from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
 from app.api.compliance.models.compliance_article import ComplianceArticle
@@ -139,7 +141,10 @@ def RandomIncidentDocumentType():
     return random.choice(
         [x.mine_incident_document_type_code for x in MineIncidentDocumentTypeCode.get_all()])
 
-
+def RandomAmsAuthType():
+    return random.choice(
+        [x.project_summary_authorization_type for x in ProjectSummaryAuthorizationType.get_by_group_id('ENVIRONMENTAL_MANAGMENT_ACT')]
+    )
 def RandomMineReportDefinition():
     return random.choice([x.mine_report_definition_id for x in MineReportDefinition.get_all()])
 
@@ -169,6 +174,10 @@ def RandomExplosivesPermitMagazineTypeCode():
 def RandomProjectSummaryDocumentTypeCode():
     return random.choice(
         [x.project_summary_document_type_code for x in ProjectSummaryDocumentType.get_all()])
+
+def RandomAmsFinalApplicationDocumentTypeCode():
+    return random.choice(
+        [x.ams_final_application_document_type_code for x in AmsFinalApplicationDocumentType.get_all()])
 
 def RandomProjectDecisionPackageDocumentTypeCode():
     return random.choice(

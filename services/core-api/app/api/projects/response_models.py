@@ -141,6 +141,34 @@ PROJECT_SUMMARY_CONTACT_MODEL = api.model(
         'is_primary': fields.Boolean,
     })
 
+AMS_FINAL_APPLICATION_DOCUMENT_TYPE_MODEL = api.model(
+    'AmsFinalApplicationDocumentType', {
+        'ams_final_application_document_type_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean,
+    }
+)
+
+AMS_FINAL_APPLICATION_DOCUMENT_MODEL = api.inherit('AmsFinalApplicationDocument', MINE_DOCUMENT_MODEL, {
+    'ams_final_application_document_xref_guid': fields.String,
+    'ams_final_application_guid': fields.String,
+    'ams_final_application_document_type_code': fields.String,
+    'document_type_description': fields.String,
+})
+
+AMS_FINAL_APPLICATION_MODEL = api.model(
+    'AmsFinalApplication', {
+        'ams_final_application_guid': fields.String,
+        'project_summary_authorization_guid': fields.String,
+        'submitter_name': fields.String,
+        'is_agent': fields.Boolean,
+        'is_draft': fields.Boolean,
+        'pre_submitted_files': fields.List(fields.String),
+        'submitted_timestamp': fields.DateTime,
+        'documents': fields.List(fields.Nested(AMS_FINAL_APPLICATION_DOCUMENT_MODEL)), 
+    }
+)
+
 PROJECT_SUMMARY_AUTHORIZATION_MODEL = api.model(
     'ProjectSummaryAuthorization', {
         'project_summary_authorization_guid': fields.String,
