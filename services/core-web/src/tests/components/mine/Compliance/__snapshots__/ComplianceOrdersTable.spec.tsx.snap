@@ -431,7 +431,6 @@ exports[`ComplianceOrdersTable renders properly 1`] = `
                       class="ant-table-cell"
                     >
                       <div
-                        class="order_no-column"
                         title="Order No."
                       >
                         1
@@ -512,7 +511,6 @@ exports[`ComplianceOrdersTable renders properly 1`] = `
                       class="ant-table-cell"
                     >
                       <div
-                        class="order_no-column"
                         title="Order No."
                       >
                         7
@@ -593,7 +591,6 @@ exports[`ComplianceOrdersTable renders properly 1`] = `
                       class="ant-table-cell"
                     >
                       <div
-                        class="order_no-column"
                         title="Order No."
                       >
                         2

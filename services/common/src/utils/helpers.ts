@@ -141,3 +141,21 @@ export const transformPermitReportRequirement = (report: IMineReportPermitRequir
   }
   return null;
 }
+
+export const inspectionOrderNumberSorter = (a, b, dataIndex) => {
+  const getValue = (record) => {
+    const keys = Array.isArray(dataIndex) ? dataIndex : [dataIndex];
+    return keys.reduce((obj, key) => obj?.[key], record);
+  };
+
+  const parseOrder = (order) => {
+    const [main, sub] = (order ? order.split("-") : ["0", "0"]).map(Number);
+    return [main, sub];
+  };
+
+  const [mainA, subA] = parseOrder(getValue(a));
+  const [mainB, subB] = parseOrder(getValue(b));
+
+  if (mainA !== mainB) return mainA - mainB;
+  return subA - subB;
+};

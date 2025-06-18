@@ -297,6 +297,7 @@ def _save_stop_order(stop_order):
     completion_date = stop_order.find('order_completion_date')
     authority_act = stop_order.find('order_authority_act')
     authority_act_section = stop_order.find('order_authority_section')
+    order_number = stop_order.find('order_number')
 
     for order_legislation in stop_order.findall('order_legislations'):
         noncompliance_legislation = _save_order_noncompliance_legislation(order_legislation)
@@ -316,6 +317,7 @@ def _save_stop_order(stop_order):
     stop_detail.completion_date = _parse_element_text(completion_date)
     stop_detail.authority_act = _parse_element_text(authority_act)
     stop_detail.authority_act_section = _parse_element_text(authority_act_section)
+    stop_detail.order_number = _parse_element_text(order_number)
 
     for attachment in stop_order.findall('attachment'):
         doc = _save_document(attachment)

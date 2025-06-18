@@ -7,6 +7,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { RED_CLOCK } from "@/constants/assets";
 import * as STRINGS from "@/constants/strings";
 import CoreTable from "@mds/common/components/common/CoreTable";
+import { inspectionOrderNumberSorter } from "@mds/common/utils/helpers";
 
 const propTypes = {
   orders: CustomPropTypes.complianceOrders,
@@ -36,7 +37,7 @@ const columns = [
     dataIndex: "order_no",
     key: "order_no",
     render: (text, record) => <div title="Order #">{record.order_no || STRINGS.EMPTY_FIELD}</div>,
-    sorter: (a, b) => (a.order_no > b.order_no ? -1 : 1),
+    sorter: (a, b) => inspectionOrderNumberSorter(a, b, "order_no"),
   },
   {
     title: "Violation",
