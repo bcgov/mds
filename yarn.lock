@@ -2835,7 +2835,7 @@ __metadata:
     regenerator-runtime: 0.13.3
     remark-gfm: ^3.0.1
     reselect: 5.0.1
-    sass: 1.80.3
+    sass: 1.80.6
     sass-loader: 16.0.2
     speed-measure-webpack-plugin: ^1.5.0
     string-similarity: 3.0.0
