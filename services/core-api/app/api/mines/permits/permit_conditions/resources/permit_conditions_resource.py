@@ -4,6 +4,7 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from marshmallow.exceptions import MarshmallowError
 from datetime import datetime, timezone
 
+from app.api.mines.permits.permit_extraction.tasks import export_and_index_single_permit_amendment
 from app.api.mines.reports.models.mine_report_req_permit_condition_xref import MineReportReqPermitConditionXref
 from app.extensions import api, jwt, db
 from app.api.mines.response_models import PERMIT_CONDITION_MODEL
@@ -148,6 +149,11 @@ class PermitConditionsResource(Resource, UserMixin):
         set_audit_metadata(permit_amendment, False)
 
         db.session.commit()
+
+        #Check if the amendment is now verified and if so index the conditions
+        if (permit_amendment.conditions_review_completed):
+            export_and_index_single_permit_amendment.delay(permit_amendment.permit_amendment_guid)
+
         return condition
 
     @api.doc(description='delete a permit condition')
