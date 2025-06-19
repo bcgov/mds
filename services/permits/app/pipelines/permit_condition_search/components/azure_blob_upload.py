@@ -24,7 +24,7 @@ class AzureBlobUploader:
             raise ValueError("container_name cannot be empty")
 
     @component.output_types(blob_url=str)
-    def run(self, file_path: Path, file_name) -> dict:
+    def run(self, file_path: Path, file_name=None) -> dict:
         """
         Uploads a file to Azure Blob Storage in the indexing folder
         """
