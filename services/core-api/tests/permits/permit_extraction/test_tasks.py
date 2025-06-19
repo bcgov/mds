@@ -15,6 +15,11 @@ def permit_search_service_mock():
         yield mc
 
 @pytest.fixture
+def export_and_index_single_permit_amendment_mock():
+    with mock.patch('app.api.mines.permits.permit_extraction.tasks.export_and_index_single_permit_amendment') as mc:
+        yield mc
+
+@pytest.fixture
 def create_permit_conditions_mock():
     with mock.patch('app.api.mines.permits.permit_extraction.tasks.create_permit_conditions_from_task') as mc:
         yield mc
@@ -35,7 +40,7 @@ def celery_app(request, app):
     return app
 
 
-def test_poll_update_permit_extraction_status_success(permit_search_service_mock, celery_app, test_client, create_permit_conditions_mock, db_session):
+def test_poll_update_permit_extraction_status_success(permit_search_service_mock, celery_app, test_client, create_permit_conditions_mock, db_session, export_and_index_single_permit_amendment_mock):
     permit_search_service_mock.return_value.update_task_status.return_value = (mock.Mock(), 'SUCCESS')
 
     result = poll_update_permit_extraction_status.apply(args=(str(uuid.uuid4()),)).get()
