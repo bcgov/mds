@@ -27,6 +27,7 @@ import { MINE_DASHBOARD } from "@/constants/routes";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { NodStatusSaveEnum } from "@mds/common/constants/enums";
+import AddNoticeOfDepartureForm from "@/components/Forms/noticeOfDeparture/AddNoticeOfDepartureForm";
 
 interface NoticeOfDepartureProps {
   nods: INoticeOfDeparture[];
@@ -132,7 +133,7 @@ export const NoticeOfDeparture: FC<NoticeOfDepartureProps & PropsFromRedux> = (p
         mineGuid: mine.mine_guid,
         permits,
       },
-      content: modalConfig.ADD_NOTICE_OF_DEPARTURE,
+      content: AddNoticeOfDepartureForm,
     });
   };
 
