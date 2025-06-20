@@ -11,6 +11,9 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.constants import MAJOR_MINES_OFFICE_EMAIL
+from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.parties.party.models.party import Party
+from datetime import datetime
 
 SIGNATURE_IMAGE_HEIGHT_INCHES = 0.8
 
@@ -241,6 +244,15 @@ class NOWApplicationDocumentType(AuditMixin, Base):
 
         # Transform template data for "Acknowledgement Letter" (CAL), "Withdrawal Letter" (WDL), "Rejection Letter" (RJL), and "Permit Enclosed Letter" (NPE)
         def transform_letter(template_data, now_application):
+            now_application_identity = NOWApplicationIdentity.find_by_now_application_id(now_application.now_application_id)
+            template_data['now_number'] = now_application_identity.now_number
+            
+            if self.now_application_document_type_code in ('CAL', 'NPE'):
+                organization = Party.find_by_name(template_data['proponent_name'])
+                template_data['letter_dt'] = datetime.strptime(template_data["letter_dt"], '%b %d %Y').strftime('%B %d %Y')
+                template_data['application_dt'] = datetime.strptime(template_data["application_dt"], '%b %d %Y').strftime('%B %d %Y')
+                template_data['organization_email'] = organization.email if organization else None
+
             validate_issuing_inspector(now_application)
             agent_contact = next(
                 (contact for contact in now_application.contacts if contact.mine_party_appt_type_code == 'AGT'),

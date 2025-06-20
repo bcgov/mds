@@ -749,6 +749,12 @@ SET form_spec_json = '[
       "required": true
     },
     {
+      "id": "applicant_email",
+      "label": "Applicant Email",
+      "type": "FIELD",
+      "placeholder": "Enter the applicant''s email"
+    },
+    {
       "id": "property",
       "relative-data-path": "now_application.property_name",
       "read-only": true
@@ -807,6 +813,16 @@ SET form_spec_json = '[
     {
       "id": "application_type_code",
       "relative-data-path": "now_application.application_type_code",
+      "read-only": true
+    },
+    {
+      "id": "bond_inc_amt",
+      "relative-data-path": "now_application.liability_adjustment",
+      "read-only": true
+    },
+    {
+      "id": "now_tracking_number",
+      "relative-data-path": "now_application.now_tracking_number",
       "read-only": true
     }
   ]'
@@ -1029,6 +1045,16 @@ SET form_spec_json = '[
   {
     "id": "application_type_code",
     "relative-data-path": "now_application.application_type_code",
+    "read-only": true
+  },
+  {
+    "id": "bond_inc_amt",
+    "relative-data-path": "now_application.liability_adjustment",
+    "read-only": true
+  },
+  {
+    "id": "now_tracking_number",
+    "relative-data-path": "now_application.now_tracking_number",
     "read-only": true
   }
 ]'
