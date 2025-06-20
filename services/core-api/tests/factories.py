@@ -5,6 +5,8 @@ from random import randrange
 import factory
 import factory.fuzzy
 from app.api.activity.models.activity_notification import ActivityNotification
+from app.api.projects.ams_final_application.models.ams_final_application import AmsFinalApplication
+from app.api.projects.ams_final_application.models.ams_final_application_document_xref import AmsFinalApplicationDocumentXref
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES
 from app.api.dams import Dam
 from app.api.dams.models.dam import ConsequenceClassification, DamType, OperatingStatus
@@ -1502,6 +1504,141 @@ class ProjectSummaryAuthorizationFactory(BaseFactory):
     existing_permits_authorizations = []
     deleted_ind = False
 
+class ProjectSummaryAmsAuthorizationFactory(ProjectSummaryAuthorizationFactory):
+    class Params:
+        authorization_description = factory.Faker('sentence', nb_words=10)
+        exemption_requested = False
+        is_contaminated = False
+        exemption_reason = factory.Faker('sentence', nb_words=5) 
+        submit_success = factory.Trait(
+            ams_status_code='200',
+            ams_tracking_number=factory.LazyFunction(lambda: str(random.randint(1000, 99999))),
+            ams_outcome='{Successfully create new Authorization Amendment}',
+            ams_submission_timestamp=TODAY
+        )       
+
+    project_summary_authorization_type = factory.LazyFunction(RandomAmsAuthType)
+    project_summary_permit_type = factory.LazyFunction(lambda: [random.choice(["NEW", "AMENDMENT"])])    
+    existing_permits_authorizations = factory.LazyFunction(lambda: [str(random.randint(100, 999999))])
+        
+    amendment_severity = factory.LazyFunction(lambda: random.choice(["SIG", "MIN"]))
+    amendment_changes = factory.LazyFunction(lambda: [random.choice(["ILT", "IGT", "DDL", "NAM", "TRA", "MMR", "RCH", "OTH"])])
+    new_type = factory.LazyFunction(lambda: random.choice(["PER", "APP"]))     
+    change_ownership_name_documents = []    
+    consent_documents = []
+    location_documents = []
+    exemption_documents = []
+    support_documents = []
+    clause_amendment_documents = []
+    discharge_documents = []
+
+    @factory.post_generation
+    def location_documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+        # Always required for AMS
+        obj.location_documents.extend([
+            ProjectSummaryAuthorizationDocumentFactory(
+                project_summary_authorization=obj,
+                project_summary_document_type_code="MAP"
+            )
+        ])
+
+    @factory.post_generation
+    def discharge_documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+        required = False
+        if obj.project_summary_permit_type and obj.project_summary_permit_type[0] == "NEW":
+            required = True
+        elif obj.project_summary_permit_type and obj.project_summary_permit_type[0] == "AMENDMENT":
+            changes = obj.amendment_changes or []
+            if any(c in changes for c in ["ILT", "IGT", "DDL"]):
+                required = True
+        if required:
+            obj.discharge_documents.extend([
+                ProjectSummaryAuthorizationDocumentFactory(
+                    project_summary_authorization=obj,
+                    project_summary_document_type_code="DFA"
+                )
+            ])
+
+    @factory.post_generation
+    def consent_documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+        required = False
+        if obj.project_summary_permit_type and obj.project_summary_permit_type[0] == "AMENDMENT":
+            changes = obj.amendment_changes or []
+            if "TRA" in changes:
+                required = True
+        if required:
+            obj.consent_documents.extend([
+                ProjectSummaryAuthorizationDocumentFactory(
+                    project_summary_authorization=obj,
+                    project_summary_document_type_code="CSL"
+                )
+            ])
+
+    @factory.post_generation
+    def change_ownership_name_documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+        required = False
+        if obj.project_summary_permit_type and obj.project_summary_permit_type[0] == "AMENDMENT":
+            changes = obj.amendment_changes or []
+            if any(c in changes for c in ["NAM", "TRA"]):
+                required = True
+        if required:
+            obj.change_ownership_name_documents.extend([
+                ProjectSummaryAuthorizationDocumentFactory(
+                    project_summary_authorization=obj,
+                    project_summary_document_type_code="CON"
+                )
+            ])
+
+    @factory.post_generation
+    def clause_amendment_documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+        required = False
+        if obj.project_summary_permit_type and obj.project_summary_permit_type[0] == "AMENDMENT":
+            changes = obj.amendment_changes or []
+            if any(c in changes for c in ["MMR", "RCH"]):
+                required = True
+        if required:
+            obj.clause_amendment_documents.extend([
+                ProjectSummaryAuthorizationDocumentFactory(
+                    project_summary_authorization=obj,
+                    project_summary_document_type_code="CAF"
+                )
+            ])
+
+    @factory.post_generation
+    def exemption_documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+        if obj.exemption_requested:
+            obj.exemption_documents.extend([
+                ProjectSummaryAuthorizationDocumentFactory(
+                    project_summary_authorization=obj,
+                    project_summary_document_type_code="EXL"
+                )
+            ])
+
+    @factory.post_generation
+    def support_documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+        if obj.exemption_requested:
+            obj.support_documents.extend([
+                ProjectSummaryAuthorizationDocumentFactory(
+                    project_summary_authorization=obj,
+                    project_summary_document_type_code="SPR"
+                )
+            ])
+
+
 class MinistryContactTypeFactory(BaseFactory):
 
     class Meta:
@@ -1788,3 +1925,48 @@ class PermitExtractionTaskFactory(BaseFactory):
     core_status_task_id = factory.Faker('uuid4')
     permit_amendment_guid = factory.SelfAttribute('permit_amendment.permit_amendment_guid')
     permit_amendment_document_guid = factory.SelfAttribute('permit_amendment_document.permit_amendment_document_guid')
+
+
+class AmsFinalApplicationDocumentXrefFactory(BaseFactory):
+    class Meta:
+        model = AmsFinalApplicationDocumentXref
+
+    class Params:
+        mine_guid = GUID
+        ams_final_application = factory.SubFactory('tests.factories.AmsFinalApplicationFactory')
+
+    ams_final_application_document_xref_guid = GUID
+    ams_final_application_guid = factory.SelfAttribute('ams_final_application.ams_final_application_guid')
+    ams_final_application_document_type_code = factory.LazyFunction(RandomAmsFinalApplicationDocumentTypeCode)
+    mine_document = factory.SubFactory(MineDocumentFactory, mine_guid=factory.SelfAttribute('..mine_guid'))
+    mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
+    deleted_ind = False
+
+
+class AmsFinalApplicationFactory(BaseFactory):
+    class Meta:
+        model = AmsFinalApplication
+
+    class Params:
+        project_summary_authorization = factory.SubFactory(ProjectSummaryAuthorizationFactory)
+        is_submitted = factory.Trait(
+            submitted_timestamp=TODAY,
+            is_draft=False
+        )
+
+    ams_final_application_guid = GUID
+    project_summary_authorization_guid = factory.SelfAttribute('project_summary_authorization.project_summary_authorization_guid')
+    submitter_name = factory.Faker('name')
+    is_agent = factory.Faker('boolean', chance_of_getting_true=30)
+    pre_submitted_files = []
+
+    @factory.post_generation
+    def documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        AmsFinalApplicationDocumentXrefFactory.create_batch(
+            size=extracted, ams_final_application=obj, mine_document__mine=None, **kwargs)
