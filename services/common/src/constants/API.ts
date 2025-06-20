@@ -171,6 +171,8 @@ export const PROJECT_SUMMARY_MINISTRY_COMMENTS = (project_summary_guid) =>
 export const PROJECT_SUMMARY_ENVIRONMENT_AUTHORIZATION_STATUSES = () =>
   "/projects/project-summary-environment-authorization-statuses";
 
+export const PROJECT_SUMMARY_ENVIRONMENT_FINAL_APPLICATION = (projectSummaryGuid: string, project_summary_authorization_guid = "") =>
+  `/projects/${projectSummaryGuid}/ams-final-application?${queryString.stringify(project_summary_authorization_guid)}`;
 //New file version upload
 export const NEW_VERSION_DOCUMENTS = ({ mineGuid, mineDocumentGuid }) =>
   `/mines/${mineGuid}/documents/${mineDocumentGuid}/versions/upload`;
