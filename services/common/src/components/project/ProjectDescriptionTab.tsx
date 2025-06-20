@@ -31,7 +31,7 @@ import { openModal } from "@mds/common/redux/actions/modalActions";
 
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { renderTextColumn, renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
-import { IAuthorizationSummary } from "@mds/common/interfaces";
+import { IAuthorizationSummary, IProjectSummaryAuthorization } from "@mds/common/interfaces";
 import { useHistory, Link } from "react-router-dom";
 
 import {
@@ -95,6 +95,16 @@ const ProjectDescriptionTab = () => {
     render: (record) => <Badge status={record.status.status} text={record.status.text} />,
   };
 
+  const openFinalApplication = (record: IProjectSummaryAuthorization) => {
+    history.push(
+      GLOBAL_ROUTES?.AMS_FINAL_APPLICATION.dynamicRoute(
+        project.project_guid,
+        project.project_summary.project_summary_guid,
+        record.project_summary_authorization_guid
+      )
+    );
+  };
+
   const actions = [
     {
       key: "view",
@@ -111,6 +121,11 @@ const ProjectDescriptionTab = () => {
         );
       },
     },
+    {
+      key: "final-app",
+      label: "Manage Final Application",
+      clickFunction: (_e, record) => openFinalApplication(record)
+    }
   ];
 
   const nonAMSStatusColumn = createStatusColumn("Submitted", AMS_STATUS_CODES_SUCCESS);
