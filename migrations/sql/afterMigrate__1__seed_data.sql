@@ -824,6 +824,11 @@ SET form_spec_json = '[
       "id": "now_tracking_number",
       "relative-data-path": "now_application.now_tracking_number",
       "read-only": true
+    },
+    {
+      "id": "now_number",
+      "relative-data-path": "now_application.now_application_identity.now_number",
+      "read-only": true
     }
   ]'
 WHERE document_template_code = 'NCL';
@@ -1055,6 +1060,11 @@ SET form_spec_json = '[
   {
     "id": "now_tracking_number",
     "relative-data-path": "now_application.now_tracking_number",
+    "read-only": true
+  },
+  {
+    "id": "now_number",
+    "relative-data-path": "now_application.now_application_identity.now_number",
     "read-only": true
   }
 ]'

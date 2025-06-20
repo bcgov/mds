@@ -244,9 +244,6 @@ class NOWApplicationDocumentType(AuditMixin, Base):
 
         # Transform template data for "Acknowledgement Letter" (CAL), "Withdrawal Letter" (WDL), "Rejection Letter" (RJL), and "Permit Enclosed Letter" (NPE)
         def transform_letter(template_data, now_application):
-            now_application_identity = NOWApplicationIdentity.find_by_now_application_id(now_application.now_application_id)
-            template_data['now_number'] = now_application_identity.now_number
-            
             if self.now_application_document_type_code in ('CAL', 'NPE'):
                 organization = Party.find_by_name(template_data['proponent_name'])
                 template_data['letter_dt'] = datetime.strptime(template_data["letter_dt"], '%b %d %Y').strftime('%B %d %Y')
