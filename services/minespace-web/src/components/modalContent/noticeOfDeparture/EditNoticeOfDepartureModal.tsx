@@ -5,19 +5,12 @@ import { INodDocumentPayload, INoticeOfDeparture } from "@mds/common/interfaces"
 interface EditNoticeOfDepartureModalProps {
   onSubmit: (nod_guid: string, values: any, documentArray: INodDocumentPayload[]) => any;
   initialValues: INoticeOfDeparture;
-  afterClose: () => void;
-  closeModal: () => void;
   mineGuid: string;
   noticeOfDeparture: INoticeOfDeparture;
 }
 
-const AddNoticeOfDepartureModal: React.FC<EditNoticeOfDepartureModalProps> = (props) => {
-  const { onSubmit, initialValues, afterClose, closeModal, mineGuid, noticeOfDeparture } = props;
-
-  const close = () => {
-    closeModal();
-    afterClose();
-  };
+const EditNoticeofDepartureModal: React.FC<EditNoticeOfDepartureModalProps> = (props) => {
+  const { onSubmit, initialValues, mineGuid, noticeOfDeparture } = props;
 
   return (
     <div>
@@ -31,4 +24,4 @@ const AddNoticeOfDepartureModal: React.FC<EditNoticeOfDepartureModalProps> = (pr
   );
 };
 
-export default AddNoticeOfDepartureModal;
+export default EditNoticeofDepartureModal;
