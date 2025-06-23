@@ -14,7 +14,8 @@ from tests.factories import (
     MinespaceUserFactory,
     NOWApplicationIdentityFactory,
 )
-
+from app.api.mines.mine.models.mine import Mine
+from app.api.users.minespace.models.minespace_user import MinespaceUser
 from .cli_commands.generate_history_table_migration import (
     generate_history_table_migration,
     generate_table_migration,
@@ -229,6 +230,74 @@ def register_commands(app):
             flask generate_table_migration mine_tailings_storage_facility
         """
         generate_table_migration(table)
+
+    @app.cli.command('seed_user_data')
+    @click.argument('user_name')
+    @click.argument('is_idir', default=True)
+    def do_seed_user_data(user_name, is_idir):
+        """
+        Creates subscriptions for MS/Core users
+        - first 5 (alphabetical) major mines
+        - last 5 regional mines
+        - uses MS user if they already exist, or else creates a new one
+        - core user isn't a foreign key so no user created/queried
+
+        Example usage:
+            flask seed_user_data myidir true
+            flask seed_user_data mybceid false    
+        """
+        _seed_user_data(user_name, is_idir)
+
+    def _seed_user_data(user_name, is_idir):
+        major_mine_count = 5
+        regional_mine_count = 5        
+
+        full_user_name = f'idir\\{user_name}' if is_idir else f'{user_name}@bceid'
+        print(f'Seeding user data for {full_user_name}')
+
+        with app.app_context():
+            major_mines = db.session.query(Mine).filter_by(major_mine_ind=True).order_by(Mine.mine_name).limit(major_mine_count)
+            regional_mines = db.session.query(Mine).filter_by(major_mine_ind=False).order_by(Mine.mine_name.desc()).limit(regional_mine_count)
+            all_mines = list(major_mines) + list(regional_mines)
+
+            if is_idir:
+                from app.api.mines.subscription.models.subscription import Subscription
+                existing_subscriptions = Subscription.query.filter_by(user_name=full_user_name).all()
+                subscribed_mine_guids = [s.mine_guid for s in existing_subscriptions]
+                for mine in all_mines:
+                    if mine.mine_guid in subscribed_mine_guids:
+                        print(f'Skipping already subscribed mine. Username: {full_user_name}, Mine: {mine.mine_name}')
+                    else:
+                        print(f'Creating mine subscription. Username: {full_user_name}, Mine: {mine.mine_name}')
+                        subscription = Subscription(mine_guid=mine.mine_guid, user_name=full_user_name)
+                        db.session.add(subscription)                    
+            else:
+                minespace_user = MinespaceUser.find_by_email(full_user_name)
+                subscribed_mine_guids = []
+                if not minespace_user:
+                    minespace_user = MinespaceUserFactory(
+                        email_or_username=full_user_name,
+                        keycloak_guid='b28dfc3a-5e5c-4501-ab2f-399d8e64f2c8')
+                else:
+                    from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
+                    existing_subscriptions = MinespaceUserMine.query.filter_by(user_id=minespace_user.user_id).all()
+                    subscribed_mine_guids = [s.mine_guid for s in existing_subscriptions]
+                for mine in all_mines:
+                    if mine.mine_guid in subscribed_mine_guids:
+                        print(f'Skipping already subscribed mine. Username: {full_user_name}, Mine: {mine.mine_name}')
+                    else:
+                        print(f'Creating mine subscription. Username: {full_user_name}, Mine: {mine.mine_name}')
+                        MinespaceSubscriptionFactory(mine=mine, minespace_user=minespace_user)                        
+
+            try:
+                db.session.commit()
+                print(f'Successfully created user access data for {full_user_name}.')
+            except DBAPIError:
+                print(f'Failed to create user access data for {user_name}.')
+                db.session.rollback()
+                raise
+                
+                
 
     @app.cli.command('export_permit_conditions')
     @click.argument('permit_amendment_guid')

@@ -187,3 +187,21 @@ restart:
 
 help:
 	@./bin/help.sh
+
+# Adds mine subscription (idir) and/or access (bceid) to given user(s)
+# Creates MS user if BCEID is given and user doesn't already exist
+# picks first 5 mine names in alphabet (A) for major mines, and last 5 (Z) for regional
+# Usage: make seed_user_data IDIR=myidir BCEID=mybceid
+# Do not pass in IDIR as "idir\myidir" or BCEID as "mybceid@bceid"
+seed_user_data:
+	@if [ -z "$(IDIR)" ] && [ -z "$(BCEID)" ]; then \
+		echo "must pass in an IDIR or BCEID"; exit 1; \
+	fi
+	@if [ -n "$(IDIR)" ]; then \
+		echo "Seeding user data for IDIR: $(IDIR)"; \
+		docker compose $(DC_FILE) exec backend flask seed_user_data "$(IDIR)" true; \
+	fi
+	@if [ -n "$(BCEID)" ]; then \
+		echo "Seeding user data for BCEID: $(BCEID)"; \
+		docker compose $(DC_FILE) exec backend flask seed_user_data "$(BCEID)" false; \
+	fi
