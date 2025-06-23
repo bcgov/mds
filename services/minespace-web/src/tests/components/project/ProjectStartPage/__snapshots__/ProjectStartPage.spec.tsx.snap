@@ -1,0 +1,309 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectStartPage renders properly 1`] = `
+<div>
+  <div>
+    <h1
+      class="ant-typography"
+    >
+      New Project - 
+      mine3
+    </h1>
+    <div
+      class="ant-row margin-large--bottom"
+    >
+      <div
+        class="ant-col ant-col-24"
+      >
+        <a
+          class="back-link"
+          href="/mines/35633148-57f8-4967-be35-7f89abfbd02e/dashboard/applications"
+        >
+          <span
+            aria-label="arrow-left"
+            class="anticon anticon-arrow-left padding-sm--right"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              class=""
+              data-icon="arrow-left"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M872 474H286.9l350.2-304c5.6-4.9 2.2-14-5.2-14h-88.5c-3.9 0-7.6 1.4-10.5 3.9L155 487.8a31.96 31.96 0 000 48.3L535.1 866c1.5 1.3 3.3 2 5.2 2h91.5c7.4 0 10.8-9.2 5.2-14L286.9 550H872c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8z"
+              />
+            </svg>
+          </span>
+           Back to: Projects page
+        </a>
+      </div>
+    </div>
+    <h3
+      class="ant-typography"
+    >
+      Submit Application
+    </h3>
+    <div
+      class="project-getting-started"
+    >
+      <h3
+        class="ant-typography"
+      >
+        Getting Started with your Project Description
+      </h3>
+      <div
+        class="ant-typography"
+      >
+        You are submitting a Major Mine Application to the Chief Permitting Officer.
+      </div>
+      <h4
+        class="ant-typography"
+      >
+        What type of application are you submitting today?
+      </h4>
+      <h5
+        class="ant-typography"
+      >
+        New major operations or amendments requiring a ministry decision
+      </h5>
+      <div
+        class="ant-form-item ant-form-item-has-error"
+      >
+        <div
+          class="ant-row ant-form-item-row"
+        >
+          <div
+            class="ant-col ant-form-item-control"
+          >
+            <div
+              class="ant-form-item-control-input"
+            >
+              <div
+                class="ant-form-item-control-input-content"
+              >
+                <div
+                  class="ant-checkbox-group"
+                  style="display: flex; flex-direction: column; gap: 10px;"
+                >
+                  <label
+                    class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                  >
+                    <span
+                      class="ant-checkbox"
+                    >
+                      <input
+                        class="ant-checkbox-input"
+                        type="checkbox"
+                        value="application_type_mines_act"
+                      />
+                      <span
+                        class="ant-checkbox-inner"
+                      />
+                    </span>
+                    <span>
+                      Mines Act Permit
+                    </span>
+                  </label>
+                  <label
+                    class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                  >
+                    <span
+                      class="ant-checkbox"
+                    >
+                      <input
+                        class="ant-checkbox-input"
+                        type="checkbox"
+                        value="application_type_ema_air"
+                      />
+                      <span
+                        class="ant-checkbox-inner"
+                      />
+                    </span>
+                    <span>
+                      Environmental Management Act (permits or approvals for air emissions, effluent, or refuse discharge)
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-alert ant-alert-info ant-alert-with-description margin-large--top margin-large--bottom"
+        data-show="true"
+        role="alert"
+      >
+        <span
+          aria-label="info-circle"
+          class="anticon anticon-info-circle ant-alert-icon"
+          role="img"
+        >
+          <svg
+            aria-hidden="true"
+            data-icon="info-circle"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
+          >
+            <path
+              d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+            />
+            <path
+              d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+            />
+          </svg>
+        </span>
+        <div
+          class="ant-alert-content"
+        >
+          <div
+            class="ant-alert-description"
+          >
+            <div
+              class="ant-typography margin-large--top"
+            >
+              If applicable, please refer to 
+              <a>
+                coordinated authorizations
+              </a>
+               for The
+               
+              <i>
+                Mines Act/Environmental Management Act
+              </i>
+               Joint Application Information Requirements (JAIR) guidance document and accompanying Information Requirements Table (IRT).
+            </div>
+          </div>
+        </div>
+      </div>
+      <h4
+        class="ant-typography"
+      >
+         Applications Not Accepted on This Page:
+      </h4>
+      <div
+        class="ant-typography margin-none--bottom"
+      >
+        <strong>
+          Depart from an authorized mine plan and reclamation program
+        </strong>
+      </div>
+      <div
+        class="ant-typography"
+      >
+        Submit a
+         
+        <a
+          href="/mines/35633148-57f8-4967-be35-7f89abfbd02e/dashboard/nods"
+        >
+          Notice of Departure
+        </a>
+         
+        through MineSpace as per
+         
+        <a
+          href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/health-safety/health-safety-and-reclamation-code-for-mines-in-british-columbia"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          BC's Health, Safety, and Reclamation Code
+        </a>
+        .
+      </div>
+      <div
+        class="ant-typography margin-none--bottom"
+      >
+        <strong>
+          Exploration outside the permitted mine area (not expanding production)
+        </strong>
+      </div>
+      <div
+        class="ant-typography"
+      >
+        Submit a Notice of Work application through
+         
+        <a
+          href="https://portal.nrs.gov.bc.ca/web/client/home"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          FrontCounter BC Online
+        </a>
+        .
+      </div>
+      <div
+        class="ant-typography margin-none--bottom"
+      >
+        <strong>
+          Induced polarization surveys or exploration drilling within the permitted mine area
+        </strong>
+      </div>
+      <div
+        class="ant-typography"
+      >
+        Submit a Notification of Deemed Authorization through
+         
+        <a
+          href="https://portal.nrs.gov.bc.ca/web/client/home"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          FrontCounter BC Online
+        </a>
+        .
+      </div>
+      <div
+        class="ant-typography"
+      >
+        For all other applications relating to your mine, please contact the appropriate Ministry
+      </div>
+    </div>
+    <div
+      class="form-buttons right"
+    >
+      <div
+        class="ant-space ant-space-horizontal ant-space-align-center"
+      >
+        <div
+          class="ant-space-item"
+          style="margin-right: 8px;"
+        >
+          <a
+            href="/mines/35633148-57f8-4967-be35-7f89abfbd02e/dashboard/projects"
+          >
+            <button
+              class="ant-btn ant-btn-default"
+              type="button"
+            >
+              <span>
+                Cancel
+              </span>
+            </button>
+          </a>
+        </div>
+        <div
+          class="ant-space-item"
+        >
+          <button
+            class="ant-btn ant-btn-primary"
+            disabled=""
+            type="button"
+          >
+            <span>
+              Create Project Description
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
