@@ -25,6 +25,72 @@ const amsFinalAppSlice = createAppSlice({
     name: amsAppReducerType,
     initialState,
     reducers: (create) => ({
+        createAmsFinalApp: create.asyncThunk(
+            async (payload: {
+                projectSummaryGuid: string,
+                projectSummaryAuthorizationGuid: string,
+                application: Partial<IAmsFinalApplication>
+            }, thunkApi) => {
+                const headers = createRequestHeader();
+                thunkApi.dispatch(showLoading());
+                const { projectSummaryGuid, projectSummaryAuthorizationGuid, application } = payload;
+                const applicationPayload = {
+                    ...application,
+                    project_summary_authorization_guid: projectSummaryAuthorizationGuid
+                };
+
+                let resp;
+                try {
+                    resp = await CustomAxios({
+                        successToastMessage: "Successfully created new application",
+                    }).post(`${ENVIRONMENT.apiUrl}${API.PROJECT_SUMMARY_ENVIRONMENT_FINAL_APPLICATION(projectSummaryGuid, projectSummaryAuthorizationGuid)}`,
+                        applicationPayload, headers);
+                } finally {
+                    thunkApi.dispatch(hideLoading());
+                }
+                return resp.data;
+            },
+            {
+                fulfilled: (state: AmsFinalAppState, action) => {
+                    const newApplication = action.payload;
+                    state.amsFinalApplications[newApplication.project_summary_authorization_guid] = newApplication;
+                },
+                rejected: (state: AmsFinalAppState, action) => {
+                    rejectHandler(action)
+                }
+            }
+        ),
+        updateAmsFinalApp: create.asyncThunk(
+            async (payload: {
+                projectSummaryGuid: string,
+                projectSummaryAuthorizationGuid: string,
+                application: Partial<IAmsFinalApplication>
+            }, thunkApi) => {
+                const headers = createRequestHeader();
+                thunkApi.dispatch(showLoading());
+                const { projectSummaryGuid, projectSummaryAuthorizationGuid, application } = payload;
+
+                let resp;
+                try {
+                    resp = await CustomAxios({
+                        successToastMessage: "Successfully updated application",
+                    }).put(`${ENVIRONMENT.apiUrl}${API.PROJECT_SUMMARY_ENVIRONMENT_FINAL_APPLICATION(projectSummaryGuid, projectSummaryAuthorizationGuid)}`,
+                        application, headers);
+                } finally {
+                    thunkApi.dispatch(hideLoading());
+                }
+                return resp.data;
+            },
+            {
+                fulfilled: (state: AmsFinalAppState, action) => {
+                    const newApplication = action.payload;
+                    state.amsFinalApplications[newApplication.project_summary_authorization_guid] = newApplication;
+                },
+                rejected: (state: AmsFinalAppState, action) => {
+                    rejectHandler(action)
+                }
+            }
+        ),
         fetchAmsFinalApp: create.asyncThunk(
             async (payload: { projectSummaryGuid: string, projectSummaryAuthorizationGuid: string }, thunkApi) => {
                 const headers = createRequestHeader();
@@ -34,12 +100,11 @@ const amsFinalAppSlice = createAppSlice({
                 try {
                     resp = await CustomAxios({
                         errorToastMessage: "Failed to load authorization final application",
-                    }).get(`${ENVIRONMENT.apiUrl}${API.PROJECT_SUMMARY_ENVIRONMENT_FINAL_APPLICATION(payload.projectSummaryGuid, payload.projectSummaryAuthorizationGuid)}`,
+                    }).get(`${ENVIRONMENT.apiUrl}${API.PROJECT_SUMMARY_ENVIRONMENT_FINAL_APPLICATION_GET(payload.projectSummaryGuid, payload.projectSummaryAuthorizationGuid)}`,
                         headers);
                 } finally {
                     thunkApi.dispatch(hideLoading());
                 }
-                console.log('resp', resp);
                 return resp.data;
             }, {
             fulfilled: (state, action) => {
@@ -73,7 +138,7 @@ export const getAmsFinalAppIsLoaded = (authGuid: string) =>
     createSelector([getAmsFinalApps], (appData) => {
         return Object.keys(appData).includes(authGuid);
     })
-export const { fetchAmsFinalApp } = amsFinalAppSlice.actions;
+export const { fetchAmsFinalApp, createAmsFinalApp, updateAmsFinalApp } = amsFinalAppSlice.actions;
 
 const amsFinalAppReducer = amsFinalAppSlice.reducer;
 export default amsFinalAppReducer;

@@ -7,7 +7,7 @@ from app.api.projects.project_summary.resources.project_summary_list import Proj
 from app.api.projects.project_summary.resources.project_summary_document_types import ProjectSummaryDocumentTypeResource
 from app.api.projects.project_summary.resources.project_summary_ministry_comment import \
     ProjectSummaryMinistryCommentResource
-from app.api.projects.ams_final_application.resources.ams_final_application_resource import AmsFinalApplicationResource, AmsFinalApplicationListResource
+from app.api.projects.ams_final_application.resources.ams_final_application_resource import AmsFinalApplicationResource, AmsFinalApplicationListResource, AmsFinalApplicationDocumentResource
 from app.api.projects.project_summary.resources.project_summary_status_codes import ProjectSummaryStatusCodeResource
 from app.api.projects.project_summary.resources.project_summary_document_upload import ProjectSummaryDocumentUploadResource
 from app.api.projects.project_summary.resources.project_summary_uploaded_document import ProjectSummaryUploadedDocumentResource
@@ -67,6 +67,8 @@ api.add_resource(AmsFinalApplicationResource,
                  '/<string:project_summary_guid>/ams-final-application/<string:project_summary_authorization_guid>')
 api.add_resource(AmsFinalApplicationListResource, 
                  '/<string:project_summary_guid>/ams-final-application')
+api.add_resource(AmsFinalApplicationDocumentResource, 
+                 '/<string:project_summary_guid>/ams-final-application/documents')
 
 # Information Requirements Table (IRT)
 api.add_resource(InformationRequirementsTableDownloadResource,

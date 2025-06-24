@@ -259,6 +259,13 @@ export const MINE_DASHBOARD = {
   helpKey: "Mine-Dashboard",
 };
 
+export const MAJOR_PROJECTS = {
+  route: MINE_DASHBOARD.route,
+  dynamicRoute: (id) => MINE_DASHBOARD.dynamicRoute(id, "applications"),
+  component: MINE_DASHBOARD.component,
+  helpKey: MINE_DASHBOARD.helpKey,
+};
+
 export const MINE_TAILINGS = {
   route: MINE_DASHBOARD.route,
   dynamicRoute: (id, filterParams?: any) =>

@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 ALLOWED_DOCUMENT_CATEGORIES = [
     'tailings', 'permits', 'variances', 'incidents', 'reports', 'mine_party_appts', 'noticeofwork',
-    'bonds', 'reclamation_invoices', 'explosives_permits', 'project_summaries',
+    'bonds', 'reclamation_invoices', 'explosives_permits', 'project_summaries', 'ams_final_application',
     'notices_of_depature', 'information_requirements_table', 'major_mine_application', 'project_decision_package'
 ]
 

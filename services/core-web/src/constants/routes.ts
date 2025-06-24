@@ -236,6 +236,10 @@ export const MINE_PRE_APPLICATIONS = {
   helpKey: "Mine-Pre-Applications",
 };
 
+export const MAJOR_PROJECTS = {
+  ...MINE_PRE_APPLICATIONS
+};
+
 export const ADD_PROJECT_SUMMARY = {
   route: "/mines/:mineGuid/project-description/new/:tab",
   dynamicRoute: (mineGuid, tab = "basic-information") =>

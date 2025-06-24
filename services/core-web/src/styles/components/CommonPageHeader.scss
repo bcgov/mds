@@ -22,6 +22,17 @@
 
     }
 
+    .common-page-header-no-tabs {
+        // this padding-bottom value added to fixed-page-content top
+        padding-bottom: 20px;
+    }
+
+    .fixed-page-content {
+        top: calc(99px + 20px + $header-height);
+        position: absolute;
+        width: 100%;
+    }
+
     .ant-tabs-nav {
         margin-bottom: 0;
         height: 45px;

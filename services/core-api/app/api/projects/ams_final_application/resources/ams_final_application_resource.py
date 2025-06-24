@@ -1,3 +1,4 @@
+from flask import request
 from flask_restx import Resource
 from werkzeug.exceptions import BadRequest, NotFound
 from app.api.utils.resources_mixins import UserMixin
@@ -5,9 +6,27 @@ from app.api.utils.resources_mixins import UserMixin
 from app.extensions import api
 from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, EDIT_PROJECT_SUMMARIES
 from app.api.projects.response_models import AMS_FINAL_APPLICATION_MODEL
+from app.api.projects.project_summary.models.project_summary import ProjectSummary
 from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
 from app.api.projects.ams_final_application.models.ams_final_application import AmsFinalApplication
+from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.mines.mine.models.mine import Mine
 from app.api.utils.custom_reqparser import CustomReqparser
+from app.api.services.document_manager_service import DocumentManagerService
+
+class AmsFinalApplicationDocumentResource(Resource, UserMixin):
+
+    @api.doc(description='Request a document_manager_guid for uploading a document')
+    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES])
+    def post(self, project_summary_guid):
+        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid)
+        mine = Mine.find_by_mine_guid(project_summary.mine_guid)
+
+        if not mine:
+            raise NotFound('Mine not found.')
+
+        return DocumentManagerService.initializeFileUploadWithDocumentManager(
+            request, mine, 'ams_final_application')
 
 
 class AmsFinalApplicationResource(Resource, UserMixin):
@@ -27,7 +46,7 @@ class AmsFinalApplicationResource(Resource, UserMixin):
         if project_summary_authorization.ams_tracking_number is None:
             raise BadRequest("Authorization must be successfully submitted before creating the final application.")
 
-    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES ])
+    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES])
     @api.expect(parser)
     @api.marshal_with(AMS_FINAL_APPLICATION_MODEL, code=201)    
     def post(self, project_summary_guid, project_summary_authorization_guid):

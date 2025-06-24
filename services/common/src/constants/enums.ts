@@ -298,6 +298,19 @@ export enum AMS_FORESTRY_ACT_TYPE {
   "OCCUPANT_CUT_LICENCE" = "OCCUPANT_CUT_LICENCE",
 }
 
+export enum AMS_FINAL_APPLICATION_DOCUMENT_TYPES {
+  AID = "Application Instruction Document",
+  CLF = "Clause Form",
+  DFF = "Discharge Factor Form",
+  IRT = "Information Requirements Table",
+  LOC = "Location Map",
+  NEN = "Notification and Engagement",
+  QPD = "Qualified Professional Declaration Form",
+  SIT = "Site Plan",
+  SPR = "Supporting Documents",
+  TAR = "Technical Assessment Report"
+};
+
 export enum MAX_DOCUMENT_NAME_LENGTHS {
   "MAJOR_PROJECTS" = "50",
 }
