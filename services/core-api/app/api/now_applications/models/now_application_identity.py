@@ -124,6 +124,10 @@ class NOWApplicationIdentity(Base, AuditMixin):
     @classmethod
     def find_by_now_number(cls, now_number):
         return cls.query.filter_by(now_number=now_number).one_or_none()
+    
+    @classmethod
+    def find_by_now_application_id(cls, now_application_id):
+        return cls.query.filter_by(now_application_id=now_application_id).one_or_none()
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
