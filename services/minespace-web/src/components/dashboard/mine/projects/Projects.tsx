@@ -106,7 +106,7 @@ export const Projects: FC = () => {
         </Typography.Paragraph>
         <Typography.Paragraph>
           <AuthorizationWrapper>
-            <Link to={routes.ADD_PROJECT_SUMMARY.dynamicRoute(mine.mine_guid)}>
+            <Link to={routes.PROJECT_START_PAGE.dynamicRoute(mine.mine_guid)}>
               <Button type="primary" disabled={!isLoaded}>
                 <PlusCircleFilled />
                 Create New Project

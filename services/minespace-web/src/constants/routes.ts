@@ -45,6 +45,9 @@ const ViewPermitRedirect = React.lazy(
   () => import("@/components/dashboard/mine/permits/ViewPermitRedirect")
 );
 
+const ProjectStartPage = React.lazy(
+  () => import("@/components/dashboard/mine/projects/ProjectStartPage")
+);
 const ProjectSubmissionStatusPage = React.lazy(
   () => import("@mds/common/components/projectSummary/ProjectSubmissionStatusPage")
 );
@@ -71,6 +74,13 @@ export const USERS = {
   route: "/users",
   component: UsersPage,
   helpKey: "Users", // never implemented
+};
+
+export const PROJECT_START_PAGE = {
+  route: "/mines/:mineGuid/project-start",
+  dynamicRoute: (mineGuid) => `/mines/${mineGuid}/project-start`,
+  component: ProjectStartPage,
+  helpKey: "Project-Start-Page",
 };
 
 export const ADD_PROJECT_SUMMARY = {
