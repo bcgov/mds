@@ -56,7 +56,6 @@ describe("amsFinalApplicationSlice", () => {
                 document_name: "doc1.pdf",
                 upload_date: "2025-06-25T12:00:00Z",
                 create_user: "Jane Doe",
-                active_ind: true
             }
         ]
     };
