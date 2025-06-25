@@ -138,57 +138,6 @@ exports[`ViewProjects renders major mines application tab properly 1`] = `
                 <div
                   class="ant-typography"
                 >
-                  If you are proposing induced polarization surveys or exploration drilling within the permit mine area of an operating production mineral or coal mine (
-                  <a
-                    href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/health-and-safety/code-review/health_safety_and_reclamation_code_apr2021.pdf"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    HSRC
-                  </a>
-                   10.1.2), please submit a 
-                  <a
-                    href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mines-act-deemed-authorizations"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    Notification of Deemed Authorization
-                  </a>
-                   application through 
-                  <a
-                    href="https://portal.nrs.gov.bc.ca/web/client/home"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    FrontCounter BC
-                  </a>
-                  .
-                </div>
-                <div
-                  class="ant-typography"
-                >
-                  If you are proposing exploration work (
-                  <a
-                    href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/health-and-safety/code-review/health_safety_and_reclamation_code_apr2021.pdf"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    HSRC
-                  </a>
-                   9.1.1) outside of the permit mine area of an operating production mineral or coal mine that does not consist of an expansion to the production mining area, please submit a Notice of Work application through
-                   
-                  <a
-                    href="https://portal.nrs.gov.bc.ca/web/client/home"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    FrontCounter BC
-                  </a>
-                   to amend your MX or CX permit.
-                </div>
-                <div
-                  class="ant-typography"
-                >
                   If you are unsure how to proceed, please email the Major Mines Office at 
                   <a
                     href="mailto:permrecl@gov.bc.ca"

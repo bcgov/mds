@@ -55,7 +55,7 @@ const ProjectStartPage: FC = () => {
     { label: "Mines Act Permit", value: "application_type_mines_act" },
     {
       label:
-        "Environmental Management Act (permits or approvals for air emissions, effluent, or refuse discharge)",
+        "Environmental Management Act (EMA) Permit or Approval for air emissions, effluent or refuse discharge",
       value: "application_type_ema_air",
     },
   ];
@@ -97,18 +97,20 @@ const ProjectStartPage: FC = () => {
           showIcon
           className="margin-large--top margin-large--bottom"
           description={
-            <Typography.Paragraph className="margin-large--top">
-              If applicable, please refer to <a>coordinated authorizations</a> for The{" "}
-              <i>Mines Act/Environmental Management Act</i> Joint Application Information
+            <Typography.Paragraph className="margin-none--bottom">
+              If applicable, please refer to{" "}
+              <a
+                href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/coordinated-authorizations"
+                target="_blank"
+              >
+                coordinated authorizations
+              </a>{" "}
+              for The <i>Mines Act/Environmental Management Act</i> Joint Application Information
               Requirements (JAIR) guidance document and accompanying Information Requirements Table
               (IRT).
             </Typography.Paragraph>
           }
         />
-        <Typography.Title level={4}> Applications Not Accepted on This Page:</Typography.Title>
-        <Typography.Paragraph strong className="margin-none--bottom">
-          Depart from an authorized mine plan and reclamation program
-        </Typography.Paragraph>
         <Typography.Paragraph>
           Submit a{" "}
           <Link to={MINE_DASHBOARD.dynamicRoute(mine?.mine_guid, "nods")}>Notice of Departure</Link>{" "}
@@ -149,6 +151,32 @@ const ProjectStartPage: FC = () => {
             FrontCounter BC Online
           </a>
           .
+        </Typography.Paragraph>
+        <Typography.Paragraph strong className="margin-none--bottom">
+          Registration and Changes to an Existing Registration under the EMA’s Municipal Wastewater
+          Regulation, Hazardous Waste Regulation or Petroleum Storage and Distribution Facilities
+          Storm Water Regulation:
+        </Typography.Paragraph>
+        <Typography.Paragraph>
+          Submit an application to the Ministry of Environment and Parks according to the{" "}
+          <a
+            target="_blank"
+            href="https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/apply"
+          >
+            new authorization
+          </a>{" "}
+          or{" "}
+          <a
+            target="_blank"
+            href="https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/change"
+          >
+            change a waste discharge authorization
+          </a>{" "}
+          guideline.
+        </Typography.Paragraph>
+        <Typography.Title level={4}> Applications Not Accepted on This Page:</Typography.Title>
+        <Typography.Paragraph strong className="margin-none--bottom">
+          Depart from an authorized mine plan and reclamation program
         </Typography.Paragraph>
         <Typography.Paragraph>
           For all other applications relating to your mine, please contact the appropriate Ministry
