@@ -50,7 +50,7 @@ async def index_permit_conditions(file: UploadFile = File(...)) -> IndexingRespo
         pipeline = permit_condition_search_indexing_pipeline
         logger.info(f"Starting indexing pipeline for file {file.filename}")
 
-        res = pipeline.run({"blob_uploader": {"file_path": Path(tmp.name)}})
+        res = pipeline.run({"blob_uploader": {"file_path": Path(tmp.name), "file_name": file.filename}})
         logger.debug(f"Pipeline response: {res}")
 
         return IndexingResponse(

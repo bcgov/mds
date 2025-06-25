@@ -16,9 +16,17 @@ exports[`ResultItem Rendering renders basic result information 1`] = `
           class="ant-col"
         >
           <div
-            data-testid="path-section"
+            class="ant-space ant-space-horizontal ant-space-align-center"
           >
-            Section
+            <div
+              class="ant-space-item"
+            >
+              <div
+                data-testid="path-section"
+              >
+                Section
+              </div>
+            </div>
           </div>
         </div>
         <div
