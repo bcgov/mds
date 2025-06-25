@@ -41,7 +41,9 @@ import {
   ITailingsStorageFacilityForm,
   IMineComplianceInfo,
   IVariance,
+  IProjectSummaryAuthorization,
 } from "@mds/common/interfaces";
+import { IAmsFinalApplication } from "@mds/common/interfaces/projects/amsFinalApplication.interface";
 import { HaystackDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
 
 export const createMockHeader = () => ({
@@ -9511,6 +9513,59 @@ export const PROJECT: IProject = {
     },
   ],
 };
+
+export const AMS_AUTHORIZATION_SUCCESS: IProjectSummaryAuthorization = {
+  project_summary_authorization_guid: "c47161c0-8860-4125-8e68-fac3d98cf429",
+  project_summary_guid: PROJECT.project_summary.project_summary_guid,
+  project_summary_permit_type: ["AMENDMENT"],
+  project_summary_authorization_type: "REFUSE_DISCHARGE_PERMIT",
+  existing_permits_authorizations: ['1234'],
+  amendment_changes: null,
+  amendment_severity: null,
+  is_contaminated: null,
+  new_type: "PER",
+  authorization_description: "description",
+  exemption_reason: "exemption reason",
+  amendment_documents: [],
+  exemption_requested: true,
+  ams_tracking_number: "123456",
+  ams_outcome: ["Successfully create new Authorization Amendment."],
+  ams_status_code: "200",
+  ams_submission_timestamp: "2024-05-24T19:17:09.212499+00:00",
+}
+
+export const AMS_FINAL_APPLICATION: IAmsFinalApplication = {
+  "ams_final_application_guid": "ca547e91-02fa-4ef5-b420-15351e555b9e",
+  "project_summary_authorization_guid": AMS_AUTHORIZATION_SUCCESS.project_summary_authorization_guid,
+  "submitter_name": "Jane Doe",
+  "is_agent": false,
+  "is_draft": false,
+  "pre_submitted_files": [
+    "DFF",
+    "LOC"
+  ],
+  "submitted_timestamp": "2025-06-25T20:11:48.890187+00:00",
+  "documents": [
+    {
+      "ams_final_application_document_xref_guid": "0886942c-0313-4199-9ed8-94bf9e69f230",
+      "ams_final_application_guid": "ca547e91-02fa-4ef5-b420-15351e555b9e",
+      "ams_final_application_document_type_code": "AID",
+      "document_type_description": "Application Instruction Document",
+      "mine_document_guid": "9b785612-d9b1-4747-a95b-bff5e7157b09",
+      "mine_guid": PROJECT.mine_guid,
+      "document_manager_guid": "8f324863-0d45-4356-befd-2e3f650c3dc9",
+      "document_name": "my document.pdf",
+      "upload_date": null,
+      "update_timestamp": null,
+      "create_user": "user@bceid",
+      "is_archived": null,
+      "archived_date": null,
+      "archived_by": null,
+      "mine_document_bundle_id": null,
+      "versions": null,
+    }
+  ]
+}
 
 export const PROJECT_SUMMARIES = {
   records: [

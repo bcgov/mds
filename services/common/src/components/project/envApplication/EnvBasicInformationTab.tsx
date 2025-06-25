@@ -24,6 +24,7 @@ const EnvBasicInformationTab = () => {
                 validate={[requiredRadioButton]}
                 label="The person submitting this application is:"
                 component={RenderRadioButtons}
+                isVertical
                 customOptions={[
                     { label: "the Applicant, as named in the project description", value: false },
                     { label: "the Agent, as named in the project description", value: true },
