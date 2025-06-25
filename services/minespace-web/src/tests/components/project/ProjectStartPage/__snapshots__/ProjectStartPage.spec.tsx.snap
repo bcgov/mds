@@ -125,7 +125,7 @@ exports[`ProjectStartPage renders properly 1`] = `
                       />
                     </span>
                     <span>
-                      Environmental Management Act (permits or approvals for air emissions, effluent, or refuse discharge)
+                      Environmental Management Act (EMA) Permit or Approval for air emissions, effluent or refuse discharge
                     </span>
                   </label>
                 </div>
@@ -170,12 +170,16 @@ exports[`ProjectStartPage renders properly 1`] = `
             <div
               class="ant-typography margin-large--top"
             >
-              If applicable, please refer to 
-              <a>
+              If applicable, please refer to
+               
+              <a
+                href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/coordinated-authorizations"
+                target="_blank"
+              >
                 coordinated authorizations
               </a>
-               for The
                
+              for The 
               <i>
                 Mines Act/Environmental Management Act
               </i>
@@ -183,18 +187,6 @@ exports[`ProjectStartPage renders properly 1`] = `
             </div>
           </div>
         </div>
-      </div>
-      <h4
-        class="ant-typography"
-      >
-         Applications Not Accepted on This Page:
-      </h4>
-      <div
-        class="ant-typography margin-none--bottom"
-      >
-        <strong>
-          Depart from an authorized mine plan and reclamation program
-        </strong>
       </div>
       <div
         class="ant-typography"
@@ -259,6 +251,48 @@ exports[`ProjectStartPage renders properly 1`] = `
           FrontCounter BC Online
         </a>
         .
+      </div>
+      <div
+        class="ant-typography margin-none--bottom"
+      >
+        <strong>
+          Registration and Changes to an Existing Registration under the EMA’s Municipal Wastewater Regulation, Hazardous Waste Regulation or Petroleum Storage and Distribution Facilities Storm Water Regulation:
+        </strong>
+      </div>
+      <div
+        class="ant-typography"
+      >
+        Submit an application to the Ministry of Environment and Parks according to the
+         
+        <a
+          href="https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/apply"
+          target="_blank"
+        >
+          new authorization
+        </a>
+         
+        or
+         
+        <a
+          href="https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/change"
+          target="_blank"
+        >
+          change a waste discharge authorization
+        </a>
+         
+        guideline.
+      </div>
+      <h4
+        class="ant-typography"
+      >
+         Applications Not Accepted on This Page:
+      </h4>
+      <div
+        class="ant-typography margin-none--bottom"
+      >
+        <strong>
+          Depart from an authorized mine plan and reclamation program
+        </strong>
       </div>
       <div
         class="ant-typography"
