@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Col, Row, Typography } from "antd";
+import { Button, Col, Divider, Row, Typography } from "antd";
 import { arrayPush, arrayRemove, Field, FieldArray, getFormValues } from "../../forms/form";
 import RenderFileUpload from "../../forms/RenderFileUpload";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@mds/common/constants/fileTypes";
@@ -63,19 +63,15 @@ const EnvDocumentCategoryForm = ({ fields }) => {
                                     allowClear={false}
                                 />
                             </Col>
-                            <Col span={2} style={{ alignContent: "end" }}>
-                                <Button
-                                    disabled={false}
-                                    className="fa-icon-container"
-                                    aria-label="Delete Condition"
-                                    type="primary"
-                                    style={{ marginBottom: 0 }}
-                                    danger
-                                    icon={<FontAwesomeIcon icon={faTrashCan} />}
-                                    onClick={() => handleDelete(index)}
-                                />
-                            </Col>
                         </Row>
+                        <Button
+                            className="fa-icon-container"
+                            type="primary"
+                            danger
+                            icon={<FontAwesomeIcon icon={faTrashCan} />}
+                            onClick={() => handleDelete(index)}
+                        >Delete File</Button>
+                        <Divider />
                     </div>
                 );
             })}
@@ -86,6 +82,15 @@ const EnvDocumentCategoryForm = ({ fields }) => {
 const EnvDocumentsTab = () => {
     const { projectSummaryGuid } = useParams<{ projectSummaryGuid: string }>();
     const dispatch = useAppDispatch();
+
+    const preSubmittedCategories = [
+        AMS_FINAL_APPLICATION_DOCUMENT_TYPES.LOC,
+        AMS_FINAL_APPLICATION_DOCUMENT_TYPES.SIT,
+        AMS_FINAL_APPLICATION_DOCUMENT_TYPES.DFF
+    ];
+    const preSubmittedOptions = documentTypeOptions.filter((o) => {
+        return preSubmittedCategories.includes(o.label)
+    });
 
     const onFileLoad = (document_name, document_manager_guid) => {
         dispatch(arrayPush(
@@ -105,15 +110,15 @@ const EnvDocumentsTab = () => {
                 name="pre_submitted_files"
                 label="Check those that were submitted as part of the Project Description"
                 component={RenderGroupCheckbox}
-                options={documentTypeOptions}
+                options={preSubmittedOptions}
                 normalize={normalizeGroupCheckBox}
             />
             <FieldArray props={{}} name="documents" component={EnvDocumentCategoryForm} />
             <Field
                 name="uploadedFiles"
-                label="Label"
+                label="Upload Files"
                 component={RenderFileUpload}
-                maxFileSize="400MB"
+                maxFileSize="750MB"
                 acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL, ...IMAGE, ...SPATIAL }}
                 allowRevert
                 allowMultiple

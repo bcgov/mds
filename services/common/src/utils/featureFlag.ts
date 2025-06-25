@@ -20,6 +20,7 @@ export enum Feature {
   REPORT_ERROR = "report_error",
   MAJOR_PROJECT_LINK_PROJECTS = "major_project_link_projects",
   AMS_AGENT = "ams_agent",
+  AMS_FINAL_APPLICATION = 'ams_final_application',
   HSRC_CODE_EDIT = "hsrc_code_edit",
   MULTIPART_UPLOAD = "s3_multipart_upload",
   DIGITIZED_PERMITS = "digitized_permits",

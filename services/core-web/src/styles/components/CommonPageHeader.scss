@@ -28,9 +28,13 @@
     }
 
     .fixed-page-content {
-        top: calc(99px + 20px + $header-height);
-        position: absolute;
+        top: calc(99px + 20px);
+        position: relative;
+        padding: 0 $fixed-page-margin;
+        background-color: $pure-white;
         width: 100%;
+        // footer height * 2
+        margin-bottom: calc(45px * 2);
     }
 
     .ant-tabs-nav {

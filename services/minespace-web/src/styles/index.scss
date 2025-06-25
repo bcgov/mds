@@ -34,6 +34,7 @@
 @use "./components/ViewPermit.scss";
 @use "./components/PermitConditions.scss";
 @use "./components/Button.scss";
+@use "./components/Tag.scss";
 
 // UTILITIES - utilities and helper classes. This layer has the highest specificity.
 @use "./generic/helpers.scss";

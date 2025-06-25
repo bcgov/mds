@@ -92,7 +92,7 @@ const EnvApplicationPage = () => {
                             text: `${mine?.mine_name} Major Projects`,
                         },
                         {
-                            route: "",
+                            route: GLOBAL_ROUTES?.EDIT_PROJECT.dynamicRoute(projectGuid),
                             text: projectSummary?.project_summary_title
                         }
                     ]}
