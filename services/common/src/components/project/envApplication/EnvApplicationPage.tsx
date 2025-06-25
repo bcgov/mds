@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { createAmsFinalApp, fetchAmsFinalApp, getAmsFinalAppByAuthGuid, getAmsFinalAppIsLoaded, updateAmsFinalApp } from "@mds/common/redux/slices/amsFinalApplicationSlice";
 import { useHistory, useParams } from "react-router-dom";
@@ -29,7 +28,6 @@ const EnvApplicationPage = () => {
         ? { ...amsFinalApp, is_submitting: true }
         : amsFinalApp
     const amsFinalAppLoaded = useAppSelector(getAmsFinalAppIsLoaded(projectSummaryAuthorizationGuid));
-    const hasFinalApp = amsFinalAppLoaded ? Boolean(amsFinalApp) : undefined;
 
     const projectSummary = useAppSelector(getProjectSummary);
     const projectSummaryLoaded = projectSummary?.project_summary_guid === projectSummaryGuid;
@@ -38,7 +36,7 @@ const EnvApplicationPage = () => {
     const auth = projectSummary?.authorizations?.find((a) => a.project_summary_authorization_guid === projectSummaryAuthorizationGuid);
     const authType = AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT[auth?.project_summary_authorization_type] ?? ""
     const trackingNumber = auth?.ams_tracking_number;
-    const [isEditMode, setIsEditMode] = useState(true);
+    const [isEditMode] = useState(true);
 
     const loaded = amsFinalAppLoaded && projectSummaryLoaded;
 
