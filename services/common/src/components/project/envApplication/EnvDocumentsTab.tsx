@@ -31,7 +31,7 @@ const EnvDocumentCategoryForm = ({ fields }) => {
     const handleDelete = (index: number) => {
         const document = formValues.documents[index];
         deleteConfirmWrapper(`file: ${document.document_name}`,
-            () => dispatch(arrayRemove(formName, 'documents', index))
+            async () => dispatch(arrayRemove(formName, 'documents', index))
         );
     };
 
