@@ -91,6 +91,21 @@ exports[`PrivateRoutes  renders properly 1`] = `
       path="/mines/:mineGuid/project-description/new/:tab"
     />
     <Route
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": [Function],
+          "_ctor": [Function],
+          "_result": null,
+          "_status": -1,
+          "compare": null,
+          "displayName": "Connect(authenticationGuard)",
+          "type": [Function],
+        }
+      }
+      path="/projects/:projectGuid/project-summary/:projectSummaryGuid/application/:projectSummaryAuthorizationGuid/:tab"
+    />
+    <Route
       component={[Function]}
       path="/projects/:projectGuid/project-description/:projectSummaryGuid/:tab"
     />
