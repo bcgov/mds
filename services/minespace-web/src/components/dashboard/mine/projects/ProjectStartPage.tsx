@@ -97,7 +97,7 @@ const ProjectStartPage: FC = () => {
           showIcon
           className="margin-large--top margin-large--bottom"
           description={
-            <Typography.Paragraph className="margin-none--bottom">
+            <Typography.Paragraph className="margin-large--top">
               If applicable, please refer to{" "}
               <a
                 href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/coordinated-authorizations"
