@@ -2,24 +2,12 @@ import React from "react";
 import { render } from "@testing-library/react";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
-import { amsAppReducerType } from "@mds/common/redux/slices/amsFinalApplicationSlice";
 import FormWrapper from "../../forms/FormWrapper";
 import EnvDocumentsTab from "./EnvDocumentsTab";
 import { BrowserRouter } from "react-router-dom";
+import { FORM } from "@mds/common/constants/forms";
 
-const initialState = {
-    [amsAppReducerType]: {
-        amsFinalApplications: {
-            [MOCK.AMS_AUTHORIZATION_SUCCESS.project_summary_authorization_guid]: MOCK.AMS_FINAL_APPLICATION
-        }
-    },
-    form: {
-        formName: {
-            initial: MOCK.AMS_FINAL_APPLICATION,
-            values: MOCK.AMS_FINAL_APPLICATION
-        }
-    }
-};
+const initialState = {};
 
 function mockFunction() {
     const original = jest.requireActual("react-router-dom");
@@ -39,7 +27,7 @@ describe("EnvDocumentsTab", () => {
         const { container } = render(
             <BrowserRouter>
                 <ReduxWrapper initialState={initialState}>
-                    <FormWrapper name="formName">
+                    <FormWrapper name={FORM.ADD_EDIT_AMS_FINAL_APPLICATION} initialValues={MOCK.AMS_FINAL_APPLICATION}>
                         <EnvDocumentsTab />
                     </FormWrapper>
                 </ReduxWrapper>

@@ -38,6 +38,7 @@ const EnvDocumentCategoryForm = ({ fields }) => {
     return (
         <>
             {fields.map((field: string, index: number) => {
+                const isSaved = Boolean(formValues.documents[index].mine_document_guid);
                 return (
                     <div key={field}>
                         <Row gutter={16}>
@@ -64,13 +65,13 @@ const EnvDocumentCategoryForm = ({ fields }) => {
                                 />
                             </Col>
                         </Row>
-                        <Button
+                        {isSaved && <Button
                             className="fa-icon-container"
                             type="primary"
                             danger
                             icon={<FontAwesomeIcon icon={faTrashCan} />}
                             onClick={() => handleDelete(index)}
-                        >Delete File</Button>
+                        >Delete File</Button>}
                         <Divider />
                     </div>
                 );
@@ -82,6 +83,7 @@ const EnvDocumentCategoryForm = ({ fields }) => {
 const EnvDocumentsTab = () => {
     const { projectSummaryGuid } = useParams<{ projectSummaryGuid: string }>();
     const dispatch = useAppDispatch();
+    const formValues = useAppSelector(getFormValues(formName)) as IAmsFinalApplication;
 
     const preSubmittedCategories = [
         AMS_FINAL_APPLICATION_DOCUMENT_TYPES.LOC,
@@ -102,6 +104,14 @@ const EnvDocumentsTab = () => {
             }
         ));
     };
+    console.log('HI TARA formValues', formValues)
+    const onRemoveFile = (_error, file) => {
+        const document_manager_guid = file?.serverId;
+        const docIndex = formValues.documents.findIndex((d) => d.document_manager_guid === document_manager_guid);
+        if (docIndex) {
+            dispatch(arrayRemove(formName, "documents", docIndex));
+        }
+    }
 
     return (
         <>
@@ -126,6 +136,7 @@ const EnvDocumentsTab = () => {
                 abbrevLabel={true}
                 uploadUrl={PROJECT_SUMMARY_ENVIRONMENT_FINAL_APPLICATION_DOCUMENTS(projectSummaryGuid)}
                 onFileLoad={onFileLoad}
+                onRemoveFile={onRemoveFile}
             />
         </>)
 };

@@ -3,8 +3,8 @@
 exports[`EnvDeclarationTab renders properly 1`] = `
 <div>
   <form
-    class="ant-form ant-form-vertical common-form common-form-formName form-edit"
-    id="formName"
+    class="ant-form ant-form-vertical common-form common-form-ADD_EDIT_AMS_FINAL_APPLICATION form-edit"
+    id="ADD_EDIT_AMS_FINAL_APPLICATION"
   >
     <h3
       class="ant-typography"
@@ -133,7 +133,7 @@ exports[`EnvDeclarationTab renders properly 1`] = `
                     <input
                       aria-required="true"
                       class="ant-checkbox-input"
-                      id="formName_is_submitting"
+                      id="ADD_EDIT_AMS_FINAL_APPLICATION_is_submitting"
                       type="checkbox"
                       value=""
                     />
@@ -152,7 +152,7 @@ exports[`EnvDeclarationTab renders properly 1`] = `
             >
               <div
                 class="ant-form-item-explain ant-form-item-explain-connected"
-                id="formName_is_submitting_help"
+                id="ADD_EDIT_AMS_FINAL_APPLICATION_is_submitting_help"
                 role="alert"
               >
                 <div

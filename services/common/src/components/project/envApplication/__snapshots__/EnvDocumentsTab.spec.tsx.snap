@@ -3,8 +3,8 @@
 exports[`EnvDocumentsTab renders properly 1`] = `
 <div>
   <form
-    class="ant-form ant-form-vertical common-form common-form-formName form-edit"
-    id="formName"
+    class="ant-form ant-form-vertical common-form common-form-ADD_EDIT_AMS_FINAL_APPLICATION form-edit"
+    id="ADD_EDIT_AMS_FINAL_APPLICATION"
   >
     <h3
       class="ant-typography"
@@ -22,7 +22,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
         >
           <label
             class=""
-            for="formName_pre_submitted_files"
+            for="ADD_EDIT_AMS_FINAL_APPLICATION_pre_submitted_files"
             title="Check those that were submitted as part of the Project Description"
           >
             Check those that were submitted as part of the Project Description
@@ -39,7 +39,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
             >
               <div
                 class="ant-checkbox-group"
-                id="formName_pre_submitted_files"
+                id="ADD_EDIT_AMS_FINAL_APPLICATION_pre_submitted_files"
                 name="pre_submitted_files"
               >
                 <label
@@ -112,7 +112,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
           >
             <div
               class="ant-form-item-explain ant-form-item-explain-connected"
-              id="formName_pre_submitted_files_help"
+              id="ADD_EDIT_AMS_FINAL_APPLICATION_pre_submitted_files_help"
               role="alert"
             >
               <div
@@ -143,7 +143,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
               >
                 <label
                   class="ant-form-item-required"
-                  for="formName_documents[0]document_name"
+                  for="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]document_name"
                   title=""
                 >
                   <div
@@ -178,7 +178,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
                 >
                   <div
                     class="ant-form-item-explain ant-form-item-explain-connected"
-                    id="formName_documents[0]document_name_help"
+                    id="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]document_name_help"
                     role="alert"
                   >
                     <div
@@ -205,7 +205,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
               >
                 <label
                   class="ant-form-item-required"
-                  for="formName_documents[0]ams_final_application_document_type_code"
+                  for="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]ams_final_application_document_type_code"
                   title=""
                 >
                   <div
@@ -236,15 +236,15 @@ exports[`EnvDocumentsTab renders properly 1`] = `
                           class="ant-select-selection-search"
                         >
                           <input
-                            aria-activedescendant="formName_documents[0]ams_final_application_document_type_code_list_0"
+                            aria-activedescendant="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]ams_final_application_document_type_code_list_0"
                             aria-autocomplete="list"
-                            aria-controls="formName_documents[0]ams_final_application_document_type_code_list"
+                            aria-controls="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]ams_final_application_document_type_code_list"
                             aria-haspopup="listbox"
-                            aria-owns="formName_documents[0]ams_final_application_document_type_code_list"
+                            aria-owns="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]ams_final_application_document_type_code_list"
                             aria-required="true"
                             autocomplete="off"
                             class="ant-select-selection-search-input"
-                            id="formName_documents[0]ams_final_application_document_type_code"
+                            id="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]ams_final_application_document_type_code"
                             role="combobox"
                             type="search"
                             value=""
@@ -291,7 +291,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
                 >
                   <div
                     class="ant-form-item-explain ant-form-item-explain-connected"
-                    id="formName_documents[0]ams_final_application_document_type_code_help"
+                    id="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]ams_final_application_document_type_code_help"
                     role="alert"
                   >
                     <div
@@ -346,7 +346,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
           >
             <label
               class=""
-              for="formName_uploadedFiles"
+              for="ADD_EDIT_AMS_FINAL_APPLICATION_uploadedFiles"
               title=""
             >
               <span>
@@ -406,7 +406,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
             >
               <div
                 class="ant-form-item-explain ant-form-item-explain-connected"
-                id="formName_uploadedFiles_help"
+                id="ADD_EDIT_AMS_FINAL_APPLICATION_uploadedFiles_help"
                 role="alert"
               >
                 <div

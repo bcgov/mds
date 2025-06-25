@@ -3,8 +3,8 @@
 exports[`EnvBasicInformationTab renders properly 1`] = `
 <div>
   <form
-    class="ant-form ant-form-vertical common-form common-form-formName form-edit"
-    id="formName"
+    class="ant-form ant-form-vertical common-form common-form-ADD_EDIT_AMS_FINAL_APPLICATION form-edit"
+    id="ADD_EDIT_AMS_FINAL_APPLICATION"
   >
     <h3
       class="ant-typography"
@@ -22,7 +22,7 @@ exports[`EnvBasicInformationTab renders properly 1`] = `
         >
           <label
             class="ant-form-item-required"
-            for="formName_submitter_name"
+            for="ADD_EDIT_AMS_FINAL_APPLICATION_submitter_name"
             title=""
           >
             <div
@@ -57,7 +57,7 @@ exports[`EnvBasicInformationTab renders properly 1`] = `
           >
             <div
               class="ant-form-item-explain ant-form-item-explain-connected"
-              id="formName_submitter_name_help"
+              id="ADD_EDIT_AMS_FINAL_APPLICATION_submitter_name_help"
               role="alert"
             >
               <div
@@ -79,7 +79,7 @@ exports[`EnvBasicInformationTab renders properly 1`] = `
         >
           <label
             class="ant-form-item-required"
-            for="formName_is_agent"
+            for="ADD_EDIT_AMS_FINAL_APPLICATION_is_agent"
             title=""
           >
             <div
@@ -150,7 +150,7 @@ exports[`EnvBasicInformationTab renders properly 1`] = `
           >
             <div
               class="ant-form-item-explain ant-form-item-explain-connected"
-              id="formName_is_agent_help"
+              id="ADD_EDIT_AMS_FINAL_APPLICATION_is_agent_help"
               role="alert"
             >
               <div
