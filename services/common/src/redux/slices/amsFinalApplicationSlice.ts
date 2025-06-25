@@ -125,7 +125,7 @@ const amsFinalAppSlice = createAppSlice({
     }
 });
 
-const {
+export const {
     getAmsFinalApps
 } = amsFinalAppSlice.selectors;
 
