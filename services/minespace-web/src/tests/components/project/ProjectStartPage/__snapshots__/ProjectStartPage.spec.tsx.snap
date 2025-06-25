@@ -168,7 +168,7 @@ exports[`ProjectStartPage renders properly 1`] = `
             class="ant-alert-description"
           >
             <div
-              class="ant-typography margin-large--top"
+              class="ant-typography margin-none--bottom"
             >
               If applicable, please refer to
                
