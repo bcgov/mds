@@ -188,6 +188,18 @@ exports[`ProjectStartPage renders properly 1`] = `
           </div>
         </div>
       </div>
+      <h4
+        class="ant-typography"
+      >
+         Applications Not Accepted on This Page:
+      </h4>
+      <div
+        class="ant-typography margin-none--bottom"
+      >
+        <strong>
+          Depart from an authorized mine plan and reclamation program
+        </strong>
+      </div>
       <div
         class="ant-typography"
       >
@@ -282,18 +294,6 @@ exports[`ProjectStartPage renders properly 1`] = `
          
         guideline.
       </div>
-      <h4
-        class="ant-typography"
-      >
-         Applications Not Accepted on This Page:
-      </h4>
-      <div
-        class="ant-typography margin-none--bottom"
-      >
-        <strong>
-          Depart from an authorized mine plan and reclamation program
-        </strong>
-      </div>
       <div
         class="ant-typography"
       >
@@ -311,7 +311,7 @@ exports[`ProjectStartPage renders properly 1`] = `
           style="margin-right: 8px;"
         >
           <a
-            href="/mines/35633148-57f8-4967-be35-7f89abfbd02e/dashboard/projects"
+            href="/mines/35633148-57f8-4967-be35-7f89abfbd02e/dashboard/applications"
           >
             <button
               class="ant-btn ant-btn-default"
