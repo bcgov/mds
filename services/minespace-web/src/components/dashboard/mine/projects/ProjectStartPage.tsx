@@ -111,6 +111,10 @@ const ProjectStartPage: FC = () => {
             </Typography.Paragraph>
           }
         />
+        <Typography.Title level={4}> Applications Not Accepted on This Page:</Typography.Title>
+        <Typography.Paragraph strong className="margin-none--bottom">
+          Depart from an authorized mine plan and reclamation program
+        </Typography.Paragraph>
         <Typography.Paragraph>
           Submit a{" "}
           <Link to={MINE_DASHBOARD.dynamicRoute(mine?.mine_guid, "nods")}>Notice of Departure</Link>{" "}
@@ -174,10 +178,6 @@ const ProjectStartPage: FC = () => {
           </a>{" "}
           guideline.
         </Typography.Paragraph>
-        <Typography.Title level={4}> Applications Not Accepted on This Page:</Typography.Title>
-        <Typography.Paragraph strong className="margin-none--bottom">
-          Depart from an authorized mine plan and reclamation program
-        </Typography.Paragraph>
         <Typography.Paragraph>
           For all other applications relating to your mine, please contact the appropriate Ministry
         </Typography.Paragraph>
@@ -185,7 +185,7 @@ const ProjectStartPage: FC = () => {
 
       <div className="form-buttons right">
         <Space>
-          <Link to={routes.MINE_DASHBOARD.dynamicRoute(mineGuid, "projects")}>
+          <Link to={routes.MINE_DASHBOARD.dynamicRoute(mineGuid, "applications")}>
             <Button>Cancel</Button>
           </Link>
           <Button type="primary" onClick={handleSubmit} disabled={selectedOptions.length === 0}>
