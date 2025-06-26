@@ -44,55 +44,6 @@ export const Projects: FC = () => {
           operation of a coal or mineral mine through a permit issued under the Mines Act.{" "}
         </Typography.Paragraph>
         <Typography.Paragraph>
-          If you are proposing induced polarization surveys or exploration drilling within the
-          permit mine area of an operating production mineral or coal mine (
-          <a
-            href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/health-and-safety/code-review/health_safety_and_reclamation_code_apr2021.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            HSRC
-          </a>
-          &nbsp;10.1.2), please submit a&nbsp;
-          <a
-            href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mines-act-deemed-authorizations"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Notification of Deemed Authorization
-          </a>
-          &nbsp;application through&nbsp;
-          <a
-            href="https://portal.nrs.gov.bc.ca/web/client/home"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            FrontCounter BC
-          </a>
-          .
-        </Typography.Paragraph>
-        <Typography.Paragraph>
-          If you are proposing exploration work (
-          <a
-            href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/health-and-safety/code-review/health_safety_and_reclamation_code_apr2021.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            HSRC
-          </a>
-          &nbsp;9.1.1) outside of the permit mine area of an operating production mineral or coal
-          mine that does not consist of an expansion to the production mining area, please submit a
-          Notice of Work application through{" "}
-          <a
-            href="https://portal.nrs.gov.bc.ca/web/client/home"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            FrontCounter BC
-          </a>
-          &nbsp;to amend your MX or CX permit.
-        </Typography.Paragraph>
-        <Typography.Paragraph>
           If you are unsure how to proceed, please email the Major Mines Office at&nbsp;
           <a href="mailto:permrecl@gov.bc.ca">permrecl@gov.bc.ca</a>&nbsp;or contact the&nbsp;
           <a
@@ -106,7 +57,7 @@ export const Projects: FC = () => {
         </Typography.Paragraph>
         <Typography.Paragraph>
           <AuthorizationWrapper>
-            <Link to={routes.ADD_PROJECT_SUMMARY.dynamicRoute(mine.mine_guid)}>
+            <Link to={routes.PROJECT_START_PAGE.dynamicRoute(mine.mine_guid)}>
               <Button type="primary" disabled={!isLoaded}>
                 <PlusCircleFilled />
                 Create New Project

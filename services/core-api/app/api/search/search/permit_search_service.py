@@ -43,6 +43,19 @@ class PermitSearchService:
         
         # Just return the response directly for streaming
         return response
+    
+    def index(self, file, filename="filename.csv"):
+        """
+        Sends a file to the permit conditions service for indexing.
+        """
+        print(f'Indexing file {filename}')
+        result = self.session.post(
+            SEARCH_ENDPOINT+"/index",
+            files={"file": (filename, file, 'text/csv')},
+        )
+        if result.status_code != 200:
+            current_app.logger.error(f'Failed to index file. Status code: {result.status_code}. Response: {result.text}')
+            raise InternalServerError('Failed to index file')
 
     def initialize_permit_extraction(self, permit_amendment_document, with_internal_auth=False):
         """

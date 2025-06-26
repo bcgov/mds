@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Typography, Tag, Row, Col, Button } from 'antd';
+import { Typography, Tag, Row, Col, Button, Tooltip, Space } from 'antd';
 import { ContextItem, HaystackDocumentSearchResult } from '@mds/common/src/interfaces/search/facet-search.interface';
 import dayjs from 'dayjs';
 import { formatPermitConditionStep } from '@mds/common/utils/helpers';
@@ -18,6 +18,7 @@ import {
 import PermitAmendmentPreviewModal from './PermitAmendmentPreviewModal';
 import DocumentLink from '@mds/common/components/documents/DocumentLink';
 import { ActionMenuButton } from '@mds/common/components/common/ActionMenu';
+import { WarningOutlined } from '@ant-design/icons';
 
 
 interface ResultItemProps {
@@ -241,9 +242,16 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
             <Col span={24}>
                 <Row justify="space-between" align="top">
                     <Col>
-                        <div data-testid="path-section">
-                            {pathParts?.join(' > ')}
-                        </div>
+                        <Space>
+                            <div data-testid="path-section">
+                                {pathParts?.join(' > ')}
+                            </div>
+                            {meta.verification_status?.toLowerCase() == 'unverified' && (
+                                <Tooltip title="Condition requires verification">
+                                    <WarningOutlined className="color-warning" />
+                                </Tooltip>
+                            )}
+                        </Space>
                     </Col>
                     <Col>
                         <ActionMenuButton

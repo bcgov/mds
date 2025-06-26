@@ -214,6 +214,14 @@ fields = [
         sortable=False,
         facetable=True,
     ),
+    SearchField(
+        name="verification_status",
+        type=SearchFieldDataType.String,
+        searchable=False,
+        filterable=True,
+        sortable=False,
+        facetable=True,
+    ),
 ]
 
 # Vector search configuration

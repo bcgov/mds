@@ -3,7 +3,6 @@ import ViewVarianceModal from "@/components/modalContent/variances/ViewVarianceM
 import EditVarianceModal from "@/components/modalContent/variances/EditVarianceModal";
 import AddTailingsModal from "@/components/modalContent/tailing/AddTailingsModal";
 import AddContactModal from "@/components/modalContent/contacts/AddContactModal";
-import AddNoticeOfDepartureModal from "@/components/modalContent/noticeOfDeparture/AddNoticeOfDepartureModal";
 import ViewNoticeOfDepartureModal from "@/components/modalContent/noticeOfDeparture/ViewNoticeOfDepartureModal";
 import EditNoticeOfDepartureModal from "@/components/modalContent/noticeOfDeparture/EditNoticeOfDepartureModal";
 import ImportIRTSuccessModal from "@/components/modalContent/informationRequirementsTable/ImportIRTSuccessModal";
@@ -18,7 +17,6 @@ export const modalConfig = {
   EDIT_VARIANCE: EditVarianceModal,
   ADD_TAILINGS: AddTailingsModal,
   ADD_CONTACT: AddContactModal,
-  ADD_NOTICE_OF_DEPARTURE: AddNoticeOfDepartureModal,
   VIEW_NOTICE_OF_DEPARTURE: ViewNoticeOfDepartureModal,
   EDIT_NOTICE_OF_DEPARTURE: EditNoticeOfDepartureModal,
   IMPORT_IRT_SUCCESS: ImportIRTSuccessModal,

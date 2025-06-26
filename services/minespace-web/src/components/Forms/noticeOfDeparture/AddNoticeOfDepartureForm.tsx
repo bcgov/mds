@@ -50,6 +50,7 @@ interface AddNoticeOfDepartureProps {
     documentArray: INodDocumentPayload[]
   ) => Promise<AxiosResponse<INoticeOfDeparture>>;
   mineGuid: string;
+  isModal?: boolean;
 }
 
 export const renderContacts: React.FC<RenderContactsProps> = (props) => {
@@ -201,6 +202,7 @@ const AddNoticeOfDepartureForm: React.FC<AddNoticeOfDepartureProps> = (props) =>
           enableReinitialize: true,
         }}
         onSubmit={handleNoticeOfDepartureSubmit}
+        isModal={props.isModal}
       >
         <Typography.Text>
           Please complete the following form to submit your Notice of Departure and any relevant
@@ -264,6 +266,7 @@ const AddNoticeOfDepartureForm: React.FC<AddNoticeOfDepartureProps> = (props) =>
           please contact us."
           component={RenderRadioButtons}
           validate={[requiredRadioButton]}
+          required
           customOptions={[
             {
               value: NOD_TYPE_FIELD_VALUE.NON_SUBSTANTIAL,
