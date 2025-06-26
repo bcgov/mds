@@ -1,4 +1,6 @@
 from enum import Enum
+import os
+import json
 
 from app.config import Config
 from flagsmith import Flagsmith
@@ -29,6 +31,15 @@ flagsmith = Flagsmith(
 
 
 def is_feature_enabled(feature):
+    if Config.FLAGSMITH_ENABLE_LOCAL_EVALUTION:
+        json_path = os.path.join(os.getcwd(), "feature_flags.json")
+        try:
+            with open(json_path, "r") as f:
+                flags = json.load(f)
+            return flags.get(str(feature), False)
+        except Exception as e:
+            print(f"Failed to read local feature flags: {e}")
+            return False
     try:
         feature = str(feature).strip()
         flags = flagsmith.get_environment_flags()

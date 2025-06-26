@@ -26,6 +26,7 @@ Cypress.Commands.add("login", () => {
     environment: Cypress.env("CYPRESS_ENVIRONMENT"),
     flagsmithUrl: Cypress.env("CYPRESS_FLAGSMITH_URL"),
     flagsmithKey: Cypress.env("CYPRESS_FLAGSMITH_KEY"),
+    flagsmithLocal: Cypress.env("FLAGSMITH_ENABLE_LOCAL_EVALUATION"),
     geoMarkUrl: Cypress.env("GEOMARK_URL_BASE"),
   };
 
