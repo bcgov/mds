@@ -6,6 +6,7 @@ services:
   # TODO: replace these by setting up pipeline ENV for assign perm template migration
   flyway-verify:
     container_name: mds_flyway_verify
+    image: mds-postgres_verify:latest
     build:
       context: migrations
       dockerfile: Dockerfile.flyway.dev
