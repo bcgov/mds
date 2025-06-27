@@ -104,14 +104,14 @@ const EnvDocumentsTab = () => {
             }
         ));
     };
-    console.log('HI TARA formValues', formValues)
+
     const onRemoveFile = (_error, file) => {
         const document_manager_guid = file?.serverId;
         const docIndex = formValues.documents.findIndex((d) => d.document_manager_guid === document_manager_guid);
         if (docIndex) {
             dispatch(arrayRemove(formName, "documents", docIndex));
         }
-    }
+    };
 
     return (
         <>
