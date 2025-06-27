@@ -25,7 +25,8 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          docker compose -f docker-compose.ci.yaml up --build --force-recreate --exit-code-from flyway-verify flyway-verify
+          docker compose -f docker-compose.ci.yaml build postgres
+          docker compose -f docker-compose.ci.yaml up --force-recreate --exit-code-from flyway-verify flyway-verify
 
   tests-integration-backend:
     name: tests-integration-backend
@@ -39,7 +40,7 @@ jobs:
       - name: Run Migrations First
         env:
           DOCKER_BUILDKIT: 1
-        run: docker compose -f docker-compose.ci.yaml up --build --force-recreate --exit-code-from flyway flyway
+        run: docker compose -f docker-compose.ci.yaml up --force-recreate --exit-code-from flyway flyway
 
       - name: Run integration tests
         env:
