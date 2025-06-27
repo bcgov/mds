@@ -545,20 +545,16 @@ exports[`AddNoticeOfDepartureForm renders properly 1`] = `
             class="ant-col ant-form-item-label"
           >
             <label
-              class=""
+              class="ant-form-item-required"
               for="ADD_NOTICE_OF_DEPARTURE_nod_type"
               title=""
             >
-              <div>
+              <div
+                style="width: 100%;"
+              >
                 Based on the information established in your self-assessment form please determine your
           submissions Notice of Departure type. If you are unsure what category you fall under,
           please contact us.
-                 
-                <span
-                  class="form-item-optional"
-                >
-                   (optional)
-                </span>
               </div>
             </label>
           </div>
