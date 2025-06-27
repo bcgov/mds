@@ -3,6 +3,7 @@ version: "3"
 services:
   ####################### Flyway Migration Verification Definition #######################
   # Used to verify return code of migrations
+  # Add random change here
   # TODO: replace these by setting up pipeline ENV for assign perm template migration
   flyway-verify:
     container_name: mds_flyway_verify
