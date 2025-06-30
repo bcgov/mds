@@ -21,7 +21,10 @@ interface CommonPageHeaderProps {
   mineGuid: string;
   current_permittee: string; // would be ideal to get this from the mine
   breadCrumbs?: BreadCrumb[];
+  // pass in either tabProps for tabbed view or pageContent for any styled content
+  // do not use both
   tabProps?: TabsProps;
+  pageContent?: ReactNode;
   extraElement?: ReactNode;
 }
 
@@ -34,6 +37,7 @@ const CommonPageHeader: FC<CommonPageHeaderProps> = ({
   entityType,
   breadCrumbs,
   tabProps,
+  pageContent,
   extraElement,
 }) => {
   const mine = useSelector(getMineById(mineGuid));
@@ -45,9 +49,11 @@ const CommonPageHeader: FC<CommonPageHeaderProps> = ({
     }
   }, [mineGuid]);
 
+  const headerClassname = pageContent ? "common-page-header common-page-header-no-tabs" : "common-page-header"
+
   return (
     <div className="common-page">
-      <div className="view--header padding-lg--top padding-lg--sides common-page-header">
+      <div className={`view--header padding-lg--top padding-lg--sides ${headerClassname}`}>
         <Row>
           <Col>
             {breadCrumbs.map((crumb) => {
@@ -97,6 +103,11 @@ const CommonPageHeader: FC<CommonPageHeaderProps> = ({
           {...tabProps}
           tabBarStyle={{ paddingLeft: 20, paddingRight: 20 }}
         />
+      )}
+      {pageContent && (
+        <div className="fixed-page-content">
+          {pageContent}
+        </div>
       )}
     </div>
   );

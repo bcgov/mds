@@ -44,6 +44,7 @@ import MergeContactsDashboard from "@/components/admin/contacts/MergeContactsDas
 import MineSpaceMinistryContactManagement from "@/components/admin/contacts/MinistryContacts/MineSpaceMinistryContactManagement";
 import PermitConditionManagement from "@/components/mine/Permit/PermitConditionManagement";
 import Project from "@/components/mine/Projects/Project";
+import EnvApplicationPage from "@mds/common/components/project/envApplication/EnvApplicationPage";
 import MajorMineApplicationTab from "@/components/mine/Projects/MajorMineApplicationTab";
 import DecisionPackageTab from "@/components/mine/Projects/DecisionPackageTab";
 import MineIncident from "@/components/mine/Incidents/MineIncident";
@@ -235,6 +236,10 @@ export const MINE_PRE_APPLICATIONS = {
   helpKey: "Mine-Pre-Applications",
 };
 
+export const MAJOR_PROJECTS = {
+  ...MINE_PRE_APPLICATIONS
+};
+
 export const ADD_PROJECT_SUMMARY = {
   route: "/mines/:mineGuid/project-description/new/:tab",
   dynamicRoute: (mineGuid, tab = "basic-information") =>
@@ -273,6 +278,15 @@ export const EDIT_PROJECT = {
   component: Project,
   helpKey: "Edit-Project",
 };
+
+export const AMS_FINAL_APPLICATION = {
+  route: "/projects/:projectGuid/project-summary/:projectSummaryGuid/application/:projectSummaryAuthorizationGuid/:tab",
+  dynamicRoute: (projectGuid, projectSummaryGuid, projectSummaryAuthorizationGuid, tab = "basic-information") =>
+    `/projects/${projectGuid}/project-summary/${projectSummaryGuid}/application/${projectSummaryAuthorizationGuid}/${tab}`,
+  component: EnvApplicationPage,
+  helpKey: "ENV-Final-Application"
+}
+
 
 export const PROJECT_APPLICATION = {
   route: "/pre-applications/:projectGuid/app",

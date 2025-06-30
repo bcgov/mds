@@ -98,6 +98,10 @@ const Routes = () => (
         component={ColumnWrapper()(AuthenticationGuard()(routes.ADD_PROJECT_SUMMARY.component))}
       />
       <Route
+        path={routes.AMS_FINAL_APPLICATION.route}
+        component={AuthenticationGuard()(routes.AMS_FINAL_APPLICATION.component)}
+      />
+      <Route
         path={routes.EDIT_PROJECT_SUMMARY.route}
         component={ColumnWrapper()(AuthenticationGuard()(routes.EDIT_PROJECT_SUMMARY.component))}
       />

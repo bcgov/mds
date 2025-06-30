@@ -23,10 +23,14 @@
 .ant-layout-footer {
   z-index: 8;
   width: 100%;
-  min-height: 80px;
+  min-height: $layout-footer-height;
   bottom: 0;
   padding: 0;
   height: $layout-footer-height;
+
+  @include screen-lg {
+    height: unset;
+  }
 }
 
 .ant-layout {
