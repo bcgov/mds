@@ -1,4 +1,6 @@
 import flagsmith from "flagsmith";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
+import featureFlags from "./feature_flags.json";
 
 // Name of feature flags. These correspond to feature flags defined in flagsmith.
 export enum Feature {
@@ -31,6 +33,10 @@ export enum Feature {
 }
 
 export const initializeFlagsmith = async (flagsmithUrl, flagsmithKey) => {
+  if (ENVIRONMENT.flagsmithLocal) {
+    // Skip flagsmith initialization in local eval mode
+    return;
+  }
   await flagsmith.init({
     api: flagsmithUrl,
     environmentID: flagsmithKey,
@@ -45,5 +51,9 @@ export const initializeFlagsmith = async (flagsmithUrl, flagsmithKey) => {
  * @returns true if the given feature is enabled
  */
 export const isFeatureEnabled = (feature: Feature) => {
+  if (ENVIRONMENT.flagsmithLocal) {
+    // Use the value from the local JSON file
+    return featureFlags[feature] ?? false;
+  }
   return flagsmith.hasFeature(feature);
 };

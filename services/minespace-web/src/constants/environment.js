@@ -6,6 +6,7 @@ export const DEFAULT_ENVIRONMENT = {
   filesystemProviderUrl: "http://localhost:62870/file-api/AmazonS3Provider/",
   flagsmithKey: "4Eu9eEMDmWVEHKDaKoeWY7",
   flagsmithUrl: "https://mds-flags-dev.apps.silver.devops.gov.bc.ca/api/v1/",
+  flagsmithLocal: "true",
   environment: "development",
   keycloak_resource: "mines-digital-services-mds-public-client-4414",
   keycloak_clientId: "mines-digital-services-mds-public-client-4414",
