@@ -31,7 +31,7 @@ flagsmith = Flagsmith(
 
 
 def is_feature_enabled(feature):
-    if Config.FLAGSMITH_ENABLE_LOCAL_EVALUTION:
+    if Config.FLAGSMITH_ENABLE_LOCAL_EVALUATION:
         json_path = os.path.join(os.getcwd(), "feature_flags.json")
         try:
             with open(json_path, "r") as f:

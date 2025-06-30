@@ -23,6 +23,7 @@ export default function fetchEnv() {
         env.environment,
         env.flagsmithKey,
         env.flagsmithUrl,
+        env.flagsmithLocal,
         env.syncfusionLicense,
         env.geoMarkUrl
       );
