@@ -200,7 +200,7 @@ class Config(object):
     FLAGSMITH_KEY = os.environ.get('FLAGSMITH_KEY', '4Eu9eEMDmWVEHKDaKoeWY7')
 
     # Enable flag caching and evalutation. If set to True, FLAGSMITH_KEY must be set to a server side FLAGSMITH_KEY
-    FLAGSMITH_ENABLE_LOCAL_EVALUTION = os.environ.get('FLAGSMITH_ENABLE_LOCAL_EVALUTION',
+    FLAGSMITH_ENABLE_LOCAL_EVALUATION = os.environ.get('FLAGSMITH_ENABLE_LOCAL_EVALUATION',
                                                       'false') == 'true'
 
     # Kibana
