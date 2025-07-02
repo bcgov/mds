@@ -11,6 +11,7 @@ Cypress.Commands.add("login", () => {
     filesystemProviderUrl: Cypress.env("CYPRESS_FILE_SYSTEM_PROVIDER_URL"),
     flagsmithUrl: Cypress.env("CYPRESS_FLAGSMITH_URL"),
     flagsmithKey: Cypress.env("CYPRESS_FLAGSMITH_KEY"),
+    flagsmithLocal: Cypress.env("FLAGSMITH_ENABLE_LOCAL_EVALUATION"),
     keycloak_clientId: Cypress.env("CYPRESS_KEYCLOAK_CLIENT_ID"),
     keycloak_resource: Cypress.env("CYPRESS_KEYCLOAK_RESOURCE"),
     keycloak_url: Cypress.env("CYPRESS_KEYCLOAK_URL"),

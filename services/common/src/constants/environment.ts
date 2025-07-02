@@ -14,6 +14,7 @@ export const DEFAULT_ENVIRONMENT = {
   keycloak_url: "https://test.loginproxy.gov.bc.ca/auth",
   flagsmithKey: "4Eu9eEMDmWVEHKDaKoeWY7",
   flagsmithUrl: "https://mds-flags-dev.apps.silver.devops.gov.bc.ca/api/v1/",
+  flagsmithLocal: process.env.FLAGSMITH_ENABLE_LOCAL_EVALUATION === "true" || false,
   syncfusionLicense: process.env.SYNCFUSION_LICENSE_KEY || "-",
   geoMarkUrl: process.env.GEOMARK_URL_BASE || "https://test.apps.gov.bc.ca/pub/geomark",
 };
@@ -27,6 +28,7 @@ export const ENVIRONMENT = {
   environment: "<ENV>",
   flagsmithKey: "<FLAGSMITH_KEY>",
   flagsmithUrl: "<FLAGSMITH_URL>",
+  flagsmithLocal: "<FLAGSMITH_ENABLE_LOCAL_EVALUATION>",
   syncfusionLicense: "<SYNCFUSION_LICENSE_KEY>",
   _loaded: false,
   geoMarkUrl: "<GEOMARK_URL_BASE>",
@@ -63,6 +65,7 @@ export function setupEnvironment(
   environment,
   flagsmithKey,
   flagsmithUrl,
+  flagsmithLocal,
   syncfusionLicence,
   geoMarkUrl
 ) {
@@ -108,6 +111,7 @@ export function setupEnvironment(
   ENVIRONMENT.environment = environment || "development";
   ENVIRONMENT.flagsmithKey = flagsmithKey;
   ENVIRONMENT.flagsmithUrl = flagsmithUrl;
+  ENVIRONMENT.flagsmithLocal = flagsmithLocal;
   ENVIRONMENT.syncfusionLicense = syncfusionLicence;
   ENVIRONMENT.geoMarkUrl = geoMarkUrl;
 

@@ -1,0 +1,423 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EnvDocumentsTab renders properly 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-ADD_EDIT_AMS_FINAL_APPLICATION form-edit"
+    id="ADD_EDIT_AMS_FINAL_APPLICATION"
+  >
+    <h3
+      class="ant-typography"
+    >
+      Documents
+    </h3>
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class=""
+            for="ADD_EDIT_AMS_FINAL_APPLICATION_pre_submitted_files"
+            title="Check those that were submitted as part of the Project Description"
+          >
+            Check those that were submitted as part of the Project Description
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <div
+                class="ant-checkbox-group"
+                id="ADD_EDIT_AMS_FINAL_APPLICATION_pre_submitted_files"
+                name="pre_submitted_files"
+              >
+                <label
+                  class="ant-checkbox-wrapper ant-checkbox-wrapper-checked ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                >
+                  <span
+                    class="ant-checkbox ant-checkbox-checked"
+                  >
+                    <input
+                      checked=""
+                      class="ant-checkbox-input"
+                      name="pre_submitted_files"
+                      type="checkbox"
+                      value="DFF"
+                    />
+                    <span
+                      class="ant-checkbox-inner"
+                    />
+                  </span>
+                  <span>
+                    Discharge Factor Form
+                  </span>
+                </label>
+                <label
+                  class="ant-checkbox-wrapper ant-checkbox-wrapper-checked ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                >
+                  <span
+                    class="ant-checkbox ant-checkbox-checked"
+                  >
+                    <input
+                      checked=""
+                      class="ant-checkbox-input"
+                      name="pre_submitted_files"
+                      type="checkbox"
+                      value="LOC"
+                    />
+                    <span
+                      class="ant-checkbox-inner"
+                    />
+                  </span>
+                  <span>
+                    Location Map
+                  </span>
+                </label>
+                <label
+                  class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                >
+                  <span
+                    class="ant-checkbox"
+                  >
+                    <input
+                      class="ant-checkbox-input"
+                      name="pre_submitted_files"
+                      type="checkbox"
+                      value="SIT"
+                    />
+                    <span
+                      class="ant-checkbox-inner"
+                    />
+                  </span>
+                  <span>
+                    Site Plan
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="ADD_EDIT_AMS_FINAL_APPLICATION_pre_submitted_files_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col"
+          style="padding-left: 8px; padding-right: 8px; flex: 1 1 auto;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]document_name"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    Document Name
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="documents[0]document_name"
+                      class="ant-input ant-input-disabled"
+                      data-testid="documents[0]document_name"
+                      disabled=""
+                      name="documents[0]document_name"
+                      type="text"
+                      value="my document.pdf"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]document_name_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-8"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]ams_final_application_document_type_code"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    Document Category
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      aria-required="true"
+                      class="ant-select ant-select-in-form-item ant-select-single ant-select-show-arrow ant-select-show-search"
+                      data-cy="documents[0]ams_final_application_document_type_code"
+                    >
+                      <div
+                        class="ant-select-selector"
+                      >
+                        <span
+                          class="ant-select-selection-search"
+                        >
+                          <input
+                            aria-activedescendant="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]ams_final_application_document_type_code_list_0"
+                            aria-autocomplete="list"
+                            aria-controls="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]ams_final_application_document_type_code_list"
+                            aria-haspopup="listbox"
+                            aria-owns="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]ams_final_application_document_type_code_list"
+                            aria-required="true"
+                            autocomplete="off"
+                            class="ant-select-selection-search-input"
+                            id="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]ams_final_application_document_type_code"
+                            role="combobox"
+                            type="search"
+                            value=""
+                          />
+                        </span>
+                        <span
+                          class="ant-select-selection-item"
+                          title="Application Instruction Document"
+                        >
+                          Application Instruction Document
+                        </span>
+                      </div>
+                      <span
+                        aria-hidden="true"
+                        class="ant-select-arrow"
+                        style="user-select: none;"
+                        unselectable="on"
+                      >
+                        <span
+                          aria-label="down"
+                          class="anticon anticon-down ant-select-suffix"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="down"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]ams_final_application_document_type_code_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        class="ant-btn ant-btn-primary ant-btn-dangerous fa-icon-container"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          class="svg-inline--fa fa-trash-can "
+          data-icon="trash-can"
+          data-prefix="far"
+          focusable="false"
+          role="img"
+          viewBox="0 0 448 512"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M170.5 51.6L151.5 80h145l-19-28.4c-1.5-2.2-4-3.6-6.7-3.6H177.1c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6L354.2 80H368h48 8c13.3 0 24 10.7 24 24s-10.7 24-24 24h-8V432c0 44.2-35.8 80-80 80H112c-44.2 0-80-35.8-80-80V128H24c-13.3 0-24-10.7-24-24S10.7 80 24 80h8H80 93.8l36.7-55.1C140.9 9.4 158.4 0 177.1 0h93.7c18.7 0 36.2 9.4 46.6 24.9zM80 128V432c0 17.7 14.3 32 32 32H336c17.7 0 32-14.3 32-32V128H80zm80 64V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z"
+            fill="currentColor"
+          />
+        </svg>
+        <span>
+          Delete File
+        </span>
+      </button>
+      <div
+        class="ant-divider ant-divider-horizontal"
+        role="separator"
+      />
+    </div>
+    <div
+      class="whirlpool-container"
+    >
+      <div
+        class="ant-form-item ant-form-item-with-help"
+      >
+        <div
+          class="ant-row ant-form-item-row"
+        >
+          <div
+            class="ant-col ant-form-item-label"
+          >
+            <label
+              class=""
+              for="ADD_EDIT_AMS_FINAL_APPLICATION_uploadedFiles"
+              title=""
+            >
+              <span>
+                Upload Files
+                 
+                <span>
+                  <span
+                    class="form-dashed-underline"
+                  >
+                    Accepted file types
+                     
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-circle-question "
+                      data-icon="circle-question"
+                      data-prefix="fal"
+                      focusable="false"
+                      role="img"
+                      style="width: 15px;"
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M480 256A224 224 0 1 0 32 256a224 224 0 1 0 448 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm168.7-86.2c6.5-24.6 28.7-41.8 54.2-41.8H280c35.5 0 64 29 64 64.3c0 24-13.4 46.2-34.9 57.2L272 268.3V288c0 8.8-7.2 16-16 16s-16-7.2-16-16V258.5c0-6 3.4-11.5 8.7-14.3l45.8-23.4c10.7-5.4 17.5-16.6 17.5-28.7c0-17.8-14.4-32.3-32-32.3H222.9c-10.9 0-20.5 7.4-23.2 17.9l-.2 .7c-2.2 8.5-11 13.7-19.5 11.4s-13.7-11-11.4-19.5l.2-.7zM232 352a24 24 0 1 1 48 0 24 24 0 1 1 -48 0z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </span>
+            </label>
+          </div>
+          <div
+            class="ant-col ant-form-item-control"
+          >
+            <div
+              class="ant-form-item-control-input"
+            >
+              <div
+                class="ant-form-item-control-input-content"
+              >
+                <div
+                  class="filepond--wrapper"
+                >
+                  <input
+                    accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpg,image/jpeg,image/png,image/jp2,image/tiff,image/heic,image/heif,application/vnd.geo+json,application/gml+xml,application/dbf,application/x-dbf,application/x-dbase,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,text/csv,application/xml,text/xml"
+                    id="uploadedFiles"
+                    multiple=""
+                    name="file"
+                    type="file"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              style="display: flex; flex-wrap: nowrap;"
+            >
+              <div
+                class="ant-form-item-explain ant-form-item-explain-connected"
+                id="ADD_EDIT_AMS_FINAL_APPLICATION_uploadedFiles_help"
+                role="alert"
+              >
+                <div
+                  class=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;

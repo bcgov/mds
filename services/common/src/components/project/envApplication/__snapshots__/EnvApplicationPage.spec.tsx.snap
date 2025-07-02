@@ -1,0 +1,385 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EnvApplicationPage renders properly 1`] = `
+<div>
+  <div
+    class="fixed-tabs-container"
+  >
+    <div
+      class="common-page"
+    >
+      <div
+        class="view--header padding-lg--top padding-lg--sides common-page-header common-page-header-no-tabs"
+      >
+        <div
+          class="ant-row"
+        >
+          <div
+            class="ant-col"
+          >
+            <a
+              class="faded-text"
+              href="/mock-route/undefined"
+            >
+              undefined Major Projects
+            </a>
+             
+            /
+             
+            <a
+              class="faded-text"
+              href="/mock-route/35633148-57f8-4967-be35-7f89abfbd02e"
+            >
+              Sample title
+            </a>
+             
+            /
+             
+            <span
+              class="ant-typography"
+            >
+              ENV Application
+               
+            </span>
+          </div>
+        </div>
+        <div
+          class="ant-row ant-row-space-between ant-row-middle"
+          style="margin-left: -8px; margin-right: -8px;"
+        >
+          <div
+            class="ant-col"
+            style="padding-left: 8px; padding-right: 8px;"
+          >
+            <div
+              class="ant-row ant-row-middle"
+              style="margin-left: -8px; margin-right: -8px;"
+            >
+              <div
+                class="ant-col"
+                style="padding-left: 8px; padding-right: 8px;"
+              >
+                <h1
+                  class="ant-typography margin-none"
+                >
+                  ENV Application
+                   
+                </h1>
+              </div>
+              <div
+                class="ant-col"
+                style="padding-left: 8px; padding-right: 8px;"
+              >
+                <div
+                  class="ant-row ant-row-space-between ant-row-middle tag"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-location-dot "
+                    data-icon="location-dot"
+                    data-prefix="fal"
+                    focusable="false"
+                    role="img"
+                    viewBox="0 0 384 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M352 192c0-88.4-71.6-160-160-160S32 103.6 32 192c0 15.6 5.4 37 16.6 63.4c10.9 25.9 26.2 54 43.6 82.1c34.1 55.3 74.4 108.2 99.9 140c25.4-31.8 65.8-84.7 99.9-140c17.3-28.1 32.7-56.3 43.6-82.1C346.6 229 352 207.6 352 192zm32 0c0 87.4-117 243-168.3 307.2c-12.3 15.3-35.1 15.3-47.4 0C117 435 0 279.4 0 192C0 86 86 0 192 0S384 86 384 192zm-240 0a48 48 0 1 0 96 0 48 48 0 1 0 -96 0zm48 80a80 80 0 1 1 0-160 80 80 0 1 1 0 160z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  <span
+                    class="ant-typography margin-medium--left"
+                  >
+                    <a
+                      href="/mock-route/60300a07-376c-46f1-a984-88a813f91438"
+                      style="text-decoration: none;"
+                    />
+                  </span>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div
+            class="ant-col core-header-extra"
+            style="padding-left: 8px; padding-right: 8px;"
+          >
+            <span
+              class="ant-tag table-tag table-tag--primary"
+            >
+              
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="fixed-page-content"
+      >
+        <div
+          class="ant-row"
+        >
+          <div
+            class="ant-col ant-col-6 stepped-form-menu-container"
+          >
+            <ul
+              class="ant-menu ant-menu-root ant-menu-inline ant-menu-light stepped-form"
+              data-menu-list="true"
+              role="menu"
+              tabindex="0"
+            >
+              <li
+                aria-disabled="false"
+                class="ant-menu-item ant-menu-item-selected ant-menu-item-only-child stepped-menu-item"
+                data-menu-id="rc-menu-uuid-test-basic-information"
+                role="menuitem"
+                style="padding-left: 24px;"
+                tabindex="-1"
+              >
+                <span
+                  class="ant-menu-title-content"
+                >
+                  Basic Information
+                </span>
+              </li>
+              <li
+                aria-disabled="false"
+                class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+                data-menu-id="rc-menu-uuid-test-documents"
+                role="menuitem"
+                style="padding-left: 24px;"
+                tabindex="-1"
+              >
+                <span
+                  class="ant-menu-title-content"
+                >
+                  Documents
+                </span>
+              </li>
+              <li
+                aria-disabled="false"
+                class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+                data-menu-id="rc-menu-uuid-test-declaration"
+                role="menuitem"
+                style="padding-left: 24px;"
+                tabindex="-1"
+              >
+                <span
+                  class="ant-menu-title-content"
+                >
+                  Declaration
+                </span>
+              </li>
+            </ul>
+            <div
+              aria-hidden="true"
+              style="display: none;"
+            />
+          </div>
+          <div
+            class="ant-col ant-col-18"
+          >
+            <div
+              class="stepped-form-form-container"
+            >
+              <form
+                class="ant-form ant-form-vertical common-form common-form-ADD_EDIT_AMS_FINAL_APPLICATION form-edit"
+                id="ADD_EDIT_AMS_FINAL_APPLICATION"
+              >
+                <h3
+                  class="ant-typography"
+                >
+                  Basic Information
+                </h3>
+                <div
+                  class="ant-form-item ant-form-item-with-help"
+                >
+                  <div
+                    class="ant-row ant-form-item-row"
+                  >
+                    <div
+                      class="ant-col ant-form-item-label"
+                    >
+                      <label
+                        class="ant-form-item-required"
+                        for="ADD_EDIT_AMS_FINAL_APPLICATION_submitter_name"
+                        title=""
+                      >
+                        <div
+                          style="width: 100%;"
+                        >
+                          Submitter Name
+                        </div>
+                      </label>
+                    </div>
+                    <div
+                      class="ant-col ant-form-item-control"
+                    >
+                      <div
+                        class="ant-form-item-control-input"
+                      >
+                        <div
+                          class="ant-form-item-control-input-content"
+                        >
+                          <input
+                            aria-label="submitter_name"
+                            class="ant-input"
+                            data-testid="submitter_name"
+                            id="submitter_name"
+                            name="submitter_name"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </div>
+                      <div
+                        style="display: flex; flex-wrap: nowrap;"
+                      >
+                        <div
+                          class="ant-form-item-explain ant-form-item-explain-connected"
+                          id="ADD_EDIT_AMS_FINAL_APPLICATION_submitter_name_help"
+                          role="alert"
+                        >
+                          <div
+                            class=""
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="ant-form-item ant-form-item-with-help"
+                >
+                  <div
+                    class="ant-row ant-form-item-row"
+                  >
+                    <div
+                      class="ant-col ant-form-item-label"
+                    >
+                      <label
+                        class="ant-form-item-required"
+                        for="ADD_EDIT_AMS_FINAL_APPLICATION_is_agent"
+                        title=""
+                      >
+                        <div
+                          style="width: 100%;"
+                        >
+                          The person submitting this application is:
+                        </div>
+                      </label>
+                    </div>
+                    <div
+                      class="ant-col ant-form-item-control"
+                    >
+                      <div
+                        class="ant-form-item-control-input"
+                      >
+                        <div
+                          class="ant-form-item-control-input-content"
+                        >
+                          <div
+                            class="ant-radio-group ant-radio-group-solid vertical-radio-group"
+                          >
+                            <label
+                              class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                            >
+                              <span
+                                class="ant-radio"
+                              >
+                                <input
+                                  class="ant-radio-input"
+                                  name="is_agent"
+                                  type="radio"
+                                  value="false"
+                                />
+                                <span
+                                  class="ant-radio-inner"
+                                />
+                              </span>
+                              <span>
+                                the Applicant, as named in the project description
+                              </span>
+                            </label>
+                            <label
+                              class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                            >
+                              <span
+                                class="ant-radio"
+                              >
+                                <input
+                                  class="ant-radio-input"
+                                  name="is_agent"
+                                  type="radio"
+                                  value="true"
+                                />
+                                <span
+                                  class="ant-radio-inner"
+                                />
+                              </span>
+                              <span>
+                                the Agent, as named in the project description
+                              </span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        style="display: flex; flex-wrap: nowrap;"
+                      >
+                        <div
+                          class="ant-form-item-explain ant-form-item-explain-connected"
+                          id="ADD_EDIT_AMS_FINAL_APPLICATION_is_agent_help"
+                          role="alert"
+                        >
+                          <div
+                            class=""
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <div
+                class="ant-row ant-row-end stepped-form-button-row"
+              >
+                <div>
+                  <button
+                    class="ant-btn ant-btn-primary"
+                    type="button"
+                  >
+                    <span>
+                      Save & Continue
+                    </span>
+                    <span
+                      aria-label="right"
+                      class="anticon anticon-right"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class=""
+                        data-icon="right"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

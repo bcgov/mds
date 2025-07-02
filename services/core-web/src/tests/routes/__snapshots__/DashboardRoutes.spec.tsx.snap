@@ -316,6 +316,20 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/mine-dashboard/:id/permits-and-approvals/pre-applications"
   />
   <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(MineProject)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    key="/mine-dashboard/:id/permits-and-approvals/pre-applications"
+    path="/mine-dashboard/:id/permits-and-approvals/pre-applications"
+  />
+  <Route
     component={[Function]}
     exact={true}
     key="/mines/:mineGuid/project-description/new/:tab"
@@ -338,6 +352,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
     exact={true}
     key="/pre-applications/:projectGuid/:tab"
     path="/pre-applications/:projectGuid/:tab"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    key="/projects/:projectGuid/project-summary/:projectSummaryGuid/application/:projectSummaryAuthorizationGuid/:tab"
+    path="/projects/:projectGuid/project-summary/:projectSummaryGuid/application/:projectSummaryAuthorizationGuid/:tab"
   />
   <Route
     component={[Function]}

@@ -46,6 +46,7 @@ import permitConditionDiffReducer, { permitConditionDiffReducerType } from "../s
 import permitSearchReducer, { permitSearchReducerType } from "../slices/permitSearchSlice";
 import damReducer, { damReducerType } from "../slices/damSlice";
 import tailingsReducer, { tsfReducerType } from "../slices/tailingsSlice";
+import amsFinalAppReducer, { amsAppReducerType } from "../slices/amsFinalApplicationSlice";
 
 const networkReducers = Object.fromEntries(Object.entries(NetworkReducerTypes).map(([key, value]) =>
   [NetworkReducerTypes[key], createReducer(networkReducer, value)]
@@ -92,5 +93,6 @@ export const sharedReducer = {
   [mineReportPermitRequirementReducerType]: mineReportPermitRequirementReducer,
   [permitConditionDiffReducerType]: permitConditionDiffReducer,
   [permitSearchReducerType]: permitSearchReducer,
+  [amsAppReducerType]: amsFinalAppReducer,
   ...networkReducers
 };
