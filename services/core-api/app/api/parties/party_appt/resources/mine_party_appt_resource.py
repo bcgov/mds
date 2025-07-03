@@ -251,14 +251,9 @@ class MinePartyApptResource(Resource, UserMixin):
                 )
 
         if end_current and mine_party_appt_type_code in ['EOR', 'TQP']:
-            if mine_party_appt_type_code == 'EOR':
-                current_eor_list = MinePartyAppointment.find_current_appointments(mine_guid, 'EOR', None, tsf.mine_tailings_storage_facility_guid)
-                if len(current_eor_list) > 0:
-                    current_eor_list[0].request_termination_report_if_required(True)
-            if mine_party_appt_type_code == 'TQP':
-                current_tqp_list = MinePartyAppointment.find_current_appointments(mine_guid, 'TQP', None, tsf.mine_tailings_storage_facility_guid)
-                if len(current_tqp_list) > 0:
-                    current_tqp_list[0].request_termination_report_if_required(True)
+            current_appt_list = MinePartyAppointment.find_current_appointments(mine_guid, mine_party_appt_type_code, None, tsf.mine_tailings_storage_facility_guid)
+            if len(current_appt_list) > 0:
+                current_appt_list[0].request_termination_report_if_required(True)
 
         return new_mpa.json()
 
