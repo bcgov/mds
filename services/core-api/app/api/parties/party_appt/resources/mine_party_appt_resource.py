@@ -184,7 +184,7 @@ class MinePartyApptResource(Resource, UserMixin):
             mine_party_acknowledgement_status = MinePartyAcknowledgedStatus.not_acknowledged
         elif mine_party_appt_type_code == 'EOR':
             mine_party_acknowledgement_status = MinePartyAcknowledgedStatus.acknowledged
-        
+
         if end_current and (not is_minespace_user() or mine_party_appt_type_code == 'TQP'):
             new_status = MinePartyAppointmentStatus.active
             MinePartyAppointment.end_current(
@@ -249,6 +249,16 @@ class MinePartyApptResource(Resource, UserMixin):
                         'mine_tailings_storage_facility_guid': str(tsf.mine_tailings_storage_facility_guid),
                     }}
                 )
+
+        if end_current and mine_party_appt_type_code in ['EOR', 'TQP']:
+            if mine_party_appt_type_code == 'EOR':
+                current_eor_list = MinePartyAppointment.find_current_appointments(mine_guid, 'EOR', None, tsf.mine_tailings_storage_facility_guid)
+                if len(current_eor_list) > 0:
+                    current_eor_list[0].request_termination_report_if_required(True)
+            if mine_party_appt_type_code == 'TQP':
+                current_tqp_list = MinePartyAppointment.find_current_appointments(mine_guid, 'TQP', None, tsf.mine_tailings_storage_facility_guid)
+                if len(current_tqp_list) > 0:
+                    current_tqp_list[0].request_termination_report_if_required(True)
 
         return new_mpa.json()
 

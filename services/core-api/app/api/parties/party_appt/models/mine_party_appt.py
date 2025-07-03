@@ -497,7 +497,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
             mpa.save(commit=False)
         return mpa
     
-    def request_termination_report_if_required(self):
+    def request_termination_report_if_required(self, trigger_with_pending_assignment = False):
         if not is_feature_enabled(Feature.TSF_TERMINATE_APPTS):
             return
 
@@ -507,12 +507,12 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
             'TQP': ['10', '4', '2', '1(d)'],
         }
         section = required_reports.get(self.mine_party_appt_type_code, None)
-        if section and self.end_date:
+        if section and (self.end_date or trigger_with_pending_assignment):
             mine_report_definition = MineReportDefinition.find_one_by_section(*section)
             if not mine_report_definition:
                 section_output = '.'.join(section)
                 raise NotFound(f'{self.mine_party_appt_type_code} Report definition not found by section {section_output}')
-            calculated_due_date = self.end_date + timedelta(hours=72)
+            calculated_due_date = self.end_date + timedelta(hours=72) if self.end_date else datetime.now() + timedelta(hours=72)
             report = MineReport.create(
                 mine_report_definition_id=mine_report_definition.mine_report_definition_id,
                 mine_guid=self.mine_guid,
