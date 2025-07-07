@@ -2,6 +2,7 @@ from unittest.mock import MagicMock, PropertyMock, patch
 
 import pytest
 from app.pipelines.permit_condition_search.stores.ai_search_document_store import (
+    AdditionalAISearchConfig,
     AzureSearchDocumentStore,
 )
 from azure.core.credentials import AzureKeyCredential
@@ -9,6 +10,7 @@ from azure.search.documents import SearchClient
 from azure.search.documents.indexes import SearchIndexClient
 from azure.search.documents.indexes.models import SearchField, SearchIndex
 from haystack import Document
+from haystack.utils import Secret
 from haystack_integrations.document_stores.azure_ai_search import (
     AzureAISearchDocumentStore,
 )
@@ -82,18 +84,12 @@ def azure_search_store(mock_search_client, mock_index_client, mock_azure_credent
         mock_index_client_cls.return_value = mock_index_client
         
         store = AzureSearchDocumentStore(
-            azure_endpoint="https://test.search.windows.net",
-            api_key="test-key",
+            azure_endpoint=Secret.from_token("https://test.search.windows.net"),
+            api_key=Secret.from_token("test-key"),
             index_name="test-index",
             embedding_dimension=768,
-            metadata_fields={"category": str},
-            extra_field_config={
-                "category": {
-                    "filterable": True,
-                    "sortable": True,
-                    "facetable": True
-                }
-            }
+            search_config=AdditionalAISearchConfig(highlight_fields="content"),
+            semantic_configuration_name="test-semantic-config"
         )
 
         # Pre-set the client property to avoid actual API calls
@@ -109,13 +105,8 @@ def test_base_document_store_initialization(azure_search_store):
     assert azure_search_store._embedding_dimension == 768
 
 def test_custom_document_store_initialization(azure_search_store):
-    assert azure_search_store.extra_field_config == {
-        "category": {
-            "filterable": True,
-            "sortable": True,
-            "facetable": True
-        }
-    }
+    assert azure_search_store.search_config.highlight_fields == "content"
+    assert azure_search_store.semantic_configuration_name == "test-semantic-config"
 
 def test_convert_search_results_with_facets(azure_search_store):
     azure_docs = [
@@ -125,8 +116,12 @@ def test_convert_search_results_with_facets(azure_search_store):
             "embedding": [0.1] * 768,
             "category": "test",
             "@search.score": 0.8,
+            "@search.reranker_score": 0.9,
             "@search.facets": {
                 "category": [{"value": "test", "count": 1}]
+            },
+            "@search.highlights": {
+                "content": ["<em>test</em> content"]
             }
         }
     ]
@@ -139,28 +134,27 @@ def test_convert_search_results_with_facets(azure_search_store):
     assert documents[0].content == "test content"
     assert documents[0].meta["category"] == "test"
     assert documents[0].meta["facets"] == {"category": [{"value": "test", "count": 1}]}
-    assert documents[0].score == 0
+    assert documents[0].meta["highlights"] == {"content": ["<em>test</em> content"]}
+    assert documents[0].score == 0.9
 
 def test_hybrid_retrieval_with_facets(azure_search_store, mock_search_client):
     results = azure_search_store._hybrid_retrieval(
         query="test",
         query_embedding=[0.1] * 768,
-        top_k=1
+        top_k=1,
+        filters="category eq 'test'"
     )
 
     assert len(results) == 1
     assert results[0].meta["facets"] == {"category": [{"value": "test", "count": 1}]}
-    assert results[0].score == 0
+    assert results[0].score == 0.0 # reranker_score is not in mock_docs
 
-def test_metadata_field_creation(azure_search_store):
-    fields = azure_search_store._create_metadata_index_fields({"category": str})
-    
-    # Find the category field
-    category_field = next((f for f in fields if f.name == "category"), None)
-    assert category_field is not None
-    assert category_field.filterable is True
-    assert category_field.sortable is True
-    assert category_field.facetable is True
+    mock_search_client.search.assert_called_once()
+    call_args = mock_search_client.search.call_args[1]
+    assert call_args["search_text"] == "test"
+    assert call_args["filter"] == "category eq 'test'"
+    assert call_args["semantic_configuration_name"] == "test-semantic-config"
+    assert call_args["highlight_fields"] == "content"
 
 def test_write_documents_with_metadata(azure_search_store):
     doc = Document(

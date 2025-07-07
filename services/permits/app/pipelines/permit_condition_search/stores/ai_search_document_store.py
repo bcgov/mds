@@ -1,18 +1,50 @@
+import logging
 from typing import Any, Dict, List, Optional
 
-from azure.search.documents.indexes.models import SimpleField
+from app.pipelines.permit_condition_search.search_index_fields import fields
 from azure.search.documents.models import (
     QueryCaptionType,
     QueryType,
     VectorizableTextQuery,
-    VectorizedQuery,
 )
-from haystack import Document, component
+from haystack import Document
 from haystack_integrations.document_stores.azure_ai_search import (
     AzureAISearchDocumentStore,
 )
-from pygments import highlight
+from haystack_integrations.document_stores.azure_ai_search import filters as fltrs
 
+logger = logging.getLogger(__name__)
+
+# There's a bug in the Haystack Azure AI Search integration where it doesn't handle collection index field types correctly.
+# Issue: Filters on a field of the type Collection(...) fails with an error (it works for single fields).
+# Expected Odata filter syntax for a collection field is: 
+# `field/any(field: <filter>)` where `field` is the name of the field and `value` is the value to filter on. The haystack integration spits out just the <filter> part.
+# Example: `search.in(field, 'value1,value2', ',')` should be `field/any(field: search.in(field, 'value1,value2', ','))`
+#
+# The following code overrides the comparison operators to handle a collection index field type.
+# Why override and not fix the bug in Haystack? This aims to fix it specifically for our use case,
+# a more general fix would require more considerations (e.g. handle 'any' vs 'all', complex types etc.).
+
+# Reference: https://learn.microsoft.com/en-us/azure/search/search-query-odata-filter
+
+fields_dict = {field.name: field for field in fields}
+og_fltr = fltrs.COMPARISON_OPERATORS
+
+def override_comparison_operators(op, func):
+    def handle_collection_index_field_type(field, value, **kwargs):
+        res = func(field, value, **kwargs)
+
+        if fields_dict.get(field) and fields_dict[field].type.startswith("Collection("):
+            # If the field is a collection, we need to format the value as a list
+            res = f"{field}/any({field}: {res})"
+        return res
+    return handle_collection_index_field_type
+
+new_comparison_operators = {op: override_comparison_operators(op, func) for op, func in og_fltr.items()}
+fltrs.COMPARISON_OPERATORS = new_comparison_operators
+
+# This class is used to configure additional search parameters for the Azure AI Search Document Store that are not part of the standard Haystack configuration.
+# It allows for highlighting fields and customizing highlight tags.
 
 class AdditionalAISearchConfig:
     highlight_fields: Optional[str] = None
@@ -38,16 +70,19 @@ class AdditionalAISearchConfig:
 
 
 class AzureSearchDocumentStore(AzureAISearchDocumentStore):
+    """
+    The AzureSearchDocumentStore extends the AzureAISearchDocumentStore
+    to add support for facets, highlights, in the search results and additional configuration that haystack
+    does not support out of the box.
+    """
 
     def __init__(
         self,
-        extra_field_config: Optional[Dict[str, Any]] = None,
         search_config: Optional[AdditionalAISearchConfig] = None,
         semantic_configuration_name=None,
         **kwargs,
     ):
         super(AzureSearchDocumentStore, self).__init__(**kwargs)
-        self.extra_field_config = extra_field_config
         self.search_config = search_config or AdditionalAISearchConfig()
         self.semantic_configuration_name = semantic_configuration_name
 
@@ -79,29 +114,12 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
 
         return documents
 
-    def _create_metadata_index_fields(
-        self, metadata: Dict[str, Any]
-    ) -> List[SimpleField]:
-        """Create a list of index fields for storing metadata values."""
-
-        index_fields = super()._create_metadata_index_fields(metadata)
-
-        for field in index_fields:
-            field_name = field.name
-            if field_name in self.extra_field_config:
-                field_options = self.extra_field_config[field_name]
-                field.filterable = field_options.get("filterable", field.filterable)
-                field.sortable = field_options.get("sortable", field.sortable)
-                field.facetable = field_options.get("facetable", field.facetable)
-
-        return index_fields
-
     def _hybrid_retrieval(
         self,
         query: str,
         query_embedding: List[float],
         top_k: int = 25,
-        filters: Optional[Dict[str, Any]] = None,
+        filters: Optional[str] = None,
         **kwargs,
     ) -> List[Document]:
         """Retrieves documents similar to query using vector configuration and BM25."""
@@ -115,6 +133,8 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
         vector_query = VectorizableTextQuery(
             text=query, k_nearest_neighbors=top_k, fields="embedding", exhaustive=True
         )
+
+        logger.error("Test query: %s", filters)
 
         result = self.client.search(
             search_text=query,

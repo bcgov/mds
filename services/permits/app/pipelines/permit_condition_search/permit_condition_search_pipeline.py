@@ -14,6 +14,7 @@ from app.pipelines.permit_condition_search.components.indexer_runner import (
     IndexerRunner,
 )
 from app.pipelines.permit_condition_search.config import config
+from app.pipelines.permit_condition_search.search_index_fields import fields
 from app.pipelines.permit_condition_search.stores.ai_search_document_store import (
     AdditionalAISearchConfig,
     AzureSearchDocumentStore,
@@ -65,6 +66,8 @@ doc_metadata_fields = {
     "tenure": List[str],
     "verification_status": str,
 }
+
+doc_metadata_fields = { f.name: f for f in fields }
 
 vector_search_config = VectorSearch()
 
@@ -139,7 +142,7 @@ def create_permit_condition_search_retrieval_pipeline():
 
     logger.info("Adding components to pipeline")
     text_embedder = AzureOpenAITextEmbedder(
-        azure_endpoint=config.openai.endpoint,
+        azure_endpoint=config.openai.endpoint.resolve_value(),
         azure_deployment=config.openai.embedding_model,
         api_key=config.openai.api_key,
     )
@@ -169,7 +172,7 @@ def create_permit_condition_search_retrieval_pipeline():
     ])
 
     llm = AzureOpenAIChatGenerator(
-        azure_endpoint=config.openai.endpoint,
+        azure_endpoint=config.openai.endpoint.resolve_value(),
         azure_deployment=config.openai.deployment_name,
         api_key=config.openai.api_key,
         api_version=config.openai.api_version,
