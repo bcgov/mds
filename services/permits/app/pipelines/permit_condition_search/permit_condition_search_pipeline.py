@@ -43,30 +43,6 @@ ROOT_DIR = os.path.abspath(os.curdir)
 with open(f"{ROOT_DIR}/app/permit_condition_prompts.yaml", "r") as file:
     prompts = yaml.safe_load(file)
 
-# Metadata field definitions for search index
-doc_metadata_fields = {
-    "category": str,
-    "issue_date": datetime,
-    "permit": str,
-    "permit_type": str,
-    "mine_number": str,
-    "mine_name": str,
-    "document_name": str,
-    "document_manager_guid": str,
-    "mine_guid": str,
-    "permit_guid": str,
-    "permit_condition_guid": str,
-    "permit_amendment_guid": str,
-    "step": str,
-    "step_path": str,
-    "parent_ids": List[str],  # Changed from parent_id to parent_ids
-    "sibling_ids": List[str],  # Add sibling_ids
-    "child_ids": List[str],  # Add child_ids
-    "report_name": str,  # Add report_name field
-    "tenure": List[str],
-    "verification_status": str,
-}
-
 doc_metadata_fields = { f.name: f for f in fields }
 
 vector_search_config = VectorSearch()
