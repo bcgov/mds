@@ -45,6 +45,8 @@ with open(f"{ROOT_DIR}/app/permit_condition_prompts.yaml", "r") as file:
 
 doc_metadata_fields = { f.name: f for f in fields }
 
+doc_metadata_fields = { f.name: f for f in fields }
+
 vector_search_config = VectorSearch()
 
 

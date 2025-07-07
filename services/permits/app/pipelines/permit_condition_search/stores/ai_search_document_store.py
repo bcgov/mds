@@ -134,6 +134,8 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
             text=query, k_nearest_neighbors=top_k, fields="embedding", exhaustive=True
         )
 
+        logger.error("Test query: %s", filters)
+
         result = self.client.search(
             search_text=query,
             vector_queries=[vector_query],
