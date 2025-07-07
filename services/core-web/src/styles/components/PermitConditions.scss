@@ -1,9 +1,17 @@
 @use "../base.scss" as *;
 
 div.condition-layer {
+  padding: 2px;
   padding-top: 12px;
   padding-left: 24px;
   font-weight: normal;
+  margin-bottom: 10px;
+  border: 1px solid $disabled-text;
+  border-radius: 4px;
+
+  &.condition-SEC .condition-column>.ant-typography {
+    font-weight: bold;
+  }
 
   .ant-form {
     margin-bottom: 0;
@@ -12,7 +20,7 @@ div.condition-layer {
   .condition-content {
     &.editable:hover {
       cursor: pointer;
-      background-color: #F4F0F0;
+      background-color: $lightest-violet;
     }
 
     .condition-column {
@@ -34,9 +42,11 @@ div.condition-layer {
     opacity: 0.8;
   }
 
+  &--1 .condition-column>.ant-typography {
+    font-weight: normal !important;
+  }
+
   &--0 {
-    border: 1px solid $transparent-dark-grey;
-    border-radius: 4px;
     padding: 16px;
 
     p.condition-layer--0 {
@@ -60,10 +70,6 @@ div.condition-layer {
 
 .top-level-condition {
   font-weight: 600;
-}
-
-.condition-edit-buttons {
-  padding: 0 8px;
 }
 
 .report-collapse-container {

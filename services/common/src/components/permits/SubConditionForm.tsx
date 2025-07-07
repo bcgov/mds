@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Field } from "@mds/common/components/forms/form";
+import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { Row, Col } from "antd";
 import { faCheck, faXmark } from "@fortawesome/pro-regular-svg-icons";
 import {
@@ -13,11 +13,12 @@ import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeFiel
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useAppDispatch } from "@mds/common/redux/rootState";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { createPermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { FORM } from "@mds/common/constants/forms";
 import RenderGroupedSelect from "@mds/common/components/forms/RenderGroupedSelect";
 import { usePermitConditions } from "./PermitConditionsContext";
+import { required } from "@mds/common/redux/utils/Validate";
 
 interface SubConditionFormProps {
   level?: number;
@@ -40,6 +41,8 @@ const SubConditionForm: FC<SubConditionFormProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const { loading, setLoading } = usePermitConditions();
+  const formValues = useAppSelector(getFormValues(FORM.EDIT_PERMIT_CONDITION)) as IPermitCondition;
+
   const handleSubmit = async (values) => {
     setLoading(true);
     const resp = await dispatch(createPermitCondition(permitAmendmentGuid, values));
@@ -59,29 +62,40 @@ const SubConditionForm: FC<SubConditionFormProps> = ({
     }
     return "LIS";
   };
+
+  const getCategoryText = () => {
+    if (!categoryOptions?.length) {
+      return "";
+    }
+    const allOptions = categoryOptions.reduce((acc, group) => { return [...acc, ...group.opt] }, []);
+    const selectedOption = allOptions.find((o) => o.value === formValues?.condition_category_code);
+    return selectedOption?.label;
+  };
+
+  const parentText = parentCondition?.stepPath ?? getCategoryText();
   const getPlaceHolderText = (conditionTypeCode: string = "SEC") => {
     return {
-      SEC: "Enter Sub-Section title",
-      CON: "Enter a condition",
-      LIS: "Enter a list item",
+      SEC: `Enter Sub-Section title for ${parentText}`,
+      CON: `Enter condition text for ${parentText}`,
+      LIS: `Enter list item text for ${parentText}`,
     }[conditionTypeCode];
   };
 
   const emptyCondition = parentCondition
     ? {
-        condition_category_code: parentCondition.condition_category_code,
-        condition_type_code: getConditionTypeCode(),
-        display_order: parentCondition.sub_conditions.length + 1,
-        parent_permit_condition_id: parentCondition.permit_condition_id,
-        top_level_parent_permit_condition_id: parentCondition.top_level_parent_permit_condition_id
-          ? parentCondition.top_level_parent_permit_condition_id
-          : parentCondition.parent_permit_condition_id,
-      }
+      condition_category_code: parentCondition.condition_category_code,
+      condition_type_code: getConditionTypeCode(),
+      display_order: parentCondition.sub_conditions.length + 1,
+      parent_permit_condition_id: parentCondition.permit_condition_id,
+      top_level_parent_permit_condition_id: parentCondition.top_level_parent_permit_condition_id
+        ? parentCondition.top_level_parent_permit_condition_id
+        : parentCondition.parent_permit_condition_id,
+    }
     : {
-        condition_category_code: conditionCategory.condition_category_code,
-        condition_type_code: getConditionTypeCode(),
-        display_order: conditionCategory.conditions.length + 1,
-      };
+      condition_category_code: conditionCategory.condition_category_code,
+      condition_type_code: getConditionTypeCode(),
+      display_order: conditionCategory.conditions.length + 1,
+    };
   return (
     <FormWrapper
       name={FORM.EDIT_PERMIT_CONDITION}
@@ -112,11 +126,13 @@ const SubConditionForm: FC<SubConditionFormProps> = ({
         <Row wrap={false}>
           <Col span={24}>
             <Field
-              placeholder={getPlaceHolderText(emptyCondition.condition_type_code)}
+              label={getPlaceHolderText(emptyCondition.condition_type_code)}
               name="condition"
               component={RenderAutoSizeField}
               autoFocus
               disabled={loading}
+              required
+              validate={[required]}
             />
           </Col>
         </Row>

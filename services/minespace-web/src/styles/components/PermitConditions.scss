@@ -3,19 +3,23 @@
 @use "../settings/variables.scss";
 
 div.condition-layer {
+  padding: 2px;
   padding-top: 12px;
   padding-left: 24px;
   font-weight: normal;
+  margin-bottom: 10px;
+  border: 1px solid variables.$light-grey;
+  border-radius: 4px;
+
+  &.condition-SEC .condition-column>.ant-typography {
+    font-weight: bold;
+  }
 
   .ant-form {
     margin-bottom: 0;
   }
 
   .condition-content {
-    &.editable:hover {
-      cursor: pointer;
-      background-color: #f4f0f0;
-    }
 
     .condition-column {
       width: 100%;
@@ -36,9 +40,11 @@ div.condition-layer {
     opacity: 0.8;
   }
 
+  &--1 .condition-column>.ant-typography {
+    font-weight: normal !important;
+  }
+
   &--0 {
-    border: 1px solid variables.$transparent-dark-grey;
-    border-radius: 4px;
     padding: 16px;
 
     p.condition-layer--0 {

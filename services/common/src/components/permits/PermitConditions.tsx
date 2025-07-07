@@ -60,6 +60,7 @@ import { createDropDownList } from "@mds/common/redux/utils/helpers";
 import PermitConditionLayer from "@mds/common/components/permits/PermitConditionLayer";
 import { LatestAmendmentWarning } from "./LatestAmendmentWarning";
 import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
+import { FORM } from "@mds/common/constants/forms";
 
 const { Title } = Typography;
 
@@ -148,7 +149,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [viewPdf, setViewPdf] = useState(false);
   const [selectedCondition, setSelectedCondition] = useState<IPermitCondition | null>(null);
-  const [editingConditionGuid, setEditingConditionGuid] = useState<string>();
+  const [editingFormName, setEditingFormName] = useState<string>();
   const [addingToCategoryCode, setAddingToCategoryCode] = useState<string>();
   const [loading, setLoading] = useState(false);
 
@@ -180,13 +181,19 @@ const PermitConditions: FC<PermitConditionProps> = ({
 
   const refreshData = async () => {
     await dispatch(fetchPermits(mineGuid));
-    setEditingConditionGuid(null);
+    setEditingFormName(null);
   };
 
   useEffect(() => {
     dispatch(searchConditionCategories({}));
     dispatch(fetchReviewAssignments({ permit_amendment_id: currentAmendment.permit_amendment_id }));
   }, []);
+
+  useEffect(() => {
+    if (editingFormName !== FORM.EDIT_PERMIT_CONDITION) {
+      setAddingToCategoryCode(null);
+    }
+  }, [editingFormName]);
 
   const defaultPermitConditionCategories = useAppSelector(getPermitConditionCategoryOptions);
   const condWithoutConditionsText = defaultPermitConditionCategories?.map((cat) => {
@@ -321,6 +328,11 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const handleAddCondition = async () => {
     setAddingToCategoryCode(null);
     await refreshData();
+  };
+
+  const handleClickAddCondition = (category) => {
+    setAddingToCategoryCode(category.condition_category_code);
+    setEditingFormName(FORM.EDIT_PERMIT_CONDITION)
   };
 
   const toggleViewPdf = () => {
@@ -508,11 +520,11 @@ const PermitConditions: FC<PermitConditionProps> = ({
         </Row>
       </Col>
       <Col span={24}>
-        <div className="common-page-content">
+        <div>
           <Row gutter={[16, 16]}>
             {formattedPermitConditionCategories.map((category, idx) => {
               return (
-                <React.Fragment key={category.href}>
+                <div key={category.href} className="common-page-content">
                   <Col span={24}>
                     <Row justify="space-between">
                       <Title level={3} className="margin-none" id={category.href}>
@@ -534,8 +546,8 @@ const PermitConditions: FC<PermitConditionProps> = ({
                         <CoreButton
                           type="primary"
                           loading={showLoading}
-                          disabled={Boolean(addingToCategoryCode) || Boolean(editingConditionGuid)}
-                          onClick={() => setAddingToCategoryCode(category.condition_category_code)}
+                          disabled={Boolean(addingToCategoryCode) || Boolean(editingFormName)}
+                          onClick={() => handleClickAddCondition(category)}
                         >
                           Add Condition
                         </CoreButton>
@@ -558,8 +570,8 @@ const PermitConditions: FC<PermitConditionProps> = ({
                         canEditPermitConditions={canEditPermitConditions(
                           category.condition_category
                         )}
-                        setEditingConditionGuid={setEditingConditionGuid}
-                        editingConditionGuid={editingConditionGuid ?? addingToCategoryCode}
+                        setEditingFormName={setEditingFormName}
+                        editingFormName={editingFormName ?? addingToCategoryCode}
                         refreshData={refreshData}
                         conditionSelected={setSelectedCondition}
                         categoryOptions={dropdownCategories}
@@ -571,13 +583,13 @@ const PermitConditions: FC<PermitConditionProps> = ({
                       <SubConditionForm
                         conditionCategory={category}
                         permitAmendmentGuid={currentAmendment.permit_amendment_guid}
-                        handleCancel={() => setAddingToCategoryCode(null)}
+                        handleCancel={() => { setAddingToCategoryCode(null); setEditingFormName(null); }}
                         onSubmit={handleAddCondition}
                         categoryOptions={dropdownCategories}
                       />
                     </Col>
                   )}
-                </React.Fragment>
+                </div>
               );
             })}
           </Row>
