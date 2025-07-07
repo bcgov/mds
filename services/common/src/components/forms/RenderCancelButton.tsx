@@ -60,11 +60,7 @@ const RenderCancelButton: FC<RenderCancelButtonProps> = ({
   const { formName, isModal, isEditMode } = useContext(FormContext);
   const isFormDirty = useSelector(isDirty(formName));
 
-  const handleCancel = (e?) => {
-    if (e) {
-      e?.stopPropagation();
-      e?.preventDefault();
-    }
+  const handleCancel = () => {
     if (cancelFunction) {
       cancelFunction();
     }
