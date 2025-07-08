@@ -1,4 +1,4 @@
-import { IPermit, IPermitAmendment, IPermitCondition, IStandardPermitCondition } from "@mds/common/interfaces";
+import { IPermit, IPermitAmendment, IPermitCondition, IPermitConditionTag, IStandardPermitCondition } from "@mds/common/interfaces";
 import * as actionTypes from "@mds/common/constants/actionTypes";
 import { PERMITS } from "@mds/common/constants/reducerTypes";
 import { RootState } from "@mds/common/redux/rootState";
@@ -7,6 +7,7 @@ interface PermitState {
   permits: IPermit[];
   draftPermits: IPermit[];
   permitConditions: IPermitCondition[];
+  permitConditionTags: IPermitConditionTag[];
   editingConditionFlag: boolean;
   editingPreambleFlag: boolean;
   standardPermitConditions: IStandardPermitCondition[];
@@ -18,6 +19,7 @@ const initialState = {
   permits: [],
   draftPermits: [],
   permitConditions: [],
+  permitConditionTags: [],
   editingConditionFlag: false,
   editingPreambleFlag: false,
   standardPermitConditions: [],
@@ -70,6 +72,11 @@ export const permitReducer = (state: PermitState = initialState, action) => {
       return {
         ...state,
         permitConditions: action.payload.records,
+      };
+    case actionTypes.STORE_PERMIT_CONDITION_TAGS:
+      return {
+        ...state,
+        permitConditionTags: action.payload.records,
       };
     case actionTypes.STORE_PERMIT_AMENDMENT:
       const { permit_guid, permit_amendment_guid } = action.payload;
@@ -126,6 +133,8 @@ export const getLatestPermitAmendments = (state: RootState): IPermitAmendment[] 
 export const getPermitAmendments = (state: RootState): Record<string, IPermitAmendment> => state[PERMITS].permitAmendments;
 export const getPermitConditions = (state: RootState): IPermitCondition[] =>
   state[PERMITS].permitConditions;
+export const getPermitConditionTags = (state: RootState): IPermitConditionTag[] =>
+  state[PERMITS].permitConditionTags;
 export const getStandardPermitConditions = (state: RootState): IStandardPermitCondition[] =>
   state[PERMITS].standardPermitConditions;
 export const getEditingConditionFlag = (state: RootState): boolean =>

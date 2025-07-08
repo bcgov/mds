@@ -5,6 +5,7 @@ from app.api.utils.list_lettering_helpers import num_to_letter, num_to_roman
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.api.mines.reports.models.mine_report_req_permit_condition_xref import MineReportReqPermitConditionXref
 from app.api.mines.reports.models.mine_report_permit_requirement import MineReportPermitRequirement
+from app.api.mines.permits.permit_conditions.models.permit_condition_tag import PermitConditionTag
 from app.extensions import db
 from marshmallow import fields
 from sqlalchemy.dialects.postgresql import JSONB, UUID
@@ -83,6 +84,13 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         order_by="asc(PermitConditions.display_order)",
         backref=backref("parent", remote_side=[permit_condition_id]),
         foreign_keys=[parent_permit_condition_id]
+    )
+
+    condition_tags = db.relationship(
+        "PermitConditionTagXref",
+        back_populates="permit_condition",
+        lazy="dynamic",
+        primaryjoin="PermitConditions.permit_condition_id==PermitConditionTagXref.permit_condition_id"
     )
 
     @hybrid_property

@@ -25,7 +25,6 @@ class PermitCondition(fields.Raw):
     def format(self, value):
         return marshal(value, PERMIT_CONDITION_MODEL)
 
-
 class PermitConditionTemplate(fields.Raw):
 
     def format(self, value):
@@ -962,12 +961,18 @@ PERMIT_CONDITION_MODEL = api.model(
         'display_order': fields.Integer,
         'meta': fields.Raw,
         'permit_condition_status_code': fields.String,
-        'top_level_parent_permit_condition_id': fields.Integer
+        'top_level_parent_permit_condition_id': fields.Integer,
+        'condition_tags': fields.List(fields.String)
     })
 
 PERMIT_CONDITION_TEMPLATE_MODEL = api.model('PermitConditionTemplate', {
     'condition': fields.String,
     'sub_conditions': fields.List(PermitConditionTemplate),
+})
+
+PERMIT_CONDITION_TAG_MODEL = api.model('PermitConditionTag', {
+    'permit_condition_tag_guid': fields.String,
+    'description': fields.String,
 })
 
 PERMIT_CONDITION_TYPE_MODEL = api.model('PermitConditionType', {

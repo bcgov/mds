@@ -686,3 +686,19 @@ export const updateStandardPermitCondition = (
       .catch(() => dispatch(error(NetworkReducerTypes.UPDATE_PERMIT_CONDITION)))
       .finally(() => dispatch(hideLoading()));
   };
+
+export const fetchPermitConditionTags = (): AppThunk => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.GET_PERMIT_CONDITION_TAGS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION_TAGS}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(NetworkReducerTypes.GET_PERMIT_CONDITION_TAGS));
+      dispatch(permitActions.storePermitConditionTags(response.data));
+    })
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_PERMIT_CONDITION_TAGS)))
+    .finally(() => dispatch(hideLoading()));
+};

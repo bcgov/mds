@@ -62,3 +62,8 @@ export interface IPermitConditionCategory {
   conditions?: IPermitCondition[]
   reports?: IMineReportPermitRequirement[]
 }
+
+export interface IPermitConditionTag {
+  permit_condition_tag_guid: string;
+  description: string;
+}
