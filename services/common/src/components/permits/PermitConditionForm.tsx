@@ -30,6 +30,7 @@ import { formatPermitConditionStep, parsePermitConditionStep } from "@mds/common
 import { FORM } from "@mds/common/constants/forms";
 import RenderGroupedSelect from "@mds/common/components/forms/RenderGroupedSelect";
 import { PermitConditionsProvider, usePermitConditions } from "@mds/common/components/permits/PermitConditionsContext";
+import { DeleteConditionModal } from "./DeleteConditionModal";
 
 interface PermitConditionFormProps {
     isExtracted: boolean;
@@ -142,7 +143,9 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     };
 
     const handleDelete = async () => {
-        deleteConfirmWrapper("Permit Condition", async () => {
+        const title = "Delete Condition";
+
+        const onSubmit = async () => {
             const resp = await dispatch(
                 deletePermitCondition(permitAmendmentGuid, condition.permit_condition_guid)
             );
@@ -151,7 +154,16 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 refreshData();
                 cancelEdit();
             }
-        });
+        }
+
+        dispatch(openModal({
+            props: {
+                title,
+                condition,
+                onSubmit
+            },
+            content: DeleteConditionModal
+        }))
     };
 
     const handleOpenAddReportModal = (event, reportCondition: IPermitCondition) => {
