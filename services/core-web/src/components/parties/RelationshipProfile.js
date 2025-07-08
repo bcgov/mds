@@ -128,24 +128,25 @@ export class RelationshipProfile extends Component {
     const { id, typeCode } = this.props.match.params;
     const isPermittee = typeCode === "PMT";
     const isEOR = typeCode === "EOR";
+    const isTQP = typeCode === "TQP";
     const mine = this.props.mines[id];
     const permitColumn = isPermittee
       ? [
-          {
-            title: "Permit",
-            dataIndex: "permit",
-            render: (text) => <div title="Permit">{text}</div>,
-          },
-        ]
+        {
+          title: "Permit",
+          dataIndex: "permit",
+          render: (text) => <div title="Permit">{text}</div>,
+        },
+      ]
       : [];
-    const EORColumn = isEOR
+    const EORColumn = isEOR || isTQP
       ? [
-          {
-            title: "Tailings Storage Facility",
-            dataIndex: "tailingsStorageFacility",
-            render: (text) => <div title="Tailings Storage Facility">{text}</div>,
-          },
-        ]
+        {
+          title: "Tailings Storage Facility",
+          dataIndex: "tailingsStorageFacility",
+          render: (text) => <div title="Tailings Storage Facility">{text}</div>,
+        },
+      ]
       : [];
     const columns = [
       {
