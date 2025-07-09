@@ -11,6 +11,7 @@ import PermitConditionReportRequirements from "@mds/common/components/permits/Pe
 import { PermitConditionStatus } from "./PermitConditionStatus";
 import { getReportRequirementsByCondition } from "@mds/common/redux/selectors/permitSelectors";
 import { useAppSelector } from "@mds/common/redux/rootState";
+import { FORM } from "@mds/common/constants/forms";
 
 const { Title } = Typography;
 
@@ -21,8 +22,8 @@ interface PermitConditionLayerProps {
   isExpanded?: boolean;
   setParentExpand?: () => void;
   canEditPermitConditions?: boolean;
-  setEditingConditionGuid: (permit_condition_guid: string) => void;
-  editingConditionGuid: string;
+  setEditingFormName: (formName: string) => void;
+  editingFormName: string;
   handleMoveCondition: (condition: IPermitCondition, isMoveUp: boolean) => Promise<void>;
   currentPosition: number;
   conditionCount: number;
@@ -40,8 +41,8 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   level = 0,
   setParentExpand = () => { },
   canEditPermitConditions = false,
-  setEditingConditionGuid,
-  editingConditionGuid,
+  setEditingFormName,
+  editingFormName,
   handleMoveCondition,
   currentPosition,
   conditionCount,
@@ -54,8 +55,8 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
     getReportRequirementsByCondition(permitGuid, permitAmendmentGuid, condition.permit_condition_id)
   );
   const editingCondition = useMemo(
-    () => editingConditionGuid === condition.permit_condition_guid,
-    [condition.permit_condition_guid, editingConditionGuid]
+    () => editingFormName === `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`,
+    [condition.permit_condition_guid, editingFormName]
   );
   const [isAddingListItem, setIsAddingListItem] = useState<boolean>(false);
   const [expandClass, setExpandClass] = useState(
@@ -126,8 +127,8 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
           onEdit={setParentExpand}
           condition={condition}
           canEditPermitConditions={canEditPermitConditions}
-          setEditingConditionGuid={setEditingConditionGuid}
-          editingConditionGuid={editingConditionGuid}
+          setEditingFormName={setEditingFormName}
+          editingFormName={editingFormName}
           moveUp={currentPosition > 0 ? moveUp : undefined}
           moveDown={currentPosition < conditionCount - 1 ? moveDown : undefined}
           permitAmendmentGuid={permitAmendmentGuid}
@@ -146,8 +147,8 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
                 level={level + 1}
                 setParentExpand={handleSetParentExpand}
                 canEditPermitConditions={canEditPermitConditions}
-                setEditingConditionGuid={setEditingConditionGuid}
-                editingConditionGuid={editingConditionGuid}
+                setEditingFormName={setEditingFormName}
+                editingFormName={editingFormName}
                 handleMoveCondition={handleMoveCondition}
                 currentPosition={idx}
                 conditionCount={condition.sub_conditions.length}

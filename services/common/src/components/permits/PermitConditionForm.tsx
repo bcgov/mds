@@ -1,8 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
-import { useAppDispatch } from "@mds/common/redux/rootState";
-import { useParams } from "react-router-dom";
-import { change, Field, reset } from "@mds/common/components/forms/form";
-import { Row, Col, Button, Typography } from "antd";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import { change, Field, isDirty, reset } from "@mds/common/components/forms/form";
+import { Row, Col, Button, Typography, Modal } from "antd";
 import {
     faArrowDown,
     faArrowUp,
@@ -31,6 +30,7 @@ import { formatPermitConditionStep, parsePermitConditionStep } from "@mds/common
 import { FORM } from "@mds/common/constants/forms";
 import RenderGroupedSelect from "@mds/common/components/forms/RenderGroupedSelect";
 import { PermitConditionsProvider, usePermitConditions } from "@mds/common/components/permits/PermitConditionsContext";
+import { DeleteConditionModal } from "./DeleteConditionModal";
 
 interface PermitConditionFormProps {
     isExtracted: boolean;
@@ -38,8 +38,8 @@ interface PermitConditionFormProps {
     condition: IPermitCondition;
     canEditPermitConditions: boolean;
     onEdit: () => void;
-    setEditingConditionGuid: (condition_guid: string) => void;
-    editingConditionGuid: string;
+    setEditingFormName: (formName: string) => void;
+    editingFormName: string;
     moveUp?: (condition: IPermitCondition) => Promise<void>;
     moveDown?: (condition: IPermitCondition) => Promise<void>;
     refreshData: () => Promise<void>;
@@ -53,8 +53,8 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     canEditPermitConditions,
     condition,
     onEdit,
-    setEditingConditionGuid,
-    editingConditionGuid,
+    setEditingFormName,
+    editingFormName,
     moveUp,
     moveDown,
     refreshData,
@@ -63,22 +63,39 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     categoryOptions,
 }) => {
     const dispatch = useAppDispatch();
-    const { id: mineGuid, permitGuid } = useParams<{ id: string; permitGuid: string }>();
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const permitConditionsValue = usePermitConditions();
-    const { currentAmendment, loading, setLoading } = permitConditionsValue;
+    const { loading, setLoading } = permitConditionsValue;
     // the form fails to re-initialize when the category is changed, so concatenating it forces it to make a new one
     const formName = `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`;
+    const editingFormDirty = useAppSelector(isDirty(editingFormName));
+    const listItemFormDirty = useAppSelector(isDirty(FORM.EDIT_PERMIT_CONDITION));
 
     const startEdit = () => {
-        onEdit();
-        setEditingConditionGuid(condition.permit_condition_guid);
-        setIsEditMode(true);
+        const handleEdit = () => {
+            onEdit();
+            setEditingFormName(formName);
+            setIsEditMode(true);
+        }
+        if (editingFormName && (editingFormDirty || listItemFormDirty)) {
+            Modal.confirm({
+                title: "Discard changes?",
+                content: "Another condition is currently being edited. Do you want to continue editing or discard the changes?",
+                onOk: () => {
+                    dispatch(reset(editingFormName));
+                    handleEdit()
+                },
+                cancelText: "Continue editing",
+                okText: "Discard"
+            })
+        } else {
+            handleEdit();
+        }
     };
 
     const cancelEdit = () => {
         setIsEditMode(false);
-        setEditingConditionGuid(null);
+        setEditingFormName(null);
         setIsAddingListItem(false);
     };
 
@@ -89,6 +106,14 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
             setIsEditMode(false);
         }
     }, [canEditPermitConditions]);
+
+    // if edit is cancelled from another form
+    useEffect(() => {
+        if (editingFormName !== formName && isEditMode) {
+            setIsEditMode(false);
+            setIsAddingListItem(false);
+        }
+    }, [editingFormName]);
 
     const handleSubmit = async (values) => {
         setLoading(true);
@@ -118,7 +143,9 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     };
 
     const handleDelete = async () => {
-        deleteConfirmWrapper("Permit Condition", async () => {
+        const title = "Delete Condition";
+
+        const onSubmit = async () => {
             const resp = await dispatch(
                 deletePermitCondition(permitAmendmentGuid, condition.permit_condition_guid)
             );
@@ -127,7 +154,16 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 refreshData();
                 cancelEdit();
             }
-        });
+        }
+
+        dispatch(openModal({
+            props: {
+                title,
+                condition,
+                onSubmit
+            },
+            content: DeleteConditionModal
+        }))
     };
 
     const handleOpenAddReportModal = (event, reportCondition: IPermitCondition) => {
@@ -145,13 +181,13 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
         );
     };
 
-    const editingEnabled = !editingConditionGuid && canEditPermitConditions && !loading;
+    const editingEnabled = editingFormName !== formName && canEditPermitConditions && !loading;
 
     const editableProps = editingEnabled
         ? {
             onClick: startEdit,
-            title: "Edit Condition",
-            "aria-label": "Edit Condition",
+            title: `Edit Condition ${condition.stepPath}`,
+            "aria-label": `Edit Condition ${condition.stepPath}`,
         }
         : {};
 
@@ -164,6 +200,13 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
             dispatch(change(formName, name, newVal));
         }
     };
+
+    const childTypeMap = {
+        "SEC": "Condition",
+        "CON": "List Item",
+        "LIS": "List Item"
+    };
+    const childConditionType = childTypeMap[condition.condition_type_code];
 
     return !isEditMode ? (
         <Row
@@ -214,7 +257,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
             <Row
                 wrap={false}
                 align="top"
-                className={`condition-content ${!editingConditionGuid ? "editable" : ""}${!condition.parent_permit_condition_id ? " top-level-condition" : ""}`}
+                className={`condition-content ${!editingFormName ? "editable" : ""}${!condition.parent_permit_condition_id ? " top-level-condition" : ""}`}
             >
                 <Col className="step-column" style={{ flexShrink: 0 }}>
                     <Field
@@ -233,109 +276,99 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                         component={RenderAutoSizeField}
                         disabled={isAddingListItem || loading}
                     />
-                </Col>
-            </Row>
-            {isEditMode && !isAddingListItem && (
-                <Row justify="space-between" align="middle">
-                    <Col>
-                        <Row gutter={8} className="condition-edit-buttons">
+                    {isEditMode && !isAddingListItem && (
+                        <Row justify="space-between" align="middle">
+                            <Col>
+                                <Row gutter={8} className="condition-edit-buttons">
+                                    {isExtracted && (
+                                        <Col>
+                                            <Button
+                                                loading={loading}
+                                                className="fa-icon-container btn-sm-padding"
+                                                type="default"
+                                                icon={<FontAwesomeIcon icon={faPlus} />}
+                                                onClick={handleAddListItem}
+                                            >
+                                                {childConditionType}
+                                            </Button>
+                                        </Col>
+                                    )}
+                                    <Col>
+                                        <Button
+                                            loading={loading}
+                                            className="fa-icon-container btn-sm-padding"
+                                            type="default"
+                                            icon={<FontAwesomeIcon icon={faClipboard} />}
+                                            onClick={(e) => handleOpenAddReportModal(e, condition)}
+                                            disabled={condition?.mineReportPermitRequirement !== undefined}
+                                        >
+                                            {condition?.mineReportPermitRequirement
+                                                ? "Report Added"
+                                                : "Add Report Requirement"}
+                                        </Button>
+                                    </Col>
+                                    <Col>
+                                        <RenderCancelButton
+                                            disabled={loading}
+                                            cancelFunction={handleCancel}
+                                            buttonProps={{
+                                                type: "primary",
+                                                icon: <FontAwesomeIcon icon={faXmark} />,
+                                            }}
+                                            iconButton
+                                        />
+                                    </Col>
+                                    <Col>
+                                        <RenderSubmitButton
+                                            disabled={loading}
+                                            buttonProps={{
+                                                icon: <FontAwesomeIcon icon={faCheck} />,
+                                            }}
+                                            iconButton
+                                        />
+                                    </Col>
+                                </Row>
+                            </Col>
                             {isExtracted && (
                                 <Col>
-                                    <Button
-                                        loading={loading}
-                                        className="fa-icon-container btn-sm-padding"
-                                        type="default"
-                                        icon={<FontAwesomeIcon icon={faPlus} />}
-                                        onClick={handleAddListItem}
-                                    >
-                                        List Item
-                                    </Button>
+                                    <Row gutter={8} align="middle" className="condition-edit-buttons">
+                                        <Col>
+                                            <Button
+                                                disabled={loading}
+                                                className="fa-icon-container"
+                                                aria-label="Delete Condition"
+                                                type="default"
+                                                icon={<FontAwesomeIcon icon={faTrashCan} />}
+                                                onClick={handleDelete}
+                                            />
+                                        </Col>
+                                        <Col>
+                                            <Button
+                                                className="fa-icon-container"
+                                                aria-label="Move Condition Up"
+                                                type="default"
+                                                disabled={!moveUp || loading}
+                                                icon={<FontAwesomeIcon icon={faArrowUp} />}
+                                                onClick={() => moveUp(condition)}
+                                            />
+                                        </Col>
+                                        <Col>
+                                            <Button
+                                                className="fa-icon-container"
+                                                aria-label="Move Condition Down"
+                                                type="default"
+                                                disabled={!moveDown || loading}
+                                                icon={<FontAwesomeIcon icon={faArrowDown} />}
+                                                onClick={() => moveDown(condition)}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Col>
                             )}
-                            {/* <Col>
-                                    <Button
-                                        className="fa-icon-container btn-sm-padding"
-                                        type="default"
-                                        icon={<FontAwesomeIcon icon={faLink} />}
-                                        onClick={handleLinkDocument}
-                                    >
-                                        Link Document
-                                    </Button>
-                                </Col> */}
-                            <Col>
-                                <Button
-                                    loading={loading}
-                                    className="fa-icon-container btn-sm-padding"
-                                    type="default"
-                                    icon={<FontAwesomeIcon icon={faClipboard} />}
-                                    onClick={(e) => handleOpenAddReportModal(e, condition)}
-                                    disabled={condition?.mineReportPermitRequirement !== undefined}
-                                >
-                                    {condition?.mineReportPermitRequirement
-                                        ? "Report Added"
-                                        : "Add Report Requirement"}
-                                </Button>
-                            </Col>
-                            <Col>
-                                <RenderCancelButton
-                                    disabled={loading}
-                                    cancelFunction={handleCancel}
-                                    buttonProps={{
-                                        type: "primary",
-                                        icon: <FontAwesomeIcon icon={faXmark} />,
-                                    }}
-                                    iconButton
-                                />
-                            </Col>
-                            <Col>
-                                <RenderSubmitButton
-                                    disabled={loading}
-                                    buttonProps={{
-                                        icon: <FontAwesomeIcon icon={faCheck} />,
-                                    }}
-                                    iconButton
-                                />
-                            </Col>
                         </Row>
-                    </Col>
-                    {isExtracted && (
-                        <Col>
-                            <Row gutter={8} align="middle" className="condition-edit-buttons">
-                                <Col>
-                                    <Button
-                                        disabled={loading}
-                                        className="fa-icon-container"
-                                        aria-label="Delete Condition"
-                                        type="default"
-                                        icon={<FontAwesomeIcon icon={faTrashCan} />}
-                                        onClick={handleDelete}
-                                    />
-                                </Col>
-                                <Col>
-                                    <Button
-                                        className="fa-icon-container"
-                                        aria-label="Move Condition Up"
-                                        type="default"
-                                        disabled={!moveUp || loading}
-                                        icon={<FontAwesomeIcon icon={faArrowUp} />}
-                                        onClick={() => moveUp(condition)}
-                                    />
-                                </Col>
-                                <Col>
-                                    <Button
-                                        className="fa-icon-container"
-                                        aria-label="Move Condition Down"
-                                        type="default"
-                                        disabled={!moveDown || loading}
-                                        icon={<FontAwesomeIcon icon={faArrowDown} />}
-                                        onClick={() => moveDown(condition)}
-                                    />
-                                </Col>
-                            </Row>
-                        </Col>
                     )}
-                </Row>
-            )}
+                </Col>
+            </Row>
         </FormWrapper>
     );
 };

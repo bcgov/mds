@@ -71,7 +71,7 @@ describe("SubConditionForm", () => {
                 /></PermitConditionsProvider>
         </ReduxWrapper>);
 
-        const textInput = container.querySelector("textarea");
-        expect(textInput.placeholder).toEqual("Enter Sub-Section title");
+        const label = container.querySelector('label[for="EDIT_PERMIT_CONDITION_condition"]');
+        expect(label?.textContent).toContain("Enter Sub-Section title");
     });
 });

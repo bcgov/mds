@@ -22,6 +22,21 @@ exports[`SubConditionForm renders properly for adding list item 1`] = `
               class="ant-row ant-form-item-row"
             >
               <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="EDIT_PERMIT_CONDITION_condition"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    Enter condition text for 
+                  </div>
+                </label>
+              </div>
+              <div
                 class="ant-col ant-form-item-control"
               >
                 <div
@@ -33,7 +48,6 @@ exports[`SubConditionForm renders properly for adding list item 1`] = `
                     <textarea
                       class="ant-input"
                       name="condition"
-                      placeholder="Enter a condition"
                       style="height: 0px; resize: none; min-height: -12px;"
                     />
                   </div>
