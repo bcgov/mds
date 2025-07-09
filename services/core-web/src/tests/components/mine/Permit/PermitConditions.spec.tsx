@@ -123,7 +123,7 @@ describe("PermitConditions", () => {
   });
 
   it("does not allow any editing without the correct role", async () => {
-    const { container, queryByText, queryByTitle } = render(
+    const { container, queryByText, queryByTitle, queryAllByTitle } = render(
       <ReduxWrapper initialState={noPermissionState}>
         <BrowserRouter>
           <ViewPermit />
@@ -142,14 +142,16 @@ describe("PermitConditions", () => {
     expect(addConditionButton).not.toBeInTheDocument();
     const assignReviewer = container.querySelectorAll('[data-cy="assigned_review_user"]');
     expect(Array.from(assignReviewer)).toEqual([]);
-    const editCondition = queryByTitle("Edit Condition");
-    expect(editCondition).not.toBeInTheDocument();
+    const editCondition = queryAllByTitle((_content, element) =>
+      element.getAttribute("title")?.startsWith("Edit Condition")
+    );
+    expect(editCondition).toHaveLength(0);
     const editCategory = queryByTitle("Click to edit");
     expect(editCategory).not.toBeInTheDocument();
   });
 
   it("only allows specific actions when permit has been generated in Core", async () => {
-    const { container, getByText, queryByText, queryByTitle } = render(
+    const { container, getByText, queryByText, queryAllByTitle, queryByTitle } = render(
       <ReduxWrapper initialState={generatedState}>
         <BrowserRouter>
           <ViewPermit />
@@ -173,7 +175,9 @@ describe("PermitConditions", () => {
     expect(Array.from(assignReviewer).length).toEqual(
       GENERATED_PERMIT.permit_amendments[0].condition_categories.length
     );
-    const editCondition = queryByTitle("Edit Condition");
+    const editCondition = queryAllByTitle((_content, element) =>
+      element.getAttribute("title")?.startsWith("Edit Condition")
+    )[0];
     expect(editCondition).toBeInTheDocument();
 
     editCondition.click();
@@ -201,7 +205,7 @@ describe("PermitConditions", () => {
   });
 
   it("does not allow editing without being assigned to the category", async () => {
-    const { container, queryByText, queryByTitle } = render(
+    const { container, queryByText, queryByTitle, queryAllByTitle } = render(
       <ReduxWrapper initialState={unassignedState}>
         <BrowserRouter>
           <ViewPermit />
@@ -214,8 +218,10 @@ describe("PermitConditions", () => {
     // 3 click to edit category
     const addConditionButton = queryByText("Add Condition");
     expect(addConditionButton).not.toBeInTheDocument();
-    const editCondition = queryByTitle("Edit Condition");
-    expect(editCondition).not.toBeInTheDocument();
+    const editCondition = queryAllByTitle((_content, element) =>
+      element.getAttribute("title")?.startsWith("Edit Condition")
+    );
+    expect(editCondition).toHaveLength(0);
     const editCategory = queryByTitle("Click to edit");
     expect(editCategory).not.toBeInTheDocument();
 
@@ -285,12 +291,14 @@ describe("PermitConditions", () => {
     });
 
     // allows editing of a condition
-    const editCondition = screen.queryByTitle("Edit Condition");
+    const editCondition = screen.queryAllByTitle((_content, element) =>
+      element.getAttribute("title")?.startsWith("Edit Condition")
+    )[0];
     editCondition.click();
     await waitFor(() => {
       const addReport = screen.queryByText("Add Report Requirement");
       expect(addReport).toBeInTheDocument();
-      const addListItem = screen.queryByText("List Item");
+      const addListItem = screen.queryByText("Condition");
       expect(addListItem).toBeInTheDocument();
       const conditionInput = container.querySelector('[name="condition"]');
       expect(conditionInput).toBeInTheDocument();

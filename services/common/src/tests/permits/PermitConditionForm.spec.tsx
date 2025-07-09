@@ -50,8 +50,8 @@ describe("PermitConditionForm", () => {
                     condition={condition}
                     canEditPermitConditions={true}
                     onEdit={jest.fn()}
-                    setEditingConditionGuid={jest.fn()}
-                    editingConditionGuid={undefined}
+                    setEditingFormName={jest.fn()}
+                    editingFormName={undefined}
                     moveUp={jest.fn()}
                     moveDown={jest.fn()}
                     refreshData={jest.fn()}
@@ -61,7 +61,7 @@ describe("PermitConditionForm", () => {
             </PermitConditionsProvider>
         </ReduxWrapper>);
 
-        const editElement = container.querySelector("[aria-label='Edit Condition']")
+        const editElement = container.querySelector(`[aria-label='Edit Condition ${condition.stepPath}']`)
         fireEvent.click(editElement);
         await findByText("Report Added");
         expect(container).toMatchSnapshot()
@@ -75,8 +75,8 @@ describe("PermitConditionForm", () => {
                     condition={condition}
                     canEditPermitConditions={false}
                     onEdit={jest.fn()}
-                    setEditingConditionGuid={jest.fn()}
-                    editingConditionGuid={undefined}
+                    setEditingFormName={jest.fn()}
+                    editingFormName={undefined}
                     moveUp={jest.fn()}
                     moveDown={jest.fn()}
                     refreshData={jest.fn()}
