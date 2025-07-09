@@ -18,6 +18,8 @@ div.condition-layer {
   }
 
   .condition-content {
+    padding-right: 6px;
+
     &.editable:hover {
       cursor: pointer;
       background-color: $lightest-violet;
