@@ -692,7 +692,7 @@ export const fetchPermitConditionTags = (): AppThunk => (dispatch) => {
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION_TAGS}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION_TAGS()}`,
       createRequestHeader()
     )
     .then((response) => {

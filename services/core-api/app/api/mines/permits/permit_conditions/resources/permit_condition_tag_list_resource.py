@@ -11,6 +11,6 @@ from app.api.utils.resources_mixins import UserMixin
 class PermitConditionTagListResource(Resource, UserMixin):
     @api.doc(description='Get all permit condition tags')
     @requires_role_view_all
-    @api.marshal_with(PERMIT_CONDITION_TAG_MODEL, code=200, envelope='tags')
+    @api.marshal_with(PERMIT_CONDITION_TAG_MODEL, code=200, envelope='records')
     def get(self):
         return PermitConditionTag.get_all()
