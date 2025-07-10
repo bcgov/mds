@@ -111,6 +111,17 @@ div.condition-layer {
   align-items: center;
 }
 
+.condition-tag-select {
+  width: 400px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0px;
+}
+
+.ant-select-dropdown {
+  z-index: 950;
+}
+
 .horizontal-form-item {
   .ant-select {
     max-width: 350px;

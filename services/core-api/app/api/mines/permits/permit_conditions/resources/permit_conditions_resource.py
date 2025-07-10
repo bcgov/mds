@@ -1,9 +1,11 @@
+import uuid
 from flask_restx import Resource, marshal
 from flask import request, current_app
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from marshmallow.exceptions import MarshmallowError
 from datetime import datetime, timezone
 
+from app.api.mines.permits.permit_conditions.models.permit_condition_tag_xref import PermitConditionTagXref
 from app.api.mines.permits.permit_conditions.tasks import export_and_index_single_permit_amendment
 from app.api.mines.reports.models.mine_report_req_permit_condition_xref import MineReportReqPermitConditionXref
 from app.extensions import api, jwt, db
@@ -93,11 +95,13 @@ class PermitConditionsResource(Resource, UserMixin):
         old_condition = PermitConditions.find_by_permit_condition_guid(permit_condition_guid)
         old_display_order = old_condition.display_order
         old_category_code = old_condition.condition_category_code
+        old_tags = old_condition.condition_tags;
         new_category_code = request_data.get("condition_category_code", None)
         if not PermitConditionCategory.find_by_permit_condition_category_code(new_category_code):
             raise BadRequest('condition_category_code is invalid')
         changed_category = old_category_code != new_category_code
         new_status_code = request_data.get("permit_condition_status_code",None)
+        new_tags = request_data.get("condition_tags", None)
         changed_status = old_condition.permit_condition_status_code != new_status_code
 
         if changed_category:
@@ -147,6 +151,8 @@ class PermitConditionsResource(Resource, UserMixin):
             cond.save(commit=False)
 
         set_audit_metadata(permit_amendment, False)
+
+        updateConditionTags(old_tags, new_tags, condition)
 
         db.session.commit()
 
@@ -213,3 +219,28 @@ def set_audit_metadata(permit_amendment, commit=True):
     permit_amendment.permit_conditions_last_updated_by = User().get_user_username()
     permit_amendment.permit_conditions_last_updated_date = datetime.now(timezone.utc)
     permit_amendment.save(commit=commit)
+
+def updateConditionTags(old_tags, new_tags, condition):
+    if old_tags != new_tags:
+
+        # Remove tags
+        for tag in old_tags:
+            if tag not in new_tags:
+                xref = PermitConditionTagXref.query.filter_by(
+                    permit_condition_tag_guid=uuid.UUID(tag),
+                    permit_condition_id=condition.permit_condition_id
+                ).first()
+                if xref:
+                    print(f"Removing tag {tag} from condition {condition.permit_condition_id}")
+                    xref.deleted_ind = True
+                    xref.save()
+                    db.session.commit()
+                
+        # Add new tags
+        for tag in new_tags:
+            if tag not in old_tags:
+                xref = PermitConditionTagXref(
+                    permit_condition_tag_guid=tag,
+                    permit_condition_id=condition.permit_condition_id
+                )
+                xref.save()

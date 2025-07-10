@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { change, Field, isDirty, reset } from "@mds/common/components/forms/form";
-import { Row, Col, Button, Typography, Modal } from "antd";
+import { Row, Col, Button, Typography, Modal, Select } from "antd";
 import {
     faArrowDown,
     faArrowUp,
@@ -11,7 +11,7 @@ import {
     faTrashCan,
     faXmark,
 } from "@fortawesome/pro-regular-svg-icons";
-import { IPermitCondition, IGroupedDropdownList } from "@mds/common/interfaces";
+import { IPermitCondition, IGroupedDropdownList, IPermitConditionTag } from "@mds/common/interfaces";
 import { ERROR } from "@mds/common/constants/actionTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
@@ -22,6 +22,7 @@ import { openModal } from "@mds/common/redux/actions/modalActions";
 import { ReportPermitRequirementForm } from "@mds/common/components/permits/ReportPermitRequirementForm";
 import {
     deletePermitCondition,
+    fetchPermitConditionTags,
     updatePermitCondition,
 } from "@mds/common/redux/actionCreators/permitActionCreator";
 import RenderField from "@mds/common/components/forms/RenderField";
@@ -31,6 +32,8 @@ import { FORM } from "@mds/common/constants/forms";
 import RenderGroupedSelect from "@mds/common/components/forms/RenderGroupedSelect";
 import { PermitConditionsProvider, usePermitConditions } from "@mds/common/components/permits/PermitConditionsContext";
 import { DeleteConditionModal } from "./DeleteConditionModal";
+import { getPermitConditionTags } from "@mds/common/redux/reducers/permitReducer";
+import RenderMultiSelect from "../forms/RenderMultiSelect";
 
 interface PermitConditionFormProps {
     isExtracted: boolean;
@@ -70,6 +73,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const formName = `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`;
     const editingFormDirty = useAppSelector(isDirty(editingFormName));
     const listItemFormDirty = useAppSelector(isDirty(FORM.EDIT_PERMIT_CONDITION));
+    const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags);
 
     const startEdit = () => {
         const handleEdit = () => {
@@ -106,6 +110,12 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
             setIsEditMode(false);
         }
     }, [canEditPermitConditions]);
+
+    useEffect(() => {
+        if (conditionTags?.length === 0) {
+          dispatch(fetchPermitConditionTags());
+        }
+      }, [conditionTags]);
 
     // if edit is cancelled from another form
     useEffect(() => {
@@ -237,6 +247,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 touchOnChange: false,
                 touchOnBlur: true,
             }}
+            isModal={true}
         >
             {isEditMode && isExtracted && categoryOptions && (
                 <Row>
@@ -306,6 +317,19 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                                 ? "Report Added"
                                                 : "Add Report Requirement"}
                                         </Button>
+                                    </Col>
+                                     <Col>
+                                        <div className="condition-tag-select">
+                                        <Field
+                                            name="condition_tags"
+                                            component={RenderMultiSelect}
+                                            placeholder="Select tags"
+                                            data={conditionTags.map((tag) => ({
+                                                label: tag.description,
+                                                value: tag.permit_condition_tag_guid}))}
+                                        />
+                                        </div>
+
                                     </Col>
                                     <Col>
                                         <RenderCancelButton

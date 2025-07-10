@@ -86,12 +86,16 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         foreign_keys=[parent_permit_condition_id]
     )
 
-    condition_tags = db.relationship(
+    condition_tag_xrefs = db.relationship(
         "PermitConditionTagXref",
         back_populates="permit_condition",
-        lazy="dynamic",
-        primaryjoin="PermitConditions.permit_condition_id==PermitConditionTagXref.permit_condition_id"
+        lazy="joined",
+        primaryjoin="and_(PermitConditions.permit_condition_id==PermitConditionTagXref.permit_condition_id,PermitConditionTagXref.deleted_ind==False)",
     )
+
+    @hybrid_property
+    def condition_tags(self):
+        return [ str(tag_xref.permit_condition_tag_guid) for tag_xref in self.condition_tag_xrefs ]
 
     @hybrid_property
     def sub_conditions(self):

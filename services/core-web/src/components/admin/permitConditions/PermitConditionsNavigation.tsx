@@ -49,6 +49,22 @@ const PermitConditionsNavigation: FC<AdminNavigationProps> = (props) => {
     ],
   };
 
+  const tagsItem = {
+    label: "Permit Condition Tags",
+    key: "tag-management",
+    id: ifActiveButton("tag-management"),
+    icon: <DownOutlined />,
+    children: [{
+        key: "tag-management",
+        label: (
+          <Link to={routes.ADMIN_PERMIT_CONDITION_TAG_MANAGEMENT.route}>
+            Manage Tags
+          </Link>
+        )
+      }
+    ]
+  }
+
   const items = [
     {
       label: "Permit Conditions",
@@ -87,6 +103,7 @@ const PermitConditionsNavigation: FC<AdminNavigationProps> = (props) => {
       ],
     },
     complianceEnabled && complianceItem,
+    tagsItem
   ].filter(Boolean);
 
   return (

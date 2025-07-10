@@ -2,10 +2,10 @@ from sqlalchemy.dialects.postgresql import UUID
 from app.extensions import db
 from sqlalchemy.schema import FetchedValue
 
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 
 
-class PermitConditionTagXref(AuditMixin, Base):
+class PermitConditionTagXref(AuditMixin, Base, SoftDeleteMixin):
     __tablename__ = 'permit_condition_tag_xref'
     permit_condition_tag_xref_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue(), primary_key=True)
     permit_condition_tag_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('permit_condition_tag.permit_condition_tag_guid'), nullable=False)
@@ -13,7 +13,7 @@ class PermitConditionTagXref(AuditMixin, Base):
 
     permit_condition = db.relationship(
         'PermitConditions',
-        back_populates='condition_tags'
+        back_populates='condition_tag_xrefs'
     )
 
     permit_condition_tag = db.relationship('PermitConditionTag', backref=db.backref('tag_xrefs', lazy='dynamic'))
