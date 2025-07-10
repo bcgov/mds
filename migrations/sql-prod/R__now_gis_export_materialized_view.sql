@@ -277,7 +277,7 @@ AS select na.mine_purpose,appv.latest_response_date,nai.application_type_code,ap
             LEFT JOIN permit_status_code psc ON p.permit_status_code::text = psc.permit_status_code::text
             LEFT JOIN mine_party_appt mpa ON p.permit_id = mpa.permit_id AND mpa.mine_party_appt_id = (( SELECT DISTINCT ON (mine_party_appt.end_date) mine_party_appt.mine_party_appt_id
                                                                                                          FROM mine_party_appt
-                                                                                                         WHERE mine_party_appt.permit_id = p.permit_id
+                                                                                                         WHERE mine_party_appt.permit_id = p.permit_id AND mine_party_appt.mine_party_appt_type_code = 'PMT'
                                                                                                          ORDER BY mine_party_appt.end_date DESC
                                                                                                          LIMIT 1))
             LEFT JOIN bond_permit_xref bpx ON p.permit_id = bpx.permit_id
