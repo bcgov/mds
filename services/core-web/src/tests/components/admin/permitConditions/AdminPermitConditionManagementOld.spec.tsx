@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { AdminPermitConditionManagement } from "@/components/admin/permitConditions/AdminPermitConditionManagement";
+import { AdminPermitConditionManagementOld } from "@/components/admin/permitConditions/AdminPermitConditionManagementOld";
 import { BrowserRouter } from "react-router-dom";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
@@ -11,12 +11,12 @@ const props = {
   },
 };
 
-describe("AdminPermitConditionManagement", () => {
+describe("AdminPermitConditionManagementOld", () => {
   it("renders properly", () => {
     const { container: component } = render(
       <ReduxWrapper>
         <BrowserRouter>
-          <AdminPermitConditionManagement {...dispatchProps} {...props} />
+          <AdminPermitConditionManagementOld {...dispatchProps} {...props} />
         </BrowserRouter>
       </ReduxWrapper>
     );

@@ -53,7 +53,7 @@ const typeFromURL = {
   exploration: "MIN",
   placer: "PLA",
 };
-export class StandardPermitConditions extends Component {
+export class StandardPermitConditionsOld extends Component {
   constructor(props) {
     super(props);
     this.state = { submitting: false, isLoaded: false, type: "SAG" };
@@ -165,11 +165,10 @@ export class StandardPermitConditions extends Component {
                   style={{ padding: "18px 16px", backgroundColor: COLOR.lightGrey }}
                   header={
                     <span>
-                      {`${conditionCategory.step} ${conditionCategory.description} (${
-                        Object.values(flattenObject({ conditions })).filter(
-                          (value) => value === "CON"
-                        ).length
-                      } conditions)`}
+                      {`${conditionCategory.step} ${conditionCategory.description} (${Object.values(flattenObject({ conditions })).filter(
+                        (value) => value === "CON"
+                      ).length
+                        } conditions)`}
                       <span onClick={(event) => event.stopPropagation()}>
                         <Button
                           ghost
@@ -209,27 +208,27 @@ export class StandardPermitConditions extends Component {
                     initialValues={
                       conditions && conditions.length !== 0
                         ? {
-                            condition_category_code: conditionCategory.condition_category_code,
-                            condition_type_code: "SEC",
-                            display_order:
-                              conditions.length === 0
-                                ? 1
-                                : maxBy(conditions, "display_order").display_order + 1,
-                            parent_permit_condition_id: null,
-                            permit_amendment_id: null,
-                            parent_condition_type_code: "SEC",
-                            sibling_condition_type_code:
-                              conditions.length === 0 ? null : conditions[0].condition_type_code,
-                          }
+                          condition_category_code: conditionCategory.condition_category_code,
+                          condition_type_code: "SEC",
+                          display_order:
+                            conditions.length === 0
+                              ? 1
+                              : maxBy(conditions, "display_order").display_order + 1,
+                          parent_permit_condition_id: null,
+                          permit_amendment_id: null,
+                          parent_condition_type_code: "SEC",
+                          sibling_condition_type_code:
+                            conditions.length === 0 ? null : conditions[0].condition_type_code,
+                        }
                         : {
-                            condition_category_code: conditionCategory.condition_category_code,
-                            condition_type_code: "SEC",
-                            display_order: 1,
-                            parent_permit_condition_id: null,
-                            permit_amendment_id: null,
-                            parent_condition_type_code: "SEC",
-                            sibling_condition_type_code: null,
-                          }
+                          condition_category_code: conditionCategory.condition_category_code,
+                          condition_type_code: "SEC",
+                          display_order: 1,
+                          parent_permit_condition_id: null,
+                          permit_amendment_id: null,
+                          parent_condition_type_code: "SEC",
+                          sibling_condition_type_code: null,
+                        }
                     }
                     layer={0}
                   />
@@ -263,6 +262,6 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-StandardPermitConditions.propTypes = propTypes;
+StandardPermitConditionsOld.propTypes = propTypes;
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(StandardPermitConditions));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(StandardPermitConditionsOld));

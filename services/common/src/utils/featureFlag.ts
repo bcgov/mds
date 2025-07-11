@@ -31,7 +31,8 @@ export enum Feature {
   MODIFY_PERMIT_CONDITIONS = "modify_permit_conditions",
   MAJOR_PROJECT_REFACTOR = "major_project_refactor",
   HELP_GUIDE = "help_guide",
-  PERMIT_CONDITION_SEARCH = "PERMIT_CONDITION_SEARCH"
+  PERMIT_CONDITION_SEARCH = "PERMIT_CONDITION_SEARCH",
+  STANDARD_PERMIT_CONDITIONS_EDITOR = "standard_permit_conditions_new_editor"
 }
 
 export const initializeFlagsmith = async (flagsmithUrl, flagsmithKey) => {
