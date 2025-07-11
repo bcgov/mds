@@ -50,15 +50,16 @@ const MineAlert: FC<MineAlertProps> = ({ mine }) => {
         return !alert.is_active || (alert.end_date && remainingDays(alert.end_date) < 0);
       });
       setPastMineAlerts(pastAlerts);
+    } else {
+      setActiveMineAlert(undefined);
+      setPastMineAlerts([]);
     }
-
-  }, [mineAlerts])
+  }, [mineAlerts, mine.mine_guid])
 
   useEffect(() => {
-    if (!loaded) {
-      fetchAlerts();
-    }
-  }, []);
+    setLoaded(false);
+    fetchAlerts();
+  }, [mine.mine_guid]);
 
   const handleCreateMineAlert = (values: IMineAlert) => {
     dispatch(createMineAlert(mine.mine_guid, values))
