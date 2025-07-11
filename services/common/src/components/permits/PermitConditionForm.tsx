@@ -34,6 +34,8 @@ import { PermitConditionsProvider, usePermitConditions } from "@mds/common/compo
 import { DeleteConditionModal } from "./DeleteConditionModal";
 import { getPermitConditionTags } from "@mds/common/redux/reducers/permitReducer";
 import RenderMultiSelect from "../forms/RenderMultiSelect";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils";
 
 interface PermitConditionFormProps {
     isExtracted: boolean;
@@ -67,6 +69,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
 }) => {
     const dispatch = useAppDispatch();
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
+    const { isFeatureEnabled } = useFeatureFlag();
     const permitConditionsValue = usePermitConditions();
     const { loading, setLoading } = permitConditionsValue;
     // the form fails to re-initialize when the category is changed, so concatenating it forces it to make a new one
@@ -74,6 +77,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const editingFormDirty = useAppSelector(isDirty(editingFormName));
     const listItemFormDirty = useAppSelector(isDirty(FORM.EDIT_PERMIT_CONDITION));
     const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags);
+    const enablePermitConditionTags = isFeatureEnabled(Feature.PERMIT_CONDITION_TAGS);
 
     const startEdit = () => {
         const handleEdit = () => {
@@ -318,19 +322,20 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                                 : "Add Report Requirement"}
                                         </Button>
                                     </Col>
-                                     <Col>
-                                        <div className="condition-tag-select">
-                                        <Field
-                                            name="condition_tags"
-                                            component={RenderMultiSelect}
-                                            placeholder="Select tags"
-                                            data={conditionTags.map((tag) => ({
-                                                label: tag.description,
-                                                value: tag.permit_condition_tag_guid}))}
-                                        />
-                                        </div>
-
-                                    </Col>
+                                    {enablePermitConditionTags &&
+                                        <Col>
+                                            <div className="condition-tag-select">
+                                                <Field
+                                                    name="condition_tags"
+                                                    component={RenderMultiSelect}
+                                                    placeholder="Select tags"
+                                                    data={conditionTags.map((tag) => ({
+                                                        label: tag.description,
+                                                        value: tag.permit_condition_tag_guid}))}
+                                                />
+                                            </div>
+                                        </Col>
+                                    }
                                     <Col>
                                         <RenderCancelButton
                                             disabled={loading}

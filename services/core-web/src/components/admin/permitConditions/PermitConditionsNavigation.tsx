@@ -22,6 +22,8 @@ const PermitConditionsNavigation: FC<AdminNavigationProps> = (props) => {
     userHasRole(USER_ROLES.role_edit_compliance_codes)
   );
   const complianceEnabled = isFeatureEnabled(Feature.HSRC_CODE_EDIT) && complianceRolePresent;
+  const enablePermitConditionTags = isFeatureEnabled(Feature.PERMIT_CONDITION_TAGS);
+
   const ifActiveButton = (route) => (includes(props.activeButton, route) ? "active-menu-btn" : "");
 
   const complianceItem = {
@@ -103,7 +105,7 @@ const PermitConditionsNavigation: FC<AdminNavigationProps> = (props) => {
       ],
     },
     complianceEnabled && complianceItem,
-    tagsItem
+    enablePermitConditionTags && tagsItem
   ].filter(Boolean);
 
   return (
