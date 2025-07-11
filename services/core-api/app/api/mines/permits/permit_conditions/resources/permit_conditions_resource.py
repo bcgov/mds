@@ -226,21 +226,23 @@ def updateConditionTags(old_tags, new_tags, condition):
         # Remove tags
         for tag in old_tags:
             if tag not in new_tags:
-                xref = PermitConditionTagXref.query.filter_by(
-                    permit_condition_tag_guid=uuid.UUID(tag),
-                    permit_condition_id=condition.permit_condition_id
-                ).first()
+                xref = PermitConditionTagXref.find_by_guid_and_condition_id(tag,condition.permit_condition_id)
                 if xref:
-                    print(f"Removing tag {tag} from condition {condition.permit_condition_id}")
                     xref.deleted_ind = True
                     xref.save()
-                    db.session.commit()
                 
         # Add new tags
         for tag in new_tags:
             if tag not in old_tags:
-                xref = PermitConditionTagXref(
-                    permit_condition_tag_guid=tag,
-                    permit_condition_id=condition.permit_condition_id
-                )
-                xref.save()
+                #Check if xref already exists
+                deleted_xref = PermitConditionTagXref.find_by_guid_and_condition_id(tag,condition.permit_condition_id)
+
+                if(deleted_xref):
+                    deleted_xref.deleted_ind = False
+                    deleted_xref.save()
+                else:
+                    xref = PermitConditionTagXref(
+                        permit_condition_tag_guid=tag,
+                        permit_condition_id=condition.permit_condition_id
+                    )
+                    xref.save()

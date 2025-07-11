@@ -1,3 +1,4 @@
+import uuid
 from sqlalchemy.dialects.postgresql import UUID
 from app.extensions import db
 from sqlalchemy.schema import FetchedValue
@@ -17,3 +18,10 @@ class PermitConditionTagXref(AuditMixin, Base, SoftDeleteMixin):
     )
 
     permit_condition_tag = db.relationship('PermitConditionTag', backref=db.backref('tag_xrefs', lazy='dynamic'))
+
+    @classmethod
+    def find_by_guid_and_condition_id(cls, tag_guid, condition_id):
+        return PermitConditionTagXref.query.filter_by(
+            permit_condition_tag_guid=uuid.UUID(tag_guid),
+            permit_condition_id=condition_id
+        ).first()
