@@ -12,6 +12,7 @@ import {
   IPatchPermitVCLocked,
   IStandardPermitCondition,
   IPermitConditionCategory,
+  IPermitConditionTag,
 } from "@mds/common/interfaces";
 import { request, success, error, IDispatchError } from "../actions/genericActions";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
@@ -700,5 +701,67 @@ export const fetchPermitConditionTags = (): AppThunk => (dispatch) => {
       dispatch(permitActions.storePermitConditionTags(response.data));
     })
     .catch(() => dispatch(error(NetworkReducerTypes.GET_PERMIT_CONDITION_TAGS)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const deletePermitConditionTag = (condition_tag_guid: String): AppThunk => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.DELETE_PERMIT_CONDITION_TAG));
+  dispatch(showLoading());
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION_TAG(condition_tag_guid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(NetworkReducerTypes.DELETE_PERMIT_CONDITION_TAG));
+      notification.success({
+        message: "Successfully deleted permit condition tag.",
+        duration: 5,
+      });
+      return response.data;
+    })
+    .catch(() => dispatch(error(NetworkReducerTypes.DELETE_PERMIT_CONDITION_TAG)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const updatePermitConditionTag = (condition_tag_guid: String, payload: IPermitConditionTag): AppThunk => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.UPDATE_PERMIT_CONDITION_TAG));
+  dispatch(showLoading());
+  return CustomAxios()
+    .put(
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION_TAG(condition_tag_guid)}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(NetworkReducerTypes.UPDATE_PERMIT_CONDITION_TAG));
+      notification.success({
+        message: "Successfully updated permit condition tag.",
+        duration: 5,
+      });
+      return response.data;
+    })
+    .catch(() => dispatch(error(NetworkReducerTypes.UPDATE_PERMIT_CONDITION_TAG)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const createPermitConditionTag = (payload: IPermitConditionTag): AppThunk => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.CREATE_PERMIT_CONDITION_TAG));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION_TAGS()}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(NetworkReducerTypes.CREATE_PERMIT_CONDITION_TAG));
+      notification.success({
+        message: "Successfully created permit condition tag.",
+        duration: 5,
+      });
+      return response.data;
+    })
+    .catch(() => dispatch(error(NetworkReducerTypes.CREATE_PERMIT_CONDITION_TAG)))
     .finally(() => dispatch(hideLoading()));
 };

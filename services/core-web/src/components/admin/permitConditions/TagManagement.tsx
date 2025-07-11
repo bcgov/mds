@@ -3,14 +3,18 @@ import PermitConditionsNavigation from "../permitConditions/PermitConditionsNavi
 import { useParams } from "react-router-dom";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
-import { Button, Divider, Popconfirm } from "antd";
+import { Button, Divider, Popconfirm, Row } from "antd";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import { IPermitConditionTag } from "@mds/common/interfaces";
-import { fetchPermitConditionTags } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { deletePermitConditionTag, fetchPermitConditionTags } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getPermitConditionTags } from "@mds/common/redux/reducers/permitReducer";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
+import { PlusOutlined } from "@ant-design/icons";
+import { TagEditForm } from "./TagEditForm";
+import { FORM } from "@mds/common/constants/forms";
 
 const TagManagement: FC = () => {
   const { tab } = useParams<{ tab: string }>();
@@ -26,6 +30,45 @@ const TagManagement: FC = () => {
       }
     }, [conditionTags]);
 
+  const refreshConditionTags = () => {
+    dispatch(fetchPermitConditionTags())
+  };
+
+  const handleOpenModal = (record) => {
+    dispatch(openModal({
+      props: {
+        title: `Update Tag`,
+        existingTag: record,
+        formName: FORM.EDIT_PERMIT_CONDITION_TAG,
+        handleClose: () => handleCloseAddModal(),
+      },
+      content: TagEditForm,
+    }));
+  };
+
+  const openAddModal = () => {
+    dispatch(
+      openModal({
+        props: {
+          title: "Add New Tag",
+          formName: FORM.ADD_PERMIT_CONDITION_TAG,
+          handleClose: () => handleCloseAddModal(),
+        },
+        content: TagEditForm,
+      })
+    );
+  }
+
+  const handleCloseAddModal = () => {
+    dispatch(closeModal());
+    refreshConditionTags();
+  };
+
+  const handleDelete = async (conditionTagGuid) => {
+    await dispatch(deletePermitConditionTag(conditionTagGuid))
+    refreshConditionTags();
+  };
+
   const columns = [
     renderTextColumn("description", "Tag", true),
     {
@@ -36,7 +79,7 @@ const TagManagement: FC = () => {
         <div title="">
           <Button
             className="full-mobile"
-            //onClick={(e) => record.update(e, record)}
+            onClick={() => handleOpenModal(record)}
             ghost
             type="primary"
           >
@@ -45,7 +88,7 @@ const TagManagement: FC = () => {
           <Popconfirm
             placement="topLeft"
             title={`Are you sure you want to delete ${record.description}?`}
-            onConfirm={() => text(record.permit_condition_tag_guid)}
+            onConfirm={() => handleDelete(record.permit_condition_tag_guid)}
             okText="Delete"
             cancelText="Cancel"
           >
@@ -64,17 +107,26 @@ const TagManagement: FC = () => {
         <h1>Permit Condition Management</h1>
       </div>
       <PermitConditionsNavigation
-        activeButton="hsrc-management"
+        activeButton="tag-management"
         openSubMenuKey={[tab]}
       />
       <div className="tab__content">
         <h2>Permit Condition Tags</h2>
         <Divider />
-        <br />
+        <Row justify="end">
+          <Button
+            onClick={() => openAddModal()}
+            loading={isLoading}
+            type="primary"
+            icon={<PlusOutlined />}
+          >
+            Add Tag
+          </Button>
+        </Row>
         <CoreTable
             condition={!isLoading}
             columns={columns}
-            dataSource={conditionTags.sort((a, b) => a.description.localeCompare(b.description))}
+            dataSource={conditionTags}
           />
       </div>
     </div>
