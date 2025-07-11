@@ -16,7 +16,6 @@ import { IMine, IMineAlert } from "@mds/common/interfaces";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { ActionMenuButton, IHeaderAction } from "@mds/common/components/common/ActionMenu";
 
-
 interface MineAlertProps {
   mine: IMine;
 }
@@ -26,7 +25,9 @@ const MineAlert: FC<MineAlertProps> = ({ mine }) => {
   const [activeMineAlert, setActiveMineAlert] = useState<IMineAlert>();
   const [pastMineAlerts, setPastMineAlerts] = useState<IMineAlert[]>([]);
   const mineAlerts = useAppSelector(getMineAlerts);
-  const [loaded, setLoaded] = useState(mineAlerts.some(alert => alert.mine_guid === mine.mine_guid));
+  const [loaded, setLoaded] = useState(
+    mineAlerts.some((alert) => alert.mine_guid === mine.mine_guid)
+  );
 
   const fetchAlerts = async () => {
     setLoaded(false);
@@ -43,7 +44,7 @@ const MineAlert: FC<MineAlertProps> = ({ mine }) => {
   useEffect(() => {
     if (mineAlerts?.length > 0) {
       const newActive = mineAlerts.filter((alert) => {
-        return alert.is_active && (alert.end_date == null || remainingDays(alert.end_date) >= 0)
+        return alert.is_active && (alert.end_date == null || remainingDays(alert.end_date) >= 0);
       })?.[0];
       setActiveMineAlert(newActive);
       const pastAlerts = mineAlerts.filter((alert) => {
@@ -54,7 +55,7 @@ const MineAlert: FC<MineAlertProps> = ({ mine }) => {
       setActiveMineAlert(undefined);
       setPastMineAlerts([]);
     }
-  }, [mineAlerts, mine.mine_guid])
+  }, [mineAlerts, mine.mine_guid]);
 
   useEffect(() => {
     setLoaded(false);
@@ -72,16 +73,14 @@ const MineAlert: FC<MineAlertProps> = ({ mine }) => {
   };
 
   const handleUpdateMineAlert = (values: IMineAlert) => {
-    dispatch(updateMineAlert(mine.mine_guid, values.mine_alert_guid, values))
-      .then(() => {
-        fetchAlerts();
-        dispatch(closeModal());
-      });
+    dispatch(updateMineAlert(mine.mine_guid, values.mine_alert_guid, values)).then(() => {
+      fetchAlerts();
+      dispatch(closeModal());
+    });
   };
 
   const handleRemoveAlert = (mineAlertGuid: string) => {
-    dispatch(deleteMineAlert(mine.mine_guid, mineAlertGuid))
-      .then(() => fetchAlerts());
+    dispatch(deleteMineAlert(mine.mine_guid, mineAlertGuid)).then(() => fetchAlerts());
   };
 
   const removeConfirmWrapper = (mineAlert: IMineAlert) => {
@@ -93,7 +92,7 @@ const MineAlert: FC<MineAlertProps> = ({ mine }) => {
       title,
       onOk: () => handleRemoveAlert(activeMineAlert.mine_alert_guid),
       okText: "Delete",
-    })
+    });
   };
 
   const submitCreateMineAlarmForm = () => (values: IMineAlert) => {
@@ -118,74 +117,82 @@ const MineAlert: FC<MineAlertProps> = ({ mine }) => {
   };
 
   const openCreateMineAlertModal = (activeMineAlert: IMineAlert, mineAlerts: IMineAlert[]) => {
-    dispatch(openModal({
-      props: {
-        title: ModalContent.CREATE_MINE_ALERT_RECORD,
-        text: ModalContent.CREATE_MINE_ALERT_TEXT,
-        mineAlertGuid: activeMineAlert?.mine_alert_guid,
-        closeModal: () => dispatch(closeModal()),
-        onSubmit: submitCreateMineAlarmForm(),
-        activeMineAlert,
-        mineAlerts,
-      },
-      content: modalConfig.ADD_MINE_ALERT,
-    }));
+    dispatch(
+      openModal({
+        props: {
+          title: ModalContent.CREATE_MINE_ALERT_RECORD,
+          text: ModalContent.CREATE_MINE_ALERT_TEXT,
+          mineAlertGuid: activeMineAlert?.mine_alert_guid,
+          closeModal: () => dispatch(closeModal()),
+          onSubmit: submitCreateMineAlarmForm(),
+          activeMineAlert,
+          mineAlerts,
+        },
+        content: modalConfig.ADD_MINE_ALERT,
+      })
+    );
   };
 
   const openUpdateMineAlertModal = (activeMineAlert: IMineAlert, mineAlerts: IMineAlert[]) => {
-    return dispatch(openModal({
-      props: {
-        title: ModalContent.EDIT_MINE_ALERT_RECORD,
-        text: ModalContent.EDIT_MINE_ALERT_TEXT,
-        initialValues: activeMineAlert,
-        mineAlertGuid: activeMineAlert?.mine_alert_guid,
-        closeModal: () => dispatch(closeModal()),
-        onSubmit: submitUpdateMineAlarmForm(activeMineAlert?.mine_alert_guid),
-        activeMineAlert,
-        mineAlerts,
-      },
-      content: modalConfig.ADD_MINE_ALERT,
-    }));
+    return dispatch(
+      openModal({
+        props: {
+          title: ModalContent.EDIT_MINE_ALERT_RECORD,
+          text: ModalContent.EDIT_MINE_ALERT_TEXT,
+          initialValues: activeMineAlert,
+          mineAlertGuid: activeMineAlert?.mine_alert_guid,
+          closeModal: () => dispatch(closeModal()),
+          onSubmit: submitUpdateMineAlarmForm(activeMineAlert?.mine_alert_guid),
+          activeMineAlert,
+          mineAlerts,
+        },
+        content: modalConfig.ADD_MINE_ALERT,
+      })
+    );
   };
 
   const openviewPastMineAlertModal = () => {
-    return dispatch(openModal({
-      props: {
-        title: ModalContent.PAST_MINE_ALERT_RECORD,
-        mineAlerts: pastMineAlerts,
-        closeModal: () => dispatch(closeModal()),
-      },
-      content: modalConfig.VIEW_PAST_MINE_ALERTS,
-    }));
+    return dispatch(
+      openModal({
+        props: {
+          title: ModalContent.PAST_MINE_ALERT_RECORD,
+          mineAlerts: pastMineAlerts,
+          closeModal: () => dispatch(closeModal()),
+        },
+        content: modalConfig.VIEW_PAST_MINE_ALERTS,
+      })
+    );
   };
 
   const menuActions: IHeaderAction[] = [
     {
       key: "create",
       label: "Create New Alert",
-      clickFunction: () => openCreateMineAlertModal(activeMineAlert, pastMineAlerts)
+      clickFunction: () => openCreateMineAlertModal(activeMineAlert, pastMineAlerts),
     },
     activeMineAlert && {
       key: "edit",
       label: "Edit Active Alert",
-      clickFunction: () => openUpdateMineAlertModal(activeMineAlert, pastMineAlerts)
+      clickFunction: () => openUpdateMineAlertModal(activeMineAlert, pastMineAlerts),
     },
     activeMineAlert && {
       key: "remove",
       label: "Remove Alert",
-      clickFunction: () => removeConfirmWrapper(activeMineAlert)
+      clickFunction: () => removeConfirmWrapper(activeMineAlert),
     },
     {
       key: "history",
       label: "View Alert History",
-      clickFunction: () => openviewPastMineAlertModal()
-    }
+      clickFunction: () => openviewPastMineAlertModal(),
+    },
   ].filter(Boolean);
 
-  const dropdownMenu = <ActionMenuButton
-    actions={menuActions}
-    buttonProps={{ style: { backgroundColor: "transparent" } }}
-  />;
+  const dropdownMenu = (
+    <ActionMenuButton
+      actions={menuActions}
+      buttonProps={{ style: { backgroundColor: "transparent" } }}
+    />
+  );
 
   return (
     <div>
@@ -200,9 +207,7 @@ const MineAlert: FC<MineAlertProps> = ({ mine }) => {
                 </p>
               </Col>
               <Col xs={24} md={6}>
-                <div className="right center-mobile">
-                  {dropdownMenu}
-                </div>
+                <div className="right center-mobile">{dropdownMenu}</div>
               </Col>
             </Row>
           }
@@ -214,6 +219,7 @@ const MineAlert: FC<MineAlertProps> = ({ mine }) => {
       )}
       {loaded && activeMineAlert && (
         <Alert
+          data-testid="active-alert"
           message=""
           description={
             <Row>
@@ -237,9 +243,7 @@ const MineAlert: FC<MineAlertProps> = ({ mine }) => {
                 </p>
               </Col>
               <Col xs={24} md={6}>
-                <div className="right center-mobile">
-                  {dropdownMenu}
-                </div>
+                <div className="right center-mobile">{dropdownMenu}</div>
               </Col>
             </Row>
           }
@@ -252,6 +256,5 @@ const MineAlert: FC<MineAlertProps> = ({ mine }) => {
     </div>
   );
 };
-
 
 export default MineAlert;
