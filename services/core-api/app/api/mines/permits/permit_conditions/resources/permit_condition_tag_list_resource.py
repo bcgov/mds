@@ -15,7 +15,7 @@ class PermitConditionTagListResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(PERMIT_CONDITION_TAG_MODEL, code=200, envelope='records')
     def get(self):
-        return PermitConditionTag.get_all()
+        return PermitConditionTag.query.order_by(PermitConditionTag.description.asc()).all()
     
     @requires_role_mine_admin
     def delete_tag(self, tag_guid):

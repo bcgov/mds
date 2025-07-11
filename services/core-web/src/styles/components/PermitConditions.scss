@@ -113,9 +113,20 @@ div.condition-layer {
 
 .condition-tag-select {
   width: 400px;
-  font-weight: 600;
-  font-size: 0.875rem;
-  padding: 0px;
+
+  .ant-select-selector {
+    padding: 0px;
+    min-height: 32px;
+
+    .ant-select-selection-overflow {
+      max-width: 97%;
+    }
+
+    .ant-select-selection-item {
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+  }
 }
 
 .ant-select-dropdown {
