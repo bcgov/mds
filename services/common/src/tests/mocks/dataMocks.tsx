@@ -42,6 +42,7 @@ import {
   IMineComplianceInfo,
   IVariance,
   IProjectSummaryAuthorization,
+  IPermitConditionTag
 } from "@mds/common/interfaces";
 import { IAmsFinalApplication } from "@mds/common/interfaces/projects/amsFinalApplication.interface";
 import { HaystackDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
@@ -2162,6 +2163,41 @@ export const PERMIT_CONDITION_EXTRACTION = [
   },
 ];
 
+export const PERMIT_CONDITION_TAGS: IPermitConditionTag[] = [
+      {
+          "permit_condition_tag_guid": "c0c31497-3f91-42d3-a13b-61eef85922f5",
+          "description": "Growth mediums"
+      },
+      {
+          "permit_condition_tag_guid": "6d6638fe-59d0-426a-894d-7db91825c440",
+          "description": "Measurable"
+      },
+      {
+          "permit_condition_tag_guid": "1a2e280e-f02a-420f-8d4f-69473a11e736",
+          "description": "Mine roads"
+      },
+      {
+          "permit_condition_tag_guid": "80f1d4ec-499e-4edc-885a-c726d1d89895",
+          "description": "Revegetation"
+      },
+      {
+          "permit_condition_tag_guid": "fcccc12d-3700-4e69-93f5-75ff6cf7e0d3",
+          "description": "Securities"
+      },
+      {
+          "permit_condition_tag_guid": "a73deaf4-1895-4db3-be0d-a1d1e4f2f820",
+          "description": "Specific"
+      },
+      {
+          "permit_condition_tag_guid": "6ed7445e-a1b5-4bb0-a778-b33744718bf4",
+          "description": "Timber"
+      },
+      {
+          "permit_condition_tag_guid": "65360863-af4d-45fb-89c6-63bab29095d0",
+          "description": "Traditional knowledge"
+      }
+  ]
+
 export const PERMITS: IPermit[] = [
   {
     permit_id: "283",
@@ -2215,6 +2251,7 @@ export const PERMITS: IPermit[] = [
             permit_condition_guid: "6fd71a4d-a55e-4e0b-a249-0ed54c3d2387",
             condition: "Section decade check including.",
             condition_type_code: "SEC",
+            condition_tags: [],
             condition_category_code: "HSC",
             parent_permit_condition_id: null,
             sub_conditions: [],
@@ -2238,6 +2275,7 @@ export const PERMITS: IPermit[] = [
             permit_condition_guid: "49aab01f-1c4a-4f5b-8fb8-1a1baf17388b",
             condition: "Reflect miss police tough such single force.",
             condition_type_code: "SEC",
+            condition_tags: [],
             condition_category_code: "RCC",
             parent_permit_condition_id: null,
             sub_conditions: [],
@@ -2251,6 +2289,7 @@ export const PERMITS: IPermit[] = [
             permit_condition_guid: "36c2ac6b-fcc1-4f24-a327-2a27151a0791",
             condition: "International clear those TV individual look.",
             condition_type_code: "SEC",
+            condition_tags: [],
             condition_category_code: "ELC",
             parent_permit_condition_id: null,
             sub_conditions: [
@@ -2260,6 +2299,7 @@ export const PERMITS: IPermit[] = [
                 permit_condition_guid: "a35014df-ca0e-46ce-a956-e219f6821706",
                 condition: "See store understand company interview value factor.",
                 condition_type_code: "CON",
+                condition_tags: [],
                 condition_category_code: "ELC",
                 parent_permit_condition_id: 1650,
                 permit_condition_status_code: "NST",
@@ -2270,6 +2310,7 @@ export const PERMITS: IPermit[] = [
                     permit_condition_guid: "29f9002c-b873-4b02-a71d-db95b26c0333",
                     condition: "Mr item fall study although.",
                     condition_type_code: "LIS",
+                    condition_tags: [],
                     condition_category_code: "ELC",
                     parent_permit_condition_id: 1641,
                     sub_conditions: [],
@@ -2287,6 +2328,7 @@ export const PERMITS: IPermit[] = [
                 permit_condition_guid: "895a1221-7d29-4008-9c96-32fedda6f0c1",
                 condition: "words words words sub-section",
                 condition_type_code: "SEC",
+                condition_tags: [],
                 condition_category_code: "ELC",
                 parent_permit_condition_id: 1650,
                 sub_conditions: [
@@ -2297,6 +2339,7 @@ export const PERMITS: IPermit[] = [
                     condition:
                       "a condition added underneath the section, with a lot of detail added to it, which is probably important for documents like permits",
                     condition_type_code: "CON",
+                    condition_tags: [],
                     condition_category_code: "ELC",
                     parent_permit_condition_id: 12507,
                     permit_condition_status_code: "NST",
@@ -2311,6 +2354,7 @@ export const PERMITS: IPermit[] = [
                         condition_category_code: "ELC",
                         parent_permit_condition_id: 12509,
                         sub_conditions: [],
+                        condition_tags: ["c0c31497-3f91-42d3-a13b-61eef85922f5"],
                         step: "1.",
                         display_order: 1,
                         permit_condition_status_code: "NST",
@@ -2335,6 +2379,7 @@ export const PERMITS: IPermit[] = [
                         condition_category_code: "ELC",
                         parent_permit_condition_id: 12509,
                         sub_conditions: [],
+                        condition_tags: [],
                         step: "2.",
                         display_order: 2,
                         permit_condition_status_code: "NST",
@@ -2356,6 +2401,7 @@ export const PERMITS: IPermit[] = [
                         condition:
                           "good things come in 3s, so another list item is added to the condition",
                         condition_type_code: "LIS",
+                        condition_tags: ["65360863-af4d-45fb-89c6-63bab29095d0"],
                         condition_category_code: "ELC",
                         parent_permit_condition_id: 12509,
                         permit_condition_status_code: "NST",
@@ -2370,6 +2416,7 @@ export const PERMITS: IPermit[] = [
                             condition_category_code: "ELC",
                             parent_permit_condition_id: 12512,
                             sub_conditions: [],
+                            condition_tags: [],
                             step: "a.",
                             display_order: 1,
                             permit_condition_status_code: "NST",
@@ -2399,6 +2446,7 @@ export const PERMITS: IPermit[] = [
             condition:
               "Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines",
             condition_type_code: "SEC",
+            condition_tags: ["fcccc12d-3700-4e69-93f5-75ff6cf7e0d3"],
             condition_category_code: "ELC",
             parent_permit_condition_id: null,
             sub_conditions: [
@@ -2412,6 +2460,7 @@ export const PERMITS: IPermit[] = [
                 condition_category_code: "ELC",
                 parent_permit_condition_id: 12514,
                 sub_conditions: [],
+                condition_tags: ["fcccc12d-3700-4e69-93f5-75ff6cf7e0d3","6d6638fe-59d0-426a-894d-7db91825c440"],
                 step: "a.",
                 display_order: 1,
                 permit_condition_status_code: "",
