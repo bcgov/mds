@@ -1,6 +1,5 @@
 import { IPermitConditionTag } from "@mds/common/interfaces"
-import React from "react"
-import { FC } from "react"
+import React, { FC } from "react"
 import { Field } from "redux-form"
 import {
   required,

@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { change, Field, isDirty, reset } from "@mds/common/components/forms/form";
-import { Row, Col, Button, Typography, Modal, Select } from "antd";
+import { Row, Col, Button, Typography, Modal } from "antd";
 import {
     faArrowDown,
     faArrowUp,
@@ -22,11 +22,9 @@ import { openModal } from "@mds/common/redux/actions/modalActions";
 import { ReportPermitRequirementForm } from "@mds/common/components/permits/ReportPermitRequirementForm";
 import {
     deletePermitCondition,
-    fetchPermitConditionTags,
     updatePermitCondition,
 } from "@mds/common/redux/actionCreators/permitActionCreator";
 import RenderField from "@mds/common/components/forms/RenderField";
-import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import { formatPermitConditionStep, parsePermitConditionStep } from "@mds/common/utils/helpers";
 import { FORM } from "@mds/common/constants/forms";
 import RenderGroupedSelect from "@mds/common/components/forms/RenderGroupedSelect";
