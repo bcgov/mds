@@ -7,10 +7,10 @@ from sqlalchemy.orm import validates
 from app.extensions import db
 from sqlalchemy.schema import FetchedValue
 
-from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
+from app.api.utils.models_mixins import AuditMixin, Base
 
 
-class PermitConditionStatusCode(SoftDeleteMixin, AuditMixin, Base):
+class PermitConditionStatusCode(AuditMixin, Base):
     __tablename__ = 'permit_condition_status_code'
     permit_condition_status_code = db.Column(db.String, nullable=False, primary_key=True)
     description = db.Column(db.String, nullable=False)
