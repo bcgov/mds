@@ -101,7 +101,7 @@ class PermitConditionsResource(Resource, UserMixin):
             raise BadRequest('condition_category_code is invalid')
         changed_category = old_category_code != new_category_code
         new_status_code = request_data.get("permit_condition_status_code",None)
-        new_tags = request_data.get("condition_tags", None)
+        new_tags = request_data.get("condition_tags", [])
         changed_status = old_condition.permit_condition_status_code != new_status_code
 
         if changed_category:
