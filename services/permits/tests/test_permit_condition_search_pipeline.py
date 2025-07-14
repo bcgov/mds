@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 from app.pipelines.permit_condition_extraction.components.azure_document_intelligence_converter import (
@@ -10,6 +10,9 @@ from app.pipelines.permit_condition_search.components.azure_blob_upload import (
 from app.pipelines.permit_condition_search.permit_condition_search_pipeline import (
     create_permit_condition_search_indexing_pipeline,
     create_permit_condition_search_retrieval_pipeline,
+)
+from app.pipelines.permit_condition_search.stores.ai_search_document_store import (
+    AzureSearchDocumentStore,
 )
 from haystack.components.builders import ChatPromptBuilder
 from haystack.components.embedders import AzureOpenAITextEmbedder
@@ -28,10 +31,15 @@ def mock_components():
     AzureAISearchHybridRetriever.__init__ = MagicMock(return_value=None)
     AzureDocumentIntelligenceConverter.__init__ = MagicMock(return_value=None)
     AzureBlobUploader.__init__ = MagicMock(return_value=None)
+    with patch("app.pipelines.permit_condition_search.permit_condition_search_pipeline.create_azure_search_document_store") as mock_create_store:
+        mock_create_store.return_value = MagicMock(spec=AzureSearchDocumentStore)
+        yield
+
 
 def test_create_permit_condition_search_retrieval_pipeline_returns_pipeline(mock_components):
     pipeline = create_permit_condition_search_retrieval_pipeline()
     assert isinstance(pipeline, AsyncPipeline)
+
 
 def test_indexing_pipeline_validates(mock_components):
     pipeline = create_permit_condition_search_retrieval_pipeline()
@@ -41,6 +49,7 @@ def test_indexing_pipeline_validates(mock_components):
 
     except Exception as e:
         pytest.fail(f"Pipeline validation failed with error: {str(e)}")
+
 
 def test_search_pipeline_validates(mock_components):
     pipeline = create_permit_condition_search_indexing_pipeline()

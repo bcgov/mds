@@ -89,7 +89,7 @@ def permit_condition_pipeline():
     max_tokens = completion_tokens
 
     llm = CachedAzureOpenAIChatGenerator(
-        azure_endpoint=config.openai.endpoint,
+        azure_endpoint=config.openai.endpoint.resolve_value(),
         api_version=config.openai.api_version,
         azure_deployment=config.openai.deployment_name,
         api_key=config.openai.api_key,
