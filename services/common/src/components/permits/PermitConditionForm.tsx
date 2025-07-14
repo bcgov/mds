@@ -317,17 +317,15 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                         </Button>
                                     </Col>
                                     {enablePermitConditionTags && conditionTags &&
-                                        <Col>
-                                            <div className="condition-tag-select">
-                                                <Field
-                                                    name="condition_tags"
-                                                    component={RenderMultiSelect}
-                                                    placeholder="Select tags"
-                                                    data={conditionTags.map((tag) => ({
-                                                        label: tag.description,
-                                                        value: tag.permit_condition_tag_guid}))}
-                                                />
-                                            </div>
+                                        <Col className="condition-tag-select">
+                                            <Field
+                                                name="condition_tags"
+                                                component={RenderMultiSelect}
+                                                placeholder="Select tags"
+                                                data={conditionTags.map((tag) => ({
+                                                    label: tag.description,
+                                                    value: tag.permit_condition_tag_guid}))}
+                                            />
                                         </Col>
                                     }
                                     <Col>
