@@ -15,6 +15,7 @@ import {
   IPermitAmendment,
   IPermitCondition,
   IPermitConditionCategory,
+  IPermitConditionTag,
 } from "@mds/common/interfaces/permits";
 import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
@@ -35,6 +36,7 @@ import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import {
   createPermitAmendmentConditionCategory,
   deletePermitAmendmentConditionCategory,
+  fetchPermitConditionTags,
   fetchPermits,
   updatePermitAmendmentConditionCategory,
   updatePermitCondition,
@@ -61,6 +63,7 @@ import PermitConditionLayer from "@mds/common/components/permits/PermitCondition
 import { LatestAmendmentWarning } from "./LatestAmendmentWarning";
 import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
 import { FORM } from "@mds/common/constants/forms";
+import { getPermitConditionTags } from "@mds/common/redux/reducers/permitReducer";
 
 const { Title } = Typography;
 
@@ -152,6 +155,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const [editingFormName, setEditingFormName] = useState<string>();
   const [addingToCategoryCode, setAddingToCategoryCode] = useState<string>();
   const [loading, setLoading] = useState(false);
+  const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags);
 
   const reviewAssignments = useAppSelector(
     getReviewAssignmentsByAmendment(currentAmendment.permit_amendment_id)
@@ -188,6 +192,12 @@ const PermitConditions: FC<PermitConditionProps> = ({
     dispatch(searchConditionCategories({}));
     dispatch(fetchReviewAssignments({ permit_amendment_id: currentAmendment.permit_amendment_id }));
   }, []);
+
+  useEffect(() => {
+    if (conditionTags?.length === 0) {
+      dispatch(fetchPermitConditionTags());
+    }
+  }, [conditionTags]);
 
   useEffect(() => {
     if (editingFormName !== FORM.EDIT_PERMIT_CONDITION) {

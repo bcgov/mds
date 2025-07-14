@@ -115,12 +115,6 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
         }
     }, [canEditPermitConditions]);
 
-    useEffect(() => {
-        if (conditionTags?.length === 0) {
-          dispatch(fetchPermitConditionTags());
-        }
-      }, [conditionTags]);
-
     // if edit is cancelled from another form
     useEffect(() => {
         if (editingFormName !== formName && isEditMode) {
@@ -322,7 +316,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                                 : "Add Report Requirement"}
                                         </Button>
                                     </Col>
-                                    {enablePermitConditionTags &&
+                                    {enablePermitConditionTags && conditionTags &&
                                         <Col>
                                             <div className="condition-tag-select">
                                                 <Field
