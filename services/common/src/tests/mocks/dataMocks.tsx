@@ -2694,6 +2694,7 @@ export const PERMITS: IPermit[] = [
             condition_category_code: "HSC",
             parent_permit_condition_id: null,
             sub_conditions: [],
+            condition_tags: [],
             step: "1.",
             display_order: 1,
             permit_condition_status_code: "COM",

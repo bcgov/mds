@@ -617,6 +617,20 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
+        "displayName": "Connect(authorizationGuard)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    key="/admin/tag-management"
+    path="/admin/tag-management"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
         "displayName": "Connect(SearchResults)",
         "type": [Function],
       }
