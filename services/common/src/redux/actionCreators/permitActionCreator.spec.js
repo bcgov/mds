@@ -25,7 +25,8 @@ import {
   updatePermitAmendmentConditionCategory,
   deletePermitAmendmentConditionCategory,
   createPermitConditionTag,
-  updatePermitConditionTag
+  updatePermitConditionTag,
+  deletePermitConditionTag
 } from "@mds/common/redux/actionCreators/permitActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
@@ -924,6 +925,38 @@ describe("`createPermitCondition` action creator", () => {
         expect(requestSpy).toHaveBeenCalledWith("UPDATE_PERMIT_CONDITION_TAG");
         expect(errorSpy).toHaveBeenCalledTimes(1);
         expect(errorSpy).toHaveBeenCalledWith("UPDATE_PERMIT_CONDITION_TAG");
+        expect(dispatch).toHaveBeenCalledTimes(4);
+
+      });
+    });
+  });
+
+  describe("`deletePermitConditionTag` action creator", () => {
+    const condition_tag_guid = "abc123";
+
+    const url = ENVIRONMENT.apiUrl + API.PERMIT_CONDITION_TAG(condition_tag_guid);
+
+    it("Request successful, dispatches `success` with correct response", () => {
+      const mockResponse = { data: { success: true } };
+      mockAxios.onDelete(url, payload).reply(200, mockResponse);
+
+      return deletePermitConditionTag(condition_tag_guid)(dispatch).then(() => {
+        expect(requestSpy).toHaveBeenCalledTimes(1);
+        expect(requestSpy).toHaveBeenCalledWith("DELETE_PERMIT_CONDITION_TAG");
+        expect(successSpy).toHaveBeenCalledTimes(1);
+        expect(successSpy).toHaveBeenCalledWith("DELETE_PERMIT_CONDITION_TAG");
+        expect(dispatch).toHaveBeenCalledTimes(4);
+      });
+    });
+
+    it("Request failure, dispatches `error` with correct response", () => {
+      mockAxios.onDelete(url).reply(418, MOCK.ERROR);
+
+      return deletePermitConditionTag(condition_tag_guid)(dispatch).catch(() => {
+        expect(requestSpy).toHaveBeenCalledTimes(1);
+        expect(requestSpy).toHaveBeenCalledWith("DELETE_PERMIT_CONDITION_TAG");
+        expect(errorSpy).toHaveBeenCalledTimes(1);
+        expect(errorSpy).toHaveBeenCalledWith("DELETE_PERMIT_CONDITION_TAG");
         expect(dispatch).toHaveBeenCalledTimes(4);
 
       });
