@@ -20,34 +20,32 @@ class PermitConditionTagResource(Resource, UserMixin, SoftDeleteMixin):
     
     @requires_role_mine_admin
     @api.expect(PERMIT_CONDITION_TAG_MODEL)
-    #@api.marshal_with(PERMIT_CONDITION_TAG_MODEL, code=204)
     def delete(self, permit_condition_tag_guid):
         tag = PermitConditionTag.find_by_guid(permit_condition_tag_guid)
         if not tag:
             raise BadRequest(f"Permit condition tag with ID {permit_condition_tag_guid} not found.")
-        
         tag.deleted_ind = True
         tag.save()
         return {'message': 'Permit condition tag deleted successfully.'}, 204
     
     @requires_role_mine_admin
-    @api.marshal_with(PERMIT_CONDITION_TAG_MODEL, code=204)
+    @api.expect(PERMIT_CONDITION_TAG_MODEL)
+    @api.marshal_with(PERMIT_CONDITION_TAG_MODEL, code=200)
     def put(self, permit_condition_tag_guid):
         tag = PermitConditionTag.find_by_guid(permit_condition_tag_guid)
         if not tag:
             raise BadRequest(f"Permit condition tag with ID {permit_condition_tag_guid} not found.")
-        
         tag.description = request.json.get('description', tag.description)
         tag.save()
-        return marshal(tag, PERMIT_CONDITION_TAG_MODEL), 200
+        return tag
     
     @requires_role_mine_admin
+    @api.expect(PERMIT_CONDITION_TAG_MODEL)
+    @api.marshal_with(PERMIT_CONDITION_TAG_MODEL, code=201)
     def post(self):
-
         description = request.json.get('description')
         if not description:
             raise BadRequest("Missing required field to create a permit condition tag.")
-
         tag = PermitConditionTag(description=description)
         tag.save()
-        return marshal(tag, PERMIT_CONDITION_TAG_MODEL), 201
+        return tag, 201
