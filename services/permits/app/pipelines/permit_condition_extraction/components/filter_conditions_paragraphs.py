@@ -178,6 +178,9 @@ def _identify_bottom_of_first_page_header(paragraphs):
             None,
         )
 
+        if page_header_end_idx is None:
+            continue
+
         is_like_page_header = next(
             (
                 True
