@@ -6,7 +6,7 @@ from sqlalchemy.schema import FetchedValue
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 
 
-class PermitConditionTagXref(AuditMixin, Base, SoftDeleteMixin):
+class PermitConditionTagXref(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'permit_condition_tag_xref'
     permit_condition_tag_xref_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue(), primary_key=True)
     permit_condition_tag_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('permit_condition_tag.permit_condition_tag_guid'), nullable=False)

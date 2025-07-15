@@ -10,7 +10,7 @@ from app.api.mines.permits.permit_conditions.models import PermitConditionTag
 from app.api.utils.resources_mixins import UserMixin
 
 
-class PermitConditionTagResource(Resource, UserMixin, SoftDeleteMixin):
+class PermitConditionTagResource(Resource, UserMixin):
 
     @api.doc(description='Get all permit condition tags')
     @requires_role_view_all
@@ -24,8 +24,7 @@ class PermitConditionTagResource(Resource, UserMixin, SoftDeleteMixin):
         tag = PermitConditionTag.find_by_guid(permit_condition_tag_guid)
         if not tag:
             raise BadRequest(f"Permit condition tag with ID {permit_condition_tag_guid} not found.")
-        tag.deleted_ind = True
-        tag.save()
+        tag.delete(True)
         return {'message': 'Permit condition tag deleted successfully.'}, 204
     
     @requires_role_mine_admin

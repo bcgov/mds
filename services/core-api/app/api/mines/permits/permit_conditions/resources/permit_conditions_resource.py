@@ -228,8 +228,7 @@ def updateConditionTags(old_tags, new_tags, condition):
             if tag not in new_tags:
                 xref = PermitConditionTagXref.find_by_guid_and_condition_id(tag,condition.permit_condition_id)
                 if xref:
-                    xref.deleted_ind = True
-                    xref.save()
+                    xref.delete(True)
                 
         # Add new tags
         for tag in new_tags:
