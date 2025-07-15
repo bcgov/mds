@@ -37,6 +37,7 @@ export const fetchMineAlertsByMine = (
 ): Promise<AxiosResponse<IMineAlert>> => {
     dispatch(request(NetworkReducerTypes.GET_MINE_ALERTS));
     dispatch(showLoading("modal"));
+    dispatch(mineActions.clearMineAlerts());
     return CustomAxios()
       .get(`${ENVIRONMENT.apiUrl}${API.MINE_ALERTS(mineGuid)}`, createRequestHeader())
       .then((response: AxiosResponse<IMineAlert>) => {

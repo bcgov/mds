@@ -11,6 +11,6 @@ export const storeGlobalMineAlerts = (payload) => ({
   payload,
 });
 
-export const clearMineAlert = () => ({
-  type: ActionTypes.CLEAR_MINE_ALERT,
+export const clearMineAlerts = () => ({
+  type: ActionTypes.CLEAR_MINE_ALERTS,
 });

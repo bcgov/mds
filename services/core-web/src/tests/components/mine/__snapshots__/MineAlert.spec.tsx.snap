@@ -4,19 +4,20 @@ exports[`MineAlert renders dispatchProperly 1`] = `
 <div>
   <div>
     <div
-      class="ant-alert ant-alert-info ant-alert-with-description ant-alert-info ant-alert-info-custom-with-black-icon"
+      class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-warning ant-alert-warning-custom-with-red-icon"
       data-show="true"
+      data-testid="active-alert"
       role="alert"
-      style="background-color: rgb(244, 240, 240); border: 1.5px solid #525252;"
+      style="background-color: rgb(255, 242, 240); border: 1.5px solid #ff0000;"
     >
       <span
-        aria-label="info-circle"
-        class="anticon anticon-info-circle ant-alert-icon"
+        aria-label="exclamation-circle"
+        class="anticon anticon-exclamation-circle ant-alert-icon"
         role="img"
       >
         <svg
           aria-hidden="true"
-          data-icon="info-circle"
+          data-icon="exclamation-circle"
           fill="currentColor"
           focusable="false"
           height="1em"
@@ -27,7 +28,7 @@ exports[`MineAlert renders dispatchProperly 1`] = `
             d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
           />
           <path
-            d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+            d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
           />
         </svg>
       </span>
@@ -45,8 +46,17 @@ exports[`MineAlert renders dispatchProperly 1`] = `
             >
               <p>
                 <b>
-                  There are no active staff alerts for this mine.
+                  Active Alert: Oct 27 2022 - Oct 31 2052
                 </b>
+              </p>
+              <p>
+                Mine under construction
+                <br />
+                For more information contact: 
+                mock name
+                 -
+                 
+                337-588-3109
               </p>
             </div>
             <div
