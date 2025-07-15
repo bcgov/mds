@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from app.pipelines.permit_condition_search.config import config
+from app.pipelines.permit_condition_search.search_index_fields import fields
 from azure.core.credentials import AzureKeyCredential
 from azure.search.documents.indexes import SearchIndexClient
 from azure.search.documents.indexes.models import (
@@ -14,8 +15,6 @@ from azure.search.documents.indexes.models import (
     ScoringFunctionAggregation,
     ScoringFunctionInterpolation,
     ScoringProfile,
-    SearchField,
-    SearchFieldDataType,
     SearchIndex,
     SemanticConfiguration,
     SemanticField,
@@ -31,198 +30,6 @@ assert search_api_key is not None, "Search API key is required"
 # Initialize the search client
 credential = AzureKeyCredential(search_api_key)
 index_client = SearchIndexClient(endpoint=config.search.endpoint, credential=credential)
-
-# Define fields with explicit settings
-fields = [
-    SearchField(
-        name="id",
-        type=SearchFieldDataType.String,
-        key=True,
-        searchable=True,
-        filterable=True,
-        sortable=True,
-        facetable=False,
-    ),
-    SearchField(
-        name="content",
-        type=SearchFieldDataType.String,
-        searchable=True,
-        filterable=False,
-        sortable=False,
-        facetable=False,
-    ),
-    SearchField(
-        name="category",
-        type=SearchFieldDataType.String,
-        searchable=True,
-        filterable=True,
-        sortable=True,
-        facetable=True,
-    ),
-    SearchField(
-        name="issue_date",
-        type=SearchFieldDataType.DateTimeOffset,
-        searchable=False,
-        filterable=True,
-        sortable=True,
-        facetable=True,
-    ),
-    SearchField(
-        name="permit",
-        type=SearchFieldDataType.String,
-        searchable=True,
-        filterable=True,
-        sortable=True,
-        facetable=True,
-    ),
-    SearchField(
-        name="mine_number",
-        type=SearchFieldDataType.String,
-        searchable=True,
-        filterable=True,
-        sortable=True,
-        facetable=True,
-    ),
-    SearchField(
-        name="mine_name",
-        type=SearchFieldDataType.String,
-        searchable=True,
-        filterable=True,
-        sortable=True,
-        facetable=True,
-    ),
-    SearchField(
-        name="document_name",
-        type=SearchFieldDataType.String,
-        searchable=True,
-        filterable=True,
-        sortable=True,
-        facetable=True,
-    ),
-    SearchField(
-        name="document_manager_guid",
-        type=SearchFieldDataType.String,
-        searchable=True,
-        filterable=True,
-        sortable=True,
-        facetable=True,
-    ),
-    SearchField(
-        name="step",
-        type=SearchFieldDataType.String,
-        searchable=True,
-        filterable=True,
-        sortable=True,
-        facetable=True,
-    ),
-    SearchField(
-        name="step_path",
-        type=SearchFieldDataType.String,
-        searchable=True,
-        filterable=True,
-        sortable=True,
-        facetable=True,
-    ),
-    SearchField(
-        name="permit_guid",
-        type=SearchFieldDataType.String,
-        searchable=False,
-        filterable=True,
-        sortable=False,
-        facetable=False,
-    ),
-    SearchField(
-        name="mine_guid",
-        type=SearchFieldDataType.String,
-        searchable=False,
-        filterable=True,
-        sortable=False,
-        facetable=False,
-    ),
-    SearchField(
-        name="permit_condition_guid",
-        type=SearchFieldDataType.String,
-        searchable=False,
-        filterable=True,
-        sortable=False,
-        facetable=False,
-    ),
-    SearchField(
-        name="permit_amendment_guid",
-        type=SearchFieldDataType.String,
-        searchable=False,
-        filterable=True,
-        sortable=False,
-        facetable=False,
-    ),
-    SearchField(
-        name="embedding",
-        type="Collection(Edm.Half)",
-        vector_search_dimensions=3072,
-        vector_search_profile_name="vector-profile",
-        searchable=True,
-        filterable=False,
-        sortable=False,
-        facetable=False,
-        stored=False,
-    ),
-    SearchField(
-        name="parent_ids",
-        type="Collection(Edm.String)",
-        searchable=False,
-        filterable=True,
-        sortable=False,
-        facetable=False,
-    ),
-    SearchField(
-        name="sibling_ids",
-        type="Collection(Edm.String)",
-        searchable=False,
-        filterable=True,
-        sortable=False,
-        facetable=False,
-    ),
-    SearchField(
-        name="child_ids",
-        type="Collection(Edm.String)",
-        searchable=False,
-        filterable=True,
-        sortable=False,
-        facetable=False,
-    ),
-    SearchField(
-        name="report_name",
-        type=SearchFieldDataType.String,
-        searchable=True,
-        filterable=True,
-        sortable=True,
-        facetable=True,
-    ),
-    SearchField(
-        name="permit_type",
-        type=SearchFieldDataType.String,
-        searchable=True,
-        filterable=True,
-        sortable=True,
-        facetable=True,
-    ),
-    SearchField(
-        name="tenure",
-        type="Collection(Edm.String)",
-        searchable=False,
-        filterable=True,
-        sortable=False,
-        facetable=True,
-    ),
-    SearchField(
-        name="verification_status",
-        type=SearchFieldDataType.String,
-        searchable=False,
-        filterable=True,
-        sortable=False,
-        facetable=True,
-    ),
-]
 
 # Vector search configuration
 vector_search = VectorSearch(

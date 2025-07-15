@@ -14,14 +14,14 @@ class DocumentIntelligenceConfig:
 @dataclass
 class AzureOpenAIConfig:
     api_key: Secret
-    endpoint: str
+    endpoint: Secret
     deployment_name: str
     api_version: str
     embedding_model: str = "text-embedding-3-large"
 
 @dataclass
 class AzureSearchConfig:
-    endpoint: str
+    endpoint: Secret
     api_key: Secret
     index_name: str = "permit-conditions"
     embedding_dimension: int = 3072
@@ -52,7 +52,7 @@ class Config:
         # Azure OpenAI configuration
         openai = AzureOpenAIConfig(
             api_key=Secret.from_env_var("AZURE_API_KEY", strict=True),
-            endpoint=os.environ["AZURE_BASE_URL"],
+            endpoint=Secret.from_env_var("AZURE_BASE_URL", strict=True),
             deployment_name=os.environ["AZURE_DEPLOYMENT_NAME"],
             api_version=os.environ.get("AZURE_API_VERSION", "2024-02-01"),
             embedding_model="text-embedding-3-large"
@@ -60,7 +60,7 @@ class Config:
 
         # Azure Search configuration
         search = AzureSearchConfig(
-            endpoint=os.environ["AZURE_SEARCH_SERVICE_ENDPOINT"],
+            endpoint=Secret.from_env_var("AZURE_SEARCH_SERVICE_ENDPOINT", strict=True),
             api_key=Secret.from_env_var("AZURE_SEARCH_API_KEY", strict=True),
             index_name="permit-conditions",
             embedding_dimension=3072

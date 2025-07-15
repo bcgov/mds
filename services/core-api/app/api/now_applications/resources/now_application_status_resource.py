@@ -19,6 +19,7 @@ from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
 from app.api.services.issue_to_orgbook_service import OrgBookIssuerService
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
+from app.api.mines.permits.permit_conditions.tasks import export_and_index_single_permit_amendment
 
 
 class NOWApplicationStatusCodeResource(Resource, UserMixin):
@@ -306,6 +307,8 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                         db.session.add(new_mpa)
 
             db.session.commit()
+
+            export_and_index_single_permit_amendment.delay(permit_amendment.permit_amendment_guid)
 
             # Issue verifiable credential to OrgBook (currently, a non-blocking operation)
             try:
