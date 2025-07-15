@@ -105,7 +105,7 @@ def _exclude_paragraphs_overlapping_page_header(paragraphs):
     )
 
     for p in part_of_header:
-        logger.info(f"Excluded paragraph due to header overlap: {p.content['text']}")
+        logger.info(f"Excluded paragraph due to header overlap: {p}, y max: {max_page_header_y}")
 
     if len(non_header_paragraphs) > 0:
         return non_header_paragraphs, max_page_header_y
@@ -156,6 +156,8 @@ def _exclude_paragraphs_with_non_paragraph_roles(paragraphs, max_page_header_y):
 
     return [p for p in paragraphs if p.content["role"] not in filterf]
 
+def _is_normal_paragraph(p):
+    return not p.content["role"] or p.content["role"] not in ["pageHeader","pageNumber"] and p.content
 
 def _identify_bottom_of_first_page_header(paragraphs):
     # Find the first paragraph that is identified as a page header
@@ -166,11 +168,12 @@ def _identify_bottom_of_first_page_header(paragraphs):
         if p.content["role"] != "pageHeader":
             continue
 
+        # The header continues until the next paragraph that is not a page header (that's on the same page)
         page_header_end_idx = next(
             (
                 page_header_start_idx + i
-                for i, p in enumerate(paragraphs[page_header_start_idx + 1 :])
-                if p.content["role"] and p.content["role"] != "pageHeader"
+                for i, end_p in enumerate(paragraphs[page_header_start_idx + 1 :])
+                if _is_normal_paragraph(end_p) and end_p.meta["page"] == p.meta["page"]
             ),
             None,
         )
