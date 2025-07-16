@@ -1006,7 +1006,6 @@ exports[`PermitConditions renders properly 1`] = `
                                         >
                                           <div
                                             class="ant-col step-column"
-                                            style="flex-shrink: 0;"
                                           >
                                             <div
                                               class="ant-typography view-item-value"
@@ -1298,7 +1297,6 @@ exports[`PermitConditions renders properly 1`] = `
                                         >
                                           <div
                                             class="ant-col step-column"
-                                            style="flex-shrink: 0;"
                                           >
                                             <div
                                               class="ant-typography view-item-value"
@@ -1560,7 +1558,6 @@ exports[`PermitConditions renders properly 1`] = `
                                         >
                                           <div
                                             class="ant-col step-column"
-                                            style="flex-shrink: 0;"
                                           >
                                             <div
                                               class="ant-typography view-item-value"
@@ -1598,7 +1595,6 @@ exports[`PermitConditions renders properly 1`] = `
                                               >
                                                 <div
                                                   class="ant-col step-column"
-                                                  style="flex-shrink: 0;"
                                                 >
                                                   <div
                                                     class="ant-typography view-item-value"
@@ -1636,7 +1632,6 @@ exports[`PermitConditions renders properly 1`] = `
                                                     >
                                                       <div
                                                         class="ant-col step-column"
-                                                        style="flex-shrink: 0;"
                                                       >
                                                         <div
                                                           class="ant-typography view-item-value"
@@ -1680,7 +1675,6 @@ exports[`PermitConditions renders properly 1`] = `
                                               >
                                                 <div
                                                   class="ant-col step-column"
-                                                  style="flex-shrink: 0;"
                                                 >
                                                   <div
                                                     class="ant-typography view-item-value"
@@ -1718,7 +1712,6 @@ exports[`PermitConditions renders properly 1`] = `
                                                     >
                                                       <div
                                                         class="ant-col step-column"
-                                                        style="flex-shrink: 0;"
                                                       >
                                                         <div
                                                           class="ant-typography view-item-value"
@@ -1756,7 +1749,6 @@ exports[`PermitConditions renders properly 1`] = `
                                                           >
                                                             <div
                                                               class="ant-col step-column"
-                                                              style="flex-shrink: 0;"
                                                             >
                                                               <div
                                                                 class="ant-typography view-item-value"
@@ -1797,7 +1789,6 @@ exports[`PermitConditions renders properly 1`] = `
                                                           >
                                                             <div
                                                               class="ant-col step-column"
-                                                              style="flex-shrink: 0;"
                                                             >
                                                               <div
                                                                 class="ant-typography view-item-value"
@@ -1838,7 +1829,6 @@ exports[`PermitConditions renders properly 1`] = `
                                                           >
                                                             <div
                                                               class="ant-col step-column"
-                                                              style="flex-shrink: 0;"
                                                             >
                                                               <div
                                                                 class="ant-typography view-item-value"
@@ -1876,7 +1866,6 @@ exports[`PermitConditions renders properly 1`] = `
                                                                 >
                                                                   <div
                                                                     class="ant-col step-column"
-                                                                    style="flex-shrink: 0;"
                                                                   >
                                                                     <div
                                                                       class="ant-typography view-item-value"
@@ -1986,7 +1975,6 @@ exports[`PermitConditions renders properly 1`] = `
                                         >
                                           <div
                                             class="ant-col step-column"
-                                            style="flex-shrink: 0;"
                                           >
                                             <div
                                               class="ant-typography view-item-value"
@@ -2024,7 +2012,6 @@ exports[`PermitConditions renders properly 1`] = `
                                               >
                                                 <div
                                                   class="ant-col step-column"
-                                                  style="flex-shrink: 0;"
                                                 >
                                                   <div
                                                     class="ant-typography view-item-value"

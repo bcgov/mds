@@ -101,7 +101,7 @@ exports[`PermitConditionForm renders properly in edit mode 1`] = `
           </div>
         </div>
         <div
-          class="ant-row ant-row-space-between ant-row-middle"
+          class="ant-row ant-row-no-wrap ant-row-space-between ant-row-top"
         >
           <div
             class="ant-col"
@@ -290,59 +290,70 @@ exports[`PermitConditionForm renders properly in edit mode 1`] = `
                 class="ant-col"
                 style="padding-left: 4px; padding-right: 4px;"
               >
-                <button
-                  aria-label="Cancel"
-                  class="ant-btn ant-btn-primary ant-btn-icon-only core-btn core-btn-primary  form-btn"
-                  type="button"
+                <div
+                  class="ant-row"
+                  style="margin-left: -4px; margin-right: -4px;"
                 >
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-xmark "
-                    data-icon="xmark"
-                    data-prefix="far"
-                    focusable="false"
-                    role="img"
-                    viewBox="0 0 384 512"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <div
+                    class="ant-col"
+                    style="padding-left: 4px; padding-right: 4px;"
                   >
-                    <path
-                      d="M345 137c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-119 119L73 103c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l119 119L39 375c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l119-119L311 409c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-119-119L345 137z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div
-                class="ant-col"
-                style="padding-left: 4px; padding-right: 4px;"
-              >
-                <button
-                  aria-label="Submit"
-                  class="ant-btn ant-btn-primary ant-btn-icon-only  form-btn"
-                  disabled=""
-                  type="submit"
-                >
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-check "
-                    data-icon="check"
-                    data-prefix="far"
-                    focusable="false"
-                    role="img"
-                    viewBox="0 0 448 512"
-                    xmlns="http://www.w3.org/2000/svg"
+                    <button
+                      aria-label="Cancel"
+                      class="ant-btn ant-btn-primary ant-btn-icon-only core-btn core-btn-primary  form-btn"
+                      type="button"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-xmark "
+                        data-icon="xmark"
+                        data-prefix="far"
+                        focusable="false"
+                        role="img"
+                        viewBox="0 0 384 512"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M345 137c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-119 119L73 103c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l119 119L39 375c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l119-119L311 409c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-119-119L345 137z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <div
+                    class="ant-col"
+                    style="padding-left: 4px; padding-right: 4px;"
                   >
-                    <path
-                      d="M441 103c9.4 9.4 9.4 24.6 0 33.9L177 401c-9.4 9.4-24.6 9.4-33.9 0L7 265c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l119 119L407 103c9.4-9.4 24.6-9.4 33.9 0z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </button>
+                    <button
+                      aria-label="Submit"
+                      class="ant-btn ant-btn-primary ant-btn-icon-only  form-btn"
+                      disabled=""
+                      type="submit"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-check "
+                        data-icon="check"
+                        data-prefix="far"
+                        focusable="false"
+                        role="img"
+                        viewBox="0 0 448 512"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M441 103c9.4 9.4 9.4 24.6 0 33.9L177 401c-9.4 9.4-24.6 9.4-33.9 0L7 265c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l119 119L407 103c9.4-9.4 24.6-9.4 33.9 0z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           <div
             class="ant-col"
+            style="flex-shrink: 0;"
           >
             <div
               class="ant-row ant-row-middle condition-edit-buttons"
