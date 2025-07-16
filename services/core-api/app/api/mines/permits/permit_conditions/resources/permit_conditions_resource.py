@@ -152,7 +152,7 @@ class PermitConditionsResource(Resource, UserMixin):
 
         set_audit_metadata(permit_amendment, False)
 
-        updateConditionTags(old_tags, new_tags, condition)
+        update_condition_tags(old_tags, new_tags, condition)
 
         db.session.commit()
 
@@ -220,7 +220,7 @@ def set_audit_metadata(permit_amendment, commit=True):
     permit_amendment.permit_conditions_last_updated_date = datetime.now(timezone.utc)
     permit_amendment.save(commit=commit)
 
-def updateConditionTags(old_tags, new_tags, condition):
+def update_condition_tags(old_tags, new_tags, condition):
     if old_tags != new_tags:
 
         # Remove tags

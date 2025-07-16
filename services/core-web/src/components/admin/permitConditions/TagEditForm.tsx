@@ -9,7 +9,7 @@ import RenderField from "@mds/common/components/forms/RenderField";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import { useAppDispatch } from "@mds/common/redux/rootState";
-import { createPermitConditionTag, updatePermitConditionTag } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { createPermitConditionTag, updatePermitConditionTag } from "@mds/common/redux/slices/permitConditionTagSlice";
 
 export const TagEditForm: FC<{
     existingTag: IPermitConditionTag
@@ -21,7 +21,7 @@ export const TagEditForm: FC<{
 
     const handleSubmit = async (values) => {
         if(existingTag){
-            await dispatch(updatePermitConditionTag(existingTag.permit_condition_tag_guid, values))
+            await dispatch(updatePermitConditionTag(values))
         } else {
             await dispatch(createPermitConditionTag(values))
         }

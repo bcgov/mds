@@ -36,7 +36,6 @@ import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import {
   createPermitAmendmentConditionCategory,
   deletePermitAmendmentConditionCategory,
-  fetchPermitConditionTags,
   fetchPermits,
   updatePermitAmendmentConditionCategory,
   updatePermitCondition,
@@ -63,7 +62,7 @@ import PermitConditionLayer from "@mds/common/components/permits/PermitCondition
 import { LatestAmendmentWarning } from "./LatestAmendmentWarning";
 import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
 import { FORM } from "@mds/common/constants/forms";
-import { getPermitConditionTags } from "@mds/common/redux/reducers/permitReducer";
+import { fetchPermitConditionTags, getPermitConditionTags } from "@mds/common/redux/slices/permitConditionTagSlice";
 
 const { Title } = Typography;
 
@@ -195,7 +194,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
 
   useEffect(() => {
     if (conditionTags?.length === 0) {
-      dispatch(fetchPermitConditionTags());
+      dispatch(fetchPermitConditionTags(undefined));
     }
   }, [conditionTags]);
 

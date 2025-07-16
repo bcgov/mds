@@ -95,7 +95,7 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def condition_tags(self):
-        return [ str(tag_xref.permit_condition_tag_guid) for tag_xref in self.condition_tag_xrefs ]
+        return [ str(tag_xref.permit_condition_tag_guid) for tag_xref in self.condition_tag_xrefs if tag_xref.permit_condition_tag and not tag_xref.permit_condition_tag.deleted_ind]
 
     @hybrid_property
     def sub_conditions(self):

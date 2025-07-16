@@ -3,6 +3,7 @@
 div.condition-layer {
   padding: 2px;
   padding-top: 12px;
+  padding-bottom: 12px;
   padding-left: 24px;
   font-weight: normal;
   margin-bottom: 10px;
@@ -11,6 +12,7 @@ div.condition-layer {
 
   &.condition-SEC .condition-column>.ant-typography {
     font-weight: bold;
+    margin-bottom: 8px;
   }
 
   .ant-form {

@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { change, Field, isDirty, reset } from "@mds/common/components/forms/form";
-import { Row, Col, Button, Typography, Modal } from "antd";
+import { Row, Col, Button, Typography, Modal, Tag } from "antd";
 import {
     faArrowDown,
     faArrowUp,
@@ -30,10 +30,10 @@ import { FORM } from "@mds/common/constants/forms";
 import RenderGroupedSelect from "@mds/common/components/forms/RenderGroupedSelect";
 import { PermitConditionsProvider, usePermitConditions } from "@mds/common/components/permits/PermitConditionsContext";
 import { DeleteConditionModal } from "./DeleteConditionModal";
-import { getPermitConditionTags } from "@mds/common/redux/reducers/permitReducer";
 import RenderMultiSelect from "../forms/RenderMultiSelect";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
+import { getPermitConditionTags } from "@mds/common/redux/slices/permitConditionTagSlice";
 
 interface PermitConditionFormProps {
     isExtracted: boolean;
@@ -215,22 +215,37 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const childConditionType = childTypeMap[condition.condition_type_code];
 
     return !isEditMode ? (
-        <Row
-            wrap={false}
-            align="top"
-            className={`condition-content ${editingEnabled ? "editable" : ""}`}
-        >
-            <Col className="step-column" style={{ flexShrink: 0 }}>
-                <Typography.Paragraph className="view-item-value">
-                    {formatPermitConditionStep(condition.step)}
-                </Typography.Paragraph>
-            </Col>
-            <Col className="condition-column" {...editableProps}>
-                <Typography.Paragraph className="view-item-value">
-                    {condition.condition}
-                </Typography.Paragraph>
-            </Col>
-        </Row>
+        <Col>
+            <Row
+                wrap={false}
+                align="top"
+                className={`condition-content ${editingEnabled ? "editable" : ""}`}
+            >
+                <Col className="step-column" style={{ flexShrink: 0 }}>
+                    <Typography.Paragraph className="view-item-value">
+                        {formatPermitConditionStep(condition.step)}
+                    </Typography.Paragraph>
+                </Col>
+                <Col className="condition-column" {...editableProps}>
+                    <Typography.Paragraph className="view-item-value">
+                        {condition.condition}
+                    </Typography.Paragraph>
+                </Col>
+            </Row>
+            {enablePermitConditionTags && conditionTags && 
+                <Row>
+                        { condition.condition_tags.map((tagGuid) => {
+                            const tag = conditionTags.find((t) => t.permit_condition_tag_guid === tagGuid);
+                            if (!tag) return null;
+                            return (
+                                <Tag color="green" key={tag.permit_condition_tag_guid}>
+                                    {tag.description}
+                                </Tag>
+                            );
+                        })}
+                </Row>
+            }
+        </Col>
     ) : (
         <FormWrapper
             isEditMode={isEditMode && isExtracted}

@@ -998,29 +998,37 @@ exports[`PermitConditions renders properly 1`] = `
                                       class="condition-collapsed"
                                     >
                                       <div
-                                        class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                        class="ant-col"
+                                        style="padding: 8px 8px 8px 8px;"
                                       >
                                         <div
-                                          class="ant-col step-column"
-                                          style="flex-shrink: 0;"
+                                          class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
                                         >
                                           <div
-                                            class="ant-typography view-item-value"
+                                            class="ant-col step-column"
+                                            style="flex-shrink: 0;"
                                           >
-                                            1.
+                                            <div
+                                              class="ant-typography view-item-value"
+                                            >
+                                              1.
+                                            </div>
+                                          </div>
+                                          <div
+                                            aria-label="Edit Condition Health and Safety - 1"
+                                            class="ant-col condition-column"
+                                            title="Edit Condition Health and Safety - 1"
+                                          >
+                                            <div
+                                              class="ant-typography view-item-value"
+                                            >
+                                              Section decade check including.
+                                            </div>
                                           </div>
                                         </div>
                                         <div
-                                          aria-label="Edit Condition Health and Safety - 1"
-                                          class="ant-col condition-column"
-                                          title="Edit Condition Health and Safety - 1"
-                                        >
-                                          <div
-                                            class="ant-typography view-item-value"
-                                          >
-                                            Section decade check including.
-                                          </div>
-                                        </div>
+                                          class="ant-row"
+                                        />
                                       </div>
                                     </div>
                                     <div>
@@ -1282,27 +1290,35 @@ exports[`PermitConditions renders properly 1`] = `
                                       class="condition-collapsed"
                                     >
                                       <div
-                                        class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                        class="ant-col"
+                                        style="padding: 8px 8px 8px 8px;"
                                       >
                                         <div
-                                          class="ant-col step-column"
-                                          style="flex-shrink: 0;"
+                                          class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                         >
                                           <div
-                                            class="ant-typography view-item-value"
+                                            class="ant-col step-column"
+                                            style="flex-shrink: 0;"
                                           >
-                                            1.
+                                            <div
+                                              class="ant-typography view-item-value"
+                                            >
+                                              1.
+                                            </div>
+                                          </div>
+                                          <div
+                                            class="ant-col condition-column"
+                                          >
+                                            <div
+                                              class="ant-typography view-item-value"
+                                            >
+                                              Reflect miss police tough such single force.
+                                            </div>
                                           </div>
                                         </div>
                                         <div
-                                          class="ant-col condition-column"
-                                        >
-                                          <div
-                                            class="ant-typography view-item-value"
-                                          >
-                                            Reflect miss police tough such single force.
-                                          </div>
-                                        </div>
+                                          class="ant-row"
+                                        />
                                       </div>
                                     </div>
                                     <div>
@@ -1536,27 +1552,35 @@ exports[`PermitConditions renders properly 1`] = `
                                       class="condition-collapsed"
                                     >
                                       <div
-                                        class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                        class="ant-col"
+                                        style="padding: 8px 8px 8px 8px;"
                                       >
                                         <div
-                                          class="ant-col step-column"
-                                          style="flex-shrink: 0;"
+                                          class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                         >
                                           <div
-                                            class="ant-typography view-item-value"
+                                            class="ant-col step-column"
+                                            style="flex-shrink: 0;"
                                           >
-                                            1.
+                                            <div
+                                              class="ant-typography view-item-value"
+                                            >
+                                              1.
+                                            </div>
+                                          </div>
+                                          <div
+                                            class="ant-col condition-column"
+                                          >
+                                            <div
+                                              class="ant-typography view-item-value"
+                                            >
+                                              International clear those TV individual look.
+                                            </div>
                                           </div>
                                         </div>
                                         <div
-                                          class="ant-col condition-column"
-                                        >
-                                          <div
-                                            class="ant-typography view-item-value"
-                                          >
-                                            International clear those TV individual look.
-                                          </div>
-                                        </div>
+                                          class="ant-row"
+                                        />
                                       </div>
                                       <div>
                                         <div
@@ -1566,27 +1590,35 @@ exports[`PermitConditions renders properly 1`] = `
                                             class="condition-collapsed"
                                           >
                                             <div
-                                              class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                              class="ant-col"
+                                              style="padding: 8px 8px 8px 8px;"
                                             >
                                               <div
-                                                class="ant-col step-column"
-                                                style="flex-shrink: 0;"
+                                                class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                               >
                                                 <div
-                                                  class="ant-typography view-item-value"
+                                                  class="ant-col step-column"
+                                                  style="flex-shrink: 0;"
                                                 >
-                                                  a.
+                                                  <div
+                                                    class="ant-typography view-item-value"
+                                                  >
+                                                    a.
+                                                  </div>
+                                                </div>
+                                                <div
+                                                  class="ant-col condition-column"
+                                                >
+                                                  <div
+                                                    class="ant-typography view-item-value"
+                                                  >
+                                                    See store understand company interview value factor.
+                                                  </div>
                                                 </div>
                                               </div>
                                               <div
-                                                class="ant-col condition-column"
-                                              >
-                                                <div
-                                                  class="ant-typography view-item-value"
-                                                >
-                                                  See store understand company interview value factor.
-                                                </div>
-                                              </div>
+                                                class="ant-row"
+                                              />
                                             </div>
                                             <div>
                                               <div
@@ -1596,27 +1628,35 @@ exports[`PermitConditions renders properly 1`] = `
                                                   class="condition-collapsed"
                                                 >
                                                   <div
-                                                    class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                                    class="ant-col"
+                                                    style="padding: 8px 8px 8px 8px;"
                                                   >
                                                     <div
-                                                      class="ant-col step-column"
-                                                      style="flex-shrink: 0;"
+                                                      class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                                     >
                                                       <div
-                                                        class="ant-typography view-item-value"
+                                                        class="ant-col step-column"
+                                                        style="flex-shrink: 0;"
                                                       >
-                                                        i.
+                                                        <div
+                                                          class="ant-typography view-item-value"
+                                                        >
+                                                          i.
+                                                        </div>
+                                                      </div>
+                                                      <div
+                                                        class="ant-col condition-column"
+                                                      >
+                                                        <div
+                                                          class="ant-typography view-item-value"
+                                                        >
+                                                          Mr item fall study although.
+                                                        </div>
                                                       </div>
                                                     </div>
                                                     <div
-                                                      class="ant-col condition-column"
-                                                    >
-                                                      <div
-                                                        class="ant-typography view-item-value"
-                                                      >
-                                                        Mr item fall study although.
-                                                      </div>
-                                                    </div>
+                                                      class="ant-row"
+                                                    />
                                                   </div>
                                                 </div>
                                               </div>
@@ -1632,27 +1672,35 @@ exports[`PermitConditions renders properly 1`] = `
                                             class="condition-collapsed"
                                           >
                                             <div
-                                              class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                              class="ant-col"
+                                              style="padding: 8px 8px 8px 8px;"
                                             >
                                               <div
-                                                class="ant-col step-column"
-                                                style="flex-shrink: 0;"
+                                                class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                               >
                                                 <div
-                                                  class="ant-typography view-item-value"
+                                                  class="ant-col step-column"
+                                                  style="flex-shrink: 0;"
                                                 >
-                                                  b.
+                                                  <div
+                                                    class="ant-typography view-item-value"
+                                                  >
+                                                    b.
+                                                  </div>
+                                                </div>
+                                                <div
+                                                  class="ant-col condition-column"
+                                                >
+                                                  <div
+                                                    class="ant-typography view-item-value"
+                                                  >
+                                                    words words words sub-section
+                                                  </div>
                                                 </div>
                                               </div>
                                               <div
-                                                class="ant-col condition-column"
-                                              >
-                                                <div
-                                                  class="ant-typography view-item-value"
-                                                >
-                                                  words words words sub-section
-                                                </div>
-                                              </div>
+                                                class="ant-row"
+                                              />
                                             </div>
                                             <div>
                                               <div
@@ -1662,27 +1710,35 @@ exports[`PermitConditions renders properly 1`] = `
                                                   class="condition-collapsed"
                                                 >
                                                   <div
-                                                    class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                                    class="ant-col"
+                                                    style="padding: 8px 8px 8px 8px;"
                                                   >
                                                     <div
-                                                      class="ant-col step-column"
-                                                      style="flex-shrink: 0;"
+                                                      class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                                     >
                                                       <div
-                                                        class="ant-typography view-item-value"
+                                                        class="ant-col step-column"
+                                                        style="flex-shrink: 0;"
                                                       >
-                                                        i.
+                                                        <div
+                                                          class="ant-typography view-item-value"
+                                                        >
+                                                          i.
+                                                        </div>
+                                                      </div>
+                                                      <div
+                                                        class="ant-col condition-column"
+                                                      >
+                                                        <div
+                                                          class="ant-typography view-item-value"
+                                                        >
+                                                          a condition added underneath the section, with a lot of detail added to it, which is probably important for documents like permits
+                                                        </div>
                                                       </div>
                                                     </div>
                                                     <div
-                                                      class="ant-col condition-column"
-                                                    >
-                                                      <div
-                                                        class="ant-typography view-item-value"
-                                                      >
-                                                        a condition added underneath the section, with a lot of detail added to it, which is probably important for documents like permits
-                                                      </div>
-                                                    </div>
+                                                      class="ant-row"
+                                                    />
                                                   </div>
                                                   <div>
                                                     <div
@@ -1692,27 +1748,35 @@ exports[`PermitConditions renders properly 1`] = `
                                                         class="condition-collapsed"
                                                       >
                                                         <div
-                                                          class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                                          class="ant-col"
+                                                          style="padding: 8px 8px 8px 8px;"
                                                         >
                                                           <div
-                                                            class="ant-col step-column"
-                                                            style="flex-shrink: 0;"
+                                                            class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                                           >
                                                             <div
-                                                              class="ant-typography view-item-value"
+                                                              class="ant-col step-column"
+                                                              style="flex-shrink: 0;"
                                                             >
-                                                              1.
+                                                              <div
+                                                                class="ant-typography view-item-value"
+                                                              >
+                                                                1.
+                                                              </div>
+                                                            </div>
+                                                            <div
+                                                              class="ant-col condition-column"
+                                                            >
+                                                              <div
+                                                                class="ant-typography view-item-value"
+                                                              >
+                                                                a detailed list item desribing exactly what must be done to accomplish the parent condition
+                                                              </div>
                                                             </div>
                                                           </div>
                                                           <div
-                                                            class="ant-col condition-column"
-                                                          >
-                                                            <div
-                                                              class="ant-typography view-item-value"
-                                                            >
-                                                              a detailed list item desribing exactly what must be done to accomplish the parent condition
-                                                            </div>
-                                                          </div>
+                                                            class="ant-row"
+                                                          />
                                                         </div>
                                                       </div>
                                                     </div>
@@ -1725,27 +1789,35 @@ exports[`PermitConditions renders properly 1`] = `
                                                         class="condition-collapsed"
                                                       >
                                                         <div
-                                                          class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                                          class="ant-col"
+                                                          style="padding: 8px 8px 8px 8px;"
                                                         >
                                                           <div
-                                                            class="ant-col step-column"
-                                                            style="flex-shrink: 0;"
+                                                            class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                                           >
                                                             <div
-                                                              class="ant-typography view-item-value"
+                                                              class="ant-col step-column"
+                                                              style="flex-shrink: 0;"
                                                             >
-                                                              2.
+                                                              <div
+                                                                class="ant-typography view-item-value"
+                                                              >
+                                                                2.
+                                                              </div>
+                                                            </div>
+                                                            <div
+                                                              class="ant-col condition-column"
+                                                            >
+                                                              <div
+                                                                class="ant-typography view-item-value"
+                                                              >
+                                                                but, that wasn't quite enough information, another list item will expand on other responsibilities associated with this permit
+                                                              </div>
                                                             </div>
                                                           </div>
                                                           <div
-                                                            class="ant-col condition-column"
-                                                          >
-                                                            <div
-                                                              class="ant-typography view-item-value"
-                                                            >
-                                                              but, that wasn't quite enough information, another list item will expand on other responsibilities associated with this permit
-                                                            </div>
-                                                          </div>
+                                                            class="ant-row"
+                                                          />
                                                         </div>
                                                       </div>
                                                     </div>
@@ -1758,27 +1830,35 @@ exports[`PermitConditions renders properly 1`] = `
                                                         class="condition-collapsed"
                                                       >
                                                         <div
-                                                          class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                                          class="ant-col"
+                                                          style="padding: 8px 8px 8px 8px;"
                                                         >
                                                           <div
-                                                            class="ant-col step-column"
-                                                            style="flex-shrink: 0;"
+                                                            class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                                           >
                                                             <div
-                                                              class="ant-typography view-item-value"
+                                                              class="ant-col step-column"
+                                                              style="flex-shrink: 0;"
                                                             >
-                                                              3.
+                                                              <div
+                                                                class="ant-typography view-item-value"
+                                                              >
+                                                                3.
+                                                              </div>
+                                                            </div>
+                                                            <div
+                                                              class="ant-col condition-column"
+                                                            >
+                                                              <div
+                                                                class="ant-typography view-item-value"
+                                                              >
+                                                                good things come in 3s, so another list item is added to the condition
+                                                              </div>
                                                             </div>
                                                           </div>
                                                           <div
-                                                            class="ant-col condition-column"
-                                                          >
-                                                            <div
-                                                              class="ant-typography view-item-value"
-                                                            >
-                                                              good things come in 3s, so another list item is added to the condition
-                                                            </div>
-                                                          </div>
+                                                            class="ant-row"
+                                                          />
                                                         </div>
                                                         <div>
                                                           <div
@@ -1788,27 +1868,35 @@ exports[`PermitConditions renders properly 1`] = `
                                                               class="condition-collapsed"
                                                             >
                                                               <div
-                                                                class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                                                class="ant-col"
+                                                                style="padding: 8px 8px 8px 8px;"
                                                               >
                                                                 <div
-                                                                  class="ant-col step-column"
-                                                                  style="flex-shrink: 0;"
+                                                                  class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                                                 >
                                                                   <div
-                                                                    class="ant-typography view-item-value"
+                                                                    class="ant-col step-column"
+                                                                    style="flex-shrink: 0;"
                                                                   >
-                                                                    a.
+                                                                    <div
+                                                                      class="ant-typography view-item-value"
+                                                                    >
+                                                                      a.
+                                                                    </div>
+                                                                  </div>
+                                                                  <div
+                                                                    class="ant-col condition-column"
+                                                                  >
+                                                                    <div
+                                                                      class="ant-typography view-item-value"
+                                                                    >
+                                                                      we want to show nesting to 5 levels, so one list item gets a child
+                                                                    </div>
                                                                   </div>
                                                                 </div>
                                                                 <div
-                                                                  class="ant-col condition-column"
-                                                                >
-                                                                  <div
-                                                                    class="ant-typography view-item-value"
-                                                                  >
-                                                                    we want to show nesting to 5 levels, so one list item gets a child
-                                                                  </div>
-                                                                </div>
+                                                                  class="ant-row"
+                                                                />
                                                               </div>
                                                             </div>
                                                           </div>
@@ -1890,27 +1978,35 @@ exports[`PermitConditions renders properly 1`] = `
                                       class="condition-collapsed"
                                     >
                                       <div
-                                        class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                        class="ant-col"
+                                        style="padding: 8px 8px 8px 8px;"
                                       >
                                         <div
-                                          class="ant-col step-column"
-                                          style="flex-shrink: 0;"
+                                          class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                         >
                                           <div
-                                            class="ant-typography view-item-value"
+                                            class="ant-col step-column"
+                                            style="flex-shrink: 0;"
                                           >
-                                            2.
+                                            <div
+                                              class="ant-typography view-item-value"
+                                            >
+                                              2.
+                                            </div>
+                                          </div>
+                                          <div
+                                            class="ant-col condition-column"
+                                          >
+                                            <div
+                                              class="ant-typography view-item-value"
+                                            >
+                                              Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines
+                                            </div>
                                           </div>
                                         </div>
                                         <div
-                                          class="ant-col condition-column"
-                                        >
-                                          <div
-                                            class="ant-typography view-item-value"
-                                          >
-                                            Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines
-                                          </div>
-                                        </div>
+                                          class="ant-row"
+                                        />
                                       </div>
                                       <div>
                                         <div
@@ -1920,27 +2016,35 @@ exports[`PermitConditions renders properly 1`] = `
                                             class="condition-collapsed"
                                           >
                                             <div
-                                              class="ant-row ant-row-no-wrap ant-row-top condition-content "
+                                              class="ant-col"
+                                              style="padding: 8px 8px 8px 8px;"
                                             >
                                               <div
-                                                class="ant-col step-column"
-                                                style="flex-shrink: 0;"
+                                                class="ant-row ant-row-no-wrap ant-row-top condition-content "
                                               >
                                                 <div
-                                                  class="ant-typography view-item-value"
+                                                  class="ant-col step-column"
+                                                  style="flex-shrink: 0;"
                                                 >
-                                                  a.
+                                                  <div
+                                                    class="ant-typography view-item-value"
+                                                  >
+                                                    a.
+                                                  </div>
+                                                </div>
+                                                <div
+                                                  class="ant-col condition-column"
+                                                >
+                                                  <div
+                                                    class="ant-typography view-item-value"
+                                                  >
+                                                    It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?
+                                                  </div>
                                                 </div>
                                               </div>
                                               <div
-                                                class="ant-col condition-column"
-                                              >
-                                                <div
-                                                  class="ant-typography view-item-value"
-                                                >
-                                                  It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?
-                                                </div>
-                                              </div>
+                                                class="ant-row"
+                                              />
                                             </div>
                                           </div>
                                         </div>

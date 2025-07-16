@@ -6,8 +6,7 @@ import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonC
 import { Button, Divider, Popconfirm, Row } from "antd";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import { IPermitConditionTag } from "@mds/common/interfaces";
-import { deletePermitConditionTag, fetchPermitConditionTags } from "@mds/common/redux/actionCreators/permitActionCreator";
-import { getPermitConditionTags } from "@mds/common/redux/reducers/permitReducer";
+import { deletePermitConditionTag, fetchPermitConditionTags, getPermitConditionTags } from "@mds/common/redux/slices/permitConditionTagSlice";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
@@ -25,13 +24,13 @@ const TagManagement: FC = () => {
   useEffect(() => {
       if (conditionTags?.length === 0) {
         setIsLoading(true);
-        dispatch(fetchPermitConditionTags())
+        dispatch(fetchPermitConditionTags(undefined))
         setIsLoading(false);
       }
     }, [conditionTags]);
 
   const refreshConditionTags = () => {
-    dispatch(fetchPermitConditionTags())
+    dispatch(fetchPermitConditionTags(undefined))
   };
 
   const handleOpenModal = (record) => {
@@ -40,7 +39,7 @@ const TagManagement: FC = () => {
         title: `Update Tag`,
         existingTag: record,
         formName: FORM.EDIT_PERMIT_CONDITION_TAG,
-        handleClose: () => handleCloseAddModal(),
+        handleClose: () => dispatch(closeModal()),
       },
       content: TagEditForm,
     }));
@@ -52,17 +51,12 @@ const TagManagement: FC = () => {
         props: {
           title: "Add New Tag",
           formName: FORM.ADD_PERMIT_CONDITION_TAG,
-          handleClose: () => handleCloseAddModal(),
+          handleClose: () => dispatch(closeModal()),
         },
         content: TagEditForm,
       })
     );
   }
-
-  const handleCloseAddModal = () => {
-    dispatch(closeModal());
-    refreshConditionTags();
-  };
 
   const handleDelete = async (conditionTagGuid) => {
     await dispatch(deletePermitConditionTag(conditionTagGuid))

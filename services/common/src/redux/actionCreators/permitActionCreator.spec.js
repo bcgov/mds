@@ -24,9 +24,6 @@ import {
   createPermitAmendmentConditionCategory,
   updatePermitAmendmentConditionCategory,
   deletePermitAmendmentConditionCategory,
-  createPermitConditionTag,
-  updatePermitConditionTag,
-  deletePermitConditionTag
 } from "@mds/common/redux/actionCreators/permitActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
@@ -865,100 +862,6 @@ describe("`createPermitCondition` action creator", () => {
         expect(errorSpy).toHaveBeenCalledTimes(1);
         expect(errorSpy).toHaveBeenCalledWith("DELETE_PERMIT_CONDITION_CATEGORY");
         expect(dispatch).toHaveBeenCalledTimes(4);
-      });
-    });
-  });
-
-  describe("`createPermitConditionTag` action creator", () => {
-    const payload = { name: "Tag 1" };
-    const url = ENVIRONMENT.apiUrl + API.PERMIT_CONDITION_TAGS();
-
-    it("Request successful, dispatches `success` with correct response", () => {
-      const mockResponse = { data: { ...payload, condition_tag_guid: "abc123" } };
-      mockAxios.onPost(url, payload).reply(200, mockResponse);
-
-      return createPermitConditionTag(payload)(dispatch).then(() => {
-        expect(requestSpy).toHaveBeenCalledTimes(1);
-        expect(requestSpy).toHaveBeenCalledWith("CREATE_PERMIT_CONDITION_TAG");
-        expect(successSpy).toHaveBeenCalledTimes(1);
-        expect(successSpy).toHaveBeenCalledWith("CREATE_PERMIT_CONDITION_TAG");
-        expect(dispatch).toHaveBeenCalledTimes(4);
-      });
-    });
-
-    it("Request failure, dispatches `error` with correct response", () => {
-      mockAxios.onPost(url).reply(418, MOCK.ERROR);
-
-      return createPermitConditionTag(payload)(dispatch).catch(() => {
-        expect(requestSpy).toHaveBeenCalledTimes(1);
-        expect(requestSpy).toHaveBeenCalledWith("CREATE_PERMIT_CONDITION_TAG");
-        expect(errorSpy).toHaveBeenCalledTimes(1);
-        expect(errorSpy).toHaveBeenCalledWith("CREATE_PERMIT_CONDITION_TAG");
-        expect(dispatch).toHaveBeenCalledTimes(4);
-      });
-    });
-  });
-
-  describe("`updatePermitConditionTag` action creator", () => {
-    const condition_tag_guid = "abc123";
-    const payload = { name: "Updated Tag" };
-    const url = ENVIRONMENT.apiUrl + API.PERMIT_CONDITION_TAG(condition_tag_guid);
-
-    it("Request successful, dispatches `success` with correct response", () => {
-      const mockResponse = { data: { ...payload, condition_tag_guid } };
-      mockAxios.onPut(url, payload).reply(200, mockResponse);
-
-      return updatePermitConditionTag(condition_tag_guid, payload)(dispatch).then(() => {
-        expect(requestSpy).toHaveBeenCalledTimes(1);
-        expect(requestSpy).toHaveBeenCalledWith("UPDATE_PERMIT_CONDITION_TAG");
-        expect(successSpy).toHaveBeenCalledTimes(1);
-        expect(successSpy).toHaveBeenCalledWith("UPDATE_PERMIT_CONDITION_TAG");
-        expect(dispatch).toHaveBeenCalledTimes(4);
-      });
-    });
-
-    it("Request failure, dispatches `error` with correct response", () => {
-      mockAxios.onPut(url).reply(418, MOCK.ERROR);
-
-      return updatePermitConditionTag(condition_tag_guid, payload)(dispatch).catch(() => {
-        expect(requestSpy).toHaveBeenCalledTimes(1);
-        expect(requestSpy).toHaveBeenCalledWith("UPDATE_PERMIT_CONDITION_TAG");
-        expect(errorSpy).toHaveBeenCalledTimes(1);
-        expect(errorSpy).toHaveBeenCalledWith("UPDATE_PERMIT_CONDITION_TAG");
-        expect(dispatch).toHaveBeenCalledTimes(4);
-
-      });
-    });
-  });
-
-  describe("`deletePermitConditionTag` action creator", () => {
-    const condition_tag_guid = "abc123";
-
-    const url = ENVIRONMENT.apiUrl + API.PERMIT_CONDITION_TAG(condition_tag_guid);
-
-    it("Request successful, dispatches `success` with correct response", () => {
-      const mockResponse = { data: { success: true } };
-      mockAxios.onDelete(url, payload).reply(200, mockResponse);
-
-      return deletePermitConditionTag(condition_tag_guid)(dispatch).then(() => {
-        expect(requestSpy).toHaveBeenCalledTimes(1);
-        expect(requestSpy).toHaveBeenCalledWith("DELETE_PERMIT_CONDITION_TAG");
-        expect(successSpy).toHaveBeenCalledTimes(1);
-        expect(successSpy).toHaveBeenCalledWith("DELETE_PERMIT_CONDITION_TAG");
-        expect(dispatch).toHaveBeenCalledTimes(4);
-      });
-    });
-
-    it("Request failure, dispatches `error` with correct response", () => {
-      mockAxios.onDelete(url).reply(418, MOCK.ERROR);
-
-      return deletePermitConditionTag(condition_tag_guid)(dispatch).catch(() => {
-        expect(requestSpy).toHaveBeenCalledTimes(1);
-        expect(requestSpy).toHaveBeenCalledWith("DELETE_PERMIT_CONDITION_TAG");
-        expect(errorSpy).toHaveBeenCalledTimes(1);
-        expect(errorSpy).toHaveBeenCalledWith("DELETE_PERMIT_CONDITION_TAG");
-        expect(dispatch).toHaveBeenCalledTimes(4);
-
       });
     });
   });

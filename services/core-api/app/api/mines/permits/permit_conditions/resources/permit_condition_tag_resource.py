@@ -2,7 +2,8 @@ from flask_restx import Resource, marshal
 from flask import request
 from werkzeug.exceptions import BadRequest
 
-from app.api.mines.response_models import PERMIT_CONDITION_TAG_MODEL
+from app.api.mines.permits.permit_conditions.models.permit_condition_tag_xref import PermitConditionTagXref
+from app.api.mines.response_models import PERMIT_CONDITION_TAG_MODEL, PermitCondition
 from app.api.utils.access_decorators import requires_role_mine_admin, requires_role_view_all
 from app.api.utils.models_mixins import SoftDeleteMixin
 from app.extensions import api
@@ -25,6 +26,7 @@ class PermitConditionTagResource(Resource, UserMixin):
         if not tag:
             raise BadRequest(f"Permit condition tag with ID {permit_condition_tag_guid} not found.")
         tag.delete(True)
+        PermitConditionTagXref.deleteAllByGuid(permit_condition_tag_guid)
         return {'message': 'Permit condition tag deleted successfully.'}, 204
     
     @requires_role_mine_admin

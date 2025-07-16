@@ -7,7 +7,6 @@ interface PermitState {
   permits: IPermit[];
   draftPermits: IPermit[];
   permitConditions: IPermitCondition[];
-  permitConditionTags: IPermitConditionTag[];
   editingConditionFlag: boolean;
   editingPreambleFlag: boolean;
   standardPermitConditions: IStandardPermitCondition[];
@@ -19,7 +18,6 @@ const initialState = {
   permits: [],
   draftPermits: [],
   permitConditions: [],
-  permitConditionTags: [],
   editingConditionFlag: false,
   editingPreambleFlag: false,
   standardPermitConditions: [],
@@ -133,8 +131,6 @@ export const getLatestPermitAmendments = (state: RootState): IPermitAmendment[] 
 export const getPermitAmendments = (state: RootState): Record<string, IPermitAmendment> => state[PERMITS].permitAmendments;
 export const getPermitConditions = (state: RootState): IPermitCondition[] =>
   state[PERMITS].permitConditions;
-export const getPermitConditionTags = (state: RootState): IPermitConditionTag[] =>
-  state[PERMITS].permitConditionTags;
 export const getStandardPermitConditions = (state: RootState): IStandardPermitCondition[] =>
   state[PERMITS].standardPermitConditions;
 export const getEditingConditionFlag = (state: RootState): boolean =>
