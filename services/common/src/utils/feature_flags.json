@@ -22,6 +22,7 @@
     "spatial_bundle": true,
     "permit_conditions_page": true,
     "permit_conditions_pdf_split_view": true,
+    "permit_condition_tags": true,
     "modify_permit_conditions": true,
     "major_project_refactor": true,
     "help_guide": true,
