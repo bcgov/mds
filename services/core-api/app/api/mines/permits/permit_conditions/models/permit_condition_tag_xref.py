@@ -28,4 +28,4 @@ class PermitConditionTagXref(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def deleteAllByGuid(cls, permit_condition_tag_guid):
-        return PermitConditionTagXref.query.filter_by(permit_condition_tag_guid=uuid.UUID(permit_condition_tag_guid)).delete(True)
+        return PermitConditionTagXref.query.filter_by(permit_condition_tag_guid=uuid.UUID(permit_condition_tag_guid)).delete()

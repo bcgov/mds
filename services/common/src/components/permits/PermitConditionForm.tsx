@@ -221,7 +221,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 align="top"
                 className={`condition-content ${editingEnabled ? "editable" : ""}`}
             >
-                <Col className="step-column" style={{ flexShrink: 0 }}>
+                <Col className="step-column" >
                     <Typography.Paragraph className="view-item-value">
                         {formatPermitConditionStep(condition.step)}
                     </Typography.Paragraph>
@@ -299,7 +299,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                         disabled={isAddingListItem || loading}
                     />
                     {isEditMode && !isAddingListItem && (
-                        <Row justify="space-between" align="middle">
+                        <Row justify="space-between" align="top" wrap={false}>
                             <Col>
                                 <Row gutter={8} className="condition-edit-buttons">
                                     {isExtracted && (
@@ -342,29 +342,33 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                         </Col>
                                     }
                                     <Col>
-                                        <RenderCancelButton
-                                            disabled={loading}
-                                            cancelFunction={handleCancel}
-                                            buttonProps={{
-                                                type: "primary",
-                                                icon: <FontAwesomeIcon icon={faXmark} />,
-                                            }}
-                                            iconButton
-                                        />
-                                    </Col>
-                                    <Col>
-                                        <RenderSubmitButton
-                                            disabled={loading}
-                                            buttonProps={{
-                                                icon: <FontAwesomeIcon icon={faCheck} />,
-                                            }}
-                                            iconButton
-                                        />
+                                        <Row gutter={8}>
+                                            <Col>
+                                                <RenderCancelButton
+                                                    disabled={loading}
+                                                    cancelFunction={handleCancel}
+                                                    buttonProps={{
+                                                        type: "primary",
+                                                        icon: <FontAwesomeIcon icon={faXmark} />,
+                                                    }}
+                                                    iconButton
+                                                />
+                                            </Col>
+                                            <Col>
+                                                <RenderSubmitButton
+                                                    disabled={loading}
+                                                    buttonProps={{
+                                                        icon: <FontAwesomeIcon icon={faCheck} />,
+                                                    }}
+                                                    iconButton
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Col>
                                 </Row>
                             </Col>
                             {isExtracted && (
-                                <Col>
+                                <Col style={{ flexShrink: 0 }}>
                                     <Row gutter={8} align="middle" className="condition-edit-buttons">
                                         <Col>
                                             <Button
