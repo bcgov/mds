@@ -71,11 +71,6 @@ export const permitReducer = (state: PermitState = initialState, action) => {
         ...state,
         permitConditions: action.payload.records,
       };
-    case actionTypes.STORE_PERMIT_CONDITION_TAGS:
-      return {
-        ...state,
-        permitConditionTags: action.payload.records,
-      };
     case actionTypes.STORE_PERMIT_AMENDMENT:
       const { permit_guid, permit_amendment_guid } = action.payload;
 
