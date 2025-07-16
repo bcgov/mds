@@ -92,7 +92,7 @@ def create_permit_condition_search_indexing_pipeline():
     assert api_key is not None, "API key must be provided to create the indexer"
 
     indexer_runner = IndexerRunner(
-        search_endpoint=config.search.endpoint,
+        search_endpoint=config.search.endpoint.resolve_value(),
         search_api_key=api_key,
     )
 
