@@ -3,6 +3,7 @@
 div.condition-layer {
   padding: 2px;
   padding-top: 12px;
+  padding-bottom: 12px;
   padding-left: 24px;
   font-weight: normal;
   margin-bottom: 10px;
@@ -11,6 +12,7 @@ div.condition-layer {
 
   &.condition-SEC .condition-column>.ant-typography {
     font-weight: bold;
+    margin-bottom: 8px;
   }
 
   .ant-form {
@@ -109,6 +111,28 @@ div.condition-layer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.condition-tag-select {
+  width: 400px;
+
+  .ant-select-selector {
+    padding: 0px;
+    min-height: 32px;
+
+    .ant-select-selection-overflow {
+      max-width: 97%;
+    }
+
+    .ant-select-selection-item {
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+  }
+}
+
+.ant-select-dropdown {
+  z-index: 950;
 }
 
 .horizontal-form-item {

@@ -45,6 +45,7 @@ export interface IPermitCondition {
   meta?: IPermitConditionMeta
   permit_condition_status_code: string;
   top_level_parent_permit_condition_id?: number;
+  condition_tags: string[];
 }
 
 export interface IPermitConditionReviewAssignment {
@@ -61,4 +62,9 @@ export interface IPermitConditionCategory {
   step: string;
   conditions?: IPermitCondition[]
   reports?: IMineReportPermitRequirement[]
+}
+
+export interface IPermitConditionTag {
+  permit_condition_tag_guid: string;
+  description: string;
 }

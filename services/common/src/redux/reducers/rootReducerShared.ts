@@ -41,6 +41,7 @@ import searchConditionCategoriesReducer, {
 } from "../slices/permitConditionCategorySlice";
 import helpReducer, { helpReducerType } from "../slices/helpSlice";
 import userReducer, { userReducerType } from "@mds/common/redux/slices/userSlice";
+import permitConditionTagReducer, { permitConditionTagReducerType } from "@mds/common/redux/slices/permitConditionTagSlice";
 import mineReportPermitRequirementReducer, { mineReportPermitRequirementReducerType } from "../slices/mineReportPermitRequirementSlice";
 import permitConditionDiffReducer, { permitConditionDiffReducerType } from "../slices/permitConditionDiffSlice";
 import permitSearchReducer, { permitSearchReducerType } from "../slices/permitSearchSlice";
@@ -93,6 +94,7 @@ export const sharedReducer = {
   [mineReportPermitRequirementReducerType]: mineReportPermitRequirementReducer,
   [permitConditionDiffReducerType]: permitConditionDiffReducer,
   [permitSearchReducerType]: permitSearchReducer,
+  [permitConditionTagReducerType]: permitConditionTagReducer,
   [amsAppReducerType]: amsFinalAppReducer,
   ...networkReducers
 };

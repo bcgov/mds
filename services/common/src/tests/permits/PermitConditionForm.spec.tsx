@@ -12,7 +12,8 @@ const initialState = {
         permits: MOCK.PERMITS,
         latestPermitAmendments: {
             [MOCK.PERMITS[0].permit_guid]: MOCK.PERMITS[0].permit_amendments[0]
-        }
+        },
+        permitConditionTags: MOCK.PERMIT_CONDITION_TAGS,
     },
 };
 

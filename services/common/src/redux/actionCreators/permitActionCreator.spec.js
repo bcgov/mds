@@ -23,7 +23,7 @@ import {
   fetchPermitAmendmentConditionCategories,
   createPermitAmendmentConditionCategory,
   updatePermitAmendmentConditionCategory,
-  deletePermitAmendmentConditionCategory
+  deletePermitAmendmentConditionCategory,
 } from "@mds/common/redux/actionCreators/permitActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
@@ -865,4 +865,5 @@ describe("`createPermitCondition` action creator", () => {
       });
     });
   });
+
 });

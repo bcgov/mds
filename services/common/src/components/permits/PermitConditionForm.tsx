@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { change, Field, isDirty, reset } from "@mds/common/components/forms/form";
-import { Row, Col, Button, Typography, Modal } from "antd";
+import { Row, Col, Button, Typography, Modal, Tag } from "antd";
 import {
     faArrowDown,
     faArrowUp,
@@ -11,7 +11,7 @@ import {
     faTrashCan,
     faXmark,
 } from "@fortawesome/pro-regular-svg-icons";
-import { IPermitCondition, IGroupedDropdownList } from "@mds/common/interfaces";
+import { IPermitCondition, IGroupedDropdownList, IPermitConditionTag } from "@mds/common/interfaces";
 import { ERROR } from "@mds/common/constants/actionTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
@@ -25,12 +25,15 @@ import {
     updatePermitCondition,
 } from "@mds/common/redux/actionCreators/permitActionCreator";
 import RenderField from "@mds/common/components/forms/RenderField";
-import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import { formatPermitConditionStep, parsePermitConditionStep } from "@mds/common/utils/helpers";
 import { FORM } from "@mds/common/constants/forms";
 import RenderGroupedSelect from "@mds/common/components/forms/RenderGroupedSelect";
 import { PermitConditionsProvider, usePermitConditions } from "@mds/common/components/permits/PermitConditionsContext";
 import { DeleteConditionModal } from "./DeleteConditionModal";
+import RenderMultiSelect from "../forms/RenderMultiSelect";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils";
+import { getPermitConditionTags } from "@mds/common/redux/slices/permitConditionTagSlice";
 
 interface PermitConditionFormProps {
     isExtracted: boolean;
@@ -64,12 +67,15 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
 }) => {
     const dispatch = useAppDispatch();
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
+    const { isFeatureEnabled } = useFeatureFlag();
     const permitConditionsValue = usePermitConditions();
     const { loading, setLoading } = permitConditionsValue;
     // the form fails to re-initialize when the category is changed, so concatenating it forces it to make a new one
     const formName = `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`;
     const editingFormDirty = useAppSelector(isDirty(editingFormName));
     const listItemFormDirty = useAppSelector(isDirty(FORM.EDIT_PERMIT_CONDITION));
+    const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags);
+    const enablePermitConditionTags = isFeatureEnabled(Feature.PERMIT_CONDITION_TAGS);
 
     const startEdit = () => {
         const handleEdit = () => {
@@ -209,22 +215,37 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const childConditionType = childTypeMap[condition.condition_type_code];
 
     return !isEditMode ? (
-        <Row
-            wrap={false}
-            align="top"
-            className={`condition-content ${editingEnabled ? "editable" : ""}`}
-        >
-            <Col className="step-column" style={{ flexShrink: 0 }}>
-                <Typography.Paragraph className="view-item-value">
-                    {formatPermitConditionStep(condition.step)}
-                </Typography.Paragraph>
-            </Col>
-            <Col className="condition-column" {...editableProps}>
-                <Typography.Paragraph className="view-item-value">
-                    {condition.condition}
-                </Typography.Paragraph>
-            </Col>
-        </Row>
+        <Col>
+            <Row
+                wrap={false}
+                align="top"
+                className={`condition-content ${editingEnabled ? "editable" : ""}`}
+            >
+                <Col className="step-column" >
+                    <Typography.Paragraph className="view-item-value">
+                        {formatPermitConditionStep(condition.step)}
+                    </Typography.Paragraph>
+                </Col>
+                <Col className="condition-column" {...editableProps}>
+                    <Typography.Paragraph className="view-item-value">
+                        {condition.condition}
+                    </Typography.Paragraph>
+                </Col>
+            </Row>
+            {enablePermitConditionTags && conditionTags && 
+                <Row>
+                        { condition.condition_tags.map((tagGuid) => {
+                            const tag = conditionTags.find((t) => t.permit_condition_tag_guid === tagGuid);
+                            if (!tag) return null;
+                            return (
+                                <Tag color="green" key={tag.permit_condition_tag_guid}>
+                                    {tag.description}
+                                </Tag>
+                            );
+                        })}
+                </Row>
+            }
+        </Col>
     ) : (
         <FormWrapper
             isEditMode={isEditMode && isExtracted}
@@ -237,6 +258,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 touchOnChange: false,
                 touchOnBlur: true,
             }}
+            isModal={true}
         >
             {isEditMode && isExtracted && categoryOptions && (
                 <Row>
@@ -277,7 +299,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                         disabled={isAddingListItem || loading}
                     />
                     {isEditMode && !isAddingListItem && (
-                        <Row justify="space-between" align="middle">
+                        <Row justify="space-between" align="top" wrap={false}>
                             <Col>
                                 <Row gutter={8} className="condition-edit-buttons">
                                     {isExtracted && (
@@ -307,30 +329,46 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                                 : "Add Report Requirement"}
                                         </Button>
                                     </Col>
+                                    {enablePermitConditionTags && conditionTags &&
+                                        <Col className="condition-tag-select">
+                                            <Field
+                                                name="condition_tags"
+                                                component={RenderMultiSelect}
+                                                placeholder="Select tags"
+                                                data={conditionTags.map((tag) => ({
+                                                    label: tag.description,
+                                                    value: tag.permit_condition_tag_guid}))}
+                                            />
+                                        </Col>
+                                    }
                                     <Col>
-                                        <RenderCancelButton
-                                            disabled={loading}
-                                            cancelFunction={handleCancel}
-                                            buttonProps={{
-                                                type: "primary",
-                                                icon: <FontAwesomeIcon icon={faXmark} />,
-                                            }}
-                                            iconButton
-                                        />
-                                    </Col>
-                                    <Col>
-                                        <RenderSubmitButton
-                                            disabled={loading}
-                                            buttonProps={{
-                                                icon: <FontAwesomeIcon icon={faCheck} />,
-                                            }}
-                                            iconButton
-                                        />
+                                        <Row gutter={8}>
+                                            <Col>
+                                                <RenderCancelButton
+                                                    disabled={loading}
+                                                    cancelFunction={handleCancel}
+                                                    buttonProps={{
+                                                        type: "primary",
+                                                        icon: <FontAwesomeIcon icon={faXmark} />,
+                                                    }}
+                                                    iconButton
+                                                />
+                                            </Col>
+                                            <Col>
+                                                <RenderSubmitButton
+                                                    disabled={loading}
+                                                    buttonProps={{
+                                                        icon: <FontAwesomeIcon icon={faCheck} />,
+                                                    }}
+                                                    iconButton
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Col>
                                 </Row>
                             </Col>
                             {isExtracted && (
-                                <Col>
+                                <Col style={{ flexShrink: 0 }}>
                                     <Row gutter={8} align="middle" className="condition-edit-buttons">
                                         <Col>
                                             <Button

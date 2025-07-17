@@ -60,6 +60,7 @@ import ViewPermit from "@mds/common/components/permits/ViewPermit";
 import PermitConditionSearch from "@/components/mine/Permit/Search/PermitConditionSearch";
 import { getEnvironment } from "@mds/common/utils/environmentUtils";
 import ViewPermitRedirect from "@/components/mine/Permit/ViewPermitRedirect";
+import TagManagement from "@/components/admin/permitConditions/TagManagement";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -539,6 +540,12 @@ export const ADMIN_HSRC_COMPLIANCE_CODE_MANAGEMENT = {
   component: ComplianceManagement,
   dynamicRoute: (tab: string, params = {}) => `/admin/hsrc-management/${tab}?${queryString.stringify(params)}`,
   helpKey: "HSRC-Code-Management",
+};
+
+export const ADMIN_PERMIT_CONDITION_TAG_MANAGEMENT = {
+  route: "/admin/tag-management",
+  component: TagManagement,
+  helpKey: "Tag-Management",
 };
 
 export const SEARCH_RESULTS = {

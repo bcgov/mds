@@ -1,3 +1,4 @@
+from pyexpat import model
 import uuid
 from datetime import date, datetime, time, timedelta
 from random import randrange
@@ -5,6 +6,7 @@ from random import randrange
 import factory
 import factory.fuzzy
 from app.api.activity.models.activity_notification import ActivityNotification
+from app.api.mines.permits.permit_conditions.models.permit_condition_tag import PermitConditionTag
 from app.api.projects.ams_final_application.models.ams_final_application import AmsFinalApplication
 from app.api.projects.ams_final_application.models.ams_final_application_document_xref import AmsFinalApplicationDocumentXref
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES
@@ -127,6 +129,7 @@ from app.api.variances.models.variance import Variance
 from app.api.variances.models.variance_document_xref import VarianceDocumentXref
 from app.extensions import db
 from pytz import timezone, utc
+from tests.mines import permit
 from tests.status_code_gen import *
 
 GUID = factory.LazyFunction(uuid.uuid4)
@@ -1134,6 +1137,13 @@ class MinePermitXrefFactory(BaseFactory):
     permit_id = factory.SelfAttribute('permit.permit_id')
     mine_guid = factory.SelfAttribute('mine.mine_guid')
 
+class PermitConditionTagFactory(BaseFactory):
+    class Meta:
+        model = PermitConditionTag
+    
+    permit_condition_tag_guid = GUID
+    description = factory.Faker('text', max_nb_chars=20)
+    deleted_ind = False
 
 class PermitAmendmentFactory(BaseFactory):
 

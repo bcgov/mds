@@ -101,7 +101,7 @@ exports[`PermitConditionForm renders properly in edit mode 1`] = `
           </div>
         </div>
         <div
-          class="ant-row ant-row-space-between ant-row-middle"
+          class="ant-row ant-row-no-wrap ant-row-space-between ant-row-top"
         >
           <div
             class="ant-col"
@@ -168,62 +168,192 @@ exports[`PermitConditionForm renders properly in edit mode 1`] = `
                 </button>
               </div>
               <div
-                class="ant-col"
+                class="ant-col condition-tag-select"
                 style="padding-left: 4px; padding-right: 4px;"
               >
-                <button
-                  aria-label="Cancel"
-                  class="ant-btn ant-btn-primary ant-btn-icon-only core-btn core-btn-primary  form-btn"
-                  type="button"
+                <div
+                  class="form-multiselect"
                 >
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-xmark "
-                    data-icon="xmark"
-                    data-prefix="far"
-                    focusable="false"
-                    role="img"
-                    viewBox="0 0 384 512"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <div
+                    class="ant-form-item ant-form-item-with-help"
                   >
-                    <path
-                      d="M345 137c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-119 119L73 103c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l119 119L39 375c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l119-119L311 409c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-119-119L345 137z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </button>
+                    <div
+                      class="ant-row ant-form-item-row"
+                    >
+                      <div
+                        class="ant-col ant-form-item-control"
+                      >
+                        <div
+                          class="ant-form-item-control-input"
+                        >
+                          <div
+                            class="ant-form-item-control-input-content"
+                          >
+                            <div
+                              class="ant-select ant-select-sm ant-select-in-form-item ant-select-multiple ant-select-show-arrow ant-select-show-search"
+                              style="width: 100%;"
+                            >
+                              <div
+                                class="ant-select-selector"
+                              >
+                                <div
+                                  class="ant-select-selection-overflow"
+                                >
+                                  <div
+                                    class="ant-select-selection-overflow-item ant-select-selection-overflow-item-suffix"
+                                    style="opacity: 1;"
+                                  >
+                                    <div
+                                      class="ant-select-selection-search"
+                                      style="width: 0px;"
+                                    >
+                                      <input
+                                        aria-activedescendant="condition_tags_list_0"
+                                        aria-autocomplete="list"
+                                        aria-controls="condition_tags_list"
+                                        aria-haspopup="listbox"
+                                        aria-owns="condition_tags_list"
+                                        autocomplete="off"
+                                        class="ant-select-selection-search-input"
+                                        id="condition_tags"
+                                        readonly=""
+                                        role="combobox"
+                                        style="opacity: 0;"
+                                        type="search"
+                                        unselectable="on"
+                                        value=""
+                                      />
+                                      <span
+                                        aria-hidden="true"
+                                        class="ant-select-selection-search-mirror"
+                                      >
+                                        
+                                         
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <span
+                                  class="ant-select-selection-placeholder"
+                                >
+                                  Select tags
+                                </span>
+                              </div>
+                              <span
+                                aria-hidden="true"
+                                class="ant-select-arrow"
+                                style="user-select: none;"
+                                unselectable="on"
+                              >
+                                <span
+                                  aria-label="down"
+                                  class="anticon anticon-down ant-select-suffix"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          style="display: flex; flex-wrap: nowrap;"
+                        >
+                          <div
+                            class="ant-form-item-explain ant-form-item-explain-connected"
+                            id="EDIT_PERMIT_CONDITION_1639_HSC_condition_tags_help"
+                            role="alert"
+                          >
+                            <div
+                              class=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div
                 class="ant-col"
                 style="padding-left: 4px; padding-right: 4px;"
               >
-                <button
-                  aria-label="Submit"
-                  class="ant-btn ant-btn-primary ant-btn-icon-only  form-btn"
-                  disabled=""
-                  type="submit"
+                <div
+                  class="ant-row"
+                  style="margin-left: -4px; margin-right: -4px;"
                 >
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-check "
-                    data-icon="check"
-                    data-prefix="far"
-                    focusable="false"
-                    role="img"
-                    viewBox="0 0 448 512"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <div
+                    class="ant-col"
+                    style="padding-left: 4px; padding-right: 4px;"
                   >
-                    <path
-                      d="M441 103c9.4 9.4 9.4 24.6 0 33.9L177 401c-9.4 9.4-24.6 9.4-33.9 0L7 265c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l119 119L407 103c9.4-9.4 24.6-9.4 33.9 0z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </button>
+                    <button
+                      aria-label="Cancel"
+                      class="ant-btn ant-btn-primary ant-btn-icon-only core-btn core-btn-primary  form-btn"
+                      type="button"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-xmark "
+                        data-icon="xmark"
+                        data-prefix="far"
+                        focusable="false"
+                        role="img"
+                        viewBox="0 0 384 512"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M345 137c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-119 119L73 103c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l119 119L39 375c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l119-119L311 409c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-119-119L345 137z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <div
+                    class="ant-col"
+                    style="padding-left: 4px; padding-right: 4px;"
+                  >
+                    <button
+                      aria-label="Submit"
+                      class="ant-btn ant-btn-primary ant-btn-icon-only  form-btn"
+                      disabled=""
+                      type="submit"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-check "
+                        data-icon="check"
+                        data-prefix="far"
+                        focusable="false"
+                        role="img"
+                        viewBox="0 0 448 512"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M441 103c9.4 9.4 9.4 24.6 0 33.9L177 401c-9.4 9.4-24.6 9.4-33.9 0L7 265c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l119 119L407 103c9.4-9.4 24.6-9.4 33.9 0z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           <div
             class="ant-col"
+            style="flex-shrink: 0;"
           >
             <div
               class="ant-row ant-row-middle condition-edit-buttons"

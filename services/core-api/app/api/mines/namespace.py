@@ -97,6 +97,7 @@ from app.api.mines.permits.permit_amendment.resources.permit_amendment_document 
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_vc import (
     PermitAmendmentVCResource,
 )
+from app.api.mines.permits.permit_conditions.models.permit_condition_tag import PermitConditionTag
 from app.api.mines.permits.permit_conditions.resources.permit_amendment_condition_category_list_resource import (
     PermitAmendmentConditionCategoryListResource,
 )
@@ -109,6 +110,7 @@ from app.api.mines.permits.permit_conditions.resources.permit_amendment_conditio
 from app.api.mines.permits.permit_conditions.resources.permit_condition_category_resource import (
     PermitConditionCategoryResource,
 )
+from app.api.mines.permits.permit_conditions.resources.permit_condition_tag_resource import PermitConditionTagResource
 from app.api.mines.permits.permit_conditions.resources.permit_condition_type_resource import (
     PermitConditionTypeResource,
 )
@@ -291,6 +293,9 @@ api.add_resource(StandardPermitConditionsListResource,
                  '/permits/standard-conditions/<string:notice_of_work_type>')
 api.add_resource(StandardPermitConditionsResource,
                  '/permits/standard-conditions/<string:standard_permit_condition_guid>')
+
+api.add_resource(PermitConditionTagResource, '/permits/condition-tags')
+api.add_resource(PermitConditionTagResource, '/permits/condition-tags/<string:permit_condition_tag_guid>')
 
 api.add_resource(PermitAmendmentListResource,
                  '/<string:mine_guid>/permits/<string:permit_guid>/amendments')
