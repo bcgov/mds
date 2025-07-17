@@ -152,6 +152,36 @@ export const getReportRequirementsByCondition = (permitGuid, permitAmendmentGuid
     }
   );
 
+const getStepPath = (condition, category, conditionMap, parentPath = "", reportRequirements = []): IPermitCondition => {
+  const formattedStep = formatPermitConditionStep(condition.step);
+
+  const currentPath = parentPath
+    ? `${parentPath}${formattedStep}`
+    : `${category.description} - ${formattedStep}`;
+  const stepPath = currentPath.replace(/\.+$/, "");
+
+  const mineReportPermitRequirement = reportRequirements.find(
+    (requirement) => requirement.permit_condition_ids.includes(condition.permit_condition_id)
+  );
+
+  const sub_conditions =
+    condition.sub_conditions?.map((subCondition) =>
+      getStepPath(subCondition, currentPath, conditionMap, currentPath, reportRequirements)
+    ) ?? [];
+
+  const formattedCondition = {
+    ...condition,
+    formattedStep,
+    stepPath,
+    mineReportPermitRequirement,
+    sub_conditions,
+  };
+
+  conditionMap[condition.permit_condition_id] = formattedCondition;
+
+  return formattedCondition;
+};
+
 export const getPermitConditionCategories = (permitGuid, permitAmendmentGuid) =>
   createSelector(
     [getAmendment(permitGuid, permitAmendmentGuid), getPermitConditionCategoryOptions, getMineReportPermitRequirementsByAmendment(permitGuid, permitAmendmentGuid)],
@@ -183,41 +213,7 @@ export const getPermitConditionCategories = (permitGuid, permitAmendmentGuid) =>
             return null;
           }
 
-          const getStepPath = (condition, parentPath = ""): IPermitCondition => {
-            const formattedStep = formatPermitConditionStep(condition.step);
-
-            const currentPath = parentPath
-              ? `${parentPath}${formattedStep}`
-              : `${cat.description} - ${formattedStep}`;
-            const stepPath = currentPath.replace(/\.+$/, "");
-
-            const mineReportPermitRequirement = mineReportPermitRequirements.find(
-              (requirement) => requirement.permit_condition_ids.includes(condition.permit_condition_id)
-            );
-
-            const sub_conditions =
-              condition.sub_conditions?.map((subCondition) =>
-                getStepPath(subCondition, currentPath)
-              ) ?? [];
-
-            conditionMap[condition.permit_condition_id] = {
-              ...condition,
-              formattedStep,
-              stepPath,
-              mineReportPermitRequirement,
-              sub_conditions,
-            };
-
-            return {
-              ...condition,
-              formattedStep,
-              stepPath,
-              mineReportPermitRequirement,
-              sub_conditions,
-            };
-          };
-
-          const formattedConditions = catConditions.map((condition) => getStepPath(condition));
+          const formattedConditions = catConditions.map((condition) => getStepPath(condition, cat, conditionMap));
 
           return {
             ...cat,
@@ -232,3 +228,33 @@ export const getPermitConditionCategories = (permitGuid, permitAmendmentGuid) =>
       };
     }
   );
+
+export const getStandardPermitConditionsFormatted = () =>
+  createSelector([getStandardPermitConditions, getPermitConditionCategoryOptions],
+    (conditions, categories) => {
+      if (!conditions || !categories) {
+        return {
+          conditionMap: {},
+          categoriesWithConditions: []
+        }
+      }
+
+      const conditionMap: { [permit_condition_id: string]: IPermitCondition } = {}
+
+      const categoriesWithConditions = categories.map((cat) => {
+        const catConditions = conditions.filter((c) =>
+          c.condition_category_code === cat.condition_category_code
+        );
+        const formattedConditions = catConditions.map((condition) => getStepPath(condition, cat, conditionMap));
+
+        return {
+          ...cat,
+          conditions: formattedConditions
+        }
+      });
+
+      return {
+        categoriesWithConditions,
+        conditionMap
+      };
+    });

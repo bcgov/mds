@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AdminPermitConditionManagement renders properly 1`] = `
+exports[`AdminPermitConditionManagementOld renders properly 1`] = `
 <div>
   <div>
     <div

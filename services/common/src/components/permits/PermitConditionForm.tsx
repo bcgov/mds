@@ -11,7 +11,7 @@ import {
     faTrashCan,
     faXmark,
 } from "@fortawesome/pro-regular-svg-icons";
-import { IPermitCondition, IGroupedDropdownList, IPermitConditionTag } from "@mds/common/interfaces";
+import { IPermitCondition, IGroupedDropdownList, IPermitConditionTag, IStandardPermitCondition } from "@mds/common/interfaces";
 import { ERROR } from "@mds/common/constants/actionTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
@@ -22,7 +22,9 @@ import { openModal } from "@mds/common/redux/actions/modalActions";
 import { ReportPermitRequirementForm } from "@mds/common/components/permits/ReportPermitRequirementForm";
 import {
     deletePermitCondition,
+    deleteStandardPermitCondition,
     updatePermitCondition,
+    updateStandardPermitCondition,
 } from "@mds/common/redux/actionCreators/permitActionCreator";
 import RenderField from "@mds/common/components/forms/RenderField";
 import { formatPermitConditionStep, parsePermitConditionStep } from "@mds/common/utils/helpers";
@@ -38,13 +40,13 @@ import { getPermitConditionTags } from "@mds/common/redux/slices/permitCondition
 interface PermitConditionFormProps {
     isExtracted: boolean;
     permitAmendmentGuid: string;
-    condition: IPermitCondition;
+    condition: IPermitCondition | IStandardPermitCondition;
     canEditPermitConditions: boolean;
     onEdit: () => void;
     setEditingFormName: (formName: string) => void;
     editingFormName: string;
-    moveUp?: (condition: IPermitCondition) => Promise<void>;
-    moveDown?: (condition: IPermitCondition) => Promise<void>;
+    moveUp?: (condition: IPermitCondition | IStandardPermitCondition) => Promise<void>;
+    moveDown?: (condition: IPermitCondition | IStandardPermitCondition) => Promise<void>;
     refreshData: () => Promise<void>;
     setIsAddingListItem: (isAdding: boolean) => void;
     isAddingListItem: boolean;
@@ -69,13 +71,15 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const { isFeatureEnabled } = useFeatureFlag();
     const permitConditionsValue = usePermitConditions();
-    const { loading, setLoading } = permitConditionsValue;
+    const { loading, setLoading, standardConditionType } = permitConditionsValue;
+    const editingAllowed = Boolean(standardConditionType) || isExtracted;
     // the form fails to re-initialize when the category is changed, so concatenating it forces it to make a new one
     const formName = `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`;
     const editingFormDirty = useAppSelector(isDirty(editingFormName));
     const listItemFormDirty = useAppSelector(isDirty(FORM.EDIT_PERMIT_CONDITION));
     const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags);
-    const enablePermitConditionTags = isFeatureEnabled(Feature.PERMIT_CONDITION_TAGS);
+    const enablePermitConditionTags = isFeatureEnabled(Feature.PERMIT_CONDITION_TAGS) && !standardConditionType;
+    const stepEditDisabled = Boolean(standardConditionType);
 
     const startEdit = () => {
         const handleEdit = () => {
@@ -130,9 +134,14 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 _step: values.step,
             }
             : values;
-        const resp = await dispatch(
-            updatePermitCondition(values.permit_condition_guid, permitAmendmentGuid, payload)
-        );
+        let resp;
+        if (standardConditionType) {
+            resp = await dispatch(updateStandardPermitCondition(values.standard_permit_condition_guid, values))
+        } else {
+            resp = await dispatch(
+                updatePermitCondition(values.permit_condition_guid, permitAmendmentGuid, payload)
+            );
+        }
         // @ts-ignore
         if (resp?.type !== ERROR) {
             cancelEdit();
@@ -152,9 +161,14 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
         const title = "Delete Condition";
 
         const onSubmit = async () => {
-            const resp = await dispatch(
-                deletePermitCondition(permitAmendmentGuid, condition.permit_condition_guid)
-            );
+            let resp;
+            if ('standard_permit_condition_guid' in condition) {
+                resp = await dispatch(deleteStandardPermitCondition(condition.standard_permit_condition_guid));
+            } else {
+                resp = await dispatch(
+                    deletePermitCondition(permitAmendmentGuid, condition.permit_condition_guid)
+                );
+            }
             // @ts-ignore
             if (resp?.type !== ERROR) {
                 refreshData();
@@ -172,7 +186,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
         }))
     };
 
-    const handleOpenAddReportModal = (event, reportCondition: IPermitCondition) => {
+    const handleOpenAddReportModal = (event, reportCondition: IPermitCondition | IStandardPermitCondition) => {
         event.stopPropagation();
         dispatch(
             openModal({
@@ -232,23 +246,23 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                     </Typography.Paragraph>
                 </Col>
             </Row>
-            {enablePermitConditionTags && conditionTags && 
+            {enablePermitConditionTags && conditionTags &&
                 <Row>
-                        { condition.condition_tags.map((tagGuid) => {
-                            const tag = conditionTags.find((t) => t.permit_condition_tag_guid === tagGuid);
-                            if (!tag) return null;
-                            return (
-                                <Tag color="green" key={tag.permit_condition_tag_guid}>
-                                    {tag.description}
-                                </Tag>
-                            );
-                        })}
+                    {condition?.condition_tags.map((tagGuid) => {
+                        const tag = conditionTags.find((t) => t.permit_condition_tag_guid === tagGuid);
+                        if (!tag) return null;
+                        return (
+                            <Tag color="green" key={tag.permit_condition_tag_guid}>
+                                {tag.description}
+                            </Tag>
+                        );
+                    })}
                 </Row>
             }
         </Col>
     ) : (
         <FormWrapper
-            isEditMode={isEditMode && isExtracted}
+            isEditMode={isEditMode && editingAllowed}
             onSubmit={handleSubmit}
             name={formName}
             initialValues={condition}
@@ -260,7 +274,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
             }}
             isModal={true}
         >
-            {isEditMode && isExtracted && categoryOptions && (
+            {isEditMode && editingAllowed && categoryOptions && (
                 <Row>
                     <Col span={24}>
                         <Field
@@ -288,7 +302,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                         name="step"
                         component={RenderField}
                         showNA={false}
-                        disabled={isAddingListItem || loading}
+                        disabled={isAddingListItem || loading || stepEditDisabled}
                         onChange={handleBackSpace}
                     />
                 </Col>
@@ -302,7 +316,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                         <Row justify="space-between" align="top" wrap={false}>
                             <Col>
                                 <Row gutter={8} className="condition-edit-buttons">
-                                    {isExtracted && (
+                                    {editingAllowed && (
                                         <Col>
                                             <Button
                                                 loading={loading}
@@ -315,7 +329,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                             </Button>
                                         </Col>
                                     )}
-                                    <Col>
+                                    {!standardConditionType && <Col>
                                         <Button
                                             loading={loading}
                                             className="fa-icon-container btn-sm-padding"
@@ -328,18 +342,19 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                                 ? "Report Added"
                                                 : "Add Report Requirement"}
                                         </Button>
-                                    </Col>
-                                    {enablePermitConditionTags && conditionTags &&
-                                        <Col className="condition-tag-select">
+                                    </Col>}
+                                    {enablePermitConditionTags && conditionTags && !standardConditionType &&
+                                        (<Col className="condition-tag-select">
                                             <Field
                                                 name="condition_tags"
                                                 component={RenderMultiSelect}
                                                 placeholder="Select tags"
                                                 data={conditionTags.map((tag) => ({
                                                     label: tag.description,
-                                                    value: tag.permit_condition_tag_guid}))}
+                                                    value: tag.permit_condition_tag_guid
+                                                }))}
                                             />
-                                        </Col>
+                                        </Col>)
                                     }
                                     <Col>
                                         <Row gutter={8}>
@@ -367,7 +382,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                     </Col>
                                 </Row>
                             </Col>
-                            {isExtracted && (
+                            {editingAllowed && (
                                 <Col style={{ flexShrink: 0 }}>
                                     <Row gutter={8} align="middle" className="condition-edit-buttons">
                                         <Col>

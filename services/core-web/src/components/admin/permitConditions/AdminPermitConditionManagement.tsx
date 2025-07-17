@@ -27,7 +27,7 @@ const AdminPermitConditionManagement: FC = () => {
                 <h1>Permit Condition Management</h1>
             </div>
             <PermitConditionsNavigation
-                activeButton="permit-conditions"
+                activeButton="permit-condition-management"
                 openSubMenuKey={[activeTab]}
             />
             <div className="tab__content">

@@ -1,3 +1,6 @@
+import { IMineReportPermitRequirement } from "./mineReportPermitRequirements.interface";
+import { IPermitConditionTag } from "./permitCondition.interface";
+
 export interface IStandardPermitCondition {
   standard_permit_condition_id: number;
   permit_condition_id: number;
@@ -11,4 +14,7 @@ export interface IStandardPermitCondition {
   sub_conditions: IStandardPermitCondition[];
   step: string;
   display_order: number;
+  stepPath?: string;
+  mineReportPermitRequirement?: IMineReportPermitRequirement;
+  condition_tags?: IPermitConditionTag[];
 }

@@ -10,6 +10,9 @@ const condition = MOCK.PERMITS[0].permit_amendments[0].conditions[0];
 const conditionCategories = MOCK.PERMITS[0].permit_amendments[0].condition_categories;
 const conditionCategory = {
     ...conditionCategories[0],
+    href: "href",
+    title: <div>{conditionCategories[0].description}</div>,
+    condition_category: conditionCategories[0],
     conditions: [condition]
 }
 const standardCategories = MOCK.BULK_STATIC_CONTENT_RESPONSE.permitConditionCategoryOptions;

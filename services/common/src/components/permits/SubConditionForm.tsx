@@ -3,9 +3,9 @@ import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { Row, Col } from "antd";
 import { faCheck, faXmark } from "@fortawesome/pro-regular-svg-icons";
 import {
+  IFormattedConditionCategory,
   IGroupedDropdownList,
   IPermitCondition,
-  IPermitConditionCategory,
 } from "@mds/common/interfaces";
 import { ERROR } from "@mds/common/constants/actionTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
@@ -14,7 +14,7 @@ import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton"
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
-import { createPermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { createPermitCondition, createStandardPermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { FORM } from "@mds/common/constants/forms";
 import RenderGroupedSelect from "@mds/common/components/forms/RenderGroupedSelect";
 import { usePermitConditions } from "./PermitConditionsContext";
@@ -22,11 +22,11 @@ import { required } from "@mds/common/redux/utils/Validate";
 
 interface SubConditionFormProps {
   level?: number;
-  conditionCategory?: IPermitConditionCategory;
+  conditionCategory?: IFormattedConditionCategory;
   parentCondition?: IPermitCondition;
   handleCancel: () => void;
   onSubmit: () => Promise<void>;
-  permitAmendmentGuid: string;
+  permitAmendmentGuid?: string;
   categoryOptions?: IGroupedDropdownList[];
 }
 
@@ -40,12 +40,18 @@ const SubConditionForm: FC<SubConditionFormProps> = ({
   onSubmit,
 }) => {
   const dispatch = useAppDispatch();
-  const { loading, setLoading } = usePermitConditions();
+  const { loading, setLoading, standardConditionType } = usePermitConditions();
   const formValues = useAppSelector(getFormValues(FORM.EDIT_PERMIT_CONDITION)) as IPermitCondition;
 
   const handleSubmit = async (values) => {
     setLoading(true);
-    const resp = await dispatch(createPermitCondition(permitAmendmentGuid, values));
+    let resp;
+    if (permitAmendmentGuid && !standardConditionType) {
+      resp = await dispatch(createPermitCondition(permitAmendmentGuid, values));
+    } else {
+      resp = await dispatch(createStandardPermitCondition(standardConditionType, values));
+    }
+
     // @ts-ignore
     if (resp?.type !== ERROR) {
       await onSubmit();
