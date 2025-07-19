@@ -64,7 +64,7 @@ def test_format_context_chain():
     ]
     
     siblings = [
-        create_test_document("sib1", "Sibling 1", {"step": "2", "step_path": "A.2"})
+        ("next", create_test_document("sib1", "Sibling 1", {"step": "2", "step_path": "A.2"}))
     ]
     
     children = [
