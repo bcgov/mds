@@ -258,7 +258,6 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 touchOnChange: false,
                 touchOnBlur: true,
             }}
-            isModal={true}
         >
             {isEditMode && isExtracted && categoryOptions && (
                 <Row>
@@ -335,6 +334,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                                 name="condition_tags"
                                                 component={RenderMultiSelect}
                                                 placeholder="Select tags"
+                                                enableGetPopupContainer={true}
                                                 data={conditionTags.map((tag) => ({
                                                     label: tag.description,
                                                     value: tag.permit_condition_tag_guid}))}
