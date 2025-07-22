@@ -37,6 +37,10 @@ class AmsFinalApplication(HistoryMixin, SoftDeleteMixin, DraftMixin, AuditMixin,
     def mine_guid(self):
         return self.project_summary_authorization.project_summary.project.mine_guid
     
+    @hybrid_property
+    def project_summary_guid(self):
+        return self.project_summary_authorization.project_summary.project_summary_guid
+    
     @staticmethod
     def find_by_authorization_guid(authorization_guid):
         return AmsFinalApplication.query.filter_by(project_summary_authorization_guid=authorization_guid).one_or_none()
@@ -78,8 +82,8 @@ class AmsFinalApplication(HistoryMixin, SoftDeleteMixin, DraftMixin, AuditMixin,
         self.pre_submitted_files = pre_submitted_files or []
         self._update_documents(documents)
 
-        if is_submitting and not self.submitted_timestamp:
-            self.submitted_timestamp = datetime.now(timezone.utc)
+        if is_submitting:
+            self.submitted_timestamp = self.submitted_timestamp or datetime.now(timezone.utc)
             self.submit()
         else:
             self.save_draft()

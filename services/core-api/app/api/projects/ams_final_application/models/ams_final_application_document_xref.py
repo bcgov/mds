@@ -35,6 +35,11 @@ class AmsFinalApplicationDocumentXref(SoftDeleteMixin, Base):
     document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
     document_name = association_proxy('mine_document', 'document_name')
     create_user = association_proxy('mine_document', 'create_user')
+    update_timestamp = association_proxy('mine_document', 'update_timestamp')
+    upload_date = association_proxy('mine_document', 'upload_date')
+    is_archived = association_proxy('mine_document', 'is_archived')
+    archived_by = association_proxy('mine_document', 'archived_by')
+    archived_date = association_proxy('mine_document', 'archived_date')
 
     @classmethod
     def find_by_mine_document_guid(cls, mine_document_guid):

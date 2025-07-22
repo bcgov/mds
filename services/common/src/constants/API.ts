@@ -176,7 +176,7 @@ export const PROJECT_SUMMARY_ENVIRONMENT_AUTHORIZATION_STATUSES = () =>
   "/projects/project-summary-environment-authorization-statuses";
 
 export const PROJECT_SUMMARY_ENVIRONMENT_FINAL_APPLICATION_GET = (projectSummaryGuid: string, project_summary_authorization_guid = "") =>
-  `/projects/${projectSummaryGuid}/ams-final-application?${queryString.stringify({ project_summary_authorization_guid })}`;
+  `/projects/${projectSummaryGuid}/ams-final-application?${project_summary_authorization_guid ? queryString.stringify({ project_summary_authorization_guid }) : ""}`;
 
 export const PROJECT_SUMMARY_ENVIRONMENT_FINAL_APPLICATION = (projectSummaryGuid: string, project_summary_authorization_guid = "") =>
   `/projects/${projectSummaryGuid}/ams-final-application/${project_summary_authorization_guid}`;

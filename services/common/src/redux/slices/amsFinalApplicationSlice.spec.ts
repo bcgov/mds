@@ -2,10 +2,12 @@ import { configureStore } from "@reduxjs/toolkit";
 import amsFinalAppReducer, {
     getAmsFinalApps,
     getAmsFinalAppByAuthGuid,
+    getAmsFinalAppsByProjectSummary,
     getAmsFinalAppIsLoaded,
     createAmsFinalApp,
     updateAmsFinalApp,
     fetchAmsFinalApp,
+    fetchAmsFinalAppsByProjectSummary,
     amsAppReducerType
 } from "./amsFinalApplicationSlice";
 import CustomAxios from "../customAxios";
@@ -39,6 +41,7 @@ describe("amsFinalApplicationSlice", () => {
     const newApplicationResponse: IAmsFinalApplication = {
         ams_final_application_guid: amsFinalApplicationGuid,
         project_summary_authorization_guid: projectSummaryAuthorizationGuid,
+        project_summary_guid: projectSummaryGuid,
         submitter_name: "Jane Doe",
         is_agent: false,
         is_draft: false,
@@ -161,6 +164,58 @@ describe("amsFinalApplicationSlice", () => {
     });
 
     describe("getAmsFinalAppIsLoaded", () => {
+        describe("fetchAmsFinalAppsByProjectSummary", () => {
+            it("should fetch and store all applications for a project summary", async () => {
+                const anotherAuthGuid = "auth-guid-2";
+                const anotherApp = {
+                    ...newApplicationResponse,
+                    project_summary_authorization_guid: anotherAuthGuid,
+                    project_summary_guid: projectSummaryGuid,
+                    submitter_name: "John Smith"
+                };
+                (CustomAxios as jest.Mock).mockImplementation(() => ({
+                    get: jest.fn().mockResolvedValue({ data: { records: [newApplicationResponse, anotherApp] } }),
+                }));
+                await store.dispatch(
+                    fetchAmsFinalAppsByProjectSummary(projectSummaryGuid)
+                );
+                const state = store.getState()[amsAppReducerType];
+                expect(state.amsFinalApplications[projectSummaryAuthorizationGuid]).toEqual(newApplicationResponse);
+                expect(state.amsFinalApplications[anotherAuthGuid]).toEqual(anotherApp);
+            });
+        });
+
+        describe("getAmsFinalAppsByProjectSummary", () => {
+            it("should select all applications for a given project summary guid", async () => {
+                const anotherAuthGuid = "auth-guid-2";
+                const anotherApp = {
+                    ...newApplicationResponse,
+                    project_summary_authorization_guid: anotherAuthGuid,
+                    project_summary_guid: projectSummaryGuid,
+                    submitter_name: "John Smith"
+                };
+                (CustomAxios as jest.Mock).mockImplementation(() => ({
+                    get: jest.fn().mockResolvedValue({ data: { records: [newApplicationResponse, anotherApp] } }),
+                }));
+                await store.dispatch(
+                    fetchAmsFinalAppsByProjectSummary(projectSummaryGuid)
+                );
+                const state = store.getState();
+                const selector = getAmsFinalAppsByProjectSummary(projectSummaryGuid);
+                const result = selector(state);
+                expect(result).toEqual(
+                    expect.arrayContaining([
+                        expect.objectContaining({ project_summary_authorization_guid: projectSummaryAuthorizationGuid }),
+                        expect.objectContaining({ project_summary_authorization_guid: anotherAuthGuid })
+                    ])
+                );
+            });
+            it("should return an empty array if no project summary guid is provided", () => {
+                const state = store.getState();
+                const selector = getAmsFinalAppsByProjectSummary("");
+                expect(selector(state)).toEqual([]);
+            });
+        });
         it("should return true if app is loaded", async () => {
             (CustomAxios as jest.Mock).mockImplementation(() => ({
                 get: jest.fn().mockResolvedValue({ data: { records: [newApplicationResponse] } }),

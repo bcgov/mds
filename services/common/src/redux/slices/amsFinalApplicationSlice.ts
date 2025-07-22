@@ -91,6 +91,33 @@ const amsFinalAppSlice = createAppSlice({
                 }
             }
         ),
+        fetchAmsFinalAppsByProjectSummary: create.asyncThunk(
+            async (projectSummaryGuid: string, thunkApi) => {
+                const headers = createRequestHeader();
+                thunkApi.dispatch(showLoading());
+
+                let resp;
+                try {
+                    resp = await CustomAxios({
+                        errorToastMessage: "Failed to load authorization final application",
+                    }).get(`${ENVIRONMENT.apiUrl}${API.PROJECT_SUMMARY_ENVIRONMENT_FINAL_APPLICATION_GET(projectSummaryGuid)}`,
+                        headers);
+                } finally {
+                    thunkApi.dispatch(hideLoading());
+                }
+                return resp.data;
+            }, {
+            fulfilled: (state, action) => {
+                const { records } = action.payload;
+                records.forEach((record) => {
+                    state.amsFinalApplications[record.project_summary_authorization_guid] = record;
+                });
+            },
+            rejected: (state, action) => {
+                rejectHandler(action);
+            }
+        }
+        ),
         fetchAmsFinalApp: create.asyncThunk(
             async (payload: { projectSummaryGuid: string, projectSummaryAuthorizationGuid: string }, thunkApi) => {
                 const headers = createRequestHeader();
@@ -121,12 +148,12 @@ const amsFinalAppSlice = createAppSlice({
     selectors: {
         getAmsFinalApps: (state) => {
             return state.amsFinalApplications;
-        }
+        },
     }
 });
 
 export const {
-    getAmsFinalApps
+    getAmsFinalApps,
 } = amsFinalAppSlice.selectors;
 
 export const getAmsFinalAppByAuthGuid = (authGuid: string) =>
@@ -137,8 +164,18 @@ export const getAmsFinalAppByAuthGuid = (authGuid: string) =>
 export const getAmsFinalAppIsLoaded = (authGuid: string) =>
     createSelector([getAmsFinalApps], (appData) => {
         return Object.keys(appData).includes(authGuid);
-    })
-export const { fetchAmsFinalApp, createAmsFinalApp, updateAmsFinalApp } = amsFinalAppSlice.actions;
+    });
+
+export const getAmsFinalAppsByProjectSummary = (projectSummaryGuid: string) =>
+    createSelector([getAmsFinalApps], (appData) => {
+        if (!projectSummaryGuid) {
+            return [];
+        }
+        const apps = Object.values(appData);
+        return apps.filter((a) => a.project_summary_guid === projectSummaryGuid)
+    });
+
+export const { fetchAmsFinalApp, fetchAmsFinalAppsByProjectSummary, createAmsFinalApp, updateAmsFinalApp } = amsFinalAppSlice.actions;
 
 const amsFinalAppReducer = amsFinalAppSlice.reducer;
 export default amsFinalAppReducer;

@@ -4,7 +4,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 from app.api.utils.resources_mixins import UserMixin
 
 from app.extensions import api
-from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, EDIT_PROJECT_SUMMARIES
+from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, EDIT_MAJOR_MINE_APPLICATIONS
 from app.api.projects.response_models import AMS_FINAL_APPLICATION_MODEL
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
 from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
@@ -17,7 +17,7 @@ from app.api.services.document_manager_service import DocumentManagerService
 class AmsFinalApplicationDocumentResource(Resource, UserMixin):
 
     @api.doc(description='Request a document_manager_guid for uploading a document')
-    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES])
+    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_MAJOR_MINE_APPLICATIONS])
     def post(self, project_summary_guid):
         project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid)
         mine = Mine.find_by_mine_guid(project_summary.mine_guid)
@@ -46,7 +46,7 @@ class AmsFinalApplicationResource(Resource, UserMixin):
         if project_summary_authorization.ams_tracking_number is None:
             raise BadRequest("Authorization must be successfully submitted before creating the final application.")
 
-    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES])
+    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_MAJOR_MINE_APPLICATIONS])
     @api.expect(parser)
     @api.marshal_with(AMS_FINAL_APPLICATION_MODEL, code=201)    
     def post(self, project_summary_guid, project_summary_authorization_guid):
@@ -60,7 +60,7 @@ class AmsFinalApplicationResource(Resource, UserMixin):
         final_app = AmsFinalApplication.create(**data)
         return final_app, 201
     
-    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES ])
+    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_MAJOR_MINE_APPLICATIONS ])
     @api.expect(parser)
     @api.marshal_with(AMS_FINAL_APPLICATION_MODEL, code=200)
     def put(self, project_summary_guid, project_summary_authorization_guid):
