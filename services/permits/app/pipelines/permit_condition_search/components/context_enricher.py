@@ -43,7 +43,7 @@ class ContextEnricher:
     def _format_context_chain(
         self,
         parents: List[Document],
-        siblings: List[Document],
+        siblings: List[Tuple[str, Document]],
         children: List[Document],
     ) -> Dict[str, dict]:
         """
@@ -70,16 +70,13 @@ class ContextEnricher:
             }
 
         # Format sibling contexts - use step_path
-        for i, sibling in enumerate(siblings):
-            position = "previous" if i < len(siblings) // 2 else "next"
-            context["sibling_contexts"][position].append(
-                {
-                    "id": sibling.id,
-                    "content": sibling.content,
-                    "step": sibling.meta.get("step", ""),
-                    "hierarchy": sibling.meta.get("step_path", ""),
-                }
-            )
+        for position, sibling in siblings:
+            context["sibling_contexts"][position].append({
+                "id": sibling.id,
+                "content": sibling.content,
+                "step": sibling.meta.get("step", ""),
+                "hierarchy": sibling.meta.get("step_path", ""),
+            })
 
         # Format child contexts - use step_path
         for child in children:
@@ -196,15 +193,23 @@ class ContextEnricher:
 
             # Get siblings
             if sibling_ids := doc.meta.get("sibling_ids", []):
-                mid = len(sibling_ids) // 2
-                selected_siblings = (
-                    sibling_ids[max(0, mid - 2) : mid] + sibling_ids[mid : mid + 2]
-                )
                 siblings = [
                     related_docs[sid]
-                    for sid in selected_siblings
+                    for sid in sibling_ids 
                     if sid in related_docs
                 ]
+
+                all_current_related_docs = siblings + [doc]
+                all_current_related_docs.sort(key=lambda d: d.meta.get("step", ""))
+                mid = next((i for i, d in enumerate(all_current_related_docs) if d.id == doc.id), None)
+                if mid is not None:
+                    previous_siblings = all_current_related_docs[max(0, mid - 3):mid]
+                    next_siblings = all_current_related_docs[mid + 1:mid + 4]
+                else:
+                    previous_siblings = []
+                    next_siblings = []
+                                   
+                siblings = [("previous", s) for s in previous_siblings] + [("next", s) for s in next_siblings]
 
             # Get children
             if child_ids := doc.meta.get("child_ids", []):
