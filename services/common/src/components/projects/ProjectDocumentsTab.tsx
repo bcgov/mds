@@ -37,6 +37,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
   const isUserProponent = useSelector(isProponent);
 
   const { isFeatureEnabled } = useFeatureFlag();
+  const isAmsDocumentsEnabled = isFeatureEnabled(Feature.AMS_FINAL_APPLICATION);
   const systemFlag = useSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;
   const [isLoaded, setIsLoaded] = useState(true);
@@ -164,7 +165,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
 
   const spatialCategoryText = "Spatial Files";
 
-  const amsSections = appsWithDocs.map((application) => {
+  const amsSections = isAmsDocumentsEnabled ? appsWithDocs.map((application) => {
     const auth = project?.project_summary?.authorizations?.find((a) => a.project_summary_authorization_guid === application.project_summary_authorization_guid);
     const titleText = `Application (#${auth.ams_tracking_number})`;
     const headingText = getAuthorizationHeader(auth);
@@ -194,7 +195,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
         />
       ),
     }
-  });
+  }) : [];
 
   const sections: any[] = [
     {
@@ -289,9 +290,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
       href: "mines-act",
       title: <div className="sub-tab-1">Mines Act</div>,
       content: (
-        <>
-          <Typography.Title level={4}>Mines Act</Typography.Title>
-        </>
+        <Typography.Title level={4}>Mines Act</Typography.Title>
       )
     },
     {
@@ -337,7 +336,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
         />
       ),
     },
-    amsSections.length > 1 && {
+    amsSections.length > 1 && isAmsDocumentsEnabled && {
       href: "ENV Applications",
       title: <div className="sub-tab-1">ENV Applications</div>,
       content: (
