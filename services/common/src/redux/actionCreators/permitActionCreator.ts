@@ -590,7 +590,7 @@ export const patchPermitVCLocked = (
   };
 
 // standard permit conditions
-export const fetchStandardPermitConditions = (noticeOfWorkType: string): AppThunk => (dispatch) => {
+export const fetchStandardPermitConditions = (noticeOfWorkType: string): AppThunk<Promise<void>> => (dispatch) => {
   dispatch(request(NetworkReducerTypes.GET_PERMIT_CONDITIONS));
   dispatch(showLoading());
   return CustomAxios()

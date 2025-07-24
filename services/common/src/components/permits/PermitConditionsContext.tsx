@@ -2,11 +2,12 @@ import { IPermitAmendment } from "@mds/common/interfaces/permits";
 import React, { FC } from "react";
 
 interface PermitConditionsContextType {
-    mineGuid: string;
-    permitGuid: string;
-    latestAmendment: IPermitAmendment;
-    previousAmendment: IPermitAmendment;
-    currentAmendment: IPermitAmendment;
+    mineGuid?: string;
+    permitGuid?: string;
+    latestAmendment?: IPermitAmendment;
+    previousAmendment?: IPermitAmendment;
+    currentAmendment?: IPermitAmendment;
+    standardConditionType?: string;
     loading: boolean;
     setLoading: (loading: boolean) => void;
 }

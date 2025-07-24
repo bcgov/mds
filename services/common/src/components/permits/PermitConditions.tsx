@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useEffect, useState } from "react";
+import React, { FC, useMemo, useEffect, useState, ReactNode } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row, Space, Typography } from "antd";
 import FileOutlined from "@ant-design/icons/FileOutlined";
@@ -10,11 +10,10 @@ import {
   faCheckCircle,
   faClock,
 } from "@fortawesome/pro-light-svg-icons";
-import { getPermitConditionCategoryOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import {
+  IFormattedConditionCategory,
   IPermitAmendment,
   IPermitCondition,
-  IPermitConditionCategory,
   IPermitConditionTag,
 } from "@mds/common/interfaces/permits";
 import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
@@ -35,12 +34,7 @@ import PermitConditionCategoryEditModal from "@mds/common/components/permits/Per
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import {
   createPermitAmendmentConditionCategory,
-  deletePermitAmendmentConditionCategory,
-  fetchPermits,
-  updatePermitAmendmentConditionCategory,
-  updatePermitCondition,
 } from "@mds/common/redux/actionCreators/permitActionCreator";
-import { EditPermitConditionCategoryInline } from "@mds/common/components/permits/PermitConditionCategory";
 import {
   fetchReviewAssignments,
   getReviewAssignmentsByAmendment,
@@ -49,20 +43,17 @@ import {
 } from "@mds/common/redux/slices/permitConditionCategorySlice";
 import { PreviewPermitAmendmentDocument } from "@mds/common/components/permits/PreviewPermitAmendmentDocument";
 import { formatPermitConditionStep } from "@mds/common/utils/helpers";
-import SubConditionForm from "@mds/common/components/permits/SubConditionForm";
 import { getIsFetching } from "@mds/common/redux/reducers/networkReducer";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
-import PermitConditionReviewAssignment from "@mds/common/components/permits/PermitConditionReviewAssignment";
 import { PERMIT_CONDITION_STATUS_CODE } from "@mds/common/constants/enums";
 import { PermitReviewBanner } from "@mds/common/components/permits/PermitReviewBanner";
 import { PermitConditionsProvider } from "@mds/common/components/permits/PermitConditionsContext";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
-import { createDropDownList } from "@mds/common/redux/utils/helpers";
-import PermitConditionLayer from "@mds/common/components/permits/PermitConditionLayer";
 import { LatestAmendmentWarning } from "./LatestAmendmentWarning";
 import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
 import { FORM } from "@mds/common/constants/forms";
 import { fetchPermitConditionTags, getPermitConditionTags } from "@mds/common/redux/slices/permitConditionTagSlice";
+import PermitConditionViewEdit from "./PermitConditionViewEdit";
 
 const { Title } = Typography;
 
@@ -177,16 +168,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
     (assignment) => assignment.condition_category_code
   );
 
-  const canEditPermitConditions = (category: IPermitConditionCategory): boolean =>
-    isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) &&
-    userCanEdit &&
-    userReviewCategoryCodes.includes(category.condition_category_code);
-
-  const refreshData = async () => {
-    await dispatch(fetchPermits(mineGuid));
-    setEditingFormName(null);
-  };
-
   useEffect(() => {
     dispatch(searchConditionCategories({}));
     dispatch(fetchReviewAssignments({ permit_amendment_id: currentAmendment.permit_amendment_id }));
@@ -203,14 +184,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
       setAddingToCategoryCode(null);
     }
   }, [editingFormName]);
-
-  const defaultPermitConditionCategories = useAppSelector(getPermitConditionCategoryOptions);
-  const condWithoutConditionsText = defaultPermitConditionCategories?.map((cat) => {
-    return {
-      ...cat,
-      description: cat.description.replace("Conditions", "").trim(),
-    };
-  });
 
   const isExtractionInProgress =
     permitExtraction?.task_status === PermitExtractionStatus.in_progress;
@@ -293,7 +266,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const permitConditionCategories = useAppSelector(
     getPermitConditionCategories(permitGuid, currentAmendment?.permit_amendment_guid)
   );
-  const formattedPermitConditionCategories = useMemo(
+  const formattedPermitConditionCategories: IFormattedConditionCategory[] = useMemo(
     () => getFormattedPermitConditionCategories(permitConditionCategories),
     [permitGuid, currentAmendment]
   );
@@ -309,40 +282,9 @@ const PermitConditions: FC<PermitConditionProps> = ({
     ],
   };
 
-  const dropdownCategories = useMemo(
-    () => [
-      {
-        groupName: "Custom Categories",
-        opt: createDropDownList(
-          currentAmendment?.condition_categories ?? [],
-          "description",
-          "condition_category_code"
-        ),
-      },
-      {
-        groupName: "Standard Categories",
-        opt: createDropDownList(
-          condWithoutConditionsText,
-          "description",
-          "condition_category_code"
-        ),
-      },
-    ],
-    [currentAmendment?.condition_categories, condWithoutConditionsText]
-  );
-
   const bannerHeight = isCore ? 30 : 60;
   const topOffset = 99 + 45 + bannerHeight; // header + tab nav
 
-  const handleAddCondition = async () => {
-    setAddingToCategoryCode(null);
-    await refreshData();
-  };
-
-  const handleClickAddCondition = (category) => {
-    setAddingToCategoryCode(category.condition_category_code);
-    setEditingFormName(FORM.EDIT_PERMIT_CONDITION)
-  };
 
   const toggleViewPdf = () => {
     setViewPdf(!viewPdf);
@@ -375,62 +317,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
     );
   };
 
-  const handleUpdateConditionCategory = (category: IPermitConditionCategory) => {
-    setLoading(true);
-    dispatch(
-      updatePermitAmendmentConditionCategory(
-        mineGuid,
-        permitGuid,
-        currentAmendment.permit_amendment_guid,
-        category
-      )
-    ).finally(() => setLoading(false));
-  };
-
-  const handleDeleteConditionCategory = (category: IPermitConditionCategory) => {
-    setLoading(true);
-    dispatch(
-      deletePermitAmendmentConditionCategory(
-        mineGuid,
-        permitGuid,
-        currentAmendment.permit_amendment_guid,
-        category.condition_category_code
-      )
-    ).finally(() => setLoading(false));
-  };
-
-  const handleMove = (category: IPermitConditionCategory, newOrder: number) => {
-    const updatedCat = {
-      ...category,
-      display_order: newOrder,
-    };
-
-    dispatch(
-      updatePermitAmendmentConditionCategory(
-        mineGuid,
-        permitGuid,
-        currentAmendment.permit_amendment_guid,
-        updatedCat
-      )
-    );
-  };
-
-  const handleMoveCondition = async (condition: IPermitCondition, isMoveUp: boolean) => {
-    const newOrder = isMoveUp ? condition.display_order - 1 : condition.display_order + 1;
-    const updatedCond = {
-      ...condition,
-      display_order: newOrder,
-    };
-
-    await dispatch(
-      updatePermitCondition(
-        condition.permit_condition_guid,
-        currentAmendment.permit_amendment_guid,
-        updatedCond
-      )
-    );
-    await refreshData();
-  };
   const viewPermitAmendment = (e) => {
     e.preventDefault();
     history.push(
@@ -529,80 +415,18 @@ const PermitConditions: FC<PermitConditionProps> = ({
         </Row>
       </Col>
       <Col span={24}>
-        <div>
-          <Row gutter={[16, 16]}>
-            {formattedPermitConditionCategories.map((category, idx) => {
-              return (
-                <div key={category.href} className="common-page-content">
-                  <Col span={24}>
-                    <Row justify="space-between">
-                      <Title level={3} className="margin-none" id={category.href}>
-                        <EditPermitConditionCategoryInline
-                          canEdit={
-                            isExtracted && canEditPermitConditions(category.condition_category)
-                          }
-                          onDelete={handleDeleteConditionCategory}
-                          onChange={handleUpdateConditionCategory}
-                          moveUp={(cat) => handleMove(cat, idx - 1)}
-                          moveDown={(cat) => handleMove(cat, idx + 1)}
-                          currentPosition={idx}
-                          categoryCount={formattedPermitConditionCategories.length}
-                          category={category.condition_category}
-                          conditionCount={category?.conditions.length || 0}
-                        />
-                      </Title>
-                      {canEditPermitConditions(category.condition_category) && isExtracted && (
-                        <CoreButton
-                          type="primary"
-                          loading={showLoading}
-                          disabled={Boolean(addingToCategoryCode) || Boolean(editingFormName)}
-                          onClick={() => handleClickAddCondition(category)}
-                        >
-                          Add Condition
-                        </CoreButton>
-                      )}
-                    </Row>
-                    {isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && userCanEdit && (
-                      <PermitConditionReviewAssignment category={category?.condition_category} />
-                    )}
-                  </Col>
-                  {category.conditions.map((sc, idx) => (
-                    <Col span={24} key={sc.permit_condition_id} className="fade-in">
-                      <PermitConditionLayer
-                        isExtracted={isExtracted}
-                        permitAmendmentGuid={currentAmendment?.permit_amendment_guid}
-                        condition={sc}
-                        isExpanded={isExpanded}
-                        handleMoveCondition={handleMoveCondition}
-                        currentPosition={idx}
-                        conditionCount={category.conditions.length}
-                        canEditPermitConditions={canEditPermitConditions(
-                          category.condition_category
-                        )}
-                        setEditingFormName={setEditingFormName}
-                        editingFormName={editingFormName ?? addingToCategoryCode}
-                        refreshData={refreshData}
-                        conditionSelected={setSelectedCondition}
-                        categoryOptions={dropdownCategories}
-                      />
-                    </Col>
-                  ))}
-                  {addingToCategoryCode === category.condition_category_code && (
-                    <Col span={24}>
-                      <SubConditionForm
-                        conditionCategory={category}
-                        permitAmendmentGuid={currentAmendment.permit_amendment_guid}
-                        handleCancel={() => { setAddingToCategoryCode(null); setEditingFormName(null); }}
-                        onSubmit={handleAddCondition}
-                        categoryOptions={dropdownCategories}
-                      />
-                    </Col>
-                  )}
-                </div>
-              );
-            })}
-          </Row>
-        </div>
+        <PermitConditionViewEdit
+          isExtracted={isExtracted}
+          userCanEdit={userCanEdit}
+          userReviewCategoryCodes={userReviewCategoryCodes}
+          formattedCategories={formattedPermitConditionCategories}
+          isExpanded={isExpanded}
+          setSelectedCondition={setSelectedCondition}
+          editingFormName={editingFormName}
+          setEditingFormName={setEditingFormName}
+          addingToCategoryCode={addingToCategoryCode}
+          setAddingToCategoryCode={setAddingToCategoryCode}
+        />
       </Col>
     </Row>
   );

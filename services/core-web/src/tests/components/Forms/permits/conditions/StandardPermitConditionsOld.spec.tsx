@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { StandardPermitConditions } from "@/components/Forms/permits/conditions/StandardPermitConditions";
+import { StandardPermitConditionsOld } from "@/components/Forms/permits/conditions/StandardPermitConditionsOld";
 
 const dispatchProps = {
   openModal: jest.fn(),
@@ -17,9 +17,9 @@ const props = {
   match: { params: { type: "SAG" } },
 };
 
-describe("StandardPermitConditions", () => {
+describe("StandardPermitConditionsOld", () => {
   it("renders properly", () => {
-    const { container: component } = render(<StandardPermitConditions {...dispatchProps} {...props} />);
+    const { container: component } = render(<StandardPermitConditionsOld {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

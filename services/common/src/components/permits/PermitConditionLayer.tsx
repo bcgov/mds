@@ -12,6 +12,7 @@ import { PermitConditionStatus } from "./PermitConditionStatus";
 import { getReportRequirementsByCondition } from "@mds/common/redux/selectors/permitSelectors";
 import { useAppSelector } from "@mds/common/redux/rootState";
 import { FORM } from "@mds/common/constants/forms";
+import { IStandardPermitCondition } from "@mds/common/interfaces";
 
 const { Title } = Typography;
 
@@ -24,7 +25,7 @@ interface PermitConditionLayerProps {
   canEditPermitConditions?: boolean;
   setEditingFormName: (formName: string) => void;
   editingFormName: string;
-  handleMoveCondition: (condition: IPermitCondition, isMoveUp: boolean) => Promise<void>;
+  handleMoveCondition: (condition: IPermitCondition | IStandardPermitCondition, isMoveUp: boolean) => Promise<void>;
   currentPosition: number;
   conditionCount: number;
   permitAmendmentGuid: string;
@@ -50,7 +51,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   refreshData,
   categoryOptions,
 }) => {
-  const { loading, previousAmendment, permitGuid } = usePermitConditions();
+  const { loading, previousAmendment, permitGuid, standardConditionType } = usePermitConditions();
   const requirements = useAppSelector(
     getReportRequirementsByCondition(permitGuid, permitAmendmentGuid, condition.permit_condition_id)
   );
@@ -95,11 +96,11 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
     setIsAddingListItem(false);
   };
 
-  const moveUp = async (condition: IPermitCondition) => {
+  const moveUp = async (condition: IPermitCondition | IStandardPermitCondition) => {
     await handleMoveCondition(condition, true);
   };
 
-  const moveDown = async (condition: IPermitCondition) => {
+  const moveDown = async (condition: IPermitCondition | IStandardPermitCondition) => {
     await handleMoveCondition(condition, false);
   };
 
@@ -183,7 +184,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
               />
             </div>
           )}
-          <PermitConditionStatus
+          {!standardConditionType && <PermitConditionStatus
             condition={condition}
             previousCondition={matchingCondition}
             canEditPermitConditions={canEditPermitConditions}
@@ -191,7 +192,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
             permitAmendmentGuid={permitAmendmentGuid}
             requirements={requirements}
             refreshData={refreshData}
-          />
+          />}
         </div>
       )}
       {/* Content added here will show up at the top level when conditions are collapsed */}

@@ -1,4 +1,5 @@
-import { IMineReportPermitRequirement, IUser } from "@mds/common/interfaces";
+import { IMineReportPermitRequirement, IStandardPermitCondition, IUser } from "@mds/common/interfaces";
+import { ReactNode } from "react";
 
 
 export interface IBoundingBox {
@@ -67,4 +68,15 @@ export interface IPermitConditionCategory {
 export interface IPermitConditionTag {
   permit_condition_tag_guid: string;
   description: string;
+}
+
+export interface IFormattedConditionCategory {
+  href: string;
+  condition_category: { description: string, step: string };
+  conditions: IPermitCondition[] | IStandardPermitCondition[];
+  condition_category_code: string;
+  step: string;
+  description: string;
+  title: ReactNode;
+
 }

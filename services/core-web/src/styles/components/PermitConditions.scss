@@ -1,5 +1,16 @@
 @use "../base.scss" as *;
 
+.permit-conditions-collapse-panel {
+
+  .ant-collapse-content {
+    background-color: #f9f9f9;
+
+    .condition-layer--0 {
+      background-color: $pure-white;
+    }
+  }
+}
+
 div.condition-layer {
   padding: 2px;
   padding-top: 12px;

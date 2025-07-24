@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col } from "antd";
 import PropTypes from "prop-types";
-import StandardPermitConditions from "@/components/Forms/permits/conditions/StandardPermitConditions";
+import StandardPermitConditionsOld from "@/components/Forms/permits/conditions/StandardPermitConditionsOld";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import PermitConditionsNavigation from "@/components/admin/permitConditions/PermitConditionsNavigation";
@@ -12,7 +12,7 @@ const propTypes = {
 
 const defaultProps = {};
 
-export class AdminPermitConditionManagement extends Component {
+export class AdminPermitConditionManagementOld extends Component {
   state = {
     activeNavButton: "permit-conditions",
     openSubMenuKey: ["SAG"],
@@ -48,16 +48,16 @@ export class AdminPermitConditionManagement extends Component {
           openSubMenuKey={this.state.openSubMenuKey}
         />
         <div className="tab__content">
-          <StandardPermitConditions />
+          <StandardPermitConditionsOld />
         </div>
       </div>
     );
   }
 }
 
-AdminPermitConditionManagement.propTypes = propTypes;
-AdminPermitConditionManagement.defaultProps = defaultProps;
+AdminPermitConditionManagementOld.propTypes = propTypes;
+AdminPermitConditionManagementOld.defaultProps = defaultProps;
 
 export default AuthorizationGuard(Permission.EDIT_TEMPLATE_PERMIT_CONDITIONS)(
-  AdminPermitConditionManagement
+  AdminPermitConditionManagementOld
 );
