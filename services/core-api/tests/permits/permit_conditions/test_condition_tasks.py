@@ -23,9 +23,9 @@ def test_export_and_index_permit_amendments_success(export_permit_conditions_moc
     amendment_mock.conditions = []
     permit_amendment_mock.return_value = amendment_mock
     export_permit_conditions_mock.return_value = [{'header': 'row'}]
-    mock_index = permit_search_service_mock.return_value.index
+    mock_upload = permit_search_service_mock.return_value.blob_upload
 
     export_and_index_permit_amendments([permit_amendment_guid])
     
     export_permit_conditions_mock.assert_called_once()
-    mock_index.assert_called_once()
+    mock_upload.assert_called_once()
