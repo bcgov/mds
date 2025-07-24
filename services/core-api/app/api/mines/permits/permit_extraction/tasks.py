@@ -1,5 +1,5 @@
 from app.api.mines.permits.permit_conditions.tasks import (
-    export_and_index_single_permit_amendment
+    export_and_index_permit_amendments
 )
 from app.api.mines.permits.permit_extraction.create_permit_conditions import (
     create_permit_conditions_from_task,
@@ -82,7 +82,7 @@ def poll_update_permit_extraction_status(permit_extraction_task_id):
     if task_status == 'SUCCESS' or task_status == 'FAILURE':
         if task_status == 'SUCCESS':
             create_permit_conditions_from_task(task)
-            export_and_index_single_permit_amendment.delay(task.permit_amendment_guid)
+            export_and_index_permit_amendments.delay([task.permit_amendment_guid])
 
         task.task_status = task_status
         task.save()

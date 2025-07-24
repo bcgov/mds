@@ -1,7 +1,9 @@
 from multiprocessing.dummy import Pool as ThreadPool
+from typing import List
 
 import click
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.utils.include.user_info import User
 from app.config import Config
 from app.extensions import db
@@ -396,3 +398,44 @@ def register_commands(app):
         auth.apply_security = False
         with current_app.app_context():
             bulk_export_permit_conditions(csv_path, output_dir)
+
+    
+    def _batch( items: list, batch_size: int) -> List[List]:
+        """Split a list into batches of specified size"""
+        return [items[i : i + batch_size] for i in range(0, len(items), batch_size)]
+
+    
+    @app.cli.command('bulk_export_and_index_permit_conditions')
+    @click.argument('permit_type', type=click.STRING, required=False)
+    @click.option('--amendment_guids', type=click.STRING, required=False)
+    def bulk_export_and_index_permit_conditions(permit_type, amendment_guids):
+        """
+        Bulk export permit conditions and index them in the search service.
+
+        Example usage:
+            flask bulk_export_and_index_permit_conditions
+            flask bulk_export_and_index_permit_conditions NOW
+            flask bulk_export_and_index_permit_conditions MM
+            flask bulk_export_and_index_permit_conditions --amendment_guids=b1af0a62-2379-4ac0-85a9-be4f2b229cd6
+        """
+        from app import auth
+
+        from app.api.mines.permits.permit_conditions.tasks import export_and_index_permit_amendments
+        
+        auth.apply_security = False
+        is_now = permit_type.lower() == 'now' if permit_type else False
+
+        if amendment_guids:
+            print(f"Exporting and indexing permit amendments with guids: {amendment_guids}")
+            permit_amendment_guids = amendment_guids.split(',')
+        elif permit_type:
+            permit_amendment_guids = PermitAmendment.find_all_guids_with_extracted_conditions(is_now)
+            print(f"Exporting and indexing {len(permit_amendment_guids)} {'Notice of Work' if is_now else 'Major Mine'} permit amendments")
+        else:
+            permit_amendment_guids = PermitAmendment.find_all_guids_with_extracted_conditions()
+            print(f"Exporting and indexing {len(permit_amendment_guids)} permit amendments with extracted conditions for all types")
+
+        batches = _batch(permit_amendment_guids, 500)
+        for guids in batches:
+            with current_app.app_context():
+                export_and_index_permit_amendments(permit_amendment_guids=guids, is_manual=True);

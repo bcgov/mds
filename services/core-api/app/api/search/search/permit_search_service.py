@@ -44,13 +44,13 @@ class PermitSearchService:
         # Just return the response directly for streaming
         return response
     
-    def index(self, file, filename="filename.csv"):
+    def blob_upload(self, file, filename="filename.csv"):
         """
-        Sends a file to the permit conditions service for indexing.
+        Sends a file to the permit conditions service to be uploaded for indexing.
         """
-        print(f'Indexing file {filename}')
+        print(f'Uploading file {filename}')
         result = self.session.post(
-            SEARCH_ENDPOINT+"/index",
+            SEARCH_ENDPOINT+"/upload",
             files={"file": (filename, file, 'text/csv')},
         )
         if result.status_code != 200:

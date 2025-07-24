@@ -135,11 +135,10 @@ def export_permit_conditions(permit_amendment_guid, csv_writer=None):
             }
             processed_ids.add(str(condition.permit_condition_guid))
 
-        if csv_writer:
-            csv_writer.writerow(row)
         condition_rows.append(row)
 
     if csv_writer:
+        csv_writer.writerows(condition_rows)
         print(f'Exported {len(conditions)} conditions for amendment {permit_amendment_guid}')
         return condition_rows
     else:

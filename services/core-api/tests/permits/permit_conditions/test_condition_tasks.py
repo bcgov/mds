@@ -1,6 +1,6 @@
 import pytest
 from unittest import mock
-from app.api.mines.permits.permit_conditions.tasks import export_and_index_single_permit_amendment
+from app.api.mines.permits.permit_conditions.tasks import export_and_index_permit_amendments
 
 @pytest.fixture
 def export_permit_conditions_mock():
@@ -25,7 +25,7 @@ def test_export_and_index_single_permit_amendment_success(export_permit_conditio
     export_permit_conditions_mock.return_value = [{'header': 'row'}]
     mock_index = permit_search_service_mock.return_value.index
 
-    export_and_index_single_permit_amendment(permit_amendment_guid)
+    export_and_index_permit_amendments([permit_amendment_guid])
     
     export_permit_conditions_mock.assert_called_once()
     mock_index.assert_called_once()

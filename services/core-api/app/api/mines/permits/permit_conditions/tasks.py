@@ -15,7 +15,7 @@ class PermitConditionTaskBase(Task):
             return Task.__call__(self, *args, **kwargs)
 
 @celery.task(base=PermitConditionTaskBase)
-def export_and_index_single_permit_amendment(permit_amendment_guid):
+def export_and_index_permit_amendments(permit_amendment_guids, is_manual=False):
     """
     Export conditions for a permit amendment as a CSV file and index them in the search service.
     """
@@ -24,12 +24,14 @@ def export_and_index_single_permit_amendment(permit_amendment_guid):
         csv_data = io.StringIO()
         writer = csv.DictWriter(csv_data, fieldnames=headers)
         writer.writeheader()
-        conditions = export_permit_conditions(permit_amendment_guid, csv_writer=writer)
-        if conditions:
-            csv_data.seek(0)
-            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-            output_filename = f'permit_conditions_bulk_export_{timestamp}.csv'
-            PermitSearchService().index(csv_data.getvalue(),output_filename)
+        
+        for permit_amendment_guid in permit_amendment_guids:
+            export_permit_conditions(permit_amendment_guid, csv_writer=writer)
+
+        csv_data.seek(0)
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_filename = f'{"manual_" if is_manual else ""}permit_conditions_bulk_export_{timestamp}.csv'
+        PermitSearchService().blob_upload(csv_data.getvalue(),output_filename)
     except Exception as e:
         print(f"Exception in export_and_index_single_permit_amendment: {e}")
         raise
