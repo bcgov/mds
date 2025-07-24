@@ -281,3 +281,49 @@ class TestPermitConditionSearchResource:
         assert headers["Content-Type"] == "text/event-stream"
         
         mock_stream_search.assert_called_once_with(search_params)
+
+    @pytest.mark.asyncio
+    @patch("app.pipelines.permit_condition_search.resources.permit_condition_search_resource.store_temporary")
+    @patch("app.pipelines.permit_condition_search.resources.permit_condition_search_resource.permit_condition_blob_uploader_pipeline")
+    async def test_upload_permit_conditions_success(self, mock_blob_pipeline, mock_store_temp):
+        mock_file = MagicMock(spec=UploadFile)
+        mock_file.filename = "test.csv"
+        mock_file.content_type = "text/csv"
+        mock_temp_file = MagicMock()
+        mock_store_temp.return_value = mock_temp_file
+        mock_blob_pipeline.run.return_value = {"blob_uploader": {"blob_url": "mock_blob_url"}}
+
+        from app.pipelines.permit_condition_search.resources.permit_condition_search_resource import upload_permit_conditions
+        result = await upload_permit_conditions(mock_file)
+        assert result == "mock_blob_url"
+        mock_store_temp.assert_called_once_with(mock_file, suffix=".csv")
+        mock_blob_pipeline.run.assert_called_once()
+        mock_temp_file.close.assert_called_once()
+
+    @pytest.mark.asyncio
+    async def test_upload_permit_conditions_invalid_file_type(self):
+        from app.pipelines.permit_condition_search.resources.permit_condition_search_resource import upload_permit_conditions
+        mock_file = MagicMock(spec=UploadFile)
+        mock_file.filename = "test.pdf"
+        mock_file.content_type = "application/pdf"
+        with pytest.raises(HTTPException) as exc_info:
+            await upload_permit_conditions(mock_file)
+        assert exc_info.value.status_code == 400
+        assert "Invalid file type" in str(exc_info.value.detail)
+
+    @pytest.mark.asyncio
+    @patch("app.pipelines.permit_condition_search.resources.permit_condition_search_resource.store_temporary")
+    @patch("app.pipelines.permit_condition_search.resources.permit_condition_search_resource.permit_condition_blob_uploader_pipeline")
+    async def test_upload_permit_conditions_pipeline_error(self, mock_blob_pipeline, mock_store_temp):
+        from app.pipelines.permit_condition_search.resources.permit_condition_search_resource import upload_permit_conditions
+        mock_file = MagicMock(spec=UploadFile)
+        mock_file.filename = "test.csv"
+        mock_file.content_type = "text/csv"
+        mock_temp_file = MagicMock()
+        mock_store_temp.return_value = mock_temp_file
+        mock_blob_pipeline.run.side_effect = Exception("Pipeline error")
+        with pytest.raises(HTTPException) as exc_info:
+            await upload_permit_conditions(mock_file)
+        assert exc_info.value.status_code == 500
+        assert "Error during indexing" in str(exc_info.value.detail)
+        mock_temp_file.close.assert_called_once()

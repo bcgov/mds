@@ -17,7 +17,7 @@ def permit_amendment_mock():
     with mock.patch('app.api.mines.permits.permit_amendment.models.permit_amendment.PermitAmendment.find_by_permit_amendment_guid') as mc:
         yield mc
 
-def test_export_and_index_single_permit_amendment_success(export_permit_conditions_mock, permit_search_service_mock, permit_amendment_mock, db_session):
+def test_export_and_index_permit_amendments_success(export_permit_conditions_mock, permit_search_service_mock, permit_amendment_mock, db_session):
     permit_amendment_guid = 'test-guid'
     amendment_mock = mock.Mock()
     amendment_mock.conditions = []

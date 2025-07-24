@@ -33,5 +33,5 @@ def export_and_index_permit_amendments(permit_amendment_guids, is_manual=False):
         output_filename = f'{"manual_" if is_manual else ""}permit_conditions_bulk_export_{timestamp}.csv'
         PermitSearchService().blob_upload(csv_data.getvalue(),output_filename)
     except Exception as e:
-        print(f"Exception in export_and_index_single_permit_amendment: {e}")
+        print(f"Exception in export_and_index_permit_amendments: {e}")
         raise
