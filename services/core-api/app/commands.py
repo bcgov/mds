@@ -408,8 +408,8 @@ def register_commands(app):
     @app.cli.command('bulk_export_and_index_permit_conditions')
     @click.argument('permit_type', type=click.STRING, required=False)
     @click.option('--amendment_guids', type=click.STRING, required=False)
-    @click.option('--batch_size', type=click.INT, required=False)
-    def bulk_export_and_index_permit_conditions(permit_type, amendment_guids, batch_size=500):
+    @click.option('--batch_size', type=click.INT, required=False, default=500)
+    def bulk_export_and_index_permit_conditions(permit_type, amendment_guids, batch_size):
         """
         Bulk export permit conditions and index them in the search service.
 
@@ -439,4 +439,4 @@ def register_commands(app):
         batches = _batch(permit_amendment_guids, batch_size)
         for guids in batches:
             with current_app.app_context():
-                export_and_index_permit_amendments(permit_amendment_guids=guids, is_manual=True);
+                export_and_index_permit_amendments(permit_amendment_guids=guids, is_manual=True)
