@@ -20,7 +20,7 @@ search_api_key = config.search.api_key.resolve_value()
 assert search_api_key is not None, "Search API key is required"
 
 credential = AzureKeyCredential(search_api_key)
-indexer_client = SearchIndexerClient(endpoint=config.search.endpoint, credential=credential)
+indexer_client = SearchIndexerClient(endpoint=config.search.endpoint.resolve_value(), credential=credential)
 
 def create_data_source():
     data_source = SearchIndexerDataSourceConnection(
