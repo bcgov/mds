@@ -109,7 +109,7 @@ scoring_profile = ScoringProfile(
 
 # Create or update index
 index = SearchIndex(
-    name="permit-conditions",
+    name=config.search.index_name.resolve_value(),
     fields=fields,
     vector_search=vector_search,
     semantic_search=semantic_search,

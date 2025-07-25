@@ -23,7 +23,10 @@ class AzureOpenAIConfig:
 class AzureSearchConfig:
     endpoint: Secret
     api_key: Secret
-    index_name: str = "permit-conditions"
+    index_name: Secret
+    data_source: Secret
+    indexer_name: Secret
+    skillset_name: Secret
     embedding_dimension: int = 3072
 
 @dataclass
@@ -62,7 +65,10 @@ class Config:
         search = AzureSearchConfig(
             endpoint=Secret.from_env_var("AZURE_SEARCH_SERVICE_ENDPOINT", strict=True),
             api_key=Secret.from_env_var("AZURE_SEARCH_API_KEY", strict=True),
-            index_name="permit-conditions",
+            index_name=Secret.from_env_var("AZURE_SEARCH_INDEX_NAME", strict=True),
+            data_source=Secret.from_env_var("AZURE_SEARCH_DATA_SOURCE", strict=True),
+            indexer_name=Secret.from_env_var("AZURE_SEARCH_INDEXER_NAME", strict=True),
+            skillset_name=Secret.from_env_var("AZURE_SEARCH_SKILLSET", strict=True),
             embedding_dimension=3072
         )
 

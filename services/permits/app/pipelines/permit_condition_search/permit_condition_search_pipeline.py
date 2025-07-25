@@ -52,7 +52,7 @@ def create_azure_search_document_store():
     return AzureSearchDocumentStore(
         api_key=config.search.api_key,
         azure_endpoint=config.search.endpoint,
-        index_name=config.search.index_name,
+        index_name=config.search.index_name.resolve_value(),
         embedding_dimension=config.search.embedding_dimension,
         metadata_fields=doc_metadata_fields,
         vector_search_configuration=vector_search_config,

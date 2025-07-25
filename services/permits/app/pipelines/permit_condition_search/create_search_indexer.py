@@ -24,7 +24,7 @@ indexer_client = SearchIndexerClient(endpoint=config.search.endpoint, credential
 
 def create_data_source():
     data_source = SearchIndexerDataSourceConnection(
-        name="permit-conditions-data",
+        name=config.search.data_source.resolve_value(),
         type="azureblob",
         connection_string=config.storage.connection_string,
         container=SearchIndexerDataContainer(name=config.storage.container_name, query="indexing"),
@@ -35,7 +35,7 @@ def create_data_source():
 def create_skillset():
     # Create a skillset with text splitting and embedding generation
     skillset = SearchIndexerSkillset(
-        name="permit-conditions-skillset",
+        name=config.search.skillset_name.resolve_value(),
         description="Skillset for processing permit conditions",
         skills=[
             AzureOpenAIEmbeddingSkill(
@@ -71,10 +71,10 @@ def create_indexer():
     generates embeddings for the condition content, and indexes the data in the permit-conditions index.
     """
     indexer = SearchIndexer(
-        name="permit-conditions-indexer",
-        data_source_name="permit-conditions-data",
-        target_index_name="permit-conditions",
-        skillset_name="permit-conditions-skillset", # The skillset will generate embeddings for the condition content
+        name=config.search.indexer_name.resolve_value(),
+        data_source_name=config.search.data_source.resolve_value(),
+        target_index_name=config.search.index_name.resolve_value(),
+        skillset_name=config.search.skillset_name.resolve_value(), # The skillset will generate embeddings for the condition content
         parameters=IndexingParameters(
             batch_size=100,
             configuration=IndexingParametersConfiguration(
