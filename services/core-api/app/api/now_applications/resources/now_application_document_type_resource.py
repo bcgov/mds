@@ -69,8 +69,9 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
         # Enforce that read-only fields do not change
         enforced_data = [
             x for x in document_type.document_template._form_spec_with_context(now_application_guid)
-            if x.get('read-only', False)
+            if x.get('read-only', False) and not x.get('allow-format-date', False)
         ]
+
         for enforced_item in enforced_data:
             if template_data.get(enforced_item['id']) != enforced_item['context-value']:
                 current_app.logger.debug(
