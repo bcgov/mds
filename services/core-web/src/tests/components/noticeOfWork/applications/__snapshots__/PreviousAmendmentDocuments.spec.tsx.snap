@@ -32,7 +32,6 @@ exports[`PermitPackage renders properly 1`] = `
         Download All
       </span>
     </button>
-    <div />
   </div>
 </div>
 `;

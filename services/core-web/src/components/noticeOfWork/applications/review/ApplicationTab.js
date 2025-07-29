@@ -256,7 +256,7 @@ export class ApplicationTab extends Component {
           this.props.noticeOfWork.lead_inspector_party_guid && (
             <>
               <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="REV">
-                <Button type="secondary" onClick={this.toggleEditMode}>
+                <Button type="secondary" className="form-btn" onClick={this.toggleEditMode}>
                   <img alt="EDIT_OUTLINE" className="padding-sm--right" src={EDIT_OUTLINE} />
                   Edit
                 </Button>

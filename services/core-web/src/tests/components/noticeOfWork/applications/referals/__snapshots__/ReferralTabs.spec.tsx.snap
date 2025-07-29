@@ -242,9 +242,7 @@ exports[`ReferralTabs renders properly 1`] = `
           </div>
           <div
             class="right center-mobile"
-          >
-            <div />
-          </div>
+          />
         </div>
       </div>
     </div>

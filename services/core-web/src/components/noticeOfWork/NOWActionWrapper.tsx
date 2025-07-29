@@ -121,7 +121,7 @@ export const NOWActionWrapper: FC<RouteComponentProps & NOWActionWrapperProps> =
       {props.children}
     </AuthorizationWrapper>
   ) : (
-    <div />
+    null
   );
 };
 

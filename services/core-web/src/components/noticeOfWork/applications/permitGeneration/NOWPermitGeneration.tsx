@@ -499,7 +499,7 @@ export const NOWPermitGeneration: FC<NOWPermitGenerationProps> = ({
               </NOWActionWrapper>
               {draftPermitAmendment.has_permit_conditions && (
                 <Button
-                  className="full-mobile"
+                  className="full-mobile form-btn"
                   type="default"
                   onClick={handlePermitGenSubmit}
                   loading={downloadingDraft}

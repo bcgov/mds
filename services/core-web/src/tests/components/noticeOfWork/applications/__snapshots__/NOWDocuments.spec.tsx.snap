@@ -15,9 +15,7 @@ exports[`NOWDocuments renders properly 1`] = `
       </div>
       <div
         class="ant-col ant-col-6"
-      >
-        <div />
-      </div>
+      />
     </div>
     <br />
     <div
