@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 import { isEmpty, isEqual } from "lodash";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import AuthorizationWrapper from "@mds/common/wrappers/AuthorizationWrapper";
 import {
   getNoticeOfWork,
   getApplicationDelay,
@@ -118,7 +118,7 @@ export const NOWActionWrapper: FC<RouteComponentProps & NOWActionWrapperProps> =
   const disabled = isApplicationDelayed || isApplicationComplete || disableTab;
   return !disabled || props.allowAfterProcess || adminDashboard ? (
     <AuthorizationWrapper {...props}>
-      {React.createElement("span", null, props.children)}
+      {props.children}
     </AuthorizationWrapper>
   ) : (
     <div />

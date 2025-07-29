@@ -1,10 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC, ReactNode, ReactNodeArray } from "react";
 import { startCase, camelCase } from "lodash";
 import { Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
-import { detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common/utils";
+import { detectProdEnvironment } from "@mds/common/utils";
 import { USER_ROLES } from "@mds/common/constants/environment";
 
 /**
@@ -31,59 +30,57 @@ import { USER_ROLES } from "@mds/common/constants/environment";
     </AuthorizationWrapper>
   </Menu>
  *
- * NOTE: isMajorMine comes from `mine.major_mine_ind`, currently in MDS only Major mines can be updated,
- * therefore all edit buttons will be hidden from regional Mines -- Admin can view/edit everything
- *
- *
- * inDevelopment - If the feature is still being built and not ready to be shared with a larger audience, `inDevelopment` only displays the content in local and dev environment
- * inTesting - if the feature is ready to be shared with a larger audience, but not ready to be displayed in PROD, `inTesting` will display content in every environment except Prod.
+ * isMajorMine - has been removed as it has no use cases
+ * inDevelopment - has been removed as it has no use cases and is superceded by flagsmith
+ * inTesting - deprecated usage: superceded by flagsmith but some use cases remain
  */
 
-const propTypes = {
-  permission: PropTypes.string,
-  isMajorMine: PropTypes.bool,
-  inDevelopment: PropTypes.bool,
-  inTesting: PropTypes.bool,
-  children: PropTypes.any,
-  showToolTip: PropTypes.bool,
-};
 
-const defaultProps = {
-  isMajorMine: undefined,
-  inDevelopment: undefined,
-  inTesting: undefined,
-  permission: undefined,
-  showToolTip: true,
-};
+interface AuthorizationWrapperProps {
+  /**
+   * @deprecated Use feature flags instead of inTesting property.
+   */
+  inTesting?: boolean;
+  permission?: string;
+  showToolTip?: boolean;
+  children: ReactNode | ReactNodeArray;
+}
 
-export const AuthorizationWrapper = (props) => {
-  const inDevCheck =
-    props.inDevelopment === undefined || (props.inDevelopment && detectDevelopmentEnvironment());
+export const AuthorizationWrapper: FC<AuthorizationWrapperProps> = ({
+  inTesting,
+  children,
+  permission = "",
+  showToolTip = true,
+}) => {
   const inTestCheck =
-    props.inTesting === undefined || (props.inTesting && !detectProdEnvironment());
-  const permissionCheck = useSelector(userHasRole(props.permission));
-  const isMajorMine = props.isMajorMine === undefined || props.isMajorMine;
+    inTesting === undefined || (inTesting && !detectProdEnvironment());
+  const userHasPermission = useSelector(userHasRole(permission));
+  const permissionCheck = userHasPermission || permission === "";
   const isAdmin = useSelector(userHasRole(USER_ROLES.role_admin));
 
   const title = () => {
-    const permission = props.permission ? `${USER_ROLES[props.permission]}` : "";
-    const inTest = props.inTesting ? "Not Visible in Production" : "";
-    const majorMine = props.isMajorMine !== undefined ? "Only Visible to Major Mines" : "";
+    const permissionLabel = USER_ROLES[permission] ?? permission;
+    const inTest = inTesting ? "Not Visible in Production" : "";
     return (
       <ul style={{ listStyle: "none", marginBottom: "0" }}>
-        {permission && <li>{startCase(camelCase(permission))}</li>}
+        {permission !== "" && <li>{startCase(camelCase(permissionLabel))}</li>}
         {inTest && <li>{inTest}</li>}
-        {majorMine && <li>{majorMine}</li>}
       </ul>
     );
   };
 
   // all actions are visible to admin, except when they should only exist in their respective environments. (ie admin cannot see features in prod if they are feature flagged to test)
-  const adminOverride = isAdmin && !inDevCheck && !inTestCheck;
+  const adminOverride = isAdmin && !inTestCheck;
+  // Determine if children is an array and needs wrapping
+  const needsWrapper = Array.isArray(children) && children.length > 1;
+  const tooltipContent = needsWrapper
+    ? <span>{children}</span>
+    : children;
+
   return (
-    (adminOverride || (inDevCheck && inTestCheck && permissionCheck && isMajorMine)) && (
+    (adminOverride || (inTestCheck && permissionCheck)) && (
       <Tooltip
-        title={isAdmin && props.showToolTip ? title() : ""}
+        title={isAdmin && showToolTip ? title() : ""}
         placement="left"
         mouseEnterDelay={1.7}
         mouseLeaveDelay={0}
@@ -93,12 +90,10 @@ export const AuthorizationWrapper = (props) => {
         trigger={["hover"]}
         destroyTooltipOnHide
       >
-        {React.createElement("span", null, props.children)}
+        {tooltipContent}
       </Tooltip>
     )
   );
 };
-AuthorizationWrapper.propTypes = propTypes;
-AuthorizationWrapper.defaultProps = defaultProps;
 
 export default AuthorizationWrapper;

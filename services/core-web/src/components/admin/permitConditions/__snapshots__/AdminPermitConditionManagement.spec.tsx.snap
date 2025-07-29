@@ -169,6 +169,7 @@ exports[`AdminPermitConditionManagement renders properly 1`] = `
         >
           <div
             class="ant-col ant-col-24"
+            id="GEC"
             style="padding: 8px 8px 8px 8px;"
           >
             <div
@@ -313,6 +314,7 @@ exports[`AdminPermitConditionManagement renders properly 1`] = `
           </div>
           <div
             class="ant-col ant-col-24"
+            id="HSC"
             style="padding: 8px 8px 8px 8px;"
           >
             <div
@@ -457,6 +459,7 @@ exports[`AdminPermitConditionManagement renders properly 1`] = `
           </div>
           <div
             class="ant-col ant-col-24"
+            id="GOC"
             style="padding: 8px 8px 8px 8px;"
           >
             <div
@@ -601,6 +604,7 @@ exports[`AdminPermitConditionManagement renders properly 1`] = `
           </div>
           <div
             class="ant-col ant-col-24"
+            id="ELC"
             style="padding: 8px 8px 8px 8px;"
           >
             <div
@@ -745,6 +749,7 @@ exports[`AdminPermitConditionManagement renders properly 1`] = `
           </div>
           <div
             class="ant-col ant-col-24"
+            id="RCC"
             style="padding: 8px 8px 8px 8px;"
           >
             <div

@@ -1222,7 +1222,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <Connect(AuthorizationWrapper)
+    <AuthorizationWrapper
       permission="role_edit_permits"
     >
       <ForwardRef
@@ -1245,7 +1245,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
       >
         Verify Application
       </Button>
-    </Connect(AuthorizationWrapper)>
+    </AuthorizationWrapper>
     <p
       className="violet"
     >

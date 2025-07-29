@@ -54,7 +54,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  handleDraftPermit: () => {},
+  handleDraftPermit: () => { },
   isNoticeOfWorkTypeDisabled: true,
 };
 
@@ -92,8 +92,7 @@ export class NOWProgressActions extends Component {
       .createNoticeOfWorkApplicationProgress(
         this.props.noticeOfWork.now_application_guid,
         tab,
-        `Successfully ${trigger}${trigger === "Start" ? "ed" : "d"} the ${
-          this.props.progressStatusHash[tab]
+        `Successfully ${trigger}${trigger === "Start" ? "ed" : "d"} the ${this.props.progressStatusHash[tab]
         } Process.`
       )
       .then(() => {
@@ -219,7 +218,7 @@ export class NOWProgressActions extends Component {
       isEmpty(this.props.draftPermitAmendment);
     const showReasonModal = processedWithReason || isApplicationDelayed;
     return (
-      <div className="inline-flex progress-actions">
+      <div className="inline-flex progress-actions form-btn">
         <>
           {!isProcessed && showActions && (
             <>

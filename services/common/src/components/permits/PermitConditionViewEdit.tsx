@@ -1,7 +1,7 @@
-import React, { FC, useMemo } from "react";
+import React, { FC, useEffect, useMemo } from "react";
 import { Col, Collapse, Row, Spin, Typography } from "antd";
 import LoadingOutlined from "@ant-design/icons/LoadingOutlined";
-import { IFormattedConditionCategory, IPermitCondition, IPermitConditionCategory, IStandardPermitCondition } from "@mds/common/interfaces";
+import { IFormattedConditionCategory, IPermitCondition, IPermitConditionCategory, IPermitConditionTag, IStandardPermitCondition } from "@mds/common/interfaces";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
 import SubConditionForm from "./SubConditionForm";
@@ -10,11 +10,12 @@ import PermitConditionReviewAssignment from "./PermitConditionReviewAssignment";
 import CoreButton from "../common/CoreButton";
 import { EditPermitConditionCategoryInline } from "./PermitConditionCategory";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
-import { deletePermitAmendmentConditionCategory, fetchPermits, fetchStandardPermitConditions, updatePermitAmendmentConditionCategory, updatePermitCondition, updateStandardPermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { deletePermitAmendmentConditionCategory, updatePermitAmendmentConditionCategory, updatePermitCondition, updateStandardPermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { usePermitConditions } from "./PermitConditionsContext";
 import { createDropDownList } from "@mds/common/redux/utils/helpers";
 import { getPermitConditionCategoryOptions } from "@mds/common/redux/reducers/staticContentReducer";
 import { FORM } from "@mds/common/constants/forms";
+import { fetchPermitConditionTags, getPermitConditionTags } from "@mds/common/redux/slices/permitConditionTagSlice";
 
 const { Title } = Typography;
 
@@ -51,15 +52,18 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
         currentAmendment,
         loading,
         setLoading,
-        standardConditionType
+        standardConditionType,
+        isNowEditor,
+        refreshData,
     } = usePermitConditions();
 
     const { isFeatureEnabled } = useFeatureFlag();
     const dispatch = useAppDispatch();
     const defaultPermitConditionCategories = useAppSelector(getPermitConditionCategoryOptions);
-
+    const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags);
     const isStandardConditions = Boolean(standardConditionType);
-    const canAddConditions = isStandardConditions || isExtracted;
+    const canAddConditions = isStandardConditions || isExtracted || isNowEditor;
+    const areTagsEnabled = isFeatureEnabled(Feature.PERMIT_CONDITION_TAGS) && !isStandardConditions;
 
     const condWithoutConditionsText = defaultPermitConditionCategories?.map((cat) => {
         return {
@@ -69,6 +73,12 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
     });
 
     const featureModifyConditions = isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS);
+
+    useEffect(() => {
+        if (conditionTags?.length === 0 && areTagsEnabled) {
+            dispatch(fetchPermitConditionTags(undefined));
+        }
+    }, [conditionTags]);
 
     const dropdownCategories = useMemo(
         () => [
@@ -94,21 +104,17 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
 
     const canEditPermitConditions = (category: IPermitConditionCategory): boolean =>
         featureModifyConditions &&
-        userCanEdit && (isStandardConditions ||
+        userCanEdit && (isStandardConditions || isNowEditor ||
             userReviewCategoryCodes.includes(category.condition_category_code));
 
-    const refreshData = async () => {
-        if (isStandardConditions) {
-            await dispatch(fetchStandardPermitConditions(standardConditionType));
-        } else {
-            await dispatch(fetchPermits(mineGuid));
-        }
+    const refreshConditionData = async () => {
+        await refreshData();
         setEditingFormName(null);
     };
 
     const handleAddCondition = async () => {
         setAddingToCategoryCode(null);
-        await refreshData();
+        await refreshConditionData();
     };
 
     const handleClickAddCondition = (category) => {
@@ -178,7 +184,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
                 )
             );
         }
-        await refreshData();
+        await refreshConditionData();
     };
 
     const renderCategory = (category, idx) => {
@@ -211,7 +217,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
                         </CoreButton>
                     )}
                 </Row>
-                {featureModifyConditions && userCanEdit && !isStandardConditions && (
+                {featureModifyConditions && userCanEdit && !isStandardConditions && !isNowEditor && (
                     <PermitConditionReviewAssignment category={category?.condition_category} />
                 )}
             </Col>
@@ -230,7 +236,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
                         )}
                         setEditingFormName={setEditingFormName}
                         editingFormName={editingFormName ?? addingToCategoryCode}
-                        refreshData={refreshData}
+                        refreshData={refreshConditionData}
                         conditionSelected={setSelectedCondition}
                         categoryOptions={dropdownCategories}
                     />
@@ -257,7 +263,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
                     {
                         if (collapseCategories) {
                             return (
-                                <Col span={24}>
+                                <Col span={24} id={category.href} key={category.href}>
                                     <Collapse
                                         key={category.href}
                                         className="light-header"

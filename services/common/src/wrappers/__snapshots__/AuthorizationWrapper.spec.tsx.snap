@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AuthorizationWrapper empty params  1`] = `
+<div>
+  <div>
+    hello
+  </div>
+</div>
+`;
+
+exports[`AuthorizationWrapper renders major mine properly 1`] = `
+<div>
+  <div>
+    hello
+  </div>
+</div>
+`;
+
+exports[`AuthorizationWrapper renders properly admin overrides is major mine 1`] = `
+<div>
+  <div>
+    hello
+  </div>
+</div>
+`;
+
+exports[`AuthorizationWrapper renders properly edit and major mine require both success 1`] = `
+<div>
+  <div>
+    hello
+  </div>
+</div>
+`;
+
+exports[`AuthorizationWrapper renders properly edit and major mine require both wrong role: EMPTY 1`] = `<div />`;

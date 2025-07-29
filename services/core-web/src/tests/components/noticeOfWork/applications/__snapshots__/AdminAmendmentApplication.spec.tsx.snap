@@ -324,7 +324,7 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
                         class="view--header--content--actions"
                       >
                         <div
-                          class="inline-flex progress-actions"
+                          class="inline-flex progress-actions form-btn"
                         />
                         
                       </div>

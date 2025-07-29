@@ -3,7 +3,7 @@
 exports[`ReferralConsultationPackage renders properly 1`] = `
 <div>
   <button
-    class="ant-btn ant-btn-secondary full-mobile"
+    class="ant-btn ant-btn-secondary full-mobile form-btn"
     type="button"
   >
     <span>

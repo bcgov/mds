@@ -457,7 +457,7 @@ exports[`ApplicationTab renders properly 1`] = `
   <div
     className="side-menu"
   >
-    <withRouter(Connect(NOWSideMenu))
+    <NOWSideMenu
       tabSection="application"
     />
   </div>

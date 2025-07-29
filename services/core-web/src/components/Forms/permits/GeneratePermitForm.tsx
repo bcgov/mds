@@ -1,16 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { compose } from "redux";
-import { connect } from "react-redux";
+import React, { FC, useState } from "react";
 import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { Button, Col, Row, Descriptions, Popconfirm } from "antd";
+import EditOutlined from "@ant-design/icons/EditOutlined";
 import { required, dateNotAfterOther, dateNotBeforeOther, maxLength } from "@mds/common/redux/utils/Validate";
-import { resetForm, formatDate } from "@common/utils/helpers";
-import { getEditingPreambleFlag } from "@mds/common/redux/selectors/permitSelectors";
+import { resetForm, formatDate } from "@mds/common/redux/utils/helpers";
+import { getEditingPreambleFlag, getNowDraftConditionsFormatted } from "@mds/common/redux/selectors/permitSelectors";
 import * as FORM from "@/constants/forms";
-import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
-import { EDIT_OUTLINE } from "@/constants/assets";
 import VariableConditionMenu from "@/components/Forms/permits/conditions/VariableConditionMenu";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
@@ -21,32 +17,71 @@ import PermitAmendmentTable from "@/components/noticeOfWork/applications/permitG
 import UploadPermitDocument from "@/components/noticeOfWork/applications/permitGeneration/UploadPermitDocument";
 import ReviewSiteProperties from "@/components/noticeOfWork/applications/review/ReviewSiteProperties";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import AuthorizationWrapper from "@mds/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import { IFormattedConditionCategory, INoWApplicationForm, INoWGeneratedPermit, IOption, IPermit, IPermitAmendment } from "@mds/common/interfaces";
+import { storeEditingPreambleFlag } from "@mds/common/redux/actions/permitActions";
+import { PermitConditionsProvider } from "@mds/common/components/permits/PermitConditionsContext";
+import PermitConditionViewEdit from "@mds/common/components/permits/PermitConditionViewEdit";
+import { fetchDraftPermitByNOW } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils";
 
-const propTypes = {
-  isAmendment: PropTypes.bool.isRequired,
-  previousAmendmentDocuments: PropTypes.objectOf(PropTypes.any).isRequired,
-  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  isViewMode: PropTypes.bool.isRequired,
-  permitAmendmentDropdown: CustomPropTypes.options.isRequired,
-  isPermitAmendmentTypeDropDownDisabled: PropTypes.bool.isRequired,
-  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  isLoaded: PropTypes.bool.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  draftPermit: CustomPropTypes.permit.isRequired,
-  draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
-  editingPreambleFlag: PropTypes.bool.isRequired,
-  storeEditingPreambleFlag: PropTypes.func.isRequired,
-  handleSavePreamble: PropTypes.func.isRequired,
-  handleCancelPreambleTextEdit: PropTypes.func.isRequired,
-};
 
-export const GeneratePermitForm = (props) => {
+interface IGeneratedPermitFormProps {
+  isAmendment: boolean;
+  previousAmendmentDocuments: any[];
+  noticeOfWork: INoWApplicationForm;
+  isViewMode: boolean;
+  permitAmendmentDropdown: IOption[];
+  isLoaded: boolean;
+  initialValues: INoWGeneratedPermit;
+  draftPermit: IPermit;
+  draftPermitAmendment: IPermitAmendment;
+  isPermitAmendmentTypeDropDownDisabled: boolean;
+  handleSavePreamble: () => void;
+  handleCancelPreambleTextEdit: () => void;
+}
+
+export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
+  const dispatch = useAppDispatch();
+  const formValues = (useAppSelector(getFormValues(FORM.GENERATE_PERMIT)) ?? {}) as INoWGeneratedPermit;
+  const editingPreambleFlag = useAppSelector(getEditingPreambleFlag);
+  const { isFeatureEnabled } = useFeatureFlag();
+  const newEditorEnabled = isFeatureEnabled(Feature.NOW_PERMIT_CONDITIONS_EDITOR);
+  const [loading, setLoading] = useState(false);
+  const [editingFormName, setEditingFormName] = useState<string>();
+  const [addingToCategoryCode, setAddingToCategoryCode] = useState<string>();
+  const { categoriesWithConditions } = useAppSelector(getNowDraftConditionsFormatted)
+
+  const formattedCategories: IFormattedConditionCategory[] = categoriesWithConditions.map((cat) => {
+
+    return {
+      href: cat.condition_category_code,
+      condition_category: { description: cat.description, step: cat.step },
+      conditions: cat.conditions,
+      condition_category_code: cat.condition_category_code,
+      title: <span>{cat.description}</span>,
+    }
+  });
+
+
+  const conditionsProviderValue = {
+    mineGuid: props.noticeOfWork.mine_guid,
+    permitGuid: props.draftPermit.permit_guid,
+    currentAmendment: props.draftPermitAmendment,
+    isNowEditor: true,
+    // previousAmendment will be in props.draftPermit.permit_amendments
+    loading,
+    setLoading,
+    refreshData: () => dispatch(fetchDraftPermitByNOW(props.noticeOfWork.mine_guid, props.noticeOfWork.now_application_guid)),
+  };
+
   return (
     <FormWrapper
-      initialValues={props.initialValues}
+      initialValues={props.initialValues ?? {}}
       name={FORM.GENERATE_PERMIT}
       reduxFormConfig={{
         touchOnBlur: false,
@@ -232,7 +267,7 @@ export const GeneratePermitForm = (props) => {
                 label="Issue Date"
                 component={renderConfig.DATE}
                 required
-                validate={[dateNotAfterOther(props.formValues.auth_end_date)]}
+                validate={[dateNotAfterOther(formValues.auth_end_date)]}
                 disabled={props.isViewMode}
               />
             </Col>
@@ -243,7 +278,7 @@ export const GeneratePermitForm = (props) => {
                 label="Authorization End Date"
                 component={renderConfig.DATE}
                 required
-                validate={[dateNotBeforeOther(props.formValues.issue_date)]}
+                validate={[dateNotBeforeOther(formValues.issue_date)]}
                 disabled={props.isViewMode}
               />
             </Col>
@@ -272,7 +307,7 @@ export const GeneratePermitForm = (props) => {
           draftPermit={props.draftPermit}
         />
       </ScrollContentWrapper>
-      {props.editingPreambleFlag && <VariableConditionMenu />}
+      {editingPreambleFlag && <VariableConditionMenu />}
       {props.draftPermitAmendment.has_permit_conditions && (
         <ScrollContentWrapper id="preamble" title="Preamble" isLoaded={props.isLoaded}>
           <>
@@ -321,18 +356,18 @@ export const GeneratePermitForm = (props) => {
                 />
               </Col>
             </Row>
-            {!props.editingPreambleFlag && (
+            {!editingPreambleFlag && (
               <div className="right">
                 <br />
                 <br />
                 <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
                   <Button
-                    type="secondary"
+                    type="default"
+                    icon={<EditOutlined />}
                     onClick={() => {
-                      props.storeEditingPreambleFlag(true);
+                      dispatch(storeEditingPreambleFlag(true));
                     }}
                   >
-                    <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
                     Edit Preamble Text
                   </Button>
                 </AuthorizationWrapper>
@@ -342,7 +377,7 @@ export const GeneratePermitForm = (props) => {
             <br />
             <div
               style={
-                props.editingPreambleFlag ? { backgroundColor: "#f3f0f0", padding: "20px" } : {}
+                editingPreambleFlag ? { backgroundColor: "#f3f0f0", padding: "20px" } : {}
               }
             >
               <Row gutter={32}>
@@ -352,13 +387,13 @@ export const GeneratePermitForm = (props) => {
                     name="preamble_text"
                     label="Preamble text"
                     component={renderConfig.AUTO_SIZE_FIELD}
-                    disabled={!props.editingPreambleFlag}
+                    disabled={!editingPreambleFlag}
                     minRows={4}
                     validate={maxLength(4000)}
                   />
                 </Col>
               </Row>
-              {props.editingPreambleFlag && (
+              {editingPreambleFlag && (
                 <div className="right center-mobile">
                   <Popconfirm
                     placement="topRight"
@@ -367,7 +402,7 @@ export const GeneratePermitForm = (props) => {
                     okText="Yes"
                     cancelText="No"
                   >
-                    <Button className="full-mobile" type="secondary">
+                    <Button className="full-mobile" type="default">
                       Cancel
                     </Button>
                   </Popconfirm>
@@ -392,7 +427,8 @@ export const GeneratePermitForm = (props) => {
               <PreviousAmendmentDocuments
                 previousAmendmentDocuments={props.previousAmendmentDocuments}
                 editPreambleFileMetadata={!props.isViewMode}
-                initialValues={props.initialValues}
+              // TODO: see if initialValues is necessary
+              // initialValues={props.initialValues}
               />
             )}
           </>
@@ -400,13 +436,25 @@ export const GeneratePermitForm = (props) => {
       )}
       {props.draftPermitAmendment.has_permit_conditions && (
         <ScrollContentWrapper id="conditions" title="Conditions" isLoaded={props.isLoaded}>
-          <Conditions
-            mineGuid={props.noticeOfWork.mine_guid}
-            permitGuid={props.draftPermit.permit_guid}
-            isViewMode={props.isViewMode}
-            isSourcePermitGeneratedInCore={props.noticeOfWork.is_source_permit_generated_in_core}
-            isNoWApplication={props.noticeOfWork.application_type_code === "NOW"}
-          />
+          {newEditorEnabled ? <PermitConditionsProvider value={conditionsProviderValue}>
+            <PermitConditionViewEdit
+              userCanEdit={true}
+              formattedCategories={formattedCategories}
+              collapseCategories
+              editingFormName={editingFormName}
+              setEditingFormName={setEditingFormName}
+              addingToCategoryCode={addingToCategoryCode}
+              setAddingToCategoryCode={setAddingToCategoryCode}
+            />
+          </PermitConditionsProvider>
+            : <Conditions
+              mineGuid={props.noticeOfWork.mine_guid}
+              permitGuid={props.draftPermit.permit_guid}
+              isViewMode={props.isViewMode}
+              isSourcePermitGeneratedInCore={props.noticeOfWork.is_source_permit_generated_in_core}
+              isNoWApplication={props.noticeOfWork.application_type_code === "NOW"}
+            />
+          }
         </ScrollContentWrapper>
       )}
       <ScrollContentWrapper id="maps" title="Maps">
@@ -426,13 +474,4 @@ export const GeneratePermitForm = (props) => {
   );
 };
 
-GeneratePermitForm.propTypes = propTypes;
-
-const mapStateToProps = (state) => ({
-  formValues: getFormValues(FORM.GENERATE_PERMIT)(state) || {},
-  editingPreambleFlag: getEditingPreambleFlag(state),
-});
-
-export default compose(
-  connect(mapStateToProps)
-)(GeneratePermitForm);
+export default GeneratePermitForm;

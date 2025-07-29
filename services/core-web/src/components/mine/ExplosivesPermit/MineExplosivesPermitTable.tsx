@@ -27,7 +27,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFiles } from "@fortawesome/pro-light-svg-icons";
 import { COLOR } from "@/constants/styles";
 import { ColumnsType } from "antd/es/table";
-import { ESUP_DOCUMENT_GENERATED_TYPES } from "@mds/common/constants/strings";
 
 interface MineExplosivesPermitTableProps {
   data: IExplosivesPermit[];
@@ -128,13 +127,6 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
       render: (record) => {
         const isApproved = record.application_status === "APP";
         const isProcessed = record.application_status !== "REC";
-        const hasDocuments =
-          record.documents?.filter((doc) =>
-            Object.keys(ESUP_DOCUMENT_GENERATED_TYPES).includes(
-              doc.explosives_permit_document_type_code
-            )
-          )?.length > 0;
-        const isCoreSource = record.originating_system === "Core";
 
         const approvedMenu: ITableAction[] = [viewPermitAction, editDocumentAction, amendPermitAction];
         const menu: ITableAction[] = !isProcessed
@@ -167,10 +159,6 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
 
         return (
           <div className="btn--middle flex">
-            {isApproved && !hasDocuments && isCoreSource && (
-              <AuthorizationWrapper permission={Permission.EDIT_EXPLOSIVES_PERMITS}>
-              </AuthorizationWrapper>
-            )}
             {showActions && (
               <AuthorizationWrapper permission={Permission.EDIT_EXPLOSIVES_PERMITS}>
                 <ActionMenu

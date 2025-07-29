@@ -21,7 +21,7 @@ exports[`ContactHomePage renders properly 1`] = `
           To find a contact profile, search in the list section below.
         </p>
       </div>
-      <Connect(AuthorizationWrapper)
+      <AuthorizationWrapper
         permission="role_edit_parties"
       >
         <AddButton
@@ -29,7 +29,7 @@ exports[`ContactHomePage renders properly 1`] = `
         >
           Add New Contact
         </AddButton>
-      </Connect(AuthorizationWrapper)>
+      </AuthorizationWrapper>
     </div>
   </div>
   <div

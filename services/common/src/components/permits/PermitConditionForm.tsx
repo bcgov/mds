@@ -71,15 +71,15 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const { isFeatureEnabled } = useFeatureFlag();
     const permitConditionsValue = usePermitConditions();
-    const { loading, setLoading, standardConditionType } = permitConditionsValue;
-    const editingAllowed = Boolean(standardConditionType) || isExtracted;
+    const { loading, setLoading, standardConditionType, isNowEditor } = permitConditionsValue;
+    const editingAllowed = Boolean(standardConditionType) || isExtracted || isNowEditor;
     // the form fails to re-initialize when the category is changed, so concatenating it forces it to make a new one
     const formName = `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`;
     const editingFormDirty = useAppSelector(isDirty(editingFormName));
     const listItemFormDirty = useAppSelector(isDirty(FORM.EDIT_PERMIT_CONDITION));
     const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags);
     const enablePermitConditionTags = isFeatureEnabled(Feature.PERMIT_CONDITION_TAGS) && !standardConditionType;
-    const stepEditDisabled = Boolean(standardConditionType);
+    const stepEditDisabled = Boolean(standardConditionType) || isNowEditor;
 
     const startEdit = () => {
         const handleEdit = () => {
@@ -127,7 +127,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
 
     const handleSubmit = async (values) => {
         setLoading(true);
-        const payload = values.step
+        const payload = values.step && !stepEditDisabled
             ? {
                 ...values,
                 // Backend has the property named as _step to update in the db

@@ -8,8 +8,10 @@ interface PermitConditionsContextType {
     previousAmendment?: IPermitAmendment;
     currentAmendment?: IPermitAmendment;
     standardConditionType?: string;
+    isNowEditor?: boolean;
     loading: boolean;
     setLoading: (loading: boolean) => void;
+    refreshData: () => Promise<any>;
 }
 
 const PermitConditionsContext = React.createContext<PermitConditionsContextType | undefined>(undefined);

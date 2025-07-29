@@ -54,6 +54,7 @@ const StandardPermitConditions: FC<StandardPermitConditionsProps> = ({ type }) =
         loading: showLoading,
         setLoading: setIsLoading,
         standardConditionType: typeCode,
+        refreshData: () => dispatch(fetchStandardPermitConditions(typeCode))
     };
 
     const formattedCategories: IFormattedConditionCategory[] = categoriesWithConditions.map((cat) => {

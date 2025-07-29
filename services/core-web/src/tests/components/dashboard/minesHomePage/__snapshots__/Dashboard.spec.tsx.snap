@@ -19,7 +19,7 @@ exports[`Dashboard renders properly 1`] = `
         </p>
       </div>
       <div>
-        <Connect(AuthorizationWrapper)
+        <AuthorizationWrapper
           permission="role_edit_mines"
         >
           <AddButton
@@ -28,7 +28,7 @@ exports[`Dashboard renders properly 1`] = `
           >
             Create Mine Record
           </AddButton>
-        </Connect(AuthorizationWrapper)>
+        </AuthorizationWrapper>
       </div>
     </div>
   </div>

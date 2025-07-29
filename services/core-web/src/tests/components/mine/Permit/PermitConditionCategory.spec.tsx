@@ -31,6 +31,7 @@ const providerParams = {
   currentAmendment: null,
   loading: false,
   setLoading: jest.fn(),
+  refreshData: jest.fn(),
 };
 
 const initialState = {};
