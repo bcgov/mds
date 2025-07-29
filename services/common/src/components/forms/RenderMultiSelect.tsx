@@ -17,6 +17,7 @@ interface MultiSelectProps extends BaseInputProps {
   onSearch?: any;
   loading?: boolean;
   viewDisplay?: (opts: IOption[]) => ReactNode;
+  enableGetPopupContainer?: boolean;
 }
 
 const defaultViewDisplay = (opts: IOption[]): ReactNode => {
@@ -43,6 +44,7 @@ export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
     disabled = false,
     onSearch = () => { },
     filterOption = false,
+    enableGetPopupContainer = false,
     label = "",
     viewDisplay = defaultViewDisplay,
     showNA,
@@ -66,7 +68,7 @@ export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
           </div>
         }
 
-        const extraProps = isModal ? null : { getPopupContainer: (trigger) => trigger.parentNode };
+        const extraProps = isModal || enableGetPopupContainer ? null : { getPopupContainer: (trigger) => trigger.parentNode };
         return (
           <div className="form-multiselect">
             <Form.Item

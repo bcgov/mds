@@ -246,8 +246,13 @@ class NOWApplicationDocumentType(AuditMixin, Base):
         def transform_letter(template_data, now_application):
             if self.now_application_document_type_code in ('CAL', 'NPE'):
                 organization = Party.find_by_name(template_data['proponent_name'])
-                template_data['letter_dt'] = datetime.strptime(template_data["letter_dt"], '%b %d %Y').strftime('%B %d %Y')
-                template_data['application_dt'] = datetime.strptime(template_data["application_dt"], '%b %d %Y').strftime('%B %d %Y')
+                date_display_format = '%B %-d, %Y'
+                template_data['letter_dt'] = datetime.strptime(template_data["letter_dt"], '%b %d %Y').strftime(date_display_format)
+                template_data['application_dt'] = datetime.strptime(template_data["application_dt"], '%b %d %Y').strftime(date_display_format)
+                if template_data.get('start_date') and template_data['start_date'] != "Invalid date":
+                    template_data['start_date'] = datetime.strptime(template_data["start_date"], '%Y-%m-%d').strftime(date_display_format)
+                if template_data.get('end_date') and template_data['end_date'] != "Invalid date":
+                    template_data['end_date'] = datetime.strptime(template_data["end_date"], '%Y-%m-%d').strftime(date_display_format)
                 template_data['organization_email'] = organization.email if organization else None
 
             validate_issuing_inspector(now_application)

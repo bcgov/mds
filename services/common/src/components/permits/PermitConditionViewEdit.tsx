@@ -60,10 +60,12 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
     const { isFeatureEnabled } = useFeatureFlag();
     const dispatch = useAppDispatch();
     const defaultPermitConditionCategories = useAppSelector(getPermitConditionCategoryOptions);
+
     const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags);
     const isStandardConditions = Boolean(standardConditionType);
     const canAddConditions = isStandardConditions || isExtracted || isNowEditor;
     const areTagsEnabled = isFeatureEnabled(Feature.PERMIT_CONDITION_TAGS) && !isStandardConditions;
+
 
     const condWithoutConditionsText = defaultPermitConditionCategories?.map((cat) => {
         return {
@@ -79,6 +81,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
             dispatch(fetchPermitConditionTags(undefined));
         }
     }, [conditionTags]);
+
 
     const dropdownCategories = useMemo(
         () => [
@@ -109,6 +112,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
 
     const refreshConditionData = async () => {
         await refreshData();
+
         setEditingFormName(null);
     };
 

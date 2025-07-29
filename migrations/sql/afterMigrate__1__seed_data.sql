@@ -1014,13 +1014,15 @@ SET form_spec_json = '[
     "id": "start_date",
     "label": "Authorization Start Date",
     "relative-data-path": "now_application.proposed_start_date",
-    "read-only": true
+    "read-only": true,
+    "allow-format-date": true
   },
   {
     "id": "end_date",
     "label": "Authorization End Date",
     "relative-data-path": "now_application.proposed_end_date",
-    "read-only": true
+    "read-only": true,
+    "allow-format-date": true
   },
   {
     "id": "issuing_inspector_name",

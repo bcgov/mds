@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useEffect, useState } from "react";
+import React, { FC, useMemo, useEffect, useState, ReactNode } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row, Space, Typography } from "antd";
 import FileOutlined from "@ant-design/icons/FileOutlined";

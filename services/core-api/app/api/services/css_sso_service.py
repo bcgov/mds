@@ -58,7 +58,7 @@ class CSSService():
         :return: list
         '''
         
-        url = f'{Config.CSS_API_URL}/{Config.CSS_ENV}/user-role-mappings?roleName={rolename}'
+        url = f'{Config.CSS_API_URL}/{Config.CSS_ENV}/roles/{rolename}/users'
         auth_token = CSSService.get_css_auth_token()
         headers = {'Authorization': f'Bearer {auth_token}'}
 
@@ -77,7 +77,7 @@ class CSSService():
             current_app.logger.error(message)
             return            
 
-        users = resp_data.get('users') 
+        users = resp_data.get('data') 
         user_emails = [user['email'] for user in users]
 
         return user_emails
