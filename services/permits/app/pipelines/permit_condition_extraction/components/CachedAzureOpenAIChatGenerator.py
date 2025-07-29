@@ -14,6 +14,7 @@ from haystack.document_stores.types import DuplicatePolicy
 from haystack_integrations.document_stores.elasticsearch import (
     ElasticsearchDocumentStore,
 )
+from app.pipelines.permit_condition_search.config import config
 
 ROOT_DIR = os.path.abspath(os.curdir)
 logger = logging.getLogger(__name__)
@@ -88,7 +89,7 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
         document_store = ElasticsearchDocumentStore(
             hosts=host,
             basic_auth=(username, password),
-            index="permits",
+            index=config.storage.container_name,
             embedding_similarity_function="cosine",
             ca_certs=ca_cert if ca_cert else None,
             verify_certs=True if ca_cert else False,

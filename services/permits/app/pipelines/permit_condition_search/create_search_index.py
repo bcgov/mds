@@ -29,7 +29,7 @@ assert search_api_key is not None, "Search API key is required"
 
 # Initialize the search client
 credential = AzureKeyCredential(search_api_key)
-index_client = SearchIndexClient(endpoint=config.search.endpoint, credential=credential)
+index_client = SearchIndexClient(endpoint=config.search.endpoint.resolve_value(), credential=credential)
 
 # Vector search configuration
 vector_search = VectorSearch(
@@ -109,7 +109,7 @@ scoring_profile = ScoringProfile(
 
 # Create or update index
 index = SearchIndex(
-    name="permit-conditions",
+    name=config.search.index_name.resolve_value(),
     fields=fields,
     vector_search=vector_search,
     semantic_search=semantic_search,
