@@ -28,6 +28,8 @@ import PermitConditionViewEdit from "@mds/common/components/permits/PermitCondit
 import { fetchDraftPermitByNOW } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
+import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
+import { USER_ROLES } from "@mds/common/constants/environment";
 
 
 interface IGeneratedPermitFormProps {
@@ -54,7 +56,8 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
   const [loading, setLoading] = useState(false);
   const [editingFormName, setEditingFormName] = useState<string>();
   const [addingToCategoryCode, setAddingToCategoryCode] = useState<string>();
-  const { categoriesWithConditions } = useAppSelector(getNowDraftConditionsFormatted)
+  const { categoriesWithConditions } = useAppSelector(getNowDraftConditionsFormatted);
+  const userCanEdit = useAppSelector(userHasRole(USER_ROLES.role_edit_permits));
 
   const formattedCategories: IFormattedConditionCategory[] = categoriesWithConditions.map((cat) => {
 
@@ -438,7 +441,7 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
         <ScrollContentWrapper id="conditions" title="Conditions" isLoaded={props.isLoaded}>
           {newEditorEnabled ? <PermitConditionsProvider value={conditionsProviderValue}>
             <PermitConditionViewEdit
-              userCanEdit={true}
+              userCanEdit={userCanEdit && !props.isViewMode}
               formattedCategories={formattedCategories}
               collapseCategories
               editingFormName={editingFormName}
