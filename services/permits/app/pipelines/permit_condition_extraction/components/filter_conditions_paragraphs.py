@@ -77,6 +77,8 @@ def filter_paragraphs(paragraphs):
         paragraphs, max_page_header_y
     )
 
+    paragraphs = _exclude_figure_paragraphs(paragraphs)
+
     logger.info(
         f"Found {len(paragraphs)} paragraphs after filtering, {max_page_header_y}"
     )
@@ -117,14 +119,27 @@ def _has_numbering(p):
 
     return bool(p['regex'])
 
+def _looks_like_condition_header(role, text):
+    """
+    Check if the paragraph looks like a condition header based on its role and text.
+    So far, we have yet to see a permit that would no have a condition header that does not fall under these criteria.
+    """
+    return (
+        role in ("title", "sectionHeading")
+        and len(text.split()) <= 4 # The text is not too long (less than 4 words) - Should cover some variants like "Conditions", "Permit Conditions" or "Terms and Conditions"
+        and len(text) < 40 # The text is short (less than 40 characters). If it is longer, it's likely a sentance, not a header.
+        and "condition" in text.lower()
+    )
+
 def _exclude_paragraphs_not_in_conditions_section(paragraphs):
     # Find the first section header / title that contains the word "conditions" in it - this is likely the start of the conditions section
     idx_of_conditions_header = next(
         (
             i
             for i, p in enumerate(paragraphs)
-            if "conditions" in p.content["text"].lower()
-            and p.content["role"] in ("sectionHeading", "title")
+            if _looks_like_condition_header(
+                p.content["role"], p.content["text"]
+            )
         ),
         None,
     )
@@ -147,7 +162,6 @@ def _exclude_paragraphs_not_in_conditions_section(paragraphs):
 
     return filtered_paragraphs
 
-
 def _exclude_paragraphs_with_non_paragraph_roles(paragraphs, max_page_header_y):
     filterf = ["pageNumber", "footnote", "pageFooter"]
 
@@ -158,6 +172,20 @@ def _exclude_paragraphs_with_non_paragraph_roles(paragraphs, max_page_header_y):
 
 def _is_normal_paragraph(p):
     return not p.content["role"] or p.content["role"] not in ["pageHeader","pageNumber"] and p.content
+
+def _looks_like_permitted_area_figure(p):
+    text = p.content.get("text", "").lower().strip()
+    return (
+        text.startswith("figure")
+        and '°' in text 
+        and '"' in text
+    )
+
+def _exclude_figure_paragraphs(paragraphs):
+    """
+    Exclude paragraphs that are figures, i.e. those with a role of 'figure'.
+    """
+    return [p for p in paragraphs if not _looks_like_permitted_area_figure(p)]
 
 def _identify_bottom_of_first_page_header(paragraphs):
     # Find the first paragraph that is identified as a page header

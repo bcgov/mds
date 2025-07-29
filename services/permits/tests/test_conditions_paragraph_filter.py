@@ -163,34 +163,34 @@ def test_filter_paragraphs_excludes_page_nr_footnote_page_footer():
     assert result[2].content["text"] == "5"
 
 
-def test_filter_paragraphs_only_includes_paragraphs_in_conditions_section():
+def test_filter_paragraphs_only_includes_paragraphs_in_conditions_section_finds_conditions_header():
     paragraphs = [
         Document(
-            content=json.dumps({"id": "ab1", "text": "paragraph 1", "role": None}),
+            content=json.dumps({"role": None, "text": "paragraph 1"}),
             meta={"page": 1},
         ),
         Document(
-            content=json.dumps({"id": "ab2", "text": "paragraph 2", "role": None}),
-            meta={"page": 1},
-        ),
-        Document(
-            content=json.dumps(
-                {"id": "ab3", "text": "conditions header", "role": "sectionHeading"}
-            ),
-            meta={"page": 1},
-        ),
-        Document(
-            content=json.dumps({"id": "ab2", "text": "paragraph 2", "role": None}),
+            content=json.dumps({"role": None, "text": "paragraph 2"}),
             meta={"page": 1},
         ),
         Document(
             content=json.dumps(
-                {"id": "ab4", "text": "condition 1", "role": "sectionHeading"}
+                {"role": "sectionHeading", "text": "Permit Conditions"}
             ),
             meta={"page": 1},
         ),
         Document(
-            content=json.dumps({"id": "ab5", "text": "condition 2", "role": None}),
+            content=json.dumps({"role": None, "text": "paragraph after header"}),
+            meta={"page": 1},
+        ),
+        Document(
+            content=json.dumps(
+                {"role": "sectionHeading", "text": "1. First condition"}
+            ),
+            meta={"page": 1},
+        ),
+        Document(
+            content=json.dumps({"role": None, "text": "2. Second condition"}),
             meta={"page": 1},
         ),
     ]
@@ -203,8 +203,57 @@ def test_filter_paragraphs_only_includes_paragraphs_in_conditions_section():
         result = filter_paragraphs(paragraphs)
 
     assert len(result) == 2
-    assert result[0].content["text"] == "condition 1"
-    assert result[1].content["text"] == "condition 2"
+    assert result[0].content["text"] == "1. First condition"
+    assert result[1].content["text"] == "2. Second condition"
+
+
+def test_filter_paragraphs_only_includes_paragraphs_in_conditions_section_no_conditions_header():
+    paragraphs = [
+        Document(
+            content=json.dumps({"role": None, "text": "paragraph 1"}),
+            meta={"page": 1},
+        ),
+        Document(
+            content=json.dumps({"role": None, "text": "paragraph 2"}),
+            meta={"page": 1},
+        ),
+    ]
+
+    for p in paragraphs:
+        if p.content:
+            p.content = json.loads(p.content)
+
+    with task_context(MockContext()):
+        result = filter_paragraphs(paragraphs)
+
+    assert len(result) == 2
+    assert result[0].content["text"] == "paragraph 1"
+    assert result[1].content["text"] == "paragraph 2"
+
+
+def test_filter_paragraphs_only_includes_paragraphs_in_conditions_section_header_only():
+    paragraphs = [
+        Document(
+            content=json.dumps({"role": None, "text": "paragraph 1"}),
+            meta={"page": 1},
+        ),
+        Document(
+            content=json.dumps(
+                {"role": "sectionHeading", "text": "Permit Conditions"}
+            ),
+            meta={"page": 1},
+        ),
+    ]
+
+    for p in paragraphs:
+        if p.content:
+            p.content = json.loads(p.content)
+
+    with task_context(MockContext()):
+        result = filter_paragraphs(paragraphs)
+
+    assert len(result) == 1
+    assert result[0].content["text"] == "Permit Conditions"
 
 
 def test_identify_bottom_of_first_page_header():
@@ -336,3 +385,40 @@ def test_filter_paragraphs_integration_multi_page():
     assert len(result) == 2
     assert result[0].content["text"] == "1. General Conditions"
     assert result[1].content["text"] == "This is the first condition."
+
+
+def test_filter_paragraphs_excludes_figure_paragraphs():
+    paragraphs = [
+        Document(
+            content=json.dumps({"role": None, "text": "This is a normal paragraph."}),
+            meta={"page": 1},
+        ),
+        Document(
+            content=json.dumps(
+                {"role": None, "text": ' Figure 1: Map of area 49° 5\' 30"'}
+            ),
+            meta={"page": 1},
+        ),
+        Document(
+            content=json.dumps({"role": None, "text": "Figure 2: Another map"}),
+            meta={"page": 1},
+        ),
+        Document(
+            content=json.dumps(
+                {"role": None, "text": "This is another normal paragraph."}
+            ),
+            meta={"page": 1},
+        ),
+    ]
+
+    for p in paragraphs:
+        if p.content:
+            p.content = json.loads(p.content)
+
+    with task_context(MockContext()):
+        result = filter_paragraphs(paragraphs)
+
+    assert len(result) == 3
+    assert result[0].content["text"] == "This is a normal paragraph."
+    assert result[1].content["text"] == "Figure 2: Another map"
+    assert result[2].content["text"] == "This is another normal paragraph."
