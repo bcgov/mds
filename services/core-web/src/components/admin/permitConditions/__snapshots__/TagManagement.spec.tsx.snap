@@ -204,7 +204,7 @@ exports[`TagManagement renders properly 1`] = `
             class="ant-spin-container"
           >
             <div
-              class="ant-table ant-table-empty"
+              class="ant-table ant-table-empty ant-table-has-fix-right"
             >
               <div
                 class="ant-table-container"
@@ -215,12 +215,7 @@ exports[`TagManagement renders properly 1`] = `
                   <table
                     style="table-layout: auto;"
                   >
-                    <colgroup>
-                      <col />
-                      <col
-                        style="width: 175px;"
-                      />
-                    </colgroup>
+                    <colgroup />
                     <thead
                       class="ant-table-thead"
                     >
@@ -287,10 +282,9 @@ exports[`TagManagement renders properly 1`] = `
                           </div>
                         </th>
                         <th
-                          class="ant-table-cell"
-                        >
-                          
-                        </th>
+                          class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                          style="position: sticky; right: 0px;"
+                        />
                       </tr>
                     </thead>
                     <tbody
