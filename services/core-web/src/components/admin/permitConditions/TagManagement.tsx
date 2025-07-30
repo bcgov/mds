@@ -2,16 +2,15 @@ import React, { FC, useEffect, useState } from "react";
 import PermitConditionsNavigation from "../permitConditions/PermitConditionsNavigation";
 import { useParams } from "react-router-dom";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
-import { Button, Divider, Popconfirm, Row } from "antd";
-import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
+import { renderTextColumn, renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import { Button, Divider, Row, Modal } from "antd";
 import { IPermitConditionTag } from "@mds/common/interfaces";
 import { deletePermitConditionTag, fetchPermitConditionTags, getPermitConditionTags } from "@mds/common/redux/slices/permitConditionTagSlice";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { TagEditForm } from "./TagEditForm";
 import { FORM } from "@mds/common/constants/forms";
 
@@ -22,12 +21,12 @@ const TagManagement: FC = () => {
 
   const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags)
   useEffect(() => {
-      if (conditionTags?.length === 0) {
-        setIsLoading(true);
-        dispatch(fetchPermitConditionTags(undefined))
-        setIsLoading(false);
-      }
-    }, [conditionTags]);
+    if (conditionTags?.length === 0) {
+      setIsLoading(true);
+      dispatch(fetchPermitConditionTags(undefined))
+      setIsLoading(false);
+    }
+  }, [conditionTags]);
 
   const refreshConditionTags = () => {
     dispatch(fetchPermitConditionTags(undefined))
@@ -63,36 +62,42 @@ const TagManagement: FC = () => {
     refreshConditionTags();
   };
 
+  const getActions = () => {
+    return [
+      {
+        key: "edit",
+        label: "Edit",
+        icon: <EditOutlined />,
+        clickFunction: (event, record) => {
+          return Modal.confirm({
+            title: "Updating this name will change it in all conditions where it is used. Do you want to continue?",
+            okText: "Confirm",
+            cancelText: "Cancel",
+            onOk: () => handleOpenModal(record),
+          })
+        }
+      },
+      {
+        key: "delete",
+        label: "Delete",
+        icon: <DeleteOutlined />,
+        clickFunction: (event, record) => {
+          return Modal.confirm({
+            title: "Deleting this tag will remove it from all the items it is currently attached to. Do you wish to continue?",
+            okText: "Delete",
+            cancelText: "Cancel",
+            onOk: () => handleDelete(record.permit_condition_tag_guid)
+          })
+        }
+      }
+    ];
+  }
+
   const columns = [
     renderTextColumn("description", "Tag", true),
-    {
-      title: "",
-      dataIndex: "delete",
-      width: 175,
-      render: (text, record) => (
-        <div title="">
-          <Button
-            className="full-mobile"
-            onClick={() => handleOpenModal(record)}
-            ghost
-            type="primary"
-          >
-            <img src={EDIT_OUTLINE_VIOLET} alt="Edit Tag" />
-          </Button>
-          <Popconfirm
-            placement="topLeft"
-            title={`Are you sure you want to delete ${record.description}?`}
-            onConfirm={() => handleDelete(record.permit_condition_tag_guid)}
-            okText="Delete"
-            cancelText="Cancel"
-          >
-            <Button className="full-mobile" ghost type="primary">
-              <img  src={TRASHCAN} alt="Remove Tag" />
-            </Button>
-          </Popconfirm>
-        </div>
-      ),
-    },
+    renderActionsColumn({
+      actions: getActions(),
+    }),
   ];
 
   return (
@@ -118,10 +123,10 @@ const TagManagement: FC = () => {
           </Button>
         </Row>
         <CoreTable
-            condition={!isLoading}
-            columns={columns}
-            dataSource={conditionTags}
-          />
+          condition={!isLoading}
+          columns={columns}
+          dataSource={conditionTags}
+        />
       </div>
     </div>
   )
