@@ -76,7 +76,6 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
     permitGuid: props.draftPermit.permit_guid,
     currentAmendment: props.draftPermitAmendment,
     isNowEditor: true,
-    // previousAmendment will be in props.draftPermit.permit_amendments
     loading,
     setLoading,
     refreshData: () => dispatch(fetchDraftPermitByNOW(props.noticeOfWork.mine_guid, props.noticeOfWork.now_application_guid)),

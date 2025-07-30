@@ -32,4 +32,4 @@ exports[`AuthorizationWrapper renders properly edit and major mine require both 
 </div>
 `;
 
-exports[`AuthorizationWrapper renders properly edit and major mine require both wrong role: EMPTY 1`] = `<div />`;
+exports[`AuthorizationWrapper renders properly edit and major mine require both wrong role 1`] = `<div />`;
