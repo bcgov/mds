@@ -1,4 +1,5 @@
 
+from datetime import timedelta
 from app.pipelines.permit_condition_search.config import config
 from azure.core.credentials import AzureKeyCredential
 from azure.search.documents.indexes import SearchIndexerClient
@@ -8,6 +9,7 @@ from azure.search.documents.indexes.models import (
     FieldMapping,
     IndexingParameters,
     IndexingParametersConfiguration,
+    IndexingSchedule,
     InputFieldMappingEntry,
     OutputFieldMappingEntry,
     SearchIndexer,
@@ -42,7 +44,7 @@ def create_skillset():
                 name="ChunkEmbedder",
                 description="Generate embeddings for chunks",
                 context="/document",
-                resource_url=config.openai.endpoint,
+                resource_url=config.openai.endpoint.resolve_value(),
                 api_key=config.openai.api_key.resolve_value(),
                 model_name=config.openai.embedding_model,
                 deployment_name=config.openai.embedding_model,
@@ -83,6 +85,7 @@ def create_indexer():
                 query_timeout=None
             )
         ),
+        schedule=IndexingSchedule(interval=timedelta(minutes=5)),
         output_field_mappings=[
             FieldMapping(
                 source_field_name="/document/id",

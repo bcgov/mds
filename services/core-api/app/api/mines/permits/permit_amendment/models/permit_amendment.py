@@ -302,7 +302,22 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     def find_original_permit_amendment_by_permit_guid(cls, _guid, mine_guid):
         return cls.query.filter_by(permit_guid=_guid).filter_by(
             permit_amendment_type_code='OGP', mine_guid=mine_guid).first()
+    
+    @classmethod
+    def find_all_guids_with_extracted_conditions(cls, filter_now_application=None):
+        query = (
+            cls.query
+            .with_entities(cls.permit_amendment_guid)
+            .join(PermitConditions, PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id)
+            .filter(cls.deleted_ind == False, PermitConditions.deleted_ind == False, cls.permit_amendment_status_code != 'DFT')
+        )
+        if filter_now_application is True:
+            query = query.filter(PermitAmendment.now_application_guid.isnot(None))
+        elif filter_now_application is False:
+            query = query.filter(PermitAmendment.now_application_guid.is_(None))
 
+        return [row[0] for row in query.distinct().all()]
+    
     @validates('permit_amendment_status_code')
     def validate_status_code(self, key, permit_amendment_status_code):
         if not permit_amendment_status_code:

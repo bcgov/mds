@@ -53,7 +53,7 @@ vector_search = VectorSearch(
             kind="azureOpenAI",
             parameters=AzureOpenAIVectorizerParameters(
                 api_key=config.openai.api_key.resolve_value(),
-                resource_url=config.openai.endpoint,
+                resource_url=config.openai.endpoint.resolve_value(),
                 deployment_name="text-embedding-3-large",
                 model_name="text-embedding-3-large",
             ),

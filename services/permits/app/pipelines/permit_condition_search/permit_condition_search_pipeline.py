@@ -103,6 +103,21 @@ def create_permit_condition_search_indexing_pipeline():
 
     return index_pipeline
 
+def create_blob_uploader_pipeline():
+    """
+    Creates a pipeline for uploading permit conditions to Azure Blob Storage.
+    """
+    blob_uploader_pipeline = Pipeline()
+
+    blob_uploader = AzureBlobUploader(
+        connection_string=config.storage.connection_string,
+        container_name=config.storage.container_name,
+    )
+
+    blob_uploader_pipeline.add_component("blob_uploader", blob_uploader)
+
+    return blob_uploader_pipeline
+
 
 def create_permit_condition_search_retrieval_pipeline():
     """
@@ -190,8 +205,10 @@ logger.info("Initializing permit condition search pipelines")
 if not os.getenv("TESTING"):
     permit_condition_search_retrieval_pipeline = create_permit_condition_search_retrieval_pipeline()
     permit_condition_search_indexing_pipeline = create_permit_condition_search_indexing_pipeline()
+    permit_condition_blob_uploader_pipeline = create_blob_uploader_pipeline()
     logger.info("Pipelines initialized successfully")
 else:
     permit_condition_search_retrieval_pipeline = None
     permit_condition_search_indexing_pipeline = None
+    permit_condition_blob_uploader_pipeline = None
     logger.info("Pipelines initialization skipped for testing")

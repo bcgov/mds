@@ -8,6 +8,7 @@ from app.pipelines.permit_condition_search.components.azure_blob_upload import (
     AzureBlobUploader,
 )
 from app.pipelines.permit_condition_search.permit_condition_search_pipeline import (
+    create_blob_uploader_pipeline,
     create_permit_condition_search_indexing_pipeline,
     create_permit_condition_search_retrieval_pipeline,
 )
@@ -53,6 +54,14 @@ def test_indexing_pipeline_validates(mock_components):
 
 def test_search_pipeline_validates(mock_components):
     pipeline = create_permit_condition_search_indexing_pipeline()
+    try:
+        pipeline._validate_input({"blob_uploader": {"file_path": "test.csv"}})
+
+    except Exception as e:
+        pytest.fail(f"Pipeline validation failed with error: {str(e)}")
+
+def test_blob_upload_pipeline_validates(mock_components):
+    pipeline = create_blob_uploader_pipeline()
     try:
         pipeline._validate_input({"blob_uploader": {"file_path": "test.csv"}})
 

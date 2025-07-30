@@ -12,6 +12,7 @@ from app.pipelines.permit_condition_search.models.search_models import (
 from app.pipelines.permit_condition_search.permit_condition_search_pipeline import (
     permit_condition_search_indexing_pipeline,
     permit_condition_search_retrieval_pipeline,
+    permit_condition_blob_uploader_pipeline,
 )
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from haystack.dataclasses import ChatMessage
@@ -22,6 +23,32 @@ from sse_starlette.sse import EventSourceResponse
 router = APIRouter()
 
 logger = logging.getLogger(__name__)
+
+
+@router.post("/permit_conditions/search/upload")
+async def upload_permit_conditions(file: UploadFile = File(...)) -> str:
+    """Uploads a CSV file containing permit conditions to blob storage."""
+    if file.content_type != "text/csv":
+        raise HTTPException(
+            400, detail="Invalid file type. Only CSV files are supported."
+        )
+
+    tmp = store_temporary(file, suffix=".csv")
+
+    try:
+        pipeline = permit_condition_blob_uploader_pipeline
+
+        res = pipeline.run({"blob_uploader": {"file_path": Path(tmp.name), "file_name": file.filename}})
+        logger.debug(f"Pipeline response: {res}")
+        return res["blob_uploader"]["blob_url"]
+
+    except Exception as e:
+        logger.error(f"Error during indexing: {str(e)}", exc_info=True)
+        raise HTTPException(500, f"Error during indexing: {str(e)}")
+
+    finally:
+        tmp.close()
+
 
 
 @router.post("/permit_conditions/search/index")
