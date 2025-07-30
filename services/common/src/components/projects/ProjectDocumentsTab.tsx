@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useAppDispatch } from "@mds/common/redux/rootState";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import ScrollSidePageWrapper from "../common/ScrollSidePageWrapper";
 import { ScrollSideMenuProps } from "../common/ScrollSideMenu";
 import { fetchProjectById } from "@mds/common/redux/actionCreators/projectActionCreator";
@@ -30,18 +29,19 @@ interface ProjectDocumentsTabProps {
 }
 const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
   const dispatch = useAppDispatch();
-  const mineDocuments = useSelector(getMineDocuments);
-  const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
-  const amsApplications = useSelector(getAmsFinalAppsByProjectSummary(project?.project_summary?.project_summary_guid));
-  const canEditMajorMineApplications = useSelector(userHasRole(USER_ROLES.role_edit_major_mine_applications));
-  const isUserProponent = useSelector(isProponent);
+  const mineDocuments = useAppSelector(getMineDocuments);
+  const projectSummaryDocumentTypesHash = useAppSelector(getProjectSummaryDocumentTypesHash);
+  const amsApplications = useAppSelector(getAmsFinalAppsByProjectSummary(project?.project_summary?.project_summary_guid));
+  const canEditMajorMineApplications = useAppSelector(userHasRole(USER_ROLES.role_edit_major_mine_applications));
+  const isUserProponent = useAppSelector(isProponent);
 
   const { isFeatureEnabled } = useFeatureFlag();
   const isAmsDocumentsEnabled = isFeatureEnabled(Feature.AMS_FINAL_APPLICATION);
-  const systemFlag = useSelector(getSystemFlag);
+  const systemFlag = useAppSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;
   const [isLoaded, setIsLoaded] = useState(true);
   const canManageAmsFiles = canEditMajorMineApplications || isUserProponent;
+
 
   const authsWithDocs =
     project?.project_summary?.authorizations?.filter(
