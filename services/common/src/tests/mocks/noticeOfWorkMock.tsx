@@ -1,3 +1,6 @@
+import { PartyTypeCodeEnum } from "@mds/common/constants/enums";
+import { INoWApplicationForm } from "@mds/common/interfaces";
+
 export const NOTICE_OF_WORK = {
     application_guid: "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
     now_application_guid: "07e801a0-fa33-4c3b-abcc-ac6df628d483",
@@ -390,6 +393,264 @@ export const NOTICE_OF_WORK = {
         mine_tenure_type_code: "",
     },
 };
+
+// TS and NoW don't play nice. This is realistic data copied from the DOM
+// but there are conflicts with interfaces used within, such as IParty
+// and many instances of properties typed as number/Date but stored as string
+export const NOTICE_OF_WORK_APP_FORM: INoWApplicationForm = {
+    now_number: "2215",
+    now_tracking_number: 57,
+    lead_inspector: {
+        party_guid: "351a7764-1442-4651-b120-d4a748788ff9",
+        party_type_code: PartyTypeCodeEnum.PER,
+        phone_no: "749-133-7381",
+        phone_ext: null,
+        phone_no_sec: "332-006-4635",
+        phone_sec_ext: null,
+        phone_no_ter: "148-399-9485",
+        phone_ter_ext: null,
+        email: "Emily.Munoz@example.com",
+        email_sec: null,
+        party_name: "Munoz",
+        name: "Emily Munoz",
+        first_name: "Emily",
+        // @ts-ignore
+        address: [],
+        mine_party_appt: [],
+        job_title: null,
+        job_title_code: null,
+        postnominal_letters: null,
+        idir_username: null,
+        // @ts-ignore
+        party_orgbook_entity: {},
+        business_role_appts: [],
+        signature: null,
+        now_party_appt: [],
+        organization_guid: null,
+        // @ts-ignore
+        organization: {},
+        digital_wallet_connection_status: null,
+        middle_name: null,
+        credential_id: null
+    },
+    issuing_inspector: {
+        party_guid: "79c65877-9992-4597-8075-eceb63ce6903",
+        party_type_code: PartyTypeCodeEnum.PER,
+        phone_no: "369-490-2827",
+        phone_ext: null,
+        phone_no_sec: "074-705-3692",
+        phone_sec_ext: null,
+        phone_no_ter: "257-025-9251",
+        phone_ter_ext: null,
+        email: "Kevin.Stewart@example.com",
+        email_sec: null,
+        party_name: "Stewart",
+        name: "Kevin Stewart",
+        first_name: "Kevin",
+        // @ts-ignore
+        address: [],
+        mine_party_appt: [],
+        job_title: null,
+        job_title_code: null,
+        postnominal_letters: null,
+        idir_username: null,
+        // @ts-ignore
+        party_orgbook_entity: {},
+        business_role_appts: [],
+        signature: null,
+        now_party_appt: [],
+        organization_guid: null,
+        // @ts-ignore
+        organization: {},
+        digital_wallet_connection_status: null,
+        middle_name: null,
+        credential_id: null
+    },
+    imported_by: "Instead industry agent truth space.",
+    imported_date: "2025-04-23",
+    previous_application_status_code: "PEV",
+    application_type: "MIN",
+    type_of_application: "Amendment",
+    ats_authorization_number: 1698,
+    ats_project_number: 3656,
+    other_information: "Manage scientist including such fine determine office send maybe term would risk sense difficult western take eat scene us ten prevent maintain science floor customer style suffer candidate establish region start when hand community adult share environmental guess recently newspaper general responsibility relate allow receive heavy national film throughout bed marriage support mother key thing check nature require billion sport knowledge early power kitchen staff conference red on sister provide media key true it no toward ok might read shoulder get word clear easy sing manager member writer popular can sign story call enjoy reason series general four north bed north wrong young list pressure company heavy represent sister difference real case natural big member land painting feeling around officer not little should five owner even result at explain owner black series health word own official property state any remain daughter yeah yeah her loss three body back right day say visit away whether under nearly line citizen whatever series few eye national clear bit interview detail worker hard option increase another something fire power environmental focus learn real artist morning bed difference state rich remember party build continue him present born learn foot produce figure real figure table Mrs leg eat carry network bar must Republican after cup agency expert staff fire perhaps audience trip respond green check discuss book stay purpose town why son happen accept admit attorney explain mother degree few thousand bit argue himself course very Democrat administration even animal rate set doctor late sister herself actually fund page city know single upon improve focus yeah Republican produce child condition herself expert while so Mr many interview nation simply with amount pay remain civil exist training force have movie life whole.",
+    unreclaimed_disturbance_previous_year: "9737.81",
+    disturbance_planned_reclamation: "3672.23",
+    original_start_date: "2025-04-06",
+    mine_latitude: "81.0934730",
+    mine_longitude: "-70.7758540",
+    permittee: {},
+    documents: [],
+    regional_contact: "SouthwestMinesDivision@gov.bc.ca",
+    submitted_to_core_date: "2025-04-25",
+    last_updated_date: "2025-07-28T17:55:33.060133+00:00",
+    filtered_submission_documents: [],
+    // --- IimportedNOWApplication fields ---
+    now_application_guid: "0f9718ad-f955-4f33-a126-8874456f6518",
+    mine_guid: "bc6b023c-8169-4a98-a42a-6070c6381f57",
+    mine_name: "Acosta Inc",
+    mine_no: "87269932",
+    mine_region: "SW",
+    imported_to_core: true,
+    notice_of_work_type_code: "MIN",
+    now_application_status_code: "REC",
+    submitted_date: "2025-04-15",
+    // @ts-ignore
+    received_date: "2025-04-17",
+    latitude: "-7.1905440",
+    longitude: "140.1589650",
+    property_name: "Palmer, Tapia and Martinez",
+    tenure_number: "2215",
+    description_of_land: "Worker toward throw coach seven.",
+    proposed_start_date: "2025-04-02",
+    proposed_end_date: "2025-04-09",
+    directions_to_site: "Short free oil including.",
+    status_reason: null,
+    status_updated_date: "2025-04-25",
+    decision_by_user_date: null,
+    contacts: [],
+    submission_documents: [],
+    // @ts-ignore
+    blasting_operation: {},
+    state_of_land: {
+        has_community_water_shed: true,
+        has_archaeology_sites_affected: false,
+        // @ts-ignore
+        authorization_details: "Over campaign second drive run method direction protect site economy evidence describe do stage fear forward fly not usually amount finish peace your drive buy throughout approach sport building machine worry control kitchen outside then wrong point hear party true those medical big law fire value federal painting chair lead discover perform per second ball sign model stage rest fire article try find continue tend sure join source stay do commercial accept weight produce personal gun establish to real third professional night team today industry especially new not according imagine wide show company spring with enough too seem travel forget blood require only social local ever color people.",
+        has_licence_of_occupation: false,
+        licence_of_occupation: "Sister mention data want true computer member high choose former nice reveal current effect that friend interest stock college deep child doctor list focus cost think project community difference bar strong majority think show should buy worker newspaper field mother box matter red whose raise scientist deep high look hair nearly speak together worker across black certain wall drive pretty dark particular decade fund line back audience whom Republican hospital we grow hundred.",
+        applied_for_licence_of_occupation: true,
+        notice_served_to_private: true
+    },
+    camp: {
+        health_authority_consent: false,
+        health_authority_notified: true,
+        has_fuel_stored: false,
+        has_fuel_stored_in_bulk: false,
+        has_fuel_stored_in_barrels: false,
+        volume_fuel_stored: "5727.00",
+        // @ts-ignore
+        calculated_total_disturbance: "0.00000",
+        // @ts-ignore
+        details: [],
+        building_details: [],
+        staging_area_details: [],
+        reclamation_description: "Of unit picture her officer firm policy me above successful evening common deal individual phone stock meet unit grow go blue whole necessary however artist hundred difficult full market trial color mother also pretty professor note approach alone church the data growth politics.",
+        // @ts-ignore
+        reclamation_cost: "260239.52",
+        // @ts-ignore
+        total_disturbed_area: "51211.00925",
+        total_disturbed_area_unit_type_code: "PER",
+        // @ts-ignore
+        equipment: []
+    },
+    cut_lines_polarization_survey: {
+        // @ts-ignore
+        details: [],
+        reclamation_description: "All quality condition such total try across answer claim thing range test after side name probably reach stage side send painting then moment tree member such reality toward nice lot position trouble safe require.",
+        // @ts-ignore
+        reclamation_cost: "85378.94",
+        // @ts-ignore
+        total_disturbed_area: "303562.81683",
+        total_disturbed_area_unit_type_code: "MEC",
+        // @ts-ignore
+        equipment: []
+    },
+    exploration_access: {
+        has_proposed_bridges_or_culverts: false,
+        // @ts-ignore
+        details: [],
+        reclamation_description: "Official right want personal both body difference best theory maintain success lay hold mouth book conference could them fill realize common their take whatever ago these democratic down until imagine hit data think account inside first trial community.",
+        // @ts-ignore
+        reclamation_cost: "107469.18",
+        // @ts-ignore
+        total_disturbed_area: "391871.76606",
+        total_disturbed_area_unit_type_code: "PER",
+        // @ts-ignore
+        equipment: []
+    },
+    exploration_surface_drilling: {
+        reclamation_core_storage: "Cell rich property actually investment.",
+        // @ts-ignore
+        details: [],
+        reclamation_description: "Memory price new best bad strategy relate bar authority give second company them piece how remember hour collection policy perhaps many argue dark offer finish develop its cup three response month teach husband start per behavior teach later produce relate rule.",
+        // @ts-ignore
+        reclamation_cost: "473695.82",
+        // @ts-ignore
+        total_disturbed_area: "27841.12761",
+        total_disturbed_area_unit_type_code: "HA",
+        // @ts-ignore
+        equipment: []
+    },
+    mechanical_trenching: {
+        // @ts-ignore
+        details: [],
+        reclamation_description: "First remain effect attorney require career threat reduce catch edge voice western word trouble treat rise raise town end many she government his north everybody bar same eight strategy any leg in themselves here draw act past laugh.",
+        // @ts-ignore
+        reclamation_cost: "207329.11",
+        // @ts-ignore
+        total_disturbed_area: "2972.93871",
+        total_disturbed_area_unit_type_code: "MES",
+        // @ts-ignore
+        equipment: []
+    },
+    sand_gravel_quarry_operation: {
+        has_ground_water_from_other: false,
+        // @ts-ignore
+        details: [],
+        reclamation_description: "Seven remember half trouble side perhaps travel yet thus hospital which direction become sort debate control ground set blue dream left mind approach leave pay official strong dog price live short organization everybody thought worry design sea never significant tax drop run I room again police stop game lose former issue toward expert yes.",
+        // @ts-ignore
+        reclamation_cost: "45107.28",
+        // @ts-ignore
+        total_disturbed_area: "413850.49785",
+        total_disturbed_area_unit_type_code: "HA",
+        // @ts-ignore
+        equipment: []
+    },
+    settling_pond: {
+        proponent_pond_name: "Go authority peace hot letter beautiful member.",
+        is_ponds_exfiltrated: false,
+        // @ts-ignore
+        equipment: []
+    },
+    surface_bulk_sample: {
+        // @ts-ignore
+        equipment: []
+    },
+    underground_exploration: {
+        // @ts-ignore
+        equipment: []
+    },
+    water_supply: {
+        // @ts-ignore
+        details: []
+    },
+    placer_operation: {
+        is_underground: true,
+        is_hand_operation: true,
+        has_stream_diversion: false,
+        // @ts-ignore
+        reclamation_area: "67779.51",
+        reclamation_unit_type_code: "MTN",
+        // @ts-ignore
+        details: [],
+        reclamation_description: "Senior statement this nearly dog himself finish value morning garden beat country believe address situation wide high world owner suffer red detail yourself floor rich you light government evidence item piece road happen nearly article animal art best least deep together simple each manage throughout story scientist serious international still window.",
+        // @ts-ignore
+        reclamation_cost: "118499.52",
+        // @ts-ignore
+        total_disturbed_area: "83313.45946",
+        total_disturbed_area_unit_type_code: "KMT",
+        // @ts-ignore
+        equipment: []
+    },
+    // @ts-ignore
+    site_property: {
+        mine_disturbance_code: []
+    },
+    is_source_permit_generated_in_core: false,
+    application_type_code: "NOW"
+};
+
 
 export const IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB = {
     import_now_submission_documents_job_id: 17,

@@ -7,7 +7,12 @@ import {
 
 export interface IParty {
   address: IPartyAddress;
-  business_role_appts: string[];
+  business_role_appts: {
+    party_business_role_appt_id: number,
+    party_business_role_code: string,
+    start_date: string,
+    end_date?: string,
+  }[];
   email: string;
   email_sec?: string;
   /** The first name of the party, if the party is a person */

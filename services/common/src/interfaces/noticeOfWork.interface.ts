@@ -78,7 +78,7 @@ export interface INoWApplicationForm extends Omit<IimportedNOWApplication, "docu
   original_start_date: string;
   mine_latitude: string;
   mine_longitude: string;
-  permittee: IParty;
+  permittee: IParty | {};
   documents: Array<{
     id?: number;
     messageid?: number;

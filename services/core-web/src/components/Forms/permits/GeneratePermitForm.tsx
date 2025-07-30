@@ -430,8 +430,6 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
               <PreviousAmendmentDocuments
                 previousAmendmentDocuments={props.previousAmendmentDocuments}
                 editPreambleFileMetadata={!props.isViewMode}
-              // TODO: see if initialValues is necessary
-              // initialValues={props.initialValues}
               />
             )}
           </>
