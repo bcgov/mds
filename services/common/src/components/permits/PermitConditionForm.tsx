@@ -78,8 +78,8 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const editingFormDirty = useAppSelector(isDirty(editingFormName));
     const listItemFormDirty = useAppSelector(isDirty(FORM.EDIT_PERMIT_CONDITION));
     const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags);
-    const enablePermitConditionTags = isFeatureEnabled(Feature.PERMIT_CONDITION_TAGS) && !standardConditionType;
     const stepEditDisabled = Boolean(standardConditionType) || isNowEditor;
+    const enablePermitConditionTags = isFeatureEnabled(Feature.PERMIT_CONDITION_TAGS);
 
     const startEdit = () => {
         const handleEdit = () => {
@@ -342,7 +342,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                                 : "Add Report Requirement"}
                                         </Button>
                                     </Col>}
-                                    {enablePermitConditionTags && conditionTags && !standardConditionType &&
+                                    {enablePermitConditionTags && conditionTags &&
                                         (<Col className="condition-tag-select">
                                             <Field
                                                 name="condition_tags"

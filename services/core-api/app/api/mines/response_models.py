@@ -994,7 +994,9 @@ STANDARD_PERMIT_CONDITION_MODEL = api.model(
         'condition_type_code': fields.String,
         'sub_conditions': fields.List(StandardPermitCondition),
         'step': fields.String,
-        'display_order': fields.Integer
+        'display_order': fields.Integer,
+        'condition_tags': fields.List(fields.String)
+        
     })
 
 GOVERNMENT_AGENCY_TYPE_MODEL = api.model(

@@ -7,7 +7,8 @@ import { fetchStandardPermitConditions } from "@mds/common/redux/actionCreators/
 import { getIsFetching } from "@mds/common/redux/reducers/networkReducer";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { getStandardPermitConditionsFormatted } from "@mds/common/redux/selectors/permitSelectors";
-import { IFormattedConditionCategory } from "@mds/common/interfaces";
+import { IFormattedConditionCategory, IPermitConditionTag } from "@mds/common/interfaces";
+import { fetchPermitConditionTags, getPermitConditionTags } from "@mds/common/redux/slices/permitConditionTagSlice";
 
 
 interface StandardPermitConditionsProps {
@@ -37,9 +38,17 @@ const StandardPermitConditions: FC<StandardPermitConditionsProps> = ({ type }) =
     const [isLoading, setIsLoading] = useState(false);
     const [editingFormName, setEditingFormName] = useState<string>();
     const [addingToCategoryCode, setAddingToCategoryCode] = useState<string>();
+    // TODO: won't be necessary after NoW editor merge
+    const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags);
 
     const showLoading = conditionsLoading || isLoading;
 
+    // TODO: remove
+    useEffect(() => {
+        if (conditionTags?.length === 0) {
+            dispatch(fetchPermitConditionTags(undefined));
+        }
+    }, [conditionTags]);
 
     useEffect(() => {
         if (!conditionsLoaded) {

@@ -57,13 +57,13 @@ const PermitConditionsNavigation: FC<AdminNavigationProps> = (props) => {
     id: ifActiveButton("tag-management"),
     icon: <DownOutlined />,
     children: [{
-        key: "tag-management",
-        label: (
-          <Link to={routes.ADMIN_PERMIT_CONDITION_TAG_MANAGEMENT.route}>
-            Manage Tags
-          </Link>
-        )
-      }
+      key: "manage-tags",
+      label: (
+        <Link to={routes.ADMIN_PERMIT_CONDITION_TAG_MANAGEMENT.route}>
+          Manage Tags
+        </Link>
+      )
+    }
     ]
   }
 
