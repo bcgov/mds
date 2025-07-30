@@ -2911,7 +2911,7 @@ exports[`NOWPermitGeneration renders properly 1`] = `
                                        
                                       Health and Safety Conditions
                                        (
-                                      2
+                                      3
                                       )
                                     </div>
                                   </div>
@@ -3036,6 +3036,94 @@ exports[`NOWPermitGeneration renders properly 1`] = `
                                         <div />
                                       </div>
                                     </div>
+                                    <div
+                                      class="ant-col ant-col-24 fade-in"
+                                      style="padding: 8px 8px 8px 8px;"
+                                    >
+                                      <div
+                                        class="condition-layer condition-layer--0 condition-SEC fade-in "
+                                      >
+                                        <div
+                                          class="condition-expanded"
+                                        >
+                                          <div
+                                            class="ant-col"
+                                            style="padding: 8px 8px 8px 8px;"
+                                          >
+                                            <div
+                                              class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                            >
+                                              <div
+                                                class="ant-col step-column"
+                                              >
+                                                <div
+                                                  class="ant-typography view-item-value"
+                                                >
+                                                  2.
+                                                </div>
+                                              </div>
+                                              <div
+                                                aria-label="Edit Condition Health and Safety Conditions - 2"
+                                                class="ant-col condition-column"
+                                                title="Edit Condition Health and Safety Conditions - 2"
+                                              >
+                                                <div
+                                                  class="ant-typography view-item-value"
+                                                >
+                                                  Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div
+                                              class="ant-row"
+                                            />
+                                          </div>
+                                          <div>
+                                            <div
+                                              class="condition-layer condition-layer--1 condition-CON fade-in "
+                                            >
+                                              <div
+                                                class="condition-collapsed"
+                                              >
+                                                <div
+                                                  class="ant-col"
+                                                  style="padding: 8px 8px 8px 8px;"
+                                                >
+                                                  <div
+                                                    class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
+                                                  >
+                                                    <div
+                                                      class="ant-col step-column"
+                                                    >
+                                                      <div
+                                                        class="ant-typography view-item-value"
+                                                      >
+                                                        a.
+                                                      </div>
+                                                    </div>
+                                                    <div
+                                                      aria-label="Edit Condition Health and Safety Conditions - 2.a"
+                                                      class="ant-col condition-column"
+                                                      title="Edit Condition Health and Safety Conditions - 2.a"
+                                                    >
+                                                      <div
+                                                        class="ant-typography view-item-value"
+                                                      >
+                                                        It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div
+                                                    class="ant-row"
+                                                  />
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div />
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -3095,7 +3183,7 @@ exports[`NOWPermitGeneration renders properly 1`] = `
                                        
                                       Geotechnical Conditions
                                        (
-                                      1
+                                      0
                                       )
                                     </div>
                                   </div>
@@ -3126,94 +3214,6 @@ exports[`NOWPermitGeneration renders properly 1`] = `
                                             Add Condition
                                           </span>
                                         </button>
-                                      </div>
-                                    </div>
-                                    <div
-                                      class="ant-col ant-col-24 fade-in"
-                                      style="padding: 8px 8px 8px 8px;"
-                                    >
-                                      <div
-                                        class="condition-layer condition-layer--0 condition-SEC fade-in "
-                                      >
-                                        <div
-                                          class="condition-expanded"
-                                        >
-                                          <div
-                                            class="ant-col"
-                                            style="padding: 8px 8px 8px 8px;"
-                                          >
-                                            <div
-                                              class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
-                                            >
-                                              <div
-                                                class="ant-col step-column"
-                                              >
-                                                <div
-                                                  class="ant-typography view-item-value"
-                                                >
-                                                  2.
-                                                </div>
-                                              </div>
-                                              <div
-                                                aria-label="Edit Condition Geotechnical Conditions - 2"
-                                                class="ant-col condition-column"
-                                                title="Edit Condition Geotechnical Conditions - 2"
-                                              >
-                                                <div
-                                                  class="ant-typography view-item-value"
-                                                >
-                                                  Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines
-                                                </div>
-                                              </div>
-                                            </div>
-                                            <div
-                                              class="ant-row"
-                                            />
-                                          </div>
-                                          <div>
-                                            <div
-                                              class="condition-layer condition-layer--1 condition-CON fade-in "
-                                            >
-                                              <div
-                                                class="condition-collapsed"
-                                              >
-                                                <div
-                                                  class="ant-col"
-                                                  style="padding: 8px 8px 8px 8px;"
-                                                >
-                                                  <div
-                                                    class="ant-row ant-row-no-wrap ant-row-top condition-content editable"
-                                                  >
-                                                    <div
-                                                      class="ant-col step-column"
-                                                    >
-                                                      <div
-                                                        class="ant-typography view-item-value"
-                                                      >
-                                                        a.
-                                                      </div>
-                                                    </div>
-                                                    <div
-                                                      aria-label="Edit Condition Geotechnical Conditions - 2.a"
-                                                      class="ant-col condition-column"
-                                                      title="Edit Condition Geotechnical Conditions - 2.a"
-                                                    >
-                                                      <div
-                                                        class="ant-typography view-item-value"
-                                                      >
-                                                        It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                  <div
-                                                    class="ant-row"
-                                                  />
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div />
                                       </div>
                                     </div>
                                   </div>
