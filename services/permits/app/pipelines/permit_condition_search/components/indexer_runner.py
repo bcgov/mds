@@ -5,6 +5,7 @@ from azure.core.credentials import AzureKeyCredential
 from azure.search.documents.indexes import SearchIndexerClient
 from fastapi import HTTPException
 from haystack import component, logging
+from app.pipelines.permit_condition_search.config import config
 
 logger = logging.getLogger(__name__)
 
@@ -26,12 +27,12 @@ class IndexerRunner:
             credential=credential
         )
         
-        indexer_client.run_indexer("permit-conditions-indexer")
+        indexer_client.run_indexer(config.search.indexer_name.resolve_value())
         
         start_time = time.time()
 
         while True:
-            status = indexer_client.get_indexer_status("permit-conditions-indexer")
+            status = indexer_client.get_indexer_status(config.search.indexer_name.resolve_value())
             
             if time.time() - start_time > self.timeout:
                 raise TimeoutError("Indexer run timed out after 5 minutes")

@@ -50,9 +50,9 @@ vector_search_config = VectorSearch()
 
 def create_azure_search_document_store():
     return AzureSearchDocumentStore(
-        api_key=config.search.api_key,
-        azure_endpoint=config.search.endpoint,
-        index_name=config.search.index_name,
+        api_key=config.search.api_key.resolve_value(),
+        azure_endpoint=config.search.endpoint.resolve_value(),
+        index_name=config.search.index_name.resolve_value(),
         embedding_dimension=config.search.embedding_dimension,
         metadata_fields=doc_metadata_fields,
         vector_search_configuration=vector_search_config,
