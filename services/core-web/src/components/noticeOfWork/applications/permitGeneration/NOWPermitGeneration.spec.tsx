@@ -18,10 +18,6 @@ const mockPermit = {
             permit_amendment_status_code: "DFT",
             has_permit_conditions: true,
             now_application_guid: NOTICE_OF_WORK_APP_FORM.now_application_guid,
-            conditions: (amendment.conditions).map((c) => {
-                const codeIndex = Math.floor(Math.random() * categoryCodes.length);
-                return { ...c, condition_category_code: categoryCodes[codeIndex] };
-            })
         }
     ]
 }
