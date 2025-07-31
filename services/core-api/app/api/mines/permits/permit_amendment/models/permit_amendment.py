@@ -150,14 +150,14 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     @hybrid_property
     def now_application_documents(self):
         _now_app_docs = []
-        if self.now_application_identity:
+        if self.now_application_identity and self.now_application_identity.now_application:
             _now_app_docs = self.now_application_identity.now_application.documents
         return _now_app_docs
 
     @hybrid_property
     def imported_now_application_documents(self):
         _imported_now_app_docs = []
-        if self.now_application_identity:
+        if self.now_application_identity and self.now_application_identity.now_application:
             _imported_now_app_docs = self.now_application_identity.now_application.imported_submission_documents
         return _imported_now_app_docs
 
