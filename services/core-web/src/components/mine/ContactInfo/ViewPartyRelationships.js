@@ -276,39 +276,41 @@ export class ViewPartyRelationships extends Component {
     }
   };
 
-  renderMenu = (partyRelationshipGroupingLevels, isAbandonedMines) => (
-    <Menu>
-      {partyRelationshipGroupingLevels.map((group) => [
-        this.props.partyRelationshipTypes
-          .filter((x) => x.grouping_level === group)
-          .filter((x) => x.mine_party_appt_type_code !== "AGT")
-          .filter(
-            (x) =>
-              isAbandonedMines ||
-              (x.mine_party_appt_type_code !== "DAM" && x.mine_party_appt_type_code !== "CCS")
-          )
-          .map((value) => (
-            <Menu.Item key={value.mine_party_appt_type_code}>
-              <button
-                className="full"
-                type="button"
-                onClick={() => {
-                  this.setState({
-                    selectedPartyRelationshipType: value.mine_party_appt_type_code,
-                  });
-                  this.openAddPartyRelationshipModal({
-                    value,
-                  });
-                }}
-              >
-                {`${value.description}`}
-              </button>
-            </Menu.Item>
-          )),
-        <Menu.Divider key={group} />,
-      ])}
-    </Menu>
-  );
+  renderMenu = (partyRelationshipGroupingLevels, isAbandonedMines) => {
+    return (
+      <Menu>
+        {partyRelationshipGroupingLevels.map((group) => [
+          this.props.partyRelationshipTypes
+            .filter((x) => x.grouping_level === group)
+            .filter((x) => !["EOR", "TQP", "AGT"].includes(x.mine_party_appt_type_code))
+            .filter(
+              (x) =>
+                isAbandonedMines ||
+                (x.mine_party_appt_type_code !== "DAM" && x.mine_party_appt_type_code !== "CCS")
+            )
+            .map((value) => (
+              <Menu.Item key={value.mine_party_appt_type_code}>
+                <button
+                  className="full"
+                  type="button"
+                  onClick={() => {
+                    this.setState({
+                      selectedPartyRelationshipType: value.mine_party_appt_type_code,
+                    });
+                    this.openAddPartyRelationshipModal({
+                      value,
+                    });
+                  }}
+                >
+                  {`${value.description}`}
+                </button>
+              </Menu.Item>
+            )),
+          <Menu.Divider key={group} />,
+        ])}
+      </Menu>
+    )
+  };
 
   renderPartyRelationship = (partyRelationship) => {
     if (
