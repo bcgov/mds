@@ -12,7 +12,8 @@ const initialState = {
       ...MOCK.PROJECT,
       project_summary: {
         ...MOCK.PROJECT.project_summary,
-        authorizations: [...MOCK.PROJECT.project_summary.authorizations,
+        // the successfully submitted ENV auth in the mock makes loading more complicated 
+        authorizations: [...MOCK.PROJECT.project_summary.authorizations.filter((a) => !a.ams_tracking_number),
         {
           project_summary_authorization_guid: "c47161c0-8860-4125-8e68-fac3d98cf429",
           project_summary_guid: "8b4b9781-2e59-43ef-8164-4cc3b964417a",

@@ -44,6 +44,10 @@
         .sub-tab-1 {
           margin: -2px 0 -2px 16px;
         }
+
+        .sub-tab-2 {
+          margin: -2px 0 -2px 32px;
+        }
       }
 
 
@@ -104,6 +108,7 @@
 
   .fixed-tabs-tabs {
     padding-top: 0;
+
     &>.ant-tabs-nav {
       position: fixed;
       top: $layout-header-height + 103px; //ProjectDocumentsTab->headerHeight

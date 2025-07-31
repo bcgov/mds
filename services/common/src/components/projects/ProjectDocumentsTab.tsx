@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import ScrollSidePageWrapper from "../common/ScrollSidePageWrapper";
 import { ScrollSideMenuProps } from "../common/ScrollSideMenu";
 import { fetchProjectById } from "@mds/common/redux/actionCreators/projectActionCreator";
@@ -9,7 +9,7 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import ArchivedDocumentsSection from "./ArchivedDocumentsSection";
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import { formatUrlToUpperCaseString } from "@mds/common/redux/utils/helpers";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import { getSystemFlag, isProponent, userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import SpatialDocumentTable from "../documents/spatial/SpatialDocumentTable";
 import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { MineDocument } from "@mds/common/models/documents/document";
@@ -20,19 +20,41 @@ import { IProject, IProjectSummaryAuthorization } from "@mds/common/interfaces/p
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { Feature } from "@mds/common/utils";
 import { CATEGORY_CODE } from "@mds/common/constants/strings";
+import { fetchAmsFinalAppsByProjectSummary, getAmsFinalAppsByProjectSummary } from "@mds/common/redux/slices/amsFinalApplicationSlice";
+import { USER_ROLES } from "@mds/common/constants/environment";
+
 
 interface ProjectDocumentsTabProps {
   project: IProject;
 }
 const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
-  const dispatch = useDispatch();
-  const mineDocuments = useSelector(getMineDocuments);
-  const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
+  const dispatch = useAppDispatch();
+  const mineDocuments = useAppSelector(getMineDocuments);
+  const projectSummaryDocumentTypesHash = useAppSelector(getProjectSummaryDocumentTypesHash);
+  const amsApplications = useAppSelector(getAmsFinalAppsByProjectSummary(project?.project_summary?.project_summary_guid));
+  const canEditMajorMineApplications = useAppSelector(userHasRole(USER_ROLES.role_edit_major_mine_applications));
+  const isUserProponent = useAppSelector(isProponent);
 
   const { isFeatureEnabled } = useFeatureFlag();
-  const systemFlag = useSelector(getSystemFlag);
+  const isAmsDocumentsEnabled = isFeatureEnabled(Feature.AMS_FINAL_APPLICATION);
+  const systemFlag = useAppSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;
   const [isLoaded, setIsLoaded] = useState(true);
+  const canManageAmsFiles = canEditMajorMineApplications || isUserProponent;
+
+
+  const authsWithDocs =
+    project?.project_summary?.authorizations?.filter(
+      (auth) => auth.amendment_documents.length > 0
+    ) ?? [];
+  const appsWithDocs = amsApplications?.filter((app) =>
+    app.documents.length > 0
+  ) ?? [];
+  const archivedAppDocs = appsWithDocs.reduce((acc, app) => {
+    return [...acc, ...app.documents.filter((doc) => doc.is_archived)]
+  }, []);
+
+  const archivedDocs = [...mineDocuments, ...archivedAppDocs.map((d) => new MineDocument(d))];
 
   const refreshData = async () => {
     setIsLoaded(false);
@@ -48,6 +70,14 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
     setIsLoaded(true);
   };
 
+  const refreshAmsApps = async () => {
+    setIsLoaded(false);
+    dispatch(
+      fetchAmsFinalAppsByProjectSummary(project.project_summary.project_summary_guid)
+    ).then(() => setIsLoaded(true));
+    setIsLoaded(true);
+  };
+
   useEffect(() => {
     dispatch(
       fetchMineDocuments(project.mine_guid, {
@@ -57,10 +87,13 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
     );
   }, []);
 
-  const authsWithDocs =
-    project?.project_summary?.authorizations?.filter(
-      (auth) => auth.amendment_documents.length > 0
-    ) ?? [];
+  useEffect(() => {
+    if (project?.project_summary?.project_summary_guid) {
+      refreshAmsApps();
+    }
+  }, [project?.project_summary?.project_summary_guid]);
+
+
   const headerHeight = isCore ? 121 : 123;
   const tabNavHeight = isCore ? 60 : 49;
   const topOffset = headerHeight + tabNavHeight;
@@ -131,6 +164,39 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
     ) ?? [];
 
   const spatialCategoryText = "Spatial Files";
+
+  const amsSections = isAmsDocumentsEnabled ? appsWithDocs.map((application) => {
+    const auth = project?.project_summary?.authorizations?.find((a) => a.project_summary_authorization_guid === application.project_summary_authorization_guid);
+    const titleText = `Application (#${auth.ams_tracking_number})`;
+    const headingText = getAuthorizationHeader(auth);
+    const infoText = formatUrlToUpperCaseString(headingText);
+    const href = `application-${auth.ams_tracking_number}`;
+
+    return {
+      href,
+      title: <div className="sub-tab-2">{titleText}</div>,
+      content: (
+        <ProjectDocumentsTabSection
+          id={application.ams_final_application_guid}
+          title={titleText}
+          titleLevel={5}
+          infoText={infoText}
+          key={application.ams_final_application_guid}
+          canArchive={canManageAmsFiles}
+          canReplace={canManageAmsFiles}
+          onArchivedDocuments={refreshAmsApps}
+          documents={application.documents.map(
+            (d) =>
+              new MineDocument({
+                ...d,
+                category: d.document_type_description,
+              })
+          )}
+        />
+      ),
+    }
+  }) : [];
+
   const sections: any[] = [
     {
       href: "project-description",
@@ -212,22 +278,30 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
       ),
     },
     {
-      href: "major-mine-application",
+      href: "application",
       content: (
         <>
-          <Typography.Title level={3}>Major Mine Application</Typography.Title>
+          <Typography.Title level={3}>Application</Typography.Title>
           <Typography.Paragraph>Below are the documents submitted as part of the Major Mine Application.</Typography.Paragraph>
         </>
       )
     },
     {
+      href: "mines-act",
+      title: <div className="sub-tab-1">Mines Act</div>,
+      content: (
+        <Typography.Title level={4}>Mines Act</Typography.Title>
+      )
+    },
+    {
       href: "mma-primary-document",
-      title: <div className="sub-tab-1">Primary Document</div>,
+      title: <div className="sub-tab-2">Primary Document</div>,
       content: (
         <ProjectDocumentsTabSection
           id="primary-document"
           key="primary-document"
           onArchivedDocuments={refreshData}
+          titleLevel={5}
           documents={primaryDocuments}
           canReplace={canModifyMmaDocs}
           canArchive={canModifyMmaDocs}
@@ -236,10 +310,10 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
     },
     {
       href: "mma-spatial-components",
-      title: <div className="sub-tab-1">Spatial Components</div>,
+      title: <div className="sub-tab-2">Spatial Components</div>,
       content: (
         <>
-          <Typography.Title level={4}>Spatial Components</Typography.Title>
+          <Typography.Title level={5}>Spatial Components</Typography.Title>
           <SpatialDocumentTable
             documents={mmaSpatialDocuments}
             categoryText={spatialCategoryText}
@@ -249,18 +323,34 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
     },
     {
       href: "mma-supporting-documents",
-      title: <div className="sub-tab-1">Supporting Documents</div>,
+      title: <div className="sub-tab-2">Supporting Documents</div>,
       content: (
         <ProjectDocumentsTabSection
           id="supporting-documents"
           key="supporting-documents"
           onArchivedDocuments={refreshData}
+          titleLevel={5}
           documents={mmaSupportingDocuments}
           canReplace={canModifyMmaDocs}
           canArchive={canModifyMmaDocs}
         />
       ),
     },
+    amsSections.length > 1 && isAmsDocumentsEnabled && {
+      href: "ENV Applications",
+      title: <div className="sub-tab-1">ENV Applications</div>,
+      content: (
+        <>
+          <Typography.Title level={4}>ENV Applications</Typography.Title>
+          <Alert
+            className={isCore ? "ant-alert-grey" : ""}
+            description="Some informative text for ENV Applications"
+            showIcon
+          />
+        </>
+      ),
+    },
+    ...amsSections,
     isCore && {
       href: "ministry-decision-documentation",
       content: (
@@ -278,7 +368,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
       href: "archived-documents",
       content: (
         <ArchivedDocumentsSection
-          documents={mineDocuments}
+          documents={archivedDocs}
           showCategory={false}
         />
       ),

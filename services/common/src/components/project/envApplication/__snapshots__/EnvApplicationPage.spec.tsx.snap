@@ -40,6 +40,7 @@ exports[`EnvApplicationPage renders properly 1`] = `
             >
               ENV Application
                
+              123456
             </span>
           </div>
         </div>
@@ -64,6 +65,7 @@ exports[`EnvApplicationPage renders properly 1`] = `
                 >
                   ENV Application
                    
+                  123456
                 </h1>
               </div>
               <div
@@ -108,7 +110,7 @@ exports[`EnvApplicationPage renders properly 1`] = `
             <span
               class="ant-tag table-tag table-tag--primary"
             >
-              
+              Refuse Discharge Permit
             </span>
           </div>
         </div>

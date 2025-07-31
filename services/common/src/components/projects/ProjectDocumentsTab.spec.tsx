@@ -4,9 +4,15 @@ import { render } from "@testing-library/react";
 import { PROJECTS } from "@mds/common/constants/reducerTypes";
 import ProjectDocumentsTab from "./ProjectDocumentsTab";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
+import { amsAppReducerType } from "@mds/common/redux/slices/amsFinalApplicationSlice";
 
 const initialState = {
   [PROJECTS]: { projects: MOCK.PROJECTS.records, project: MOCK.PROJECT },
+  [amsAppReducerType]: {
+    amsFinalApplications: {
+      [MOCK.AMS_FINAL_APPLICATION.project_summary_authorization_guid]: MOCK.AMS_FINAL_APPLICATION,
+    }
+  }
 };
 
 function mockFunction() {

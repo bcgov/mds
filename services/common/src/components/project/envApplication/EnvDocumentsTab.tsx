@@ -65,7 +65,7 @@ const EnvDocumentCategoryForm = ({ fields }) => {
                                 />
                             </Col>
                         </Row>
-                        {isSaved && <Button
+                        {isSaved && formValues.is_draft && <Button
                             className="fa-icon-container"
                             type="primary"
                             danger

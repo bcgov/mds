@@ -160,6 +160,7 @@ AMS_FINAL_APPLICATION_MODEL = api.model(
     'AmsFinalApplication', {
         'ams_final_application_guid': fields.String,
         'project_summary_authorization_guid': fields.String,
+        'project_summary_guid': fields.String,
         'submitter_name': fields.String,
         'is_agent': fields.Boolean,
         'is_draft': fields.Boolean,

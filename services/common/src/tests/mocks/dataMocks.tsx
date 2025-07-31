@@ -12277,6 +12277,27 @@ export const PROJECT_SUMMARY_MINISTRY_COMMENTS = [
   },
 ];
 
+export const AMS_AUTHORIZATION_SUCCESS: IProjectSummaryAuthorization = {
+  project_summary_authorization_guid: "c47161c0-8860-4125-8e68-fac3d98cf429",
+  project_summary_guid: PROJECT_SUMMARY.project_summary_guid,
+  project_summary_permit_type: ["AMENDMENT"],
+  project_summary_authorization_type: "REFUSE_DISCHARGE_PERMIT",
+  existing_permits_authorizations: ['1234'],
+  amendment_changes: null,
+  amendment_severity: null,
+  is_contaminated: null,
+  new_type: "PER",
+  authorization_description: "description",
+  exemption_reason: "exemption reason",
+  amendment_documents: [],
+  exemption_requested: true,
+  ams_tracking_number: "123456",
+  ams_outcome: ["Successfully create new Authorization Amendment."],
+  ams_status_code: "200",
+  ams_submission_timestamp: "2024-05-24T19:17:09.212499+00:00",
+}
+
+
 export const PROJECT: IProject = {
   project_guid: "35633148-57f8-4967-be35-7f89abfbd02e",
   project_title: "Test Project Title",
@@ -12312,6 +12333,10 @@ export const PROJECT: IProject = {
   project_summary: {
     ...PROJECT_SUMMARY,
     project_guid: "35633148-57f8-4967-be35-7f89abfbd02e",
+    authorizations: [
+      ...PROJECT_SUMMARY.authorizations,
+      AMS_AUTHORIZATION_SUCCESS,
+    ]
   },
   information_requirements_table: {
     ...INFORMATION_REQUIREMENTS_TABLE,
@@ -12521,26 +12546,6 @@ export const PROJECT: IProject = {
   ],
 };
 
-export const AMS_AUTHORIZATION_SUCCESS: IProjectSummaryAuthorization = {
-  project_summary_authorization_guid: "c47161c0-8860-4125-8e68-fac3d98cf429",
-  project_summary_guid: PROJECT.project_summary.project_summary_guid,
-  project_summary_permit_type: ["AMENDMENT"],
-  project_summary_authorization_type: "REFUSE_DISCHARGE_PERMIT",
-  existing_permits_authorizations: ['1234'],
-  amendment_changes: null,
-  amendment_severity: null,
-  is_contaminated: null,
-  new_type: "PER",
-  authorization_description: "description",
-  exemption_reason: "exemption reason",
-  amendment_documents: [],
-  exemption_requested: true,
-  ams_tracking_number: "123456",
-  ams_outcome: ["Successfully create new Authorization Amendment."],
-  ams_status_code: "200",
-  ams_submission_timestamp: "2024-05-24T19:17:09.212499+00:00",
-}
-
 export const AMS_FINAL_APPLICATION: IAmsFinalApplication = {
   "ams_final_application_guid": "ca547e91-02fa-4ef5-b420-15351e555b9e",
   "project_summary_authorization_guid": AMS_AUTHORIZATION_SUCCESS.project_summary_authorization_guid,
@@ -12562,17 +12567,36 @@ export const AMS_FINAL_APPLICATION: IAmsFinalApplication = {
       "mine_guid": PROJECT.mine_guid,
       "document_manager_guid": "8f324863-0d45-4356-befd-2e3f650c3dc9",
       "document_name": "my document.pdf",
-      "upload_date": null,
-      "update_timestamp": null,
+      "upload_date": "2025-06-25 20:11:33.328563+00:00",
+      "update_timestamp": "2025-06-25 20:11:33.328560+00:00",
       "create_user": "user@bceid",
-      "is_archived": null,
+      "is_archived": false,
       "archived_date": null,
       "archived_by": null,
       "mine_document_bundle_id": null,
       "versions": null,
+    },
+    {
+      "ams_final_application_document_xref_guid": "813c3bfb-a784-41ea-a959-9601773cea18",
+      "ams_final_application_guid": "ca547e91-02fa-4ef5-b420-15351e555b9e",
+      "ams_final_application_document_type_code": "CLF",
+      "document_type_description": "Clause Form",
+      "mine_document_guid": "877c9601-d5cd-40f7-9124-4a925737d34d",
+      "mine_guid": PROJECT.mine_guid,
+      "document_manager_guid": "974be288-9773-4e57-813e-75e797da88a8",
+      "document_name": "my archived document.pdf",
+      "upload_date": "2025-07-03 15:59:23.155567+00:00",
+      "update_timestamp": "2025-07-22 17:21:22.608960+00:00",
+      "create_user": "user@bceid",
+      "is_archived": true,
+      "archived_date": "2025-07-22 17:21:22.607646",
+      "archived_by": "idir\\coreuser",
+      "mine_document_bundle_id": null,
+      "versions": null,
     }
-  ]
-}
+  ],
+  project_summary_guid: PROJECT_SUMMARY.project_summary_guid,
+};
 
 export const PROJECT_SUMMARIES = {
   records: [

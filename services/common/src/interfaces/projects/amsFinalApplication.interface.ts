@@ -16,6 +16,7 @@ export interface IAmsFinalApplicationDocument extends IMineDocument {
 export interface IAmsFinalApplication {
     ams_final_application_guid: string;
     project_summary_authorization_guid: string;
+    project_summary_guid: string;
     submitter_name: string;
     is_agent: boolean;
     is_draft: boolean;

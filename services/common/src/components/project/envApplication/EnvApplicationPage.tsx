@@ -15,6 +15,8 @@ import Loading from "../../common/Loading";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT } from "@mds/common/constants/strings";
 import { Tag } from "antd";
+import { isProponent, userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
+import { USER_ROLES } from "@mds/common/constants/environment";
 
 const EnvApplicationPage = () => {
     const { projectGuid, projectSummaryGuid, projectSummaryAuthorizationGuid, tab } = useParams<{
@@ -36,7 +38,9 @@ const EnvApplicationPage = () => {
     const auth = projectSummary?.authorizations?.find((a) => a.project_summary_authorization_guid === projectSummaryAuthorizationGuid);
     const authType = AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT[auth?.project_summary_authorization_type] ?? ""
     const trackingNumber = auth?.ams_tracking_number;
-    const [isEditMode] = useState(true);
+    const canEditMajorMineApplications = useAppSelector(userHasRole(USER_ROLES.role_edit_major_mine_applications));
+    const isUserProponent = useAppSelector(isProponent);
+    const [isEditMode] = useState(canEditMajorMineApplications || isUserProponent);
 
     const loaded = amsFinalAppLoaded && projectSummaryLoaded;
 
