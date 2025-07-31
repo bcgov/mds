@@ -81,8 +81,8 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   }, [isExpanded]);
 
   const handleSectionClick = (event) => {
+    event.stopPropagation();
     if (canEditPermitConditions) {
-      event.stopPropagation();
       setParentExpand();
     }
 
