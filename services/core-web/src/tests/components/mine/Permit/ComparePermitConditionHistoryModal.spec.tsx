@@ -30,7 +30,8 @@ describe('ComparePermitConditionHistoryModal', () => {
         currentAmendment: MOCK.PERMITS[0].permit_amendments[0],
         previousAmendment: MOCK.PERMITS[0].permit_amendments[1],
         loading: false,
-        setLoading: jest.fn()
+        setLoading: jest.fn(),
+        refreshData: jest.fn(),
     };
 
     const defaultProps: ComparePermitConditionHistoryModalProps = {

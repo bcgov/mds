@@ -5,7 +5,6 @@ import { formatDate } from "@common/utils/helpers";
 import { connect } from "react-redux";
 import {
   getNoticeOfWork,
-  getImportNowSubmissionDocumentsJob,
 } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
@@ -25,7 +24,6 @@ const propTypes = {
   }).isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   generatableApplicationDocuments: PropTypes.objectOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any).isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
@@ -109,9 +107,7 @@ export class DraftPermitTab extends Component {
               this.props.noticeOfWork.now_application_guid
             )
           }
-          importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
           isAmendment={isAmendment}
-          isLoaded={this.state.isLoaded}
           documentType={
             isAmendment
               ? this.props.generatableApplicationDocuments.PMA
@@ -127,7 +123,6 @@ export class DraftPermitTab extends Component {
 
 const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
-  importNowSubmissionDocumentsJob: getImportNowSubmissionDocumentsJob(state),
   generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
 });
 

@@ -14,7 +14,6 @@ import {
   IFormattedConditionCategory,
   IPermitAmendment,
   IPermitCondition,
-  IPermitConditionTag,
 } from "@mds/common/interfaces/permits";
 import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
@@ -34,6 +33,7 @@ import PermitConditionCategoryEditModal from "@mds/common/components/permits/Per
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import {
   createPermitAmendmentConditionCategory,
+  fetchPermits,
 } from "@mds/common/redux/actionCreators/permitActionCreator";
 import {
   fetchReviewAssignments,
@@ -52,7 +52,6 @@ import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { LatestAmendmentWarning } from "./LatestAmendmentWarning";
 import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
 import { FORM } from "@mds/common/constants/forms";
-import { fetchPermitConditionTags, getPermitConditionTags } from "@mds/common/redux/slices/permitConditionTagSlice";
 import PermitConditionViewEdit from "./PermitConditionViewEdit";
 
 const { Title } = Typography;
@@ -145,7 +144,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const [editingFormName, setEditingFormName] = useState<string>();
   const [addingToCategoryCode, setAddingToCategoryCode] = useState<string>();
   const [loading, setLoading] = useState(false);
-  const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags);
 
   const reviewAssignments = useAppSelector(
     getReviewAssignmentsByAmendment(currentAmendment.permit_amendment_id)
@@ -172,12 +170,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
     dispatch(searchConditionCategories({}));
     dispatch(fetchReviewAssignments({ permit_amendment_id: currentAmendment.permit_amendment_id }));
   }, []);
-
-  useEffect(() => {
-    if (conditionTags?.length === 0) {
-      dispatch(fetchPermitConditionTags(undefined));
-    }
-  }, [conditionTags]);
 
   useEffect(() => {
     if (editingFormName !== FORM.EDIT_PERMIT_CONDITION) {
@@ -449,6 +441,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
           currentAmendment,
           loading: showLoading,
           setLoading,
+          refreshData: () => dispatch(fetchPermits(mineGuid))
         }}
       >
         <Row>

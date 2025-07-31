@@ -22,7 +22,8 @@ const params = {
     latestAmendment: MOCK.PERMITS[0].permit_amendments[0],
     previousAmendment: MOCK.PERMITS[0].permit_amendments[0],
     loading: false,
-    setLoading: jest.fn()
+    setLoading: jest.fn(),
+    refreshData: jest.fn(),
 };
 
 describe("PermitConditionReportRequirements", () => {

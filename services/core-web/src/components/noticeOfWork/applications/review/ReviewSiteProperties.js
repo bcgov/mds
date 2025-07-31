@@ -45,13 +45,13 @@ export class ReviewSiteProperties extends Component {
       <FormSection name="site_property">
         <Row gutter={16}>
           <Col md={12} sm={24}>
-            <div className="field-title">
-              Tenure*
-              <CoreTooltip title="The Tenure is based on the Application Type" />
-            </div>
             <Field
               id="mine_tenure_type_code"
               name="mine_tenure_type_code"
+              label={<>
+                Tenure
+                <CoreTooltip title="The Tenure is based on the Application Type" />
+              </>}
               component={RenderSelect}
               disabled={this.props.isViewMode}
               required

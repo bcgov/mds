@@ -61,7 +61,7 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
         },
         width: 2048,
         content: (props) => {
-          const value = { mineGuid, permitGuid, latestAmendment, previousAmendment, currentAmendment, loading, setLoading };
+          const value = { mineGuid, permitGuid, latestAmendment, previousAmendment, currentAmendment, loading, setLoading, refreshData };
           return <PermitConditionsProvider value={value} > <ComparePermitConditionHistoryModal {...props} /></PermitConditionsProvider>;
         }
       })

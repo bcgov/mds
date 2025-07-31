@@ -214,11 +214,11 @@ export const PreDraftPermitForm = (props) => {
                 />
               </div>
             )}
-            <Tooltip title={tooltip} placement="left" mouseEnterDelay={0.3}>
-              <p>Select Permit Type*</p>
-            </Tooltip>
             <div className="left">
               <Field
+                label={<Tooltip title={tooltip} placement="left" mouseEnterDelay={0.3}>
+                  <p>Select Permit Type</p>
+                </Tooltip>}
                 id="permit_amendment_type_code"
                 name="permit_amendment_type_code"
                 placeholder="Select a Permit amendment type"

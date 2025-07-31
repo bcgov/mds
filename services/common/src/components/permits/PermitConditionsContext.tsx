@@ -8,8 +8,10 @@ interface PermitConditionsContextType {
     previousAmendment?: IPermitAmendment;
     currentAmendment?: IPermitAmendment;
     standardConditionType?: string;
+    isNowEditor?: boolean;
     loading: boolean;
     setLoading: (loading: boolean) => void;
+    refreshData: () => Promise<any>;
 }
 
 const PermitConditionsContext = React.createContext<PermitConditionsContextType | undefined>(undefined);
@@ -22,11 +24,23 @@ export const usePermitConditions = () => {
     return context;
 };
 
+
 export const PermitConditionsProvider: FC<{
     children: React.ReactNode;
     value: PermitConditionsContextType;
-}> = ({ children, value }) => (
-    <PermitConditionsContext.Provider value={value}>
-        {children}
-    </PermitConditionsContext.Provider>
-);
+}> = ({ children, value }) => {
+    // undefined default value causes problems in permit condition form
+    const defaultValue = {
+        isNowEditor: false,
+    };
+
+    const contextValue = {
+        ...defaultValue,
+        ...value,
+    };
+    return (
+        <PermitConditionsContext.Provider value={contextValue}>
+            {children}
+        </PermitConditionsContext.Provider>
+    );
+};

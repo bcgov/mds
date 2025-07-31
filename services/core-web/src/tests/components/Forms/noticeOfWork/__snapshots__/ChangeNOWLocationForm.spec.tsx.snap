@@ -19,7 +19,7 @@ exports[`ChangeNOWLocationForm renders properly 1`] = `
     className="right center-mobile"
   >
     <RenderCancelButton />
-    <Connect(AuthorizationWrapper)
+    <AuthorizationWrapper
       permission="role_edit_permits"
     >
       <RenderSubmitButton
@@ -27,7 +27,7 @@ exports[`ChangeNOWLocationForm renders properly 1`] = `
         disableOnClean={false}
         disabled={false}
       />
-    </Connect(AuthorizationWrapper)>
+    </AuthorizationWrapper>
   </div>
 </Connect(ReduxForm)>
 `;

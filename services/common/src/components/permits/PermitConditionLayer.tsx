@@ -51,9 +51,9 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   refreshData,
   categoryOptions,
 }) => {
-  const { loading, previousAmendment, permitGuid, standardConditionType } = usePermitConditions();
+  const { loading, previousAmendment, permitGuid, standardConditionType, isNowEditor } = usePermitConditions();
   const requirements = useAppSelector(
-    getReportRequirementsByCondition(permitGuid, permitAmendmentGuid, condition.permit_condition_id)
+    getReportRequirementsByCondition(permitGuid, permitAmendmentGuid, condition.permit_condition_id, isNowEditor)
   );
   const editingCondition = useMemo(
     () => editingFormName === `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`,
@@ -184,7 +184,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
               />
             </div>
           )}
-          {!standardConditionType && <PermitConditionStatus
+          {!standardConditionType && !isNowEditor && <PermitConditionStatus
             condition={condition}
             previousCondition={matchingCondition}
             canEditPermitConditions={canEditPermitConditions}

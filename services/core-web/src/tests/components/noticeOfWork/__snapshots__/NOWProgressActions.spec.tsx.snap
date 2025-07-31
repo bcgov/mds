@@ -3,7 +3,7 @@
 exports[`NOWProgressActions renders properly 1`] = `
 <div>
   <div
-    class="inline-flex progress-actions"
+    class="inline-flex progress-actions form-btn"
   />
 </div>
 `;

@@ -4,7 +4,7 @@ import { NOWActionWrapper } from "@/components/noticeOfWork/NOWActionWrapper";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const reducerProps: any = {
-  children: <></>,
+  children: <div>test</div>,
   history: { push: jest.fn() },
   progress: {},
   tab: "application",

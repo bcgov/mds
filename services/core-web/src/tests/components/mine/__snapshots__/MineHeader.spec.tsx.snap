@@ -174,7 +174,7 @@ exports[`MineHeader renders dispatchProperly 1`] = `
         Mine Details
       </h4>
       <div>
-        <Connect(AuthorizationWrapper)
+        <AuthorizationWrapper
           permission="role_edit_mines"
         >
           <Dropdown
@@ -223,7 +223,7 @@ exports[`MineHeader renders dispatchProperly 1`] = `
               </div>
             </Button>
           </Dropdown>
-        </Connect(AuthorizationWrapper)>
+        </AuthorizationWrapper>
       </div>
     </div>
     <Divider

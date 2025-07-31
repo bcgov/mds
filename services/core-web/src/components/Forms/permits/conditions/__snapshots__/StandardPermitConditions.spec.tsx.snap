@@ -19,6 +19,7 @@ exports[`StandardPermitConditions renders properly 1`] = `
     >
       <div
         class="ant-col ant-col-24"
+        id="GEC"
         style="padding: 8px 8px 8px 8px;"
       >
         <div
@@ -1292,6 +1293,7 @@ OR Activities must be conducted within the permit area illustrated by Figure # [
       </div>
       <div
         class="ant-col ant-col-24"
+        id="HSC"
         style="padding: 8px 8px 8px 8px;"
       >
         <div
@@ -2299,6 +2301,7 @@ OR Activities must be conducted within the permit area illustrated by Figure # [
       </div>
       <div
         class="ant-col ant-col-24"
+        id="GOC"
         style="padding: 8px 8px 8px 8px;"
       >
         <div
@@ -3055,6 +3058,7 @@ OR Activities must be conducted within the permit area illustrated by Figure # [
       </div>
       <div
         class="ant-col ant-col-24"
+        id="ELC"
         style="padding: 8px 8px 8px 8px;"
       >
         <div
@@ -6997,6 +7001,7 @@ OR Activities must be conducted within the permit area illustrated by Figure # [
       </div>
       <div
         class="ant-col ant-col-24"
+        id="RCC"
         style="padding: 8px 8px 8px 8px;"
       >
         <div

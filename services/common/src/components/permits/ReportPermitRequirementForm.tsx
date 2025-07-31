@@ -26,7 +26,7 @@ import {
 } from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
 import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import { usePermitConditions } from "@mds/common/components/permits/PermitConditionsContext";
-import { getMineReportPermitRequirementsByAmendment, getPermitConditionCategories } from "@mds/common/redux/selectors/permitSelectors";
+import { getMineReportPermitRequirementsByAmendment, getNowDraftConditionsFormatted, getPermitConditionCategories } from "@mds/common/redux/selectors/permitSelectors";
 import CoreButton from "../common/CoreButton";
 import RenderTreeSelect, { parseTreeValues } from "../forms/RenderTreeSelect";
 import RenderSubmitButton from "../forms/RenderSubmitButton";
@@ -49,16 +49,18 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
   refreshData,
 }) => {
   const formName = `${FORM.ADD_REPORT_TO_PERMIT_CONDITION}-${condition?.permit_condition_id ?? mineReportPermitRequirement?.mine_report_permit_requirement_id}`;
-  const { loading, currentAmendment, permitGuid, mineGuid } = usePermitConditions();
+  const { loading, currentAmendment, permitGuid, mineGuid, isNowEditor } = usePermitConditions();
   const [selectedRequirement, setSelectedRequirement] = useState(mineReportPermitRequirement);
   const dispatch = useAppDispatch();
   const [isEditMode, setIsEditMode] = useState(isModal && canEditPermitConditions);
-  const existingRequirements = useAppSelector(getMineReportPermitRequirementsByAmendment(permitGuid, currentAmendment.permit_amendment_guid));
+  const existingRequirements = useAppSelector(getMineReportPermitRequirementsByAmendment(permitGuid, currentAmendment.permit_amendment_guid, isNowEditor));
   const hasExistingRequirements = existingRequirements?.length > 0;
   const existingRequirementsOptions = existingRequirements.map((r) => { return { label: r.report_name, value: r.mine_report_permit_requirement_id } });
   const disableFields = mineReportPermitRequirement?.mine_report_permit_requirement_id !== selectedRequirement?.mine_report_permit_requirement_id;
   const multipleConditions = selectedRequirement?.permit_condition_ids.length > 1;
-  const { conditionMap, categoriesWithConditions } = useAppSelector(getPermitConditionCategories(permitGuid, currentAmendment.permit_amendment_guid));
+  const permitConditions = useAppSelector(getPermitConditionCategories(permitGuid, currentAmendment.permit_amendment_guid));
+  const nowConditions = useAppSelector(getNowDraftConditionsFormatted);
+  const { conditionMap, categoriesWithConditions } = isNowEditor ? nowConditions : permitConditions;
 
   const getLinkedConditionList = () => {
     if (!hasExistingRequirements || !selectedRequirement) {
@@ -150,7 +152,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
     const children = condition.sub_conditions.map((c) => conditionToTree(c));
     const value = condition.permit_condition_id;
     const title = condition.stepPath;
-    
+
     return ({
       value,
       key: condition.permit_condition_id,

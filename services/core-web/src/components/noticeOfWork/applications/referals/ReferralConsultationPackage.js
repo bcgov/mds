@@ -226,7 +226,7 @@ export const ReferralConsultationPackage = (props) => {
       </Button>
     </NOWActionWrapper>
   ) : (
-    <Button type="secondary" className="full-mobile" onClick={openDownloadPackageModal}>
+    <Button type="secondary" className="full-mobile form-btn" onClick={openDownloadPackageModal}>
       {label}
     </Button>
   );

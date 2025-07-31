@@ -2,8 +2,8 @@
 
 exports[`NOWActionWrapper renders properly 1`] = `
 <div>
-  <span>
-    <span />
-  </span>
+  <div>
+    test
+  </div>
 </div>
 `;

@@ -19,7 +19,7 @@ import NullScreen from "@/components/common/NullScreen";
 interface ScrollContentWrapperProps extends RouteComponentProps {
   id: string;
   children: React.ReactNode;
-  title: string;
+  title: string | React.ReactNode;
   history: any;
   showContent?: boolean;
   data?: any;

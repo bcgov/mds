@@ -24,10 +24,10 @@ exports[`ReferralTabs renders properly 1`] = `
               class="view--header--content--actions"
             >
               <div
-                class="inline-flex progress-actions"
+                class="inline-flex progress-actions form-btn"
               />
               <button
-                class="ant-btn ant-btn-secondary full-mobile"
+                class="ant-btn ant-btn-secondary full-mobile form-btn"
                 type="button"
               >
                 <span>
@@ -242,9 +242,7 @@ exports[`ReferralTabs renders properly 1`] = `
           </div>
           <div
             class="right center-mobile"
-          >
-            <div />
-          </div>
+          />
         </div>
       </div>
     </div>

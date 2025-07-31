@@ -14,7 +14,7 @@ import {
   storeEditingPreambleFlag,
   storePermits,
 } from "@mds/common/redux/actions/permitActions";
-import { PERMITS } from "@mds/common/constants/reducerTypes";
+import { NOTICE_OF_WORK, PERMITS } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { RootState } from "../rootState";
 import { createItemMap } from "../utils/helpers";
@@ -52,6 +52,9 @@ describe("permitSelectors", () => {
   it("getPermitByGuid returns the correct permit", () => {
     const localMockState = {
       [PERMITS]: { permits: mockPermits },
+      [NOTICE_OF_WORK]: {
+        noticeOfWork: {}
+      },
     };
     const permit = formatPermit(MOCK.PERMITS[1]);
     const actual = getPermitByGuid(permit.permit_guid)(localMockState as RootState);
@@ -79,6 +82,9 @@ describe("permitSelectors", () => {
 it("getAmendment returns the correct permit amendment", () => {
   const localMockState = {
     [PERMITS]: { permits: mockPermits },
+    [NOTICE_OF_WORK]: {
+      noticeOfWork: {}
+    },
   };
   const permit = MOCK.PERMITS[0];
   const amendment = permit.permit_amendments[0];
@@ -218,12 +224,14 @@ describe("getReportRequirementsByCondition", () => {
                 display_order: 1,
                 permit_condition_status_code: "ACT",
                 top_level_parent_permit_condition_id: topConditionId,
+                condition_tags: []
               },
             ],
             step: "1",
             display_order: 0,
             permit_condition_status_code: "ACT",
             top_level_parent_permit_condition_id: undefined,
+            condition_tags: []
           },
           {
             permit_condition_id: unrelatedConditionId,
@@ -238,6 +246,7 @@ describe("getReportRequirementsByCondition", () => {
             display_order: 2,
             permit_condition_status_code: "ACT",
             top_level_parent_permit_condition_id: undefined,
+            condition_tags: []
           },
         ],
         mine_report_permit_requirements: [
@@ -252,6 +261,9 @@ describe("getReportRequirementsByCondition", () => {
   const mockState = {
     [PERMITS]: {
       permits: [mockPermit],
+    },
+    [NOTICE_OF_WORK]: {
+      noticeOfWork: {}
     },
   };
 

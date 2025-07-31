@@ -111,7 +111,12 @@ class PermitListResource(Resource, UserMixin):
             current_app.logger.info('Supplied now_application_guid: ' + str(now_application_guid))
         if now_application_guid is not None:
             permit = Permit.find_by_now_application_guid(now_application_guid)
-            results = [permit] if permit else []
+            if permit:
+                for permit_amendment in permit.permit_amendments:
+                        permit_amendment.mine_report_permit_requirements = MineReportPermitRequirement.query.filter_by(permit_amendment_id=permit_amendment.permit_amendment_id, deleted_ind=False).all()
+                results = [permit]
+            else:
+                results = []
         else:
             results = Mine.find_by_mine_guid(mine_guid).mine_permit
             for permit in results:

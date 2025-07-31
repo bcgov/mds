@@ -35,12 +35,7 @@ exports[`ConditionLayerOne renders properly 1`] = `
     >
       <div
         class="float-right"
-      >
-        <div />
-        <div />
-        <div />
-        <div />
-      </div>
+      />
     </div>
   </div>
   <div
@@ -50,9 +45,7 @@ exports[`ConditionLayerOne renders properly 1`] = `
     <div
       class="ant-col ant-col-22"
       style="padding-left: 16px; padding-right: 16px;"
-    >
-      <div />
-    </div>
+    />
   </div>
   <div
     class="ant-row"

@@ -3,8 +3,9 @@ import { getNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelecto
 import * as permitReducer from "../reducers/permitReducer";
 import { IMineReportPermitRequirement, IPermitAmendment, IPermitCondition, IPermitConditionCategory } from "@mds/common/interfaces";
 import { getPermitConditionCategoryOptions } from "./staticContentSelectors";
-import { uniqBy } from "lodash";
+import { uniqBy, memoize } from "lodash";
 import { formatPermitConditionStep } from "@mds/common/utils/helpers";
+import { RootState } from "../rootState";
 
 const draft = "DFT";
 
@@ -22,7 +23,7 @@ export const {
 export const getDraftPermitForNOW = createSelector(
   [getDraftPermits, getNoticeOfWork],
   (draftPermits, noticeOfWork) =>
-    draftPermits.find(({ permit_amendments }) =>
+    draftPermits?.find(({ permit_amendments }) =>
       permit_amendments.some(
         (amendment) => amendment.now_application_guid === noticeOfWork.now_application_guid
       )
@@ -32,7 +33,7 @@ export const getDraftPermitForNOW = createSelector(
 export const getDraftPermitAmendmentForNOW = createSelector(
   [getDraftPermits, getNoticeOfWork],
   (draftPermits, noticeOfWork) => {
-    const draftPermit = draftPermits.find(({ permit_amendments }) =>
+    const draftPermit = draftPermits?.find(({ permit_amendments }) =>
       permit_amendments.some(
         (amendment) => amendment.now_application_guid === noticeOfWork.now_application_guid
       )
@@ -71,9 +72,13 @@ export const formatPermit = (permit) => {
   return { ...permit, site_properties: activePermitSiteProperty };
 };
 
-export const getPermitByGuid = (permitGuid) =>
-  createSelector([getUnformattedPermits], (permits) => {
-    const permit = permits.find((p) => p.permit_guid === permitGuid);
+export const getPermitByGuid = (permitGuid, isNowDraft = false) =>
+  createSelector([getUnformattedPermits, getDraftPermitForNOW], (permits, nowDraft) => {
+    if (isNowDraft && nowDraft.permit_guid == permitGuid) {
+      return formatPermit(nowDraft);
+    }
+    const permitList = isNowDraft ? [nowDraft] : permits;
+    const permit = permitList.find((p) => p.permit_guid === permitGuid);
     return permit && formatPermit(permit);
   });
 
@@ -82,10 +87,16 @@ export const getLatestAmendmentByPermitGuid = (permitGuid) =>
     return amendments ? amendments[permitGuid] : null;
   });
 
-export const getAmendment = (permitGuid, amendmentGuid) =>
-  createSelector([getPermitByGuid(permitGuid)], (permit): IPermitAmendment => {
-    return permit?.permit_amendments?.find((amendment) => amendment.permit_amendment_guid === amendmentGuid);
-  });
+export const getAmendment = memoize(
+  (permitGuid: string, amendmentGuid: string, isNowDraft = false): ((state: RootState) => IPermitAmendment) =>
+    createSelector(
+      [getPermitByGuid(permitGuid, isNowDraft)],
+      (permit): IPermitAmendment => {
+        return permit?.permit_amendments?.find((amendment) => amendment.permit_amendment_guid === amendmentGuid);
+      }
+    ),
+  (permitGuid, amendmentGuid, isNowDraft) => `${permitGuid}_${amendmentGuid}_${isNowDraft}`
+);
 
 export const getAmendmentByGuid = (amendmentGuid: string) =>
   createSelector([getPermitAmendments], (amendments) => {
@@ -97,14 +108,16 @@ export const getPermits = createSelector([getUnformattedPermits], (permits) => {
   return formattedPermits;
 });
 
-export const getMineReportPermitRequirementsByAmendment = (permitGuid, amendmentGuid) =>
-  createSelector(
-    [getAmendment(permitGuid, amendmentGuid)],
-    (amendment): IMineReportPermitRequirement[] => {
-      return (amendment && amendment.mine_report_permit_requirements) ?? [];
-    }
-  );
-
+export const getMineReportPermitRequirementsByAmendment = memoize(
+  (permitGuid: string, amendmentGuid: string, isNowDraft = false): ((state: RootState) => IMineReportPermitRequirement[]) =>
+    createSelector(
+      [getAmendment(permitGuid, amendmentGuid, isNowDraft)],
+      (amendment): IMineReportPermitRequirement[] => {
+        return (amendment && amendment.mine_report_permit_requirements) ?? [];
+      }
+    ),
+  (permitGuid, amendmentGuid, isNowDraft) => `${permitGuid}_${amendmentGuid}_${isNowDraft}`
+);
 
 export const getMineReportPermitRequirements = (permitGuid) =>
   createSelector(
@@ -135,9 +148,9 @@ const getSubConditionIds = (conditions: IPermitCondition[]) => {
 };
 
 // conditionId must be for top-level condition
-export const getReportRequirementsByCondition = (permitGuid, permitAmendmentGuid, conditionId) =>
+export const getReportRequirementsByCondition = (permitGuid, permitAmendmentGuid, conditionId, isNowDraft = false) =>
   createSelector(
-    [getAmendment(permitGuid, permitAmendmentGuid), getMineReportPermitRequirementsByAmendment(permitGuid, permitAmendmentGuid)],
+    [getAmendment(permitGuid, permitAmendmentGuid, isNowDraft), getMineReportPermitRequirementsByAmendment(permitGuid, permitAmendmentGuid, isNowDraft)],
     (amendment, requirements) => {
       if (!amendment || !requirements.length) {
         return [];
@@ -152,7 +165,7 @@ export const getReportRequirementsByCondition = (permitGuid, permitAmendmentGuid
     }
   );
 
-const getStepPath = (condition, category, conditionMap, parentPath = "", reportRequirements = []): IPermitCondition => {
+export const getStepPath = (condition, category, conditionMap, parentPath = "", reportRequirements = []): IPermitCondition => {
   const formattedStep = formatPermitConditionStep(condition.step);
 
   const currentPath = parentPath
@@ -193,7 +206,10 @@ export const getPermitConditionCategories = (permitGuid, permitAmendmentGuid) =>
       }));
 
       const permitConditionCategoryOptions: IPermitConditionCategory[] = uniqBy(
-        currentAmendment?.condition_categories.concat(condWithoutConditionsText) ?? [],
+        [
+          ...(currentAmendment?.condition_categories ?? []),
+          ...(condWithoutConditionsText ?? [])
+        ],
         "condition_category_code"
       );
 
@@ -213,7 +229,7 @@ export const getPermitConditionCategories = (permitGuid, permitAmendmentGuid) =>
             return null;
           }
 
-          const formattedConditions = catConditions.map((condition) => getStepPath(condition, cat, conditionMap));
+          const formattedConditions = catConditions.map((condition) => getStepPath(condition, cat, conditionMap, "", mineReportPermitRequirements));
 
           return {
             ...cat,
@@ -225,6 +241,38 @@ export const getPermitConditionCategories = (permitGuid, permitAmendmentGuid) =>
       return {
         categoriesWithConditions,
         conditionMap,
+      };
+    }
+  );
+
+export const getNowDraftConditionsFormatted =
+  createSelector([getDraftPermitAmendmentForNOW, getPermitConditionCategoryOptions],
+    (amendment, categories) => {
+      const { conditions, mine_report_permit_requirements } = amendment;
+
+      if (!conditions || !categories) {
+        return {
+          conditionMap: {},
+          categoriesWithConditions: []
+        };
+      }
+      const conditionMap: { [permit_condition_id: string]: IPermitCondition } = {}
+
+      const categoriesWithConditions = categories.map((cat) => {
+        const catConditions = conditions.filter((c) =>
+          c.condition_category_code === cat.condition_category_code
+        );
+        const formattedConditions = catConditions.map((condition) => getStepPath(condition, cat, conditionMap, "", mine_report_permit_requirements));
+
+        return {
+          ...cat,
+          conditions: formattedConditions
+        }
+      });
+
+      return {
+        categoriesWithConditions,
+        conditionMap
       };
     }
   );

@@ -309,7 +309,6 @@ exports[`NOWSubmissionDocuments renders properly 1`] = `
                               Package
                             </span>
                           </div>
-                          <div />
                         </div>
                       </th>
                     </tr>

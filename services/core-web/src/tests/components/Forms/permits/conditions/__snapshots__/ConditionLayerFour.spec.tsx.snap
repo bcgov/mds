@@ -28,12 +28,7 @@ exports[`ConditionLayerFour renders properly 1`] = `
     >
       <div
         class="float-right"
-      >
-        <div />
-        <div />
-        <div />
-        <div />
-      </div>
+      />
     </div>
   </div>
   <div
@@ -43,9 +38,7 @@ exports[`ConditionLayerFour renders properly 1`] = `
     <div
       class="ant-col ant-col-22 ant-col-offset-3"
       style="padding: 8px 4px 8px 4px;"
-    >
-      <div />
-    </div>
+    />
   </div>
 </div>
 `;

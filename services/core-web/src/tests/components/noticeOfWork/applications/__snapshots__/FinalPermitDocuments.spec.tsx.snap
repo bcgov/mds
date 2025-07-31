@@ -45,7 +45,6 @@ exports[`FinalPermitDocuments renders properly 1`] = `
               Download All
             </span>
           </button>
-          <div />
         </div>
       </div>
     </div>
@@ -320,7 +319,6 @@ exports[`FinalPermitDocuments renders properly 1`] = `
                                 Package
                               </span>
                             </div>
-                            <div />
                           </div>
                         </th>
                       </tr>
