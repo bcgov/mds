@@ -26,7 +26,7 @@ import {
 } from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
 import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import { usePermitConditions } from "@mds/common/components/permits/PermitConditionsContext";
-import { getMineReportPermitRequirementsByAmendment, getNowDraftConditionsFormatted, getPermitConditionCategories } from "@mds/common/redux/selectors/permitSelectors";
+import { getMineReportPermitRequirementsByAmendment, getNowDraftConditionsFormatted, getPermitConditionCategories, getStandardPermitConditionsFormatted } from "@mds/common/redux/selectors/permitSelectors";
 import CoreButton from "../common/CoreButton";
 import RenderTreeSelect, { parseTreeValues } from "../forms/RenderTreeSelect";
 import RenderSubmitButton from "../forms/RenderSubmitButton";
@@ -49,18 +49,28 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
   refreshData,
 }) => {
   const formName = `${FORM.ADD_REPORT_TO_PERMIT_CONDITION}-${condition?.permit_condition_id ?? mineReportPermitRequirement?.mine_report_permit_requirement_id}`;
-  const { loading, currentAmendment, permitGuid, mineGuid, isNowEditor } = usePermitConditions();
+
+  const { loading, currentAmendment, permitGuid, mineGuid, isNowEditor, standardConditionType } = usePermitConditions();
   const [selectedRequirement, setSelectedRequirement] = useState(mineReportPermitRequirement);
   const dispatch = useAppDispatch();
   const [isEditMode, setIsEditMode] = useState(isModal && canEditPermitConditions);
   const existingRequirements = useAppSelector(getMineReportPermitRequirementsByAmendment(permitGuid, currentAmendment.permit_amendment_guid, isNowEditor));
+
   const hasExistingRequirements = existingRequirements?.length > 0;
   const existingRequirementsOptions = existingRequirements.map((r) => { return { label: r.report_name, value: r.mine_report_permit_requirement_id } });
   const disableFields = mineReportPermitRequirement?.mine_report_permit_requirement_id !== selectedRequirement?.mine_report_permit_requirement_id;
   const multipleConditions = selectedRequirement?.permit_condition_ids.length > 1;
-  const permitConditions = useAppSelector(getPermitConditionCategories(permitGuid, currentAmendment.permit_amendment_guid));
+
   const nowConditions = useAppSelector(getNowDraftConditionsFormatted);
-  const { conditionMap, categoriesWithConditions } = isNowEditor ? nowConditions : permitConditions;
+  const permitConditions = useAppSelector(getPermitConditionCategories(permitGuid, currentAmendment?.permit_amendment_guid));
+  const standardConditions = useAppSelector(getStandardPermitConditionsFormatted());
+
+  const conditions = Boolean(standardConditionType)
+    ? standardConditions
+    : isNowEditor ? nowConditions : permitConditions;
+
+  const { conditionMap, categoriesWithConditions } = conditions;
+
 
   const getLinkedConditionList = () => {
     if (!hasExistingRequirements || !selectedRequirement) {
@@ -258,7 +268,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
               disabled={loading || disableFields}
             />
           </Col>
-          <Col span={12}>
+          <Col span={standardConditionType ? 24 : 12}>
             <Field
               name="due_date_period_months"
               label="Report Frequency"
@@ -274,16 +284,17 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
               disabled={loading || disableFields}
             />
           </Col>
-          <Col md={12} sm={24}>
-            <Field
-              name="initial_due_date"
-              label="Initial Due Date"
-              placeholder="Select date"
-              formatViewDate
-              component={RenderDate}
-              disabled={loading || disableFields}
-            />
-          </Col>
+          {!standardConditionType &&
+            <Col md={12} sm={24}>
+              <Field
+                name="initial_due_date"
+                label="Initial Due Date"
+                placeholder="Select date"
+                formatViewDate
+                component={RenderDate}
+                disabled={loading || disableFields}
+              />
+            </Col>}
           <Col md={12} sm={24}>
             {!isModal && !isEditMode ? (
               <div>

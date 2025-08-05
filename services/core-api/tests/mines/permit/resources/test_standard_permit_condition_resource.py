@@ -61,18 +61,6 @@ def test_put_standard_permit(test_client, db_session, auth_headers):
 
     assert put_resp.status_code == 200
 
-
-def test_put_standard_permit(test_client, db_session, auth_headers):
-    standard_permit_condition = StandardPermitConditionsFactory()
-
-    put_resp = test_client.put(
-        f'/mines/permits/standard-conditions/{uuid.uuid4()}',
-        headers=auth_headers['full_auth_header'],
-        json=STD_PERMIT_CONDITIONS_DATA)
-
-    assert put_resp.status_code == 200
-
-
 def test_delete_standard_permit(test_client, db_session, auth_headers):
     standard_permit_condition = StandardPermitConditionsFactory()
 

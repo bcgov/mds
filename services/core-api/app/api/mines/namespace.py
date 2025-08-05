@@ -151,7 +151,10 @@ from app.api.mines.reports.resources.mine_report_due_date_type_resource import (
     MineReportDueDateTypeResource,
 )
 from app.api.mines.reports.resources.mine_report_permit_requirement import (
-    MineReportPermitRequirementResource,
+    MineReportPermitRequirementResource
+)
+from app.api.mines.permits.permit_conditions.resources.standard_report_permit_requirement_resource import (
+    StandardReportPermitRequirementResource
 )
 from app.api.mines.reports.resources.mine_report_submission_resource import (
     ReportSubmissionResource,
@@ -280,6 +283,8 @@ api.add_resource(
     '/<string:mine_guid>/reports/documents',
 )
 api.add_resource(MineReportPermitRequirementResource, '/<string:mine_guid>/reports/permit-requirements')
+api.add_resource(StandardReportPermitRequirementResource, '/reports/standard-permit-requirements')
+
 api.add_resource(MineReportDueDateTypeResource, '/reports/due-date-types')
 
 api.add_resource(PermitResource, '/<string:mine_guid>/permits/<string:permit_guid>')

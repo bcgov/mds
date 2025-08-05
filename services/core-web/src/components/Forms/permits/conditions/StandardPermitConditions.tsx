@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { getStandardPermitConditionsFormatted } from "@mds/common/redux/selectors/permitSelectors";
 import { IFormattedConditionCategory, IPermitConditionTag } from "@mds/common/interfaces";
 import { fetchPermitConditionTags, getPermitConditionTags } from "@mds/common/redux/slices/permitConditionTagSlice";
+import { fetchStandardReportRequirements, getStandardReportRequirements } from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
 
 
 interface StandardPermitConditionsProps {
@@ -35,6 +36,7 @@ const StandardPermitConditions: FC<StandardPermitConditionsProps> = ({ type }) =
     const { categoriesWithConditions } = useAppSelector(getStandardPermitConditionsFormatted());
     const conditionsLoading = useAppSelector(getIsFetching(NetworkReducerTypes.GET_PERMIT_CONDITIONS));
     const conditionsLoaded = categoriesWithConditions[0]?.conditions[0]?.notice_of_work_type === typeCode;
+    const reportRequirements = useAppSelector(getStandardReportRequirements);
     const [isLoading, setIsLoading] = useState(false);
     const [editingFormName, setEditingFormName] = useState<string>();
     const [addingToCategoryCode, setAddingToCategoryCode] = useState<string>();
@@ -49,6 +51,12 @@ const StandardPermitConditions: FC<StandardPermitConditionsProps> = ({ type }) =
             dispatch(fetchPermitConditionTags(undefined));
         }
     }, [conditionTags]);
+
+    useEffect(() => {
+        if (!reportRequirements) {
+            dispatch(fetchStandardReportRequirements(undefined))
+        }
+    }, [reportRequirements]);
 
     useEffect(() => {
         if (!conditionsLoaded) {

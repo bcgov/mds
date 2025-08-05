@@ -2022,6 +2022,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 420,
@@ -2033,6 +2034,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 400,
         parent_permit_condition_id: 400,
         condition_type_code: "CON",
+        condition_tags: ["c0c31497-3f91-42d3-a13b-61eef85922f5"],
         sub_conditions: [
           {
             standard_permit_condition_id: 421,
@@ -2045,6 +2047,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             parent_permit_condition_id: 420,
             condition_type_code: "LIS",
             sub_conditions: [],
+            condition_tags: [],
             "step": "i.",
             "display_order": 1
           },
@@ -2060,7 +2063,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "ii.",
-            "display_order": 2
+            "display_order": 2,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 423,
@@ -2074,7 +2078,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "iii.",
-            "display_order": 3
+            "display_order": 3,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 424,
@@ -2088,7 +2093,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "iv.",
-            "display_order": 4
+            "display_order": 4,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 425,
@@ -2102,7 +2108,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "v.",
-            "display_order": 5
+            "display_order": 5,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 426,
@@ -2116,7 +2123,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "vi.",
-            "display_order": 6
+            "display_order": 6,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 427,
@@ -2130,7 +2138,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "vii.",
-            "display_order": 7
+            "display_order": 7,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 428,
@@ -2144,7 +2153,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "viii.",
-            "display_order": 8
+            "display_order": 8,
+            condition_tags: [],
           }
         ],
         "step": "a.",
@@ -2160,6 +2170,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 400,
         parent_permit_condition_id: 400,
         condition_type_code: "CON",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 430,
@@ -2173,7 +2184,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           }
         ],
         "step": "b.",
@@ -2191,7 +2203,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "c.",
-        "display_order": 3
+        "display_order": 3,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 890,
@@ -2205,7 +2218,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "d.",
-        "display_order": 4
+        "display_order": 4,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 432,
@@ -2219,7 +2233,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "e.",
-        "display_order": 5
+        "display_order": 5,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 433,
@@ -2233,7 +2248,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "f.",
-        "display_order": 6
+        "display_order": 6,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 434,
@@ -2247,7 +2263,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "g.",
-        "display_order": 7
+        "display_order": 7,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 435,
@@ -2261,7 +2278,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "h.",
-        "display_order": 8
+        "display_order": 8,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 436,
@@ -2275,7 +2293,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "i.",
-        "display_order": 9
+        "display_order": 9,
+        condition_tags: [],
       }
     ],
     "step": "1.",
@@ -2291,6 +2310,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 442,
@@ -2304,7 +2324,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "a.",
-        "display_order": 1
+        "display_order": 1,
+        condition_tags: [],
       }
     ],
     "step": "1.",
@@ -2320,6 +2341,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 540,
@@ -2333,7 +2355,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "a.",
-        "display_order": 1
+        "display_order": 1,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 541,
@@ -2345,6 +2368,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 415,
         parent_permit_condition_id: 415,
         condition_type_code: "CON",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 542,
@@ -2358,7 +2382,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 543,
@@ -2372,7 +2397,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "ii.",
-            "display_order": 2
+            "display_order": 2,
+            condition_tags: [],
           }
         ],
         "step": "b.",
@@ -2392,6 +2418,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 452,
@@ -2405,7 +2432,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "a.",
-        "display_order": 1
+        "display_order": 1,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 453,
@@ -2417,6 +2445,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 406,
         parent_permit_condition_id: 406,
         condition_type_code: "CON",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 454,
@@ -2430,7 +2459,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 455,
@@ -2444,7 +2474,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "ii.",
-            "display_order": 2
+            "display_order": 2,
+            condition_tags: [],
           }
         ],
         "step": "b.",
@@ -2464,6 +2495,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 459,
@@ -2477,7 +2509,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "a.",
-        "display_order": 1
+        "display_order": 1,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 460,
@@ -2491,7 +2524,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "b.",
-        "display_order": 2
+        "display_order": 2,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 461,
@@ -2505,7 +2539,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "c.",
-        "display_order": 3
+        "display_order": 3,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 462,
@@ -2519,7 +2554,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "d.",
-        "display_order": 4
+        "display_order": 4,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 463,
@@ -2531,6 +2567,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 410,
         parent_permit_condition_id: 410,
         condition_type_code: "CON",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 891,
@@ -2544,7 +2581,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 892,
@@ -2558,7 +2596,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "ii.",
-            "display_order": 2
+            "display_order": 2,
+            condition_tags: [],
           }
         ],
         "step": "e.",
@@ -2578,6 +2617,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 465,
@@ -2591,7 +2631,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "a.",
-        "display_order": 1
+        "display_order": 1,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 466,
@@ -2605,7 +2646,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "b.",
-        "display_order": 2
+        "display_order": 2,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 467,
@@ -2619,7 +2661,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "c.",
-        "display_order": 3
+        "display_order": 3,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 468,
@@ -2633,7 +2676,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "d.",
-        "display_order": 4
+        "display_order": 4,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 469,
@@ -2647,7 +2691,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "e.",
-        "display_order": 5
+        "display_order": 5,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 470,
@@ -2661,7 +2706,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "f.",
-        "display_order": 6
+        "display_order": 6,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 471,
@@ -2675,7 +2721,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "g.",
-        "display_order": 7
+        "display_order": 7,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 472,
@@ -2687,6 +2734,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 411,
         parent_permit_condition_id: 411,
         condition_type_code: "CON",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 473,
@@ -2700,7 +2748,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           }
         ],
         "step": "h.",
@@ -2716,6 +2765,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 411,
         parent_permit_condition_id: 411,
         condition_type_code: "CON",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 475,
@@ -2729,7 +2779,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           }
         ],
         "step": "i.",
@@ -2749,6 +2800,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 544,
@@ -2762,7 +2814,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "a.",
-        "display_order": 1
+        "display_order": 1,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 545,
@@ -2776,7 +2829,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "b.",
-        "display_order": 2
+        "display_order": 2,
+        condition_tags: [],
       }
     ],
     "step": "2.",
@@ -2792,6 +2846,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 443,
@@ -2805,7 +2860,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "a.",
-        "display_order": 1
+        "display_order": 1,
+        condition_tags: [],
       }
     ],
     "step": "2.",
@@ -2821,6 +2877,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 456,
@@ -2834,7 +2891,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "a.",
-        "display_order": 1
+        "display_order": 1,
+        condition_tags: [],
       }
     ],
     "step": "2.",
@@ -2850,6 +2908,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 419,
@@ -2863,7 +2922,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "a.",
-        "display_order": 1
+        "display_order": 1,
+        condition_tags: [],
       }
     ],
     "step": "2.",
@@ -2879,6 +2939,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 457,
@@ -2892,7 +2953,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "a.",
-        "display_order": 1
+        "display_order": 1,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 458,
@@ -2906,7 +2968,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "b.",
-        "display_order": 2
+        "display_order": 2,
+        condition_tags: [],
       }
     ],
     "step": "3.",
@@ -2922,6 +2985,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 476,
@@ -2935,7 +2999,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "a.",
-        "display_order": 1
+        "display_order": 1,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 477,
@@ -2949,7 +3014,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "b.",
-        "display_order": 2
+        "display_order": 2,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 478,
@@ -2963,7 +3029,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "c.",
-        "display_order": 3
+        "display_order": 3,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 479,
@@ -2977,7 +3044,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "d.",
-        "display_order": 4
+        "display_order": 4,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 480,
@@ -2991,7 +3059,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "e.",
-        "display_order": 5
+        "display_order": 5,
+        condition_tags: [],
       }
     ],
     "step": "3.",
@@ -3007,6 +3076,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 934,
@@ -3020,7 +3090,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "a.",
-        "display_order": 1
+        "display_order": 1,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 437,
@@ -3032,6 +3103,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 401,
         parent_permit_condition_id: 401,
         condition_type_code: "CON",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 438,
@@ -3045,7 +3117,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 563,
@@ -3059,7 +3132,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "ii.",
-            "display_order": 2
+            "display_order": 2,
+            condition_tags: [],
           }
         ],
         "step": "b.",
@@ -3077,7 +3151,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "c.",
-        "display_order": 3
+        "display_order": 3,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 440,
@@ -3091,7 +3166,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "d.",
-        "display_order": 4
+        "display_order": 4,
+        condition_tags: [],
       }
     ],
     "step": "3.",
@@ -3107,6 +3183,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 546,
@@ -3120,7 +3197,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "a.",
-        "display_order": 1
+        "display_order": 1,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 547,
@@ -3132,6 +3210,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 417,
         parent_permit_condition_id: 417,
         condition_type_code: "CON",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 905,
@@ -3145,7 +3224,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 906,
@@ -3159,7 +3239,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "ii.",
-            "display_order": 2
+            "display_order": 2,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 907,
@@ -3173,7 +3254,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "iii.",
-            "display_order": 3
+            "display_order": 3,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 908,
@@ -3187,7 +3269,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "iv.",
-            "display_order": 4
+            "display_order": 4,
+            condition_tags: [],
           }
         ],
         "step": "b.",
@@ -3203,6 +3286,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 417,
         parent_permit_condition_id: 417,
         condition_type_code: "CON",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 552,
@@ -3216,7 +3300,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 553,
@@ -3228,6 +3313,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             parent_standard_permit_condition_id: 551,
             parent_permit_condition_id: 551,
             condition_type_code: "LIS",
+            condition_tags: [],
             sub_conditions: [
               {
                 standard_permit_condition_id: 554,
@@ -3241,7 +3327,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
                 condition_type_code: "LIS",
                 sub_conditions: [],
                 "step": "1.",
-                "display_order": 1
+                "display_order": 1,
+                condition_tags: [],
               },
               {
                 standard_permit_condition_id: 555,
@@ -3255,7 +3342,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
                 condition_type_code: "LIS",
                 sub_conditions: [],
                 "step": "2.",
-                "display_order": 2
+                "display_order": 2,
+                condition_tags: [],
               },
               {
                 standard_permit_condition_id: 556,
@@ -3269,7 +3357,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
                 condition_type_code: "LIS",
                 sub_conditions: [],
                 "step": "3.",
-                "display_order": 3
+                "display_order": 3,
+                condition_tags: [],
               },
               {
                 standard_permit_condition_id: 557,
@@ -3283,7 +3372,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
                 condition_type_code: "LIS",
                 sub_conditions: [],
                 "step": "4.",
-                "display_order": 4
+                "display_order": 4,
+                condition_tags: [],
               },
               {
                 standard_permit_condition_id: 558,
@@ -3297,7 +3387,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
                 condition_type_code: "LIS",
                 sub_conditions: [],
                 "step": "5.",
-                "display_order": 5
+                "display_order": 5,
+                condition_tags: [],
               }
             ],
             "step": "ii.",
@@ -3317,6 +3408,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 417,
         parent_permit_condition_id: 417,
         condition_type_code: "CON",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 910,
@@ -3330,7 +3422,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 911,
@@ -3344,7 +3437,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "ii.",
-            "display_order": 2
+            "display_order": 2,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 912,
@@ -3358,7 +3452,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "iii.",
-            "display_order": 3
+            "display_order": 3,
+            condition_tags: [],
           }
         ],
         "step": "d.",
@@ -3378,6 +3473,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 565,
@@ -3391,7 +3487,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "a.",
-        "display_order": 1
+        "display_order": 1,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 566,
@@ -3405,7 +3502,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "b.",
-        "display_order": 2
+        "display_order": 2,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 567,
@@ -3419,7 +3517,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "c.",
-        "display_order": 3
+        "display_order": 3,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 568,
@@ -3433,7 +3532,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "d.",
-        "display_order": 4
+        "display_order": 4,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 569,
@@ -3447,7 +3547,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "e.",
-        "display_order": 5
+        "display_order": 5,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 570,
@@ -3461,7 +3562,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "f.",
-        "display_order": 6
+        "display_order": 6,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 571,
@@ -3475,7 +3577,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "g.",
-        "display_order": 7
+        "display_order": 7,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 572,
@@ -3489,7 +3592,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "h.",
-        "display_order": 8
+        "display_order": 8,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 573,
@@ -3503,7 +3607,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "i.",
-        "display_order": 9
+        "display_order": 9,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 574,
@@ -3517,7 +3622,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "j.",
-        "display_order": 10
+        "display_order": 10,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 575,
@@ -3531,7 +3637,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "k.",
-        "display_order": 11
+        "display_order": 11,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 576,
@@ -3543,6 +3650,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 564,
         parent_permit_condition_id: 564,
         condition_type_code: "CON",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 577,
@@ -3556,7 +3664,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 578,
@@ -3570,7 +3679,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "ii.",
-            "display_order": 2
+            "display_order": 2,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 579,
@@ -3584,7 +3694,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "iii.",
-            "display_order": 3
+            "display_order": 3,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 580,
@@ -3598,7 +3709,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "iv.",
-            "display_order": 4
+            "display_order": 4,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 581,
@@ -3612,7 +3724,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "v.",
-            "display_order": 5
+            "display_order": 5,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 582,
@@ -3626,7 +3739,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "vi.",
-            "display_order": 6
+            "display_order": 6,
+            condition_tags: [],
           }
         ],
         "step": "l.",
@@ -3646,6 +3760,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 559,
@@ -3657,6 +3772,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 418,
         parent_permit_condition_id: 418,
         condition_type_code: "CON",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 560,
@@ -3670,7 +3786,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 561,
@@ -3684,7 +3801,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "LIS",
             sub_conditions: [],
             "step": "ii.",
-            "display_order": 2
+            "display_order": 2,
+            condition_tags: [],
           }
         ],
         "step": "a.",
@@ -3704,6 +3822,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 441,
@@ -3717,7 +3836,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "a.",
-        "display_order": 1
+        "display_order": 1,
+        condition_tags: [],
       }
     ],
     "step": "4.",
@@ -3733,6 +3853,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 482,
@@ -3744,6 +3865,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 413,
         parent_permit_condition_id: 413,
         condition_type_code: "SEC",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 483,
@@ -3757,7 +3879,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 484,
@@ -3769,6 +3892,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             parent_standard_permit_condition_id: 482,
             parent_permit_condition_id: 482,
             condition_type_code: "CON",
+            condition_tags: [],
             sub_conditions: [
               {
                 standard_permit_condition_id: 485,
@@ -3782,7 +3906,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
                 condition_type_code: "LIS",
                 sub_conditions: [],
                 "step": "1.",
-                "display_order": 1
+                "display_order": 1,
+                condition_tags: [],
               },
               {
                 standard_permit_condition_id: 486,
@@ -3796,7 +3921,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
                 condition_type_code: "LIS",
                 sub_conditions: [],
                 "step": "2.",
-                "display_order": 2
+                "display_order": 2,
+                condition_tags: [],
               },
               {
                 standard_permit_condition_id: 487,
@@ -3810,7 +3936,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
                 condition_type_code: "LIS",
                 sub_conditions: [],
                 "step": "3.",
-                "display_order": 3
+                "display_order": 3,
+                condition_tags: [],
               },
               {
                 standard_permit_condition_id: 488,
@@ -3824,7 +3951,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
                 condition_type_code: "LIS",
                 sub_conditions: [],
                 "step": "4.",
-                "display_order": 4
+                "display_order": 4,
+                condition_tags: [],
               },
               {
                 standard_permit_condition_id: 489,
@@ -3838,7 +3966,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
                 condition_type_code: "LIS",
                 sub_conditions: [],
                 "step": "5.",
-                "display_order": 5
+                "display_order": 5,
+                condition_tags: [],
               }
             ],
             "step": "ii.",
@@ -3858,6 +3987,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 413,
         parent_permit_condition_id: 413,
         condition_type_code: "SEC",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 491,
@@ -3871,7 +4001,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 492,
@@ -3885,7 +4016,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "ii.",
-            "display_order": 2
+            "display_order": 2,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 493,
@@ -3899,7 +4031,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "iii.",
-            "display_order": 3
+            "display_order": 3,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 494,
@@ -3913,7 +4046,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "iv.",
-            "display_order": 4
+            "display_order": 4,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 495,
@@ -3927,7 +4061,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "v.",
-            "display_order": 5
+            "display_order": 5,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 496,
@@ -3941,7 +4076,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "vi.",
-            "display_order": 6
+            "display_order": 6,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 497,
@@ -3955,7 +4091,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "vii.",
-            "display_order": 7
+            "display_order": 7,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 498,
@@ -3969,7 +4106,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "viii.",
-            "display_order": 8
+            "display_order": 8,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 500,
@@ -3983,7 +4121,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "x.",
-            "display_order": 10
+            "display_order": 10,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 501,
@@ -3997,7 +4136,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "xi.",
-            "display_order": 11
+            "display_order": 11,
+            condition_tags: [],
           }
         ],
         "step": "b.",
@@ -4013,6 +4153,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 413,
         parent_permit_condition_id: 413,
         condition_type_code: "SEC",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 503,
@@ -4026,7 +4167,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 504,
@@ -4040,7 +4182,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "ii.",
-            "display_order": 2
+            "display_order": 2,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 505,
@@ -4054,7 +4197,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "iii.",
-            "display_order": 3
+            "display_order": 3,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 506,
@@ -4068,7 +4212,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "iv.",
-            "display_order": 4
+            "display_order": 4,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 507,
@@ -4082,7 +4227,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "v.",
-            "display_order": 5
+            "display_order": 5,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 508,
@@ -4096,7 +4242,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "vi.",
-            "display_order": 6
+            "display_order": 6,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 509,
@@ -4110,7 +4257,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "vii.",
-            "display_order": 7
+            "display_order": 7,
+            condition_tags: [],
           }
         ],
         "step": "c.",
@@ -4126,6 +4274,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 413,
         parent_permit_condition_id: 413,
         condition_type_code: "SEC",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 511,
@@ -4139,7 +4288,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 512,
@@ -4153,7 +4303,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "ii.",
-            "display_order": 2
+            "display_order": 2,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 513,
@@ -4167,7 +4318,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "iii.",
-            "display_order": 3
+            "display_order": 3,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 514,
@@ -4181,7 +4333,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "iv.",
-            "display_order": 4
+            "display_order": 4,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 515,
@@ -4195,7 +4348,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "v.",
-            "display_order": 5
+            "display_order": 5,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 516,
@@ -4209,7 +4363,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "vi.",
-            "display_order": 6
+            "display_order": 6,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 517,
@@ -4223,7 +4378,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "vii.",
-            "display_order": 7
+            "display_order": 7,
+            condition_tags: [],
           }
         ],
         "step": "d.",
@@ -4239,6 +4395,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 413,
         parent_permit_condition_id: 413,
         condition_type_code: "SEC",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 519,
@@ -4252,7 +4409,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           }
         ],
         "step": "e.",
@@ -4268,6 +4426,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 413,
         parent_permit_condition_id: 413,
         condition_type_code: "SEC",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 521,
@@ -4281,7 +4440,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 522,
@@ -4295,7 +4455,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "ii.",
-            "display_order": 2
+            "display_order": 2,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 523,
@@ -4309,7 +4470,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "iii.",
-            "display_order": 3
+            "display_order": 3,
+            condition_tags: [],
           }
         ],
         "step": "f.",
@@ -4325,6 +4487,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 413,
         parent_permit_condition_id: 413,
         condition_type_code: "SEC",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 525,
@@ -4338,7 +4501,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 526,
@@ -4352,7 +4516,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "ii.",
-            "display_order": 2
+            "display_order": 2,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 527,
@@ -4366,7 +4531,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "iii.",
-            "display_order": 3
+            "display_order": 3,
+            condition_tags: [],
           }
         ],
         "step": "g.",
@@ -4382,6 +4548,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 413,
         parent_permit_condition_id: 413,
         condition_type_code: "SEC",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 529,
@@ -4395,7 +4562,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 530,
@@ -4409,7 +4577,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "ii.",
-            "display_order": 2
+            "display_order": 2,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 531,
@@ -4423,7 +4592,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "iii.",
-            "display_order": 3
+            "display_order": 3,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 532,
@@ -4437,7 +4607,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "iv.",
-            "display_order": 4
+            "display_order": 4,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 533,
@@ -4451,7 +4622,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "v.",
-            "display_order": 5
+            "display_order": 5,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 534,
@@ -4465,7 +4637,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "vi.",
-            "display_order": 6
+            "display_order": 6,
+            condition_tags: [],
           }
         ],
         "step": "h.",
@@ -4481,6 +4654,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 413,
         parent_permit_condition_id: 413,
         condition_type_code: "SEC",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 894,
@@ -4494,7 +4668,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 895,
@@ -4508,7 +4683,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "ii.",
-            "display_order": 2
+            "display_order": 2,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 896,
@@ -4522,7 +4698,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "iii.",
-            "display_order": 3
+            "display_order": 3,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 897,
@@ -4534,6 +4711,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             parent_standard_permit_condition_id: 893,
             parent_permit_condition_id: 893,
             condition_type_code: "CON",
+            condition_tags: [],
             sub_conditions: [
               {
                 standard_permit_condition_id: 898,
@@ -4547,7 +4725,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
                 condition_type_code: "LIS",
                 sub_conditions: [],
                 "step": "1.",
-                "display_order": 1
+                "display_order": 1,
+                condition_tags: [],
               },
               {
                 standard_permit_condition_id: 899,
@@ -4561,7 +4740,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
                 condition_type_code: "LIS",
                 sub_conditions: [],
                 "step": "2.",
-                "display_order": 2
+                "display_order": 2,
+                condition_tags: [],
               }
             ],
             "step": "iv.",
@@ -4579,7 +4759,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "v.",
-            "display_order": 5
+            "display_order": 5,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 901,
@@ -4593,7 +4774,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "vi.",
-            "display_order": 6
+            "display_order": 6,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 902,
@@ -4607,7 +4789,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "vii.",
-            "display_order": 7
+            "display_order": 7,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 903,
@@ -4621,7 +4804,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "viii.",
-            "display_order": 8
+            "display_order": 8,
+            condition_tags: [],
           },
           {
             standard_permit_condition_id: 904,
@@ -4635,7 +4819,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "ix.",
-            "display_order": 9
+            "display_order": 9,
+            condition_tags: [],
           }
         ],
         "step": "i.",
@@ -4657,7 +4842,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     condition_type_code: "SEC",
     sub_conditions: [],
     "step": "4.",
-    "display_order": 4
+    "display_order": 4,
+    condition_tags: [],
   },
   {
     standard_permit_condition_id: 414,
@@ -4669,6 +4855,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 535,
@@ -4682,7 +4869,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "a.",
-        "display_order": 1
+        "display_order": 1,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 536,
@@ -4696,7 +4884,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "b.",
-        "display_order": 2
+        "display_order": 2,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 537,
@@ -4710,7 +4899,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "c.",
-        "display_order": 3
+        "display_order": 3,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 538,
@@ -4724,7 +4914,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "d.",
-        "display_order": 4
+        "display_order": 4,
+        condition_tags: [],
       },
       {
         standard_permit_condition_id: 539,
@@ -4738,7 +4929,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         condition_type_code: "CON",
         sub_conditions: [],
         "step": "e.",
-        "display_order": 5
+        "display_order": 5,
+        condition_tags: [],
       }
     ],
     "step": "5.",
@@ -4754,6 +4946,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 814,
@@ -4765,6 +4958,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 802,
         parent_permit_condition_id: 802,
         condition_type_code: "SEC",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 838,
@@ -4778,7 +4972,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           }
         ],
         "step": "a.",
@@ -4794,6 +4989,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 802,
         parent_permit_condition_id: 802,
         condition_type_code: "SEC",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 842,
@@ -4807,7 +5003,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           }
         ],
         "step": "b.",
@@ -4827,6 +5024,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 830,
@@ -4838,6 +5036,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 810,
         parent_permit_condition_id: 810,
         condition_type_code: "SEC",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 854,
@@ -4851,7 +5050,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           }
         ],
         "step": "a.",
@@ -4867,6 +5067,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 810,
         parent_permit_condition_id: 810,
         condition_type_code: "SEC",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 858,
@@ -4880,7 +5081,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           }
         ],
         "step": "b.",
@@ -4900,6 +5102,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
     parent_standard_permit_condition_id: null,
     parent_permit_condition_id: null,
     condition_type_code: "SEC",
+    condition_tags: [],
     sub_conditions: [
       {
         standard_permit_condition_id: 822,
@@ -4911,6 +5114,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 806,
         parent_permit_condition_id: 806,
         condition_type_code: "SEC",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 846,
@@ -4924,7 +5128,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           }
         ],
         "step": "a.",
@@ -4940,6 +5145,7 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
         parent_standard_permit_condition_id: 806,
         parent_permit_condition_id: 806,
         condition_type_code: "SEC",
+        condition_tags: [],
         sub_conditions: [
           {
             standard_permit_condition_id: 850,
@@ -4953,7 +5159,8 @@ export const STANDARD_PERMIT_CONDITIONS: IStandardPermitCondition[] = [
             condition_type_code: "CON",
             sub_conditions: [],
             "step": "i.",
-            "display_order": 1
+            "display_order": 1,
+            condition_tags: [],
           }
         ],
         "step": "b.",

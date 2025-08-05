@@ -96,6 +96,12 @@ class StandardPermitConditions(SoftDeleteMixin, AuditMixin, Base):
         return cls.query.filter_by(
             standard_permit_condition_guid=standard_permit_condition_guid, deleted_ind=False).first()
 
+    @classmethod
+    def find_many_by_permit_condition_ids(cls, ids):
+        return cls.query.filter(
+            cls.standard_permit_condition_id.in_(ids)
+        ).filter_by(deleted_ind=False).all()
+
 
     @classmethod
     def find_by_standard_permit_condition_id(cls, standard_permit_condition_id):

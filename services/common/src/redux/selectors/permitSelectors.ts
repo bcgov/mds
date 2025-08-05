@@ -1,11 +1,12 @@
 import { createSelector } from "reselect";
 import { getNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import * as permitReducer from "../reducers/permitReducer";
-import { IMineReportPermitRequirement, IPermitAmendment, IPermitCondition, IPermitConditionCategory } from "@mds/common/interfaces";
+import { IMineReportPermitRequirement, IPermitAmendment, IPermitCondition, IPermitConditionCategory, IStandardPermitCondition } from "@mds/common/interfaces";
 import { getPermitConditionCategoryOptions } from "./staticContentSelectors";
 import { uniqBy, memoize } from "lodash";
 import { formatPermitConditionStep } from "@mds/common/utils/helpers";
 import { RootState } from "../rootState";
+import { getStandardReportRequirements } from "../slices/mineReportPermitRequirementSlice";
 
 const draft = "DFT";
 
@@ -135,7 +136,7 @@ export const getMineReportPermitRequirementById = (permitGuid, reportId) =>
     }
   );
 
-const getSubConditionIds = (conditions: IPermitCondition[]) => {
+export const getSubConditionIds = (conditions: IPermitCondition[] | IStandardPermitCondition[]) => {
   if (!conditions?.length) {
     return [];
   }
@@ -278,8 +279,8 @@ export const getNowDraftConditionsFormatted =
   );
 
 export const getStandardPermitConditionsFormatted = () =>
-  createSelector([getStandardPermitConditions, getPermitConditionCategoryOptions],
-    (conditions, categories) => {
+  createSelector([getStandardPermitConditions, getPermitConditionCategoryOptions, getStandardReportRequirements],
+    (conditions, categories, reportRequirements) => {
       if (!conditions || !categories) {
         return {
           conditionMap: {},
@@ -293,7 +294,7 @@ export const getStandardPermitConditionsFormatted = () =>
         const catConditions = conditions.filter((c) =>
           c.condition_category_code === cat.condition_category_code
         );
-        const formattedConditions = catConditions.map((condition) => getStepPath(condition, cat, conditionMap));
+        const formattedConditions = catConditions.map((condition) => getStepPath(condition, cat, conditionMap, "", reportRequirements));
 
         return {
           ...cat,

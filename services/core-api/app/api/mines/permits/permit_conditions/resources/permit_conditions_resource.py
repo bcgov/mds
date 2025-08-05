@@ -95,7 +95,7 @@ class PermitConditionsResource(Resource, UserMixin):
         old_condition = PermitConditions.find_by_permit_condition_guid(permit_condition_guid)
         old_display_order = old_condition.display_order
         old_category_code = old_condition.condition_category_code
-        old_tags = old_condition.condition_tags;
+        old_tags = old_condition.condition_tags
         new_category_code = request_data.get("condition_category_code", None)
         if not PermitConditionCategory.find_by_permit_condition_category_code(new_category_code):
             raise BadRequest('condition_category_code is invalid')

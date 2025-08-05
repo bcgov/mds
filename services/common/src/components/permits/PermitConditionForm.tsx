@@ -328,7 +328,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                             </Button>
                                         </Col>
                                     )}
-                                    {!standardConditionType && <Col>
+                                    <Col>
                                         <Button
                                             loading={loading}
                                             className="fa-icon-container btn-sm-padding"
@@ -341,7 +341,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                                 ? "Report Added"
                                                 : "Add Report Requirement"}
                                         </Button>
-                                    </Col>}
+                                    </Col>
                                     {enablePermitConditionTags && conditionTags &&
                                         (<Col className="condition-tag-select">
                                             <Field
