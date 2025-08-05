@@ -22,6 +22,7 @@ import { REPORT_FREQUENCY_HASH, REPORT_MINISTRY_RECIPIENT_HASH, REPORT_REGULATOR
 import {
   createMineReportPermitRequirement,
   deleteMineReportPermitRequirement,
+  getStandardReportRequirements,
   updateMineReportPermitRequirement,
 } from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
 import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
@@ -54,7 +55,10 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
   const [selectedRequirement, setSelectedRequirement] = useState(mineReportPermitRequirement);
   const dispatch = useAppDispatch();
   const [isEditMode, setIsEditMode] = useState(isModal && canEditPermitConditions);
-  const existingRequirements = useAppSelector(getMineReportPermitRequirementsByAmendment(permitGuid, currentAmendment.permit_amendment_guid, isNowEditor));
+
+  const standardRequirements = useAppSelector(getStandardReportRequirements);
+  const permitRequirements = useAppSelector(getMineReportPermitRequirementsByAmendment(permitGuid, currentAmendment?.permit_amendment_guid, isNowEditor));
+  const existingRequirements = Boolean(standardConditionType) ? standardRequirements : permitRequirements;
 
   const hasExistingRequirements = existingRequirements?.length > 0;
   const existingRequirementsOptions = existingRequirements.map((r) => { return { label: r.report_name, value: r.mine_report_permit_requirement_id } });
