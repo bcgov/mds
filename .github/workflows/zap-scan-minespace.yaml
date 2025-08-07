@@ -21,7 +21,7 @@ jobs:
         with:
           target: "https://minespace-test.apps.silver.devops.gov.bc.ca"
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifact: false
+          artifact: "false"
           artifact_name: minespace
 
       - name: Upload ZAP Report
