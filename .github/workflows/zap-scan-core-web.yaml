@@ -22,7 +22,7 @@ jobs:
           target: "https://mds-test.apps.silver.devops.gov.bc.ca"
           token: ${{ secrets.GITHUB_TOKEN }}
           artifact: false
-          artifact_name: coreweb-zap-scan
+          artifact_name: coreweb_zap_scan
 
       - name: Upload ZAP Report
         uses: actions/upload-artifact@v4
