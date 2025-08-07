@@ -21,7 +21,7 @@ jobs:
         with:
           target: "https://mds-test.apps.silver.devops.gov.bc.ca"
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifact: "false"
+          artifact: "true"
           artifact_name: coreweb
 
       - name: Upload ZAP Report
