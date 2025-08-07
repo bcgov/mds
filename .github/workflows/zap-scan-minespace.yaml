@@ -22,6 +22,7 @@ jobs:
           target: "https://minespace-test.apps.silver.devops.gov.bc.ca"
           token: ${{ secrets.GITHUB_TOKEN }}
           artifact: false
+          artifact_name: minespace-zap-scan
 
       - name: Upload ZAP Report
         uses: actions/upload-artifact@v4
