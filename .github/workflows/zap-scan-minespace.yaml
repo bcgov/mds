@@ -4,9 +4,6 @@ on:
   schedule:
     - cron: "0 8 * * *" # Runs at 08:00 UTC (Midnight PST)
   workflow_dispatch:
-  pull_request:
-    branches:
-      - develop
 
 jobs:
   zap_scan:
