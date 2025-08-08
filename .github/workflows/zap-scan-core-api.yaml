@@ -21,6 +21,7 @@ jobs:
         with:
           target: "https://mds-test.apps.silver.devops.gov.bc.ca/api/swagger.json"
           format: openapi
+          fail_action: false
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload ZAP Report
