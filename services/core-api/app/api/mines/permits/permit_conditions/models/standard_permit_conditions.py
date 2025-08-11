@@ -7,7 +7,6 @@ from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.utils.list_lettering_helpers import num_to_letter, num_to_roman
-from app.api.mines.permits.permit_conditions.models.permit_condition_tag import PermitConditionTag
 from app.api.mines.permits.permit_conditions.models.standard_permit_condition_tag_xref import StandardPermitConditionTagXref
 
 class StandardPermitConditions(SoftDeleteMixin, AuditMixin, Base):
@@ -102,13 +101,22 @@ class StandardPermitConditions(SoftDeleteMixin, AuditMixin, Base):
             cls.standard_permit_condition_id.in_(ids)
         ).filter_by(deleted_ind=False).all()
 
-
+    def get_all_sub_condition_ids(self):
+        ids = [self.standard_permit_condition_id]
+        def collect_ids(condition):
+            for sub in condition.sub_conditions:
+                ids.append(sub.standard_permit_condition_id)
+                collect_ids(sub)
+        collect_ids(self)
+        return ids
+    
     @classmethod
     def find_by_standard_permit_condition_id(cls, standard_permit_condition_id):
         return cls.query.filter_by(
             standard_permit_condition_id=standard_permit_condition_id, deleted_ind=False).first()
     
-    def update_condition_tags(self, old_tags, new_tags):
+    def update_condition_tags(self, new_tags):
+        old_tags = self.condition_tags
         if old_tags != new_tags:
 
             # Remove tags

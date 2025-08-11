@@ -214,11 +214,8 @@ class PermitAmendmentListResource(Resource, UserMixin):
                 now_type = application_identity.now_application.notice_of_work_type_code
                 standard_conditions = StandardPermitConditions.find_by_notice_of_work_type_code(
                     now_type)
-                for condition in standard_conditions:
-                    PermitConditions.create(condition.condition_category_code,
-                                            condition.condition_type_code,
-                                            new_pa.permit_amendment_id, condition.condition,
-                                            condition.display_order, condition.sub_conditions)
+
+                PermitConditions.copy_from_standard(standard_conditions, new_pa.permit_amendment_id)
 
             if application_identity.now_application:
                 if populate_with_conditions:

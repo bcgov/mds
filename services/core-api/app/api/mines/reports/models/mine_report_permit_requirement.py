@@ -1,6 +1,6 @@
 from datetime import date
 from enum import Enum
-from typing import Optional, Self
+from typing import Optional, Self, List
 
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin, HistoryMixin
 from app.extensions import db
@@ -74,7 +74,7 @@ class MineReportPermitRequirement(SoftDeleteMixin, AuditMixin, HistoryMixin, Bas
         return '<MineReportPermitRequirement %r>' % self.mine_report_permit_requirement_id
 
     @classmethod
-    def find_by_mine_report_permit_requirement_id(cls, id) -> "MineReportPermitRequirement":
+    def find_by_mine_report_permit_requirement_id(cls, id) -> Self | None:
         try:
             return cls.query.filter_by(mine_report_permit_requirement_id=id, deleted_ind=False).first()
         except ValueError:
@@ -88,21 +88,18 @@ class MineReportPermitRequirement(SoftDeleteMixin, AuditMixin, HistoryMixin, Bas
         return None
 
     @classmethod
-    def find_by_report_name(cls, report_name) -> "MineReportPermitRequirement":
-        try:
-            return cls.query.filter_by(report_name=report_name).all()
-        except ValueError:
-            return None
+    def find_by_report_name(cls, report_name, permit_amendment_id) -> Self:
+        return cls.query.filter_by(report_name=report_name, permit_amendment_id=permit_amendment_id).one_or_none()
 
     @classmethod
-    def get_all(cls) -> list["MineReportPermitRequirement"]:
+    def get_all(cls) -> list[Self]:
         try:
             return cls.query.all()
         except ValueError:
             return None
         
 
-    def update_permit_conditions(self, new_permit_condition_ids) -> "MineReportPermitRequirement":
+    def update_permit_conditions(self, new_permit_condition_ids) -> None:
         current_condition_ids = self.permit_condition_ids
         
         to_add = [c for c in new_permit_condition_ids if c not in current_condition_ids]
@@ -138,7 +135,7 @@ class MineReportPermitRequirement(SoftDeleteMixin, AuditMixin, HistoryMixin, Bas
                cim_or_cpo: Optional[CimOrCpo],
                ministry_recipient: Optional[list[OfficeDestination]],
                permit_condition_ids: list[int],
-               permit_amendment_id: int) -> "MineReportPermitRequirement":
+               permit_amendment_id: int) -> Self:
 
         mine_report_permit_requirement = cls(
             report_name=report_name,
@@ -180,7 +177,7 @@ class StandardReportPermitRequirement(MineReportPermitRequirement):
         backref=backref('mine_report_permit_requirements', lazy='joined')
     )
 
-    def update_permit_conditions(self, new_permit_condition_ids) -> "StandardReportPermitRequirement":
+    def update_permit_conditions(self, new_permit_condition_ids) -> None:
         current_condition_ids = self.permit_condition_ids
         
         to_add = [c for c in new_permit_condition_ids if c not in current_condition_ids]
@@ -198,13 +195,19 @@ class StandardReportPermitRequirement(MineReportPermitRequirement):
             self.mine_report_req_permit_conditions.append(xref)
 
     @classmethod
+    def find_by_many_condition_ids(cls, ids) -> List[Self]:
+        xrefs = StandardReportReqPermitConditionXref.find_by_many_permit_condition_ids(ids)
+        requirements = [xref.mine_report_permit_requirement for xref in xrefs if xref.mine_report_permit_requirement]
+        return list(set(requirements))
+
+    @classmethod
     def create(cls,
                report_name: Optional[str],
                due_date_period_months: int,
                cim_or_cpo: Optional[CimOrCpo],
                ministry_recipient: Optional[list[OfficeDestination]],
                permit_condition_ids: list[int]
-               ) -> "StandardReportPermitRequirement":
+               ) -> Self:
 
         standard_report_permit_requirement = cls(
             report_name=report_name,

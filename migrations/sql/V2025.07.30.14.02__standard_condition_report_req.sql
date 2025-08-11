@@ -40,3 +40,8 @@ ALTER TABLE mine_report_permit_requirement
 
 ALTER TABLE mine_report_permit_requirement_version
     ADD COLUMN is_standard BOOLEAN NOT NULL DEFAULT FALSE;
+
+-- add unique index for standard report requirements: report_name must be unique where is_standard = True
+CREATE UNIQUE INDEX unique_standard_report_name_idx
+ON mine_report_permit_requirement (report_name)
+WHERE is_standard = TRUE AND report_name IS NOT NULL;

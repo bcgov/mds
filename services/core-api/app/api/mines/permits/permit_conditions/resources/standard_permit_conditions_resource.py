@@ -5,7 +5,7 @@ from marshmallow.exceptions import MarshmallowError
 
 from app.extensions import api, db
 from app.api.mines.response_models import STANDARD_PERMIT_CONDITION_MODEL
-from app.api.mines.permits.permit_conditions.models import StandardPermitConditions, StandardPermitConditionTagXref
+from app.api.mines.permits.permit_conditions.models import StandardPermitConditions
 from app.api.utils.access_decorators import requires_role_edit_standard_permit_conditions
 from app.api.utils.resources_mixins import UserMixin
 
@@ -22,7 +22,6 @@ class StandardPermitConditionsResource(Resource, UserMixin):
         old_display_order = None
         old_condition = StandardPermitConditions.find_by_standard_permit_condition_guid(
             standard_permit_condition_guid)
-        old_tags = old_condition.condition_tags
         new_tags = request_data.get("condition_tags", [])
         if old_condition:
             old_display_order = old_condition.display_order
@@ -36,7 +35,7 @@ class StandardPermitConditionsResource(Resource, UserMixin):
         except MarshmallowError as e:
             raise BadRequest(e)
         
-        condition.update_condition_tags(old_tags, new_tags)
+        condition.update_condition_tags(new_tags)
 
         conditions = []
         if condition.parent_standard_permit_condition_id is not None:

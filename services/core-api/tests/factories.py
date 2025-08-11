@@ -7,6 +7,7 @@ import factory
 import factory.fuzzy
 from app.api.activity.models.activity_notification import ActivityNotification
 from app.api.mines.permits.permit_conditions.models.permit_condition_tag import PermitConditionTag
+from app.api.mines.permits.permit_conditions.models.standard_permit_condition_tag_xref import StandardPermitConditionTagXref
 from app.api.projects.ams_final_application.models.ams_final_application import AmsFinalApplication
 from app.api.projects.ams_final_application.models.ams_final_application_document_xref import AmsFinalApplicationDocumentXref
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES, TSF_ALLOWED_CONTACT_TYPES
@@ -57,10 +58,12 @@ from app.api.mines.reports.models.mine_report_definition_compliance_article_xref
 from app.api.mines.reports.models.mine_report_permit_requirement import (
     CimOrCpo,
     MineReportPermitRequirement,
+    StandardReportPermitRequirement,
     OfficeDestination,
 )
 from app.api.mines.reports.models.mine_report_req_permit_condition_xref import (
     MineReportReqPermitConditionXref,
+    StandardReportReqPermitConditionXref,
 )
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.status.models.mine_status import MineStatus
@@ -1145,6 +1148,18 @@ class PermitConditionTagFactory(BaseFactory):
     description = factory.Faker('text', max_nb_chars=20)
     deleted_ind = False
 
+class StandardPermitConditionTagXrefFactory(BaseFactory):
+    class Meta:
+        model = StandardPermitConditionTagXref
+
+    class Params:
+        permit_condition_tag = factory.SubFactory(PermitConditionTagFactory)
+        standard_permit_condition = factory.SubFactory(StandardPermitConditions)
+    
+    standard_permit_condition_tag_xref_guid = GUID
+    permit_condition_tag_guid = factory.SelfAttribute('permit_condition_tag.permit_condition_tag_guid')
+    standard_permit_condition_id = factory.SelfAttribute('standard_permit_condition.standard_permit_condition_id')
+
 class PermitAmendmentFactory(BaseFactory):
 
     class Meta:
@@ -1891,6 +1906,19 @@ class MineReportPermitRequirementFactory(BaseFactory):
     mine_report_permit_requirement_id = factory.LazyFunction(lambda: random.randint(1, 12))
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
 
+class StandardReportPermitRequirementFactory(BaseFactory):
+    class Meta:
+        model = StandardReportPermitRequirement
+
+    due_date_period_months = factory.LazyFunction(lambda: random.randint(1, 12))
+    active_ind = factory.LazyFunction(lambda: random.choice([True, False]))
+    deleted_ind = False
+    cim_or_cpo = factory.LazyFunction(lambda: random.choice(list(CimOrCpo)))
+    ministry_recipient = factory.LazyFunction(
+        lambda: [random.choice(list(OfficeDestination))]
+    )
+    mine_report_permit_requirement_id = factory.LazyFunction(lambda: random.randint(1, 12))  
+    report_name = factory.Faker('name')
 
 class MineReportReqPermitConditionXrefFactory(BaseFactory):
     class Meta:
@@ -1903,6 +1931,17 @@ class MineReportReqPermitConditionXrefFactory(BaseFactory):
     permit_condition_id = factory.SelfAttribute('permit_condition.permit_condition_id')
     mine_report_permit_requirement_id = factory.SelfAttribute('mine_report_permit_requirement.mine_report_permit_requirement_id')
 
+class StandardReportReqConditionXrefFactory(BaseFactory):
+    class Meta:
+        model = StandardReportReqPermitConditionXref
+
+    class Params:
+        permit_condition = factory.SubFactory(PermitConditionsFactory)
+        mine_report_permit_requirement = factory.SubFactory(StandardReportPermitRequirementFactory)
+
+    standard_permit_condition_id = factory.SelfAttribute('permit_condition.permit_condition_id')
+    permit_condition_id = factory.SelfAttribute('permit_condition.permit_condition_id')
+    mine_report_permit_requirement_id = factory.SelfAttribute('mine_report_permit_requirement.mine_report_permit_requirement_id')
 
 class PermitExtractionTaskFactory(BaseFactory):
     class Meta:

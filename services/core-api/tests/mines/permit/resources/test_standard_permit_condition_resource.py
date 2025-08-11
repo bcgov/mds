@@ -1,9 +1,7 @@
 import json
 import uuid
 
-from flask import current_app
-from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import StandardPermitConditions
-from tests.factories import StandardPermitConditionsFactory
+from tests.factories import StandardPermitConditionsFactory, PermitConditionTagFactory, StandardPermitConditionTagXrefFactory
 
 NOTICE_OF_WORK_TYPE ='SAG'
 
@@ -83,3 +81,26 @@ def test_delete_not_found_standard_permit(test_client, db_session, auth_headers)
 
     assert 'No standard permit condition found with that guid.' in del_data['message']
     assert del_resp.status_code == 400
+
+def test_standard_permit_condition_tags(test_client, db_session, auth_headers):
+    standard_permit_condition = StandardPermitConditionsFactory()
+    tag = PermitConditionTagFactory()
+    StandardPermitConditionTagXrefFactory(
+        permit_condition_tag=tag,
+        standard_permit_condition=standard_permit_condition
+    )
+
+    new_tag = PermitConditionTagFactory()
+
+    put_json = STD_PERMIT_CONDITIONS_DATA | {
+        "condition_tags": [new_tag.permit_condition_tag_guid]
+    }
+    put_resp = test_client.put(
+        f'/mines/permits/standard-conditions/{standard_permit_condition.standard_permit_condition_guid}',
+        headers=auth_headers['full_auth_header'],
+        json=put_json)
+
+    assert put_resp.status_code == 200
+    put_data = json.loads(put_resp.data.decode())
+    assert len(put_data['condition_tags']) == 1
+    assert put_data['condition_tags'][0] == str(new_tag.permit_condition_tag_guid)

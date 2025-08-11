@@ -1,11 +1,10 @@
-from typing import Optional
+from typing import Optional, List
 
 from app.api.utils.field_template import FieldTemplate
 from app.api.utils.list_lettering_helpers import num_to_letter, num_to_roman
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
-from app.api.mines.reports.models.mine_report_req_permit_condition_xref import MineReportReqPermitConditionXref
-from app.api.mines.reports.models.mine_report_permit_requirement import MineReportPermitRequirement
-from app.api.mines.permits.permit_conditions.models.permit_condition_tag import PermitConditionTag
+from app.api.mines.permits.permit_conditions.models.permit_condition_tag_xref import PermitConditionTagXref
+from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import StandardPermitConditions
 from app.extensions import db
 from marshmallow import fields
 from sqlalchemy.dialects.postgresql import JSONB, UUID
@@ -169,6 +168,92 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
             self.permit_condition_guid,
             self.display_order,
         )
+    
+    def update_condition_tags(self, new_tags):
+        old_tags = self.condition_tags
+        if old_tags != new_tags:
+
+            # Remove tags
+            for tag in old_tags:
+                if tag not in new_tags:
+                    xref = PermitConditionTagXref.find_by_guid_and_condition_id(tag, self.permit_condition_id)
+                    if xref:
+                        xref.delete(True)
+                    
+            # Add new tags
+            for tag in new_tags:
+                if tag not in old_tags:
+                    #Check if xref already exists
+                    deleted_xref = PermitConditionTagXref.find_by_guid_and_condition_id(tag, self.permit_condition_id)
+
+                    if(deleted_xref):
+                        deleted_xref.deleted_ind = False
+                        deleted_xref.save()
+                    else:
+                        xref = PermitConditionTagXref(
+                            permit_condition_tag_guid=tag,
+                            permit_condition_id=self.permit_condition_id
+                        )
+                        xref.save()
+
+    @classmethod
+    def _copy_from_standard_recursive(cls, standard_condition: StandardPermitConditions, permit_amendment_id, parent_condition=None):
+        from app.api.mines.reports.models.mine_report_req_permit_condition_xref import MineReportReqPermitConditionXref, StandardReportReqPermitConditionXref
+        from app.api.mines.reports.models.mine_report_permit_requirement import (
+            MineReportPermitRequirement
+        )
+        permit_condition = cls(
+            condition_category_code=standard_condition.condition_category_code,
+            condition_type_code=standard_condition.condition_type_code,
+            permit_amendment_id=permit_amendment_id,
+            condition=standard_condition.condition,
+            display_order=standard_condition.display_order,
+            parent=parent_condition,
+        )
+
+        permit_condition.save(commit=False)
+        permit_condition.update_condition_tags(standard_condition.condition_tags)
+        # and the xrefs here
+        xref = StandardReportReqPermitConditionXref.find_by_permit_condition_id(standard_condition.standard_permit_condition_id)
+        if xref is not None:
+            report_name = xref.mine_report_permit_requirement.report_name
+            report_requirement = MineReportPermitRequirement.find_by_report_name(report_name, permit_amendment_id)
+            mrpr = MineReportReqPermitConditionXref.create(
+                mine_report_permit_requirement=report_requirement,
+                permit_condition_id=permit_condition.permit_condition_id
+            )
+            mrpr.save(commit=True)
+
+
+        for condition in standard_condition.sub_conditions:
+            PermitConditions._copy_from_standard_recursive(condition, permit_amendment_id, permit_condition)
+    
+    @classmethod
+    def copy_from_standard(cls, standard_conditions: List[StandardPermitConditions], permit_amendment_id):
+        # the import is in the functions because otherwise it creates a circular reference
+        from app.api.mines.reports.models.mine_report_permit_requirement import (
+            StandardReportPermitRequirement, MineReportPermitRequirement
+        )
+        from app.api.mines.reports.models.mine_report_req_permit_condition_xref import MineReportReqPermitConditionXref, StandardReportReqPermitConditionXref
+
+        standard_condition_ids = []
+        for condition in standard_conditions:
+            standard_condition_ids.extend(condition.get_all_sub_condition_ids())
+
+        report_requirements = StandardReportPermitRequirement.find_by_many_condition_ids(standard_condition_ids)
+
+        for requirement in report_requirements:
+            mrpr = MineReportPermitRequirement(
+                report_name=requirement.report_name,
+                due_date_period_months=requirement.due_date_period_months,
+                cim_or_cpo=requirement.cim_or_cpo,
+                ministry_recipient=requirement.ministry_recipient,
+                permit_amendment_id=permit_amendment_id
+            )
+            mrpr.save(commit=True)
+        
+        for condition in standard_conditions:
+            PermitConditions._copy_from_standard_recursive(condition, permit_amendment_id)
 
     @classmethod
     def create(

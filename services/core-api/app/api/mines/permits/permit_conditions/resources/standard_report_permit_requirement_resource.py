@@ -22,6 +22,8 @@ from flask_restx import reqparse
 from sqlalchemy.exc import IntegrityError
 
 class StandardReportPermitRequirementResource(Resource, UserMixin):
+    unique_report_error_message = "Report name must be unique"
+
     parser = CustomReqparser()
 
     parser.add_argument("mine_report_permit_requirement_id", type=int, location="json")
@@ -45,7 +47,7 @@ class StandardReportPermitRequirementResource(Resource, UserMixin):
             raise NotFound("Standard Permit Conditions not found")
         
         cim_or_cpo = data.get("cim_or_cpo")
-        cim_or_cpo = None if cim_or_cpo == "None" else CimOrCpo(cim_or_cpo)
+        cim_or_cpo = None if cim_or_cpo == "NONE" else CimOrCpo(cim_or_cpo)
 
         try:
             standard_report_permit_requirement = StandardReportPermitRequirement.create(
@@ -57,6 +59,7 @@ class StandardReportPermitRequirementResource(Resource, UserMixin):
             )
         except IntegrityError as e:
             current_app.logger.info(e)
+            raise BadRequest(self.unique_report_error_message)
 
         return standard_report_permit_requirement, 201
     
@@ -85,13 +88,14 @@ class StandardReportPermitRequirementResource(Resource, UserMixin):
             raise BadRequest(f"{len(not_found_ids)} standard conditions were not found")
             
         cim_or_cpo = data.get("cim_or_cpo")
-        data['cim_or_cpo'] = None if cim_or_cpo == "None" else CimOrCpo(cim_or_cpo)
+        data['cim_or_cpo'] = None if cim_or_cpo == "NONE" else CimOrCpo(cim_or_cpo)
 
         try:
             report_requirement.update(**data)
         except IntegrityError as e:
             current_app.logger.info(e)
             raise BadRequest(self.unique_report_error_message)
+        
         return report_requirement
         
 
@@ -123,6 +127,6 @@ class StandardReportPermitRequirementResource(Resource, UserMixin):
         if not report_requirement:
             raise NotFound(f"Report requirement with id {mine_report_permit_requirement_id} not found")
 
-
-        report_requirement.delete()
         current_app.logger.info(f'Deleting {report_requirement}')
+        report_requirement.delete()        
+        return None, 204

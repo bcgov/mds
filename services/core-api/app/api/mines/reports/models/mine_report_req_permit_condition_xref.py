@@ -39,6 +39,10 @@ class MineReportReqPermitConditionXref(SoftDeleteMixin, AuditMixin, HistoryMixin
         return cls.query.filter_by(permit_condition_id=id, deleted_ind=False).one_or_none()
     
     @classmethod
+    def find_by_many_permit_condition_ids(cls, ids) -> Self:
+        return cls.query.filter(cls.permit_condition_id.in_(ids), cls.deleted_ind==False).all()
+    
+    @classmethod
     def create(cls,
                mine_report_permit_requirement,
                permit_condition_id):
@@ -88,6 +92,14 @@ class StandardReportReqPermitConditionXref(MineReportReqPermitConditionXref):
 
     def __repr__(self):
         return f'<StandardReportReqPermitConditionXref {self.mine_report_req_permit_condition_xref_guid}>'
+
+    @classmethod
+    def find_by_many_permit_condition_ids(cls, ids) -> Self:
+        return cls.query.filter(cls.standard_permit_condition_id.in_(ids), cls.deleted_ind==False).all()
+    
+    @classmethod
+    def find_by_permit_condition_id(cls, id) -> Self:
+        return cls.query.filter_by(standard_permit_condition_id=id, deleted_ind=False).one_or_none()
     
     @classmethod
     def create(cls,
