@@ -72,7 +72,6 @@ class StandardReportReqPermitConditionXref(MineReportReqPermitConditionXref):
         "polymorphic_identity": True,
     }
 
-    # TODO: this needs a FK constraint
     standard_permit_condition_id = db.Column(
         db.Integer, db.ForeignKey('standard_permit_conditions.standard_permit_condition_id'), nullable=True)
     
