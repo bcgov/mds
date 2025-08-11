@@ -171,30 +171,26 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
     
     def update_condition_tags(self, new_tags):
         old_tags = self.condition_tags
-        if old_tags != new_tags:
+        tags_to_remove = [tag for tag in old_tags if tag not in new_tags]
+        tags_to_add = [tag for tag in new_tags if tag not in old_tags]
 
-            # Remove tags
-            for tag in old_tags:
-                if tag not in new_tags:
-                    xref = PermitConditionTagXref.find_by_guid_and_condition_id(tag, self.permit_condition_id)
-                    if xref:
-                        xref.delete(True)
-                    
-            # Add new tags
-            for tag in new_tags:
-                if tag not in old_tags:
-                    #Check if xref already exists
-                    deleted_xref = PermitConditionTagXref.find_by_guid_and_condition_id(tag, self.permit_condition_id)
+        for t in tags_to_remove:
+            xref = PermitConditionTagXref.find_by_guid_and_condition_id(t, self.permit_condition_id)
+            if xref:
+                xref.delete(True)
+        
+        for t in tags_to_add:
+            deleted_xref = PermitConditionTagXref.find_by_guid_and_condition_id(t, self.permit_condition_id)
 
-                    if(deleted_xref):
-                        deleted_xref.deleted_ind = False
-                        deleted_xref.save()
-                    else:
-                        xref = PermitConditionTagXref(
-                            permit_condition_tag_guid=tag,
-                            permit_condition_id=self.permit_condition_id
-                        )
-                        xref.save()
+            if(deleted_xref):
+                deleted_xref.deleted_ind = False
+                deleted_xref.save()
+            else:
+                xref = PermitConditionTagXref(
+                    permit_condition_tag_guid=t,
+                    permit_condition_id=self.permit_condition_id
+                )
+                xref.save()
 
     @classmethod
     def _copy_from_standard_recursive(cls, standard_condition: StandardPermitConditions, permit_amendment_id, parent_condition=None):

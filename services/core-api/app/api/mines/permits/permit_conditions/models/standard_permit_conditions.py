@@ -117,27 +117,24 @@ class StandardPermitConditions(SoftDeleteMixin, AuditMixin, Base):
     
     def update_condition_tags(self, new_tags):
         old_tags = self.condition_tags
-        if old_tags != new_tags:
 
-            # Remove tags
-            for tag in old_tags:
-                if tag not in new_tags:
-                    xref = StandardPermitConditionTagXref.find_by_guid_and_condition_id(tag,self.standard_permit_condition_id)
-                    if xref:
-                        xref.delete(True)
-                    
-            # Add new tags
-            for tag in new_tags:
-                if tag not in old_tags:
-                    #Check if xref already exists
-                    deleted_xref = StandardPermitConditionTagXref.find_by_guid_and_condition_id(tag,self.standard_permit_condition_id)
+        tags_to_remove = [tag for tag in old_tags if tag not in new_tags]
+        tags_to_add = [tag for tag in new_tags if tag not in old_tags]
 
-                    if(deleted_xref):
-                        deleted_xref.deleted_ind = False
-                        deleted_xref.save()
-                    else:
-                        xref = StandardPermitConditionTagXref(
-                            permit_condition_tag_guid=tag,
-                            standard_permit_condition_id=self.standard_permit_condition_id
-                        )
-                        xref.save()
+        for t in tags_to_remove:
+            xref = StandardPermitConditionTagXref.find_by_guid_and_condition_id(t, self.standard_permit_condition_id)
+            if xref:
+                xref.delete(True)
+        
+        for t in tags_to_add:
+            deleted_xref = StandardPermitConditionTagXref.find_by_guid_and_condition_id(t, self.standard_permit_condition_id)
+
+            if(deleted_xref):
+                deleted_xref.deleted_ind = False
+                deleted_xref.save()
+            else:
+                xref = StandardPermitConditionTagXref(
+                    permit_condition_tag_guid=t,
+                    standard_permit_condition_id=self.standard_permit_condition_id
+                )
+                xref.save()
