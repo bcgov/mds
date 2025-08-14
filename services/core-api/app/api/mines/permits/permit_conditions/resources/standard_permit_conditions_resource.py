@@ -10,16 +10,19 @@ from app.api.utils.access_decorators import requires_role_edit_standard_permit_c
 from app.api.utils.resources_mixins import UserMixin
 
 
-class StandardPermitConditionsResource(Resource, UserMixin):
+class StandardPermitConditionsResource(Resource, UserMixin):    
     @api.doc(description='Update a standard permit condition')
     @requires_role_edit_standard_permit_conditions
     @api.expect(STANDARD_PERMIT_CONDITION_MODEL)
     @api.marshal_with(STANDARD_PERMIT_CONDITION_MODEL, code=200)
     def put(self, standard_permit_condition_guid):
+
+        request_data = request.json
+
         old_display_order = None
         old_condition = StandardPermitConditions.find_by_standard_permit_condition_guid(
             standard_permit_condition_guid)
-
+        new_tags = request_data.get("condition_tags", [])
         if old_condition:
             old_display_order = old_condition.display_order
 
@@ -31,6 +34,8 @@ class StandardPermitConditionsResource(Resource, UserMixin):
                     standard_permit_condition_guid))
         except MarshmallowError as e:
             raise BadRequest(e)
+        
+        condition.update_condition_tags(new_tags)
 
         conditions = []
         if condition.parent_standard_permit_condition_id is not None:

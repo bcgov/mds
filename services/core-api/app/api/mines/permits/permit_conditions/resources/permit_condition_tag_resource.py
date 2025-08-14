@@ -26,7 +26,7 @@ class PermitConditionTagResource(Resource, UserMixin):
         if not tag:
             raise BadRequest(f"Permit condition tag with ID {permit_condition_tag_guid} not found.")
         tag.delete(True)
-        PermitConditionTagXref.deleteAllByGuid(permit_condition_tag_guid)
+        PermitConditionTagXref.delete_all_by_guid(permit_condition_tag_guid)
         return {'message': 'Permit condition tag deleted successfully.'}, 204
     
     @requires_role_mine_admin

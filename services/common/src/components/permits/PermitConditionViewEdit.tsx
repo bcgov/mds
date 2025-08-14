@@ -64,7 +64,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
     const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags);
     const isStandardConditions = Boolean(standardConditionType);
     const canAddConditions = isStandardConditions || isExtracted || isNowEditor;
-    const areTagsEnabled = isFeatureEnabled(Feature.PERMIT_CONDITION_TAGS) && !isStandardConditions;
+    const areTagsEnabled = isFeatureEnabled(Feature.PERMIT_CONDITION_TAGS);
 
 
     const condWithoutConditionsText = defaultPermitConditionCategories?.map((cat) => {

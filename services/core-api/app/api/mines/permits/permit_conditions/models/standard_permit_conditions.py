@@ -7,7 +7,7 @@ from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.utils.list_lettering_helpers import num_to_letter, num_to_roman
-
+from app.api.mines.permits.permit_conditions.models.standard_permit_condition_tag_xref import StandardPermitConditionTagXref
 
 class StandardPermitConditions(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'standard_permit_conditions'
@@ -34,11 +34,22 @@ class StandardPermitConditions(SoftDeleteMixin, AuditMixin, Base):
         order_by='asc(StandardPermitConditions.display_order)',
         backref=backref('parent', remote_side=[standard_permit_condition_id]))
 
+    condition_tag_xrefs = db.relationship(
+        "StandardPermitConditionTagXref",
+        back_populates="standard_permit_condition",
+        lazy="joined",
+        primaryjoin="and_(StandardPermitConditions.standard_permit_condition_id==StandardPermitConditionTagXref.standard_permit_condition_id,StandardPermitConditionTagXref.deleted_ind==False)",
+    )
+
     def __repr__(self):
         return f'{self.__class__.__name__} {self.standard_permit_condition_id}, {self.standard_permit_condition_guid}'
 
     def __str__(self):
         return f'{self.__class__.__name__} standard_permit_condition_id: {self.standard_permit_condition_id}, standard_permit_condition_guid: {self.standard_permit_condition_guid}, condition: {self.condition}, condition_category_code: {self.condition_category_code}, condition_type_code: {self.condition_type_code}, notice_of_work_type: {self.notice_of_work_type}, parent_standard_permit_condition_id: {self.parent_standard_permit_condition_id}, display_order: {self.display_order}, all_sub_conditions: {self.all_sub_conditions}'
+
+    @hybrid_property
+    def condition_tags(self):
+        return [ str(tag_xref.permit_condition_tag_guid) for tag_xref in self.condition_tag_xrefs if tag_xref.permit_condition_tag and not tag_xref.permit_condition_tag.deleted_ind]
 
     @hybrid_property
     def sub_conditions(self):
@@ -84,8 +95,46 @@ class StandardPermitConditions(SoftDeleteMixin, AuditMixin, Base):
         return cls.query.filter_by(
             standard_permit_condition_guid=standard_permit_condition_guid, deleted_ind=False).first()
 
+    @classmethod
+    def find_many_by_permit_condition_ids(cls, ids):
+        return cls.query.filter(
+            cls.standard_permit_condition_id.in_(ids)
+        ).filter_by(deleted_ind=False).all()
 
+    def get_all_sub_condition_ids(self):
+        ids = [self.standard_permit_condition_id]
+        def collect_ids(condition):
+            for sub in condition.sub_conditions:
+                ids.append(sub.standard_permit_condition_id)
+                collect_ids(sub)
+        collect_ids(self)
+        return ids
+    
     @classmethod
     def find_by_standard_permit_condition_id(cls, standard_permit_condition_id):
         return cls.query.filter_by(
             standard_permit_condition_id=standard_permit_condition_id, deleted_ind=False).first()
+    
+    def update_condition_tags(self, new_tags):
+        old_tags = self.condition_tags
+
+        tags_to_remove = [tag for tag in old_tags if tag not in new_tags]
+        tags_to_add = [tag for tag in new_tags if tag not in old_tags]
+
+        for t in tags_to_remove:
+            xref = StandardPermitConditionTagXref.find_by_guid_and_condition_id(t, self.standard_permit_condition_id)
+            if xref:
+                xref.delete(True)
+        
+        for t in tags_to_add:
+            deleted_xref = StandardPermitConditionTagXref.find_by_guid_and_condition_id(t, self.standard_permit_condition_id)
+
+            if(deleted_xref):
+                deleted_xref.deleted_ind = False
+                deleted_xref.save()
+            else:
+                xref = StandardPermitConditionTagXref(
+                    permit_condition_tag_guid=t,
+                    standard_permit_condition_id=self.standard_permit_condition_id
+                )
+                xref.save()

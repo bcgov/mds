@@ -16,5 +16,5 @@ export interface IStandardPermitCondition {
   display_order: number;
   stepPath?: string;
   mineReportPermitRequirement?: IMineReportPermitRequirement;
-  condition_tags?: IPermitConditionTag[];
+  condition_tags: string[];
 }

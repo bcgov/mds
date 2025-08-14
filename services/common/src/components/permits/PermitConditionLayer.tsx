@@ -13,6 +13,7 @@ import { getReportRequirementsByCondition } from "@mds/common/redux/selectors/pe
 import { useAppSelector } from "@mds/common/redux/rootState";
 import { FORM } from "@mds/common/constants/forms";
 import { IStandardPermitCondition } from "@mds/common/interfaces";
+import { getStandardReportByCondition } from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
 
 const { Title } = Typography;
 
@@ -52,9 +53,13 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   categoryOptions,
 }) => {
   const { loading, previousAmendment, permitGuid, standardConditionType, isNowEditor } = usePermitConditions();
-  const requirements = useAppSelector(
+  const permitRequirements = useAppSelector(
     getReportRequirementsByCondition(permitGuid, permitAmendmentGuid, condition.permit_condition_id, isNowEditor)
   );
+  const standardId = standardConditionType ? condition.permit_condition_id : undefined;
+  const standardRequirements = useAppSelector(getStandardReportByCondition(standardId));
+  const requirements = standardConditionType ? standardRequirements : permitRequirements;
+
   const editingCondition = useMemo(
     () => editingFormName === `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`,
     [condition.permit_condition_guid, editingFormName]

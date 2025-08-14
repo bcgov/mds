@@ -77,6 +77,9 @@ from app.api.mines.region.resources.region import MineRegionResource
 from app.api.mines.reports.resources.mine_report_permit_requirement import (
     MineReportPermitRequirementResource,
 )
+from app.api.mines.permits.permit_conditions.resources.standard_report_permit_requirement_resource import (
+    StandardReportPermitRequirementResource
+)
 from app.api.mines.reports.resources.mine_reports import (
     MineReportListResource,
     MineReportResource,
@@ -220,6 +223,10 @@ from app.api.utils.access_decorators import (
      (MineReportListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineReportListResource, "post", [EDIT_REPORT, MINESPACE_PROPONENT]),
      (MineReportPermitRequirementResource, "post", [EDIT_REPORT]),
+     (StandardReportPermitRequirementResource, "post", [EDIT_STANDARD_PERMIT_CONDITIONS]),
+     (StandardReportPermitRequirementResource, "put", [EDIT_STANDARD_PERMIT_CONDITIONS]),
+     (StandardReportPermitRequirementResource, "delete", [EDIT_STANDARD_PERMIT_CONDITIONS]),
+     (StandardReportPermitRequirementResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineStatusXrefListResource, "get", [VIEW_ALL]),
      (MineTailingsStorageFacilityListResource, "get", [VIEW_ALL]),
      (MineTailingsStorageFacilityListResource, "post", [MINESPACE_PROPONENT, EDIT_TSF]),

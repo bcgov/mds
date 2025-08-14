@@ -258,7 +258,8 @@ MINE_REPORT_PERMIT_REQUIREMENT = api.model(
         'cim_or_cpo': fields.String(enum=[e.value for e in CimOrCpo], attribute='cim_or_cpo.name'),
         'ministry_recipient': fields.List(fields.String(enum=[e.value for e in OfficeDestination])),
         'permit_condition_ids': fields.List(fields.Integer),
-        'permit_amendment_id': fields.Integer
+        'permit_amendment_id': fields.Integer,
+        'is_standard': fields.Boolean,
     }
 )
 
@@ -994,7 +995,9 @@ STANDARD_PERMIT_CONDITION_MODEL = api.model(
         'condition_type_code': fields.String,
         'sub_conditions': fields.List(StandardPermitCondition),
         'step': fields.String,
-        'display_order': fields.Integer
+        'display_order': fields.Integer,
+        'condition_tags': fields.List(fields.String)
+        
     })
 
 GOVERNMENT_AGENCY_TYPE_MODEL = api.model(
