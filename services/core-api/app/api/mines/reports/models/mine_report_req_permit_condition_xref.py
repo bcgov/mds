@@ -38,10 +38,12 @@ class MineReportReqPermitConditionXref(SoftDeleteMixin, AuditMixin, HistoryMixin
     def find_by_permit_condition_id(cls, id) -> Self | None:
         if id is None:
             return None
-        xref = cls.query.filter_by(permit_condition_id=id, deleted_ind=False).one_or_none()
-        if xref is None or xref.mine_report_permit_requirement is None:
-            return None
-        return xref
+        return cls.query.join(cls.mine_report_permit_requirement).\
+            filter(
+                cls.permit_condition_id == id,
+                cls.deleted_ind == False,
+                cls.mine_report_permit_requirement.has(deleted_ind=False)
+            ).first()
     
     @classmethod
     def find_by_many_permit_condition_ids(cls, ids) -> Self:
@@ -105,10 +107,12 @@ class StandardReportReqPermitConditionXref(MineReportReqPermitConditionXref):
     def find_by_permit_condition_id(cls, id) -> Self | None:
         if id is None:
             return None
-        xref = cls.query.filter_by(standard_permit_condition_id=id, deleted_ind=False).one_or_none()
-        if xref is None or xref.mine_report_permit_requirement is None:
-            return None
-        return xref
+        return cls.query.join(cls.mine_report_permit_requirement).\
+            filter(
+                cls.standard_permit_condition_id == id,
+                cls.deleted_ind == False,
+                cls.mine_report_permit_requirement.has(deleted_ind=False)
+            ).first()
     
     @classmethod
     def create(cls,
