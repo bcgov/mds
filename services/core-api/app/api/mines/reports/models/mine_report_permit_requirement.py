@@ -81,6 +81,13 @@ class MineReportPermitRequirement(SoftDeleteMixin, AuditMixin, HistoryMixin, Bas
             return None
 
     @classmethod
+    def find_by_permit_condition_id(cls, id) -> Self | None:
+        xref = MineReportReqPermitConditionXref.find_by_permit_condition_id(id)
+        if xref:
+            return xref.mine_report_permit_requirement
+        return None
+    
+    @classmethod
     def find_by_report_name(cls, report_name, permit_amendment_id) -> Self:
         return cls.query.filter_by(report_name=report_name, permit_amendment_id=permit_amendment_id).one_or_none()
 
