@@ -85,7 +85,9 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
     const linked = condition_ids
       .map((id) => {
         return conditionMap[id];
-      }).sort((a, b) => a.stepPath.localeCompare(b.stepPath));
+      })
+      .filter(Boolean)
+      .sort((a, b) => a.stepPath.localeCompare(b.stepPath));
 
     return <ul>
       {linked.map((lc) => {

@@ -28,7 +28,7 @@ class MineReportReqPermitConditionXref(SoftDeleteMixin, AuditMixin, HistoryMixin
     mine_report_permit_requirement = db.relationship(
         'MineReportPermitRequirement',
         lazy='joined',
-        primaryjoin='MineReportReqPermitConditionXref.mine_report_permit_requirement_id == MineReportPermitRequirement.mine_report_permit_requirement_id',
+        primaryjoin='and_(MineReportReqPermitConditionXref.mine_report_permit_requirement_id == MineReportPermitRequirement.mine_report_permit_requirement_id, MineReportPermitRequirement.deleted_ind==False)',
     )
 
     def __repr__(self):
@@ -38,7 +38,10 @@ class MineReportReqPermitConditionXref(SoftDeleteMixin, AuditMixin, HistoryMixin
     def find_by_permit_condition_id(cls, id) -> Self | None:
         if id is None:
             return None
-        return cls.query.filter_by(permit_condition_id=id, deleted_ind=False).one_or_none()
+        xref = cls.query.filter_by(permit_condition_id=id, deleted_ind=False).one_or_none()
+        if xref is None or xref.mine_report_permit_requirement is None:
+            return None
+        return xref
     
     @classmethod
     def find_by_many_permit_condition_ids(cls, ids) -> Self:
@@ -80,7 +83,7 @@ class StandardReportReqPermitConditionXref(MineReportReqPermitConditionXref):
     mine_report_permit_requirement = db.relationship(
         'StandardReportPermitRequirement',
         lazy='joined',
-        primaryjoin='StandardReportReqPermitConditionXref.mine_report_permit_requirement_id == StandardReportPermitRequirement.mine_report_permit_requirement_id',
+        primaryjoin='and_(StandardReportReqPermitConditionXref.mine_report_permit_requirement_id == StandardReportPermitRequirement.mine_report_permit_requirement_id, StandardReportPermitRequirement.deleted_ind==False)',
     )
 
     @property
@@ -99,8 +102,13 @@ class StandardReportReqPermitConditionXref(MineReportReqPermitConditionXref):
         return cls.query.filter(cls.standard_permit_condition_id.in_(ids), cls.deleted_ind==False).all()
     
     @classmethod
-    def find_by_permit_condition_id(cls, id) -> Self:
-        return cls.query.filter_by(standard_permit_condition_id=id, deleted_ind=False).one_or_none()
+    def find_by_permit_condition_id(cls, id) -> Self | None:
+        if id is None:
+            return None
+        xref = cls.query.filter_by(standard_permit_condition_id=id, deleted_ind=False).one_or_none()
+        if xref is None or xref.mine_report_permit_requirement is None:
+            return None
+        return xref
     
     @classmethod
     def create(cls,
