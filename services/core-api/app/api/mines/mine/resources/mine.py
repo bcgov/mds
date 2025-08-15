@@ -7,7 +7,7 @@ from sqlalchemy.sql.sqltypes import Integer
 from sqlalchemy import select, func, and_
 from sqlalchemy.orm import aliased
 from app.extensions import db, api
-from flask_restx import Resource, reqparse, inputs
+from flask_restx import Resource, reqparse, inputs, fields
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import BadRequest, NotFound
 
@@ -19,6 +19,7 @@ from app.api.constants import MINE_MAP_CACHE
 
 #namespace imports
 from app.api.mines.response_models import MINE_LIST_MODEL, MINE_MODEL, MINE_SEARCH_MODEL
+from app.api.mines.payload_models import CREATE_MINE_SWAGGER_PAYLOAD, UPDATE_MINE_SWAGGER_PAYLOAD
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 
@@ -31,6 +32,8 @@ from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
 
 from .mine_map import MineMapResource
+
+from pprint import pprint
 
 
 class MineListResource(Resource, UserMixin):
@@ -56,6 +59,7 @@ class MineListResource(Resource, UserMixin):
     parser.add_argument(
         'mine_status',
         action='split',
+        type=str,
         help=
         'Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ',
         required=True,
@@ -138,12 +142,20 @@ class MineListResource(Resource, UserMixin):
             'total': pagination_details.total_results,
         }
 
-    @api.expect(parser)
+    # @api.expect(parser, mine_status_model)
+    @api.expect(parser, CREATE_MINE_SWAGGER_PAYLOAD)
     @api.doc(description='Creates a new mine.')
     @api.marshal_with(MINE_MODEL, code=201)
     @requires_role_mine_edit
     def post(self):
         data = self.parser.parse_args()
+        # mine_status_arg = api.payload.get('mine_status', [])
+
+        print("AASDAAAA!")
+        print(data)
+        pprint(vars(data))
+        print(data.get('mine_status'))
+
         lat = data.get('latitude')
         lon = data.get('longitude')
         if (lat and not lon) or (not lat and lon):
@@ -329,6 +341,7 @@ class MineResource(Resource, UserMixin):
     parser.add_argument(
         'mine_status',
         action='split',
+        type=str,
         help=
         'Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ',
         store_missing=False,
@@ -395,7 +408,7 @@ class MineResource(Resource, UserMixin):
 
         return mine
 
-    @api.expect(parser)
+    @api.expect(parser, UPDATE_MINE_SWAGGER_PAYLOAD)
     @api.marshal_with(MINE_MODEL, code=200)
     @api.doc(description='Updates the specified mine.')
     @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
@@ -407,6 +420,9 @@ class MineResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
+        pprint("HI HO HI HO!")
+        print(data)
+        
         if is_minespace_user() is not True: 
             lat = data.get('latitude')
             lon = data.get('longitude')

@@ -2,7 +2,7 @@ import logging
 import os
 
 from flask_caching import Cache
-from flask import Flask
+from flask import Flask, jsonify
 from app.flask_jwt_oidc_local.exceptions import AuthError
 from app.flask_jwt_oidc_local import JwtManager
 from flask_sqlalchemy import SQLAlchemy
@@ -94,6 +94,17 @@ api = Api(
     default='mds',
     default_label='MDS related operations')
 
+_original_schema = api.__class__.__schema__
+
+@property
+def patched_schema(self):
+    swag = _original_schema.__get__(self, self.__class__)
+    for key, val in swag.get('responses', {}).items():
+        if val == {}:
+            swag['responses'][key] = {"description": ''}
+    return swag
+
+api.__class__.__schema__ = patched_schema
 
 if Config.FLASK_LOGGING_LEVEL == 'DEBUG':
     # Have engine logs included at INFO level when pod debug set to DEBUG

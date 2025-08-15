@@ -90,7 +90,7 @@ export const PERMIT_AMENDMENT_CONDITION_CATEGORIES = (mineGuid, permitGuid, perm
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/condition-categories`;
 
 export const STANDARD_PERMIT_CONDITIONS = (noticeOfWorkType) =>
-  `/mines/permits/standard-conditions/${noticeOfWorkType}`;
+  `/mines/permits/standard-conditions/notice-of-work/${noticeOfWorkType}`;
 export const STANDARD_PERMIT_CONDITION = (permitConditionGuid) =>
   `/mines/permits/standard-conditions/${permitConditionGuid}`;
 

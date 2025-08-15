@@ -45,24 +45,26 @@ class MinistryContactListResource(Resource, UserMixin):
         'deleted_ind', type=bool, help='Deleted indicator: true/false', location='json')
 
     @api.doc(
-        params={'is_major_mine': 'MCM user is related to a major mine? true/false'},
+        # params={'is_major_mine': 'MCM user is related to a major mine? true/false'},
         description='Returns all MCM contacts information.')
     @api.marshal_with(MINISTRY_CONTACT_MODEL, code=201, envelope='records')
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
-    def get(self, mine_region_code=None):
-        is_major_mine = request.args.get('is_major_mine') == 'true'
+    def get(self):
+        # is_major_mine = request.args.get('is_major_mine') == 'true'
+        print("NO REGION CODE!!!")
+        # if mine_region_code:
+        #     return MinistryContact.find_ministry_contacts_by_mine_region(mine_region_code, is_major_mine)
 
-        if mine_region_code:
-            return MinistryContact.find_ministry_contacts_by_mine_region(mine_region_code, is_major_mine)
-
-        return MinistryContact.get_all(is_major_mine)
+        return MinistryContact.get_all()
 
     @api.doc(description='Create a MCM contact.')
     @api.expect(parser)
     @api.marshal_with(MINISTRY_CONTACT_MODEL, code=200)
     @requires_role_edit_ministry_contacts
     def post(self):
+        print("INSIDE THE POST request for the mcm contact!!")
         data = self.parser.parse_args()
+        print(data)
 
         contact_type = data.get('emli_contact_type_code', None)
         is_major_mine = data.get('is_major_mine', None)
@@ -111,3 +113,18 @@ class MinistryContactListResource(Resource, UserMixin):
         contact.save()
 
         return contact
+    
+class MinistryContactListByRegionResource(Resource, UserMixin):
+    @api.doc(
+        params={'is_major_mine': 'MCM user is related to a major mine? true/false'},
+        description='Returns all MCM contacts information by region.')
+    @api.marshal_with(MINISTRY_CONTACT_MODEL, code=201, envelope='records')
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
+    def get(self, mine_region_code):
+        is_major_mine = request.args.get('is_major_mine') == 'true'
+        print("region code????")
+        print(mine_region_code)
+        # if mine_region_code:
+        return MinistryContact.find_ministry_contacts_by_mine_region(mine_region_code, is_major_mine)
+
+        # return MinistryContact.get_all(is_major_mine)

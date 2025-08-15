@@ -12,13 +12,24 @@ from app.api.utils.resources_mixins import UserMixin
 
 
 class PermitConditionTagResource(Resource, UserMixin):
-
     @api.doc(description='Get all permit condition tags')
     @requires_role_view_all
     @api.marshal_with(PERMIT_CONDITION_TAG_MODEL, code=200, envelope='records')
     def get(self):
         return PermitConditionTag.query.filter_by(deleted_ind=False).order_by(PermitConditionTag.description.asc()).all()
     
+    @requires_role_mine_admin
+    @api.expect(PERMIT_CONDITION_TAG_MODEL)
+    @api.marshal_with(PERMIT_CONDITION_TAG_MODEL, code=201)
+    def post(self):
+        description = request.json.get('description')
+        if not description:
+            raise BadRequest("Missing required field to create a permit condition tag.")
+        tag = PermitConditionTag(description=description)
+        tag.save()
+        return tag, 201
+    
+class PermitConditionTagSpecifiedResource(Resource, UserMixin):
     @requires_role_mine_admin
     @api.expect(PERMIT_CONDITION_TAG_MODEL)
     def delete(self, permit_condition_tag_guid):
@@ -39,14 +50,3 @@ class PermitConditionTagResource(Resource, UserMixin):
         tag.description = request.json.get('description', tag.description)
         tag.save()
         return tag
-    
-    @requires_role_mine_admin
-    @api.expect(PERMIT_CONDITION_TAG_MODEL)
-    @api.marshal_with(PERMIT_CONDITION_TAG_MODEL, code=201)
-    def post(self):
-        description = request.json.get('description')
-        if not description:
-            raise BadRequest("Missing required field to create a permit condition tag.")
-        tag = PermitConditionTag(description=description)
-        tag.save()
-        return tag, 201
