@@ -1,31 +1,31 @@
-name: Core API - ZAP Scan
+# name: Core API - ZAP Scan
 
-on:
-  schedule:
-    - cron: "0 8 * * *" # Runs at 08:00 UTC (Midnight PST)
-  workflow_dispatch:
-  pull_request:
-    branches:
-      - develop
+# on:
+#   schedule:
+#     - cron: "0 8 * * *" # Runs at 08:00 UTC (Midnight PST)
+#   workflow_dispatch:
+#   pull_request: # Will need to remove this pull_request section
+#     branches:
+#       - develop
 
-jobs:
-  zap_scan:
-    runs-on: ubuntu-latest
+# jobs:
+#   zap_scan:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
 
-      - name: ZAP API Full Scan
-        uses: zaproxy/action-api-scan@v0.9.0
-        with:
-          target: "https://mds-test.apps.silver.devops.gov.bc.ca/api/swagger.json"
-          format: openapi
-          fail_action: false
-          token: ${{ secrets.GITHUB_TOKEN }}
+#       - name: ZAP API Full Scan
+#         uses: zaproxy/action-api-scan@v0.9.0
+#         with:
+#           target: "https://mds-test.apps.silver.devops.gov.bc.ca/api/swagger.json"
+#           format: openapi
+#           fail_action: false
+#           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload ZAP Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: zap-core-api-report
-          path: report_html.html
+#       - name: Upload ZAP Report
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: zap-core-api-report
+#           path: report_html.html
