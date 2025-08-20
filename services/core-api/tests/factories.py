@@ -1903,7 +1903,6 @@ class MineReportPermitRequirementFactory(BaseFactory):
     ministry_recipient = factory.LazyFunction(
         lambda: [random.choice(list(OfficeDestination))]
     )
-    mine_report_permit_requirement_id = factory.LazyFunction(lambda: random.randint(1, 12))
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
 
 class StandardReportPermitRequirementFactory(BaseFactory):
@@ -1917,7 +1916,6 @@ class StandardReportPermitRequirementFactory(BaseFactory):
     ministry_recipient = factory.LazyFunction(
         lambda: [random.choice(list(OfficeDestination))]
     )
-    mine_report_permit_requirement_id = factory.LazyFunction(lambda: random.randint(1, 12))  
     report_name = factory.Faker('name')
 
 class MineReportReqPermitConditionXrefFactory(BaseFactory):
