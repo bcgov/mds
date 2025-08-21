@@ -1,0 +1,26 @@
+name: Core Web - ZAP Scan
+
+on:
+  schedule:
+    - cron: "0 8 * * *" # Runs at 08:00 UTC (Midnight PST)
+  workflow_dispatch:
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ZAP Base Scan (Frontend)
+        uses: zaproxy/action-baseline@v0.14.0
+        with:
+          target: "https://mds-test.apps.silver.devops.gov.bc.ca"
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload ZAP Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-core-web-report
+          path: report_html.html
