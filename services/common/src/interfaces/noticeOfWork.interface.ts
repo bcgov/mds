@@ -22,6 +22,10 @@ export interface INoticeOfWork {
   application_progress?: INoticeOfWorkApplicationProgress[];
 }
 
+export interface IConditionSection {
+  condition: string;
+}
+
 // equivalent to CustomPropTypes permitGenObj, based on real values
 export interface INoWGeneratedPermit {
   application_date: string;

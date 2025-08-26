@@ -391,10 +391,26 @@
   }
 }
 
+.condition-menu-container:hover {
+  cursor: pointer;
+}
+
 .variable-menu {
   margin: 10px;
 }
 
 .variable-item.ant-menu-item-selected {
   background-color: white !important;
+}
+
+.variable-menu-animated {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+
+.variable-menu-animated.show {
+  opacity: 1;
+  max-height: 1000px;
 }

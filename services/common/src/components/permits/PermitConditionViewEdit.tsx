@@ -16,6 +16,7 @@ import { createDropDownList } from "@mds/common/redux/utils/helpers";
 import { getPermitConditionCategoryOptions } from "@mds/common/redux/reducers/staticContentReducer";
 import { FORM } from "@mds/common/constants/forms";
 import { fetchPermitConditionTags, getPermitConditionTags } from "@mds/common/redux/slices/permitConditionTagSlice";
+import VariableConditionMenu from "./VariableConditionMenu";
 
 const { Title } = Typography;
 
@@ -109,6 +110,8 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
         featureModifyConditions &&
         userCanEdit && (isStandardConditions || isNowEditor ||
             userReviewCategoryCodes.includes(category.condition_category_code));
+
+    const showVariableConditionMenu = userCanEdit && (isStandardConditions || isNowEditor) && editingFormName;
 
     const refreshConditionData = async () => {
         await refreshData();
@@ -262,6 +265,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
 
     return (
         <div>
+            {showVariableConditionMenu && <VariableConditionMenu isManagementView={isStandardConditions} conditionForm={editingFormName}/>}
             <Row gutter={[16, 16]}>
                 {formattedCategories.map((category, idx) => {
                     {
