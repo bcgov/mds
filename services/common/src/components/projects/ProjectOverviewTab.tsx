@@ -141,8 +141,6 @@ const ProjectOverviewTab: FC = () => {
         }
     });
 
-    const amsAppTableData = amsAuthTableData.filter((td) => Boolean(td.ams_tracking_number));
-
     const project_lead_contact =
         projectLeads?.filter((lead) => lead.party_guid.includes(project.project_lead_party_guid)) ?? [];
 
@@ -347,14 +345,13 @@ const ProjectOverviewTab: FC = () => {
                                     className: "actions-column",
                                     render: (record) => {
                                         return <Button
-                                            ghost
-                                            type="primary"
+                                            disabled={!record.ams_tracking_number}
                                             onClick={() => handleNavigateAmsApp(record)}
                                         >View</Button>
                                     }
                                 },
                             ]}
-                            dataSource={amsAppTableData}
+                            dataSource={amsAuthTableData}
                         /></>}
                 </Col>
 
