@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { useSelector } from "react-redux"
-import { Col, Menu, Row, Space, Tooltip } from "antd";
+import {  Dropdown, MenuProps, Space, Tooltip } from "antd";
 import { change, getFormValues } from "@mds/common/components/forms/form";
 import { getNOWReclamationSummary } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import { getDropdownNoticeOfWorkActivityTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -9,8 +9,6 @@ import { IConditionSection, INoWGeneratedPermit } from "@mds/common/interfaces";
 import { useAppDispatch } from "@mds/common/redux/rootState";
 import { FORM } from "@mds/common/constants/forms";
 import { DownOutlined, QuestionCircleOutlined } from "@ant-design/icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/pro-regular-svg-icons";
 
 interface VariableConditionMenuProps {
   isManagementView?: boolean,
@@ -26,9 +24,8 @@ const VariableConditionMenu: FC<VariableConditionMenuProps> = ({
   const generatePermitFormValues = useSelector(getFormValues(FORM.GENERATE_PERMIT)) as INoWGeneratedPermit;
   const reclamationSummary = useSelector(getNOWReclamationSummary);
   const activityTypeOptions = useSelector(getDropdownNoticeOfWorkActivityTypeOptions);
-  const [show, setShow] = useState(false);
- 
-  const mouseHover = () => setShow(prev => !prev)
+  const [open, setOpen] = useState(false);
+  const closeTimeout = React.useRef<NodeJS.Timeout | null>(null);
 
   const handleClick = (value) => {
     if (!isEmpty(conditionFormValues)) {
@@ -53,106 +50,110 @@ const VariableConditionMenu: FC<VariableConditionMenuProps> = ({
     const reclamationMenuOptions = isManagementView
       ? filteredActivityTypes
       : reclamationSummary;
-    return (
-      <div className="condition-menu-container"
-        onMouseEnter={mouseHover}
-        onMouseLeave={mouseHover}
-      >
-        <Col>
-          <div className="fa-icon-container ant-primary" style={{color: "white"}}>
-            <span style={{ fontWeight: 600 }}>Condition Data Variables </span>
-            <DownOutlined />
-            <Tooltip title={"Hover your mouse over the menus until you find the variable data you'd like to enter. Put it into your edited Permit Condition by clicking on it. This will populate the edited condition with a variable in the Draft permit screen. The Data from the Application tab will show up correctly in the PDF Draft permit in place of the variable. Please ensure all variable data fields you select have the correct information in the Application tab before adding these fields to your draft permit."}
-            placement="right" mouseEnterDelay={0.3} overlayClassName="core-tooltip" getPopupContainer={triggerNode => triggerNode.parentNode as HTMLElement}>
-                <QuestionCircleOutlined className="icon-sm" style={{ marginLeft: 8 }} />
-              </Tooltip>
-          </div>
-        </Col>
-   
-        <div className={`variable-menu-animated${show ? " show" : ""}`}>
-          <Menu
-            onClick={(values) => handleClick(values)}
-            className="variable-menu"
-            mode="vertical"
-          >
-            <Menu.SubMenu key="mine" title="Mine">
-              <Menu.Item key="{mine_name}" className="variable-item">
-                Mine Name
-              </Menu.Item>
-              <Menu.Item key="{mine_no}" className="variable-item">
-                Mine Number
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.SubMenu key="now" title="Notice of Work">
-              <Menu.Item key="{proposed_annual_maximum_tonnage}" className="variable-item">
-                Proposed Annual Tonnage
-              </Menu.Item>
-              {reclamationMenuOptions.length > 0 && (
-                <Menu.SubMenu key="rec" title="Reclamation">
-                  {reclamationMenuOptions?.map((activity, i) => (
-                    <Menu.SubMenu key={i} title={activity.label}>
-                      <Menu.Item
-                        key={`{${activity.value}.total}{hectare_unit}`}
-                        className="variable-item"
-                      >
-                        Total Disturbed Area
-                      </Menu.Item>
-                      <Menu.Item key={`{${activity.value}.cost}`} className="variable-item">
-                        Total Cost
-                      </Menu.Item>
-                    </Menu.SubMenu>
-                  ))}
-                </Menu.SubMenu>
-              )}
-              <Menu.Item key="{application_type}" className="variable-item">
-                Application Type
-              </Menu.Item>
-              <Menu.Item key="{application_dated}" className="variable-item">
-                Application Dated
-              </Menu.Item>
-              <Menu.Item key="{application_last_updated_date}" className="variable-item">
-                Application Last Updated
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.SubMenu key="draft" title="Draft Permit">
-              <Menu.Item key="{issue_date}" className="variable-item">
-                Issue Date
-              </Menu.Item>
-              <Menu.Item key="{authorization_end_date}" className="variable-item">
-                Authorization End Date
-              </Menu.Item>
-              <Menu.Item key="{permit_no}" className="variable-item">
-                Permit Number
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.SubMenu key="sec" title="Security">
-              <Menu.Item key="{total_liability}" className="variable-item">
-                Total Liability
-              </Menu.Item>
-              <Menu.Item key="{liability_adjustment}" className="variable-item">
-                Assessed Liability Adjustment
-              </Menu.Item>
-              <Menu.Item key="{security_received_date}" className="variable-item">
-                Security Received Date
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.SubMenu key="email" title="Emails">
-              <Menu.Item key="{major_mine_inbox}" className="variable-item">
-                Major Mine Inbox
-              </Menu.Item>
-              <Menu.Item key="{regional_mine_inbox}" className="variable-item">
-                <Space>
+
+    const items: MenuProps['items'] = [
+      {
+        key:"mine",
+        label:"Mine",
+        children: [
+          {key:"{mine_name}",
+            label:"Mine Name"
+          },
+          { key:"{mine_no}" ,
+            label: "Mine Number"
+          }
+        ]
+      },
+      {
+        key:"now",
+        label:"Notice of Work",
+        children: [
+          { key:"{proposed_annual_maximum_tonnage}",
+            label:"Proposed Annual Tonnage"
+          },
+          {
+            key:"rec",
+            label:"Reclamation",
+            children: reclamationMenuOptions?.map((activity, i) => (
+              {
+                key: i,
+                label: activity.label,
+                children: [
+                  { key:`{${activity.value}.total}{hectare_unit}`, label:"Total Disturbed Area" },
+                  { key:`{${activity.value}.cost}`, label:"Cost" }
+                ]
+              }
+            ))
+          },
+          { key: "{application_type}", label: "Application Type"},
+          { key: "{application_dated}", label: "Application Dated"},
+          { key: "{application_last_updated_date}", label: "Application Last Updated"}
+        ] 
+      },
+      {
+        key:"draft",
+        label:"Draft Permit",
+        children: [
+          { key:"{issue_date}", label:"Issue Date" },
+          { key:"{authorization_end_date}", label:"Authorization End Date" },
+          { key:"{permit_no}", label:"Permit Number" }
+        ]
+      },
+      {
+        key:"sec",
+        label:"Security",
+        children: [
+          { key:"{total_liability}", label:"Total Liability" },
+          { key:"{liability_adjustment}", label:"Liability Adjustment" },
+          { key:"{security_received_date}", label:"Security Received Date" }
+        ]
+      },
+      {
+        key:"email",
+        label:"Emails",
+        children: [
+          { key:"{major_mine_inbox}", label: "Major Mine Inbox"},
+          { key:"{regional_mine_inbox}", label: (
+            <Space>
                 Regional Mine Inbox
-                <Tooltip title={"Defaults to the region associated with the Mine."} placement="right" mouseEnterDelay={0.3} overlayClassName="core-tooltip">
+                <Tooltip title={"Defaults to the region associated with the Mine."} placement="right" mouseEnterDelay={0.3} getPopupContainer={triggerNode => triggerNode.parentNode as HTMLElement}>
                   <QuestionCircleOutlined className="icon-sm" />
                 </Tooltip>
-                </Space>
-              </Menu.Item>
-            </Menu.SubMenu>
-          </Menu>
+            </Space>
+          )}  
+        ]
+      }
+    ]
+
+    return (
+        <div
+          className="condition-menu-container"
+          onMouseEnter={() => {
+            if (closeTimeout.current) clearTimeout(closeTimeout.current);
+            setOpen(true);
+          }}
+          onMouseLeave={() => {
+            if (closeTimeout.current) clearTimeout(closeTimeout.current);
+            closeTimeout.current = setTimeout(() => setOpen(false), 400);
+          }}
+        >
+          <Dropdown
+            menu={{ items, onClick: handleClick, getPopupContainer: triggerNode => triggerNode.parentElement }}
+            getPopupContainer={triggerNode => triggerNode.parentElement}
+            open={open}
+            onOpenChange={() => {}}
+          >
+            <div className="fa-icon-container ant-primary" style={{color: "white"}}>
+              <span style={{ fontWeight: 600 }}>Condition Data Variables </span>
+              <DownOutlined />
+              <Tooltip title={"Hover your mouse over the menus until you find the variable data you'd like to enter. Put it into your edited Permit Condition by clicking on it. This will populate the edited condition with a variable in the Draft permit screen. The Data from the Application tab will show up correctly in the PDF Draft permit in place of the variable. Please ensure all variable data fields you select have the correct information in the Application tab before adding these fields to your draft permit."}
+                placement="right" mouseEnterDelay={0.3} overlayClassName="core-tooltip" getPopupContainer={triggerNode => triggerNode.parentNode as HTMLElement}>
+                <QuestionCircleOutlined className="icon-sm" style={{ marginLeft: 8 }} />
+              </Tooltip>
+            </div>
+          </Dropdown>
         </div>
-      </div>
-    );
+    )
 }
 
 export default VariableConditionMenu;

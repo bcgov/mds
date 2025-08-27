@@ -378,7 +378,7 @@
 
 .condition-menu-container {
   background-color: $violet;
-  padding: 5px;
+  padding: 5px 10px;
   position: fixed;
   top: 65px;
   left: 20px;
@@ -388,6 +388,12 @@
 
   h4 {
     color: $white;
+  }
+
+  .ant-dropdown-menu {
+    min-width: 240px !important;
+    max-width: 400px !important;
+    width: max-content !important;
   }
 }
 
@@ -401,16 +407,4 @@
 
 .variable-item.ant-menu-item-selected {
   background-color: white !important;
-}
-
-.variable-menu-animated {
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: opacity 0.3s ease, max-height 0.3s ease;
-}
-
-.variable-menu-animated.show {
-  opacity: 1;
-  max-height: 1000px;
 }
