@@ -64,7 +64,7 @@ const ProjectPage: FC = () => {
 
   const mine = useSelector(getMineById(mine_guid));
   const { mine_name } = mine ?? {};
-  const { status_code: irtStatus, irt_guid } = information_requirements_table ?? {};
+  const { status_code: irtStatus } = information_requirements_table ?? {};
   const { status_code: mmaStatus, major_mine_application_guid } = major_mine_application ?? {};
   const irtDocsDisabled = areDocumentFieldsDisabled(SystemFlagEnum.ms, irtStatus);
   const mmaDocsDisabled = areDocumentFieldsDisabled(SystemFlagEnum.ms, mmaStatus);
