@@ -1107,6 +1107,130 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                               <div
                                 title="Final Application"
                               >
+                                Air Emissions Discharge Permit
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="auth_no-column"
+                                title="Authorization"
+                              >
+                                1234
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="ams_tracking_number-column"
+                                title="Tracking #"
+                              >
+                                N/A
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <span
+                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                              >
+                                <span
+                                  class="ant-badge-status-dot ant-badge-status-default"
+                                />
+                                <span
+                                  class="ant-badge-status-text"
+                                >
+                                  N/A
+                                </span>
+                              </span>
+                            </td>
+                            <td
+                              class="ant-table-cell actions-column"
+                            >
+                              <button
+                                class="ant-btn ant-btn-default"
+                                disabled=""
+                                type="button"
+                              >
+                                <span>
+                                  View
+                                </span>
+                              </button>
+                            </td>
+                          </tr>
+                          <tr
+                            class="ant-table-row ant-table-row-level-0 fade-in"
+                          >
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                title="Final Application"
+                              >
+                                Refuse Discharge Permit
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="auth_no-column"
+                                title="Authorization"
+                              >
+                                5678
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="ams_tracking_number-column"
+                                title="Tracking #"
+                              >
+                                N/A
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <span
+                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                              >
+                                <span
+                                  class="ant-badge-status-dot ant-badge-status-default"
+                                />
+                                <span
+                                  class="ant-badge-status-text"
+                                >
+                                  N/A
+                                </span>
+                              </span>
+                            </td>
+                            <td
+                              class="ant-table-cell actions-column"
+                            >
+                              <button
+                                class="ant-btn ant-btn-default"
+                                disabled=""
+                                type="button"
+                              >
+                                <span>
+                                  View
+                                </span>
+                              </button>
+                            </td>
+                          </tr>
+                          <tr
+                            class="ant-table-row ant-table-row-level-0 fade-in"
+                          >
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                title="Final Application"
+                              >
                                 Refuse Discharge Permit
                               </div>
                             </td>
@@ -1150,7 +1274,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                               class="ant-table-cell actions-column"
                             >
                               <button
-                                class="ant-btn ant-btn-primary ant-btn-background-ghost"
+                                class="ant-btn ant-btn-default"
                                 type="button"
                               >
                                 <span>
