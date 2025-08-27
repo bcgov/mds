@@ -36,7 +36,7 @@ const ProjectContacts: FC<ProjectContactsProps> = ({ title, contacts }) => {
             return (
                 <Typography.Paragraph className="ministry-contact-item" key={c.project_contact_guid}>
                     {jobTitle && (
-                        <Typography.Text strong className="ministry-contact-title taratest4">
+                        <Typography.Text strong className="ministry-contact-title">
                             {jobTitle}
                         </Typography.Text>
                     )}
@@ -45,13 +45,13 @@ const ProjectContacts: FC<ProjectContactsProps> = ({ title, contacts }) => {
                         <Typography.Text>Project Lead has not been assigned</Typography.Text>
                     ) : (
                         <>
-                            {name.length > 0 && <><Typography.Text className="taratest1">{name ?? Strings.EMPTY_FIELD}</Typography.Text>
+                            {name.length > 0 && <><Typography.Text>{name ?? Strings.EMPTY_FIELD}</Typography.Text>
                                 <br /></>}
-                            {phone && <><Typography.Text className="taratest2">{phone}</Typography.Text>
+                            {phone && <><Typography.Text>{phone}</Typography.Text>
                                 <br /></>}
 
                             {c.email && (
-                                <Typography.Text className="taratest3">
+                                <Typography.Text>
                                     <a href={`mailto:${c.email}`}>{c.email}</a>
                                 </Typography.Text>
                             )}

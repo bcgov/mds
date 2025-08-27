@@ -1411,7 +1411,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                 class="ant-typography ministry-contact-item"
               >
                 <span
-                  class="ant-typography ministry-contact-title taratest4"
+                  class="ant-typography ministry-contact-title"
                 >
                   <strong>
                     Primary Contact
@@ -1419,19 +1419,19 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                 </span>
                 <br />
                 <span
-                  class="ant-typography taratest1"
+                  class="ant-typography"
                 >
                   Test Testerson
                 </span>
                 <br />
                 <span
-                  class="ant-typography taratest2"
+                  class="ant-typography"
                 >
                   999-999-9999
                 </span>
                 <br />
                 <span
-                  class="ant-typography taratest3"
+                  class="ant-typography"
                 >
                   <a
                     href="mailto:test@test.com"
@@ -1444,7 +1444,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                 class="ant-typography ministry-contact-item"
               >
                 <span
-                  class="ant-typography ministry-contact-title taratest4"
+                  class="ant-typography ministry-contact-title"
                 >
                   <strong>
                     MCM Project Lead

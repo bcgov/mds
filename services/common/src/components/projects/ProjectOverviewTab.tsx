@@ -67,13 +67,16 @@ const ProjectOverviewTab: FC = () => {
     const hasAmsAuth = amsAuthorizations.length > 0;
     const [amsStatusData, setAmsStatusData] = useState([]);
 
+    const getStatusText = (status_code: string) => {
+        const statusCode = !isCore && status_code === "ASG" ? "SUB" : status_code;
+        return projectSummaryStatusCodesHash[statusCode];
+    };
+
     const hasIRT = Boolean(project.information_requirements_table?.irt_guid);
-    const irtStatus = project.information_requirements_table.status_code === "ASG" ? "SUB" : project.information_requirements_table.status_code;
-    const irtDocsDisabled = areDocumentFieldsDisabled(system, irtStatus);
+    const irtDocsDisabled = areDocumentFieldsDisabled(system, project.information_requirements_table.status_code);
 
     const hasMaFinalApp = Boolean(project.major_mine_application?.major_mine_application_guid);
-    const maAppStatus = project.major_mine_application.status_code === "ASG" ? "SUB" : project.major_mine_application.status_code;
-    const maAppDocsDisabled = areDocumentFieldsDisabled(system, maAppStatus);
+    const maAppDocsDisabled = areDocumentFieldsDisabled(system, project.major_mine_application.status_code);
 
     const getButtonProps = (recordExists: boolean, editLocked: boolean) => {
         let buttonProps = { text: "Start", disabled: false };
@@ -92,7 +95,7 @@ const ProjectOverviewTab: FC = () => {
         return permit?.permit_no ?? permitGuid;
     };
 
-    const projectSummaryStatus = { status: PROJECT_SUMMARY_STATUS_CODES[project.project_summary.status_code] };
+    const projectSummaryStatus = { status: getStatusText(project.project_summary.status_code) };
     const maAuthTableData = maAuthorizations.map((a: IProjectSummaryAuthorization) => {
         const permits = a.existing_permits_authorizations?.length > 0
             ? a.existing_permits_authorizations?.map((p) => <div>{getPermitNo(p)}</div>)
@@ -114,14 +117,14 @@ const ProjectOverviewTab: FC = () => {
         key: "irt-table-item",
         ...project.information_requirements_table,
         irt_type: hasAmsAuth ? "Joint Application" : "Mines Act Permit",
-        status: projectSummaryStatusCodesHash[irtStatus]
+        status: getStatusText(project.information_requirements_table?.status_code)
     }
     const maAppButtonProps = getButtonProps(hasMaFinalApp, maAppDocsDisabled);
     const maAppTableData = hasMinesActAuth ? {
         key: "mma-table-item",
         ...project.major_mine_application,
         type: irtTableData.irt_type,
-        status: projectSummaryStatusCodesHash[maAppStatus]
+        status: getStatusText(project.major_mine_application?.status_code)
     } : {};
 
     const amsAuthTableData = amsAuthorizations.map((auth) => {
