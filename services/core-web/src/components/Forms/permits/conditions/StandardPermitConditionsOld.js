@@ -6,7 +6,7 @@ import { Divider, Collapse, Button } from "antd";
 import { withRouter } from "react-router-dom";
 import { flattenObject } from "@common/utils/helpers";
 import { ReadOutlined } from "@ant-design/icons";
-import VariableConditionMenu from "@/components/Forms/permits/conditions/VariableConditionMenu";
+import VariableConditionMenuOld from "@/components/Forms/permits/conditions/VariableConditionMenuOld";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
   getPermitConditionCategoryOptions,
@@ -151,7 +151,7 @@ export class StandardPermitConditionsOld extends Component {
         <>
           <h2>{templateType[this.state.type]} Template Permit Conditions</h2>
           <Divider />
-          {this.props.editingConditionFlag && <VariableConditionMenu isManagementView />}
+          {this.props.editingConditionFlag && <VariableConditionMenuOld isManagementView />}
           <Collapse>
             {this.props.permitConditionCategoryOptions.map((conditionCategory) => {
               const conditions =

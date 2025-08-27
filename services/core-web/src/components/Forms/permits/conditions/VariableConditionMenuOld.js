@@ -25,7 +25,7 @@ const defaultProps = {
   isManagementView: false,
 };
 
-export class VariableConditionMenu extends Component {
+export class VariableConditionMenuOld extends Component {
   handleClick(value) {
     if (!isEmpty(this.props.conditionFormValues)) {
       const condition = this.props.conditionFormValues.condition
@@ -143,8 +143,8 @@ export class VariableConditionMenu extends Component {
   }
 }
 
-VariableConditionMenu.propTypes = propTypes;
-VariableConditionMenu.defaultProps = defaultProps;
+VariableConditionMenuOld.propTypes = propTypes;
+VariableConditionMenuOld.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   conditionFormValues: getFormValues(FORM.CONDITION_SECTION)(state) || {},
@@ -161,4 +161,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(VariableConditionMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(VariableConditionMenuOld);

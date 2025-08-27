@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { VariableConditionMenu } from "@/components/Forms/permits/conditions/VariableConditionMenu";
+import { VariableConditionMenuOld } from "@/components/Forms/permits/conditions/VariableConditionMenuOld";
 
 const dispatchProps = {};
 const props = {
@@ -11,7 +11,7 @@ const props = {
 
 describe("VariableConditionMenu", () => {
   it("renders properly", () => {
-    const { container: component } = render(<VariableConditionMenu {...dispatchProps} {...props} />);
+    const { container: component } = render(<VariableConditionMenuOld {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

@@ -7,7 +7,7 @@ import { resetForm, formatDate } from "@mds/common/redux/utils/helpers";
 import { getEditingPreambleFlag, getNowDraftConditionsFormatted } from "@mds/common/redux/selectors/permitSelectors";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import VariableConditionMenu from "@/components/Forms/permits/conditions/VariableConditionMenu";
+import VariableConditionMenuOld from "@/components/Forms/permits/conditions/VariableConditionMenuOld";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
 import PreviousAmendmentDocuments from "@/components/noticeOfWork/applications/PreviousAmendmentDocuments";
@@ -309,7 +309,7 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
           draftPermit={props.draftPermit}
         />
       </ScrollContentWrapper>
-      {editingPreambleFlag && <VariableConditionMenu />}
+      {editingPreambleFlag && <VariableConditionMenuOld />}
       {props.draftPermitAmendment.has_permit_conditions && (
         <ScrollContentWrapper id="preamble" title="Preamble" isLoaded={props.isLoaded}>
           <>
