@@ -1,0 +1,1369 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectDocumentsTab renders properly 1`] = `
+<div>
+  <div
+    class="ant-row"
+    style="margin-top: -8px; margin-bottom: -8px;"
+  >
+    <div
+      class="ant-col ant-col-lg-14 ant-col-xl-16"
+      style="padding-top: 8px; padding-bottom: 8px;"
+    >
+      <div
+        class="ant-row"
+        style="margin: -8px -8px -8px -8px;"
+      >
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <h2
+            class="ant-typography"
+          >
+            Overview
+          </h2>
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Project description
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            Sample description
+          </div>
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Key dates
+            </strong>
+          </div>
+          <div
+            class="ant-row"
+          >
+            <div
+              class="ant-col ant-col-lg-12"
+            >
+              <div
+                class="ant-descriptions"
+              >
+                <div
+                  class="ant-descriptions-view"
+                >
+                  <table>
+                    <tbody>
+                      <tr
+                        class="ant-descriptions-row"
+                      >
+                        <th
+                          class="ant-descriptions-item vertical-description"
+                          colspan="2"
+                        >
+                          <div
+                            class="ant-descriptions-item-container"
+                          >
+                            <span
+                              class="ant-descriptions-item-label"
+                            >
+                              Estimated IRT Submission
+                            </span>
+                          </div>
+                        </th>
+                      </tr>
+                      <tr
+                        class="ant-descriptions-row"
+                      >
+                        <td
+                          class="ant-descriptions-item vertical-description"
+                          colspan="2"
+                        >
+                          <div
+                            class="ant-descriptions-item-container"
+                          >
+                            <span
+                              class="ant-descriptions-item-content"
+                            >
+                              Nov 10 2020
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr
+                        class="ant-descriptions-row"
+                      >
+                        <th
+                          class="ant-descriptions-item vertical-description"
+                          colspan="2"
+                        >
+                          <div
+                            class="ant-descriptions-item-container"
+                          >
+                            <span
+                              class="ant-descriptions-item-label"
+                            >
+                              Desired date to receive permit/amendment(s)
+                            </span>
+                          </div>
+                        </th>
+                      </tr>
+                      <tr
+                        class="ant-descriptions-row"
+                      >
+                        <td
+                          class="ant-descriptions-item vertical-description"
+                          colspan="2"
+                        >
+                          <div
+                            class="ant-descriptions-item-container"
+                          >
+                            <span
+                              class="ant-descriptions-item-content"
+                            >
+                              Nov 20 2020
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-col ant-col-lg-12"
+            >
+              <div
+                class="ant-descriptions"
+              >
+                <div
+                  class="ant-descriptions-view"
+                >
+                  <table>
+                    <tbody>
+                      <tr
+                        class="ant-descriptions-row"
+                      >
+                        <th
+                          class="ant-descriptions-item vertical-description"
+                          colspan="2"
+                        >
+                          <div
+                            class="ant-descriptions-item-container"
+                          >
+                            <span
+                              class="ant-descriptions-item-label"
+                            >
+                              Estimated Permit Application Submission
+                            </span>
+                          </div>
+                        </th>
+                      </tr>
+                      <tr
+                        class="ant-descriptions-row"
+                      >
+                        <td
+                          class="ant-descriptions-item vertical-description"
+                          colspan="2"
+                        >
+                          <div
+                            class="ant-descriptions-item-container"
+                          >
+                            <span
+                              class="ant-descriptions-item-content"
+                            >
+                              Nov 12 2020
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr
+                        class="ant-descriptions-row"
+                      >
+                        <th
+                          class="ant-descriptions-item vertical-description"
+                          colspan="2"
+                        >
+                          <div
+                            class="ant-descriptions-item-container"
+                          >
+                            <span
+                              class="ant-descriptions-item-label"
+                            >
+                              Anticipated work start
+                            </span>
+                          </div>
+                        </th>
+                      </tr>
+                      <tr
+                        class="ant-descriptions-row"
+                      >
+                        <td
+                          class="ant-descriptions-item vertical-description"
+                          colspan="2"
+                        >
+                          <div
+                            class="ant-descriptions-item-container"
+                          >
+                            <span
+                              class="ant-descriptions-item-content"
+                            >
+                              Nov 22 2020
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="ant-row ant-row-space-between"
+          >
+            <div
+              class="ant-col"
+            >
+              <h2
+                class="ant-typography"
+              >
+                Permit and Authorization
+              </h2>
+            </div>
+            <div
+              class="ant-col"
+            >
+              <button
+                class="ant-btn ant-btn-default"
+                data-cy="project-description-view-link"
+                type="button"
+              >
+                <span>
+                  View Project Description
+                </span>
+              </button>
+            </div>
+          </div>
+          <h5
+            class="ant-typography"
+          >
+            Mines Act (MA) and Joint Application Project Description
+          </h5>
+          <div
+            class="ant-table-wrapper  core-table"
+          >
+            <div
+              class="ant-spin-nested-loading"
+            >
+              <div
+                class="ant-spin-container"
+              >
+                <div
+                  class="ant-table"
+                >
+                  <div
+                    class="ant-table-container"
+                  >
+                    <div
+                      class="ant-table-content"
+                    >
+                      <table
+                        style="table-layout: auto;"
+                      >
+                        <colgroup />
+                        <thead
+                          class="ant-table-thead"
+                        >
+                          <tr>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Authorization Type
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Permit Type
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Permit
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Project Description Status
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody
+                          class="ant-table-tbody"
+                        >
+                          <tr
+                            class="ant-table-row ant-table-row-level-0 fade-in"
+                            data-row-key="4d04995c-f90d-42fd-a951-60d9891f242c"
+                          >
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                title="Authorization Type"
+                              >
+                                Mines Act permit
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="type-column"
+                                title="Permit Type"
+                              >
+                                <div>
+                                  Amendment to an existing permit
+                                </div>
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="permits-column"
+                                title="Permit"
+                              >
+                                <div>
+                                  P-1234
+                                </div>
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <span
+                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                              >
+                                <span
+                                  class="ant-badge-status-dot ant-badge-status-warning"
+                                />
+                                <span
+                                  class="ant-badge-status-text"
+                                >
+                                  Draft
+                                </span>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr
+                            class="ant-table-row ant-table-row-level-0 fade-in"
+                            data-row-key="80fa60e3-0c8b-48e1-aede-ed2830e8ca42"
+                          >
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                title="Authorization Type"
+                              >
+                                Occupant licence to cut
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="type-column"
+                                title="Permit Type"
+                              >
+                                <div>
+                                  Closure of an existing permit
+                                </div>
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="permits-column"
+                                title="Permit"
+                              >
+                                <div>
+                                  P-4444
+                                </div>
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <span
+                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                              >
+                                <span
+                                  class="ant-badge-status-dot ant-badge-status-warning"
+                                />
+                                <span
+                                  class="ant-badge-status-text"
+                                >
+                                  Draft
+                                </span>
+                              </span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h5
+            class="ant-typography"
+          >
+            Environmental Management Act (EMA) Authorization
+          </h5>
+          <div
+            class="ant-typography"
+          >
+            An Environmental Protection Officer will contact you once your application is reviewed and accepted. In the meantime, to learn about the ministry's structured application process and timelines to get a waste discharge authorization, please visit
+             
+            <a
+              href="https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/process"
+            >
+              The waste discharge authorization process.
+            </a>
+          </div>
+          <div
+            class="ant-table-wrapper  core-table"
+          >
+            <div
+              class="ant-spin-nested-loading"
+            >
+              <div
+                class="ant-spin-container"
+              >
+                <div
+                  class="ant-table ant-table-has-fix-right"
+                >
+                  <div
+                    class="ant-table-container"
+                  >
+                    <div
+                      class="ant-table-content"
+                    >
+                      <table
+                        style="table-layout: auto;"
+                      >
+                        <colgroup />
+                        <thead
+                          class="ant-table-thead"
+                        >
+                          <tr>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Type
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Auth #
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Tracking #
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Date
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Auth Status
+                            </th>
+                            <th
+                              class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                              style="position: sticky; right: 0px;"
+                            />
+                          </tr>
+                        </thead>
+                        <tbody
+                          class="ant-table-tbody"
+                        >
+                          <tr
+                            class="ant-table-row ant-table-row-level-0 fade-in"
+                          >
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                title="Type"
+                              >
+                                Air Emissions Discharge Permit
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="auth_no-column"
+                                title="Auth #"
+                              >
+                                1234
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="ams_tracking_number-column"
+                                title="Tracking #"
+                              >
+                                N/A
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                title="Date"
+                              >
+                                May 24 2024
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <span
+                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                              >
+                                <span
+                                  class="ant-badge-status-dot ant-badge-status-default"
+                                />
+                                <span
+                                  class="ant-badge-status-text"
+                                >
+                                  N/A
+                                </span>
+                              </span>
+                            </td>
+                            <td
+                              class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                              style="position: sticky; right: 0px;"
+                            >
+                              <button
+                                class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
+                                data-cy="menu-actions-button"
+                                type="button"
+                              >
+                                <span>
+                                  Actions
+                                </span>
+                                <span
+                                  alt="Menu"
+                                  aria-label="caret-down"
+                                  class="anticon anticon-caret-down"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class=""
+                                    data-icon="caret-down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="0 0 1024 1024"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                    />
+                                  </svg>
+                                </span>
+                              </button>
+                            </td>
+                          </tr>
+                          <tr
+                            class="ant-table-row ant-table-row-level-0 fade-in"
+                          >
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                title="Type"
+                              >
+                                Refuse Discharge Permit
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="auth_no-column"
+                                title="Auth #"
+                              >
+                                5678
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="ams_tracking_number-column"
+                                title="Tracking #"
+                              >
+                                N/A
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                title="Date"
+                              >
+                                May 24 2024
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <span
+                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                              >
+                                <span
+                                  class="ant-badge-status-dot ant-badge-status-default"
+                                />
+                                <span
+                                  class="ant-badge-status-text"
+                                >
+                                  N/A
+                                </span>
+                              </span>
+                            </td>
+                            <td
+                              class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                              style="position: sticky; right: 0px;"
+                            >
+                              <button
+                                class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
+                                data-cy="menu-actions-button"
+                                type="button"
+                              >
+                                <span>
+                                  Actions
+                                </span>
+                                <span
+                                  alt="Menu"
+                                  aria-label="caret-down"
+                                  class="anticon anticon-caret-down"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class=""
+                                    data-icon="caret-down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="0 0 1024 1024"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                    />
+                                  </svg>
+                                </span>
+                              </button>
+                            </td>
+                          </tr>
+                          <tr
+                            class="ant-table-row ant-table-row-level-0 fade-in"
+                          >
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                title="Type"
+                              >
+                                Refuse Discharge Permit
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="auth_no-column"
+                                title="Auth #"
+                              >
+                                1234
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="ams_tracking_number-column"
+                                title="Tracking #"
+                              >
+                                123456
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                title="Date"
+                              >
+                                May 24 2024
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <span
+                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                              >
+                                <span
+                                  class="ant-badge-status-dot ant-badge-status-default"
+                                />
+                                <span
+                                  class="ant-badge-status-text"
+                                >
+                                  N/A
+                                </span>
+                              </span>
+                            </td>
+                            <td
+                              class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                              style="position: sticky; right: 0px;"
+                            >
+                              <button
+                                class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
+                                data-cy="menu-actions-button"
+                                type="button"
+                              >
+                                <span>
+                                  Actions
+                                </span>
+                                <span
+                                  alt="Menu"
+                                  aria-label="caret-down"
+                                  class="anticon anticon-caret-down"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class=""
+                                    data-icon="caret-down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="0 0 1024 1024"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                    />
+                                  </svg>
+                                </span>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <h2
+            class="ant-typography"
+          >
+            Information Requirements Table (IRT)
+          </h2>
+          <h5
+            class="ant-typography"
+          >
+            Mines Act (MA) and Joint Application
+          </h5>
+          <div
+            class="ant-table-wrapper  core-table"
+          >
+            <div
+              class="ant-spin-nested-loading"
+            >
+              <div
+                class="ant-spin-container"
+              >
+                <div
+                  class="ant-table"
+                >
+                  <div
+                    class="ant-table-container"
+                  >
+                    <div
+                      class="ant-table-content"
+                    >
+                      <table
+                        style="table-layout: auto;"
+                      >
+                        <colgroup />
+                        <thead
+                          class="ant-table-thead"
+                        >
+                          <tr>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Final IRT
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Date
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Status
+                            </th>
+                            <th
+                              class="ant-table-cell actions-column"
+                            />
+                          </tr>
+                        </thead>
+                        <tbody
+                          class="ant-table-tbody"
+                        >
+                          <tr
+                            class="ant-table-row ant-table-row-level-0 fade-in"
+                            data-row-key="irt-table-item"
+                          >
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="irt_type-column"
+                                title="Final IRT"
+                              >
+                                Joint Application
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                title="Date"
+                              >
+                                Nov 18 2020
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <span
+                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                              >
+                                <span
+                                  class="ant-badge-status-dot ant-badge-status-success"
+                                />
+                                <span
+                                  class="ant-badge-status-text"
+                                >
+                                  Submitted
+                                </span>
+                              </span>
+                            </td>
+                            <td
+                              class="ant-table-cell actions-column"
+                            >
+                              <button
+                                class="ant-btn ant-btn-default"
+                                data-cy="final-irt-view-link"
+                                type="button"
+                              >
+                                <span>
+                                  View
+                                </span>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <h2
+            class="ant-typography"
+          >
+            Application and Final Package
+          </h2>
+           
+          <h5
+            class="ant-typography"
+          >
+            Mines Act and Joint Application
+          </h5>
+          <div
+            class="ant-table-wrapper  core-table"
+          >
+            <div
+              class="ant-spin-nested-loading"
+            >
+              <div
+                class="ant-spin-container"
+              >
+                <div
+                  class="ant-table"
+                >
+                  <div
+                    class="ant-table-container"
+                  >
+                    <div
+                      class="ant-table-content"
+                    >
+                      <table
+                        style="table-layout: auto;"
+                      >
+                        <colgroup />
+                        <thead
+                          class="ant-table-thead"
+                        >
+                          <tr>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Application
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Date
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Status
+                            </th>
+                            <th
+                              class="ant-table-cell actions-column"
+                            />
+                          </tr>
+                        </thead>
+                        <tbody
+                          class="ant-table-tbody"
+                        >
+                          <tr
+                            class="ant-table-row ant-table-row-level-0 fade-in"
+                            data-row-key="mma-table-item"
+                          >
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="type-column"
+                                title="Application"
+                              >
+                                Joint Application
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                title="Date"
+                              >
+                                Sep 04 2024
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <span
+                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                              >
+                                <span
+                                  class="ant-badge-status-dot ant-badge-status-default"
+                                />
+                                <span
+                                  class="ant-badge-status-text"
+                                >
+                                  N/A
+                                </span>
+                              </span>
+                            </td>
+                            <td
+                              class="ant-table-cell actions-column"
+                            >
+                              <button
+                                class="ant-btn ant-btn-default"
+                                data-cy="final-application-view-link"
+                                type="button"
+                              >
+                                <span>
+                                  View
+                                </span>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h5
+            class="ant-typography"
+          >
+            Environmental Management Act
+          </h5>
+          <div
+            class="ant-table-wrapper  core-table"
+          >
+            <div
+              class="ant-spin-nested-loading"
+            >
+              <div
+                class="ant-spin-container"
+              >
+                <div
+                  class="ant-table"
+                >
+                  <div
+                    class="ant-table-container"
+                  >
+                    <div
+                      class="ant-table-content"
+                    >
+                      <table
+                        style="table-layout: auto;"
+                      >
+                        <colgroup />
+                        <thead
+                          class="ant-table-thead"
+                        >
+                          <tr>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Final Application
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Authorization
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Tracking #
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Status
+                            </th>
+                            <th
+                              class="ant-table-cell actions-column"
+                            />
+                          </tr>
+                        </thead>
+                        <tbody
+                          class="ant-table-tbody"
+                        >
+                          <tr
+                            class="ant-table-row ant-table-row-level-0 fade-in"
+                          >
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                title="Final Application"
+                              >
+                                Refuse Discharge Permit
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="auth_no-column"
+                                title="Authorization"
+                              >
+                                1234
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="ams_tracking_number-column"
+                                title="Tracking #"
+                              >
+                                123456
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <span
+                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                              >
+                                <span
+                                  class="ant-badge-status-dot ant-badge-status-default"
+                                />
+                                <span
+                                  class="ant-badge-status-text"
+                                >
+                                  N/A
+                                </span>
+                              </span>
+                            </td>
+                            <td
+                              class="ant-table-cell actions-column"
+                            >
+                              <button
+                                class="ant-btn ant-btn-primary ant-btn-background-ghost"
+                                type="button"
+                              >
+                                <span>
+                                  View
+                                </span>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <h3
+            class="ant-typography"
+          >
+            Related Project Applications
+          </h3>
+          <div
+            class="ant-typography"
+          >
+            Description of related major project applications for this mine are listed below.
+          </div>
+          <div
+            class="ant-table-wrapper"
+          >
+            <div
+              class="ant-spin-nested-loading"
+            >
+              <div
+                class="ant-spin-container"
+              >
+                <div
+                  class="ant-table"
+                >
+                  <div
+                    class="ant-table-container"
+                  >
+                    <div
+                      class="ant-table-content"
+                    >
+                      <table
+                        style="table-layout: auto;"
+                      >
+                        <colgroup />
+                        <thead
+                          class="ant-table-thead"
+                        >
+                          <tr>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Project Title
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Project #
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Status
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Contact
+                            </th>
+                            <th
+                              class="ant-table-cell"
+                            >
+                              Last Updated
+                            </th>
+                            <th
+                              class="ant-table-cell actions-column"
+                            />
+                          </tr>
+                        </thead>
+                        <tbody
+                          class="ant-table-tbody"
+                        />
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-lg-9 ant-col-lg-offset-1 ant-col-xl-7 ant-col-xl-offset-1"
+      style="padding-top: 8px; padding-bottom: 8px;"
+    >
+      <div
+        class="ant-row"
+        style="margin-top: -8px; margin-bottom: -8px;"
+      >
+        <div
+          class="ant-col ant-col-24"
+          style="padding-top: 8px; padding-bottom: 8px;"
+        >
+          <div
+            class="ant-card ant-card-bordered"
+          >
+            <div
+              class="ant-card-head"
+              style="min-height: unset;"
+            >
+              <div
+                class="ant-card-head-wrapper"
+              >
+                <div
+                  class="ant-card-head-title"
+                >
+                  Project Contacts
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-card-body"
+            >
+              <div
+                class="ant-typography ministry-contact-item"
+              >
+                <span
+                  class="ant-typography ministry-contact-title taratest4"
+                >
+                  <strong>
+                    Primary Contact
+                  </strong>
+                </span>
+                <br />
+                <span
+                  class="ant-typography taratest1"
+                >
+                  Test Testerson
+                </span>
+                <br />
+                <span
+                  class="ant-typography taratest2"
+                >
+                  999-999-9999
+                </span>
+                <br />
+                <span
+                  class="ant-typography taratest3"
+                >
+                  <a
+                    href="mailto:test@test.com"
+                  >
+                    test@test.com
+                  </a>
+                </span>
+              </div>
+              <div
+                class="ant-typography ministry-contact-item"
+              >
+                <span
+                  class="ant-typography ministry-contact-title taratest4"
+                >
+                  <strong>
+                    MCM Project Lead
+                  </strong>
+                </span>
+                <br />
+                <span
+                  class="ant-typography"
+                >
+                  Project Lead has not been assigned
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          style="padding-top: 8px; padding-bottom: 8px;"
+        >
+          <div
+            class="ant-card ant-card-bordered"
+          >
+            <div
+              class="ant-card-head"
+              style="min-height: unset;"
+            >
+              <div
+                class="ant-card-head-wrapper"
+              >
+                <div
+                  class="ant-card-head-title"
+                >
+                  Ministry Contacts
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-card-body"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

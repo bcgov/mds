@@ -7,7 +7,7 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import * as routes from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import ProjectOverviewTab from "@/components/mine/Projects/ProjectOverviewTab";
+import ProjectOverviewTab from "@mds/common/components/projects/ProjectOverviewTab";
 import InformationRequirementsTableTab from "@/components/mine/Projects/InformationRequirementsTableTab";
 import MajorMineApplicationTab from "@/components/mine/Projects/MajorMineApplicationTab";
 import NullScreen from "@/components/common/NullScreen";
@@ -65,7 +65,7 @@ const Project: FC = () => {
     let url = routes.EDIT_PROJECT.dynamicRoute(projectGuid, newActiveTab);
 
     switch (newActiveTab) {
-      case "app":
+      case "major-mine-application":
         url = routes.PROJECT_APPLICATION.dynamicRoute(projectGuid);
         break;
       case "decision-package":
@@ -140,7 +140,7 @@ const Project: FC = () => {
       ),
     },
     {
-      key: "app",
+      key: "major-mine-application",
       label: "Application",
       disabled: !hasFinalAplication,
       children: <MajorMineApplicationTab />
@@ -170,11 +170,10 @@ const Project: FC = () => {
           <LoadingWrapper condition={isLoaded}>
             <Tabs
               size="large"
+              tabBarStyle={{ marginLeft: "20px" }}
               activeKey={activeTab}
               animated={{ inkBar: true, tabPane: false }}
-              className="now-tabs core-tabs fixed-tabs-tabs"
-              style={{ margin: "0" }}
-              centered
+              className="core-tabs fixed-tabs-tabs"
               onTabClick={handleTabChange}
               items={tabItems}
               destroyInactiveTabPane={true}

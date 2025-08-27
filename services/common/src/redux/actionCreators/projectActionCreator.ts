@@ -156,9 +156,9 @@ export const fetchProjectSummaryById = (
 
 export const fetchProjectSummaryEnvironmentAuthorizationStatuses = (
   amsTrackingNumbers: string[],
-): AppThunk<Promise<AxiosResponse<IProjectSummaryEnvironmentAuthorizationStatus[]>>> => (
+): AppThunk<Promise<IProjectSummaryEnvironmentAuthorizationStatus[]>> => (
   dispatch
-): Promise<AxiosResponse<IProjectSummaryEnvironmentAuthorizationStatus[]>> => {
+): Promise<IProjectSummaryEnvironmentAuthorizationStatus[]> => {
     dispatch(request(NetworkReducerTypes.GET_PROJECT_SUMMARY_ENVIRONMENT_AUTHORIZATION_STATUSES));
     dispatch(showLoading());
     return CustomAxios({ errorToastMessage: Strings.ERROR })

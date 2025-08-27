@@ -290,9 +290,9 @@ export const AMS_FINAL_APPLICATION = {
 
 
 export const PROJECT_APPLICATION = {
-  route: "/pre-applications/:projectGuid/app",
-  dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/app`,
-  hashRoute: (projectGuid, link) => `/pre-applications/${projectGuid}/app/${link}`,
+  route: "/pre-applications/:projectGuid/major-mine-application",
+  dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/major-mine-application`,
+  hashRoute: (projectGuid, link) => `/pre-applications/${projectGuid}/major-mine-application/${link}`,
   component: MajorMineApplicationTab,
   helpKey: "Major-Mine-Application",
 };

@@ -15,7 +15,7 @@ import { fetchMinistryContactsByRegion } from "@mds/common/redux/actionCreators/
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import MajorMineApplicationReviewSubmit from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationReviewSubmit";
-import ProjectOverviewTab from "./ProjectOverviewTab";
+import ProjectOverviewTab from "@mds/common/components/projects/ProjectOverviewTab";
 import InformationRequirementsTableEntryTab from "./InformationRequirementsTableEntryTab";
 import MajorMineApplicationEntryTab from "./MajorMineApplicationEntryTab";
 import ProjectDocumentsTab from "@mds/common/components/projects/ProjectDocumentsTab";
@@ -29,7 +29,7 @@ import { Feature } from "@mds/common/utils/featureFlag";
 const tabs = [
   "overview",
   "project-description",
-  "irt-entry",
+  "information-requirements-table",
   "toc",
   "major-mine-application",
   "documents",
@@ -79,53 +79,6 @@ const ProjectPage: FC = () => {
     dispatch(fetchMineDocuments(mine_guid, filters));
   };
 
-  const navigateFromProjectStagesTable = (source, status) => {
-    switch (source) {
-      case "DES": {
-        const projectDescriptionTab = document.querySelector('[id*="project-description"]');
-        if (!projectDescriptionTab) {
-          return null;
-        }
-
-        // @ts-ignore
-        return projectDescriptionTab.click();
-      }
-      case "IRT": {
-        if (irtDocsDisabled) {
-          return history.push({
-            pathname: router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-              projectGuid,
-              irt_guid
-            ),
-            state: { current: 2 },
-          });
-        }
-        const irtTab = document.querySelector('[id*="irt-entry"]');
-        if (!irtTab) {
-          return null;
-        }
-        // @ts-ignore
-        return irtTab.click();
-      }
-      case "MMA":
-        if (mmaDocsDisabled) {
-          return history.push({
-            pathname: router.REVIEW_MAJOR_MINE_APPLICATION.dynamicRoute(
-              projectGuid,
-              major_mine_application_guid
-            ),
-            state: { current: 2, applicationSubmitted: true },
-          });
-        } else {
-          const mmaTab = document.querySelector('[id*="major-mine-application"]') as HTMLElement;
-          if (!mmaTab) {
-            return null;
-          }
-          return mmaTab.click();
-        }
-    }
-  };
-
   const handleFetchData = async (includeArchivedDocuments = false) => {
     if (
       (projectGuid && project?.project_guid !== projectGuid) ||
@@ -156,7 +109,7 @@ const ProjectPage: FC = () => {
       case "overview":
         url = router.EDIT_PROJECT.dynamicRoute(projectGuid, newActiveTab);
         return history.push(url);
-      case "irt-entry": {
+      case "information-requirements-table": {
         url = irtDocsDisabled
           ? router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
               projectGuid,
@@ -197,7 +150,7 @@ const ProjectPage: FC = () => {
       key: "overview",
       children: (
         <div className={pageClass}>
-          <ProjectOverviewTab navigateForward={navigateFromProjectStagesTable} />
+          <ProjectOverviewTab />
         </div>
       ),
     },
@@ -212,7 +165,7 @@ const ProjectPage: FC = () => {
     },
     {
       label: "IRT",
-      key: "irt-entry",
+      key: "information-requirements-table",
       disabled: !hasInformationRequirementsTable && !isProjectSummarySubmitted,
       children: (
         <div className={pageClass}>
@@ -257,6 +210,7 @@ const ProjectPage: FC = () => {
         <Col span={24}>
           <Tabs
             defaultActiveKey={activeTab}
+            activeKey={activeTab}
             onChange={handleTabChange}
             className="core-tabs fixed-tabs-tabs"
             items={tabItems}
