@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { useSelector } from "react-redux"
-import {  Dropdown, MenuProps, Space, Tooltip } from "antd";
+import {  Dropdown, MenuProps, Space, Tooltip, Typography } from "antd";
 import { change, getFormValues } from "@mds/common/components/forms/form";
 import { getNOWReclamationSummary } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import { getDropdownNoticeOfWorkActivityTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -144,7 +144,7 @@ const VariableConditionMenu: FC<VariableConditionMenuProps> = ({
             onOpenChange={() => {}}
           >
             <div className="fa-icon-container ant-primary" style={{color: "white"}}>
-              <span style={{ fontWeight: 600 }}>Condition Data Variables </span>
+              <Typography.Text style={{ fontWeight: 600 }}>Condition Data Variables </Typography.Text>
               <DownOutlined />
               <Tooltip title={"Hover your mouse over the menus until you find the variable data you'd like to enter. Put it into your edited Permit Condition by clicking on it. This will populate the edited condition with a variable in the Draft permit screen. The Data from the Application tab will show up correctly in the PDF Draft permit in place of the variable. Please ensure all variable data fields you select have the correct information in the Application tab before adding these fields to your draft permit."}
                 placement="right" mouseEnterDelay={0.3} overlayClassName="core-tooltip" getPopupContainer={triggerNode => triggerNode.parentNode as HTMLElement}>

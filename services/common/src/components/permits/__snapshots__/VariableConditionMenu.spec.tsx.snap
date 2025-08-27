@@ -9,6 +9,7 @@ exports[`VariableConditionMenu renders correctly and matches the snapshot 1`] = 
     style="color: white;"
   >
     <span
+      class="ant-typography"
       style="font-weight: 600;"
     >
       Condition Data Variables 
