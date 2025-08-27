@@ -212,6 +212,7 @@
 
 .margin-none {
   margin: 0 !important;
+
   &--bottom {
     margin-bottom: 0 !important;
   }
@@ -328,7 +329,7 @@
 }
 
 .grey-box {
-  border: 1px solid $background;
+  border: 1px solid $background !important;
   padding: 16px 24px;
 }
 

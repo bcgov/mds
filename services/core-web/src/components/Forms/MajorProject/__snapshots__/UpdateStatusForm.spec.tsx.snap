@@ -44,7 +44,7 @@ exports[`UpdateStatusForm renders properly 1`] = `
         class="ant-col ant-col-24"
       >
         <div
-          class="ant-alert ant-alert-warning ant-alert-with-description margin-large--bottom"
+          class="ant-alert ant-alert-warning ant-alert-with-description margin-medium--bottom"
           data-show="true"
           role="alert"
         >
