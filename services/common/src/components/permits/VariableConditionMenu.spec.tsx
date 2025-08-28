@@ -7,10 +7,10 @@ describe("VariableConditionMenu", () => {
   it("renders correctly and matches the snapshot", () => {
     const { container } = render(
       <ReduxWrapper>
-        <VariableConditionMenu conditionForm="MOCK_CONDITION_FORM" isManagementView/>
+        <VariableConditionMenu conditionForm="MOCK_CONDITION_FORM" isManagementView />
       </ReduxWrapper>
     );
-    fireEvent.mouseEnter(container.firstChild!);
+    fireEvent.mouseEnter(container.firstChild);
     expect(container.firstChild).toMatchSnapshot();
   });
 });

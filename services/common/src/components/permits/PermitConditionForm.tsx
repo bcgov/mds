@@ -36,6 +36,9 @@ import RenderMultiSelect from "../forms/RenderMultiSelect";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
 import { getPermitConditionTags } from "@mds/common/redux/slices/permitConditionTagSlice";
+import VariableConditionMenu from "./VariableConditionMenu";
+import Highlight from "react-highlighter";
+import { highlightPermitConditionVariables } from "@mds/common/redux/utils/helpers";
 
 interface PermitConditionFormProps {
     isExtracted: boolean;
@@ -242,7 +245,9 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 </Col>
                 <Col className="condition-column" {...editableProps}>
                     <Typography.Paragraph className="view-item-value">
-                        {condition.condition}
+                        <Highlight className="injectable-string" search={highlightPermitConditionVariables()}>
+                            {condition.condition}
+                        </Highlight>
                     </Typography.Paragraph>
                 </Col>
             </Row>
@@ -306,11 +311,16 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                     />
                 </Col>
                 <Col className="condition-column" {...editableProps}>
-                    <Field
-                        name="condition"
-                        component={RenderAutoSizeField}
-                        disabled={isAddingListItem || loading}
-                    />
+                    <Col className="condition-editor">
+                        <Row className="condition-editor-toolbar">
+                            <VariableConditionMenu isManagementView={Boolean(standardConditionType)} conditionForm={editingFormName}/>
+                        </Row>
+                        <Field
+                            name="condition"
+                            component={RenderAutoSizeField}
+                            disabled={isAddingListItem || loading}
+                        />
+                    </Col>
                     {isEditMode && !isAddingListItem && (
                         <Row justify="space-between" align="top" wrap={false}>
                             <Col>

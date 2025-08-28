@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { useSelector } from "react-redux"
-import {  Dropdown, MenuProps, Space, Tooltip, Typography } from "antd";
+import {  Button, Dropdown, MenuProps, Space, Tooltip } from "antd";
 import { change, getFormValues } from "@mds/common/components/forms/form";
 import { getNOWReclamationSummary } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import { getDropdownNoticeOfWorkActivityTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -8,7 +8,7 @@ import { isEmpty } from "lodash";
 import { IConditionSection, INoWGeneratedPermit } from "@mds/common/interfaces";
 import { useAppDispatch } from "@mds/common/redux/rootState";
 import { FORM } from "@mds/common/constants/forms";
-import { DownOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 interface VariableConditionMenuProps {
   isManagementView?: boolean,
@@ -127,7 +127,6 @@ const VariableConditionMenu: FC<VariableConditionMenuProps> = ({
 
     return (
         <div
-          className="condition-menu-container"
           onMouseEnter={() => {
             if (closeTimeout.current) clearTimeout(closeTimeout.current);
             setOpen(true);
@@ -138,19 +137,18 @@ const VariableConditionMenu: FC<VariableConditionMenuProps> = ({
           }}
         >
           <Dropdown
-            menu={{ items, onClick: handleClick, getPopupContainer: triggerNode => triggerNode.parentElement }}
-            getPopupContainer={triggerNode => triggerNode.parentElement}
+            menu={{ items, onClick: handleClick}}
             open={open}
             onOpenChange={() => {}}
+            getPopupContainer={triggerNode => triggerNode.parentNode as HTMLElement}
           >
-            <div className="fa-icon-container ant-primary" style={{color: "white"}}>
-              <Typography.Text style={{ fontWeight: 600, color: "white" }}>Condition Data Variables </Typography.Text>
-              <DownOutlined />
+            <Button>
+              Condition Data Variables
               <Tooltip title={"Hover your mouse over the menus until you find the variable data you'd like to enter. Put it into your edited Permit Condition by clicking on it. This will populate the edited condition with a variable in the Draft permit screen. The Data from the Application tab will show up correctly in the PDF Draft permit in place of the variable. Please ensure all variable data fields you select have the correct information in the Application tab before adding these fields to your draft permit."}
-                placement="right" mouseEnterDelay={0.3} overlayClassName="core-tooltip" getPopupContainer={triggerNode => triggerNode.parentNode as HTMLElement}>
+                placement="right" mouseEnterDelay={0.3} overlayClassName="core-tooltip" >
                 <QuestionCircleOutlined className="icon-sm" style={{ marginLeft: 8 }} />
               </Tooltip>
-            </div>
+            </Button>
           </Dropdown>
         </div>
     )

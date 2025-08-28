@@ -111,8 +111,6 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
         userCanEdit && (isStandardConditions || isNowEditor ||
             userReviewCategoryCodes.includes(category.condition_category_code));
 
-    const showVariableConditionMenu = userCanEdit && (isStandardConditions || isNowEditor) && editingFormName;
-
     const refreshConditionData = async () => {
         await refreshData();
 
@@ -265,7 +263,6 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
 
     return (
         <div>
-            {showVariableConditionMenu && <VariableConditionMenu isManagementView={isStandardConditions} conditionForm={editingFormName}/>}
             <Row gutter={[16, 16]}>
                 {formattedCategories.map((category, idx) => {
                     {
