@@ -888,6 +888,15 @@ export const getMinistryContactTypesHash = createSelector(
   createLabelHash
 );
 
+export const getProjectSummaryAuthorizationTypesHash = createSelector(
+  [getProjectSummaryAuthorizationTypes], (types) => {
+    return types.reduce((acc, t) => {
+      acc[t.project_summary_authorization_type] = t.description;
+      return acc;
+    }, {});
+  }
+);
+
 export const getTransformedProjectSummaryAuthorizationTypes = createSelector(
   [getProjectSummaryAuthorizationTypes],
   (types) => {
