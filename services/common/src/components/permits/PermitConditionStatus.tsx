@@ -19,7 +19,7 @@ interface PermitConditionStatusProps {
   isDisabled?: boolean;
   canEditPermitConditions?: boolean;
   permitAmendmentGuid: string;
-  refreshData: () => Promise<void>;
+  refreshData: (closeForm?: boolean) => Promise<void>;
 }
 
 export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({

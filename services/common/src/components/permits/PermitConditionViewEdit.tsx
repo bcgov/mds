@@ -110,10 +110,11 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
         userCanEdit && (isStandardConditions || isNowEditor ||
             userReviewCategoryCodes.includes(category.condition_category_code));
 
-    const refreshConditionData = async () => {
+    const refreshConditionData = async (closeForm = true) => {
         await refreshData();
-
-        setEditingFormName(null);
+        if (closeForm) {
+            setEditingFormName(null);
+        }
     };
 
     const handleAddCondition = async () => {

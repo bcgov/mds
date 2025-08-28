@@ -47,7 +47,7 @@ interface PermitConditionFormProps {
     editingFormName: string;
     moveUp?: (condition: IPermitCondition | IStandardPermitCondition) => Promise<void>;
     moveDown?: (condition: IPermitCondition | IStandardPermitCondition) => Promise<void>;
-    refreshData: () => Promise<void>;
+    refreshData: (closeForm?: boolean) => Promise<void>;
     setIsAddingListItem: (isAdding: boolean) => void;
     isAddingListItem: boolean;
     categoryOptions?: IGroupedDropdownList[];
@@ -144,8 +144,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
         }
         // @ts-ignore
         if (resp?.type !== ERROR) {
-            cancelEdit();
-            refreshData();
+            refreshData(false);
         }
         setLoading(false);
     };
@@ -188,7 +187,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
 
     const handleOpenAddReportModal = (event, reportCondition: IPermitCondition | IStandardPermitCondition) => {
         event.stopPropagation();
-        dispatch(
+        const openReportModal = async () => await dispatch(
             openModal({
                 props: {
                     title: `Add Permit Required Report to Condition "${condition.stepPath}"`,
@@ -199,6 +198,15 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 content: (props) => <PermitConditionsProvider value={permitConditionsValue}> <ReportPermitRequirementForm {...props} /> </PermitConditionsProvider>,
             })
         );
+        const formDirty = editingFormDirty || listItemFormDirty;
+
+        return formDirty ? Modal.confirm({
+            title: "Cancel editing condition?",
+            content: "Adding a report will cancel changes made to the condition",
+            onOk: openReportModal,
+            cancelText: "Edit Condition",
+            okText: "Add Report"
+        }) : openReportModal();
     };
 
     const editingEnabled = editingFormName !== formName && canEditPermitConditions && !loading;
