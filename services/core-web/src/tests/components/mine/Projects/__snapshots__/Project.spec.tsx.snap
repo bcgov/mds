@@ -92,12 +92,12 @@ exports[`Project renders properly 1`] = `
             class="fade-in"
           >
             <div
-              class="ant-tabs ant-tabs-top ant-tabs-large ant-tabs-centered now-tabs core-tabs fixed-tabs-tabs"
-              style="margin: 0px;"
+              class="ant-tabs ant-tabs-top ant-tabs-large core-tabs fixed-tabs-tabs"
             >
               <div
                 class="ant-tabs-nav"
                 role="tablist"
+                style="margin-left: 20px;"
               >
                 <div
                   class="ant-tabs-nav-wrap"
@@ -154,14 +154,14 @@ exports[`Project renders properly 1`] = `
                     </div>
                     <div
                       class="ant-tabs-tab"
-                      data-node-key="app"
+                      data-node-key="major-mine-application"
                     >
                       <div
-                        aria-controls="rc-tabs-test-panel-app"
+                        aria-controls="rc-tabs-test-panel-major-mine-application"
                         aria-disabled="false"
                         aria-selected="false"
                         class="ant-tabs-tab-btn"
-                        id="rc-tabs-test-tab-app"
+                        id="rc-tabs-test-tab-major-mine-application"
                         role="tab"
                         tabindex="0"
                       >
@@ -220,6 +220,7 @@ exports[`Project renders properly 1`] = `
                 </div>
                 <div
                   class="ant-tabs-nav-operations ant-tabs-nav-operations-hidden"
+                  style="margin-left: 20px;"
                 >
                   <button
                     aria-controls="rc-tabs-test-more-popup"

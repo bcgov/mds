@@ -1,13 +1,14 @@
 import React, { ReactNode } from "react";
 import Highlight from "react-highlighter";
 import { dateSorter, formatDate, nullableStringSorter } from "@mds/common/redux/utils/helpers";
-import { EMPTY_FIELD } from "@mds/common/constants/strings";
+import { EMPTY_FIELD, NOT_APPLICABLE } from "@mds/common/constants/strings";
 import { ColumnType } from "antd/lib/table";
-import { Button, Dropdown, Tag, Tooltip } from "antd";
+import { Badge, Button, Dropdown, Tag, Tooltip } from "antd";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { generateActionMenuItems } from "./ActionMenu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFiles } from "@fortawesome/pro-light-svg-icons";
+import { PresetStatusColorType } from "antd/lib/_util/colors";
 
 export const renderTextColumn = (
   dataIndex: string | string[],
@@ -90,6 +91,14 @@ export interface ITableAction {
   icon?: ReactNode;
   disabled?: boolean;
 }
+
+export const renderStatusColumn = (statusMap: { [key: string]: PresetStatusColorType }, title = "Status", dataIndex = "status") => {
+  return {
+    title,
+    dataIndex,
+    render: (text: string) => <Badge status={statusMap[text] ?? "default"} text={text ?? NOT_APPLICABLE} />
+  }
+};
 
 export const renderActionsColumn = ({
   actions,

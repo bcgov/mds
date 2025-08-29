@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 import React from "react";
-import { MINE_REPORT_SUBMISSION_CODES } from "./enums";
+import { MINE_REPORT_SUBMISSION_CODES, PROJECT_SUMMARY_STATUS_CODES } from "./enums";
 // reusable messages for error handling, validations, null-screens, etc.
 export const ERROR = "Error.";
 export const ERROR_CANCELED =
@@ -483,6 +483,39 @@ export const AMS_STOPPED_STATUSES = {
   "Suspended": "Suspended",
   "Withdrawn": "Withdrawn",
 };
+
+export const AMS_STATUSES_TYPES: { [key: string]: "success" | "warning" | "error" | "default" } = {
+  "Approved": "success",
+  "Completed": "success",
+  "New": "success",
+
+  "Review and Decision": "warning",
+  "Pending Customer": "warning",
+  "Pending Final Application": "warning",
+  "Pending Suspension": "warning",
+  "Preliminary Application Review": "warning",
+  "Preliminary Withdrawal Review": "warning",
+  "Reinstated": "warning",
+  "Review Complete": "warning",
+
+  "Expired": "error",
+  "AMS Rejected": "error",
+  "Suspended": "error",
+  "Withdrawn": "error",
+
+  "N/A": "default"
+};
+
+export const PROJECT_STATUS_SEVERITY: { [key: string]: "success" | "warning" | "error" | "default" } = {
+  [PROJECT_SUMMARY_STATUS_CODES.ASG]: "success",
+  [PROJECT_SUMMARY_STATUS_CODES.SUB]: "success",
+  [PROJECT_SUMMARY_STATUS_CODES.COM]: "success",
+  [PROJECT_SUMMARY_STATUS_CODES.DFT]: "warning",
+  [PROJECT_SUMMARY_STATUS_CODES.CHR]: "warning",
+  [PROJECT_SUMMARY_STATUS_CODES.UNR]: "warning",
+  [PROJECT_SUMMARY_STATUS_CODES.OHD]: "error",
+  [PROJECT_SUMMARY_STATUS_CODES.WDN]: "error",
+}
 
 export const ENVIRONMENTAL_MANAGMENT_ACT = "ENVIRONMENTAL_MANAGMENT_ACT";
 

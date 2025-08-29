@@ -201,6 +201,7 @@ exports[`EmaApplicationsTab renders properly 1`] = `
           >
             <div
               class="ant-card-head"
+              style="min-height: unset;"
             >
               <div
                 class="ant-card-head-wrapper"
@@ -248,7 +249,50 @@ exports[`EmaApplicationsTab renders properly 1`] = `
                   </a>
                 </span>
               </div>
+              <div
+                class="ant-typography ministry-contact-item"
+              >
+                <span
+                  class="ant-typography ministry-contact-title"
+                >
+                  <strong>
+                    MCM Project Lead
+                  </strong>
+                </span>
+                <br />
+                <span
+                  class="ant-typography"
+                >
+                  Project Lead has not been assigned
+                </span>
+              </div>
             </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          style="padding-top: 8px; padding-bottom: 8px;"
+        >
+          <div
+            class="ant-card ant-card-bordered"
+          >
+            <div
+              class="ant-card-head"
+              style="min-height: unset;"
+            >
+              <div
+                class="ant-card-head-wrapper"
+              >
+                <div
+                  class="ant-card-head-title"
+                >
+                  Ministry Contacts
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-card-body"
+            />
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { useHistory, Link } from "react-router-dom";
-import { Row, Col, Typography, Button, Alert, Badge, List, Card, Descriptions } from "antd";
+import { Row, Col, Typography, Button, Alert, Badge, List, Descriptions } from "antd";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import {
@@ -9,66 +9,46 @@ import {
 } from "@mds/common/redux/actionCreators/projectActionCreator";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import {
-    AMS_STATUS_CODES_SUCCESS,
     WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL,
     WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL,
     AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT,
     AMS_AUTHORIZATION_TYPES_TEXT,
-    AMS_APPROVED_STATUSES,
+    AMS_STATUSES_TYPES,
     EMPTY_FIELD,
 } from "@mds/common/constants/strings";
 import { PresetStatusColorType } from "antd/es/_util/colors";
 import Loading from "@mds/common/components/common/Loading";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
+import ProjectContacts from "../projects/ProjectContacts";
+import { getProjectLeads } from "@mds/common/redux/selectors/partiesSelectors";
+import { getMinistryContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
 
 const EmaApplicationsTab = () => {
     const dispatch = useAppDispatch();
+    const ministryContacts = useAppSelector(getMinistryContactsByRegion);
+    const project = useAppSelector(getProject);
+    const projectLeads = useAppSelector(getProjectLeads);
     const history = useHistory();
     const [isLoaded, setIsLoaded] = useState(true);
+    const [emaAuths, setEmaAuths] = useState([]);
     const systemFlag = useAppSelector(getSystemFlag);
     const { isFeatureEnabled } = useFeatureFlag();
     const amsFinalAppEnabled = isFeatureEnabled(Feature.AMS_FINAL_APPLICATION);
     const isCore = systemFlag === SystemFlagEnum.core;
-    const project = useAppSelector(getProject);
     const authorizations = project?.project_summary?.authorizations;
     const hasMinesActApp = authorizations?.some(auth => auth.project_summary_authorization_type === "MINES_ACT_PERMIT");
-    const [emaAuths, setEmaAuths] = useState([]);
 
-    const renderProjectContactsCard = (contacts = []) => {
-        return (
-            <Card title="Project Contacts">
-                {contacts.map((c) => {
-                    const isPrimary = c.is_primary;
-                    const hasJobTitle = c.job_title;
-                    const name = [c?.first_name, c?.last_name].join(" ").trim();
-                    let title: string;
-                    if (isPrimary) {
-                        title = "Primary Contact";
-                    } else if (hasJobTitle) {
-                        title = c.job_title;
-                    }
-                    return (
-                        <Typography.Paragraph className="ministry-contact-item" key={c.project_contact_guid}>
-                            {title && (
-                                <Typography.Text strong className="ministry-contact-title">
-                                    {title}
-                                </Typography.Text>
-                            )}
-                            <br />
-                            <Typography.Text>{name || EMPTY_FIELD}</Typography.Text>
-                            <br />
-                            <Typography.Text>{c.phone_number}</Typography.Text>
-                            <br />
-                            <Typography.Text>
-                                <a href={`mailto:${c.email}`}>{c.email}</a>
-                            </Typography.Text>
-                        </Typography.Paragraph>
-                    );
-                })}
-            </Card>
-        );
-    };
+    const project_lead_contact =
+        projectLeads?.filter((lead) => lead.party_guid.includes(project.project_lead_party_guid)) ?? [];
+
+    if (project_lead_contact?.length > 0) {
+        project_lead_contact[0].is_project_lead_contact = true;
+    } else {
+        project_lead_contact.push({ is_project_lead_contact: true, project_contact_guid: "n/a" });
+    }
+
+    const contactsAndProjectLead = [...project.contacts, project_lead_contact[0]];
 
     useEffect(() => {
         const amsAuthorizations = authorizations?.filter(
@@ -149,8 +129,8 @@ const EmaApplicationsTab = () => {
                                             <Descriptions.Item label="Type">{AMS_AUTHORIZATION_TYPES_TEXT[item.project_summary_permit_type[0]]}</Descriptions.Item>
                                             <Descriptions.Item label="" style={{ float: "right", marginLeft: "auto" }}>
                                                 <Badge
-                                                    status={AMS_STATUS_CODES_SUCCESS as PresetStatusColorType}
-                                                    text={AMS_APPROVED_STATUSES[item.status]}
+                                                    status={(AMS_STATUSES_TYPES[item.status] ?? "default") as PresetStatusColorType}
+                                                    text={item.status}
                                                 />
                                             </Descriptions.Item>
                                             <Descriptions.Item label="Authorization Number">
@@ -177,8 +157,12 @@ const EmaApplicationsTab = () => {
                         </Col >
                         {!isCore && <Col lg={{ span: 9, offset: 1 }} xl={{ span: 7, offset: 1 }}>
                             <Row gutter={[0, 16]}>
-                                {/* WILL HAVE TO CHANGE TO USE TARA's COMPONENT */}
-                                <Col span={24}>{renderProjectContactsCard(project.contacts)}</Col>
+                                <Col span={24}>
+                                    <ProjectContacts contacts={contactsAndProjectLead} title="Project Contacts" />
+                                </Col>
+                                {!isCore && <Col span={24}>
+                                    <ProjectContacts contacts={ministryContacts} title="Ministry Contacts" />
+                                </Col>}
                             </Row>
                         </Col>
                         }
