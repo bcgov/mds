@@ -128,8 +128,6 @@ const ProjectOverviewTab: FC = () => {
     } : {};
 
     const amsAuthTableData = amsAuthorizations.map((auth) => {
-        console.log("amsAUthdasadasd");
-        console.log(auth);
         const app = amsFinalApps.find((a) => a.project_summary_authorization_guid === auth.project_summary_authorization_guid);
         const statusData = amsStatusData.find((s) => s.ams_tracking_number === auth?.ams_tracking_number);
 
