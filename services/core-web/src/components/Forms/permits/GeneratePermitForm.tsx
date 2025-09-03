@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useRef, useState } from "react";
 import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { Button, Col, Row, Descriptions, Popconfirm } from "antd";
 import EditOutlined from "@ant-design/icons/EditOutlined";
@@ -30,6 +30,8 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import { Feature } from "@mds/common/utils";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common/constants/environment";
+import VariableConditionMenu from "@mds/common/components/permits/VariableConditionMenu";
+import { TextAreaRef } from "antd/lib/input/TextArea";
 
 
 interface IGeneratedPermitFormProps {
@@ -58,6 +60,7 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
   const [addingToCategoryCode, setAddingToCategoryCode] = useState<string>();
   const { categoriesWithConditions } = useAppSelector(getNowDraftConditionsFormatted);
   const userCanEdit = useAppSelector(userHasRole(USER_ROLES.role_edit_permits));
+  const preambleInputRef = useRef<TextAreaRef | null>(null);
 
   const formattedCategories: IFormattedConditionCategory[] = categoriesWithConditions.map((cat) => {
 
@@ -309,7 +312,7 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
           draftPermit={props.draftPermit}
         />
       </ScrollContentWrapper>
-      {editingPreambleFlag && <VariableConditionMenuOld />}
+      {editingPreambleFlag && !newEditorEnabled &&<VariableConditionMenuOld />}
       {props.draftPermitAmendment.has_permit_conditions && (
         <ScrollContentWrapper id="preamble" title="Preamble" isLoaded={props.isLoaded}>
           <>
@@ -383,11 +386,15 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
               }
             >
               <Row gutter={32}>
-                <Col xs={48} md={24}>
+                <Col xs={48} md={24} className="condition-editor">
+                  <Row className="ant-form-item-label">
+                    <label htmlFor="preamble_text">Preamble Text</label>
+                  </Row>
+                  {editingPreambleFlag && newEditorEnabled && <VariableConditionMenu conditionForm={editingFormName} inputRef={preambleInputRef} />}
                   <Field
                     id="preamble_text"
                     name="preamble_text"
-                    label="Preamble text"
+                    inputRef={preambleInputRef}
                     component={renderConfig.AUTO_SIZE_FIELD}
                     disabled={!editingPreambleFlag}
                     minRows={4}

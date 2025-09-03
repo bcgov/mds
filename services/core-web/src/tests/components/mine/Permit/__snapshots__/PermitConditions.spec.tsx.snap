@@ -1021,7 +1021,13 @@ exports[`PermitConditions renders properly 1`] = `
                                             <div
                                               class="ant-typography view-item-value"
                                             >
-                                              Section decade check including.
+                                              <span
+                                                class="injectable-string"
+                                              >
+                                                <span>
+                                                  Section decade check including.
+                                                </span>
+                                              </span>
                                             </div>
                                           </div>
                                         </div>
@@ -1310,7 +1316,13 @@ exports[`PermitConditions renders properly 1`] = `
                                             <div
                                               class="ant-typography view-item-value"
                                             >
-                                              Reflect miss police tough such single force.
+                                              <span
+                                                class="injectable-string"
+                                              >
+                                                <span>
+                                                  Reflect miss police tough such single force.
+                                                </span>
+                                              </span>
                                             </div>
                                           </div>
                                         </div>
@@ -1571,7 +1583,13 @@ exports[`PermitConditions renders properly 1`] = `
                                             <div
                                               class="ant-typography view-item-value"
                                             >
-                                              International clear those TV individual look.
+                                              <span
+                                                class="injectable-string"
+                                              >
+                                                <span>
+                                                  International clear those TV individual look.
+                                                </span>
+                                              </span>
                                             </div>
                                           </div>
                                         </div>
@@ -1608,7 +1626,13 @@ exports[`PermitConditions renders properly 1`] = `
                                                   <div
                                                     class="ant-typography view-item-value"
                                                   >
-                                                    See store understand company interview value factor.
+                                                    <span
+                                                      class="injectable-string"
+                                                    >
+                                                      <span>
+                                                        See store understand company interview value factor.
+                                                      </span>
+                                                    </span>
                                                   </div>
                                                 </div>
                                               </div>
@@ -1645,7 +1669,13 @@ exports[`PermitConditions renders properly 1`] = `
                                                         <div
                                                           class="ant-typography view-item-value"
                                                         >
-                                                          Mr item fall study although.
+                                                          <span
+                                                            class="injectable-string"
+                                                          >
+                                                            <span>
+                                                              Mr item fall study although.
+                                                            </span>
+                                                          </span>
                                                         </div>
                                                       </div>
                                                     </div>
@@ -1688,7 +1718,13 @@ exports[`PermitConditions renders properly 1`] = `
                                                   <div
                                                     class="ant-typography view-item-value"
                                                   >
-                                                    words words words sub-section
+                                                    <span
+                                                      class="injectable-string"
+                                                    >
+                                                      <span>
+                                                        words words words sub-section
+                                                      </span>
+                                                    </span>
                                                   </div>
                                                 </div>
                                               </div>
@@ -1725,7 +1761,13 @@ exports[`PermitConditions renders properly 1`] = `
                                                         <div
                                                           class="ant-typography view-item-value"
                                                         >
-                                                          a condition added underneath the section, with a lot of detail added to it, which is probably important for documents like permits
+                                                          <span
+                                                            class="injectable-string"
+                                                          >
+                                                            <span>
+                                                              a condition added underneath the section, with a lot of detail added to it, which is probably important for documents like permits
+                                                            </span>
+                                                          </span>
                                                         </div>
                                                       </div>
                                                     </div>
@@ -1762,7 +1804,13 @@ exports[`PermitConditions renders properly 1`] = `
                                                               <div
                                                                 class="ant-typography view-item-value"
                                                               >
-                                                                a detailed list item desribing exactly what must be done to accomplish the parent condition
+                                                                <span
+                                                                  class="injectable-string"
+                                                                >
+                                                                  <span>
+                                                                    a detailed list item desribing exactly what must be done to accomplish the parent condition
+                                                                  </span>
+                                                                </span>
                                                               </div>
                                                             </div>
                                                           </div>
@@ -1802,7 +1850,13 @@ exports[`PermitConditions renders properly 1`] = `
                                                               <div
                                                                 class="ant-typography view-item-value"
                                                               >
-                                                                but, that wasn't quite enough information, another list item will expand on other responsibilities associated with this permit
+                                                                <span
+                                                                  class="injectable-string"
+                                                                >
+                                                                  <span>
+                                                                    but, that wasn't quite enough information, another list item will expand on other responsibilities associated with this permit
+                                                                  </span>
+                                                                </span>
                                                               </div>
                                                             </div>
                                                           </div>
@@ -1842,7 +1896,13 @@ exports[`PermitConditions renders properly 1`] = `
                                                               <div
                                                                 class="ant-typography view-item-value"
                                                               >
-                                                                good things come in 3s, so another list item is added to the condition
+                                                                <span
+                                                                  class="injectable-string"
+                                                                >
+                                                                  <span>
+                                                                    good things come in 3s, so another list item is added to the condition
+                                                                  </span>
+                                                                </span>
                                                               </div>
                                                             </div>
                                                           </div>
@@ -1879,7 +1939,13 @@ exports[`PermitConditions renders properly 1`] = `
                                                                     <div
                                                                       class="ant-typography view-item-value"
                                                                     >
-                                                                      we want to show nesting to 5 levels, so one list item gets a child
+                                                                      <span
+                                                                        class="injectable-string"
+                                                                      >
+                                                                        <span>
+                                                                          we want to show nesting to 5 levels, so one list item gets a child
+                                                                        </span>
+                                                                      </span>
                                                                     </div>
                                                                   </div>
                                                                 </div>
@@ -1988,7 +2054,13 @@ exports[`PermitConditions renders properly 1`] = `
                                             <div
                                               class="ant-typography view-item-value"
                                             >
-                                              Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines
+                                              <span
+                                                class="injectable-string"
+                                              >
+                                                <span>
+                                                  Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines
+                                                </span>
+                                              </span>
                                             </div>
                                           </div>
                                         </div>
@@ -2025,7 +2097,13 @@ exports[`PermitConditions renders properly 1`] = `
                                                   <div
                                                     class="ant-typography view-item-value"
                                                   >
-                                                    It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?
+                                                    <span
+                                                      class="injectable-string"
+                                                    >
+                                                      <span>
+                                                        It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?
+                                                      </span>
+                                                    </span>
                                                   </div>
                                                 </div>
                                               </div>

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { change, Field, isDirty, reset } from "@mds/common/components/forms/form";
 import { Row, Col, Button, Typography, Modal, Tag } from "antd";
@@ -39,6 +39,7 @@ import { getPermitConditionTags } from "@mds/common/redux/slices/permitCondition
 import VariableConditionMenu from "./VariableConditionMenu";
 import Highlight from "react-highlighter";
 import { highlightPermitConditionVariables } from "@mds/common/redux/utils/helpers";
+import { TextAreaRef } from "antd/lib/input/TextArea";
 
 interface PermitConditionFormProps {
     isExtracted: boolean;
@@ -83,6 +84,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags);
     const stepEditDisabled = Boolean(standardConditionType) || isNowEditor;
     const enablePermitConditionTags = isFeatureEnabled(Feature.PERMIT_CONDITION_TAGS);
+    const conditionInputRef = useRef<TextAreaRef | null>(null);
 
     const startEdit = () => {
         const handleEdit = () => {
@@ -312,13 +314,12 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 </Col>
                 <Col className="condition-column" {...editableProps}>
                     <Col className="condition-editor">
-                        <Row className="condition-editor-toolbar">
-                            <VariableConditionMenu isManagementView={Boolean(standardConditionType)} conditionForm={editingFormName}/>
-                        </Row>
+                        <VariableConditionMenu inputRef={conditionInputRef} isManagementView={Boolean(standardConditionType)} conditionForm={editingFormName}/>
                         <Field
                             name="condition"
                             component={RenderAutoSizeField}
                             disabled={isAddingListItem || loading}
+                            inputRef={conditionInputRef}
                         />
                     </Col>
                     {isEditMode && !isAddingListItem && (

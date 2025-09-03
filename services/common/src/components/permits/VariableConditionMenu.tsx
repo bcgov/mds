@@ -1,6 +1,6 @@
-import React, { FC, useState } from "react";
+import React, { FC, MutableRefObject, useState } from "react";
 import { useSelector } from "react-redux"
-import {  Button, Dropdown, MenuProps, Space, Tooltip } from "antd";
+import {  Button, Dropdown, MenuProps, Row, Space, Tooltip } from "antd";
 import { change, getFormValues } from "@mds/common/components/forms/form";
 import { getNOWReclamationSummary } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import { getDropdownNoticeOfWorkActivityTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -9,15 +9,18 @@ import { IConditionSection, INoWGeneratedPermit } from "@mds/common/interfaces";
 import { useAppDispatch } from "@mds/common/redux/rootState";
 import { FORM } from "@mds/common/constants/forms";
 import { QuestionCircleOutlined } from "@ant-design/icons";
+import { TextAreaRef } from "antd/lib/input/TextArea";
 
 interface VariableConditionMenuProps {
   isManagementView?: boolean,
-  conditionForm: string
+  conditionForm: string,
+  inputRef: MutableRefObject<TextAreaRef | null>
 };
 
 const VariableConditionMenu: FC<VariableConditionMenuProps> = ({
   isManagementView = false,
-  conditionForm
+  conditionForm,
+  inputRef
 }) => {
   const dispatch = useAppDispatch();
   const conditionFormValues = useSelector(getFormValues(conditionForm)) as IConditionSection;
@@ -27,17 +30,24 @@ const VariableConditionMenu: FC<VariableConditionMenuProps> = ({
   const [open, setOpen] = useState(false);
   const closeTimeout = React.useRef<NodeJS.Timeout | null>(null);
 
-  const handleClick = (value) => {
-    if (!isEmpty(conditionFormValues)) {
-      const newValues = `${conditionFormValues.condition ?? ""} ${value.key}`;
-      dispatch(change(conditionForm, "condition", newValues));
-    } else {
-      const preambleText = generatePermitFormValues.preamble_text
-        ? generatePermitFormValues.preamble_text
-        : "";
+  const handleClick: MenuProps['onClick'] = async (event) => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+    const isPreambleText = isEmpty(conditionFormValues);
+    const text = isPreambleText ? generatePermitFormValues.preamble_text ?? "" : conditionFormValues.condition ?? "";
+    const pos = inputRef.current?.resizableTextArea?.textArea?.selectionStart ?? text.length;
+    const newText = `${text.slice(0, pos)} ${event.key} ${text.slice(pos)}`.replace(/ {2,}/g, ' ');
 
-      const newPreambleText = `${preambleText} ${value.key}`;
-      dispatch(change(FORM.GENERATE_PERMIT, "preamble_text", newPreambleText));
+    if (!isPreambleText) {
+      await dispatch(change(conditionForm, "condition", newText));
+    } else {
+      await dispatch(change(FORM.GENERATE_PERMIT, "preamble_text", newText));
+    }
+
+    if (inputRef.current) {
+      const updatedCursorPos = newText.indexOf(event.key, pos) + event.key.length;
+      inputRef.current.resizableTextArea.textArea.setSelectionRange(updatedCursorPos, updatedCursorPos);
     }
   }
 
@@ -126,7 +136,7 @@ const VariableConditionMenu: FC<VariableConditionMenuProps> = ({
     ]
 
     return (
-        <div
+        <Row className="condition-editor-toolbar"
           onMouseEnter={() => {
             if (closeTimeout.current) clearTimeout(closeTimeout.current);
             setOpen(true);
@@ -150,7 +160,7 @@ const VariableConditionMenu: FC<VariableConditionMenuProps> = ({
               </Tooltip>
             </Button>
           </Dropdown>
-        </div>
+        </Row>
     )
 }
 

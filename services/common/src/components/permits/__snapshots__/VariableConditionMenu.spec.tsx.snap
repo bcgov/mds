@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`VariableConditionMenu renders correctly and matches the snapshot 1`] = `
-<div>
+<div
+  class="ant-row condition-editor-toolbar"
+>
   <button
     class="ant-btn ant-btn-default ant-dropdown-trigger ant-dropdown-open"
     type="button"
