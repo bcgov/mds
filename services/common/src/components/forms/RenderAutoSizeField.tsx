@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { Input, Form, Row } from "antd";
 import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
 import { FormConsumer, IFormContext } from "./FormWrapper";
+import { TextAreaRef } from "antd/lib/input/TextArea";
 
 /**
  * @constant  RenderAutoSizeField - Ant Design `Input` autosize component for redux-form. (useful for notes/description)
@@ -10,7 +11,7 @@ import { FormConsumer, IFormContext } from "./FormWrapper";
 interface AutoSizeProps extends BaseInputProps {
   minRows?: number;
   maximumCharacters: number;
-  inputRef?: React.Ref<HTMLTextAreaElement>;
+  inputRef?: React.Ref<TextAreaRef>;
 }
 
 const RenderAutoSizeField: FC<AutoSizeProps> = ({
