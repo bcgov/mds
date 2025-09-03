@@ -165,7 +165,22 @@ exports[`Project renders properly 1`] = `
                         role="tab"
                         tabindex="0"
                       >
-                        Application
+                        Mines Act Application
+                      </div>
+                    </div>
+                    <div
+                      class="ant-tabs-tab"
+                      data-node-key="ema-applications"
+                    >
+                      <div
+                        aria-controls="rc-tabs-test-panel-ema-applications"
+                        aria-selected="false"
+                        class="ant-tabs-tab-btn"
+                        id="rc-tabs-test-tab-ema-applications"
+                        role="tab"
+                        tabindex="0"
+                      >
+                        EMA Applications
                       </div>
                     </div>
                     <div

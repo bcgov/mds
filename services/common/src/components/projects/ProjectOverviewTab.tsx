@@ -13,7 +13,7 @@ import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import { Feature } from "@mds/common/utils/featureFlag";
 import ProjectLinks from "@mds/common/components/projectSummary/ProjectLinks";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
-import { AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES, PROJECT_SUMMARY_STATUS_CODES } from "@mds/common/constants/enums";
+import { AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES } from "@mds/common/constants/enums";
 import CoreTable from "../common/CoreTable";
 import { renderActionsColumn, renderCategoryColumn, renderDateColumn, renderStatusColumn, renderTextColumn } from "../common/CoreTableCommonColumns";
 import { fetchAmsFinalAppsByProjectSummary, getAmsFinalAppsByProjectSummary } from "@mds/common/redux/slices/amsFinalApplicationSlice";
@@ -140,7 +140,7 @@ const ProjectOverviewTab: FC = () => {
             ...app,
             ...auth,
             status,
-            auth_no: auth.existing_permits_authorizations[0]
+            auth_no: auth?.existing_permits_authorizations?.[0] ?? Strings.NOT_APPLICABLE,
         }
     });
 

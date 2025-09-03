@@ -534,6 +534,12 @@ export const WASTE_DISCHARGE_AUTHORIZATION_PROCESS =
 export const AMS_ENVIRONMENT_PUBLIC_DOCUMENT_SEARCH_URL =
   "https://j200.gov.bc.ca/pub/ams/Default.aspx?PossePresentation=DocumentSearch";
 
+export const MINES_ACT_INCLUDES_EMA_AUTH_TEXT =
+  "This application package includes authorization documents related to the ";
+
+export const MINES_ACT_ENSURE_REVIEW_EMA_AUTH_TEXT =
+  "Please ensure that these files are reviewed alongside the main submission, as they may contain critical permitting information relevant to your inspection or assessment.";
+
 export const REPORT_REGULATORY_AUTHORITY_CODES_HASH = {
   CPO: "Chief Permitting Officer",
   CIM: "Chief Inspector of Mines",

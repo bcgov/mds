@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Row, Col, Typography, Descriptions, Input, Button } from "antd";
+import { Row, Col, Typography, Descriptions, Input, Button, Alert } from "antd";
 import DownloadOutlined from "@ant-design/icons/DownloadOutlined";
 import { getDropdownMajorMinesApplicationStatusCodes, getMajorMinesApplicationStatusCodesHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import {
@@ -38,6 +38,8 @@ const MajorMineApplicationTab: FC = () => {
   const mineDocuments = useSelector(getMineDocuments);
   const dropdownMajorMineAppStatusCodes = useSelector(getDropdownMajorMinesApplicationStatusCodes);
   const archivedDocuments = mineDocuments?.map((doc) => new MajorMineApplicationDocument(doc))
+  const authorizations = project?.project_summary?.authorizations;
+  const hasEmaApp = authorizations?.some(auth => auth.ams_tracking_number);
 
   const defaultLoaded = project.project_guid === projectGuid;
   const { isFeatureEnabled } = useFeatureFlag();
@@ -128,6 +130,20 @@ const MajorMineApplicationTab: FC = () => {
             formName={FORM.UPDATE_MAJOR_MINE_APPLICATION}
             dropdownOptions={dropdownMajorMineAppStatusCodes}
           />
+          {hasEmaApp && (
+            <Alert
+              className="ant-alert-grey margin-medium--bottom"
+              description={
+                <div>
+                  <Typography.Text>
+                    <b>{Strings.MINES_ACT_INCLUDES_EMA_AUTH_TEXT}<i>Mines Act</i></b>
+                    <br />
+                    {Strings.MINES_ACT_ENSURE_REVIEW_EMA_AUTH_TEXT}
+                  </Typography.Text>
+                </div>}
+              showIcon
+            />
+          )}
         </Col>
       </Row>
 

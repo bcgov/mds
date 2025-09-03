@@ -20,6 +20,7 @@ import InformationRequirementsTableEntryTab from "./InformationRequirementsTable
 import MajorMineApplicationEntryTab from "./MajorMineApplicationEntryTab";
 import ProjectDocumentsTab from "@mds/common/components/projects/ProjectDocumentsTab";
 import ProjectDescriptionTab from "@mds/common/components/project/ProjectDescriptionTab";
+import EmaApplicationsTab from "@mds/common/components/project/EmaApplicationsTab";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { getProjectSummary } from "@mds/common/redux/reducers/projectReducer";
 import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
@@ -32,6 +33,7 @@ const tabs = [
   "information-requirements-table",
   "toc",
   "major-mine-application",
+  "ema-applications",
   "documents",
 ];
 
@@ -57,6 +59,9 @@ const ProjectPage: FC = () => {
     major_mine_application,
     mrc_review_required,
   } = project;
+
+  const authorizations = projectSummary?.authorizations;
+  const hasEmaApp = authorizations?.some((auth) => auth.ams_tracking_number);
 
   const isProjectSummarySubmitted = Boolean(projectSummary?.submission_date);
   const hasInformationRequirementsTable = Boolean(information_requirements_table?.irt_guid);
@@ -106,6 +111,7 @@ const ProjectPage: FC = () => {
     switch (newActiveTab) {
       case "documents":
       case "project-description":
+      case "ema-applications":
       case "overview":
         url = router.EDIT_PROJECT.dynamicRoute(projectGuid, newActiveTab);
         return history.push(url);
@@ -122,7 +128,6 @@ const ProjectPage: FC = () => {
       case "major-mine-application":
         url = router.PROJECT_STAGE_ENTRY.dynamicRoute(projectGuid, newActiveTab);
         return history.push(url);
-
       default:
         return null;
     }
@@ -177,10 +182,19 @@ const ProjectPage: FC = () => {
       ),
     },
     {
-      label: "Application",
+      label: "Mines Act Application",
       key: "major-mine-application",
       disabled: !hasFinalAplication && !isProjectSummarySubmitted,
       children: <div className={pageClass}>{majorMineApplicationTabContent}</div>,
+    },
+    hasEmaApp && {
+      label: "EMA Applications",
+      key: "ema-applications",
+      children: (
+        <div className={pageClass}>
+          <EmaApplicationsTab />
+        </div>
+      ),
     },
     {
       label: "Documents",

@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getFormValues, isDirty, submit } from "@mds/common/components/forms/form";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
-import { Button, Row, Col, Popconfirm, Steps, Typography } from "antd";
+import { Button, Row, Col, Popconfirm, Steps, Typography, Alert } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { getProject } from "@mds/common/redux/reducers/projectReducer";
 import {
@@ -25,12 +25,15 @@ import ProjectCallout from "@mds/common/components/projects/ProjectCallout";
 import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
 import { IMajorMinesApplication } from "@mds/common/interfaces/projects/majorMinesApplication.interface";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
+import * as Strings from "@mds/common/constants/strings";
 
 export const MajorMineApplicationPage: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { projectGuid } = useParams<{ projectGuid: string }>();
   const project = useSelector(getProject);
+  const authorizations = project?.project_summary?.authorizations;
+  const hasEmaApp = authorizations?.some((auth) => auth.ams_tracking_number);
   const majorMineApplication = useSelector(getFormattedProjectApplication);
   const formValues = useSelector(
     getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION)
@@ -319,7 +322,27 @@ export const MajorMineApplicationPage: FC = () => {
       <Row>
         <Col span={24}>
           {current !== 0 && (
-            <ProjectCallout status_code={project?.major_mine_application?.status_code} />
+            <>
+              <ProjectCallout status_code={project?.major_mine_application?.status_code} />
+              {hasEmaApp && (
+                <Alert
+                  className="margin-medium--bottom"
+                  description={
+                    <div>
+                      <Typography.Text>
+                        <b>
+                          {Strings.MINES_ACT_INCLUDES_EMA_AUTH_TEXT}
+                          <i>Mines Act</i>
+                        </b>
+                        <br />
+                        {Strings.MINES_ACT_ENSURE_REVIEW_EMA_AUTH_TEXT}
+                      </Typography.Text>
+                    </div>
+                  }
+                  showIcon
+                />
+              )}
+            </>
           )}
           <div>{stepItems[current].content}</div>
         </Col>
