@@ -88,7 +88,7 @@ const ProjectCallout: FC<ProjectCalloutProps> = ({ status_code, formField }) => 
       }
       showIcon
       type="warning"
-      className="margin-large--bottom"
+      className="margin-medium--bottom"
     />
   ) : (
     <Callout message={calloutParams.message} title={title} severity={calloutParams.severity} />

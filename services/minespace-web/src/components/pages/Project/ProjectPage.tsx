@@ -15,11 +15,12 @@ import { fetchMinistryContactsByRegion } from "@mds/common/redux/actionCreators/
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import MajorMineApplicationReviewSubmit from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationReviewSubmit";
-import ProjectOverviewTab from "./ProjectOverviewTab";
+import ProjectOverviewTab from "@mds/common/components/projects/ProjectOverviewTab";
 import InformationRequirementsTableEntryTab from "./InformationRequirementsTableEntryTab";
 import MajorMineApplicationEntryTab from "./MajorMineApplicationEntryTab";
 import ProjectDocumentsTab from "@mds/common/components/projects/ProjectDocumentsTab";
 import ProjectDescriptionTab from "@mds/common/components/project/ProjectDescriptionTab";
+import EmaApplicationsTab from "@mds/common/components/project/EmaApplicationsTab";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { getProjectSummary } from "@mds/common/redux/reducers/projectReducer";
 import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
@@ -29,9 +30,10 @@ import { Feature } from "@mds/common/utils/featureFlag";
 const tabs = [
   "overview",
   "project-description",
-  "irt-entry",
+  "information-requirements-table",
   "toc",
   "major-mine-application",
+  "ema-applications",
   "documents",
 ];
 
@@ -58,13 +60,16 @@ const ProjectPage: FC = () => {
     mrc_review_required,
   } = project;
 
+  const authorizations = projectSummary?.authorizations;
+  const hasEmaApp = authorizations?.some((auth) => auth.ams_tracking_number);
+
   const isProjectSummarySubmitted = Boolean(projectSummary?.submission_date);
   const hasInformationRequirementsTable = Boolean(information_requirements_table?.irt_guid);
   const hasFinalAplication = Boolean(major_mine_application?.major_mine_application_guid);
 
   const mine = useSelector(getMineById(mine_guid));
   const { mine_name } = mine ?? {};
-  const { status_code: irtStatus, irt_guid } = information_requirements_table ?? {};
+  const { status_code: irtStatus } = information_requirements_table ?? {};
   const { status_code: mmaStatus, major_mine_application_guid } = major_mine_application ?? {};
   const irtDocsDisabled = areDocumentFieldsDisabled(SystemFlagEnum.ms, irtStatus);
   const mmaDocsDisabled = areDocumentFieldsDisabled(SystemFlagEnum.ms, mmaStatus);
@@ -77,53 +82,6 @@ const ProjectPage: FC = () => {
       }
     }
     dispatch(fetchMineDocuments(mine_guid, filters));
-  };
-
-  const navigateFromProjectStagesTable = (source, status) => {
-    switch (source) {
-      case "DES": {
-        const projectDescriptionTab = document.querySelector('[id*="project-description"]');
-        if (!projectDescriptionTab) {
-          return null;
-        }
-
-        // @ts-ignore
-        return projectDescriptionTab.click();
-      }
-      case "IRT": {
-        if (irtDocsDisabled) {
-          return history.push({
-            pathname: router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-              projectGuid,
-              irt_guid
-            ),
-            state: { current: 2 },
-          });
-        }
-        const irtTab = document.querySelector('[id*="irt-entry"]');
-        if (!irtTab) {
-          return null;
-        }
-        // @ts-ignore
-        return irtTab.click();
-      }
-      case "MMA":
-        if (mmaDocsDisabled) {
-          return history.push({
-            pathname: router.REVIEW_MAJOR_MINE_APPLICATION.dynamicRoute(
-              projectGuid,
-              major_mine_application_guid
-            ),
-            state: { current: 2, applicationSubmitted: true },
-          });
-        } else {
-          const mmaTab = document.querySelector('[id*="major-mine-application"]') as HTMLElement;
-          if (!mmaTab) {
-            return null;
-          }
-          return mmaTab.click();
-        }
-    }
   };
 
   const handleFetchData = async (includeArchivedDocuments = false) => {
@@ -153,10 +111,11 @@ const ProjectPage: FC = () => {
     switch (newActiveTab) {
       case "documents":
       case "project-description":
+      case "ema-applications":
       case "overview":
         url = router.EDIT_PROJECT.dynamicRoute(projectGuid, newActiveTab);
         return history.push(url);
-      case "irt-entry": {
+      case "information-requirements-table": {
         url = irtDocsDisabled
           ? router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
               projectGuid,
@@ -169,7 +128,6 @@ const ProjectPage: FC = () => {
       case "major-mine-application":
         url = router.PROJECT_STAGE_ENTRY.dynamicRoute(projectGuid, newActiveTab);
         return history.push(url);
-
       default:
         return null;
     }
@@ -197,7 +155,7 @@ const ProjectPage: FC = () => {
       key: "overview",
       children: (
         <div className={pageClass}>
-          <ProjectOverviewTab navigateForward={navigateFromProjectStagesTable} />
+          <ProjectOverviewTab />
         </div>
       ),
     },
@@ -212,7 +170,7 @@ const ProjectPage: FC = () => {
     },
     {
       label: "IRT",
-      key: "irt-entry",
+      key: "information-requirements-table",
       disabled: !hasInformationRequirementsTable && !isProjectSummarySubmitted,
       children: (
         <div className={pageClass}>
@@ -224,10 +182,19 @@ const ProjectPage: FC = () => {
       ),
     },
     {
-      label: "Application",
+      label: "Mines Act Application",
       key: "major-mine-application",
       disabled: !hasFinalAplication && !isProjectSummarySubmitted,
       children: <div className={pageClass}>{majorMineApplicationTabContent}</div>,
+    },
+    hasEmaApp && {
+      label: "EMA Applications",
+      key: "ema-applications",
+      children: (
+        <div className={pageClass}>
+          <EmaApplicationsTab />
+        </div>
+      ),
     },
     {
       label: "Documents",
@@ -257,6 +224,7 @@ const ProjectPage: FC = () => {
         <Col span={24}>
           <Tabs
             defaultActiveKey={activeTab}
+            activeKey={activeTab}
             onChange={handleTabChange}
             className="core-tabs fixed-tabs-tabs"
             items={tabItems}

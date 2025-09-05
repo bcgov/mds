@@ -30,7 +30,7 @@ interface PermitConditionLayerProps {
   currentPosition: number;
   conditionCount: number;
   permitAmendmentGuid: string;
-  refreshData: () => Promise<void>;
+  refreshData: (closeForm?: boolean) => Promise<void>;
   conditionSelected?: (condition: IPermitCondition) => void;
   categoryOptions?: IGroupedDropdownList[];
 }

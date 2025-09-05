@@ -7,12 +7,13 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import * as routes from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import ProjectOverviewTab from "@/components/mine/Projects/ProjectOverviewTab";
+import ProjectOverviewTab from "@mds/common/components/projects/ProjectOverviewTab";
 import InformationRequirementsTableTab from "@/components/mine/Projects/InformationRequirementsTableTab";
 import MajorMineApplicationTab from "@/components/mine/Projects/MajorMineApplicationTab";
 import NullScreen from "@/components/common/NullScreen";
 import DecisionPackageTab from "@/components/mine/Projects/DecisionPackageTab";
 import ProjectDescriptionTab from "@mds/common/components/project/ProjectDescriptionTab";
+import EmaApplicationsTab from "@mds/common/components/project/EmaApplicationsTab";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
 import ProjectDocumentsTab from "@mds/common/components/projects/ProjectDocumentsTab";
@@ -29,7 +30,9 @@ const Project: FC = () => {
   const [isValid, setIsValid] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
 
-  const { information_requirements_table, major_mine_application } = project;
+  const { information_requirements_table, major_mine_application, project_summary } = project;
+  const authorizations = project_summary?.authorizations;
+  const hasEmaApp = authorizations?.some(auth => auth.ams_tracking_number);
 
   const hasInformationRequirementsTable = Boolean(information_requirements_table?.irt_guid);
   const hasFinalAplication = Boolean(major_mine_application?.major_mine_application_guid);
@@ -65,7 +68,7 @@ const Project: FC = () => {
     let url = routes.EDIT_PROJECT.dynamicRoute(projectGuid, newActiveTab);
 
     switch (newActiveTab) {
-      case "app":
+      case "major-mine-application":
         url = routes.PROJECT_APPLICATION.dynamicRoute(projectGuid);
         break;
       case "decision-package":
@@ -140,10 +143,19 @@ const Project: FC = () => {
       ),
     },
     {
-      key: "app",
-      label: "Application",
+      key: "major-mine-application",
+      label: "Mines Act Application",
       disabled: !hasFinalAplication,
       children: <MajorMineApplicationTab />
+    },
+    hasEmaApp && {
+      key: "ema-applications",
+      label: "EMA Applications",
+      children: (
+        <div className="padding-lg">
+          <EmaApplicationsTab />
+        </div>
+      )
     },
     isFeatureEnabled(Feature.MAJOR_PROJECT_DECISION_PACKAGE) && {
       key: "decision-package",
@@ -170,11 +182,10 @@ const Project: FC = () => {
           <LoadingWrapper condition={isLoaded}>
             <Tabs
               size="large"
+              tabBarStyle={{ marginLeft: "20px" }}
               activeKey={activeTab}
               animated={{ inkBar: true, tabPane: false }}
-              className="now-tabs core-tabs fixed-tabs-tabs"
-              style={{ margin: "0" }}
-              centered
+              className="core-tabs fixed-tabs-tabs"
               onTabClick={handleTabChange}
               items={tabItems}
               destroyInactiveTabPane={true}

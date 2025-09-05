@@ -12,6 +12,7 @@ import {
   PROJECT,
   PROJECT_SUMMARY_MINISTRY_COMMENTS,
   SEARCH_PERMIT_CONDITIONS_RESPONSE,
+  AMS_ENVIRONMENT_AUTH_STATUS_RESPONSE,
 } from "@mds/common/tests/mocks/dataMocks";
 import queryString from "query-string";
 import { SystemFlagEnum } from "../constants/enums";
@@ -52,6 +53,11 @@ const projectHandlers = [
       return HttpResponse.json(PROJECT_SUMMARY_MINISTRY_COMMENTS);
     }
   ),
+  http.post(
+    "/%3CAPI_URL%3E/projects/project-summary-environment-authorization-statuses", async () => {
+      return HttpResponse.json(AMS_ENVIRONMENT_AUTH_STATUS_RESPONSE);
+    }
+  )
 ];
 
 const permitHandlers = [
