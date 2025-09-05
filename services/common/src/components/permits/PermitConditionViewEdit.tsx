@@ -16,6 +16,7 @@ import { createDropDownList } from "@mds/common/redux/utils/helpers";
 import { getPermitConditionCategoryOptions } from "@mds/common/redux/reducers/staticContentReducer";
 import { FORM } from "@mds/common/constants/forms";
 import { fetchPermitConditionTags, getPermitConditionTags } from "@mds/common/redux/slices/permitConditionTagSlice";
+import VariableConditionMenu from "./VariableConditionMenu";
 
 const { Title } = Typography;
 

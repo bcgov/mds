@@ -159,6 +159,37 @@ div.condition-layer {
   margin-left: 5px;
 }
 
+.condition-editor {
+
+  .condition-editor-toolbar {
+    background-color: #f5f5f5;
+    border: 1px solid #d9d9d9;
+    border-bottom: none;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+
+    .anticon {
+      vertical-align: bottom;
+    }
+
+    .ant-btn {
+      margin-bottom: 0;
+      border-radius: 0;
+      border: none;
+      border-right: 1px solid #ddd;
+      background-color: #eee;
+      color: #7c66ad;
+    }
+
+  }
+
+  .ant-input {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+}
+
 .permit-status-banner {
   position: fixed;
   width: 100%;

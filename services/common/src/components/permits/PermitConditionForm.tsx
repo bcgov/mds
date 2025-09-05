@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { change, Field, isDirty, reset } from "@mds/common/components/forms/form";
 import { Row, Col, Button, Typography, Modal, Tag } from "antd";
@@ -36,6 +36,10 @@ import RenderMultiSelect from "../forms/RenderMultiSelect";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
 import { getPermitConditionTags } from "@mds/common/redux/slices/permitConditionTagSlice";
+import VariableConditionMenu from "./VariableConditionMenu";
+import Highlight from "react-highlighter";
+import { highlightPermitConditionVariables } from "@mds/common/redux/utils/helpers";
+import { TextAreaRef } from "antd/lib/input/TextArea";
 
 interface PermitConditionFormProps {
     isExtracted: boolean;
@@ -80,6 +84,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags);
     const stepEditDisabled = Boolean(standardConditionType) || isNowEditor;
     const enablePermitConditionTags = isFeatureEnabled(Feature.PERMIT_CONDITION_TAGS);
+    const conditionInputRef = useRef<TextAreaRef | null>(null);
 
     const startEdit = () => {
         const handleEdit = () => {
@@ -250,7 +255,9 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 </Col>
                 <Col className="condition-column" {...editableProps}>
                     <Typography.Paragraph className="view-item-value">
-                        {condition.condition}
+                        <Highlight className="injectable-string" search={highlightPermitConditionVariables()}>
+                            {condition.condition}
+                        </Highlight>
                     </Typography.Paragraph>
                 </Col>
             </Row>
@@ -314,11 +321,15 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                     />
                 </Col>
                 <Col className="condition-column" {...editableProps}>
-                    <Field
-                        name="condition"
-                        component={RenderAutoSizeField}
-                        disabled={isAddingListItem || loading}
-                    />
+                    <Col className="condition-editor">
+                        <VariableConditionMenu inputRef={conditionInputRef} isManagementView={Boolean(standardConditionType)} conditionForm={editingFormName}/>
+                        <Field
+                            name="condition"
+                            component={RenderAutoSizeField}
+                            disabled={isAddingListItem || loading}
+                            inputRef={conditionInputRef}
+                        />
+                    </Col>
                     {isEditMode && !isAddingListItem && (
                         <Row justify="space-between" align="top" wrap={false}>
                             <Col>
