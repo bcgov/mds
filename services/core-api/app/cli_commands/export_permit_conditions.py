@@ -73,7 +73,7 @@ def export_permit_conditions(permit_amendment_guid, csv_writer=None):
     condition_variables = {}
     if isNow and amendment.now_application_identity:
         total_liability = calculate_liability(amendment.now_application_identity.now_application)
-        condition_variables = transform_variables_to_data(amendment.now_application_identity.now_application, permit, mine, total_liability)
+        condition_variables = transform_variables_to_data(amendment.now_application_identity.now_application, amendment, mine, total_liability)
 
     condition_rows = []
     processed_ids = set()

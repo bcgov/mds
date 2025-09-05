@@ -22,17 +22,17 @@ def get_default_disturbance_or_cost(obj, field, currency=False):
     else:
         return ' '
         
-def transform_variables_to_data(now_application, draft_permit, mine, total_liability):
+def transform_variables_to_data(now_application, permit_amendment, mine, total_liability):
     return {
         'mine_name': now_application.mine_name,
         'mine_no': now_application.mine_no,
         'application_type': now_application.notice_of_work_type.description,
         'proposed_annual_maximum_tonnage': str(now_application.proposed_annual_maximum_tonnage) if now_application.proposed_annual_maximum_tonnage is not None else ' ',
-        'issue_date': format_datetime_to_string(draft_permit.issue_date),
+        'issue_date': format_datetime_to_string(permit_amendment.issue_date),
         'application_dated': format_datetime_to_string(now_application.submitted_date),
         'application_last_updated_date': format_datetime_to_string(now_application.last_updated_date) if now_application.last_updated_date else now_application.submitted_date,
-        'authorization_end_date': format_datetime_to_string(draft_permit.authorization_end_date),
-        'permit_no': draft_permit.permit_no,
+        'authorization_end_date': format_datetime_to_string(permit_amendment.authorization_end_date),
+        'permit_no': permit_amendment.permit_no,
         'liability_adjustment': format_currency(now_application.liability_adjustment),
         'total_liability': format_currency(total_liability),
         'security_received_date': format_datetime_to_string(now_application.security_received_date),
@@ -99,14 +99,14 @@ def transform_template_data(now_application_document_type_code, template_data, n
     # Transform template data for "Working Permit" (PMT) or "Working Permit for Amendment" (PMA)
     def transform_permit(template_data, now_application):
         is_draft = False
-        permit = None
+        permit_amendment = None
         if now_application.active_permit:
-            permit = now_application.active_permit
+            permit_amendment = now_application.active_permit
         elif now_application.draft_permit:
-            permit = now_application.draft_permit
+            permit_amendment = now_application.draft_permit
             is_draft = template_data.get('is_draft', True)
         elif now_application.remitted_permit:
-            permit = now_application.remitted_permit
+            permit_amendment = now_application.remitted_permit
         else:
             raise Exception('Notice of Work has no permit')
 
@@ -137,12 +137,12 @@ def transform_template_data(now_application_document_type_code, template_data, n
         template_data['security_adjustment'] = format_currency(total_liability)
 
         # Replace variables in conditions with  NoW data or Permit data
-        condition_variables = transform_variables_to_data(now_application, permit, mine,
+        condition_variables = transform_variables_to_data(now_application, permit_amendment, mine,
                                                             total_liability)
 
         template_data['preamble_text'] = replace_condition_value_with_data(
             template_data['preamble_text'], condition_variables)
-        conditions = permit.conditions
+        conditions = permit_amendment.conditions
         conditions_template_data = {}
         for section in conditions:
             # replace section title variables with data
