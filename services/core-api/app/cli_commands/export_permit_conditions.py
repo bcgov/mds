@@ -7,6 +7,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import (
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
     PermitConditions,
 )
+from app.api.now_applications.now_template_transformer import calculate_liability, replace_condition_value_with_data, transform_variables_to_data
 
 headers = [
     'step', 'category', 'status', 'display_order', 'issue_date',
@@ -28,6 +29,8 @@ def export_permit_conditions(permit_amendment_guid, csv_writer=None):
     if amendment is None:
         print(f'Permit amendment with guid {permit_amendment_guid} not found.')
         return
+
+    isNow = bool(amendment.now_application_guid)
 
     # Get all conditions in hierarchical order
     conditions = PermitConditions.find_by_permit_amendment_id_ordered(amendment.permit_amendment_id)
@@ -52,7 +55,7 @@ def export_permit_conditions(permit_amendment_guid, csv_writer=None):
     document_name = ''
     document_guid = ''
 
-    if amendment.now_application_guid and amendment.now_application_documents:
+    if isNow and amendment.now_application_documents:
         doc = amendment.now_application_documents[0].mine_document
         document_name = doc.document_name
         document_guid = doc.document_manager_guid
@@ -67,6 +70,11 @@ def export_permit_conditions(permit_amendment_guid, csv_writer=None):
     for property in permit.site_properties:
         tenure.append(property.mine_tenure_type.description)
 
+    condition_variables = {}
+    if isNow and amendment.now_application_identity:
+        total_liability = calculate_liability(amendment.now_application_identity.now_application)
+        condition_variables = transform_variables_to_data(amendment.now_application_identity.now_application, permit, mine, total_liability)
+
     condition_rows = []
     processed_ids = set()
 
@@ -79,8 +87,11 @@ def export_permit_conditions(permit_amendment_guid, csv_writer=None):
         report_requirement = condition.mine_report_permit_requirements[0] if len(condition.mine_report_permit_requirements) > 0 else None
         report_name = report_requirement.report_name if report_requirement else None
 
+        replace_variables(condition, isNow, condition_variables)
+
         if should_merge_with_parent(condition):
             parent = condition.parent_permit_condition
+            replace_variables(parent, isNow, condition_variables)
             merged_data = merge_condition_with_parent(condition, parent)
             
             row = {
@@ -119,7 +130,7 @@ def export_permit_conditions(permit_amendment_guid, csv_writer=None):
                 'mine_guid': str(mine.mine_guid),
                 'permit_amendment_guid': str(amendment.permit_amendment_guid),
                 'permit_condition_guid': str(condition.permit_condition_guid),
-                'permit_type': 'Notice of Work' if amendment.now_application_guid else 'Major Mine',
+                'permit_type': 'Notice of Work' if isNow else 'Major Mine',
                 'verification_status': 'Verified' if amendment.conditions_review_completed else 'Unverified',
                 'tenure': tenure,
                 'id': str(condition.permit_condition_guid),
@@ -211,6 +222,9 @@ def bulk_export_permit_conditions(csv_path, output_dir):
     print(f"\nExport complete: {success_count} amendments processed with {total_conditions} conditions exported to {output_filename}")
     print(f"Errors: {error_count}")
 
+def replace_variables(condition, isNow, condition_variables):
+    if isNow:
+        condition.condition = replace_condition_value_with_data(condition.condition, condition_variables)
 
 def should_merge_with_parent(condition):
     """Check if condition should be merged with its parent"""
