@@ -1,9 +1,10 @@
 import pytest
+from regex import template
 from app.api.now_applications import now_template_transformer as now_template_transformer
 from werkzeug.exceptions import NotFound
 
 from app.api.utils.helpers import format_currency
-from tests.factories import PermitAmendmentFactory, PermitFactory, create_mine_and_permit
+from tests.factories import PartyFactory, PermitAmendmentFactory, PermitFactory, create_mine_and_permit
 from tests.now_application_factories import NOWApplicationFactory, NOWApplicationIdentityFactory
 
 def test_get_default_disturbance_or_cost_field_none(db_session):
@@ -74,7 +75,25 @@ def test_transform_template_data_missing_inspector(db_session):
         now_template_transformer.transform_template_data('PMT', {'preamble_text': ''}, now_application)
     assert "No Issuing Inspector has been assigned" in str(extext.value)
 
-def test_transform_template_data(db_session):
+def test_transform_template_data_letter(db_session):
+    mine, permit = create_mine_and_permit()
+    now_application = NOWApplicationFactory()
+    permit_amendment = PermitAmendmentFactory(conditions=0, mine=mine, permit=permit)
+    now_application_identity = NOWApplicationIdentityFactory(now_application=now_application, mine=mine)
+    permit_amendment.now_application_guid = now_application_identity.now_application_guid
+    now_application.now_application_identity = now_application_identity
+    now_application.issuing_inspector.signature = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
+    party = PartyFactory(company=True)
+    template_data = now_template_transformer.transform_template_data('CAL', {'preamble_text': '', 'proponent_name': party.party_name, 'letter_dt': 'Sep 09 2025', 'application_dt': 'Sep 05 2025', 'mine_name': mine.mine_name}, now_application)
+
+    assert isinstance(template_data, dict)
+    assert template_data['mine_name'] == mine.mine_name
+    assert 'organization_email' in template_data
+    assert 'letter_dt' in template_data
+    assert 'application_dt' in template_data
+    assert 'images' in template_data
+
+def test_transform_template_data_permit(db_session):
     mine, permit = create_mine_and_permit()
     now_application = NOWApplicationFactory()
     permit_amendment = PermitAmendmentFactory(conditions=0, mine=mine, permit=permit)
@@ -85,11 +104,8 @@ def test_transform_template_data(db_session):
     template_data = now_template_transformer.transform_template_data('PMT', {'preamble_text': ''}, now_application)
 
     assert isinstance(template_data, dict)
-    assert 'mine_name' in template_data
     assert template_data['mine_name'] == mine.mine_name
-    assert 'latitude' in template_data
     assert template_data['latitude'] == str(now_application.latitude)
-    assert 'longitude' in template_data
     assert template_data['longitude'] == str(now_application.longitude)
     assert 'security_adjustment' in template_data
     assert 'conditions' in template_data
