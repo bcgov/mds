@@ -82,103 +82,35 @@ def calculate_liability(now_application):
     else:
         return float(now_application.liability_adjustment or 0)
 
-def transform_template_data(now_application_document_type_code, template_data, now_application):
+def validate_issuing_inspector(now_application):
+    if not now_application.issuing_inspector:
+        raise Exception('No Issuing Inspector has been assigned')
+    if not now_application.issuing_inspector.signature:
+        raise Exception('No signature for the Issuing Inspector has been provided')
 
-    def validate_issuing_inspector(now_application):
-        if not now_application.issuing_inspector:
-            raise Exception('No Issuing Inspector has been assigned')
-        if not now_application.issuing_inspector.signature:
-            raise Exception('No signature for the Issuing Inspector has been provided')
+def replace_nested_conditions(section_data, condition_variables):
+    for sub_condition in section_data['sub_conditions']:
+        sub_condition['condition'] = replace_condition_value_with_data(
+            sub_condition['condition'], condition_variables)
+        replace_nested_conditions(sub_condition, condition_variables)
 
-    def replace_nested_conditions(section_data, condition_variables):
-        for sub_condition in section_data['sub_conditions']:
-            sub_condition['condition'] = replace_condition_value_with_data(
-                sub_condition['condition'], condition_variables)
-            replace_nested_conditions(sub_condition, condition_variables)
+# Transform template data for "Working Permit" (PMT) or "Working Permit for Amendment" (PMA)
+def transform_permit(template_data, now_application):
+    is_draft = False
+    permit_amendment = None
+    if now_application.active_permit:
+        permit_amendment = now_application.active_permit
+    elif now_application.draft_permit:
+        permit_amendment = now_application.draft_permit
+        is_draft = template_data.get('is_draft', True)
+    elif now_application.remitted_permit:
+        permit_amendment = now_application.remitted_permit
+    else:
+        raise Exception('Notice of Work has no permit')
 
-    # Transform template data for "Working Permit" (PMT) or "Working Permit for Amendment" (PMA)
-    def transform_permit(template_data, now_application):
-        is_draft = False
-        permit_amendment = None
-        if now_application.active_permit:
-            permit_amendment = now_application.active_permit
-        elif now_application.draft_permit:
-            permit_amendment = now_application.draft_permit
-            is_draft = template_data.get('is_draft', True)
-        elif now_application.remitted_permit:
-            permit_amendment = now_application.remitted_permit
-        else:
-            raise Exception('Notice of Work has no permit')
+    validate_issuing_inspector(now_application)
 
-        validate_issuing_inspector(now_application)
-
-        if not is_draft:
-            template_data['images'] = {
-                'issuing_inspector_signature':
-                create_image_with_aspect_ratio(
-                    now_application.issuing_inspector.signature,
-                    height=SIGNATURE_IMAGE_HEIGHT_INCHES)
-            }
-
-        # NOTE: This is how the front-end is determining whether it's an amendment or not. But, is it not more correct to check permit_amendment.permit_amendment_type_code == 'AMD'?
-        template_data['is_amendment'] = not now_application.is_new_permit
-
-        template_data['is_draft'] = is_draft
-
-        template_data['latitude'] = str(now_application.latitude)
-        template_data['longitude'] = str(now_application.longitude)
-        template_data['mine_name'] = now_application.mine_name
-
-        mine = Mine.find_by_mine_no(now_application.mine_no)
-        if mine is None:
-            raise NotFound('Mine not found')
-
-        total_liability = calculate_liability(now_application)
-        template_data['security_adjustment'] = format_currency(total_liability)
-
-        # Replace variables in conditions with  NoW data or Permit data
-        condition_variables = transform_variables_to_data(now_application, permit_amendment, mine,
-                                                            total_liability)
-
-        template_data['preamble_text'] = replace_condition_value_with_data(
-            template_data['preamble_text'], condition_variables)
-        conditions = permit_amendment.conditions
-        conditions_template_data = {}
-        for section in conditions:
-            # replace section title variables with data
-            section.condition = replace_condition_value_with_data(section.condition,
-                                                                    condition_variables)
-            category_code = section.condition_category_code
-            if not conditions_template_data.get(category_code):
-                conditions_template_data[category_code] = []
-            section_data = marshal(section, PERMIT_CONDITION_TEMPLATE_MODEL)
-
-            replace_nested_conditions(section_data, condition_variables)
-            conditions_template_data[category_code].append(section_data)
-        template_data['conditions'] = conditions_template_data
-
-        return template_data
-
-    # Transform template data for "Acknowledgement Letter" (CAL), "Withdrawal Letter" (WDL), "Rejection Letter" (RJL), and "Permit Enclosed Letter" (NPE)
-    def transform_letter(template_data, now_application):
-        if now_application_document_type_code in ('CAL', 'NPE'):
-            organization = Party.find_by_name(template_data['proponent_name'])
-            date_display_format = '%B %-d, %Y'
-            template_data['letter_dt'] = datetime.strptime(template_data["letter_dt"], '%b %d %Y').strftime(date_display_format)
-            template_data['application_dt'] = datetime.strptime(template_data["application_dt"], '%b %d %Y').strftime(date_display_format)
-            if template_data.get('start_date') and template_data['start_date'] != "Invalid date":
-                template_data['start_date'] = datetime.strptime(template_data["start_date"], '%Y-%m-%d').strftime(date_display_format)
-            if template_data.get('end_date') and template_data['end_date'] != "Invalid date":
-                template_data['end_date'] = datetime.strptime(template_data["end_date"], '%Y-%m-%d').strftime(date_display_format)
-            template_data['organization_email'] = organization.email if organization else None
-
-        validate_issuing_inspector(now_application)
-        agent_contact = next(
-            (contact for contact in now_application.contacts if contact.mine_party_appt_type_code == 'AGT'),
-            None
-        )
-        template_data['agent_email'] = agent_contact.party.email if agent_contact else None
-
+    if not is_draft:
         template_data['images'] = {
             'issuing_inspector_signature':
             create_image_with_aspect_ratio(
@@ -186,12 +118,70 @@ def transform_template_data(now_application_document_type_code, template_data, n
                 height=SIGNATURE_IMAGE_HEIGHT_INCHES)
         }
 
-        return template_data
+    # NOTE: This is how the front-end is determining whether it's an amendment or not. But, is it not more correct to check permit_amendment.permit_amendment_type_code == 'AMD'?
+    template_data['is_amendment'] = not now_application.is_new_permit
 
-    # Transform the template data according to the document type
-    if now_application_document_type_code in ('PMT', 'PMA'):
-        return transform_permit(template_data, now_application)
-    elif now_application_document_type_code in ('CAL', 'WDL', 'RJL', 'NPE', 'NPI', 'NPR'):
-        return transform_letter(template_data, now_application)
+    template_data['is_draft'] = is_draft
+
+    template_data['latitude'] = str(now_application.latitude)
+    template_data['longitude'] = str(now_application.longitude)
+    template_data['mine_name'] = now_application.mine_name
+
+    mine = Mine.find_by_mine_no(now_application.mine_no)
+    if mine is None:
+        raise NotFound('Mine not found')
+
+    total_liability = calculate_liability(now_application)
+    template_data['security_adjustment'] = format_currency(total_liability)
+
+    # Replace variables in conditions with  NoW data or Permit data
+    condition_variables = transform_variables_to_data(now_application, permit_amendment, mine,
+                                                        total_liability)
+
+    template_data['preamble_text'] = replace_condition_value_with_data(
+        template_data['preamble_text'], condition_variables)
+    conditions = permit_amendment.conditions
+    conditions_template_data = {}
+    for section in conditions:
+        # replace section title variables with data
+        section.condition = replace_condition_value_with_data(section.condition,
+                                                                condition_variables)
+        category_code = section.condition_category_code
+        if not conditions_template_data.get(category_code):
+            conditions_template_data[category_code] = []
+        section_data = marshal(section, PERMIT_CONDITION_TEMPLATE_MODEL)
+
+        replace_nested_conditions(section_data, condition_variables)
+        conditions_template_data[category_code].append(section_data)
+    template_data['conditions'] = conditions_template_data
+
+    return template_data
+
+# Transform template data for "Acknowledgement Letter" (CAL), "Withdrawal Letter" (WDL), "Rejection Letter" (RJL), and "Permit Enclosed Letter" (NPE)
+def transform_letter(template_data, now_application, now_application_document_type_code):
+    if now_application_document_type_code in ('CAL', 'NPE'):
+        organization = Party.find_by_name(template_data['proponent_name'])
+        date_display_format = '%B %-d, %Y'
+        template_data['letter_dt'] = datetime.strptime(template_data["letter_dt"], '%b %d %Y').strftime(date_display_format)
+        template_data['application_dt'] = datetime.strptime(template_data["application_dt"], '%b %d %Y').strftime(date_display_format)
+        if template_data.get('start_date') and template_data['start_date'] != "Invalid date":
+            template_data['start_date'] = datetime.strptime(template_data["start_date"], '%Y-%m-%d').strftime(date_display_format)
+        if template_data.get('end_date') and template_data['end_date'] != "Invalid date":
+            template_data['end_date'] = datetime.strptime(template_data["end_date"], '%Y-%m-%d').strftime(date_display_format)
+        template_data['organization_email'] = organization.email if organization else None
+
+    validate_issuing_inspector(now_application)
+    agent_contact = next(
+        (contact for contact in now_application.contacts if contact.mine_party_appt_type_code == 'AGT'),
+        None
+    )
+    template_data['agent_email'] = agent_contact.party.email if agent_contact else None
+
+    template_data['images'] = {
+        'issuing_inspector_signature':
+        create_image_with_aspect_ratio(
+            now_application.issuing_inspector.signature,
+            height=SIGNATURE_IMAGE_HEIGHT_INCHES)
+    }
 
     return template_data

@@ -60,7 +60,7 @@ def test_transform_variables_to_data_keys(db_session):
 def test_transform_template_data_no_permit(db_session):
     now_application = NOWApplicationFactory()
     with pytest.raises(Exception) as extext:
-        now_template_transformer.transform_template_data('PMT', {'preamble_text': ''}, now_application)
+        now_template_transformer.transform_permit({'preamble_text': ''}, now_application)
     assert "Notice of Work has no permit" in str(extext.value)
 
 def test_transform_template_data_missing_inspector(db_session):
@@ -72,7 +72,7 @@ def test_transform_template_data_missing_inspector(db_session):
     now_application.now_application_identity = now_application_identity
     now_application.issuing_inspector = None
     with pytest.raises(Exception) as extext:
-        now_template_transformer.transform_template_data('PMT', {'preamble_text': ''}, now_application)
+        now_template_transformer.transform_permit({'preamble_text': ''}, now_application)
     assert "No Issuing Inspector has been assigned" in str(extext.value)
 
 def test_transform_template_data_letter(db_session):
@@ -84,7 +84,7 @@ def test_transform_template_data_letter(db_session):
     now_application.now_application_identity = now_application_identity
     now_application.issuing_inspector.signature = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
     party = PartyFactory(company=True)
-    template_data = now_template_transformer.transform_template_data('CAL', {'preamble_text': '', 'proponent_name': party.party_name, 'letter_dt': 'Sep 09 2025', 'application_dt': 'Sep 05 2025', 'mine_name': mine.mine_name}, now_application)
+    template_data = now_template_transformer.transform_letter({'preamble_text': '', 'proponent_name': party.party_name, 'letter_dt': 'Sep 09 2025', 'application_dt': 'Sep 05 2025', 'mine_name': mine.mine_name}, now_application, 'CAL')
 
     assert isinstance(template_data, dict)
     assert template_data['mine_name'] == mine.mine_name
@@ -101,7 +101,7 @@ def test_transform_template_data_permit(db_session):
     permit_amendment.now_application_guid = now_application_identity.now_application_guid
     now_application.now_application_identity = now_application_identity
     now_application.issuing_inspector.signature = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
-    template_data = now_template_transformer.transform_template_data('PMT', {'preamble_text': ''}, now_application)
+    template_data = now_template_transformer.transform_permit({'preamble_text': ''}, now_application)
 
     assert isinstance(template_data, dict)
     assert template_data['mine_name'] == mine.mine_name

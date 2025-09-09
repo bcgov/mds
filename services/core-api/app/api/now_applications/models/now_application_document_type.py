@@ -1,6 +1,6 @@
 from sqlalchemy.schema import FetchedValue
 
-from app.api.now_applications.now_template_transformer import transform_template_data
+from app.api.now_applications.now_template_transformer import transform_letter, transform_permit
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
@@ -31,7 +31,12 @@ class NOWApplicationDocumentType(AuditMixin, Base):
         return document_type
     
     def transform_template_data(self, template_data, now_application):
-        return transform_template_data(self.now_application_document_type_code, template_data, now_application)
+        # Transform the template data according to the document type
+        if self.now_application_document_type_code in ('PMT', 'PMA'):
+            return transform_permit(template_data, now_application)
+        elif self.now_application_document_type_code in ('CAL', 'WDL', 'RJL', 'NPE', 'NPI', 'NPR'):
+            return transform_letter(template_data, now_application, self.now_application_document_type_code)
+        return template_data
 
     def after_template_generated(self, template_data, now_doc, now_application):
         def after_permit_generated(template_data, now_doc, now_application):
