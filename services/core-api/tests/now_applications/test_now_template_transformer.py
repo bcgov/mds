@@ -45,7 +45,7 @@ def test_calculate_liability_amendment(db_session):
 def test_transform_variables_to_data_keys(db_session):
     mine,permit = create_mine_and_permit()
     now_application = NOWApplicationFactory()
-    permit_amendment = PermitAmendmentFactory(conditions=0, mine=mine, permit=permit)
+    permit_amendment = PermitAmendmentFactory(mine=mine, permit=permit)
     now_application_identity = NOWApplicationIdentityFactory(now_application=now_application, mine=mine)
     permit_amendment.now_application_guid = now_application_identity.now_application_guid
     now_application.now_application_identity = now_application_identity
@@ -66,7 +66,7 @@ def test_transform_template_data_no_permit(db_session):
 def test_transform_template_data_missing_inspector(db_session):
     mine,permit = create_mine_and_permit()
     now_application = NOWApplicationFactory()
-    permit_amendment = PermitAmendmentFactory(conditions=0, mine=mine, permit=permit)
+    permit_amendment = PermitAmendmentFactory(mine=mine, permit=permit)
     now_application_identity = NOWApplicationIdentityFactory(now_application=now_application, mine=mine)
     permit_amendment.now_application_guid = now_application_identity.now_application_guid
     now_application.now_application_identity = now_application_identity
@@ -78,7 +78,7 @@ def test_transform_template_data_missing_inspector(db_session):
 def test_transform_template_data_letter(db_session):
     mine, permit = create_mine_and_permit()
     now_application = NOWApplicationFactory()
-    permit_amendment = PermitAmendmentFactory(conditions=0, mine=mine, permit=permit)
+    permit_amendment = PermitAmendmentFactory(mine=mine, permit=permit)
     now_application_identity = NOWApplicationIdentityFactory(now_application=now_application, mine=mine)
     permit_amendment.now_application_guid = now_application_identity.now_application_guid
     now_application.now_application_identity = now_application_identity
@@ -96,7 +96,7 @@ def test_transform_template_data_letter(db_session):
 def test_transform_template_data_permit(db_session):
     mine, permit = create_mine_and_permit()
     now_application = NOWApplicationFactory()
-    permit_amendment = PermitAmendmentFactory(conditions=0, mine=mine, permit=permit)
+    permit_amendment = PermitAmendmentFactory(mine=mine, permit=permit)
     now_application_identity = NOWApplicationIdentityFactory(now_application=now_application, mine=mine)
     permit_amendment.now_application_guid = now_application_identity.now_application_guid
     now_application.now_application_identity = now_application_identity
