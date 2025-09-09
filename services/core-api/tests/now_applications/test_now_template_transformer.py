@@ -73,3 +73,24 @@ def test_transform_template_data_missing_inspector(db_session):
     with pytest.raises(Exception) as extext:
         now_template_transformer.transform_template_data('PMT', {'preamble_text': ''}, now_application)
     assert "No Issuing Inspector has been assigned" in str(extext.value)
+
+def test_transform_template_data(db_session):
+    mine, permit = create_mine_and_permit()
+    now_application = NOWApplicationFactory()
+    permit_amendment = PermitAmendmentFactory(conditions=0, mine=mine, permit=permit)
+    now_application_identity = NOWApplicationIdentityFactory(now_application=now_application, mine=mine)
+    permit_amendment.now_application_guid = now_application_identity.now_application_guid
+    now_application.now_application_identity = now_application_identity
+    now_application.issuing_inspector.signature = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
+    template_data = now_template_transformer.transform_template_data('PMT', {'preamble_text': ''}, now_application)
+
+    assert isinstance(template_data, dict)
+    assert 'mine_name' in template_data
+    assert template_data['mine_name'] == mine.mine_name
+    assert 'latitude' in template_data
+    assert template_data['latitude'] == str(now_application.latitude)
+    assert 'longitude' in template_data
+    assert template_data['longitude'] == str(now_application.longitude)
+    assert 'security_adjustment' in template_data
+    assert 'conditions' in template_data
+    assert template_data['is_draft'] == False
