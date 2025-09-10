@@ -83,6 +83,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const listItemFormDirty = useAppSelector(isDirty(FORM.EDIT_PERMIT_CONDITION));
     const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags);
     const stepEditDisabled = Boolean(standardConditionType) || isNowEditor;
+    const showVariableConditionMenu = stepEditDisabled;
     const enablePermitConditionTags = isFeatureEnabled(Feature.PERMIT_CONDITION_TAGS);
     const conditionInputRef = useRef<TextAreaRef | null>(null);
 
@@ -322,7 +323,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 </Col>
                 <Col className="condition-column" {...editableProps}>
                     <Col className="condition-editor">
-                        <VariableConditionMenu inputRef={conditionInputRef} isManagementView={Boolean(standardConditionType)} conditionForm={editingFormName}/>
+                        {showVariableConditionMenu && <VariableConditionMenu inputRef={conditionInputRef} isManagementView={Boolean(standardConditionType)} conditionForm={editingFormName}/>}
                         <Field
                             name="condition"
                             component={RenderAutoSizeField}
