@@ -285,6 +285,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
             scrollOnToggleEdit={false}
             reduxFormConfig={{
                 enableReinitialize: true,
+                keepDirtyOnReinitialize: true,
                 touchOnChange: false,
                 touchOnBlur: true,
             }}

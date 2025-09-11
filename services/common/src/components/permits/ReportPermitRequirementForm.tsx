@@ -136,7 +136,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
       resp = await dispatch(createMineReportPermitRequirement({ mineGuid, values }));
     }
     if (resp.payload) {
-      // await refreshData(false);
+      await refreshData(false);
       // this is for an edge case where an existing report is edited and so it has a form on the page
       // and it was not getting updated so not showing the correct conditions there.
       if (condition && values.mine_report_permit_requirement_id) {
