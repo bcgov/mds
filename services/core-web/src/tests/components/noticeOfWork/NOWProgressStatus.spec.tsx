@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { NOWProgressStatus } from "@/components/noticeOfWork/NOWProgressStatus";
 
-// Common base props
+
 const baseNoticeOfWork = {
   now_application_guid: "123-abc",
   notice_of_work_type_code: "PLA",

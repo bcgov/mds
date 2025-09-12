@@ -1,18 +1,11 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, within } from "@testing-library/react";
 import VerifyNoWContacts, { VerifyNoWContacts as Unconnected } from "@/components/Forms/noticeOfWork/VerifyNoWContacts";
 import * as FORM from "@/constants/forms";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
-// Keep AuthorizationWrapper simple
 jest.mock("@/components/common/wrappers/AuthorizationWrapper", () => ({ children }: any) => <>{children}</>);
-// RenderSelect & CoreTable can be simplified (they are integration-tested elsewhere)
-jest.mock("@mds/common/components/forms/RenderSelect", () => (props: any) => (
-    <select data-testid="render-select" name={props.name} />
-));
-jest.mock("@mds/common/components/common/CoreTable", () => (props: any) => (
-    <div data-testid="core-table">CoreTable ({(props.dataSource || []).length} rows)</div>
-));
 
 // Action creators that would hit API - mock only these (reduce but retain realism)
 jest.mock("@mds/common/redux/actionCreators/searchActionCreator", () => ({
@@ -28,7 +21,6 @@ jest.mock("@mds/common/redux/actionCreators/searchActionCreator", () => ({
     clearAllSearchResults: () => ({ type: "CLEAR_SEARCH" }),
 }));
 
-// Minimal search reducer to react to mocked actions (placed in initial state override not needed if we just supply shape)
 const baseContacts = [
     {
         id: "c-1",
@@ -43,13 +35,11 @@ const baseContacts = [
 ];
 
 const initialState = {
-    // redux-form state so FieldArray has entries
     form: {
         [FORM.VERIFY_NOW_APPLICATION_FORM]: {
             values: { contacts: baseContacts },
         },
     },
-    // static content slice (only what selector needs)
     staticContent: {
         partyRelationshipTypesList: [
             { value: "PMT", label: "Permittee" },
@@ -62,9 +52,6 @@ const initialState = {
         searchSubsetResults: [],
     },
 };
-
-// Helper to render connected component inside a form context
-import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const renderWithStore = () =>
     render(
@@ -100,11 +87,20 @@ describe("VerifyNoWContacts (connected)", () => {
         renderWithStore();
         fireEvent.click(screen.getAllByRole("button", { name: /Search Contact/i })[0]);
         await waitFor(() => expect(screen.getByText(/Add New Core Contact/i)).toBeInTheDocument());
-        expect(screen.getByTestId("core-table")).toBeInTheDocument();
+        // Verify the results table is rendered in the Matching Contact Options column
+        const optionsHeading = screen.getByRole("heading", { name: /Matching Contact Options/i });
+        const optionsContainer = optionsHeading.closest(".contact-rows") as HTMLElement | null;
+        expect(optionsContainer).toBeTruthy();
+        // Ant Table renders a native <table> (role=table); in some cases role can be grid
+        await waitFor(() => {
+            const tableEl =
+                within(optionsContainer as HTMLElement).queryByRole("table") ||
+                within(optionsContainer as HTMLElement).getByRole("grid");
+            expect(tableEl).toBeInTheDocument();
+        });
     });
 });
 
-// Unconnected component specific logic (mount/unmount effects) can be tested with manual prop mocks if desired
 describe("VerifyNoWContacts (unconnected lifecycle)", () => {
     it("calls clearAllSearchResults on mount/unmount", () => {
         const clearAllSearchResults = jest.fn();
@@ -138,14 +134,11 @@ describe("VerifyNoWContacts (unconnected lifecycle)", () => {
 
 describe("VerifyNoWContacts (unconnected add new contact flow)", () => {
     it("shows newly created contact in search results and core contact detail after creation", async () => {
-        // Mutable holders to simulate store-updated props
         let searchResults: any = { party: [] };
         let searchSubsetResults: any[] = [];
         const fetchCalls: any[] = [];
 
         const fetchSearchResults = jest.fn().mockImplementation((term: string) => {
-            // First call: only existing party (p-1)
-            // Second+ call: include new party (new-1)
             const callIndex = fetchCalls.length;
             fetchCalls.push(term);
             const partyBase = [{ result: { party_guid: "p-1", name: term || "Alpha Person", email: "a@test.ca", phone_no: "111", address: [{}] } }];
@@ -157,14 +150,12 @@ describe("VerifyNoWContacts (unconnected add new contact flow)", () => {
             return Promise.resolve({ data });
         });
 
-        // We'll capture afterSubmit from openModal invocation
         let capturedAfterSubmit: any = null;
         const openModal = jest.fn().mockImplementation((cfg) => {
             capturedAfterSubmit = cfg?.props?.afterSubmit;
         });
         const closeModal = jest.fn();
 
-        // Rerender handle
         const storeSubsetSearchResults = jest.fn().mockImplementation((subset: any[]) => {
             searchSubsetResults = subset;
             // If new party selected, also update full searchResults to include it (as store would)
@@ -250,7 +241,20 @@ describe("VerifyNoWContacts (unconnected add new contact flow)", () => {
         await waitFor(() => expect(storeSubsetSearchResults).toHaveBeenCalled());
         await waitFor(() => {
             // Core contact detail should now include New Person
-            expect(screen.getByText(/New Person/i)).toBeInTheDocument();
+            const coreDetailHeading = screen.getByRole("heading", { name: /Core Contact Detail/i });
+            const coreDetailContainer = coreDetailHeading.closest(".contact-rows") as HTMLElement | null;
+            expect(coreDetailContainer).toBeTruthy();
+            const headingEl = within(coreDetailContainer as HTMLElement).getByText(
+                (_content, node) => {
+                    const el = node as HTMLElement;
+                    return (
+                        !!el &&
+                        el.tagName.toLowerCase() === "h4" &&
+                        /New Person/i.test(el.textContent || "")
+                    );
+                }
+            );
+            expect(headingEl).toBeInTheDocument();
         });
     });
 });

@@ -15,14 +15,14 @@ import { resetForm } from "@common/utils/helpers";
 import EditNOWMineAndLocation from "@/components/Forms/noticeOfWork/EditNOWMineAndLocation";
 import VerifyNoWContacts from "@/components/Forms/noticeOfWork/VerifyNoWContacts";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
-import { INoticeOfWork } from "@mds/common/interfaces";
+import { INoticeOfWork, IParty } from "@mds/common/interfaces";
 
 export interface NoticeOfWorkContact {
     id?: string; // assigned client side
     party_guid?: string | null;
     mine_party_appt_type_code?: string;
     mine_party_appt_type_code_description?: string;
-    party?: any; // existing code treats this as an opaque party object
+    party?: IParty | null;
     [key: string]: any; // allow passthrough of unknown fields (legacy form data)
 }
 
@@ -34,10 +34,10 @@ export interface VerifyApplicationInformationFormProps {
     initialValues?: any;
     isImporting: boolean;
     // Optional overrides (mainly for unit tests or external customization)
-    longitude?: string; // form field value override
-    latitude?: string; // form field value override
-    mine_guid?: string; // form field value override
-    contactFormValues?: NoticeOfWorkContact[]; // form field value override
+    longitude?: string;
+    latitude?: string;
+    mine_guid?: string;
+    contactFormValues?: NoticeOfWorkContact[];
     // Optional injected action overrides (tests)
     reset?: (form: string) => void;
     change?: (form: string, field: string, value: any) => void;

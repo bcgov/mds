@@ -61,8 +61,7 @@ describe("NOWStatusIndicator banner", () => {
   it("does not render banner for in-progress (showBanner false)", () => {
     const progress = { REV: { start_date: "2025-01-01" } } as any;
     renderBanner({ progress });
-    // In progress sets showBanner false; message 'In Progress' not displayed as banner (display:none)
-    // Instead we assert banner element exists but hidden
+
     const banner = screen.getByRole("alert", { hidden: true });
     expect(banner).toHaveClass("status-banner");
     expect(banner).toHaveStyle({ display: "none" });

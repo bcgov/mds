@@ -32,10 +32,8 @@ import AddButton from "@/components/common/buttons/AddButton";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import { sub } from "date-fns";
 import { IParty, IPartyRelationshipType } from "@mds/common/interfaces";
 
-// ---------------- Types ----------------
 export interface VerifyNoWContactValue {
     id?: string;
     mine_party_appt_type_code?: string;
@@ -63,7 +61,6 @@ export interface VerifyNoWContactsProps {
     closeModal?: () => void;
 }
 
-// ---------------- Helpers ----------------
 const columns = [
     {
         title: "Select All",
@@ -310,7 +307,6 @@ const renderContacts = ({
     );
 };
 
-// ---------------- Component ----------------
 export const VerifyNoWContacts: React.FC<VerifyNoWContactsProps> = (props) => {
     const dispatch = useDispatch();
 
@@ -363,7 +359,6 @@ export const VerifyNoWContacts: React.FC<VerifyNoWContactsProps> = (props) => {
         };
     }, []);
 
-    // Contacts changed
     useEffect(() => {
         if (prevContactsRef.current !== props.contactFormValues) {
             handleRoles(props.contactFormValues);
@@ -371,7 +366,6 @@ export const VerifyNoWContacts: React.FC<VerifyNoWContactsProps> = (props) => {
         }
     }, [props.contactFormValues, handleRoles]);
 
-    // Reset flag toggled to true
     useEffect(() => {
         if (!prevWasFormReset.current && props.wasFormReset) {
             setSelectedNOWContact({});

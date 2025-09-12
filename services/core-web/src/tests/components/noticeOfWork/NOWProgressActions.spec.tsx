@@ -4,17 +4,10 @@ import { NOWProgressActions } from "@/components/noticeOfWork/NOWProgressActions
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { USER_ROLES } from "@mds/common/constants/environment";
 
-// NOTE: AuthorizationWrapper maps permission constants (e.g. role_edit_permits)
-// through USER_ROLES to their concrete role string (e.g. core_edit_permits).
-// The redux authentication slice stores those concrete role strings in
-// userAccessData. Previous test state used the wrong slice key/name and
-// an unmapped value so the buttons never rendered.
-
-// Helper to render with store
 const defaultState = {
   AUTHENTICATION: {
     isAuthenticated: true,
-    userAccessData: [USER_ROLES.role_edit_permits], // mapped value: core_edit_permits
+    userAccessData: [USER_ROLES.role_edit_permits],
   },
 };
 
@@ -154,7 +147,6 @@ describe("NOWProgressActions", () => {
       />
     );
     expect(screen.queryByText(/Start Review/)).not.toBeInTheDocument();
-    // Still can view status reason because processedWithReason for AIA? (AIA not in processedWithReason list) so may not show
   });
 
   it("shows create draft button when DFT tab in progress but draft permit deleted", () => {
