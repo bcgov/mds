@@ -70,31 +70,17 @@ class PermitConditionsListResource(Resource, UserMixin):
         return permit_condition, 201
 
     def _create_sub_conditions_recursively(self, sub_conditions, permit_amendment_id, parent_id, category_code):
-        """
-        Recursively create sub-conditions and their nested sub-conditions.
-
-        Args:
-            sub_conditions (list): List of sub-condition data dictionaries
-            permit_amendment_id (int): ID of the permit amendment
-            parent_id (int): ID of the parent condition
-            category_code (str): Category code of the parent condition
-        """
+        # Recursively create sub-conditions and their nested sub-conditions.
         for idx, sub_condition_data in enumerate(sub_conditions):
-            # Set the parent relationship and amendment ID
+
             sub_condition_data['permit_amendment_id'] = permit_amendment_id
             sub_condition_data['parent_permit_condition_id'] = parent_id
+            sub_condition_data['condition_category_code'] = sub_condition_data.get('condition_category_code', category_code)
+            sub_condition_data['display_order'] = sub_condition_data.get('display_order', idx + 1)
 
-            # Set the same category code as the parent
-            sub_condition_data['condition_category_code'] = category_code
-
-            # Set display order based on the index
-            sub_condition_data['display_order'] = idx + 1
-
-            # Get nested sub-conditions before loading the current one
             nested_sub_conditions = sub_condition_data.pop('sub_conditions', [])
 
             try:
-                # Load and validate the sub-condition
                 sub_condition = PermitConditions._schema().load(sub_condition_data)
                 sub_condition.save()
 
