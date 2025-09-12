@@ -15,6 +15,7 @@ import { resetForm } from "@common/utils/helpers";
 import EditNOWMineAndLocation from "@/components/Forms/noticeOfWork/EditNOWMineAndLocation";
 import VerifyNoWContacts from "@/components/Forms/noticeOfWork/VerifyNoWContacts";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import { INoticeOfWork } from "@mds/common/interfaces";
 
 export interface NoticeOfWorkContact {
     id?: string; // assigned client side
@@ -25,18 +26,9 @@ export interface NoticeOfWorkContact {
     [key: string]: any; // allow passthrough of unknown fields (legacy form data)
 }
 
-export interface NoticeOfWorkLike {
-    now_application_guid?: string;
-    mine_guid?: string;
-    longitude?: string;
-    latitude?: string;
-    contacts?: NoticeOfWorkContact[];
-    [key: string]: any;
-}
-
 export interface VerifyApplicationInformationFormProps {
-    noticeOfWork: NoticeOfWorkLike;
-    originalNoticeOfWork: NoticeOfWorkLike;
+    noticeOfWork: INoticeOfWork;
+    originalNoticeOfWork: INoticeOfWork;
     mineGuid: string;
     onSubmit: (values: any) => void | Promise<any>;
     initialValues?: any;
@@ -129,7 +121,6 @@ export const VerifyApplicationInformationForm: React.FC<VerifyApplicationInforma
             <h4>Match the contacts from the Notice of Work application to contacts in Core.</h4>
             <Divider />
             <VerifyNoWContacts
-                initialValues={props.originalNoticeOfWork}
                 contactFormValues={contactFormValues}
                 wasFormReset={wasFormReset}
                 isImporting={props.isImporting}

@@ -39,10 +39,11 @@ const dispatchProps = {
 const reducerProps = {
   longitude: "",
   latitude: "",
-  noticeOfWork: NOW_MOCK.NOTICE_OF_WORK,
+  // TODO: This really needs a type. The NoW types neeeds an overhaul so setting to any for now...
+  noticeOfWork: NOW_MOCK.NOTICE_OF_WORK as any,
   initialValues: NOW_MOCK.NOTICE_OF_WORK,
   contacts: NOW_MOCK.NOTICE_OF_WORK.contacts,
-  originalNoticeOfWork: NOW_MOCK.NOTICE_OF_WORK,
+  originalNoticeOfWork: NOW_MOCK.NOTICE_OF_WORK as any,
   mineGuid: MOCK.MINES.mineIds[0],
   submitting: false,
 };
@@ -90,8 +91,8 @@ describe("VerifyApplicationInformationForm", () => {
       <ReduxWrapper initialState={baseInitialFormState}>
         <VerifyApplicationInformationForm
           {...dispatchProps}
-          noticeOfWork={NOW_MOCK.NOTICE_OF_WORK}
-          originalNoticeOfWork={NOW_MOCK.NOTICE_OF_WORK}
+          noticeOfWork={NOW_MOCK.NOTICE_OF_WORK as any}
+          originalNoticeOfWork={NOW_MOCK.NOTICE_OF_WORK as any}
           mineGuid={MOCK.MINES.mineIds[0]}
           mine_guid={MOCK.MINES.mineIds[0]}
           latitude=""
@@ -116,8 +117,8 @@ describe("VerifyApplicationInformationForm", () => {
       <ReduxWrapper initialState={baseInitialFormState}>
         <VerifyApplicationInformationForm
           {...dispatchProps}
-          noticeOfWork={NOW_MOCK.NOTICE_OF_WORK}
-          originalNoticeOfWork={NOW_MOCK.NOTICE_OF_WORK}
+          noticeOfWork={NOW_MOCK.NOTICE_OF_WORK as any}
+          originalNoticeOfWork={NOW_MOCK.NOTICE_OF_WORK as any}
           mineGuid={MOCK.MINES.mineIds[0]}
           mine_guid={MOCK.MINES.mineIds[0]}
           latitude=""
@@ -140,8 +141,8 @@ describe("VerifyApplicationInformationForm", () => {
       <ReduxWrapper initialState={baseInitialFormState}>
         <VerifyApplicationInformationForm
           {...dispatchProps}
-          noticeOfWork={NOW_MOCK.NOTICE_OF_WORK}
-          originalNoticeOfWork={NOW_MOCK.NOTICE_OF_WORK}
+          noticeOfWork={NOW_MOCK.NOTICE_OF_WORK as any}
+          originalNoticeOfWork={NOW_MOCK.NOTICE_OF_WORK as any}
           mineGuid={MOCK.MINES.mineIds[0]}
           mine_guid=""
           latitude=""
@@ -177,8 +178,8 @@ describe("VerifyApplicationInformationForm", () => {
         <ReduxWrapper initialState={baseInitialFormState}>
           <VerifyApplicationInformationForm
             {...dispatchProps}
-            noticeOfWork={NOW_MOCK.NOTICE_OF_WORK}
-            originalNoticeOfWork={originalNoticeOfWork}
+            noticeOfWork={NOW_MOCK.NOTICE_OF_WORK as any}
+            originalNoticeOfWork={originalNoticeOfWork as any}
             mineGuid={MOCK.MINES.mineIds[0]}
             mine_guid={MOCK.MINES.mineIds[0]}
             latitude=""

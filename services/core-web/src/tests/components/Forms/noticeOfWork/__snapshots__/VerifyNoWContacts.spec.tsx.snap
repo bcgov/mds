@@ -1,0 +1,523 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VerifyNoWContacts (connected) renders lists and snapshot 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-VERIFY_NOW_APPLICATION_FORM form-edit"
+    id="VERIFY_NOW_APPLICATION_FORM"
+  >
+    <div
+      class="ant-row"
+      style="margin: -8px -8px -8px -8px;"
+    >
+      <div
+        class="ant-col ant-col-8"
+        style="padding: 8px 8px 8px 8px;"
+      >
+        <div
+          class="ant-row contact-rows"
+        >
+          <div
+            class="scroll"
+          >
+            <div
+              class="ant-col ant-col-24"
+              style="min-height: 150px;"
+            >
+              <h3>
+                Application Contacts
+              </h3>
+              <p>
+                Contacts listed here come from the original Notice of Work. Click "Search Contact" to see a list of possible Core matches in the "Matching Contact Options" column. Ensure the correct role has been assigned to the application contact.
+              </p>
+            </div>
+            <div
+              class="ant-col ant-col-24"
+            >
+              <div
+                class="ant-card ant-card-hoverable ant-card-now white inherit-height "
+              >
+                <div
+                  class="ant-card-head"
+                >
+                  <div
+                    class="ant-card-head-wrapper"
+                  >
+                    <div
+                      class="ant-card-head-title"
+                    >
+                      <div
+                        class="inline-flex between"
+                        style="align-items: center; height: 55px;"
+                      >
+                        <span
+                          class="field-title"
+                        >
+                          Application Permittee
+                        </span>
+                        <button
+                          class="ant-btn ant-btn-default ant-btn-background-ghost"
+                          type="button"
+                        >
+                          <img
+                            alt="Remove Application Contact"
+                            class=""
+                            src="[object Object]"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="ant-card-body"
+                >
+                  <div
+                    class="ant-row ant-row-center ant-row-middle"
+                  >
+                    <div
+                      class="ant-col ant-col-15"
+                    >
+                      <div
+                        class="inline-flex"
+                      >
+                        <img
+                          alt="user"
+                          class="icon-sm padding-sm--right"
+                          height="25"
+                          src="[object Object]"
+                        />
+                        <h4>
+                          Alpha Person
+                        </h4>
+                      </div>
+                      <div>
+                        <div
+                          class="inline-flex"
+                        >
+                          <div
+                            class="padding-sm--right"
+                          >
+                            <span
+                              aria-label="mail"
+                              class="anticon anticon-mail icon-sm"
+                              role="img"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class=""
+                                data-icon="mail"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="64 64 896 896"
+                                width="1em"
+                              >
+                                <path
+                                  d="M928 160H96c-17.7 0-32 14.3-32 32v640c0 17.7 14.3 32 32 32h832c17.7 0 32-14.3 32-32V192c0-17.7-14.3-32-32-32zm-40 110.8V792H136V270.8l-27.6-21.5 39.3-50.5 42.8 33.3h643.1l42.8-33.3 39.3 50.5-27.7 21.5zM833.6 232L512 482 190.4 232l-42.8-33.3-39.3 50.5 27.6 21.5 341.6 265.6a55.99 55.99 0 0068.7 0L888 270.8l27.6-21.5-39.3-50.5-42.7 33.2z"
+                                />
+                              </svg>
+                            </span>
+                          </div>
+                          <a
+                            href="mailto:alpha@test.ca"
+                          >
+                            alpha@test.ca
+                          </a>
+                        </div>
+                        <div
+                          class="inline-flex"
+                        >
+                          <div
+                            class="padding-sm--right"
+                          >
+                            <span
+                              aria-label="phone"
+                              class="anticon anticon-phone icon-sm"
+                              role="img"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class=""
+                                data-icon="phone"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="64 64 896 896"
+                                width="1em"
+                              >
+                                <path
+                                  d="M877.1 238.7L770.6 132.3c-13-13-30.4-20.3-48.8-20.3s-35.8 7.2-48.8 20.3L558.3 246.8c-13 13-20.3 30.5-20.3 48.9 0 18.5 7.2 35.8 20.3 48.9l89.6 89.7a405.46 405.46 0 01-86.4 127.3c-36.7 36.9-79.6 66-127.2 86.6l-89.6-89.7c-13-13-30.4-20.3-48.8-20.3a68.2 68.2 0 00-48.8 20.3L132.3 673c-13 13-20.3 30.5-20.3 48.9 0 18.5 7.2 35.8 20.3 48.9l106.4 106.4c22.2 22.2 52.8 34.9 84.2 34.9 6.5 0 12.8-.5 19.2-1.6 132.4-21.8 263.8-92.3 369.9-198.3C818 606 888.4 474.6 910.4 342.1c6.3-37.6-6.3-76.3-33.3-103.4zm-37.6 91.5c-19.5 117.9-82.9 235.5-178.4 331s-213 158.9-330.9 178.4c-14.8 2.5-30-2.5-40.8-13.2L184.9 721.9 295.7 611l119.8 120 .9.9 21.6-8a481.29 481.29 0 00285.7-285.8l8-21.6-120.8-120.7 110.8-110.9 104.5 104.5c10.8 10.8 15.8 26 13.3 40.8z"
+                                />
+                              </svg>
+                            </span>
+                          </div>
+                          <p>
+                            111
+                             
+                            
+                          </p>
+                        </div>
+                        <div
+                          style="min-height: 70px;"
+                        >
+                          <div
+                            class="inline-flex"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="svg-inline--fa fa-building fa-lg fa-fw"
+                              data-icon="building"
+                              data-prefix="fal"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 384 512"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M64 32C46.3 32 32 46.3 32 64V448c0 17.7 14.3 32 32 32h64V416c0-35.3 28.7-64 64-64s64 28.7 64 64v64h64c17.7 0 32-14.3 32-32V64c0-17.7-14.3-32-32-32H64zM224 416c0-17.7-14.3-32-32-32s-32 14.3-32 32v64h64V416zm-96 96H64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0H320c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H256 224 160 128zM64 120c0-13.3 10.7-24 24-24h48c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H88c-13.3 0-24-10.7-24-24V120zm32 8v32h32V128H96zM248 96h48c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H248c-13.3 0-24-10.7-24-24V120c0-13.3 10.7-24 24-24zm8 64h32V128H256v32zM64 248c0-13.3 10.7-24 24-24h48c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H88c-13.3 0-24-10.7-24-24V248zm32 8v32h32V256H96zm152-32h48c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H248c-13.3 0-24-10.7-24-24V248c0-13.3 10.7-24 24-24zm8 64h32V256H256v32z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                            <p>
+                              <span>
+                                N/A
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="ant-col ant-col-9"
+                    >
+                      <select
+                        data-testid="render-select"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="ant-row"
+                  >
+                    <div
+                      class="ant-col ant-col-12"
+                    />
+                    <div
+                      class="ant-col ant-col-12"
+                    >
+                      <button
+                        class="ant-btn ant-btn-primary"
+                        style="float: right;"
+                        type="button"
+                      >
+                        <span>
+                          Search Contact
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-col ant-col-24"
+            >
+              <div
+                class="ant-card ant-card-hoverable ant-card-now white inherit-height "
+              >
+                <div
+                  class="ant-card-head"
+                >
+                  <div
+                    class="ant-card-head-wrapper"
+                  >
+                    <div
+                      class="ant-card-head-title"
+                    >
+                      <div
+                        class="inline-flex between"
+                        style="align-items: center; height: 55px;"
+                      >
+                        <span
+                          class="field-title"
+                        >
+                          Application undefined
+                        </span>
+                        <button
+                          class="ant-btn ant-btn-default ant-btn-background-ghost"
+                          type="button"
+                        >
+                          <img
+                            alt="Remove Application Contact"
+                            class=""
+                            src="[object Object]"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="ant-card-body"
+                >
+                  <div
+                    class="ant-row ant-row-center ant-row-middle"
+                  >
+                    <div
+                      class="ant-col ant-col-15"
+                    >
+                      <div
+                        class="inline-flex"
+                      >
+                        <img
+                          alt="user"
+                          class="icon-sm padding-sm--right"
+                          height="25"
+                          src="[object Object]"
+                        />
+                        <h4>
+                          Beta Person
+                        </h4>
+                      </div>
+                      <div>
+                        <div
+                          class="inline-flex"
+                        >
+                          <div
+                            class="padding-sm--right"
+                          >
+                            <span
+                              aria-label="mail"
+                              class="anticon anticon-mail icon-sm"
+                              role="img"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class=""
+                                data-icon="mail"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="64 64 896 896"
+                                width="1em"
+                              >
+                                <path
+                                  d="M928 160H96c-17.7 0-32 14.3-32 32v640c0 17.7 14.3 32 32 32h832c17.7 0 32-14.3 32-32V192c0-17.7-14.3-32-32-32zm-40 110.8V792H136V270.8l-27.6-21.5 39.3-50.5 42.8 33.3h643.1l42.8-33.3 39.3 50.5-27.7 21.5zM833.6 232L512 482 190.4 232l-42.8-33.3-39.3 50.5 27.6 21.5 341.6 265.6a55.99 55.99 0 0068.7 0L888 270.8l27.6-21.5-39.3-50.5-42.7 33.2z"
+                                />
+                              </svg>
+                            </span>
+                          </div>
+                          <a
+                            href="mailto:beta@test.ca"
+                          >
+                            beta@test.ca
+                          </a>
+                        </div>
+                        <div
+                          class="inline-flex"
+                        >
+                          <div
+                            class="padding-sm--right"
+                          >
+                            <span
+                              aria-label="phone"
+                              class="anticon anticon-phone icon-sm"
+                              role="img"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class=""
+                                data-icon="phone"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="64 64 896 896"
+                                width="1em"
+                              >
+                                <path
+                                  d="M877.1 238.7L770.6 132.3c-13-13-30.4-20.3-48.8-20.3s-35.8 7.2-48.8 20.3L558.3 246.8c-13 13-20.3 30.5-20.3 48.9 0 18.5 7.2 35.8 20.3 48.9l89.6 89.7a405.46 405.46 0 01-86.4 127.3c-36.7 36.9-79.6 66-127.2 86.6l-89.6-89.7c-13-13-30.4-20.3-48.8-20.3a68.2 68.2 0 00-48.8 20.3L132.3 673c-13 13-20.3 30.5-20.3 48.9 0 18.5 7.2 35.8 20.3 48.9l106.4 106.4c22.2 22.2 52.8 34.9 84.2 34.9 6.5 0 12.8-.5 19.2-1.6 132.4-21.8 263.8-92.3 369.9-198.3C818 606 888.4 474.6 910.4 342.1c6.3-37.6-6.3-76.3-33.3-103.4zm-37.6 91.5c-19.5 117.9-82.9 235.5-178.4 331s-213 158.9-330.9 178.4c-14.8 2.5-30-2.5-40.8-13.2L184.9 721.9 295.7 611l119.8 120 .9.9 21.6-8a481.29 481.29 0 00285.7-285.8l8-21.6-120.8-120.7 110.8-110.9 104.5 104.5c10.8 10.8 15.8 26 13.3 40.8z"
+                                />
+                              </svg>
+                            </span>
+                          </div>
+                          <p>
+                            222
+                             
+                            
+                          </p>
+                        </div>
+                        <div
+                          style="min-height: 70px;"
+                        >
+                          <div
+                            class="inline-flex"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="svg-inline--fa fa-building fa-lg fa-fw"
+                              data-icon="building"
+                              data-prefix="fal"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 384 512"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M64 32C46.3 32 32 46.3 32 64V448c0 17.7 14.3 32 32 32h64V416c0-35.3 28.7-64 64-64s64 28.7 64 64v64h64c17.7 0 32-14.3 32-32V64c0-17.7-14.3-32-32-32H64zM224 416c0-17.7-14.3-32-32-32s-32 14.3-32 32v64h64V416zm-96 96H64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0H320c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H256 224 160 128zM64 120c0-13.3 10.7-24 24-24h48c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H88c-13.3 0-24-10.7-24-24V120zm32 8v32h32V128H96zM248 96h48c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H248c-13.3 0-24-10.7-24-24V120c0-13.3 10.7-24 24-24zm8 64h32V128H256v32zM64 248c0-13.3 10.7-24 24-24h48c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H88c-13.3 0-24-10.7-24-24V248zm32 8v32h32V256H96zm152-32h48c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H248c-13.3 0-24-10.7-24-24V248c0-13.3 10.7-24 24-24zm8 64h32V256H256v32z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                            <p>
+                              <span>
+                                N/A
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="ant-col ant-col-9"
+                    >
+                      <select
+                        data-testid="render-select"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="ant-row"
+                  >
+                    <div
+                      class="ant-col ant-col-12"
+                    />
+                    <div
+                      class="ant-col ant-col-12"
+                    >
+                      <button
+                        class="ant-btn ant-btn-primary"
+                        disabled=""
+                        style="float: right;"
+                        type="button"
+                      >
+                        <span>
+                          Search Contact
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-col ant-col-24"
+            >
+              <div
+                class="add-content-block"
+                role="button"
+                tabindex="0"
+              >
+                <div
+                  class="inline-flex flex-center"
+                >
+                  <span
+                    aria-label="plus"
+                    class="anticon anticon-plus icon-sm padding-sm--right"
+                    role="img"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class=""
+                      data-icon="plus"
+                      fill="currentColor"
+                      focusable="false"
+                      height="1em"
+                      viewBox="64 64 896 896"
+                      width="1em"
+                    >
+                      <path
+                        d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"
+                      />
+                      <path
+                        d="M192 474h672q8 0 8 8v60q0 8-8 8H160q-8 0-8-8v-60q0-8 8-8z"
+                      />
+                    </svg>
+                  </span>
+                  <p>
+                    Add New Application Contact
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-8"
+        style="padding: 8px 8px 8px 8px;"
+      >
+        <div
+          class="ant-row contact-rows"
+        >
+          <div
+            class="scroll"
+          >
+            <div
+              class="ant-col ant-col-24"
+              style="min-height: 150px;"
+            >
+              <h3>
+                Matching Contact Options
+              </h3>
+              <p>
+                Click on a contact(s) below to see their detailed information in the "Contact Detail" column. If you cannot find a match, you can either search or create a new contact.
+              </p>
+            </div>
+            <div
+              class="ant-col ant-col-24 card--white"
+            >
+              <p
+                class="null"
+              >
+                No Contact selected to verify
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-8"
+        style="padding: 8px 8px 8px 8px;"
+      >
+        <div
+          class="ant-row contact-rows"
+        >
+          <div
+            class="scroll"
+          >
+            <div
+              class="ant-col ant-col-24"
+              style="min-height: 150px;"
+            >
+              <h3>
+                Core Contact Detail
+              </h3>
+              <p>
+                Use this information to determine if this is the correct contact to use in Core for this application. Click "Select Contact" when you have found the right match. You may update the contact if the information is incorrect.
+              </p>
+            </div>
+            <div
+              class="ant-col ant-col-24 card--white"
+            >
+              <p
+                class="null"
+              >
+                No Contact selected to verify
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;
