@@ -126,7 +126,7 @@ const VariableConditionMenu: FC<VariableConditionMenuProps> = ({
           { key:"{regional_mine_inbox}", label: (
             <Space>
                 Regional Mine Inbox
-                <Tooltip title={"Defaults to the region associated with the Mine."} placement="right" mouseEnterDelay={0.3} getPopupContainer={triggerNode => triggerNode.parentNode as HTMLElement}>
+                <Tooltip title={"Defaults to the region associated with the Mine."} placement="right" mouseEnterDelay={0.3}>
                   <QuestionCircleOutlined className="icon-sm" />
                 </Tooltip>
             </Space>
