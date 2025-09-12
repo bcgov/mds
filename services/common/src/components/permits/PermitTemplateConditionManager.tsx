@@ -1,38 +1,48 @@
 import React, { FC, useEffect, useMemo } from "react";
-import { Collapse, Typography, Row, Col, Skeleton } from "antd";
-import { IFormattedConditionCategory, IStandardPermitCondition } from "@mds/common/interfaces";
-import { fetchStandardPermitConditions } from "@mds/common/redux/actionCreators/permitActionCreator";
-import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
-import { getStandardPermitConditionsFormatted } from "@mds/common/redux/selectors/permitSelectors";
+import { Col, Collapse, Row, Skeleton, Typography } from "antd";
 import {
-  fetchStandardReportRequirements,
-  getStandardReportRequirements,
-} from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
+  IFormattedConditionCategory,
+  IPermitCondition,
+  IStandardPermitCondition,
+} from "@mds/common/interfaces";
+import {
+  createPermitCondition,
+  fetchStandardPermitConditions,
+} from "@mds/common/redux/actionCreators/permitActionCreator";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import {
+  getStandardPermitConditions,
+  getStandardPermitConditionsFormatted,
+} from "@mds/common/redux/selectors/permitSelectors";
 import { getIsFetching } from "@mds/common/redux/reducers/networkReducer";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import CoreButton from "@mds/common/components/common/CoreButton";
+import { LeftOutlined } from "@ant-design/icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/pro-light-svg-icons";
+
+const { Text } = Typography;
 
 interface PermitTemplateConditionManagerProps {
   category: IFormattedConditionCategory;
   typeCode: string;
-  onInsert: ({
-    category,
-    condition,
-  }: {
-    category: IFormattedConditionCategory;
-    condition: IStandardPermitCondition;
-  }) => void;
+  onInsert: () => void;
+  onClose: () => void;
+  permitAmendmentGuid: string;
 }
 
 const PermitTemplateConditionManager: FC<PermitTemplateConditionManagerProps> = ({
   category,
   typeCode,
   onInsert,
+  permitAmendmentGuid,
+  onClose,
 }) => {
   const dispatch = useAppDispatch();
 
   const { categoriesWithConditions } = useAppSelector(getStandardPermitConditionsFormatted());
-  const reportRequirements = useAppSelector(getStandardReportRequirements);
+  const standardPermitConditions = useAppSelector(getStandardPermitConditions);
+
   const conditionsLoading = useAppSelector(
     getIsFetching(NetworkReducerTypes.GET_PERMIT_CONDITIONS)
   );
@@ -40,13 +50,13 @@ const PermitTemplateConditionManager: FC<PermitTemplateConditionManagerProps> = 
     categoriesWithConditions[0]?.conditions[0]?.notice_of_work_type === typeCode;
 
   const templateConditions = useMemo(() => {
-    if (!reportRequirements) return [];
+    if (!categoriesWithConditions) return [];
     return (
       categoriesWithConditions.find(
         (cat) => cat.condition_category_code === category.condition_category_code
       )?.conditions ?? []
     );
-  }, [reportRequirements, categoriesWithConditions, category.condition_category_code]);
+  }, [categoriesWithConditions, category.condition_category_code, standardPermitConditions]);
 
   useEffect(() => {
     if (!conditionsLoaded) {
@@ -54,11 +64,28 @@ const PermitTemplateConditionManager: FC<PermitTemplateConditionManagerProps> = 
     }
   }, [typeCode]);
 
-  useEffect(() => {
-    if (!reportRequirements) {
-      dispatch(fetchStandardReportRequirements(undefined));
-    }
-  }, [reportRequirements]);
+  const handleInsert = async (condition: IStandardPermitCondition) => {
+    const newCondition: IPermitCondition = {
+      condition_category_code: condition.condition_category_code,
+      condition_type_code: condition.condition_type_code,
+      display_order: category.conditions.length + 1,
+      condition: condition.condition,
+      sub_conditions: condition.sub_conditions,
+    } as unknown as IPermitCondition;
+    await dispatch(createPermitCondition(permitAmendmentGuid, newCondition));
+    onInsert();
+  };
+
+  const renderCloseButton = () => {
+    return (
+      <CoreButton
+        data-testid="close-template-manager-button"
+        type="primary"
+        onClick={onClose}
+        icon={<FontAwesomeIcon icon={faXmark} />}
+      />
+    );
+  };
 
   if (conditionsLoading) {
     return <Skeleton active paragraph={{ rows: 4 }} />;
@@ -69,19 +96,25 @@ const PermitTemplateConditionManager: FC<PermitTemplateConditionManagerProps> = 
       <div>
         <Typography.Title level={4}>Template Conditions</Typography.Title>
         <Typography.Text>No template conditions available for this category.</Typography.Text>
+        {renderCloseButton()}
       </div>
     );
   }
 
   return (
-    <div>
-      <Typography.Title level={4}>Template Conditions</Typography.Title>
-      <Collapse className="template-conditions-collapse">
+    <div data-testid="permit-condition-template-manager">
+      <Row wrap={false}>
+        <Col flex="auto">
+          <Typography.Title level={4}>Template Conditions</Typography.Title>
+        </Col>
+        <Col>{renderCloseButton()}</Col>
+      </Row>
+      <Collapse>
         {templateConditions.map((condition: IStandardPermitCondition) => (
           <Collapse.Panel
             key={condition.standard_permit_condition_guid}
             header={
-              <Row>
+              <Row wrap={false} data-testid="template-conditions-collapse">
                 <Col flex="auto">
                   <Typography.Text strong>
                     {condition.condition.substring(0, 80)}
@@ -90,13 +123,12 @@ const PermitTemplateConditionManager: FC<PermitTemplateConditionManagerProps> = 
                 </Col>
                 <Col>
                   <CoreButton
+                    data-testid="template-insert-button"
+                    icon={<LeftOutlined />}
                     type="primary"
                     onClick={(event) => {
                       event.stopPropagation();
-                      onInsert({
-                        category,
-                        condition,
-                      });
+                      handleInsert(condition);
                     }}
                   >
                     Insert Condition
@@ -107,29 +139,20 @@ const PermitTemplateConditionManager: FC<PermitTemplateConditionManagerProps> = 
           >
             <Typography.Paragraph>{condition.condition}</Typography.Paragraph>
 
-            {condition.condition_type_code && (
-              <Row gutter={[8, 8]}>
-                <Col span={8}>
-                  <Typography.Text strong>Type:</Typography.Text>
-                </Col>
-                <Col span={16}>
-                  <Typography.Text>{condition.condition_type_code}</Typography.Text>
-                </Col>
-              </Row>
-            )}
-
             {condition.sub_conditions && condition.sub_conditions.length > 0 && (
               <>
                 <Typography.Text strong style={{ marginTop: "16px", display: "block" }}>
                   Sub Conditions:
                 </Typography.Text>
-                <Collapse className="sub-conditions-collapse">
+                <Collapse>
                   {condition.sub_conditions.map((subCondition) => (
                     <Collapse.Panel
                       key={subCondition.standard_permit_condition_guid}
                       header={
-                        subCondition.condition.substring(0, 80) +
-                        (subCondition.condition.length > 80 ? "..." : "")
+                        <Text data-testid="sub-conditions-collapse">
+                          {subCondition.condition.substring(0, 80) +
+                            (subCondition.condition.length > 80 ? "..." : "")}
+                        </Text>
                       }
                     >
                       <Typography.Paragraph>{subCondition.condition}</Typography.Paragraph>

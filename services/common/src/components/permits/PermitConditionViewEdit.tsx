@@ -123,6 +123,12 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
     [currentAmendment?.condition_categories, condWithoutConditionsText]
   );
 
+  useEffect(() => {
+    if (!userCanEdit) {
+      setAddingTemplateConditions(undefined);
+    }
+  }, [userCanEdit]);
+
   const canEditPermitConditions = (category: IPermitConditionCategory): boolean =>
     featureModifyConditions &&
     userCanEdit &&
@@ -147,17 +153,12 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
     setEditingFormName(FORM.EDIT_PERMIT_CONDITION);
   };
 
-  const handleRetrieveTemplates = (category) => {
+  const handleOpenTemplateManager = (category) => {
     if (addingTemplateConditions === category.condition_category_code) {
       setAddingTemplateConditions(undefined);
     } else {
       setAddingTemplateConditions(category.condition_category_code);
     }
-  };
-
-  const handleInsertTemplate = ({ category, condition }) => {
-    console.log("category", category);
-    console.log("condition", condition);
   };
 
   const handleUpdateConditionCategory = (category: IPermitConditionCategory) => {
@@ -256,14 +257,18 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
                 >
                   Add Condition
                 </CoreButton>
-                <CoreButton
-                  type="primary"
-                  loading={loading}
-                  disabled={Boolean(addingToCategoryCode) || Boolean(editingFormName)}
-                  onClick={() => handleRetrieveTemplates(category)}
-                >
-                  Retrieve Template Conditions
-                </CoreButton>
+                {Boolean(typeCode) && (
+                  <CoreButton
+                    type="primary"
+                    loading={loading}
+                    disabled={Boolean(addingToCategoryCode) || Boolean(editingFormName)}
+                    onClick={() => handleOpenTemplateManager(category)}
+                  >
+                    {addingTemplateConditions === category.condition_category_code
+                      ? "Close Template Conditions"
+                      : "Insert Template Conditions"}
+                  </CoreButton>
+                )}
               </Row>
             )}
           </Row>
@@ -340,9 +345,11 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
                         <Col span={12}>{renderCategory(category, idx)}</Col>
                         <Col span={12}>
                           <PermitTemplateConditionManager
+                            permitAmendmentGuid={currentAmendment?.permit_amendment_guid}
                             category={category}
                             typeCode={typeCode}
-                            onInsert={handleInsertTemplate}
+                            onInsert={() => refreshData()}
+                            onClose={() => handleOpenTemplateManager(category)}
                           />
                         </Col>
                       </Row>
