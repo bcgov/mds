@@ -805,14 +805,18 @@ exports[`PermitConditions renders properly 1`] = `
                                         </span>
                                       </div>
                                     </h3>
-                                    <button
-                                      class="ant-btn ant-btn-primary core-btn core-btn-primary"
-                                      type="button"
+                                    <div
+                                      class="ant-row"
                                     >
-                                      <span>
-                                        Add Condition
-                                      </span>
-                                    </button>
+                                      <button
+                                        class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                        type="button"
+                                      >
+                                        <span>
+                                          Add Condition
+                                        </span>
+                                      </button>
+                                    </div>
                                   </div>
                                   <form
                                     class="ant-form ant-form-horizontal common-form common-form-PERMIT_CONDITION_REVIEW_ASSIGNMENT-HSC form-edit"
