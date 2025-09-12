@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Tabs } from "antd";
 import { formatDate } from "@mds/common/redux/utils/helpers";
@@ -17,6 +16,7 @@ import {
 import ReviewInformationRequirementsTable from "@/components/mine/Projects/ReviewInformationRequirementsTable";
 import UpdateStatusForm from "@/components/Forms/MajorProject/UpdateStatusForm";
 import { FORM } from "@mds/common/constants/forms";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 
 const sideMenuOptions = [
   {
@@ -59,19 +59,18 @@ const sideMenuOptions = [
 
 const InformationRequirementsTableTab = () => {
   const { projectGuid } = useParams<{ projectGuid: string }>();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const project = useSelector(getProject);
-  const requirements = useSelector(getRequirements);
-  const informationRequirementsTable = useSelector(getInformationRequirementsTable);
-  const dropdownIRTStatusCodes = useSelector(getDropdownInformationRequirementsTableStatusCodes);
+  const project = useAppSelector(getProject);
+  const requirements = useAppSelector(getRequirements);
+  const informationRequirementsTable = useAppSelector(getInformationRequirementsTable);
+  const dropdownIRTStatusCodes = useAppSelector(getDropdownInformationRequirementsTableStatusCodes);
+
   const [isLoaded, setIsLoaded] = useState(false);
 
   const handleFetchData = () => {
-    dispatch(fetchProjectById(projectGuid))
-      // @ts-ignore
-      .then(() => dispatch(fetchRequirements()))
-      .catch(setIsLoaded(false));
+    dispatch(fetchProjectById(projectGuid));
+    dispatch(fetchRequirements());
   };
 
   useEffect(() => {
@@ -101,7 +100,7 @@ const InformationRequirementsTableTab = () => {
       updateInformationRequirementsTable({
         projectGuid,
         informationRequirementsTableGuid: informationRequirementsTable.irt_guid,
-        status_code: values.status_code
+        status_code: values.status_code,
       })
     );
     return handleFetchData();
@@ -151,4 +150,5 @@ const InformationRequirementsTableTab = () => {
     </div>
   );
 };
+
 export default InformationRequirementsTableTab;
