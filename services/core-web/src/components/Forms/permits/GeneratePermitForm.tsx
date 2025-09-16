@@ -92,6 +92,7 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
     permitGuid: props.draftPermit.permit_guid,
     currentAmendment: props.draftPermitAmendment,
     isNowEditor: true,
+    standardConditionType: props.noticeOfWork.notice_of_work_type_code,
     loading,
     setLoading,
     refreshData: () =>
@@ -470,7 +471,6 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
                 setEditingFormName={setEditingFormName}
                 addingToCategoryCode={addingToCategoryCode}
                 setAddingToCategoryCode={setAddingToCategoryCode}
-                typeCode={props.noticeOfWork.notice_of_work_type_code}
               />
             </PermitConditionsProvider>
           ) : (

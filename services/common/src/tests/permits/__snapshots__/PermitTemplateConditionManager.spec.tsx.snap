@@ -85,22 +85,23 @@ exports[`PermitTemplateConditionManager renders the list of template conditions 
           <div
             class="ant-row ant-row-no-wrap"
             data-testid="template-conditions-collapse"
+            style="margin-left: -8px; margin-right: -8px;"
           >
             <div
               class="ant-col"
-              style="flex-basis: auto; min-width: 0;"
+              style="padding-left: 8px; padding-right: 8px; flex-basis: auto; min-width: 0;"
             >
               <span
                 class="ant-typography"
               >
                 <strong>
-                  Approval - This permit authorizes only the following mining activities as outlin
-                  ...
+                  Approval - This permit authorizes only the following mining activities as outlin...
                 </strong>
               </span>
             </div>
             <div
               class="ant-col"
+              style="padding-left: 8px; padding-right: 8px;"
             >
               <button
                 class="ant-btn ant-btn-primary core-btn core-btn-primary"
@@ -128,7 +129,7 @@ exports[`PermitTemplateConditionManager renders the list of template conditions 
                   </svg>
                 </span>
                 <span>
-                  Insert Condition
+                  Insert
                 </span>
               </button>
             </div>
@@ -175,22 +176,23 @@ exports[`PermitTemplateConditionManager renders the list of template conditions 
           <div
             class="ant-row ant-row-no-wrap"
             data-testid="template-conditions-collapse"
+            style="margin-left: -8px; margin-right: -8px;"
           >
             <div
               class="ant-col"
-              style="flex-basis: auto; min-width: 0;"
+              style="padding-left: 8px; padding-right: 8px; flex-basis: auto; min-width: 0;"
             >
               <span
                 class="ant-typography"
               >
                 <strong>
                   Definitions
-                  
                 </strong>
               </span>
             </div>
             <div
               class="ant-col"
+              style="padding-left: 8px; padding-right: 8px;"
             >
               <button
                 class="ant-btn ant-btn-primary core-btn core-btn-primary"
@@ -218,7 +220,7 @@ exports[`PermitTemplateConditionManager renders the list of template conditions 
                   </svg>
                 </span>
                 <span>
-                  Insert Condition
+                  Insert
                 </span>
               </button>
             </div>
@@ -265,22 +267,23 @@ exports[`PermitTemplateConditionManager renders the list of template conditions 
           <div
             class="ant-row ant-row-no-wrap"
             data-testid="template-conditions-collapse"
+            style="margin-left: -8px; margin-right: -8px;"
           >
             <div
               class="ant-col"
-              style="flex-basis: auto; min-width: 0;"
+              style="padding-left: 8px; padding-right: 8px; flex-basis: auto; min-width: 0;"
             >
               <span
                 class="ant-typography"
               >
                 <strong>
                   Documentation 
-                  
                 </strong>
               </span>
             </div>
             <div
               class="ant-col"
+              style="padding-left: 8px; padding-right: 8px;"
             >
               <button
                 class="ant-btn ant-btn-primary core-btn core-btn-primary"
@@ -308,7 +311,7 @@ exports[`PermitTemplateConditionManager renders the list of template conditions 
                   </svg>
                 </span>
                 <span>
-                  Insert Condition
+                  Insert
                 </span>
               </button>
             </div>
@@ -355,22 +358,23 @@ exports[`PermitTemplateConditionManager renders the list of template conditions 
           <div
             class="ant-row ant-row-no-wrap"
             data-testid="template-conditions-collapse"
+            style="margin-left: -8px; margin-right: -8px;"
           >
             <div
               class="ant-col"
-              style="flex-basis: auto; min-width: 0;"
+              style="padding-left: 8px; padding-right: 8px; flex-basis: auto; min-width: 0;"
             >
               <span
                 class="ant-typography"
               >
                 <strong>
                   Reports to be signed by a Qualified Professional:
-                  
                 </strong>
               </span>
             </div>
             <div
               class="ant-col"
+              style="padding-left: 8px; padding-right: 8px;"
             >
               <button
                 class="ant-btn ant-btn-primary core-btn core-btn-primary"
@@ -398,7 +402,7 @@ exports[`PermitTemplateConditionManager renders the list of template conditions 
                   </svg>
                 </span>
                 <span>
-                  Insert Condition
+                  Insert
                 </span>
               </button>
             </div>

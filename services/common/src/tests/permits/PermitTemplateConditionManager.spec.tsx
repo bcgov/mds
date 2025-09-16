@@ -4,7 +4,7 @@ import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import PermitTemplateConditionManager from "@mds/common/components/permits/PermitTemplateConditionManager";
 import { PermitConditionsProvider } from "@mds/common/components/permits/PermitConditionsContext";
-import { PERMITS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
+import { PERMITS } from "@mds/common/constants/reducerTypes";
 import userEvent from "@testing-library/user-event";
 
 const category = {
@@ -21,9 +21,6 @@ const category = {
 };
 
 const initialState = {
-  [STATIC_CONTENT]: {
-    ...MOCK.BULK_STATIC_CONTENT_RESPONSE,
-  },
   [PERMITS]: {
     standardPermitConditions: MOCK.STANDARD_PERMIT_CONDITIONS,
   },
@@ -32,6 +29,7 @@ const initialState = {
 const providerParams = {
   mineGuid: "mineGuid",
   permitGuid: "permitGuid",
+  standardConditionType: 'GEC',
   latestAmendment: null,
   previousAmendment: null,
   currentAmendment: null,
@@ -42,12 +40,11 @@ const providerParams = {
 
 describe("PermitTemplateConditionManager", () => {
   it("renders the list of template conditions", async () => {
-    const { container, getByTestId, findByTestId } = render(
+    const { findByTestId } = render(
       <ReduxWrapper initialState={initialState}>
         <PermitConditionsProvider value={providerParams}>
           <PermitTemplateConditionManager
             category={category}
-            typeCode="GEC"
             onInsert={jest.fn()}
             onClose={jest.fn()}
             permitAmendmentGuid="permit-amendment-guid"
@@ -68,7 +65,6 @@ describe("PermitTemplateConditionManager", () => {
         <PermitConditionsProvider value={providerParams}>
           <PermitTemplateConditionManager
             category={category}
-            typeCode="GEC"
             onInsert={jest.fn()}
             onClose={jest.fn()}
             permitAmendmentGuid="permit-amendment-guid"
@@ -88,7 +84,6 @@ describe("PermitTemplateConditionManager", () => {
         <PermitConditionsProvider value={providerParams}>
           <PermitTemplateConditionManager
             category={category}
-            typeCode="GEC"
             onInsert={jest.fn()}
             onClose={onCloseMock}
             permitAmendmentGuid="permit-amendment-guid"
@@ -115,7 +110,6 @@ describe("PermitTemplateConditionManager", () => {
         <PermitConditionsProvider value={providerParams}>
           <PermitTemplateConditionManager
             category={category}
-            typeCode="GEC"
             onInsert={onInsertMock}
             onClose={jest.fn()}
             permitAmendmentGuid="permit-amendment-guid"
@@ -138,7 +132,6 @@ describe("PermitTemplateConditionManager", () => {
         <PermitConditionsProvider value={providerParams}>
           <PermitTemplateConditionManager
             category={category}
-            typeCode="GEC"
             onInsert={jest.fn()}
             onClose={jest.fn()}
             permitAmendmentGuid="permit-amendment-guid"

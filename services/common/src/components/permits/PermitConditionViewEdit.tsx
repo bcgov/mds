@@ -46,7 +46,6 @@ interface PermitConditionViewEditProps {
   setEditingFormName: (formName: string) => void;
   addingToCategoryCode: string;
   setAddingToCategoryCode: (categoryCode: string) => void;
-  typeCode?: string;
 }
 
 const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
@@ -61,7 +60,6 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
   setEditingFormName,
   addingToCategoryCode,
   setAddingToCategoryCode,
-  typeCode,
 }) => {
   const {
     mineGuid,
@@ -69,7 +67,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
     currentAmendment,
     loading,
     setLoading,
-    standardConditionType,
+    isStandardConditionEditor,
     isNowEditor,
     refreshData,
   } = usePermitConditions();
@@ -81,7 +79,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
   const defaultPermitConditionCategories = useAppSelector(getPermitConditionCategoryOptions);
 
   const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags);
-  const isStandardConditions = Boolean(standardConditionType);
+  const isStandardConditions = isStandardConditionEditor;
   const canAddConditions = isStandardConditions || isExtracted || isNowEditor;
   const areTagsEnabled = isFeatureEnabled(Feature.PERMIT_CONDITION_TAGS);
 
@@ -257,7 +255,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
                 >
                   Add Condition
                 </CoreButton>
-                {Boolean(typeCode) && (
+                {!isStandardConditionEditor && (
                   <CoreButton
                     type="primary"
                     loading={loading}
@@ -347,7 +345,6 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
                           <PermitTemplateConditionManager
                             permitAmendmentGuid={currentAmendment?.permit_amendment_guid}
                             category={category}
-                            typeCode={typeCode}
                             onInsert={() => refreshData()}
                             onClose={() => handleOpenTemplateManager(category)}
                           />

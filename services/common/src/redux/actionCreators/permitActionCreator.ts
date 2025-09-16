@@ -271,19 +271,6 @@ export const updatePermitAmendmentConditionCategory =
   (dispatch): Promise<IPermitCondition | IDispatchError> => {
     dispatch(request(NetworkReducerTypes.UPDATE_PERMIT_CONDITION_CATEGORY));
     dispatch(showLoading());
-    console.log(
-      "dispatching update permit condition category",
-      payload,
-      "with params: ",
-      mineGuid,
-      permitGuid,
-      permitAmdendmentGuid,
-      "and payload:"
-    );
-    console.log(
-      "endpoint",
-      `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT_CONDITION_CATEGORIES(mineGuid, permitGuid, permitAmdendmentGuid)}/${payload.condition_category_code}`
-    );
     return CustomAxios()
       .put(
         `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT_CONDITION_CATEGORIES(mineGuid, permitGuid, permitAmdendmentGuid)}/${payload.condition_category_code}`,

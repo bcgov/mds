@@ -1,14 +1,7 @@
-import React, { FC, useEffect, useMemo } from "react";
+import React, { FC, useEffect, useMemo, useState } from "react";
 import { Col, Collapse, Row, Skeleton, Typography } from "antd";
-import {
-  IFormattedConditionCategory,
-  IPermitCondition,
-  IStandardPermitCondition,
-} from "@mds/common/interfaces";
-import {
-  createPermitCondition,
-  fetchStandardPermitConditions,
-} from "@mds/common/redux/actionCreators/permitActionCreator";
+import { IFormattedConditionCategory, IStandardPermitCondition } from "@mds/common/interfaces";
+import { fetchStandardPermitConditions } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import {
   getStandardPermitConditions,
@@ -20,12 +13,13 @@ import CoreButton from "@mds/common/components/common/CoreButton";
 import { LeftOutlined } from "@ant-design/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/pro-light-svg-icons";
+import { postTemplateConditionToAmendment } from "@mds/common/redux/slices/permitConditionTemplateSlice";
+import { usePermitConditions } from "@mds/common/components/permits/PermitConditionsContext";
 
 const { Text } = Typography;
 
 interface PermitTemplateConditionManagerProps {
   category: IFormattedConditionCategory;
-  typeCode: string;
   onInsert: () => void;
   onClose: () => void;
   permitAmendmentGuid: string;
@@ -33,12 +27,16 @@ interface PermitTemplateConditionManagerProps {
 
 const PermitTemplateConditionManager: FC<PermitTemplateConditionManagerProps> = ({
   category,
-  typeCode,
   onInsert,
   permitAmendmentGuid,
   onClose,
 }) => {
   const dispatch = useAppDispatch();
+
+  const { standardConditionType } = usePermitConditions();
+
+  const [activeKeys, setActiveKeys] = useState<string[]>([]);
+  const [activeSubKeys, setActiveSubKeys] = useState<Record<string, string[]>>({});
 
   const { categoriesWithConditions } = useAppSelector(getStandardPermitConditionsFormatted());
   const standardPermitConditions = useAppSelector(getStandardPermitConditions);
@@ -46,8 +44,15 @@ const PermitTemplateConditionManager: FC<PermitTemplateConditionManagerProps> = 
   const conditionsLoading = useAppSelector(
     getIsFetching(NetworkReducerTypes.GET_PERMIT_CONDITIONS)
   );
+
+  useEffect(() => {
+    if (!conditionsLoaded) {
+      dispatch(fetchStandardPermitConditions(standardConditionType));
+    }
+  }, [standardConditionType]);
+
   const conditionsLoaded =
-    categoriesWithConditions[0]?.conditions[0]?.notice_of_work_type === typeCode;
+    categoriesWithConditions[0]?.conditions[0]?.notice_of_work_type === standardConditionType;
 
   const templateConditions = useMemo(() => {
     if (!categoriesWithConditions) return [];
@@ -58,21 +63,24 @@ const PermitTemplateConditionManager: FC<PermitTemplateConditionManagerProps> = 
     );
   }, [categoriesWithConditions, category.condition_category_code, standardPermitConditions]);
 
-  useEffect(() => {
-    if (!conditionsLoaded) {
-      dispatch(fetchStandardPermitConditions(typeCode)).then(() => {});
-    }
-  }, [typeCode]);
+  const handleCollapseChange = (keys: string | string[]) => {
+    setActiveKeys(Array.isArray(keys) ? keys : [keys]);
+  };
+
+  const handleSubCollapseChange = (parentKey: string) => (keys: string | string[]) => {
+    setActiveSubKeys({
+      ...activeSubKeys,
+      [parentKey]: Array.isArray(keys) ? keys : [keys],
+    });
+  };
 
   const handleInsert = async (condition: IStandardPermitCondition) => {
-    const newCondition: IPermitCondition = {
-      condition_category_code: condition.condition_category_code,
-      condition_type_code: condition.condition_type_code,
-      display_order: category.conditions.length + 1,
-      condition: condition.condition,
-      sub_conditions: condition.sub_conditions,
-    } as unknown as IPermitCondition;
-    await dispatch(createPermitCondition(permitAmendmentGuid, newCondition));
+    dispatch(
+      postTemplateConditionToAmendment({
+        permitAmendmentGuid,
+        standardPermitConditionGuid: condition.standard_permit_condition_guid,
+      })
+    );
     onInsert();
   };
 
@@ -101,6 +109,47 @@ const PermitTemplateConditionManager: FC<PermitTemplateConditionManagerProps> = 
     );
   }
 
+  const renderConditionText = (condition: IStandardPermitCondition, isExpanded: boolean) => {
+    if (isExpanded) return condition.condition;
+    return `${condition.condition.substring(0, 80)}${condition.condition.length > 80 ? "..." : ""}`;
+  };
+
+  const renderSubConditions = (
+    subConditions: IStandardPermitCondition[],
+    parentConditionKey: string
+  ) => {
+    return (
+      <>
+        <Typography.Text strong style={{ marginTop: "16px", display: "block" }}>
+          Sub Conditions:
+        </Typography.Text>
+        <Collapse
+          activeKey={activeSubKeys[parentConditionKey] || []}
+          onChange={handleSubCollapseChange(parentConditionKey)}
+        >
+          {subConditions.map((subCondition) => {
+            const subKey = subCondition.standard_permit_condition_guid;
+            const isSubExpanded = activeSubKeys[parentConditionKey]?.includes(subKey);
+
+            return (
+              <Collapse.Panel
+                key={subCondition.standard_permit_condition_guid}
+                header={
+                  <Text data-testid="sub-conditions-collapse">
+                    {renderConditionText(subCondition, isSubExpanded)}
+                  </Text>
+                }
+              >
+                {subCondition?.sub_conditions?.length > 0 &&
+                  renderSubConditions(subCondition.sub_conditions, subKey)}
+              </Collapse.Panel>
+            );
+          })}
+        </Collapse>
+      </>
+    );
+  };
+
   return (
     <div data-testid="permit-condition-template-manager">
       <Row wrap={false}>
@@ -109,60 +158,42 @@ const PermitTemplateConditionManager: FC<PermitTemplateConditionManagerProps> = 
         </Col>
         <Col>{renderCloseButton()}</Col>
       </Row>
-      <Collapse>
-        {templateConditions.map((condition: IStandardPermitCondition) => (
-          <Collapse.Panel
-            key={condition.standard_permit_condition_guid}
-            header={
-              <Row wrap={false} data-testid="template-conditions-collapse">
-                <Col flex="auto">
-                  <Typography.Text strong>
-                    {condition.condition.substring(0, 80)}
-                    {condition.condition.length > 80 ? "..." : ""}
-                  </Typography.Text>
-                </Col>
-                <Col>
-                  <CoreButton
-                    data-testid="template-insert-button"
-                    icon={<LeftOutlined />}
-                    type="primary"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      handleInsert(condition);
-                    }}
-                  >
-                    Insert Condition
-                  </CoreButton>
-                </Col>
-              </Row>
-            }
-          >
-            <Typography.Paragraph>{condition.condition}</Typography.Paragraph>
+      <Collapse activeKey={activeKeys} onChange={handleCollapseChange}>
+        {templateConditions.map((condition: IStandardPermitCondition) => {
+          const conditionKey = condition.standard_permit_condition_guid;
+          const isExpanded = activeKeys.includes(conditionKey);
 
-            {condition.sub_conditions && condition.sub_conditions.length > 0 && (
-              <>
-                <Typography.Text strong style={{ marginTop: "16px", display: "block" }}>
-                  Sub Conditions:
-                </Typography.Text>
-                <Collapse>
-                  {condition.sub_conditions.map((subCondition) => (
-                    <Collapse.Panel
-                      key={subCondition.standard_permit_condition_guid}
-                      header={
-                        <Text data-testid="sub-conditions-collapse">
-                          {subCondition.condition.substring(0, 80) +
-                            (subCondition.condition.length > 80 ? "..." : "")}
-                        </Text>
-                      }
+          return (
+            <Collapse.Panel
+              key={conditionKey}
+              header={
+                <Row wrap={false} data-testid="template-conditions-collapse" gutter={16}>
+                  <Col flex="auto">
+                    <Typography.Text strong>
+                      {renderConditionText(condition, isExpanded)}
+                    </Typography.Text>
+                  </Col>
+                  <Col>
+                    <CoreButton
+                      data-testid="template-insert-button"
+                      icon={<LeftOutlined />}
+                      type="primary"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleInsert(condition);
+                      }}
                     >
-                      <Typography.Paragraph>{subCondition.condition}</Typography.Paragraph>
-                    </Collapse.Panel>
-                  ))}
-                </Collapse>
-              </>
-            )}
-          </Collapse.Panel>
-        ))}
+                      Insert
+                    </CoreButton>
+                  </Col>
+                </Row>
+              }
+            >
+              {condition?.sub_conditions?.length > 0 &&
+                renderSubConditions(condition.sub_conditions, conditionKey)}
+            </Collapse.Panel>
+          );
+        })}
       </Collapse>
     </div>
   );

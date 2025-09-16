@@ -51,14 +51,14 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
 }) => {
   const formName = `${FORM.ADD_REPORT_TO_PERMIT_CONDITION}-${condition?.permit_condition_id ?? mineReportPermitRequirement?.mine_report_permit_requirement_id}`;
 
-  const { loading, currentAmendment, permitGuid, mineGuid, isNowEditor, standardConditionType } = usePermitConditions();
+  const { loading, currentAmendment, permitGuid, mineGuid, isNowEditor, isStandardConditionEditor } = usePermitConditions();
   const [selectedRequirement, setSelectedRequirement] = useState(mineReportPermitRequirement);
   const dispatch = useAppDispatch();
   const [isEditMode, setIsEditMode] = useState(isModal && canEditPermitConditions);
 
   const standardRequirements = useAppSelector(getStandardReportRequirements);
   const permitRequirements = useAppSelector(getMineReportPermitRequirementsByAmendment(permitGuid, currentAmendment?.permit_amendment_guid, isNowEditor));
-  const existingRequirements = Boolean(standardConditionType) ? standardRequirements : permitRequirements;
+  const existingRequirements = isStandardConditionEditor ? standardRequirements : permitRequirements;
 
   const hasExistingRequirements = existingRequirements?.length > 0;
   const existingRequirementsOptions = existingRequirements.map((r) => { return { label: r.report_name, value: r.mine_report_permit_requirement_id } });
@@ -69,7 +69,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
   const permitConditions = useAppSelector(getPermitConditionCategories(permitGuid, currentAmendment?.permit_amendment_guid));
   const standardConditions = useAppSelector(getStandardPermitConditionsFormatted());
 
-  const conditions = Boolean(standardConditionType)
+  const conditions = isStandardConditionEditor
     ? standardConditions
     : isNowEditor ? nowConditions : permitConditions;
 
@@ -274,7 +274,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
               disabled={loading || disableFields}
             />
           </Col>
-          <Col span={standardConditionType ? 24 : 12}>
+          <Col span={isStandardConditionEditor ? 24 : 12}>
             <Field
               name="due_date_period_months"
               label="Report Frequency"
@@ -290,7 +290,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
               disabled={loading || disableFields}
             />
           </Col>
-          {!standardConditionType &&
+          {!isStandardConditionEditor &&
             <Col md={12} sm={24}>
               <Field
                 name="initial_due_date"

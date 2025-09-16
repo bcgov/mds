@@ -97,6 +97,8 @@ export const STANDARD_PERMIT_CONDITION = (permitConditionGuid) =>
 export const PERMIT_CONDITION_TAGS = () => `/mines/permits/condition-tags`;
 export const PERMIT_CONDITION_TAG = (tagGuid) =>
   `/mines/permits/condition-tags/${tagGuid}`;
+export const PERMIT_CONDITION_INSERT_TEMPLATE = (permitAmendmentGuid: string, standardPermitConditionGuid: string) =>
+  `/mines/permits/amendments/${permitAmendmentGuid}/standard_permit_conditions/${standardPermitConditionGuid}`;
 
 export const PERMIT_AMENDMENT_CONDITION_ASSIGN_REVIEWER = (params?: { permit_amendment_id: number }) =>
   `mines/permits/condition-category/assign-review-user?${queryString.stringify(params ?? {})}`;

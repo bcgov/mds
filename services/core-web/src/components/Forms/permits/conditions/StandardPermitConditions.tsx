@@ -61,6 +61,7 @@ const StandardPermitConditions: FC<StandardPermitConditionsProps> = ({ type }) =
         loading: showLoading,
         setLoading: setIsLoading,
         standardConditionType: typeCode,
+        isStandardConditionEditor: true,
         refreshData: () => dispatch(fetchStandardPermitConditions(typeCode))
     };
 
