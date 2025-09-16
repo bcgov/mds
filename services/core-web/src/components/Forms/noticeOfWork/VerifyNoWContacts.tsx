@@ -255,7 +255,7 @@ const renderContacts = ({
                                                 </Button>
                                             ) : (
                                                 <Button
-                                                    type="primary"
+                                                    type="default"
                                                     style={{ float: "right" }}
                                                     disabled={isImporting}
                                                     onClick={(event) => handleSearch(event, fields.get(index), index, true)}
