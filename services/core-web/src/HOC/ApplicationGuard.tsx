@@ -24,7 +24,7 @@ import { useAppDispatch } from "@mds/common/redux/rootState";
  */
 
 const ApplicationGuard = (WrappedComponent) => {
-  const applicationGuard = (props) => {
+  const ApplicationGuardInner = (props) => {
     const dispatch = useAppDispatch();
     const history = useHistory();
     const location = useLocation<{ applicationPageFromRoute?: any }>();
@@ -41,11 +41,19 @@ const ApplicationGuard = (WrappedComponent) => {
     const [mineGuid, setMineGuid] = useState();
 
     const handleScroll = () => {
-      const scrollHeight = window.scrollY ?? window.pageYOffset;
-      if (scrollHeight > 170 && !fixedTopRef.current) {
-        setFixedTop(true);
-      } else if (scrollHeight <= 170 && fixedTopRef.current) {
-        setFixedTop(false);
+      let isMounted = true;
+      if (isMounted) {
+        const scrollHeight = window.scrollY ?? window.pageYOffset;
+        if (scrollHeight > 170 && !fixedTopRef.current) {
+          setFixedTop(true);
+        } else if (scrollHeight <= 170 && fixedTopRef.current) {
+          setFixedTop(false);
+        }
+      }
+
+      return () => {
+        isMounted = false;
+        dispatch(clearNoticeOfWorkApplication)
       }
     };
 
@@ -130,8 +138,8 @@ const ApplicationGuard = (WrappedComponent) => {
   };
 
 
-  hoistNonReactStatics(applicationGuard, WrappedComponent);
-  return applicationGuard;
+  hoistNonReactStatics(ApplicationGuardInner, WrappedComponent);
+  return ApplicationGuardInner;
 };
 
 export default ApplicationGuard;
