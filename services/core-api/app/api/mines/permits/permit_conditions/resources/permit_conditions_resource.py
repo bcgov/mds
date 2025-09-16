@@ -30,15 +30,11 @@ class PermitConditionsListResource(Resource, UserMixin):
         if permit_amendment.is_generated_in_core and permit_amendment.permit_amendment_status_code != "DFT":
             raise BadRequest('Permit Conditions cannot be edited if the permit was issued in Core and is no longer a draft.')
 
-        # Extract data from the request
-        permit_condition_data = request.json['permit_condition']
-        permit_condition_data['permit_amendment_id'] = permit_amendment.permit_amendment_id
-
-        # Extract sub-conditions before loading the main condition
-        sub_conditions = permit_condition_data.pop('sub_conditions', [])
+        request.json['permit_condition'][
+            'permit_amendment_id'] = permit_amendment.permit_amendment_id
 
         try:
-            permit_condition = PermitConditions._schema().load(permit_condition_data)
+            permit_condition = PermitConditions._schema().load(request.json['permit_condition'])
 
             if not PermitConditionCategory.find_by_permit_condition_category_code(permit_condition.condition_category_code):
                 raise BadRequest('condition_category_code is invalid')
@@ -52,48 +48,9 @@ class PermitConditionsListResource(Resource, UserMixin):
 
         permit_condition.save()
 
-        # Process any sub-conditions if they exist
-        if sub_conditions:
-            try:
-                self._create_sub_conditions_recursively(
-                    sub_conditions,
-                    permit_amendment.permit_amendment_id,
-                    permit_condition.permit_condition_id,
-                    permit_condition.condition_category_code
-                )
-            except Exception as e:
-                db.session.rollback()
-                raise BadRequest(f"Error creating sub-conditions: {str(e)}")
-
         set_audit_metadata(permit_amendment)
 
         return permit_condition, 201
-
-    def _create_sub_conditions_recursively(self, sub_conditions, permit_amendment_id, parent_id, category_code):
-        # Recursively create sub-conditions and their nested sub-conditions.
-        for idx, sub_condition_data in enumerate(sub_conditions):
-
-            sub_condition_data['permit_amendment_id'] = permit_amendment_id
-            sub_condition_data['parent_permit_condition_id'] = parent_id
-            sub_condition_data['condition_category_code'] = sub_condition_data.get('condition_category_code', category_code)
-            sub_condition_data['display_order'] = sub_condition_data.get('display_order', idx + 1)
-
-            nested_sub_conditions = sub_condition_data.pop('sub_conditions', [])
-
-            try:
-                sub_condition = PermitConditions._schema().load(sub_condition_data)
-                sub_condition.save()
-
-                # If there are nested sub-conditions, process them recursively
-                if nested_sub_conditions:
-                    self._create_sub_conditions_recursively(
-                        nested_sub_conditions,
-                        permit_amendment_id,
-                        sub_condition.permit_condition_id,
-                        category_code
-                    )
-            except MarshmallowError as e:
-                raise BadRequest(f"Error creating sub-condition: {str(e)}")
 
     @api.doc(description='Get all permit conditions for a specific amendment')
     @requires_role_edit_permit
@@ -168,7 +125,7 @@ class PermitConditionsResource(Resource, UserMixin):
         if changed_category:
             condition.display_order = len(conditions) + 1
 
-         #Reset status unless status is being changed to complete
+        #Reset status unless status is being changed to complete
         if not ( changed_status and new_status_code == 'COM' ):
             if condition.top_level_parent_permit_condition_id is not None:
                 top_condition = PermitConditions.find_by_permit_condition_id(condition.top_level_parent_permit_condition_id)
@@ -213,7 +170,7 @@ class PermitConditionsResource(Resource, UserMixin):
 
         if permit_amendment.is_generated_in_core and permit_amendment.permit_amendment_status_code != "DFT":
             raise BadRequest('Permit Conditions cannot be edited if the permit was issued in Core and is no longer a draft.')
-            
+
         permit_condition = PermitConditions.find_by_permit_condition_guid(permit_condition_guid)
 
         if not permit_condition:
