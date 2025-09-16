@@ -125,7 +125,7 @@ class PermitConditionsResource(Resource, UserMixin):
         if changed_category:
             condition.display_order = len(conditions) + 1
 
-         #Reset status unless status is being changed to complete
+        #Reset status unless status is being changed to complete
         if not ( changed_status and new_status_code == 'COM' ):
             if condition.top_level_parent_permit_condition_id is not None:
                 top_condition = PermitConditions.find_by_permit_condition_id(condition.top_level_parent_permit_condition_id)
@@ -170,7 +170,7 @@ class PermitConditionsResource(Resource, UserMixin):
 
         if permit_amendment.is_generated_in_core and permit_amendment.permit_amendment_status_code != "DFT":
             raise BadRequest('Permit Conditions cannot be edited if the permit was issued in Core and is no longer a draft.')
-            
+
         permit_condition = PermitConditions.find_by_permit_condition_guid(permit_condition_guid)
 
         if not permit_condition:

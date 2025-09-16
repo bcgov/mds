@@ -13,6 +13,7 @@ import {
   PROJECT_SUMMARY_MINISTRY_COMMENTS,
   SEARCH_PERMIT_CONDITIONS_RESPONSE,
   AMS_ENVIRONMENT_AUTH_STATUS_RESPONSE,
+  STANDARD_PERMIT_CONDITIONS,
 } from "@mds/common/tests/mocks/dataMocks";
 import queryString from "query-string";
 import { SystemFlagEnum } from "../constants/enums";
@@ -54,10 +55,11 @@ const projectHandlers = [
     }
   ),
   http.post(
-    "/%3CAPI_URL%3E/projects/project-summary-environment-authorization-statuses", async () => {
+    "/%3CAPI_URL%3E/projects/project-summary-environment-authorization-statuses",
+    async () => {
       return HttpResponse.json(AMS_ENVIRONMENT_AUTH_STATUS_RESPONSE);
     }
-  )
+  ),
 ];
 
 const permitHandlers = [
@@ -128,8 +130,8 @@ const permitSearchHandlers = [
     const stream = new ReadableStream({
       start(controller) {
         const documentsAndFacets = {
-          documents: responseData.documents || [],
-          facets: responseData.facets || {},
+          documents: responseData.documents ?? [],
+          facets: responseData.facets ?? {},
         };
         controller.enqueue(
           encoder.encode(
@@ -139,7 +141,7 @@ const permitSearchHandlers = [
 
         controller.enqueue(encoder.encode(`event: ${SearchEventType.AI_START}\ndata: {}\n\n`));
 
-        const promptText = responseData.prompt?.answers?.[0] || "";
+        const promptText = responseData.prompt?.answers?.[0] ?? "";
         if (promptText) {
           controller.enqueue(
             encoder.encode(
@@ -214,6 +216,21 @@ const reviewAssignmentHandler = http.get(
   }
 );
 
+const permitConditionTemplateHandlers = [
+  http.get("/%3CAPI_URL%3E/mines/permits/standard-conditions/GEC", async () => {
+    return HttpResponse.json({ records: STANDARD_PERMIT_CONDITIONS });
+  }),
+  http.get("/%3CAPI_URL%3E/mines/reports/standard-permit-requirements", async () => {
+    return HttpResponse.json([]);
+  }),
+  http.post(
+    "/%3CAPI_URL%3E/mines/null/permits/null/amendments/permit-amendment-guid/conditions",
+    async () => {
+      return HttpResponse.json({});
+    }
+  ),
+];
+
 const commonHandlers = [
   ...mineHandlers,
   ...geoSpatialHandlers,
@@ -223,6 +240,7 @@ const commonHandlers = [
   ...permitSearchHandlers,
   complianceReportHandler,
   reviewAssignmentHandler,
+  ...permitConditionTemplateHandlers,
 ];
 
 export default commonHandlers;
