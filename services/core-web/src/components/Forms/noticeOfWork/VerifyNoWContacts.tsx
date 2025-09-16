@@ -32,7 +32,7 @@ import AddButton from "@/components/common/buttons/AddButton";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import { IParty, IPartyRelationshipType } from "@mds/common/interfaces";
+import { IMinePartyApptType, IParty, IPartyRelationshipType } from "@mds/common/interfaces";
 
 export interface VerifyNoWContactValue {
     id?: string;
@@ -47,18 +47,6 @@ export interface VerifyNoWContactsProps {
     contactFormValues: VerifyNoWContactValue[];
     wasFormReset: boolean;
     isImporting: boolean;
-    // Optional test overrides/injections
-    partyRelationshipTypesList?: any[];
-    fetchSearchResults?: (term: string, category: string) => Promise<any> | any;
-    clearAllSearchResults?: () => void;
-    searchResults?: any;
-    searchSubsetResults?: any;
-    change?: (form: string, field: string, value: any) => void;
-    updateParty?: (values: any, partyGuid: string) => Promise<any> | any;
-    storeSubsetSearchResults?: (results: any) => void;
-    fetchPartyById?: (partyGuid: string) => Promise<any> | any;
-    openModal?: (cfg: any) => void;
-    closeModal?: () => void;
 }
 
 const columns = [
@@ -86,7 +74,7 @@ const transformData = (results: any[]) =>
 
 interface RenderContactsArgs {
     fields: any;
-    partyRelationshipTypes: IPartyRelationshipType[];
+    partyRelationshipTypes: IMinePartyApptType[];
     rolesUsedOnce: string[];
     confirmedContacts: string[];
     contactFormValues: VerifyNoWContactValue[];
@@ -108,7 +96,7 @@ const renderContacts = ({
     isImporting,
 }: RenderContactsArgs) => {
     const filteredRelationships = partyRelationshipTypes.filter((pr) =>
-        ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "MOR"].includes(pr.mine_party_appt_type_code)
+        ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "MOR"].includes(pr.value)
     );
     return (
         <Col span={8}>
@@ -267,7 +255,7 @@ const renderContacts = ({
                                                 </Button>
                                             ) : (
                                                 <Button
-                                                    type={"secondary" as any}
+                                                    type="primary"
                                                     style={{ float: "right" }}
                                                     disabled={isImporting}
                                                     onClick={(event) => handleSearch(event, fields.get(index), index, true)}
@@ -310,22 +298,20 @@ const renderContacts = ({
 export const VerifyNoWContacts: React.FC<VerifyNoWContactsProps> = (props) => {
     const dispatch = useDispatch();
 
-    // Selectors (fallback to provided props for test flexibility)
-    const partyRelationshipTypesList = props.partyRelationshipTypesList ?? useSelector(getPartyRelationshipTypesList as any) ?? [];
-    const searchResults = props.searchResults ?? useSelector(getSearchResults as any) ?? { party: [] };
-    const searchSubsetResults = props.searchSubsetResults ?? useSelector(getSearchSubsetResults as any) ?? [];
+    const partyRelationshipTypesList = useSelector(getPartyRelationshipTypesList);
+    const searchResults = useSelector(getSearchResults);
+    const searchSubsetResults = useSelector(getSearchSubsetResults);
 
-    // Action dispatchers (allow test overrides)
-    const openModal = props.openModal ?? ((cfg: any) => dispatch(openModalAction(cfg)));
-    const closeModal = props.closeModal ?? (() => dispatch(closeModalAction()));
-    const fetchSearchResults = props.fetchSearchResults ?? ((term: string, category: string) => dispatch(fetchSearchResultsAction(term, category) as any));
-    const clearAllSearchResults = props.clearAllSearchResults ?? (() => dispatch(clearAllSearchResultsAction() as any));
-    const storeSubsetSearchResults = props.storeSubsetSearchResults ?? ((r: any) => dispatch(storeSubsetSearchResultsAction(r)));
-    const fetchPartyById = props.fetchPartyById ?? ((pg: string) => dispatch(fetchPartyByIdAction(pg) as any));
-    const updateParty = props.updateParty ?? ((values: any, guid: string) => dispatch(updatePartyAction(values, guid) as any));
-    const change = props.change ?? ((form: string, field: string, value: any) => dispatch(reduxFormChange(form, field, value)));
+    const openModal = (cfg: any) => dispatch(openModalAction(cfg));
+    const closeModal = () => dispatch(closeModalAction());
+    const fetchSearchResults = (term: string, category: string) =>
+        dispatch(fetchSearchResultsAction(term, category));
+    const clearAllSearchResults = () => dispatch(clearAllSearchResultsAction());
+    const storeSubsetSearchResults = (r: any) => dispatch(storeSubsetSearchResultsAction(r));
+    const fetchPartyById = (pg: string) => dispatch(fetchPartyByIdAction(pg));
+    const updateParty = (values: any, guid: string) => dispatch(updatePartyAction(values, guid));
+    const change = (form: string, field: string, value: any) => dispatch(reduxFormChange(form, field, value));
 
-    // Internal state
     const [rolesUsedOnce, setRolesUsedOnce] = useState<string[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedNOWContact, setSelectedNOWContact] = useState<any>({});
@@ -335,7 +321,6 @@ export const VerifyNoWContacts: React.FC<VerifyNoWContactsProps> = (props) => {
     const [selectedData, setSelectedData] = useState<any[]>([]);
     const [confirmedContacts, setConfirmedContacts] = useState<string[]>([]);
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
-    // Persist selected contact search results across subsequent searches so they remain uncheckable
     const [persistedSelectedResults, setPersistedSelectedResults] = useState<any[]>([]);
 
     const prevWasFormReset = useRef<boolean>(props.wasFormReset);

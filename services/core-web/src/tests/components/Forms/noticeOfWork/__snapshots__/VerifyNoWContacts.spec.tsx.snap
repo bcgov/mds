@@ -88,7 +88,7 @@ exports[`VerifyNoWContacts (connected) renders lists and snapshot 1`] = `
                           src="[object Object]"
                         />
                         <h4>
-                          Alpha Person
+                          John Smith
                         </h4>
                       </div>
                       <div>
