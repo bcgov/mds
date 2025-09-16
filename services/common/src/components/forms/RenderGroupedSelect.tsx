@@ -1,5 +1,5 @@
 import React, { FC, useContext } from "react";
-import { Select, Typography } from "antd";
+import { Select } from "antd";
 import { BaseInputProps, BaseViewInput, WrappedInput } from "./BaseInput";
 import { IGroupedDropdownList } from "@mds/common/interfaces";
 import { FormContext } from "./FormWrapper";

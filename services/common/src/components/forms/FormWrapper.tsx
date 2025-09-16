@@ -2,12 +2,10 @@ import React, { FC, useEffect } from "react";
 import {
   ConfigProps,
   getFormValues,
-  initialize,
 } from "@mds/common/components/forms/form";
 import EditForm from "./EditForm";
 import ViewForm from "./ViewForm";
-import { useDispatch, useSelector } from "react-redux";
-import { useAppSelector } from "@mds/common/redux/rootState";
+import { useSelector } from "react-redux";
 
 export interface IFormContext {
   isEditMode: boolean;

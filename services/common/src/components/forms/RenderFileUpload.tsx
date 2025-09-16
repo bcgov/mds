@@ -130,9 +130,6 @@ export const FileUpload: FC<FileUploadProps> = ({
   // and replace file functionality
   const [uploadData, setUploadData] = useState<{ [fileId: string]: MultipartDocumentUpload }>({});
 
-  if (!isEditMode) {
-    return null;
-  }
   const getAcceptedFileTypesTypes = (): string[] => {
     const allTypes = Object.values(acceptedFileTypesMap).reduce((acc, type) => {
       const typeArray = Array.isArray(type) ? type : [type];
@@ -464,6 +461,10 @@ export const FileUpload: FC<FileUploadProps> = ({
       }
     };
   }, []);
+
+  if (!isEditMode) {
+    return null;
+  }
 
   const handleFileAdd = (err, file) => {
     // Add ID to file metadata so we can reference it later
