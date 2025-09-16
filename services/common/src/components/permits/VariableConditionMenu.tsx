@@ -23,8 +23,7 @@ const VariableConditionMenu: FC<VariableConditionMenuProps> = ({
   inputRef
 }) => {
   const dispatch = useAppDispatch();
-  const conditionFormValues = useSelector(getFormValues(conditionForm)) as IConditionSection;
-  const generatePermitFormValues = useSelector(getFormValues(FORM.GENERATE_PERMIT)) as INoWGeneratedPermit;
+  const conditionFormValues = useSelector(getFormValues(conditionForm)) as IConditionSection | INoWGeneratedPermit;
   const reclamationSummary = useSelector(getNOWReclamationSummary);
   const activityTypeOptions = useSelector(getDropdownNoticeOfWorkActivityTypeOptions);
   const [open, setOpen] = useState(false);
@@ -34,16 +33,11 @@ const VariableConditionMenu: FC<VariableConditionMenuProps> = ({
     if (inputRef.current) {
       inputRef.current.focus();
     }
-    const isPreambleText = isEmpty(conditionFormValues);
-    const text = isPreambleText ? generatePermitFormValues.preamble_text ?? "" : conditionFormValues.condition ?? "";
+    const isPreambleText = "preamble_text" in conditionFormValues;
+    const text = isPreambleText ? conditionFormValues.preamble_text : conditionFormValues.condition ?? "";
     const pos = inputRef.current?.resizableTextArea?.textArea?.selectionStart ?? text.length;
     const newText = `${text.slice(0, pos)} ${event.key} ${text.slice(pos)}`.replace(/ {2,}/g, ' ');
-
-    if (!isPreambleText) {
-      await dispatch(change(conditionForm, "condition", newText));
-    } else {
-      await dispatch(change(FORM.GENERATE_PERMIT, "preamble_text", newText));
-    }
+    await dispatch(change(conditionForm, isPreambleText ? "preamble_text" : "condition", newText));
 
     if (inputRef.current) {
       const updatedCursorPos = newText.indexOf(event.key, pos) + event.key.length;

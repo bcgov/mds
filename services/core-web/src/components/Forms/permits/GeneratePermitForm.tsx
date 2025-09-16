@@ -390,7 +390,7 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
                   <Row className="ant-form-item-label">
                     <label htmlFor="preamble_text">Preamble Text</label>
                   </Row>
-                  {editingPreambleFlag && newEditorEnabled && <VariableConditionMenu conditionForm={editingFormName} inputRef={preambleInputRef} />}
+                  {editingPreambleFlag && newEditorEnabled && <VariableConditionMenu conditionForm={FORM.GENERATE_PERMIT} inputRef={preambleInputRef} />}
                   <Field
                     id="preamble_text"
                     name="preamble_text"
