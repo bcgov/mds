@@ -2,7 +2,7 @@
 
 exports[`ReviewNOWApplication renders properly 1`] = `
 <div>
-  <Connect(ReduxForm)
+  <FormWrapper
     initialValues={
       Object {
         "adjusted_annual_maximum_tonnage": "",
@@ -97,7 +97,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               originalValue="N/A"
             />
           </div>
-          <Field
+          <FormField
             component={[Function]}
             disabled={true}
             id="is_applicant_individual_or_company"
@@ -112,7 +112,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               originalValue="N/A"
             />
           </div>
-          <Field
+          <FormField
             component={[Function]}
             disabled={true}
             id="relationship_to_applicant"
@@ -220,7 +220,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               data={
                 Array [
@@ -274,7 +274,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="mine_no"
@@ -298,7 +298,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="type_of_application"
@@ -309,7 +309,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             md={12}
             sm={24}
           >
-            <Field
+            <FormField
               component={[Function]}
               customOptions={
                 Array [
@@ -346,7 +346,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="proponent_submitted_permit_number"
@@ -370,7 +370,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="annual_summary_submitted"
@@ -394,7 +394,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="ats_authorization_number"
@@ -414,7 +414,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="now_tracking_number"
@@ -425,7 +425,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             md={12}
             sm={24}
           >
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="term_of_application"
@@ -453,7 +453,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="ats_project_number"
@@ -474,7 +474,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
           md={12}
           sm={24}
         >
-          <Field
+          <FormField
             component={[Function]}
             disabled={true}
             id="term_of_application"
@@ -505,7 +505,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               originalValue="N/A"
             />
           </div>
-          <Field
+          <FormField
             component={[Function]}
             data={Array []}
             disabled={true}
@@ -517,7 +517,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
           md={12}
           sm={24}
         >
-          <Field
+          <FormField
             component={[Function]}
             data={
               Array [
@@ -570,7 +570,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="property_name"
@@ -592,7 +592,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="tenure_number"
@@ -612,7 +612,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="crown_grant_or_district_lot_numbers"
@@ -627,7 +627,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="directions_to_site"
@@ -652,7 +652,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="latitude"
@@ -672,7 +672,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="longitude"
@@ -692,7 +692,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               data={
                 Array [
@@ -743,7 +743,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             >
               Proposed Annual Maximum Tonnage
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="proposed_annual_maximum_tonnage"
@@ -803,7 +803,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="first_aid_equipment_on_site"
@@ -823,7 +823,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="first_aid_cert_level"
@@ -853,7 +853,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               originalValue="N/A"
             />
           </div>
-          <Field
+          <FormField
             component={[Function]}
             disabled={true}
             id="work_plan"
@@ -878,7 +878,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
           >
             Original Start Date
           </div>
-          <Field
+          <FormField
             component={[Function]}
             disabled={true}
             id="original_start_date"
@@ -889,7 +889,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
           >
             Proposed Start Date
           </div>
-          <Field
+          <FormField
             component={[Function]}
             disabled={true}
             id="proposed_start_date"
@@ -905,7 +905,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
           >
             Proposed Authorization End Date
           </div>
-          <Field
+          <FormField
             component={[Function]}
             disabled={true}
             id="proposed_end_date"
@@ -940,7 +940,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 }
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="is_access_gated"
@@ -970,7 +970,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               originalValue="N/A"
             />
           </div>
-          <Field
+          <FormField
             component={[Function]}
             disabled={true}
             id="has_surface_disturbance_outside_tenure"
@@ -1003,7 +1003,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   originalValue="N/A"
                 />
               </div>
-              <Field
+              <FormField
                 component={[Function]}
                 disabled={true}
                 id="present_land_condition_description"
@@ -1023,7 +1023,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   originalValue="N/A"
                 />
               </div>
-              <Field
+              <FormField
                 component={[Function]}
                 disabled={true}
                 id="means_of_access_description"
@@ -1047,7 +1047,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   originalValue="N/A"
                 />
               </div>
-              <Field
+              <FormField
                 component={[Function]}
                 disabled={true}
                 id="physiography_description"
@@ -1067,7 +1067,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   originalValue="N/A"
                 />
               </div>
-              <Field
+              <FormField
                 component={[Function]}
                 disabled={true}
                 id="old_equipment_description"
@@ -1091,7 +1091,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   originalValue="N/A"
                 />
               </div>
-              <Field
+              <FormField
                 component={[Function]}
                 disabled={true}
                 id="type_of_vegetation_description"
@@ -1111,7 +1111,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   originalValue="N/A"
                 />
               </div>
-              <Field
+              <FormField
                 component={[Function]}
                 disabled={true}
                 id="recreational_trail_use_description"
@@ -1145,7 +1145,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   }
                 />
               </div>
-              <Field
+              <FormField
                 component={[Function]}
                 disabled={true}
                 id="has_community_water_shed"
@@ -1180,7 +1180,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   }
                 />
               </div>
-              <Field
+              <FormField
                 component={[Function]}
                 disabled={true}
                 id="is_on_private_land"
@@ -1209,7 +1209,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   }
                 />
               </div>
-              <Field
+              <FormField
                 component={[Function]}
                 disabled={true}
                 id="is_on_crown_land"
@@ -1238,7 +1238,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   originalValue="N/A"
                 />
               </div>
-              <Field
+              <FormField
                 component={[Function]}
                 disabled={true}
                 id="has_activity_in_park"
@@ -1267,7 +1267,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   originalValue="N/A"
                 />
               </div>
-              <Field
+              <FormField
                 component={[Function]}
                 disabled={true}
                 id="has_shared_info_with_fn"
@@ -1300,7 +1300,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   originalValue="N/A"
                 />
               </div>
-              <Field
+              <FormField
                 component={[Function]}
                 disabled={true}
                 id="has_acknowledged_undrip"
@@ -2191,7 +2191,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="total_merchantable_timber_volume"
@@ -2233,7 +2233,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="unreclaimed_disturbance_previous_year"
@@ -2258,7 +2258,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="disturbance_planned_reclamation"
@@ -2367,7 +2367,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 originalValue="N/A"
               />
             </div>
-            <Field
+            <FormField
               component={[Function]}
               disabled={true}
               id="other_information"
@@ -2417,6 +2417,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         tableDescription="In this table, you can see all documents submitted during initial application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified."
       />
     </withRouter(Connect(ScrollContentWrapper))>
-  </Connect(ReduxForm)>
+  </FormWrapper>
 </div>
 `;

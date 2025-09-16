@@ -1,0 +1,948 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ViewForm renders properly all the components in view mode 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-view-test form-view"
+    id="view-test"
+  >
+    <div
+      class="view-item ant-form-item"
+    >
+      <div
+        class="ant-typography view-item-label"
+      >
+        Auto Complete
+      </div>
+      <div
+        class="ant-typography view-item-value"
+      >
+        opt1
+      </div>
+    </div>
+    <div
+      class="view-item ant-form-item"
+    >
+      <div
+        class="ant-typography view-item-label"
+      >
+        Auto Size Field
+      </div>
+      <div
+        class="ant-typography view-item-value"
+      >
+        auto input
+      </div>
+    </div>
+    <div
+      class="ant-form-item view-item"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <label
+                class="ant-checkbox-wrapper ant-checkbox-wrapper-checked ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+              >
+                <span
+                  class="ant-checkbox ant-checkbox-checked ant-checkbox-disabled"
+                >
+                  <input
+                    checked=""
+                    class="ant-checkbox-input"
+                    disabled=""
+                    id="view-test_checkbox"
+                    type="checkbox"
+                    value="true"
+                  />
+                  <span
+                    class="ant-checkbox-inner"
+                  />
+                </span>
+                <span>
+                  <div
+                    class="view-item-label ungroup-checkbox"
+                  >
+                    Checkbox
+                  </div>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="view-item ant-form-item"
+    >
+      <div
+        class="ant-typography view-item-label"
+      >
+        Date
+      </div>
+      <div
+        class="ant-typography view-item-value"
+      >
+        2020-04-01
+      </div>
+    </div>
+    <div
+      class="view-item ant-form-item"
+    >
+      <div
+        class="ant-typography view-item-label"
+      >
+        Date-Time Tz
+      </div>
+      <div
+        class="ant-typography view-item-value"
+      >
+        2020-03-31 18:00 -06:00 CST
+      </div>
+    </div>
+    <div
+      class="view-item ant-form-item"
+    >
+      <div
+        class="ant-typography view-item-label"
+      >
+        Field
+      </div>
+      <div
+        class="ant-typography view-item-value"
+      >
+        N/A
+      </div>
+    </div>
+    <div
+      class="ant-form-item view-item"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class=""
+            for="view-test_groupcheckbox"
+            title=""
+          >
+            <div
+              class="view-item-label"
+            >
+              Group Checkbox
+            </div>
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <div
+                class="ant-checkbox-group view-group-checkbox"
+                id="view-test_groupcheckbox"
+                name="groupcheckbox"
+              >
+                <label
+                  class="ant-checkbox-wrapper ant-checkbox-wrapper-checked ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                >
+                  <span
+                    class="ant-checkbox ant-checkbox-checked ant-checkbox-disabled"
+                  >
+                    <input
+                      checked=""
+                      class="ant-checkbox-input"
+                      disabled=""
+                      name="groupcheckbox"
+                      type="checkbox"
+                      value="a"
+                    />
+                    <span
+                      class="ant-checkbox-inner"
+                    />
+                  </span>
+                  <span>
+                    Opt a
+                  </span>
+                </label>
+                <label
+                  class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                >
+                  <span
+                    class="ant-checkbox ant-checkbox-disabled"
+                  >
+                    <input
+                      class="ant-checkbox-input"
+                      disabled=""
+                      name="groupcheckbox"
+                      type="checkbox"
+                      value="b"
+                    />
+                    <span
+                      class="ant-checkbox-inner"
+                    />
+                  </span>
+                  <span>
+                    Opt b
+                  </span>
+                </label>
+                <label
+                  class="ant-checkbox-wrapper ant-checkbox-wrapper-checked ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                >
+                  <span
+                    class="ant-checkbox ant-checkbox-checked ant-checkbox-disabled"
+                  >
+                    <input
+                      checked=""
+                      class="ant-checkbox-input"
+                      disabled=""
+                      name="groupcheckbox"
+                      type="checkbox"
+                      value="c"
+                    />
+                    <span
+                      class="ant-checkbox-inner"
+                    />
+                  </span>
+                  <span>
+                    Opt c
+                  </span>
+                </label>
+                <label
+                  class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                >
+                  <span
+                    class="ant-checkbox ant-checkbox-disabled"
+                  >
+                    <input
+                      class="ant-checkbox-input"
+                      disabled=""
+                      name="groupcheckbox"
+                      type="checkbox"
+                      value="d"
+                    />
+                    <span
+                      class="ant-checkbox-inner"
+                    />
+                  </span>
+                  <span>
+                    Opt d
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="view-item ant-form-item"
+    >
+      <div
+        class="ant-typography view-item-label"
+      >
+        Grouped Select
+      </div>
+      <ul>
+        <li>
+          Opt 1b
+        </li>
+        <li>
+          Opt 2d
+        </li>
+      </ul>
+    </div>
+    <div
+      class="ant-form-item ant-form-item-with-help form-item-hidden"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class=""
+            for="view-test_hiddenfield"
+            title=""
+          >
+            <div>
+              Hidden Field
+               
+              <span
+                class="form-item-optional"
+              >
+                 (optional)
+              </span>
+            </div>
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <div
+                style="display: none;"
+              >
+                <input
+                  class="ant-input ant-input-disabled"
+                  disabled=""
+                  name="hiddenfield"
+                  type="text"
+                  value="hidden value"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="view-test_hiddenfield_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class=""
+            title="Large Select"
+          >
+            Large Select
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <div
+                class="ant-select ant-select-in-form-item ant-select-single ant-select-show-arrow ant-select-disabled ant-select-show-search"
+                style="width: 100%;"
+              >
+                <div
+                  class="ant-select-selector"
+                >
+                  <span
+                    class="ant-select-selection-search"
+                  >
+                    <input
+                      aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+                      aria-autocomplete="list"
+                      aria-controls="rc_select_TEST_OR_SSR_list"
+                      aria-expanded="false"
+                      aria-haspopup="listbox"
+                      aria-owns="rc_select_TEST_OR_SSR_list"
+                      autocomplete="off"
+                      class="ant-select-selection-search-input"
+                      disabled=""
+                      id="rc_select_TEST_OR_SSR"
+                      role="combobox"
+                      type="search"
+                      value=""
+                    />
+                  </span>
+                  <span
+                    class="ant-select-selection-item"
+                    title="Opt 4"
+                  >
+                    Opt 4
+                  </span>
+                </div>
+                <span
+                  aria-hidden="true"
+                  class="ant-select-arrow"
+                  style="user-select: none;"
+                  unselectable="on"
+                >
+                  <span
+                    aria-label="down"
+                    class="anticon anticon-down ant-select-suffix"
+                    role="img"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      data-icon="down"
+                      fill="currentColor"
+                      focusable="false"
+                      height="1em"
+                      viewBox="64 64 896 896"
+                      width="1em"
+                    >
+                      <path
+                        d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="view-item ant-form-item"
+    >
+      <div
+        class="ant-typography view-item-label"
+      >
+        Multi Select
+      </div>
+      <ul
+        class="multi-select-view margin-large--left"
+      >
+        <li>
+          <div
+            class="ant-typography view-item-value"
+          >
+            Opt 3
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class=""
+            for="view-test_orgbooksearch"
+            title=""
+          >
+            <div>
+              Orgbook Search
+               
+              <span
+                class="form-item-optional"
+              >
+                 (optional)
+              </span>
+            </div>
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <div
+                class="ant-select ant-select-in-form-item ant-select-single ant-select-show-arrow ant-select-disabled ant-select-show-search"
+                style="width: 100%;"
+              >
+                <div
+                  class="ant-select-selector"
+                >
+                  <span
+                    class="ant-select-selection-search"
+                  >
+                    <input
+                      aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+                      aria-autocomplete="list"
+                      aria-controls="rc_select_TEST_OR_SSR_list"
+                      aria-expanded="false"
+                      aria-haspopup="listbox"
+                      aria-owns="rc_select_TEST_OR_SSR_list"
+                      autocomplete="off"
+                      class="ant-select-selection-search-input"
+                      disabled=""
+                      id="rc_select_TEST_OR_SSR"
+                      role="combobox"
+                      type="search"
+                      value=""
+                    />
+                  </span>
+                  <span
+                    class="ant-select-selection-item"
+                    title="Orgbook Option Label"
+                  >
+                    Orgbook Option Label
+                  </span>
+                </div>
+                <span
+                  aria-hidden="true"
+                  class="ant-select-arrow"
+                  style="user-select: none;"
+                  unselectable="on"
+                >
+                  <span
+                    aria-label="down"
+                    class="anticon anticon-down ant-select-suffix"
+                    role="img"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      data-icon="down"
+                      fill="currentColor"
+                      focusable="false"
+                      height="1em"
+                      viewBox="64 64 896 896"
+                      width="1em"
+                    >
+                      <path
+                        d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="view-test_orgbooksearch_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-form-item view-item"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class=""
+            for="view-test_radiobuttons"
+            title=""
+          >
+            <div
+              class="view-item-label"
+            >
+              <div>
+                Radio Buttons
+                 
+              </div>
+            </div>
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <div
+                class="ant-radio-group ant-radio-group-solid view-item"
+              >
+                <label
+                  class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                >
+                  <span
+                    class="ant-radio ant-radio-disabled"
+                  >
+                    <input
+                      class="ant-radio-input"
+                      disabled=""
+                      name="radiobuttons"
+                      type="radio"
+                      value="opt4"
+                    />
+                    <span
+                      class="ant-radio-inner"
+                    />
+                  </span>
+                  <span>
+                    Opt 4
+                  </span>
+                </label>
+                <label
+                  class="ant-radio-wrapper ant-radio-wrapper-checked ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                >
+                  <span
+                    class="ant-radio ant-radio-checked ant-radio-disabled"
+                  >
+                    <input
+                      checked=""
+                      class="ant-radio-input"
+                      disabled=""
+                      name="radiobuttons"
+                      type="radio"
+                      value="opt1"
+                    />
+                    <span
+                      class="ant-radio-inner"
+                    />
+                  </span>
+                  <span>
+                    Opt 1
+                  </span>
+                </label>
+                <label
+                  class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                >
+                  <span
+                    class="ant-radio ant-radio-disabled"
+                  >
+                    <input
+                      class="ant-radio-input"
+                      disabled=""
+                      name="radiobuttons"
+                      type="radio"
+                      value="opt2"
+                    />
+                    <span
+                      class="ant-radio-inner"
+                    />
+                  </span>
+                  <span>
+                    Opt 2
+                  </span>
+                </label>
+                <label
+                  class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                >
+                  <span
+                    class="ant-radio ant-radio-disabled"
+                  >
+                    <input
+                      class="ant-radio-input"
+                      disabled=""
+                      name="radiobuttons"
+                      type="radio"
+                      value="opt3"
+                    />
+                    <span
+                      class="ant-radio-inner"
+                    />
+                  </span>
+                  <span>
+                    Opt 3
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="view-item ant-form-item"
+    >
+      <div
+        class="ant-typography view-item-label"
+      >
+        Rich Text Editor
+      </div>
+      <div
+        class="ant-typography view-item-value"
+      >
+        Rich Text!
+      </div>
+    </div>
+    <div
+      class="view-item ant-form-item"
+    >
+      <div
+        class="ant-typography view-item-label"
+      >
+        Select
+      </div>
+      <div
+        class="ant-typography view-item-value"
+      >
+        Opt 2
+      </div>
+    </div>
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class=""
+            for="view-test_time"
+            title="Time"
+          >
+            Time
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <div
+                class="ant-picker ant-picker-disabled"
+              >
+                <div
+                  class="ant-picker-input"
+                >
+                  <input
+                    autocomplete="off"
+                    disabled=""
+                    id="view-test_time"
+                    name="time"
+                    placeholder="Select a time"
+                    readonly=""
+                    size="10"
+                    title="00:00"
+                    value="00:00"
+                  />
+                  <span
+                    class="ant-picker-suffix"
+                  >
+                    <span
+                      aria-label="clock-circle"
+                      class="anticon anticon-clock-circle"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="clock-circle"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                        />
+                        <path
+                          d="M686.7 638.6L544.1 535.5V288c0-4.4-3.6-8-8-8H488c-4.4 0-8 3.6-8 8v275.4c0 2.6 1.2 5 3.3 6.5l165.4 120.6c3.6 2.6 8.6 1.8 11.2-1.7l28.6-39c2.6-3.7 1.8-8.7-1.8-11.2z"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="view-test_time_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="view-item ant-form-item"
+    >
+      <div
+        class="ant-typography view-item-label"
+      >
+        Tree Select
+      </div>
+    </div>
+    <div
+      class="view-item ant-form-item"
+    >
+      <div
+        class="ant-typography view-item-label"
+      >
+        Field Array Prop Passed 0
+      </div>
+      <div
+        class="ant-typography view-item-value"
+      >
+        one
+      </div>
+    </div>
+    <div
+      class="view-item ant-form-item"
+    >
+      <div
+        class="ant-typography view-item-label"
+      >
+        Field Array Prop Passed 1
+      </div>
+      <div
+        class="ant-typography view-item-value"
+      >
+        two
+      </div>
+    </div>
+    <div
+      class="view-item ant-form-item"
+    >
+      <div
+        class="ant-typography view-item-label"
+      >
+        Field Array Prop Passed 2
+      </div>
+      <div
+        class="ant-typography view-item-value"
+      >
+        three
+      </div>
+    </div>
+    <div
+      class="view-item ant-form-item"
+    >
+      <div
+        class="ant-typography view-item-label"
+      >
+        Section Field
+      </div>
+      <div
+        class="ant-typography view-item-value"
+      >
+        There should be a value here
+      </div>
+    </div>
+    <div
+      class="view-item ant-form-item"
+    >
+      <div
+        class="ant-typography view-item-label"
+      >
+        Subsection Field
+      </div>
+      <div
+        class="ant-typography view-item-value"
+      >
+        There should be a value here too
+      </div>
+    </div>
+    <div>
+      Section: 0
+    </div>
+    <div
+      class="view-item ant-form-item"
+    >
+      <div
+        class="ant-typography view-item-label"
+      >
+        Field Array Nested! 0
+      </div>
+      <div
+        class="ant-typography view-item-value"
+      >
+        one!
+      </div>
+    </div>
+    <div
+      class="view-item ant-form-item"
+    >
+      <div
+        class="ant-typography view-item-label"
+      >
+        Field Array Nested! 1
+      </div>
+      <div
+        class="ant-typography view-item-value"
+      >
+        two!
+      </div>
+    </div>
+    <div>
+      Section: 1
+    </div>
+    <div
+      class="view-item ant-form-item"
+    >
+      <div
+        class="ant-typography view-item-label"
+      >
+        Field Array Nested! 0
+      </div>
+      <div
+        class="ant-typography view-item-value"
+      >
+        three!
+      </div>
+    </div>
+    <button
+      aria-label="Cancel"
+      class="ant-btn ant-btn-default core-btn core-btn-default  form-btn"
+      type="button"
+    >
+      <span>
+        Close
+      </span>
+    </button>
+  </form>
+</div>
+`;

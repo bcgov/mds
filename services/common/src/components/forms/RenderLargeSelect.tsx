@@ -53,6 +53,7 @@ const RenderLargeSelect: FC<LargeSelectProps> = ({
         notFoundContent="Not Found"
         options={data}
         filterOption={() => true}
+        // @ts-ignore I have no idea why it wants a ChangeEvent for value
         value={props.selectedOption?.value}
         onSearch={handleSearch}
         onSelect={handleSelect}

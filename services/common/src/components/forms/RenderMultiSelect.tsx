@@ -30,7 +30,7 @@ const defaultViewDisplay = (opts: IOption[]): ReactNode => {
   }
   return <ul className="multi-select-view margin-large--left">
     {opts.map((opt) =>
-      <li>
+      <li key={opt.value}>
         <Typography.Paragraph key={opt.value} className="view-item-value">{opt.label}</Typography.Paragraph>
       </li>
     )}

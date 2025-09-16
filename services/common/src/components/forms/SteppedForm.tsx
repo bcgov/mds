@@ -42,6 +42,7 @@ const SteppedForm: FC<SteppedFormProps> = ({
   sectionChangeText = "Save & Continue",
   nextText = "Next",
   disableTabsOnError = true,
+  forceRedux,
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
@@ -147,6 +148,7 @@ const SteppedForm: FC<SteppedFormProps> = ({
               onSubmit={() => { }}
               initialValues={initialValues}
               isEditMode={isEditMode}
+              forceRedux={forceRedux}
               reduxFormConfig={
                 reduxFormConfig ?? {
                   touchOnBlur: true,

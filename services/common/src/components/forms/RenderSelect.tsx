@@ -35,7 +35,7 @@ export const RenderSelect: FC<SelectProps> = ({
   enableGetPopupContainer = true,
   onSearch,
 }) => {
-  const [isDirty, setIsDirty] = useState(meta.touched);
+  const [isDirty, setIsDirty] = useState(meta?.touched);
   return (
     <FormConsumer>
       {(value: IFormContext) => {

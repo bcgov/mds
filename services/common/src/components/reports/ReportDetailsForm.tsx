@@ -434,6 +434,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         isEditMode={isEditMode}
         reduxFormConfig={{ enableReinitialize: !!reportGuid }}
         initialValues={initialValues}
+        forceRedux
       >
         {!isMS && formButtons}
         <Row gutter={[16, 8]}>

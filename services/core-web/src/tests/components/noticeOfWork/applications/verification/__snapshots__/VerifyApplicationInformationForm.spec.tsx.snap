@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`VerifyApplicationInformationForm renders properly 1`] = `
-<Connect(ReduxForm)
+<FormWrapper
   initialValues={
     Object {
       "anyotherinformation": null,
@@ -1257,5 +1257,5 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
       A mine must be associated to this application
     </p>
   </div>
-</Connect(ReduxForm)>
+</FormWrapper>
 `;

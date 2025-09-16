@@ -215,7 +215,6 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
                         class="ant-radio ant-radio-checked ant-radio-disabled"
                       >
                         <input
-                          checked=""
                           class="ant-radio-input"
                           disabled=""
                           name="report_type"
