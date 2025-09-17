@@ -111,6 +111,8 @@ from app.api.mines.permits.permit_conditions.resources.permit_condition_category
     PermitConditionCategoryResource,
 )
 from app.api.mines.permits.permit_conditions.resources.permit_condition_tag_resource import PermitConditionTagResource
+from app.api.mines.permits.permit_conditions.resources.permit_condition_template_resource import \
+    PermitConditionTemplateResource
 from app.api.mines.permits.permit_conditions.resources.permit_condition_type_resource import (
     PermitConditionTypeResource,
 )
@@ -350,6 +352,10 @@ api.add_resource(
 api.add_resource(
     PermitConditionsResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/conditions/<string:permit_condition_guid>',
+)
+api.add_resource(
+    PermitConditionTemplateResource,
+    '/permits/amendments/<string:permit_amendment_guid>/standard_permit_conditions/<string:standard_permit_condition_guid>',
 )
 
 api.add_resource(ExplosivesPermitAmendmentResource,

@@ -75,14 +75,14 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const { isFeatureEnabled } = useFeatureFlag();
     const permitConditionsValue = usePermitConditions();
-    const { loading, setLoading, standardConditionType, isNowEditor } = permitConditionsValue;
-    const editingAllowed = Boolean(standardConditionType) || isExtracted || isNowEditor;
+    const { loading, setLoading, isNowEditor, isStandardConditionEditor } = permitConditionsValue;
+    const editingAllowed = isStandardConditionEditor || isExtracted || isNowEditor;
     // the form fails to re-initialize when the category is changed, so concatenating it forces it to make a new one
     const formName = `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`;
     const editingFormDirty = useAppSelector(isDirty(editingFormName));
     const listItemFormDirty = useAppSelector(isDirty(FORM.EDIT_PERMIT_CONDITION));
     const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags);
-    const stepEditDisabled = Boolean(standardConditionType) || isNowEditor;
+    const stepEditDisabled = isStandardConditionEditor || isNowEditor;
     const showVariableConditionMenu = stepEditDisabled;
     const enablePermitConditionTags = isFeatureEnabled(Feature.PERMIT_CONDITION_TAGS);
     const conditionInputRef = useRef<TextAreaRef | null>(null);
@@ -141,7 +141,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
             }
             : values;
         let resp;
-        if (standardConditionType) {
+        if (isStandardConditionEditor) {
             resp = await dispatch(updateStandardPermitCondition(values.standard_permit_condition_guid, values))
         } else {
             resp = await dispatch(
@@ -324,7 +324,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 </Col>
                 <Col className="condition-column" {...editableProps}>
                     <Col className="condition-editor">
-                        {showVariableConditionMenu && <VariableConditionMenu inputRef={conditionInputRef} isManagementView={Boolean(standardConditionType)} conditionForm={editingFormName}/>}
+                        {showVariableConditionMenu && <VariableConditionMenu inputRef={conditionInputRef} isManagementView={isStandardConditionEditor} conditionForm={editingFormName}/>}
                         <Field
                             name="condition"
                             component={RenderAutoSizeField}

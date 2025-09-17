@@ -1,9 +1,6 @@
-import json, pytest, uuid
-from datetime import datetime, timedelta
-from dateutil import parser
-from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
-from app.api.mines.response_models import PermitCondition
+import json
 
+from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 from tests.factories import create_mine_and_permit
 
 # POST
@@ -46,6 +43,7 @@ def test_delete_permit_condition(test_client, db_session, auth_headers):
     # deleted items should be filtered out
     assert permit_amendment.conditions[0].deleted_ind != True
 
+
 # PUT
 def test_put_permit_condition(test_client, db_session, auth_headers):
     mine, permit = create_mine_and_permit()
@@ -53,13 +51,13 @@ def test_put_permit_condition(test_client, db_session, auth_headers):
     condition = permit_amendment.conditions[0]
 
     data = {
-            "permit_condition_guid": condition.permit_condition_guid,
-            "permit_amendment_id": condition.permit_amendment_id,
-            "condition_category_code": condition.condition_category_code,
-            "condition_type_code": condition.condition_type_code,
-            "condition": "edited",
-            "display_order": "2",
-        }
+        "permit_condition_guid": condition.permit_condition_guid,
+        "permit_amendment_id": condition.permit_amendment_id,
+        "condition_category_code": condition.condition_category_code,
+        "condition_type_code": condition.condition_type_code,
+        "condition": "edited",
+        "display_order": "2",
+    }
 
     put_resp = test_client.put(
         f'/mines/{permit_amendment.mine_guid}/permits/{permit_amendment.permit_guid}/amendments/{permit_amendment.permit_amendment_guid}/conditions/{condition.permit_condition_guid}',

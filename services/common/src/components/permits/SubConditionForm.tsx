@@ -40,13 +40,13 @@ const SubConditionForm: FC<SubConditionFormProps> = ({
   onSubmit,
 }) => {
   const dispatch = useAppDispatch();
-  const { loading, setLoading, standardConditionType } = usePermitConditions();
+  const { loading, setLoading, standardConditionType, isStandardConditionEditor } = usePermitConditions();
   const formValues = useAppSelector(getFormValues(FORM.EDIT_PERMIT_CONDITION)) as IPermitCondition;
 
   const handleSubmit = async (values) => {
     setLoading(true);
     let resp;
-    if (permitAmendmentGuid && !standardConditionType) {
+    if (permitAmendmentGuid && !isStandardConditionEditor) {
       resp = await dispatch(createPermitCondition(permitAmendmentGuid, values));
     } else {
       resp = await dispatch(createStandardPermitCondition(standardConditionType, values));

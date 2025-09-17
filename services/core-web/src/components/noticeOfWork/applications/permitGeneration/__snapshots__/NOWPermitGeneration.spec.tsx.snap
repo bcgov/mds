@@ -2832,14 +2832,26 @@ exports[`NOWPermitGeneration renders properly 1`] = `
                                       <div
                                         class="ant-row ant-row-space-between"
                                       >
-                                        <button
-                                          class="ant-btn ant-btn-primary core-btn core-btn-primary"
-                                          type="button"
+                                        <div
+                                          class="ant-row"
                                         >
-                                          <span>
-                                            Add Condition
-                                          </span>
-                                        </button>
+                                          <button
+                                            class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                            type="button"
+                                          >
+                                            <span>
+                                              Add Condition
+                                            </span>
+                                          </button>
+                                          <button
+                                            class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                            type="button"
+                                          >
+                                            <span>
+                                              Insert Template Conditions
+                                            </span>
+                                          </button>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -2924,14 +2936,26 @@ exports[`NOWPermitGeneration renders properly 1`] = `
                                       <div
                                         class="ant-row ant-row-space-between"
                                       >
-                                        <button
-                                          class="ant-btn ant-btn-primary core-btn core-btn-primary"
-                                          type="button"
+                                        <div
+                                          class="ant-row"
                                         >
-                                          <span>
-                                            Add Condition
-                                          </span>
-                                        </button>
+                                          <button
+                                            class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                            type="button"
+                                          >
+                                            <span>
+                                              Add Condition
+                                            </span>
+                                          </button>
+                                          <button
+                                            class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                            type="button"
+                                          >
+                                            <span>
+                                              Insert Template Conditions
+                                            </span>
+                                          </button>
+                                        </div>
                                       </div>
                                     </div>
                                     <div
@@ -3068,14 +3092,26 @@ exports[`NOWPermitGeneration renders properly 1`] = `
                                       <div
                                         class="ant-row ant-row-space-between"
                                       >
-                                        <button
-                                          class="ant-btn ant-btn-primary core-btn core-btn-primary"
-                                          type="button"
+                                        <div
+                                          class="ant-row"
                                         >
-                                          <span>
-                                            Add Condition
-                                          </span>
-                                        </button>
+                                          <button
+                                            class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                            type="button"
+                                          >
+                                            <span>
+                                              Add Condition
+                                            </span>
+                                          </button>
+                                          <button
+                                            class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                            type="button"
+                                          >
+                                            <span>
+                                              Insert Template Conditions
+                                            </span>
+                                          </button>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -3160,14 +3196,26 @@ exports[`NOWPermitGeneration renders properly 1`] = `
                                       <div
                                         class="ant-row ant-row-space-between"
                                       >
-                                        <button
-                                          class="ant-btn ant-btn-primary core-btn core-btn-primary"
-                                          type="button"
+                                        <div
+                                          class="ant-row"
                                         >
-                                          <span>
-                                            Add Condition
-                                          </span>
-                                        </button>
+                                          <button
+                                            class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                            type="button"
+                                          >
+                                            <span>
+                                              Add Condition
+                                            </span>
+                                          </button>
+                                          <button
+                                            class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                            type="button"
+                                          >
+                                            <span>
+                                              Insert Template Conditions
+                                            </span>
+                                          </button>
+                                        </div>
                                       </div>
                                     </div>
                                     <div
@@ -3788,14 +3836,26 @@ exports[`NOWPermitGeneration renders properly 1`] = `
                                       <div
                                         class="ant-row ant-row-space-between"
                                       >
-                                        <button
-                                          class="ant-btn ant-btn-primary core-btn core-btn-primary"
-                                          type="button"
+                                        <div
+                                          class="ant-row"
                                         >
-                                          <span>
-                                            Add Condition
-                                          </span>
-                                        </button>
+                                          <button
+                                            class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                            type="button"
+                                          >
+                                            <span>
+                                              Add Condition
+                                            </span>
+                                          </button>
+                                          <button
+                                            class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                            type="button"
+                                          >
+                                            <span>
+                                              Insert Template Conditions
+                                            </span>
+                                          </button>
+                                        </div>
                                       </div>
                                     </div>
                                     <div
