@@ -405,7 +405,7 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
                   </Row>
                   {editingPreambleFlag && newEditorEnabled && (
                     <VariableConditionMenu
-                      conditionForm={editingFormName}
+                      conditionForm={FORM.GENERATE_PERMIT}
                       inputRef={preambleInputRef}
                     />
                   )}
