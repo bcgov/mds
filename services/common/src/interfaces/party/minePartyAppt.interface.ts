@@ -17,3 +17,10 @@ export interface IMinePartyAppt {
   union_rep_company?: string;
   is_draft?: boolean;
 }
+
+export interface IMinePartyApptType {
+  value: MinePartyAppointmentTypeCodeEnum;
+  label: string;
+  isActive: boolean;
+  subType: string | null;
+}

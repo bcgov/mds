@@ -48,6 +48,10 @@ const projectHandlers = [
   http.get("/%3CAPI_URL%3E/projects/35633148-57f8-4967-be35-7f89abfbd02e", async () => {
     return HttpResponse.json(PROJECT);
   }),
+  // Requirements list used by InformationRequirementsTable and other project views
+  http.get("/%3CAPI_URL%3E/projects/requirements", async () => {
+    return HttpResponse.json(MOCK.REQUIREMENTS);
+  }),
   http.get(
     "/%3CAPI_URL%3E/projects/70414192-ca71-4d03-93a5-630491e9c554/ministry-comments",
     async () => {
@@ -168,6 +172,53 @@ const permitSearchHandlers = [
   }),
 ];
 
+// Generic search endpoint used by core-web to find parties, permits, etc.
+// We only implement the subset needed by current tests: search_types includes 'party'.
+const searchHandlers = [
+  http.get("/%3CAPI_URL%3E/search", async ({ request }) => {
+    const url = new URL(request.url);
+    const searchTerm = url.searchParams.get("search_term") || "";
+    const searchTypes = url.searchParams.get("search_types") || "";
+
+    // Build a minimal response matching the real API shape consumed by reducers/selectors
+    const includeParty = !searchTypes || searchTypes.includes("party");
+
+    const baseParty = {
+      result: {
+        party_guid: "p-1",
+        name: searchTerm || "John Smith",
+        email: "abc@test.ca",
+        phone_no: "999",
+        address: [{}],
+      },
+    };
+
+    // When searching for a newly created person, include that person in results
+    const maybeNewParty =
+      searchTerm === "New Person"
+        ? [
+          {
+            result: {
+              party_guid: "new-1",
+              name: "New Person",
+              email: "new@test.ca",
+              phone_no: "333",
+              address: [{}],
+            },
+          },
+        ]
+        : [];
+
+    const partyResults = includeParty ? [baseParty, ...maybeNewParty] : [];
+
+    return HttpResponse.json({
+      search_results: {
+        party: partyResults,
+      },
+    });
+  }),
+];
+
 const helpHandler = http.get("/%3CAPI_URL%3E/help/:helpKey", async ({ request, params }) => {
   const { helpKey } = params;
   const url = new URL(request.url);
@@ -238,6 +289,7 @@ const commonHandlers = [
   helpHandler,
   ...permitHandlers,
   ...permitSearchHandlers,
+  ...searchHandlers,
   complianceReportHandler,
   reviewAssignmentHandler,
   ...permitConditionTemplateHandlers,

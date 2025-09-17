@@ -1,6 +1,8 @@
 import { PartyTypeCodeEnum } from "@mds/common/constants/enums";
 import { INoWApplicationForm } from "@mds/common/interfaces";
 
+
+// TODO: This really needs a type. The NoW types neeeds an overhaul
 export const NOTICE_OF_WORK = {
     application_guid: "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
     now_application_guid: "07e801a0-fa33-4c3b-abcc-ac6df628d483",

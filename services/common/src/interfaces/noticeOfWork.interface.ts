@@ -1,5 +1,34 @@
 import { ICreatePermitSiteProperties, IimportedNOWApplication, IMineDocument, INoticeOfWorkApplicationProgress, IParty } from "@mds/common/interfaces";
 
+export interface INoticeOfWorkContact {
+  type: string;
+  org_legalname: string;
+  org_doingbusinessas: string;
+  ind_firstname: string;
+  ind_lastname: string;
+  ind_middlename: string;
+  ind_phonenumber: string;
+  dayphonenumber: string;
+  dayphonenumberext: string;
+  faxnumber: string;
+  email: string;
+  org_bcfedincorpnumber: string;
+  org_bcregnumber: string;
+  org_societynumber: string;
+  org_hstregnumber: string;
+  org_contactname: string;
+  mailingaddressline1: string;
+  contacttype: string;
+  contactcertificationtype: string;
+  contactcertificationid: string;
+  mailingaddressline2: string;
+  mailingaddresscity: string;
+  mailingaddressprovstate: string;
+  mailingaddresscountry: string;
+  mailingaddresspostalzip: string;
+  seq_no: number;
+}
+
 export interface INoticeOfWork {
   mine_region: any;
   notice_of_work_type_description: string;
@@ -19,6 +48,9 @@ export interface INoticeOfWork {
   now_number: string;
   mine_name: string;
   mine_no?: string;
+  longitude?: string;
+  latitude?: string;
+  contacts?: INoticeOfWorkContact[];
   application_progress?: INoticeOfWorkApplicationProgress[];
 }
 
