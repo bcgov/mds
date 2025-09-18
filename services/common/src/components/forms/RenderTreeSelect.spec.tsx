@@ -71,6 +71,7 @@ describe("RenderTreeSelect", () => {
         const { container } = render(
             <ReduxWrapper initialState={initialState}>
                 <FormWrapper
+                    initialValues={initialState.form.test_tree_select.values}
                     name="test_tree_select"
                     onSubmit={jest.fn()}
                     isEditMode={false}

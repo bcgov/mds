@@ -143,6 +143,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
       handleTabChange={handleTabChange}
       transformPayload={handleTransformPayload}
       activeTab={activeTab}
+      forceRedux
     >
       {projectFormTabs
         .filter((tab) => majorProjectsFeatureEnabled || tab !== "related-projects")

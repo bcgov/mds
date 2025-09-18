@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useContext, useEffect, useRef, useState } from "react";
 import { Form, Select, Spin } from "antd";
 import { debounce, DebouncedFunc } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,7 @@ import {
 import { LoadingOutlined } from "@ant-design/icons";
 import { IOrgbookCredential } from "@mds/common/interfaces";
 import { BaseInputProps, getFormItemLabel } from "./BaseInput";
+import { FormContext } from "./FormWrapper";
 
 interface OrgBookSearchProps extends BaseInputProps {
   data?: any;
@@ -32,7 +33,7 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
   setCredential,
 }) => {
   const dispatch = useDispatch();
-
+  const { isEditMode } = useContext(FormContext);
   const searchOrgBookResults = useSelector(getSearchOrgBookResults);
   const orgBookCredential = useSelector(getOrgBookCredential);
 
@@ -133,7 +134,7 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
           onChange={handleChange}
           onSelect={handleSelect}
           style={{ width: "100%" }}
-          disabled={disabled}
+          disabled={disabled || !isEditMode}
           value={options.length === 1 ? { key: options[0].text } : undefined}
         >
           {options.map((option) => (

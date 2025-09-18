@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ChangeNOWLocationForm renders properly 1`] = `
-<Connect(ReduxForm)
+<FormWrapper
   isModal={true}
   name="CHANGE_NOW_LOCATION"
   onSubmit={[Function]}
@@ -29,5 +29,5 @@ exports[`ChangeNOWLocationForm renders properly 1`] = `
       />
     </AuthorizationWrapper>
   </div>
-</Connect(ReduxForm)>
+</FormWrapper>
 `;
