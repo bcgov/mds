@@ -33,7 +33,6 @@ const EditForm: FC<EditFormProps & InjectedFormProps<any>> = ({
     const formErrors = useSelector(getFormSubmitErrors(name));
 
     const handleSubmit = async (values) => {
-        console.log('handleSubmit', name, values)
         dispatch(submit(name));
         if (!formErrors && onSubmit) {
             await onSubmit(values);
