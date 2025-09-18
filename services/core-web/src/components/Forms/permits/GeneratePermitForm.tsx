@@ -2,9 +2,17 @@ import React, { FC, useRef, useState } from "react";
 import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { Button, Col, Row, Descriptions, Popconfirm } from "antd";
 import EditOutlined from "@ant-design/icons/EditOutlined";
-import { required, dateNotAfterOther, dateNotBeforeOther, maxLength } from "@mds/common/redux/utils/Validate";
+import {
+  required,
+  dateNotAfterOther,
+  dateNotBeforeOther,
+  maxLength,
+} from "@mds/common/redux/utils/Validate";
 import { resetForm, formatDate } from "@mds/common/redux/utils/helpers";
-import { getEditingPreambleFlag, getNowDraftConditionsFormatted } from "@mds/common/redux/selectors/permitSelectors";
+import {
+  getEditingPreambleFlag,
+  getNowDraftConditionsFormatted,
+} from "@mds/common/redux/selectors/permitSelectors";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import VariableConditionMenuOld from "@/components/Forms/permits/conditions/VariableConditionMenuOld";
@@ -21,7 +29,14 @@ import AuthorizationWrapper from "@mds/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
-import { IFormattedConditionCategory, INoWApplicationForm, INoWGeneratedPermit, IOption, IPermit, IPermitAmendment } from "@mds/common/interfaces";
+import {
+  IFormattedConditionCategory,
+  INoWApplicationForm,
+  INoWGeneratedPermit,
+  IOption,
+  IPermit,
+  IPermitAmendment,
+} from "@mds/common/interfaces";
 import { storeEditingPreambleFlag } from "@mds/common/redux/actions/permitActions";
 import { PermitConditionsProvider } from "@mds/common/components/permits/PermitConditionsContext";
 import PermitConditionViewEdit from "@mds/common/components/permits/PermitConditionViewEdit";
@@ -32,7 +47,6 @@ import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors
 import { USER_ROLES } from "@mds/common/constants/environment";
 import VariableConditionMenu from "@mds/common/components/permits/VariableConditionMenu";
 import { TextAreaRef } from "antd/lib/input/TextArea";
-
 
 interface IGeneratedPermitFormProps {
   isAmendment: boolean;
@@ -51,7 +65,8 @@ interface IGeneratedPermitFormProps {
 
 export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
   const dispatch = useAppDispatch();
-  const formValues = (useAppSelector(getFormValues(FORM.GENERATE_PERMIT)) ?? {}) as INoWGeneratedPermit;
+  const formValues = (useAppSelector(getFormValues(FORM.GENERATE_PERMIT)) ??
+    {}) as INoWGeneratedPermit;
   const editingPreambleFlag = useAppSelector(getEditingPreambleFlag);
   const { isFeatureEnabled } = useFeatureFlag();
   const newEditorEnabled = isFeatureEnabled(Feature.NOW_PERMIT_CONDITIONS_EDITOR);
@@ -63,25 +78,27 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
   const preambleInputRef = useRef<TextAreaRef | null>(null);
 
   const formattedCategories: IFormattedConditionCategory[] = categoriesWithConditions.map((cat) => {
-
     return {
       href: cat.condition_category_code,
       condition_category: { description: cat.description, step: cat.step },
       conditions: cat.conditions,
       condition_category_code: cat.condition_category_code,
       title: <span>{cat.description}</span>,
-    }
+    };
   });
-
 
   const conditionsProviderValue = {
     mineGuid: props.noticeOfWork.mine_guid,
     permitGuid: props.draftPermit.permit_guid,
     currentAmendment: props.draftPermitAmendment,
     isNowEditor: true,
+    standardConditionType: props.noticeOfWork.notice_of_work_type_code,
     loading,
     setLoading,
-    refreshData: () => dispatch(fetchDraftPermitByNOW(props.noticeOfWork.mine_guid, props.noticeOfWork.now_application_guid)),
+    refreshData: () =>
+      dispatch(
+        fetchDraftPermitByNOW(props.noticeOfWork.mine_guid, props.noticeOfWork.now_application_guid)
+      ),
   };
 
   return (
@@ -93,7 +110,7 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
         onSubmitSuccess: resetForm(FORM.GENERATE_PERMIT),
         enableReinitialize: true,
       }}
-      onSubmit={() => { }}
+      onSubmit={() => {}}
     >
       {!props.draftPermitAmendment.has_permit_conditions && (
         <ScrollContentWrapper id="permit" title="Permit" isLoaded={props.isLoaded}>
@@ -312,7 +329,7 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
           draftPermit={props.draftPermit}
         />
       </ScrollContentWrapper>
-      {editingPreambleFlag && !newEditorEnabled &&<VariableConditionMenuOld />}
+      {editingPreambleFlag && !newEditorEnabled && <VariableConditionMenuOld />}
       {props.draftPermitAmendment.has_permit_conditions && (
         <ScrollContentWrapper id="preamble" title="Preamble" isLoaded={props.isLoaded}>
           <>
@@ -380,17 +397,18 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
             )}
             <br />
             <br />
-            <div
-              style={
-                editingPreambleFlag ? { backgroundColor: "#f3f0f0", padding: "20px" } : {}
-              }
-            >
+            <div style={editingPreambleFlag ? { backgroundColor: "#f3f0f0", padding: "20px" } : {}}>
               <Row gutter={32}>
                 <Col xs={48} md={24} className="condition-editor">
                   <Row className="ant-form-item-label">
                     <label htmlFor="preamble_text">Preamble Text</label>
                   </Row>
-                  {editingPreambleFlag && newEditorEnabled && <VariableConditionMenu conditionForm={editingFormName} inputRef={preambleInputRef} />}
+                  {editingPreambleFlag && newEditorEnabled && (
+                    <VariableConditionMenu
+                      conditionForm={FORM.GENERATE_PERMIT}
+                      inputRef={preambleInputRef}
+                    />
+                  )}
                   <Field
                     id="preamble_text"
                     name="preamble_text"
@@ -443,25 +461,27 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
       )}
       {props.draftPermitAmendment.has_permit_conditions && (
         <ScrollContentWrapper id="conditions" title="Conditions" isLoaded={props.isLoaded}>
-          {newEditorEnabled ? <PermitConditionsProvider value={conditionsProviderValue}>
-            <PermitConditionViewEdit
-              userCanEdit={userCanEdit && !props.isViewMode}
-              formattedCategories={formattedCategories}
-              collapseCategories
-              editingFormName={editingFormName}
-              setEditingFormName={setEditingFormName}
-              addingToCategoryCode={addingToCategoryCode}
-              setAddingToCategoryCode={setAddingToCategoryCode}
-            />
-          </PermitConditionsProvider>
-            : <Conditions
+          {newEditorEnabled ? (
+            <PermitConditionsProvider value={conditionsProviderValue}>
+              <PermitConditionViewEdit
+                userCanEdit={userCanEdit && !props.isViewMode}
+                formattedCategories={formattedCategories}
+                collapseCategories
+                editingFormName={editingFormName}
+                setEditingFormName={setEditingFormName}
+                addingToCategoryCode={addingToCategoryCode}
+                setAddingToCategoryCode={setAddingToCategoryCode}
+              />
+            </PermitConditionsProvider>
+          ) : (
+            <Conditions
               mineGuid={props.noticeOfWork.mine_guid}
               permitGuid={props.draftPermit.permit_guid}
               isViewMode={props.isViewMode}
               isSourcePermitGeneratedInCore={props.noticeOfWork.is_source_permit_generated_in_core}
               isNoWApplication={props.noticeOfWork.application_type_code === "NOW"}
             />
-          }
+          )}
         </ScrollContentWrapper>
       )}
       <ScrollContentWrapper id="maps" title="Maps">

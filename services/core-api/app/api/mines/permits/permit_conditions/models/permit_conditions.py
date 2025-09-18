@@ -1,5 +1,7 @@
 from typing import Optional, List
 
+from werkzeug.exceptions import BadRequest
+
 from app.api.utils.field_template import FieldTemplate
 from app.api.utils.list_lettering_helpers import num_to_letter, num_to_roman
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
@@ -239,6 +241,10 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         report_requirements = StandardReportPermitRequirement.find_by_many_condition_ids(standard_condition_ids)
 
         for requirement in report_requirements:
+            existing_report_requirement = MineReportPermitRequirement.find_by_report_name(requirement.report_name, permit_amendment_id)
+            if existing_report_requirement:
+                raise BadRequest("A report requirement with the name provided already exists for this permit amendment.")
+
             mrpr = MineReportPermitRequirement(
                 report_name=requirement.report_name,
                 due_date_period_months=requirement.due_date_period_months,

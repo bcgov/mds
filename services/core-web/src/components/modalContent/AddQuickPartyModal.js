@@ -24,7 +24,7 @@ const defaultProps = {
     initialValues: undefined,
   },
   initialValues: undefined,
-  afterSubmit: () => {},
+  afterSubmit: () => { },
 };
 
 export class AddQuickPartyModal extends Component {
@@ -55,7 +55,7 @@ export class AddQuickPartyModal extends Component {
       })
       .catch()
       .finally(() => {
-        this.props.afterSubmit(response?.party_guid);
+        this.props.afterSubmit(response?.party_guid, response);
       });
   };
 

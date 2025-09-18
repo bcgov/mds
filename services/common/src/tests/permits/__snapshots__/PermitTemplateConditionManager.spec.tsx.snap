@@ -1,0 +1,415 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PermitTemplateConditionManager renders the list of template conditions 1`] = `
+<div
+  data-testid="permit-condition-template-manager"
+>
+  <div
+    class="ant-row ant-row-no-wrap"
+  >
+    <div
+      class="ant-col"
+      style="flex-basis: auto; min-width: 0;"
+    >
+      <h4
+        class="ant-typography"
+      >
+        Template Conditions
+      </h4>
+    </div>
+    <div
+      class="ant-col"
+    >
+      <button
+        class="ant-btn ant-btn-primary ant-btn-icon-only core-btn core-btn-primary"
+        data-testid="close-template-manager-button"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          class="svg-inline--fa fa-xmark "
+          data-icon="xmark"
+          data-prefix="fal"
+          focusable="false"
+          role="img"
+          viewBox="0 0 384 512"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M324.5 411.1c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L214.6 256 347.1 123.5c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0L192 233.4 59.5 100.9c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6L169.4 256 36.9 388.5c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0L192 278.6 324.5 411.1z"
+            fill="currentColor"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div
+    class="ant-collapse ant-collapse-icon-position-start"
+  >
+    <div
+      class="ant-collapse-item"
+    >
+      <div
+        aria-disabled="false"
+        aria-expanded="false"
+        class="ant-collapse-header"
+        role="button"
+        tabindex="0"
+      >
+        <div
+          class="ant-collapse-expand-icon"
+        >
+          <span
+            aria-label="right"
+            class="anticon anticon-right ant-collapse-arrow"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              data-icon="right"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"
+              />
+            </svg>
+          </span>
+        </div>
+        <span
+          class="ant-collapse-header-text"
+        >
+          <div
+            class="ant-row ant-row-no-wrap"
+            data-testid="template-conditions-collapse"
+            style="margin-left: -8px; margin-right: -8px;"
+          >
+            <div
+              class="ant-col"
+              style="padding-left: 8px; padding-right: 8px; flex-basis: auto; min-width: 0;"
+            >
+              <span
+                class="ant-typography"
+              >
+                <strong>
+                  Approval - This permit authorizes only the following mining activities as outlin...
+                </strong>
+              </span>
+            </div>
+            <div
+              class="ant-col"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <button
+                class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                data-testid="template-insert-button"
+                type="button"
+              >
+                <span
+                  aria-label="left"
+                  class="anticon anticon-left"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class=""
+                    data-icon="left"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M724 218.3V141c0-6.7-7.7-10.4-12.9-6.3L260.3 486.8a31.86 31.86 0 000 50.3l450.8 352.1c5.3 4.1 12.9.4 12.9-6.3v-77.3c0-4.9-2.3-9.6-6.1-12.6l-360-281 360-281.1c3.8-3 6.1-7.7 6.1-12.6z"
+                    />
+                  </svg>
+                </span>
+                <span>
+                  Insert
+                </span>
+              </button>
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+    <div
+      class="ant-collapse-item"
+    >
+      <div
+        aria-disabled="false"
+        aria-expanded="false"
+        class="ant-collapse-header"
+        role="button"
+        tabindex="0"
+      >
+        <div
+          class="ant-collapse-expand-icon"
+        >
+          <span
+            aria-label="right"
+            class="anticon anticon-right ant-collapse-arrow"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              data-icon="right"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"
+              />
+            </svg>
+          </span>
+        </div>
+        <span
+          class="ant-collapse-header-text"
+        >
+          <div
+            class="ant-row ant-row-no-wrap"
+            data-testid="template-conditions-collapse"
+            style="margin-left: -8px; margin-right: -8px;"
+          >
+            <div
+              class="ant-col"
+              style="padding-left: 8px; padding-right: 8px; flex-basis: auto; min-width: 0;"
+            >
+              <span
+                class="ant-typography"
+              >
+                <strong>
+                  Definitions
+                </strong>
+              </span>
+            </div>
+            <div
+              class="ant-col"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <button
+                class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                data-testid="template-insert-button"
+                type="button"
+              >
+                <span
+                  aria-label="left"
+                  class="anticon anticon-left"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class=""
+                    data-icon="left"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M724 218.3V141c0-6.7-7.7-10.4-12.9-6.3L260.3 486.8a31.86 31.86 0 000 50.3l450.8 352.1c5.3 4.1 12.9.4 12.9-6.3v-77.3c0-4.9-2.3-9.6-6.1-12.6l-360-281 360-281.1c3.8-3 6.1-7.7 6.1-12.6z"
+                    />
+                  </svg>
+                </span>
+                <span>
+                  Insert
+                </span>
+              </button>
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+    <div
+      class="ant-collapse-item"
+    >
+      <div
+        aria-disabled="false"
+        aria-expanded="false"
+        class="ant-collapse-header"
+        role="button"
+        tabindex="0"
+      >
+        <div
+          class="ant-collapse-expand-icon"
+        >
+          <span
+            aria-label="right"
+            class="anticon anticon-right ant-collapse-arrow"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              data-icon="right"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"
+              />
+            </svg>
+          </span>
+        </div>
+        <span
+          class="ant-collapse-header-text"
+        >
+          <div
+            class="ant-row ant-row-no-wrap"
+            data-testid="template-conditions-collapse"
+            style="margin-left: -8px; margin-right: -8px;"
+          >
+            <div
+              class="ant-col"
+              style="padding-left: 8px; padding-right: 8px; flex-basis: auto; min-width: 0;"
+            >
+              <span
+                class="ant-typography"
+              >
+                <strong>
+                  Documentation 
+                </strong>
+              </span>
+            </div>
+            <div
+              class="ant-col"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <button
+                class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                data-testid="template-insert-button"
+                type="button"
+              >
+                <span
+                  aria-label="left"
+                  class="anticon anticon-left"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class=""
+                    data-icon="left"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M724 218.3V141c0-6.7-7.7-10.4-12.9-6.3L260.3 486.8a31.86 31.86 0 000 50.3l450.8 352.1c5.3 4.1 12.9.4 12.9-6.3v-77.3c0-4.9-2.3-9.6-6.1-12.6l-360-281 360-281.1c3.8-3 6.1-7.7 6.1-12.6z"
+                    />
+                  </svg>
+                </span>
+                <span>
+                  Insert
+                </span>
+              </button>
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+    <div
+      class="ant-collapse-item"
+    >
+      <div
+        aria-disabled="false"
+        aria-expanded="false"
+        class="ant-collapse-header"
+        role="button"
+        tabindex="0"
+      >
+        <div
+          class="ant-collapse-expand-icon"
+        >
+          <span
+            aria-label="right"
+            class="anticon anticon-right ant-collapse-arrow"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              data-icon="right"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"
+              />
+            </svg>
+          </span>
+        </div>
+        <span
+          class="ant-collapse-header-text"
+        >
+          <div
+            class="ant-row ant-row-no-wrap"
+            data-testid="template-conditions-collapse"
+            style="margin-left: -8px; margin-right: -8px;"
+          >
+            <div
+              class="ant-col"
+              style="padding-left: 8px; padding-right: 8px; flex-basis: auto; min-width: 0;"
+            >
+              <span
+                class="ant-typography"
+              >
+                <strong>
+                  Reports to be signed by a Qualified Professional:
+                </strong>
+              </span>
+            </div>
+            <div
+              class="ant-col"
+              style="padding-left: 8px; padding-right: 8px;"
+            >
+              <button
+                class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                data-testid="template-insert-button"
+                type="button"
+              >
+                <span
+                  aria-label="left"
+                  class="anticon anticon-left"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class=""
+                    data-icon="left"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M724 218.3V141c0-6.7-7.7-10.4-12.9-6.3L260.3 486.8a31.86 31.86 0 000 50.3l450.8 352.1c5.3 4.1 12.9.4 12.9-6.3v-77.3c0-4.9-2.3-9.6-6.1-12.6l-360-281 360-281.1c3.8-3 6.1-7.7 6.1-12.6z"
+                    />
+                  </svg>
+                </span>
+                <span>
+                  Insert
+                </span>
+              </button>
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;

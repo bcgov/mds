@@ -27,7 +27,6 @@ import { INoticeOfWorkApplication, INoticeOfWorkDraftPermit } from "@mds/common/
 interface NowApplicationState {
   isTabLoaded: boolean;
   activeTab: string;
-  initialPermitGuid: string;
 }
 
 export class NoticeOfWorkApplication extends Component<
@@ -38,7 +37,6 @@ export class NoticeOfWorkApplication extends Component<
   state = {
     isTabLoaded: false,
     activeTab: "verification",
-    initialPermitGuid: "",
   };
 
   componentDidMount() {
@@ -109,7 +107,6 @@ export class NoticeOfWorkApplication extends Component<
               <VerificationTab
                 noticeOfWork={this.props.noticeOfWork}
                 mineGuid={this.props.mineGuid}
-                initialPermitGuid={this.state.initialPermitGuid}
                 originalNoticeOfWork={this.props.originalNoticeOfWork}
               />
             </Tabs.TabPane>

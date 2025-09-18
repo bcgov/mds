@@ -1,46 +1,52 @@
 import { IPermitAmendment } from "@mds/common/interfaces/permits";
-import React, { FC } from "react";
+import React, { FC, useMemo } from "react";
 
 interface PermitConditionsContextType {
-    mineGuid?: string;
-    permitGuid?: string;
-    latestAmendment?: IPermitAmendment;
-    previousAmendment?: IPermitAmendment;
-    currentAmendment?: IPermitAmendment;
-    standardConditionType?: string;
-    isNowEditor?: boolean;
-    loading: boolean;
-    setLoading: (loading: boolean) => void;
-    refreshData: () => Promise<any>;
+  mineGuid?: string;
+  permitGuid?: string;
+  latestAmendment?: IPermitAmendment;
+  previousAmendment?: IPermitAmendment;
+  currentAmendment?: IPermitAmendment;
+  standardConditionType?: string;
+  isStandardConditionEditor?: boolean;
+  isNowEditor?: boolean;
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+  refreshData: () => Promise<any>;
 }
 
-const PermitConditionsContext = React.createContext<PermitConditionsContextType | undefined>(undefined);
+const PermitConditionsContext = React.createContext<PermitConditionsContextType | undefined>(
+  undefined
+);
 
 export const usePermitConditions = () => {
-    const context = React.useContext(PermitConditionsContext);
-    if (!context) {
-        throw new Error('usePermitConditions must be used within a PermitConditionsProvider');
-    }
-    return context;
+  const context = React.useContext(PermitConditionsContext);
+  if (!context) {
+    throw new Error("usePermitConditions must be used within a PermitConditionsProvider");
+  }
+  return context;
 };
 
-
 export const PermitConditionsProvider: FC<{
-    children: React.ReactNode;
-    value: PermitConditionsContextType;
+  children: React.ReactNode;
+  value: PermitConditionsContextType;
 }> = ({ children, value }) => {
-    // undefined default value causes problems in permit condition form
-    const defaultValue = {
-        isNowEditor: false,
-    };
+  // undefined default value causes problems in permit condition form
+  const defaultValue = {
+    isNowEditor: false,
+    isStandardConditionEditor: false,
+  };
 
-    const contextValue = {
-        ...defaultValue,
-        ...value,
+  const contextValue = useMemo(() => {
+    return {
+      ...defaultValue,
+      ...value,
     };
-    return (
-        <PermitConditionsContext.Provider value={contextValue}>
-            {children}
-        </PermitConditionsContext.Provider>
-    );
+  }, [value]);
+
+  return (
+    <PermitConditionsContext.Provider value={contextValue}>
+      {children}
+    </PermitConditionsContext.Provider>
+  );
 };
