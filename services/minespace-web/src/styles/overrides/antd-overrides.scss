@@ -359,10 +359,9 @@ h5.ant-typography,
 }
 
 .ant-table-thead>tr>th {
-  color: #494949;
+  color: $black;
   border-bottom: 2px solid $primary-color;
   border-radius: 0;
-  font-weight: bold;
 }
 
 .ant-table-header-column {
