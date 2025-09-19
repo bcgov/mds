@@ -39,7 +39,22 @@ app.use(
       ? {
           directives: CONTENT_SECURITY_POLICY,
         }
-      : false,
+      : {
+          directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'"], // Note: unsafe-inline should be removed when proper nonces are implemented
+            styleSrc: ["'self'", "'unsafe-inline'"], // Note: unsafe-inline should be removed when proper nonces are implemented
+            imgSrc: ["'self'", "data:", "https:"],
+            connectSrc: ["'self'"],
+            fontSrc: ["'self'"],
+            objectSrc: ["'none'"],
+            mediaSrc: ["'self'"],
+            frameSrc: ["'none'"],
+          },
+        },
+    crossOriginEmbedderPolicy: { policy: "require-corp" },
+    crossOriginOpenerPolicy: { policy: "same-origin" },
+    crossOriginResourcePolicy: { policy: "same-origin" },
   })
 );
 
@@ -100,10 +115,45 @@ app.get(`/version`, (req, res) => {
   });
 });
 
+// Explicit robots.txt endpoint with proper security headers
+app.get('/robots.txt', (req, res) => {
+  res.setHeader('Content-Type', 'text/plain');
+  res.setHeader('Cache-Control', 'public, max-age=86400');
+  res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.send('User-agent: *\nDisallow: /');
+});
+
+// Explicit sitemap.xml endpoint with proper security headers
+app.get('/sitemap.xml', (req, res) => {
+  res.setHeader('Content-Type', 'application/xml');
+  res.setHeader('Cache-Control', 'public, max-age=86400');
+  res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.send('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n</urlset>');
+});
+
+// Handle trailing slash redirects for robots.txt and sitemap.xml
+app.get('/robots.txt/', (req, res) => {
+  res.redirect(301, '/robots.txt');
+});
+
+app.get('/sitemap.xml/', (req, res) => {
+  res.redirect(301, '/sitemap.xml');
+});
+
 app.use((req, res, next) => {
   if (PERMISSIONS_POLICY) {
     res.setHeader("Permissions-Policy", PERMISSIONS_POLICY);
   }
+  
+  // Additional security headers to address ZAP scan issues
+  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  
   next();
 });
 
