@@ -29,6 +29,24 @@ import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreat
 import { formatDate } from "@mds/common/redux/utils/helpers";
 import { IProjectSummaryAuthorization } from "@mds/common/interfaces";
 
+const SectionHeader = ({ children, titleText, isLast = false }) => {
+    return <Collapse
+        defaultActiveKey="1"
+        style={isLast ? {} : { marginBottom: 16 }}
+        className="primary-title-collapse"
+    >
+        <Collapse.Panel
+            header={
+                <Typography.Title level={2} style={{ marginBottom: 0 }} className="color-white">
+                    {titleText}
+                </Typography.Title>
+            }
+            key="1"
+        >
+            {children}
+        </Collapse.Panel>
+    </Collapse>
+}
 
 const ProjectOverviewTab: FC = () => {
     const history = useHistory();
@@ -84,7 +102,7 @@ const ProjectOverviewTab: FC = () => {
             buttonProps.disabled = true;
         }
         if (recordExists) {
-            buttonProps.text = editLocked ? "Resume" : "View";
+            buttonProps.text = editLocked ? "View" : "Resume";
         }
         return buttonProps;
     };
@@ -109,6 +127,13 @@ const ProjectOverviewTab: FC = () => {
             ...projectSummaryStatus
         }
     });
+
+    const projectDescriptionTableData = [{
+        name: "Project Description",
+        date: project.project_summary.update_timestamp,
+        ...projectSummaryStatus
+    }];
+    const projDescButtonProps = getButtonProps(true, false);
 
     const projectSummaryTableData = hasMinesActAuth ? maAuthTableData : [projectSummaryStatus];
 
@@ -207,11 +232,18 @@ const ProjectOverviewTab: FC = () => {
         );
     };
 
-    const amsAuthActions = [{
+    const amsAppActions = [{
         key: "final-app",
         label: "Manage Final Application",
         clickFunction: (_e, record) => handleNavigateAmsApp(record)
     }];
+
+    const amsAppActionsFilter = (record, allActions) => {
+        if (!record.ams_tracking_number) {
+            return [];
+        }
+        return allActions;
+    };
 
     return <Row
         gutter={[0, 16]}
@@ -249,132 +281,121 @@ const ProjectOverviewTab: FC = () => {
                     </Row>
                 </Col>
                 <Col span={24}>
-                    <Collapse defaultActiveKey="1" style={{ marginBottom: 16 }}>
-                        <Collapse.Panel
-                            header={<Typography.Title level={2} style={{ marginBottom: 0 }}>1. Permit and Authorization</Typography.Title>}
-                            key="1"
-                        >
-                            <Col span={24}>
-
-                                <Row justify="space-between">
-                                    <Col>
-                                    </Col>
-                                    <Col>
-                                        <Button
-                                            data-cy="project-description-view-link"
-                                            onClick={handleNavigateProjectSummary}
-                                        >View Project Description</Button>
-                                    </Col>
-                                </Row>
-                                {hasMinesActAuth && <><Typography.Title level={5}>Mines Act (MA) and Joint Application Project Description</Typography.Title>
-                                    <CoreTable
-                                        columns={[
-                                            renderCategoryColumn('auth_type', 'Authorization Type', projectSummaryAuthTypeHash),
-                                            renderTextColumn('type', 'Permit Type'),
-                                            renderTextColumn('permits', 'Permit'),
-                                            renderStatusColumn(Strings.PROJECT_STATUS_SEVERITY, "Project Description Status")
-                                        ]}
-                                        dataSource={projectSummaryTableData}
-                                    /></>}
-                                {hasAmsAuth && <><Typography.Title level={5}>Environmental Management Act (EMA) Authorization</Typography.Title>
-                                    <Typography.Paragraph>
-                                        An Environmental Protection Officer will contact you once your application is reviewed and accepted. In the meantime, to learn about the ministry's structured application process and timelines to get a waste discharge authorization, please visit
-                                        {" "}<a href="https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/process">The waste discharge authorization process.</a>
-                                    </Typography.Paragraph>
-                                    <CoreTable
-                                        columns={[
-                                            renderCategoryColumn("project_summary_authorization_type", "Type", AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT),
-                                            renderTextColumn("auth_no", "Auth #"),
-                                            renderTextColumn("ams_tracking_number", "Tracking #"),
-                                            renderDateColumn("ams_submission_timestamp", "Date"),
-                                            renderStatusColumn(Strings.AMS_STATUSES_TYPES, "Auth Status"),
-                                            renderActionsColumn({ actions: amsFinalAppEnabled ? amsAuthActions : [] })
-                                        ]}
-                                        dataSource={amsAuthTableData}
-                                    /></>}
-                            </Col>
-                        </Collapse.Panel>
-                    </Collapse>
-
-                    {hasMinesActAuth &&
-                        <Collapse defaultActiveKey="1" style={{ marginBottom: 16 }}>
-                            <Collapse.Panel
-                                header={<Typography.Title level={2} style={{ marginBottom: 0 }}>2. Information Requirements Table (IRT)</Typography.Title>}
-                                key="1"
-                            >
-                                <Col span={24}>
-                                    <Typography.Title level={5}>Mines Act (MA) and Joint Application</Typography.Title>
-                                    <CoreTable
-                                        columns={[
-                                            renderTextColumn("irt_type", "Final IRT"),
-                                            renderDateColumn("update_timestamp", "Date"),
-                                            renderStatusColumn(Strings.PROJECT_STATUS_SEVERITY, "Status"),
-                                            {
-                                                key: "button-col",
-                                                className: "actions-column",
-                                                render: () => {
-                                                    return <Button
-                                                        disabled={irtButtonProps.disabled}
-                                                        data-cy="final-irt-view-link"
-                                                        onClick={handleNavigateIrt}
-                                                    >{irtButtonProps.text}</Button>
-                                                }
-                                            },
-                                        ]}
-                                        dataSource={[irtTableData]}
-                                    />
-                                </Col>
-                            </Collapse.Panel></Collapse>}
-                    <Collapse defaultActiveKey="1" style={{ marginBottom: 16 }}>
-                        <Collapse.Panel
-                            header={<Typography.Title level={2} style={{ marginBottom: 0 }}>{hasMinesActAuth ? "3" : "2"}. Application and Final Package</Typography.Title>}
-                            key="1"
-                        >
-                            <Col span={24}>
-                                {hasMinesActAuth &&
-                                    <> <Typography.Title level={5}>Mines Act and Joint Application</Typography.Title>
+                    <SectionHeader titleText="1. Project Description">
+                        <Col span={24}>
+                            <CoreTable
+                                columns={[
+                                    renderTextColumn("name", "Stage"),
+                                    renderDateColumn("date", "Date"),
+                                    renderStatusColumn(Strings.PROJECT_STATUS_SEVERITY),
+                                    {
+                                        key: "button-col",
+                                        className: "actions-column",
+                                        fixed: "right",
+                                        render: () => {
+                                            return <Button
+                                                data-cy="project-description-view-link"
+                                                onClick={handleNavigateProjectSummary}
+                                            >{projDescButtonProps.text}</Button>
+                                        }
+                                    },
+                                ]}
+                                dataSource={projectDescriptionTableData}
+                            />{
+                                <div className="gov-grey-border-box">
+                                    <Typography.Title level={4}>Authorizations</Typography.Title>
+                                    {hasMinesActAuth && <><Typography.Title level={5}>Mines Act (MA) and Joint Application Authorization</Typography.Title>
                                         <CoreTable
                                             columns={[
-                                                renderTextColumn("type", "Application"),
-                                                renderDateColumn("update_timestamp", "Date"),
-                                                renderStatusColumn(Strings.PROJECT_STATUS_SEVERITY),
-                                                {
-                                                    key: "button-col",
-                                                    className: "actions-column",
-                                                    render: () => {
-                                                        return <Button
-                                                            data-cy="final-application-view-link"
-                                                            disabled={maAppButtonProps.disabled}
-                                                            onClick={handleNavigateMaApplication}
-                                                        >{maAppButtonProps.text}</Button>
-                                                    }
-                                                },
+                                                renderCategoryColumn('auth_type', 'Authorization Type', projectSummaryAuthTypeHash),
+                                                renderTextColumn('type', 'Permit Type'),
+                                                renderTextColumn('permits', 'Permit'),
                                             ]}
-                                            dataSource={[maAppTableData]}
+                                            dataSource={projectSummaryTableData}
                                         /></>}
-                                {hasAmsAuth && amsFinalAppEnabled && <><Typography.Title level={5}>Environmental Management Act</Typography.Title>
+                                    {hasAmsAuth && <><Typography.Title level={5}>Environmental Management Act (EMA) Authorization</Typography.Title>
+                                        <Typography.Paragraph>
+                                            An Environmental Protection Officer will contact you once your application is reviewed and accepted. In the meantime, to learn about the ministry's structured application process and timelines to get a waste discharge authorization, please visit
+                                            {" "}<a href="https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/process">The waste discharge authorization process.</a>
+                                        </Typography.Paragraph>
+                                        <CoreTable
+                                            columns={[
+                                                renderCategoryColumn("project_summary_authorization_type", "Type", AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT),
+                                                renderTextColumn("auth_no", "Auth #"),
+                                                renderTextColumn("ams_tracking_number", "Tracking #"),
+                                                renderDateColumn("ams_submission_timestamp", "Date"),
+                                                renderStatusColumn(Strings.AMS_STATUSES_TYPES, "Status"),
+                                            ]}
+                                            dataSource={amsAuthTableData}
+                                        /></>}
+                                </div>
+                            }
+                        </Col>
+                    </SectionHeader>
+
+                    {hasMinesActAuth &&
+                        <SectionHeader titleText="2. Information Requirements Table (IRT)">
+                            <Col span={24}>
+                                <Typography.Title level={5}>Mines Act (MA) and Joint Application</Typography.Title>
+                                <CoreTable
+                                    columns={[
+                                        renderTextColumn("irt_type", "Final IRT"),
+                                        renderDateColumn("date", "Date"),
+                                        renderStatusColumn(Strings.PROJECT_STATUS_SEVERITY, "Status"),
+                                        {
+                                            key: "button-col",
+                                            className: "actions-column",
+                                            fixed: "right",
+                                            render: () => {
+                                                return <Button
+                                                    disabled={irtButtonProps.disabled}
+                                                    data-cy="final-irt-view-link"
+                                                    onClick={handleNavigateIrt}
+                                                >{irtButtonProps.text}</Button>
+                                            }
+                                        },
+                                    ]}
+                                    dataSource={[irtTableData]}
+                                />
+                            </Col>
+                        </SectionHeader>}
+                    <SectionHeader titleText={`${hasMinesActAuth ? "3" : "2"}. Application and Final Package`} isLast>
+                        <Col span={24}>
+                            {hasMinesActAuth &&
+                                <> <Typography.Title level={5}>Mines Act and Joint Application</Typography.Title>
                                     <CoreTable
                                         columns={[
-                                            renderCategoryColumn("project_summary_authorization_type", "Final Application", AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT),
-                                            renderTextColumn("auth_no", "Authorization"),
-                                            renderTextColumn("ams_tracking_number", "Tracking #"),
-                                            renderStatusColumn(Strings.AMS_STATUSES_TYPES, "Status"),
+                                            renderTextColumn("type", "Application"),
+                                            renderDateColumn("update_timestamp", "Date"),
+                                            renderStatusColumn(Strings.PROJECT_STATUS_SEVERITY),
                                             {
                                                 key: "button-col",
                                                 className: "actions-column",
-                                                render: (record) => {
+                                                fixed: "right",
+                                                render: () => {
                                                     return <Button
-                                                        disabled={!record.ams_tracking_number}
-                                                        onClick={() => handleNavigateAmsApp(record)}
-                                                    >View</Button>
+                                                        data-cy="final-application-view-link"
+                                                        disabled={maAppButtonProps.disabled}
+                                                        onClick={handleNavigateMaApplication}
+                                                    >{maAppButtonProps.text}</Button>
                                                 }
                                             },
                                         ]}
-                                        dataSource={amsAuthTableData}
+                                        dataSource={[maAppTableData]}
                                     /></>}
-                            </Col>
-                        </Collapse.Panel>
-                    </Collapse>
+                            {hasAmsAuth && amsFinalAppEnabled && <><Typography.Title level={5}>Environmental Management Act</Typography.Title>
+                                <CoreTable
+                                    columns={[
+                                        renderCategoryColumn("project_summary_authorization_type", "Final Application", AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT),
+                                        renderTextColumn("auth_no", "Authorization"),
+                                        renderTextColumn("ams_tracking_number", "Tracking #"),
+                                        renderStatusColumn(Strings.AMS_STATUSES_TYPES, "Status"),
+                                        renderActionsColumn({ actions: amsAppActions, recordActionsFilter: amsAppActionsFilter })
+                                    ]}
+                                    dataSource={amsAuthTableData}
+                                /></>}
+                        </Col>
+                    </SectionHeader>
                 </Col>
 
                 {shouldDisplayLinkedProjects && (

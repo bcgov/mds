@@ -335,8 +335,6 @@ h5.ant-typography,
   border: none !important;
   border-radius: 0 !important;
   margin-bottom: 16px;
-  line-height: 3;
-  white-space: nowrap;
 
   .ant-table-content {
     overflow-x: auto;
@@ -360,8 +358,10 @@ h5.ant-typography,
 
 .ant-table-thead>tr>th {
   color: $black;
-  border-bottom: 2px solid $primary-color;
+  border-bottom: 1px solid $primary-color;
   border-radius: 0;
+  padding: 11px 8px 11px 16px;
+  background-color: $table-header-bg;
 }
 
 .ant-table-header-column {
