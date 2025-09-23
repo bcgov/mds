@@ -65,7 +65,7 @@ class W3CCredentialIssueResource(Resource, UserMixin):
             public_did, permit_amendment)
 
         signed_credential = traction_service.sign_add_data_integrity_proof(
-            Config.CHIEF_PERMITTING_OFFICER_DID_WEB_VERIFICATION_METHOD, public_verkey,
+            Config.CHIEF_PERMITTING_OFFICER_DID_WEB_VERIFICATION_METHOD,
             credential_dict)
 
         return signed_credential["securedDocument"]
