@@ -1,12 +1,7 @@
 import Keycloak from "keycloak-js";
 import { KEYCLOAK } from "@mds/common/constants/environment";
 
-let kc: Keycloak;
-const getKeycloak = () => {
-  kc = kc ?? new Keycloak(KEYCLOAK);
-  return kc;
-};
-
+const keycloak = new Keycloak(KEYCLOAK);
 export const keycloakInitConfig = {
   pkceMethod: KEYCLOAK.pkceMethod,
   idpHint: KEYCLOAK.idir_idpHint,
@@ -17,5 +12,4 @@ export const keycloakInitConfig = {
     }silent-check-sso.html`,
 };
 
-const keycloak = getKeycloak();
 export default keycloak;
