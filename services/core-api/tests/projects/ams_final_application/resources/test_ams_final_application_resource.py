@@ -228,3 +228,37 @@ def test_put_ams_final_remove_documents(test_client, db_session, auth_headers):
     assert put_resp_data['is_draft'] == True
     assert len(put_resp_data['documents']) == 1
     assert put_resp_data['documents'][0]['document_manager_guid'] == str(final_app.documents[0].document_manager_guid)
+
+def test_put_ams_final_app_minespace_edit_toggle(test_client, db_session, auth_headers):
+    final_app = AmsFinalApplicationFactory(is_submitted=False)
+
+    documents = [
+        {
+            'document_manager_guid': d.document_manager_guid,
+            'document_name': d.document_name,
+            'mine_document_guid': d.mine_document_guid,
+            'ams_final_application_document_type_code': d.ams_final_application_document_type_code
+        }
+        for d in list(final_app.documents)
+    ]
+
+    put_data = {
+        'ams_final_application_guid': final_app.ams_final_application_guid,
+        'project_summary_authorization_guid': final_app.project_summary_authorization_guid,
+        'submitter_name': final_app.submitter_name,
+        'is_agent': final_app.is_agent,
+        'pre_submitted_files': final_app.pre_submitted_files,
+        'documents': documents,
+        'is_submitting': True,
+        'editable': False,
+    }
+
+    put_resp = test_client.put(
+        f'/projects/{final_app.project_summary_authorization.project_summary_guid}/ams-final-application/{final_app.project_summary_authorization_guid}/minespace-edit',
+        headers=auth_headers['full_auth_header'], json=put_data
+    )
+
+    put_resp_data = json.loads(put_resp.data.decode())
+
+    assert put_resp.status_code == 200
+    assert put_resp_data['editable'] == False

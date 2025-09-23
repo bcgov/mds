@@ -4,7 +4,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 from app.api.utils.resources_mixins import UserMixin
 
 from app.extensions import api
-from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, EDIT_MAJOR_MINE_APPLICATIONS
+from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, EDIT_MAJOR_MINE_APPLICATIONS, is_minespace_user
 from app.api.projects.response_models import AMS_FINAL_APPLICATION_MODEL
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
 from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
@@ -71,6 +71,9 @@ class AmsFinalApplicationResource(Resource, UserMixin):
         final_app = AmsFinalApplication.find_by_authorization_guid(project_summary_authorization_guid)
         if not final_app:
             raise NotFound("AMS Final Application not found.")
+        if final_app.editable == False and is_minespace_user():
+            raise BadRequest("This Application cannot currently be editted in MineSpace.")
+
         submitter_name = data.get('submitter_name', None)
         documents = data.get('documents', [])
         is_agent = data.get('is_agent', False)
@@ -79,7 +82,27 @@ class AmsFinalApplicationResource(Resource, UserMixin):
         final_app = final_app.update(submitter_name, documents, is_agent, pre_submitted_files, is_submitting)
         return final_app, 200
 
-    
+class AmsFinalApplicationMineSpaceEditResource(Resource, UserMixin):
+    parser = CustomReqparser()
+    parser.add_argument('ams_final_application_guid', type=str, store_missing=False, required=False)
+    parser.add_argument('editable', type=bool, store_missing=False, required=True)
+
+    @requires_any_of([MINE_ADMIN, EDIT_MAJOR_MINE_APPLICATIONS ])
+    @api.expect(parser)
+    @api.marshal_with(AMS_FINAL_APPLICATION_MODEL, code=200)
+    def put(self, project_summary_guid, project_summary_authorization_guid):
+        data = self.parser.parse_args()
+        ams_final_application_guid = data.get('ams_final_application_guid')
+        if not ams_final_application_guid:
+            raise BadRequest("ams_final_application_guid is required for updating edit toggle.")
+        
+        final_app = AmsFinalApplication.find_by_authorization_guid(project_summary_authorization_guid)
+        if not final_app:
+            raise NotFound("AMS Final Application not found.")
+        
+        editable = data.get('editable', True)
+        final_app = final_app.update_edit_toggle(editable)
+        return final_app, 200
 
 class AmsFinalApplicationListResource(Resource, UserMixin):
     parser = CustomReqparser()
