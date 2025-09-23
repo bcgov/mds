@@ -424,13 +424,16 @@ class VerifiableCredentialManager():
         #mine_types should related to the permits
         #all mine_types for all permits are used in mine.mine_type
         #but we only want the mine_type for this specific permit/permit_amendment.
-
+        
         #not really a 'mine_type' if it's managed at the permit level.
-        mine_type = [
+        mine_types = [
             mt for mt in permit_amendment.permit.site_properties
             if mt.mine_guid == permit_amendment.mine_guid
-        ][0] if permit_amendment.permit.site_properties else None
+        ] if permit_amendment.permit.site_properties else None
 
+        #there my be mine types on other mines, so check again after filtering.
+        mine_type = mine_types[0] if mine_types else None
+    
         #provide permit object the permit_amendment mine_guid
         permit_amendment.permit._context_mine = permit_amendment.mine_guid
 
