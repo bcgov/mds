@@ -182,14 +182,15 @@ def register_commands(app):
             print("celery job started: forward_all_pending_untp_vc_to_orgbook")
 
     @app.cli.command('push_untp_map_data_to_publisher')
-    def push_untp_map_data_to_publisher():
+    @click.argument('regional', default=False)
+    def push_untp_map_data_to_publisher(regional:bool):
         from app import auth
         from app.api.verifiable_credentials.manager import (
             push_untp_map_data_to_publisher,
         )
         auth.apply_security = False
         with current_app.app_context():
-            result = push_untp_map_data_to_publisher.apply_async()
+            result = push_untp_map_data_to_publisher.apply_async(kwargs={"include_regional": regional})
             print("celery job started: push_untp_map_data_to_publisher")
 
     @app.cli.command('cleanup_untp_map_data_failures')
