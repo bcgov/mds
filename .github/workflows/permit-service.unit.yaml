@@ -41,6 +41,6 @@ jobs:
       - name: Sonar Reporting
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        uses: SonarSource/sonarcloud-github-action@v2.1.1
+        uses: SonarSource/sonarqube-scan-action@v6.0.0
         with:
           projectBaseDir: services/permits

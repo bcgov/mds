@@ -30,7 +30,7 @@ const EnvironmentAuthorizationDocumentsModal: FC<EnvironmentAuthorizationDocumen
     ];
     return (
         <div>
-            <Title level={3}>EMA AUthorization Documents</Title>
+            <Title level={3}>EMA Authorization Documents</Title>
             <Paragraph>
                 View the final approval documents issued by the Ministry of Environment.
                 For more details, visit{" "}

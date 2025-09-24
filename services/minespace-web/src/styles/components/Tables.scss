@@ -94,8 +94,10 @@
 }
 
 // buttons within tables
-td.ant-table-cell {
+.ant-table-tbody>tr>td.ant-table-cell {
   vertical-align: middle;
+  padding: 15px 8px 15px 16px;
+  overflow-wrap: normal;
 
   button {
     margin-top: 0;
@@ -104,7 +106,8 @@ td.ant-table-cell {
 }
 
 .ant-table-thead th.ant-table-column-sort {
-  background: #eff0f3;
+  font-weight: bold;
+  background: $table-header-bg;
 }
 
 .diff-table td {

@@ -5,7 +5,7 @@ exports[`EnvironmentAuthorizationDocumentsModal renders correctly and matches th
   <h3
     class="ant-typography"
   >
-    EMA AUthorization Documents
+    EMA Authorization Documents
   </h3>
   <div
     class="ant-typography"
