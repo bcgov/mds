@@ -312,7 +312,7 @@ def push_untp_map_data_to_publisher(include_regional: bool = False):
     publisher_service = OrgbookPublisherService()
 
     for index, row in enumerate(permit_amendment_query_results):
-        prepare_permit_amendment_untp_credential(row[0])
+        # prepare_permit_amendment_untp_credential(row[0])
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
 
         next_pa_guid: str | None = None
