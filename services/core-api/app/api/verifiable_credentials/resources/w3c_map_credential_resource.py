@@ -83,4 +83,4 @@ class W3CCredentialIssueResource(Resource, UserMixin):
         data = self.parser.parse_args()
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
             data["permit_amendment_guid"])
-        VerifiableCredentialManager.prepare_permit_amendment_untp_credential( data["permit_amendment_guid"])
+        return VerifiableCredentialManager.prepare_permit_amendment_untp_credential( data["permit_amendment_guid"])
