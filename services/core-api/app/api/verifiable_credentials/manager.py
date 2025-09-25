@@ -505,7 +505,6 @@ class VerifiableCredentialManager():
         #produce a uuid for logging/tracing.
         publish_payload["options"]["credentialId"] = str(uuid4())
 
-        current_app.logger.debug('returning publish payload')
         return publish_payload
             
         
