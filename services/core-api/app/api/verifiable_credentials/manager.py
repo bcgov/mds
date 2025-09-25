@@ -432,7 +432,7 @@ class VerifiableCredentialManager():
         pass
 
     @classmethod   
-    def prepare_permit_amendment_untp_credential(cls, permit_amendment_guid: str):
+    def prepare_permit_amendment_untp_credential(cls, permit_amendment_guid: str) -> dict|None:
         pa = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid, unsafe=True)
         if not pa:
             current_app.logger.warning(
@@ -442,8 +442,68 @@ class VerifiableCredentialManager():
         pa.permit._context_mine = pa.mine_guid 
         pa_list = pa.permit.permit_amendments 
         pos = pa_list.index(pa)
-        next_pa = pa_list[pos + 1] if pos + 1 < len(pa_list) else None
+        next_pa: str | None = None
+        valid_until_date: date | None = None
+        try:
+            next_pa = pa_list[pos + 1] if pos + 1 < len(pa_list) else None
+        except IndexError: 
+            pass
+        
+        if next_pa:
+            valid_until_date = next_pa.issue_date
+        
+        if pa.permit_no[1] in ("X", "x"):
+            current_app.logger.info(
+                f"exclude exploration permit={pa.permit_no}, they cannot produce goods for sale")
+            return None
 
+        pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload_without_id(
+            Config.CHIEF_PERMITTING_OFFICER_DID_WEB, pa)
+        if not pa_cred:
+            current_app.logger.warning(
+                f"pa_cred could not be created for permit_amendment_guid={permit_amendment_guid}")
+            return None
+        
+               #only one assessment per credential
+        publish_payload: dict[str, Any] = {
+            "credential": {
+                "type": "BCMinesActPermitCredential",
+                "validFrom": convert_date_to_iso_datetime(pa.issue_date),
+                "credentialSubject": {
+                    "permitNumber": pa_cred.credentialSubject.permitNumber
+                },
+            },
+            "options": {
+                "entityId": pa_cred.credentialSubject.issuedToParty.registeredId,
+                "cardinalityId": pa_cred.credentialSubject.permitNumber,
+                "additionalData": {
+                    "assessedFacility": [
+                        f.model_dump(exclude_none=True)
+                        for f in pa_cred.credentialSubject.assessment[0].assessedFacility
+                    ],
+                    "assessedProduct": [
+                        p.model_dump(exclude_none=True)
+                        for p in pa_cred.credentialSubject.assessment[0].assessedProduct
+                    ],
+                }
+            }
+        }
+        #TODO: Combine continous permit_amendments where the contents of the credential and permittee did not change into one credential.
+        if valid_until_date:
+            publish_payload["credential"]["validUntil"] = convert_date_to_iso_datetime(
+                valid_until_date)
+
+        current_app.logger.debug(f"publishing record={publish_payload}")
+        payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
+        current_app.logger.debug(f"payload hash={payload_hash}")
+
+        #produce a uuid for logging/tracing.
+        publish_payload["options"]["credentialId"] = str(uuid4())
+
+        current_app.logger.debug('returning publish payload')
+        return publish_payload
+            
+        
     @classmethod
     def delete_any_unsuccessful_untp_push(cls, live: bool = False) -> int:
         if not live:
@@ -642,6 +702,9 @@ class VerifiableCredentialManager():
         #TODO, can CORE identify commodities by their UNCEFACT code?
         #remove duplicates
         product_names = list(set([c for c in permit_amendment.mine.commodities]))
+        #sort list of strings for consistency
+        product_names.sort()
+        
         products = [cc.Product(id=None, name=c, IDverifiedByCAB=False) for c in product_names]
 
         issue_date = permit_amendment.issue_date

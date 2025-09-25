@@ -69,3 +69,18 @@ class W3CCredentialIssueResource(Resource, UserMixin):
             credential_dict)
 
         return signed_credential["securedDocument"]
+
+    @api.expect(parser)
+    @api.doc(
+        description=
+        "returns the preparad payload to be sent to the orgbook publisher"
+    )
+    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
+    def get(self):
+        if not is_feature_enabled(Feature.VC_W3C):
+            raise ServiceUnavailable("This feature is not enabled.")
+
+        data = self.parser.parse_args()
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
+            data["permit_amendment_guid"])
+        VerifiableCredentialManager.prepare_permit_amendment_untp_credential( data["permit_amendment_guid"])
