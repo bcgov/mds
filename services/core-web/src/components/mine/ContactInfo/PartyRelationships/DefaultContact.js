@@ -8,7 +8,7 @@ import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as router from "@/constants/routes";
 import * as Permission from "@/constants/permissions";
-import DocumentLink from "@/components/common/DocumentLink";
+import DocumentLink from "@mds/common/components/documents/DocumentLink";
 
 const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
@@ -68,7 +68,7 @@ export const DefaultContact = (props) => {
         <div>
           <h6>Email Address</h6>
           {props.partyRelationship.party.email &&
-          props.partyRelationship.party.email !== "Unknown" ? (
+            props.partyRelationship.party.email !== "Unknown" ? (
             <a href={`mailto:${props.partyRelationship.party.email}`}>
               {props.partyRelationship.party.email}
             </a>

@@ -5,7 +5,7 @@ import { Dropdown, Button, MenuProps } from "antd";
 import { CARAT } from "@/constants/assets";
 import { DownloadOutlined, FileOutlined } from "@ant-design/icons";
 import { openDocument, isDocumentOpenable } from "@mds/common/components/syncfusion/DocumentViewer";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 
 interface DocumentActionsProps {
   document: { documentName: string; documentMangerGuid: string };
@@ -16,9 +16,9 @@ export const DocumentActions: FC<DocumentActionsProps> = (props) => {
   const downloadOnClick = (document) =>
     document.documentMangerGuid
       ? downloadFileFromDocumentManager({
-          document_manager_guid: document.documentMangerGuid,
-          document_name: document.documentName,
-        })
+        document_manager_guid: document.documentMangerGuid,
+        document_name: document.documentName,
+      })
       : null;
 
   const canOpenInDocumentViewer = (document) =>

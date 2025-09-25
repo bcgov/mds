@@ -15,7 +15,7 @@ import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
-import DocumentLink from "@/components/common/DocumentLink";
+import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import * as router from "@/constants/routes";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { getVarianceApplicationBadgeStatusType } from "@mds/common/constants/badgeStatusTypes";

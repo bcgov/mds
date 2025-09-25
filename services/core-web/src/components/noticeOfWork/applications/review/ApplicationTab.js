@@ -23,7 +23,7 @@ import {
   getNoticeOfWorkApplicationStatusOptionsHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { flattenObject } from "@common/utils/helpers";
-import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
+import { downloadNowDocument } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import * as Strings from "@mds/common/constants/strings";
 import * as Permission from "@/constants/permissions";
 import { exportNoticeOfWorkApplicationDocument } from "@/actionCreators/documentActionCreator";

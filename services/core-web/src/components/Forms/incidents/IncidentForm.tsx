@@ -16,7 +16,7 @@ import {
   documentNameColumn,
   uploadDateColumn,
   uploadedByColumn,
-} from "@/components/common/DocumentColumns";
+} from "@mds/common/components/documents/DocumentColumns";
 import IncidentFormDocuments from "@/components/Forms/incidents/IncidentFormDocuments";
 import IncidentFormInternalDocumentComments from "@/components/Forms/incidents/IncidentFormInternalDocumentComments";
 import IncidentFormInitialReport from "@/components/Forms/incidents/IncidentFormInitialReport";

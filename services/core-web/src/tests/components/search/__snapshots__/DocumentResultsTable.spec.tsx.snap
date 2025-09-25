@@ -299,6 +299,7 @@ exports[`DocumentResultsTable renders properly 1`] = `
                           <a
                             role="link"
                             tabindex="0"
+                            title="above.js"
                           >
                             <span>
                               <mark
@@ -352,6 +353,7 @@ exports[`DocumentResultsTable renders properly 1`] = `
                           <a
                             role="link"
                             tabindex="0"
+                            title="about.js"
                           >
                             <span>
                               <mark
@@ -405,6 +407,7 @@ exports[`DocumentResultsTable renders properly 1`] = `
                           <a
                             role="link"
                             tabindex="0"
+                            title="above.avi"
                           >
                             <span>
                               <mark
@@ -458,6 +461,7 @@ exports[`DocumentResultsTable renders properly 1`] = `
                           <a
                             role="link"
                             tabindex="0"
+                            title="above.avi"
                           >
                             <span>
                               <mark
@@ -511,6 +515,7 @@ exports[`DocumentResultsTable renders properly 1`] = `
                           <a
                             role="link"
                             tabindex="0"
+                            title="above.avi"
                           >
                             <span>
                               <mark
@@ -564,6 +569,7 @@ exports[`DocumentResultsTable renders properly 1`] = `
                           <a
                             role="link"
                             tabindex="0"
+                            title="about.js"
                           >
                             <span>
                               <mark

@@ -5,6 +5,7 @@ exports[`DocumentLink renders properly 1`] = `
   <a
     role="link"
     tabindex="0"
+    title="Mock name"
   >
     Mock Title
   </a>

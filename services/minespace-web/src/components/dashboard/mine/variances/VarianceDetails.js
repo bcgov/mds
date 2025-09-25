@@ -4,7 +4,10 @@ import { Descriptions } from "antd";
 import { formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
-import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
+import {
+  documentNameColumn,
+  uploadDateColumn,
+} from "@mds/common/components/documents/DocumentColumns";
 import * as Strings from "@/constants/strings";
 import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { MineDocument } from "@mds/common/models/documents/document";

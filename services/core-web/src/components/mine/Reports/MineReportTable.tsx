@@ -13,7 +13,7 @@ import {
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { Link, useHistory } from "react-router-dom";
 import { Badge } from "antd";
-import DocumentLink from "@/components/common/DocumentLink";
+import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import * as router from "@/constants/routes";
 import { getReportSubmissionBadgeStatusType } from "@mds/common/constants/badgeStatusTypes";

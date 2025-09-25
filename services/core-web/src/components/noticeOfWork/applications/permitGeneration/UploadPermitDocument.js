@@ -4,10 +4,9 @@ import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import { Button } from "antd";
 import { isEmpty } from "lodash";
-import DocumentLink from "@/components/common/DocumentLink";
+import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
-import { truncateFilename } from "@common/utils/helpers";
 import {
   updatePermitAmendment,
   removePermitAmendmentDocument,

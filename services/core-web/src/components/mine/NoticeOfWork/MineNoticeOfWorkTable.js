@@ -7,9 +7,9 @@ import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import { getApplicationStatusType } from "@mds/common/constants/badgeStatusTypes";
-import DocumentLink from "@/components/common/DocumentLink";
+import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import { isEmpty } from "lodash";
-import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
+import { downloadNowDocument } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import {
   renderDateColumn,

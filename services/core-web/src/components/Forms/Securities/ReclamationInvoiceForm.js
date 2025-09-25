@@ -17,7 +17,7 @@ import {
   documentNameColumn,
   removeFunctionColumn,
   uploadDateColumn,
-} from "@/components/common/DocumentColumns";
+} from "@mds/common/components/documents/DocumentColumns";
 import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";

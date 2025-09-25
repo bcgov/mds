@@ -110,7 +110,7 @@ export default defineConfig({
     rspack: {
       plugins: [
         new rspack.ProvidePlugin({
-          REQUEST_HEADER: path.resolve(__dirname, "common/utils/RequestHeaders.js"),
+          REQUEST_HEADER: path.resolve(__dirname, "common/utils/RequestHeaders.tsx"),
           GLOBAL_ROUTES: path.resolve(__dirname, "src/constants/routes.ts"),
         })
       ]
