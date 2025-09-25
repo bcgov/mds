@@ -379,6 +379,9 @@ def push_untp_map_data_to_publisher(include_regional: bool = False):
         #produce a uuid for logging/tracing.
         publish_payload["options"]["credentialId"] = str(uuid4())
 
+
+        # NEED TO REPLACE ALL THE CODE ABOVE WITH prepare_permit_amendment_untp_credential
+        
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
             permit_amendment_guid=row[0],
