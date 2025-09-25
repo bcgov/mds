@@ -381,6 +381,13 @@ def push_untp_map_data_to_publisher(include_regional: bool = False):
 
 
         # NEED TO REPLACE ALL THE CODE ABOVE WITH prepare_permit_amendment_untp_credential
+        other_publish_payload = prepare_permit_amendment_untp_credential(row[0])
+        
+        
+        if json.dumps(other_publish_payload) != json.dumps(publish_payload):
+            current_app.logger.debug(f"payloads do not match for {row[0]}")
+        else:
+            current_app.logger.debug(f"payloads match for {row[0]}")
         
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
