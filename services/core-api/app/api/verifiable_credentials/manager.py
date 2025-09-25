@@ -380,7 +380,7 @@ def push_untp_map_data_to_publisher(include_regional: bool = False):
         publish_payload["options"]["credentialId"] = str(uuid4())
 
 
-        # NEED TO REPLACE ALL THE CODE ABOVE WITH prepare_permit_amendment_untp_credential
+        # NEED TO REPLACE ALL THE CODE ABOVE WITH prepare_permit_amendment_untp_credentials
         other_publish_payload = prepare_permit_amendment_untp_credential(row[0])
         
         
