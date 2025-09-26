@@ -21,6 +21,7 @@ from app.extensions import db
 from app.config import Config
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 
+from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
@@ -378,6 +379,16 @@ def push_untp_map_data_to_publisher(include_regional: bool = False):
         #produce a uuid for logging/tracing.
         publish_payload["options"]["credentialId"] = str(uuid4())
 
+
+        # NEED TO REPLACE ALL THE CODE ABOVE WITH prepare_permit_amendment_untp_credentials
+        other_publish_payload = prepare_permit_amendment_untp_credential(row[0])
+        
+        
+        if json.dumps(other_publish_payload) != json.dumps(publish_payload):
+            current_app.logger.debug(f"payloads do not match for {row[0]}")
+        else:
+            current_app.logger.debug(f"payloads match for {row[0]}")
+        
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
             permit_amendment_guid=row[0],
@@ -434,12 +445,13 @@ class VerifiableCredentialManager():
     @classmethod   
     def prepare_permit_amendment_untp_credential(cls, permit_amendment_guid: str) -> dict|None:
         pa = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid, unsafe=True)
-        if not pa:
+        mine = Mine.find_by_mine_guid(pa.mine_guid)
+        if not pa or not mine:
             current_app.logger.warning(
-                f"Permit Amendment not found for permit_amendment_guid={permit_amendment_guid}")
+                f"Permit Amendment or mine not found for permit_amendment_guid={permit_amendment_guid}")
             return
         #get other permit_amendments
-        pa.permit._context_mine = pa.mine_guid 
+        pa.permit._context_mine = mine
         pa_list = pa.permit.permit_amendments 
         pos = pa_list.index(pa)
         next_pa: str | None = None
@@ -500,7 +512,6 @@ class VerifiableCredentialManager():
         #produce a uuid for logging/tracing.
         publish_payload["options"]["credentialId"] = str(uuid4())
 
-        current_app.logger.debug('returning publish payload')
         return publish_payload
             
         
@@ -657,12 +668,27 @@ class VerifiableCredentialManager():
                     f"mine_party_appointment.start_date is neither `date` or `datetime` object, it's {type(d)}"
                 )
 
+        
+        if pmt_appts is None or len(pmt_appts) == 0:
+            current_app.logger.warning(
+                f"No permittee appointments found for permit_amendment_guid={permit_amendment.permit_amendment_guid}, cannot produce Mines Act Permit UNTP CC"
+            )
+            return None
+        
         #remove all appointments after the issue_date then take the top one, there are overlapping entries that may not be handled here.
-        curr_appt = [
-            pa for pa in pmt_appts
-            if ensure_start_date_type(pa.start_date) <= permit_amendment_issue_date
-        ][0]
-
+    
+        try:
+            curr_appt = [
+                pa for pa in pmt_appts
+                if ensure_start_date_type(pa.start_date) <= permit_amendment_issue_date
+            ][0] 
+        except IndexError:
+            current_app.logger.warning(
+                f"No valid permittee appointments found for permit_amendment_guid={permit_amendment.permit_amendment_guid}, cannot produce Mines Act Permit UNTP CC"
+            )
+            return None
+        
+#
         orgbook_entity = curr_appt.party.party_orgbook_entity
         if not orgbook_entity:
             if curr_appt.party:
