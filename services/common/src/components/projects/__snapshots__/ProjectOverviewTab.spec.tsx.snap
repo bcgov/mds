@@ -384,7 +384,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                                           type="button"
                                         >
                                           <span>
-                                            Resume
+                                            View
                                           </span>
                                         </button>
                                       </td>
