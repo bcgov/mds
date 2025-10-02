@@ -9,7 +9,7 @@ import CustomPropTypes from "@/customPropTypes";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
-import DocumentLink from "@/components/common/DocumentLink";
+import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
@@ -79,17 +79,17 @@ const columns = (type) => {
         <div title="Documents">
           {text.length > 0
             ? text.map((doc) =>
-                doc && doc.mine_document ? (
-                  <li key={doc.mine_document.mine_document_guid}>
-                    <div key={doc.mine_document.mine_document_guid}>
-                      <DocumentLink
-                        documentManagerGuid={doc.mine_document.document_manager_guid}
-                        documentName={doc.mine_document.document_name}
-                      />
-                    </div>
-                  </li>
-                ) : null
-              )
+              doc && doc.mine_document ? (
+                <li key={doc.mine_document.mine_document_guid}>
+                  <div key={doc.mine_document.mine_document_guid}>
+                    <DocumentLink
+                      documentManagerGuid={doc.mine_document.document_manager_guid}
+                      documentName={doc.mine_document.document_name}
+                    />
+                  </div>
+                </li>
+              ) : null
+            )
             : Strings.EMPTY_FIELD}
         </div>
       ),

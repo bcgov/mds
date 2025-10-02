@@ -5,7 +5,7 @@ import { request, success, error } from "@/actions/genericActions";
 import * as userMineActions from "@/actions/userMineActions";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import * as API from "@mds/common/constants/API";
-import { createRequestHeader } from "@/utils/RequestHeaders";
+import { createRequestHeader } from "@mds/common/redux/utils/RequestHeaders";
 import { DEFAULT_DASHBOARD_PARAMS, ERROR } from "@mds/common/constants/strings";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
 

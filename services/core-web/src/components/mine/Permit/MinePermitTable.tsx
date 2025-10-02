@@ -21,7 +21,7 @@ import * as Strings from "@mds/common/constants/strings";
 import { PERMIT_AMENDMENT_TYPES } from "@mds/common/constants/strings";
 import { isEmpty } from "lodash";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import DocumentLink from "@/components/common/DocumentLink";
+import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import * as route from "@/constants/routes";
 import { VIEW_MINE_PERMIT } from "@/constants/routes";
 import { IMineDocument, IPermit, IPermitAmendment } from "@mds/common/interfaces";

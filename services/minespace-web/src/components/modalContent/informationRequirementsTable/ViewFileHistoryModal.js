@@ -10,7 +10,7 @@ import {
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import { formatDateTime } from "@common/utils/helpers";
 import { MineDocument } from "@mds/common/models/documents/document";
-import { documentNameColumn } from "@/components/common/DocumentColumns";
+import { documentNameColumn } from "@mds/common/components/documents/DocumentColumns";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,

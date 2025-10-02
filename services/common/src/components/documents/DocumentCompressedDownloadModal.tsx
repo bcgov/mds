@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Modal, Typography } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
-import { downloadFileFromDocumentManager } from "@mds/core-web/common/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import { COLOR } from "@mds/common/constants/styles";
 
 interface DocumentCompressedDownloadModalProps {

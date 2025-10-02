@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@mds/common/constants/strings";
-import DocumentLink from "@/components/common/DocumentLink";
+import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { getPermitAmendmentTypeOptionsHash } from "@mds/common/redux/selectors/staticContentSelectors";
 

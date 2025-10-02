@@ -6,7 +6,7 @@ import {
   IPermitAmendment,
 } from "@mds/common/interfaces";
 import { truncateFilename } from "@common/utils/helpers";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import LinkButton from "@/components/common/LinkButton";
 import * as Strings from "@/constants/strings";
 import CoreTable from "@mds/common/components/common/CoreTable";
