@@ -133,7 +133,7 @@ const ProjectOverviewTab: FC = () => {
         date: project.project_summary.update_timestamp,
         ...projectSummaryStatus
     }];
-    const projDescButtonProps = getButtonProps(true, false);
+    const projDescButtonText = project.project_summary?.submission_date ? "View" : "Resume";
 
     const projectSummaryTableData = hasMinesActAuth ? maAuthTableData : [projectSummaryStatus];
 
@@ -296,7 +296,7 @@ const ProjectOverviewTab: FC = () => {
                                             return <Button
                                                 data-cy="project-description-view-link"
                                                 onClick={handleNavigateProjectSummary}
-                                            >{projDescButtonProps.text}</Button>
+                                            >{projDescButtonText}</Button>
                                         }
                                     },
                                 ]}
