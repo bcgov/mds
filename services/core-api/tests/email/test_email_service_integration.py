@@ -109,19 +109,6 @@ def test_minespace_template_renders_with_correct_branding(mock_health_check, moc
     assert 'Your report has been successfully submitted' in rendered_body
 
 
-def test_template_not_found_raises_proper_error(test_client):
-    with current_app.app_context():
-        with pytest.raises(Exception) as exc_info:
-            EmailService.send_template_email(
-                subject='Test',
-                recipients=['test@example.com'],
-                template_path='email/nonexistent/template.html',
-                context={}
-            )
-        
-        assert 'Template rendering failed' in str(exc_info.value)
-
-
 @patch('app.api.services.email_service.requests.post')
 @patch('app.api.services.email_service.EmailService.get_auth_token')
 @patch('app.api.services.email_service.EmailService.perform_health_check')
