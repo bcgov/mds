@@ -73,7 +73,6 @@ export const ProjectSummary: FC = () => {
   const isDefaultEditMode = !isExistingProject || mode === "edit";
 
   const [isLoaded, setIsLoaded] = useState(isDefaultLoaded);
-  // isNewProject on CORE and isEditMode on MS are inverses of each other
   const [isNewProject, setIsNewProject] = useState(isDefaultEditMode);
   // this isEditMode doesn't mean new/edit, it's edit/view
   const [isEditMode, setIsEditMode] = useState(isDefaultEditMode);

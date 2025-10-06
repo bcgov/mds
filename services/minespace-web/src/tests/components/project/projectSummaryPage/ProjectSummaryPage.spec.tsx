@@ -21,10 +21,11 @@ function mockFunction() {
       projectSummaryGuid: "70414192-ca71-4d03-93a5-630491e9c554",
       tab: "basic-information",
       mineGuid: "12345678-74f2-4e27-82e6-878ddb472e5a",
+      mode: "edit",
     }),
     useLocation: jest.fn().mockReturnValue({
       pathname:
-        "/projects/74120872-74f2-4e27-82e6-878ddb472e5a/project-description/70414192-ca71-4d03-93a5-630491e9c554/basic-information",
+        "/projects/74120872-74f2-4e27-82e6-878ddb472e5a/project-description/70414192-ca71-4d03-93a5-630491e9c554/edit/basic-information",
     }),
   };
 }

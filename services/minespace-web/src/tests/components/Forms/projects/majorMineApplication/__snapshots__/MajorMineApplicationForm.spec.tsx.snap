@@ -19,7 +19,7 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
         >
           Please ensure the following information is correct and up to date. If changes are needed please edit your 
           <a
-            href="/projects/35633148-57f8-4967-be35-7f89abfbd02e/project-description/undefined/basic-information"
+            href="/projects/35633148-57f8-4967-be35-7f89abfbd02e/project-description/undefined/view/basic-information"
           >
             project description
           </a>
