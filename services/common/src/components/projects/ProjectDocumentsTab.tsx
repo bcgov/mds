@@ -171,7 +171,6 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
     const headingText = getAuthorizationHeader(auth);
     const infoText = formatUrlToUpperCaseString(headingText);
     const href = `application-${auth.ams_tracking_number}`;
-    const canChangeApplicationAmsFile = !isCore ? application.editable : canManageAmsFiles;
 
     return {
       href,
@@ -183,8 +182,8 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           titleLevel={5}
           infoText={infoText}
           key={application.ams_final_application_guid}
-          canArchive={canChangeApplicationAmsFile}
-          canReplace={canChangeApplicationAmsFile}
+          canArchive={canManageAmsFiles}
+          canReplace={canManageAmsFiles}
           onArchivedDocuments={refreshAmsApps}
           documents={application.documents.map(
             (d) =>
