@@ -15,8 +15,9 @@ import Loading from "../../common/Loading";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT } from "@mds/common/constants/strings";
 import { Tag } from "antd";
-import { isProponent, userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
+import { isProponent, userHasRole, getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common/constants/environment";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 const EnvApplicationPage = () => {
     const { projectGuid, projectSummaryGuid, projectSummaryAuthorizationGuid, tab } = useParams<{
@@ -40,7 +41,9 @@ const EnvApplicationPage = () => {
     const trackingNumber = auth?.ams_tracking_number;
     const canEditMajorMineApplications = useAppSelector(userHasRole(USER_ROLES.role_edit_major_mine_applications));
     const isUserProponent = useAppSelector(isProponent);
-    const [isEditMode] = useState(canEditMajorMineApplications || isUserProponent);
+    const [isEditMode, setIsEditMode] = useState((canEditMajorMineApplications || isUserProponent));
+    const systemFlag = useAppSelector(getSystemFlag);
+    const isCore = systemFlag === SystemFlagEnum.core;
 
     const loaded = amsFinalAppLoaded && projectSummaryLoaded;
 
@@ -50,6 +53,12 @@ const EnvApplicationPage = () => {
         }
         dispatch(fetchAmsFinalApp({ projectSummaryGuid, projectSummaryAuthorizationGuid }));
     }, []);
+
+    useEffect(() => {
+        if (amsFinalApp && !isCore && !amsFinalApp.editable) {
+            setIsEditMode(false);
+        }
+    }, [amsFinalApp]);
 
     const handleSaveData = (values, _newActiveTab) => {
         const payload = {
