@@ -124,6 +124,8 @@ class AmsFinalApplicationMineSpaceEditResource(Resource, UserMixin):
         if not final_app:
             raise NotFound("AMS Final Application not found.")
         
+        check_mine_access(final_app.project_summary_authorization.project_summary.mine_guid)
+        
         editable = data.get('editable', True)
         final_app = final_app.update_edit_toggle(editable)
         return final_app, 200
