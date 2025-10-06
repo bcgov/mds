@@ -12764,7 +12764,6 @@ export const AMS_FINAL_APPLICATION: IAmsFinalApplication = {
     "LOC"
   ],
   "submitted_timestamp": "2025-06-25T20:11:48.890187+00:00",
-  "editable": true,
   "documents": [
     {
       "ams_final_application_document_xref_guid": "0886942c-0313-4199-9ed8-94bf9e69f230",

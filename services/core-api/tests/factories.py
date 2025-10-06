@@ -2006,7 +2006,6 @@ class AmsFinalApplicationFactory(BaseFactory):
     submitter_name = factory.Faker('name')
     is_agent = factory.Faker('boolean', chance_of_getting_true=30)
     pre_submitted_files = []
-    editable = True
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):

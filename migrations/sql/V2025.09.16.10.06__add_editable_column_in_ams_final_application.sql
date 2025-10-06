@@ -1,5 +1,0 @@
-ALTER TABLE ams_final_application
-ADD COLUMN IF NOT EXISTS editable BOOLEAN NOT NULL DEFAULT TRUE;
-
-ALTER TABLE ams_final_application_version 
-ADD COLUMN IF NOT EXISTS editable BOOLEAN NOT NULL DEFAULT TRUE;

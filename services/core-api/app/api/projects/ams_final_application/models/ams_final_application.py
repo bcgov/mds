@@ -29,7 +29,6 @@ class AmsFinalApplication(HistoryMixin, SoftDeleteMixin, DraftMixin, AuditMixin,
         primaryjoin='and_(AmsFinalApplicationDocumentXref.ams_final_application_guid == AmsFinalApplication.ams_final_application_guid, AmsFinalApplicationDocumentXref.deleted_ind == False)'
     )
     project_summary_authorization = db.relationship("ProjectSummaryAuthorization", back_populates="ams_final_application")
-    editable = db.Column(db.Boolean, default=True)
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.ams_final_application_guid}'
@@ -49,10 +48,6 @@ class AmsFinalApplication(HistoryMixin, SoftDeleteMixin, DraftMixin, AuditMixin,
     @staticmethod
     def find_by_project_summary_guid(project_summary_guid):
         return AmsFinalApplication.query.join(AmsFinalApplication.project_summary_authorization).filter_by(project_summary_guid=project_summary_guid).all()
-    
-    @staticmethod
-    def find_by_ams_final_application_guid(ams_final_application_guid):
-        return AmsFinalApplication.query.filter_by(ams_final_application_guid=ams_final_application_guid).one_or_none()
 
     @classmethod
     def create(cls, 
@@ -60,15 +55,13 @@ class AmsFinalApplication(HistoryMixin, SoftDeleteMixin, DraftMixin, AuditMixin,
                submitter_name,
                is_agent=False,
                pre_submitted_files=None,
-               is_submitting=False,
-               editable=True,
+               is_submitting=False
                ):
         final_app = cls(
             project_summary_authorization_guid=project_summary_authorization_guid,
             submitter_name=submitter_name,
             is_agent=is_agent,
             pre_submitted_files=pre_submitted_files or [],
-            editable=editable,
         )
         if is_submitting:
             final_app.submitted_timestamp = datetime.now(timezone.utc)
@@ -82,7 +75,7 @@ class AmsFinalApplication(HistoryMixin, SoftDeleteMixin, DraftMixin, AuditMixin,
                documents=[],
                is_agent=False,
                pre_submitted_files=None,
-               is_submitting=False,
+               is_submitting=False
                ):
         self.submitter_name = submitter_name
         self.is_agent = is_agent
@@ -94,11 +87,6 @@ class AmsFinalApplication(HistoryMixin, SoftDeleteMixin, DraftMixin, AuditMixin,
             self.submit()
         else:
             self.save_draft()
-        return self
-    
-    def update_edit_toggle(self, editable= True):
-        self.editable = editable
-        self.save()
         return self
 
     def _update_documents(self, documents):  
