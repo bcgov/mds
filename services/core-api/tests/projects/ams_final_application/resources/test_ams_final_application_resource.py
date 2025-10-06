@@ -39,6 +39,7 @@ def subscribe_minespace_user(db_session, project_summary, email='test-proponent@
 def _enable_real_user_mode():
     # Disable any test-mode short–circuiting so access decorators execute real logic
     User._test_mode = False
+    auth.apply_security = True
     auth.clear_cache()
 
 
