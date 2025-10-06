@@ -279,7 +279,8 @@ export const dateNotBeforeStrictOther = memoize(
   (other: string, otherLabel?: string) => (value: string) =>
     value && other && moment(value).isBefore(other)
       ? `Date cannot be before ${otherLabel ? `${otherLabel} - ` : ""}${moment(other).format("YYYY-MM-DD HH:mm Z z")}`
-      : undefined
+      : undefined,
+  (other, otherLabel) => `${other}_${otherLabel}`
 );
 
 export const timeNotBeforeOther = memoize(
