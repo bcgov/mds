@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { useHistory, Link } from "react-router-dom";
-import { Row, Col, Typography, Button, Alert, Badge, List, Descriptions } from "antd";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import { Row, Col, Typography, Button, Alert, Badge, List, Descriptions, Modal, Tooltip } from "antd";
+import FormOutlined from "@ant-design/icons/FormOutlined";
+import { getSystemFlag, userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import {
     fetchProjectSummaryEnvironmentAuthorizationStatuses,
@@ -23,6 +24,11 @@ import { Feature } from "@mds/common/utils";
 import ProjectContacts from "../projects/ProjectContacts";
 import { getProjectLeads } from "@mds/common/redux/selectors/partiesSelectors";
 import { getMinistryContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
+import { fetchAmsFinalAppsByProjectSummary, updateAmsFinalAppMineSpaceEditability } from "@mds/common/redux/slices/amsFinalApplicationSlice";
+import { USER_ROLES } from "@mds/common/constants/environment";
+import CheckCircleOutlined from "@ant-design/icons/CheckCircleOutlined";
+import { COLOR } from "@mds/common/constants/styles";
+const { Paragraph } = Typography;
 
 const EmaApplicationsTab = () => {
     const dispatch = useAppDispatch();
@@ -31,13 +37,15 @@ const EmaApplicationsTab = () => {
     const projectLeads = useAppSelector(getProjectLeads);
     const history = useHistory();
     const [isLoaded, setIsLoaded] = useState(true);
-    const [emaAuths, setEmaAuths] = useState([]);
+    const [emaData, setEmaData] = useState([]);
     const systemFlag = useAppSelector(getSystemFlag);
     const { isFeatureEnabled } = useFeatureFlag();
     const amsFinalAppEnabled = isFeatureEnabled(Feature.AMS_FINAL_APPLICATION);
     const isCore = systemFlag === SystemFlagEnum.core;
     const authorizations = project?.project_summary?.authorizations;
     const hasMinesActApp = authorizations?.some(auth => auth.project_summary_authorization_type === "MINES_ACT_PERMIT");
+    const canEditMajorMineApplications = useAppSelector(userHasRole(USER_ROLES.role_edit_major_mine_applications));
+    const [editToggleLoading, setEditToggleLoading] = useState(false);
 
     const project_lead_contact =
         projectLeads?.filter((lead) => lead.party_guid.includes(project.project_lead_party_guid)) ?? [];
@@ -50,25 +58,79 @@ const EmaApplicationsTab = () => {
 
     const contactsAndProjectLead = [...project.contacts, project_lead_contact[0]];
 
-    useEffect(() => {
+    const fetchAmsData = async () => {
         const amsAuthorizations = authorizations?.filter(
             auth => auth.ams_tracking_number && auth.ams_tracking_number !== "0"
         );
         const amsTrackingNumbers = amsAuthorizations?.map(auth => auth.ams_tracking_number);
-        setIsLoaded(false);
-        dispatch(fetchProjectSummaryEnvironmentAuthorizationStatuses(amsTrackingNumbers)).then((statuses) => {
-            const emaAuthsData = amsAuthorizations.map(auth => {
-                const match = statuses.find(status => status?.ams_tracking_number === auth.ams_tracking_number);
-                return {
-                    ...auth,
-                    status: match?.status,
-                    ams_authorization_number: match?.ams_authorization_number,
-                }
-            })
-            setEmaAuths(emaAuthsData);
-            setIsLoaded(true);
+
+        const [statuses, finalApps] = await Promise.all([
+            dispatch(fetchProjectSummaryEnvironmentAuthorizationStatuses(amsTrackingNumbers)),
+            dispatch(fetchAmsFinalAppsByProjectSummary(project?.project_summary?.project_summary_guid)),
+        ]);
+
+        const emaMergedData = amsAuthorizations.map((auth) => {
+            const match = statuses.find(
+                (status) => status?.ams_tracking_number === auth.ams_tracking_number
+            );
+            return {
+                ...auth,
+                status: match?.status,
+                ams_authorization_number: match?.ams_authorization_number,
+                finalApp: finalApps?.payload?.records.find(
+                    (app) => app.project_summary_authorization_guid === auth.project_summary_authorization_guid) || null,
+            };
         });
+
+        setEmaData(emaMergedData);
+        setIsLoaded(true);
+        setEditToggleLoading(false);
+    };
+
+    useEffect(() => {
+        setIsLoaded(false);
+        fetchAmsData();
     }, [authorizations]);
+
+    const updateFinalAppMineSpaceEditability = async (emaRecord, canEdit) => {
+        const payload = {
+            projectSummaryGuid: emaRecord.project_summary_guid,
+            projectSummaryAuthorizationGuid: emaRecord.project_summary_authorization_guid,
+            application: { ...emaRecord.finalApp, editable: canEdit }
+        };
+
+        setEditToggleLoading(true);
+        dispatch(updateAmsFinalAppMineSpaceEditability(payload)).then(() => fetchAmsData());
+    };
+
+    const rendereMineSpaceFinalAppEditModal = (record, canEdit) => {
+        const iconColor = canEdit ? COLOR.successGreen : COLOR.yellow;
+        return Modal.confirm({
+            title: <b>Are you sure you want to change the file editability status for this application?</b>,
+            icon: <CheckCircleOutlined style={{ color: iconColor, fontSize: "26px" }} />,
+            content: (<div>
+                <Paragraph>
+                    Changing this setting will:
+                    <ul style={{ listStyleType: "disc" }}>
+                        {!canEdit
+                            ? <li>
+                                <b>Disable</b> file editting: Files will be locked and cannot be changed unless re-enabled.
+                            </li>
+                            : <li>
+                                <b>Enable</b> file editting: Users will be able to upload, replace, or modify files.
+                            </li>
+                        }
+                    </ul>
+
+                    This action affects all files associated with this final application project.
+                </Paragraph>
+            </div>),
+            width: 550,
+            okText: "Confirm Change",
+            cancelText: "Cancel",
+            onOk: () => updateFinalAppMineSpaceEditability(record, canEdit),
+        })
+    };
 
     return (
         <>
@@ -114,8 +176,10 @@ const EmaApplicationsTab = () => {
                             />}
                             <List
                                 itemLayout="vertical"
-                                dataSource={emaAuths}
+                                dataSource={emaData}
                                 renderItem={(item) => {
+                                    const finalApp = item.finalApp;
+                                    const editOptionText = finalApp?.editable ? "Disable" : "Enable";
                                     return <List.Item key={item.ams_tracking_number} className="grey-box margin-medium--top margin-medium--bottom">
                                         <Descriptions
                                             title={
@@ -136,6 +200,18 @@ const EmaApplicationsTab = () => {
                                             <Descriptions.Item label="Authorization Number">
                                                 {item.project_summary_permit_type[0] === "NEW" ? EMPTY_FIELD : item.ams_authorization_number}
                                             </Descriptions.Item>
+                                            {(isCore && canEditMajorMineApplications && finalApp)
+                                                ? <Descriptions.Item label="" style={{ float: "right", marginLeft: "auto" }}>
+                                                    <Tooltip title={`${editOptionText} File Editing`}>
+                                                        <Button
+                                                            className="ant-btn-ghost"
+                                                            onClick={() => rendereMineSpaceFinalAppEditModal(item, !finalApp.editable)}
+                                                            disabled={editToggleLoading}>
+                                                            <FormOutlined /> {editOptionText} Edits
+                                                        </Button>
+                                                    </Tooltip>
+                                                </Descriptions.Item>
+                                                : null}
                                         </Descriptions>
                                         {
                                             amsFinalAppEnabled && (
@@ -145,7 +221,10 @@ const EmaApplicationsTab = () => {
                                                         project.project_summary.project_summary_guid,
                                                         item.project_summary_authorization_guid
                                                     )
-                                                )} type="primary">
+                                                )}
+                                                    type="primary"
+                                                    disabled={editToggleLoading}
+                                                >
                                                     Manage Final Application
                                                 </Button>
                                             )

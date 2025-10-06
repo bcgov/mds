@@ -23,4 +23,5 @@ export interface IAmsFinalApplication {
     pre_submitted_files: string[];
     submitted_timestamp?: string | null;
     documents: IAmsFinalApplicationDocument[];
+    editable: boolean;
 }

@@ -166,7 +166,8 @@ AMS_FINAL_APPLICATION_MODEL = api.model(
         'is_draft': fields.Boolean,
         'pre_submitted_files': fields.List(fields.String),
         'submitted_timestamp': fields.DateTime,
-        'documents': fields.List(fields.Nested(AMS_FINAL_APPLICATION_DOCUMENT_MODEL)), 
+        'documents': fields.List(fields.Nested(AMS_FINAL_APPLICATION_DOCUMENT_MODEL)),
+        'editable': fields.Boolean, 
     }
 )
 

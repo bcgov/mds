@@ -91,6 +91,37 @@ const amsFinalAppSlice = createAppSlice({
                 }
             }
         ),
+        updateAmsFinalAppMineSpaceEditability: create.asyncThunk(
+            async (payload: {
+                projectSummaryGuid: string,
+                projectSummaryAuthorizationGuid: string,
+                application: Partial<IAmsFinalApplication>
+            }, thunkApi) => {
+                const headers = createRequestHeader();
+                thunkApi.dispatch(showLoading());
+                const { projectSummaryGuid, projectSummaryAuthorizationGuid, application } = payload;
+
+                let resp;
+                try {
+                    resp = await CustomAxios({
+                        successToastMessage: "Successfully updated application minespace editability",
+                    }).put(`${ENVIRONMENT.apiUrl}${API.PROJECT_SUMMARY_ENVIRONMENT_FINAL_APPLICATION_MINESPACE_EDITABILITY(projectSummaryGuid, projectSummaryAuthorizationGuid)}`,
+                        application, headers);
+                } finally {
+                    thunkApi.dispatch(hideLoading());
+                }
+                return resp.data;
+            },
+            {
+                fulfilled: (state: AmsFinalAppState, action) => {
+                    const newApplication = action.payload;
+                    state.amsFinalApplications[newApplication.project_summary_authorization_guid] = newApplication;
+                },
+                rejected: (state: AmsFinalAppState, action) => {
+                    rejectHandler(action)
+                }
+            }
+        ),
         fetchAmsFinalAppsByProjectSummary: create.asyncThunk(
             async (projectSummaryGuid: string, thunkApi) => {
                 const headers = createRequestHeader();
@@ -175,7 +206,7 @@ export const getAmsFinalAppsByProjectSummary = (projectSummaryGuid: string) =>
         return apps.filter((a) => a.project_summary_guid === projectSummaryGuid)
     });
 
-export const { fetchAmsFinalApp, fetchAmsFinalAppsByProjectSummary, createAmsFinalApp, updateAmsFinalApp } = amsFinalAppSlice.actions;
+export const { fetchAmsFinalApp, fetchAmsFinalAppsByProjectSummary, createAmsFinalApp, updateAmsFinalApp, updateAmsFinalAppMineSpaceEditability } = amsFinalAppSlice.actions;
 
 const amsFinalAppReducer = amsFinalAppSlice.reducer;
 export default amsFinalAppReducer;

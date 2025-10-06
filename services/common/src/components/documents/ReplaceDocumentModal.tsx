@@ -91,12 +91,14 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
         })
       );
 
-      const newDocument = new MineDocument({
-        ...updatedDocument,
-        versions: [ConnectedVersion.data as IMineDocumentVersion, ...document.versions].reverse(),
-      });
+      if (ConnectedVersion) {
+        const newDocument = new MineDocument({
+          ...updatedDocument,
+          versions: [ConnectedVersion.data as IMineDocumentVersion, ...document.versions].reverse(),
+        });
 
-      props.handleSubmit(newDocument).then(() => dispatch(closeModal()));
+        props.handleSubmit(newDocument).then(() => dispatch(closeModal()));
+      }
     }
   };
 
