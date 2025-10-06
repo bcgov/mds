@@ -11,7 +11,8 @@ import { renderConfig } from "@/components/common/config";
 import RenderDateTimeTz from "@mds/common/components/forms/RenderDateTimeTz";
 import { normalizeDatetime } from "@mds/common/redux/utils/helpers";
 import {
-  required, requiredRadioButton,
+  required,
+  requiredRadioButton,
   dateNotBeforeStrictOther,
   dateNotInFutureTZ,
   requiredList,
@@ -34,7 +35,9 @@ const IncidentFormMinistryFollowup: FC<IncidentFormMinistryFollowupProps> = ({
   dangerousOccurenceSubparagraphOptions,
   inspectorOptions,
 }) => {
-  const formValues = useSelector((state) => getFormValues(ADD_EDIT_INCIDENT)(state)) as IMineIncident;
+  const formValues = useSelector((state) =>
+    getFormValues(ADD_EDIT_INCIDENT)(state)
+  ) as IMineIncident;
 
   const filteredFollowUpActions = incidentFollowUpActionOptions.filter(
     (act) => act.mine_incident_followup_investigation_type !== INCIDENT_FOLLOWUP_ACTIONS.unknown
@@ -98,20 +101,20 @@ const IncidentFormMinistryFollowup: FC<IncidentFormMinistryFollowupProps> = ({
             )}
           {formValues?.determination_type_code ===
             INCIDENT_DETERMINATION_TYPES.dangerousOccurance && (
-              <Col xs={24} md={12}>
-                <Field
-                  label="Which section(s) of the code apply to this dangerous occurrence?"
-                  id="dangerous_occurrence_subparagraph_ids"
-                  name="dangerous_occurrence_subparagraph_ids"
-                  placeholder="Please choose one or more..."
-                  component={renderConfig.MULTI_SELECT}
-                  data={dangerousOccurenceSubparagraphOptions}
-                  required
-                  validate={[requiredList]}
-                  disabled={!isEditMode}
-                />
-              </Col>
-            )}
+            <Col xs={24} md={12}>
+              <Field
+                label="Which section(s) of the code apply to this dangerous occurrence?"
+                id="dangerous_occurrence_subparagraph_ids"
+                name="dangerous_occurrence_subparagraph_ids"
+                placeholder="Please choose one or more..."
+                component={renderConfig.MULTI_SELECT}
+                data={dangerousOccurenceSubparagraphOptions}
+                required
+                validate={[requiredList]}
+                disabled={!isEditMode}
+              />
+            </Col>
+          )}
           {formValues.verbal_notification_provided && (
             <Col md={12} xs={24}>
               <Field
@@ -126,7 +129,7 @@ const IncidentFormMinistryFollowup: FC<IncidentFormMinistryFollowupProps> = ({
                 placeholder="Please select date"
                 validate={[
                   dateNotInFutureTZ,
-                  dateNotBeforeStrictOther(formValues.incident_timestamp),
+                  dateNotBeforeStrictOther(formValues.incident_timestamp, "Incident date & time"),
                 ]}
               />
             </Col>
