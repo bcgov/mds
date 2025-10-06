@@ -42,7 +42,7 @@ class EmailPreviewResource(Resource, UserMixin):
         except Exception as e:
             current_app.logger.error(f"Error previewing template {template_name}: {e}")
             return jsonify({
-                'error': f'Template preview failed: {str(e)}',
+                'error': 'Template preview failed due to an internal error.',
                 'template': template_name
             }), 400
     
@@ -226,5 +226,5 @@ class EmailPreviewListResource(Resource, UserMixin):
         except Exception as e:
             current_app.logger.error(f"Error listing email templates: {e}")
             return jsonify({
-                'error': f'Failed to list templates: {str(e)}'
+                'error': 'Failed to list templates due to an internal error.'
             }), 500
