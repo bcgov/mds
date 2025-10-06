@@ -216,15 +216,13 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             self.mine_report_guid,
             recipients=ActivityRecipients.core_users)
 
-        core_email_body = open("app/templates/email/report/core_new_report_submitted_email.html",
-                               "r").read()
+        core_template = "email/report/core_new_report_submitted_email.html"
         EmailService.send_template_email(
-            subject, core_recipients, core_email_body, email_context, cc=None)
+            subject, core_recipients, core_template, email_context, cc=None)
 
-        ms_email_body = open("app/templates/email/report/ms_new_report_submitted_email.html",
-                             "r").read()
+        ms_template = "email/report/ms_new_report_submitted_email.html"
         EmailService.send_template_email(
-            subject, ms_recipients, ms_email_body, email_context, cc=None)
+            subject, ms_recipients, ms_template, email_context, cc=None)
 
     def collectRecipients(self, is_proponent):
         core_recipients = [MDS_EMAIL]
@@ -330,9 +328,8 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             "ms_report_page_link": ms_report_page_link
         }
 
-        ms_email_body = open("app/templates/email/report/ms_new_report_requested_email.html",
-                             "r").read()
-        EmailService.send_template_email(subject, recipients, ms_email_body, email_context, cc=None)
+        ms_template = "email/report/ms_new_report_requested_email.html"
+        EmailService.send_template_email(subject, recipients, ms_template, email_context, cc=None)
 
     @classmethod
     def create(cls,

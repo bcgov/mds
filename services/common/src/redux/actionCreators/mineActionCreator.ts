@@ -18,6 +18,14 @@ const handleError = (dispatch, reducer) => (err) => {
   dispatch(hideLoading("modal"));
 };
 
+export const testEmailsAction = async (payload?) => {
+  return CustomAxios()
+    .get(ENVIRONMENT.apiUrl + API.EMAIL_PREVIEW(payload), createRequestHeader())
+    .then((response) => {
+      return response?.data;
+    });
+};
+
 export const createMineRecord = (payload) => (dispatch) => {
   dispatch(request(NetworkReducerTypes.CREATE_MINE_RECORD));
   dispatch(showLoading("modal"));

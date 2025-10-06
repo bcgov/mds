@@ -1,0 +1,90 @@
+<style>
+    /* Reset and base styles */
+    * {
+        box-sizing: border-box;
+    }
+
+    /* Email client compatibility styles */
+    .body {
+        background-color: #ffffff;
+        font-family: sans-serif;
+        -webkit-font-smoothing: antialiased;
+        font-size: 14px;
+        line-height: 1.4;
+        margin: 0;
+        padding: 0;
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+    }
+
+    /* Responsive styles */
+    @media only screen and (max-width: 620px) {
+
+        table.body .wrapper,
+        table.body .article {
+            padding: 10px !important;
+        }
+
+        table.body .content {
+            padding: 0 !important;
+        }
+
+        table.body .container {
+            padding: 0 !important;
+            width: 100% !important;
+        }
+
+        table.body .main {
+            border-left-width: 0 !important;
+            border-radius: 0 !important;
+            border-right-width: 0 !important;
+        }
+
+        table.body .btn table {
+            width: 100% !important;
+        }
+
+        table.body .btn a {
+            width: 100% !important;
+        }
+
+        table.body .img-responsive {
+            height: auto !important;
+            max-width: 100% !important;
+            width: auto !important;
+        }
+    }
+
+    /* Accessibility improvements */
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    /* High contrast mode support */
+    @media (prefers-contrast: high) {
+        .main {
+            border-width: 2px !important;
+        }
+
+        .btn a {
+            border-width: 2px !important;
+        }
+    }
+
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+</style>

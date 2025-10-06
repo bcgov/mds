@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Button } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
@@ -13,6 +14,9 @@ import { getSubscribedMines } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchSubscribedMinesByUser, unSubscribe } from "@mds/common/redux/actionCreators/mineActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import { SubscriptionTable } from "./SubscriptionTable";
+import { testEmailsAction } from "@mds/common/redux/actionCreators/mineActionCreator";
+import { detectProdEnvironment } from "@mds/common/utils";
+
 
 /**
  * @class CustomHomePage is a personalized landing page for users
@@ -30,6 +34,7 @@ const propTypes = {
 
 export class CustomHomePage extends Component {
   state = { isLoaded: false };
+  isProd = detectProdEnvironment();
 
   componentDidMount() {
     this.props.fetchSubscribedMinesByUser().then(() => {
@@ -44,11 +49,20 @@ export class CustomHomePage extends Component {
     });
   };
 
+  testEmails = () => {
+    testEmailsAction().then((r) => {
+      const { templates } = r;
+      templates.forEach((t) => {
+        testEmailsAction(t.name)
+      })
+    });
+  };
+
   render() {
     return (
       <div className="landing-page">
         <div className="landing-page__header">
-          <h1>My Dashboard</h1>
+          <h1>My Dashboard</h1> {!this.isProd && <Button type="primary" onClick={this.testEmails}>Test Emails</Button>}
         </div>
         <div className="landing-page__content page__content">
           <h4>Subscribed Mines</h4>

@@ -31,9 +31,9 @@ class ReportErrorResource(Resource, UserMixin):
             kibana_link = f'{Config.KIBANA_BASE_URL}/app/kibana#/discover?_g=()&_a=(query:(language:kuery,query:%22trace_id%3D{trace_id}%22))'
 
             if auth.get_user_is_proponent():
-                email_body = open("app/templates/email/report_error/ms_error_report_email.html", "r").read()
+                template_path = "email/report_error/ms_error_report_email.html"
             else:
-                email_body = open("app/templates/email/report_error/core_error_report_email.html", "r").read()
+                template_path = "email/report_error/core_error_report_email.html"
 
             email_context = {
                     "reporter": {
@@ -47,7 +47,7 @@ class ReportErrorResource(Resource, UserMixin):
                     "kibana_link": kibana_link
                 }
             recipients = [MDS_EMAIL]
-            EmailService.send_template_email(email_title, recipients, email_body, email_context)
+            EmailService.send_template_email(email_title, recipients, template_path, email_context)
 
         except Exception as e:
             current_app.logger.error(e)

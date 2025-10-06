@@ -122,15 +122,15 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
             }
         }
 
-        minespace_body = open("app/templates/email/projects/minespace_project_section_email.html", "r").read()
-        core_body = open("app/templates/email/projects/ministry_project_section_email.html", "r").read()
+        minespace_template = "email/projects/minespace_project_section_email.html"
+        core_template = "email/projects/ministry_project_section_email.html"
 
         subject = f'IRT Status Updated for {project.mine_name}:{project.project_title}'
 
         if core_recipients != []:
-            EmailService.send_template_email(subject, core_recipients, core_body, project_context)
+            EmailService.send_template_email(subject, core_recipients, core_template, project_context)
         if minespace_recipients != []:
-            EmailService.send_template_email(subject, minespace_recipients, minespace_body, project_context)
+            EmailService.send_template_email(subject, minespace_recipients, minespace_template, project_context)
 
         mine = Mine.find_by_mine_guid(project.mine_guid)
 
