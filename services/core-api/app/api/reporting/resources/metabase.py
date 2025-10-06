@@ -1,14 +1,11 @@
 import jwt
-
+from app.api.utils.access_decorators import requires_role_view_all
+from app.api.utils.resources_mixins import UserMixin
+from app.extensions import api
+from flask import current_app
 from flask_restx import Resource
-from flask import request, current_app
-
-from app.extensions import db, api
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit
-from app.api.utils.resources_mixins import UserMixin 
-from app.api.utils.search import search_targets, append_result, execute_search, SearchResult
-from app.api.search.response_models import SEARCH_RESULT_RETURN_MODEL
 from werkzeug.exceptions import BadRequest
+
 
 class MetabaseDashboardResource(Resource, UserMixin):
 
@@ -19,6 +16,7 @@ class MetabaseDashboardResource(Resource, UserMixin):
             'id': 'Metabase id of resource to embed'
         }
     )
+    @requires_role_view_all
     def get(self, type, id):
         if type not in ('dashboard', 'question'):
             raise BadRequest('Type must be dashboard or question')

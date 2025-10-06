@@ -128,6 +128,14 @@ def requires_role_edit_requirements(func):
     return _inner_wrapper(func, EDIT_REQUIREMENTS)
 
 
+def public_endpoint(func):
+    @wraps(func)
+    def wrapper(*args, **kwds):
+        return func(*args, **kwds)
+
+    wrapper.required_roles = _combine_role_flags(func, ["public"])
+    return wrapper
+
 def requires_any_of(roles):
     def decorator(func):
         @wraps(func)
