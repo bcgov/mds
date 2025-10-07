@@ -1,19 +1,13 @@
-"""
-Email Preview Resource
-Provides development endpoints for previewing email templates with test data
-"""
-
-from flask import current_app, request, jsonify, Response
-from flask_restx import Resource, reqparse
+from flask import current_app, Response
+from flask_restx import Resource
 import os
 from pathlib import Path
 
 from app.extensions import api
-from app.api.utils.access_decorators import requires_any_of
+from app.api.utils.access_decorators import requires_any_of, MINE_ADMIN
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import MINE_ADMIN
 from app.api.constants import CORE_PURPLE_LOGO_BASE64_ENCODED, MINESPACE_LOGO_BASE64_ENCODED, BC_GOV_LOGO_BASE64_ENCODED
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, InternalServerError
 
 def _get_available_email_templates():
     """
@@ -43,12 +37,11 @@ class EmailPreviewResource(Resource, UserMixin):
     Email Preview API endpoint for development
     """
     
+    @api.doc(
+        description='Preview an email template with test data',
+        params={'template_name': 'The name/path of the email template to preview'})
     @requires_any_of([MINE_ADMIN])
     def get(self, template_name):
-        """
-        Preview an email template with test data
-        GET /api/email-preview/<template_name>
-        """
         try:
             # Validate template exists and prevent path traversal
             available_templates = _get_available_email_templates()
@@ -70,10 +63,7 @@ class EmailPreviewResource(Resource, UserMixin):
             
         except Exception as e:
             current_app.logger.error(f"Error previewing template {template_name}: {e}")
-            return jsonify({
-                'error': 'Template preview failed due to an internal error.',
-                'template': template_name
-            }), 400
+            raise InternalServerError('Template preview failed due to an internal error.')
     
     def _get_test_data_for_template(self, template_name):
         """Get appropriate test data based on template name"""
@@ -211,12 +201,9 @@ class EmailPreviewListResource(Resource, UserMixin):
     List all available email templates
     """
     
+    @api.doc(description='List all available email templates for preview')
     @requires_any_of([MINE_ADMIN])
     def get(self):
-        """
-        List all available email templates for preview
-        GET /api/email-preview/
-        """
         try:
             available_templates = _get_available_email_templates()
             templates = []
@@ -231,14 +218,10 @@ class EmailPreviewListResource(Resource, UserMixin):
                     'brand': 'core' if 'ministry' in template_name or 'core' in template_name else 'minespace'
                 })
             
-            return jsonify({
-                'templates': templates,
-                'total': len(templates),
-                'base_url': request.host_url.rstrip('/') + '/api/email-preview/'
-            })
+            return {
+                'templates': templates
+            }
             
         except Exception as e:
             current_app.logger.error(f"Error listing email templates: {e}")
-            return jsonify({
-                'error': 'Failed to list templates due to an internal error.'
-            }), 500
+            raise InternalServerError('Failed to list templates due to an internal error.')

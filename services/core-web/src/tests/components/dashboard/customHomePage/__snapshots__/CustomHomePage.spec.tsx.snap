@@ -11,15 +11,6 @@ exports[`CustomHomePage renders properly 1`] = `
       <h1>
         My Dashboard
       </h1>
-       
-      <button
-        class="ant-btn ant-btn-primary"
-        type="button"
-      >
-        <span>
-          Test Emails
-        </span>
-      </button>
     </div>
     <div
       class="landing-page__content page__content"
