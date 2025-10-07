@@ -1,6 +1,7 @@
 import queryString from "query-string";
 
 export const CORE_STATIC_CONTENT = "/exports/core-static-content";
+export const EMAIL_PREVIEW = (template?) => `/email-preview${template ? `/${template}` : ""}`;
 
 // Network URL's
 export const MINE = "/mines";

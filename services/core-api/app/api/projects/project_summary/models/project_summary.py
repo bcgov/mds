@@ -1324,7 +1324,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             email_recipients = emails.get(self.status_code)
 
             if email_recipients is not None:
-                ministry_body = open("app/templates/email/projects/ministry_project_summary_email.html", "r").read()
+                ministry_template = "email/projects/ministry_project_summary_email.html"
                 subject = f'Project Description Documents Notification for {mine.mine_name}'
                 cc = [MDS_EMAIL]
 
@@ -1339,7 +1339,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     "message": message,
                     "core_project_summary_link": f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/overview'
                 }
-                EmailService.send_template_email(subject, email_recipients, ministry_body, ministry_context, cc=cc)
+                EmailService.send_template_email(subject, email_recipients, ministry_template, ministry_context, cc=cc)
 
 
     def send_project_summary_email(self, mine, message) -> None:
@@ -1360,8 +1360,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         cc = [MDS_EMAIL]
         minespace_recipients = [contact.email for contact in self.contacts if contact.is_primary]
 
-        ministry_body = open("app/templates/email/projects/ministry_project_summary_email.html", "r").read()
-        minespace_body = open("app/templates/email/projects/minespace_project_summary_email.html", "r").read()
+        ministry_template = "email/projects/ministry_project_summary_email.html"
+        minespace_template = "email/projects/minespace_project_summary_email.html"
         subject = f'Project Description Notification for {mine.mine_name}'
 
         ministry_context = {
@@ -1386,6 +1386,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             "ema_auth_link": f'{Config.EMA_AUTH_LINK}',
         }
 
-        EmailService.send_template_email(subject, ministry_recipients, ministry_body, ministry_context, cc=cc)
+        EmailService.send_template_email(subject, ministry_recipients, ministry_template, ministry_context, cc=cc)
         if send_ms_email:
-            EmailService.send_template_email(subject, minespace_recipients, minespace_body, minespace_context, cc=cc)
+            EmailService.send_template_email(subject, minespace_recipients, minespace_template, minespace_context, cc=cc)

@@ -44,6 +44,7 @@ from app.api.verifiable_credentials.namespace import api as verifiable_credentia
 from app.api.report_error.namespace import api as report_error_api
 from app.api.regions.namespace import api as regions_api
 from app.api.help.namespace import api as help_api
+from app.api.email_preview.namespace import api as email_preview_api
 
 from app.commands import register_commands
 from app.config import Config
@@ -202,6 +203,7 @@ def register_routes(app):
     root_api_namespace.add_namespace(report_error_api)
     root_api_namespace.add_namespace(regions_api)
     root_api_namespace.add_namespace(help_api)
+    root_api_namespace.add_namespace(email_preview_api)
 
     @root_api_namespace.route('/version/')
     class VersionCheck(Resource):

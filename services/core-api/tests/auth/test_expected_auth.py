@@ -1,6 +1,10 @@
 import pytest
 from app.api.compliance.resources.compliance_article import ComplianceArticleResource
 from app.api.download_token.resources.download_token import DownloadTokenResource
+from app.api.email_preview.resources.email_preview_resource import (
+    EmailPreviewResource,
+    EmailPreviewListResource,
+)
 from app.api.exports.now_application.resources.now_application_gis_export_resource import (
     NowApplicationGisExportResource,
 )
@@ -202,6 +206,8 @@ from app.api.utils.access_decorators import (
     "resource,method,expected_roles",
     [(ComplianceArticleResource, "get", [VIEW_ALL, MINESPACE_PROPONENT, EDIT_CODE]),
      (DownloadTokenResource, "get", [VIEW_ALL, MINESPACE_PROPONENT, GIS]),
+     (EmailPreviewResource, "get", [MINE_ADMIN]),
+     (EmailPreviewListResource, "get", [MINE_ADMIN]),
      (MineCommodityCodeResource, "get", [VIEW_ALL]),
      (MineComplianceSummaryResource, "get", [VIEW_ALL]),
      (MineDisturbanceCodeResource, "get", [VIEW_ALL]),

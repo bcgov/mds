@@ -202,7 +202,7 @@ class EmailService():
     def send_template_email(cls,
                             subject,
                             recipients,
-                            body,
+                            template_path,
                             context,
                             sender=Config.MDS_NO_REPLY_EMAIL,
                             body_type=EmailBodyType.HTML.value,
@@ -213,8 +213,13 @@ class EmailService():
                             encoding=EmailEncoding.UTF8.value,
                             priority=EmailPriority.NORMAL.value,
                             tag=None):
-        '''Sends an email.'''
-
+        '''Sends an email using Jinja2 template rendering.
+        
+        Args:
+            template_path: Path to a Jinja2 template (e.g., "email/report_error/core_error_report_email.html")
+            context: Dictionary of variables to pass to the template
+        '''
+        
         # Validate enum parameters.
         if not body_type in EmailBodyType._value2member_map_:
             raise Exception('Email body type is invalid')
@@ -238,36 +243,41 @@ class EmailService():
         if Config.EMAIL_RECIPIENT_OVERRIDE:
             recipients = [Config.EMAIL_RECIPIENT_OVERRIDE]
 
+        try:
+            # Render template with Jinja2
+            template = current_app.jinja_env.get_template(template_path)
+            
+            # Add logos to context for template rendering
+            template_context = context.copy()
+            template_context['bc_gov_logo'] = BC_GOV_LOGO_BASE64_ENCODED
+            template_context['core_logo'] = CORE_PURPLE_LOGO_BASE64_ENCODED
+            template_context['minespace_logo'] = MINESPACE_LOGO_BASE64_ENCODED
+            
+            rendered_body = template.render(**template_context)
+            
+        except Exception as e:
+            current_app.logger.error(f"Error rendering template {template_path}: {e}")
+            raise Exception(f"Template rendering failed: {e}")
+
         EmailService.perform_health_check()
 
-        url = f'{Config.COMMON_SERVICES_EMAIL_HOST}/emailMerge'
+        url = f'{Config.COMMON_SERVICES_EMAIL_HOST}/email'
         auth_token = EmailService.get_auth_token()
         headers = {'Authorization': f'Bearer {auth_token}', 'Content-Type': 'application/json'}
-        context['bc_gov_logo'] = BC_GOV_LOGO_BASE64_ENCODED
-        context['core_logo'] = CORE_PURPLE_LOGO_BASE64_ENCODED
-        context['minespace_logo'] = MINESPACE_LOGO_BASE64_ENCODED
-        contexts = [
-            {
-                "bcc": bcc,
-                "cc": cc,
-                "context": context,
-                'delayTS': delay,
-                'tag': tag,
-                'to': recipients,
-            }
-        ]
-
         data = {
             'subject': f'{subject} [recipients: {original_recipients}]' if is_not_prod else subject,
             'from': sender,
-            'body': body,
-            'contexts': contexts,
+            'to': recipients,
+            'body': rendered_body,
             'bodyType': body_type,
             'attachments': attachments,
+            'bcc': bcc,
+            'cc': cc,
+            'delayTS': delay,
             'encoding': encoding,
             'priority': priority,
+            'tag': tag
         }
-
         resp = requests.post(url, json.dumps(data), headers=headers)
         try:
             resp_data = resp.json()

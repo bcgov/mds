@@ -283,8 +283,8 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         days = divmod(duration_in_s, 86400)
         hours = divmod(days[1], 3600)
 
-        ministry_body = open("app/templates/email/incident/ministry_incident_email.html", "r").read()
-        minespace_body = open("app/templates/email/incident/minespace_incident_email.html", "r").read()
+        ministry_template = "email/incident/ministry_incident_email.html"
+        minespace_template = "email/incident/minespace_incident_email.html"
         subject = f'{self.mine_table.mine_name}: A new notice of reportable incident has been created on {format_email_datetime_to_string(self.create_timestamp)}'
         ministry_context = {
             "incident": {
@@ -312,8 +312,8 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
             },
             "minespace_incident_link": f'{Config.MINESPACE_PROD_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}',
         }
-        EmailService.send_template_email(subject, ministry_recipients, ministry_body, ministry_context, cc=cc)
-        EmailService.send_template_email(subject, minespace_recipients, minespace_body, minespace_context, cc=cc)
+        EmailService.send_template_email(subject, ministry_recipients, ministry_template, ministry_context, cc=cc)
+        EmailService.send_template_email(subject, minespace_recipients, minespace_template, minespace_context, cc=cc)
 
     def send_awaiting_final_report_email(self, is_prop):
         OCI_EMAIL = self.reported_to_inspector.email if self.reported_to_inspector is not None else None
@@ -323,7 +323,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
 
         subject = f'{self.mine_name}: The status of a reportable incident {self.mine_incident_report_no} has been updated on {format_email_datetime_to_string(self.update_timestamp)}'
         link = f'{Config.MINESPACE_PROD_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}/review' if is_prop else f'{Config.CORE_WEB_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}'
-        body = open("app/templates/email/incident/minespace_awaiting_incident_final_report_email.html", "r").read() if is_prop else open("app/templates/email/incident/ministry_awaiting_incident_final_report_email.html", "r").read()
+        template = "email/incident/minespace_awaiting_incident_final_report_email.html" if is_prop else "email/incident/ministry_awaiting_incident_final_report_email.html"
 
         context = {
             "incident": {
@@ -335,7 +335,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
             },
             "incident_link": link,
         }
-        EmailService.send_template_email(subject, recipients, body, context, cc=cc)
+        EmailService.send_template_email(subject, recipients, template, context, cc=cc)
 
     def send_final_report_received_email(self, is_prop):
         OCI_EMAIL = self.reported_to_inspector.email if self.reported_to_inspector is not None else None
@@ -344,8 +344,9 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         cc = None
 
         link = f'{Config.MINESPACE_PROD_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}/review' if is_prop else f'{Config.CORE_WEB_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}'
-        body = open("app/templates/email/incident/minespace_final_report_received_incident_email.html", "r").read() if is_prop else open("app/templates/email/incident/ministry_final_report_received_incident_email.html", "r").read()
+        template = "email/incident/minespace_final_report_received_incident_email.html" if is_prop else "email/incident/ministry_final_report_received_incident_email.html"
         subject = f'{self.mine_name}: A final incident report on {self.mine_incident_report_no} has been submitted on {format_email_datetime_to_string(self.update_timestamp)}'
+        
         context = {
             "incident": {
                 "mine_incident_report_no": self.mine_incident_report_no,
@@ -358,4 +359,4 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
             },
             "incident_link": link,
         }
-        EmailService.send_template_email(subject, recipients, body, context, cc=cc)
+        EmailService.send_template_email(subject, recipients, template, context, cc=cc)
