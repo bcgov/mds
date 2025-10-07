@@ -5,12 +5,37 @@ Provides development endpoints for previewing email templates with test data
 
 from flask import current_app, request, jsonify, Response
 from flask_restx import Resource, reqparse
+import os
+from pathlib import Path
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_any_of
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import VIEW_ALL, MINESPACE_PROPONENT
+from app.api.utils.access_decorators import MINE_ADMIN
 from app.api.constants import CORE_PURPLE_LOGO_BASE64_ENCODED, MINESPACE_LOGO_BASE64_ENCODED, BC_GOV_LOGO_BASE64_ENCODED
+from werkzeug.exceptions import NotFound
+
+def _get_available_email_templates():
+    """
+    Get a list of all available email templates
+    Returns a list of template names (relative paths from email/ directory)
+    """    
+    
+    templates_dir = os.path.join(os.getcwd(), 'app', 'templates', 'email')
+    templates = []
+    
+    # Recursively find all .html files in email templates
+    for template_file in Path(templates_dir).rglob('*.html'):
+        # Skip base and component templates
+        if template_file.parts[-2] in ['_base', '_components']:
+            continue
+            
+        # Get relative path from email/ directory
+        relative_path = template_file.relative_to(templates_dir)
+        template_name = str(relative_path)
+        templates.append(template_name)
+    
+    return sorted(templates)
 
 
 class EmailPreviewResource(Resource, UserMixin):
@@ -18,14 +43,18 @@ class EmailPreviewResource(Resource, UserMixin):
     Email Preview API endpoint for development
     """
     
-    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
+    @requires_any_of([MINE_ADMIN])
     def get(self, template_name):
         """
         Preview an email template with test data
         GET /api/email-preview/<template_name>
         """
         try:
-            # Get template with proper path
+            # Validate template exists and prevent path traversal
+            available_templates = _get_available_email_templates()
+            if template_name not in available_templates:
+                return NotFound("Template not found")
+            
             template_path = f"email/{template_name}"
             template = current_app.jinja_env.get_template(template_path)
             
@@ -182,29 +211,17 @@ class EmailPreviewListResource(Resource, UserMixin):
     List all available email templates
     """
     
-    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
+    @requires_any_of([MINE_ADMIN])
     def get(self):
         """
         List all available email templates for preview
         GET /api/email-preview/
         """
         try:
-            import os
-            from pathlib import Path
-            
-            templates_dir = Path(current_app.root_path) / 'templates' / 'email'
+            available_templates = _get_available_email_templates()
             templates = []
             
-            # Recursively find all .html files in email templates
-            for template_file in templates_dir.rglob('*.html'):
-                # Skip base and component templates
-                if template_file.parts[-2] in ['_base', '_components']:
-                    continue
-                    
-                # Get relative path from email/ directory
-                relative_path = template_file.relative_to(templates_dir)
-                template_name = str(relative_path)
-                
+            for template_name in available_templates:
                 # Create preview URL
                 preview_url = f"/api/email-preview/{template_name}"
                 
@@ -213,9 +230,6 @@ class EmailPreviewListResource(Resource, UserMixin):
                     'preview_url': preview_url,
                     'brand': 'core' if 'ministry' in template_name or 'core' in template_name else 'minespace'
                 })
-            
-            # Sort templates by name
-            templates.sort(key=lambda x: x['name'])
             
             return jsonify({
                 'templates': templates,
