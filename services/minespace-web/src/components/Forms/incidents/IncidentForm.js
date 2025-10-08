@@ -34,7 +34,7 @@ import {
   documentNameColumn,
   uploadDateColumn,
   uploadedByColumn,
-} from "@/components/common/DocumentColumns";
+} from "@mds/common/components/documents/DocumentColumns";
 import { renderConfig } from "@/components/common/config";
 import Callout from "@/components/common/Callout";
 import customPropTypes from "@/customPropTypes";

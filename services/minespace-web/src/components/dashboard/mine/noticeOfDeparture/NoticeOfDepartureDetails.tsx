@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Divider, Row, Typography } from "antd";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import {
   EMPTY_FIELD,
   NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,

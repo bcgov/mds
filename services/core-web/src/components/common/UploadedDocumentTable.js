@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { formatDateTime } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
-import DocumentLink from "@/components/common/DocumentLink";
+import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import * as Strings from "@mds/common/constants/strings";
 import CoreTable from "@mds/common/components/common/CoreTable";
 
@@ -18,7 +18,7 @@ const propTypes = {
 
 const defaultProps = {
   showRemove: false,
-  removeFileHandler: () => {},
+  removeFileHandler: () => { },
   showCategory: true,
   documentTypeOptionsHash: {},
 };

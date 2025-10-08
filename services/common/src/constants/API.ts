@@ -1,6 +1,7 @@
 import queryString from "query-string";
 
 export const CORE_STATIC_CONTENT = "/exports/core-static-content";
+export const EMAIL_PREVIEW = (template?) => `/email-preview${template ? `/${template}` : ""}`;
 
 // Network URL's
 export const MINE = "/mines";
@@ -182,6 +183,9 @@ export const PROJECT_SUMMARY_ENVIRONMENT_FINAL_APPLICATION_GET = (projectSummary
 
 export const PROJECT_SUMMARY_ENVIRONMENT_FINAL_APPLICATION = (projectSummaryGuid: string, project_summary_authorization_guid = "") =>
   `/projects/${projectSummaryGuid}/ams-final-application/${project_summary_authorization_guid}`;
+
+export const PROJECT_SUMMARY_ENVIRONMENT_FINAL_APPLICATION_MINESPACE_EDITABILITY = (projectSummaryGuid: string, project_summary_authorization_guid = "") =>
+  `/projects/${projectSummaryGuid}/ams-final-application/${project_summary_authorization_guid}/minespace-edit`;
 
 export const PROJECT_SUMMARY_ENVIRONMENT_FINAL_APPLICATION_DOCUMENTS = (projectSummaryGuid: string) =>
   `/projects/${projectSummaryGuid}/ams-final-application/documents`;

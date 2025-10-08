@@ -16,7 +16,7 @@ import * as Strings from "@mds/common/constants/strings";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import DocumentLink from "@/components/common/DocumentLink";
+import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import MineIncidentNotes from "@/components/mine/Incidents/MineIncidentNotes";
 import { CoreTooltip } from "@/components/common/CoreTooltip";

@@ -13,7 +13,6 @@ pytz.timezone('Canada/Pacific')
 
 @patch("app.api.projects.major_mine_application.models.major_mine_application.trigger_notification")
 @patch("app.api.services.email_service.EmailService.send_template_email")
-@patch("builtins.open", mock_open(read_data='email content'))
 def test_major_mine_application_notifications(mock_send_template_email, mock_trigger_notification, test_client,
                                               db_session, auth_headers):
     major_mine_application = MajorMineApplicationFactory()
@@ -72,7 +71,7 @@ def test_major_mine_application_notifications(mock_send_template_email, mock_tri
         call(
             status_subject,
             minespace_recipients,
-            'email content',
+            "email/projects/minespace_project_section_email.html",
             {
                 'message': status_message,
                 'minespace_link': minespace_link,
@@ -89,13 +88,13 @@ def test_major_mine_application_notifications(mock_send_template_email, mock_tri
         call(
             document_subject,
             [MAJOR_MINES_OFFICE_EMAIL, project.project_lead.email],
-            'email content',
+            "email/projects/ministry_project_section_email.html",
             document_context
         ),
         call(
             document_subject,
             minespace_recipients,
-            'email content',
+            "email/projects/minespace_project_section_email.html",
             document_context
         )
     ]

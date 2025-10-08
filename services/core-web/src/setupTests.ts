@@ -11,7 +11,7 @@ Enzyme.configure({ adapter: new Adapter() });
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 (<any>global).REQUEST_HEADER = require(path.resolve(
   __dirname,
-  "../common/utils/RequestHeaders.js"
+  "../common/utils/RequestHeaders.tsx"
 ));
 
 (<any>global).requestAnimationFrame = (callback: any) => {

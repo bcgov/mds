@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { fetchMineNameList } from "@mds/common/redux/actionCreators/mineActionCreator";
-import { getMineWithoutStore } from "@common/utils/actionlessNetworkCalls";
+import { getMineWithoutStore } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import { getMineNames } from "@mds/common/redux/selectors/mineSelectors";
 import RenderAutoComplete from "@mds/common/components/forms/RenderAutoComplete";
 import MineCard from "@/components/mine/NoticeOfWork/MineCard";

@@ -3,7 +3,10 @@ import { useSelector } from "react-redux";
 import { Row, Col, Typography, Descriptions, Card, Input, Checkbox, Form } from "antd";
 import * as Strings from "@mds/common/constants/strings";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
-import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
+import {
+  documentNameColumn,
+  uploadDateColumn,
+} from "@mds/common/components/documents/DocumentColumns";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";

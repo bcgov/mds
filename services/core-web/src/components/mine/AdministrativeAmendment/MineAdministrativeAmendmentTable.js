@@ -7,7 +7,7 @@ import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { getApplicationStatusType } from "@mds/common/constants/badgeStatusTypes";
-import DocumentLink from "@/components/common/DocumentLink";
+import DocumentLink from "@mds/common/components/documents/DocumentLink";
 
 /**
  * @class MineAdministrativeAmendmentTable - list of mine administrative applications

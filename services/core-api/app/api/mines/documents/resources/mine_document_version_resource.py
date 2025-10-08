@@ -11,7 +11,7 @@ from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
-from app.api.utils.access_decorators import EDIT_INFORMATION_REQUIREMENTS_TABLE, EDIT_MAJOR_MINE_APPLICATIONS, EDIT_PROJECT_DECISION_PACKAGES, EDIT_PROJECT_SUMMARIES, MINE_ADMIN, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from app.api.utils.access_decorators import EDIT_INFORMATION_REQUIREMENTS_TABLE, EDIT_MAJOR_MINE_APPLICATIONS, EDIT_PROJECT_DECISION_PACKAGES, EDIT_PROJECT_SUMMARIES, MINE_ADMIN, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, is_minespace_user
 from app.api.utils.resources_mixins import UserMixin
 
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -19,6 +19,8 @@ from app.api.mines.mine.models.mine import Mine
 
 from app.api.mines.response_models import MINE_DOCUMENT_MODEL, MINE_DOCUMENT_VERSION_MODEL
 from app.api.services.document_manager_service import DocumentManagerService
+from app.api.projects.ams_final_application.models.ams_final_application_document_xref import AmsFinalApplicationDocumentXref
+from app.api.projects.ams_final_application.models.ams_final_application import AmsFinalApplication
 
 class MineDocumentVersionUploadResource(Resource, UserMixin):
 
@@ -44,6 +46,15 @@ class MineDocumentVersionUploadResource(Resource, UserMixin):
 
         if str(mine_document.mine_guid) != mine_guid:
             raise BadRequest('Mine document not attached to Mine')
+        
+        if is_minespace_user():
+            ams_final_application_document_xref = AmsFinalApplicationDocumentXref.find_by_mine_document_guid(mine_document_guid)
+            if ams_final_application_document_xref:
+                ams_final_application_guid = ams_final_application_document_xref.ams_final_application_guid
+                ams_final_application = AmsFinalApplication.find_by_ams_final_application_guid(ams_final_application_guid)
+                if ams_final_application and not ams_final_application.editable:
+                        raise BadRequest("The following document cannot currently be changed for this application")
+        
 
         if mine_document.is_archived:
             raise BadRequest('Cannot create new version of archived document')

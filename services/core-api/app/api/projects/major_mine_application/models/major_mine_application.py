@@ -223,13 +223,13 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
             }
         }
 
-        minespace_body = open("app/templates/email/projects/minespace_project_section_email.html", "r").read()
-        core_body = open("app/templates/email/projects/ministry_project_section_email.html", "r").read()
+        minespace_template = "email/projects/minespace_project_section_email.html"
+        core_template = "email/projects/ministry_project_section_email.html"
 
         if core_recipients != []:
-            EmailService.send_template_email(subject, core_recipients, core_body, context)
+            EmailService.send_template_email(subject, core_recipients, core_template, context)
         if minespace_recipients != []:
-            EmailService.send_template_email(subject, minespace_recipients, minespace_body, context)
+            EmailService.send_template_email(subject, minespace_recipients, minespace_template, context)
 
     def send_mma_status_notifications(self, status_code):
             project: Project = self.project

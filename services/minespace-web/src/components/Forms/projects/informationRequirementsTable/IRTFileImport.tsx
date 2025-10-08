@@ -21,7 +21,7 @@ import {
   renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import { formatDateTime } from "@common/utils/helpers";
-import { documentNameColumn } from "@/components/common/DocumentColumns";
+import { documentNameColumn } from "@mds/common/components/documents/DocumentColumns";
 import { MineDocument } from "@mds/common/models/documents/document";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { ENVIRONMENT } from "@mds/common/constants/environment";

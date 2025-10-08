@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { openModal } from "@mds/common/redux/actions/modalActions";
 import { truncateFilename } from "@common/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import LinkButton from "@/components/common/LinkButton";
 import * as Strings from "@/constants/strings";
 import CoreTable from "@mds/common/components/common/CoreTable";

@@ -255,7 +255,8 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
                 >
                   Add Condition
                 </CoreButton>
-                {!isStandardConditionEditor && (
+                {/* Template conditions should only be available in the NoW permit drafting flow. */}
+                {isNowEditor && !isStandardConditionEditor && (
                   <CoreButton
                     type="primary"
                     loading={loading}

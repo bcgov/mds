@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { DocumentLink } from "@/components/common/DocumentLink";
+import { DocumentLink } from "@mds/common/components/documents/DocumentLink";
 
 const props = {
   documentManagerGuid: "mockGuid",

@@ -86,7 +86,7 @@ const commonConfig = merge([
         template: PATHS.template,
       }),
       new webpack.ProvidePlugin({
-        REQUEST_HEADER: path.resolve(__dirname, "common/utils/RequestHeaders.js"),
+        REQUEST_HEADER: path.resolve(__dirname, "common/utils/RequestHeaders.tsx"),
         GLOBAL_ROUTES: path.resolve(__dirname, "src/constants/routes.ts"),
       }),
       // // Prevent moment locales to be bundled with the app

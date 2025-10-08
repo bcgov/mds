@@ -1,0 +1,20 @@
+<!-- Government of BC Header -->
+<div class="content-block"
+    style="font-family: sans-serif; vertical-align: top; padding-bottom: 36px; padding-top: 10px; font-size: 12px; text-align: center;"
+    valign="top">
+
+    {% if brand == 'minespace' %}
+    <img src="{{ minespace_logo }}" width="60%" style="object-fit: contain;"
+        alt="Government of British Columbia - MineSpace Logo">
+    {% else %}
+    <img src="{{ core_logo }}" width="60%" style="object-fit: contain;"
+        alt="Government of British Columbia - Core Logo">
+    {% endif %}
+
+    {% if notification_type %}
+    <div class="notification-type" style="margin-top: 16px; font-size: 14px; color: #6B6363; font-weight: 500;">
+        {{ notification_type }}
+    </div>
+    {% endif %}
+
+</div>
