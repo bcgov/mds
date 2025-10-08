@@ -28,6 +28,7 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.verifiable_credentials.models.orgbook_publish_status import PermitAmendmentOrgBookPublish
+from app.api.verifiable_credentials.manager.verifiable_credential_manager import VerifiableCredentialManager
 from app.api.services.traction_service import TractionService
 from app.api.services.orgbook_publisher import OrgbookPublisherService
 
@@ -313,7 +314,6 @@ def push_untp_map_data_to_publisher(include_regional: bool = False):
     publisher_service = OrgbookPublisherService()
 
     for index, row in enumerate(permit_amendment_query_results):
-        # prepare_permit_amendment_untp_credential(row[0])
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
 
         next_pa_guid: str | None = None
@@ -376,12 +376,12 @@ def push_untp_map_data_to_publisher(include_regional: bool = False):
         payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
         current_app.logger.debug(f"payload hash={payload_hash}")
 
-        #produce a uuid for logging/tracing.
+        #produce a uuid for logging/tracing
         publish_payload["options"]["credentialId"] = str(uuid4())
 
 
-        # NEED TO REPLACE ALL THE CODE ABOVE WITH prepare_permit_amendment_untp_credentials
-        other_publish_payload = prepare_permit_amendment_untp_credential(row[0])
+        # NEED TO REPLACE ALL THE CODE ABOVE WITH prepare_permit_amendment_untp_credential
+        other_publish_payload = VerifiableCredentialManager.prepare_permit_amendment_untp_credential(row[0])
         
         
         if json.dumps(other_publish_payload) != json.dumps(publish_payload):
