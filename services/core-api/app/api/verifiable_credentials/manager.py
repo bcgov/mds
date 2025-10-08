@@ -28,7 +28,6 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.verifiable_credentials.models.orgbook_publish_status import PermitAmendmentOrgBookPublish
-from app.api.verifiable_credentials.manager.verifiable_credential_manager import VerifiableCredentialManager
 from app.api.services.traction_service import TractionService
 from app.api.services.orgbook_publisher import OrgbookPublisherService
 
