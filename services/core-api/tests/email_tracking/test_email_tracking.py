@@ -62,7 +62,7 @@ def test_email_tracking_find_all(db_session):
     )
     email3 = EmailTrackingFactory(
         reference_table='project_summary',
-        email_status=EmailStatus.delivered
+        email_status=EmailStatus.completed
     )
 
     # Test finding all records

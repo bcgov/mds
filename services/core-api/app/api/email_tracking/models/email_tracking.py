@@ -10,14 +10,12 @@ from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class EmailStatus(Enum):
-    pending = 'pending'
-    accepted = 'accepted'
     sent = 'sent'
-    delivered = 'delivered'
-    failed = 'failed'
-    bounced = 'bounced'
+    accepted = 'accepted'
     cancelled = 'cancelled'
     completed = 'completed'
+    pending = 'pending'
+    failed = 'failed'
 
     def __str__(self):
         return self.value
