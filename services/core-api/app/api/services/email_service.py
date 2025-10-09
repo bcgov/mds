@@ -385,7 +385,7 @@ class EmailService():
                             reference_table=None,
                             reference_email_type=None,
                             email_template_name=None,
-                            create_tracking_record=True):
+                            create_tracking_record=False):
         '''Sends an email using Jinja2 template rendering.
 
         Args:
