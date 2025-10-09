@@ -2068,7 +2068,6 @@ class EmailTrackingFactory(BaseFactory):
     delivered_timestamp = None
     failed_timestamp = None
     error_message = None
-    error_code = None
     ches_message_id = GUID
     ches_transaction_id = GUID
     retry_count = 0

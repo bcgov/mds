@@ -7,7 +7,6 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
-from flask import current_app
 
 
 class EmailStatus(Enum):
@@ -165,15 +164,13 @@ class EmailTracking(AuditMixin, Base):
         self.delivered_timestamp = updated_timestamp if updated_timestamp else db.func.now()
         self.save()
 
-    def mark_as_failed(self, error_message=None, error_code=None, increment_retry=True, updated_timestamp=None):
+    def mark_as_failed(self, error_message=None, increment_retry=True, updated_timestamp=None):
         """Mark email as failed"""
         self.email_status = EmailStatus.failed
         self.failed_timestamp = updated_timestamp if updated_timestamp else db.func.now()
 
         if error_message:
             self.error_message = error_message
-        if error_code:
-            self.error_code = error_code
 
         if increment_retry:
             self.retry_count += 1

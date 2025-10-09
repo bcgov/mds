@@ -4,9 +4,12 @@ import json
 from enum import Enum
 from flask import current_app
 
+from app.tasks.celery import celery
+
 from app.config import Config
 from app.api.constants import CORE_PURPLE_LOGO_BASE64_ENCODED, MINESPACE_LOGO_BASE64_ENCODED, BC_GOV_LOGO_BASE64_ENCODED
 from app.api.email_tracking.models.email_tracking import EmailTracking, EmailStatus, RecipientType
+from werkzeug.exceptions import BadRequest
 
 
 class EmailBodyType(Enum):
@@ -348,10 +351,9 @@ class EmailService():
 
             # Update tracking records with failure status
             if create_tracking_record:
-                error_code = str(resp.status_code)
                 error_message = resp_data.get('detail', 'Email send failed') if resp_data else 'Email send failed'
                 for tracking_record in tracking_records:
-                    tracking_record.mark_as_failed(error_message=error_message, error_code=error_code)
+                    tracking_record.mark_as_failed(error_message=error_message)
             return
 
         if create_tracking_record and resp_data:

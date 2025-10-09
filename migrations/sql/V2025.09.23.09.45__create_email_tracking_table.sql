@@ -43,7 +43,7 @@ CREATE TABLE email_tracking (
 
     -- CHES specific fields
                                 ches_message_id uuid, -- CHES returns a message ID for tracking
-                                ches_transaction_id varchar(255), -- CHES transaction identifier
+                                ches_transaction_id uuid, -- CHES transaction identifier
 
     -- Audit fields
                                 create_user varchar(60) NOT NULL,
