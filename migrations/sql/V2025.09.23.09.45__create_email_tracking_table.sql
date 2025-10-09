@@ -3,7 +3,7 @@ CREATE TYPE email_status_enum AS ENUM (
     'sent',
     'accepted',
     'cancelled',
-    'completed'
+    'completed',
     'failed',
     'pending'
 );
