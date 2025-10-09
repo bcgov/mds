@@ -163,7 +163,7 @@ class EmailService():
             status_mapping = {
                 'accepted': EmailStatus.accepted,
                 'pending': EmailStatus.pending,
-                'completed': EmailStatus.delivered,
+                'completed': EmailStatus.completed,
                 'failed': EmailStatus.failed,
                 'cancelled': EmailStatus.cancelled
             }

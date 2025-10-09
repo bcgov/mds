@@ -34,7 +34,7 @@ def poll_ches_email_status(self, ches_message_id):
             return {"status": "error", "message": "Tracking record not found"}
 
         # Skip if email is already in a final state
-        if tracking_record.email_status in [EmailStatus.delivered, EmailStatus.completed, EmailStatus.failed, EmailStatus.cancelled]:
+        if tracking_record.email_status in [EmailStatus.completed, EmailStatus.failed, EmailStatus.cancelled]:
             current_app.logger.info(f"Email {ches_message_id} already in final state: {tracking_record.email_status}")
             return {"status": "complete", "message": f"Email already in final state: {tracking_record.email_status}"}
 
@@ -66,7 +66,7 @@ def poll_ches_email_status(self, ches_message_id):
             current_app.logger.info(f"Updating email {ches_message_id} status from {tracking_record.email_status} to {new_status}")
 
             # Update status with appropriate timestamp
-            if new_status == EmailStatus.delivered:
+            if new_status == EmailStatus.completed:
                 tracking_record.mark_as_delivered(updated_timestamp)
             elif new_status == EmailStatus.failed:
                 # Extract error information from CHES response

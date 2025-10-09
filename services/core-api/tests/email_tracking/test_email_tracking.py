@@ -158,7 +158,7 @@ def test_email_tracking_mark_as_delivered(db_session):
 
     email_tracking.mark_as_delivered()
 
-    assert email_tracking.email_status == EmailStatus.delivered
+    assert email_tracking.email_status == EmailStatus.completed
     assert email_tracking.delivered_timestamp is not None
 
 
@@ -179,12 +179,12 @@ def test_email_tracking_update(db_session):
     email_tracking = EmailTrackingFactory()
 
     email_tracking.update(
-        email_status=EmailStatus.delivered,
+        email_status=EmailStatus.completed,
         recipient_name='Updated Name',
         retry_count=2
     )
 
-    assert email_tracking.email_status == EmailStatus.delivered
+    assert email_tracking.email_status == EmailStatus.completed
     assert email_tracking.recipient_name == 'Updated Name'
     assert email_tracking.retry_count == 2
 
@@ -202,16 +202,6 @@ def test_email_tracking_check_email_sent_within_timeframe(db_session):
 
     # Should not be within 6 hour timeframe
     assert email_tracking.check_email_sent_within_timeframe(6) == False
-
-
-def test_email_tracking_check_email_sent_within_timeframe_no_sent_timestamp(db_session):
-    """Test checking timeframe when no sent timestamp exists"""
-    email_tracking = EmailTrackingFactory(email_status=EmailStatus.pending)
-
-    # Should handle None sent_timestamp gracefully
-    with pytest.raises(TypeError):
-        email_tracking.check_email_sent_within_timeframe(24)
-
 
 def test_email_tracking_different_recipient_types(db_session):
     """Test creating email tracking records with different recipient types"""

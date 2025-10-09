@@ -2035,7 +2035,7 @@ class EmailTrackingFactory(BaseFactory):
             sent_timestamp=TODAY
         )
         delivered = factory.Trait(
-            email_status=EmailStatus.delivered,
+            email_status=EmailStatus.completed,
             sent_timestamp=TODAY,
             delivered_timestamp=TODAY
         )

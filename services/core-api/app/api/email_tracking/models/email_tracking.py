@@ -158,7 +158,7 @@ class EmailTracking(AuditMixin, Base):
 
     def mark_as_delivered(self, updated_timestamp=None):
         """Mark email as delivered"""
-        self.email_status = EmailStatus.delivered
+        self.email_status = EmailStatus.completed
         self.delivered_timestamp = updated_timestamp if updated_timestamp else db.func.now()
         self.save()
 
