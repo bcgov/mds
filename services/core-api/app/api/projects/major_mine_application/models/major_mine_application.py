@@ -6,6 +6,7 @@ from werkzeug.exceptions import NotFound
 from app.api.activity.models.activity_notification import ActivityType, ActivityRecipients
 from app.api.activity.utils import trigger_notification
 from app.api.constants import MAJOR_MINES_OFFICE_EMAIL
+from app.api.email_tracking.models.email_tracking import EmailTracking
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
 from app.api.mines.mine.models.mine import Mine
@@ -114,7 +115,16 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
             body += f'<ul>{"".join(list(map(generate_list_element, supporting_documents)))}</ul>'
         body += f'<p>View Major Mine Application in Minespace: <a href="{link}" target="_blank">{link}</a></p>'
 
-        EmailService.send_email(subject, recipients, body, send_to_proponent=True)
+        EmailService.send_email(
+            subject,
+            recipients,
+            body,
+            send_to_proponent=True,
+            reference_id=self.major_mine_application_guid,
+            reference_table='major_mine_application',
+            reference_email_type='mma_submit_email',
+            create_tracking_record=True
+        )
 
     @classmethod
     def create(cls,
@@ -199,8 +209,8 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
             doc.mine_document.delete(False)
         return super(MajorMineApplication, self).delete(commit)
 
-    def send_application_emails(self, status_code: str, project: Project, subject: str, message: str):
-        minespace_recipients = [contact.email for contact in project.contacts]
+    def send_application_emails(self, status_code: str, project: Project, subject: str, message: str, limit_minespace_resend: bool = False):
+        minespace_recipients = [contact.email for contact in project.contacts] if not limit_minespace_resend else []
         core_recipients = []
         if status_code not in ['CHR', 'UNR']:
             core_recipients.append(MAJOR_MINES_OFFICE_EMAIL)
@@ -227,9 +237,27 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
         core_template = "email/projects/ministry_project_section_email.html"
 
         if core_recipients != []:
-            EmailService.send_template_email(subject, core_recipients, core_template, context)
+            EmailService.send_template_email(
+                subject,
+                core_recipients,
+                core_template,
+                context,
+                reference_id=self.major_mine_application_guid,
+                reference_table='major_mine_application',
+                email_template_name='ministry_project_section_email',
+                create_tracking_record=True
+            )
         if minespace_recipients != []:
-            EmailService.send_template_email(subject, minespace_recipients, minespace_template, context)
+            EmailService.send_template_email(
+                subject,
+                minespace_recipients,
+                minespace_template,
+                context,
+                reference_id=self.major_mine_application_guid,
+                reference_table='major_mine_application',
+                email_template_name='minespace_project_section_email',
+                create_tracking_record=True
+            )
 
     def send_mma_status_notifications(self, status_code):
             project: Project = self.project
@@ -253,7 +281,17 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
         message = f'{message_start} been uploaded for the project {self.project.project_title} for {self.project.mine_name}.'
         subject = f'Application documents updated for {project.mine_name}:{project.project_title}'
 
-        self.send_application_emails(status_code, project, subject, message)
+        limit_minespace_resend = False
+        email_tracking: EmailTracking = EmailTracking.find_latest_by_reference(
+            reference_id=self.major_mine_application_guid,
+            reference_table='major_mine_application',
+            email_reference_type='ministry_project_section_email'
+        )
+        if email_tracking:
+            if email_tracking.check_email_sent_within_timeframe():
+                limit_minespace_resend = True
+
+        self.send_application_emails(status_code, project, subject, message, limit_minespace_resend)
 
         extra_data = {'project': {'project_guid': str(self.project.project_guid)}}
         idempotency_key = f'{self.project_guid}-{self.major_mine_application_guid}'

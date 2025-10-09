@@ -1339,7 +1339,17 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     "message": message,
                     "core_project_summary_link": f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/overview'
                 }
-                EmailService.send_template_email(subject, email_recipients, ministry_template, ministry_context, cc=cc)
+                EmailService.send_template_email(
+                    subject,
+                    email_recipients,
+                    ministry_template,
+                    ministry_context,
+                    cc=cc,
+                    reference_id=self.project_summary_guid,
+                    reference_table='project_summary',
+                    email_template_name='ministry_project_summary_document_update',
+                    create_tracking_record=True
+                )
 
 
     def send_project_summary_email(self, mine, message) -> None:
@@ -1386,6 +1396,26 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             "ema_auth_link": f'{Config.EMA_AUTH_LINK}',
         }
 
-        EmailService.send_template_email(subject, ministry_recipients, ministry_template, ministry_context, cc=cc)
+        EmailService.send_template_email(
+            subject,
+            ministry_recipients,
+            ministry_template,
+            ministry_context,
+            cc=cc,
+            reference_id=self.project_summary_guid,
+            reference_table='project_summary',
+            email_template_name='ministry_project_summary_notification',
+            create_tracking_record=True
+        )
         if send_ms_email:
-            EmailService.send_template_email(subject, minespace_recipients, minespace_template, minespace_context, cc=cc)
+            EmailService.send_template_email(
+                subject,
+                minespace_recipients,
+                minespace_template,
+                minespace_context,
+                cc=cc,
+                reference_id=self.project_summary_guid,
+                reference_table='project_summary',
+                email_template_name='minespace_project_summary_notification',
+                create_tracking_record=True
+            )

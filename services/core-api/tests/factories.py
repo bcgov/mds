@@ -134,6 +134,7 @@ from app.extensions import db
 from pytz import timezone, utc
 from tests.mines import permit
 from tests.status_code_gen import *
+from app.api.email_tracking.models.email_tracking import EmailTracking, EmailStatus, RecipientType
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
@@ -2018,3 +2019,57 @@ class AmsFinalApplicationFactory(BaseFactory):
 
         AmsFinalApplicationDocumentXrefFactory.create_batch(
             size=extracted, ams_final_application=obj, mine_document__mine=None, **kwargs)
+
+class EmailTrackingFactory(BaseFactory):
+
+    class Meta:
+        model = EmailTracking
+
+    class Params:
+        major_mine_application = factory.SubFactory('tests.factories.MajorMineApplicationFactory')
+        project_summary = factory.SubFactory('tests.factories.ProjectSummaryFactory')
+
+        # Email status traits
+        sent = factory.Trait(
+            email_status=EmailStatus.sent,
+            sent_timestamp=TODAY
+        )
+        delivered = factory.Trait(
+            email_status=EmailStatus.delivered,
+            sent_timestamp=TODAY,
+            delivered_timestamp=TODAY
+        )
+        failed = factory.Trait(
+            email_status=EmailStatus.failed,
+            failed_timestamp=TODAY,
+            error_message='Email delivery failed',
+            error_code='500'
+        )
+
+    email_tracking_id = GUID
+    reference_id = factory.SelfAttribute('major_mine_application.major_mine_application_guid')
+    reference_table = 'major_mine_application'
+    reference_email_type = factory.LazyFunction(lambda: random.choice([
+        'mma_submit_email',
+        'ministry_project_section_email',
+        'minespace_project_section_email'
+    ]))
+    email_template_name = factory.LazyFunction(lambda: random.choice([
+        'ministry_project_section_email',
+        'minespace_project_section_email',
+        'mma_submit_email'
+    ]))
+    email_subject = factory.Faker('sentence', nb_words=6)
+    recipient_email = factory.Faker('email')
+    recipient_name = factory.Faker('name')
+    recipient_type = RecipientType.primary
+    email_status = EmailStatus.pending
+    sent_timestamp = None
+    delivered_timestamp = None
+    failed_timestamp = None
+    error_message = None
+    error_code = None
+    ches_message_id = GUID
+    ches_transaction_id = GUID
+    retry_count = 0
+    max_retries = 3
