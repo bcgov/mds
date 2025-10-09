@@ -49,7 +49,10 @@ CREATE TABLE email_tracking (
                                 create_user varchar(60) NOT NULL,
                                 create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
                                 update_user varchar(60) NOT NULL,
-                                update_timestamp timestamp with time zone DEFAULT now() NOT NULL
+                                update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+
+                                retry_count integer DEFAULT 0,
+                                max_retries integer DEFAULT 3
 );
 
 -- Add comments for documentation
