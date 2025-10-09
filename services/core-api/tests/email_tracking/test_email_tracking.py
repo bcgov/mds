@@ -1,7 +1,5 @@
 import uuid
 from datetime import datetime, timedelta
-
-import pytest
 from pytz import utc
 
 from app.api.email_tracking.models.email_tracking import EmailTracking, EmailStatus, RecipientType
