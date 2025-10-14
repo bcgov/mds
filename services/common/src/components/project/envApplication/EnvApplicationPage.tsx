@@ -112,6 +112,7 @@ const EnvApplicationPage = () => {
                         initialValues={initialValues}
                         isEditMode={isEditMode}
                         handleSaveData={handleSaveData}
+                        forceRedux={true}
                         handleTabChange={handleTabChange}
                         activeTab={tab}
                     >
