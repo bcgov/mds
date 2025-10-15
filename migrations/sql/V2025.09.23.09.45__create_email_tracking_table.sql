@@ -19,8 +19,8 @@ CREATE TABLE email_tracking (
                                 email_tracking_guid uuid DEFAULT gen_random_uuid() PRIMARY KEY,
 
     -- Generic reference to any entity this email relates to
-                                reference_id varchar NOT NULL,
-                                reference_table varchar(100) NOT NULL,
+                                reference_id varchar,
+                                reference_table varchar(100),
                                 reference_email_type varchar(100),
 
     -- Email content and template information
