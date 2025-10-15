@@ -36,8 +36,8 @@ class EmailTracking(AuditMixin, Base):
     email_tracking_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
 
     # Generic reference to tracked entity
-    reference_id = db.Column(db.String(100), nullable=False)
-    reference_table = db.Column(db.String(100), nullable=False)
+    reference_id = db.Column(db.String(100), nullable=True)
+    reference_table = db.Column(db.String(100), nullable=True)
     reference_email_type = db.Column(db.String(255), nullable=True  )
 
     email_template_name = db.Column(db.String(255), nullable=True)
