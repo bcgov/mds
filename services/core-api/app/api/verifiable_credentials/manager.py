@@ -717,7 +717,7 @@ class VerifiableCredentialManager():
 
         if not permit_amendment.mine.latitude or not permit_amendment.mine.longitude:
             current_app.logger.warning(
-                f"No location information found for permit_amendment_guid={permit_amendment.permit_amendment_guid}, cannot produce Mines Act Permit UNTP CC"
+                f"Missing location information for permit_amendment_guid={permit_amendment.permit_amendment_guid}, cannot produce Mines Act Permit UNTP CC"
             )
             return None
 
