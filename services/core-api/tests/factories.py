@@ -2046,7 +2046,7 @@ class EmailTrackingFactory(BaseFactory):
             error_code='500'
         )
 
-    email_tracking_id = GUID
+    email_tracking_guid = GUID
     reference_id = factory.SelfAttribute('major_mine_application.major_mine_application_guid')
     reference_table = 'major_mine_application'
     reference_email_type = factory.LazyFunction(lambda: random.choice([

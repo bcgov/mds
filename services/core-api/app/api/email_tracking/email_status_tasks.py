@@ -4,18 +4,11 @@ from celery import Task
 
 from app.api.email_tracking.models.email_tracking import EmailTracking, EmailStatus
 from app.api.services.email_service import EmailService
+from app.api.tasks.celery_task_base import TaskBase
 from app.tasks.celery import celery
 
 
-class EmailTaskBase(Task):
-    def __call__(self, *args, **kwargs):
-        from app.tasks.celery_entrypoint import celery_app
-
-        with celery_app.app_context():
-            return Task.__call__(self, *args, **kwargs)
-
-
-@celery.task(base=EmailTaskBase, bind=True, max_retries=5, default_retry_delay=300)
+@celery.task(base=TaskBase, bind=True, max_retries=5, default_retry_delay=300)
 def poll_ches_email_status(self, ches_message_id):
     """
     Poll CHES API for email status and update tracking record.
@@ -50,6 +43,7 @@ def poll_ches_email_status(self, ches_message_id):
             return status_result
 
         if status_result["status"] == "error":
+            current_app.logger.error(f"Error polling CHES status for {ches_message_id}: {status_result['message']}")
             # Will be handled by the exception block for retries
             raise Exception(status_result["message"])
 
@@ -86,7 +80,7 @@ def poll_ches_email_status(self, ches_message_id):
         if new_status in [EmailStatus.pending, EmailStatus.accepted, EmailStatus.sent]:
             # Schedule next poll in 5 minutes
             current_app.logger.info(f"Scheduling next poll for email {ches_message_id} in 5 minutes")
-            poll_ches_email_status.apply_async(args=[ches_message_id], countdown=300)
+            poll_ches_email_status.retry(args=[ches_message_id], countdown=300)
         else:
             current_app.logger.info(f"Email {ches_message_id} reached final status: {new_status}")
 

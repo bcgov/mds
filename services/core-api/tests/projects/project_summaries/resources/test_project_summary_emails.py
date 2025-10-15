@@ -50,8 +50,7 @@ def test_sub_to_asg(mock_send_template_email, test_client, db_session, auth_head
         cc=[MDS_EMAIL],
         reference_id=project_summary.project_summary_guid,
         reference_table='project_summary',
-        email_template_name='ministry_project_summary_notification',
-        create_tracking_record=True
+
     )
 
     assert put_resp.status_code == 200

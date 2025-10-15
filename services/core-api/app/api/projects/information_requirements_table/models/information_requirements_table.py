@@ -100,8 +100,7 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
             body,
             reference_id=self.irt_guid,
             reference_table='information_requirements_table',
-            reference_email_type='irt_submit_email',
-            create_tracking_record=True
+            reference_email_type='irt_submit_email'
         )
 
     def send_irt_status_notifications(self, project_guid: str, status_code: str):
@@ -142,9 +141,7 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
                 core_template,
                 project_context,
                 reference_id=self.irt_guid,
-                reference_table='information_requirements_table',
-                email_template_name='ministry_irt_status_notification',
-                create_tracking_record=True
+                reference_table='information_requirements_table'
             )
         if minespace_recipients != []:
             EmailService.send_template_email(
@@ -153,9 +150,7 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
                 minespace_template,
                 project_context,
                 reference_id=self.irt_guid,
-                reference_table='information_requirements_table',
-                email_template_name='minespace_irt_status_notification',
-                create_tracking_record=True
+                reference_table='information_requirements_table'
             )
 
         mine = Mine.find_by_mine_guid(project.mine_guid)
@@ -180,8 +175,7 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
             body,
             send_to_proponent=True,
             reference_id=self.irt_guid,
-            reference_table='information_requirements_table',
-            create_tracking_record=True
+            reference_table='information_requirements_table'
         )
 
     def update(self, irt_data, import_file=None, document_guid=None, add_to_session=True):

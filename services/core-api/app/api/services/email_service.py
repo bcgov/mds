@@ -1,3 +1,5 @@
+import os
+
 import requests
 import json
 
@@ -262,9 +264,7 @@ class EmailService():
                    # Email tracking parameters
                    reference_id=None,
                    reference_table=None,
-                   email_template_name=None,
-                   reference_email_type=None,
-                   create_tracking_record=False):
+                   reference_email_type=None):
         '''Sends an email.'''
 
         # Validate enum parameters.
@@ -292,22 +292,22 @@ class EmailService():
 
         # Create email tracking records before sending
         tracking_records = []
-        if create_tracking_record:
-            tracking_record_kwargs = {
-                'reference_id': reference_id,
-                'reference_table': reference_table,
-                'email_template_name': email_template_name,
-                'reference_email_type': reference_email_type,
-                'email_subject': subject,
-            }
 
-            # Create tracking records for all recipient types
-            tracking_records.extend(cls._create_tracking_records_for_recipients(
-                original_recipients, RecipientType.primary, tracking_record_kwargs))
-            tracking_records.extend(cls._create_tracking_records_for_recipients(
-                cc, RecipientType.cc, tracking_record_kwargs))
-            tracking_records.extend(cls._create_tracking_records_for_recipients(
-                bcc, RecipientType.bcc, tracking_record_kwargs))
+        tracking_record_kwargs = {
+            'reference_id': reference_id,
+            'reference_table': reference_table,
+            'email_template_name': None,
+            'reference_email_type': reference_email_type,
+            'email_subject': subject,
+        }
+
+        # Create tracking records for all recipient types
+        tracking_records.extend(cls._create_tracking_records_for_recipients(
+            original_recipients, RecipientType.primary, tracking_record_kwargs))
+        tracking_records.extend(cls._create_tracking_records_for_recipients(
+            cc, RecipientType.cc, tracking_record_kwargs))
+        tracking_records.extend(cls._create_tracking_records_for_recipients(
+            bcc, RecipientType.bcc, tracking_record_kwargs))
 
 
         EmailService.perform_health_check()
@@ -350,15 +350,14 @@ class EmailService():
             current_app.logger.error(message)
 
             # Update tracking records with failure status
-            if create_tracking_record:
-                error_message = resp_data.get('detail', 'Email send failed') if resp_data else 'Email send failed'
-                for tracking_record in tracking_records:
-                    tracking_record.mark_as_failed(error_message=error_message)
+            error_message = resp_data.get('detail', 'Email send failed') if resp_data else 'Email send failed'
+            for tracking_record in tracking_records:
+                tracking_record.mark_as_failed(error_message=error_message)
             return
 
-        if create_tracking_record and resp_data:
-            # Update tracking records with sent status
-            cls._handle_successful_email_response(resp_data, tracking_records)
+
+        # Update tracking records with sent status
+        cls._handle_successful_email_response(resp_data, tracking_records)
 
         current_app.logger.info(
             f'Common Services email request successful.\nEmail Subject: {subject}\nResponse: {resp_data}\nRecipients: {original_recipients}'
@@ -383,9 +382,7 @@ class EmailService():
                             # Email tracking parameters
                             reference_id=None,
                             reference_table=None,
-                            reference_email_type=None,
-                            email_template_name=None,
-                            create_tracking_record=False):
+                            reference_email_type=None):
         '''Sends an email using Jinja2 template rendering.
 
         Args:
@@ -400,10 +397,6 @@ class EmailService():
             raise Exception('Email encoding is invalid')
         if not priority in EmailPriority._value2member_map_:
             raise Exception('Email priority is invalid')
-
-        # Validate tracking parameters if tracking is enabled
-        if create_tracking_record and (not reference_id or not reference_table):
-            raise BadRequest('Email tracking requires reference_id and reference_table')
 
         # NOTE: Be careful when enabling emails in local/dev/test. You could possibly be sending spam emails!
         is_not_prod = Config.ENVIRONMENT_NAME != 'prod'
@@ -423,6 +416,8 @@ class EmailService():
         try:
             # Render template with Jinja2
             template = current_app.jinja_env.get_template(template_path)
+            file_name = os.path.basename(template_path)
+            email_template_name = os.path.splitext(file_name)[0]
 
             # Add logos to context for template rendering
             template_context = context.copy()
@@ -438,22 +433,22 @@ class EmailService():
 
         # Create email tracking records before sending
         tracking_records = []
-        if create_tracking_record:
-            tracking_record_kwargs = {
-                'reference_id': reference_id,
-                'reference_table': reference_table,
-                'email_template_name': email_template_name,
-                'reference_email_type': reference_email_type if reference_email_type else email_template_name,
-                'email_subject': subject,
-            }
 
-            # Create tracking records for all recipient types
-            tracking_records.extend(cls._create_tracking_records_for_recipients(
-                original_recipients, RecipientType.primary, tracking_record_kwargs))
-            tracking_records.extend(cls._create_tracking_records_for_recipients(
-                cc, RecipientType.cc, tracking_record_kwargs))
-            tracking_records.extend(cls._create_tracking_records_for_recipients(
-                bcc, RecipientType.bcc, tracking_record_kwargs))
+        tracking_record_kwargs = {
+            'reference_id': reference_id,
+            'reference_table': reference_table,
+            'email_template_name': email_template_name,
+            'reference_email_type': reference_email_type if reference_email_type else email_template_name,
+            'email_subject': subject,
+        }
+
+        # Create tracking records for all recipient types
+        tracking_records.extend(cls._create_tracking_records_for_recipients(
+            original_recipients, RecipientType.primary, tracking_record_kwargs))
+        tracking_records.extend(cls._create_tracking_records_for_recipients(
+            cc, RecipientType.cc, tracking_record_kwargs))
+        tracking_records.extend(cls._create_tracking_records_for_recipients(
+            bcc, RecipientType.bcc, tracking_record_kwargs))
 
         EmailService.perform_health_check()
 
@@ -488,16 +483,16 @@ class EmailService():
             current_app.logger.error(message)
 
             # Update tracking records with failure status
-            if create_tracking_record:
-                error_code = str(resp.status_code)
-                error_message = resp_data.get('detail', 'Template email send failed') if resp_data else 'Template email send failed'
-                for tracking_record in tracking_records:
-                    tracking_record.mark_as_failed(error_message=error_message, error_code=error_code)
+            error_code = str(resp.status_code)
+            error_message = resp_data.get('detail', 'Template email send failed') if resp_data else 'Template email send failed'
+
+            for tracking_record in tracking_records:
+                tracking_record.mark_as_failed(error_message=error_message, error_code=error_code)
             return
 
-        if create_tracking_record and resp_data:
-            # Update tracking records with sent status if applicable
-            cls._handle_successful_email_response(resp_data, tracking_records)
+
+        # Update tracking records with sent status if applicable
+        cls._handle_successful_email_response(resp_data, tracking_records)
 
         current_app.logger.info(
             f'Common Services email request successful.\nEmail Subject: {subject}\nResponse: {resp_data}\nRecipients: {original_recipients}'

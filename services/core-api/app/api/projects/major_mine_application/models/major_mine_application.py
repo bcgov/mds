@@ -122,8 +122,7 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
             send_to_proponent=True,
             reference_id=self.major_mine_application_guid,
             reference_table='major_mine_application',
-            reference_email_type='mma_submit_email',
-            create_tracking_record=True
+            reference_email_type='mma_submit_email'
         )
 
     @classmethod
@@ -243,9 +242,7 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
                 core_template,
                 context,
                 reference_id=self.major_mine_application_guid,
-                reference_table='major_mine_application',
-                email_template_name='ministry_project_section_email',
-                create_tracking_record=True
+                reference_table='major_mine_application'
             )
         if minespace_recipients != []:
             EmailService.send_template_email(
@@ -254,9 +251,7 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
                 minespace_template,
                 context,
                 reference_id=self.major_mine_application_guid,
-                reference_table='major_mine_application',
-                email_template_name='minespace_project_section_email',
-                create_tracking_record=True
+                reference_table='major_mine_application'
             )
 
     def send_mma_status_notifications(self, status_code):
@@ -295,7 +290,6 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
 
         extra_data = {'project': {'project_guid': str(self.project.project_guid)}}
         idempotency_key = f'{self.project_guid}-{self.major_mine_application_guid}'
-        print('SHOULD TRIGGER NOTIFICATIONS')
         trigger_notification(message, ActivityType.project_app_documents_updated, mine,
                              'MajorMineApplication', self.major_mine_application_guid, extra_data, idempotency_key,
                              ActivityRecipients.all_users, True, 24 * 60)

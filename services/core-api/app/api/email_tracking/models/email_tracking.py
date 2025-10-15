@@ -33,10 +33,10 @@ class RecipientType(Enum):
 class EmailTracking(AuditMixin, Base):
     __tablename__ = "email_tracking"
 
-    email_tracking_id = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
+    email_tracking_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
 
     # Generic reference to tracked entity
-    reference_id = db.Column(UUID(as_uuid=True), nullable=False)
+    reference_id = db.Column(db.String(100), nullable=False)
     reference_table = db.Column(db.String(100), nullable=False)
     reference_email_type = db.Column(db.String(255), nullable=True  )
 
@@ -55,7 +55,7 @@ class EmailTracking(AuditMixin, Base):
     error_message = db.Column(db.Text)
 
     ches_message_id = db.Column(UUID(as_uuid=True))
-    ches_transaction_id = db.Column(db.String(255))
+    ches_transaction_id = db.Column(UUID(as_uuid=True))
 
     retry_count = db.Column(db.Integer, default=0)
     max_retries = db.Column(db.Integer, default=3)
@@ -98,9 +98,10 @@ class EmailTracking(AuditMixin, Base):
                  email_template_name=None,
                  recipient_email=None):
         query = cls.query.order_by(desc(cls.create_timestamp))
+        string_reference_id = str(reference_id) if reference_id else None
 
         if reference_id:
-            query = query.filter_by(reference_id=reference_id)
+            query = query.filter_by(reference_id=string_reference_id)
         if reference_table:
             query = query.filter_by(reference_table=reference_table)
         if email_status:
@@ -115,10 +116,11 @@ class EmailTracking(AuditMixin, Base):
 
     @classmethod
     def find_latest_by_reference(cls, reference_id, reference_table, email_reference_type):
+        string_reference_id = str(reference_id) if reference_id else None
         """Find the latest email tracking record for a specific entity"""
         query = cls.query.filter(
             and_(
-                cls.reference_id == reference_id,
+                cls.reference_id == string_reference_id,
                 cls.reference_table == reference_table,
                 cls.reference_email_type == email_reference_type
             )

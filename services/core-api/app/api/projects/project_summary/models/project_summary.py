@@ -1346,9 +1346,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     ministry_context,
                     cc=cc,
                     reference_id=self.project_summary_guid,
-                    reference_table='project_summary',
-                    email_template_name='ministry_project_summary_document_update',
-                    create_tracking_record=True
+                    reference_table='project_summary'
                 )
 
 
@@ -1403,9 +1401,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             ministry_context,
             cc=cc,
             reference_id=self.project_summary_guid,
-            reference_table='project_summary',
-            email_template_name='ministry_project_summary_notification',
-            create_tracking_record=True
+            reference_table='project_summary'
         )
         if send_ms_email:
             EmailService.send_template_email(
@@ -1415,7 +1411,5 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 minespace_context,
                 cc=cc,
                 reference_id=self.project_summary_guid,
-                reference_table='project_summary',
-                email_template_name='minespace_project_summary_notification',
-                create_tracking_record=True
+                reference_table='project_summary'
             )

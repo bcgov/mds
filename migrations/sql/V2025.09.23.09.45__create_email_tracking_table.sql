@@ -16,10 +16,10 @@ CREATE TYPE recipient_type_enum AS ENUM (
 
 -- Create generic email tracking table for all entities
 CREATE TABLE email_tracking (
-                                email_tracking_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+                                email_tracking_guid uuid DEFAULT gen_random_uuid() PRIMARY KEY,
 
     -- Generic reference to any entity this email relates to
-                                reference_id uuid NOT NULL,
+                                reference_id varchar NOT NULL,
                                 reference_table varchar(100) NOT NULL,
                                 reference_email_type varchar(100),
 
@@ -57,7 +57,7 @@ CREATE TABLE email_tracking (
 
 -- Add comments for documentation
 COMMENT ON TABLE email_tracking IS 'Generic email tracking table for all entities using CHES service';
-COMMENT ON COLUMN email_tracking.reference_id IS 'UUID of the entity this email relates to (can reference any table)';
+COMMENT ON COLUMN email_tracking.reference_id IS 'Primary key of the entity this email relates to (can reference any table)';
 COMMENT ON COLUMN email_tracking.reference_table IS 'Name of the table that the reference_id points to';
 COMMENT ON COLUMN email_tracking.reference_email_type IS 'Type of email this is (e.g. documents uploaded, submission confirmation, etc.).  Needed for non template emails to differentiate between email types';
 COMMENT ON COLUMN email_tracking.email_template_name IS 'Name/identifier of the email template used';

@@ -85,9 +85,7 @@ def test_major_mine_application_notifications(mock_send_template_email, mock_tri
                 }
             },
             reference_id=major_mine_application.major_mine_application_guid,
-            reference_table='major_mine_application',
-            email_template_name='minespace_project_section_email',
-            create_tracking_record=True
+            reference_table='major_mine_application'
         ),
         call(
             document_subject,
@@ -95,9 +93,7 @@ def test_major_mine_application_notifications(mock_send_template_email, mock_tri
             "email/projects/ministry_project_section_email.html",
             document_context,
             reference_id=major_mine_application.major_mine_application_guid,
-            reference_table='major_mine_application',
-            email_template_name='ministry_project_section_email',
-            create_tracking_record=True
+            reference_table='major_mine_application'
         ),
         call(
             document_subject,
@@ -105,9 +101,7 @@ def test_major_mine_application_notifications(mock_send_template_email, mock_tri
             "email/projects/minespace_project_section_email.html",
             document_context,
             reference_id=major_mine_application.major_mine_application_guid,
-            reference_table='major_mine_application',
-            email_template_name='minespace_project_section_email',
-            create_tracking_record=True
+            reference_table='major_mine_application'
         )
     ]
 
