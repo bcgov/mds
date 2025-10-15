@@ -168,7 +168,7 @@ def register_commands(app):
         auth.apply_security = False
         with current_app.app_context() as app:
             result = process_all_untp_map_for_orgbook.apply_async()
-            print("celery job started: forward_all_pending_untp_vc_to_orgbook")
+            print("celery job started: process_all_untp_map_for_orgbook")
 
     @app.cli.command('forward_all_pending_untp_vc_to_orgbook')
     def forward_all_pending_untp_vc_to_orgbook():

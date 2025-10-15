@@ -384,9 +384,9 @@ def push_untp_map_data_to_publisher(include_regional: bool = False):
         
         
         if json.dumps(other_publish_payload) != json.dumps(publish_payload):
-            current_app.logger.debug(f"payloads do not match for {row[0]}")
+            current_app.logger.warning(f"payloads do not match for {row[0]}")
         else:
-            current_app.logger.debug(f"payloads match for {row[0]}")
+            current_app.logger.info(f"payloads match for {row[0]}")
         
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
@@ -638,26 +638,17 @@ class VerifiableCredentialManager():
                                                permit_amendment: PermitAmendment) -> W3CCred | None:
         """Produce payload for Mines Act Permit UNTP Conformity Credential from permit amendment and did."""
 
-        #attributes in anoncreds but not in untp
-        # "latitude": permit_amendment.mine.latitude, but in pluscode
-        # "longitude": permit_amendment.mine.longitude, but in pluscode
-
-        # "bond_total"
-        # "mine_disturbance"
-        # "mine_operation_status"
-        # "mine_operation_status_reason"
-        # "mine_operation_status_sub_reason"
-        # "tsf_operating_count"
-        # "tsf_care_and_maintenance_count"
-
         pmt_appts: List[MinePartyAppointment] = permit_amendment.permittee_appointments
-
+        current_app.logger.debug(f"starting... produce_untp_cc_map_payload_without_id permit_amendment_guid={permit_amendment.permit_amendment_guid}")
         permit_amendment_issue_date = permit_amendment.issue_date if isinstance(
             permit_amendment.issue_date, date) else permit_amendment.issue_date.date()
 
         def ensure_start_date_type(d) -> date:
             if not d:
-                return date(1900, 0, 0)
+                current_app.logger.info(
+                    f"mine_party_appointment.start_date is None, setting to 1900-01-01"
+                )
+                return date(1900, 1, 1)
             elif isinstance(d, date):
                 return d
             elif isinstance(d, datetime):
