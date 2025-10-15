@@ -715,12 +715,17 @@ class VerifiableCredentialManager():
             name=orgbook_entity.name_text,
             registeredId=str(orgbook_entity.registration_id))
 
+        if not permit_amendment.mine.latitude or not permit_amendment.mine.longitude:
+            current_app.logger.warning(
+                f"Missing location information for permit_amendment_guid={permit_amendment.permit_amendment_guid}, cannot produce Mines Act Permit UNTP CC"
+            )
+            return None
+
         facility = cc.Facility(
             id=None,
             name=permit_amendment.mine.mine_name,
             registeredId=permit_amendment.mine.mine_no,
-            locationInformation=
-            f'https://plus.codes/{plus_code_encode(permit_amendment.mine.latitude, permit_amendment.mine.longitude)}',
+            locationInformation=f'https://plus.codes/{plus_code_encode(permit_amendment.mine.latitude, permit_amendment.mine.longitude)}',
             address=None,
             IDverifiedByCAB=True)
 
