@@ -1,6 +1,6 @@
 INSERT INTO major_mine_application_document_type 
     (major_mine_application_document_type_code, description, display_order, create_user, update_user) 
-VALUES ('APX', 'Appendeix', 15, 'system-mds', 'system-mds');
+VALUES ('APX', 'Appendix', 15, 'system-mds', 'system-mds');
 
 CREATE TABLE IF NOT EXISTS major_mine_application_document_subtype (
     major_mine_application_document_subtype_code                   character varying(3)                 PRIMARY KEY,
@@ -36,10 +36,10 @@ INSERT INTO major_mine_application_document_subtype (
          ('MGP', 'APX', 'Management Plans', 90, 'system-mds', 'system-mds'),
          ('RLE', 'APX', 'Reclamation Liability Cost Estimate', 100, 'system-mds', 'system-mds'),
          
-         ('QPD', 'SPR', 'Qualified Professional Declaration Form', 10, 'system-mds', 'system-mds'),
-         ('TOC', 'SPR', 'Table of Concordance', 20, 'system-mds', 'system-mds'),
-         ('SPR', 'SPR', 'Supporting Documents ', 30, 'system-mds', 'system-mds'),
-         ('CIF', 'SPR', 'Confidential Information', 40, 'system-mds', 'system-mds');
+         ('QPD', 'SPR', 'Qualified Professional Declaration Form', 110, 'system-mds', 'system-mds'),
+         ('TOC', 'SPR', 'Table of Concordance', 120, 'system-mds', 'system-mds'),
+         ('SPR', 'SPR', 'Supporting Documents ', 130, 'system-mds', 'system-mds'),
+         ('CIF', 'SPR', 'Confidential Information', 140, 'system-mds', 'system-mds');
 
 ALTER TABLE major_mine_application_document_xref
     ADD COLUMN IF NOT EXISTS major_mine_application_document_subtype_code character varying(3),
