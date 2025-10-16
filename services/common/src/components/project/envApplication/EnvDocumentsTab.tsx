@@ -44,7 +44,7 @@ const EnvDocumentCategoryForm = ({ fields }) => {
                         <Row gutter={16}>
                             <Col flex={1}>
                                 <Field
-                                    name={`${field}document_name`}
+                                    name={`${field}.document_name`}
                                     label="Document Name"
                                     required
                                     validate={[required]}
@@ -54,7 +54,7 @@ const EnvDocumentCategoryForm = ({ fields }) => {
                             </Col>
                             <Col span={8}>
                                 <Field
-                                    name={`${field}ams_final_application_document_type_code`}
+                                    name={`${field}.ams_final_application_document_type_code`}
                                     label="Document Category"
                                     placeholder="Select a Document Category"
                                     component={RenderSelect}

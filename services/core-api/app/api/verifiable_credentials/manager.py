@@ -358,7 +358,7 @@ def push_untp_map_data_to_publisher():
             current_app.logger.info(pprint.pformat(publish_payload))
             current_app.logger.info(pprint.pformat(other_publish_payload))
         else:
-            current_app.logger.debug(f"payloads match for {row[0]}")
+            current_app.logger.info(f"payloads match for {row[0]}")
         
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
