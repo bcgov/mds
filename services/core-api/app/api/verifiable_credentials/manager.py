@@ -343,7 +343,6 @@ def push_untp_map_data_to_publisher():
         current_app.logger.debug(f"publishing record={publish_payload}")
 
         #produce a uuid for logging/tracing
-        publish_payload["options"]["credentialId"] = str(uuid4())
 
 
         # NEED TO REPLACE ALL THE CODE ABOVE WITH prepare_permit_amendment_untp_credential
@@ -360,6 +359,7 @@ def push_untp_map_data_to_publisher():
         else:
             current_app.logger.info(f"payloads match for {row[0]}")
         
+        publish_payload["options"]["credentialId"] = str(uuid4()) 
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
             permit_amendment_guid=row[0],
@@ -428,7 +428,7 @@ class VerifiableCredentialManager():
         next_pa: str | None = None
         valid_until_date: date | None = None
         try:
-            next_pa = pa_list[pos + 1] if pos + 1 < len(pa_list) else None
+            next_pa = pa_list[pos - 1] if pos > 0 else None
         except IndexError: 
             pass
         
@@ -475,9 +475,6 @@ class VerifiableCredentialManager():
         if valid_until_date:
             publish_payload["credential"]["validUntil"] = convert_date_to_iso_datetime(
                 valid_until_date)
-
-        #produce a uuid for logging/tracing.
-        publish_payload["options"]["credentialId"] = str(uuid4())
 
         return publish_payload
             
