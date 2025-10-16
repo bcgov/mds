@@ -277,6 +277,7 @@ def push_untp_map_data_to_publisher():
     failed_credentials: List[Tuple[str, str | None]] = []
     success_count = 0
     skipped_count = 0
+    not_created_count = 0
     current_app.logger.info(f"num_records_to_process={len(permit_amendment_query_results)}")
     #token is valid for an hour currently.
     publisher_service = OrgbookPublisherService()
@@ -300,7 +301,7 @@ def push_untp_map_data_to_publisher():
         if pa.permit_no[1] in ("X", "x"):
             current_app.logger.info(
                 f"exclude exploration permit={pa.permit_no}, they cannot produce goods for sale")
-            skipped_count += 1
+            not_created_count += 1
             continue
 
         pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload_without_id(
@@ -308,7 +309,7 @@ def push_untp_map_data_to_publisher():
         if not pa_cred:
             current_app.logger.warning(
                 f"pa_cred could not be created for permit_amendment_guid={row[0]}")
-            skipped_count += 1
+            not_created_count += 1
             continue
 
         #only one assessment per credential
@@ -342,11 +343,8 @@ def push_untp_map_data_to_publisher():
 
         current_app.logger.debug(f"publishing record={publish_payload}")
 
-        #produce a uuid for logging/tracing
-
-
         # NEED TO REPLACE ALL THE CODE ABOVE WITH prepare_permit_amendment_untp_credential
-        other_publish_payload = VerifiableCredentialManager.prepare_permit_amendment_untp_credential(row[0])
+        other_publish_payload = VerifiableCredentialManager.prepare_permit_amendment_untp_credential_without_id(row[0])
         other_payload_hash = md5(json.dumps(other_publish_payload).encode('utf-8')).hexdigest()
         
         payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
@@ -354,12 +352,12 @@ def push_untp_map_data_to_publisher():
         
         if other_payload_hash != payload_hash:
             current_app.logger.info(f"payloads do not match for {row[0]}")
-            current_app.logger.info(pprint.pformat(publish_payload))
-            current_app.logger.info(pprint.pformat(other_publish_payload))
-        else:
-            current_app.logger.info(f"payloads match for {row[0]}")
+            current_app.logger.info("live payload" + pprint.pformat(publish_payload))
+            current_app.logger.info("test endpoint payload" + pprint.pformat(other_publish_payload))
         
+        #MUST BE AFTER HASHING
         publish_payload["options"]["credentialId"] = str(uuid4()) 
+
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
             permit_amendment_guid=row[0],
@@ -405,7 +403,7 @@ def push_untp_map_data_to_publisher():
         else:
             skipped_count += 1
 
-    return f"num published={success_count}, num_skipped={skipped_count} num failed = {len(failed_credentials)}"
+    return f"counts, published={success_count}, not_created={not_created_count}, skipped={skipped_count}, failed = {len(failed_credentials)}"
 
 
 class VerifiableCredentialManager():
@@ -414,7 +412,7 @@ class VerifiableCredentialManager():
         pass
 
     @classmethod   
-    def prepare_permit_amendment_untp_credential(cls, permit_amendment_guid: str) -> dict|None:
+    def prepare_permit_amendment_untp_credential_without_id(cls, permit_amendment_guid: str) -> dict|None:
         pa = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid, unsafe=True)
         mine = Mine.find_by_mine_guid(pa.mine_guid)
         if not pa or not mine:
