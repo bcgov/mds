@@ -1,6 +1,7 @@
 # for midware/business level actions between requests and data access
 import json
 import requests
+import pprint
 
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
@@ -42,31 +43,6 @@ class UNTPCCMinesActPermit(cc.ConformityAttestation):
 W3C_CRED_ID_PREFIX = f"{Config.ORGBOOK_PUBLISHER_BASE_URL}/credentials/"
 
 permit_amendments_for_orgbook_query = """
-    select pa.permit_amendment_guid, p.party_guid, pmt.permit_no
- 
-    from party_orgbook_entity poe
-    inner join party p on poe.party_guid = p.party_guid
-    inner join mine_party_appt mpa on p.party_guid = mpa.party_guid
-    inner join permit pmt on pmt.permit_id = mpa.permit_id
-    inner join permit_amendment pa on pa.permit_id = pmt.permit_id
-    inner join mine m on pa.mine_guid = m.mine_guid
-    
-    where mpa.permit_id is not null
-    and mpa.mine_party_appt_type_code = 'PMT'
-    and mpa.deleted_ind = false
-    and mpa.start_date <= pa.issue_date
-    and (mpa.end_date > pa.issue_date OR mpa.end_date is null or mpa.end_date = '9999-12-31')
-    and m.major_mine_ind = true
-    and pa.deleted_ind = false
-    and pmt.permit_status_code = 'O'
-    and substring(pmt.permit_no,2,1) != 'X'
-
-    group by pa.permit_amendment_guid, p.party_guid, pa.description, pa.issue_date, pa.permit_amendment_status_code, pmt.permit_no, mpa.permit_id, poe.party_guid, p.party_name, poe.name_text, poe.registration_id, m.mine_name, mine_party_appt_type_code
-    order by pmt.permit_no, pa.issue_date;
-"""
-
-## for testing, exact same as above but includes regional mines.
-permit_amendments_for_orgbook_query_with_regional = """
     select pa.permit_amendment_guid, p.party_guid, pmt.permit_no
  
     from party_orgbook_entity poe
@@ -290,20 +266,13 @@ def forward_all_pending_untp_vc_to_orgbook():
 
 
 @celery.task()
-def push_untp_map_data_to_publisher(include_regional: bool = False):
+def push_untp_map_data_to_publisher():
     ## This is a different process that passes the data to the publisher.
     ## the publisher structures the data and sends it to the orgbook.
     ## the publisher also manages the BitStringStatusLists.
     query = permit_amendments_for_orgbook_query
-    
-    if include_regional:
-        current_app.logger.info("including regional mines in the push to publisher")
-        query = permit_amendments_for_orgbook_query_with_regional
-
     permit_amendment_query_results = db.session.execute(
         query).fetchall()
-
-
 
     failed_credentials: List[Tuple[str, str | None]] = []
     success_count = 0
@@ -372,8 +341,6 @@ def push_untp_map_data_to_publisher(include_regional: bool = False):
                 valid_until_date)
 
         current_app.logger.debug(f"publishing record={publish_payload}")
-        payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
-        current_app.logger.debug(f"payload hash={payload_hash}")
 
         #produce a uuid for logging/tracing
         publish_payload["options"]["credentialId"] = str(uuid4())
@@ -381,10 +348,15 @@ def push_untp_map_data_to_publisher(include_regional: bool = False):
 
         # NEED TO REPLACE ALL THE CODE ABOVE WITH prepare_permit_amendment_untp_credential
         other_publish_payload = VerifiableCredentialManager.prepare_permit_amendment_untp_credential(row[0])
+        other_payload_hash = md5(json.dumps(other_publish_payload).encode('utf-8')).hexdigest()
         
+        payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
+        current_app.logger.debug(f"payload hash={payload_hash}")
         
-        if json.dumps(other_publish_payload) != json.dumps(publish_payload):
-            current_app.logger.warning(f"payloads do not match for {row[0]}")
+        if other_payload_hash != payload_hash:
+            current_app.logger.info(f"payloads do not match for {row[0]}")
+            current_app.logger.info(pprint.pformat(publish_payload))
+            current_app.logger.info(pprint.pformat(other_publish_payload))
         else:
             current_app.logger.info(f"payloads match for {row[0]}")
         
@@ -503,10 +475,6 @@ class VerifiableCredentialManager():
         if valid_until_date:
             publish_payload["credential"]["validUntil"] = convert_date_to_iso_datetime(
                 valid_until_date)
-
-        current_app.logger.debug(f"publishing record={publish_payload}")
-        payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
-        current_app.logger.debug(f"payload hash={payload_hash}")
 
         #produce a uuid for logging/tracing.
         publish_payload["options"]["credentialId"] = str(uuid4())
