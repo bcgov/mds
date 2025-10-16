@@ -1,6 +1,7 @@
 # for midware/business level actions between requests and data access
 import json
 import requests
+import pprint
 
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
@@ -340,8 +341,6 @@ def push_untp_map_data_to_publisher():
                 valid_until_date)
 
         current_app.logger.debug(f"publishing record={publish_payload}")
-        payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
-        current_app.logger.debug(f"payload hash={payload_hash}")
 
         #produce a uuid for logging/tracing
         publish_payload["options"]["credentialId"] = str(uuid4())
@@ -349,12 +348,17 @@ def push_untp_map_data_to_publisher():
 
         # NEED TO REPLACE ALL THE CODE ABOVE WITH prepare_permit_amendment_untp_credential
         other_publish_payload = VerifiableCredentialManager.prepare_permit_amendment_untp_credential(row[0])
+        other_payload_hash = md5(json.dumps(other_publish_payload).encode('utf-8')).hexdigest()
         
+        payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
+        current_app.logger.debug(f"payload hash={payload_hash}")
         
-        if json.dumps(other_publish_payload) != json.dumps(publish_payload):
-            current_app.logger.warning(f"payloads do not match for {row[0]}")
+        if other_payload_hash != payload_hash:
+            current_app.logger.info(f"payloads do not match for {row[0]}")
+            current_app.logger.info(pprint.pformat(publish_payload))
+            current_app.logger.info(pprint.pformat(other_publish_payload))
         else:
-            current_app.logger.info(f"payloads match for {row[0]}")
+            current_app.logger.debug(f"payloads match for {row[0]}")
         
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
@@ -471,10 +475,6 @@ class VerifiableCredentialManager():
         if valid_until_date:
             publish_payload["credential"]["validUntil"] = convert_date_to_iso_datetime(
                 valid_until_date)
-
-        current_app.logger.debug(f"publishing record={publish_payload}")
-        payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
-        current_app.logger.debug(f"payload hash={payload_hash}")
 
         #produce a uuid for logging/tracing.
         publish_payload["options"]["credentialId"] = str(uuid4())
