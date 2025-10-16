@@ -202,6 +202,29 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
             >
               <a
                 class="ant-anchor-link-title"
+                href="#pd-appendix-documents"
+                title=""
+              >
+                <div
+                  class="side-nav-title"
+                >
+                  <div
+                    class="side-nav-title-content"
+                  >
+                    <div
+                      class="sub-tab-2"
+                    >
+                      Appendix Documents
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <div
+              class="ant-anchor-link now-menu-link fade-in"
+            >
+              <a
+                class="ant-anchor-link-title"
                 href="#mma-spatial-components"
                 title=""
               >
@@ -2962,34 +2985,13 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                     class="ant-col document-table-actions"
                   >
                     <button
-                      class="ant-btn ant-btn-primary ant-dropdown-trigger actions-dropdown-button"
-                      data-testid=""
+                      class="ant-btn ant-btn-primary"
                       disabled=""
                       type="button"
                     >
-                      <span>
-                        Action
-                      </span>
-                      <span
-                        aria-label="down"
-                        class="anticon anticon-down"
-                        role="img"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class=""
-                          data-icon="down"
-                          fill="currentColor"
-                          focusable="false"
-                          height="1em"
-                          viewBox="64 64 896 896"
-                          width="1em"
-                        >
-                          <path
-                            d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
-                          />
-                        </svg>
-                      </span>
+                      <div>
+                        Download
+                      </div>
                     </button>
                   </div>
                 </div>
@@ -3379,6 +3381,728 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                                       title="Last Modified"
                                     >
                                       Sep 03 2024
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      class="create_user-column"
+                                      title="Created By"
+                                    >
+                                      test@bceid
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                    style="position: sticky; right: 0px;"
+                                  >
+                                    <button
+                                      class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
+                                      data-cy="menu-actions-button"
+                                      type="button"
+                                    >
+                                      <span>
+                                        Actions
+                                      </span>
+                                      <span
+                                        alt="Menu"
+                                        aria-label="caret-down"
+                                        class="anticon anticon-caret-down"
+                                        role="img"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          class=""
+                                          data-icon="caret-down"
+                                          fill="currentColor"
+                                          focusable="false"
+                                          height="1em"
+                                          viewBox="0 0 1024 1024"
+                                          width="1em"
+                                        >
+                                          <path
+                                            d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                          />
+                                        </svg>
+                                      </span>
+                                    </button>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          id="pd-appendix-documents"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="ant-row"
+            id="mma-appendix-documents"
+          >
+            <div
+              class="ant-col ant-col-24"
+            >
+              <h5
+                class="ant-typography"
+              >
+                Appendix Documents
+              </h5>
+            </div>
+            <div
+              class="ant-col ant-col-24"
+            >
+              <div>
+                <div />
+                <div
+                  class="ant-row ant-row-end ant-row-bottom document-table-header"
+                >
+                  <div
+                    class="ant-col document-table-actions"
+                  >
+                    <button
+                      class="ant-btn ant-btn-primary"
+                      disabled=""
+                      type="button"
+                    >
+                      <div>
+                        Download
+                      </div>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="ant-table-wrapper  core-table"
+                >
+                  <div
+                    class="ant-spin-nested-loading"
+                  >
+                    <div
+                      class="ant-spin-container"
+                    >
+                      <div
+                        class="ant-table ant-table-has-fix-right"
+                      >
+                        <div
+                          class="ant-table-container"
+                        >
+                          <div
+                            class="ant-table-content"
+                          >
+                            <table
+                              style="table-layout: auto;"
+                            >
+                              <colgroup>
+                                <col
+                                  class="ant-table-selection-col"
+                                />
+                              </colgroup>
+                              <thead
+                                class="ant-table-thead"
+                              >
+                                <tr>
+                                  <th
+                                    class="ant-table-cell ant-table-selection-column"
+                                  >
+                                    <div
+                                      class="ant-table-selection"
+                                    >
+                                      <label
+                                        class="ant-checkbox-wrapper"
+                                      >
+                                        <span
+                                          class="ant-checkbox"
+                                        >
+                                          <input
+                                            aria-label="Select all"
+                                            class="ant-checkbox-input"
+                                            type="checkbox"
+                                          />
+                                          <span
+                                            class="ant-checkbox-inner"
+                                          />
+                                        </span>
+                                      </label>
+                                    </div>
+                                  </th>
+                                  <th
+                                    aria-label=""
+                                    class="ant-table-cell ant-table-column-has-sorters"
+                                    tabindex="0"
+                                  >
+                                    <div
+                                      class="ant-table-column-sorters"
+                                    >
+                                      <span
+                                        class="ant-table-column-title"
+                                      >
+                                        <span
+                                          style="margin-left: 38px;"
+                                        >
+                                          File Name
+                                        </span>
+                                      </span>
+                                      <span
+                                        class="ant-table-column-sorter ant-table-column-sorter-full"
+                                      >
+                                        <span
+                                          class="ant-table-column-sorter-inner"
+                                        >
+                                          <span
+                                            aria-label="caret-up"
+                                            class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                            role="presentation"
+                                          >
+                                            <svg
+                                              aria-hidden="true"
+                                              data-icon="caret-up"
+                                              fill="currentColor"
+                                              focusable="false"
+                                              height="1em"
+                                              viewBox="0 0 1024 1024"
+                                              width="1em"
+                                            >
+                                              <path
+                                                d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                              />
+                                            </svg>
+                                          </span>
+                                          <span
+                                            aria-label="caret-down"
+                                            class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                            role="presentation"
+                                          >
+                                            <svg
+                                              aria-hidden="true"
+                                              data-icon="caret-down"
+                                              fill="currentColor"
+                                              focusable="false"
+                                              height="1em"
+                                              viewBox="0 0 1024 1024"
+                                              width="1em"
+                                            >
+                                              <path
+                                                d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                              />
+                                            </svg>
+                                          </span>
+                                        </span>
+                                      </span>
+                                    </div>
+                                  </th>
+                                  <th
+                                    class="ant-table-cell"
+                                  >
+                                    Document Label
+                                  </th>
+                                  <th
+                                    aria-label="File Type"
+                                    class="ant-table-cell ant-table-column-has-sorters"
+                                    tabindex="0"
+                                  >
+                                    <div
+                                      class="ant-table-column-sorters"
+                                    >
+                                      <span
+                                        class="ant-table-column-title"
+                                      >
+                                        File Type
+                                      </span>
+                                      <span
+                                        class="ant-table-column-sorter ant-table-column-sorter-full"
+                                      >
+                                        <span
+                                          class="ant-table-column-sorter-inner"
+                                        >
+                                          <span
+                                            aria-label="caret-up"
+                                            class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                            role="presentation"
+                                          >
+                                            <svg
+                                              aria-hidden="true"
+                                              data-icon="caret-up"
+                                              fill="currentColor"
+                                              focusable="false"
+                                              height="1em"
+                                              viewBox="0 0 1024 1024"
+                                              width="1em"
+                                            >
+                                              <path
+                                                d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                              />
+                                            </svg>
+                                          </span>
+                                          <span
+                                            aria-label="caret-down"
+                                            class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                            role="presentation"
+                                          >
+                                            <svg
+                                              aria-hidden="true"
+                                              data-icon="caret-down"
+                                              fill="currentColor"
+                                              focusable="false"
+                                              height="1em"
+                                              viewBox="0 0 1024 1024"
+                                              width="1em"
+                                            >
+                                              <path
+                                                d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                              />
+                                            </svg>
+                                          </span>
+                                        </span>
+                                      </span>
+                                    </div>
+                                  </th>
+                                  <th
+                                    aria-sort="descending"
+                                    class="ant-table-cell ant-table-column-sort ant-table-column-has-sorters"
+                                    tabindex="0"
+                                  >
+                                    <div
+                                      class="ant-table-column-sorters"
+                                    >
+                                      <span
+                                        class="ant-table-column-title"
+                                      >
+                                        Last Modified
+                                      </span>
+                                      <span
+                                        class="ant-table-column-sorter ant-table-column-sorter-full"
+                                      >
+                                        <span
+                                          class="ant-table-column-sorter-inner"
+                                        >
+                                          <span
+                                            aria-label="caret-up"
+                                            class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                            role="presentation"
+                                          >
+                                            <svg
+                                              aria-hidden="true"
+                                              data-icon="caret-up"
+                                              fill="currentColor"
+                                              focusable="false"
+                                              height="1em"
+                                              viewBox="0 0 1024 1024"
+                                              width="1em"
+                                            >
+                                              <path
+                                                d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                              />
+                                            </svg>
+                                          </span>
+                                          <span
+                                            aria-label="caret-down"
+                                            class="anticon anticon-caret-down ant-table-column-sorter-down active"
+                                            role="presentation"
+                                          >
+                                            <svg
+                                              aria-hidden="true"
+                                              data-icon="caret-down"
+                                              fill="currentColor"
+                                              focusable="false"
+                                              height="1em"
+                                              viewBox="0 0 1024 1024"
+                                              width="1em"
+                                            >
+                                              <path
+                                                d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                              />
+                                            </svg>
+                                          </span>
+                                        </span>
+                                      </span>
+                                    </div>
+                                  </th>
+                                  <th
+                                    aria-label="Created By"
+                                    class="ant-table-cell ant-table-column-has-sorters"
+                                    tabindex="0"
+                                  >
+                                    <div
+                                      class="ant-table-column-sorters"
+                                    >
+                                      <span
+                                        class="ant-table-column-title"
+                                      >
+                                        Created By
+                                      </span>
+                                      <span
+                                        class="ant-table-column-sorter ant-table-column-sorter-full"
+                                      >
+                                        <span
+                                          class="ant-table-column-sorter-inner"
+                                        >
+                                          <span
+                                            aria-label="caret-up"
+                                            class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                            role="presentation"
+                                          >
+                                            <svg
+                                              aria-hidden="true"
+                                              data-icon="caret-up"
+                                              fill="currentColor"
+                                              focusable="false"
+                                              height="1em"
+                                              viewBox="0 0 1024 1024"
+                                              width="1em"
+                                            >
+                                              <path
+                                                d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                              />
+                                            </svg>
+                                          </span>
+                                          <span
+                                            aria-label="caret-down"
+                                            class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                            role="presentation"
+                                          >
+                                            <svg
+                                              aria-hidden="true"
+                                              data-icon="caret-down"
+                                              fill="currentColor"
+                                              focusable="false"
+                                              height="1em"
+                                              viewBox="0 0 1024 1024"
+                                              width="1em"
+                                            >
+                                              <path
+                                                d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                              />
+                                            </svg>
+                                          </span>
+                                        </span>
+                                      </span>
+                                    </div>
+                                  </th>
+                                  <th
+                                    class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                    style="position: sticky; right: 0px;"
+                                  />
+                                </tr>
+                              </thead>
+                              <tbody
+                                class="ant-table-tbody"
+                              >
+                                <tr
+                                  class="ant-table-row ant-table-row-level-0 table-row-align-middle no-sub-table-expandable-rows fade-in"
+                                  data-row-key="66f78901-23f1-4234-5678-901234567890"
+                                >
+                                  <td
+                                    class="ant-table-cell ant-table-selection-column"
+                                  >
+                                    <label
+                                      class="ant-checkbox-wrapper"
+                                    >
+                                      <span
+                                        class="ant-checkbox"
+                                      >
+                                        <input
+                                          class="ant-checkbox-input"
+                                          type="checkbox"
+                                        />
+                                        <span
+                                          class="ant-checkbox-inner"
+                                        />
+                                      </span>
+                                    </label>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell ant-table-cell-with-append"
+                                  >
+                                    <span
+                                      class="ant-table-row-indent indent-level-0"
+                                      style="padding-left: 0px;"
+                                    />
+                                    <div
+                                      class="inline-flex flex-between file-name-container"
+                                      style="margin-left: 38px;"
+                                      title="File Name"
+                                    >
+                                      <a>
+                                        Environmental_Effects_Assessment.pdf
+                                      </a>
+                                      <span
+                                        class="file-history-container"
+                                      />
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      class="label-column"
+                                      title="Document Label"
+                                    >
+                                      Environmental Effects Assessment
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      class="file_type-column"
+                                      title="File Type"
+                                    >
+                                      .pdf
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell ant-table-column-sort"
+                                  >
+                                    <div
+                                      title="Last Modified"
+                                    >
+                                      Oct 03 2024
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      class="create_user-column"
+                                      title="Created By"
+                                    >
+                                      test@bceid
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                    style="position: sticky; right: 0px;"
+                                  >
+                                    <button
+                                      class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
+                                      data-cy="menu-actions-button"
+                                      type="button"
+                                    >
+                                      <span>
+                                        Actions
+                                      </span>
+                                      <span
+                                        alt="Menu"
+                                        aria-label="caret-down"
+                                        class="anticon anticon-caret-down"
+                                        role="img"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          class=""
+                                          data-icon="caret-down"
+                                          fill="currentColor"
+                                          focusable="false"
+                                          height="1em"
+                                          viewBox="0 0 1024 1024"
+                                          width="1em"
+                                        >
+                                          <path
+                                            d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                          />
+                                        </svg>
+                                      </span>
+                                    </button>
+                                  </td>
+                                </tr>
+                                <tr
+                                  class="ant-table-row ant-table-row-level-0 table-row-align-middle no-sub-table-expandable-rows fade-in"
+                                  data-row-key="44d56789-01ef-4012-3456-789012345678"
+                                >
+                                  <td
+                                    class="ant-table-cell ant-table-selection-column"
+                                  >
+                                    <label
+                                      class="ant-checkbox-wrapper"
+                                    >
+                                      <span
+                                        class="ant-checkbox"
+                                      >
+                                        <input
+                                          class="ant-checkbox-input"
+                                          type="checkbox"
+                                        />
+                                        <span
+                                          class="ant-checkbox-inner"
+                                        />
+                                      </span>
+                                    </label>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell ant-table-cell-with-append"
+                                  >
+                                    <span
+                                      class="ant-table-row-indent indent-level-0"
+                                      style="padding-left: 0px;"
+                                    />
+                                    <div
+                                      class="inline-flex flex-between file-name-container"
+                                      style="margin-left: 38px;"
+                                      title="File Name"
+                                    >
+                                      <a>
+                                        Mine_Plan_Detail.pdf
+                                      </a>
+                                      <span
+                                        class="file-history-container"
+                                      />
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      class="label-column"
+                                      title="Document Label"
+                                    >
+                                      Mine Plan
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      class="file_type-column"
+                                      title="File Type"
+                                    >
+                                      .pdf
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell ant-table-column-sort"
+                                  >
+                                    <div
+                                      title="Last Modified"
+                                    >
+                                      Oct 02 2024
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      class="create_user-column"
+                                      title="Created By"
+                                    >
+                                      test@bceid
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                    style="position: sticky; right: 0px;"
+                                  >
+                                    <button
+                                      class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
+                                      data-cy="menu-actions-button"
+                                      type="button"
+                                    >
+                                      <span>
+                                        Actions
+                                      </span>
+                                      <span
+                                        alt="Menu"
+                                        aria-label="caret-down"
+                                        class="anticon anticon-caret-down"
+                                        role="img"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          class=""
+                                          data-icon="caret-down"
+                                          fill="currentColor"
+                                          focusable="false"
+                                          height="1em"
+                                          viewBox="0 0 1024 1024"
+                                          width="1em"
+                                        >
+                                          <path
+                                            d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                          />
+                                        </svg>
+                                      </span>
+                                    </button>
+                                  </td>
+                                </tr>
+                                <tr
+                                  class="ant-table-row ant-table-row-level-0 table-row-align-middle no-sub-table-expandable-rows fade-in"
+                                  data-row-key="22b34567-89cd-4ef0-1234-567890123456"
+                                >
+                                  <td
+                                    class="ant-table-cell ant-table-selection-column"
+                                  >
+                                    <label
+                                      class="ant-checkbox-wrapper"
+                                    >
+                                      <span
+                                        class="ant-checkbox"
+                                      >
+                                        <input
+                                          class="ant-checkbox-input"
+                                          type="checkbox"
+                                        />
+                                        <span
+                                          class="ant-checkbox-inner"
+                                        />
+                                      </span>
+                                    </label>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell ant-table-cell-with-append"
+                                  >
+                                    <span
+                                      class="ant-table-row-indent indent-level-0"
+                                      style="padding-left: 0px;"
+                                    />
+                                    <div
+                                      class="inline-flex flex-between file-name-container"
+                                      style="margin-left: 38px;"
+                                      title="File Name"
+                                    >
+                                      <a>
+                                        Indigenous_Nation_Engagement_Report.pdf
+                                      </a>
+                                      <span
+                                        class="file-history-container"
+                                      />
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      class="label-column"
+                                      title="Document Label"
+                                    >
+                                      Indigenous Nation Engagement
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      class="file_type-column"
+                                      title="File Type"
+                                    >
+                                      .pdf
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell ant-table-column-sort"
+                                  >
+                                    <div
+                                      title="Last Modified"
+                                    >
+                                      Oct 01 2024
                                     </div>
                                   </td>
                                   <td
@@ -3941,34 +4665,13 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                     class="ant-col document-table-actions"
                   >
                     <button
-                      class="ant-btn ant-btn-primary ant-dropdown-trigger actions-dropdown-button"
-                      data-testid=""
+                      class="ant-btn ant-btn-primary"
                       disabled=""
                       type="button"
                     >
-                      <span>
-                        Action
-                      </span>
-                      <span
-                        aria-label="down"
-                        class="anticon anticon-down"
-                        role="img"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class=""
-                          data-icon="down"
-                          fill="currentColor"
-                          focusable="false"
-                          height="1em"
-                          viewBox="64 64 896 896"
-                          width="1em"
-                        >
-                          <path
-                            d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
-                          />
-                        </svg>
-                      </span>
+                      <div>
+                        Download
+                      </div>
                     </button>
                   </div>
                 </div>
@@ -4094,7 +4797,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                                   <th
                                     class="ant-table-cell"
                                   >
-                                    Category
+                                    Document Label
                                   </th>
                                   <th
                                     aria-label="File Type"
@@ -4290,6 +4993,124 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                               >
                                 <tr
                                   class="ant-table-row ant-table-row-level-0 table-row-align-middle no-sub-table-expandable-rows fade-in"
+                                  data-row-key="88h90123-45f3-4456-7890-123456789012"
+                                >
+                                  <td
+                                    class="ant-table-cell ant-table-selection-column"
+                                  >
+                                    <label
+                                      class="ant-checkbox-wrapper"
+                                    >
+                                      <span
+                                        class="ant-checkbox"
+                                      >
+                                        <input
+                                          class="ant-checkbox-input"
+                                          type="checkbox"
+                                        />
+                                        <span
+                                          class="ant-checkbox-inner"
+                                        />
+                                      </span>
+                                    </label>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell ant-table-cell-with-append"
+                                  >
+                                    <span
+                                      class="ant-table-row-indent indent-level-0"
+                                      style="padding-left: 0px;"
+                                    />
+                                    <div
+                                      class="inline-flex flex-between file-name-container"
+                                      style="margin-left: 38px;"
+                                      title="File Name"
+                                    >
+                                      <a>
+                                        Table_of_Concordance.xlsx
+                                      </a>
+                                      <span
+                                        class="file-history-container"
+                                      />
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      class="label-column"
+                                      title="Document Label"
+                                    >
+                                      Table of Concordance
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      class="file_type-column"
+                                      title="File Type"
+                                    >
+                                      .xlsx
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell ant-table-column-sort"
+                                  >
+                                    <div
+                                      title="Last Modified"
+                                    >
+                                      Oct 05 2024
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell"
+                                  >
+                                    <div
+                                      class="create_user-column"
+                                      title="Created By"
+                                    >
+                                      test@bceid
+                                    </div>
+                                  </td>
+                                  <td
+                                    class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                    style="position: sticky; right: 0px;"
+                                  >
+                                    <button
+                                      class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
+                                      data-cy="menu-actions-button"
+                                      type="button"
+                                    >
+                                      <span>
+                                        Actions
+                                      </span>
+                                      <span
+                                        alt="Menu"
+                                        aria-label="caret-down"
+                                        class="anticon anticon-caret-down"
+                                        role="img"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          class=""
+                                          data-icon="caret-down"
+                                          fill="currentColor"
+                                          focusable="false"
+                                          height="1em"
+                                          viewBox="0 0 1024 1024"
+                                          width="1em"
+                                        >
+                                          <path
+                                            d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                          />
+                                        </svg>
+                                      </span>
+                                    </button>
+                                  </td>
+                                </tr>
+                                <tr
+                                  class="ant-table-row ant-table-row-level-0 table-row-align-middle no-sub-table-expandable-rows fade-in"
                                   data-row-key="1dc751a4-3a29-4203-85e6-7d592f84e3c1"
                                 >
                                   <td
@@ -4324,7 +5145,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                                       title="File Name"
                                     >
                                       <a>
-                                        pdf1.pdf
+                                        supporting-doc-no-subtype.pdf
                                       </a>
                                       <span
                                         class="file-history-container"
@@ -4335,10 +5156,10 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                                     class="ant-table-cell"
                                   >
                                     <div
-                                      class="category-column"
-                                      title="Category"
+                                      class="label-column"
+                                      title="Document Label"
                                     >
-                                      Supporting Document
+                                      N/A
                                     </div>
                                   </td>
                                   <td
@@ -4442,7 +5263,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                                       title="File Name"
                                     >
                                       <a>
-                                        pdf3 2.pdf
+                                        Qualified_Professional_Declaration.pdf
                                       </a>
                                       <span
                                         class="file-history-container"
@@ -4453,10 +5274,10 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                                     class="ant-table-cell"
                                   >
                                     <div
-                                      class="category-column"
-                                      title="Category"
+                                      class="label-column"
+                                      title="Document Label"
                                     >
-                                      Supporting Document
+                                      Qualified Professional Declaration Form
                                     </div>
                                   </td>
                                   <td

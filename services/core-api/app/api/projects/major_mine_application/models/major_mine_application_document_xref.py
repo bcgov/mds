@@ -18,6 +18,11 @@ class MajorMineApplicationDocumentXref(Base, DocumentXrefMixin):
         db.ForeignKey(
             'major_mine_application_document_type.major_mine_application_document_type_code'),
         nullable=False)
+    major_mine_application_document_subtype_code = db.Column(
+        db.String,
+        db.ForeignKey(
+            'major_mine_application_document_subtype.major_mine_application_document_subtype_code'),
+        nullable=True)
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.major_mine_application_document_xref_guid}'

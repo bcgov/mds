@@ -133,6 +133,7 @@ export const MajorMineApplicationPage: FC = () => {
   const transformPayload = (values, status_code = "DFT") => {
     const documents = [
       ...(values?.primary_documents || []),
+      ...(values?.appendix_documents || []),
       ...(values?.spatial_documents || []),
       ...(values?.supporting_documents || []),
     ];

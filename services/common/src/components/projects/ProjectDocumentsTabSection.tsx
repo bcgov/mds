@@ -27,6 +27,12 @@ const ProjectDocumentsTabSection: FC<ProjectDocumentsTabSectionProps> = ({
 }) => {
   const sectionTitle = title ?? formatUrlToUpperCaseString(id);
 
+  const hasDocumentsWithLabels = documents?.some(doc => doc.label) || false;
+
+  const additionalColumns = hasDocumentsWithLabels
+    ? [renderTextColumn("label", "Document Label")]
+    : [renderTextColumn("category", "Category")];
+
   return (
     <Row id={id}>
       <Col span={24}>
@@ -37,7 +43,7 @@ const ProjectDocumentsTabSection: FC<ProjectDocumentsTabSectionProps> = ({
         <DocumentTable
           documents={documents ?? []}
           documentParent={title}
-          additionalColumns={[renderTextColumn("category", "Category")]}
+          additionalColumns={additionalColumns}
           canArchiveDocuments={canArchive}
           canReplaceDocuments={canReplace}
           onArchivedDocuments={onArchivedDocuments}

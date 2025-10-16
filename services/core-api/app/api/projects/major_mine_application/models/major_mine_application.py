@@ -93,6 +93,7 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
     def send_mma_submit_email(self):
         recipients = [contact.email for contact in self.project.contacts]
         primary_documents = [document.document_name for document in self.documents if document.major_mine_application_document_type_code == "PRM"]
+        appendix_documents = [document.document_name for document in self.documents if document.major_mine_application_document_type_code == "APX"]
         spatial_documents = [document.document_name for document in self.documents if document.major_mine_application_document_type_code == "SPT"]
         supporting_documents = [document.document_name for document in self.documents if document.major_mine_application_document_type_code == "SPR"]
 
@@ -106,6 +107,9 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
         body = '<p>The following documents have been submitted with this Major Mine Application:</p>'
         body += '<p>Primary document(s):</p>'
         body += f'<ul>{"".join(list(map(generate_list_element, primary_documents)))}</ul>'
+        if len(appendix_documents) > 0:
+            body += '<p>Appendix document(s):</p>'
+            body += f'<ul>{"".join(list(map(generate_list_element, appendix_documents)))}</ul>'
         if len(spatial_documents) > 0:
             body += '<p>Spatial document(s):</p>'
             body += f'<ul>{"".join(list(map(generate_list_element, spatial_documents)))}</ul>'
@@ -143,7 +147,10 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
                     mine_document_guid=mine_doc.mine_document_guid,
                     major_mine_application_id=major_mine_application.major_mine_application_id,
                     major_mine_application_document_type_code=doc.get(
-                        'major_mine_application_document_type_code'))
+                        'major_mine_application_document_type_code'),
+                    major_mine_application_document_subtype_code=doc.get(
+                        'major_mine_application_document_subtype_code', None
+                    ))
                 major_mine_application_doc.mine_document = mine_doc
                 major_mine_application.documents.append(major_mine_application_doc)
 
@@ -167,6 +174,8 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
                     major_mine_application_doc = MajorMineApplicationDocumentXref.find_by_mine_document_guid(mine_document_guid)
                     major_mine_application_doc.major_mine_application_document_type_code = doc.get(
                         'major_mine_application_document_type_code')
+                    major_mine_application_doc.major_mine_application_document_subtype_code = doc.get(
+                        'major_mine_application_document_subtype_code')
                 else:
                     mine_doc = MineDocument(
                         mine_guid=project.mine_guid,
@@ -177,7 +186,10 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
                         mine_document_guid=mine_doc.mine_document_guid,
                         major_mine_application_id=self.major_mine_application_id,
                         major_mine_application_document_type_code=doc.get(
-                            'major_mine_application_document_type_code'))
+                            'major_mine_application_document_type_code'),
+                        major_mine_application_document_subtype_code=doc.get(
+                            'major_mine_application_document_subtype_code', None))
+                    
                     major_mine_application_doc.mine_document = mine_doc
                     self.documents.append(major_mine_application_doc)
 

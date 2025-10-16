@@ -26,6 +26,7 @@ import ArchivedDocumentsSection from "@mds/common/components/projects/ArchivedDo
 import { FORM } from "@mds/common/constants/forms";
 import { Feature } from "@mds/common/utils/featureFlag";
 import { IProject } from "@mds/common/interfaces/projects";
+import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 
 
 const MajorMineApplicationTab: FC = () => {
@@ -87,6 +88,7 @@ const MajorMineApplicationTab: FC = () => {
 
   const documentSections = [
     { href: "primary-documents", documents: majorMineApplicationDocs.filter((doc) => doc.major_mine_application_document_type_code === "PRM") },
+    { href: "appendix-documents", documents: majorMineApplicationDocs.filter((doc) => doc.major_mine_application_document_type_code === "APX") },
     { href: "spatial-components", documents: majorMineApplicationDocs.filter((doc) => doc.major_mine_application_document_type_code === "SPT") },
     { href: "supporting-documents", documents: majorMineApplicationDocs.filter((doc) => doc.major_mine_application_document_type_code === "SPR") },
     decisionPackageEnabled && { href: "ministry-decision-documents", documents: project?.project_decision_package?.documents ?? [] },
@@ -182,11 +184,15 @@ const MajorMineApplicationTab: FC = () => {
           </Col>
         </Row>
         <Row gutter={[16, 16]}>
-          {documentSections.map((section) =>
-            <Col span={24} key={section.href}>
+          {documentSections.map((section) => {
+            const hasSubTypes = section.documents.some((d) => d.label);
+            const additionalColumns = hasSubTypes ? [renderTextColumn('label', 'Document Label')] : [];
+
+            return <Col span={24} key={section.href}>
               <Typography.Title level={5} id={section.href} style={{ fontWeight: "bold" }}>{section.title}</Typography.Title>
               <DocumentTable
                 documents={section.documents}
+                additionalColumns={additionalColumns}
                 canArchiveDocuments={archiveFeatureEnabled}
                 onArchivedDocuments={fetchData}
                 isLoaded={isLoaded}
@@ -194,6 +200,7 @@ const MajorMineApplicationTab: FC = () => {
                 enableBulkActions={true}
               />
             </Col>
+          }
           )}
           {archiveFeatureEnabled &&
             <Col span={24}>

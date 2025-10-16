@@ -3,51 +3,19 @@ import { render, fireEvent } from "@testing-library/react";
 import MajorMineApplicationForm from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationForm";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { FORM } from "@mds/common/constants/forms";
-import { reduxForm } from "@mds/common/components/forms/form";
-import { ReduxWrapper as CommonReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { ReduxWrapper as MinespaceReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { BrowserRouter } from "react-router-dom";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 const mockDispatch = jest.fn();
-const mockUseSelector = jest.fn();
 
 jest.mock("react-redux", () => {
   const actualReactRedux = jest.requireActual("react-redux");
   return {
     ...actualReactRedux,
-    useSelector: () => mockUseSelector,
     useDispatch: () => mockDispatch,
   };
 });
-
-jest.mock(
-  "@/components/Forms/projects/majorMineApplication/MajorMineApplicationFileUpload",
-  () => (props: any) => (
-    <div>
-      <input
-        type="file"
-        onChange={(e) => {
-          if (e.target.files && e.target.files[0]) {
-            props.onFileLoad(
-              e.target.files[0].name,
-              "mock-document-manager-guid",
-              "PRIMARY",
-              FORM.ADD_MINE_MAJOR_APPLICATION
-            );
-          }
-        }}
-        onClick={() => {
-          props.onRemoveFile(
-            null,
-            { serverId: "mock-document-manager-guid" },
-            "primary_documents",
-            [MOCK.PROJECTS.records[0].major_mine_application.documents[0]]
-          );
-        }}
-      />
-    </div>
-  )
-);
 
 jest.mock("@mds/common/components/documents/DocumentTable", () => (props: any) => (
   <div>
@@ -55,38 +23,51 @@ jest.mock("@mds/common/components/documents/DocumentTable", () => (props: any) =
   </div>
 ));
 
+const values = {
+  primary_documents: MOCK.PROJECT.major_mine_application.documents.filter(
+    (d) => d.major_mine_application_document_type_code === "PRM"
+  ),
+  appendix_documents: MOCK.PROJECT.major_mine_application.documents.filter(
+    (d) => d.major_mine_application_document_type_code === "APX"
+  ),
+  spatial_documents: MOCK.PROJECT.major_mine_application.documents.filter(
+    (d) => d.major_mine_application_document_type_code === "SPT"
+  ),
+  supporting_documents: MOCK.PROJECT.major_mine_application.documents.filter(
+    (d) => d.major_mine_application_document_type_code === "SPR"
+  ),
+};
+
 const initialState = {
   form: {
     ADD_MINE_MAJOR_APPLICATION: {
-      values: {
-        primary_documents: [MOCK.PROJECTS.records[0].major_mine_application.documents[0]],
-        spatial_documents: [MOCK.PROJECTS.records[0].major_mine_application.documents[1]],
-        supporting_documents: [MOCK.PROJECTS.records[0].major_mine_application.documents[2]],
-      },
+      values,
     },
+  },
+  mines: {
+    mineDocuments: [MOCK.MINEDOCUMENTS.records[0]],
   },
 };
 
-const props: any = {};
-mockUseSelector.mockReturnValue([MOCK.MINEDOCUMENTS.records[0]]);
-
-beforeEach(() => {
-  props.project = MOCK.PROJECTS.records[0];
-  props.handleSubmit = jest.fn();
-  props.refreshData = jest.fn();
-});
-
-const MajorMineApplicationReduxForm = reduxForm({
-  form: FORM.ADD_MINE_MAJOR_APPLICATION,
-})(MajorMineApplicationForm as any);
+const props = {
+  project: MOCK.PROJECT,
+  refreshData: jest.fn(),
+};
 
 const WrappedMajorMineApplicationForm = () => (
   <BrowserRouter>
-    <CommonReduxWrapper initialState={initialState}>
-      <MinespaceReduxWrapper initialState={initialState}>
-        <MajorMineApplicationReduxForm {...props} />
-      </MinespaceReduxWrapper>
-    </CommonReduxWrapper>
+    <MinespaceReduxWrapper initialState={initialState}>
+      <FormWrapper
+        name={FORM.ADD_MINE_MAJOR_APPLICATION}
+        initialValues={values}
+        onSubmit={jest.fn()}
+        reduxFormConfig={{
+          destroyOnUnmount: true,
+        }}
+      >
+        <MajorMineApplicationForm project={props.project} refreshData={props.refreshData} />
+      </FormWrapper>
+    </MinespaceReduxWrapper>
   </BrowserRouter>
 );
 

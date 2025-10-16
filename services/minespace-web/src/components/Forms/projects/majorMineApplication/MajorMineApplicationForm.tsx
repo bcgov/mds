@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Field, change, getFormValues } from "@mds/common/components/forms/form";
+import { Field, FieldArray, change, getFormValues } from "@mds/common/components/forms/form";
 import { Col, Row, Typography, Button } from "antd";
 import {
+  MAJOR_MINES_APPLICATION_DOCUMENT_SUBTYPE_CODE,
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE,
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE,
   SPATIAL_DATA_STANDARDS_URL,
@@ -25,11 +26,57 @@ import { FORM } from "@mds/common/constants/forms";
 import { DOCUMENT, MODERN_EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
 
 interface MajorMineApplicationFormProps {
   project: IProject;
   refreshData: () => void | Promise<void>;
 }
+
+const DocumentCategoryForm = ({ fields, typeCode }) => {
+  const subTypes = MAJOR_MINES_APPLICATION_DOCUMENT_SUBTYPE_CODE[typeCode];
+  if (!subTypes) {
+    return null;
+  }
+  const documentTypeOptions = Object.entries(subTypes).map(([type, description]) => {
+    return { value: type, label: description };
+  });
+
+  return (
+    <>
+      {fields.map((field: string) => {
+        return (
+          <div key={field}>
+            <Row gutter={16}>
+              <Col flex={1}>
+                <Field
+                  name={`${field}.document_name`}
+                  label="Document Name"
+                  required
+                  validate={[required]}
+                  disabled
+                  component={RenderField}
+                />
+              </Col>
+              <Col span={8}>
+                <Field
+                  name={`${field}.major_mine_application_document_subtype_code`}
+                  label="Document Label"
+                  placeholder="Select a Document Label"
+                  component={RenderSelect}
+                  data={documentTypeOptions}
+                  validate={[required]}
+                  required
+                  allowClear={false}
+                />
+              </Col>
+            </Row>
+          </div>
+        );
+      })}
+    </>
+  );
+};
 
 const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
   project,
@@ -37,8 +84,9 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const { primary_documents, spatial_documents, supporting_documents } =
-    (useSelector(getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION)) as IMajorMinesApplication) || {};
+  const formValues = useSelector(getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION)) ?? {};
+  const { primary_documents, appendix_documents, spatial_documents, supporting_documents } =
+    formValues as IMajorMinesApplication;
   const canModifyMmaDocs = !areDocumentFieldsDisabled(
     SystemFlagEnum.ms,
     project?.major_mine_application?.status_code
@@ -231,6 +279,57 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
       )}
 
       <br />
+      <Typography.Title level={5}>Upload Appendix Documents</Typography.Title>
+      <Typography.Paragraph>
+        Appendix documents must be uploaded as separate files and assigned one of the provided
+        document labels. Using the correct label ensures accurate categorization and can
+        significantly improve review time.
+      </Typography.Paragraph>
+
+      <FieldArray
+        props={{ typeCode: MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.APPENDIX }}
+        name={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.APPENDIX}
+        component={DocumentCategoryForm}
+      />
+      <Field
+        id={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.APPENDIX}
+        name={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.APPENDIX}
+        label="Upload appendix document"
+        onFileLoad={(documentName: string, document_manager_guid: string) => {
+          onFileLoad(
+            documentName,
+            document_manager_guid,
+            MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.APPENDIX,
+            MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.APPENDIX
+          );
+        }}
+        onRemoveFile={(err: any, fileItem: any) => {
+          onRemoveFile(
+            err,
+            fileItem,
+            MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.APPENDIX,
+            appendix_documents
+          );
+        }}
+        projectGuid={project.project_guid}
+        allowMultiple
+        acceptedFileTypesMap={acceptedFileTypesMap}
+        component={MajorMineApplicationFileUpload}
+        uploadType={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.APPENDIX}
+      />
+      {appendix_documents.length > 0 && (
+        <DocumentTable
+          documents={appendix_documents}
+          documentParent="Major Mine Application"
+          canArchiveDocuments={canModifyMmaDocs}
+          canReplaceDocuments={canModifyMmaDocs}
+          onArchivedDocuments={refreshData}
+          enableBulkActions={true}
+          showVersionHistory={true}
+        />
+      )}
+      <br />
+
       <Typography.Title level={5}>Spatial Data Files</Typography.Title>
       <Typography.Paragraph>
         Please upload spatial files to support your application. You must upload at least one KML,
@@ -264,6 +363,12 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
       <Typography.Paragraph>
         Additional documentation that supports your application can be uploaded here.
       </Typography.Paragraph>
+
+      <FieldArray
+        props={{ typeCode: MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.SUPPORTING }}
+        name={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SUPPORTING}
+        component={DocumentCategoryForm}
+      />
       <Field
         id={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SUPPORTING}
         name={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SUPPORTING}
