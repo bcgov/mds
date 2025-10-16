@@ -38,7 +38,7 @@ const MajorMineApplicationTab: FC = () => {
   const majorMineAppStatusCodesHash = useSelector(getMajorMinesApplicationStatusCodesHash);
   const mineDocuments = useSelector(getMineDocuments);
   const dropdownMajorMineAppStatusCodes = useSelector(getDropdownMajorMinesApplicationStatusCodes);
-  const archivedDocuments = mineDocuments?.map((doc) => new MajorMineApplicationDocument(doc))
+  const archivedDocuments = mineDocuments?.map((doc) => new MajorMineApplicationDocument(doc));
   const authorizations = project?.project_summary?.authorizations;
   const hasEmaApp = authorizations?.some(auth => auth.ams_tracking_number);
 

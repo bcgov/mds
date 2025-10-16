@@ -206,13 +206,14 @@ export class MajorMineApplicationDocument extends MineDocument {
 
   constructor(jsonObject: any) {
     super(jsonObject);
-    this.major_mine_application_document_type_code =
-      jsonObject.major_mine_application_document_type_code;
-    if (jsonObject.major_mine_application_document_subtype_code) {
-      this.major_mine_application_document_subtype_code = jsonObject.major_mine_application_document_subtype_code;
+    const typeCode = jsonObject.major_mine_application_document_type_code ?? jsonObject.major_mine_application_document_xref?.major_mine_application_document_type_code;
+    const subtypeCode = jsonObject.major_mine_application_document_subtype_code ?? jsonObject.major_mine_application_document_xref?.major_mine_application_document_subtype_code;
+    this.major_mine_application_document_type_code = typeCode;
+    if (subtypeCode) {
+      this.major_mine_application_document_subtype_code = subtypeCode;
       this.label = this.getSubtypeLabel(
-        jsonObject.major_mine_application_document_type_code,
-        jsonObject.major_mine_application_document_subtype_code
+        typeCode,
+        subtypeCode
       );
     } else {
       this.label = undefined;
