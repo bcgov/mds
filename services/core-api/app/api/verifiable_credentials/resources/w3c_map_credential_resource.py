@@ -86,8 +86,8 @@ class W3CCredentialIssueResource(Resource, UserMixin):
             data["permit_amendment_guid"])
         
         payload = VerifiableCredentialManager.prepare_permit_amendment_untp_credential_without_id( data["permit_amendment_guid"])
-        payload_hash = md5(dumps(payload).encode('utf-8')).hexdigest()
+        payload_hash: str = md5(dumps(payload).encode('utf-8')).hexdigest()
 
-        existing = PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(payload_hash) is not None
+        existing: bool = PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(payload_hash) is not None
 
-        return {hash: payload_hash, existing: existing, payload: payload}
+        return {"hash": payload_hash, "existing": existing, "payload": payload}
