@@ -94,14 +94,7 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
 
         link = f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/information-requirements-table/{self.irt_guid}/intro-project-overview'
         body += f'<p>View IRT in Core: <a href="{link}" target="_blank">{link}</a></p>'
-        EmailService.send_email(
-            subject,
-            recipients,
-            body,
-            reference_id=self.irt_guid,
-            reference_table='information_requirements_table',
-            reference_email_type='irt_submit_email'
-        )
+        EmailService.send_email(subject, recipients, body)
 
     def send_irt_status_notifications(self, project_guid: str, status_code: str):
         project: Project = self.project
@@ -135,23 +128,9 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
         subject = f'IRT Status Updated for {project.mine_name}:{project.project_title}'
 
         if core_recipients != []:
-            EmailService.send_template_email(
-                subject,
-                core_recipients,
-                core_template,
-                project_context,
-                reference_id=self.irt_guid,
-                reference_table='information_requirements_table'
-            )
+            EmailService.send_template_email(subject, core_recipients, core_template, project_context)
         if minespace_recipients != []:
-            EmailService.send_template_email(
-                subject,
-                minespace_recipients,
-                minespace_template,
-                project_context,
-                reference_id=self.irt_guid,
-                reference_table='information_requirements_table'
-            )
+            EmailService.send_template_email(subject, minespace_recipients, minespace_template, project_context)
 
         mine = Mine.find_by_mine_guid(project.mine_guid)
 
@@ -169,14 +148,7 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
         body = f'<p>An IRT has been approved for {self.project.mine_name}:(Mine no: {self.project.mine_no})-{self.project.project_title}.</p>'
         body += f'<p>View IRT in Minespace: <a href="{link}" target="_blank">{link}</a></p>'
 
-        EmailService.send_email(
-            subject,
-            recipients,
-            body,
-            send_to_proponent=True,
-            reference_id=self.irt_guid,
-            reference_table='information_requirements_table'
-        )
+        EmailService.send_email(subject, recipients, body, send_to_proponent=True)
 
     def update(self, irt_data, import_file=None, document_guid=None, add_to_session=True):
         mine_doc = None
