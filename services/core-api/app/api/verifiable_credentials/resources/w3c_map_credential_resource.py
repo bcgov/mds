@@ -1,4 +1,5 @@
 from json import dumps, loads
+from hashlib import md5
 from datetime import datetime
 from flask import current_app, request
 from werkzeug.exceptions import BadRequest, ServiceUnavailable
@@ -83,4 +84,10 @@ class W3CCredentialIssueResource(Resource, UserMixin):
         data = self.parser.parse_args()
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
             data["permit_amendment_guid"])
-        return VerifiableCredentialManager.prepare_permit_amendment_untp_credential_without_id( data["permit_amendment_guid"])
+        
+        payload = VerifiableCredentialManager.prepare_permit_amendment_untp_credential_without_id( data["permit_amendment_guid"])
+        payload_hash = md5(dumps(payload).encode('utf-8')).hexdigest()
+
+        existing = PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(payload) is not None
+
+        return {hash: payload_hash, existing: existing, payload: payload}
