@@ -129,7 +129,8 @@ def make_celery(app):
         beat_schedule=Config.CELERY_BEAT_SCHEDULE,
         beat_scheduler='redbeat.RedBeatScheduler',
         redbeat_redis_url=Config.CELERY_READBEAT_BROKER_URL,
-        redbeat_lock_key='core-api')
+        redbeat_lock_key='core-api',
+        imports=['app.api.email_tracking.email_status_tasks'])
 
     celery.steps['worker'].add(HealthCheckProbe)
 
