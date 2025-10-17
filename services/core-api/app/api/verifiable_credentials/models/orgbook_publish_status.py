@@ -32,7 +32,7 @@ class PermitAmendmentOrgBookPublish(AuditMixin, Base):
     def find_by_unsigned_payload_hash(cls,
                                       unsigned_payload_hash,
                                       *,
-                                      unsafe: bool = False) -> "PermitAmendmentOrgBookPublish" | None:
+                                      unsafe: bool = False) -> "PermitAmendmentOrgBookPublish":
         query = cls.query.unbound_unsafe() if unsafe else cls.query
         return query.filter_by(unsigned_payload_hash=unsigned_payload_hash).one_or_none()
 
