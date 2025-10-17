@@ -1,20 +1,13 @@
 import csv
 import datetime
 import io
+
+from app.api.tasks.celery_task_base import TaskBase
 from app.cli_commands.export_permit_conditions import headers, export_permit_conditions
 from app.api.search.search.permit_search_service import PermitSearchService
 from app.tasks.celery import celery
-from celery import Task
 
-class PermitConditionTaskBase(Task):
-    def __call__(self, *args, **kwargs):
-        from app.tasks.celery_entrypoint import celery_app
-
-        # Make sure app context is set up when running the task so we can access the database
-        with celery_app.app_context():
-            return Task.__call__(self, *args, **kwargs)
-
-@celery.task(base=PermitConditionTaskBase)
+@celery.task(base=TaskBase)
 def export_and_index_permit_amendments(permit_amendment_guids, is_manual=False):
     """
     Export conditions for a permit amendment as a CSV file and index them in the search service.
