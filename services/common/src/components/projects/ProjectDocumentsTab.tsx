@@ -144,7 +144,6 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
   const primaryDocuments = majorMineAppDocs.filter((doc) => doc.category === CATEGORY_CODE.PRM);
   const mmaAppendixDocuments = majorMineAppDocs.filter((doc) => doc.category === CATEGORY_CODE.APX);
   const mmaSpatialDocuments = majorMineAppDocs.filter((doc) => doc.category === CATEGORY_CODE.SPT);
-  console.log({ documents: project?.major_mine_application?.documents, mmaAppendixDocuments })
   const mmaSupportingDocuments = majorMineAppDocs.filter(
     (doc) => doc.category === CATEGORY_CODE.SPR
   );
