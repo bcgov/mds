@@ -40,6 +40,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.extensions import api
 from flask import current_app, request
 from flask_restx import Resource
+from sqlalchemy import or_
 from sqlalchemy.orm import joinedload
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
