@@ -349,6 +349,9 @@ export const EditFullPartyForm: FC<EditFullPartyFormProps> = ({
                     </Typography.Text>
                   </Typography.Paragraph>
                 </Col>
+                <Col>
+                  <PartyOrgBookForm party={party} />
+                </Col>
               </Row>
             )) ||
               (!isPerson && canManageOrgbook && (
