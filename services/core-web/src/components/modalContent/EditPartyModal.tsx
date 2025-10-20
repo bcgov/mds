@@ -17,14 +17,14 @@ export const EditPartyModal: FC<EditPartyProps> = ({ onSubmit, partyGuid }) => {
   const parties = useAppSelector(getParties) as IParty[];
   const party: EditFullPartyFormValues = parties[partyGuid];
   const today = moment().utc();
-  const inspectorInfo = party.business_role_appts.find(
+  const inspectorInfo = party?.business_role_appts.find(
     (role) =>
       role.party_business_role_code === "INS" &&
       today.isSameOrAfter(role.start_date, "day") &&
       (!role.end_date || today.isBefore(role.end_date, "day"))
   );
 
-  const projectLeadInfo = party.business_role_appts.find(
+  const projectLeadInfo = party?.business_role_appts.find(
     (role) =>
       role.party_business_role_code === "PRL" &&
       today.isSameOrAfter(role.start_date, "day") &&
@@ -55,8 +55,8 @@ export const EditPartyModal: FC<EditPartyProps> = ({ onSubmit, partyGuid }) => {
 
   const initialValues = {
     ...party,
-    ...(party.address[0] ? party.address[0] : {}),
-    email: party.email && party.email !== "Unknown" ? party.email : null,
+    ...(party?.address?.[0] ? party.address[0] : {}),
+    email: party?.email && party.email !== "Unknown" ? party.email : null,
   };
 
   return <EditFullPartyForm onSubmit={onSubmit} party={party} initialValues={initialValues} />;

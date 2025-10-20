@@ -1198,7 +1198,6 @@ exports[`EditPartyModal renders properly 1`] = `
           style="padding-left: 24px; padding-right: 24px;"
         />
       </div>
-      <br />
       <div
         class="right center-mobile"
       >

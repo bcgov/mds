@@ -249,7 +249,7 @@ class PartyResource(Resource, UserMixin):
                 setattr(existing_party.address[0], key, value)
 
         # admin only can set inspector and project lead roles as well as signature
-        if jwt.validate_roles([MINE_ADMIN, MANAGE_ORGBOOK]):
+        if jwt.has_one_of_roles([MINE_ADMIN, MANAGE_ORGBOOK]):
             signature = data.get('signature') if data.get('signature') else None
             today = datetime.now(timezone.utc).date()
             business_roles = PartyBusinessRoleAppointment.get_current_business_appointments(

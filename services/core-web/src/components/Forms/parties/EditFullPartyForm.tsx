@@ -60,8 +60,8 @@ export const EditFullPartyForm: FC<EditFullPartyFormProps> = ({
     setSignature(signatureBase64);
   };
 
-  const isPerson = party.party_type_code === "PER";
-  const orgBookEntity = party.party_orgbook_entity;
+  const isPerson = party?.party_type_code === "PER";
+  const orgBookEntity = party?.party_orgbook_entity;
   const hasOrgBookEntity = !isEmpty(orgBookEntity);
   return (
     <div>
