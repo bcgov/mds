@@ -132,12 +132,12 @@ class MineReportListResource(Resource, UserMixin):
             # CRR: Has definition id; optionally exclude TSF unless TAR explicitly requested
             if MINE_REPORT_TYPE['CODE REQUIRED REPORTS'] in requested_types:
                 crr_cond = MineReport.mine_report_definition_id.isnot(None)
-                if MINE_REPORT_TYPE['TAILINGS REPORTS'] not in requested_types:
-                    crr_cond = crr_cond & (~MineReport.mine_report_definition.has(
-                        MineReportDefinition.categories.any(
-                            MineReportCategory.mine_report_category == 'TSF'
-                        )
-                    ))
+                # if MINE_REPORT_TYPE['TAILINGS REPORTS'] not in requested_types:
+                #     crr_cond = crr_cond & (~MineReport.mine_report_definition.has(
+                #         MineReportDefinition.categories.any(
+                #             MineReportCategory.mine_report_category == 'TSF'
+                #         )
+                #     ))
                 conditions.append(crr_cond)
 
             # TAR: TSF category on definition
