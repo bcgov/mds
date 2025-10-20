@@ -1,23 +1,21 @@
-import React from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 import { getParties } from "@mds/common/redux/selectors/partiesSelectors";
-import CustomPropTypes from "@/customPropTypes";
-import EditFullPartyForm from "@/components/Forms/parties/EditFullPartyForm";
-import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
+import EditFullPartyForm, {
+  EditFullPartyFormValues,
+} from "@/components/Forms/parties/EditFullPartyForm";
 import moment from "moment";
 import { formatDate } from "@common/utils/helpers";
+import { useAppSelector } from "@mds/common/redux/rootState";
+import { IParty } from "@mds/common/interfaces";
 
-const propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
-  partyGuid: PropTypes.string.isRequired,
-  provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-};
+interface EditPartyProps {
+  onSubmit: () => any;
+  partyGuid: string;
+}
 
-export const EditPartyModal = (props) => {
-  const party = props.parties[props.partyGuid];
+export const EditPartyModal: FC<EditPartyProps> = ({ onSubmit, partyGuid }) => {
+  const parties = useAppSelector(getParties) as IParty[];
+  const party: EditFullPartyFormValues = parties[partyGuid];
   const today = moment().utc();
   const inspectorInfo = party.business_role_appts.find(
     (role) =>
@@ -61,22 +59,7 @@ export const EditPartyModal = (props) => {
     email: party.email && party.email !== "Unknown" ? party.email : null,
   };
 
-  return (
-    <EditFullPartyForm
-      onSubmit={props.onSubmit}
-      closeModal={props.closeModal}
-      party={party}
-      provinceOptions={props.provinceOptions}
-      initialValues={initialValues}
-    />
-  );
+  return <EditFullPartyForm onSubmit={onSubmit} party={party} initialValues={initialValues} />;
 };
 
-const mapStateToProps = (state) => ({
-  parties: getParties(state),
-  provinceOptions: getDropdownProvinceOptions(state),
-});
-
-EditPartyModal.propTypes = propTypes;
-
-export default connect(mapStateToProps)(EditPartyModal);
+export default EditPartyModal;
