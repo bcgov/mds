@@ -51,15 +51,19 @@ def test_information_requirements_table_notifications(mock_send_template_email, 
     expected_calls = [
         call(
             subject,
-            minespace_recipients,
-            "email/projects/minespace_project_section_email.html",
-            context
+            [MAJOR_MINES_OFFICE_EMAIL, project.project_lead.email],
+            "email/projects/ministry_project_section_email.html",
+            context,
+            reference_id=irt.irt_guid,
+            reference_table='information_requirements_table'
         ),
         call(
             subject,
-            [MAJOR_MINES_OFFICE_EMAIL, project.project_lead.email],
-            "email/projects/ministry_project_section_email.html",
-            context
+            minespace_recipients,
+            "email/projects/minespace_project_section_email.html",
+            context,
+            reference_id=irt.irt_guid,
+            reference_table='information_requirements_table'
         )
     ]
 
