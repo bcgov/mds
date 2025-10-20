@@ -64,7 +64,7 @@ export const EditPermitConditionCategoryInline: FC<IPermitConditionCategoryProps
   if (!isEditMode) {
     return (
       <Tooltip title="Click to edit">
-        <div onClick={enableEditMode} onKeyDown={enableEditMode}>
+        <div data-title="Click to edit" onClick={enableEditMode} onKeyDown={enableEditMode}>
           {titleElement}
         </div>
       </Tooltip>
