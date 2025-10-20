@@ -13,10 +13,11 @@ import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants/enums";
 import { IMineReport } from "@mds/common/interfaces/reports/mineReport.interface";
 import { MINE_REPORT_STATUS_HASH } from "@mds/common/constants/strings";
 import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
+import { EditOutlined } from "@ant-design/icons";
 
 interface ReportsTableProps {
   mineReports: IMineReport[];
-  openReport: (record: IMineReport) => void;
+  openReport: (record: IMineReport, isEditMode?: boolean) => void;
   isLoaded: boolean;
   backendPaginated?: boolean;
 }
@@ -50,7 +51,28 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
       },
       icon: <EyeOutlined />,
     },
+    {
+      key: "submit",
+      label: "Submit",
+      clickFunction: (_event, record) => {
+        props.openReport(record, true);
+      },
+      icon: <EditOutlined />,
+    },
   ];
+
+  const recordActionsFilter = (record: IMineReport, actionList: any[]) => {
+    // Hide view action for NON and REQ statuses, show submit for others
+    if (
+      [MINE_REPORT_SUBMISSION_CODES.NON, MINE_REPORT_SUBMISSION_CODES.REQ].includes(
+        record.mine_report_status_code
+      )
+    ) {
+      return actionList.filter((action) => action.key !== "view");
+    }
+
+    return actionList.filter((action) => action.key !== "submit");
+  };
 
   let columns: ColumnsType<IMineReport> = [
     renderTextColumn("report_name", "Report Name", !props.backendPaginated),
@@ -69,8 +91,8 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
         ) : null;
       },
     },
-    renderTextColumn("submission_year", "Compliance Year", !props.backendPaginated, null, 5),
-    renderTextColumn("due_date", "Due", true, null, 5),
+    renderTextColumn("submission_year", "Compliance Year", !props.backendPaginated, null, 50),
+    renderTextColumn("due_date", "Due", true, null, 100),
     renderTextColumn(["latest_submission", "received_date"], "Submitted On", true),
     renderTextColumn("created_by_idir", "Requested By", true),
     {
@@ -81,13 +103,13 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
         return <Badge status={reportStatusSeverity(text)} text={MINE_REPORT_STATUS_HASH[text]} />;
       },
     },
-    renderActionsColumn({ actions }),
+    renderActionsColumn({ actions, recordActionsFilter }),
   ];
 
   if (props.mineReports.some((report) => report.permit_guid)) {
     columns = columns.map((col) => {
       if (col.key === "code_section") {
-        return renderTextColumn("permit_number", "Permit #", true, null, 5);
+        return renderTextColumn("permit_number", "Permit #", true, null, 125);
       } else {
         return col;
       }

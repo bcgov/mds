@@ -53,18 +53,20 @@ export const createMineReport = (mineGuid, payload) => (dispatch) => {
 
 export const fetchMineReports = (
   mineGuid,
-  reportsType = Strings.MINE_REPORTS_TYPE.codeRequiredReports,
+  reportsType: string | string[] = Strings.MINE_REPORTS_TYPE.codeRequiredReports,
   params = {}
 ) => (dispatch) => {
   dispatch(mineReportActions.clearMineReports());
   dispatch(request(NetworkReducerTypes.GET_MINE_REPORTS));
   dispatch(showLoading());
   const filteredParams = removeNullValues(params);
+  // Allow multiple mine_reports_type values; if array, pass as-is so query-string serializes repeats
+  const mineReportsTypeParam = Array.isArray(reportsType) ? reportsType : reportsType;
   return CustomAxios()
     .get(
       `${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid, {
         ...filteredParams,
-        mine_reports_type: reportsType,
+        mine_reports_type: mineReportsTypeParam,
       })}`,
       createRequestHeader()
     )
