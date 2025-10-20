@@ -112,7 +112,8 @@ MINE_DOCUMENT_VERSION_MODEL = api.model(
 
 MAJOR_MINE_APPLICATION_DOCUMENT_XREF_MODEL = api.model(
     'MajorMineApplicationDocumentXref', {
-        'major_mine_application_document_type_code': fields.String
+        'major_mine_application_document_type_code': fields.String,
+        'major_mine_application_document_subtype_code': fields.String
     })
 
 PROJECT_SUMMARY_DOCUMENT_XREF_MODEL = api.model(

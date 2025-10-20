@@ -1,6 +1,7 @@
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { IMineDocument, IMineDocumentVersion } from "@mds/common/interfaces";
 import { isFeatureEnabled, Feature } from "@mds/common/utils";
+import { MAJOR_MINES_APPLICATION_DOCUMENT_SUBTYPE_CODE } from "@mds/common/constants/strings";
 
 export enum FileOperations {
   View = "Open in document viewer",
@@ -82,6 +83,8 @@ export class MineDocument implements IMineDocument {
   public is_latest_version: boolean;
 
   public category?: string;
+
+  public label?: string;
 
   // generated
   public key: string;
@@ -194,14 +197,27 @@ export class MajorMineApplicationDocument extends MineDocument {
 
   public major_mine_application_document_xref: {
     major_mine_application_document_type_code: string;
+    major_mine_application_document_subtype_code?: string;
   };
 
   public major_mine_application_document_type_code: string;
+  public major_mine_application_document_subtype_code: string;
+  public label: string | undefined;
 
   constructor(jsonObject: any) {
     super(jsonObject);
-    this.major_mine_application_document_type_code =
-      jsonObject.major_mine_application_document_type_code;
+    const typeCode = jsonObject.major_mine_application_document_type_code ?? jsonObject.major_mine_application_document_xref?.major_mine_application_document_type_code;
+    const subtypeCode = jsonObject.major_mine_application_document_subtype_code ?? jsonObject.major_mine_application_document_xref?.major_mine_application_document_subtype_code;
+    this.major_mine_application_document_type_code = typeCode;
+    if (subtypeCode) {
+      this.major_mine_application_document_subtype_code = subtypeCode;
+      this.label = this.getSubtypeLabel(
+        typeCode,
+        subtypeCode
+      );
+    } else {
+      this.label = undefined;
+    }
     this.category_code = this.determineCategoryCode(jsonObject);
   }
 
@@ -219,6 +235,15 @@ export class MajorMineApplicationDocument extends MineDocument {
       information_requirements_table_document_xref?.information_requirements_table_document_type_code ??
       major_mine_application_document_xref?.major_mine_application_document_type_code
     );
+  }
+
+  private getSubtypeLabel(typeCode: string, subtypeCode: string): string | undefined {
+    const subtypes = MAJOR_MINES_APPLICATION_DOCUMENT_SUBTYPE_CODE[typeCode];
+    if (subtypes && subtypes[subtypeCode]) {
+      return subtypes[subtypeCode];
+    }
+
+    return undefined;
   }
 
   public getAllowedActions(userRoles: string[] = []) {

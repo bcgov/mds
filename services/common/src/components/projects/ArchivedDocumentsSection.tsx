@@ -4,7 +4,7 @@ import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import { Feature } from "@mds/common/utils/featureFlag";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import DocumentTable from "../documents/DocumentTable";
-import { renderCategoryColumn } from "../common/CoreTableCommonColumns";
+import { renderCategoryColumn, renderTextColumn } from "../common/CoreTableCommonColumns";
 import { CATEGORY_CODE } from "@mds/common/constants/strings";
 import { IMineDocument } from "@mds/common/interfaces/mineDocument.interface";
 
@@ -27,9 +27,13 @@ const ArchivedDocumentsSection: FC<ArchivedDocumentsSectionProps> = ({
     return <></>;
   }
 
-  const additionalColumns = showCategory
-    ? [renderCategoryColumn("category_code", "Category", CATEGORY_CODE)]
-    : [];
+  const hasDocumentsWithLabels = documents?.some(doc => doc?.label) || false;
+  const categoryColumn = renderCategoryColumn("category_code", "Category", CATEGORY_CODE);
+  const labelColumn = renderTextColumn("label", "Document Label");
+
+  const additionalColumns = hasDocumentsWithLabels
+    ? [categoryColumn, labelColumn]
+    : [categoryColumn];
 
   return (
     <div id={href}>
@@ -44,7 +48,7 @@ const ArchivedDocumentsSection: FC<ArchivedDocumentsSectionProps> = ({
         documents={documents}
         showVersionHistory={true}
         canReplaceDocuments={false}
-        additionalColumns={additionalColumns}
+        additionalColumns={showCategory ? additionalColumns : []}
       />
     </div>
   );
