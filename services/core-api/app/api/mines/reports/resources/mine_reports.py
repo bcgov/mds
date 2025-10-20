@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 
 from app.api.activity.models.activity_notification import (
@@ -6,6 +7,8 @@ from app.api.activity.models.activity_notification import (
 )
 from app.api.activity.utils import trigger_notification
 from app.api.constants import MINE_REPORT_TYPE
+from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.mines.exceptions.mine_exceptions import MineException
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_conditions.models.permit_condition_category import (
@@ -15,9 +18,13 @@ from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_category import MineReportCategory
 from app.api.mines.reports.models.mine_report_contact import MineReportContact
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
+from app.api.mines.reports.models.mine_report_document_xref import (
+    MineReportDocumentXref,
+)
 from app.api.mines.reports.models.mine_report_permit_requirement import (
     MineReportPermitRequirement,
 )
+from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.reports.report_helpers import ReportFilterHelper
 from app.api.mines.response_models import MINE_REPORT_MODEL, PAGINATED_REPORT_LIST
 from app.api.utils.access_decorators import (
@@ -33,7 +40,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.extensions import api
 from flask import current_app, request
 from flask_restx import Resource
-from sqlalchemy import or_
+from sqlalchemy.orm import joinedload
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 PAGE_DEFAULT = 1
