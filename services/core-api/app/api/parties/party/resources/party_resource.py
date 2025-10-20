@@ -14,7 +14,7 @@ from app.api.parties.response_models import PARTY
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.utils.access_decorators import MINE_ADMIN
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_admin, \
-    requires_any_of, EDIT_PARTY, MINESPACE_PROPONENT, is_minespace_user, bceid_username
+    requires_any_of, EDIT_PARTY, MINESPACE_PROPONENT, is_minespace_user, bceid_username, MANAGE_ORGBOOK
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.resources_mixins import UserMixin
 from app.extensions import api, jwt, cache
@@ -207,14 +207,11 @@ class PartyResource(Resource, UserMixin):
     @api.expect(parser)
     @api.doc(
         description='Update a party by guid', params={'party_guid': 'guid of the party to update.'})
-    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
+    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT, MANAGE_ORGBOOK])
     @api.marshal_with(PARTY, code=200)
     def put(self, party_guid):
         if is_minespace_user():
             user = bceid_username()
-            current_app.logger.debug('**********************')
-            current_app.logger.debug(user)
-            current_app.logger.debug('**********************')
             minespace_user = MinespaceUser.find_by_email(user + "@bceid")
             if not minespace_user:
                 raise BadRequest('User not found.')
