@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { Button, Col, Row, Typography } from "antd";
@@ -6,13 +6,16 @@ import { fetchMineReports } from "@mds/common/redux/actionCreators/reportActionC
 import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { IMine, IMineReport, IPageData } from "@mds/common/interfaces";
+import { IMine, IMineReport, IPageData, IPermit } from "@mds/common/interfaces";
 import { Link, useHistory } from "react-router-dom";
 import * as routes from "@/constants/routes";
 import { Link as ScrollLink, Element } from "react-scroll";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 import * as Strings from "@mds/common/constants/strings";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils";
+import ReportManagement from "@/components/dashboard/mine/reports/ReportManagement";
 
 export const Reports: FC = () => {
   const dispatch = useDispatch();
@@ -20,6 +23,8 @@ export const Reports: FC = () => {
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
   const pageData = useSelector(getReportsPageData);
   const mineReports: IMineReport[] = useSelector(getMineReports);
+  const { isFeatureEnabled } = useFeatureFlag();
+  const isV2Enabled = isFeatureEnabled(Feature.REPORT_MANAGEMENT_V2);
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [permitRequiredReports, setPermitRequiredReports] = useState<IMineReport[]>([]);
@@ -48,6 +53,7 @@ export const Reports: FC = () => {
   }, [mineReports]);
 
   useEffect(() => {
+    if (isV2Enabled) return; // v2 handles its own fetching inside the component
     let isMounted = true;
     setIsLoaded(false);
     Promise.all([
@@ -58,11 +64,10 @@ export const Reports: FC = () => {
         setIsLoaded(true);
       }
     });
-
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [isV2Enabled]);
 
   const openReport = (reportRecord: IMineReport) => {
     history.push(
@@ -87,6 +92,11 @@ export const Reports: FC = () => {
       })
     );
   };
+
+  // V2 layout
+  if (isV2Enabled) {
+    return <ReportManagement />;
+  }
 
   return (
     <Row>
@@ -162,6 +172,7 @@ export const Reports: FC = () => {
               openReport={openReport}
               mineReports={permitRequiredReports}
               isLoaded={isLoaded}
+              backendPaginated
             />
             <Row justify="center" className="margin-large--bottom">
               <ResponsivePagination

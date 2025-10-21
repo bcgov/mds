@@ -1,12 +1,11 @@
 import json
 import uuid
-from datetime import datetime, timedelta, date
-from flask import current_app
+from datetime import date, datetime, timedelta
 
+from app.api.constants import MINE_REPORT_TYPE
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
-from app.api.constants import MINE_REPORT_TYPE
-
+from flask import current_app
 from tests.factories import MineFactory, MineReportFactory
 
 THREE_REPORTS = 3
@@ -53,21 +52,23 @@ def test_get_code_required_reports_for_mine(test_client, db_session, auth_header
     assert get_resp.status_code == 200
     assert all(report['report_name'] == specific_report_name for report in get_data['records'])
 
-    # Test filter by received date range
-    start_date = mine.mine_reports[0].received_date - timedelta(days=1)
-    end_date = mine.mine_reports[0].received_date + timedelta(days=1)
+    # Test filter by received date range (robust to date or datetime values from factories)
+    base_rd = mine.mine_reports[0].received_date
+    base_rd_date = base_rd.date() if isinstance(base_rd, datetime) else base_rd
+    start_date = base_rd_date - timedelta(days=1)
+    end_date = base_rd_date + timedelta(days=1)
 
     get_resp = test_client.get(
-        f'/mines/{mine.mine_guid}/reports?mine_reports_type=CRR&due_date_start={start_date.strftime("%Y-%m-%d")}&due_date_end={end_date.strftime("%Y-%m-%d")}',
+        f'/mines/{mine.mine_guid}/reports?mine_reports_type=CRR&received_date_start={start_date.strftime("%Y-%m-%d")}&received_date_end={end_date.strftime("%Y-%m-%d")}',
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
 
     for report in get_data['records']:
-        received_date = datetime.strptime(report['received_date'], '%Y-%m-%d')
+        received_date = datetime.strptime(report['received_date'], '%Y-%m-%d').date()
 
-        assert (start_date.date() <= received_date.date())
-        assert (received_date.date() <= end_date)
+        assert (start_date <= received_date)
+        assert (received_date <= end_date)
 
 
 def test_get_permit_required_reports_for_mine(test_client, db_session, auth_headers):
@@ -243,3 +244,42 @@ def test_delete_mine_report(test_client, db_session, auth_headers):
         f'/mines/{mine.mine_guid}/reports/{mine.mine_reports[0].mine_report_guid}',
         headers=auth_headers['full_auth_header'])
     assert delete_resp.status_code == 204, delete_resp.response
+
+
+def test_get_prr_and_crr_reports_for_mine(test_client, db_session, auth_headers):
+    # Create a mine with no reports, then add one CRR (non-TSF) and one PRR
+    mine = MineFactory(mine_reports=0)
+
+    # Pick a non-TSF code-required report definition to avoid TAR filtering
+    defs = MineReportDefinition.get_all()
+    non_tsf_def = next(
+        d for d in defs if not any(getattr(c, 'mine_report_category', None) == 'TSF' for c in d.categories)
+    )
+
+    # Create CRR (has definition) and PRR (no definition) reports
+    MineReportFactory(mine=mine, mine_report_definition_id=non_tsf_def.mine_report_definition_id)
+    MineReportFactory(mine=mine, permit_required_reports=True)
+
+    # Request only CRR
+    get_resp = test_client.get(
+        f'/mines/{mine.mine_guid}/reports?mine_reports_type=CRR',
+        headers=auth_headers['full_auth_header']
+    )
+    get_data = json.loads(get_resp.data.decode())
+
+    assert get_resp.status_code == 200
+    assert len(get_data['records']) == 1
+
+
+    # Request both CRR and PRR
+    get_resp = test_client.get(
+        f'/mines/{mine.mine_guid}/reports?mine_reports_type=CRR&mine_reports_type=PRR',
+        headers=auth_headers['full_auth_header']
+    )
+    get_data = json.loads(get_resp.data.decode())
+
+    assert get_resp.status_code == 200
+    assert len(get_data['records']) == 2
+    has_prr = any(r.get('mine_report_definition_guid') is None for r in get_data['records'])
+    has_crr = any(r.get('mine_report_definition_guid') is not None for r in get_data['records'])
+    assert has_prr and has_crr

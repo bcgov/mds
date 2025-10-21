@@ -53,13 +53,14 @@ export const createMineReport = (mineGuid, payload) => (dispatch) => {
 
 export const fetchMineReports = (
   mineGuid,
-  reportsType = Strings.MINE_REPORTS_TYPE.codeRequiredReports,
+  reportsType: string | string[] = Strings.MINE_REPORTS_TYPE.codeRequiredReports,
   params = {}
 ) => (dispatch) => {
   dispatch(mineReportActions.clearMineReports());
   dispatch(request(NetworkReducerTypes.GET_MINE_REPORTS));
   dispatch(showLoading());
   const filteredParams = removeNullValues(params);
+
   return CustomAxios()
     .get(
       `${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid, {

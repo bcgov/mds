@@ -792,7 +792,9 @@ exports[`PermitConditions renders properly 1`] = `
                                       class="ant-typography margin-none"
                                       id="hsc"
                                     >
-                                      <div>
+                                      <div
+                                        data-title="Click to edit"
+                                      >
                                         <span
                                           style="margin-bottom: 0px;"
                                         >
