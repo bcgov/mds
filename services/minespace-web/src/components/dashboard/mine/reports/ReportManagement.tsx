@@ -28,7 +28,10 @@ const ReportManagement: FC = () => {
   const history = useHistory();
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [allReports, setAllReports] = useState<IMineReport[]>([]);
+
+  const [allReports, setAllReports] = useState<IMineReport[]>(
+    (useAppSelector(getMineReports) as IMineReport[]) || []
+  );
 
   const mineReports: IMineReport[] = useAppSelector(getMineReports);
   const permits: IPermit[] = useAppSelector(getPermits);
@@ -37,20 +40,15 @@ const ReportManagement: FC = () => {
   const pageData = useAppSelector(getReportsPageData) as any;
 
   useEffect(() => {
-    let isMounted = true;
     setIsLoaded(true);
-
     onAllReportsPageChange(1);
-
     dispatch(fetchPermits(mine.mine_guid));
-
-    return () => {
-      isMounted = false;
-    };
   }, [mine.mine_guid]);
 
   useEffect(() => {
-    setAllReports(mineReports || []);
+    if (mineReports && mineReports.length > 0) {
+      setAllReports(mineReports);
+    }
   }, [mineReports]);
 
   const reportsOverdue = 3;
