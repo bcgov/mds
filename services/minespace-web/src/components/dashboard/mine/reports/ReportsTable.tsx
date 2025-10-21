@@ -14,6 +14,8 @@ import { IMineReport } from "@mds/common/interfaces/reports/mineReport.interface
 import { MINE_REPORT_STATUS_HASH } from "@mds/common/constants/strings";
 import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { EditOutlined } from "@ant-design/icons";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils";
 
 interface ReportsTableProps {
   mineReports: IMineReport[];
@@ -42,6 +44,9 @@ export const reportStatusSeverity = (status: MINE_REPORT_SUBMISSION_CODES) => {
 
 export const ReportsTable: FC<ReportsTableProps> = (props) => {
   const mineReportDefinitionHash = useSelector(getMineReportDefinitionHash);
+  const { isFeatureEnabled } = useFeatureFlag();
+  const showOverdueLabel = isFeatureEnabled(Feature.REPORT_MANAGEMENT_V2);
+
   const actions = [
     {
       key: "view",
@@ -99,7 +104,11 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
       title: "Status",
       dataIndex: "mine_report_status_code",
       sorter: (a, b) => a.mine_report_status_code.localeCompare(b.mine_report_status_code),
-      render: (text: MINE_REPORT_SUBMISSION_CODES) => {
+      render: (text: MINE_REPORT_SUBMISSION_CODES, report: IMineReport) => {
+        if (report.is_overdue && showOverdueLabel) {
+          return <Badge status="error" text="Overdue" />;
+        }
+
         return <Badge status={reportStatusSeverity(text)} text={MINE_REPORT_STATUS_HASH[text]} />;
       },
     },

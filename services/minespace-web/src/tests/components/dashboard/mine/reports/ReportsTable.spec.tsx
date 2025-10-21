@@ -178,6 +178,36 @@ describe("ReportsTable", () => {
     fireEvent.click(within(secondMenu).getByTestId("action-button-view"));
     expect(openReport).toHaveBeenCalledWith(expect.objectContaining({ mine_report_guid: "s2" }));
   });
+
+  it("renders Overdue badge when report.is_overdue is true", () => {
+    const openReport = jest.fn();
+    const overdue: IMineReport = baseReport({
+      mine_report_guid: "overdue-1",
+      is_overdue: true,
+      mine_report_status_code: MINE_REPORT_SUBMISSION_CODES.NON,
+      report_name: "Report 1",
+    });
+    const normal: IMineReport = baseReport({
+      mine_report_guid: "normal-1",
+      is_overdue: false,
+      mine_report_status_code: MINE_REPORT_SUBMISSION_CODES.REC,
+      report_name: "Regular Report",
+    });
+
+    render(
+      <ReduxWrapper initialState={initialComplianceState}>
+        <ReportsTable
+          mineReports={[overdue, normal]}
+          openReport={openReport}
+          isLoaded
+          backendPaginated={false}
+        />
+      </ReduxWrapper>
+    );
+
+    const overdueBadges = within(document.querySelector("table")).getAllByText(/Overdue/i);
+    expect(overdueBadges.length).toBe(1);
+  });
 });
 
 describe("reportStatusSeverity", () => {

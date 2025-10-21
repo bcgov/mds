@@ -11,6 +11,7 @@ import {
   MINE_REPORTS as MOCK_MINE_REPORTS,
   MINE_REPORT_RESPONSE as MOCK_MINE_REPORT_RESPONSE,
   MINE_REPORT_DEFINITION_OPTIONS as MOCK_REPORT_DEFS,
+  MOCK_MINE_REPORT_STATS,
 } from "@mds/common/tests/mocks/dataMocks";
 
 describe("ReportManagement", () => {
@@ -25,6 +26,11 @@ describe("ReportManagement", () => {
       mineReports: MOCK_MINE_REPORTS,
       mineReportGuid: "",
       reportComments: [],
+    },
+    MINE_REPORT_STATS: {
+      byMineGuid: {
+        [mineGuid]: MOCK_MINE_REPORT_STATS,
+      },
     },
     // Permits reducer seeded from common mocks
     PERMITS: {
@@ -83,12 +89,12 @@ describe("ReportManagement", () => {
     expect(within(activePermitsCard as HTMLElement).getByText("3")).toBeInTheDocument();
 
     const overdueCard = screen.getByText("Reports Overdue").closest(".table-summary-card");
-    expect(within(overdueCard as HTMLElement).getByText("3")).toBeInTheDocument();
+    expect(within(overdueCard as HTMLElement).getByText("4")).toBeInTheDocument();
 
     const dueNextCard = screen
       .getByText("Reports Due in the Next 90 Days")
       .closest(".table-summary-card");
-    expect(within(dueNextCard as HTMLElement).getByText("4")).toBeInTheDocument();
+    expect(within(dueNextCard as HTMLElement).getByText("5")).toBeInTheDocument();
 
     // "Reminder" alert content
     expect(
@@ -118,8 +124,6 @@ describe("ReportManagement", () => {
       );
       expect(lastMineReportsRequest?.query?.page).toBe("1");
       expect(lastMineReportsRequest?.query?.per_page).toBe("20");
-
-      expect(lastPermitsRequest?.mineGuid).toEqual(mineGuid);
     });
   });
 

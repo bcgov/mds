@@ -14,6 +14,10 @@ import NotFoundNotice from "@/components/common/NotFoundNotice";
 import { useAppDispatch } from "@mds/common/redux/rootState";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
+import {
+  fetchMineReportStats,
+  getOverdueReportsCountByMineGuid,
+} from "@mds/common/redux/slices/mineReportStatsSlice";
 
 const MineDashboard: FC = () => {
   const dispatch = useAppDispatch();
@@ -24,6 +28,7 @@ const MineDashboard: FC = () => {
   const [mineNotFound, setMineNotFound] = useState(false);
   const { isFeatureEnabled } = useFeatureFlag();
   const showApplications = mine?.major_mine_ind || isFeatureEnabled(Feature.MINESPACE_NOW_STATUS);
+  const showReportStats = isFeatureEnabled(Feature.REPORT_MANAGEMENT_V2);
 
   const loadData = async (mine_guid) => {
     return Promise.all([
@@ -48,10 +53,17 @@ const MineDashboard: FC = () => {
     }
   }, [id]);
 
+  const overdueReports = useSelector(getOverdueReportsCountByMineGuid(mine?.mine_guid));
+  useEffect(() => {
+    if (mine?.mine_guid && showReportStats) {
+      dispatch(fetchMineReportStats(mine.mine_guid));
+    }
+  }, [mine?.mine_guid, showReportStats]);
+
   const dynamicRoute = (key: string) => {
     return MINE_DASHBOARD.dynamicRoute(mine?.mine_guid, key, "");
   };
-  const items = getMineDashboardRoutes(showApplications).map((item) => ({
+  const items = getMineDashboardRoutes(showApplications, overdueReports).map((item) => ({
     ...item,
     path: dynamicRoute(item.key),
   }));
