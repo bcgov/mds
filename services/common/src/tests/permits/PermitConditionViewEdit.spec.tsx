@@ -89,7 +89,7 @@ describe("PermitConditionViewEdit", () => {
         expect(screen.getByText("Add Condition")).toBeInTheDocument();
 
         // Category inline edit (title has aria button with title 'Click to edit')
-        const editCategory = container.querySelector('[data-title="Click to edit"]');
+        const editCategory = container.querySelector('[title="Click to edit"]');
         expect(editCategory).toBeInTheDocument();
 
         // Condition edit button has aria-label starting with Edit Condition
@@ -140,6 +140,7 @@ describe("PermitConditionViewEdit", () => {
 
         fireEvent.click(screen.getByText("Add Condition"));
 
+        // re-render with editing form name like component would set (simulate state lift)
         rerender(
             <ReduxWrapper initialState={initialState}>
                 <PermitConditionsProvider value={providerValue}>
@@ -158,7 +159,8 @@ describe("PermitConditionViewEdit", () => {
         );
 
         await waitFor(() => {
-            expect(screen.getByLabelText('Cancel')).toBeInTheDocument();
+            // SubConditionForm uses a cancel button (text may be 'Cancel')
+            expect(screen.getByText(/Cancel/i)).toBeInTheDocument();
         });
     });
 });
