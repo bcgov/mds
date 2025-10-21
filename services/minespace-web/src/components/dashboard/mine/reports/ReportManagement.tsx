@@ -1,5 +1,4 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { Row, Col, Typography, Tabs, Alert, Button } from "antd";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { IMine, IPermit } from "@mds/common/interfaces";
@@ -18,14 +17,14 @@ import {
   PlusCircleFilled,
 } from "@ant-design/icons";
 import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
-import { useAppSelector } from "@mds/common/redux/rootState";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 
 const REPORTS_PAGE_SIZE = 20;
 
 const ReportManagement: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -37,7 +36,6 @@ const ReportManagement: FC = () => {
   const activePermits = permits?.filter((permit) => permit.permit_status_code === "O").length;
   const pageData = useAppSelector(getReportsPageData) as any;
 
-  console.log(permits);
   useEffect(() => {
     let isMounted = true;
     setIsLoaded(true);
