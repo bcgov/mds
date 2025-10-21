@@ -293,6 +293,7 @@ export const MINE_REPORTS = (mineGuid, params?) =>
   `/mines/${mineGuid}/reports?${queryString.stringify(params)}`;
 export const MINE_REPORT = (mineGuid, mineReportGuid) =>
   `/mines/${mineGuid}/reports/${mineReportGuid}`;
+export const MINE_REPORT_STATS = (mineGuid: string) => `/mines/${mineGuid}/reports/stats`;
 export const MINE_REPORT_SUBMISSIONS = (
   params: { mine_report_guid?: string },
   latest_submission = true
