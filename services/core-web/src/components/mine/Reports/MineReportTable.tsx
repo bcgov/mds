@@ -24,12 +24,14 @@ import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common/constants/environment";
-import { IMineReport } from "@mds/common/interfaces";
+import { IMineReport, IMineReportDefinition } from "@mds/common/interfaces";
 import { TablePaginationConfig } from "antd/es/table";
 import DocumentCompression from "@mds/common/components/documents/DocumentCompression";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { getMineReportDefinitionHash } from "@mds/common/redux/slices/complianceReportsSlice";
 import { PresetStatusColorType } from "antd/lib/_util/colors";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils/featureFlag";
 
 interface MineReportTableProps {
   mineReports: IMineReport[];
@@ -62,6 +64,8 @@ export const MineReportTable: FC<MineReportTableProps> = ({
   const mineReportCategoryOptionsHash = useSelector(getMineReportCategoryOptionsHash);
   const mineReportStatusOptionsHash = useSelector(getMineReportStatusOptionsHash);
   const mineReportDefinitionHash = useSelector(getMineReportDefinitionHash);
+  const { isFeatureEnabled } = useFeatureFlag();
+  const showOverdueLabel = isFeatureEnabled(Feature.REPORT_MANAGEMENT_V2);
 
   const hideColumn = (condition) => (condition ? "column-hide" : "");
 
@@ -162,14 +166,14 @@ export const MineReportTable: FC<MineReportTableProps> = ({
       dataIndex: "mine_report_status",
       sortField: "mine_report_status",
       sorter: isDashboardView || nullableStringSorter("mine_report_status"),
-      render: (text) => (
+      render: (text, record) => (
         <div title="Status">
-          <Badge
+          {record?.report?.is_overdue && showOverdueLabel ? <Badge status="error" text="Overdue" /> : <Badge
             status={getReportSubmissionBadgeStatusType(text) as PresetStatusColorType}
             text={text || Strings.EMPTY_FIELD}
-          />
+          />}
         </div>
-      ),
+      )
     },
     {
       title: "Due",

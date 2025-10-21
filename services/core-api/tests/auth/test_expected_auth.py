@@ -2,8 +2,8 @@ import pytest
 from app.api.compliance.resources.compliance_article import ComplianceArticleResource
 from app.api.download_token.resources.download_token import DownloadTokenResource
 from app.api.email_preview.resources.email_preview_resource import (
-    EmailPreviewResource,
     EmailPreviewListResource,
+    EmailPreviewResource,
 )
 from app.api.exports.now_application.resources.now_application_gis_export_resource import (
     NowApplicationGisExportResource,
@@ -77,13 +77,14 @@ from app.api.mines.permits.permit_conditions.resources.standard_permit_condition
 from app.api.mines.permits.permit_conditions.resources.standard_permit_conditions_resource import (
     StandardPermitConditionsResource,
 )
+from app.api.mines.permits.permit_conditions.resources.standard_report_permit_requirement_resource import (
+    StandardReportPermitRequirementResource,
+)
 from app.api.mines.region.resources.region import MineRegionResource
 from app.api.mines.reports.resources.mine_report_permit_requirement import (
     MineReportPermitRequirementResource,
 )
-from app.api.mines.permits.permit_conditions.resources.standard_report_permit_requirement_resource import (
-    StandardReportPermitRequirementResource
-)
+from app.api.mines.reports.resources.mine_report_stats import MineReportStatsResource
 from app.api.mines.reports.resources.mine_reports import (
     MineReportListResource,
     MineReportResource,
@@ -184,7 +185,6 @@ from app.api.utils.access_decorators import (
     EDIT_INFORMATION_REQUIREMENTS_TABLE,
     EDIT_MAJOR_MINE_APPLICATIONS,
     EDIT_PARTY,
-    MANAGE_ORGBOOK,
     EDIT_PERMIT,
     EDIT_PROJECT_DECISION_PACKAGES,
     EDIT_PROJECT_SUMMARIES,
@@ -196,6 +196,7 @@ from app.api.utils.access_decorators import (
     EDIT_TSF,
     EDIT_VARIANCE,
     GIS,
+    MANAGE_ORGBOOK,
     MINE_ADMIN,
     MINE_EDIT,
     MINESPACE_PROPONENT,
@@ -229,6 +230,7 @@ from app.api.utils.access_decorators import (
      (MineReportResource, "put", [EDIT_REPORT, MINESPACE_PROPONENT]),
      (MineReportListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineReportListResource, "post", [EDIT_REPORT, MINESPACE_PROPONENT]),
+     (MineReportStatsResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineReportPermitRequirementResource, "post", [EDIT_REPORT]),
      (StandardReportPermitRequirementResource, "post", [EDIT_STANDARD_PERMIT_CONDITIONS]),
      (StandardReportPermitRequirementResource, "put", [EDIT_STANDARD_PERMIT_CONDITIONS]),

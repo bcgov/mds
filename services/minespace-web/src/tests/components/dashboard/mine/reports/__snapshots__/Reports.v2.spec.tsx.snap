@@ -109,9 +109,7 @@ exports[`Reports (v2) matches snapshot (v2) 1`] = `
             </div>
             <div
               class="table-summary-card-content"
-            >
-              3
-            </div>
+            />
           </div>
         </div>
         <div
@@ -153,9 +151,7 @@ exports[`Reports (v2) matches snapshot (v2) 1`] = `
             </div>
             <div
               class="table-summary-card-content"
-            >
-              3
-            </div>
+            />
           </div>
         </div>
         <div
@@ -197,9 +193,7 @@ exports[`Reports (v2) matches snapshot (v2) 1`] = `
             </div>
             <div
               class="table-summary-card-content"
-            >
-              4
-            </div>
+            />
           </div>
         </div>
       </div>
@@ -355,8 +349,32 @@ exports[`Reports (v2) matches snapshot (v2) 1`] = `
                 <div
                   class="ant-spin-nested-loading"
                 >
+                  <div>
+                    <div
+                      aria-busy="true"
+                      aria-live="polite"
+                      class="ant-spin ant-spin-spinning"
+                    >
+                      <span
+                        class="ant-spin-dot ant-spin-dot-spin"
+                      >
+                        <i
+                          class="ant-spin-dot-item"
+                        />
+                        <i
+                          class="ant-spin-dot-item"
+                        />
+                        <i
+                          class="ant-spin-dot-item"
+                        />
+                        <i
+                          class="ant-spin-dot-item"
+                        />
+                      </span>
+                    </div>
+                  </div>
                   <div
-                    class="ant-spin-container"
+                    class="ant-spin-container ant-spin-blur"
                   >
                     <div
                       class="ant-table ant-table-small ant-table-has-fix-right"

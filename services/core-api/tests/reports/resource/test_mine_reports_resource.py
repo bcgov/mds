@@ -6,7 +6,8 @@ from app.api.constants import MINE_REPORT_TYPE
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 from flask import current_app
-from tests.factories import MineFactory, MineReportFactory
+from pytz import timezone as pytz_timezone
+from tests.factories import MineFactory, MineReportFactory, MineReportSubmissionFactory
 
 THREE_REPORTS = 3
 ONE_REPORT = 1
@@ -92,6 +93,103 @@ def test_get_a_report_for_a_mine(test_client, db_session, auth_headers):
     get_data = json.loads(get_resp.data.decode())
     assert get_data['mine_report_guid'] == str(mine_report.mine_report_guid)
     assert get_resp.status_code == 200
+    assert 'is_overdue' in get_data
+
+
+def test_is_overdue_flag_in_list_and_detail(test_client, db_session, auth_headers):
+    today_pst = datetime.now(pytz_timezone('US/Pacific')).date()
+    yesterday = today_pst - timedelta(days=1)
+    apr_1_2025 = date(2025, 4, 1)
+
+    mine = MineFactory(mine_reports=0)
+
+    # Overdue record: due yesterday but not submitted (NON) and after threshold
+    overdue = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,
+        due_date=max(yesterday, apr_1_2025),
+        received_date=None,
+    )
+
+    assert overdue.is_overdue is True
+
+    # Not overdue: due in future
+    not_overdue = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,
+        due_date=today_pst + timedelta(days=5),
+        received_date=None,
+    )
+
+    assert not_overdue.is_overdue is False
+
+    list_resp = test_client.get(
+        f'/mines/{mine.mine_guid}/reports', headers=auth_headers['full_auth_header']
+    )
+    list_data = json.loads(list_resp.data.decode())
+    assert list_resp.status_code == 200
+    assert len(list_data['records']) >= 2
+
+    flags = {r['mine_report_guid']: r.get('is_overdue') for r in list_data['records']}
+    assert flags[str(overdue.mine_report_guid)] is True
+    assert flags[str(not_overdue.mine_report_guid)] is False
+
+    det_resp = test_client.get(
+        f'/mines/{mine.mine_guid}/reports/{overdue.mine_report_guid}',
+        headers=auth_headers['full_auth_header'],
+    )
+    det_data = json.loads(det_resp.data.decode())
+    assert det_resp.status_code == 200
+    assert det_data['is_overdue'] is True
+
+
+def test_is_overdue_false_when_latest_submission_present(test_client, db_session, auth_headers):
+    today_pst = datetime.now(pytz_timezone('US/Pacific')).date()
+    yesterday = today_pst - timedelta(days=1)
+    apr_1_2025 = date(2025, 4, 1)
+
+    mine = MineFactory(mine_reports=0)
+
+    # Past-due report but add a submission so status != 'NON' => not overdue
+    report = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,
+        due_date=max(yesterday, apr_1_2025),
+        received_date=None,
+    )
+
+    MineReportSubmissionFactory(
+        report=report,
+        mine_report_submission_status_code='INI',
+    )
+
+    # Detail endpoint should reflect not overdue
+    det_resp = test_client.get(
+        f'/mines/{mine.mine_guid}/reports/{report.mine_report_guid}',
+        headers=auth_headers['full_auth_header'],
+    )
+    det_data = json.loads(det_resp.data.decode())
+    assert det_resp.status_code == 200
+    assert det_data['is_overdue'] is False
+
+
+def test_is_overdue_false_when_due_before_apr_1_2025(test_client, db_session, auth_headers):
+    mine = MineFactory(mine_reports=0)
+
+    report = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,
+        due_date=date(2025, 3, 31),
+        received_date=None,
+    )
+
+    det_resp = test_client.get(
+        f'/mines/{mine.mine_guid}/reports/{report.mine_report_guid}',
+        headers=auth_headers['full_auth_header'],
+    )
+    det_data = json.loads(det_resp.data.decode())
+    assert det_resp.status_code == 200
+    assert det_data['is_overdue'] is False
 
 
 # Create

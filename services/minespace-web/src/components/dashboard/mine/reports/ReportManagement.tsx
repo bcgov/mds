@@ -1,7 +1,7 @@
 import React, { FC, useContext, useEffect, useState } from "react";
 import { Row, Col, Typography, Tabs, Alert, Button } from "antd";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
-import { IMine, IPermit } from "@mds/common/interfaces";
+import { IMine } from "@mds/common/interfaces";
 import { fetchMineReports } from "@mds/common/redux/actionCreators/reportActionCreator";
 import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
 import { IMineReport } from "@mds/common/interfaces/reports/mineReport.interface";
@@ -18,8 +18,7 @@ import {
 } from "@ant-design/icons";
 import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
-import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
-import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { getMineReportStatsByMineGuid } from "@mds/common/redux/slices/mineReportStatsSlice";
 
 const REPORTS_PAGE_SIZE = 20;
 
@@ -34,15 +33,11 @@ const ReportManagement: FC = () => {
   );
 
   const mineReports: IMineReport[] = useAppSelector(getMineReports);
-  const permits: IPermit[] = useAppSelector(getPermits);
-
-  const activePermits = permits?.filter((permit) => permit.permit_status_code === "O").length;
   const pageData = useAppSelector(getReportsPageData) as any;
-
+  const stats = useAppSelector(getMineReportStatsByMineGuid(mine.mine_guid));
   useEffect(() => {
     setIsLoaded(true);
     onAllReportsPageChange(1);
-    dispatch(fetchPermits(mine.mine_guid));
   }, [mine.mine_guid]);
 
   useEffect(() => {
@@ -51,8 +46,9 @@ const ReportManagement: FC = () => {
     }
   }, [mineReports]);
 
-  const reportsOverdue = 3;
-  const reportsDueNext90 = 4;
+  const activePermits = stats?.active_permits ?? "";
+  const reportsOverdue = stats?.overdue_reports ?? "";
+  const reportsDueNext90 = stats?.due_next_90_days ?? "";
 
   const openReport = (reportRecord: IMineReport, isEditMode: boolean) => {
     history.push(

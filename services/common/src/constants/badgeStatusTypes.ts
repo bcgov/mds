@@ -37,6 +37,7 @@ const badgeStatusTypes = {
     [MINE_REPORT_STATUS_HASH.REQ]: "processing",
     [MINE_REPORT_STATUS_HASH.NRQ]: "default",
     [MINE_REPORT_STATUS_HASH.NON]: "warning",
+    "overdue": "error", // Dervived status for `overdue` reports. This is by design not part of MINE_REPORT_STATUS_HASH as to only be used in specific contexts
   },
   workInformation: {
     Unknown: "default",

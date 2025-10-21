@@ -1,4 +1,5 @@
 import React from "react";
+import { Badge } from "antd";
 import Overview from "./overview/Overview";
 import ViewProjects from "./projects/ViewProjects";
 import PermitTabContainer from "./permits/PermitTabContainer";
@@ -23,7 +24,7 @@ import {
   faUserMagnifyingGlass,
 } from "@fortawesome/pro-light-svg-icons";
 
-export const getMineDashboardRoutes = (showApplications) =>
+export const getMineDashboardRoutes = (showApplications, overdueReportsCount?: number) =>
   [
     {
       key: "overview",
@@ -52,7 +53,16 @@ export const getMineDashboardRoutes = (showApplications) =>
     {
       key: "reports",
       label: "Reports",
-      icon: <FontAwesomeIcon icon={faClipboardList} style={{ width: "24px" }} />,
+      icon: (
+        <Badge
+          count={overdueReportsCount}
+          overflowCount={99}
+          showZero={false}
+          style={{ backgroundColor: "#d9363e" }}
+        >
+          <FontAwesomeIcon icon={faClipboardList} style={{ width: "24px" }} />
+        </Badge>
+      ),
       component: Reports,
     },
     {

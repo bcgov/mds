@@ -47,6 +47,7 @@ import {
 } from "@mds/common/interfaces";
 import { IAmsFinalApplication } from "@mds/common/interfaces/projects/amsFinalApplication.interface";
 import { HaystackDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
+import { MineReportStats } from "@mds/common/redux/slices/mineReportStatsSlice";
 
 export const createMockHeader = () => ({
   headers: {
@@ -13849,3 +13850,9 @@ export const AMS_ENVIRONMENT_AUTH_STATUS_RESPONSE = [
     "errors": [],
   }
 ];
+
+export const MOCK_MINE_REPORT_STATS: MineReportStats = {
+  active_permits: 3,
+  overdue_reports: 4,
+  due_next_90_days: 5,
+};

@@ -791,6 +791,8 @@ MINE_REPORT_MODEL = api.model(
             fields.String,
         'due_date':
             fields.Date,
+        'is_overdue':
+            fields.Boolean,
         'received_date':
             fields.Date,
         'submission_year':
@@ -908,6 +910,13 @@ MINE_COMPLIANCE_RESPONSE_MODEL = api.model(
         'year_to_date': fields.Nested(
             api.model('NUM_INSPECTIONS', {'num_inspections': fields.Integer})),
         'orders': fields.List(fields.Nested(ORDER_MODEL)),
+    })
+
+MINE_REPORT_STATS_MODEL = api.model(
+    'MineReportStats', {
+        'active_permits': fields.Integer,
+        'overdue_reports': fields.Integer,
+        'due_next_90_days': fields.Integer,
     })
 
 
