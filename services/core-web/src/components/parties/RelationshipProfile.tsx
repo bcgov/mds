@@ -181,25 +181,11 @@ export const RelationshipProfile: FC = () => {
     );
   };
 
-  const permitColumn = isPermittee
-    ? [
-        {
-          title: "Permit",
-          dataIndex: "permit",
-          render: (text) => <div title="Permit">{text}</div>,
-        },
-      ]
-    : [];
+  const permitColumn = isPermittee ? [renderTextColumn("permit", "Permit")] : [];
 
   const EORColumn =
     isEOR || isTQP
-      ? [
-          {
-            title: "Tailings Storage Facility",
-            dataIndex: "tailingsStorageFacility",
-            render: (text) => <div title="Tailings Storage Facility">{text}</div>,
-          },
-        ]
+      ? [renderTextColumn("tailingsStorageFacility", "Tailings Storage Facility")]
       : [];
 
   const columns: ColumnsType<ITransformedValues> = [
