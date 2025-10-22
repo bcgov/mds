@@ -1,6 +1,7 @@
 export interface IPartyFetchParams {
   first_name?: string;
   party_name?: string;
+  name_search?: string;
   phone_no?: string;
   phone_no_sec?: string;
   phone_no_ter?: string;
