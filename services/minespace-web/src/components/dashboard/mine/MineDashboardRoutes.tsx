@@ -10,6 +10,7 @@ import Reports from "./reports/Reports";
 import Variances from "./variances/Variances";
 import Incidents from "./incidents/Incidents";
 import NoticesOfDeparture from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDeparture";
+import MineUserAccess from "@mds/common/components/mine/MineUserAccess";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouse,
@@ -22,6 +23,7 @@ import {
   faShieldKeyhole,
   faHouseWater,
   faUserMagnifyingGlass,
+  faUsers,
 } from "@fortawesome/pro-light-svg-icons";
 
 export const getMineDashboardRoutes = (showApplications, overdueReportsCount?: number) =>
@@ -94,5 +96,11 @@ export const getMineDashboardRoutes = (showApplications, overdueReportsCount?: n
       label: "Tailings & Dams",
       icon: <FontAwesomeIcon icon={faHouseWater} style={{ width: "24px" }} />,
       component: Tailings,
+    },
+    {
+      key: "user-access",
+      label: "User Access",
+      icon: <FontAwesomeIcon icon={faUsers} style={{ width: "24px" }} />,
+      component: MineUserAccess,
     },
   ].filter(Boolean);

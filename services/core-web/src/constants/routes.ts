@@ -61,6 +61,7 @@ import PermitConditionSearch from "@/components/mine/Permit/Search/PermitConditi
 import { getEnvironment } from "@mds/common/utils/environmentUtils";
 import ViewPermitRedirect from "@/components/mine/Permit/ViewPermitRedirect";
 import TagManagement from "@/components/admin/permitConditions/TagManagement";
+import MineUserAccess from "@mds/common/components/mine/MineUserAccess";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -153,6 +154,13 @@ export const MINE_GENERAL = {
   dynamicRoute: (id) => `/mine-dashboard/${id}/mine-information/general`,
   component: MineSummary,
   helpKey: "Mine-Summary",
+};
+
+export const MINE_ACCESS = {
+  route: "/mine-dashboard/:id/mine-information/user-access",
+  dynamicRoute: (id: string) => `/mine-dashboard/${id}/mine-information/user-access`,
+  component: MineUserAccess,
+  helpKey: "User-Access",
 };
 
 export const MINE_DOCUMENTS = {
