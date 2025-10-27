@@ -78,6 +78,32 @@ export const fetchMineReports = (
     .finally(() => dispatch(hideLoading()));
 };
 
+export const fetchUpcomingMineReports = (
+  mineGuid,
+  reportsType: string | string[] = [Strings.MINE_REPORTS_TYPE.codeRequiredReports, Strings.MINE_REPORTS_TYPE.permitRequiredReports],
+  params = {}
+) => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.GET_MINE_REPORTS));
+  dispatch(showLoading());
+  const filteredParams = removeNullValues(params);
+
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.MINE_UPCOMING_REPORTS(mineGuid, {
+        ...filteredParams,
+        mine_reports_type: reportsType,
+      })}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(NetworkReducerTypes.GET_MINE_REPORTS));
+      dispatch(mineReportActions.storeUpcomingMineReports(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_MINE_REPORTS)))
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const fetchReports = (params = {}) => (dispatch) => {
   dispatch(request(NetworkReducerTypes.GET_REPORTS));
   dispatch(showLoading());

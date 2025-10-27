@@ -2,8 +2,16 @@ import React, { FC, useContext, useEffect, useState } from "react";
 import { Row, Col, Typography, Tabs, Alert, Button } from "antd";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { IMine } from "@mds/common/interfaces";
-import { fetchMineReports } from "@mds/common/redux/actionCreators/reportActionCreator";
-import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
+import {
+  fetchMineReports,
+  fetchUpcomingMineReports,
+} from "@mds/common/redux/actionCreators/reportActionCreator";
+import {
+  getMineReports,
+  getReportsPageData,
+  getUpcomingMineReports,
+  getUpcomingReportsPageData,
+} from "@mds/common/redux/selectors/reportSelectors";
 import { IMineReport } from "@mds/common/interfaces/reports/mineReport.interface";
 import * as Strings from "@mds/common/constants/strings";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
@@ -27,6 +35,7 @@ const ReportManagement: FC = () => {
   const history = useHistory();
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [upcomingIsLoaded, setUpcomingIsLoaded] = useState(false);
 
   const [allReports, setAllReports] = useState<IMineReport[]>(
     (useAppSelector(getMineReports) as IMineReport[]) || []
@@ -34,10 +43,17 @@ const ReportManagement: FC = () => {
 
   const mineReports: IMineReport[] = useAppSelector(getMineReports);
   const pageData = useAppSelector(getReportsPageData) as any;
+  const upcomingReports: IMineReport[] = useAppSelector(getUpcomingMineReports);
+  const upcomingPageData = useAppSelector(getUpcomingReportsPageData) as any;
   const stats = useAppSelector(getMineReportStatsByMineGuid(mine.mine_guid));
+
+  console.log(upcomingReports);
+
   useEffect(() => {
     setIsLoaded(true);
+    setUpcomingIsLoaded(true);
     onAllReportsPageChange(1);
+    onUpcomingReportsPageChange(1);
   }, [mine.mine_guid]);
 
   useEffect(() => {
@@ -73,6 +89,22 @@ const ReportManagement: FC = () => {
         )
       )
     ).then(() => setIsLoaded(true));
+  };
+
+  const onUpcomingReportsPageChange = (page: number) => {
+    setUpcomingIsLoaded(false);
+    Promise.resolve(
+      dispatch(
+        fetchUpcomingMineReports(
+          mine.mine_guid,
+          [
+            Strings.MINE_REPORTS_TYPE.codeRequiredReports,
+            Strings.MINE_REPORTS_TYPE.permitRequiredReports,
+          ],
+          { page, per_page: REPORTS_PAGE_SIZE }
+        )
+      )
+    ).then(() => setUpcomingIsLoaded(true));
   };
 
   return (
@@ -157,6 +189,29 @@ const ReportManagement: FC = () => {
                 currentPage={Number(pageData?.current_page || 1)}
                 pageTotal={Number(pageData?.total || allReports.length)}
                 itemsPerPage={Number(pageData?.items_per_page || REPORTS_PAGE_SIZE)}
+              />
+            </Row>
+          </Tabs.TabPane>
+
+          <Tabs.TabPane tab="Upcoming Reports" key="upcoming_reports">
+            <Typography.Title level={2}>Upcoming Reports</Typography.Title>
+            <Typography.Paragraph>
+              This table shows reports with due dates in the future. Use it to focus on what is
+              coming up next.
+            </Typography.Paragraph>
+
+            <ReportsTable
+              openReport={openReport}
+              mineReports={upcomingReports || []}
+              isLoaded={upcomingIsLoaded}
+              backendPaginated
+            />
+            <Row justify="center" className="margin-large--bottom">
+              <ResponsivePagination
+                onPageChange={onUpcomingReportsPageChange}
+                currentPage={Number(upcomingPageData?.current_page || 1)}
+                pageTotal={Number(upcomingPageData?.total || (upcomingReports || []).length)}
+                itemsPerPage={Number(upcomingPageData?.items_per_page || REPORTS_PAGE_SIZE)}
               />
             </Row>
           </Tabs.TabPane>

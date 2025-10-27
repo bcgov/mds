@@ -7,6 +7,8 @@ const initialState = {
   mineReports: [],
   mineReportGuid: "",
   reportComments: [],
+  upcomingMineReports: [],
+  upcomingReportsPageData: {},
 };
 
 export const reportReducer = (state = initialState, action) => {
@@ -40,6 +42,13 @@ export const reportReducer = (state = initialState, action) => {
         ...state,
         reportComments: action.payload.records,
       };
+    case actionTypes.STORE_UPCOMING_MINE_REPORTS:
+      console.log("STORE_UPCOMING_MINE_REPORTS", action.payload);
+      return {
+        ...state,
+        upcomingMineReports: action.payload.records,
+        upcomingReportsPageData: action.payload,
+      };
     default:
       return state;
   }
@@ -59,5 +68,7 @@ export const getMineReportById = (state, reportGuid) => {
   return state[REPORTS].mineReports.find((report) => report.mine_report_guid == reportGuid);
 };
 export const getMineReportComments = (state) => state[REPORTS].reportComments;
+export const getUpcomingMineReports = (state) => state[REPORTS].upcomingMineReports;
+export const getUpcomingReportsPageData = (state) => state[REPORTS].upcomingReportsPageData;
 
 export default reportReducerObject;

@@ -176,6 +176,9 @@ from app.api.mines.reports.resources.mine_reports import (
     MineReportListResource,
     MineReportResource,
 )
+from app.api.mines.reports.resources.mine_upcoming_reports import (
+    MineUpcomingReportListResource,
+)
 from app.api.mines.reports.resources.reports_resource import ReportsResource
 from app.api.mines.status.resources.status import MineStatusXrefListResource
 from app.api.mines.subscription.resources.subscription import (
@@ -274,6 +277,7 @@ api.add_resource(MineIncidentDocumentListResource, '/<string:mine_guid>/incident
 
 api.add_resource(ReportsResource, '/reports')
 api.add_resource(MineReportListResource, '/<string:mine_guid>/reports')
+api.add_resource(MineUpcomingReportListResource, '/<string:mine_guid>/reports/upcoming')
 api.add_resource(MineReportResource, '/<string:mine_guid>/reports/<string:mine_report_guid>')
 api.add_resource(MineReportStatsResource, '/<string:mine_guid>/reports/stats')
 api.add_resource(ReportSubmissionResource, '/reports/submissions')

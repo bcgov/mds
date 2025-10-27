@@ -9,6 +9,9 @@ export const {
   getMineReportComments,
 } = reportReducer;
 
+export const getUpcomingReportsPageData = (state) => reportReducer.getUpcomingReportsPageData(state);
+export const getUpcomingMineReports = (state) => reportReducer.getUpcomingMineReports(state);
+
 export const getMineTSFReports = createSelector([getMineReports], (reports) =>
   reports.filter((report) => report.mine_report_definition_guid !== null)
 );
