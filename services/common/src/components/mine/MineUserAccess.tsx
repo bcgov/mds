@@ -16,7 +16,6 @@ const MineUserAccess: FC<MineUserAccessParams> = ({ mineGuid }) => {
     const dispatch = useAppDispatch();
     const mineUsers = useAppSelector(getMinespaceUsersByMineGuid(mineGuid));
     const isCore = useAppSelector(getIsCore);
-    console.log({ mineUsers });
 
     useEffect(() => {
         if (!mineUsers) {
