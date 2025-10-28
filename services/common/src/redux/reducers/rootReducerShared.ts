@@ -63,7 +63,6 @@ export const sharedReducer = {
   ...externalAuthorizationReducer,
   ...incidentReducer,
   ...mineReducer,
-  ...minespaceReducer,
   ...modalReducer,
   ...noticeOfDepartureReducer,
   ...noticeOfWorkReducer,
