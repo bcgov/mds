@@ -156,7 +156,9 @@ describe("minespaceSlice", () => {
 
     describe("updateMinespaceUserMines", () => {
         const mockResponse = {
-            data: { ...mockMinespaceUser, mines: ["updated-mine-guid"] },
+            data: {
+                records: { ...mockMinespaceUser, mines: ["updated-mine-guid"] }
+            },
         };
 
         it("should successfully update a minespace user's mines and update state", async () => {
@@ -186,6 +188,7 @@ describe("minespaceSlice", () => {
             const updatedUser = state.minespace.minespaceUsers.find(
                 (user) => user.user_id === 1
             );
+            expect(updatedUser).toBeDefined();
             expect(updatedUser.mines).toEqual(["updated-mine-guid"]);
         });
 
