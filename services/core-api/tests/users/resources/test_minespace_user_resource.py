@@ -1,7 +1,14 @@
 import json, uuid
-
+from app import auth
 from tests.factories import MineFactory, MinespaceUserFactory, MinespaceSubscriptionFactory
 
+def subscribe_minespace_user(db_session, mine, email='test-proponent@bceid'):
+    """Create a MineSpace user and subscribe them to the mine of the given project summary."""
+    ms_user = MinespaceUserFactory(email_or_username=email)  # type: ignore[arg-type]
+    MinespaceSubscriptionFactory(mine=mine, minespace_user=ms_user)  # type: ignore[arg-type]
+    db_session.commit()
+    auth.clear_cache()
+    return ms_user
 
 def test_get_minespace_users_all(test_client, db_session, auth_headers):
     user_email = MinespaceUserFactory().email_or_username
@@ -150,7 +157,10 @@ def test_get_minespace_users_by_mine_guid(test_client, db_session, auth_headers)
     user1 = MinespaceUserFactory()
     user2 = MinespaceUserFactory()
 
-    mine = MineFactory()
+    mine = MineFactory(minimal=True)
+
+    # the user that performs the action
+    test_user = subscribe_minespace_user(db_session, mine)
 
     MinespaceSubscriptionFactory(mine=mine, minespace_user=user1)
     MinespaceSubscriptionFactory(mine=mine, minespace_user=user2)
@@ -162,8 +172,9 @@ def test_get_minespace_users_by_mine_guid(test_client, db_session, auth_headers)
     get_data = json.loads(get_resp_proponent.data.decode())
     assert get_resp_proponent.status_code == 200, get_resp_proponent.response
 
-    assert get_data['records'][0]['email_or_username'] == user1.email_or_username
-    assert get_data['records'][1]['email_or_username'] == user2.email_or_username
+    user_names = sorted([x['email_or_username'] for x in get_data['records']])
+    expected_names = sorted([user1.email_or_username, user2.email_or_username, test_user.email_or_username])
+    assert user_names == expected_names
 
     # test that view only can access
     get_resp_view = test_client.get(
