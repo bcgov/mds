@@ -37,7 +37,7 @@ class MinespaceUser(SoftDeleteMixin, Base):
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
-        return cls.query.join(MinespaceUserMine).filter(
+        return cls.query.filter_by(deleted_ind=False).join(MinespaceUserMine).filter(
             MinespaceUserMine.mine_guid == mine_guid
         ).all()
     
