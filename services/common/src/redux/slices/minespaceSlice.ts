@@ -7,28 +7,14 @@ import * as API from "@mds/common/constants/API";
 import * as String from "@mds/common/constants/strings";
 import { notification } from "antd";
 import { createSelector } from "reselect";
-import { IMinistryContact } from "@mds/common/interfaces";
+import { IMinistryContact, IMinespaceUser, IMinespaceUserMine } from "@mds/common/interfaces";
 
 export const minespaceReducerType = "minespace";
 
-interface MinespaceUser {
-    user_id: number;
-    email_or_username: string;
-    keycloak_guid?: string;
-    mines: string[];
-    [key: string]: any;
-}
-
-interface MinespaceUserMine {
-    mine_guid: string;
-    mine_name: string;
-    [key: string]: any;
-}
-
 interface MinespaceState {
-    minespaceUsers: MinespaceUser[];
-    minespaceUsersByMine: { [mine_guid: string]: MinespaceUser[] };
-    minespaceUserMines: MinespaceUserMine[];
+    minespaceUsers: IMinespaceUser[];
+    minespaceUsersByMine: { [mine_guid: string]: IMinespaceUser[] };
+    minespaceUserMines: IMinespaceUserMine[];
     MinistryContacts: IMinistryContact[];
     MinistryContactsByRegion: IMinistryContact[];
 }
