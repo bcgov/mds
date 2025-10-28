@@ -38,7 +38,7 @@ class MinespaceUserListResource(Resource, UserMixin):
         elif mine_guid:
             mine = Mine.find_by_mine_guid(mine_guid)
             if not mine:
-                raise NotFound(f'Mine not found')
+                raise NotFound('Mine not found')
             ms_users = MinespaceUser.find_by_mine_guid(mine_guid)
         else:            
             ms_users = MinespaceUser.get_all()

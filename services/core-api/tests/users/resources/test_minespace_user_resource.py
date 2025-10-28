@@ -1,14 +1,6 @@
 import json, uuid
-from app import auth
 from tests.factories import MineFactory, MinespaceUserFactory, MinespaceSubscriptionFactory
-
-def subscribe_minespace_user(db_session, mine, email='test-proponent@bceid'):
-    """Create a MineSpace user and subscribe them to the mine of the given project summary."""
-    ms_user = MinespaceUserFactory(email_or_username=email)  # type: ignore[arg-type]
-    MinespaceSubscriptionFactory(mine=mine, minespace_user=ms_user)  # type: ignore[arg-type]
-    db_session.commit()
-    auth.clear_cache()
-    return ms_user
+from tests.helpers import subscribe_minespace_user
 
 def test_get_minespace_users_all(test_client, db_session, auth_headers):
     user_email = MinespaceUserFactory().email_or_username
