@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 
 from app.api.constants import MINE_REPORT_TYPE
 from app.api.mines.reports.models.mine_report import MineReport
@@ -33,13 +33,28 @@ class MineUpcomingReportListResource(Resource, UserMixin):
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
             'sort_field': 'The field the returned results will be ordered by',
             'sort_dir': 'The direction by which the sort field is ordered',
-            'mine_reports_type': 'Report type filter(s). Can repeat to include multiple.'
+            'mine_reports_type': 'Report type filter(s). Can repeat to include multiple.',
+            'time_range': "Upcoming window from today: one of '90d', '6m', '1y'. Default: '90d'",
         },
     )
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self, mine_guid):
         # Always enforce due_date strictly in the future (upcoming)
         today_iso = date.today().isoformat()
+
+        # Optional upcoming window: default 1 year; allowed: '90d', '6m', '1y'
+        time_range = request.args.get('time_range', '1y', type=str)
+        if time_range not in {'90d', '6m', '1y'}:
+            time_range = '90d'
+
+        if time_range == '90d':
+            end_date = date.today() + timedelta(days=90)
+        elif time_range == '6m':
+            # Approximate 6 months as 182 days
+            end_date = date.today() + timedelta(days=182)
+        else:
+            # 1 year
+            end_date = date.today() + timedelta(days=365)
 
         args = {
             "page_number": request.args.get('page', PAGE_DEFAULT, type=int),
@@ -50,7 +65,7 @@ class MineUpcomingReportListResource(Resource, UserMixin):
             'report_type': None,  # we derive below
             'report_name': None,
             'due_date_after': today_iso,
-            'due_date_before': None,
+            'due_date_before': end_date.isoformat(),
             'received_date_after': None,
             'received_date_before': None,
             'received_only': False,

@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { Row, Col, Typography, Tabs, Alert, Button } from "antd";
+import { Row, Col, Typography, Tabs, Alert, Button, Radio } from "antd";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { IMine } from "@mds/common/interfaces";
 import { fetchUpcomingMineReports } from "@mds/common/redux/actionCreators/reportActionCreator";
@@ -34,6 +34,7 @@ const ReportManagement: FC = () => {
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
   const [isLoaded, setIsLoaded] = useState(false);
   const [upcomingIsLoaded, setUpcomingIsLoaded] = useState(false);
+  const [upcomingRange, setUpcomingRange] = useState<"90d" | "6m" | "1y">("90d");
 
   const [allReports, setAllReports] = useState<IMineReport[]>(
     (useAppSelector(getMineReports) as IMineReport[]) || []
@@ -89,6 +90,12 @@ const ReportManagement: FC = () => {
     ).then(() => setIsLoaded(true));
   };
 
+  useEffect(() => {
+    if (upcomingRange) {
+      onUpcomingReportsPageChange(1);
+    }
+  }, [upcomingRange]);
+
   const onUpcomingReportsPageChange = (page: number) => {
     setUpcomingIsLoaded(false);
     Promise.resolve(
@@ -99,7 +106,7 @@ const ReportManagement: FC = () => {
             Strings.MINE_REPORTS_TYPE.codeRequiredReports,
             Strings.MINE_REPORTS_TYPE.permitRequiredReports,
           ],
-          { page, per_page: REPORTS_PAGE_SIZE }
+          { page, per_page: REPORTS_PAGE_SIZE, time_range: upcomingRange }
         )
       )
     ).then(() => setUpcomingIsLoaded(true));
@@ -197,6 +204,26 @@ const ReportManagement: FC = () => {
               This table shows reports with due dates in the future. Use it to focus on what is
               coming up next.
             </Typography.Paragraph>
+
+            <Row className="margin-large--bottom" align="middle" justify="start">
+              <Col>
+                <Typography.Text strong className="margin-small--right">
+                  Time Range:
+                </Typography.Text>
+              </Col>
+              <Col>
+                <Radio.Group
+                  value={upcomingRange}
+                  onChange={(e) => {
+                    setUpcomingRange(e.target.value);
+                  }}
+                >
+                  <Radio.Button value="90d">90 days</Radio.Button>
+                  <Radio.Button value="6m">6 months</Radio.Button>
+                  <Radio.Button value="1y">1 year</Radio.Button>
+                </Radio.Group>
+              </Col>
+            </Row>
 
             <ReportsTable
               openReport={openReport}
