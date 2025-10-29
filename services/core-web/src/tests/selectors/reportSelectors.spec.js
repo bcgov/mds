@@ -1,6 +1,5 @@
 import { getReports } from "@mds/common/redux/selectors/reportSelectors";
-import { reportReducer } from "@mds/common/redux/reducers/reportReducer";
-import { storeReports } from "@mds/common/redux/actions/mineReportActions";
+import reportSliceReducer, { storeReports } from "@mds/common/redux/slices/reportSlice";
 import { REPORTS } from "@mds/common/constants/reducerTypes";
 import * as Mock from "@mds/common/tests/mocks/dataMocks";
 
@@ -16,7 +15,7 @@ describe("reportSelectors", () => {
 
   it("`getReports` calls `reportReducer.getReports` when `storeReports` is dispatched", () => {
     const storeAction = storeReports(Mock.MINE_REPORT_RESPONSE);
-    const storeState = reportReducer({}, storeAction);
+    const storeState = reportSliceReducer(undefined, storeAction);
     const localMockState = {
       [REPORTS]: storeState,
     };

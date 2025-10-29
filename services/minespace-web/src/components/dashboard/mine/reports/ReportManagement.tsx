@@ -2,10 +2,7 @@ import React, { FC, useContext, useEffect, useState } from "react";
 import { Row, Col, Typography, Tabs, Alert, Button } from "antd";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { IMine } from "@mds/common/interfaces";
-import {
-  fetchMineReports,
-  fetchUpcomingMineReports,
-} from "@mds/common/redux/actionCreators/reportActionCreator";
+import { fetchUpcomingMineReports } from "@mds/common/redux/actionCreators/reportActionCreator";
 import {
   getMineReports,
   getReportsPageData,
@@ -27,6 +24,7 @@ import {
 import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { getMineReportStatsByMineGuid } from "@mds/common/redux/slices/mineReportStatsSlice";
+import { fetchMineReports } from "@mds/common/redux/slices/reportSlice";
 
 const REPORTS_PAGE_SIZE = 20;
 
@@ -79,14 +77,14 @@ const ReportManagement: FC = () => {
     setIsLoaded(false);
     Promise.resolve(
       dispatch(
-        fetchMineReports(
-          mine.mine_guid,
-          [
+        fetchMineReports({
+          mineGuid: mine.mine_guid,
+          reportsType: [
             Strings.MINE_REPORTS_TYPE.codeRequiredReports,
             Strings.MINE_REPORTS_TYPE.permitRequiredReports,
           ],
-          { page, per_page: REPORTS_PAGE_SIZE }
-        )
+          params: { page, per_page: REPORTS_PAGE_SIZE },
+        })
       )
     ).then(() => setIsLoaded(true));
   };

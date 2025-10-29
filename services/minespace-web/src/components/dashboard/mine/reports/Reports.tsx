@@ -2,7 +2,6 @@ import React, { FC, useContext, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { Button, Col, Row, Typography } from "antd";
-import { fetchMineReports } from "@mds/common/redux/actionCreators/reportActionCreator";
 import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -16,6 +15,7 @@ import * as Strings from "@mds/common/constants/strings";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
 import ReportManagement from "@/components/dashboard/mine/reports/ReportManagement";
+import { fetchMineReports } from "@mds/common/redux/slices/reportSlice";
 
 export const Reports: FC = () => {
   const dispatch = useDispatch();
@@ -57,8 +57,18 @@ export const Reports: FC = () => {
     let isMounted = true;
     setIsLoaded(false);
     Promise.all([
-      dispatch(fetchMineReports(mine.mine_guid, Strings.MINE_REPORTS_TYPE.codeRequiredReports)),
-      dispatch(fetchMineReports(mine.mine_guid, Strings.MINE_REPORTS_TYPE.permitRequiredReports)),
+      dispatch(
+        fetchMineReports({
+          mineGuid: mine.mine_guid,
+          reportsType: Strings.MINE_REPORTS_TYPE.codeRequiredReports,
+        })
+      ),
+      dispatch(
+        fetchMineReports({
+          mineGuid: mine.mine_guid,
+          reportsType: Strings.MINE_REPORTS_TYPE.permitRequiredReports,
+        })
+      ),
     ]).then(() => {
       if (isMounted) {
         setIsLoaded(true);
@@ -77,18 +87,26 @@ export const Reports: FC = () => {
 
   const onCRRPageChange = (page, per_page) => {
     dispatch(
-      fetchMineReports(mine.mine_guid, Strings.MINE_REPORTS_TYPE.codeRequiredReports, {
-        page,
-        per_page,
+      fetchMineReports({
+        mineGuid: mine.mine_guid,
+        reportsType: Strings.MINE_REPORTS_TYPE.codeRequiredReports,
+        params: {
+          page,
+          per_page,
+        },
       })
     );
   };
 
   const onPRRPageChange = (page, per_page) => {
     dispatch(
-      fetchMineReports(mine.mine_guid, Strings.MINE_REPORTS_TYPE.permitRequiredReports, {
-        page,
-        per_page,
+      fetchMineReports({
+        mineGuid: mine.mine_guid,
+        reportsType: Strings.MINE_REPORTS_TYPE.permitRequiredReports,
+        params: {
+          page,
+          per_page,
+        },
       })
     );
   };

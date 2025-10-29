@@ -8,7 +8,6 @@ import { isEmpty } from "lodash";
 import {
   createMineReport,
   deleteMineReport,
-  fetchMineReports,
 } from "@mds/common/redux/actionCreators/reportActionCreator";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
@@ -25,6 +24,7 @@ import ResponsivePagination from "@mds/common/components/common/ResponsivePagina
 import { MineReportParams } from "@mds/common/interfaces/reports";
 import { MINE_REPORTS_ENUM, MineReportType } from "@mds/common/constants/enums";
 import { useAppDispatch } from "@mds/common/redux/rootState";
+import { fetchMineReports } from "@mds/common/redux/slices/reportSlice";
 
 const defaultParams: MineReportParams = {
   report_name: undefined,
@@ -64,7 +64,7 @@ export const MineReportInfo: FC = () => {
     const newParams = { ...defaultParams, ...params };
     history.replace(routes.MINE_REPORTS.dynamicRoute(mineGuid, reportType, newParams));
 
-    dispatch(fetchMineReports(mineGuid, mine_reports_type, params)).then(() => {
+    dispatch(fetchMineReports({ mineGuid, reportsType: mine_reports_type, params })).then(() => {
       setIsLoaded(true);
       setStateParams(newParams);
     });
@@ -77,12 +77,12 @@ export const MineReportInfo: FC = () => {
   const handleFiltering = (reports, params: MineReportParams) => {
     const reportDefinitionGuids = params.report_type
       ? mineReportDefinitionOptions
-        .filter((option) =>
-          option.categories
-            .map((category) => category.mine_report_category)
-            .includes(params.report_type)
-        )
-        .map((definition) => definition.mine_report_definition_guid)
+          .filter((option) =>
+            option.categories
+              .map((category) => category.mine_report_category)
+              .includes(params.report_type)
+          )
+          .map((definition) => definition.mine_report_definition_guid)
       : mineReportDefinitionOptions.map((definition) => definition.mine_report_definition_guid);
 
     let report_type: boolean;
@@ -104,19 +104,19 @@ export const MineReportInfo: FC = () => {
       const due_date_start =
         !params.due_date_start ||
         moment(report.due_date, Strings.DATE_FORMAT) >=
-        moment(params.due_date_start, Strings.DATE_FORMAT);
+          moment(params.due_date_start, Strings.DATE_FORMAT);
       const due_date_end =
         !params.due_date_end ||
         moment(report.due_date, Strings.DATE_FORMAT) <=
-        moment(params.due_date_end, Strings.DATE_FORMAT);
+          moment(params.due_date_end, Strings.DATE_FORMAT);
       const received_date_start =
         !params.received_date_start ||
         moment(report.received_date, Strings.DATE_FORMAT) >=
-        moment(params.received_date_start, Strings.DATE_FORMAT);
+          moment(params.received_date_start, Strings.DATE_FORMAT);
       const received_date_end =
         !params.received_date_end ||
         moment(report.received_date, Strings.DATE_FORMAT) <=
-        moment(params.received_date_end, Strings.DATE_FORMAT);
+          moment(params.received_date_end, Strings.DATE_FORMAT);
       const requested_by =
         !params.requested_by ||
         report.created_by_idir.toLowerCase().includes(params.requested_by.toLowerCase());
@@ -153,7 +153,13 @@ export const MineReportInfo: FC = () => {
   }, [location]);
 
   const refreshReportData = () => {
-    return dispatch(fetchMineReports(mineGuid, mine_reports_type, stateParams ?? defaultParams));
+    return dispatch(
+      fetchMineReports({
+        mineGuid,
+        reportsType: mine_reports_type,
+        params: stateParams ?? defaultParams,
+      })
+    );
   };
 
   const handleAddReport = (values) => {
@@ -171,7 +177,7 @@ export const MineReportInfo: FC = () => {
   const handleReportFilterSubmit = (params) => {
     setStateParams(params);
     history.replace(routes.MINE_REPORTS.dynamicRoute(mineGuid, reportType, params));
-    dispatch(fetchMineReports(mineGuid, mine_reports_type, params));
+    dispatch(fetchMineReports({ mineGuid, reportsType: mine_reports_type, params }));
   };
 
   const onPageChange = (page, per_page) => {
@@ -186,7 +192,7 @@ export const MineReportInfo: FC = () => {
       ...defaultParams,
     });
     history.replace(routes.MINE_REPORTS.dynamicRoute(mineGuid, reportType, defaultParams));
-    dispatch(fetchMineReports(mineGuid, mine_reports_type, defaultParams));
+    dispatch(fetchMineReports({ mineGuid, reportsType: mine_reports_type, params: defaultParams }));
   };
 
   const handleOpenRequestReportModal = () => {

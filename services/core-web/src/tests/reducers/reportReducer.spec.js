@@ -1,5 +1,4 @@
-import { reportReducer } from "@mds/common/redux/reducers/reportReducer";
-import { storeMineReports, storeReports } from "@mds/common/redux/actions/mineReportActions";
+import reportSliceReducer, { storeMineReports, storeReports } from "@mds/common/redux/slices/reportSlice";
 import * as Mocks from "@mds/common/tests/mocks/dataMocks";
 
 const baseExpectedValue = {
@@ -16,7 +15,7 @@ const getBaseExpectedValue = () => JSON.parse(JSON.stringify(baseExpectedValue))
 describe("reportReducer", () => {
   it("receives undefined", () => {
     const expectedValue = getBaseExpectedValue();
-    const result = reportReducer(undefined, {});
+    const result = reportSliceReducer(undefined, {});
     expect(result).toEqual(expectedValue);
   });
 
@@ -24,7 +23,7 @@ describe("reportReducer", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.mineReports = Mocks.MINE_REPORT_RESPONSE.records;
     expectedValue.reportsPageData = Mocks.MINE_REPORT_RESPONSE;
-    const result = reportReducer(undefined, storeMineReports(Mocks.MINE_REPORT_RESPONSE));
+    const result = reportSliceReducer(undefined, storeMineReports(Mocks.MINE_REPORT_RESPONSE));
     expect(result).toEqual(expectedValue);
   });
 
@@ -32,7 +31,7 @@ describe("reportReducer", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.reports = Mocks.REPORTS_PAGE_DATA.records;
     expectedValue.reportsPageData = Mocks.REPORTS_PAGE_DATA;
-    const result = reportReducer(undefined, storeReports(Mocks.REPORTS_PAGE_DATA));
+    const result = reportSliceReducer(undefined, storeReports(Mocks.REPORTS_PAGE_DATA));
     expect(result).toEqual(expectedValue);
   });
 });

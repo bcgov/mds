@@ -1,14 +1,20 @@
-import { notification } from "antd";
-import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT } from "@mds/common/constants/environment";
-import { request, success, error } from "../actions/genericActions";
-import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
-import * as mineReportActions from "../actions/mineReportActions";
 import * as API from "@mds/common/constants/API";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
+import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import * as Strings from "@mds/common/constants/strings";
-import { createRequestHeader } from "../utils/RequestHeaders";
-import CustomAxios from "../customAxios";
 import { removeNullValues } from "@mds/common/constants/utils";
+import {
+  clearMineReports,
+  storeMineReport,
+  storeMineReports,
+  storeReports,
+  storeUpcomingMineReports,
+} from "@mds/common/redux/slices/reportSlice";
+import { notification } from "antd";
+import { hideLoading, showLoading } from "react-redux-loading-bar";
+import { error, request, success } from "../actions/genericActions";
+import CustomAxios from "../customAxios";
+import { createRequestHeader } from "../utils/RequestHeaders";
 
 export const deleteMineReport = (mineGuid, mineReportGuid) => (dispatch) => {
   dispatch(request(NetworkReducerTypes.DELETE_MINE_REPORT));
@@ -51,71 +57,51 @@ export const createMineReport = (mineGuid, payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const fetchMineReports = (
-  mineGuid,
-  reportsType: string | string[] = Strings.MINE_REPORTS_TYPE.codeRequiredReports,
-  params = {}
-) => (dispatch) => {
-  dispatch(mineReportActions.clearMineReports());
-  dispatch(request(NetworkReducerTypes.GET_MINE_REPORTS));
-  dispatch(showLoading());
-  const filteredParams = removeNullValues(params);
+export const fetchUpcomingMineReports =
+  (
+    mineGuid,
+    reportsType: string | string[] = [
+      Strings.MINE_REPORTS_TYPE.codeRequiredReports,
+      Strings.MINE_REPORTS_TYPE.permitRequiredReports,
+    ],
+    params = {}
+  ) =>
+  (dispatch) => {
+    dispatch(request(NetworkReducerTypes.GET_MINE_REPORTS));
+    dispatch(showLoading());
+    const filteredParams = removeNullValues(params);
 
-  return CustomAxios()
-    .get(
-      `${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid, {
-        ...filteredParams,
-        mine_reports_type: reportsType,
-      })}`,
-      createRequestHeader()
-    )
-    .then((response) => {
-      dispatch(success(NetworkReducerTypes.GET_MINE_REPORTS));
-      dispatch(mineReportActions.storeMineReports(response.data));
-      return response;
-    })
-    .catch(() => dispatch(error(NetworkReducerTypes.GET_MINE_REPORTS)))
-    .finally(() => dispatch(hideLoading()));
-};
+    return CustomAxios()
+      .get(
+        `${ENVIRONMENT.apiUrl}${API.MINE_UPCOMING_REPORTS(mineGuid, {
+          ...filteredParams,
+          mine_reports_type: reportsType,
+        })}`,
+        createRequestHeader()
+      )
+      .then((response) => {
+        dispatch(success(NetworkReducerTypes.GET_MINE_REPORTS));
+        dispatch(storeUpcomingMineReports(response.data));
+        return response;
+      })
+      .catch(() => dispatch(error(NetworkReducerTypes.GET_MINE_REPORTS)))
+      .finally(() => dispatch(hideLoading()));
+  };
 
-export const fetchUpcomingMineReports = (
-  mineGuid,
-  reportsType: string | string[] = [Strings.MINE_REPORTS_TYPE.codeRequiredReports, Strings.MINE_REPORTS_TYPE.permitRequiredReports],
-  params = {}
-) => (dispatch) => {
-  dispatch(request(NetworkReducerTypes.GET_MINE_REPORTS));
-  dispatch(showLoading());
-  const filteredParams = removeNullValues(params);
-
-  return CustomAxios()
-    .get(
-      `${ENVIRONMENT.apiUrl}${API.MINE_UPCOMING_REPORTS(mineGuid, {
-        ...filteredParams,
-        mine_reports_type: reportsType,
-      })}`,
-      createRequestHeader()
-    )
-    .then((response) => {
-      dispatch(success(NetworkReducerTypes.GET_MINE_REPORTS));
-      dispatch(mineReportActions.storeUpcomingMineReports(response.data));
-      return response;
-    })
-    .catch(() => dispatch(error(NetworkReducerTypes.GET_MINE_REPORTS)))
-    .finally(() => dispatch(hideLoading()));
-};
-
-export const fetchReports = (params = {}) => (dispatch) => {
-  dispatch(request(NetworkReducerTypes.GET_REPORTS));
-  dispatch(showLoading());
-  return CustomAxios({ errorToastMessage: Strings.ERROR })
-    .get(ENVIRONMENT.apiUrl + API.REPORTS(params), createRequestHeader())
-    .then((response) => {
-      dispatch(success(NetworkReducerTypes.GET_REPORTS));
-      dispatch(mineReportActions.storeReports(response.data));
-    })
-    .catch(() => dispatch(error(NetworkReducerTypes.GET_REPORTS)))
-    .finally(() => dispatch(hideLoading()));
-};
+export const fetchReports =
+  (params = {}) =>
+  (dispatch) => {
+    dispatch(request(NetworkReducerTypes.GET_REPORTS));
+    dispatch(showLoading());
+    return CustomAxios({ errorToastMessage: Strings.ERROR })
+      .get(ENVIRONMENT.apiUrl + API.REPORTS(params), createRequestHeader())
+      .then((response) => {
+        dispatch(success(NetworkReducerTypes.GET_REPORTS));
+        dispatch(storeReports(response.data));
+      })
+      .catch(() => dispatch(error(NetworkReducerTypes.GET_REPORTS)))
+      .finally(() => dispatch(hideLoading()));
+  };
 
 export const fetchMineReport = (mineGuid, mineReportGuid) => (dispatch) => {
   dispatch(request(NetworkReducerTypes.GET_MINE_REPORT));
@@ -124,7 +110,7 @@ export const fetchMineReport = (mineGuid, mineReportGuid) => (dispatch) => {
     .get(`${ENVIRONMENT.apiUrl}${API.MINE_REPORT(mineGuid, mineReportGuid)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(NetworkReducerTypes.GET_MINE_REPORT));
-      dispatch(mineReportActions.storeMineReport(response.data));
+      dispatch(storeMineReport(response.data));
       return response.data;
     })
     .catch(() => {
