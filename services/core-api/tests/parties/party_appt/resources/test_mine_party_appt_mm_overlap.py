@@ -79,7 +79,7 @@ def test_post_mine_manager_overlap_one_day_end(test_client, db_session, auth_hea
         'mine_guid': setup_info['mine_guid'],
         'party_guid': setup_info['party_guid'],
         'mine_party_appt_type_code': "MMG",
-        'start_date': str(setup_info['existing_mine_manager'].end_date.date()),
+        'start_date': str(setup_info['existing_mine_manager'].end_date.date() - timedelta(days=1)),
         'end_date': None,
     }
     post_resp = test_client.post(
