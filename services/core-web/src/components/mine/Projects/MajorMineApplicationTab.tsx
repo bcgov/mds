@@ -92,7 +92,7 @@ const MajorMineApplicationTab: FC = () => {
     { href: "spatial-components", documents: majorMineApplicationDocs.filter((doc) => doc.major_mine_application_document_type_code === "SPT") },
     { href: "supporting-documents", documents: majorMineApplicationDocs.filter((doc) => doc.major_mine_application_document_type_code === "SPR") },
     decisionPackageEnabled && { href: "ministry-decision-documents", documents: project?.project_decision_package?.documents ?? [] },
-  ].map((section) => section && ({ ...section, title: formatUrlToUpperCaseString(section.href) }));
+  ].filter(Boolean).map((section) => section && ({ ...section, title: formatUrlToUpperCaseString(section.href) }));
 
   const archiveMenuOption = archiveFeatureEnabled && { href: "archived-documents", title: "Archived Documents" }
   const menuOptions = [{ href: "basic-information", title: "Basic Information" }, ...documentSections, archiveMenuOption].filter(Boolean);
