@@ -269,13 +269,21 @@ export const RelationshipProfile: FC = () => {
             size="large"
             animated={{ inkBar: true, tabPane: false }}
             centered
-          >
-            <Tabs.TabPane tab="History" key="history">
-              <div className="tab__content">
-                <CoreTable columns={columns} dataSource={transformRowData(filteredRelationships)} />
-              </div>
-            </Tabs.TabPane>
-          </Tabs>
+            items={[
+              {
+                label: "History",
+                key: "history",
+                children: (
+                  <div className="tab__content">
+                    <CoreTable
+                      columns={columns}
+                      dataSource={transformRowData(filteredRelationships)}
+                    />
+                  </div>
+                ),
+              },
+            ]}
+          />
         </div>
       </div>
     );
