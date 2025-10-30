@@ -22,6 +22,7 @@ interface ReportsTableProps {
   openReport: (record: IMineReport, isEditMode?: boolean) => void;
   isLoaded: boolean;
   backendPaginated?: boolean;
+  columns?: ColumnsType<IMineReport>;
 }
 
 const DEFAULT_PAGE_SIZE = 10;
@@ -79,7 +80,7 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
     return actionList.filter((action) => action.key !== "submit");
   };
 
-  let columns: ColumnsType<IMineReport> = [
+  let defaultColumns: ColumnsType<IMineReport> = [
     renderTextColumn("report_name", "Report Name", !props.backendPaginated),
     {
       title: "Code Section",
@@ -112,11 +113,10 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
         return <Badge status={reportStatusSeverity(text)} text={MINE_REPORT_STATUS_HASH[text]} />;
       },
     },
-    renderActionsColumn({ actions, recordActionsFilter }),
   ];
 
-  if (props.mineReports.some((report) => report.permit_guid)) {
-    columns = columns.map((col) => {
+  if (!props.columns && props.mineReports.some((report) => report.permit_guid)) {
+    defaultColumns = defaultColumns.map((col) => {
       if (col.key === "code_section") {
         return renderTextColumn("permit_number", "Permit #", true, null, 125);
       } else {
@@ -124,6 +124,8 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
       }
     });
   }
+
+  const columns: ColumnsType<IMineReport> = props.columns || defaultColumns;
 
   const pagination: TablePaginationConfig = {
     defaultPageSize: DEFAULT_PAGE_SIZE,
@@ -135,7 +137,7 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
     <CoreTable
       size={"small"}
       loading={!props.isLoaded}
-      columns={columns}
+      columns={[...columns, renderActionsColumn({ actions, recordActionsFilter })]}
       rowKey={(record) => record.mine_report_guid}
       emptyText="This mine has no report data."
       dataSource={props.mineReports}

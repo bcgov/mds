@@ -1,0 +1,54 @@
+@use "../settings/theme" as theme;
+@use "../base.scss" as *;
+@use "sass:color";
+
+// Scoped styles for the time range selector radios to match the selected tab styling
+.upcoming-range-selector {
+  // Ensure radio buttons look like segmented controls
+  .ant-radio-button-wrapper {
+    font-weight: 600;
+  }
+
+  // Selected state — match Tabs card active style (dark blue background, white text)
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+    background-color: theme.$primary-color;
+    border-color: theme.$primary-color;
+    color: $white;
+    box-shadow: none;
+
+    // Divider between buttons when a checked button precedes another
+    & + .ant-radio-button-wrapper {
+      border-left-color: theme.$primary-color;
+    }
+
+    // The little separator pseudo element
+    &::before {
+      background-color: theme.$primary-color;
+    }
+
+    // Hover on selected
+    &:hover {
+      background-color: color.adjust(theme.$primary-color, $lightness: -5%);
+      border-color: color.adjust(theme.$primary-color, $lightness: -5%);
+      color: $white;
+    }
+
+    // Active press on selected
+    &:active {
+      background-color: color.adjust(theme.$primary-color, $lightness: -8%);
+      border-color: color.adjust(theme.$primary-color, $lightness: -8%);
+    }
+
+    // Keep label text white in all states
+    .ant-radio-button {
+      color: $white;
+    }
+  }
+
+  // Focus ring for accessibility
+  .ant-radio-button-wrapper:focus-visible,
+  .ant-radio-button-wrapper-checked:focus-visible {
+    outline: 2px solid theme.$primary-color;
+    outline-offset: 1px;
+  }
+}

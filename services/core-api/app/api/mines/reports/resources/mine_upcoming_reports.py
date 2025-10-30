@@ -56,11 +56,15 @@ class MineUpcomingReportListResource(Resource, UserMixin):
             # 1 year
             end_date = date.today() + timedelta(days=365)
 
+        # Default sorting: due date ascending (soonest first)
+        sort_field = request.args.get('sort_field', type=str) or 'due_date'
+        sort_dir = request.args.get('sort_dir', type=str) or 'asc'
+
         args = {
             "page_number": request.args.get('page', PAGE_DEFAULT, type=int),
             "page_size": request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
-            'sort_field': request.args.get('sort_field', type=str),
-            'sort_dir': request.args.get('sort_dir', type=str),
+            'sort_field': sort_field,
+            'sort_dir': sort_dir,
             'search_terms': None,
             'report_type': None,  # we derive below
             'report_name': None,

@@ -1,17 +1,12 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { Row, Col, Typography, Tabs, Alert, Button, Radio } from "antd";
+import { Row, Col, Typography, Tabs, Alert, Button } from "antd";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { IMine } from "@mds/common/interfaces";
-import { fetchUpcomingMineReports } from "@mds/common/redux/actionCreators/reportActionCreator";
-import {
-  getMineReports,
-  getReportsPageData,
-  getUpcomingMineReports,
-  getUpcomingReportsPageData,
-} from "@mds/common/redux/selectors/reportSelectors";
+import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
 import { IMineReport } from "@mds/common/interfaces/reports/mineReport.interface";
 import * as Strings from "@mds/common/constants/strings";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
+import UpcomingReports from "@/components/dashboard/mine/reports/UpcomingReports";
 import { Link, useHistory } from "react-router-dom";
 import * as routes from "@/constants/routes";
 import TableSummaryCard from "@/components/common/TableSummaryCard";
@@ -33,8 +28,6 @@ const ReportManagement: FC = () => {
   const history = useHistory();
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [upcomingIsLoaded, setUpcomingIsLoaded] = useState(false);
-  const [upcomingRange, setUpcomingRange] = useState<"90d" | "6m" | "1y">("90d");
 
   const [allReports, setAllReports] = useState<IMineReport[]>(
     (useAppSelector(getMineReports) as IMineReport[]) || []
@@ -42,17 +35,11 @@ const ReportManagement: FC = () => {
 
   const mineReports: IMineReport[] = useAppSelector(getMineReports);
   const pageData = useAppSelector(getReportsPageData) as any;
-  const upcomingReports: IMineReport[] = useAppSelector(getUpcomingMineReports);
-  const upcomingPageData = useAppSelector(getUpcomingReportsPageData) as any;
   const stats = useAppSelector(getMineReportStatsByMineGuid(mine.mine_guid));
-
-  console.log(upcomingReports);
 
   useEffect(() => {
     setIsLoaded(true);
-    setUpcomingIsLoaded(true);
     onAllReportsPageChange(1);
-    onUpcomingReportsPageChange(1);
   }, [mine.mine_guid]);
 
   useEffect(() => {
@@ -88,28 +75,6 @@ const ReportManagement: FC = () => {
         })
       )
     ).then(() => setIsLoaded(true));
-  };
-
-  useEffect(() => {
-    if (upcomingRange) {
-      onUpcomingReportsPageChange(1);
-    }
-  }, [upcomingRange]);
-
-  const onUpcomingReportsPageChange = (page: number) => {
-    setUpcomingIsLoaded(false);
-    Promise.resolve(
-      dispatch(
-        fetchUpcomingMineReports(
-          mine.mine_guid,
-          [
-            Strings.MINE_REPORTS_TYPE.codeRequiredReports,
-            Strings.MINE_REPORTS_TYPE.permitRequiredReports,
-          ],
-          { page, per_page: REPORTS_PAGE_SIZE, time_range: upcomingRange }
-        )
-      )
-    ).then(() => setUpcomingIsLoaded(true));
   };
 
   return (
@@ -199,46 +164,7 @@ const ReportManagement: FC = () => {
           </Tabs.TabPane>
 
           <Tabs.TabPane tab="Upcoming Reports" key="upcoming_reports">
-            <Typography.Title level={2}>Upcoming Reports</Typography.Title>
-            <Typography.Paragraph>
-              This table shows reports with due dates in the future. Use it to focus on what is
-              coming up next.
-            </Typography.Paragraph>
-
-            <Row className="margin-large--bottom" align="middle" justify="start">
-              <Col>
-                <Typography.Text strong className="margin-small--right">
-                  Time Range:
-                </Typography.Text>
-              </Col>
-              <Col>
-                <Radio.Group
-                  value={upcomingRange}
-                  onChange={(e) => {
-                    setUpcomingRange(e.target.value);
-                  }}
-                >
-                  <Radio.Button value="90d">90 days</Radio.Button>
-                  <Radio.Button value="6m">6 months</Radio.Button>
-                  <Radio.Button value="1y">1 year</Radio.Button>
-                </Radio.Group>
-              </Col>
-            </Row>
-
-            <ReportsTable
-              openReport={openReport}
-              mineReports={upcomingReports || []}
-              isLoaded={upcomingIsLoaded}
-              backendPaginated
-            />
-            <Row justify="center" className="margin-large--bottom">
-              <ResponsivePagination
-                onPageChange={onUpcomingReportsPageChange}
-                currentPage={Number(upcomingPageData?.current_page || 1)}
-                pageTotal={Number(upcomingPageData?.total || (upcomingReports || []).length)}
-                itemsPerPage={Number(upcomingPageData?.items_per_page || REPORTS_PAGE_SIZE)}
-              />
-            </Row>
+            <UpcomingReports mineGuid={mine.mine_guid} openReport={openReport} />
           </Tabs.TabPane>
         </Tabs>
       </Col>
