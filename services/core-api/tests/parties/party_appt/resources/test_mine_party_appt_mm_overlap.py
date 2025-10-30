@@ -124,7 +124,7 @@ def test_put_mine_manager_overlap_one_day_start(test_client, db_session, auth_he
 
     test_data = {
         'start_date': str(existing_start - APPT_LENGTH),
-        'end_date': str(existing_start),
+        'end_date': str(existing_start + timedelta(days=1)),
     }
     put_resp = test_client.put(
         f'/parties/mines/{setup_info["moving_mine_manager"].mine_party_appt_guid}',
