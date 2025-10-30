@@ -9,13 +9,13 @@ import {
   getMineRegionHash,
   getMinistryContactTypesHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getMinistryContacts } from "@mds/common/redux/selectors/minespaceSelector";
+import { getMinistryContacts } from "@mds/common/redux/slices/minespaceSlice";
 import {
   fetchMinistryContacts,
   updateMinistryContact,
   deleteMinistryContact,
   createMinistryContact,
-} from "@mds/common/redux/actionCreators/minespaceActionCreator";
+} from "@mds/common/redux/slices/minespaceSlice";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
@@ -51,14 +51,12 @@ export class MineSpaceMinistryContactManagement extends Component {
 
   handleCreateContact = (values) => {
     this.props.createMinistryContact(values).then(() => {
-      this.handleFetchMinistryContacts();
       this.props.closeModal();
     });
   };
 
   handleUpdateContact = (values) => {
-    this.props.updateMinistryContact(values.contact_guid, values).then(() => {
-      this.handleFetchMinistryContacts();
+    this.props.updateMinistryContact({ contact_guid: values.contact_guid, payload: values }).then(() => {
       this.props.closeModal();
     });
   };
@@ -66,7 +64,7 @@ export class MineSpaceMinistryContactManagement extends Component {
   handleDeleteContact = (guid) => {
     this.setState({ isLoaded: false });
     this.props.deleteMinistryContact(guid).then(() => {
-      this.handleFetchMinistryContacts();
+      this.setState({ isLoaded: true })
     });
   };
 

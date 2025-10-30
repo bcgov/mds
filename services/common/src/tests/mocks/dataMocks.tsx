@@ -44,6 +44,7 @@ import {
   IProjectSummaryAuthorization,
   IPermitConditionTag,
   IStandardPermitCondition,
+  IMinespaceUser,
 } from "@mds/common/interfaces";
 import { IAmsFinalApplication } from "@mds/common/interfaces/projects/amsFinalApplication.interface";
 import { HaystackDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
@@ -925,24 +926,24 @@ export const MINE_NAME_LIST = {
 
 export const MINE_NO = "BLAH6666";
 
-export const MINESPACE_USERS = [
+export const MINESPACE_USERS: IMinespaceUser[] = [
   {
-    user_id: "1",
-    email: "email1@srvr.com",
-    keycloak_guid: "",
-    mines: [""],
+    user_id: 1,
+    email_or_username: "user1@bceid",
+    keycloak_guid: "keycloak-guid-1",
+    mines: [MINE_NAME_LIST.mines[0].mine_guid, MINE_NAME_LIST.mines[1].mine_guid,],
   },
   {
-    user_id: "2",
-    email: "email2@srvr.com",
+    user_id: 2,
+    email_or_username: "user2@example.com",
     keycloak_guid: "",
-    mines: [""],
+    mines: [MINE_NAME_LIST.mines[0].mine_guid,],
   },
   {
-    user_id: "3",
-    email: "email3@srvr.com",
-    keycloak_guid: "",
-    mines: [""],
+    user_id: 3,
+    email_or_username: "user3@bceid",
+    keycloak_guid: "keycloak-guid-3",
+    mines: [MINE_NAME_LIST.mines[2].mine_guid,],
   },
 ];
 

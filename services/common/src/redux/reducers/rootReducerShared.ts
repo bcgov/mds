@@ -12,7 +12,6 @@ import {
   externalAuthorizationReducer,
   incidentReducer,
   mineReducer,
-  minespaceReducer,
   modalReducer,
   noticeOfDepartureReducer,
   noticeOfWorkReducer,
@@ -41,6 +40,7 @@ import searchConditionCategoriesReducer, {
 } from "../slices/permitConditionCategorySlice";
 import helpReducer, { helpReducerType } from "../slices/helpSlice";
 import userReducer, { userReducerType } from "@mds/common/redux/slices/userSlice";
+import minespaceReducer, { minespaceReducerType } from "../slices/minespaceSlice";
 import permitConditionTagReducer, { permitConditionTagReducerType } from "@mds/common/redux/slices/permitConditionTagSlice";
 import mineReportPermitRequirementReducer, { mineReportPermitRequirementReducerType } from "../slices/mineReportPermitRequirementSlice";
 import permitConditionDiffReducer, { permitConditionDiffReducerType } from "../slices/permitConditionDiffSlice";
@@ -63,7 +63,6 @@ export const sharedReducer = {
   ...externalAuthorizationReducer,
   ...incidentReducer,
   ...mineReducer,
-  ...minespaceReducer,
   ...modalReducer,
   ...noticeOfDepartureReducer,
   ...noticeOfWorkReducer,
@@ -98,5 +97,6 @@ export const sharedReducer = {
   [permitConditionTagReducerType]: permitConditionTagReducer,
   [amsAppReducerType]: amsFinalAppReducer,
   [mineReportStatsReducerType]: mineReportStatsReducer,
+  [minespaceReducerType]: minespaceReducer,
   ...networkReducers
 };

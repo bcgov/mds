@@ -2,10 +2,11 @@ import uuid
 
 from flask import request, current_app
 from flask_restx import Resource, reqparse
-from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
+from werkzeug.exceptions import BadRequest, NotFound
+from app.extensions import getJwtManager
 
 from app.extensions import api, db
-from app.api.utils.access_decorators import requires_role_mine_admin
+from app.api.utils.access_decorators import requires_role_mine_admin, VIEW_ALL, requires_any_of, MINESPACE_PROPONENT, MINE_ADMIN
 from app.api.utils.resources_mixins import UserMixin
 
 from app.api.users.minespace.models.minespace_user import MinespaceUser
@@ -20,14 +21,26 @@ class MinespaceUserListResource(Resource, UserMixin):
     parser.add_argument('mine_guids', type=list, location='json', required=True)
 
     @api.doc(params={
-        'email_or_username': 'find by email, this will return a list with at most one element'
+        'email_or_username': 'find by email, this will return a list with at most one element',
+        'mine_guid': 'find by mine guid, this will return all users with access to the specified mine'
     })
     @api.marshal_with(MINESPACE_USER_MODEL, envelope='records')
-    @requires_role_mine_admin
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
+        mine_guid = request.args.get('mine_guid')
+        is_admin = getJwtManager().contains_role([MINE_ADMIN])
+
+        if not is_admin and mine_guid is None:
+            raise BadRequest("mine_guid is a required argument")
+        
         if request.args.get('email_or_username'):
             ms_users = [MinespaceUser.find_by_email(request.args.get('email_or_username'))]
-        else:
+        elif mine_guid:
+            mine = Mine.find_by_mine_guid(mine_guid)
+            if not mine:
+                raise NotFound('Mine not found')
+            ms_users = MinespaceUser.find_by_mine_guid(mine_guid)
+        else:            
             ms_users = MinespaceUser.get_all()
         return ms_users
 

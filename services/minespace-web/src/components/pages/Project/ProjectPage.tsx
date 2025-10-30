@@ -11,7 +11,7 @@ import {
   fetchMineDocuments,
   fetchMineRecordById,
 } from "@mds/common/redux/actionCreators/mineActionCreator";
-import { fetchMinistryContactsByRegion } from "@mds/common/redux/actionCreators/minespaceActionCreator";
+import { fetchMinistryContactsByRegion } from "@mds/common/redux/slices/minespaceSlice";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import MajorMineApplicationReviewSubmit from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationReviewSubmit";
@@ -95,7 +95,12 @@ const ProjectPage: FC = () => {
       await dispatch(fetchMineRecordById(project.mine_guid));
     }
     if (mine?.mine_region && project?.project_guid === projectGuid) {
-      await dispatch(fetchMinistryContactsByRegion(mine.mine_region, mine.major_mine_ind));
+      await dispatch(
+        fetchMinistryContactsByRegion({
+          region: mine.mine_region,
+          isMajorMine: mine.major_mine_ind,
+        })
+      );
       setIsLoaded(true);
     }
     if (includeArchivedDocuments) {

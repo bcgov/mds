@@ -36,6 +36,12 @@ class MinespaceUser(SoftDeleteMixin, Base):
         return cls.query.filter_by(keycloak_guid=user_guid).filter_by(deleted_ind=False).first()
 
     @classmethod
+    def find_by_mine_guid(cls, mine_guid):
+        return cls.query.filter_by(deleted_ind=False).join(MinespaceUserMine).filter(
+            MinespaceUserMine.mine_guid == mine_guid
+        ).all()
+    
+    @classmethod
     def find_by_email(cls, email_or_username):
         return cls.query.filter_by(email_or_username=email_or_username).filter_by(
             deleted_ind=False).first()
