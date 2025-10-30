@@ -8480,7 +8480,53 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       municipality_guid: "abbadb49-446d-49ab-8500-8352a9da46be",
     },
   ],
-  partyRelationshipTypes: [],
+  partyRelationshipTypes: [
+    {
+      "mine_party_appt_type_code": "MMG",
+      "description": "Mine Manager",
+      "display_order": 1,
+      "person": true,
+      "organization": false,
+      "grouping_level": 3,
+      "active_ind": true
+    },
+    {
+      "mine_party_appt_type_code": "PMT",
+      "description": "Permittee",
+      "display_order": 2,
+      "person": true,
+      "organization": true,
+      "grouping_level": 3,
+      "active_ind": true
+    },
+    {
+      "mine_party_appt_type_code": "MOR",
+      "description": "Site Operator",
+      "display_order": 3,
+      "person": true,
+      "organization": true,
+      "grouping_level": 3,
+      "active_ind": true
+    },
+    {
+      "mine_party_appt_type_code": "MOW",
+      "description": "Mine Owner",
+      "display_order": 4,
+      "person": true,
+      "organization": true,
+      "grouping_level": 3,
+      "active_ind": true
+    },
+    {
+      "mine_party_appt_type_code": "DAM",
+      "description": "Director of Abandoned Mines",
+      "display_order": 5,
+      "person": true,
+      "organization": false,
+      "grouping_level": 3,
+      "active_ind": true
+    }
+  ],
   partyBusinessRoleOptions: [],
   noticeOfWorkActivityTypeOptions: [
     {

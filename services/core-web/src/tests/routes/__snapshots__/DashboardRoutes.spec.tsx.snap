@@ -472,15 +472,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/dashboard/:id/profile"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(RelationshipProfile)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
     key="/dashboard/:id/history/:typeCode"
     path="/dashboard/:id/history/:typeCode"
