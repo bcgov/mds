@@ -225,7 +225,7 @@ export const MAJOR_MINES_APPLICATION_DOCUMENT_SUBTYPE_CODE = {
   SPR: {
     QPD: "Qualified Professional Declaration Form",
     TOC: "Table of Concordance",
-    SPT: "Supporting Documents",
+    SPR: "Supporting Documents",
     CIF: "Confidential Information"
   }
 };
