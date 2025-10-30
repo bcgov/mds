@@ -23,7 +23,7 @@ import { fetchProjectSummaryEnvironmentAuthorizationStatuses } from "@mds/common
 import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
 import { areDocumentFieldsDisabled } from "./projectUtils";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
-import { getMinistryContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
+import { getMinistryContactsByRegion } from "@mds/common/redux/slices/minespaceSlice";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { formatDate } from "@mds/common/redux/utils/helpers";

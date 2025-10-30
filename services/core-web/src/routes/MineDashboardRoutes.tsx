@@ -7,7 +7,8 @@ const MineDashboardRoutes: FC = () => (
   <Switch>
     <Route exact path={routes.MINE_CONTACTS.route} component={routes.MINE_CONTACTS.component} />
     <Route exact path={routes.MINE_GENERAL.route} component={routes.MINE_GENERAL.component} />
-    <Route exact path={routes.MINE_PERMITS.route} component={routes.MINE_PERMITS.component} />
+    <Route exact path={routes.MINE_ACCESS.route} component={routes.MINE_ACCESS.component} />
+    <Route exact path={routes.MINE_DOCUMENTS.route} component={routes.MINE_DOCUMENTS.component} />
     <Route
       exact
       path={routes.MINE_PERMIT_DIGITAL_CREDENTIALS.route}

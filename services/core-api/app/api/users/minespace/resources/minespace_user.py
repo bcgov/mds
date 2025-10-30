@@ -2,10 +2,11 @@ import uuid
 
 from flask import request, current_app
 from flask_restx import Resource, reqparse
-from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
+from werkzeug.exceptions import BadRequest, NotFound
+from app.extensions import getJwtManager
 
 from app.extensions import api, db
-from app.api.utils.access_decorators import requires_role_mine_admin
+from app.api.utils.access_decorators import requires_role_mine_admin, VIEW_ALL, requires_any_of, MINESPACE_PROPONENT, MINE_ADMIN
 from app.api.utils.resources_mixins import UserMixin
 
 from app.api.users.minespace.models.minespace_user import MinespaceUser
@@ -23,7 +24,7 @@ class MinespaceUserListResource(Resource, UserMixin):
         'mine_guid': 'find by mine guid, this will return all users with access to the specified mine'
     })
     @api.marshal_with(MINESPACE_USER_MODEL, envelope='records')
-    @requires_role_mine_admin
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
         mine_guid = request.args.get('mine_guid')
         is_admin = getJwtManager().contains_role([MINE_ADMIN])
@@ -35,7 +36,7 @@ class MinespaceUserListResource(Resource, UserMixin):
             if not mine:
                 raise NotFound('Mine not found')
             ms_users = MinespaceUser.find_by_mine_guid(mine_guid)
-        else:            
+        else:
             ms_users = MinespaceUser.get_all()
         return ms_users
 

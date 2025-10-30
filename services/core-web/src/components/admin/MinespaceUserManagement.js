@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
 import { getMineNames } from "@mds/common/redux/selectors/mineSelectors";
-import { getMinespaceUsers, getMinespaceUserEmailHash } from "@mds/common/redux/selectors/minespaceSelector";
+import { getMinespaceUsers, getMinespaceUserEmailHash } from "@mds/common/redux/slices/minespaceSlice";
 import { fetchMineNameList } from "@mds/common/redux/actionCreators/mineActionCreator";
 import {
   createMinespaceUser,
@@ -13,8 +13,8 @@ import {
   deleteMinespaceUser,
   fetchMinespaceUserMines,
   updateMinespaceUserMines,
-} from "@mds/common/redux/actionCreators/minespaceActionCreator";
-import { getMinespaceUserMines } from "@mds/common/redux/reducers/minespaceReducer";
+} from "@mds/common/redux/slices/minespaceSlice";
+import { getMinespaceUserMines } from "@mds/common/redux/slices/minespaceSlice";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
 import NewMinespaceUser from "@/components/admin/NewMinespaceUser";
@@ -69,26 +69,17 @@ export const MinespaceUserManagement = (props) => {
   }, [minespaceUserMines]);
 
   const handleDelete = (userId) => {
-    props.deleteMinespaceUser(userId).then(() => {
-      props.fetchMinespaceUsers();
-    });
-  };
-
-  const refreshUserData = () => {
-    props.fetchMinespaceUsers();
+    props.deleteMinespaceUser(userId);
   };
 
   const handleUpdate = (record) => {
-    props.updateMinespaceUserMines(record.user_id, record).then(() => {
+    props.updateMinespaceUserMines({ minespace_id: record.user_id, payload: record }).then(() => {
       props.closeModal();
-      refreshUserData();
     });
   };
 
   const handleCreateUser = (values) => {
-    props.createMinespaceUser(values).then(() => {
-      refreshUserData();
-    });
+    props.createMinespaceUser(values);
   };
 
   const handleOpenModal = (e, record) => {
@@ -97,8 +88,6 @@ export const MinespaceUserManagement = (props) => {
         title: `Update User: ${record.bceid_username}`,
         initialValues: record,
         handleSubmit: handleUpdate,
-        refreshData: refreshUserData,
-        afterClose: () => { },
       },
       content: modalConfig.UPDATE_MINESPACE_USERS,
       width: "75vw",
@@ -113,8 +102,6 @@ export const MinespaceUserManagement = (props) => {
       <NewMinespaceUser
         handleSubmit={handleCreateUser}
         minespaceUserEmailHash={minespaceUserEmailHash}
-        refresdata={refreshUserData}
-        handleSearch={handleUpdate}
       />
       <h3>MineSpace Users</h3>
       <MinespaceUserList
