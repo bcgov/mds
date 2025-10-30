@@ -136,7 +136,7 @@ def test_put_mine_manager_overlap_one_day_start(test_client, db_session, auth_he
 
 def test_put_mine_manager_overlap_one_day_end(test_client, db_session, auth_headers, setup_info):
     test_data = {
-        'start_date': str(setup_info['existing_mine_manager'].end_date.date()),
+        'start_date': str(setup_info['existing_mine_manager'].end_date.date() - timedelta(days=1)),
         'end_date': None,
     }
     put_resp = test_client.put(
