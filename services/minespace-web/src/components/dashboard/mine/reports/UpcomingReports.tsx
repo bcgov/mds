@@ -1,21 +1,14 @@
 import React, { FC, useEffect, useState } from "react";
-import { Row, Col, Typography, Radio, Alert } from "antd";
+import { Alert, Col, Radio, Row, Typography } from "antd";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
-import ReportsTable, {
-  reportStatusSeverity,
-} from "@/components/dashboard/mine/reports/ReportsTable";
+import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import * as Strings from "@mds/common/constants/strings";
 import {
   getUpcomingMineReports,
   getUpcomingReportsPageData,
 } from "@mds/common/redux/selectors/reportSelectors";
 import { IMineReport } from "@mds/common/interfaces/reports/mineReport.interface";
-import { ColumnsType } from "antd/es/table";
-import { Badge } from "antd";
-import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants/enums";
-import { MINE_REPORT_STATUS_HASH } from "@mds/common/constants/strings";
-import { PERMIT_VIEW, VIEW_ESUP } from "@/constants/routes";
 import { fetchUpcomingMineReports } from "@mds/common/redux/slices/reportSlice";
 
 const REPORTS_PAGE_SIZE = 20;

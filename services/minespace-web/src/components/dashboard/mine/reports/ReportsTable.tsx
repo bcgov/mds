@@ -12,12 +12,11 @@ import CoreTable from "@mds/common/components/common/CoreTable";
 import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants/enums";
 import { IMineReport } from "@mds/common/interfaces/reports/mineReport.interface";
 import { MINE_REPORT_STATUS_HASH } from "@mds/common/constants/strings";
-import { useAppSelector, useAppSelector as useSelector } from "@mds/common/redux/rootState";
+import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { EditOutlined } from "@ant-design/icons";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
 import { PERMIT_VIEW } from "@/constants/routes";
-import { getPendingReportsCountByMineGuid } from "@mds/common/redux/slices/mineReportStatsSlice";
 
 interface ReportsTableProps {
   mineReports: IMineReport[];
