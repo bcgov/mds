@@ -5,7 +5,6 @@ import ResponsivePagination from "@mds/common/components/common/ResponsivePagina
 import ReportsTable, {
   reportStatusSeverity,
 } from "@/components/dashboard/mine/reports/ReportsTable";
-import { fetchUpcomingMineReports } from "@mds/common/redux/actionCreators/reportActionCreator";
 import * as Strings from "@mds/common/constants/strings";
 import {
   getUpcomingMineReports,
@@ -17,6 +16,7 @@ import { Badge } from "antd";
 import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants/enums";
 import { MINE_REPORT_STATUS_HASH } from "@mds/common/constants/strings";
 import { PERMIT_VIEW, VIEW_ESUP } from "@/constants/routes";
+import { fetchUpcomingMineReports } from "@mds/common/redux/slices/reportSlice";
 
 const REPORTS_PAGE_SIZE = 20;
 
@@ -35,26 +35,24 @@ const UpcomingReports: FC<UpcomingReportsProps> = ({ mineGuid, openReport }) => 
 
   useEffect(() => {
     onPageChange(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mineGuid]);
 
   useEffect(() => {
     onPageChange(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [range]);
 
   const onPageChange = (page: number) => {
     setIsLoaded(false);
     Promise.resolve(
       dispatch(
-        fetchUpcomingMineReports(
+        fetchUpcomingMineReports({
           mineGuid,
-          [
+          reportsType: [
             Strings.MINE_REPORTS_TYPE.codeRequiredReports,
             Strings.MINE_REPORTS_TYPE.permitRequiredReports,
           ],
-          { page, per_page: REPORTS_PAGE_SIZE, time_range: range }
-        )
+          params: { page, per_page: REPORTS_PAGE_SIZE, time_range: range },
+        })
       )
     ).then(() => setIsLoaded(true));
   };
@@ -110,8 +108,9 @@ const UpcomingReports: FC<UpcomingReportsProps> = ({ mineGuid, openReport }) => 
     <>
       <Typography.Title level={2}>Upcoming Reports</Typography.Title>
       <Typography.Paragraph>
-        This table shows reports with due dates in the future. Use it to focus on what is coming up
-        next.
+        This table shows reports that have not yet been submitted to the Ministry. If you do not see
+        a permit required report that your mine must submit, click Submit Report, choose the report
+        you need to send and then attach the file or files.
       </Typography.Paragraph>
 
       <Row className="margin-large--bottom" align="middle" justify="start">

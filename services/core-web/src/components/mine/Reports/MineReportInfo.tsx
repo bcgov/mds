@@ -1,14 +1,10 @@
 import React, { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
-import { Button, Divider, Row, Dropdown, MenuProps } from "antd";
+import { Button, Divider, Dropdown, MenuProps, Row } from "antd";
 import moment from "moment";
 import queryString from "query-string";
 import { isEmpty } from "lodash";
-import {
-  createMineReport,
-  deleteMineReport,
-} from "@mds/common/redux/actionCreators/reportActionCreator";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
 import { getMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
@@ -24,7 +20,11 @@ import ResponsivePagination from "@mds/common/components/common/ResponsivePagina
 import { MineReportParams } from "@mds/common/interfaces/reports";
 import { MINE_REPORTS_ENUM, MineReportType } from "@mds/common/constants/enums";
 import { useAppDispatch } from "@mds/common/redux/rootState";
-import { fetchMineReports } from "@mds/common/redux/slices/reportSlice";
+import {
+  createMineReport,
+  deleteMineReport,
+  fetchMineReports,
+} from "@mds/common/redux/slices/reportSlice";
 
 const defaultParams: MineReportParams = {
   report_name: undefined,
@@ -163,15 +163,15 @@ export const MineReportInfo: FC = () => {
   };
 
   const handleAddReport = (values) => {
-    return dispatch(createMineReport(mineGuid, values))
+    return dispatch(createMineReport({ mineGuid, payload: values }))
       .then(() => dispatch(closeModal()))
       .then(() => refreshReportData());
   };
 
   const handleRemoveReport = (report) => {
-    return dispatch(deleteMineReport(report.mine_guid, report.mine_report_guid)).then(() =>
-      refreshReportData()
-    );
+    return dispatch(
+      deleteMineReport({ mineGuid: report.mine_guid, mineReportGuid: report.mine_report_guid })
+    ).then(() => refreshReportData());
   };
 
   const handleReportFilterSubmit = (params) => {
