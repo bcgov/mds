@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { Row, Col, Typography, Radio } from "antd";
+import { Row, Col, Typography, Radio, Alert } from "antd";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 import ReportsTable, {
@@ -57,53 +57,6 @@ const UpcomingReports: FC<UpcomingReportsProps> = ({ mineGuid, openReport }) => 
     ).then(() => setIsLoaded(true));
   };
 
-  const columns: ColumnsType<IMineReport> = [
-    {
-      title: "Report Name/Permit Condition",
-      dataIndex: "report_name",
-      key: "report_name",
-      render: (text: string) => text,
-    },
-    {
-      title: "Permit #",
-      dataIndex: "permit_number",
-      key: "permit_number",
-      render: (text: string | null | undefined, record) => {
-        if (!text) return "—";
-        const permitLink = PERMIT_VIEW.dynamicRoute(record.mine_guid, record.permit_guid);
-        return <a href={permitLink}>{text}</a>;
-      },
-      width: 125,
-    },
-    {
-      title: "Compliance Year",
-      dataIndex: "submission_year",
-      key: "submission_year",
-      width: 80,
-    },
-    {
-      title: "Due",
-      dataIndex: "due_date",
-      key: "due_date",
-      width: 100,
-    },
-    {
-      title: "Submitted",
-      key: "submitted_on",
-      render: (record: IMineReport) => record?.latest_submission?.received_date || "—",
-    },
-    {
-      title: "Status",
-      dataIndex: "mine_report_status_code",
-      key: "status",
-      sorter: (a: IMineReport, b: IMineReport) =>
-        a.mine_report_status_code.localeCompare(b.mine_report_status_code),
-      render: (text: MINE_REPORT_SUBMISSION_CODES) => (
-        <Badge status={reportStatusSeverity(text)} text={MINE_REPORT_STATUS_HASH[text]} />
-      ),
-    },
-  ];
-
   return (
     <>
       <Typography.Title level={2}>Upcoming Reports</Typography.Title>
@@ -133,13 +86,21 @@ const UpcomingReports: FC<UpcomingReportsProps> = ({ mineGuid, openReport }) => 
           </Radio.Group>
         </Col>
       </Row>
-
+      <div className="margin-large--bottom">
+        <Alert
+          message="Reminder"
+          showIcon
+          type="info"
+          description={
+            "Your permit is the official source of reporting requirements. Use this table as a reference, but always check your permit to confirm compliance."
+          }
+        />
+      </div>
       <ReportsTable
         openReport={openReport}
         mineReports={upcomingReports || []}
         isLoaded={isLoaded}
         backendPaginated
-        columns={columns}
       />
       <Row justify="center" className="margin-large--bottom">
         <ResponsivePagination
