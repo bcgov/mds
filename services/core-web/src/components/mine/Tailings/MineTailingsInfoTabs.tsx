@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
 import { Divider, Tabs } from "antd";
-import { deleteMineReport } from "@mds/common/redux/actionCreators/reportActionCreator";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import {
   createTailingsStorageFacility,
@@ -37,7 +36,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { ADD_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import { resetForm } from "@mds/common/redux/utils/helpers";
 import { FORM } from "@mds/common/constants/forms";
-import { fetchMineReports } from "@mds/common/redux/slices/reportSlice";
+import { deleteMineReport, fetchMineReports } from "@mds/common/redux/slices/reportSlice";
 
 /**
  * @class  MineTailingsInfoTabs - all tenure information related to the mine.
@@ -100,7 +99,9 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
   };
 
   const handleRemoveReport = (report) => {
-    return dispatch(deleteMineReport(report.mine_guid, report.mine_report_guid)).then(() =>
+    return dispatch(
+      deleteMineReport({ mineGuid: report.mine_guid, mineReportGuid: report.mine_report_guid })
+    ).then(() =>
       dispatch(
         fetchMineReports({
           mineGuid: report.mine_guid,

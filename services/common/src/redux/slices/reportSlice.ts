@@ -1,6 +1,5 @@
 import { createAppSlice } from "@mds/common/redux/createAppSlice";
 import * as API from "@mds/common/constants/API";
-import { REPORTS } from "@mds/common/constants/reducerTypes";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import { removeNullValues } from "@mds/common/constants/utils";
@@ -8,6 +7,8 @@ import CustomAxios from "../customAxios";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
 import * as Strings from "@mds/common/constants/strings";
 import { notification } from "antd";
+
+export const reportReducerType = "REPORTS";
 
 export interface ReportsState {
   reports: any[];
@@ -30,7 +31,7 @@ const initialState: ReportsState = {
 };
 
 const reportSlice = createAppSlice({
-  name: REPORTS,
+  name: reportReducerType,
   initialState,
   reducers: (create) => ({
     // GET /mines/:mineGuid/reports (optionally with mine_reports_type)
@@ -112,10 +113,7 @@ const reportSlice = createAppSlice({
 
     // GET /mines/reports (global reports search)
     fetchReports: create.asyncThunk(
-      async (
-        { params = {} }: { params?: any },
-        thunkApi
-      ) => {
+      async ({ params = {} }: { params?: any }, thunkApi) => {
         const headers = createRequestHeader();
         thunkApi.dispatch(showLoading());
         let response;
@@ -170,10 +168,7 @@ const reportSlice = createAppSlice({
 
     // POST /mines/:mineGuid/reports
     createMineReport: create.asyncThunk(
-      async (
-        { mineGuid, payload }: { mineGuid: string; payload: any },
-        thunkApi
-      ) => {
+      async ({ mineGuid, payload }: { mineGuid: string; payload: any }, thunkApi) => {
         const headers = createRequestHeader();
         thunkApi.dispatch(showLoading("modal"));
         let response;

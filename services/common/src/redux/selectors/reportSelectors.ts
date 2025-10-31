@@ -1,18 +1,18 @@
 import { createSelector } from "reselect";
-import { REPORTS } from "@mds/common/constants/reducerTypes";
+import { reportReducerType } from "@mds/common/redux/slices/reportSlice";
 
-export const getReports = (state) => state[REPORTS].reports;
-export const getReportsPageData = (state) => state[REPORTS].reportsPageData;
-export const getMineReports = (state) => state[REPORTS].mineReports;
+export const getReports = (state) => state[reportReducerType].reportReducerType;
+export const getReportsPageData = (state) => state[reportReducerType].reportsPageData;
+export const getMineReports = (state) => state[reportReducerType].mineReports;
 export const getMineReportById = (state, reportGuid) => {
-  if (reportGuid == state[REPORTS].mineReportGuid) {
-    return state[REPORTS].mineReports[0];
+  if (reportGuid == state[reportReducerType].mineReportGuid) {
+    return state[reportReducerType].mineReports[0];
   }
-  return state[REPORTS].mineReports.find((report) => report.mine_report_guid == reportGuid);
+  return state[reportReducerType].mineReports.find((report) => report.mine_report_guid == reportGuid);
 };
-export const getMineReportComments = (state) => state[REPORTS].reportComments;
-export const getUpcomingMineReports = (state) => state[REPORTS].upcomingMineReports;
-export const getUpcomingReportsPageData = (state) => state[REPORTS].upcomingReportsPageData;
+export const getMineReportComments = (state) => state[reportReducerType].reportComments;
+export const getUpcomingMineReports = (state) => state[reportReducerType].upcomingMineReports;
+export const getUpcomingReportsPageData = (state) => state[reportReducerType].upcomingReportsPageData;
 
 export const getMineTSFReports = createSelector([getMineReports], (reports) =>
   reports.filter((report) => report.mine_report_definition_guid !== null)
