@@ -381,3 +381,83 @@ def test_get_prr_and_crr_reports_for_mine(test_client, db_session, auth_headers)
     has_prr = any(r.get('mine_report_definition_guid') is None for r in get_data['records'])
     has_crr = any(r.get('mine_report_definition_guid') is not None for r in get_data['records'])
     assert has_prr and has_crr
+
+
+
+def test_get_upcoming_reports_for_mine(test_client, db_session, auth_headers):
+    # Create a mine with a mix of due dates
+    today = date.today()
+    mine = MineFactory(mine_reports=0)
+
+    in_window_1 = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,
+        due_date=today + timedelta(days=1),  # tomorrow
+        received_date=None,
+    )
+    in_window_2 = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,
+        due_date=today + timedelta(days=30),  # within 90d window
+        received_date=None,
+    )
+    past_due = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,
+        due_date=today - timedelta(days=1),  # yesterday → should be excluded when upcoming=true
+        received_date=None,
+    )
+    far_future = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,
+        due_date=today + timedelta(days=400),  # beyond 90d window → should be excluded
+        received_date=None,
+    )
+
+    # Request upcoming with explicit 90d window
+    resp = test_client.get(
+        f"/mines/{mine.mine_guid}/reports?upcoming=true&time_range=90d",
+        headers=auth_headers["full_auth_header"],
+    )
+
+    assert resp.status_code == 200
+    data = json.loads(resp.data.decode())
+    returned = {r["mine_report_guid"] for r in data["records"]}
+
+    assert str(in_window_1.mine_report_guid) in returned
+    assert str(in_window_2.mine_report_guid) in returned
+    assert str(past_due.mine_report_guid) not in returned
+    assert str(far_future.mine_report_guid) not in returned
+
+
+def test_get_pending_reports_for_mine_status_filter(test_client, db_session, auth_headers):
+    # Pending here corresponds to reports with no latest submission (`mine_report_status_code` == 'NON')
+    mine = MineFactory(mine_reports=0)
+
+    pending = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,  # ensures status is 'NON'
+        received_date=None,
+    )
+
+    non_pending = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,
+    )
+    # Add a submission so status is not 'NON'
+    MineReportSubmissionFactory(
+        report=non_pending,
+        mine_report_submission_status_code="INI",
+    )
+
+    resp = test_client.get(
+        f"/mines/{mine.mine_guid}/reports?status=NON",
+        headers=auth_headers["full_auth_header"],
+    )
+
+    assert resp.status_code == 200
+    data = json.loads(resp.data.decode())
+    returned = {r["mine_report_guid"] for r in data["records"]}
+
+    assert str(pending.mine_report_guid) in returned
+    assert str(non_pending.mine_report_guid) not in returned
