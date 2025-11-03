@@ -1,17 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
 import reportReducer, {
-  fetchMineReports,
-  fetchUpcomingMineReports,
-  fetchReports,
-  fetchMineReport,
   createMineReport,
   deleteMineReport,
+  fetchMineReport,
+  fetchMineReports,
+  fetchReports,
+  fetchUpcomingMineReports,
+  reportReducerType,
 } from "./reportSlice";
 import server from "@mds/common/tests/server";
 import { http, HttpResponse } from "msw";
 import * as Strings from "@mds/common/constants/strings";
 import * as API from "@mds/common/constants/API";
-import { REPORTS } from "@mds/common/constants/reducerTypes";
 
 export const showLoadingMock = jest
   .fn()
@@ -36,7 +36,7 @@ describe("reportSlice", () => {
 
   beforeEach(() => {
     store = configureStore({
-      reducer: { [REPORTS]: reportReducer },
+      reducer: { [reportReducerType]: reportReducer },
     });
     jest.clearAllMocks();
   });
@@ -55,23 +55,18 @@ describe("reportSlice", () => {
       };
 
       server.use(
-        http.get(
-          "/%3CAPI_URL%3E/mines/:mineGuid/reports",
-          async ({ params }) => {
-            expect(params.mineGuid).toBe(mineGuid);
-            return HttpResponse.json(payload);
-          }
-        )
+        http.get("/%3CAPI_URL%3E/mines/:mineGuid/reports", async ({ params }) => {
+          expect(params.mineGuid).toBe(mineGuid);
+          return HttpResponse.json(payload);
+        })
       );
 
-      await store.dispatch<any>(
-        fetchMineReports({ mineGuid, reportsType, params: {} })
-      );
+      await store.dispatch<any>(fetchMineReports({ mineGuid, reportsType, params: {} }));
 
       expect(showLoadingMock).toHaveBeenCalledTimes(1);
       expect(hideLoadingMock).toHaveBeenCalledTimes(1);
 
-      const state = store.getState()[REPORTS];
+      const state = store.getState()[reportReducerType];
       expect(state.mineReports).toEqual(payload.records);
       expect(state.reportsPageData).toEqual(payload);
     });
@@ -90,24 +85,19 @@ describe("reportSlice", () => {
       };
 
       server.use(
-        http.get(
-          "/%3CAPI_URL%3E/mines/:mineGuid/reports",
-          async ({ params }) => {
-            expect(params.mineGuid).toBe(mineGuid);
-            // upcoming=true is passed as query; path-only matcher is sufficient
-            return HttpResponse.json(payload);
-          }
-        )
+        http.get("/%3CAPI_URL%3E/mines/:mineGuid/reports", async ({ params }) => {
+          expect(params.mineGuid).toBe(mineGuid);
+          // upcoming=true is passed as query; path-only matcher is sufficient
+          return HttpResponse.json(payload);
+        })
       );
 
-      await store.dispatch<any>(
-        fetchUpcomingMineReports({ mineGuid, params: {} })
-      );
+      await store.dispatch<any>(fetchUpcomingMineReports({ mineGuid, params: {} }));
 
       expect(showLoadingMock).toHaveBeenCalledTimes(1);
       expect(hideLoadingMock).toHaveBeenCalledTimes(1);
 
-      const state = store.getState()[REPORTS];
+      const state = store.getState()[reportReducerType];
       expect(state.upcomingMineReports).toEqual(payload.records);
       expect(state.upcomingReportsPageData).toEqual(payload);
     });
@@ -134,7 +124,7 @@ describe("reportSlice", () => {
       expect(showLoadingMock).toHaveBeenCalledTimes(1);
       expect(hideLoadingMock).toHaveBeenCalledTimes(1);
 
-      const state = store.getState()[REPORTS];
+      const state = store.getState()[reportReducerType];
       expect(state.reports).toEqual(payload.records);
       expect(state.reportsPageData).toEqual(payload);
     });
@@ -148,14 +138,11 @@ describe("reportSlice", () => {
       const payload = { mine_report_guid: mineReportGuid, foo: "bar" };
 
       server.use(
-        http.get(
-          "/%3CAPI_URL%3E/mines/:mineGuid/reports/:mineReportGuid",
-          async ({ params }) => {
-            expect(params.mineGuid).toBe(mineGuid);
-            expect(params.mineReportGuid).toBe(mineReportGuid);
-            return HttpResponse.json(payload);
-          }
-        )
+        http.get("/%3CAPI_URL%3E/mines/:mineGuid/reports/:mineReportGuid", async ({ params }) => {
+          expect(params.mineGuid).toBe(mineGuid);
+          expect(params.mineReportGuid).toBe(mineReportGuid);
+          return HttpResponse.json(payload);
+        })
       );
 
       await store.dispatch<any>(fetchMineReport({ mineGuid, mineReportGuid }));
@@ -163,7 +150,7 @@ describe("reportSlice", () => {
       expect(showLoadingMock).toHaveBeenCalledTimes(1);
       expect(hideLoadingMock).toHaveBeenCalledTimes(1);
 
-      const state = store.getState()[REPORTS];
+      const state = store.getState()[reportReducerType];
       expect(state.mineReports).toEqual([payload]);
       expect(state.mineReportGuid).toEqual(mineReportGuid);
     });
@@ -177,14 +164,11 @@ describe("reportSlice", () => {
       const response = { data: { ok: true, id: "new-1" } };
 
       server.use(
-        http.post(
-          "/%3CAPI_URL%3E" + API.MINE_REPORTS(mineGuid),
-          async ({ request }) => {
-            const body = await request.json();
-            expect(body).toEqual(payload);
-            return HttpResponse.json(response.data);
-          }
-        )
+        http.post("/%3CAPI_URL%3E" + API.MINE_REPORTS(mineGuid), async ({ request }) => {
+          const body = await request.json();
+          expect(body).toEqual(payload);
+          return HttpResponse.json(response.data);
+        })
       );
 
       await store.dispatch<any>(createMineReport({ mineGuid, payload }));

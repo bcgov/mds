@@ -20,6 +20,7 @@ import ResponsivePagination from "@mds/common/components/common/ResponsivePagina
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { getMineReportStatsByMineGuid } from "@mds/common/redux/slices/mineReportStatsSlice";
 import { fetchMineReports } from "@mds/common/redux/slices/reportSlice";
+import { Feature, isFeatureEnabled } from "@mds/common/utils";
 
 const REPORTS_PAGE_SIZE = 20;
 
@@ -36,6 +37,7 @@ const ReportManagement: FC = () => {
   const mineReports: IMineReport[] = useAppSelector(getMineReports);
   const pageData = useAppSelector(getReportsPageData) as any;
   const stats = useAppSelector(getMineReportStatsByMineGuid(mine.mine_guid));
+  const showPendingReports = isFeatureEnabled(Feature.REPORT_MANAGEMENT_V2);
 
   useEffect(() => {
     setIsLoaded(true);
@@ -170,18 +172,22 @@ const ReportManagement: FC = () => {
                 </div>
               ),
             },
-            {
-              key: "upcoming_reports",
-              label: (
-                <Row gutter={8}>
-                  <Col>Upcoming Reports</Col>
-                  <Col>
-                    <Badge count={reportsDueNext90 ?? undefined} />
-                  </Col>
-                </Row>
-              ),
-              children: <UpcomingReports mineGuid={mine.mine_guid} openReport={openReport} />,
-            },
+            ...(showPendingReports
+              ? [
+                  {
+                    key: "upcoming_reports",
+                    label: (
+                      <Row gutter={8}>
+                        <Col>Upcoming Reports</Col>
+                        <Col>
+                          <Badge count={reportsDueNext90 ?? undefined} />
+                        </Col>
+                      </Row>
+                    ),
+                    children: <UpcomingReports mineGuid={mine.mine_guid} openReport={openReport} />,
+                  },
+                ]
+              : []),
           ]}
         />
       </Col>

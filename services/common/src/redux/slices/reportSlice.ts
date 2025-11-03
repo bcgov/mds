@@ -1,4 +1,4 @@
-import { createAppSlice } from "@mds/common/redux/createAppSlice";
+import { createAppSlice, rejectHandler } from "@mds/common/redux/createAppSlice";
 import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
@@ -34,7 +34,6 @@ const reportSlice = createAppSlice({
   name: reportReducerType,
   initialState,
   reducers: (create) => ({
-    // GET /mines/:mineGuid/reports (optionally with mine_reports_type)
     fetchMineReports: create.asyncThunk(
       async (
         {
@@ -61,17 +60,19 @@ const reportSlice = createAppSlice({
         } finally {
           thunkApi.dispatch(hideLoading());
         }
-        return response.data;
+        return response?.data;
       },
       {
         fulfilled: (state: ReportsState, action) => {
-          state.mineReports = action.payload.records;
+          state.mineReports = action.payload?.records ?? [];
           state.reportsPageData = action.payload;
+        },
+        rejected: (_: ReportsState, action) => {
+          rejectHandler(action);
         },
       }
     ),
 
-    // GET /mines/:mineGuid/reports (upcoming)
     fetchUpcomingMineReports: create.asyncThunk(
       async (
         {
@@ -101,17 +102,19 @@ const reportSlice = createAppSlice({
         } finally {
           thunkApi.dispatch(hideLoading());
         }
-        return response.data;
+        return response?.data;
       },
       {
         fulfilled: (state: ReportsState, action) => {
-          state.upcomingMineReports = action.payload.records;
+          state.upcomingMineReports = action.payload?.records ?? [];
           state.upcomingReportsPageData = action.payload;
+        },
+        rejected: (_: ReportsState, action) => {
+          rejectHandler(action);
         },
       }
     ),
 
-    // GET /mines/reports (global reports search)
     fetchReports: create.asyncThunk(
       async ({ params = {} }: { params?: any }, thunkApi) => {
         const headers = createRequestHeader();
@@ -127,17 +130,19 @@ const reportSlice = createAppSlice({
         } finally {
           thunkApi.dispatch(hideLoading());
         }
-        return response.data;
+        return response?.data;
       },
       {
         fulfilled: (state: ReportsState, action) => {
-          state.reports = action.payload.records;
+          state.reports = action.payload?.records ?? [];
           state.reportsPageData = action.payload;
+        },
+        rejected: (_: ReportsState, action) => {
+          rejectHandler(action);
         },
       }
     ),
 
-    // GET /mines/:mineGuid/reports/:mineReportGuid
     fetchMineReport: create.asyncThunk(
       async (
         { mineGuid, mineReportGuid }: { mineGuid: string; mineReportGuid: string },
@@ -156,17 +161,19 @@ const reportSlice = createAppSlice({
         } finally {
           thunkApi.dispatch(hideLoading());
         }
-        return response.data;
+        return response?.data;
       },
       {
         fulfilled: (state: ReportsState, action) => {
           state.mineReports = [action.payload];
           state.mineReportGuid = action.payload.mine_report_guid;
         },
+        rejected: (_: ReportsState, action) => {
+          rejectHandler(action);
+        },
       }
     ),
 
-    // POST /mines/:mineGuid/reports
     createMineReport: create.asyncThunk(
       async ({ mineGuid, payload }: { mineGuid: string; payload: any }, thunkApi) => {
         const headers = createRequestHeader();
@@ -180,15 +187,19 @@ const reportSlice = createAppSlice({
           );
           notification.success({ message: "Successfully created report.", duration: 10 });
         } catch (error) {
-          thunkApi.rejectWithValue(error);
+          return thunkApi.rejectWithValue(error);
         } finally {
           thunkApi.dispatch(hideLoading("modal"));
         }
         return response?.data;
+      },
+      {
+        rejected: (_: ReportsState, action) => {
+          rejectHandler(action);
+        },
       }
     ),
 
-    // DELETE /mines/:mineGuid/reports/:mineReportGuid
     deleteMineReport: create.asyncThunk(
       async (
         { mineGuid, mineReportGuid }: { mineGuid: string; mineReportGuid: string },
@@ -204,56 +215,32 @@ const reportSlice = createAppSlice({
           );
           notification.success({ message: "Successfully removed the report.", duration: 10 });
         } catch (error) {
-          thunkApi.rejectWithValue(error);
+          return thunkApi.rejectWithValue(error);
         } finally {
           thunkApi.dispatch(hideLoading());
         }
         return response;
+      },
+      {
+        rejected: (_: ReportsState, action) => {
+          rejectHandler(action);
+        },
       }
     ),
-
-    // Legacy direct store reducers (kept for compatibility)
-    storeReports: create.reducer((state, action: { payload: any }) => {
-      state.reports = action.payload.records;
-      state.reportsPageData = action.payload;
-    }),
-    storeMineReports: create.reducer((state, action: { payload: any }) => {
-      state.mineReports = action.payload.records;
-      state.reportsPageData = action.payload;
-      state.mineReportGuid = "";
-    }),
-    clearMineReports: create.reducer((state) => {
-      state.mineReports = initialState.mineReports;
-    }),
-    storeMineReport: create.reducer((state, action: { payload: any }) => {
-      state.mineReports = [action.payload];
-      state.mineReportGuid = action.payload.mine_report_guid;
-    }),
     storeMineReportComments: create.reducer((state, action: { payload: any }) => {
       state.reportComments = action.payload.records;
-    }),
-    storeUpcomingMineReports: create.reducer((state, action: { payload: any }) => {
-      state.upcomingMineReports = action.payload.records;
-      state.upcomingReportsPageData = action.payload;
     }),
   }),
 });
 
 export const {
-  // thunks
   fetchMineReports,
   fetchUpcomingMineReports,
   fetchReports,
   fetchMineReport,
   createMineReport,
   deleteMineReport,
-  // reducers
-  storeReports,
-  storeMineReports,
-  clearMineReports,
-  storeMineReport,
   storeMineReportComments,
-  storeUpcomingMineReports,
 } = reportSlice.actions;
 
 const reportReducer = reportSlice.reducer;
