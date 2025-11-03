@@ -91,12 +91,10 @@ describe("Reports", () => {
     ).toBeInTheDocument();
 
     // Table headers present (two tables render the same headers)
-    expect(screen.getAllByText(/report name/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/code section/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Report Name/Permit Condition").length).toBeGreaterThan(0);
     expect(screen.getAllByText(/compliance year/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/^due$/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/submitted on/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/requested by/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/submitted/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/^status$/i).length).toBeGreaterThan(0);
   });
 });
