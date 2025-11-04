@@ -29,7 +29,7 @@ const MineUserAccess: FC<MineUserAccessParams> = ({ mineGuid }) => {
         renderTextColumn("email", "Email", true),
         renderDateColumn("last_logged_in", "Last Login", true),
     ];
-    console.log({ mineUsers })
+
     return (<Row>
         <Col span={24}>
             <Typography.Title level={isCore ? 2 : 1}>User Access to Mine Records</Typography.Title>
