@@ -335,7 +335,7 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
 
     const partyRelationshipTitle = partyRelationshipTypesList.find(
       ({ value }) => value === partyRelationship.mine_party_appt_type_code
-    ).label;
+    )?.label ?? '';
 
     return (
       <Col
@@ -364,23 +364,34 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
 
   const renderPartyRelationshipGroup = (partyRelationships: IPartyAppt[], group: string) => {
     const expiredOnly = group === "4";
-    const filteredPartyRelationships = partyRelationships
-      .filter(
-        (x) =>
-          (!x.end_date || moment(x.end_date).add(1, "days") > moment(new Date())) &&
-          (!x.start_date || moment(Date.parse(x.start_date)) <= moment(new Date()))
-      )
-      .filter((partyRelationship) => partyRelationship.mine_party_appt_type_code !== "PMT")
-      .concat(
-        permits
-          .map(
-            (permit) =>
+    const now = moment(new Date());
+
+    const isActive = (x: IPartyAppt) =>
+      (!x.end_date || moment(x.end_date).add(1, "days") > now) &&
+      (!x.start_date || moment(Date.parse(x.start_date)) <= now);
+
+    const isExpired = (x: IPartyAppt) =>
+      !!x.end_date && moment(x.end_date).add(1, "days") <= now;
+
+    let partyRelationshipsInGroup: IPartyAppt[] = [];
+
+    if (expiredOnly) {
+      // Show only expired relationships regardless of their original grouping level
+      partyRelationshipsInGroup = partyRelationships.filter(isExpired);
+      partyRelationshipsInGroup.sort((a, b) => {
+        const ae = a.end_date ? new Date(a.end_date).getTime() : 0;
+        const be = b.end_date ? new Date(b.end_date).getTime() : 0;
+        return be - ae;
+      });
+    } else {
+      const filteredPartyRelationships = partyRelationships
+        .filter(isActive)
+        .filter((partyRelationship) => partyRelationship.mine_party_appt_type_code !== "PMT")
+        .concat(
+          permits
+            .map((permit) =>
               partyRelationships
-                .filter(
-                  (x) =>
-                    (!x.end_date || moment(x.end_date).add(1, "days") > moment(new Date())) &&
-                    (!x.start_date || moment(Date.parse(x.start_date)) <= moment(new Date()))
-                )
+                .filter(isActive)
                 .filter(
                   (partyRelationship) =>
                     partyRelationship.mine_party_appt_type_code === "PMT" &&
@@ -389,17 +400,20 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
                 .sort(
                   (a, b) => new Date(b.start_date).getTime() - new Date(a.start_date).getTime()
                 )[0]
-          )
-          .filter((x) => x)
+            )
+            .filter((x) => x)
+        );
+
+      const partyRelationshipTypesInGroup = partyRelationshipTypes.filter(
+        (x) => x.grouping_level === group
       );
-    const partyRelationshipTypesInGroup = partyRelationshipTypes.filter(
-      (x) => x.grouping_level === group
-    );
-    const partyRelationshipsInGroup = filteredPartyRelationships.filter((x) =>
-      partyRelationshipTypesInGroup.some(
-        (y) => y.mine_party_appt_type_code === x.mine_party_appt_type_code
-      )
-    );
+
+      partyRelationshipsInGroup = filteredPartyRelationships.filter((x) =>
+        partyRelationshipTypesInGroup.some(
+          (y) => y.mine_party_appt_type_code === x.mine_party_appt_type_code
+        )
+      );
+    }
 
     return (
       partyRelationshipsInGroup.length !== 0 && [
@@ -414,7 +428,7 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
           {partyRelationshipsInGroup.map((partyRelationship) =>
             renderPartyRelationship(partyRelationship)
           )}
-          {renderInactiveRelationships(partyRelationshipsInGroup)}
+          {!expiredOnly && renderInactiveRelationships(partyRelationshipsInGroup)}
         </Row>,
         <div key="2">
           <br />
@@ -457,9 +471,6 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
 
   if (partyRelationshipTypesList.length <= 0 || partyRelationshipTypes.length <= 0)
     return <Loading />;
-
-  console.log('partyRelationshipTypes: ', partyRelationshipTypes)
-  console.log('partyRelationships: ', partyRelationships)
 
   const partyRelationshipGroupingLevels = [
     ...uniq(partyRelationshipTypes.map(({ grouping_level }) => grouping_level)),

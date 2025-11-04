@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 import { Card, Col, Divider, Row } from "antd";
 import moment from "moment";
 import { Link, useParams } from "react-router-dom";
@@ -7,7 +7,7 @@ import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelect
 import { getPartyRelationshipTypes } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@mds/common/redux/selectors/complianceSelectors";
 import { getMines } from "@mds/common/redux/selectors/mineSelectors";
-import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
+import { getUnformattedPermits } from "@mds/common/redux/selectors/permitSelectors";
 import * as String from "@mds/common/constants/strings";
 import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
 import * as router from "@/constants/routes";
@@ -16,26 +16,11 @@ import { TSFCard } from "@/components/mine/Tailings/MineTSFCard";
 import { DOC, OVERDUEDOC } from "@/constants/assets";
 import MineHeader from "@/components/mine/MineHeader";
 import MineWorkInformation from "@/components/mine/Summary/MineWorkInformation";
-import {
-  IMine,
-  IMineComplianceInfo,
-  IPartyRelationshipType,
-  IPermit,
-  IPermitPartyRelationship,
-} from "@mds/common/interfaces";
 import { useAppSelector } from "@mds/common/redux/rootState";
 
 /**
- * @class MineSummary.js contains all content located under the 'Summary' tab on the MineDashboard.
+ * @class MineSummary.tsx contains all content located under the 'Summary' tab on the MineDashboard.
  */
-
-interface MineSummaryProps {
-  mines: Partial<IMine>;
-  partyRelationshipTypes: IPartyRelationshipType[];
-  partyRelationships: IPermitPartyRelationship[];
-  mineComplianceInfo: IMineComplianceInfo;
-  minePermits: Partial<IPermit>[];
-}
 
 const renderPartyRelationship = (mine, permits, partyRelationship, partyRelationshipTypes) => {
   if (partyRelationshipTypes.length === 0) return <div>{String.LOADING}</div>;
@@ -79,13 +64,13 @@ const isActive = (pr) =>
 const activePermitteesByPermit = (pr, permit) =>
   isActive(pr) && pr.mine_party_appt_type_code === "PMT" && pr.related_guid === permit.permit_guid;
 
-export const MineSummary: FC<MineSummaryProps> = () => {
+export const MineSummary = () => {
   const { id } = useParams<{ id: string }>();
   const mines = useAppSelector(getMines);
   const partyRelationships = useAppSelector(getPartyRelationships);
   const partyRelationshipTypes = useAppSelector(getPartyRelationshipTypes);
   const mineComplianceInfo = useAppSelector(getMineComplianceInfo);
-  const minePermits = useAppSelector(getPermits);
+  const minePermits = useAppSelector(getUnformattedPermits);
 
   const mine = mines[id];
 

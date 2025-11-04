@@ -18,7 +18,7 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   openEditPartyRelationshipModal: PropTypes.func.isRequired,
   onSubmitEditPartyRelationship: PropTypes.func.isRequired,
-  otherDetails: PropTypes.objectOf(PropTypes.any).isRequired,
+  otherDetails: PropTypes.objectOf(PropTypes.any),
   isEditable: PropTypes.bool.isRequired,
   editPermission: PropTypes.string,
   compact: PropTypes.bool.isRequired,
@@ -93,7 +93,7 @@ export const DefaultContact = (props) => {
             <span>
               {formatDate(props.partyRelationship.start_date) || "Unknown"}
               {props.partyRelationship.mine_party_appt_type_code === "MMG" &&
-                props.partyRelationship.documents.length > 0 && (
+                props.partyRelationship.documents?.length > 0 && (
                   <span>
                     {" "}
                     -{" "}

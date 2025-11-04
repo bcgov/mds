@@ -588,3 +588,291 @@ exports[`MineHeader renders dispatchProperly 1`] = `
   </div>
 </div>
 `;
+
+exports[`MineHeader renders properly 1`] = `
+<div>
+  <div
+    class="dashboard__header--card"
+  >
+    <div
+      class="dashboard__header--card__content"
+    >
+      <div />
+      <br />
+      <div
+        class="inline-flex between horizontal-center"
+      >
+        <h4>
+          Mine Details
+        </h4>
+        <div />
+      </div>
+      <div
+        class="ant-divider ant-divider-horizontal"
+        role="separator"
+        style="margin: 0px;"
+      />
+      <div>
+        <div
+          class="inline-flex padding-sm"
+        >
+          <p
+            class="field-title"
+          >
+            Operating Status 
+          </p>
+          <p>
+            Operating, Seasonal
+          </p>
+          <span
+            aria-label="info-circle"
+            class="anticon anticon-info-circle info-tooltip icon-sm"
+            role="img"
+            style="color: rgb(94, 70, 161);"
+          >
+            <svg
+              aria-hidden="true"
+              class=""
+              data-icon="info-circle"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+              />
+              <path
+                d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+              />
+            </svg>
+          </span>
+        </div>
+        <div
+          class="inline-flex padding-sm"
+        >
+          <p
+            class="field-title"
+          >
+            Status Since 
+          </p>
+          <p>
+            N/A
+          </p>
+        </div>
+      </div>
+      <div
+        class="inline-flex padding-sm"
+      >
+        <p
+          class="field-title"
+        >
+          Mine Class 
+        </p>
+        <p>
+          Major mine
+        </p>
+      </div>
+      <div
+        class="inline-flex padding-sm"
+      >
+        <p
+          class="field-title"
+        >
+          Tenure
+        </p>
+        <div>
+          <p>
+            Placer, Mineral
+          </p>
+        </div>
+      </div>
+      <div
+        class="inline-flex padding-sm wrap"
+      >
+        <p
+          class="field-title"
+        >
+          Commodity
+        </p>
+        <p>
+          N/A
+        </p>
+      </div>
+      <div
+        class="inline-flex padding-sm wrap"
+      >
+        <p
+          class="field-title"
+        >
+          Disturbance
+        </p>
+        <p>
+          N/A
+        </p>
+      </div>
+      <div
+        class="inline-flex padding-sm"
+      >
+        <p
+          class="field-title"
+        >
+          TSF
+        </p>
+        <p>
+          <a
+            href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permits-and-approvals/tailings"
+          >
+            1
+          </a>
+        </p>
+      </div>
+      <div
+        class="inline-flex padding-sm wrap"
+      >
+        <p
+          class="field-title"
+        >
+          Notes
+        </p>
+        <div>
+          <p>
+            N/A
+          </p>
+        </div>
+      </div>
+      <div
+        class="inline-flex padding-sm wrap"
+      >
+        <p
+          class="field-title"
+        >
+          Legacy Alias
+        </p>
+        <p>
+          N/A
+        </p>
+      </div>
+      <div
+        class="inline-flex padding-sm wrap"
+      >
+        <div
+          class="field-title"
+        >
+          Number of Mine Employees
+        </div>
+        <div>
+          N/A
+        </div>
+        <span
+          aria-label="info-circle"
+          class="anticon anticon-info-circle info-tooltip icon-sm"
+          role="img"
+          style="color: rgb(94, 70, 161);"
+        >
+          <svg
+            aria-hidden="true"
+            class=""
+            data-icon="info-circle"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
+          >
+            <path
+              d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+            />
+            <path
+              d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+            />
+          </svg>
+        </span>
+      </div>
+      <div
+        class="inline-flex padding-sm wrap"
+      >
+        <div
+          class="field-title"
+        >
+          Number of Contractors
+        </div>
+        <div>
+          N/A
+        </div>
+        <span
+          aria-label="info-circle"
+          class="anticon anticon-info-circle info-tooltip icon-sm"
+          role="img"
+          style="color: rgb(94, 70, 161);"
+        >
+          <svg
+            aria-hidden="true"
+            class=""
+            data-icon="info-circle"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
+          >
+            <path
+              d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+            />
+            <path
+              d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+    <div
+      class="dashboard__header--card__map"
+    >
+      <div
+        data-testid="mock-mine-header-map"
+      >
+        Mock Map
+      </div>
+      <div
+        class="dashboard__header--card__map--footer"
+      >
+        <div
+          class="inline-flex between"
+        >
+          <p
+            class="p-white"
+          >
+            Lat: 
+            N/A
+          </p>
+          <p
+            class="p-white"
+          >
+            Long: 
+            N/A
+          </p>
+        </div>
+        <div
+          class="inline-flex between"
+        >
+          <p
+            class="p-white"
+          >
+            Region: 
+            North East
+          </p>
+          <a
+            class="link-on-dark"
+            href="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
+            target="_blank"
+          >
+            View In Full Map
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

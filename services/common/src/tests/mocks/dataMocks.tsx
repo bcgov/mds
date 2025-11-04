@@ -6251,7 +6251,7 @@ export const PARTYRELATIONSHIPS = [
     description: "Permittee"
   },
   {
-    mine_party_appt_guid: "17dbf02d-a3ba-40dd-8347-36cd04b7a49b",
+    mine_party_appt_guid: "17bdf02d-a3ba-40dd-8347-36cd04b7a49b",
     mine_guid: "db059bf5-14aa-4b98-af67-9c1e635a6120",
     party_guid: "43f513af-1142-443b-a1e6-f14ef857f4ea",
     mine_party_appt_type_code: "EOR",
