@@ -18,6 +18,7 @@ from app.api.mines.mine.models.mine import Mine
 class MinespaceUserListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('mine_guids', type=list, location='json', required=True)
+    parser.add_argument('bceid_username', type=str, location='json', required=False)
 
     @api.doc(params={
         'mine_guid': 'find by mine guid, this will return all users with access to the specified mine'
