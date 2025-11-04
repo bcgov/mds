@@ -82,8 +82,7 @@ def register_commands(app):
             ## Create a minespace user with data corresponding to
             ## the Cypress test user (cypress/keycloak-users.json)
             minespace_user = MinespaceUserFactory(
-                bceid_username='cypress@bceid',
-                keycloak_guid='a28dfc3a-5e5c-4501-ab2f-399d8e64f2c8')
+                bceid_username='cypress@bceid')
 
             ## Subscribe the minespace user to a mine so we have a mine to test with
             ## for Minespace cypress tests
