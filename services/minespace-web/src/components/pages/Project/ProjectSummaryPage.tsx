@@ -173,7 +173,12 @@ export const ProjectSummaryPage = () => {
       )
     ).then(({ data: { project_guid, project_summary_guid } }) => {
       history.replace(
-        EDIT_PROJECT_SUMMARY.dynamicRoute(project_guid, project_summary_guid, projectFormTabs[1])
+        EDIT_PROJECT_SUMMARY.dynamicRoute(
+          project_guid,
+          project_summary_guid,
+          projectFormTabs[1],
+          !isEditMode
+        )
       );
     });
   };
@@ -183,7 +188,7 @@ export const ProjectSummaryPage = () => {
       return;
     }
     const url = !isNewProject
-      ? EDIT_PROJECT_SUMMARY.dynamicRoute(projectGuid, projectSummaryGuid, newTab)
+      ? EDIT_PROJECT_SUMMARY.dynamicRoute(projectGuid, projectSummaryGuid, newTab, !isEditMode)
       : ADD_PROJECT_SUMMARY.dynamicRoute(mineGuid, newTab);
     history.push(url);
   };
