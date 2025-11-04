@@ -897,8 +897,7 @@ class MinespaceUserFactory(BaseFactory):
     class Meta:
         model = MinespaceUser
 
-    keycloak_guid = GUID
-    email_or_username = factory.Faker('email')
+    bceid_username = factory.Sequence(lambda n: f"testuser{n}@bceid")
 
 
 # Core subscriptions

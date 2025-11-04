@@ -364,7 +364,7 @@ export const getMinespaceUserEmailHash = createSelector(
     (users) =>
         users.reduce(
             (map, fields) => ({
-                [fields.email_or_username]: fields,
+                [fields.bceid_username]: fields,
                 ...map,
             }),
             {}

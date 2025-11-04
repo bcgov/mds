@@ -85,7 +85,7 @@ export const MinespaceUserManagement = (props) => {
   const handleOpenModal = (e, record) => {
     props.openModal({
       props: {
-        title: `Update User: ${record.email_or_username}`,
+        title: `Update User: ${record.bceid_username}`,
         initialValues: record,
         handleSubmit: handleUpdate,
       },

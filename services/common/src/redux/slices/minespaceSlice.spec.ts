@@ -1,3 +1,4 @@
+import { IMinespaceUser } from "@mds/common/interfaces";
 import {
     minespaceReducer,
     createMinespaceUser,
@@ -40,11 +41,17 @@ jest.mock("antd", () => ({
 describe("minespaceSlice", () => {
     let store;
 
-    const mockMinespaceUser = {
+    const mockMinespaceUser: IMinespaceUser = {
         user_id: 1,
-        email_or_username: "test@example.com",
-        keycloak_guid: "123-456-789",
+        bceid_username: "test@example.com",
         mines: ["mine-guid-1", "mine-guid-2"],
+        sub: "sub-guid-string@bceidboth",
+        email: "email@email.com",
+        given_name: "Given",
+        family_name: "Family",
+        display_name: "Given Family",
+        identity_provider: "bceidboth",
+        last_logged_in: "2025-10-31 22:39:29.200932+00"
     };
 
     const mockMinespaceUserMine = {
@@ -113,7 +120,7 @@ describe("minespaceSlice", () => {
             }));
 
             const payload = {
-                email_or_username: "test@example.com",
+                bceid_username: "test@example.com",
                 mine_guids: ["mine-guid-1"],
             };
 
@@ -144,7 +151,7 @@ describe("minespaceSlice", () => {
             }));
 
             const payload = {
-                email_or_username: "test@example.com",
+                bceid_username: "test@example.com",
                 mine_guids: ["mine-guid-1"],
             };
 
