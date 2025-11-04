@@ -291,9 +291,9 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
 
   const renderMenu = (partyRelationshipGroupingLevels: string[], isAbandonedMines: boolean) => {
     return (
-      <Menu>
-        {partyRelationshipGroupingLevels.map((group) => [
-          partyRelationshipTypes
+      <Menu
+        items={partyRelationshipGroupingLevels.flatMap((group) => {
+          const menuItems = partyRelationshipTypes
             .filter((x) => x.grouping_level === group)
             .filter((x) => !["EOR", "TQP", "AGT"].includes(x.mine_party_appt_type_code))
             .filter(
@@ -301,8 +301,9 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
                 isAbandonedMines ||
                 (x.mine_party_appt_type_code !== "DAM" && x.mine_party_appt_type_code !== "CCS")
             )
-            .map((value) => (
-              <Menu.Item key={value.mine_party_appt_type_code}>
+            .map((value) => ({
+              key: value.mine_party_appt_type_code,
+              label: (
                 <button
                   className="full"
                   type="button"
@@ -317,11 +318,14 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
                 >
                   {`${value.description}`}
                 </button>
-              </Menu.Item>
-            )),
-          <Menu.Divider key={group} />,
-        ])}
-      </Menu>
+              ),
+            }));
+
+          return menuItems.length > 0
+            ? [...menuItems, { type: "divider", key: `divider-${group}` }]
+            : [];
+        })}
+      />
     );
   };
 
@@ -333,9 +337,10 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
     if (partyRelationshipTypesList.length <= 0 || partyRelationshipTypes.length <= 0)
       return <div />;
 
-    const partyRelationshipTitle = partyRelationshipTypesList.find(
-      ({ value }) => value === partyRelationship.mine_party_appt_type_code
-    )?.label ?? '';
+    const partyRelationshipTitle =
+      partyRelationshipTypesList.find(
+        ({ value }) => value === partyRelationship.mine_party_appt_type_code
+      )?.label ?? "";
 
     return (
       <Col
@@ -370,8 +375,7 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
       (!x.end_date || moment(x.end_date).add(1, "days") > now) &&
       (!x.start_date || moment(Date.parse(x.start_date)) <= now);
 
-    const isExpired = (x: IPartyAppt) =>
-      !!x.end_date && moment(x.end_date).add(1, "days") <= now;
+    const isExpired = (x: IPartyAppt) => !!x.end_date && moment(x.end_date).add(1, "days") <= now;
 
     let partyRelationshipsInGroup: IPartyAppt[] = [];
 
@@ -389,17 +393,18 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
         .filter((partyRelationship) => partyRelationship.mine_party_appt_type_code !== "PMT")
         .concat(
           permits
-            .map((permit) =>
-              partyRelationships
-                .filter(isActive)
-                .filter(
-                  (partyRelationship) =>
-                    partyRelationship.mine_party_appt_type_code === "PMT" &&
-                    permit.permit_guid === partyRelationship.related_guid
-                )
-                .sort(
-                  (a, b) => new Date(b.start_date).getTime() - new Date(a.start_date).getTime()
-                )[0]
+            .map(
+              (permit) =>
+                partyRelationships
+                  .filter(isActive)
+                  .filter(
+                    (partyRelationship) =>
+                      partyRelationship.mine_party_appt_type_code === "PMT" &&
+                      permit.permit_guid === partyRelationship.related_guid
+                  )
+                  .sort(
+                    (a, b) => new Date(b.start_date).getTime() - new Date(a.start_date).getTime()
+                  )[0]
             )
             .filter((x) => x)
         );
