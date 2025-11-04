@@ -17,11 +17,9 @@ from app.api.mines.mine.models.mine import Mine
 
 class MinespaceUserListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
-    parser.add_argument('bceid_username', type=str, location='json', required=True)
     parser.add_argument('mine_guids', type=list, location='json', required=True)
 
     @api.doc(params={
-        'bceid_username': 'find by bceid, this will return a list with at most one element',
         'mine_guid': 'find by mine guid, this will return all users with access to the specified mine'
     })
     @api.marshal_with(MINESPACE_USER_MODEL, envelope='records')
@@ -32,9 +30,6 @@ class MinespaceUserListResource(Resource, UserMixin):
 
         if not is_admin and mine_guid is None:
             raise BadRequest("mine_guid is a required argument")
-        
-        if request.args.get('bceid_username'):
-            ms_users = [MinespaceUser.find_by_username(request.args.get('bceid_username'))]
         elif mine_guid:
             mine = Mine.find_by_mine_guid(mine_guid)
             if not mine:

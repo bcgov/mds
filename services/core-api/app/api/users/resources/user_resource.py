@@ -25,24 +25,14 @@ class UserResource(Resource, UserMixin):
         try:
             # Extract token information
             if is_minespace_user():
-                # bceid given/family name may be combined
-                given_name = user_info.get("given_name", "")
-                family_name = user_info.get("family_name", "")
-                display_name = user_info.get("display_name", "")
-
                 bceid_username_data = user_info.get("bceid_username", None)
                 bceid_username = bceid_username_data + "@bceid" if bceid_username_data is not None else ""
-
-                if given_name == display_name and family_name == "":
-                    name = display_name.split()
-                    given_name = name[0] if len(name) > 0 else ""
-                    family_name = name[1] if len(name) > 1 else ""
 
                 user_data = {
                     "sub": user_info.get("sub"),
                     "email": user_info.get("email", ""),
-                    "given_name": given_name,
-                    "family_name": family_name,
+                    "given_name": user_info.get("given_name", ""),
+                    "family_name": user_info.get("family_name", ""),
                     "display_name": user_info.get("display_name", ""),
                     "bceid_username": bceid_username,
                     "identity_provider": user_info.get("identity_provider", ""),
@@ -51,7 +41,6 @@ class UserResource(Resource, UserMixin):
                 }
 
                 user = MinespaceUser.update_from_token_data(**user_data)
-                print(user)
 
             else:    
                 user_data = {
