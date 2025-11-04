@@ -67,7 +67,8 @@ const UpcomingReports: FC<UpcomingReportsProps> = ({ mineGuid, openReport }) => 
         </Col>
         <Col>
           <Radio.Group
-            className="upcoming-range-selector"
+            buttonStyle="solid"
+            className="upcoming-range-selector view-item"
             value={range}
             onChange={(e) => {
               setRange(e.target.value);
