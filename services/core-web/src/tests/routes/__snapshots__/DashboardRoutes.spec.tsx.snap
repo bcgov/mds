@@ -122,15 +122,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/home/"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(CustomHomePage)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
     key="/my-dashboard/"
     path="/my-dashboard/"
@@ -218,6 +210,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
     exact={true}
     key="/mine-dashboard/:id/mine-information/general"
     path="/mine-dashboard/:id/mine-information/general"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    key="/mine-dashboard/:id/mine-information/user-access"
+    path="/mine-dashboard/:id/mine-information/user-access"
   />
   <Route
     component={
@@ -480,15 +478,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/dashboard/:id/profile"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(RelationshipProfile)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
     key="/dashboard/:id/history/:typeCode"
     path="/dashboard/:id/history/:typeCode"

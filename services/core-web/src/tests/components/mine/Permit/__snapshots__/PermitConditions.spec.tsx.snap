@@ -792,7 +792,9 @@ exports[`PermitConditions renders properly 1`] = `
                                       class="ant-typography margin-none"
                                       id="hsc"
                                     >
-                                      <div>
+                                      <div
+                                        data-title="Click to edit"
+                                      >
                                         <span
                                           style="margin-bottom: 0px;"
                                         >
@@ -814,14 +816,6 @@ exports[`PermitConditions renders properly 1`] = `
                                       >
                                         <span>
                                           Add Condition
-                                        </span>
-                                      </button>
-                                      <button
-                                        class="ant-btn ant-btn-primary core-btn core-btn-primary"
-                                        type="button"
-                                      >
-                                        <span>
-                                          Insert Template Conditions
                                         </span>
                                       </button>
                                     </div>

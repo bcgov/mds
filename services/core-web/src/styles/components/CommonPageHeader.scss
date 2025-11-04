@@ -61,6 +61,7 @@
         // offset-x, offset-y, blur, spread, colour
         box-shadow: 0 0 2px 0 $transparent-dark-grey; // $darkest-grey at 10% opacity
         background-color: $pure-white;
+        width: 100%;
 
     }
 }

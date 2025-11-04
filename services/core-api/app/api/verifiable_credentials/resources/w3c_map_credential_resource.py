@@ -1,4 +1,5 @@
-from datetime import datetime
+from json import dumps, loads
+from hashlib import md5
 from json import dumps, loads
 
 from app.api.mines.permits.permit_amendment.models.permit_amendment import (
@@ -8,25 +9,21 @@ from app.api.services.traction_service import TractionService
 from app.api.utils.access_decorators import (
     EDIT_PARTY,
     MINESPACE_PROPONENT,
-    VIEW_ALL,
     requires_any_of,
     requires_role_view_all,
 )
 from app.api.utils.feature_flag import Feature, is_feature_enabled
-from app.api.utils.include.user_info import User
 from app.api.utils.resources_mixins import UserMixin
 from app.api.verifiable_credentials.manager import (
     VerifiableCredentialManager,
-    process_all_untp_map_for_orgbook,
 )
 from app.api.verifiable_credentials.models.orgbook_publish_status import (
     PermitAmendmentOrgBookPublish,
 )
 from app.config import Config
 from app.extensions import api
-from flask import current_app, request
 from flask_restx import Resource, reqparse
-from werkzeug.exceptions import BadRequest, ServiceUnavailable
+from werkzeug.exceptions import ServiceUnavailable
 
 PRESENT_PROOF = "present_proof"
 CONNECTIONS = "connections"
@@ -95,4 +92,10 @@ class W3CCredentialIssueResource(Resource, UserMixin):
         data = self.parser.parse_args()
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
             data["permit_amendment_guid"])
-        return VerifiableCredentialManager.prepare_permit_amendment_untp_credential( data["permit_amendment_guid"])
+        
+        payload = VerifiableCredentialManager.prepare_permit_amendment_untp_credential_without_id( data["permit_amendment_guid"])
+        payload_hash = md5(dumps(payload).encode('utf-8')).hexdigest()
+
+        existing: bool = PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(payload_hash) is not None
+
+        return {"hash": payload_hash, "existing": existing, "payload": payload}

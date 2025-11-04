@@ -199,18 +199,42 @@ export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE = {
   PRIMARY: "primary_documents",
   SPATIAL: "spatial_documents",
   SUPPORTING: "supporting_documents",
+  APPENDIX: "appendix_documents"
 };
 
 export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE = {
   PRIMARY: "PRM",
   SPATIAL: "SPT",
   SUPPORTING: "SPR",
+  APPENDIX: "APX"
+};
+
+export const MAJOR_MINES_APPLICATION_DOCUMENT_SUBTYPE_CODE = {
+  APX: {
+    INE: "Indigenous Nation Engagement",
+    BIF: "Baseline Information",
+    MIP: "Mine Plan",
+    RCP: "Reclamation and Closure Plan",
+    WQM: "Water Quality Mitigation and Water Modeling",
+    EDE: "Effluent Discharges to the Environment",
+    EEA: "Environmental Effects Assessment",
+    EMO: "Environmental Monitoring",
+    MGP: "Management Plans",
+    RLE: "Reclamation Liability Cost Estimate"
+  },
+  SPR: {
+    QPD: "Qualified Professional Declaration Form",
+    TOC: "Table of Concordance",
+    SPR: "Supporting Documents",
+    CIF: "Confidential Information"
+  }
 };
 
 export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION = {
   PRM: "Primary Document",
   SPT: "Spatial Component",
   SPR: "Supporting Document",
+  APX: "Appendix Document"
 };
 
 export const PROJECT_SUMMARY_DOCUMENT_TYPE = {
@@ -283,6 +307,7 @@ export const INFORMATION_REQUIREMENTS_TABLE_DOCUMENT_TYPE_CODE_LOCATION = {
 
 export const CATEGORY_CODE = {
   PRM: "Primary Document",
+  APX: "Appendix Document",
   SPT: "Spatial Component",
   SPR: "Supporting Document",
   GEN: "General",

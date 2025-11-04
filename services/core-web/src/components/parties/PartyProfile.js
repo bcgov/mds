@@ -98,10 +98,10 @@ export class PartyProfile extends Component {
     }
   };
 
-  openEditPartyModal = (event, partyGuid, onSubmit, title, provinceOptions) => {
+  openEditPartyModal = (event, partyGuid, onSubmit, title) => {
     event.preventDefault();
     this.props.openModal({
-      props: { partyGuid, onSubmit, title, provinceOptions },
+      props: { partyGuid, onSubmit, title },
       content: modalConfig.EDIT_PARTY,
       width: "75vw",
       clearOnSubmit: false,
@@ -246,8 +246,7 @@ export class PartyProfile extends Component {
                         event,
                         party.party_guid,
                         this.editParty,
-                        ModalContent.EDIT_PARTY(party.name),
-                        this.props.provinceOptions
+                        ModalContent.EDIT_PARTY(party.name)
                       )
                     }
                     disabled={this.state.deletingParty}

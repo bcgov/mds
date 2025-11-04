@@ -34,7 +34,7 @@ FULL_AUTH_CLAIMS = {
         "core_edit_submissions", "core_edit_explosives_permits",
         "core_edit_template_conditions", "mds_administrative_users", "core_edit_now_dates",
         "core_edit_emli_contacts", "core_edit_tsf", "core_edit_information_requirements_table",
-        "core_edit_requirements", "core_helpdesk", "core_edit_project_summaries"
+        "core_edit_requirements", "core_helpdesk", "core_edit_project_summaries", "core_manage_orgbook"
     ]
 }
 

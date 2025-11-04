@@ -377,7 +377,7 @@ export const validateDateRanges = (
   } else {
     // If (NewApptEnd >= ApptStart) and (NewApptStart <= ApptEnd) ; “Overlap”)
     conflictingAppointments = dateAppointments.filter(
-      (appt) => newDateAppt.end_date >= appt.start_date && newDateAppt.start_date <= appt.end_date
+      (appt) => newDateAppt.end_date >= appt.start_date && newDateAppt.start_date < appt.end_date
     );
   }
   if (conflictingAppointments.length > 0) {

@@ -44,9 +44,11 @@ import {
   IProjectSummaryAuthorization,
   IPermitConditionTag,
   IStandardPermitCondition,
+  IMinespaceUser,
 } from "@mds/common/interfaces";
 import { IAmsFinalApplication } from "@mds/common/interfaces/projects/amsFinalApplication.interface";
 import { HaystackDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
+import { MineReportStats } from "@mds/common/redux/slices/mineReportStatsSlice";
 
 export const createMockHeader = () => ({
   headers: {
@@ -924,24 +926,24 @@ export const MINE_NAME_LIST = {
 
 export const MINE_NO = "BLAH6666";
 
-export const MINESPACE_USERS = [
+export const MINESPACE_USERS: IMinespaceUser[] = [
   {
-    user_id: "1",
-    email: "email1@srvr.com",
-    keycloak_guid: "",
-    mines: [""],
+    user_id: 1,
+    email_or_username: "user1@bceid",
+    keycloak_guid: "keycloak-guid-1",
+    mines: [MINE_NAME_LIST.mines[0].mine_guid, MINE_NAME_LIST.mines[1].mine_guid,],
   },
   {
-    user_id: "2",
-    email: "email2@srvr.com",
+    user_id: 2,
+    email_or_username: "user2@example.com",
     keycloak_guid: "",
-    mines: [""],
+    mines: [MINE_NAME_LIST.mines[0].mine_guid,],
   },
   {
-    user_id: "3",
-    email: "email3@srvr.com",
-    keycloak_guid: "",
-    mines: [""],
+    user_id: 3,
+    email_or_username: "user3@bceid",
+    keycloak_guid: "keycloak-guid-3",
+    mines: [MINE_NAME_LIST.mines[2].mine_guid,],
   },
 ];
 
@@ -8479,7 +8481,53 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       municipality_guid: "abbadb49-446d-49ab-8500-8352a9da46be",
     },
   ],
-  partyRelationshipTypes: [],
+  partyRelationshipTypes: [
+    {
+      "mine_party_appt_type_code": "MMG",
+      "description": "Mine Manager",
+      "display_order": 1,
+      "person": true,
+      "organization": false,
+      "grouping_level": 3,
+      "active_ind": true
+    },
+    {
+      "mine_party_appt_type_code": "PMT",
+      "description": "Permittee",
+      "display_order": 2,
+      "person": true,
+      "organization": true,
+      "grouping_level": 3,
+      "active_ind": true
+    },
+    {
+      "mine_party_appt_type_code": "MOR",
+      "description": "Site Operator",
+      "display_order": 3,
+      "person": true,
+      "organization": true,
+      "grouping_level": 3,
+      "active_ind": true
+    },
+    {
+      "mine_party_appt_type_code": "MOW",
+      "description": "Mine Owner",
+      "display_order": 4,
+      "person": true,
+      "organization": true,
+      "grouping_level": 3,
+      "active_ind": true
+    },
+    {
+      "mine_party_appt_type_code": "DAM",
+      "description": "Director of Abandoned Mines",
+      "display_order": 5,
+      "person": true,
+      "organization": false,
+      "grouping_level": 3,
+      "active_ind": true
+    }
+  ],
   partyBusinessRoleOptions: [],
   noticeOfWorkActivityTypeOptions: [
     {
@@ -12555,6 +12603,7 @@ export const PROJECT: IProject = {
     project_guid: "35633148-57f8-4967-be35-7f89abfbd02e",
     status_code: MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES.CHR,
     primary_documents: [],
+    appendix_documents: [],
     spatial_documents: [],
     supporting_documents: [],
     documents: [
@@ -12656,11 +12705,63 @@ export const PROJECT: IProject = {
       },
       {
         major_mine_application_id: 2,
+        major_mine_application_document_type_code: "APX",
+        major_mine_application_document_subtype_code: "INE",
+        mine_document_guid: "11a23456-78bc-4def-9012-345678901234",
+        mine_guid: "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+        document_manager_guid: "22b34567-89cd-4ef0-1234-567890123456",
+        document_name: "Indigenous_Nation_Engagement_Report.pdf",
+        upload_date: "2024-10-01 14:30:15.123456+00:00",
+        update_timestamp: "2024-10-01 14:30:15.123456+00:00",
+        create_user: "test@bceid",
+        is_archived: null,
+        archived_date: null,
+        archived_by: null,
+        mine_document_bundle_id: null,
+        versions: [],
+      },
+      {
+        major_mine_application_id: 2,
+        major_mine_application_document_type_code: "APX",
+        major_mine_application_document_subtype_code: "MIP",
+        mine_document_guid: "33c45678-90de-4f01-2345-678901234567",
+        mine_guid: "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+        document_manager_guid: "44d56789-01ef-4012-3456-789012345678",
+        document_name: "Mine_Plan_Detail.pdf",
+        upload_date: "2024-10-02 09:15:30.654321+00:00",
+        update_timestamp: "2024-10-02 09:15:30.654321+00:00",
+        create_user: "test@bceid",
+        is_archived: null,
+        archived_date: null,
+        archived_by: null,
+        mine_document_bundle_id: null,
+        versions: [],
+      },
+      {
+        major_mine_application_id: 2,
+        major_mine_application_document_type_code: "APX",
+        major_mine_application_document_subtype_code: "EEA",
+        mine_document_guid: "55e67890-12f0-4123-4567-890123456789",
+        mine_guid: "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+        document_manager_guid: "66f78901-23f1-4234-5678-901234567890",
+        document_name: "Environmental_Effects_Assessment.pdf",
+        upload_date: "2024-10-03 16:45:12.987654+00:00",
+        update_timestamp: "2024-10-03 16:45:12.987654+00:00",
+        create_user: "test@bceid",
+        is_archived: null,
+        archived_date: null,
+        archived_by: null,
+        mine_document_bundle_id: null,
+        versions: [],
+      },
+      {
+        major_mine_application_id: 2,
         major_mine_application_document_type_code: "SPR",
+        major_mine_application_document_subtype_code: "QPD",
         mine_document_guid: "699dcd59-4e3a-4113-95b8-cbadaebae6a0",
         mine_guid: "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
         document_manager_guid: "8bd3420f-2adf-483d-a25c-a4423b84817a",
-        document_name: "pdf3 2.pdf",
+        document_name: "Qualified_Professional_Declaration.pdf",
         upload_date: "2024-09-03 23:21:09.443472+00:00",
         update_timestamp: "2024-09-03 23:21:09.443470+00:00",
         create_user: "test@bceid",
@@ -12676,9 +12777,26 @@ export const PROJECT: IProject = {
         mine_document_guid: "52ebeca1-400d-46f5-bdf3-ddd13ab81ad7",
         mine_guid: "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
         document_manager_guid: "1dc751a4-3a29-4203-85e6-7d592f84e3c1",
-        document_name: "pdf1.pdf",
+        document_name: "supporting-doc-no-subtype.pdf",
         upload_date: "2024-09-04 00:16:38.466051+00:00",
         update_timestamp: "2024-09-04 00:16:38.466049+00:00",
+        create_user: "test@bceid",
+        is_archived: null,
+        archived_date: null,
+        archived_by: null,
+        mine_document_bundle_id: null,
+        versions: [],
+      },
+      {
+        major_mine_application_id: 2,
+        major_mine_application_document_type_code: "SPR",
+        major_mine_application_document_subtype_code: "TOC",
+        mine_document_guid: "77g89012-34f2-4345-6789-012345678901",
+        mine_guid: "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+        document_manager_guid: "88h90123-45f3-4456-7890-123456789012",
+        document_name: "Table_of_Concordance.xlsx",
+        upload_date: "2024-10-05 11:20:45.111222+00:00",
+        update_timestamp: "2024-10-05 11:20:45.111222+00:00",
         create_user: "test@bceid",
         is_archived: null,
         archived_date: null,
@@ -13779,3 +13897,9 @@ export const AMS_ENVIRONMENT_AUTH_STATUS_RESPONSE = [
     "errors": [],
   }
 ];
+
+export const MOCK_MINE_REPORT_STATS: MineReportStats = {
+  active_permits: 3,
+  overdue_reports: 4,
+  due_next_90_days: 5,
+};

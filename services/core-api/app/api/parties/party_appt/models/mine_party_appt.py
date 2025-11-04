@@ -367,7 +367,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
         """
         party_title = 'Engineer of Record'
         party_page = 'engineer-of-record'
-        email_body = open("app/templates/email/mine_party_appt/ministry_new_eor_email.html", "r").read()
+        template_path = "email/mine_party_appt/ministry_new_eor_email.html"
 
         EDIT_TSF_EMAILS = 'EDIT_TSF_EMAILS'
 
@@ -381,7 +381,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
         # change from UTC to PST
         submitted_at = format_email_datetime_to_string(datetime.utcnow())
         start_date = self.start_date.strftime(
-            '%b %d %Y') if self.start_date else 'No date provided',
+            '%b %d %Y') if self.start_date else 'No date provided'
 
         email_context = {
             "tsf_name": self.mine_tailings_storage_facility.mine_tailings_storage_facility_name,
@@ -398,7 +398,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
             "submitted_at": submitted_at
         }
         subject = f'A new {party_title} for {self.mine_tailings_storage_facility.mine_tailings_storage_facility_name} at {self.mine.mine_name} has been assigned.'
-        EmailService.send_template_email(subject, recipients, email_body, email_context)
+        EmailService.send_template_email(subject, recipients, template_path, email_context)
 
     @classmethod
     def end_current(cls,

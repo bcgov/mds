@@ -12,7 +12,7 @@ export interface MineReportParams {
   status?: string[];
   sort_field?: string;
   sort_dir?: string;
-  mine_reports_type?: string;
+  mine_reports_type?: string | string[];
   permit_guid?: string;
   page?: string;
   per_page?: string;

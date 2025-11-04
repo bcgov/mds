@@ -14,4 +14,5 @@ export interface IMineDocument {
   versions?: IMineDocumentVersion[];
   mine_document_bundle_id?: string;
   update_timestamp?: string;
+  label?: string;
 }

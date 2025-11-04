@@ -9,6 +9,7 @@ VIEW_ALL = "core_view_all"
 MINE_EDIT = "core_edit_mines"
 MINE_ADMIN = "core_admin"
 EDIT_PARTY = "core_edit_parties"
+MANAGE_ORGBOOK = 'core_manage_orgbook'
 EDIT_PERMIT = "core_edit_permits"
 EDIT_EXPLOSIVES_PERMIT = "core_edit_explosives_permits"
 EDIT_STANDARD_PERMIT_CONDITIONS = "core_edit_template_conditions"
@@ -79,6 +80,8 @@ def requires_role_mine_admin(func):
 def requires_role_edit_party(func):
     return _inner_wrapper(func, EDIT_PARTY)
 
+def requires_role_manage_orgbook(func):
+    return _inner_wrapper(func, MANAGE_ORGBOOK)
 
 def requires_role_edit_permit(func):
     return _inner_wrapper(func, EDIT_PERMIT)

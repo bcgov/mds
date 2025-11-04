@@ -1,7 +1,6 @@
 import json, uuid
-
-from tests.factories import MineFactory, MinespaceUserFactory
-
+from tests.factories import MineFactory, MinespaceUserFactory, MinespaceSubscriptionFactory
+from tests.helpers import subscribe_minespace_user
 
 def test_get_minespace_users_all(test_client, db_session, auth_headers):
     user_email = MinespaceUserFactory().email_or_username
@@ -145,3 +144,42 @@ def test_update_minespace_user_does_not_exist(test_client, db_session, auth_head
     headers=auth_headers['full_auth_header'])
 
     assert put_resp.status_code == 404, put_resp.response
+
+def test_get_minespace_users_by_mine_guid(test_client, db_session, auth_headers):
+    user1 = MinespaceUserFactory()
+    user2 = MinespaceUserFactory()
+
+    mine = MineFactory(minimal=True)
+
+    # the user that performs the action
+    test_user = subscribe_minespace_user(db_session, mine)
+
+    MinespaceSubscriptionFactory(mine=mine, minespace_user=user1)
+    MinespaceSubscriptionFactory(mine=mine, minespace_user=user2)
+
+    # test that proponent can access, verify data correct
+    get_resp_proponent = test_client.get(
+        f'/users/minespace?mine_guid={mine.mine_guid}',
+        headers=auth_headers['proponent_only_auth_header'])
+    get_data = json.loads(get_resp_proponent.data.decode())
+    assert get_resp_proponent.status_code == 200, get_resp_proponent.response
+
+    user_names = sorted([x['email_or_username'] for x in get_data['records']])
+    expected_names = sorted([user1.email_or_username, user2.email_or_username, test_user.email_or_username])
+    assert user_names == expected_names
+
+    # test that view only can access
+    get_resp_view = test_client.get(
+        f'/users/minespace?mine_guid={mine.mine_guid}',
+        headers=auth_headers['view_only_auth_header'])
+    assert get_resp_view.status_code == 200, get_resp_view.response
+
+def test_get_minespace_users_no_mine_guid_bad_request(test_client, db_session, auth_headers):
+    # minespace user cannot access GET resource without specifying mine_guid
+    get_resp_proponent = test_client.get(
+        f'/users/minespace',
+        headers=auth_headers['proponent_only_auth_header'])
+    assert get_resp_proponent.status_code == 400, get_resp_proponent.response
+    get_data = json.loads(get_resp_proponent.data.decode())
+    assert get_data['message'] == "400 Bad Request: mine_guid is a required argument"
+    

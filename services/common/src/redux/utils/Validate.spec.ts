@@ -319,7 +319,7 @@ describe("Validate class", () => {
                 },
             ];
             const newAppt = {
-                start_date: "2019-06-20",
+                start_date: "2019-06-19",
                 end_date: "2019-06-25",
                 party_guid: randomString(),
             };

@@ -1,30 +1,43 @@
 import uuid
+from datetime import date, datetime
 
-from datetime import date
+from app.api.activity.models.activity_notification import (
+    ActivityRecipients,
+    ActivityType,
+)
+from app.api.activity.utils import trigger_notification
+from app.api.compliance.models.compliance_article import ComplianceArticle
+from app.api.constants import (
+    MAJOR_MINES_OFFICE_EMAIL,
+    MDS_EMAIL,
+    MINE_REPORT_TYPE,
+    PERM_RECL_EMAIL,
+)
+from app.api.mines.exceptions.mine_exceptions import MineException
+from app.api.mines.reports.models.mine_report_contact import MineReportContact
+from app.api.mines.reports.models.mine_report_notification import MineReportNotification
+from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
+from app.api.mines.reports.models.mine_report_submission_status_code import (
+    MineReportSubmissionStatusCode,
+)
+from app.api.services.email_service import EmailService
+from app.api.utils.helpers import (
+    format_email_datetime_to_string,
+    get_current_core_or_ms_env_url,
+)
+from app.api.utils.include.user_info import User
+from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
+from app.config import Config
+from app.extensions import db
 from flask import current_app
+from pytz import timezone as pytz_timezone
+from sqlalchemy import and_, desc, func, literal, select
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
-from sqlalchemy import select, and_, desc, func, literal
-from app.api.mines.reports.models.mine_report_contact import MineReportContact
-from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
-from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
-from app.api.compliance.models.compliance_article import ComplianceArticle
-from app.api.constants import MINE_REPORT_TYPE
-from app.extensions import db
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
-from app.api.utils.include.user_info import User
-from app.api.services.email_service import EmailService
-from app.config import Config
-from app.api.constants import MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL, PERM_RECL_EMAIL
-from app.api.activity.utils import trigger_notification
-from app.api.activity.models.activity_notification import ActivityType, ActivityRecipients
-from app.api.mines.reports.models.mine_report_notification import MineReportNotification
-from app.api.utils.helpers import get_current_core_or_ms_env_url
-from app.api.utils.helpers import format_email_datetime_to_string
-from app.api.mines.exceptions.mine_exceptions import MineException
+from sqlalchemy.schema import FetchedValue
+
 
 class MineReport(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "mine_report"
@@ -103,6 +116,25 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             return self.latest_submission.mine_report_submission_status_code
         else:
             return "NON"
+
+    @hybrid_property
+    def is_overdue(self) -> bool:
+        """
+        Determine if the report is overdue as of the given date.
+        A report is considered overdue for reports with a due date after April 1, 2025,
+        as that is when report submissions became mandatory through Minespace.
+        """
+        as_of_date = datetime.now(pytz_timezone('US/Pacific')).date()
+        april_1_2025 = date(2025, 4, 1)
+
+        due_dt = self.due_date
+        if isinstance(due_dt, datetime):
+            due_dt = due_dt.date()
+
+        return (due_dt is not None and
+                due_dt < as_of_date and
+                due_dt >= april_1_2025 and
+                self.mine_report_status_code == 'NON')
 
     @hybrid_property
     def report_type(self):
@@ -216,15 +248,13 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             self.mine_report_guid,
             recipients=ActivityRecipients.core_users)
 
-        core_email_body = open("app/templates/email/report/core_new_report_submitted_email.html",
-                               "r").read()
+        core_template = "email/report/core_new_report_submitted_email.html"
         EmailService.send_template_email(
-            subject, core_recipients, core_email_body, email_context, cc=None)
+            subject, core_recipients, core_template, email_context, cc=None)
 
-        ms_email_body = open("app/templates/email/report/ms_new_report_submitted_email.html",
-                             "r").read()
+        ms_template = "email/report/ms_new_report_submitted_email.html"
         EmailService.send_template_email(
-            subject, ms_recipients, ms_email_body, email_context, cc=None)
+            subject, ms_recipients, ms_template, email_context, cc=None)
 
     def collectRecipients(self, is_proponent):
         core_recipients = [MDS_EMAIL]
@@ -330,9 +360,8 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             "ms_report_page_link": ms_report_page_link
         }
 
-        ms_email_body = open("app/templates/email/report/ms_new_report_requested_email.html",
-                             "r").read()
-        EmailService.send_template_email(subject, recipients, ms_email_body, email_context, cc=None)
+        ms_template = "email/report/ms_new_report_requested_email.html"
+        EmailService.send_template_email(subject, recipients, ms_template, email_context, cc=None)
 
     @classmethod
     def create(cls,

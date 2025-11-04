@@ -1,34 +1,48 @@
 import uuid
-from flask_restx import Resource
-from flask import request, current_app
 from datetime import datetime
 
-from sqlalchemy.orm import joinedload
-from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
-
+from app.api.activity.models.activity_notification import (
+    ActivityRecipients,
+    ActivityType,
+)
+from app.api.activity.utils import trigger_notification
 from app.api.constants import MINE_REPORT_TYPE
+from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.mines.exceptions.mine_exceptions import MineException
+from app.api.mines.mine.models.mine import Mine
+from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit_conditions.models.permit_condition_category import (
+    PermitConditionCategory,
+)
+from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_category import MineReportCategory
 from app.api.mines.reports.models.mine_report_contact import MineReportContact
-from app.api.mines.reports.report_helpers import ReportFilterHelper
-from app.extensions import api
-from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_any_of, requires_role_edit_report, EDIT_REPORT, MINESPACE_PROPONENT, VIEW_ALL, is_minespace_user
-from app.api.activity.models.activity_notification import ActivityType
-from app.api.activity.models.activity_notification import ActivityRecipients
-from app.api.activity.utils import trigger_notification
-
-from app.api.mines.mine.models.mine import Mine
-from app.api.mines.reports.models.mine_report import MineReport
-from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
-from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
-from app.api.mines.reports.models.mine_report_document_xref import MineReportDocumentXref
-from app.api.mines.documents.models.mine_document import MineDocument
-from app.api.mines.permits.permit_conditions.models.permit_condition_category import PermitConditionCategory
-from app.api.mines.reports.models.mine_report_permit_requirement import MineReportPermitRequirement
-from app.api.utils.custom_reqparser import CustomReqparser
+from app.api.mines.reports.models.mine_report_document_xref import (
+    MineReportDocumentXref,
+)
+from app.api.mines.reports.models.mine_report_permit_requirement import (
+    MineReportPermitRequirement,
+)
+from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
+from app.api.mines.reports.report_helpers import ReportFilterHelper
 from app.api.mines.response_models import MINE_REPORT_MODEL, PAGINATED_REPORT_LIST
-from app.api.mines.exceptions.mine_exceptions import MineException
+from app.api.utils.access_decorators import (
+    EDIT_REPORT,
+    MINESPACE_PROPONENT,
+    VIEW_ALL,
+    is_minespace_user,
+    requires_any_of,
+    requires_role_edit_report,
+)
+from app.api.utils.custom_reqparser import CustomReqparser
+from app.api.utils.resources_mixins import UserMixin
+from app.extensions import api
+from flask import current_app, request
+from flask_restx import Resource
+from sqlalchemy import or_
+from sqlalchemy.orm import joinedload
+from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 10
@@ -102,18 +116,41 @@ class MineReportListResource(Resource, UserMixin):
         if mrd_category:
             return MineReport.find_by_mine_guid_and_category(mine_guid, mrd_category)
 
-        reports_type = request.args.get('mine_reports_type', None)
+        # Support multiple report types via repeated mine_reports_type query params
+        requested_types = set(request.args.getlist('mine_reports_type', type=str) or [])
 
-        query = MineReport.query.filter_by(mine_guid=mine_guid, deleted_ind=False).order_by(MineReport.due_date.asc())
+        # Base query; ordering is applied via ReportFilterHelper
+        query = MineReport.query.filter_by(mine_guid=mine_guid, deleted_ind=False)
 
-        if reports_type == MINE_REPORT_TYPE['PERMIT REQUIRED REPORTS']:
-            query = query.filter(MineReport.mine_report_definition_id.is_(None))
-        elif reports_type == MINE_REPORT_TYPE['CODE REQUIRED REPORTS']:
-            query = query.filter(MineReport.mine_report_definition_id.isnot(None))
-        elif reports_type == MINE_REPORT_TYPE['TAILINGS REPORTS']:
-            query = query.join(MineReport.mine_report_definition).join(MineReportDefinition.categories).filter(
-                MineReportCategory.mine_report_category == 'TSF'
-            )
+        if requested_types:
+            conditions = []
+
+            # PRR: No definition id
+            if MINE_REPORT_TYPE['PERMIT REQUIRED REPORTS'] in requested_types:
+                conditions.append(MineReport.mine_report_definition_id.is_(None))
+
+            # CRR: Has definition id; optionally exclude TSF unless TAR explicitly requested
+            if MINE_REPORT_TYPE['CODE REQUIRED REPORTS'] in requested_types:
+                crr_cond = MineReport.mine_report_definition_id.isnot(None)
+                # if MINE_REPORT_TYPE['TAILINGS REPORTS'] not in requested_types:
+                #     crr_cond = crr_cond & (~MineReport.mine_report_definition.has(
+                #         MineReportDefinition.categories.any(
+                #             MineReportCategory.mine_report_category == 'TSF'
+                #         )
+                #     ))
+                conditions.append(crr_cond)
+
+            # TAR: TSF category on definition
+            if MINE_REPORT_TYPE['TAILINGS REPORTS'] in requested_types:
+                tar_cond = MineReport.mine_report_definition.has(
+                    MineReportDefinition.categories.any(
+                        MineReportCategory.mine_report_category == 'TSF'
+                    )
+                )
+                conditions.append(tar_cond)
+
+            if conditions:
+                query = query.filter(or_(*conditions))
 
         records, pagination_details = ReportFilterHelper.apply_filters_and_pagination(query, args, mine_guid)
 

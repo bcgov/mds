@@ -12,7 +12,6 @@ import {
   externalAuthorizationReducer,
   incidentReducer,
   mineReducer,
-  minespaceReducer,
   modalReducer,
   noticeOfDepartureReducer,
   noticeOfWorkReducer,
@@ -41,6 +40,7 @@ import searchConditionCategoriesReducer, {
 } from "../slices/permitConditionCategorySlice";
 import helpReducer, { helpReducerType } from "../slices/helpSlice";
 import userReducer, { userReducerType } from "@mds/common/redux/slices/userSlice";
+import minespaceReducer, { minespaceReducerType } from "../slices/minespaceSlice";
 import permitConditionTagReducer, { permitConditionTagReducerType } from "@mds/common/redux/slices/permitConditionTagSlice";
 import mineReportPermitRequirementReducer, { mineReportPermitRequirementReducerType } from "../slices/mineReportPermitRequirementSlice";
 import permitConditionDiffReducer, { permitConditionDiffReducerType } from "../slices/permitConditionDiffSlice";
@@ -48,6 +48,7 @@ import permitSearchReducer, { permitSearchReducerType } from "../slices/permitSe
 import damReducer, { damReducerType } from "../slices/damSlice";
 import tailingsReducer, { tsfReducerType } from "../slices/tailingsSlice";
 import amsFinalAppReducer, { amsAppReducerType } from "../slices/amsFinalApplicationSlice";
+import mineReportStatsReducer, { mineReportStatsReducerType } from "../slices/mineReportStatsSlice";
 
 const networkReducers = Object.fromEntries(Object.entries(NetworkReducerTypes).map(([key, value]) =>
   [NetworkReducerTypes[key], createReducer(networkReducer, value)]
@@ -62,7 +63,6 @@ export const sharedReducer = {
   ...externalAuthorizationReducer,
   ...incidentReducer,
   ...mineReducer,
-  ...minespaceReducer,
   ...modalReducer,
   ...noticeOfDepartureReducer,
   ...noticeOfWorkReducer,
@@ -96,5 +96,7 @@ export const sharedReducer = {
   [permitSearchReducerType]: permitSearchReducer,
   [permitConditionTagReducerType]: permitConditionTagReducer,
   [amsAppReducerType]: amsFinalAppReducer,
+  [mineReportStatsReducerType]: mineReportStatsReducer,
+  [minespaceReducerType]: minespaceReducer,
   ...networkReducers
 };

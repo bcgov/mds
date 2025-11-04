@@ -6,12 +6,15 @@ import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
 describe("EditFullPartyForm", () => {
   it("renders properly", () => {
-    const { container } = render(<ReduxWrapper><EditFullPartyForm
-      onSubmit={jest.fn()}
-      provinceOptions={MOCK.DROPDOWN_PROVINCE_OPTIONS}
-      initialValues={{}}
-      party={MOCK.PARTY.parties[MOCK.PARTY.partyIds[0]]}
-    /></ReduxWrapper>);
+    const { container } = render(
+      <ReduxWrapper>
+        <EditFullPartyForm
+          onSubmit={jest.fn()}
+          initialValues={{}}
+          party={MOCK.PARTY.parties[MOCK.PARTY.partyIds[0]]}
+        />
+      </ReduxWrapper>
+    );
     expect(container).toMatchSnapshot();
   });
 });

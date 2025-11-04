@@ -18,6 +18,10 @@ from app.api.exports.mines.resources.mine_summary_csv_resource import (
     MineSummaryCSVResource,
 )
 from app.api.exports.mines.resources.mine_summary_resource import MineSummaryResource
+from app.api.email_preview.resources.email_preview_resource import (
+    EmailPreviewListResource,
+    EmailPreviewResource,
+)
 from app.api.exports.now_application.resources.now_application_gis_export_resource import (
     NowApplicationGisExportResource,
 )
@@ -218,6 +222,7 @@ from app.api.mines.reports.resources.mine_report_submission_resource import (
 from app.api.mines.reports.resources.mine_report_submission_status import (
     MineReportSubmissionStatusResource,
 )
+from app.api.mines.reports.resources.mine_report_stats import MineReportStatsResource
 from app.api.mines.reports.resources.mine_reports import (
     MineReportListResource,
     MineReportResource,
@@ -526,6 +531,7 @@ from app.api.utils.access_decorators import (
     EDIT_VARIANCE,
     GIS,
     MDS_ADMINISTRATIVE_USERS,
+    MANAGE_ORGBOOK,
     MINE_ADMIN,
     MINE_EDIT,
     MINESPACE_PROPONENT,
@@ -932,8 +938,8 @@ ALLOWED_UNPROTECTED = {
     ("SwaggerView", "get"),  # Flask-RESTX swagger UI
 }
 
-
 @pytest.mark.parametrize("resource,method,expected_roles", EXPECTED_AUTH_TABLE)
+   
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
     assert endpoint is not None, f"{resource} does not have a {method.upper()} method."

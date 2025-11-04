@@ -23,7 +23,7 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import { Feature } from "@mds/common/utils";
 import ProjectContacts from "../projects/ProjectContacts";
 import { getProjectLeads } from "@mds/common/redux/selectors/partiesSelectors";
-import { getMinistryContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
+import { getMinistryContactsByRegion } from "@mds/common/redux/slices/minespaceSlice";
 import { fetchAmsFinalAppsByProjectSummary, updateAmsFinalAppMineSpaceEditability } from "@mds/common/redux/slices/amsFinalApplicationSlice";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import CheckCircleOutlined from "@ant-design/icons/CheckCircleOutlined";

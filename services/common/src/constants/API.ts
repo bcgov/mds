@@ -1,6 +1,7 @@
 import queryString from "query-string";
 
 export const CORE_STATIC_CONTENT = "/exports/core-static-content";
+export const EMAIL_PREVIEW = (template?) => `/email-preview${template ? `/${template}` : ""}`;
 
 // Network URL's
 export const MINE = "/mines";
@@ -40,7 +41,7 @@ export const DOCUMENT_MANAGER_TOKEN_GET_URL = (documentManagerGuid) =>
   `/download-token/${documentManagerGuid}`;
 export const DOCUMENT_MANAGER_DOCUMENT = (documentManagerGuid) =>
   `/documents/${documentManagerGuid}`;
-export const MINESPACE_USER = "/users/minespace";
+export const MINESPACE_USER = (mine_guid?) => `/users/minespace${mine_guid ? `?${queryString.stringify({ mine_guid })}` : ""}`;
 export const UPDATE_MINESPACE_USER = (id) => `/users/minespace/${id}`;
 export const PROVINCE_CODES = "/parties/sub-division-codes";
 
@@ -292,6 +293,7 @@ export const MINE_REPORTS = (mineGuid, params?) =>
   `/mines/${mineGuid}/reports?${queryString.stringify(params)}`;
 export const MINE_REPORT = (mineGuid, mineReportGuid) =>
   `/mines/${mineGuid}/reports/${mineReportGuid}`;
+export const MINE_REPORT_STATS = (mineGuid: string) => `/mines/${mineGuid}/reports/stats`;
 export const MINE_REPORT_SUBMISSIONS = (
   params: { mine_report_guid?: string },
   latest_submission = true

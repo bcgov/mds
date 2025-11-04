@@ -148,6 +148,9 @@ describe("PermitConditions", () => {
     expect(editCondition).toHaveLength(0);
     const editCategory = queryByTitle("Click to edit");
     expect(editCategory).not.toBeInTheDocument();
+    // Template conditions button should never be visible outside NoW drafting flow
+    const templateBtn = queryByText("Insert Template Conditions");
+    expect(templateBtn).not.toBeInTheDocument();
   });
 
   it("only allows specific actions when permit has been generated in Core", async () => {
@@ -202,6 +205,8 @@ describe("PermitConditions", () => {
     expect(addConditionButton).not.toBeInTheDocument();
     const editCategory = queryByTitle("Click to edit");
     expect(editCategory).not.toBeInTheDocument();
+    const templateBtn = queryByText("Insert Template Conditions");
+    expect(templateBtn).not.toBeInTheDocument();
   });
 
   it("does not allow editing without being assigned to the category", async () => {
@@ -234,6 +239,8 @@ describe("PermitConditions", () => {
     expect(Array.from(assignReviewer).length).toEqual(
       MOCK.PERMITS[0].permit_amendments[0].condition_categories.length
     );
+    const templateBtn = queryByText("Insert Template Conditions");
+    expect(templateBtn).not.toBeInTheDocument();
   });
 
   it("enables adding a condition category in a modal", async () => {

@@ -13,7 +13,6 @@ pytz.timezone('Canada/Pacific')
 
 @patch("app.api.projects.information_requirements_table.models.information_requirements_table.trigger_notification")
 @patch("app.api.services.email_service.EmailService.send_template_email")
-@patch("builtins.open", mock_open(read_data='email content'))
 def test_information_requirements_table_notifications(mock_send_template_email, mock_trigger_notification, test_client,
                                                       db_session, auth_headers):
     status_code = 'WDN'
@@ -52,15 +51,19 @@ def test_information_requirements_table_notifications(mock_send_template_email, 
     expected_calls = [
         call(
             subject,
-            minespace_recipients,
-            'email content',
-            context
+            [MAJOR_MINES_OFFICE_EMAIL, project.project_lead.email],
+            "email/projects/ministry_project_section_email.html",
+            context,
+            reference_id=irt.irt_guid,
+            reference_table='information_requirements_table'
         ),
         call(
             subject,
-            [MAJOR_MINES_OFFICE_EMAIL, project.project_lead.email],
-            'email content',
-            context
+            minespace_recipients,
+            "email/projects/minespace_project_section_email.html",
+            context,
+            reference_id=irt.irt_guid,
+            reference_table='information_requirements_table'
         )
     ]
 
