@@ -205,7 +205,7 @@ const ProjectOverviewTab: FC = () => {
     const handleNavigateProjectSummary = () => {
         const url = isProjectSummarySubmitted
             ? GLOBAL_ROUTES?.EDIT_PROJECT.dynamicRoute(project_guid, "project-description")
-            : GLOBAL_ROUTES?.EDIT_PROJECT_SUMMARY.dynamicRoute(project_guid, project_summary_guid, "basic-information", false);
+            : GLOBAL_ROUTES?.EDIT_PROJECT_SUMMARY.dynamicRoute(project_guid, project_summary_guid, "basic-information", isCore);
 
         history.push(url);
     };
