@@ -33,7 +33,7 @@ exports[`FacilityOperator Component should render the component with expected fi
               <span
                 class="label-subtitle"
               >
-                List the proposed facility type and/or mining activity.
+                Briefly describe the proposed facility type and/or mining activity.
               </span>
             </div>
           </label>
@@ -95,7 +95,7 @@ exports[`FacilityOperator Component should render the component with expected fi
               <span
                 class="label-subtitle"
               >
-                Briefly describe: Overview of the project. The primary activity of the facility. If there is not enough space, you may attach additional information, including conceptual site plans.
+                Briefly describe the primary activity of the facility. If there is not enough space, you may attach additional information, including conceptual site plans.
               </span>
             </div>
           </label>
@@ -932,7 +932,7 @@ exports[`FacilityOperator Component should render the component with expected fi
                 <div
                   style="width: 100%;"
                 >
-                  Facility Operator Contact Number
+                  Facility Operator Phone Number
                 </div>
               </label>
             </div>

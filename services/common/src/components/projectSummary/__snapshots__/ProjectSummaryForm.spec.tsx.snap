@@ -45,7 +45,7 @@ exports[`Project Management renders properly 1`] = `
         <li
           aria-disabled="false"
           class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
-          data-menu-id="rc-menu-uuid-test-related-projects"
+          data-menu-id="rc-menu-uuid-test-link-related-projects"
           role="menuitem"
           style="padding-left: 24px;"
           tabindex="-1"
@@ -53,7 +53,7 @@ exports[`Project Management renders properly 1`] = `
           <span
             class="ant-menu-title-content"
           >
-            Related Projects
+            Link Related Projects
           </span>
         </li>
         <li

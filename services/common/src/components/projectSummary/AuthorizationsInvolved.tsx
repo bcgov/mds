@@ -54,7 +54,7 @@ import { FormContext } from "../forms/FormWrapper";
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
 import { areAuthEnvFieldsDisabled, areDocumentFieldsDisabled, isDocumentDeletionEnabled } from "../projects/projectUtils";
 import { removeDocumentFromProjectSummary } from "@mds/common/redux/actionCreators/projectActionCreator";
-import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE, ENVIRONMENTAL_MANAGMENT_ACT, WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL, WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL } from "@mds/common/constants/strings";
+import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE, WATER_SUSTAINABILITY_ACT, ENVIRONMENTAL_MANAGMENT_ACT, WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL, WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL } from "@mds/common/constants/strings";
 import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled }) => {
@@ -176,7 +176,7 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
         maximumCharacters={4000}
         minRows={2}
         component={RenderAutoSizeField}
-        placeholder="e.g. To Discharge air emissions from x number of stacks at a sawmill."
+        placeholder="To discharge air emissions from x number of stacks at a mining facility."
       />
       <Field
         disabled={isDisabled}
@@ -629,11 +629,21 @@ export const AuthorizationsInvolved: FC<ProjectSummaryFormComponentProps> = ({ f
             {transformedProjectSummaryAuthorizationTypes.map((authorization) => {
               return (
                 <div key={authorization.code} className="margin-large--bottom">
-                  <Typography.Title level={5}>{authorization.description}</Typography.Title>
+                  {(authorization.code === WATER_SUSTAINABILITY_ACT) && (<>
+                    <Typography.Title level={4}>Indicate any other required regulatory approvals.</Typography.Title>
+                    <Typography.Paragraph>
+                      Note: These related approvals are listed for <b>informational purposes only</b> and are <b>not submitted</b> through this application.
+                      However, by providing details about these applications, you help support a coordinated review process across ministries,
+                      which may positively impact review timelines and reduce delays.
+                    </Typography.Paragraph>
+                  </>)}
+                  <Typography.Title level={5}>{`${authorization.description} ${authorization.code === ENVIRONMENTAL_MANAGMENT_ACT ? "(EMA)" : ""}`}</Typography.Title>
                   {authorization.code === ENVIRONMENTAL_MANAGMENT_ACT && (
                     <Typography.Paragraph>
-                      For registration under the Municipal Wastewater Regulation and Hazardous Waste
-                      Regulation, please refer to the{" "}
+                      For Registration and Changes to an Existing Registration under the EMA’s Municipal Wastewater Regulation,
+                      Hazardous Waste Regulation or Petroleum Storage and
+                      Distribution Facilities Storm Water Regulation: submit an application to the Ministry of Environment and Parks
+                      according to the {" "}
                       <Link
                         to={{ pathname: WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL }}
                         target="_blank"
@@ -645,7 +655,7 @@ export const AuthorizationsInvolved: FC<ProjectSummaryFormComponentProps> = ({ f
                         to={{ pathname: WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL }}
                         target="_blank"
                       >
-                        authorization amendment
+                        change a waste discharge authorization
                       </Link>{" "}
                       guideline.
                     </Typography.Paragraph>

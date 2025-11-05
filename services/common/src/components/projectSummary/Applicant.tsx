@@ -283,7 +283,7 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
         customOptions={[
           { label: "Company", value: "ORG" },
           {
-            label: "Individual",
+            label: "Person",
             value: "PER",
           },
         ]}
@@ -384,7 +384,7 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
         <Col md={8} sm={19}>
           <Field
             name="applicant.phone_no"
-            label="Contact Number"
+            label="Phone Number"
             required
             component={RenderField}
             validate={[phoneNumber, maxLength(12), required]}

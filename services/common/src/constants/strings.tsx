@@ -543,6 +543,7 @@ export const PROJECT_STATUS_SEVERITY: { [key: string]: "success" | "warning" | "
 }
 
 export const ENVIRONMENTAL_MANAGMENT_ACT = "ENVIRONMENTAL_MANAGMENT_ACT";
+export const WATER_SUSTAINABILITY_ACT = "WATER_SUSTAINABILITY_ACT";
 
 export const DISCHARGE_FACTOR_FORM_NEW =
   "https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-03_new_auth_discharge_factors_application_form.pdf";
