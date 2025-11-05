@@ -5,12 +5,13 @@ import { Reports } from "@/components/dashboard/mine/reports/Reports";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { SidebarProvider } from "@mds/common/components/common/SidebarWrapper";
-import { REPORTS, AUTHENTICATION } from "@mds/common/constants/reducerTypes";
+import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import {
   complianceReportReducerType,
   reportParamsGetAll,
 } from "@mds/common/redux/slices/complianceReportsSlice";
 import { Feature } from "@mds/common/utils/featureFlag";
+import { reportReducerType } from "@mds/common/redux/slices/reportSlice";
 
 // Force the v2 reports UI by turning on the feature flag for this test suite
 jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
@@ -23,7 +24,7 @@ jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
 }));
 
 const initialState = {
-  [REPORTS]: { mineReports: MOCK.MINE_REPORTS, reportsPageData: MOCK.PAGE_DATA },
+  [reportReducerType]: { mineReports: MOCK.MINE_REPORTS, reportsPageData: MOCK.PAGE_DATA },
   [complianceReportReducerType]: {
     reportPageData: {
       records: MOCK.MINE_REPORT_DEFINITION_OPTIONS,

@@ -16,12 +16,14 @@ import { useAppSelector as useSelector } from "@mds/common/redux/rootState";
 import { EditOutlined } from "@ant-design/icons";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
+import { PERMIT_VIEW } from "@/constants/routes";
 
 interface ReportsTableProps {
   mineReports: IMineReport[];
   openReport: (record: IMineReport, isEditMode?: boolean) => void;
   isLoaded: boolean;
   backendPaginated?: boolean;
+  columns?: ColumnsType<IMineReport>;
 }
 
 const DEFAULT_PAGE_SIZE = 10;
@@ -79,8 +81,8 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
     return actionList.filter((action) => action.key !== "submit");
   };
 
-  let columns: ColumnsType<IMineReport> = [
-    renderTextColumn("report_name", "Report Name", !props.backendPaginated),
+  let defaultColumns: ColumnsType<IMineReport> = [
+    renderTextColumn("report_name", "Report Name/Permit Condition", !props.backendPaginated),
     {
       title: "Code Section",
       key: "code_section",
@@ -98,8 +100,7 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
     },
     renderTextColumn("submission_year", "Compliance Year", !props.backendPaginated, null, 50),
     renderTextColumn("due_date", "Due", true, null, 100),
-    renderTextColumn(["latest_submission", "received_date"], "Submitted On", true),
-    renderTextColumn("created_by_idir", "Requested By", true),
+    renderTextColumn(["latest_submission", "received_date"], "Submitted", true),
     {
       title: "Status",
       dataIndex: "mine_report_status_code",
@@ -112,18 +113,29 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
         return <Badge status={reportStatusSeverity(text)} text={MINE_REPORT_STATUS_HASH[text]} />;
       },
     },
-    renderActionsColumn({ actions, recordActionsFilter }),
   ];
 
-  if (props.mineReports.some((report) => report.permit_guid)) {
-    columns = columns.map((col) => {
+  if (!props.columns && props.mineReports.some((report) => report.permit_guid)) {
+    defaultColumns = defaultColumns.map((col) => {
       if (col.key === "code_section") {
-        return renderTextColumn("permit_number", "Permit #", true, null, 125);
+        return {
+          title: "Permit #",
+          dataIndex: "permit_number",
+          key: "permit_number",
+          render: (text: string | null | undefined, record) => {
+            if (!text) return "—";
+            const permitLink = PERMIT_VIEW.dynamicRoute(record.mine_guid, record.permit_guid);
+            return <a href={permitLink}>{text}</a>;
+          },
+          width: 125,
+        };
       } else {
         return col;
       }
     });
   }
+
+  const columns: ColumnsType<IMineReport> = props.columns || defaultColumns;
 
   const pagination: TablePaginationConfig = {
     defaultPageSize: DEFAULT_PAGE_SIZE,
@@ -135,7 +147,7 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
     <CoreTable
       size={"small"}
       loading={!props.isLoaded}
-      columns={columns}
+      columns={[...columns, renderActionsColumn({ actions, recordActionsFilter })]}
       rowKey={(record) => record.mine_report_guid}
       emptyText="This mine has no report data."
       dataSource={props.mineReports}

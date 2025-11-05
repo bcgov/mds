@@ -19,7 +19,6 @@ import {
   partiesReducer,
   permitReducer,
   projectReducer,
-  reportReducer,
   searchReducer,
   securitiesReducer,
   staticContentReducer,
@@ -49,6 +48,7 @@ import damReducer, { damReducerType } from "../slices/damSlice";
 import tailingsReducer, { tsfReducerType } from "../slices/tailingsSlice";
 import amsFinalAppReducer, { amsAppReducerType } from "../slices/amsFinalApplicationSlice";
 import mineReportStatsReducer, { mineReportStatsReducerType } from "../slices/mineReportStatsSlice";
+import reportReducer, { reportReducerType } from "@mds/common/redux/slices/reportSlice";
 
 const networkReducers = Object.fromEntries(Object.entries(NetworkReducerTypes).map(([key, value]) =>
   [NetworkReducerTypes[key], createReducer(networkReducer, value)]
@@ -70,7 +70,6 @@ export const sharedReducer = {
   ...partiesReducer,
   ...permitReducer,
   ...projectReducer,
-  ...reportReducer,
   ...searchReducer,
   ...securitiesReducer,
   ...staticContentReducer,
@@ -98,5 +97,6 @@ export const sharedReducer = {
   [amsAppReducerType]: amsFinalAppReducer,
   [mineReportStatsReducerType]: mineReportStatsReducer,
   [minespaceReducerType]: minespaceReducer,
+  [reportReducerType]: reportReducer,
   ...networkReducers
 };

@@ -1,12 +1,12 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { Row, Col, Typography, Tabs, Alert, Button } from "antd";
+import { Row, Col, Typography, Tabs, Alert, Button, Badge } from "antd";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { IMine } from "@mds/common/interfaces";
-import { fetchMineReports } from "@mds/common/redux/actionCreators/reportActionCreator";
 import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
 import { IMineReport } from "@mds/common/interfaces/reports/mineReport.interface";
 import * as Strings from "@mds/common/constants/strings";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
+import UpcomingReports from "@/components/dashboard/mine/reports/UpcomingReports";
 import { Link, useHistory } from "react-router-dom";
 import * as routes from "@/constants/routes";
 import TableSummaryCard from "@/components/common/TableSummaryCard";
@@ -19,6 +19,8 @@ import {
 import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { getMineReportStatsByMineGuid } from "@mds/common/redux/slices/mineReportStatsSlice";
+import { fetchMineReports } from "@mds/common/redux/slices/reportSlice";
+import { Feature, isFeatureEnabled } from "@mds/common/utils";
 
 const REPORTS_PAGE_SIZE = 20;
 
@@ -35,6 +37,8 @@ const ReportManagement: FC = () => {
   const mineReports: IMineReport[] = useAppSelector(getMineReports);
   const pageData = useAppSelector(getReportsPageData) as any;
   const stats = useAppSelector(getMineReportStatsByMineGuid(mine.mine_guid));
+  const showPendingReports = isFeatureEnabled(Feature.REPORT_MANAGEMENT_V2);
+
   useEffect(() => {
     setIsLoaded(true);
     onAllReportsPageChange(1);
@@ -63,14 +67,14 @@ const ReportManagement: FC = () => {
     setIsLoaded(false);
     Promise.resolve(
       dispatch(
-        fetchMineReports(
-          mine.mine_guid,
-          [
+        fetchMineReports({
+          mineGuid: mine.mine_guid,
+          reportsType: [
             Strings.MINE_REPORTS_TYPE.codeRequiredReports,
             Strings.MINE_REPORTS_TYPE.permitRequiredReports,
           ],
-          { page, per_page: REPORTS_PAGE_SIZE }
-        )
+          params: { page, per_page: REPORTS_PAGE_SIZE },
+        })
       )
     ).then(() => setIsLoaded(true));
   };
@@ -98,7 +102,7 @@ const ReportManagement: FC = () => {
       </Col>
       <Col span={24}>
         <Row gutter={[16, 16]}>
-          <Col sm={24} md={10} lg={6}>
+          <Col sm={24} md={10} lg={8}>
             <TableSummaryCard
               title="Active Permits"
               content={activePermits}
@@ -106,7 +110,7 @@ const ReportManagement: FC = () => {
               type="success"
             />
           </Col>
-          <Col sm={24} md={10} lg={6}>
+          <Col sm={24} md={10} lg={8}>
             <TableSummaryCard
               title="Reports Overdue"
               content={reportsOverdue}
@@ -114,7 +118,7 @@ const ReportManagement: FC = () => {
               type="error"
             />
           </Col>
-          <Col sm={24} md={10} lg={6}>
+          <Col sm={24} md={10} lg={8}>
             <TableSummaryCard
               title="Reports Due in the Next 90 Days"
               content={reportsDueNext90}
@@ -125,42 +129,67 @@ const ReportManagement: FC = () => {
         </Row>
       </Col>
       <Col span={24}>
-        <Tabs type="card">
-          <Tabs.TabPane tab="All Reports" key="all_reports">
-            <Typography.Title level={2}>All Reports</Typography.Title>
-            <Typography.Paragraph>
-              This table shows the reporting requirements for your permits. It highlights overdue,
-              upcoming, and requested reports to help you stay compliant. Drafts and previously
-              submitted reports are also included for your reference.
-            </Typography.Paragraph>
+        <Tabs
+          type="card"
+          items={[
+            {
+              key: "all_reports",
+              label: "All Reports",
+              children: (
+                <div>
+                  <Typography.Title level={2}>All Reports</Typography.Title>
+                  <Typography.Paragraph>
+                    This table shows the reporting requirements for your permits. It highlights
+                    overdue, upcoming, and requested reports to help you stay compliant. Drafts and
+                    previously submitted reports are also included for your reference.
+                  </Typography.Paragraph>
 
-            <div className="margin-large--bottom">
-              <Alert
-                message="Reminder"
-                showIcon
-                type="info"
-                description={
-                  "Your permit is the official source of reporting requirements. Use this table as a reference, but always check your permit to confirm compliance."
-                }
-              />
-            </div>
+                  <div className="margin-large--bottom">
+                    <Alert
+                      message="Reminder"
+                      showIcon
+                      type="info"
+                      description={
+                        "Your permit is the official source of reporting requirements. Use this table as a reference, but always check your permit to confirm compliance."
+                      }
+                    />
+                  </div>
 
-            <ReportsTable
-              openReport={openReport}
-              mineReports={allReports}
-              isLoaded={isLoaded}
-              backendPaginated
-            />
-            <Row justify="center" className="margin-large--bottom">
-              <ResponsivePagination
-                onPageChange={onAllReportsPageChange}
-                currentPage={Number(pageData?.current_page || 1)}
-                pageTotal={Number(pageData?.total || allReports.length)}
-                itemsPerPage={Number(pageData?.items_per_page || REPORTS_PAGE_SIZE)}
-              />
-            </Row>
-          </Tabs.TabPane>
-        </Tabs>
+                  <ReportsTable
+                    openReport={openReport}
+                    mineReports={allReports}
+                    isLoaded={isLoaded}
+                    backendPaginated
+                  />
+                  <Row justify="center" className="margin-large--bottom">
+                    <ResponsivePagination
+                      onPageChange={onAllReportsPageChange}
+                      currentPage={Number(pageData?.current_page || 1)}
+                      pageTotal={Number(pageData?.total || allReports.length)}
+                      itemsPerPage={Number(pageData?.items_per_page || REPORTS_PAGE_SIZE)}
+                    />
+                  </Row>
+                </div>
+              ),
+            },
+            ...(showPendingReports
+              ? [
+                  {
+                    key: "upcoming_reports",
+                    label: (
+                      <Row gutter={8}>
+                        <Col>Upcoming Reports</Col>
+                        <Col>
+                          <Badge count={reportsDueNext90 ?? undefined} />
+                        </Col>
+                      </Row>
+                    ),
+                    children: <UpcomingReports mineGuid={mine.mine_guid} openReport={openReport} />,
+                  },
+                ]
+              : []),
+          ]}
+        />
       </Col>
     </Row>
   );

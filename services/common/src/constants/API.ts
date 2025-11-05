@@ -291,6 +291,8 @@ export const MINE_REPORT_DEFINITION = "/mines/reports/definitions";
 export const MINE_REPORT_DUE_DATE_TYPES = "/mines/reports/due-date-types";
 export const MINE_REPORTS = (mineGuid, params?) =>
   `/mines/${mineGuid}/reports?${queryString.stringify(params)}`;
+export const MINE_UPCOMING_REPORTS = (mineGuid, params?) =>
+  `/mines/${mineGuid}/reports?${queryString.stringify({ ...params, upcoming: true })}`;
 export const MINE_REPORT = (mineGuid, mineReportGuid) =>
   `/mines/${mineGuid}/reports/${mineReportGuid}`;
 export const MINE_REPORT_STATS = (mineGuid: string) => `/mines/${mineGuid}/reports/stats`;
