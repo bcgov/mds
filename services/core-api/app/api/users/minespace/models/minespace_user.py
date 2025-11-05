@@ -92,7 +92,7 @@ class MinespaceUser(HistoryMixin, SoftDeleteMixin, AuditMixin, Base):
 
 
     @validates('bceid_username')
-    def validate_email(self, key, bceid_username):
+    def validate_username(self, key, bceid_username):
         if not bceid_username:
             raise AssertionError('Identifier is not provided.')
         if not bceid_username.endswith('@bceid'):
