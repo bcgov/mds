@@ -144,6 +144,16 @@ def register_commands(app):
         with current_app.app_context():
             notify_and_update_expired_party_appointments()
 
+    @app.cli.command('create_new_recurring_report_requests')
+    def create_new_recurring_report_requests():
+        from app import auth
+        from app.api.mines.reports.tasks import create_new_recurring_report_requests
+        auth.apply_security = False
+
+        with current_app.app_context():
+            create_new_recurring_report_requests()
+            print("celery job started: create_new_recurring_report_requests")
+
     @app.cli.command('revoke_mines_act_permit_vc_and_offer_newest')
     @click.argument('credential_exchange_id')
     @click.argument('permit_guid')

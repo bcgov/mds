@@ -88,7 +88,7 @@ class MineReportPermitRequirement(SoftDeleteMixin, AuditMixin, HistoryMixin, Bas
         return None
     
     @classmethod
-    def find_by_report_name(cls, report_name, permit_amendment_id) -> Self:
+    def find_by_report_name(cls, report_name, permit_amendment_id) -> Self | None:
         return cls.query.filter_by(report_name=report_name, permit_amendment_id=permit_amendment_id).one_or_none()
 
     @classmethod
@@ -98,7 +98,13 @@ class MineReportPermitRequirement(SoftDeleteMixin, AuditMixin, HistoryMixin, Bas
         except ValueError:
             return None
         
-
+    @classmethod
+    def get_all_recurring(cls) -> list[Self]:
+        return cls.query.filter_by(deleted_ind=False, active_ind=True).filter(
+            cls.due_date_period_months > 0,
+            cls.initial_due_date != None
+        ).all()
+    
     def update_permit_conditions(self, new_permit_condition_ids) -> None:
         current_condition_ids = self.permit_condition_ids
         

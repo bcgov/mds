@@ -426,6 +426,51 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         except ValueError:
             return None
 
+    @classmethod
+    def create_from_permit_report_requirement(cls, requirement, due_date):
+        """
+        Create a MineReport from a MineReportPermitRequirement.
+        This is used for creating recurring reports based on permit requirements.
+        
+        Args:
+            requirement: MineReportPermitRequirement instance
+            due_date: The specific due date for this report instance
+        """
+        # Import here to avoid circular import
+        from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+        from app.api.mines.mine.models.mine import Mine
+        
+        # Get the permit amendment to find the mine
+        permit_amendment = PermitAmendment.find_by_permit_amendment_id(requirement.permit_amendment_id)
+        if not permit_amendment:
+            raise ValueError(f"Could not find permit amendment with id {requirement.permit_amendment_id} for report requirement '{requirement.report_name}' (ID: {requirement.mine_report_permit_requirement_id})")
+        
+        # Get the mine directly from the permit amendment to avoid _context_mine requirement
+        mine_guid = permit_amendment.mine_guid
+        permit_id = permit_amendment.permit_id
+        
+        mine = Mine.find_by_mine_guid(mine_guid)
+        if not mine:
+            raise ValueError(f"Could not find mine with guid {mine_guid} for permit amendment {requirement.permit_amendment_id}")
+        
+        mine_report = cls.create(
+            mine_report_definition_id=None,  # PRR reports don't use mine_report_definition
+            mine_guid=mine.mine_guid,
+            due_date=due_date,  # Use the passed-in due date
+            received_date=None,  # Not received yet
+            submission_year=None,  # Will be set when submitted
+            description_comment=None,  # Will be set when submitted
+            submitter_name="",  # Will be set when submitted
+            permit_id=permit_id,
+            permit_condition_category_code=None,  # PRR reports don't use this
+            mine_report_permit_requirement_id=requirement.mine_report_permit_requirement_id,
+            submitter_email="",  # Will be set when submitted
+            add_to_session=True,
+            system_created=True
+        )
+        
+        return mine_report
+
     @validates('mine_report_definition_id')
     def validate_mine_report_definition_id(self, key, mine_report_definition_id):
         if mine_report_definition_id and self.permit_condition_category_code:
