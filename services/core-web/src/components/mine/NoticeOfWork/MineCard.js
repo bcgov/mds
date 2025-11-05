@@ -9,7 +9,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as Styles from "@/constants/styles";
 
 /**
- * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
+ * @class MineHeader.tsx contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
  */
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,

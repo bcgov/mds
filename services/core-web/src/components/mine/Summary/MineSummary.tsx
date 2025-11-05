@@ -1,14 +1,13 @@
-import React, { FC } from "react";
-import { Row, Col, Divider, Card } from "antd";
+import React from "react";
+import { Card, Col, Divider, Row } from "antd";
 import moment from "moment";
-import { connect } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { formatDate } from "@common/utils/helpers";
 import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import { getPartyRelationshipTypes } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@mds/common/redux/selectors/complianceSelectors";
 import { getMines } from "@mds/common/redux/selectors/mineSelectors";
-import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
+import { getUnformattedPermits } from "@mds/common/redux/selectors/permitSelectors";
 import * as String from "@mds/common/constants/strings";
 import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
 import * as router from "@/constants/routes";
@@ -17,25 +16,11 @@ import { TSFCard } from "@/components/mine/Tailings/MineTSFCard";
 import { DOC, OVERDUEDOC } from "@/constants/assets";
 import MineHeader from "@/components/mine/MineHeader";
 import MineWorkInformation from "@/components/mine/Summary/MineWorkInformation";
-import {
-  IMine,
-  IPartyRelationshipType,
-  IPermitPartyRelationship,
-  IMineComplianceInfo,
-  IPermit,
-} from "@mds/common/interfaces";
+import { useAppSelector } from "@mds/common/redux/rootState";
 
 /**
- * @class MineSummary.js contains all content located under the 'Summary' tab on the MineDashboard.
+ * @class MineSummary.tsx contains all content located under the 'Summary' tab on the MineDashboard.
  */
-
-interface MineSummaryProps {
-  mines: Partial<IMine>;
-  partyRelationshipTypes: IPartyRelationshipType[];
-  partyRelationships: IPermitPartyRelationship[];
-  mineComplianceInfo: IMineComplianceInfo;
-  minePermits: Partial<IPermit>[];
-}
 
 const renderPartyRelationship = (mine, permits, partyRelationship, partyRelationshipTypes) => {
   if (partyRelationshipTypes.length === 0) return <div>{String.LOADING}</div>;
@@ -73,18 +58,21 @@ const renderSummaryTSF = (tsf, partyRelationships) => (
 // Since end date is stored at yyyy-mm-dd, comparing current Date() to
 // the the start of the next day ensures appointments ending today are displayed.
 const isActive = (pr) =>
-  (!pr.end_date ||
-    moment(pr.end_date)
-      .add(1, "days")
-      .isAfter()) &&
+  (!pr.end_date || moment(pr.end_date).add(1, "days").isAfter()) &&
   (!pr.start_date || moment(pr.start_date).isBefore());
 
 const activePermitteesByPermit = (pr, permit) =>
   isActive(pr) && pr.mine_party_appt_type_code === "PMT" && pr.related_guid === permit.permit_guid;
 
-export const MineSummary: FC<MineSummaryProps> = (props) => {
-  const { id } = useParams<any>();
-  const mine = props.mines[id];
+export const MineSummary = () => {
+  const { id } = useParams<{ id: string }>();
+  const mines = useAppSelector(getMines);
+  const partyRelationships = useAppSelector(getPartyRelationships);
+  const partyRelationshipTypes = useAppSelector(getPartyRelationshipTypes);
+  const mineComplianceInfo = useAppSelector(getMineComplianceInfo);
+  const minePermits = useAppSelector(getUnformattedPermits);
+
+  const mine = mines[id];
 
   return (
     <div className="tab__content">
@@ -92,14 +80,14 @@ export const MineSummary: FC<MineSummaryProps> = (props) => {
         <h2>General</h2>
         <Divider />
       </div>
-      <MineHeader mine={mine} {...props} />
+      <MineHeader mine={mine} />
       <br />
       <br />
       <br />
       <br />
       <MineWorkInformation mineGuid={id} />
       <br />
-      {props.partyRelationships && props.partyRelationships.length > 0 && (
+      {partyRelationships && partyRelationships.length > 0 && (
         <div>
           <br />
           <Row>
@@ -109,30 +97,25 @@ export const MineSummary: FC<MineSummaryProps> = (props) => {
             </Col>
           </Row>
           <Row gutter={16}>
-            {props.partyRelationships
+            {partyRelationships
               .filter((pr) => pr.mine_party_appt_type_code === "MMG" && isActive(pr))
               .map((partyRelationship) =>
                 renderPartyRelationship(
                   mine,
-                  props.minePermits,
+                  minePermits,
                   partyRelationship,
-                  props.partyRelationshipTypes
+                  partyRelationshipTypes
                 )
               )}
-            {props.minePermits.map((permit) => {
-              const latestPermittee = props.partyRelationships
+            {minePermits.map((permit) => {
+              const latestPermittee = partyRelationships
                 .filter((pr) => activePermitteesByPermit(pr, permit))
                 .sort(
                   (a, b) => new Date(b.start_date).valueOf() - new Date(a.start_date).valueOf()
                 )[0];
               return (
                 latestPermittee &&
-                renderPartyRelationship(
-                  mine,
-                  props.minePermits,
-                  latestPermittee,
-                  props.partyRelationshipTypes
-                )
+                renderPartyRelationship(mine, minePermits, latestPermittee, partyRelationshipTypes)
               );
             })}
           </Row>
@@ -145,7 +128,7 @@ export const MineSummary: FC<MineSummaryProps> = (props) => {
           </Row>
         </div>
       )}
-      {props.minePermits && props.minePermits.length > 0 && (
+      {minePermits && minePermits.length > 0 && (
         <div>
           <Row>
             <Col span={24}>
@@ -154,8 +137,8 @@ export const MineSummary: FC<MineSummaryProps> = (props) => {
             </Col>
           </Row>
           <Row gutter={16}>
-            {props.minePermits.map((permit) =>
-              renderSummaryPermit(permit, props.partyRelationships.filter(isActive))
+            {minePermits.map((permit) =>
+              renderSummaryPermit(permit, partyRelationships.filter(isActive))
             )}
           </Row>
           <Row>
@@ -167,7 +150,7 @@ export const MineSummary: FC<MineSummaryProps> = (props) => {
           </Row>
         </div>
       )}
-      {props.mineComplianceInfo && (
+      {mineComplianceInfo && (
         <div>
           <Row gutter={16}>
             <Col span={24}>
@@ -183,7 +166,7 @@ export const MineSummary: FC<MineSummaryProps> = (props) => {
                   <Row justify="center" align="middle">
                     <div className="center">
                       <span className="info-display">
-                        {formatDate(props.mineComplianceInfo.last_inspection) ||
+                        {formatDate(mineComplianceInfo.last_inspection) ||
                           String.NO_NRIS_INSPECTIONS}
                       </span>
                     </div>
@@ -202,7 +185,7 @@ export const MineSummary: FC<MineSummaryProps> = (props) => {
                 title={
                   <Row justify="center" align="middle">
                     <img alt="Open Orders" src={DOC} style={{ height: 40, paddingRight: 5 }} />
-                    <span className="info-display">{props.mineComplianceInfo.num_open_orders}</span>
+                    <span className="info-display">{mineComplianceInfo.num_open_orders}</span>
                   </Row>
                 }
                 bordered={false}
@@ -222,9 +205,7 @@ export const MineSummary: FC<MineSummaryProps> = (props) => {
                       src={OVERDUEDOC}
                       style={{ height: 40, paddingRight: 5 }}
                     />
-                    <span className="info-display">
-                      {props.mineComplianceInfo.num_overdue_orders}
-                    </span>
+                    <span className="info-display">{mineComplianceInfo.num_overdue_orders}</span>
                   </Row>
                 }
                 bordered={false}
@@ -247,41 +228,34 @@ export const MineSummary: FC<MineSummaryProps> = (props) => {
           </Row>
         </div>
       )}
-      {mine.mine_tailings_storage_facilities && mine.mine_tailings_storage_facilities.length > 0 && (
-        <div>
-          <Row gutter={16}>
-            <Col span={24}>
-              <h4>Tailings Storage Facilities</h4>
-              <Divider />
-            </Col>
-          </Row>
-          <Row>
-            {mine.mine_tailings_storage_facilities.map((tsf) =>
-              renderSummaryTSF(tsf, props.partyRelationships.filter(isActive))
-            )}
-          </Row>
+      {mine.mine_tailings_storage_facilities &&
+        mine.mine_tailings_storage_facilities.length > 0 && (
+          <div>
+            <Row gutter={16}>
+              <Col span={24}>
+                <h4>Tailings Storage Facilities</h4>
+                <Divider />
+              </Col>
+            </Row>
+            <Row>
+              {mine.mine_tailings_storage_facilities.map((tsf) =>
+                renderSummaryTSF(tsf, partyRelationships.filter(isActive))
+              )}
+            </Row>
 
-          <Row>
-            <Col span={24}>
-              <div className="right">
-                <Link to={router.MINE_TAILINGS.dynamicRoute(mine.mine_guid)}>
-                  See All Tailings Storage Facilities
-                </Link>
-              </div>
-            </Col>
-          </Row>
-        </div>
-      )}
+            <Row>
+              <Col span={24}>
+                <div className="right">
+                  <Link to={router.MINE_TAILINGS.dynamicRoute(mine.mine_guid)}>
+                    See All Tailings Storage Facilities
+                  </Link>
+                </div>
+              </Col>
+            </Row>
+          </div>
+        )}
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({
-  mines: getMines(state),
-  partyRelationships: getPartyRelationships(state),
-  partyRelationshipTypes: getPartyRelationshipTypes(state),
-  mineComplianceInfo: getMineComplianceInfo(state),
-  minePermits: getPermits(state),
-});
-
-export default connect(mapStateToProps)(MineSummary);
+export default MineSummary;

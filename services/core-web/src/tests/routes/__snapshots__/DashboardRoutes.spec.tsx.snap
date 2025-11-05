@@ -198,15 +198,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/mine-dashboard/:id/mine-information/contacts"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(MineSummary)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
     key="/mine-dashboard/:id/mine-information/general"
     path="/mine-dashboard/:id/mine-information/general"

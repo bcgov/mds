@@ -25,7 +25,13 @@ import {
   useAppSelector as useSelector,
   useAppSelector,
 } from "@mds/common/redux/rootState";
-import { IOption, IPartyAppt, IPermit, ITailingsStorageFacility } from "@mds/common/interfaces";
+import {
+  IOption,
+  IPartyAppt,
+  IPartyRelationshipType,
+  IPermit,
+  ITailingsStorageFacility,
+} from "@mds/common/interfaces";
 import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import CoreButton from "@mds/common/components/common/CoreButton";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
@@ -46,13 +52,13 @@ interface ITransformedValues {
   startDate: string;
 }
 
-const mapPermitGuidToNumber = (permits) =>
+const mapPermitGuidToNumber = (permits: IPermit[]) =>
   permits.reduce((acc, { permit_guid, permit_no }) => {
     acc[permit_guid] = permit_no;
     return acc;
   }, {});
 
-const mapTSFGuidToName = (tailings) =>
+const mapTSFGuidToName = (tailings: ITailingsStorageFacility[]) =>
   tailings.reduce(
     (acc, { mine_tailings_storage_facility_guid, mine_tailings_storage_facility_name }) => {
       acc[mine_tailings_storage_facility_guid] = mine_tailings_storage_facility_name;
@@ -61,7 +67,7 @@ const mapTSFGuidToName = (tailings) =>
     {}
   );
 
-const getPartyRelationshipTitle = (partyRelationshipTypes, typeCode) => {
+const getPartyRelationshipTitle = (partyRelationshipTypes: IPartyRelationshipType[], typeCode: string) => {
   const partyRelationshipType = partyRelationshipTypes.find(({ value }) => value === typeCode);
   return (partyRelationshipType && partyRelationshipType.label) || String.EMPTY;
 };
