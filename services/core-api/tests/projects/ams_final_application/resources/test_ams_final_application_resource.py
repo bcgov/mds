@@ -29,7 +29,7 @@ def _proponent_header(auth_headers):
 
 def subscribe_minespace_user(db_session, project_summary, email='test-proponent@bceid'):
     """Create a MineSpace user and subscribe them to the mine of the given project summary."""
-    ms_user = MinespaceUserFactory(email_or_username=email)  # type: ignore[arg-type]
+    ms_user = MinespaceUserFactory(bceid_username=email)  # type: ignore[arg-type]
     MinespaceSubscriptionFactory(mine=project_summary.project.mine, minespace_user=ms_user)  # type: ignore[arg-type]
     db_session.commit()
     auth.clear_cache()

@@ -269,7 +269,7 @@ from app.api.utils.access_decorators import (
      (MinespaceUserResource, 'get', [MINE_ADMIN]), (MinespaceUserResource, 'delete', [MINE_ADMIN]),
      (MinespaceUserMineListResource, 'post', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'delete', [MINE_ADMIN]),
-     (UserResource, 'get', [VIEW_ALL]),
+     (UserResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
      (UserListResource, 'get', [VIEW_ALL]),
      (NOWActivityTypeResource, 'get', [VIEW_ALL]),
      (NOWApplicationImportResource, 'post', [EDIT_PERMIT]),

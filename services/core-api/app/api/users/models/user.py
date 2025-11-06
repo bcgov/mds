@@ -1,10 +1,10 @@
 from datetime import datetime
 from pytz import utc
-from app.api.utils.models_mixins import SoftDeleteMixin, Base, AuditMixin
+from app.api.utils.models_mixins import SoftDeleteMixin, Base, AuditMixin, HistoryMixin
 from app.extensions import db
 
 
-class User(SoftDeleteMixin, AuditMixin, Base):
+class User(HistoryMixin, SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "user"
     __versioned__ = {
         'exclude': ['last_logged_in']

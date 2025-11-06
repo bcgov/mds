@@ -5,7 +5,6 @@ from sqlalchemy import or_
 from typing import Optional, Set
 from app.extensions import db
 from .api.utils.include.user_info import User
-from .api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.utils.access_decorators import MINESPACE_PROPONENT, MINE_ADMIN
 
 # This is for use when the database models are being used outside of the context of a flask application.
@@ -36,18 +35,18 @@ class UserSecurity(object):
 
 
 def get_mine_access():
+    from .api.users.minespace.models.minespace_user import MinespaceUser
     user = get_current_user()
     return list(x.mine_guid for x in user.minespace_user_mines)
 
 
 def get_current_user():
+    from .api.users.minespace.models.minespace_user import MinespaceUser
     rv = getattr(g, 'current_user', None)
     if rv == None:
-        email = get_user_email()
         username = get_user_username()
         rv = MinespaceUser.query.unbound_unsafe().filter(
-            MinespaceUser.email_or_username.in_([email,
-                                                 username])).filter_by(deleted_ind=False).first()
+            MinespaceUser.bceid_username.in_([username])).filter_by(deleted_ind=False).first()
         g.current_user = rv
     return rv
 

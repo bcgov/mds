@@ -17,11 +17,10 @@ from app.api.mines.mine.models.mine import Mine
 
 class MinespaceUserListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
-    parser.add_argument('email_or_username', type=str, location='json', required=True)
     parser.add_argument('mine_guids', type=list, location='json', required=True)
+    parser.add_argument('bceid_username', type=str, location='json', required=False)
 
     @api.doc(params={
-        'email_or_username': 'find by email, this will return a list with at most one element',
         'mine_guid': 'find by mine guid, this will return all users with access to the specified mine'
     })
     @api.marshal_with(MINESPACE_USER_MODEL, envelope='records')
@@ -32,9 +31,6 @@ class MinespaceUserListResource(Resource, UserMixin):
 
         if not is_admin and mine_guid is None:
             raise BadRequest("mine_guid is a required argument")
-        
-        if request.args.get('email_or_username'):
-            ms_users = [MinespaceUser.find_by_email(request.args.get('email_or_username'))]
         elif mine_guid:
             mine = Mine.find_by_mine_guid(mine_guid)
             if not mine:
@@ -48,7 +44,7 @@ class MinespaceUserListResource(Resource, UserMixin):
     @requires_role_mine_admin
     def post(self):
         data = self.parser.parse_args()
-        new_user = MinespaceUser.create_minespace_user(data.get('email_or_username'))
+        new_user = MinespaceUser.create_minespace_user(data.get('bceid_username'))
         new_user.save()
         for guid in data.get('mine_guids'):
             guid = uuid.UUID(guid)               #ensure good formatting
@@ -59,7 +55,7 @@ class MinespaceUserListResource(Resource, UserMixin):
 
 class MinespaceUserResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
-    parser.add_argument('email_or_username', type=str, location='json', required=True)
+    parser.add_argument('bceid_username', type=str, location='json', required=True)
     parser.add_argument('mine_guids', type=list, location='json', required=True)
     
     @api.marshal_with(MINESPACE_USER_MODEL)
@@ -91,9 +87,9 @@ class MinespaceUserResource(Resource, UserMixin):
             raise NotFound('Contact not found.')
         data = self.parser.parse_args()
 
-        if data.get('email_or_username'):
-            if contact.email_or_username != data.get('email_or_username'):
-                contact.email_or_username = data.get('email_or_username')
+        if data.get('bceid_username'):
+            if contact.bceid_username != data.get('bceid_username'):
+                contact.bceid_username = data.get('bceid_username')
 
         if not data.get('mine_guids'):
             raise BadRequest('Empty list mine_guids is not permitted. Please provide a list of mine GUIDS.')

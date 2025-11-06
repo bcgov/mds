@@ -82,8 +82,7 @@ def register_commands(app):
             ## Create a minespace user with data corresponding to
             ## the Cypress test user (cypress/keycloak-users.json)
             minespace_user = MinespaceUserFactory(
-                email_or_username='cypress@bceid',
-                keycloak_guid='a28dfc3a-5e5c-4501-ab2f-399d8e64f2c8')
+                bceid_username='cypress@bceid')
 
             ## Subscribe the minespace user to a mine so we have a mine to test with
             ## for Minespace cypress tests
@@ -274,11 +273,11 @@ def register_commands(app):
                         subscription = Subscription(mine_guid=mine.mine_guid, user_name=full_user_name)
                         db.session.add(subscription)                    
             else:
-                minespace_user = MinespaceUser.find_by_email(full_user_name)
+                minespace_user = MinespaceUser.find_by_username(full_user_name)
                 subscribed_mine_guids = []
                 if not minespace_user:
                     minespace_user = MinespaceUserFactory(
-                        email_or_username=full_user_name,
+                        bceid_username=full_user_name,
                         keycloak_guid='b28dfc3a-5e5c-4501-ab2f-399d8e64f2c8')
                 else:
                     from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine

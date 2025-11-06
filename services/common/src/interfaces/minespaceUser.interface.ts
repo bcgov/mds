@@ -1,7 +1,13 @@
 export interface IMinespaceUser {
     user_id: number;
-    email_or_username: string;
-    keycloak_guid?: string;
+    sub: string;
+    email: string;
+    given_name: string;
+    family_name: string;
+    display_name: string;
+    bceid_username: string;
+    identity_provider: string;
+    last_logged_in: string;
     mines: string[];
 }
 

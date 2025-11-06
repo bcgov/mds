@@ -41,13 +41,13 @@ exports[`MinespaceUserManagement renders properly 1`] = `
                   >
                     <label
                       class="ant-form-item-required"
-                      for="ADD_MINESPACE_USER_email_or_username"
+                      for="ADD_MINESPACE_USER_bceid_username"
                       title=""
                     >
                       <div
                         style="width: 100%;"
                       >
-                        Email/BCeID username
+                        BCeID username
                       </div>
                     </label>
                   </div>
@@ -64,12 +64,12 @@ exports[`MinespaceUserManagement renders properly 1`] = `
                           class="ant-input-affix-wrapper"
                         >
                           <input
-                            aria-label="email_or_username"
+                            aria-label="bceid_username"
                             class="ant-input"
-                            data-testid="email_or_username"
-                            id="email_or_username"
-                            name="email_or_username"
-                            placeholder="Please enter a bceid in the format of user@bceid or a valid email address"
+                            data-testid="bceid_username"
+                            id="bceid_username"
+                            name="bceid_username"
+                            placeholder="Please enter a bceid in the format of user@bceid"
                             type="text"
                             value=""
                           />
@@ -111,7 +111,7 @@ exports[`MinespaceUserManagement renders properly 1`] = `
                     >
                       <div
                         class="ant-form-item-explain ant-form-item-explain-connected"
-                        id="ADD_MINESPACE_USER_email_or_username_help"
+                        id="ADD_MINESPACE_USER_bceid_username_help"
                         role="alert"
                       >
                         <div
@@ -298,13 +298,7 @@ exports[`MinespaceUserManagement renders properly 1`] = `
                 <table
                   style="table-layout: auto;"
                 >
-                  <colgroup>
-                    <col />
-                    <col />
-                    <col
-                      style="width: 175px;"
-                    />
-                  </colgroup>
+                  <colgroup />
                   <thead
                     class="ant-table-thead"
                   >
@@ -312,7 +306,22 @@ exports[`MinespaceUserManagement renders properly 1`] = `
                       <th
                         class="ant-table-cell"
                       >
-                        Email/BCeID
+                        Name
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        BCeID
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Email
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Last Login
                       </th>
                       <th
                         class="ant-table-cell"
@@ -320,10 +329,8 @@ exports[`MinespaceUserManagement renders properly 1`] = `
                         Mines
                       </th>
                       <th
-                        class="ant-table-cell"
-                      >
-                        
-                      </th>
+                        class="ant-table-cell actions-column"
+                      />
                     </tr>
                   </thead>
                   <tbody
