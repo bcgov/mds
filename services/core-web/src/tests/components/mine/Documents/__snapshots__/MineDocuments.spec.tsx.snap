@@ -46,6 +46,7 @@ exports[`MineDocuments renders properly 1`] = `
               >
                 <div
                   class="e-toolbar-left"
+                  role="group"
                 >
                   <div
                     class="e-toolbar-item e-hidden"
@@ -55,7 +56,6 @@ exports[`MineDocuments renders properly 1`] = `
                       aria-disabled="false"
                       aria-label="Download"
                       class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
-                      data-ripple="true"
                       data-tabindex="-1"
                       id="filemanager_tb_download"
                       style="width: auto;"
@@ -81,7 +81,6 @@ exports[`MineDocuments renders properly 1`] = `
                       aria-haspopup="true"
                       aria-label="Sort by"
                       class="e-tbar-btn e-tbtn-txt e-control e-dropdown-btn e-lib e-btn e-fe-popup"
-                      data-ripple="true"
                       data-tabindex="-1"
                       id="filemanager_tb_sortby"
                       tabindex="0"
@@ -108,7 +107,6 @@ exports[`MineDocuments renders properly 1`] = `
                       aria-disabled="false"
                       aria-label="Refresh"
                       class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
-                      data-ripple="true"
                       data-tabindex="-1"
                       id="filemanager_tb_refresh"
                       style="width: auto;"
@@ -128,9 +126,11 @@ exports[`MineDocuments renders properly 1`] = `
                 </div>
                 <div
                   class="e-toolbar-center"
+                  role="group"
                 />
                 <div
                   class="e-toolbar-right"
+                  role="group"
                 >
                   <div
                     class="e-toolbar-item e-overflow-show e-hidden"
@@ -140,7 +140,6 @@ exports[`MineDocuments renders properly 1`] = `
                       aria-disabled="false"
                       aria-label="Selection"
                       class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
-                      data-ripple="true"
                       data-tabindex="-1"
                       id="filemanager_tb_selection"
                       style="width: auto;"
@@ -166,7 +165,6 @@ exports[`MineDocuments renders properly 1`] = `
                       aria-haspopup="true"
                       aria-label="View"
                       class="e-tbar-btn e-tbtn-txt e-control e-dropdown-btn e-lib e-btn e-caret-hide e-fe-popup"
-                      data-ripple="true"
                       data-tabindex="-1"
                       id="filemanager_tb_view"
                       tabindex="0"
@@ -193,7 +191,6 @@ exports[`MineDocuments renders properly 1`] = `
                       aria-disabled="false"
                       aria-label="Details"
                       class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
-                      data-ripple="true"
                       data-tabindex="-1"
                       id="filemanager_tb_details"
                       style="width: auto;"
@@ -311,7 +308,6 @@ exports[`MineDocuments renders properly 1`] = `
                   <button
                     aria-label="Close"
                     class="e-dlg-closeicon-btn e-control e-btn e-lib e-flat e-icon-btn"
-                    data-ripple="true"
                     title="Close"
                     type="button"
                   >
