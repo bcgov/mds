@@ -30,6 +30,7 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
           >
             <div
               class="e-toolbar-left"
+              role="group"
             >
               <div
                 class="e-toolbar-item e-pv-open-document-container e-popup-text"
@@ -172,9 +173,11 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
                 <span
                   aria-disabled="true"
                   class="e-control-wrapper e-numeric e-input-group e-pv-current-page-box e-valid-input"
+                  tabindex="-1"
                 >
                   <input
                     aria-label="Current page number"
+                    aria-valuemin="0"
                     aria-valuenow="0"
                     autocomplete="off"
                     class="e-control e-numerictextbox e-lib e-input e-tooltip"
@@ -188,9 +191,9 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
                     aria-label="hidden"
                     class="e-numeric-hidden"
                     data-tabindex="-1"
+                    data-validatehidden="true"
                     name="preview-permit-amendment-pdf_currentPageInput"
                     type="text"
-                    validatehidden="true"
                   />
                 </span>
               </div>
@@ -271,6 +274,7 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
                   aria-labelledby="preview-permit-amendment-pdf_zoomDropDown_hidden"
                   class="e-input-group e-control-wrapper e-pv-zoom-drop-down e-readonly e-ddl e-valid-input"
                   style="width: 100%;"
+                  tabindex="-1"
                 >
                   <select
                     aria-hidden="true"
@@ -465,7 +469,7 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
                   class="e-tbar-btn e-control e-tooltip e-lib"
                   data-tabindex="-1"
                   id="preview-permit-amendment-pdf_submitForm"
-                  style="font-size:15px"
+                  style="font-size: 15px;"
                   tabindex="-1"
                 >
                   <span
@@ -479,9 +483,11 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
             </div>
             <div
               class="e-toolbar-center"
+              role="group"
             />
             <div
               class="e-toolbar-right"
+              role="group"
             >
               <div
                 class="e-toolbar-item e-pv-text-search-container e-popup-text e-overlay"
@@ -619,7 +625,7 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
             accept=".pdf"
             aria-label="file upload element"
             id="preview-permit-amendment-pdf_fileUploadElement"
-            style="position:fixed; left:-100em"
+            style="position: fixed; left: -100em;"
             tabindex="-1"
             type="file"
           />
@@ -638,6 +644,7 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
           >
             <div
               class="e-toolbar-left"
+              role="group"
             >
               <div
                 class="e-toolbar-item e-tbtn-align e-pv-highlight-container e-popup-text"
@@ -696,6 +703,26 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
                   <span
                     class="e-pv-strikethrough-icon e-pv-icon"
                     id="preview-permit-amendment-pdf_strikethroughIcon"
+                  />
+                </button>
+              </div>
+              <div
+                class="e-toolbar-item e-tbtn-align e-pv-squiggly-container e-popup-text"
+                id="preview-permit-amendment-pdf_squigglyContainer"
+              >
+                <button
+                  aria-disabled="false"
+                  aria-label="Squiggly Text"
+                  class="e-tbar-btn e-control e-btn e-lib e-icon-btn e-pv-squiggly e-pv-tbar-btn e-tooltip"
+                  data-tabindex="0"
+                  id="preview-permit-amendment-pdf_squiggly"
+                  style=""
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="e-pv-squiggly-icon e-pv-icon"
+                    id="preview-permit-amendment-pdf_squigglyIcon"
                   />
                 </button>
               </div>
@@ -871,7 +898,7 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
                 class="e-toolbar-item e-pv-ink-separator-container e-separator"
               />
               <div
-                class="e-toolbar-item e-pv-fontfamily-container e-template"
+                class="e-toolbar-item e-pv-fontfamily-container e-template e-hidden"
               >
                 <span
                   class="e-input-group e-control-wrapper e-pv-prop-dropdown e-ddl e-valid-input e-control e-tooltip e-lib e-overlay"
@@ -923,7 +950,7 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
                 </span>
               </div>
               <div
-                class="e-toolbar-item e-pv-fontsize-container e-template"
+                class="e-toolbar-item e-pv-fontsize-container e-template e-hidden"
               >
                 <span
                   class="e-input-group e-control-wrapper e-pv-prop-dropdown e-ddl e-valid-input e-control e-tooltip e-lib e-overlay"
@@ -975,7 +1002,7 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
                 </span>
               </div>
               <div
-                class="e-toolbar-item e-pv-text-color-container e-template e-overlay"
+                class="e-toolbar-item e-pv-text-color-container e-template e-hidden e-overlay"
               >
                 <button
                   aria-disabled="true"
@@ -998,7 +1025,7 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
                 </button>
               </div>
               <div
-                class="e-toolbar-item e-pv-alignment-container e-template e-overlay"
+                class="e-toolbar-item e-pv-alignment-container e-template e-hidden e-overlay"
               >
                 <button
                   aria-disabled="true"
@@ -1020,7 +1047,7 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
                 </button>
               </div>
               <div
-                class="e-toolbar-item e-pv-text-properties-container e-template e-overlay"
+                class="e-toolbar-item e-pv-text-properties-container e-template e-hidden e-overlay"
               >
                 <button
                   aria-disabled="true"
@@ -1042,10 +1069,10 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
                 </button>
               </div>
               <div
-                class="e-toolbar-item e-pv-text-separator-container e-separator"
+                class="e-toolbar-item e-pv-text-separator-container e-separator e-hidden"
               />
               <div
-                class="e-toolbar-item e-pv-color-template-container e-template e-overlay"
+                class="e-toolbar-item e-pv-color-template-container e-template e-overlay e-hidden"
               >
                 <button
                   aria-disabled="true"
@@ -1068,7 +1095,7 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
                 </button>
               </div>
               <div
-                class="e-toolbar-item e-pv-stroke-template-container e-template e-overlay"
+                class="e-toolbar-item e-pv-stroke-template-container e-template e-hidden e-overlay"
               >
                 <button
                   aria-disabled="true"
@@ -1091,7 +1118,7 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
                 </button>
               </div>
               <div
-                class="e-toolbar-item e-pv-thickness-template-container e-template e-overlay"
+                class="e-toolbar-item e-pv-thickness-template-container e-template e-hidden e-overlay"
               >
                 <button
                   aria-disabled="true"
@@ -1113,7 +1140,7 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
                 </button>
               </div>
               <div
-                class="e-toolbar-item e-pv-opacity-template-container e-template e-overlay"
+                class="e-toolbar-item e-pv-opacity-template-container e-template e-overlay e-hidden"
               >
                 <button
                   aria-disabled="true"
@@ -1135,7 +1162,7 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
                 </button>
               </div>
               <div
-                class="e-toolbar-item e-pv-opacity-separator-container e-separator"
+                class="e-toolbar-item e-pv-opacity-separator-container e-separator e-hidden"
               />
               <div
                 class="e-toolbar-item e-tbtn-align e-pv-annotation-delete-container e-popup-text e-overlay"
@@ -1160,9 +1187,11 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
             </div>
             <div
               class="e-toolbar-center"
+              role="group"
             />
             <div
               class="e-toolbar-right"
+              role="group"
             >
               <div
                 class="e-toolbar-item e-tbtn-align e-pv-annotation-comment-panel-container e-popup-text"
@@ -1359,14 +1388,14 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
           accept=".json"
           aria-label="upload elements"
           id="preview-permit-amendment-pdf_annotationUploadElement"
-          style="position:fixed; left:-100em"
+          style="position: fixed; left: -100em;"
           type="file"
         />
         <input
           accept=".xfdf"
           aria-label="upload elements"
           id="preview-permit-amendment-pdf_annotationXFdfUploadElement"
-          style="position:fixed; left:-100em"
+          style="position: fixed; left: -100em;"
           type="file"
         />
       </div>
@@ -1526,7 +1555,7 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
       <div
         class="e-pv-annotation-note"
         id="preview-permit-amendment-pdf_annotation_note"
-        style="display:none"
+        style="display: none;"
       >
         <div
           class="e-pv-annotation-note-author"

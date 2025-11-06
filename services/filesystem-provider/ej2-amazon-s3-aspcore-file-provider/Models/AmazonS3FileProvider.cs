@@ -25,7 +25,7 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
         public string RootName;
         long sizeValue = 0;
         List<FileManagerDirectoryContent> s3ObjectFiles = new List<FileManagerDirectoryContent>();
-        TransferUtility fileTransferUtility = new TransferUtility(client);
+        TransferUtility fileTransferUtility;
 
         // Register the amazon client details
         public void RegisterAmazonS3(string name, string awsAccessKeyId, string awsSecretAccessKey, string serviceName)
@@ -44,6 +44,7 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
             };
 
             client = new AmazonS3Client(creds, config);
+            fileTransferUtility = new TransferUtility(client);
         }
 
         // Define the root directory to the file manager
