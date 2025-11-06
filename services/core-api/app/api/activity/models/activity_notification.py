@@ -148,7 +148,7 @@ class ActivityNotification(AuditMixin, Base):
     @classmethod
     def create_many(cls, mine_guid, activity_type, document, idempotency_key=None, commit=True, recipients=ActivityRecipients.all_users, renotify_period_minutes=-1):
         MinespaceUserMineTable = table(MinespaceUserMine.__tablename__, column('mine_guid'), column('user_id'))
-        MinespaceUserTable = table(MinespaceUser.__tablename__, column('email_or_username'), column('user_id'))
+        MinespaceUserTable = table(MinespaceUser.__tablename__, column('bceid_username'), column('user_id'))
         SubscriptionTable = table(Subscription.__tablename__, column('mine_guid'), column('user_name'))
 
         users = []

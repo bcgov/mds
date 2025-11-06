@@ -44,6 +44,7 @@ import {
   IProjectSummaryAuthorization,
   IPermitConditionTag,
   IStandardPermitCondition,
+  IMinespaceUser,
 } from "@mds/common/interfaces";
 import { IAmsFinalApplication } from "@mds/common/interfaces/projects/amsFinalApplication.interface";
 import { HaystackDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
@@ -924,24 +925,42 @@ export const MINE_NAME_LIST = {
 
 export const MINE_NO = "BLAH6666";
 
-export const MINESPACE_USERS = [
+export const MINESPACE_USERS: IMinespaceUser[] = [
   {
-    user_id: "1",
-    email: "email1@srvr.com",
-    keycloak_guid: "",
-    mines: [""],
+    user_id: 1,
+    bceid_username: "user1@bceid",
+    mines: [MINE_NAME_LIST.mines[0].mine_guid, MINE_NAME_LIST.mines[1].mine_guid,],
+    sub: "sub-guid-string@bceidboth",
+    email: "user1@email.com",
+    given_name: "Ursula",
+    family_name: "Underwood",
+    display_name: "Ursula Underwood",
+    identity_provider: "bceidboth",
+    last_logged_in: "2025-10-31 22:39:29.200932+00"
   },
   {
-    user_id: "2",
-    email: "email2@srvr.com",
-    keycloak_guid: "",
-    mines: [""],
+    user_id: 2,
+    bceid_username: "user2@bceid",
+    mines: [MINE_NAME_LIST.mines[0].mine_guid,],
+    sub: "",
+    email: "",
+    given_name: "",
+    family_name: "",
+    display_name: "",
+    identity_provider: "",
+    last_logged_in: ""
   },
   {
-    user_id: "3",
-    email: "email3@srvr.com",
-    keycloak_guid: "",
-    mines: [""],
+    user_id: 3,
+    bceid_username: "user3@bceid",
+    mines: [MINE_NAME_LIST.mines[2].mine_guid,],
+    sub: "",
+    email: "",
+    given_name: "",
+    family_name: "",
+    display_name: "",
+    identity_provider: "",
+    last_logged_in: ""
   },
 ];
 

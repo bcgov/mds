@@ -29,3 +29,11 @@ export interface IMine {
   latest_mine_status: IMineStatus;
   mine_status: IMineStatus[];
 }
+
+export interface IMineName {
+  mine_guid: string;
+  mine_name: string;
+  mine_no: string;
+  latitude?: string;
+  longitude?: string;
+}

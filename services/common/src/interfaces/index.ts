@@ -48,3 +48,4 @@ export * from "./mineDisturbanceOption.interface";
 export * from "./mineSearch.interface"
 export * from "./noticeOfWorkApplicationProgress.interface";
 export * from "./noticeOfWorkApplicationStages.interface";
+export * from "./minespaceUser.interface";
