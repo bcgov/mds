@@ -47,6 +47,15 @@ jobs:
       - name: Seed database
         run: |
           make ENTRIES=10 seeddb
+      - name: Free up disk space
+        run: |
+          echo "Disk usage before cleanup:"
+          df -h
+          sudo docker system prune -af
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc &&
+          sudo apt-get clean
+          echo "Disk usage after cleanup:"
+          df -h
       - name: Run cypress tests
         run: yarn workspace @mds/minespace-web cypress run
         env:
