@@ -1,22 +1,29 @@
 from json import dumps, loads
 from hashlib import md5
-from datetime import datetime
-from flask import current_app, request
-from werkzeug.exceptions import BadRequest, ServiceUnavailable
-from flask_restx import Resource, reqparse
-from app.api.utils.include.user_info import User
-from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY, VIEW_ALL
+from json import dumps, loads
 
+from app.api.mines.permits.permit_amendment.models.permit_amendment import (
+    PermitAmendment,
+)
+from app.api.services.traction_service import TractionService
+from app.api.utils.access_decorators import (
+    EDIT_PARTY,
+    MINESPACE_PROPONENT,
+    requires_any_of,
+    requires_role_view_all,
+)
+from app.api.utils.feature_flag import Feature, is_feature_enabled
+from app.api.utils.resources_mixins import UserMixin
+from app.api.verifiable_credentials.manager import (
+    VerifiableCredentialManager,
+)
+from app.api.verifiable_credentials.models.orgbook_publish_status import (
+    PermitAmendmentOrgBookPublish,
+)
 from app.config import Config
 from app.extensions import api
-
-from app.api.utils.resources_mixins import UserMixin
-from app.api.services.traction_service import TractionService
-from app.api.verifiable_credentials.manager import VerifiableCredentialManager, process_all_untp_map_for_orgbook
-from app.api.verifiable_credentials.models.orgbook_publish_status import PermitAmendmentOrgBookPublish
-from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
-
-from app.api.utils.feature_flag import Feature, is_feature_enabled
+from flask_restx import Resource, reqparse
+from werkzeug.exceptions import ServiceUnavailable
 
 PRESENT_PROOF = "present_proof"
 CONNECTIONS = "connections"
@@ -29,6 +36,7 @@ ISSUER_CREDENTIAL_REVOKED = "issuer_cred_rev"
 class W3CCredentialResource(Resource, UserMixin):
 
     @api.doc(description='Endpoint to get vc by uri.', params={})
+    @requires_role_view_all
     def get(self, vc_unsigned_hash: str):
         return loads(
             PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(
