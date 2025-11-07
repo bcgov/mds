@@ -67,7 +67,7 @@ const mapTSFGuidToName = (tailings: ITailingsStorageFacility[]) =>
     {}
   );
 
-const getPartyRelationshipTitle = (partyRelationshipTypes: IPartyRelationshipType[], typeCode: string) => {
+const getPartyRelationshipTitle = (partyRelationshipTypes: IOption[], typeCode: string) => {
   const partyRelationshipType = partyRelationshipTypes.find(({ value }) => value === typeCode);
   return (partyRelationshipType && partyRelationshipType.label) || String.EMPTY;
 };
