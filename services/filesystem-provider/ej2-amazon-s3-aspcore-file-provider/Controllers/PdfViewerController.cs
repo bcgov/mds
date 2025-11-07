@@ -113,6 +113,17 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
 
         [AcceptVerbs("Post")]
         [HttpPost]
+        [Route("RenderPdfTexts")]
+        [Authorize("View")]
+        public IActionResult RenderPdfTexts([FromBody] Dictionary<string, string> jsonObject)
+        {
+            PdfRenderer pdfviewer = new PdfRenderer(_mCache);
+            object jsonResult = pdfviewer.GetDocumentText(jsonObject);
+            return Content(JsonConvert.SerializeObject(jsonResult));
+        }
+
+        [AcceptVerbs("Post")]
+        [HttpPost]
         [Route("RenderAnnotationComments")]
         [Authorize("View")]
         public IActionResult RenderAnnotationComments([FromBody] Dictionary<string, string> jsonObject)
