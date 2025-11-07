@@ -4066,17 +4066,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@syncfusion/ej2-base@npm:~31.1.17, @syncfusion/ej2-base@npm:~31.1.20, @syncfusion/ej2-base@npm:~31.1.22":
-  version: 31.1.22
-  resolution: "@syncfusion/ej2-base@npm:31.1.22"
-  dependencies:
-    "@syncfusion/ej2-icons": ~31.1.17
-  bin:
-    syncfusion-license: bin/syncfusion-license.js
-  checksum: 260c14b18cac65b6a4abbb7d1cbef312f56076bf8dc3e1051aa891befc47e502304a5e2ce1b66a45b50e38643076096b9600a28c5936dd742682afaad26691af
-  languageName: node
-  linkType: hard
-
 "@syncfusion/ej2-buttons@npm:31.1.17":
   version: 31.1.17
   resolution: "@syncfusion/ej2-buttons@npm:31.1.17"
