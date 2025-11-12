@@ -4,6 +4,7 @@ from app.extensions import db
 from app.tasks.celery import celery
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from app.api.utils.feature_flag import Feature, is_feature_enabled
 
 
 def _calculate_missing_due_dates(requirement, existing_due_dates, current_date, one_year_from_now):
@@ -86,6 +87,9 @@ def create_new_recurring_report_requests():
     This task finds all recurring requirements and creates missing reports
     for the next year, ensuring no duplicates are created.
     """
+    if not is_feature_enabled(Feature.RECURRING_REPORTS):
+        return
+    
     print("Starting creation of recurring report requests...")
     
     requirements = MineReportPermitRequirement.get_all_recurring()
