@@ -28,7 +28,6 @@ import {
 import {
   IOption,
   IPartyAppt,
-  IPartyRelationshipType,
   IPermit,
   ITailingsStorageFacility,
 } from "@mds/common/interfaces";
