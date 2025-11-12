@@ -15,7 +15,7 @@ import { createTailingsStorageFacility } from "@mds/common/redux/slices/tailings
 import { Col, Divider, Dropdown, Menu, Popconfirm, Row } from "antd";
 import { debounce, uniq, uniqBy } from "lodash";
 import moment from "moment";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 
 import Loading from "@/components/common/Loading";
 import NullScreen from "@/components/common/NullScreen";
@@ -202,12 +202,7 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
   };
 
   const onSubmitEditPartyRelationship = async (values: IPartyAppt) => {
-    let payload: Partial<IPartyAppt> = selectedPartyRelationship;
-
-    payload.start_date = values.start_date;
-    payload.end_date = values.end_date;
-    payload.union_rep_company = values.union_rep_company;
-    payload.related_guid = values.related_guid || payload.related_guid;
+    let payload: Partial<IPartyAppt> = { ...selectedPartyRelationship, ...values };
 
     payload = formatValuesEndCurrent(payload as IPartyAppt);
 
@@ -219,7 +214,7 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
           include_permit_contacts: "true",
         })
       );
-      closeModal();
+      dispatch(closeModal());
     });
   };
 
