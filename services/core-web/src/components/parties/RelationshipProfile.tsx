@@ -28,7 +28,6 @@ import {
 import {
   IOption,
   IPartyAppt,
-  IPartyRelationshipType,
   IPermit,
   ITailingsStorageFacility,
 } from "@mds/common/interfaces";
@@ -67,7 +66,7 @@ const mapTSFGuidToName = (tailings: ITailingsStorageFacility[]) =>
     {}
   );
 
-const getPartyRelationshipTitle = (partyRelationshipTypes: IPartyRelationshipType[], typeCode: string) => {
+const getPartyRelationshipTitle = (partyRelationshipTypes: IOption[], typeCode: string) => {
   const partyRelationshipType = partyRelationshipTypes.find(({ value }) => value === typeCode);
   return (partyRelationshipType && partyRelationshipType.label) || String.EMPTY;
 };
