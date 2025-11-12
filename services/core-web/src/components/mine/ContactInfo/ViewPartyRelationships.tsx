@@ -201,10 +201,6 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
     return { ...values, end_current } as IAddPartyAppointment;
   };
 
-  useEffect(() => {
-    console.log('selectedPartyRelationship', selectedPartyRelationship)
-  },[selectedPartyRelationship])
-
   const onSubmitEditPartyRelationship = async (values: IPartyAppt) => {
     let payload: Partial<IPartyAppt> = { ...selectedPartyRelationship, ...values };
 
