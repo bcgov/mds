@@ -116,7 +116,7 @@ const reportSlice = createAppSlice({
     ),
 
     fetchReports: create.asyncThunk(
-      async ({ params = {} }: { params?: any }, thunkApi) => {
+      async (params: any, thunkApi) => {
         const headers = createRequestHeader();
         thunkApi.dispatch(showLoading());
         let response;

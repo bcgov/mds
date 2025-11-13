@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 import { reportReducerType } from "@mds/common/redux/slices/reportSlice";
 
-export const getReports = (state) => state[reportReducerType].reportReducerType;
+export const getReports = (state) => state[reportReducerType].reports;
 export const getReportsPageData = (state) => state[reportReducerType].reportsPageData;
 export const getMineReports = (state) => state[reportReducerType].mineReports;
 export const getMineReportById = (state, reportGuid) => {

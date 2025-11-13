@@ -119,7 +119,7 @@ describe("reportSlice", () => {
         })
       );
 
-      await store.dispatch<any>(fetchReports({ params: {} }));
+      await store.dispatch<any>(fetchReports({}));
 
       expect(showLoadingMock).toHaveBeenCalledTimes(1);
       expect(hideLoadingMock).toHaveBeenCalledTimes(1);
