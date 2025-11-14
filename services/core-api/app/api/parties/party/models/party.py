@@ -10,6 +10,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 
 from app.extensions import db
+from app.api.constants import PARTY_EDIT_GROUP
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.parties.party.models.address import Address
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
@@ -21,6 +22,7 @@ MAX_NAME_LENGTH = 100
 
 class Party(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'party'
+    _edit_key = PARTY_EDIT_GROUP
 
     party_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     first_name = db.Column(db.String)

@@ -140,7 +140,7 @@ class Base(db.Model):
         if not _edit_key:
             if not self._edit_key:
                 current_app.logger.warn(
-                    'Model._edit_key not set, no related models will be updated')
+                    f'Model._edit_key not set for {self.__class__.__name__}, no related models will be updated')
             _edit_key = self._edit_key
 
         assert isinstance(data_dict, dict)
