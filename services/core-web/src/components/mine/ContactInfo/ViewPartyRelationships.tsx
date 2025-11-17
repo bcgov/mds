@@ -15,7 +15,7 @@ import { createTailingsStorageFacility } from "@mds/common/redux/slices/tailings
 import { Col, Divider, Dropdown, Menu, Popconfirm, Row } from "antd";
 import { debounce, uniq, uniqBy } from "lodash";
 import moment from "moment";
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 
 import Loading from "@/components/common/Loading";
 import NullScreen from "@/components/common/NullScreen";
