@@ -25,12 +25,7 @@ import {
   useAppSelector as useSelector,
   useAppSelector,
 } from "@mds/common/redux/rootState";
-import {
-  IOption,
-  IPartyAppt,
-  IPermit,
-  ITailingsStorageFacility,
-} from "@mds/common/interfaces";
+import { IOption, IPartyAppt, IPermit, ITailingsStorageFacility } from "@mds/common/interfaces";
 import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import CoreButton from "@mds/common/components/common/CoreButton";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
@@ -161,7 +156,7 @@ export const RelationshipProfile: FC = () => {
         include_permit_contacts: "true",
       })
     );
-    dispatch(closeModal);
+    dispatch(closeModal());
   };
 
   const handleOpenEditPartyRelationshipModal = (record: ITransformedValues) => {
