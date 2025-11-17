@@ -77,11 +77,18 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
     setUploadedFiles(uploadedFiles.filter((fileArr) => fileArr[0] !== fileItem.serverId));
   };
 
-  const onSubmitAddPartyRelationship = async (values: Partial<IPartyAppt>) => {
-    if (!selectedPartyRelationshipType) return;
+  const onSubmitAddPartyRelationship = async (
+    values: Partial<IPartyAppt>,
+    explicitTypeCode?: MinePartyAppointmentTypeCodeEnum
+  ) => {
+    const effectiveTypeCode =
+      explicitTypeCode ||
+      selectedPartyRelationshipType ||
+      (values?.mine_party_appt_type_code as MinePartyAppointmentTypeCodeEnum | undefined);
+
     const payload: IAddPartyAppointment = formatValuesEndCurrent({
       mine_guid: mine.mine_guid,
-      mine_party_appt_type_code: selectedPartyRelationshipType,
+      mine_party_appt_type_code: effectiveTypeCode,
       party_guid: values.party_guid,
       related_guid: values.related_guid,
       start_date: values.start_date,
@@ -139,7 +146,11 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
     dispatch(
       openModal({
         props: {
-          onSubmit: onSubmitAddPartyRelationship,
+          onSubmit: (formValues: Partial<IPartyAppt>) =>
+            onSubmitAddPartyRelationship(
+              formValues,
+              MinePartyAppointmentTypeCodeEnum[value.mine_party_appt_type_code]
+            ),
           title: `${ModalContent.ADD_CONTACT}: ${value.description}`,
           mine_party_appt_type_code: value.mine_party_appt_type_code,
           mine: mine,
