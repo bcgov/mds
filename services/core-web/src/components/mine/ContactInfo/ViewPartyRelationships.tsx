@@ -78,10 +78,9 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
   };
 
   const onSubmitAddPartyRelationship = async (values: Partial<IPartyAppt>) => {
-    if (!selectedPartyRelationshipType) return;
     const payload: IAddPartyAppointment = formatValuesEndCurrent({
       mine_guid: mine.mine_guid,
-      mine_party_appt_type_code: selectedPartyRelationshipType,
+      mine_party_appt_type_code: values.mine_party_appt_type_code,
       party_guid: values.party_guid,
       related_guid: values.related_guid,
       start_date: values.start_date,
