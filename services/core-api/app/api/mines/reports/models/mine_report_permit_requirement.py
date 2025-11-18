@@ -104,6 +104,12 @@ class MineReportPermitRequirement(SoftDeleteMixin, AuditMixin, HistoryMixin, Bas
             cls.due_date_period_months > 0,
             cls.initial_due_date != None
         ).all()
+
+    @classmethod
+    def get_all_single_reports(cls, due_date_after) -> list[Self]:
+        return cls.query.filter_by(deleted_ind=False, active_ind=True, due_date_period_months=0).filter(
+            cls.initial_due_date >= due_date_after
+        ).all()
     
     def update_permit_conditions(self, new_permit_condition_ids) -> None:
         current_condition_ids = self.permit_condition_ids

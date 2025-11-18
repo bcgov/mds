@@ -273,7 +273,7 @@ class TestCreateNewRecurringReportRequests:
             assert report_due_date <= max_date, f"Report due date {report_due_date} should not be after {max_date}"
     
     @mock.patch('app.api.mines.reports.tasks.MineReportPermitRequirement.get_all_recurring')
-    def test_task_with_no_recurring_requirements(self, mock_get_all_recurring):
+    def test_task_with_no_recurring_requirements(self, mock_get_all_recurring, db_session):
         mock_get_all_recurring.return_value = []
         
         result = create_new_recurring_report_requests()
@@ -281,20 +281,35 @@ class TestCreateNewRecurringReportRequests:
         assert result['total_created'] == 0
         assert len(result['failed_requirements']) == 0
     
+    def test_task_creates_single_report_for_future_non_recurring_requirement(self, setup_recurring_requirements, db_session):
+        # Should create exactly one report for a non-recurring requirement with a future initial_due_date
+        today = date.today()
+        non_recurring_req = setup_recurring_requirements['non_recurring_requirement']
+        non_recurring_req.initial_due_date = today + relativedelta(months=3)
+        non_recurring_req.save()
+
+        result = create_new_recurring_report_requests()
+
+        reports = MineReport.query.filter_by(
+            mine_report_permit_requirement_id=non_recurring_req.mine_report_permit_requirement_id,
+            deleted_ind=False
+        ).all()
+        assert len(reports) == 1
+        assert reports[0].due_date.date() == non_recurring_req.initial_due_date
+
     def test_task_creates_reports_with_correct_attributes(self, setup_recurring_requirements):
         today = date.today()
         quarterly_req = setup_recurring_requirements['quarterly_requirement']
-        
         quarterly_req.initial_due_date = today - relativedelta(months=6)
         quarterly_req.save()
-        
+
         result = create_new_recurring_report_requests()
-        
+
         reports = MineReport.query.filter_by(
             mine_report_permit_requirement_id=quarterly_req.mine_report_permit_requirement_id,
             deleted_ind=False
         ).all()
-        
+
         # All reports should be system-created with appropriate defaults
         for report in reports:
             assert report.created_by_idir == 'system'
