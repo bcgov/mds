@@ -139,7 +139,7 @@ class ReportFilterHelper:
         if mine_guid:
             query = query.filter(MineReport.mine_guid == mine_guid)
 
-        if args['permit_guid']:
+        if args.get('permit_guid'):
             query = query.filter(MineReport.permit_guid == args["permit_guid"])
 
         filtered_query = apply_filters(query, conditions)
