@@ -88,7 +88,7 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
 
     const reportRequirementsAssociatedWithAMineReport = useMemo(() => {
         return getReportRequirementsAssociatedWithAMineReport(permits, mineReports);
-    }, [permits, mineReports]);
+    }, [permits]);
 
     const updateMineReportDefinitionOptions = (
         mineReportDefinitionOptions,
