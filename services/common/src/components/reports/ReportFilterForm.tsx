@@ -72,20 +72,18 @@ export const ReportFilterForm: FC<ReportFilterFormProps> = ({
         ];
 
     const getReportRequirementsAssociatedWithAMineReport = (permits, mineReports) => {
-        const requirementIdToReportGuid = new Map<number | string, string>();
-        mineReports.forEach((report) => {
-            if (report.mine_report_permit_requirement_id != null) {
-                requirementIdToReportGuid.set(
-                    report.mine_report_permit_requirement_id,
-                    report.mine_report_guid
-                );
-            }
-        });
+        const requirementIds = new Set(
+            mineReports.map((report) => {
+                if (report.mine_report_permit_requirement_id !== null) {
+                    return report.mine_report_permit_requirement_id;
+                }
+            })
+        )
 
         return permits
             .flatMap((permit) => permit.permit_amendments || [])
             .flatMap((amendment) => amendment.mine_report_permit_requirements || [])
-            .filter((req) => requirementIdToReportGuid.has(req.mine_report_permit_requirement_id));
+            .filter((req) => requirementIds.has(req.mine_report_permit_requirement_id));
     }
 
     const reportRequirementsAssociatedWithAMineReport = useMemo(() => {
