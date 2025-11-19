@@ -72,7 +72,7 @@ const ReportManagement: FC = () => {
   useEffect(() => {
     setIsLoaded(true);
     dispatch(fetchPermits(mine?.mine_guid));
-    onAllReportsPageChange(1, 10);
+    onAllReportsPageChange(1, 20);
   }, [mine.mine_guid]);
 
   useEffect(() => {
