@@ -65,7 +65,13 @@ def _process_single_requirement(requirement, current_date, one_year_from_now):
     
     print(f"  Found {len(existing_reports)} existing reports")
     
-    existing_due_dates = {report.due_date.date() for report in existing_reports}
+    existing_due_dates = set()
+    for report in existing_reports:
+        dd = report.due_date
+        if isinstance(dd, datetime):
+            dd = dd.date()
+        existing_due_dates.add(dd)
+    
     missing_due_dates = _calculate_missing_due_dates(
         requirement, existing_due_dates, current_date, one_year_from_now
     )
