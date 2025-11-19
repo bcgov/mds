@@ -4,7 +4,8 @@ from dateutil.relativedelta import relativedelta
 from app.api.mines.reports.models.mine_report_permit_requirement import MineReportPermitRequirement
 from tests.factories import (
     MineReportPermitRequirementFactory,
-    create_mine_and_permit
+    create_mine_and_permit,
+    PermitConditionsFactory
 )
 
 
@@ -204,3 +205,52 @@ def test_mine_report_permit_requirement_get_all_single_reports(db_session):
     # Should include only the future single-report requirement
     assert len(single_ids) == 1
     assert future_single.mine_report_permit_requirement_id in single_ids
+
+
+def test_get_all_recurring_excludes_requirements_when_permit_amendment_unverified(db_session):
+    mine, permit = create_mine_and_permit(num_permit_amendments=1)
+    permit_amendment = permit.permit_amendments[0]
+
+    # Create a recurring requirement
+    recurring_req = MineReportPermitRequirementFactory(
+        permit_amendment=permit_amendment,
+        report_name="Quarterly Report",
+        due_date_period_months=3,
+        initial_due_date=date.today() - relativedelta(months=3),
+        active_ind=True,
+        deleted_ind=False,
+    )
+
+    # Add an unverified condition to the permit amendment (should invalidate it)
+    PermitConditionsFactory(permit_amendment=permit_amendment, permit_condition_status_code='NST')
+
+    recurring_requirements = MineReportPermitRequirement.get_all_recurring()
+    recurring_ids = [req.mine_report_permit_requirement_id for req in recurring_requirements]
+
+    # Requirement tied to an unverified amendment should be excluded
+    assert recurring_req.mine_report_permit_requirement_id not in recurring_ids
+
+
+def test_get_all_single_reports_excludes_requirements_when_permit_amendment_unverified(db_session):
+    mine, permit = create_mine_and_permit(num_permit_amendments=1)
+    permit_amendment = permit.permit_amendments[0]
+
+    today = date.today()
+    # Create a future single-report requirement
+    future_single = MineReportPermitRequirementFactory(
+        permit_amendment=permit_amendment,
+        report_name="Future One-time Report",
+        due_date_period_months=0,
+        initial_due_date=today + relativedelta(months=6),
+        active_ind=True,
+        deleted_ind=False,
+    )
+
+    # Add an unverified condition to the permit amendment (should invalidate it)
+    PermitConditionsFactory(permit_amendment=permit_amendment, permit_condition_status_code='INP')
+
+    single_requirements = MineReportPermitRequirement.get_all_single_reports(today)
+    single_ids = [req.mine_report_permit_requirement_id for req in single_requirements]
+
+    # Requirement tied to an unverified amendment should be excluded
+    assert future_single.mine_report_permit_requirement_id not in single_ids
