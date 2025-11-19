@@ -188,7 +188,7 @@ class TestCreateNewRecurringReportRequests:
             deleted_ind=False
         ).all()
         
-        due_dates = [r.due_date for r in all_reports]
+        due_dates = [r.due_date.date() for r in all_reports]
         unique_due_dates = set(due_dates)
         assert len(due_dates) == len(unique_due_dates), f"Found duplicate due dates: {due_dates}"
     
