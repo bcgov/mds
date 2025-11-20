@@ -9,25 +9,34 @@ from app.api.utils.feature_flag import Feature, is_feature_enabled
 
 def _calculate_missing_due_dates(requirement, existing_due_dates, current_date, one_year_from_now):
     """Calculate which due dates need new reports created."""
+    missing_due_dates = []
+
+    # Single-report (non-recurring) requirements: return the initial due date
+    # only if it's strictly in the future and within the one-year horizon.
+    if requirement.due_date_period_months <= 0:
+        initial = requirement.initial_due_date
+        if initial <= one_year_from_now and initial not in existing_due_dates:
+            missing_due_dates.append(initial)
+        return missing_due_dates
+
     latest_existing_due_date = max(existing_due_dates) if existing_due_dates else None
-    
+
     # Start from the appropriate date
     if latest_existing_due_date:
         next_due_date = latest_existing_due_date + relativedelta(months=requirement.due_date_period_months)
     else:
         next_due_date = requirement.initial_due_date
-    
+
     # Advance to the first future date
     while next_due_date <= current_date:
         next_due_date = next_due_date + relativedelta(months=requirement.due_date_period_months)
-    
+
     # Collect all future dates within the one-year horizon
-    missing_due_dates = []
     while next_due_date <= one_year_from_now:
         if next_due_date not in existing_due_dates:
             missing_due_dates.append(next_due_date)
         next_due_date = next_due_date + relativedelta(months=requirement.due_date_period_months)
-    
+
     return missing_due_dates
 
 
@@ -56,7 +65,13 @@ def _process_single_requirement(requirement, current_date, one_year_from_now):
     
     print(f"  Found {len(existing_reports)} existing reports")
     
-    existing_due_dates = {report.due_date.date() for report in existing_reports}
+    existing_due_dates = set()
+    for report in existing_reports:
+        dd = report.due_date
+        if isinstance(dd, datetime):
+            dd = dd.date()
+        existing_due_dates.add(dd)
+    
     missing_due_dates = _calculate_missing_due_dates(
         requirement, existing_due_dates, current_date, one_year_from_now
     )
@@ -88,20 +103,25 @@ def create_new_recurring_report_requests():
     for the next year, ensuring no duplicates are created.
     """
     if not is_feature_enabled(Feature.RECURRING_REPORTS):
-        return
+        print("Task exiting early - feature flag is disabled")
+        return {"status": "skipped", "reason": "feature flag disabled"} 
     
     print("Starting creation of recurring report requests...")
-    
-    requirements = MineReportPermitRequirement.get_all_recurring()
-    print(f"Found {len(requirements)} recurring report requirements")
-    
     current_date = datetime.now().date()
+    
+    recurring_requirements = MineReportPermitRequirement.get_all_recurring()
+    print(f"Found {len(recurring_requirements)} recurring report requirements")
+    single_requirements = MineReportPermitRequirement.get_all_single_reports(current_date)
+    print(f"Found {len(single_requirements)} single report requirements")
+
+    all_requirements = recurring_requirements + single_requirements
+    
     one_year_from_now = current_date + relativedelta(years=1)
     
     total_created = 0
     failed_requirements = []
     
-    for requirement in requirements:
+    for requirement in all_requirements:
         created_count, failed_count = _process_single_requirement(
             requirement, current_date, one_year_from_now
         )
