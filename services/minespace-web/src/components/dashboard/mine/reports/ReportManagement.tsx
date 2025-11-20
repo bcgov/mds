@@ -95,13 +95,14 @@ const ReportManagement: FC = () => {
   };
 
   const handleReportFilterSubmit = (params) => {
-    setStateParams(params);
-    history.replace(routes.MINE_REPORTS.dynamicRoute(mine.mine_guid, params));
+    const paramsWithCopy = { ...params };
+    setStateParams(paramsWithCopy);
+    history.replace(routes.MINE_REPORTS.dynamicRoute(mine.mine_guid, paramsWithCopy));
     dispatch(
       fetchMineReports({
         mineGuid: mine.mine_guid,
         reportsType: mine_reports_type,
-        params,
+        params: paramsWithCopy,
       })
     );
   };

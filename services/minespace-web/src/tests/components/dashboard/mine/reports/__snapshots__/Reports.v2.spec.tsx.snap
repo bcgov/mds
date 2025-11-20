@@ -1756,7 +1756,7 @@ exports[`Reports (v2) matches snapshot (v2) 1`] = `
                                     </div>
                                   </th>
                                   <th
-                                    aria-label="Received"
+                                    aria-label="Submitted"
                                     class="ant-table-cell ant-table-column-has-sorters"
                                     tabindex="0"
                                   >
@@ -1766,7 +1766,7 @@ exports[`Reports (v2) matches snapshot (v2) 1`] = `
                                       <span
                                         class="ant-table-column-title"
                                       >
-                                        Received
+                                        Submitted
                                       </span>
                                       <span
                                         class="ant-table-column-sorter ant-table-column-sorter-full"
@@ -1894,7 +1894,8 @@ exports[`Reports (v2) matches snapshot (v2) 1`] = `
                                     class="ant-table-cell"
                                   >
                                     <div
-                                      title="Report Name"
+                                      class="report_name-column"
+                                      title="Report Name/Permit Condition"
                                     >
                                       Underground Oil and Grease Storage Area Report
                                     </div>
@@ -1912,6 +1913,7 @@ exports[`Reports (v2) matches snapshot (v2) 1`] = `
                                     class="ant-table-cell"
                                   >
                                     <div
+                                      class="submission_year-column"
                                       title="Compliance Year"
                                     >
                                       2020
@@ -1921,6 +1923,7 @@ exports[`Reports (v2) matches snapshot (v2) 1`] = `
                                     class="ant-table-cell"
                                   >
                                     <div
+                                      class="due_date-column"
                                       title="Due"
                                     >
                                       2020-01-02
@@ -1930,10 +1933,9 @@ exports[`Reports (v2) matches snapshot (v2) 1`] = `
                                     class="ant-table-cell"
                                   >
                                     <div
-                                      title="Received"
-                                    >
-                                      N/A
-                                    </div>
+                                      class="received_date-column"
+                                      title="Submitted"
+                                    />
                                   </td>
                                   <td
                                     class="ant-table-cell"
@@ -1995,7 +1997,8 @@ exports[`Reports (v2) matches snapshot (v2) 1`] = `
                                     class="ant-table-cell"
                                   >
                                     <div
-                                      title="Report Name"
+                                      class="report_name-column"
+                                      title="Report Name/Permit Condition"
                                     >
                                       TSF, WSF or Dam As-built Report
                                     </div>
@@ -2013,6 +2016,7 @@ exports[`Reports (v2) matches snapshot (v2) 1`] = `
                                     class="ant-table-cell"
                                   >
                                     <div
+                                      class="submission_year-column"
                                       title="Compliance Year"
                                     >
                                       2020
@@ -2022,6 +2026,7 @@ exports[`Reports (v2) matches snapshot (v2) 1`] = `
                                     class="ant-table-cell"
                                   >
                                     <div
+                                      class="due_date-column"
                                       title="Due"
                                     >
                                       2020-03-31
@@ -2031,7 +2036,8 @@ exports[`Reports (v2) matches snapshot (v2) 1`] = `
                                     class="ant-table-cell"
                                   >
                                     <div
-                                      title="Received"
+                                      class="received_date-column"
+                                      title="Submitted"
                                     >
                                       2020-01-02
                                     </div>
@@ -2096,7 +2102,8 @@ exports[`Reports (v2) matches snapshot (v2) 1`] = `
                                     class="ant-table-cell"
                                   >
                                     <div
-                                      title="Report Name"
+                                      class="report_name-column"
+                                      title="Report Name/Permit Condition"
                                     >
                                       Annual DSI
                                     </div>
@@ -2114,6 +2121,7 @@ exports[`Reports (v2) matches snapshot (v2) 1`] = `
                                     class="ant-table-cell"
                                   >
                                     <div
+                                      class="submission_year-column"
                                       title="Compliance Year"
                                     >
                                       2020
@@ -2123,6 +2131,7 @@ exports[`Reports (v2) matches snapshot (v2) 1`] = `
                                     class="ant-table-cell"
                                   >
                                     <div
+                                      class="due_date-column"
                                       title="Due"
                                     >
                                       2020-03-31
@@ -2132,7 +2141,8 @@ exports[`Reports (v2) matches snapshot (v2) 1`] = `
                                     class="ant-table-cell"
                                   >
                                     <div
-                                      title="Received"
+                                      class="received_date-column"
+                                      title="Submitted"
                                     >
                                       N/A
                                     </div>

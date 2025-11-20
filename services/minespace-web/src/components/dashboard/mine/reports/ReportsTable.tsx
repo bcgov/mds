@@ -6,7 +6,10 @@ import {
   nullableStringSorter,
 } from "@mds/common/redux/utils/helpers";
 import { getMineReportDefinitionHash } from "@mds/common/redux/slices/complianceReportsSlice";
-import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import {
+  renderActionsColumn,
+  renderTextColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import { ColumnsType } from "antd/es/table";
 import CoreTable from "@mds/common/components/common/CoreTable";
@@ -87,14 +90,7 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
   };
 
   let defaultColumns: any = [
-    {
-      title: "Report Name/Permit Condition",
-      key: "report_name",
-      dataIndex: "report_name",
-      sortField: "report_name",
-      sorter: (a, b) => a.report_name.localeCompare(b.report_name),
-      render: (text) => <div title="Report Name">{text}</div>,
-    },
+    renderTextColumn("report_name", "Report Name/Permit Condition", true),
     {
       title: "Code Section",
       key: "code_section",
@@ -110,30 +106,9 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
         ) : null;
       },
     },
-    {
-      title: "Compliance Year",
-      key: "submission_year",
-      dataIndex: "submission_year",
-      sortField: "submission_year",
-      sorter: (a, b) => (a.submission_year < b.submission_year ? -1 : 1),
-      render: (text) => <div title="Compliance Year">{text}</div>,
-    },
-    {
-      title: "Due",
-      key: "due_date",
-      dataIndex: "due_date",
-      sortField: "due_date",
-      sorter: dateSorter("due_date"),
-      render: (text) => <div title="Due">{text || Strings.EMPTY_FIELD}</div>,
-    },
-    {
-      title: "Received",
-      key: "received_date",
-      dataIndex: "received_date",
-      sortField: "received_date",
-      sorter: dateSorter("received_date"),
-      render: (text) => <div title="Received">{text || Strings.EMPTY_FIELD}</div>,
-    },
+    renderTextColumn("submission_year", "Compliance Year", true),
+    renderTextColumn("due_date", "Due", true),
+    renderTextColumn("received_date", "Submitted", true),
     {
       title: "Status",
       dataIndex: "mine_report_status_code",
